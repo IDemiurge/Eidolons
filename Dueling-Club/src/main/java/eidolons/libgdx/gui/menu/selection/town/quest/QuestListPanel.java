@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.menu.selection.quest;
+package eidolons.libgdx.gui.menu.selection.town.quest;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;

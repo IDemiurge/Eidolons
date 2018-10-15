@@ -125,7 +125,6 @@ public class HeroDataModel extends Unit {
 
     public enum HERO_OPERATION {
         PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, UNEQUIP_JEWELRY,
-
         ATTRIBUTE_INCREMENT,
         MASTERY_INCREMENT,
         NEW_MASTERY,
@@ -136,7 +135,14 @@ public class HeroDataModel extends Unit {
         SPELL_LEARNED,
         SPELL_MEMORIZED,
         SPELL_EN_VERBATIM,
-        SPELL_UNMEMORIZED, NEW_PERK, LEVEL_UP, SET_PROPERTY, SET_PARAMETER, APPLY_TYPE, BUY, SELL,
+        SPELL_UNMEMORIZED, NEW_PERK, LEVEL_UP,
+        SET_PROPERTY, SET_PARAMETER,   ADD_PARAMETER,
+
+
+        APPLY_TYPE,
+
+        BUY, SELL,
+
 
 
     }

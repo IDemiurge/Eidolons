@@ -1,11 +1,7 @@
 package eidolons.macro;
 
 import eidolons.game.battlecraft.logic.meta.adventure.AdventureMetaMaster;
-import eidolons.game.battlecraft.logic.meta.adventure.AdventurePartyManager;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
@@ -13,11 +9,9 @@ import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.global.persist.Loader;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Region;
-import eidolons.system.text.TextMaster;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.PathUtils;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -72,7 +66,11 @@ public class AdventureInitializer {
         GuiEventManager.trigger(CREATE_PARTY,
          game.getPlayerParty());
         for (Region sub : game.getWorld().getRegions()) {
-            for (Place sub1 : sub.getPlaces()) {
+//            for (Place sub1 : sub.getPlaces()) {
+//                GuiEventManager.trigger(CREATE_PLACE,
+//                 sub1);
+//            }
+            for (Place sub1 : sub.getTowns()) {
                 GuiEventManager.trigger(CREATE_PLACE,
                  sub1);
             }

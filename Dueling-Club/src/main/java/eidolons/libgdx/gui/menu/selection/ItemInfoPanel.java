@@ -71,7 +71,7 @@ public class ItemInfoPanel extends TablePanel implements SelectableItemDisplayer
 
     protected void initSize() {
         if (GdxMaster.getFontSizeMod() != 1) {
-            setSize(GdxMaster.adjustSize(WIDTH),  GdxMaster.adjustSize(HEIGHT));
+            setSize(GdxMaster.adjustWidth(WIDTH),  GdxMaster.adjustHeight(HEIGHT));
         }
     }
 
@@ -81,8 +81,8 @@ public class ItemInfoPanel extends TablePanel implements SelectableItemDisplayer
             setBackground(new TextureRegionDrawable(new TextureRegion(
              TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
              BACKGROUND_NINE_PATCH.PATTERN,
-              (int) GdxMaster.adjustSize(WIDTH+30)
-              , (int) GdxMaster.adjustSize(HEIGHT)))));
+              (int) GdxMaster.adjustWidth(WIDTH+30)
+              , (int) GdxMaster.adjustHeight(HEIGHT)))));
         else {
             setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
         }

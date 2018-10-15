@@ -1,6 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
-import eidolons.libgdx.gui.menu.selection.quest.QuestSelectionPanel;
+import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.type.ObjType;

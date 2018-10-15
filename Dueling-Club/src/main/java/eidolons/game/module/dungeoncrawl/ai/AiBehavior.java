@@ -18,4 +18,7 @@ public abstract class AiBehavior {
     }
 
     public abstract ActionSequence getOrders(UnitAI ai);
+
+    public void act(float delta) {
+    }
 }

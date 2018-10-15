@@ -66,6 +66,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          new ScenarioMetaMaster(getData()))) {
             return;
         }
+
         //TODO should not be necessary!
         Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
 //        ?  Eidolons.mainGame.getMetaMaster(). init();

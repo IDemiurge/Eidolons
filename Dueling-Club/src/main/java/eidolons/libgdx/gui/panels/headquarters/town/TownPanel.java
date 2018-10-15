@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.town;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -19,10 +18,12 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
-import eidolons.libgdx.gui.menu.selection.quest.QuestSelectionPanel;
+import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
+import eidolons.libgdx.gui.menu.selection.town.shops.ShopSelectionPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.MAP_BACKGROUND;
@@ -49,6 +50,7 @@ public class TownPanel extends TabbedPanel {
     private final SmartButton okBtn;
     private final SmartButton hqBtn;
     private static TownPanel activeInstance;
+    private final Texture frame;
 
     public TownPanel() {
         super();
@@ -56,14 +58,14 @@ public class TownPanel extends TabbedPanel {
         addActor(new NoHitImage(TextureCache.getOrCreateR(MAP_BACKGROUND.TUNNEL.getBackgroundFilePath())));
         addActor(new NoHitImage(TextureCache.getOrCreateR(BACKGROUND_NINE_PATCH.SEMI.getPath())));
 
-        Texture frame = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
+         frame = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
          BACKGROUND_NINE_PATCH.TRANSPARENT, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         initContainer();
+        addActor(new NoHitImage(frame));
         addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()));
         addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
 
-        addActor(new NoHitImage(frame));
         tabTable.setZIndex(Integer.MAX_VALUE);
         headerBg = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON_ALT,
          BACKGROUND_NINE_PATCH.TRANSPARENT, GdxMaster.adjustFontSize(470), 100);
@@ -110,19 +112,18 @@ public class TownPanel extends TabbedPanel {
 
     @Override
     protected TablePanelX createContentsTable() {
-        return new TablePanelX(getWidth(), getHeight());
+        return new TablePanelX(frame.getWidth(), frame.getHeight());
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
 
     @Override
     public void layout() {
         super.layout();
         contentTable.setX(NINE_PATCH_PADDING.FRAME.left);
-        okBtn.setX(getWidth()-okBtn.getWidth());
+        okBtn.setX(frame.getWidth()-okBtn.getWidth()-2*NINE_PATCH_PADDING.FRAME.right);
+        okBtn.setY(NINE_PATCH_PADDING.FRAME.bottom/4);
+        hqBtn.setX(2*NINE_PATCH_PADDING.FRAME.right);
+        hqBtn.setY(NINE_PATCH_PADDING.FRAME.bottom/4);
 //         contentTable.getX()+contentTable.getWidth()+40);
 
 
@@ -153,6 +154,8 @@ public class TownPanel extends TabbedPanel {
     private void done() {
         WaitMaster.receiveInput(DONE_OPERATION, true);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null );
+        HqDataMaster.getInstance().applyModifications();
+
     }
 
     public enum TOWN_VIEWS {

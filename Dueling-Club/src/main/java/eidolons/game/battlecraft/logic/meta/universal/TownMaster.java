@@ -25,7 +25,7 @@ public class TownMaster extends MetaGameHandler {
 
     public TownMaster(MetaGameMaster master) {
         super(master);
-        shopManager= createShopManager();
+        shopManager = createShopManager();
         questMaster = new QuestMaster();
     }
 
@@ -36,18 +36,28 @@ public class TownMaster extends MetaGameHandler {
 
     public boolean initTownPhase() {
         try {
-            town = getOrCreateTown();
+            Town town = getOrCreateTown();
             town.setQuests(questMaster.getQuestTypePool());
-            Eidolons.getMainHero().reset();
-            GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
-            inTown = true;
-            boolean result = (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
-            inTown = false;
-            return result;
+            return enterTown(town);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return false;
+    }
+
+    public boolean enterTown(Town town) {
+        if (this.town == null)
+            try {
+                Eidolons.getMainHero().reset();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        this.town = town;
+        GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
+        inTown = true;
+        boolean result = (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
+        inTown = false;
+        return result;
     }
 
     public Town getTown() {

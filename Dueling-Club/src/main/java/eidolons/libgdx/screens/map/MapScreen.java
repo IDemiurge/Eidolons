@@ -10,17 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
-import eidolons.macro.MacroGame;
-import eidolons.macro.AdventureInitializer;
-import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.mouse.MapInputController;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.GameScreenWithTown;
 import eidolons.libgdx.screens.map.editor.EditorMapView;
 import eidolons.libgdx.shaders.DarkShader;
+import eidolons.macro.AdventureInitializer;
+import eidolons.macro.MacroGame;
+import eidolons.macro.global.time.MacroTimeMaster;
 import main.data.xml.XML_Reader;
 import main.game.bf.Coordinates;
 import main.system.EventCallbackParam;
@@ -33,7 +33,7 @@ import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
 /**
  * Created by JustMe on 2/3/2018.
  */
-public class MapScreen extends GameScreen {
+public class MapScreen extends GameScreenWithTown {
 
     public final static String defaultPath = "global\\map\\ersidris plain.jpg";
     public final static String timeVersionRootPath = "global\\map\\ersidris at ";
@@ -216,6 +216,10 @@ public class MapScreen extends GameScreen {
 
     }
 
+    @Override
+    protected boolean isTownInLoaderOnly() {
+        return false;
+    }
     protected boolean isBlocked() {
         if (!canShowScreen())
             return false;

@@ -89,6 +89,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected QuestJournal journal;
     protected SmartButton menuButton;
     private boolean town;
+    private List<Actor> hiddenActors=    new ArrayList<>() ;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -247,7 +248,10 @@ public class GuiStage extends StageX implements StageWithClosable {
                 if (getActorsForTown().contains(actor)) {
                     continue;
                 }
-                actor.setVisible(false);
+                if (actor.isVisible()){
+                    actor.setVisible(false);
+                    hiddenActors.add(actor);
+                }
             }
         }
         super.act(delta);
@@ -611,11 +615,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     public void setTown(boolean town) {
         this.town = town;
         if (!town) {
-            for (Actor actor : getRoot().getChildren()) {
-                if (getActorsForTown().contains(actor)) {
-                    continue;
-                }
+            for (Actor actor :    new ArrayList<>( hiddenActors)) {
                 actor.setVisible(true);
+                hiddenActors.remove(actor);
             }
         }
     }

@@ -23,6 +23,7 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.Images;
@@ -157,6 +158,13 @@ public class ContainerPanel extends TablePanel implements Blocking {
          TextureCache.getOrCreateR(Images.TINY_GOLD), "")).left().fillX().growX();
         goldLabel2.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 18));
 
+        goldLabel2.addListener(new SmartClickListener(goldLabel2) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                takeGold();
+            }
+        });
+
         lower.add(lowerLeft).left();
         if (!isButtonRequired())
             lower.add(new AdjustingVerticalGroup(400, 0.5f)).growX();
@@ -274,7 +282,12 @@ public class ContainerPanel extends TablePanel implements Blocking {
         return new EnumMaster<STD_BUTTON>().retrieveEnumConst(STD_BUTTON.class, "ITEM_" + filter.name());
     }
 
-    protected void takeAll() {
+    protected void takeGold() {
+        ContainerDataSource dataSource =
+         (ContainerDataSource) containerSlotsPanel.getUserObject();
+        dataSource.getHandler().takeGold();
+    }
+        protected void takeAll() {
         ContainerDataSource dataSource =
          (ContainerDataSource) containerSlotsPanel.getUserObject();
         dataSource.getHandler().takeAllClicked();

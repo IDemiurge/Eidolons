@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.inventory.container;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.DC_Cell;
@@ -98,7 +99,18 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
             }
             dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
         }
+        takeGold();
+
         close();
+    }
+
+    public void takeGold() {
+        Integer gold = container.getIntParam(PARAMS.GOLD);
+        if (gold>0){
+            dataMaster.operation(sim, HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
+            container.setParam(PARAMS.GOLD,0);
+            update();
+        }
     }
 
     protected void pickUp(DC_HeroItemObj item) {

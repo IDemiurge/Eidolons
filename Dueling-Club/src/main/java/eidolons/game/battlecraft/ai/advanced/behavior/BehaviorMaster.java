@@ -13,8 +13,7 @@ import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.module.dungeoncrawl.ai.AiBehavior;
 import eidolons.game.module.dungeoncrawl.ai.GuardAi;
 import eidolons.game.module.dungeoncrawl.ai.PatrolMaster;
-import eidolons.game.module.dungeoncrawl.ai.WanderAi;
-import main.content.enums.system.AiEnums;
+import eidolons.game.module.dungeoncrawl.ai.WanderAiOld;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -57,7 +56,7 @@ public class BehaviorMaster extends AiHandler {
         switch (type) {
 
             case WANDER:
-                behavior = new WanderAi();
+                behavior = new WanderAiOld();
                 break;
             case AMBUSH:
                 break;
@@ -100,7 +99,7 @@ public class BehaviorMaster extends AiHandler {
             case SEARCH: // having already turned on the Mode
             case WANDER:
                 if (ai.isLeader()) {
-                    Boolean change = WanderAi.checkWanderDirectionChange(group, type);
+                    Boolean change = WanderAiOld.checkWanderDirectionChange(group, type);
                     if (change == null) {
                         action = getIdleAction(ai, type);
                         change = true;
@@ -111,12 +110,12 @@ public class BehaviorMaster extends AiHandler {
                     if (change) {
                         group.getWanderStepCoordinateStack().push(
                          group.getLeader().getCoordinates());
-                        WanderAi.changeGroupMoveDirection(group, type);
+                        WanderAiOld.changeGroupMoveDirection(group, type);
                     }
                 }
                 boolean wait = false;
                 // ActionSequenceConstructor.getSequence(targetAction, task)
-                Coordinates targetCoordinates = WanderAi.getCoordinates(type, ai);
+                Coordinates targetCoordinates = WanderAiOld.getCoordinates(type, ai);
                 if (targetCoordinates == null) {
                     wait = true;
                     // if (!recursion)

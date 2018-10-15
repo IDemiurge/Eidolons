@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
@@ -246,5 +247,12 @@ public class AiMaster {
 
     public UnitAI getUnitAI() {
         return getUnit().getAI();
+    }
+
+    public AI_Manager getAiManager() {
+        return game.getAiManager();
+    }
+    public AI_Manager getManager() {
+        return game.getAiManager();
     }
 }

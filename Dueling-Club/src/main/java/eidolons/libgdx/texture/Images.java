@@ -13,6 +13,7 @@ public class Images {
      "hq", "spell", "empty.png");
     public static final String SPELLBOOK = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "spell", "spellbook.png");
+    public static final String EMPTY_LIST_ITEM = StrPathBuilder.build(PathFinder.getUiPath(), "EMPTY_LIST_ITEM.jpg");
     public static final String EMPTY_CONTAINER_SPACE = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "inv", "empty.png");
     public static final String EMPTY_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),

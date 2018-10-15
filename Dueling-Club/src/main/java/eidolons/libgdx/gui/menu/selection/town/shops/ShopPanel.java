@@ -1,8 +1,10 @@
-package eidolons.libgdx.gui.panels.headquarters.town;
+package eidolons.libgdx.gui.menu.selection.town.shops;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
@@ -19,6 +21,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.entity.town.Shop;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -41,14 +44,14 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         header.add(containerLabel);
         header.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
-    }
+       }
 
     protected int getDefaultHeight() {
         return (int) GdxMaster.adjustSizeBySquareRoot(700);
     }
 
     protected int getDefaultWidth() {
-        return (int) GdxMaster.adjustSizeBySquareRoot(1000);
+        return (int) GdxMaster.adjustSizeBySquareRoot(1080);
     }
 
     @Override
@@ -85,6 +88,10 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         super.layout();
         header.setPosition( GdxMaster.right(header)- NINE_PATCH_PADDING.SAURON.right,
          getHeight()-header.getHeight()/2);
+        TextureRegion bg = TextureCache.getOrCreateR("ui/components/hq/inv/inv slots bg.png");
+        containerSlotsPanel.setBackground(new TextureRegionDrawable(bg));
+        containerSlotsPanel.setSize(bg.getRegionWidth(), bg.getRegionHeight());
+
     }
 
     @Override
@@ -122,7 +129,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     }
 
     protected int getContainerColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override

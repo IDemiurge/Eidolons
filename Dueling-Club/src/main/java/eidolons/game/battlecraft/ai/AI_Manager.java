@@ -278,7 +278,7 @@ public class AI_Manager extends AiMaster {
                 groups.add(group);
             }
         }
-    return;
+        return;
     }
 
     private void resetGroups() {

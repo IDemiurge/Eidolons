@@ -33,8 +33,12 @@ public class Town extends Place {
         super(game, t, ref);
         readyToInit = true;
         init();
+        visibilityStatus = PLACE_VISIBILITY_STATUS.AVAILABLE;
     }
 
+    public boolean isVisible() {
+        return true;
+    }
     @Override
     public void init() {
         if (!readyToInit) {

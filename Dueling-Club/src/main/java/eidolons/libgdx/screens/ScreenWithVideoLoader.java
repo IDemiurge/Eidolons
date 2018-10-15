@@ -13,7 +13,7 @@ import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
-import eidolons.libgdx.gui.menu.selection.quest.QuestSelectionPanel;
+import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;

@@ -270,6 +270,13 @@ public class ActionSequenceConstructor extends AiHandler {
         return list;
 
     }
+    public ActionSequence getSequenceFromPath(ActionPath path , UnitAI ai) {
+        return getSequenceFromPath(path, new Task(ai, GOAL_TYPE.MOVE, null));
+    }
+    public ActionSequence getSequenceFromPath(ActionPath path , Task task) {
+       return new ActionSequence(path.getActions(), task, task.getAI());
+
+    }
 
     public List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
                                                       Action action) {

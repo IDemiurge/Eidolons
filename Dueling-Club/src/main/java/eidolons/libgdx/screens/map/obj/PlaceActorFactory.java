@@ -22,8 +22,8 @@ public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
         return instance;
     }
 
-    public static PlaceActor getPlace(Place party) {
-        return getInstance().create(party);
+    public static PlaceActor getPlace(Place place) {
+        return getInstance().create(place);
     }
 
     public PlaceActor get(Place place) {

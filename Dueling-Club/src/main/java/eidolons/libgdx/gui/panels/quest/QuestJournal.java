@@ -5,8 +5,8 @@ import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import eidolons.libgdx.gui.menu.selection.quest.QuestInfoPanel;
-import eidolons.libgdx.gui.menu.selection.quest.QuestListPanel;
+import eidolons.libgdx.gui.menu.selection.town.quest.QuestInfoPanel;
+import eidolons.libgdx.gui.menu.selection.town.quest.QuestListPanel;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 

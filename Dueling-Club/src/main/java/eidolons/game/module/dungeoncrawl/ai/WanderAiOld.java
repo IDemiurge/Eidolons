@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class WanderAi extends AiBehavior {
+public class WanderAiOld extends AiBehavior {
 
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
@@ -250,7 +250,7 @@ public class WanderAi extends AiBehavior {
     }
 
     public static Coordinates getCoordinates(GOAL_TYPE type, UnitAI ai) {
-        Coordinates targetCoordinates = WanderAi.getWanderTargetCoordinatesCell(ai, type);
+        Coordinates targetCoordinates = WanderAiOld.getWanderTargetCoordinatesCell(ai, type);
         Unit unit = ai.getUnit();
         GroupAI group = ai.getGroup();
         boolean adjust = targetCoordinates == null;
@@ -265,7 +265,7 @@ public class WanderAi extends AiBehavior {
                 c = Positioner.adjustCoordinate(targetCoordinates, null);
                 if (c == null) {
                     group.getWanderStepCoordinateStack().push(group.getLeader().getCoordinates());
-                    WanderAi.changeGroupMoveDirection(group, type);
+                    WanderAiOld.changeGroupMoveDirection(group, type);
                     return null;
                 }
                 if (DirectionMaster.getRelativeDirection(unit.getCoordinates(), c) != group

@@ -52,16 +52,24 @@ public abstract class SelectionPanel extends TablePanelX {
         backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel());
         startButton = new SmartButton(getDoneText(), STD_BUTTON.MENU, () -> tryDone());
 
+        row();
+
+        TablePanel<Actor> container = new TablePanelX<>(getWidth()-listPanel.getWidth(), getHeight());
+
+        if (isListOnTheRight()) {
+            container.addNormalSize(infoPanel.getActor()).left();
+            addNormalSize(container).left();
+            addNormalSize(listPanel).right();
+        } else {
+            container.addNormalSize(infoPanel.getActor()).center();
+            addNormalSize(listPanel).left();
+            addNormalSize(container).right();
+        }
         listPanel.addActor(title); //trick for pos
         title.pack();
         title.setPosition(GdxMaster.centerWidth(title),
          getTitlePosY());
         addActor(title);
-        row();
-        addNormalSize(listPanel).left();
-        TablePanel<Actor> container = new TablePanelX<>(getWidth()-listPanel.getWidth(), getHeight());
-        addNormalSize(container).right();
-        container.addNormalSize(infoPanel.getActor()).center();
 
         row();
         addElement(null).bottom().size(getWidth(), 70);
@@ -83,6 +91,10 @@ public abstract class SelectionPanel extends TablePanelX {
         listPanel.setZIndex(Integer.MAX_VALUE);
         title.setZIndex(Integer.MAX_VALUE);
 
+    }
+
+    protected boolean isListOnTheRight() {
+        return false;
     }
 
     protected float getTitlePosY() {

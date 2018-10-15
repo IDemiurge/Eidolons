@@ -3,14 +3,16 @@ package eidolons.macro;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.macro.entity.town.Town;
 import eidolons.macro.generation.ScenarioGenerator;
 import eidolons.macro.global.persist.Saver;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.macro.map.Place;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.SCREEN_TYPE;
-import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.type.ObjType;
@@ -148,7 +150,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 //        Place entered = checkBattleStarts();
 //        if (isAutoEnterCombat())
 //            if (entered != null) {
-//                combatStarts(entered);
+//                enter(entered);
 //                return;
 //            }
         if (isAutoEnterCombat())
@@ -168,14 +170,20 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         if (sub != lastEnteredPlace)
          if (AdventureInitializer.isTestMode()
                  || (sub.getCoordinates().dst(c) < 100  && macroGame.getPlayerParty().isHasMoved())) {
-            combatStarts(sub);
+
+            enter(sub);
             lastEnteredPlace= sub;
              return true;
         }
         return false;
     }
 
-    public void combatStarts(Place entered) {
+    public void enter(Place entered) {
+        if (entered instanceof Town){
+//            entered.getGame().get
+            DC_Game.game.getMetaMaster().getTownMaster().enterTown((Town) entered);
+            return;
+        }
         Eidolons.onThisOrNonGdxThread(() -> {
             startBattle(entered);
             setPaused(true);

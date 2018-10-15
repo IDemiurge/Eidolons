@@ -19,6 +19,6 @@ public class ItemActor extends HqSlotActor<DC_HeroItemObj>{
 
     @Override
     protected String getEmptyImage() {
-        return Images.EMPTY_ITEM;
+        return Images.EMPTY_LIST_ITEM;
     }
 }

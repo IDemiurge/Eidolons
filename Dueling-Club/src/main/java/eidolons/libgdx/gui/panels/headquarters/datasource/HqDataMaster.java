@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -10,6 +11,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
@@ -184,6 +186,9 @@ public class HqDataMaster {
         return instance;
     }
 
+    public static HqDataMaster getInstance() {
+        return getInstance(Eidolons.getMainHero());
+    }
     public static HqDataMaster getInstance(Unit unit) {
         HqDataMaster instance = map.get(unit);
         if (instance == null) {
@@ -300,11 +305,13 @@ public class HqDataMaster {
                 item = (DC_HeroItemObj) args[0]; //TODO fix?
                 Shop shop = (Shop) args[1];
                 if (operation == HERO_OPERATION.SELL) {
-                    shop.sellItemTo(item);
+                    Integer price = shop.sellItemTo(item);
                     hero.removeFromInventory(item);
+                    hero.modifyParameter(PARAMS.GOLD, price);
                 } else {
-                    shop.buyItemFrom(item);
+                    Integer price = shop.buyItemFrom(item);
                     hero.addItemToInventory(item);
+                    hero.modifyParameter(PARAMS.GOLD, -price);
                 }
                 break;
             case PICK_UP:
@@ -346,7 +353,13 @@ public class HqDataMaster {
     public void applyOperation(Unit hero, HERO_OPERATION operation, Object... args) {
 
         switch (operation) {
+            case ADD_PARAMETER:
+                hero.modifyParameter((PARAMETER) args[0],
+                 Integer.valueOf(args[1].toString()));
+                break;
+
             case SET_PARAMETER:
+                hero.setParameter((PARAMETER) args[0], Integer.valueOf(args[1].toString()));
                 break;
             case APPLY_TYPE:
                 String imagePath = hero.getImagePath();

@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.headquarters.town;
+package eidolons.libgdx.gui.menu.selection.town.shops;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;

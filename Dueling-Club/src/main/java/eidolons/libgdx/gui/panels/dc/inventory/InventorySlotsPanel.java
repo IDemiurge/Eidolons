@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import eidolons.libgdx.texture.Images;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
-public class InventorySlotsPanel extends TablePanel {
+public class InventorySlotsPanel extends TablePanelX {
 
     public static final int ROWS = 3;
     public static final int COLUMNS = 8;
@@ -61,7 +61,7 @@ public class InventorySlotsPanel extends TablePanel {
                 valueContainer = inventorySlots.get(i);
             }
             if (valueContainer == null) {
-                valueContainer = new ValueContainer(getOrCreateR(Images.EMPTY_ITEM));
+                valueContainer = new ValueContainer(getOrCreateR(Images.EMPTY_LIST_ITEM));
             } else {
                 items.add(valueContainer);
             }

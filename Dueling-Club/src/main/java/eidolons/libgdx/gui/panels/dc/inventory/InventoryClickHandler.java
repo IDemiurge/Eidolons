@@ -39,7 +39,7 @@ public interface InventoryClickHandler {
         RING(Images.EMPTY_RING),
         QUICK_SLOT(Images.EMPTY_QUICK_ITEM),
         INVENTORY(Images.EMPTY_ITEM),
-        CONTAINER(Images.EMPTY_CONTAINER_SPACE),
+        CONTAINER(Images.EMPTY_LIST_ITEM),
         ;
 
 

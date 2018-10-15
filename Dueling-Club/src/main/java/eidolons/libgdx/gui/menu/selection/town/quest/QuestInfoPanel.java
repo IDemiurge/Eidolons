@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.menu.selection.quest;
+package eidolons.libgdx.gui.menu.selection.town.quest;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxMaster;
@@ -18,6 +18,8 @@ public class QuestInfoPanel extends ItemInfoPanel {
     private final SmartButton accept;
     private final SmartButton cancel;
     private boolean disabled;
+    public static final int WIDTH = 920;
+    public static final int HEIGHT = 800;
 
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
@@ -35,7 +37,11 @@ public class QuestInfoPanel extends ItemInfoPanel {
         accept.setPosition(GdxMaster.centerWidth(accept) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
         cancel.setPosition(GdxMaster.centerWidth(cancel) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
     }
-
+    protected void initSize() {
+        if (GdxMaster.getFontSizeMod() != 1) {
+            setSize(GdxMaster.adjustSize(WIDTH),  GdxMaster.adjustSize(HEIGHT));
+        }
+    }
     @Override
     public void act(float delta) {
         super.act(delta);

@@ -32,9 +32,6 @@ public class ShopClickHandler extends ContainerClickHandler {
              "Inventory is full!", sim);
             return false;
         }
-        DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
-        buy(item);
-
         OPERATIONS operation = getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
 
         if (operation == OPERATIONS.DROP) {

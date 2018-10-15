@@ -530,7 +530,19 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
         obj.setProperty(PROPS.INVENTORY, contents);
 
+        int gold = getAmountOfGold(obj, totalCost);
+        if (gold>0)
+            obj.setParam(PARAMS.GOLD, gold);
 
+//        contents+=goldItem
+    }
+
+    private int getAmountOfGold(BattleFieldObject obj, int totalCost) {
+        float c =
+         RandomWizard.getRandomIntBetween(5, 15)
+         + RandomWizard.getRandomFloatBetween(0.6f, 2f)
+         *obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost;
+        return Math.round(  c);
     }
 
     private boolean isRandomizationOn() {

@@ -121,6 +121,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     private boolean isTownEnabled() {
+        if (CoreEngine.isMacro()) {
+            return false;
+        }
         return true;
     }
     private boolean isQuestsEnabled() {

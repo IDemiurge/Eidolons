@@ -184,16 +184,19 @@ public class Shop extends TownPlace implements ShopInterface {
         // perhaps shops should getOrCreate "Level Ups" eventually too :)
     }
 
-    public void buyItemFrom(DC_HeroItemObj t) {
+    public Integer buyItemFrom(DC_HeroItemObj t) {
         items.remove(t);
         // some items should be infinite though... perhaps based on shop level?
         Integer price = t.getIntParam(PARAMS.GOLD_COST);
         modifyParameter(PARAMS.GOLD, price);
+        return price;
     }
 
-    public void sellItemTo(DC_HeroItemObj t) {
-        buyItem(t);
-
+    public Integer sellItemTo(DC_HeroItemObj t) {
+        Integer cost = t.getIntParam(PARAMS.GOLD_COST);
+        cost = MathMaster.addFactor(cost, getIntParam(PARAMS.GOLD_MOD));
+        buyItem(t, cost);
+        return cost;
     }
 
     private boolean buyItem(DC_HeroItemObj t) {

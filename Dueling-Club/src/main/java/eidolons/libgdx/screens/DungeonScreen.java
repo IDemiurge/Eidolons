@@ -35,14 +35,12 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.libgdx.utils.ActTimer;
 import eidolons.macro.MacroGame;
-import eidolons.macro.entity.town.Town;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
@@ -60,7 +58,7 @@ import static main.system.GuiEventType.*;
  * Time: 23:55
  * To change this template use File | Settings | File Templates.
  */
-public class DungeonScreen extends GameScreen {
+public class DungeonScreen extends GameScreenWithTown {
     protected static float FRAMERATE_DELTA_CONTROL =
      new Float(1) / GenericLauncher.FRAMERATE; //*3 ?
     protected static DungeonScreen instance;
@@ -73,7 +71,6 @@ public class DungeonScreen extends GameScreen {
     protected ParticleManager particleManager;
     protected StageX gridStage;
     protected GridPanel gridPanel;
-    protected TownPanel townPanel;
     private boolean blocked;
     private ActTimer cameraTimer;
 
@@ -143,39 +140,6 @@ public class DungeonScreen extends GameScreen {
         return super.isTooltipsOn();
     }
 
-    private void showTownPanel(EventCallbackParam p) {
-
-        if (p.get() == null) {
-            townPanel.fadeOut();
-            overlayStage.setActive(false);
-            updateInputController();
-            GdxMaster.setLoadingCursor();
-            TownPanel.setActiveInstance(null);
-        } else {
-            Town town = (Town) p.get();
-            if (townPanel == null || TownPanel.TEST_MODE) {
-                overlayStage.addActor(townPanel = new TownPanel());
-            } else {
-                townPanel.setVisible(true);
-            }
-            townPanel.setUserObject(town);
-
-            overlayStage.setActive(true);
-            updateInputController();
-            GdxMaster.setDefaultCursor();
-            TownPanel.setActiveInstance(townPanel);
-        }
-    }
-
-    @Override
-    protected void renderLoaderAndOverlays(float delta) {
-        super.renderLoaderAndOverlays(delta);
-        if (townPanel != null&&townPanel.isVisible()){
-            guiStage.setTown(true);
-            guiStage.act(delta);
-            guiStage.draw();
-        }
-    }
 
     @Override
     public void reset() {
@@ -527,5 +491,10 @@ public class DungeonScreen extends GameScreen {
 
     public ParticleManager getParticleManager() {
         return particleManager;
+    }
+
+    @Override
+    protected boolean isTownInLoaderOnly() {
+        return true;
     }
 }
