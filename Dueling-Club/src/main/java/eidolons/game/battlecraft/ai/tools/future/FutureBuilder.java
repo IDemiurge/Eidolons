@@ -34,7 +34,7 @@ public class FutureBuilder {
         // precise...
         Map<String, Integer> cache = getCache(min_max_normal);
         if (targetObj == null)
-            targetObj = active.getOwnerObj();
+            targetObj = active.getOwnerUnit();
         Integer damage = cache.get(getCacheKey(active, targetObj));
         if (damage != null)
             return damage;
@@ -91,7 +91,7 @@ public class FutureBuilder {
     public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e,
                                 Boolean min_max_normal) {
         Integer damage;
-        Ref ref = active.getOwnerObj().getRef().getCopy();
+        Ref ref = active.getOwnerUnit().getRef().getCopy();
         ref.setTarget(targetObj.getId());
         ref.setID(KEYS.ACTIVE, active.getId());
         e.setRef(ref);

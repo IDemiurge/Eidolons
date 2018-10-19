@@ -55,9 +55,11 @@ public enum MACRO_PROPS implements PROPERTY {
     SHOP_MODIFIER("shop", null),
     SHOP_ITEM_MATERIALS("shops", null),
     SHOP_ITEM_TEMPLATES("shops", null),
+    SHOP_CACHED_PRICES("shops", null),
 
     SHOPS(null, true, "town", "place"),
 
+    TOWN_STASH(true, "Stash", true, "town"),
     TOWN_HALL(null, false, "town"),
     TAVERNS(null, false, "town"),
     LINKED_PLACES(null, false, "route", "town", "place"),
@@ -131,9 +133,7 @@ public enum MACRO_PROPS implements PROPERTY {
     QUEST_TYPE(null, false, "quest"),
     QUEST_TIME_LIMIT(null, false, "quest"),
     QUEST_LEVEL(null, false, "quest"),
-    QUEST_REWARD_TYPE(null, false, "quest"),
-
-    ;
+    QUEST_REWARD_TYPE(null, false, "quest");
 
     private Metainfo metainfo;
     private String shortName;

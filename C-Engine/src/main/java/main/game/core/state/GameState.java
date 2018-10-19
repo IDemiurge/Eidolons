@@ -71,7 +71,7 @@ public abstract class GameState {
         return getRound() + 1;
     }
 
-    public synchronized int getRound() {
+    public  int getRound() {
         return round;
     }
 
@@ -105,7 +105,7 @@ public abstract class GameState {
         }
 
         // setDirty(true);
-        // resetAllSynchronized();
+        // resetAll();
     }
 
     public void removeObject(Integer id) {
@@ -157,24 +157,24 @@ public abstract class GameState {
         this.interrupted = interrupted;
     }
 
-    public synchronized Map<Integer, Obj> getObjMap() {
+    public  Map<Integer, Obj> getObjMap() {
         return objMap;
     }
 
-    public synchronized Map<Integer, ObjType> getTypeMap() {
+    public  Map<Integer, ObjType> getTypeMap() {
         return typeMap;
     }
 
-    public synchronized DequeImpl<Trigger> getTriggers() {
+    public  DequeImpl<Trigger> getTriggers() {
         return triggers;
     }
 
 
-    public synchronized DequeImpl<Effect> getEffects() {
+    public  DequeImpl<Effect> getEffects() {
         return effects;
     }
 
-    public synchronized StateManager getManager() {
+    public  StateManager getManager() {
         return manager;
     }
 

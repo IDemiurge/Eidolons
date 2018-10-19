@@ -19,12 +19,14 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
+import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.macro.MacroGame;
+import eidolons.macro.entity.town.Town;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -123,8 +125,18 @@ public class Eidolons {
         if (mainHero == null) {
             if (game == null)
                 return null;
-            mainHero = game.getMetaMaster().getPartyManager().getParty().getLeader();
-            //            mainHero = (Unit) game.getPlayer(true).getHeroObj();
+            try {
+                mainHero = game.getMetaMaster().getPartyManager().getParty().getLeader();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (mainHero == null) {
+                try {
+                    mainHero = (Unit) game.getPlayer(true).getHeroObj();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
         }
         return mainHero;
     }
@@ -265,13 +277,16 @@ public class Eidolons {
         try {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.game != null) {
-                MacroGame.game.getLoop().setExited(true);
+                if (MacroGame.game.getLoop() != null) {
+                        MacroGame.game.getLoop().setExited(true);
+                }
 
             }
 
             getScreen().reset();
             gameExited();
             GameMenu.menuOpen = false;
+            TownPanel.setActiveInstance(null);
             GdxMaster.setInputProcessor(new InputAdapter());
             showMainMenu();
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
@@ -387,6 +402,10 @@ public class Eidolons {
 
     public static SCREEN_TYPE getPreviousScreenType() {
         return previousScreenType;
+    }
+
+    public static Town getTown() {
+        return getGame().getMetaMaster().getTownMaster().getTown();
     }
 
     public enum SCOPE {

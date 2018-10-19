@@ -15,6 +15,7 @@ import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -26,6 +27,7 @@ import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
@@ -76,11 +78,22 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForUnits() {
-        return false;
+        return true;
     }
 
     public static boolean isGenerateItemsForContainers() {
         return !CoreEngine.isFastMode();
+    }
+
+    public static boolean loot(Unit unit, DC_Obj obj) {
+        unit.getGame().getInventoryManager().setOperationsPool(5);
+
+        Pair<InventoryDataSource, ContainerDataSource> param =
+         new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
+        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
+        boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
+        unit.getGame().getManager().reset();
+        return result;
     }
 
     public ObjType getItem(CONTAINER_CONTENTS c, int maxCost) {
@@ -105,7 +118,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (isRemoveBase(c, type))
             pool.removeIf(item -> !item.isGenerated());
         else {
-//            pool.size(); debug
+            //            pool.size(); debug
         }
         if (pool.isEmpty())
             return null;
@@ -223,8 +236,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             filter(contents, group, rarity, TYPE);
             if (group.isEmpty())
                 continue;
-//            group = generateTypes(c, rarity, group);
-//            group.removeIf(type -> !type.isGenerated()); //remove base types
+            //            group = generateTypes(c, rarity, group);
+            //            group.removeIf(type -> !type.isGenerated()); //remove base types
 
             list.addAll(group);
         }
@@ -301,7 +314,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         List<ObjType> list = new ArrayList<>();
         list.add(type);
         list = generateTypes(c, rarity, list
-//         new ListMaster<ObjType>().getList(type)
+         //         new ListMaster<ObjType>().getList(type)
         );
         list = ContainerFilter.filter(list, c, rarity);
         return list;
@@ -313,9 +326,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (c == CONTAINER_CONTENTS.POTIONS ||
          group.get(0).getGroup().equalsIgnoreCase("Alchemy")) {
             return
-//             DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy");
-            DataManager.getTypesSubGroup(DC_TYPE.ITEMS, "Potions");
-//            return DataManager.gettype;
+             //             DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy");
+             DataManager.getTypesSubGroup(DC_TYPE.ITEMS, "Potions");
+            //            return DataManager.gettype;
         }
         if (c == CONTAINER_CONTENTS.JEWELRY ||
          group.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
@@ -408,7 +421,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                     return "Coating;";
                 if (TYPE == DC_TYPE.JEWELRY)
                     return "Rings;";
-//                if (DC_Game.game.isMacroOn())
+                //                if (DC_Game.game.isMacroOn())
                 return "Bolts;Arrows;Claws;Daggers;";
             case TREASURE:
                 if (TYPE == DC_TYPE.ARMOR)
@@ -441,16 +454,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         return loot(unit, obj);
     }
 
-    public static boolean loot(Unit unit, DC_Obj obj) {
-        unit.getGame().getInventoryManager().setOperationsPool(5);
-
-        Pair<InventoryDataSource, ContainerDataSource> param =
-         new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
-        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
-        boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
-        unit.getGame().getManager().reset();
-        return result;
-    }
     @Override
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();
@@ -464,7 +467,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public void initContents(BattleFieldObject obj) {
-        String contents = "";
+        String contents = obj.getProperty(PROPS.INVENTORY);
 
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
@@ -528,21 +531,26 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         } else
             main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
 
-        obj.setProperty(PROPS.INVENTORY, contents);
 
         int gold = getAmountOfGold(obj, totalCost);
-        if (gold>0)
-            obj.setParam(PARAMS.GOLD, gold);
+        if (gold > 0) {
+            if (GoldMaster.isGoldPacksOn()) {
+                contents += VariableManager.getStringWithVariable("Gold", gold);
+            } else {
+                obj.setParam(PARAMS.GOLD, gold);
+            }
+        }
+        obj.setProperty(PROPS.INVENTORY, contents);
 
-//        contents+=goldItem
+        //        contents+=goldItem
     }
 
     private int getAmountOfGold(BattleFieldObject obj, int totalCost) {
         float c =
          RandomWizard.getRandomIntBetween(5, 15)
-         + RandomWizard.getRandomFloatBetween(0.6f, 2f)
-         *obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost;
-        return Math.round(  c);
+          + RandomWizard.getRandomFloatBetween(0.6f, 2f)
+          * obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost;
+        return Math.round(c);
     }
 
     private boolean isRandomizationOn() {

@@ -215,7 +215,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     }
 
     @Override
-    public Obj getOwnerObj() {
+    public Obj getOwnerUnit() {
         return ref.getSourceObj();
     }
 

@@ -134,7 +134,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected boolean isTooltipsOn() {
-        if (TownPanel.getActiveInstance()!=null ) {
+        if (TownPanel.getActiveInstance() != null) {
             return false;
         }
         return super.isTooltipsOn();
@@ -263,7 +263,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     @Override
-    protected InputProcessor getInputController() {
+    protected InputProcessor createInputController() {
         InputMultiplexer current = null;
         if (canShowScreen()) {
             current = new InputMultiplexer(guiStage, controller, gridStage);
@@ -272,10 +272,10 @@ public class DungeonScreen extends GameScreenWithTown {
             }
             current.addProcessor(controller);//new GestureDetector(controller));
         } else {
-            if (TownPanel.getActiveInstance()!=null ){
-                return new InputMultiplexer(guiStage, super.getInputController());
+            if (TownPanel.getActiveInstance() != null) {
+                return new InputMultiplexer(guiStage, super.createInputController());
             } else {
-                return super.getInputController() ;
+                return super.createInputController();
             }
         }
 
@@ -283,8 +283,10 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void selectionPanelClosed() {
-        super.selectionPanelClosed();
+        if (TownPanel.getActiveInstance() != null) //TODO fix late events in auto-load
+            return;
         getOverlayStage().setActive(false);
+        super.selectionPanelClosed();
     }
 
     protected void triggerInitialEvents() {

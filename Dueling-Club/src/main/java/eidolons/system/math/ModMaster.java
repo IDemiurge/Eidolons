@@ -13,13 +13,13 @@ public class ModMaster {
                                                PARAMETER mod) {
         return MathMaster.applyModIfNotZero(action.getIntParam(mod),
          MathMaster.applyModIfNotZero(action.getActiveWeapon().getIntParam(mod),
-          action.getOwnerObj().getIntParam(mod)));
+          action.getOwnerUnit().getIntParam(mod)));
     }
 
     public static int getFinalBonusForAction(DC_ActiveObj dc_activeObj, PARAMS bonus) {
         Integer value = dc_activeObj.getIntParam(bonus)
          + dc_activeObj.getActiveWeapon().getIntParam(bonus)
-         + dc_activeObj.getOwnerObj().getIntParam(bonus);
+         + dc_activeObj.getOwnerUnit().getIntParam(bonus);
         return value;
     }
 }

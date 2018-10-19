@@ -385,7 +385,7 @@ public class FloatingTextMaster {
         } else {
             if (entity instanceof DC_ActiveObj) {
                 v = GridMaster.getCenteredPos(
-                 ((DC_ActiveObj) entity).getOwnerObj().getCoordinates());
+                 ((DC_ActiveObj) entity).getOwnerUnit().getCoordinates());
 
             }
         }

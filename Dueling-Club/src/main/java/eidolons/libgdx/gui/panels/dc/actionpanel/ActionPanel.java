@@ -28,10 +28,10 @@ import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
 public class ActionPanel extends GroupX {
     public final static int IMAGE_SIZE = 60;
-    public static final float EMPTY_OFFSET = 220/2;
+    public static final float EMPTY_OFFSET = 110;
     private static final String BACKGROUND_PATH = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
     private static final float SPELL_OFFSET_Y = -6;
-    private static final float OFFSET_X =  70+EMPTY_OFFSET;
+    private static final float OFFSET_X = 70 + EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
     private static final float SPELL_OFFSET_X = 40;
     private static final float ORB_OFFSET_X = OFFSET_X + 76;
@@ -56,6 +56,7 @@ public class ActionPanel extends GroupX {
 
     public ActionPanel() {
         background = new Image(TextureCache.getOrCreateR(BACKGROUND_PATH));
+        background.pack();
         setSize(background.getImageWidth(), background.getImageHeight());
         addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
@@ -97,10 +98,10 @@ public class ActionPanel extends GroupX {
          leftOrbPanel.getY() + 32);
 
         addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
-        orbOverlay.setPosition(EMPTY_OFFSET+136, 56);
+        orbOverlay.setPosition(EMPTY_OFFSET + 136, 56);
 
         addActor(bottomOverlay = new ImageContainer(BOTTOM_OVERLAY));
-        bottomOverlay.setPosition(EMPTY_OFFSET+80, -12);
+        bottomOverlay.setPosition(EMPTY_OFFSET + 80, -12);
 
         buffPanelSimple = new BuffPanelSimple();
         buffPanelSimple.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
@@ -108,9 +109,9 @@ public class ActionPanel extends GroupX {
 
         addActor(spellbookBtn);
         addActor(invBtn);
-        spellbookBtn.setPosition(modeActionsPanel.getX()+IMAGE_SIZE*6-12,
+        spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
          2);
-        invBtn.setPosition(modeActionsPanel.getX()-58,
+        invBtn.setPosition(modeActionsPanel.getX() - 58,
          2);
 
         setY(-IMAGE_SIZE);
@@ -120,10 +121,16 @@ public class ActionPanel extends GroupX {
         initResolutionScaling();
     }
 
-
     public ActionPanel(int x, int y) {
         this();
         setPosition(x, y);
+    }
+
+    @Override
+    public float getWidth() {
+        if (background == null)
+            return super.getWidth();
+        return background.getImageWidth();
     }
 
     private void showSpellbook() {
@@ -175,7 +182,7 @@ public class ActionPanel extends GroupX {
                 leftOrbPanel.setUserObject(source);
                 rigthOrbPanel.setUserObject(source);
             } else {
-//                setY(-IMAGE_SIZE);
+                //                setY(-IMAGE_SIZE);
                 if (isMovedDownOnEnemyTurn())
                     ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
 
@@ -194,9 +201,9 @@ public class ActionPanel extends GroupX {
     public void act(float delta) {
         super.act(delta);
 
-        spellbookBtn.setPosition(modeActionsPanel.getX()+IMAGE_SIZE*6-12,
+        spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
          2);
-        invBtn.setPosition(modeActionsPanel.getX()-55,
+        invBtn.setPosition(modeActionsPanel.getX() - 55,
          2);
 
 
@@ -234,5 +241,5 @@ public class ActionPanel extends GroupX {
         leftOrbPanel.setUpdateRequired(true);
         rigthOrbPanel.setUpdateRequired(true);
         initResolutionScaling();
-        }
+    }
 }

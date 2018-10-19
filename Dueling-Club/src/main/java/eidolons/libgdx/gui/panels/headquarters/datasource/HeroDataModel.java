@@ -7,10 +7,13 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PropMap;
+import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.game.logic.battle.player.Player;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -27,18 +30,22 @@ import java.util.List;
  * yes, just equip the one that is displayed
  */
 public class HeroDataModel extends Unit {
-    List<HeroOperation> modificationList = new ArrayList<>();
-    private Unit hero;
-    private boolean resetting;
+    protected List<HeroOperation> modificationList = new ArrayList<>();
+    protected Unit hero;
+    protected boolean resetting;
 
     public HeroDataModel(Unit hero) {
-        super(new ObjType(hero.getType(), true), hero.getX(), hero.getY(),
+        this(new ObjType(hero.getType(), true), hero.getX(), hero.getY(),
          hero.getOriginalOwner(),
-         Simulation.getGame(), hero.getRef().getCopy());
+         Simulation.getGame(), new Ref(Simulation.getGame()));
         copyDynamicParams(hero); //for dynamic params!
         setHero(hero);
         reset();
         //        cacheSimItems();
+    }
+
+    public HeroDataModel(ObjType type, int x, int y, Player originalOwner, DC_Game game, Ref ref) {
+        super(type, x, y, originalOwner, game, ref);
     }
 
     @Override
@@ -62,7 +69,7 @@ public class HeroDataModel extends Unit {
         super.init();
     }
 
-    private void cacheSimItems() {
+    protected void cacheSimItems() {
         cacheSimItemContainer(hero.getInventory(), getInventory());
         cacheSimItemContainer(hero.getQuickItems(), getQuickItems());
         cacheSimItemContainer(hero.getJewelry(), getJewelry());
@@ -74,7 +81,7 @@ public class HeroDataModel extends Unit {
         HqMaster.getSimCache().addSim(hero.getArmor(), hero.getArmor());
     }
 
-    private void cacheSimItemContainer(DequeImpl<? extends DC_HeroItemObj> inventory,
+    protected void cacheSimItemContainer(DequeImpl<? extends DC_HeroItemObj> inventory,
                                        DequeImpl<? extends DC_HeroItemObj> inventory1) {
         int i = 0;
         for (DC_HeroItemObj real : inventory) {
@@ -141,7 +148,7 @@ public class HeroDataModel extends Unit {
 
         APPLY_TYPE,
 
-        BUY, SELL,
+        BUY, SELL, UNSTASH, STASH,
 
 
 

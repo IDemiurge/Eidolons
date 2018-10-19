@@ -16,14 +16,11 @@ public class Images {
     public static final String EMPTY_LIST_ITEM = StrPathBuilder.build(PathFinder.getUiPath(), "EMPTY_LIST_ITEM.jpg");
     public static final String EMPTY_CONTAINER_SPACE = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "inv", "empty.png");
+
     public static final String EMPTY_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
-    "dc", "dialog" ,
-      "inv" ,
-      "empty slots", "empty_pack.jpg");
+     "generic" , "empty slots", "empty_pack.jpg");
     public static final String EMPTY_QUICK_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
-     "hq", "inv", "empty QUICK.png");
-
-
+     "generic" , "empty slots", "empty QUICK.png");
     public static final String EMPTY_WEAPON_MAIN = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
      "generic", "empty slots", "empty weapon main.png");
@@ -100,6 +97,15 @@ public class Images {
      PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
     public static final  String TINY_CHEST = "UI/components/tiny/chest.png";
     public static final  String TINY_GOLD = "UI/components/tiny/gold.png";
+    public static final java.lang.String GOLD_INV_ITEM_OVERLAY = "UI/components/hq/inv/gold overlay.png";
+    public static final String CHEST_OPEN = "UI/components/hq/inv/stash.png";
+    public static final String STASH_LANTERN = "UI/components/hq/inv/stash LANTERN.png";
+    public static final  String WEIGHT = "UI/components/hq/inv/WEIGHT.png";
+    public static final  String WEIGHT_BURDENED = "UI/components/hq/inv/WEIGHT burdened.png";
+    public static final String SHOP_PRICES = "UI/components/hq/inv/prices.png";
+    public static final String GOLD_PACK_LARGE = "UI/components/hq/inv/GOLD_PACK_LARGE.png";
+    public static final String GOLD_PACK_AVERAGE = "UI/components/hq/inv/GOLD_PACK_AVERAGE.png";
+    public static final String GOLD_PACK_SMALL = "UI/components/hq/inv/GOLD_PACK_SMALL.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

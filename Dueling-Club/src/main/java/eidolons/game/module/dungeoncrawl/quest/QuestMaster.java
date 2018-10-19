@@ -12,7 +12,9 @@ import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by JustMe on 10/6/2018.
@@ -120,11 +122,10 @@ public class QuestMaster {
         return quests;
     }
 
-    public List<ObjType> getQuestTypePool() {
+    public Set<ObjType> getQuestTypePool() {
         String filter = QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
-
-        return DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
-         filter, MACRO_PROPS.QUEST_GROUP);
+        return new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
+         filter, MACRO_PROPS.QUEST_GROUP));
 
     }
 }

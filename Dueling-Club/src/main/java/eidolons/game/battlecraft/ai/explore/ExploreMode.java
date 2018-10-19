@@ -1,9 +1,9 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 

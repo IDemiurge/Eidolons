@@ -99,8 +99,8 @@ public class Activator extends ActiveHandler {
         LogMaster.log(1, "Cannot Activate " +
          getEntity().getName() +
          ": " + getEntity().getCosts().getReasonsString());
-        if (!getEntity().getOwnerObj().isMine())
-            if (getEntity().getOwnerObj().isAiControlled())
+        if (!getEntity().getOwnerUnit().isMine())
+            if (getEntity().getOwnerUnit().isAiControlled())
                 return;
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
          TEXT_CASES.REQUIREMENT,
@@ -108,21 +108,21 @@ public class Activator extends ActiveHandler {
         f.setDisplacementY(100);
         f.setDuration(3);
         Vector2 c = GridMaster.getCenteredPos(getEntity()
-         .getOwnerObj().getCoordinates());
+         .getOwnerUnit().getCoordinates());
         f.setX(c.x);
         f.setY(c.y);
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, f);
     }
 
     public DC_UnitAction getModeAction() {
-        String mode = getAction().getOwnerObj().getActionMode(getEntity());
+        String mode = getAction().getOwnerUnit().getActionMode(getEntity());
         if (mode == null) {
             return null;
         }
         if (getChecker().isAttackGeneric()) {
-            return (DC_UnitAction) game.getActionManager().getAction(mode, getAction().getOwnerObj());
+            return (DC_UnitAction) game.getActionManager().getAction(mode, getAction().getOwnerUnit());
         }
-        return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), getAction().getOwnerObj());
+        return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), getAction().getOwnerUnit());
     }
 
 
@@ -184,7 +184,7 @@ public class Activator extends ActiveHandler {
         getHandler().setExtraAttackMode(instant_counter_opportunity, true);
         try {
             if (canBeActivated(getRef(), true)) {
-                getHandler().activateOn(triggeringAction.getOwnerObj());
+                getHandler().activateOn(triggeringAction.getOwnerUnit());
                 return true;
             }
 

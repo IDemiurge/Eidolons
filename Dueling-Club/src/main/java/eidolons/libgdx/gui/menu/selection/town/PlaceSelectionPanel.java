@@ -26,6 +26,11 @@ public abstract class PlaceSelectionPanel extends SelectionPanel {
     }
 
     @Override
+    protected boolean isAutoDoneEnabled() {
+        return false;
+    }
+
+    @Override
     public void init() {
         super.init();
         getCell(listPanel). left(). top().padRight(50);

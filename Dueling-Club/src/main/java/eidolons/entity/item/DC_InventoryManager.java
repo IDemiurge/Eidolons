@@ -67,7 +67,8 @@ public class DC_InventoryManager {
     }
 
     public enum OPERATIONS {
-        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, BUY, SELL
+        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, BUY, SELL,
+        STASH, UNSTASH, DESTROY,
     }
 
 }

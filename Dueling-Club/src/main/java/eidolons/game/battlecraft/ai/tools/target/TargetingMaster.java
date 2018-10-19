@@ -164,7 +164,7 @@ public class TargetingMaster extends AiHandler {
 
         for (Obj obj : objects) {
             ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
-            sequence.setAi(a.getOwnerObj().getUnitAI());
+            sequence.setAi(a.getOwnerUnit().getUnitAI());
             sequence.setType(type);
             int priority = DC_PriorityManager.getPriority(sequence);
             if (priority > max_priority) {

@@ -3,6 +3,7 @@ package eidolons.entity.obj.attach;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.core.Eidolons;
 import main.ability.AbilityObj;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
@@ -175,6 +176,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
             setHero((Unit) getGame().getObjectById(heroId));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            setHero(Eidolons.getMainHero());
         }
     }
 
@@ -197,6 +199,10 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     @Override
     public void setRef(Ref ref) {
+//        if (ref.getGame()!=null)
+//            if (ref.getGame().isSimulation() != isSimulation()){
+//                return;
+//            }
         super.setRef(ref);
         this.heroId = ref.getId(KEYS.SOURCE.name());
     }

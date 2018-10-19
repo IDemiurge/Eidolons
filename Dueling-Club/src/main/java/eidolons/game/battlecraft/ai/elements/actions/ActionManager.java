@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.Goal;
+import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
@@ -29,9 +30,9 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
@@ -155,7 +156,7 @@ public class ActionManager extends AiHandler {
                 return chosenSequence.nextAction();
 
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
+        if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_NONE) {
             if (AI_Manager.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
                  + " chooses task: " + chosenSequence.getTask().toShortString());

@@ -83,7 +83,7 @@ public class ChannelingRule {
 
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
-        spell.getOwnerObj().getHandler().initChannelingSpellData(spell);
+        spell.getOwnerUnit().getHandler().initChannelingSpellData(spell);
 
 
         boolean result = true;
@@ -96,7 +96,7 @@ public class ChannelingRule {
 //            }
 //        }
         Ref REF = spell.getRef().getCopy();
-        REF.setTarget(spell.getOwnerObj().getId());
+        REF.setTarget(spell.getOwnerUnit().getId());
         // modeEffect.getAddBuffEffect().setEffect(effect)
 
 //        Condition conditions = new Conditions(new RefCondition(

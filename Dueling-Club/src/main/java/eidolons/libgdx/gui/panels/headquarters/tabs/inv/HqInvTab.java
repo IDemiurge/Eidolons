@@ -9,7 +9,6 @@ import eidolons.libgdx.gui.panels.headquarters.HqMaster;
  */
 public class HqInvTab extends HqElement{
 
-    StashPanel stash;
     HqInvPanel inventory;
 
 

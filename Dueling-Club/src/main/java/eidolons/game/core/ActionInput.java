@@ -18,7 +18,7 @@ public class ActionInput {
 
     public ActionInput(DC_ActiveObj action, DC_Obj target) {
         this.action = action;
-        context = new Context(action.getOwnerObj().getRef());
+        context = new Context(action.getOwnerUnit().getRef());
         context.setTarget(target.getId());
     }
 

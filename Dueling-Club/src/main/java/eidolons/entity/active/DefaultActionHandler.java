@@ -246,7 +246,7 @@ public class DefaultActionHandler {
         int max = 0;
         for (DC_ActiveObj attack : subActions) {
             if (attack.getActiveWeapon().isNatural())
-                if (attack.getOwnerObj().getWeapon(attack.isOffhand()) != null)
+                if (attack.getOwnerUnit().getWeapon(attack.isOffhand()) != null)
                     continue;
             if (!attack.canBeActivated(attack.getRef(), true))
                 continue;
@@ -255,7 +255,7 @@ public class DefaultActionHandler {
             DC_PriorityManager.toggleImplementation(new PriorityManagerImpl(target.getGame().getAiManager()) {
                 @Override
                 public Unit getUnit() {
-                    return attack.getOwnerObj();
+                    return attack.getOwnerUnit();
                 }
             });
             int priority = 0;

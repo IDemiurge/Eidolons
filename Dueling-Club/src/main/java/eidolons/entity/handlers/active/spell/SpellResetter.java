@@ -39,7 +39,7 @@ public class SpellResetter extends ActiveResetter {
 
     @Override
     protected void addCustomMods() {
-        if (getEntity().getOwnerObj().getCustomParamMap() == null) {
+        if (getEntity().getOwnerUnit().getCustomParamMap() == null) {
             return;
         }
         super.addCustomMods();

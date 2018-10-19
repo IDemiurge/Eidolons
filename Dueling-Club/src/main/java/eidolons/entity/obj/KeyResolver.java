@@ -31,7 +31,7 @@ public class KeyResolver {
 
         switch (key) {
             case SOURCE:
-                return unit.getOwnerObj();
+                return unit.getOwnerUnit();
             case TARGET:
                 return unit.getTargetObj();
         }

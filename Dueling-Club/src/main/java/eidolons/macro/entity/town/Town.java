@@ -1,16 +1,22 @@
 package eidolons.macro.entity.town;
 
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.FactionObj;
 import eidolons.macro.map.Place;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Town extends Place {
 
@@ -27,7 +33,8 @@ public class Town extends Place {
 
     FactionObj ownerFaction;
     private boolean readyToInit;
-    private List<ObjType> quests;
+    private Set<ObjType> quests;
+    private Set<DC_HeroItemObj> stash;
 
     public Town(MacroGame game, ObjType t, MacroRef ref) {
         super(game, t, ref);
@@ -39,6 +46,7 @@ public class Town extends Place {
     public boolean isVisible() {
         return true;
     }
+
     @Override
     public void init() {
         if (!readyToInit) {
@@ -49,6 +57,13 @@ public class Town extends Place {
 		 */
         super.init();
         TownInitializer.initTownPlaces(this);
+
+        stash = new LinkedHashSet<>();
+        for (String substring : ContainerUtils.openContainer(
+         getProperty(MACRO_PROPS.TOWN_STASH))) {
+            //gonna need to store durability etc...
+
+        }
 
     }
 
@@ -131,15 +146,43 @@ public class Town extends Place {
         getTaverns().add(tavern);
     }
 
-    public void setQuests(List<ObjType> quests) {
-        this.quests = quests;
-    }
-
-    public List<ObjType> getQuests() {
+    public Set<ObjType> getQuests() {
         return quests;
     }
 
+    public void setQuests(Set<ObjType> quests) {
+        this.quests = quests;
+    }
+
     public AMBIENCE getAmbience() {
-        return RandomWizard.random()?  AMBIENCE.PIRATE_SHIP :  AMBIENCE.TOWN;
+        return RandomWizard.random() ? AMBIENCE.SHIP : AMBIENCE.TOWN;
+    }
+
+    public Set<DC_HeroItemObj> getStash() {
+        return stash;
+    }
+
+    public int getStashSize() {
+        if (!checkParam(MACRO_PARAMS.TOWN_STASH_SIZE)) {
+            return 40;
+        }
+        return getIntParam(MACRO_PARAMS.TOWN_STASH_SIZE);
+    }
+
+    public boolean isStashFull() {
+        return stash.size() >= getStashSize();
+    }
+
+    public boolean removeFromStash(DC_HeroItemObj item) {
+        if (!getStash().remove(item))
+            return false;
+        getStash().remove(item);
+        item.setContainer(CONTAINER.UNASSIGNED);
+        return true;
+    }
+
+    public void addToStash(DC_HeroItemObj item) {
+        getStash().add(item);
+        item.setContainer(CONTAINER.STASH);
     }
 }

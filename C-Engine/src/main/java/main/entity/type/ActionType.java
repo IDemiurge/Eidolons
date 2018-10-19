@@ -25,7 +25,7 @@ public class ActionType extends ObjType {
     //
     // setOwnerObj(game.getManager().getActiveObj());
     //
-    // Ref ref = Ref.getCopy(getOwnerObj().getRef());
+    // Ref ref = Ref.getCopy(getOwnerUnit().getRef());
     //
     // activate(ref);
     // }
@@ -50,7 +50,7 @@ public class ActionType extends ObjType {
     // int index = game.getManager().getUnitActions(ownerObj)
     // .indexOf(this);
     // game.getCommunicator().transmitCreateActionCommand(
-    // getOwnerObj().getId(), index);
+    // getOwnerUnit().getId(), index);
     // }
     // return action.activate();
     // }

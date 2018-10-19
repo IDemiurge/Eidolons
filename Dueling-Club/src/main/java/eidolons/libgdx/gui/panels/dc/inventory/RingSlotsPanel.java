@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
@@ -33,7 +34,7 @@ public class RingSlotsPanel extends TablePanel {
             return;
         clear();
         super.afterUpdateAct(delta);
-        final List<InventoryValueContainer> rings =
+        final List<InvItemActor> rings =
          ((EquipDataSource) getUserObject()).rings();
 
         int a = 0;
@@ -42,7 +43,7 @@ public class RingSlotsPanel extends TablePanel {
                 continue;
             }
             a++;
-            ValueContainer valueContainer = rings.get(i);
+            Actor valueContainer = rings.get(i);
             if (valueContainer == null) {
                 valueContainer = new ValueContainer(getOrCreateR(CELL_TYPE.RING.getSlotImagePath()));
             }

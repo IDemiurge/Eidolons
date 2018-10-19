@@ -35,6 +35,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
+import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -574,5 +575,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public VISION_MODE getVisionMode() {
         return VISION_MODE.NORMAL_VISION;
+    }
+
+    public boolean isAiControlled() {
+        return false;
+    }
+
+    public Obj getLinkedObj(IdKey idKey) {
+        return null;
     }
 }

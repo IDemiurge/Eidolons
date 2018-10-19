@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import main.system.graphics.FontMaster.FONT;
 
 public class DialogScenario extends Group {
     private int time;
@@ -57,6 +58,7 @@ public class DialogScenario extends Group {
         if (portraitTexture != null || message != null) {
             ValueContainer valueContainer = new ValueContainer(portraitTexture, message);
             valueContainer.setPosition(30, 30);
+            valueContainer.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
             valueContainer.setImageAlign(Align.topLeft);
             valueContainer.setValueAlignment(Align.bottomLeft);
             valueContainer.setWidth(GdxMaster.getWidth() - 60);

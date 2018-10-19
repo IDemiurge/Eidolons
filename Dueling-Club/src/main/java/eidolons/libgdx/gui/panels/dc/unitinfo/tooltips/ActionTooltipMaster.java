@@ -37,7 +37,7 @@ public class ActionTooltipMaster {
     private static String getDamageText(DC_ActiveObj action) {
 //    new AttackCalculator()
         int damage = MathMaster.applyMod(
-         action.getOwnerObj().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE),
+         action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE),
          action.getIntParam(PARAMS.DAMAGE_MOD));
         return damage + " + " + getDiceText(action);
     }
@@ -153,7 +153,7 @@ public class ActionTooltipMaster {
                 case ATTACK:
                     //TODO getAttack
                     return
-                     String.valueOf(MathMaster.applyMod(action.getOwnerObj().getIntParam(p),
+                     String.valueOf(MathMaster.applyMod(action.getOwnerUnit().getIntParam(p),
                       action.getIntParam(PARAMS.ATTACK_MOD)));
                 case BASE_DAMAGE:
                     return "Base";
@@ -298,8 +298,8 @@ public class ActionTooltipMaster {
     }
 
     private static String getCriticalDescription(DC_ActiveObj action) {
-        int attack = action.getOwnerObj().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
-        int defense = action.getOwnerObj().getIntParam(PARAMS.DEFENSE); // last hit unit? 5*level? same as unit's?
+        int attack = action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
+        int defense = action.getOwnerUnit().getIntParam(PARAMS.DEFENSE); // last hit unit? 5*level? same as unit's?
         attack = MathMaster.applyMod(attack, action.getIntParam(PARAMS.ATTACK_MOD));
         int percentage = CriticalAttackRule.getCriticalDamagePercentage(action);
         int chance = CriticalAttackRule.getCriticalChance(attack, defense, action);
@@ -320,12 +320,12 @@ public class ActionTooltipMaster {
     }
 
     private static String getAccuracyDescription(DC_ActiveObj action) {
-        int attack = action.getOwnerObj().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
+        int attack = action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         int defense = 0;
         attack = MathMaster.applyMod(attack, action.getIntParam(PARAMS.ATTACK_MOD));
         int chance = DefenseVsAttackRule.getMissChance(attack, defense, action);
         if (chance <= 0) {
-            defense = action.getOwnerObj().getIntParam(PARAMS.DEFENSE);
+            defense = action.getOwnerUnit().getIntParam(PARAMS.DEFENSE);
             chance = DefenseVsAttackRule.getMissChance(attack, defense, action);
             if (chance <= 0) {
                 return "Accuracy: Miss Impossible";

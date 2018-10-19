@@ -24,7 +24,7 @@ public class ConcealmentRule {
 
 
     public static boolean checkMissed(DC_ActiveObj action) {
-        Unit source = action.getOwnerObj();
+        Unit source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
         if (source == null || target == null) {
             return false;
@@ -45,7 +45,7 @@ public class ConcealmentRule {
 
     // DEPENDING ON VISIBILITY_LEVEL?
     public static int getMissChance(DC_ActiveObj action) {
-        DC_Obj source = action.getOwnerObj();
+        DC_Obj source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
         Obj cell = source.getGame().getCellByCoordinate(source.getCoordinates());
         // if (source.checkPassive(STANDARD_PASSIVES.DARKVISION))
@@ -77,8 +77,8 @@ public class ConcealmentRule {
 
     public static void logMissed(LogManager logManager, DC_ActiveObj activeObj) {
         logManager.log(StringMaster.getMessagePrefix(true,
-         activeObj.getOwnerObj().getOwner().isMe())
-         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+         activeObj.getOwnerUnit().getOwner().isMe())
+         + StringMaster.getPossessive(activeObj.getOwnerUnit().getName())
          + " "
          + activeObj.getDisplayedName()
          + " has missed due to Concealment"

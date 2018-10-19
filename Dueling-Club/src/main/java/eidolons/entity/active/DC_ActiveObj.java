@@ -7,6 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.active.*;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
@@ -44,8 +45,8 @@ import main.game.logic.action.context.Context;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -55,9 +56,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
-  AttachedObj {
+ AttachedObj {
 
-    protected Unit ownerObj;
+    protected BattleFieldObject ownerObj;
     protected Targeting targeting;
     protected Abilities abilities;
     protected Costs costs = new Costs(new ArrayList<>());
@@ -224,7 +225,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-
     public String getSpecialRequirements() {
         return getProperty(G_PROPS.SPECIAL_REQUIREMENTS);
     }
@@ -249,8 +249,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         ref.setGroup(targetGroup);
 
         ref.setTriggered(false);
-        setOwnerObj((Unit) ref.getObj(KEYS.SOURCE));
-//        this.ref.setGroup(null); // TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
+        setOwnerObj((BattleFieldObject) ref.getObj(KEYS.SOURCE));
+        //        this.ref.setGroup(null); // TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
     }
 
     public void playCancelSound() {
@@ -261,6 +261,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref,
          TextParser.ACTIVE_PARSING_CODE);
     }
+
     @Override
     public void invokeRightClicked() {
         super.invokeRightClicked();
@@ -274,31 +275,31 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             return;
         }
         getHandler().activateOnGameLoopThread();
-//        activate();
-//     TODO is any of it useful?
-//   boolean dont = ownerObj.checkUncontrollable();
-//        if (!dont) {
-//            dont = !canBeManuallyActivated();
-//        }
-//        if (dont && CoreEngine.isSwingOn()) {
-//            getGame().getToolTipMaster().initActionToolTip(this, false);
-//
-//            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
-//            return; // "hollow sound"? TODO
-//        }
-//        if (getGame().getManager().isSelecting()) {
-//            getGame().getManager().objClicked(this);
-//            return;
-//        } else {
-//            if (getGame().getManager().isActivatingAction()
-//             || !getGame().getManager().getActiveObj().equals(getOwnerObj())) {
-//                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
-//                return;
-//            }
-//            getGame().getManager().setActivatingAction(this);
-//            playActivateSound();
-//           activate();
-//        }
+        //        activate();
+        //     TODO is any of it useful?
+        //   boolean dont = ownerObj.checkUncontrollable();
+        //        if (!dont) {
+        //            dont = !canBeManuallyActivated();
+        //        }
+        //        if (dont && CoreEngine.isSwingOn()) {
+        //            getGame().getToolTipMaster().initActionToolTip(this, false);
+        //
+        //            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+        //            return; // "hollow sound"? TODO
+        //        }
+        //        if (getGame().getManager().isSelecting()) {
+        //            getGame().getManager().objClicked(this);
+        //            return;
+        //        } else {
+        //            if (getGame().getManager().isActivatingAction()
+        //             || !getGame().getManager().getActiveObj().equals(getOwnerUnit())) {
+        //                DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
+        //                return;
+        //            }
+        //            getGame().getManager().setActivatingAction(this);
+        //            playActivateSound();
+        //           activate();
+        //        }
     }
 
     @Override
@@ -308,10 +309,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public String toString() {
-        if (getOwnerObj() == null) {
+        if (getOwnerUnit() == null) {
             return getName();
         }
-        return StringMaster.getPossessive(getOwnerObj().getNameIfKnown()) + " " + getName();
+        return StringMaster.getPossessive(getOwnerUnit().getNameIfKnown()) + " " + getName();
     }
 
     public String getCustomTooltip() {
@@ -361,7 +362,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isFree() {
 
         if (!free) {
-            if (!getOwnerObj().isAiControlled()) {
+            if (!getOwnerUnit().isAiControlled()) {
                 if (game.isDebugMode()) {
                     return getGame().getTestMaster().isActionFree(getName());
                 }
@@ -401,14 +402,19 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return ownerObj.getActivePlayerVisionStatus();
     }
 
-    public synchronized Unit getOwnerObj() {
-        if (ownerObj == null)
-            return null;
+    public synchronized BattleFieldObject getOwnerObj() {
         return ownerObj;
     }
 
-    public synchronized void setOwnerObj(Unit ownerObj) {
+    public synchronized void setOwnerObj(BattleFieldObject ownerObj) {
         this.ownerObj = ownerObj;
+    }
+
+    public synchronized Unit getOwnerUnit() {
+        if (ownerObj instanceof Unit) {
+            return (Unit) ownerObj;
+        }
+        return null;
     }
 
     public synchronized Costs getCosts() {
@@ -488,10 +494,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public String getActionMode() {
-        if (getOwnerObj() == null) {
+        if (getOwnerUnit() == null) {
             return null;
         }
-        return getOwnerObj().getActionMode(this);
+        if (getOwnerUnit() instanceof Unit) {
+            return ((Unit) getOwnerUnit()).getActionMode(this);
+        }
+        return null;
     }
 
 
@@ -527,10 +536,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 return ((DC_QuickItemAction) this).getItem().getWrappedWeapon();
             }
         } else if (isRanged()) {
-            return (DC_WeaponObj) getOwnerObj().getLinkedObj(IdKey.RANGED);
+            return (DC_WeaponObj) getOwnerUnit().getLinkedObj(IdKey.RANGED);
         }
         IdKey key = (isOffhand() ? IdKey.OFFHAND : IdKey.WEAPON);
-        return (DC_WeaponObj) getOwnerObj().getLinkedObj(key);
+        return (DC_WeaponObj) getOwnerUnit().getLinkedObj(key);
     }
 
 
@@ -651,7 +660,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isThrow() {
         return getChecker().isThrow();
     }
-//EXEC
+    //EXEC
 
     public void payCosts() {
         getHandler().payCosts();
@@ -699,9 +708,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean canBeTargeted(Integer id) {
         return getTargeter().canBeTargeted(id);
     }
+
     protected boolean isResetViaHandler() {
         return true;
     }
+
     public boolean canBeTargeted(Integer id, boolean caching) {
         return getTargeter().canBeTargeted(id, caching);
     }
@@ -889,14 +900,15 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return CoreEngine.isTargetingResultCachingOn();
     }
 
-    public List<DC_ActiveObj> getValidSubactions( ) {
-        return getValidSubactions(getRef(), null );
+    public List<DC_ActiveObj> getValidSubactions() {
+        return getValidSubactions(getRef(), null);
     }
-        public List<DC_ActiveObj> getValidSubactions(Ref ref, Integer target) {
-       List<DC_ActiveObj> subActions=new ArrayList<>();
+
+    public List<DC_ActiveObj> getValidSubactions(Ref ref, Integer target) {
+        List<DC_ActiveObj> subActions = new ArrayList<>();
         for (DC_ActiveObj attack : getSubActions()) {
             if (attack.canBeActivated(ref, true)) {
-                if (target==null || attack.canBeTargeted(target)) {
+                if (target == null || attack.canBeTargeted(target)) {
                     subActions.add(attack);
                 }
             }

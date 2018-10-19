@@ -154,7 +154,7 @@ public class DC_GameManager extends GameManager {
      */
     public void unitActionCompleted(DC_ActiveObj action, Boolean result) {
         if (action != null) {
-            getGame().getState().getUnitActionStack(action.getOwnerObj()).push(action);
+            getGame().getState().getUnitActionStack(action.getOwnerUnit()).push(action);
         }
         if (result == null) {
             WaitMaster.interrupt(WAIT_OPERATIONS.ACTION_COMPLETE);

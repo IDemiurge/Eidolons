@@ -34,7 +34,7 @@ public class AtbMaster {
         float initiativeCost = getReadinessCost(action);
 if (initiativeCost<=0)
     return 0;
-        action.getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
+        action.getOwnerUnit().modifyParameter(PARAMS.C_INITIATIVE,
          -initiativeCost + "", 0, false);
 
         ((AtbTurnManager) action.getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();

@@ -275,7 +275,7 @@ public class DC_SoundMaster extends SoundMaster {
             }
         switch (part) {
             case PRECAST:
-                ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerObj().getGender() == GENDER.FEMALE);
+                ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerUnit().getGender() == GENDER.FEMALE);
                 getPlayer().playEffectSound(SOUNDS.PRECAST, activeObj);
                 break;
             case CAST:
@@ -384,7 +384,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     private static void playImpact(DC_ActiveObj activeObj) {
         if (activeObj.isAttackAny()) {
-            playAttackImpactSound(activeObj.getActiveWeapon(), activeObj.getOwnerObj(), (Unit) activeObj.getRef().getTargetObj(),
+            playAttackImpactSound(activeObj.getActiveWeapon(), activeObj.getOwnerUnit(), (Unit) activeObj.getRef().getTargetObj(),
              activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT),
              activeObj.getIntParam(PARAMS.DAMAGE_LAST_AMOUNT) - activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT)
             );

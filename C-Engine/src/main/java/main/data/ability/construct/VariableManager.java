@@ -411,7 +411,10 @@ public class VariableManager {
         return getVarPart(subString).length() > 2;
     }
 
-    public static String getVarString(String string, String arg) {
+    public static String getStringWithVariable(Object string, Object arg) {
+        return string+StringMaster.wrapInParenthesis(arg.toString());
+    }
+        public static String getVarString(String string, String arg) {
         return string.replaceFirst(VARIABLE, arg);
     }
 

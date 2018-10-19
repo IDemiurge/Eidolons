@@ -32,6 +32,7 @@ import eidolons.game.battlecraft.ai.elements.actions.AiQuickItemAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
@@ -86,8 +87,8 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.FuncMaster;
 import main.system.math.MathMaster;
@@ -1052,7 +1053,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         if (getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.BERSERK
          && getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.CONFUSED) {
-            if (targetObj.isOwnedBy(active.getOwnerObj().getOwner())) {
+            if (targetObj.isOwnedBy(active.getOwnerUnit().getOwner())) {
                 return -10000;
             }
         }
@@ -1136,7 +1137,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         }
 
-//    TODO     int p = getSpecialEffectsPriority(SPECIAL_EFFECTS_CASE.ON_ATTACK, active.getOwnerObj(),
+//    TODO     int p = getSpecialEffectsPriority(SPECIAL_EFFECTS_CASE.ON_ATTACK, active.getOwnerUnit(),
 //         targetObj);
 
         if (targetObj.isNeutral()) {
@@ -1515,7 +1516,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 priority = 0;
             }
         }
-        if (getUnitAi().getLogLevel() >= UnitAI.LOG_LEVEL_FULL) {
+        if (getUnitAi().getLogLevel() >= AiLogger.LOG_LEVEL_FULL) {
             LogMaster.log(getLogChannel(), " Applying [" + string
              + "] multiplier: " + factor + "; priority = " + priority);
         }
@@ -1524,7 +1525,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     public void addConstant(int constant, String string) {
         priority += (constant);
-        if (getUnitAi().getLogLevel() >= UnitAI.LOG_LEVEL_FULL) {
+        if (getUnitAi().getLogLevel() >= AiLogger.LOG_LEVEL_FULL) {
             LogMaster.log(getLogChannel(), " Adding [" + string
              + "] constant: " + constant + "; priority = " + priority);
         }
@@ -1545,7 +1546,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 //        if (priority < 0) {
 //            priority = 0;
 //        }
-        if (getUnitAi().getLogLevel() >= UnitAI.LOG_LEVEL_FULL) {
+        if (getUnitAi().getLogLevel() >= AiLogger.LOG_LEVEL_FULL) {
             LogMaster.log(getLogChannel(), " Adding [" + string
              + "] multiplier: " + factor + "; priority = " + priority);
         }

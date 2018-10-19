@@ -1,11 +1,11 @@
 package eidolons.libgdx.gui.panels.dc.inventory.shop;
 
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.dc.inventory.InvItemActor;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
@@ -13,13 +13,14 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.QuickSlotDataSource;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.libgdx.gui.panels.headquarters.datasource.inv.ShopValueContainerList;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.entity.town.Shop;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,23 +32,44 @@ public class ShopDataSource extends ContainerDataSource
  InventoryTableDataSource,
  EquipDataSource {
     private static final int SIZE = 24;
-    ShopInterface shop;
+    private static Map<Shop, ShopClickHandler> handlerCache = new HashMap<>();
+    Shop shop;
     InventoryDataSource invDataSource;
     private ITEM_FILTERS filter;
-
-    @Override
-    public void setFilter(ITEM_FILTERS filter) {
-        this.filter = filter;
-    }
+    private Set<DC_HeroItemObj> stash;
 
     public ShopDataSource(Shop shop, Unit unit) {
         super(shop, unit);
         this.shop = shop;
+        stash = shop.getTown().getStash();
         items = new ArrayList<>(shop.getItems());
-        invDataSource = new InventoryDataSource(unit);
-        handler = new ShopClickHandler(shop, unit);
+        invDataSource = new InventoryDataSource(unit){
+            @Override
+            protected HqDataMaster getDataMaster(Unit unit) {
+                return HqDataMasterDirect.getOrCreateInstance( unit);
+            }
+        };
+        handler = createClickHandler();
         factory = new InventoryFactory(handler);
         invDataSource.setFactory(factory);
+    }
+
+    @Override
+    protected ContainerClickHandler createClickHandler() {
+        if (shop == null) {
+            return null;
+        }
+        ContainerClickHandler  handler = handlerCache.get(shop);
+        if (handler == null) {
+            handler = new ShopClickHandler(shop, unit);
+            handlerCache.put(shop, (ShopClickHandler) handler);
+        }
+        return handler;
+    }
+
+    @Override
+    public void setFilter(ITEM_FILTERS filter) {
+        this.filter = filter;
     }
 
     public InventoryDataSource getInvDataSource() {
@@ -55,76 +77,65 @@ public class ShopDataSource extends ContainerDataSource
     }
 
     @Override
-    public List<InventoryValueContainer> getQuickSlots() {
+    public List<InvItemActor> getQuickSlots() {
         return invDataSource.getQuickSlots();
     }
 
     @Override
-    public List<InventoryValueContainer> getInventorySlots() {
+    public List<InvItemActor> getInventorySlots() {
+        return invDataSource.getInventorySlots();
+    }
+
+    public List<InvItemActor> getShopSlots() {
         ListMaster.fillWithNullElements(items
          , SIZE);
         return factory.getList(items, CELL_TYPE.CONTAINER);
     }
 
-    @Override
-    public InventoryValueContainer mainWeapon() {
-        return invDataSource.mainWeapon();
+    public List<InvItemActor> getStashSlots() {
+        ListMaster.fillWithNullElements(items
+         , SIZE);
+        return factory.getList(stash, CELL_TYPE.STASH);
     }
 
     @Override
-    public InventoryValueContainer offWeapon() {
+    public InvItemActor mainWeapon() {
+        return invDataSource.mainWeapon();
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    @Override
+    public InvItemActor offWeapon() {
         return invDataSource.offWeapon();
     }
 
     @Override
-    public InventoryValueContainer armor() {
+    public InvItemActor armor() {
         return invDataSource.armor();
     }
 
     @Override
-    public InventoryValueContainer avatar() {
+    public InvItemActor avatar() {
         return invDataSource.avatar();
     }
 
     @Override
-    public InventoryValueContainer amulet() {
+    public InvItemActor amulet() {
         return invDataSource.amulet();
     }
 
     @Override
-    public List<InventoryValueContainer> rings() {
+    public List<InvItemActor> rings() {
         return invDataSource.rings();
     }
 
-    public ContainerClickHandler getHandler() {
-        return handler;
+    public ShopClickHandler getHandler() {
+        return (ShopClickHandler) handler;
     }
 
-
-    public boolean isDoneDisabled() {
-        return invDataSource.isDoneDisabled();
-    }
-
-    public boolean isCancelDisabled() {
-        return invDataSource.isCancelDisabled();
-    }
-
-    public boolean isUndoDisabled() {
-        return invDataSource.isUndoDisabled();
-    }
-
-    public String getOperationsString() {
-        return invDataSource.getOperationsString();
-    }
-
-//    @Override
-//    public ShopTabbedPanel getTabs() {
-//        ShopTabbedPanel tabs = new ShopTabbedPanel();
-//        for (String tab : shop.getTabs()) {
-//            tabs.addTab(new ShopPage(getGroupLists(tab)), tab);
-//        }
-//        return tabs;
-//    }
 
     public List<ShopValueContainerList> getGroupLists(String tabName) {
         return shop.getItemSubgroups(tabName).stream().map(
@@ -148,5 +159,9 @@ public class ShopDataSource extends ContainerDataSource
 
     public ValueContainer getIcon() {
         return new ValueContainer(TextureCache.getOrCreateR(shop.getImagePath()), "");
+    }
+
+    public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
+        return shop.getPrice(model, invDataSource.getUnit(), cellType == CELL_TYPE.CONTAINER);
     }
 }

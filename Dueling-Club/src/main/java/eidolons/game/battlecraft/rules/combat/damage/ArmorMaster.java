@@ -99,7 +99,7 @@ public class ArmorMaster {
             }
         }
         return getArmorBlockDamage(false, action instanceof DC_SpellObj, canCritOrBlock, average,
-         amount, targetObj, action.getOwnerObj(), action.isOffhand(),
+         amount, targetObj, action.getOwnerUnit(), action.isOffhand(),
          action.getEnergyType(), action);
     }
 

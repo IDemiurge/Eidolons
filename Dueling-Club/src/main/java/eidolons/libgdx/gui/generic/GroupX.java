@@ -15,14 +15,38 @@ import main.system.auxiliary.ClassMaster;
  */
 public class GroupX extends Group {
 
+    boolean autoSize;
+
+    public GroupX(boolean autoSize) {
+        this.autoSize = autoSize;
+    }
+
+    public GroupX() {
+    }
+
+    @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+        if (isAutoSize())
+        {
+        if (getWidth() < actor.getWidth() + actor.getX())
+            setWidth(actor.getWidth() + actor.getX());
+        if (getHeight() < actor.getHeight() + actor.getY())
+            setHeight(actor.getHeight() + actor.getY());
+        }
+    }
+
+    public boolean isAutoSize() {
+        return autoSize;
+    }
 
     protected void initResolutionScaling() {
-        float coef = (float) Math.pow(GdxMaster.getFontSizeMod(),0.3f);
-        if (coef<1)
-            coef = 1;
+        float coef = (float) Math.pow(GdxMaster.getFontSizeMod(), 0.3f);
+        if (coef < 1)
+            return;
         setScale(coef, coef);
-        setWidth(getWidth()*getScaleX());
-        setHeight(getHeight()*getScaleY());
+        setWidth(getWidth() * getScaleX());
+        setHeight(getHeight() * getScaleY());
     }
 
     public void addAt(float x, float y, Actor actor) {
@@ -62,20 +86,21 @@ public class GroupX extends Group {
     }
 
     public Array<Action> getActionsOfClass(Class actionClass,
-        boolean recursive) {
+                                           boolean recursive) {
         Array<Action> list = new Array<>();
         addActions(list, this, actionClass, recursive);
         return list;
     }
 
     private void addActions(Array<Action> list, Actor actor, Class actionClass
-     ) {
+    ) {
         addActions(list, actor, actionClass, true);
 
     }
-        private void addActions(Array<Action> list, Actor actor, Class actionClass,
-                                boolean recursive) {
-        if (actor == null || actor.getActions()==null )
+
+    private void addActions(Array<Action> list, Actor actor, Class actionClass,
+                            boolean recursive) {
+        if (actor == null || actor.getActions() == null)
             return;
         for (Action sub : actor.getActions()) {
             if (actionClass != null)
@@ -84,13 +109,13 @@ public class GroupX extends Group {
                 }
             list.add(sub);
         }
-if (recursive)
-        if (actor instanceof Group) {
+        if (recursive)
+            if (actor instanceof Group) {
 
-            for (Actor sub : ((Group) actor).getChildren()) {
-                addActions(list, sub, actionClass);
+                for (Actor sub : ((Group) actor).getChildren()) {
+                    addActions(list, sub, actionClass);
+                }
             }
-        }
     }
 
     public void fadeOut() {
@@ -108,6 +133,7 @@ if (recursive)
     protected float getFadeOutDuration() {
         return 0;
     }
+
     protected float getFadeInDuration() {
         return 0;
     }
@@ -126,5 +152,19 @@ if (recursive)
 
     public void offset(float dX, float dY) {
         setPosition(getX() + dX, getY() + dY);
+    }
+
+    public void addActorAtPos(Actor actor, float x, float
+     y) {
+        addActor(actor);
+        actor.setPosition(x, y);
+    }
+
+    public void toggleFade() {
+        if (isVisible()) {
+            fadeOut();
+        } else {
+            fadeIn();
+        }
     }
 }

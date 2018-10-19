@@ -4,6 +4,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class RngListPanel extends ItemListPanel {
     @Override
-    public List<SelectableItemData> toDataList(List<? extends Entity> objTypes) {
+    public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         List<SelectableItemData> list = new LinkedList<>();
         for (Entity sub : objTypes) {
             SelectableItemData item = new SelectableItemData(sub);

@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.behavior.AI_BehaviorMaster;

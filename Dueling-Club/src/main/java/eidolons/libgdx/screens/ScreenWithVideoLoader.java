@@ -283,10 +283,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     @Override
-    protected InputProcessor getInputController() {
+    protected InputProcessor createInputController() {
         if (overlayStage.isActive())
             return new InputMultiplexer(overlayStage);
-        return super.getInputController();
+        return super.createInputController();
     }
 
     @Override

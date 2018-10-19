@@ -13,13 +13,20 @@ import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 10/5/2018.
+ *
+ * separate info:
+ *
+ * reward
+ * objective
+ * description
+ *
  */
 public class QuestInfoPanel extends ItemInfoPanel {
     private final SmartButton accept;
     private final SmartButton cancel;
     private boolean disabled;
     public static final int WIDTH = 920;
-    public static final int HEIGHT = 800;
+    public static final int HEIGHT = 700;
 
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
@@ -38,9 +45,7 @@ public class QuestInfoPanel extends ItemInfoPanel {
         cancel.setPosition(GdxMaster.centerWidth(cancel) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
     }
     protected void initSize() {
-        if (GdxMaster.getFontSizeMod() != 1) {
             setSize(GdxMaster.adjustSize(WIDTH),  GdxMaster.adjustSize(HEIGHT));
-        }
     }
     @Override
     public void act(float delta) {

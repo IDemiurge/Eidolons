@@ -24,8 +24,6 @@ import main.system.GuiEventType;
 
 import java.util.List;
 
-import static eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel.EMPTY_OFFSET;
-
 /**
  * Created by JustMe on 3/31/2017.
  */
@@ -120,7 +118,7 @@ public class BattleGuiStage extends GuiStage {
 
     public void update() {
         getBottomPanel().setX(
-         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 - EMPTY_OFFSET);
+         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2   );
     }
 
     @Override

@@ -23,7 +23,6 @@ import eidolons.libgdx.gui.menu.selection.town.shops.ShopSelectionPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.MAP_BACKGROUND;
@@ -41,7 +40,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * use without macro?
  */
 public class TownPanel extends TabbedPanel {
-    public static final WAIT_OPERATIONS DONE_OPERATION = WAIT_OPERATIONS.DIALOGUE_DONE;
+    public static final WAIT_OPERATIONS DONE_OPERATION = WAIT_OPERATIONS.TOWN_DONE;
     public static final boolean TEST_MODE = false;
     private final ShopSelectionPanel shopView;
     private final QuestSelectionPanel questPanel;
@@ -85,6 +84,12 @@ public class TownPanel extends TabbedPanel {
         tabTable.add(labelTable).colspan(2). center();
 
         resetCheckedTab();
+
+        GuiEventManager.bind(GuiEventType. SHOW_HQ_SCREEN, p-> {
+            if (p.get() == null) {
+                updateRequired = true;
+            }
+        });
 
     }
 
@@ -154,7 +159,7 @@ public class TownPanel extends TabbedPanel {
     private void done() {
         WaitMaster.receiveInput(DONE_OPERATION, true);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null );
-        HqDataMaster.getInstance().applyModifications();
+//        HqDataMasterDirect.applyModifications();
 
     }
 

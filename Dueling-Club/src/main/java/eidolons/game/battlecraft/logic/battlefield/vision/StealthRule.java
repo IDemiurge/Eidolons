@@ -149,7 +149,7 @@ public class StealthRule implements ActionRule {
         if (!isOn())
             return;
         DC_ActiveObj action = (DC_ActiveObj) active; // perhaps only moves?
-        Unit source = action.getOwnerObj();
+        Unit source = action.getOwnerUnit();
         List<? extends DC_Obj> list = Analyzer.getEnemies(source, false, false, false);
 
         list.removeIf(unit -> {

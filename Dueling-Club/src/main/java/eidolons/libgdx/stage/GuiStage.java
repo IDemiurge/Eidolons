@@ -395,7 +395,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 return;
             }
 
-            showTooltip(true, active.getOwnerObj().getNameIfKnown()
+            showTooltip(true, active.getOwnerUnit().getNameIfKnown()
              + " activates " + active.getName(), actionTooltip, 3f);
             hideTooltip(infoTooltip, 1f);
 

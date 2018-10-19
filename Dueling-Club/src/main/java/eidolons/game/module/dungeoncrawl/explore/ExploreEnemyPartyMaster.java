@@ -28,7 +28,7 @@ public class ExploreEnemyPartyMaster extends ExplorePartyMaster {
 
     @Override
     public void leaderActionDone(ActionInput input) {
-        setGroupAI(input.getAction().getOwnerObj().getAI().getGroupAI());
+        setGroupAI(input.getAction().getOwnerUnit().getAI().getGroupAI());
         super.leaderActionDone(input);
     }
 

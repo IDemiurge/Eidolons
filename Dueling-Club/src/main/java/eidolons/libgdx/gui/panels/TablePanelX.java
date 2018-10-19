@@ -46,4 +46,12 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
 
     public void update() {
     }
+
+    public void toggleFade() {
+        if (isVisible()) {
+            fadeOut();
+        } else {
+            fadeIn();
+        }
+    }
 }

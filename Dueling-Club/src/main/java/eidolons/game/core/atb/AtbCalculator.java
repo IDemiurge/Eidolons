@@ -41,7 +41,7 @@ public class AtbCalculator {
     public int getIndexAfterAction(DC_ActiveObj action) {
         float cost = AtbMaster.getReadinessCost(action);
         clone = getClone();
-        AtbUnit atbUnit = clone.getAtbUnit(action.getOwnerObj());
+        AtbUnit atbUnit = clone.getAtbUnit(action.getOwnerUnit());
         if (atbUnit==null ){
             return 0;
         }

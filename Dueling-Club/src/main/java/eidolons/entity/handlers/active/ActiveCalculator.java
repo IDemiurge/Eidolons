@@ -24,7 +24,7 @@ public class ActiveCalculator extends EntityCalculator<DC_ActiveObj> {
         }
         return getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
          .getAmountFormula().getInt(getRef())
-         * getEntity().getOwnerObj().getIntParam(PARAMS.INITIATIVE_MODIFIER);
+         * getEntity().getOwnerUnit().getIntParam(PARAMS.INITIATIVE_MODIFIER);
 
     }
 

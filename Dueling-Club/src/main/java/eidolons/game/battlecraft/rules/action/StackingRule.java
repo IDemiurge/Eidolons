@@ -72,10 +72,10 @@ public class StackingRule implements ActionRule {
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
         Set<BattleFieldObject> units = action.getGame().getObjectsAt(
-                action.getOwnerObj().getCoordinates());
+                action.getOwnerUnit().getCoordinates());
         units.addAll(action.getGame().getObjectsAt(
                 target.getCoordinates()));
-        units.remove(action.getOwnerObj());
+        units.remove(action.getOwnerUnit());
         units.remove(target);
         if (units.isEmpty()) {
             return;

@@ -11,7 +11,7 @@ import main.system.text.LogManager;
 
 public class EvasionRule {
     public static boolean checkMissed(DC_ActiveObj action) {
-        DC_Obj source = action.getOwnerObj();
+        DC_Obj source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
         if (source == null || target == null) {
             return false;
@@ -29,7 +29,7 @@ public class EvasionRule {
     }
 
     public static int getMissChance(DC_ActiveObj action) {
-        DC_Obj source = action.getOwnerObj();
+        DC_Obj source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
 
         int chance = target.getIntParam(PARAMS.EVASION)
@@ -39,8 +39,8 @@ public class EvasionRule {
 
     public static void logDodged(LogManager logManager, DC_ActiveObj activeObj) {
         logManager.log(StringMaster.getMessagePrefix(true,
-         activeObj.getOwnerObj().getOwner().isMe())
-         + StringMaster.getPossessive(activeObj.getOwnerObj().getName())
+         activeObj.getOwnerUnit().getOwner().isMe())
+         + StringMaster.getPossessive(activeObj.getOwnerUnit().getName())
          + " "
          + activeObj.getDisplayedName()
          + " has beed dodged"

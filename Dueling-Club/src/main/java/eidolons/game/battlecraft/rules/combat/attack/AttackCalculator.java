@@ -364,7 +364,7 @@ public class AttackCalculator {
             atk_mod = applyVisibilityPenalty(atk_mod);
         } else if (action.isRanged()) {
             atk_mod = applyVisibilityPenalty(atk_mod);
-            Obj ranged = action.getOwnerObj().getRef().getObj(KEYS.RANGED);
+            Obj ranged = action.getOwnerUnit().getRef().getObj(KEYS.RANGED);
             if (ranged == null) {
                 return; //TODO ??
             }
@@ -445,7 +445,7 @@ public class AttackCalculator {
                 return;
             }
         }
-        if (PositionMaster.inLineDiagonally(action.getOwnerObj().getCoordinates(), ref
+        if (PositionMaster.inLineDiagonally(action.getOwnerUnit().getCoordinates(), ref
          .getTargetObj().getCoordinates())) {
             Integer diagonalMod = action.getIntParam(PARAMS.DIAGONAL_ATTACK_MOD) - 100;
             if (diagonalMod != 0 && diagonalMod != -100) {
@@ -460,7 +460,7 @@ public class AttackCalculator {
                 posMap.put(MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
             }
             // TODO DO FOR WEAPONS AND MAKE A SUB MAP!
-        } else if (FacingMaster.getSingleFacing(action.getOwnerObj(), (BfObj) ref
+        } else if (FacingMaster.getSingleFacing(action.getOwnerUnit(), (BfObj) ref
          .getTargetObj()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             Integer sideMod = action.getIntParam(PARAMS.SIDE_ATTACK_MOD) - 100;
             if (sideMod != 0 && sideMod != -100) {

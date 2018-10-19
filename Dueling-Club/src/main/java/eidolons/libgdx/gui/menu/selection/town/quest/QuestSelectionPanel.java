@@ -9,6 +9,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -63,13 +64,13 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
     }
     @Override
     protected List<SelectableItemData> createListData() {
-        List<? extends Entity> list = null;
+        Collection<? extends Entity> list = null;
         if (dataSupplier != null) {
             list = dataSupplier.get();
         } else
         if (getUserObject() instanceof
-         List) {
-            list = (List<? extends Entity>) getUserObject();
+         Collection) {
+            list = (Collection<? extends Entity>) getUserObject();
         }
         return listPanel.toDataList(list);
     }

@@ -105,16 +105,16 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
             }
 
             return getGame().isDebugMode() ||
-             (getEntity().getOwnerObj().isMine() &&
-              getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.KNOWN
-              && getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.DETECTED
+             (getEntity().getOwnerUnit().isMine() &&
+              getEntity().getOwnerUnit().getPlayerVisionStatus(false) != PLAYER_VISION.KNOWN
+              && getEntity().getOwnerUnit().getPlayerVisionStatus(false) != PLAYER_VISION.DETECTED
              );
         }
-        if (!getEntity().getOwnerObj().isMine())
+        if (!getEntity().getOwnerUnit().isMine())
             if (!getGame().isDebugMode() &&
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.CONCEALED
+             getEntity().getOwnerUnit().getPlayerVisionStatus(false) == PLAYER_VISION.CONCEALED
              ||
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.INVISIBLE
+             getEntity().getOwnerUnit().getPlayerVisionStatus(false) == PLAYER_VISION.INVISIBLE
              )
                 return false;
         return true;
@@ -131,7 +131,7 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
     }
 
     public Unit getOwnerObj() {
-        return getEntity().getOwnerObj();
+        return getEntity().getOwnerUnit();
     }
 
 }

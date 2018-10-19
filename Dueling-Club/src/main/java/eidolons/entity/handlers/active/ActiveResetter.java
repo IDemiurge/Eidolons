@@ -65,7 +65,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
     }
 
     private Unit getOwnerObj() {
-        return getEntity().getOwnerObj();
+        return getEntity().getOwnerUnit();
     }
 
 

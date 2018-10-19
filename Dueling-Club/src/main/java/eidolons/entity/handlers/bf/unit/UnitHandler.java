@@ -19,7 +19,7 @@ public class UnitHandler extends EntityHandler<Unit> {
     }
 
     public void initChannelingSpellData(DC_SpellObj spell) {
-        Context context = new Context(spell.getOwnerObj().getRef());
+        Context context = new Context(spell.getOwnerUnit().getRef());
         if (ChannelingRule.isPreTargetingNeeded(spell)) {
             spell.getTargeter().initTarget();
 //        context.setTarget(target); // group?

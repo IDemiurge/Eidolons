@@ -474,8 +474,7 @@ public class Analyzer extends AiHandler {
                     continue;
                 }
             }
-            if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai
-             .getMaxWanderDistance()) {
+            if (PositionMaster.getDistance(cell, ai.getUnit()) <= 5) {
                 list.add(cell);
             }
         }

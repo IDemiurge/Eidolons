@@ -110,11 +110,11 @@ public class TownInitializer {
 
     private static void addShop(Town town, MacroRef ref, ObjType type) {
         if (town.getShop() == null) {
-            Shop shop = new Shop(town.getGame(), type, ref);
+            Shop shop = new Shop(town.getGame(), type, ref, town);
             town.setShop(shop);
             town.getShops().add(shop);
         } else {
-            town.getShops().add(new Shop(town.getGame(), type, ref));
+            town.getShops().add(new Shop(town.getGame(), type, ref, town));
         }
     }
 

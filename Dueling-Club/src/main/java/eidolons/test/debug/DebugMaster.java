@@ -328,7 +328,6 @@ public class DebugMaster {
             if (param != null) {
                 switch (param) {
                     case LOG_LEVEL:
-                        ai.setLogLevel(DialogMaster.inputInt(ai.getLogLevel()));
                         break;
                 }
             }

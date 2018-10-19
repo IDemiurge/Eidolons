@@ -4,6 +4,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class ManualArticles extends ItemListPanel {
 
 
     @Override
-    public List<SelectableItemData> toDataList(List<? extends Entity> objTypes) {
+    public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         return super.toDataList(objTypes);
     }
 

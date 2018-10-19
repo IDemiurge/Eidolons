@@ -375,7 +375,7 @@ public class ItemGenerator implements GenericItemGenerator {
         applyWeightPenalties(newType);
 
         itemMaps.get(quality).get(material).put(type, newType);
-
+        DataManager.addType(newType);
         return newType;
     }
 

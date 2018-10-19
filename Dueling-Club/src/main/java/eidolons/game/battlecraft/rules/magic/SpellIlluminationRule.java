@@ -14,7 +14,7 @@ public class SpellIlluminationRule {
     private int delay = 500;
 
     public void spellResolves(DC_ActiveObj spell) {
-        Unit caster = spell.getOwnerObj();
+        Unit caster = spell.getOwnerUnit();
         Boolean circular = true;
         // VisionManager.getSpectrumCoordinates(range, 2, 0, caster, false,
         // caster.getFacing());

@@ -74,7 +74,7 @@ public class WatchRule implements ActionRule {
 
     public static boolean checkActionWatched(DC_ActiveObj action, Unit watcher) {
         // AoO and Defense
-        return FacingMaster.getSingleFacing(watcher, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.IN_FRONT;
+        return FacingMaster.getSingleFacing(watcher, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.IN_FRONT;
     }
 
     private static boolean checkValidWatchTarget(DC_Obj watched) {

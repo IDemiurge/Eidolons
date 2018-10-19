@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
@@ -21,6 +22,7 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -69,8 +71,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         pad(NINE_PATCH_PADDING.SAURON);
 
         inventory = createInventory();
-        containerSlotsPanel = new InventorySlotsPanel(getContainerRowCount(),
-         getContainerColumnCount());
+        containerSlotsPanel =createContainerSlots();
 
         initUpperTable().row();
         initMiddleTable().row();
@@ -100,6 +101,24 @@ public class ContainerPanel extends TablePanel implements Blocking {
                 return true;
             }
         });
+    }
+
+    protected InventorySlotsPanel createContainerSlots() {
+        return new InventorySlotsPanel(getContainerRowCount(),
+         getContainerColumnCount()){
+            @Override
+            protected CELL_TYPE getCellType() {
+                return CELL_TYPE.CONTAINER;
+            }
+        };
+    }
+
+    public TablePanel getInventory() {
+        return inventory;
+    }
+
+    public InventorySlotsPanel getContainerSlotsPanel() {
+        return containerSlotsPanel;
     }
 
     protected TablePanel createInventory() {
@@ -136,13 +155,13 @@ public class ContainerPanel extends TablePanel implements Blocking {
     }
 
 
-    protected Cell initLowerTable() {
+    protected Cell<Table> initLowerTable() {
         TablePanelX lower = new TablePanelX<>();
         TablePanelX lowerLeft = new TablePanelX<>();
         TablePanelX lowerRight = new TablePanelX<>();
 
         lowerLeft.add(weightLabel = new ValueContainer(
-         TextureCache.getOrCreateR(Images.TINY_CHEST), "")).left().fillX().growX()
+         TextureCache.getOrCreateR(Images.WEIGHT), "")).left().fillX().growX()
          .row();
         weightLabel.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 18));
         lowerLeft.add(goldLabel = new ValueContainer(
@@ -151,7 +170,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
 
 
         lowerRight.add(weightLabel2 = new ValueContainer(
-         TextureCache.getOrCreateR(Images.TINY_CHEST), "")).left().fillX().growX()
+         TextureCache.getOrCreateR(Images.WEIGHT), "")).left().fillX().growX()
          .row();
         weightLabel2.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 18));
         lowerRight.add(goldLabel2 = new ValueContainer(
@@ -248,6 +267,9 @@ public class ContainerPanel extends TablePanel implements Blocking {
     }
 
     protected void updateLowerTable(Pair<InventoryDataSource, ? extends ContainerDataSource> param) {
+        weightLabel.setImage(param.getKey().isOverburdened() ?
+         Images.WEIGHT_BURDENED
+         : Images.WEIGHT);
         weightLabel.setValueText(param.getKey().getWeightInfo());
         goldLabel.setValueText(param.getKey().getGoldInfo());
         weightLabel2.setValueText(param.getValue().getWeightInfo());
@@ -287,7 +309,8 @@ public class ContainerPanel extends TablePanel implements Blocking {
          (ContainerDataSource) containerSlotsPanel.getUserObject();
         dataSource.getHandler().takeGold();
     }
-        protected void takeAll() {
+
+    protected void takeAll() {
         ContainerDataSource dataSource =
          (ContainerDataSource) containerSlotsPanel.getUserObject();
         dataSource.getHandler().takeAllClicked();

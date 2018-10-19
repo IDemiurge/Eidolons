@@ -10,6 +10,7 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class QuestSelector extends QuestHandler {
 
     public void selectDungeonQuests() {
 
-        List<ObjType> filtered =master.getQuestTypePool();
+        Collection<ObjType> filtered =master.getQuestTypePool();
 
         GuiEventManager.trigger(GuiEventType.SHOW_QUEST_SELECTION, filtered);
     }

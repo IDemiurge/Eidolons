@@ -28,13 +28,13 @@ public class CounterAttackRule {
         if (!attacked.canCounter()) {
             return false;
         }
-        if (attacked.isAlliedTo(active.getOwnerObj().getOwner()))
+        if (attacked.isAlliedTo(active.getOwnerUnit().getOwner()))
             return false;
         if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
         }
         // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        return !active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
+        return !active.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
     }
 
     public ActiveObj tryCounter(Attack attack) {
@@ -62,7 +62,7 @@ public class CounterAttackRule {
 
     private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
 //        game.getLog().combatLog();
-        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " tries to counter-attack against " + action.getOwnerObj());
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " tries to counter-attack against " + action.getOwnerUnit());
         ActiveObj activeObj = game.getActionManager().activateCounterAttack(action,
                 attacked);
         game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " makes a counter-attack:" + activeObj );

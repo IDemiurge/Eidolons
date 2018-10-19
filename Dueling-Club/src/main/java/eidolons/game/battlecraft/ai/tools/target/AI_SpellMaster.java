@@ -227,7 +227,7 @@ public class AI_SpellMaster {
         if (EffectFinder.check(actives, AddBuffEffect.class)) {
             if (((AddBuffEffect) EffectFinder.getEffectsOfClass(actives,
              AddBuffEffect.class).get(0)).getEffect().getFormula()
-             .getInt(spell.getOwnerObj().getRef()) > 0) {
+             .getInt(spell.getOwnerUnit().getRef()) > 0) {
                 return AiEnums.AI_LOGIC.BUFF_POSITIVE;
             } else {
                 return AiEnums.AI_LOGIC.BUFF_NEGATIVE;
@@ -295,7 +295,7 @@ public class AI_SpellMaster {
     private static boolean isModifyValueEffectPositive(DC_ActiveObj spell,
                                                        Effect effect) {
         try {
-            return effect.getFormula().getInt(spell.getOwnerObj().getRef()) > 0;
+            return effect.getFormula().getInt(spell.getOwnerUnit().getRef()) > 0;
         } catch (Exception e) {
             return false;
         }
@@ -306,7 +306,7 @@ public class AI_SpellMaster {
         boolean positive = CounterMaster.isCounterPositive(counterEffect
          .getCounterName());
 
-        if (counterEffect.getFormula().getInt(spell.getOwnerObj().getRef()) < 0) {
+        if (counterEffect.getFormula().getInt(spell.getOwnerUnit().getRef()) < 0) {
             positive = !positive;
         }
         return positive;
@@ -362,7 +362,7 @@ public class AI_SpellMaster {
                         if (((AddBuffEffect) EffectFinder.getEffectsOfClass(
                          actives, AddBuffEffect.class).get(0))
                          .getEffect().getFormula()
-                         .getInt(spell.getOwnerObj().getRef()) > 0) {
+                         .getInt(spell.getOwnerUnit().getRef()) > 0) {
                             return AiEnums.AI_LOGIC.BUFF_POSITIVE;
                         } else {
                             return AiEnums.AI_LOGIC.BUFF_NEGATIVE;

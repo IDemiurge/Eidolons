@@ -28,9 +28,9 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class OrbElement extends SuperActor {
     private static final String EMPTY_PATH = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "new", "orb 64.png");
+     PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
     private static final String OVERLAY_PATH = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "dc","orbs", "overlay.png");
+     PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
     private Label label;
     private Image background;
     private Image gem;
@@ -52,51 +52,60 @@ public class OrbElement extends SuperActor {
         label = new Label(value, StyleHolder.
          getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
-        addActor( background = new Image(getOrCreateR(EMPTY_PATH)));
-//        addActor(icon);
+        addActor(background = new Image(getOrCreateR(EMPTY_PATH)));
+        //        addActor(icon);
         icon.setPosition(orbRegion.getRegionWidth() / 2 - icon.getWidth() / 2,
          orbRegion.getRegionHeight() / 2 - icon.getHeight() / 2);
 
-//        addActor( overlay = new Image(getOrCreateR(OVERLAY_PATH)));
-//        String p = ContentManager.getBaseParameterFromCurrent(param).getName();
-//        addActor(gem = new Image(getOrCreateR(getGemPath(p))));
-//        addActor( gemLight = new ImageContainer((getGemLightPath(p))));
-//        gemLight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
+        //        addActor( overlay = new Image(getOrCreateR(OVERLAY_PATH)));
+        //        String p = ContentManager.getBaseParameterFromCurrent(param).getName();
+        //        addActor(gem = new Image(getOrCreateR(getGemPath(p))));
+        //        addActor( gemLight = new ImageContainer((getGemLightPath(p))));
+        //        gemLight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
 
         //TODO ORB GOES TO THE FORE ON HOVER
-    }
-
-    private String getGemLightPath(String value) {
-        return getGemPath(value + " light");
-    }
-    private String getGemPath(String value) {
-        return StrPathBuilder.build(
-         PathFinder.getComponentsPath(), "dc","orbs", "gem",
-         value+ ".png ");
     }
 
     public OrbElement(PARAMS param, String value) {
         this(getOrCreateR(
          StringMaster.getAppendedImageFile(
           ImageManager.getValueIconPath(param), " alpha")),
-         getOrCreateR("/UI/components/new/orb " +
-          param.getName() +
-          ".png"), value, param);
+         getOrCreateR(getOrbPath(param.getName())), value, param);
 
-//        lighting = new Image(getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
-//        lighting.sizeBy(0.3f);
-        Texture texture = TextureCache.getOrCreate("/UI/components/new/orb " +
-         param.getName() +
-         " border.png");
+        //        lighting = new Image(getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
+        //        lighting.sizeBy(0.3f);
+        Texture texture = TextureCache.getOrCreate(StringMaster.getAppendedImageFile(
+         getOrbPath(param.getName()), " border"
+        ));
+
         if (texture == TextureCache.getEmptyTexture()) return;
         lighting = new Image(texture);
         addActor(lighting);
         lighting.setPosition(-15, -15);
     }
 
+    private static String getOrbPath(String value) {
+        return getPath() + "/orb " + value +
+         ".png";
+    }
+
+    private static String getPath() {
+        return StrPathBuilder.build(
+         PathFinder.getComponentsPath(), "dc", "orbs");
+    }
+
+    private String getGemLightPath(String value) {
+        return getGemPath(value + " light");
+    }
+
+    private String getGemPath(String value) {
+        return StrPathBuilder.build(getPath(), "gem",
+         value + ".png ");
+    }
+
     @Override
     public void act(float delta) {
-//        alphaFluctuation(icon, delta);
+        //        alphaFluctuation(icon, delta);
         if (lighting != null)
             alphaFluctuation(lighting, delta);
         if (gemLight != null)
@@ -141,8 +150,8 @@ public class OrbElement extends SuperActor {
             final int cur = Integer.valueOf(split[0]);
             final int max = Integer.valueOf(split[1]);
             orbFullness = Math.min(Math.round(cur / (max / 62f)), 62);
-            if (cur<=0){
-                orbFullness=0;
+            if (cur <= 0) {
+                orbFullness = 0;
             }
         } else {
             orbFullness = 62;
@@ -172,16 +181,16 @@ public class OrbElement extends SuperActor {
         try {
             ScissorStack.popScissors();
         } catch (Exception e) {
-//            if (!logged) {
-//                main.system.ExceptionMaster.printStackTrace(e); //TODO spams into console!
-//                logged = true;
-//            }
+            //            if (!logged) {
+            //                main.system.ExceptionMaster.printStackTrace(e); //TODO spams into console!
+            //                logged = true;
+            //            }
 
         }
         if (Eidolons.game.isDebugMode() || Gdx.input.isKeyPressed(Keys.ALT_LEFT))
             label.draw(batch, parentAlpha);
 
-//TODO if hover
-//        batch.draw(iconRegion, 30, 30);
+        //TODO if hover
+        //        batch.draw(iconRegion, 30, 30);
     }
 }

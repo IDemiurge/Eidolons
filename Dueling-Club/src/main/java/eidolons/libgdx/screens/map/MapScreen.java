@@ -131,7 +131,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     @Override
-    protected InputProcessor getInputController() {
+    protected InputProcessor createInputController() {
         InputMultiplexer current;
         if (canShowScreen()) {
             current = new InputMultiplexer(guiStage, controller, objectStage);
@@ -140,7 +140,7 @@ public class MapScreen extends GameScreenWithTown {
             }
             current.addProcessor(controller);//new GestureDetector(controller));
         } else {
-            current = new InputMultiplexer(super.getInputController());
+            current = new InputMultiplexer(super.createInputController());
         }
 
         return current;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.shaders.ShaderMaster;
 import main.entity.Entity;
@@ -80,11 +81,14 @@ public class DragManager extends FadeImageContainer {
     @Override
     public void fadeOut() {
         super.fadeOut();
+        ActorMaster.addScaleAction(this, 0, getFadeDuration());
     }
-//    @Override
-//    public Actor hit(float x, float y, boolean touchable) {
-//        return null;
-//    }
+
+    @Override
+    public void fadeIn() {
+        super.fadeIn();
+        ActorMaster.addScaleAction(this, 1, getFadeDuration());
+    }
 
     public void setDraggedEntity(Entity draggedEntity) {
         if (draggedEntity == null)

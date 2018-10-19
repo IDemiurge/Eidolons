@@ -45,7 +45,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     @Override
     public DC_WeaponObj getActiveWeapon() {
         if (isUnarmed())
-            return getOwnerObj().getNaturalWeapon(isOffhand());
+            return getOwnerUnit().getNaturalWeapon(isOffhand());
         return super.getActiveWeapon();
     }
 

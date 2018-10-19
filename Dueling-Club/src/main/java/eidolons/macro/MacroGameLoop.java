@@ -35,20 +35,26 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public MacroGameLoop(MacroGame game) {
         super();
         this.macroGame = game;
-        timeMaster =MacroTimeMaster.getInstance();
+        timeMaster = MacroTimeMaster.getInstance();
     }
 
     @Override
     public void setExited(boolean exited) {
         if (exited)
-            if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AUTOSAVE_ON))
-                Saver.autosave();
+            if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AUTOSAVE_ON)) {
+                try {
+                    Saver.autosave();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
         super.setExited(exited);
     }
 
     public void togglePaused() {
         setPaused(!isPaused(), false);
     }
+
     @Override
     protected Boolean makeAction() {
         if (exited)
@@ -64,11 +70,11 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         if (actionQueue.isEmpty()) {
         }
 
-//        ActionInput playerAction = actionQueue.removeLast();
-//        if (checkActionInputValid(playerAction)) {
-//            game.getMovementManager().cancelAutomove(activeUnit);
-//
-//        }
+        //        ActionInput playerAction = actionQueue.removeLast();
+        //        if (checkActionInputValid(playerAction)) {
+        //            game.getMovementManager().cancelAutomove(activeUnit);
+        //
+        //        }
 
         return null;
     }
@@ -85,9 +91,9 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         if (isPaused())
             return;
         //check blocked
-//        queueActionInput(actionInput);
+        //        queueActionInput(actionInput);
         signal();
-//        GuiEventManager.trigger(MapEvent.MAP_GUI_UPDATE);
+        //        GuiEventManager.trigger(MapEvent.MAP_GUI_UPDATE);
     }
 
     @Override
@@ -117,7 +123,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
                 continue;
             timeMaster.timedCheck();
 
-//            if (Eidolons.getMacroGame().isPaused()) continue;
+            //            if (Eidolons.getMacroGame().isPaused()) continue;
 
         }
     }
@@ -147,17 +153,17 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public void act(float delta) {
         if (isPaused())
             return;
-//        Place entered = checkBattleStarts();
-//        if (isAutoEnterCombat())
-//            if (entered != null) {
-//                enter(entered);
-//                return;
-//            }
+        //        Place entered = checkBattleStarts();
+        //        if (isAutoEnterCombat())
+        //            if (entered != null) {
+        //                enter(entered);
+        //                return;
+        //            }
         if (isAutoEnterCombat())
-        for (Place sub : macroGame.getPlaces()) {
-            if (tryEnter(sub))
-                return;
-        }
+            for (Place sub : macroGame.getPlaces()) {
+                if (tryEnter(sub))
+                    return;
+            }
         timeMaster.act(delta);
     }
 
@@ -168,19 +174,19 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public boolean tryEnter(Place sub) {
         Coordinates c = macroGame.getPlayerParty().getCoordinates();
         if (sub != lastEnteredPlace)
-         if (AdventureInitializer.isTestMode()
-                 || (sub.getCoordinates().dst(c) < 100  && macroGame.getPlayerParty().isHasMoved())) {
+            if (AdventureInitializer.isTestMode()
+             || (sub.getCoordinates().dst(c) < 100 && macroGame.getPlayerParty().isHasMoved())) {
 
-            enter(sub);
-            lastEnteredPlace= sub;
-             return true;
-        }
+                enter(sub);
+                lastEnteredPlace = sub;
+                return true;
+            }
         return false;
     }
 
     public void enter(Place entered) {
-        if (entered instanceof Town){
-//            entered.getGame().get
+        if (entered instanceof Town) {
+            //            entered.getGame().get
             DC_Game.game.getMetaMaster().getTownMaster().enterTown((Town) entered);
             return;
         }
@@ -193,11 +199,11 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private void startBattle(Place entered) {
         ObjType type = ScenarioGenerator.generateScenarioType(entered);
-        main.system.auxiliary.log.LogMaster.log(1,"gen Scenario for dungeon:" +type.getName());
+        main.system.auxiliary.log.LogMaster.log(1, "gen Scenario for dungeon:" + type.getName());
 
 
-        String name =type.getName();
-        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,name );
+        String name = type.getName();
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, name);
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         //when loaded, will init DC_Game properly
     }

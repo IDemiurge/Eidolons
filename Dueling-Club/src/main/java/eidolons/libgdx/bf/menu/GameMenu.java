@@ -6,6 +6,7 @@ import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.screens.menu.GenericMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
 import main.system.graphics.FontMaster.FONT;
@@ -97,6 +98,15 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected boolean isHidden(GAME_MENU_ITEM item) {
+        if (TownPanel.getActiveInstance()!=null ){
+            if (item== GAME_MENU_ITEM.MAP_INFO
+              ) {
+                return false;
+            }
+            if (item== GAME_MENU_ITEM.QUESTS) {
+                return false;
+            }
+        }
         if (item==GAME_MENU_ITEM.RUN)
             return !CoreEngine.isMacro();
         return item.hidden;

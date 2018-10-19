@@ -21,6 +21,10 @@ public class LabelX extends VisLabel {
         super(text, sizedLabelStyle);
     }
 
+    public LabelX() {
+        this("",  StyleHolder.getDefaultLabelStyle());
+    }
+
     @Override
     public void setWrap(boolean wrap) {
         wrapped = wrap;

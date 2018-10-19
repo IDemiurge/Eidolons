@@ -46,7 +46,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
         }
         lastPosition = mainHero.getCoordinates();
         for (Unit unit : companions) {
-            unit.getAI().setAttached(
+            unit.getAI().setAutoFollow(
              checkAttached(unit)
             );
 
@@ -142,8 +142,8 @@ public class ExplorePartyMaster extends ExplorationHandler {
 
 
     private boolean tryFollow(Unit unit) {
-        unit.getAI().setAttached(checkAttached(unit));
-        if (!unit.getAI().isAttached())
+        unit.getAI().setAutoFollow(checkAttached(unit));
+        if (!unit.getAI().isAutoFollow())
             if (isFollowOn(unit)) {
                 Action move = getFollowMove(unit);
                 if (move != null) {

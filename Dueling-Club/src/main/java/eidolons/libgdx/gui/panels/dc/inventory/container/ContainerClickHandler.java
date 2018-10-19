@@ -9,6 +9,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.content.DC_TYPE;
@@ -38,7 +39,13 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     public ContainerClickHandler(
      String containerImagePath,
      Collection<DC_HeroItemObj> items, Unit unit, Obj container) {
-        super(HqDataMaster.getInstance(unit), HqDataMaster.getHeroModel(unit));
+        this(HqDataMaster.getInstance(unit),
+         containerImagePath, items, container);
+    }
+    public ContainerClickHandler(HqDataMaster dataMaster,
+     String containerImagePath,
+     Collection<DC_HeroItemObj> items,  Obj container) {
+        super(dataMaster,dataMaster.getHeroModel());
         this.containerImagePath = containerImagePath;
         this.containerName = container.getName();
         if (container instanceof DC_Cell) {
@@ -105,11 +112,20 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     }
 
     public void takeGold() {
+        if (GoldMaster.isGoldPacksOn()) {
+
+            for (DC_HeroItemObj item : items) {
+                if (GoldMaster.isGoldPack(item)) {
+                    dataMaster.operation(  HERO_OPERATION.PICK_UP, item);
+                }
+            }
+        } else {
         Integer gold = container.getIntParam(PARAMS.GOLD);
         if (gold>0){
-            dataMaster.operation(sim, HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
+            dataMaster.operation(  HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
             container.setParam(PARAMS.GOLD,0);
             update();
+        }
         }
     }
 

@@ -1,8 +1,9 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore.behavior;
 
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -23,6 +24,10 @@ import java.util.List;
  */
 public class GuardAi extends AiBehavior {
 
+    public GuardAi(AiMaster master, UnitAI ai) {
+        super(master, ai);
+    }
+
     @Override
     public ActionSequence getOrders(UnitAI ai) {
         if (isEnabled(ai))
@@ -35,7 +40,22 @@ public class GuardAi extends AiBehavior {
         return new ActionSequence(GOAL_TYPE.PROTECT, list.toArray(new Action[list.size()]));
     }
 
+    @Override
+    protected float getTimeBeforeFail() {
+        return 0;
+    }
+
+    @Override
+    protected void update(float delta) {
+
+    }
+
     protected boolean isEnabled(UnitAI ai) {
         return true;
+    }
+
+    @Override
+    protected void initOrders() {
+
     }
 }

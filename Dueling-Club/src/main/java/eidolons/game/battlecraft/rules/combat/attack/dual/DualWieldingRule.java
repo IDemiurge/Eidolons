@@ -109,11 +109,11 @@ public class DualWieldingRule {
 
 
         if (checkFocusBonusApplies(unit, action, singleCadence)) {
-            Integer amount = action.getOwnerObj().getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
+            Integer amount = action.getOwnerUnit().getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
             amount += action.getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
-            amount += action.getOwnerObj().getActiveWeapon(!offhand).getIntParam(
+            amount += action.getOwnerUnit().getActiveWeapon(!offhand).getIntParam(
              PARAMS.CADENCE_FOCUS_BOOST);
-            action.getOwnerObj().modifyParameter(PARAMS.C_FOCUS, amount, 100);
+            action.getOwnerUnit().modifyParameter(PARAMS.C_FOCUS, amount, 100);
         }
         // INIT COST CADENCE EFFECTS
         Effects effects = new Effects();

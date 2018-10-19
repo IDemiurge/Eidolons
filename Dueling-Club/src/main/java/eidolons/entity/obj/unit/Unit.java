@@ -29,6 +29,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster3d;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
@@ -120,13 +121,9 @@ public class Unit extends DC_UnitModel {
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
         if (isHero()) {
-            //            main.system.auxiliary.log.LogMaster.log(1,this + " hero created " +getId());
             String message = this + " hero created " + getId();
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-
         }
-
-        // getGame().getTestMaster().getTestSpells(); TODO add!
     }
 
     public Unit(Unit hero) {
@@ -152,23 +149,9 @@ public class Unit extends DC_UnitModel {
     @Override
     public void init() {
         super.init();
-        try {
-            initDeity();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        try {
-            initEmblem();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        try {
-            initIntegrityAlignments();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-
-        //        WaitMaster.receiveInput(WAIT_OPERATIONS.UNIT_OBJ_INIT, true);
+        initDeity();
+        initEmblem();
+        initIntegrityAlignments();
     }
 
     @Override
@@ -259,6 +242,7 @@ public class Unit extends DC_UnitModel {
         getQuickItems().add(itemObj);
         itemObj.setRef(ref);
         getResetter().resetQuickSlotsNumber();
+        itemObj.setContainer(CONTAINER.QUICK_SLOTS);
     }
 
     public boolean removeQuickItem(DC_QuickItemObj itemObj) {
@@ -702,6 +686,7 @@ public class Unit extends DC_UnitModel {
                     if (item instanceof DC_WeaponObj)
                         AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
         // preCheck weight and prompt drop if too heavy?
+        item.setContainer(CONTAINER.EQUIPPED);
         return true;
     }
 
@@ -711,6 +696,7 @@ public class Unit extends DC_UnitModel {
         inventory.add(item);
         item.setRef(ref);
 
+        item.setContainer(CONTAINER.INVENTORY);
         return true;
         // EVENT,
     }

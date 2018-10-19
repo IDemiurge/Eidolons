@@ -45,13 +45,13 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public boolean isAggroCheckNeeded(ActionInput input) {
-        Unit unit = input.getAction().getOwnerObj();
+        Unit unit = input.getAction().getOwnerUnit();
         Unit enemy = input.getAction().getGame().getAiManager().getAnalyzer().
          getClosestEnemy(unit);
         if (enemy == null)
             return false;
         double distance = PositionMaster.getExactDistance(enemy.getCoordinates(),
-         input.getAction().getOwnerObj().getCoordinates());
+         input.getAction().getOwnerUnit().getCoordinates());
         //TODO visible?
         //stealth: when is *that* check made?
         if (distance > unit.getSightRangeTowards(enemy)) {

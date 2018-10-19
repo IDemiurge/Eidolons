@@ -4,10 +4,11 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerClickHandler;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.macro.entity.town.Shop;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -18,13 +19,17 @@ import main.system.GuiEventType;
  */
 public class ShopClickHandler extends ContainerClickHandler {
 
+    private static boolean stashOpen;
+
     public ShopClickHandler(Shop shop, Unit unit) {
-        super(shop.getImagePath(), shop.getItems(), unit, shop);
+        super(HqDataMasterDirect.getInstance(unit),
+         shop.getImagePath(), shop.getItems(),  shop);
     }
 
     @Override
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         if (cellContents == null) {
+            singleClick(cell_type, null);
             return false;
         }
         if (sim.isInventoryFull()) {
@@ -37,8 +42,17 @@ public class ShopClickHandler extends ContainerClickHandler {
         if (operation == OPERATIONS.DROP) {
             if (cell_type == CELL_TYPE.CONTAINER) {
                 operation = OPERATIONS.BUY;
-            } else
+            } else if (cell_type == CELL_TYPE.STASH) {
+                operation = OPERATIONS.UNSTASH;
+            } else {
                 operation = OPERATIONS.SELL;
+            }
+        } else if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_QUICK_SLOT) {
+            if (cell_type == CELL_TYPE.CONTAINER) {
+                operation = OPERATIONS.BUY;
+            } else if (stashOpen)
+                operation = OPERATIONS.STASH;
+
         }
         if (handleOperation(operation, cell_type, cellContents)) {
             return true;
@@ -47,14 +61,55 @@ public class ShopClickHandler extends ContainerClickHandler {
     }
 
     @Override
+    protected OPERATIONS getInvOperation(CELL_TYPE cell_type,
+                                         int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
+        if (stashOpen)
+            if (altClick || clickCount > 1) {
+                if (cell_type == CELL_TYPE.INVENTORY) {
+                    return OPERATIONS.STASH;
+                }
+            }
+        return super.getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+    }
+
+    @Override
+    protected OPERATIONS getDragOperation(CELL_TYPE cell_type, Entity cellContents, Entity dragged) {
+        switch (cell_type) {
+            case INVENTORY:
+                if (dragged instanceof DC_HeroItemObj) {
+                    switch (((DC_HeroItemObj) dragged).getContainer()) {
+                        case EQUIPPED:
+                            return OPERATIONS.UNEQUIP;
+                        case QUICK_SLOTS:
+                            return OPERATIONS.UNEQUIP_QUICK_SLOT;
+                        case INVENTORY:
+                        case CONTAINER:
+                            return null;
+                        case STASH:
+                            return OPERATIONS.UNSTASH;
+                        case SHOP:
+                            return OPERATIONS.BUY;
+                    }
+                }
+                break;
+            case STASH:
+                return OPERATIONS.STASH;
+            case CONTAINER:
+                return OPERATIONS.SELL;
+        }
+
+        return super.getDragOperation(cell_type, cellContents, dragged);
+    }
+
+    @Override
     protected void execute(OPERATIONS operation, Entity type, Object arg) {
-        HqDataMaster.operation(sim, getHqOperation(operation), type, arg);
+        dataMaster.operation(  getHqOperation(operation), type, arg);
         refreshPanel();
     }
 
     @Override
     public void refreshPanel() {
-        GuiEventManager.trigger(GuiEventType.UPDATE_SHOP, container);
+        GuiEventManager.trigger(GuiEventType.UPDATE_SHOP );
     }
 
     @Override
@@ -81,13 +136,21 @@ public class ShopClickHandler extends ContainerClickHandler {
     @Override
     protected boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
         switch (operation) {
+            case STASH:
+                return !Eidolons.getTown().isStashFull();
+            case UNSTASH:
+                return !Eidolons.getMainHero().isInventoryFull();
+
             case SELL:
 
             case BUY:
+                Shop shop= (Shop) container;
                 Integer gold = (operation == OPERATIONS.BUY ? dataMaster.getHeroModel() : container)
                  .getIntParam(PARAMS.GOLD);
-                if (gold >= type.getIntParam(PARAMS.GOLD_COST))
+                if (gold >=shop.getPrice((DC_HeroItemObj) type, dataMaster.getHeroModel(),
+                 operation== OPERATIONS.SELL)) {
                     return true;
+                }
                 GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
                  (operation == OPERATIONS.BUY ?
                   "You need " + (type.getIntParam(PARAMS.GOLD_COST) - gold) + " more gold!"
@@ -114,11 +177,10 @@ public class ShopClickHandler extends ContainerClickHandler {
         return super.getOperation(cell_type, clickCount, rightClick, altClick, cellContents);
     }
 
-    public void buy(DC_HeroItemObj item) {
-
+    public static void setStashOpen(boolean stashOpen) {
+        ShopClickHandler.stashOpen = stashOpen;
     }
 
-    public void sell() {
-
+    public void repair() {
     }
 }

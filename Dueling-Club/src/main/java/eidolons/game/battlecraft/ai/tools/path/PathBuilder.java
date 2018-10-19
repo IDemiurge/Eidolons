@@ -2,12 +2,12 @@ package eidolons.game.battlecraft.ai.tools.path;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
@@ -22,8 +22,8 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +135,7 @@ public class PathBuilder extends AiHandler {
             resetUnit();
         }
         main.system.auxiliary.log.LogMaster.log(1,
-         targetAction.getActive().getOwnerObj().getNameAndCoordinate()
+         targetAction.getActive().getOwnerUnit().getNameAndCoordinate()
           + "'s Paths: " + ContainerUtils.joinList(paths, StringMaster.NEW_LINE));
 
         try {
@@ -175,16 +175,16 @@ public class PathBuilder extends AiHandler {
                 if (!step(choice)) {
                     break;
                 }
-                if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_RESULTS) {
+                if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_RESULTS) {
                     Chronos.logTimeElapsedForMark(getChronosPrefix() + choice); // TODO
                 }
                 // mark removed???
             }
-            if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+            if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
                 Chronos.logTimeElapsedForMark(getChronosPrefix() + dest);
             }
         }
-        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+        if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
             Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
         }
         return paths;

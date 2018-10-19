@@ -94,7 +94,7 @@ public enum MACRO_PARAMS implements PARAMETER {
     // TREPIDATION, // AWE?
     // HATRED
 
-    ;
+    TOWN_STASH_SIZE(null, "", false, 40, "town");
 
     private String shortName;
     private String fullName;

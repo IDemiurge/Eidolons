@@ -51,7 +51,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
     @Override
     protected FONT getFontStyle() {
-        return FONT.AVQ;
+        return FONT.MAGIC;
     }
 
     @Override

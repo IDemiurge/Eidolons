@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.ai.AggroMaster;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimationConstructor;

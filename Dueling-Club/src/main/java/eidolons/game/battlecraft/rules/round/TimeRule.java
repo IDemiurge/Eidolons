@@ -93,7 +93,7 @@ public class TimeRule {
     }
 
     public boolean checkTime(DC_ActiveObj action, int time_used) {
-        DC_Obj unitObj = action.getOwnerObj();
+        DC_Obj unitObj = action.getOwnerUnit();
         Integer prevTime = timeMap.get(unitObj);
         if (prevTime == null) {
             prevTime = 0;
@@ -170,7 +170,7 @@ public class TimeRule {
                 active = true;
                 // game.getLogManager()
                 // .log("***"
-                // + action.getOwnerObj().getName()
+                // + action.getOwnerUnit().getName()
                 // +
                 // " is ready to start a new round, other units have only one more action to make!");
                 // other units will have their remaining initiative transferred
@@ -179,7 +179,7 @@ public class TimeRule {
                 // late buff will be nominal to update that the unit will not make
                 // if unless something speeds him up!
 
-                speedyUnit = action.getOwnerObj();
+                speedyUnit = action.getOwnerUnit();
 
                 game.getLogManager().log(
                  "***" + speedyUnit.getName() + " acts swiftly, units with less than "
@@ -193,10 +193,10 @@ public class TimeRule {
             return false;
         }
 
-        // DC_Obj unitObj = action.getOwnerObj();
+        // DC_Obj unitObj = action.getOwnerUnit();
         // addBuff(unitObj, false);
         // game.getLogManager().log(
-        // "***" + action.getOwnerObj().getName()
+        // "***" + action.getOwnerUnit().getName()
         // + " is out of time for this round");
         for (Unit unit : game.getUnits()) {
             checkRunningLate(unit);

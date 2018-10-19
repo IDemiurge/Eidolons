@@ -43,7 +43,7 @@ public class WeaveScreen extends GameScreen {
     }
 
     @Override
-    public InputProcessor getInputController() {
+    public InputProcessor createInputController() {
         if (inputController == null)
             inputController =
              new InputMultiplexer(

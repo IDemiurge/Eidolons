@@ -10,10 +10,10 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.module.dungeoncrawl.ai.AiBehavior;
-import eidolons.game.module.dungeoncrawl.ai.GuardAi;
-import eidolons.game.module.dungeoncrawl.ai.PatrolMaster;
-import eidolons.game.module.dungeoncrawl.ai.WanderAiOld;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
+import eidolons.game.battlecraft.ai.explore.behavior.GuardAi;
+import eidolons.game.battlecraft.ai.explore.PatrolMaster;
+import eidolons.game.battlecraft.ai.explore.behavior.WanderAiOld;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -56,7 +56,7 @@ public class BehaviorMaster extends AiHandler {
         switch (type) {
 
             case WANDER:
-                behavior = new WanderAiOld();
+                behavior = new WanderAiOld(getMaster(), ai);
                 break;
             case AMBUSH:
                 break;
@@ -67,7 +67,7 @@ public class BehaviorMaster extends AiHandler {
             case PATROL:
                 break;
             case GUARD:
-                behavior = new GuardAi();
+                behavior = new GuardAi(getMaster(), ai);
                 break;
         }
         behaviorMap.put(type, behavior);

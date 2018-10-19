@@ -549,7 +549,7 @@ public class MusicMaster {
     // SOUNDS VS THEME-FILES?!
     public enum AMBIENCE {
         MINE,
-        PIRATE_SHIP,
+        SHIP,
         INTERIOR,
         MIST,
         HAUNTED,

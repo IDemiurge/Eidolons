@@ -182,14 +182,14 @@ public class QuickWeaponPanel extends TablePanelX {
                     if (attack == null) {
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
                          "Cannot attack with this!",
-                         attack.getOwnerObj());
+                         attack.getOwnerUnit());
                         return false;
                     }
                     if (attack.getValidSubactions().isEmpty()) {
 
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
                          "Cannot make any attack with this!",
-                         attack.getOwnerObj());
+                         attack.getOwnerUnit());
                         return false;
                     }
                     attack.setAutoSelectionOn(true);

@@ -120,11 +120,11 @@ public class EngagedRule implements ActionRule {
     }
 
     public boolean checkDisengagingActionCancelled(DC_ActiveObj action) {
-        if (action.getRef().getTargetObj() == action.getOwnerObj().getEngagementTarget()) {
+        if (action.getRef().getTargetObj() == action.getOwnerUnit().getEngagementTarget()) {
             return false;
         }
 
-        Unit unit = action.getOwnerObj();
+        Unit unit = action.getOwnerUnit();
         boolean prompt = !unit.isAiControlled()
          && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MODE
          && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
@@ -150,11 +150,11 @@ public class EngagedRule implements ActionRule {
     }
 
     public Boolean promptDisengage(DC_ActiveObj action) {
-        if (action.getOwnerObj().isAiControlled()) {
+        if (action.getOwnerUnit().isAiControlled()) {
             disengaged(action);
             return true;
         }
-        Unit disengager = action.getOwnerObj();
+        Unit disengager = action.getOwnerUnit();
         List<Unit> engagers = getEngagers(disengager);
         // remove if not aoo
         String units = StringMaster.getStringFromEntityList(engagers).replace(";", ", ");
@@ -223,7 +223,7 @@ public class EngagedRule implements ActionRule {
     public void disengaged(DC_ActiveObj action) {
         // disengager.getGame().fireEvent(new
         // Event(STANDARD_EVENT_TYPE.DISENGAGED, disengager.getRef()));
-        Unit disengaged = action.getOwnerObj();
+        Unit disengaged = action.getOwnerUnit();
         for (Unit unit : action.getGame().getUnits()) {
             if (unit.getEngagementTarget() == disengaged) {
                 checkAoO(action, unit);
@@ -263,7 +263,7 @@ public class EngagedRule implements ActionRule {
 
     public void checkAoO(DC_ActiveObj action, Unit unit) {
         try {
-            AttackOfOpportunityRule.triggerAttack(unit, action.getOwnerObj(), true);
+            AttackOfOpportunityRule.triggerAttack(unit, action.getOwnerUnit(), true);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {

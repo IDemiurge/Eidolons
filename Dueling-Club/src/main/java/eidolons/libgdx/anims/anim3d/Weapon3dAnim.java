@@ -152,7 +152,7 @@ public class Weapon3dAnim extends ActionAnim {
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
         if (getProjection() == PROJECTION.HOR) {
-            flipHor = getActive().getOwnerObj().getFacing() == main.game.bf.directions.FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
+            flipHor = getActive().getOwnerUnit().getFacing() == main.game.bf.directions.FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
             flipHor = (getProjection() == PROJECTION.TO) != offhand;
         }
@@ -208,11 +208,11 @@ public class Weapon3dAnim extends ActionAnim {
 
     protected PROJECTION getProjection() {
         if (getRef().getTargetObj() == null)
-            return getProjectionByFacing(getActive().getOwnerObj().getFacing());
+            return getProjectionByFacing(getActive().getOwnerUnit().getFacing());
         Boolean b =
          PositionMaster.isAboveOr(getRef().getSourceObj(), ref.getTargetObj());
-        if (getActive().getOwnerObj().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
-            b = getActive().getOwnerObj().isMine();
+        if (getActive().getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
+            b = getActive().getOwnerUnit().isMine();
         PROJECTION projection = PROJECTION.HOR;
         if (b != null)
             projection = b ? PROJECTION.FROM : PROJECTION.TO;

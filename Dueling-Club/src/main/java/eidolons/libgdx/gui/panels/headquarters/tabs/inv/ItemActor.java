@@ -10,6 +10,13 @@ import eidolons.libgdx.texture.Images;
 public class ItemActor extends HqSlotActor<DC_HeroItemObj>{
     public ItemActor(DC_HeroItemObj model) {
         super(model);
+//        int size = UiMaster.getIconSize();
+//        String path = getWeaponIconPath(entity);
+//        if (entity != null) {
+//            if (!C_OBJ_TYPE.ITEMS.equals(entity.getOBJ_TYPE_ENUM())) {
+//                size = 128;
+//            }
+//        }
     }
 
     @Override
@@ -21,4 +28,5 @@ public class ItemActor extends HqSlotActor<DC_HeroItemObj>{
     protected String getEmptyImage() {
         return Images.EMPTY_LIST_ITEM;
     }
+
 }

@@ -286,7 +286,7 @@ public abstract class ItemListPanel extends TablePanel {
         this.infoPanel = infoPanel;
     }
 
-    public List<SelectableItemData> toDataList(List<? extends Entity> objTypes) {
+    public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         List<SelectableItemData> list = new LinkedList<>();
         for (Entity sub : objTypes) {
             list.add(new SelectableItemData(sub));

@@ -5,7 +5,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import main.data.XList;
 import main.entity.Ref;
@@ -254,10 +253,11 @@ public class DC_GameObjMaster extends GameObjMaster {
     public Obj getObjectById(Integer id) {
         Obj obj = super.getObjectById(id);
         if (obj == null) {
-            if (Eidolons.getMainHero() != null) {
-                if (Eidolons.getMainHero().getId().equals(id))
-                    return Eidolons.getMainHero();
-            }
+//            if (Eidolons.getMainHero() != null) { this is madness... main hero must be added to state!
+//                if (Eidolons.getMainHero().getId().equals(id))
+//                    return Eidolons.getMainHero();
+//            }
+            return obj;
         }
         return obj;
     }

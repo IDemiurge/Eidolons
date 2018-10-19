@@ -65,7 +65,7 @@ public class InstantAttackRule {
 
     private static INSTANT_ATTACK_TYPE getInstantAttackType(Unit unit, DC_ActiveObj action) {
         Coordinates c = DC_MovementManager.getMovementDestinationCoordinate(action);
-        Coordinates c1 = action.getOwnerObj().getCoordinates();
+        Coordinates c1 = action.getOwnerUnit().getCoordinates();
 
         if (c.equals(c1)) {
             return INSTANT_ATTACK_TYPE.ENGAGEMENT;
@@ -77,7 +77,7 @@ public class InstantAttackRule {
         }
 
         if (singleFacing == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            singleFacing = FacingMaster.getSingleFacing(action.getOwnerObj().getFacing(), c1, c);
+            singleFacing = FacingMaster.getSingleFacing(action.getOwnerUnit().getFacing(), c1, c);
 
             if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
                 return INSTANT_ATTACK_TYPE.FLIGHT; // 'turned your back on the
@@ -129,7 +129,7 @@ public class InstantAttackRule {
 
     private static boolean checkInterrupt(INSTANT_ATTACK_TYPE type, DC_ActiveObj attack,
                                           DC_ActiveObj action) {
-        int n = getInterruptChance(type, attack, action.getOwnerObj());
+        int n = getInterruptChance(type, attack, action.getOwnerUnit());
         if (RandomWizard.chance(n)) {
             String entry = action + " has been stopped by an Instant Attack " + "(Chance: "
              + StringMaster.wrapInParenthesis(n + "%");
@@ -141,7 +141,7 @@ public class InstantAttackRule {
 
     private static int getInterruptChance(INSTANT_ATTACK_TYPE type, DC_ActiveObj attackAction,
                                           Unit attacked) {
-        Unit attacker = attackAction.getOwnerObj();
+        Unit attacker = attackAction.getOwnerUnit();
         Attack a = DC_AttackMaster.getAttackFromAction(attackAction);
         int damage = a.getDamageDealt();
         if (damage == 0) {
@@ -217,13 +217,13 @@ public class InstantAttackRule {
             }
             if (!unit.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                 if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH)) {
-                    if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
+                    if (FacingMaster.getSingleFacing(unit, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
                         continue;
                     }
                 }
             }
             if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
-                if (FacingMaster.getSingleFacing(unit, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.BEHIND) {
+                if (FacingMaster.getSingleFacing(unit, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.BEHIND) {
                     continue;
                 }
             }

@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore.behavior;
 
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -29,6 +30,10 @@ import java.util.function.Predicate;
 
 public class WanderAiOld extends AiBehavior {
 
+    public WanderAiOld(AiMaster master, UnitAI ai) {
+        super(master, ai);
+    }
+
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
         // permittedCells = ai.getGroup().getWanderBlocks();
@@ -39,7 +44,7 @@ public class WanderAiOld extends AiBehavior {
                     continue;
                 }
             }
-            if (PositionMaster.getDistance(cell, ai.getUnit()) <= ai.getMaxWanderDistance()) {
+            if (PositionMaster.getDistance(cell, ai.getUnit()) <= getMaxWanderDistance()) {
                 list.add(cell);
             }
         }
@@ -47,6 +52,10 @@ public class WanderAiOld extends AiBehavior {
             // change direction?
         }
         return list;
+    }
+
+    private static int getMaxWanderDistance() {
+        return 5;
     }
 
     public static Coordinates getWanderTargetCoordinatesCell(UnitAI ai, GOAL_TYPE type) {
@@ -278,6 +287,11 @@ public class WanderAiOld extends AiBehavior {
             targetCoordinates = c;
         }
         return targetCoordinates;
+    }
+
+    @Override
+    protected void update(float delta) {
+
     }
 
     @Override

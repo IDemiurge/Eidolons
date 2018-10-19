@@ -151,8 +151,8 @@ public class DC_SpellObj extends DC_ActiveObj {
 
 
     public void remove() {
-        ownerObj.getSpells().remove(this);
-        ownerObj.removeProperty(getSpellProp(), getName());
+        getOwnerUnit().getSpells().remove(this);
+        getOwnerUnit().removeProperty(getSpellProp(), getName());
 
     }
 

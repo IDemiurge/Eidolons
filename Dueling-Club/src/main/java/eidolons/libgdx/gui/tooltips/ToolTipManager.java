@@ -210,7 +210,7 @@ public class ToolTipManager extends TablePanel {
         float y = (v2.y - tooltip.getPrefHeight() - getPreferredPadding());
         boolean bot = false;
         if (y < 0) {
-            actorCell.bottom();
+            actorCell.top();
             actorCell.padBottom(
                     Math.max(-y / 2 - getPreferredPadding(), 64));
             bot = true;
@@ -221,18 +221,18 @@ public class ToolTipManager extends TablePanel {
             if (bot) {
                 actorCell.center();
             } else
-                actorCell.top();
+                actorCell.bottom();
             actorCell.padTop((y - GdxMaster.getHeight()) / 2 - getPreferredPadding());
         }
         float x = v2.x - tooltip.getPrefWidth() - getPreferredPadding();
         if (x < 0) {
-            actorCell.left();
+            actorCell.right();
             actorCell.padLeft((-x) / 2 - getPreferredPadding());
         }
         x = v2.x + tooltip.getPrefWidth() + getPreferredPadding();
         boolean right=true ;
         if (x > GdxMaster.getWidth()) {
-            actorCell.right();
+            actorCell.left();
             actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());
             right = true;
         }

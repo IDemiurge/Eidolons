@@ -79,16 +79,16 @@ public class TaskManager extends AiHandler {
                     case MY_ITEM:
                         break;
                     case MY_WEAPON:
-                        if (action.getOwnerObj().getMainWeapon() != null) {
-                            return action.getOwnerObj().getMainWeapon().getId();
+                        if (action.getOwnerUnit().getMainWeapon() != null) {
+                            return action.getOwnerUnit().getMainWeapon().getId();
                         }
-                        if (action.getOwnerObj().getOffhandWeapon() != null) {
-                            return action.getOwnerObj().getOffhandWeapon().getId();
+                        if (action.getOwnerUnit().getOffhandWeapon() != null) {
+                            return action.getOwnerUnit().getOffhandWeapon().getId();
                         }
                         return null;
                     case MY_ARMOR:
-                        if (action.getOwnerObj().getArmor() != null) {
-                            return action.getOwnerObj().getArmor().getId();
+                        if (action.getOwnerUnit().getArmor() != null) {
+                            return action.getOwnerUnit().getArmor().getId();
                         }
                         return null;
 

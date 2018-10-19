@@ -288,7 +288,7 @@ public class DivinationMaster {
     public static boolean rollRemove(DC_SpellObj spell) {
         int n1 = spell.getIntParam(PARAMS.SPELL_DIFFICULTY); // TODO ETERNAL
         // GRACE!
-        int n2 = spell.getOwnerObj().getIntParam(PARAMS.CHARISMA); // WILLPOWER?
+        int n2 = spell.getOwnerUnit().getIntParam(PARAMS.CHARISMA); // WILLPOWER?
         return RandomWizard.roll(n1, n2);
     }
 

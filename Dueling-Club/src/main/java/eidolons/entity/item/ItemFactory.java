@@ -1,8 +1,11 @@
 package eidolons.entity.item;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.data.DataManager;
+import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
@@ -12,13 +15,34 @@ public class ItemFactory {
 
     public static DC_HeroItemObj createItemObj(ObjType type, Player originalOwner, GenericGame game,
                                                Ref ref, boolean quick) {
+        return createItemObj(type.getName(), type.getOBJ_TYPE_ENUM(), originalOwner, game, ref, quick);
+    }
+
+    public static DC_HeroItemObj createItemObj(String subString, OBJ_TYPE TYPE, Player originalOwner, GenericGame game,
+                                               Ref ref, boolean quick) {
+        String var = VariableManager.getVar(subString);
+        subString = VariableManager.removeVarPart(subString);
+        ObjType type = DataManager.getType(subString, TYPE);
+        TYPE = type.getOBJ_TYPE_ENUM();
         if (type == null) {
             return null;
         }
-        OBJ_TYPE TYPE = type.getOBJ_TYPE_ENUM();
+        DC_HeroItemObj item = createItem(type, TYPE, originalOwner, ref, game, quick);
+        if (GoldMaster.isGoldPack(type)) {
+            try {
+                item.setParameter(GoldMaster.GOLD_VALUE, Integer.valueOf(var));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        return item;
+    }
+
+    private static DC_HeroItemObj createItem(ObjType type, OBJ_TYPE TYPE, Player originalOwner, Ref ref, GenericGame game, boolean quick) {
+
         switch ((DC_TYPE) TYPE) {
-//            case TRAP:
-//                return new DC_QuickItemObj(type, originalOwner, game, ref, true);
+            //            case TRAP:
+            //                return new DC_QuickItemObj(type, originalOwner, game, ref, true);
             case ARMOR:
                 return new DC_ArmorObj(type, originalOwner, game, ref);
             case ITEMS:

@@ -1,19 +1,19 @@
 package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
+import eidolons.libgdx.gui.panels.dc.inventory.InvItemActor;
 
 import java.util.List;
 
 public interface EquipDataSource {
-    InventoryValueContainer mainWeapon();
+    InvItemActor mainWeapon();
 
-    InventoryValueContainer offWeapon();
+    InvItemActor offWeapon();
 
-    InventoryValueContainer armor();
+    InvItemActor armor();
 
-    InventoryValueContainer avatar();
+    InvItemActor avatar();
 
-    InventoryValueContainer amulet();
+    InvItemActor amulet();
 
-    List<InventoryValueContainer> rings();
+    List<InvItemActor> rings();
 }

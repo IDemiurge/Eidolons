@@ -272,7 +272,7 @@ public class UnitChecker extends EntityChecker<Unit> {
             return false;
         }
         // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        if (active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+        if (active.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
         }
         // may still fail to activate any particular Attack Action!

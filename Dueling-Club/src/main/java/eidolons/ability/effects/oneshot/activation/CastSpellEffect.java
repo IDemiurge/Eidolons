@@ -40,7 +40,7 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
         if (!ListMaster.contains(reasons, "cooldown", false)) {
             if (!active.canBeActivated(ref, true)) {
                 game.getLogManager().log(
-                 active.getOwnerObj().getName()
+                 active.getOwnerUnit().getName()
                   + "'s channeling has failed ("
                   + active.getName() + ")");
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
@@ -52,7 +52,7 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
             ref.setTarget(null);
             if (!active.selectTarget(ref)) {
                 game.getLogManager().log(
-                 active.getOwnerObj().getName()
+                 active.getOwnerUnit().getName()
                   + "'s channeling has been cancelled ("
                   + active.getName() + ")");
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);

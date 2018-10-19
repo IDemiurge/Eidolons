@@ -488,14 +488,14 @@ public class RollMaster {
         if (action.checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
         }
-        if (action.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
+        if (action.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
         }
-        if (WatchRule.checkWatched(action.getOwnerObj(), unit)) {
+        if (WatchRule.checkWatched(action.getOwnerUnit(), unit)) {
             mod += 25;
         }
-        if (action.getOwnerObj().checkParam(PARAMS.VIGILANCE_MOD)) {
-            mod += action.getOwnerObj().getIntParam(PARAMS.VIGILANCE_MOD);
+        if (action.getOwnerUnit().checkParam(PARAMS.VIGILANCE_MOD)) {
+            mod += action.getOwnerUnit().getIntParam(PARAMS.VIGILANCE_MOD);
         }
 
         return mod;
@@ -507,7 +507,7 @@ public class RollMaster {
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE)) {
             mod += 40;
         }
-        if (WatchRule.checkWatched(unit, action.getOwnerObj())) {
+        if (WatchRule.checkWatched(unit, action.getOwnerUnit())) {
             mod += 50;
         }
         if (unit.checkParam(PARAMS.VIGILANCE_MOD)) {

@@ -2,11 +2,11 @@ package eidolons.libgdx.gui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -28,7 +28,7 @@ public class RollDecorator {
         return group;
     }
 
-    public static class RollableGroup extends Group {
+    public static class RollableGroup extends GroupX {
         private final boolean manual;
         private TablePanel table;
         private ImageContainer arrow;
@@ -41,6 +41,7 @@ public class RollDecorator {
             this(contents, direction, true);
         }
         public RollableGroup(Actor contents, FACING_DIRECTION direction, boolean manual) {
+            super(true);
             this.manual = manual;
             this.direction = direction;
             this.contents = contents;

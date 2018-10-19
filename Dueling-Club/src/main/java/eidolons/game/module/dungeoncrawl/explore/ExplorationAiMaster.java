@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.ai.AiBehavior;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.logic.action.context.Context;
 import main.system.datatypes.DequeImpl;
@@ -39,7 +39,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
         activeUnitAIs.clear();
         master.getGame().getUnits().forEach(unit ->
          {
-             if (!unit.getAI().isAttached())
+             if (!unit.getAI().isAutoFollow())
                  if (unit.isAiControlled()) {
                      if (unit.canActNow())
                          activeUnitAIs.add(unit.getAI());

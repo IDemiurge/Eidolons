@@ -48,7 +48,7 @@ public class ForceRule {
     // or spell!
     public static int getForceFromAttack(DC_ActiveObj attack) {
         boolean offhand = attack.isOffhand();
-        Obj weapon = attack.getOwnerObj().getActiveWeapon(offhand);
+        Obj weapon = attack.getOwnerUnit().getActiveWeapon(offhand);
         if (attack.isRanged()) {
             if (!attack.isThrow()) {
                 weapon = weapon.getRef().getObj(KEYS.AMMO);
@@ -73,7 +73,7 @@ public class ForceRule {
     }
 
     private static double getStrengthModifier(DC_ActiveObj attack, Obj weapon) {
-        int strength = attack.getOwnerObj().getIntParam(PARAMS.STRENGTH);
+        int strength = attack.getOwnerUnit().getIntParam(PARAMS.STRENGTH);
         int weight = weapon.getIntParam(PARAMS.WEIGHT);
         return MathMaster.applyModIfNotZero(
          Math.min(weight * weight * 2, weight * strength)
@@ -81,7 +81,7 @@ public class ForceRule {
     }
 
     private static int getAttackerWeightModifier(DC_ActiveObj attack, Obj weapon) {
-        return MathMaster.applyMods(attack.getOwnerObj().getIntParam(PARAMS.WEIGHT)
+        return MathMaster.applyMods(attack.getOwnerUnit().getIntParam(PARAMS.WEIGHT)
          , weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
          attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT));
     }
@@ -89,7 +89,7 @@ public class ForceRule {
     private static int getForceFromSpell(DC_ActiveObj spell) {
         int force =
          // new Formula(spell.getProp(PROPS.FO)).getInt(ref);
-         spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerObj().getIntParam(PARAMS.SPELLPOWER)
+         spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerUnit().getIntParam(PARAMS.SPELLPOWER)
           * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
         return force;
     }
@@ -168,7 +168,7 @@ public class ForceRule {
         if (!(action.getRef().getTargetObj() instanceof BattleFieldObject)) {
             return;
         }
-        BattleFieldObject source = action.getOwnerObj();
+        BattleFieldObject source = action.getOwnerUnit();
         BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
         Damage dmg = getDamageObject(action, source, target);
 

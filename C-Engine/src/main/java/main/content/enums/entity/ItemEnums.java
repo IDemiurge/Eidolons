@@ -33,7 +33,7 @@ public class ItemEnums {
     }
 
     public enum ITEM_GROUP {
-        POTIONS, CONCOCTIONS, COATING, KEY
+        POTIONS, CONCOCTIONS, COATING, KEY, GOLD_PACK
         // THROWING, TRAP, GEMSTONE
 
     }

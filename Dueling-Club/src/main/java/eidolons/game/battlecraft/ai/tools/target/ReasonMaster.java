@@ -51,7 +51,7 @@ public class ReasonMaster {
 
         Ref REF = action.getRef().getCopy();
         REF.setMatch(action.getRef().getTarget());
-        REF.setID(KEYS.PAYEE, action.getOwnerObj().getId());
+        REF.setID(KEYS.PAYEE, action.getOwnerUnit().getId());
         return getReasonsCannotActivate(action, REF);
     }
 

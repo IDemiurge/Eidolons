@@ -69,7 +69,7 @@ public class DC_MovementManager implements MovementManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        return active.getOwnerObj().getCoordinates();
+        return active.getOwnerUnit().getCoordinates();
     }
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {

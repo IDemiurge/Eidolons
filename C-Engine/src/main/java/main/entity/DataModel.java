@@ -21,7 +21,6 @@ import main.data.xml.XML_Formatter;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
@@ -34,14 +33,12 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
 import main.system.text.TextParser;
 
-import javax.swing.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -70,11 +67,6 @@ public abstract class DataModel {
     protected Map<String, String> customParamMap;
     protected Map<String, String> customPropMap;
     protected XLinkedMap<VALUE, String> rawValues;
-
-
-    private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private Map<PARAMETER, Integer> integerMap = new HashMap<>();
-
     protected boolean constructed = false;
     protected boolean constructing;
     protected boolean var = false;
@@ -83,11 +75,12 @@ public abstract class DataModel {
     protected boolean passivesReady = false;
     protected boolean activesReady = false;
     protected boolean defaultValuesInitialized;
-    private boolean beingReset;
-    private boolean loaded;
-
     protected String modifierKey;
     protected Double C;
+    private HashMap<PROPERTY, Map<String, Boolean>> propCache;
+    private Map<PARAMETER, Integer> integerMap = new HashMap<>();
+    private boolean beingReset;
+    private boolean loaded;
 
     public String getToolTip() {
         return getType().getDisplayedName();
@@ -441,7 +434,12 @@ public abstract class DataModel {
         Integer val2 = NumberUtils.getInteger(value);
         if (val2 == null)
             return false;
-        return checkParameter(param, val2);
+        return checkParam(param, val2);
+    }
+
+    public boolean checkParam(PARAMETER param, int value) {
+
+        return checkParameter(param, value);
     }
 
     public boolean checkProperty(PROPERTY p, String value) {
@@ -549,9 +547,10 @@ public abstract class DataModel {
     }
 
     public void setRef(Ref ref) {
-        if (game instanceof GenericGame) {
-            ref.setGame(game);
-        }
+//        if (game instanceof GenericGame) {
+//            ref.setGame(game);
+//        }
+//        this is dangerous!
         ref.setPlayer(owner);
         // this.ref = ref;
         this.ref = ref.getCopy(); // what does it change?
@@ -653,16 +652,16 @@ public abstract class DataModel {
         } else {
             newValue = amount.doubleValue();
         }
-//        if (!prevValue.isEmpty()) {
-//            try {
-//                newValue = FormulaFactory.getFormulaByAppend(prevValue,
-//                 amount).evaluate(ref);
-//            } catch (Exception e) {
-//                setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
-//                 quietly);
-//                return true;
-//            }
-//        }
+        //        if (!prevValue.isEmpty()) {
+        //            try {
+        //                newValue = FormulaFactory.getFormulaByAppend(prevValue,
+        //                 amount).evaluate(ref);
+        //            } catch (Exception e) {
+        //                setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
+        //                 quietly);
+        //                return true;
+        //            }
+        //        }
         // intAmount = prevValue
         if (minMax != null) {
             if (amount.doubleValue() < 0) {
@@ -912,21 +911,21 @@ public abstract class DataModel {
     }
 
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-//        if (param == null) {
-//            return false;
-//        }
+        //        if (param == null) {
+        //            return false;
+        //        }
         if (Game.game != null)
             if (GuiEventManager.isParamEventAlwaysFired(param.getName()) || !quiety)
                 if (getGame() == null)
                     return false;
-//            if (getGame().isStarted()) {
-//                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
-//                    return false;
-//                }
-//            }
-//        }
+        //            if (getGame().isStarted()) {
+        //                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+        //                    return false;
+        //                }
+        //            }
+        //        }
         // if (isParamSetLogged())
-//        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
+        //        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
         if (paramMap.get(param.getName()).equals(value))
             return false;
         putParameter(param, value);
@@ -1123,11 +1122,11 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
-//        if (param.getName().equalsIgnoreCase("Foc Req")) {
-//            main.system.auxiliary.log.LogMaster.log(1,
-//             this +
-//              " Foc Req set to" + value + " from " + getParam(param));
-//        }
+        //        if (param.getName().equalsIgnoreCase("Foc Req")) {
+        //            main.system.auxiliary.log.LogMaster.log(1,
+        //             this +
+        //              " Foc Req set to" + value + " from " + getParam(param));
+        //        }
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }
@@ -1343,14 +1342,14 @@ public abstract class DataModel {
 
         // so the problem is that it doesn't seem to carry over c_ and perc_
         // values?
-//        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-//            if (!p.isDynamic()) {
-//                paramMap.remove(p);
-//            }
-//        }
-//        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-//            paramMap.put(p, type.getParamMap().getMap().get(p));
-//        }
+        //        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
+        //            if (!p.isDynamic()) {
+        //                paramMap.remove(p);
+        //            }
+        //        }
+        //        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
+        //            paramMap.put(p, type.getParamMap().getMap().get(p));
+        //        }
 
 
         return clone;
@@ -1670,11 +1669,11 @@ public abstract class DataModel {
         return getGame().isSimulation();
     }
 
-    public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
-    }
-
     public boolean isLoaded() {
         return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 }

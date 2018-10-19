@@ -19,7 +19,7 @@ import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
-import eidolons.game.module.dungeoncrawl.ai.AggroMaster;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.AnimMaster;
@@ -129,7 +129,7 @@ public class Executor extends ActiveHandler {
     public void activateOnGameLoopThread() {
 
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+         new ActionInput(getAction(), new Context(getAction().getOwnerUnit().getRef())));
     }
 
     public boolean activate() {
@@ -161,10 +161,10 @@ public class Executor extends ActiveHandler {
             } else if (getAction().getTargetGroup() != null) {
                 targets = getAction().getTargetGroup().toString();
             }
-        log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
+        log(getAction().getOwnerUnit().getNameAndCoordinate() + " activates "
          + getAction().getName() + " on " + targets, false);
         if (gameLog)
-            log(getAction().getOwnerObj().getNameIfKnown() + " activates "
+            log(getAction().getOwnerUnit().getNameIfKnown() + " activates "
              + getAction().getNameIfKnown() + " " + targets, true);
 
         beingActivated();
@@ -213,17 +213,17 @@ public class Executor extends ActiveHandler {
         if (getAction() instanceof DC_QuickItemAction) {
             DC_QuickItemObj item = ((DC_QuickItemAction) getAction()).getItem();
             if (item.isAmmo()) {
-                getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
+                getAction().getOwnerUnit().getRef().setID(KEYS.AMMO, item.getId());
             }
         }
         //TODO  quickfix, replace with IdKey resolving
         if (getAction().getRef().getTargetObj() == null) {
-            if (getAction().getOwnerObj().getRef().getTargetObj() != null) {
-                getAction().getRef().setTarget(getAction().getOwnerObj().getRef().getTarget());
+            if (getAction().getOwnerUnit().getRef().getTargetObj() != null) {
+                getAction().getRef().setTarget(getAction().getOwnerUnit().getRef().getTarget());
             }
         }
 
-        getAction().setRef(getAction().getOwnerObj().getRef());
+        getAction().setRef(getAction().getOwnerUnit().getRef());
 
     }
 
@@ -281,7 +281,7 @@ public class Executor extends ActiveHandler {
 
     private void initActivation() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_ACTIVATED, true);
-        getAction().getOwnerObj().getRef().setID(KEYS.ACTIVE, getId());
+        getAction().getOwnerUnit().getRef().setID(KEYS.ACTIVE, getId());
         triggered = getRef().isTriggered();
         getCalculator().calculateTimeCost();
         getInitializer().construct();
@@ -347,10 +347,10 @@ public class Executor extends ActiveHandler {
 
     private void addStdPassives() {
         if (!StringMaster.isEmpty(getAction().getProperty(G_PROPS.STANDARD_PASSIVES))) {
-            getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
+            getAction().getOwnerUnit().addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
-            getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES,
+            getAction().getOwnerUnit().addProperty(G_PROPS.STANDARD_PASSIVES,
              getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
@@ -458,7 +458,7 @@ public class Executor extends ActiveHandler {
 //    public boolean activateChanneling() {
 //        initCosts();
 //        initChannelingCosts();
-//        game.getLogManager().log(">> " + getAction().getOwnerObj().getName() + " has begun Channeling " + getName());
+//        game.getLogManager().log(">> " + getAction().getOwnerUnit().getName() + " has begun Channeling " + getName());
 //        boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
 //        if (result) {
 //            this.channeling = true;
@@ -485,12 +485,12 @@ public class Executor extends ActiveHandler {
 
     private void checkPendingAttacksOfOpportunity() {
         for (DC_ActiveObj attack : new ArrayList<>(getPendingAttacksOpportunity())) {
-            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerObj(), attack)) {
+            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerUnit(), attack)) {
                 continue;
             }
             getPendingAttacksOpportunity().remove(attack);
             Ref REF = Ref.getCopy(attack.getRef());
-            REF.setTarget(getAction().getOwnerObj().getId());
+            REF.setTarget(getAction().getOwnerUnit().getId());
             attack.activatedOn(REF);
         }
     }

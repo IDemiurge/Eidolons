@@ -4,6 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
 import main.entity.Entity;
@@ -119,6 +120,7 @@ public class DroppedItemManager {
         game.getCellByCoordinate(c).addProperty(PROPS.DROPPED_ITEMS,
          "" + item.getId());
         item.setCoordinates(c);
+        item.setContainer(CONTAINER.UNASSIGNED);
     }
 
     public boolean pickUp(Obj cell, DC_HeroItemObj item) {

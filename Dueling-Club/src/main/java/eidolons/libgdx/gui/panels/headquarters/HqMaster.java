@@ -34,13 +34,13 @@ public class HqMaster {
 
         for (Unit sub : members) {
             list.add(new HqHeroDataSource(
-             HqDataMaster.createAndSaveInstance(
+             HqDataMaster.getOrCreateInstance(
              sub).getHeroModel()));
 
         }
         if (list.isEmpty()){
             list.add(new HqHeroDataSource(
-             HqDataMaster.createAndSaveInstance(
+             HqDataMaster.getOrCreateInstance(
               Eidolons.getMainHero()).getHeroModel()));
         }
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, list);

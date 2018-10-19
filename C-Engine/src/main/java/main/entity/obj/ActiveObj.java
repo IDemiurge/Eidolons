@@ -12,7 +12,7 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
 
     void playCancelSound();
 
-    Obj getOwnerObj();
+    Obj getOwnerUnit();
 
     boolean isFree();
 

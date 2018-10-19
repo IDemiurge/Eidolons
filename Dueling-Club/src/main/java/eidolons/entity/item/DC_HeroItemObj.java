@@ -5,6 +5,7 @@ import eidolons.entity.ChangeableType;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.EUtils;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.math.DC_MathManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
@@ -26,6 +27,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     protected boolean equipped;
     private PARAMETER[] params;
     private PROPERTY[] props = {G_PROPS.STD_BOOLS};
+    private CONTAINER container=CONTAINER.UNASSIGNED;
 
     public DC_HeroItemObj(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
                           // , PROPERTY[] props
@@ -63,6 +65,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
 
     public void equipped(Ref ref) {
         this.equipped = true;
+        container = CONTAINER.EQUIPPED;
     }
 
     @Override
@@ -156,6 +159,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
 
     public void unequip() {
         equipped = false;
+        container = CONTAINER.UNASSIGNED;
 
     }
 
@@ -178,4 +182,11 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
 
     }
 
+    public CONTAINER getContainer() {
+        return container;
+    }
+
+    public void setContainer(CONTAINER container) {
+        this.container = container;
+    }
 }

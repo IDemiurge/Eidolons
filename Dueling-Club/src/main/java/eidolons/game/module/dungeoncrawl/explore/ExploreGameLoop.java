@@ -137,17 +137,17 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 try {
                     ActionInput input = master.getAiMaster().getAiActionQueue().removeLast();
                     activateAction(input);
-                    master.getTimeMaster().aiActionActivated(input.getAction().getOwnerObj().getAI(), input.getAction());
+                    master.getTimeMaster().aiActionActivated(input.getAction().getOwnerUnit().getAI(), input.getAction());
                     master.getPartyMaster().reset();
 
-                    if (input.getAction().getOwnerObj().getAI().isLeader()) {
+                    if (input.getAction().getOwnerUnit().getAI().isLeader()) {
 //                        master.getEnemyPartyMaster().setGroupAI();
                         master.getEnemyPartyMaster().leaderActionDone(input);
                     }
 
                     if (master.getResetter().isAggroCheckNeeded(input)) {
 //                        game.getVisionMaster().getVisionRule().
-//                         fullReset(input.getAction().getOwnerObj());
+//                         fullReset(input.getAction().getOwnerUnit());
                         game.getManager().reset();
 
                         getGame().getDungeonMaster().getExplorationMaster()

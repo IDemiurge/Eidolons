@@ -35,8 +35,10 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
             addListener(getListener());
         }
 
-        image.setSize(64, 64);
-        setSize(64, 64);
+        if (model != null) {
+            image.setSize(64, 64);
+            setSize(64, 64);
+        }
     }
 
     public boolean isOverlayOn() {
@@ -72,7 +74,6 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
     @Override
     public void act(float delta) {
         super.act(delta);
-        image.setSize(64, 64);
         if (dirty) {
             if (overlayPath != null)
                 overlay.setImage(overlayPath);

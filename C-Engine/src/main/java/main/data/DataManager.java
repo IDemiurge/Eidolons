@@ -509,18 +509,18 @@ public class DataManager {
         // if (list != null)
         // return list;
 
-        List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
-         .toString());
-        // TODO preCheck TYPES!
-        if (groupsList.isEmpty()) {
-            if (DC_TYPE.isOBJ_TYPE(subgroup)) {
-                groupsList = toStringList(getTypes(DC_TYPE.getType(subgroup)));
-            } else {
-                if (isTypeName(subgroup)) {
-                    groupsList = toStringList(getTypes(getType(subgroup).getOBJ_TYPE_ENUM()));
-                }
-            }
-        }
+//        List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
+//         .toString());
+//        // TODO preCheck TYPES!
+//        if (groupsList.isEmpty()) {
+//            if (DC_TYPE.isOBJ_TYPE(subgroup)) {
+//                groupsList = toStringList(getTypes(DC_TYPE.getType(subgroup)));
+//            } else {
+//                if (isTypeName(subgroup)) {
+//                    groupsList = toStringList(getTypes(getType(subgroup).getOBJ_TYPE_ENUM()));
+//                }
+//            }
+//        }
         // if (ListMaster.contains(groupsList, subgroup, true)
         // || isCustomGroup(subgroup)) {
         list = new ArrayList<>();

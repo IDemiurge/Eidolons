@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore;
 
 import main.elements.conditions.Condition;
 import main.elements.conditions.DistanceCondition;

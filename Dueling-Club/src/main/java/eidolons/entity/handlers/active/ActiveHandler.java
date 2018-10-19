@@ -14,11 +14,11 @@ public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
 
     public ActiveHandler(DC_ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
-//        ownerObj = entity.getOwnerObj();
+//        ownerObj = entity.getOwnerUnit();
     }
 
     public Unit getOwnerObj() {
-        return getAction().getOwnerObj();
+        return getAction().getOwnerUnit();
     }
 
     @Override

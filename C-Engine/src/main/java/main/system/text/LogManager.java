@@ -348,7 +348,7 @@ public abstract class LogManager {
     }
 
     public void logActivation(ActiveObj active) {
-        Obj obj = active.getOwnerObj();
+        Obj obj = active.getOwnerUnit();
         // preCheck visibility?
     }
 

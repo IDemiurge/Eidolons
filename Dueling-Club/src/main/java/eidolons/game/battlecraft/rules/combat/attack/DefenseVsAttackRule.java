@@ -82,11 +82,11 @@ public class DefenseVsAttackRule {
     }
 
     public static int getMissChance(int attack, int defense, DC_ActiveObj action) {
-        return getChance(action, action.getOwnerObj(), null, attack, defense, false);
+        return getChance(action, action.getOwnerUnit(), null, attack, defense, false);
     }
 
     public static int getCritChance(int attack, int defense, DC_ActiveObj action) {
-        return getChance(action, action.getOwnerObj(), null, attack, defense, true);
+        return getChance(action, action.getOwnerUnit(), null, attack, defense, true);
     }
 
     // returns true if dodged, false if critical, otherwise null

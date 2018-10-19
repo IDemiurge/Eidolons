@@ -50,10 +50,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             //empty Clicked 
             if (cellContents == null || getDragged() != null)
                 singleClick(cell_type, cellContents);
-            //            if (!rightClick) { replace? 
-            //                singleClick(cell_type, cellContents);
-            //                return true;
-            //            }
+            //                        if (!rightClick) {
+            //                            singleClick(cell_type, cellContents);
+            //                            return true;
+            //                        }
         } else {
             Object arg = getSecondArg(operation, cellContents);
             if (!isBlocked())
@@ -81,8 +81,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return;
             }
             Object arg = getSlotArg(cell_type);
-            //           if (arg==null )
-            //               arg= getSecondArg(operation, dragged);
+            if (arg == null)
+                arg = getSecondArg(operation, getDragged());
 
             if (!isBlocked())
                 if (canDoOperation(operation, getDragged(), arg)) {
@@ -97,9 +97,11 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     protected boolean isBlocked() {
-        if (!manager.hasOperations() && !ExplorationMaster.isExplorationOn()) {
-            return true;
-        }
+        if (!ExplorationMaster.isExplorationOn())
+            if (manager != null)
+                if (!manager.hasOperations()) {
+                    return true;
+                }
         return false;
     }
 
@@ -141,12 +143,14 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case QUICK_SLOT:
                 return OPERATIONS.EQUIP_QUICK_SLOT;
             case CONTAINER:
-                if (cellContents == null)
-                    return OPERATIONS.DROP;
-
+                //                if (cellContents == null) should we be selective?
+                return OPERATIONS.DROP;
+            case STASH:
+                //                if (cellContents == null)
+                return OPERATIONS.STASH;
             case INVENTORY:
-                if (cellContents == null)
-                    return OPERATIONS.UNEQUIP;
+                //                if (cellContents == null)
+                return OPERATIONS.UNEQUIP;
         }
         if (checkContentMatches(cell_type, dragged))
             return OPERATIONS.EQUIP;
@@ -226,6 +230,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return HERO_OPERATION.BUY;
             case SELL:
                 return HERO_OPERATION.SELL;
+            case STASH:
+                return HERO_OPERATION.STASH;
+            case UNSTASH:
+                return HERO_OPERATION.UNSTASH;
         }
         return null;
     }
@@ -280,6 +288,13 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 if (rightClick || clickCount > 1) {
                     return OPERATIONS.UNEQUIP;
                 }
+                break;
+            case STASH:
+                if (rightClick || clickCount > 1) {
+                    return OPERATIONS.UNSTASH;
+                }
+                if (altClick)
+                    return OPERATIONS.DESTROY;
                 break;
             case CONTAINER:
             case INVENTORY:

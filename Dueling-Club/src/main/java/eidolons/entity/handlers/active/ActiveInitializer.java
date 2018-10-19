@@ -78,7 +78,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                     cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS,
                      (ap_cost)));
                     cp_cost.getPayment().getAmountFormula().applyModifier(
-                     getEntity().getOwnerObj().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
+                     getEntity().getOwnerUnit().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
                     cp_cost.setCostParam(PARAMS.CP_COST);
 
                 }
@@ -114,7 +114,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
 
     public void applyDynamicCostMods(Costs costs) {
-        Unit ownerObj = getEntity().getOwnerObj();
+        Unit ownerObj = getEntity().getOwnerUnit();
         Integer sta = 0;
         Integer ap = 0;
         if (getHandler().isCounterMode()) {

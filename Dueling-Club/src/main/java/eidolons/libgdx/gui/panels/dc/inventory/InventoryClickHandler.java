@@ -31,6 +31,14 @@ public interface InventoryClickHandler {
 
     void setDragged(Entity dragged);
 
+    enum CONTAINER {
+        INVENTORY,
+        STASH,
+        SHOP,
+        CONTAINER, QUICK_SLOTS,
+        EQUIPPED,
+        UNASSIGNED,
+    }
     enum CELL_TYPE {
         WEAPON_MAIN(Images.EMPTY_WEAPON_MAIN),
         WEAPON_OFFHAND(Images.EMPTY_WEAPON_OFFHAND),
@@ -40,7 +48,7 @@ public interface InventoryClickHandler {
         QUICK_SLOT(Images.EMPTY_QUICK_ITEM),
         INVENTORY(Images.EMPTY_ITEM),
         CONTAINER(Images.EMPTY_LIST_ITEM),
-        ;
+        STASH(Images.EMPTY_LIST_ITEM);
 
 
         private String slotImagePath;

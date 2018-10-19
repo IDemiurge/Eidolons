@@ -2,7 +2,8 @@ package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
+import eidolons.libgdx.gui.panels.dc.inventory.InvItemActor;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
 
 import java.util.ArrayList;
@@ -19,5 +20,7 @@ public interface InventoryTableDataSource {
         return list;
     }
 
-    List<InventoryValueContainer> getInventorySlots();
+    List<InvItemActor> getInventorySlots();
+
+    InventoryClickHandler getClickHandler();
 }

@@ -73,7 +73,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
     }
 
     public void payCosts(DC_ActiveObj entity) {
-        if (!entity.getOwnerObj().isMine())
+        if (!entity.getOwnerUnit().isMine())
             return;
         adjustCosts(entity.getCosts());
         entity.getCosts().pay(entity.getRef());

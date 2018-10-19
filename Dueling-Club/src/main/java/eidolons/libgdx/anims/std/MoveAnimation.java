@@ -104,7 +104,7 @@ public class MoveAnimation extends ActionAnim {
     public void playSound() {
         if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
             return;
-        DC_SoundMaster.playMoveSound(getActive().getOwnerObj());
+        DC_SoundMaster.playMoveSound(getActive().getOwnerUnit());
     }
 
     @Override

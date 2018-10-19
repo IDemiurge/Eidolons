@@ -75,19 +75,23 @@ public abstract class Entity extends DataModel implements OBJ {
             RuntimeException e = new RuntimeException("null type!" + ref);
             throw (e);
         } else {
-            this.game = game;
-            getId(); // new id if null
-            this.TYPE_ENUM = type.getOBJ_TYPE_ENUM();
-            this.type = (type); // no cloning by default
-            this.owner = owner;
-            this.setOriginalOwner(owner);
-            setProperty(G_PROPS.NAME, type.getName());
-            setOriginalName(type.getName());
-
-            master = initMaster();
-            setRef(ref); //create ref branch
+            preInit(game, type, owner, ref);
             init();
         }
+    }
+
+    protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
+        this.game = game;
+        getId(); // new id if null
+        this.TYPE_ENUM = type.getOBJ_TYPE_ENUM();
+        this.type = (type); // no cloning by default
+        this.owner = owner;
+        this.setOriginalOwner(owner);
+        setProperty(G_PROPS.NAME, type.getName());
+        setOriginalName(type.getName());
+
+        master = initMaster();
+        setRef(ref); //create ref branch
     }
 
     public boolean checkGroupingProperty(String string) {

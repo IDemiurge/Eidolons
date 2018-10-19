@@ -35,7 +35,7 @@ public class DummyAction implements ActiveObj {
     }
 
     @Override
-    public Obj getOwnerObj() {
+    public Obj getOwnerUnit() {
         return null;
     }
 

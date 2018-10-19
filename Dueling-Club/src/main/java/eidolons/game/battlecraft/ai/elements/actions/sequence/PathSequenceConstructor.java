@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
@@ -17,8 +18,8 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
 import main.system.math.PositionMaster;
 
@@ -176,7 +177,7 @@ public class PathSequenceConstructor extends AiHandler {
         if (list.size() > 1) {
             list = getPruneMaster().pruneTargetCells(targetAction, list);
         }
-        if (getUnit().getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_BASIC) {
+        if (getUnit().getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
             LogMaster.log(LOG_CHANNEL.AI_DEBUG, "***" + targetAction
              + " has target cells for PB: " + list);
         }

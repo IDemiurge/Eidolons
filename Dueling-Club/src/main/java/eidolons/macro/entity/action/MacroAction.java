@@ -207,7 +207,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
-    public Obj getOwnerObj() {
+    public Obj getOwnerUnit() {
         return Eidolons.getMainHero();
     }
 

@@ -51,7 +51,7 @@ public class DC_PriorityManager {
 
     public static int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
         Unit unit = mainImpl.getMaster().getUnit();
-        mainImpl.getMaster().setUnit(active.getOwnerObj());
+        mainImpl.getMaster().setUnit(active.getOwnerUnit());
 //        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {
 //        });
         int p = 0;

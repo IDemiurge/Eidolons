@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
@@ -222,7 +222,7 @@ public class AggroMaster extends ExplorationHandler {
     public static void unitAttacked(DC_ActiveObj action, Obj targetObj) {
 
         if (targetObj.isMine()) {
-            action.getOwnerObj().
+            action.getOwnerUnit().
              getAI().setEngaged(true);
         } else {
             ((Unit) targetObj).getAI().setEngaged(true);

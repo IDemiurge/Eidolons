@@ -183,8 +183,8 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private void checkSetFeatRef(DC_UnitAction action) {
-        DequeImpl<DC_FeatObj> skills = new DequeImpl<>(action.getOwnerObj().getSkills());
-        skills.addAll(action.getOwnerObj().getClasses());
+        DequeImpl<DC_FeatObj> skills = new DequeImpl<>(action.getOwnerUnit().getSkills());
+        skills.addAll(action.getOwnerUnit().getClasses());
         for (DC_FeatObj s : skills) {
             if (StringMaster.contains(s.getProperty(G_PROPS.ACTIVES), action.getName())) {
                 action.getRef().setID(KEYS.SKILL, s.getId());
@@ -230,7 +230,7 @@ public class DC_ActionManager implements ActionManager {
 
     @Override
     public ActiveObj activateCounterAttack(ActiveObj action, Obj _countering) {
-        Unit target = (Unit) action.getOwnerObj();
+        Unit target = (Unit) action.getOwnerUnit();
         Unit source = (Unit) _countering;
         DC_ActiveObj counter = (DC_ActiveObj) getCounterAttackAction(target, source,
          (DC_ActiveObj) action);
@@ -258,7 +258,7 @@ public class DC_ActionManager implements ActionManager {
         DC_ActiveObj counterAttack = countering.getPreferredCounterAttack();
         if (counterAttack != null) {
             if (counterAttack.canBeActivatedAsCounter()) {
-                if (counterAttack.canBeTargeted(active.getOwnerObj().getId())) {
+                if (counterAttack.canBeTargeted(active.getOwnerUnit().getId())) {
                     return counterAttack;
                 }
             }
@@ -267,7 +267,7 @@ public class DC_ActionManager implements ActionManager {
 //            if (AnimMaster.isTestMode())
 
             if (attack.canBeActivatedAsCounter()) {
-                if (attack.canBeTargeted(active.getOwnerObj().getId())) {
+                if (attack.canBeTargeted(active.getOwnerUnit().getId())) {
                     return attack;
                 }
             }
@@ -489,7 +489,7 @@ public class DC_ActionManager implements ActionManager {
         if (mode != STD_ACTION_MODES.STANDARD) {
             type.setName(mode.getPrefix() + baseAction.getName());
         }
-        DC_UnitAction subAction = newAction(type, new Ref(baseAction.getOwnerObj()), baseAction
+        DC_UnitAction subAction = newAction(type, new Ref(baseAction.getOwnerUnit()), baseAction
          .getOwner(), game);
         // TODO not all!..
         subAction.setActionType(ActionEnums.ACTION_TYPE.HIDDEN);

@@ -207,7 +207,7 @@ public class AttackAnim extends ActionAnim {
     }
 
     protected FACING_DIRECTION getFacing() {
-        return getActive().getOwnerObj().getFacing();
+        return getActive().getOwnerUnit().getFacing();
     }
 
 /*

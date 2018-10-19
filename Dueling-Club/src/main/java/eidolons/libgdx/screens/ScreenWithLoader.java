@@ -326,7 +326,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         loadingStage.setViewport(viewPort);
     }
 
-    protected InputProcessor getInputController() {
+    protected InputProcessor createInputController() {
         if (isWaitingForInput())
             return getWaitForInputController(param);
         return introStage != null ?
@@ -336,7 +336,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void updateInputController() {
         GdxMaster.setInputProcessor(
-          getInputController()) ;
+          createInputController()) ;
     }
 
     public void initLoadingStage(ScreenData meta) {

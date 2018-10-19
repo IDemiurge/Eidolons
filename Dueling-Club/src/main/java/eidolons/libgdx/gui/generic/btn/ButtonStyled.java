@@ -104,8 +104,10 @@ public class ButtonStyled extends ImageContainer {
          "buttons", "special", "eye.png")),
         CIRCLE(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
          "buttons","special", "circle.png")),
-
-        ;
+        CHEST(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
+         "buttons","special", "chest.png")), REPAIR(
+          PathFinder.getUiPath()+
+         "components/hq/inv/repair.png");
 
         String path;
         private Drawable texture;

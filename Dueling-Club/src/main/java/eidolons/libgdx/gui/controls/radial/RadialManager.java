@@ -75,7 +75,7 @@ public class RadialManager {
         if (action.getActionGroup() == ACTION_TYPE_GROUPS.DUNGEON)
             return true; //TODO [quick fix]
 
-        if (target != action.getOwnerObj()) {
+        if (target != action.getOwnerUnit()) {
             if (action.getActionType() == ACTION_TYPE.MODE) {
                 return false;
             }
@@ -83,13 +83,13 @@ public class RadialManager {
                 return processingShortcuts;
             }
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
-                if (target.getX() - action.getOwnerObj().getX() > 2
-                 || target.getY() - action.getOwnerObj().getY() > 2
+                if (target.getX() - action.getOwnerUnit().getX() > 2
+                 || target.getY() - action.getOwnerUnit().getY() > 2
                  ) {
                     return false;
                 }
                 if (action !=
-                 DefaultActionHandler.getMoveToCellAction(action.getOwnerObj(),
+                 DefaultActionHandler.getMoveToCellAction(action.getOwnerUnit(),
                   target.getCoordinates()))
                     return false;
 //
@@ -101,7 +101,7 @@ public class RadialManager {
             if (action.getActionGroup() == ACTION_TYPE_GROUPS.ATTACK) {
                 return true;
             }
-            if (target == action.getOwnerObj())
+            if (target == action.getOwnerUnit())
                 if (action.getTargeting() instanceof SelectiveTargeting)
                     return true;
         }
@@ -297,7 +297,7 @@ public class RadialManager {
                 target = target.getGame().getCellByCoordinate(target.getCoordinates());
             }
         } else if (activeObj.isTurn()) {
-            target = activeObj.getOwnerObj();
+            target = activeObj.getOwnerUnit();
         }
         RadialValueContainer node = configureActionNode(target, activeObj);
         if (activeObj.isAttackAny()) {
@@ -448,7 +448,7 @@ public class RadialManager {
     }
 
     protected static boolean checkValid(DC_ActiveObj activeObj, DC_Obj target) {
-        Ref ref = activeObj.getOwnerObj().getRef().getTargetingRef(target);
+        Ref ref = activeObj.getOwnerUnit().getRef().getTargetingRef(target);
         return activeObj.canBeActivated(ref);
     }
 
@@ -467,9 +467,9 @@ public class RadialManager {
 
         Runnable runnable = () -> {
             if (valid) {
-                Context context = new Context(active.getOwnerObj().getRef());
+                Context context = new Context(active.getOwnerUnit().getRef());
                 if (target != null)
-                    if (!target.equals(active.getOwnerObj())) {
+                    if (!target.equals(active.getOwnerUnit())) {
                         context.setTarget(target.getId());
                     }
                 Eidolons.getGame().getGameLoop().actionInput(
@@ -490,7 +490,7 @@ public class RadialManager {
      List<RadialValueContainer> list, RADIAL_PARENT_NODE parentNode, DC_Obj target, DC_ActiveObj parent) {
         if (parent.getActiveWeapon().isRanged()) {
             if (parent.getRef().getObj(Ref.KEYS.AMMO) == null) {
-                for (DC_QuickItemObj ammo : parent.getOwnerObj().getQuickItems()) {
+                for (DC_QuickItemObj ammo : parent.getOwnerUnit().getQuickItems()) {
                     final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR(ammo.getImagePath()), getRunnable(target, ammo.getActive()));
                     addSimpleTooltip(valueContainer, ammo.getName());
                     list.add(valueContainer);
@@ -508,7 +508,7 @@ public class RadialManager {
     }
 
     protected static RadialValueContainer getAttackActionNode(DC_ActiveObj activeObj, DC_Obj target) {
-//        if (activeObj.getOwnerObj() == target) {
+//        if (activeObj.getOwnerUnit() == target) {
         final RadialValueContainer valueContainer =
          configureSelectiveTargetedNode(activeObj, target);
 //            addAttackTooltip(valueContainer, activeObj, target);
@@ -527,7 +527,7 @@ public class RadialManager {
                                                             DC_ActiveObj activeObj) {
         RadialValueContainer result;
 
-        if (target == activeObj.getOwnerObj()) {
+        if (target == activeObj.getOwnerUnit()) {
             result = configureSelectiveTargetedNode(activeObj);
         } else {
             if (activeObj.getTargeting() instanceof SelectiveTargeting) {
@@ -560,7 +560,7 @@ public class RadialManager {
                 };
             }
         }
-        if (target == activeObj.getOwnerObj())
+        if (target == activeObj.getOwnerUnit())
             return () -> {
                 activeObj.invokeClicked();
             };

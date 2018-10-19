@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.advanced.behavior;
 
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
-import eidolons.game.module.dungeoncrawl.ai.Constraint;
+import eidolons.game.battlecraft.ai.explore.Constraint;
 
 import java.util.List;
 

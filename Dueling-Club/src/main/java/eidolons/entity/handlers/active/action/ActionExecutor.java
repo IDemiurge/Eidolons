@@ -42,7 +42,7 @@ public class ActionExecutor extends Executor {
         if (effect == null)
             return false;
 
-//        STD_MODES mode = (STD_MODES) getOwnerObj().getMode();
+//        STD_MODES mode = (STD_MODES) getOwnerUnit().getMode();
 //        switch (mode) {
 //            case SEARCH: // search disabled by any mode!
 //                return true;
@@ -50,7 +50,7 @@ public class ActionExecutor extends Executor {
 
         if (effect.getMode().isContinuous()) {
             if (checkActionDeactivatesContinuousMode()) {
-                getAction().getOwnerObj().removeBuff(effect.getMode().getBuffName());
+                getAction().getOwnerUnit().removeBuff(effect.getMode().getBuffName());
                 //deactivation overrides
                 return true;
             }
@@ -73,20 +73,20 @@ public class ActionExecutor extends Executor {
 
     public boolean checkActionDeactivatesContinuousMode() {
         //check same mode deactivated
-        return (getEntity().getOwnerObj().getBuff(getAction().getModeBuffName()) != null);
+        return (getEntity().getOwnerUnit().getBuff(getAction().getModeBuffName()) != null);
 
     }
 
     private void removeModeBuffs() {
         for (STD_MODES s : STD_MODES.values()) {
-            getAction().getOwnerObj().removeBuff(s.getBuffName());
+            getAction().getOwnerUnit().removeBuff(s.getBuffName());
         }
 
     }
 
     public boolean deactivate() {
         try {
-            getAction().getOwnerObj().removeBuff(getAction().getModeBuffName());
+            getAction().getOwnerUnit().removeBuff(getAction().getModeBuffName());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
@@ -107,7 +107,7 @@ public class ActionExecutor extends Executor {
     public void actionComplete() {
         super.actionComplete();
         try {
-            DualWieldingRule.checkDualAttackCadence(getAction(), getAction().getOwnerObj());
+            DualWieldingRule.checkDualAttackCadence(getAction(), getAction().getOwnerUnit());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

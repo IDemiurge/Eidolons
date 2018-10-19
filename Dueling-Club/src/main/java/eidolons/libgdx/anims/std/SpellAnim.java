@@ -38,17 +38,17 @@ public class SpellAnim extends ActionAnim {
          active.getRef().getTargetObj().getCoordinates().
           getAdjacentCoordinates().size()),
         SPRAY(300, 0, active -> {
-            Set<Coordinates> set = active.getOwnerObj().getCoordinates().
+            Set<Coordinates> set = active.getOwnerUnit().getCoordinates().
              getAdjacentCoordinates();
             set.removeIf(coordinates ->
-             FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
-              active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
+             FacingMaster.getSingleFacing(active.getOwnerUnit().getFacing(),
+              active.getOwnerUnit().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return set.size();
         }
         ) {
             @Override
             public int getAdditionalDistance(DC_ActiveObj active) {
-                if (active.getOwnerObj().getFacing().isVertical()) {
+                if (active.getOwnerUnit().getFacing().isVertical()) {
                     return GridMaster.CELL_H;
                 }
                 return GridMaster.CELL_W;
@@ -56,7 +56,7 @@ public class SpellAnim extends ActionAnim {
         },
         WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),
         RING(activeObj -> 8),
-        NOVA(activeObj -> activeObj.getOwnerObj().getCoordinates().getAdjacentCoordinates().size()),;
+        NOVA(activeObj -> activeObj.getOwnerUnit().getCoordinates().getAdjacentCoordinates().size()),;
 
         public int speed;
         private Producer<DC_ActiveObj, Integer> numberOfEmitters;

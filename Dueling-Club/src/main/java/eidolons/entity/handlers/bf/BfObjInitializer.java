@@ -13,13 +13,11 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.SimulationGame;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.macro.global.persist.Loader;
-import main.data.DataManager;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
-import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -106,7 +104,8 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                                 continue;
                             }
                         } else if (HqMaster.getSimCache().getSim(item) == null) {
-                            HqMaster.getSimCache().addSim(item, ItemFactory.createItemObj(item.getType(), getEntity().getOriginalOwner(), getGame(), getRef(),
+                            HqMaster.getSimCache().addSim(item,
+                             ItemFactory.createItemObj(item.getType(), getEntity().getOriginalOwner(), getGame(), getRef(),
                                     quick));
                         }
                         Integer durability = null;
@@ -123,9 +122,10 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                             item.setParam(PARAMS.C_DURABILITY, durability);
                     }
                 } else {
-                    ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProp(prop));
 
-                    item = ItemFactory.createItemObj(type, getEntity().getOriginalOwner(), getGame(), getRef(),
+                    item = ItemFactory.createItemObj(subString,
+                     DC_ContentValsManager.getTypeForProp(prop),
+                     getEntity().getOriginalOwner(), getGame(), getRef(),
                             quick);
                 }
 

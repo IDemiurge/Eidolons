@@ -508,8 +508,9 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Entity getEntity(KEYS key) {
-        if (getObj(key) != null) {
-            return getObj(key);
+        Entity entity = getObj(key);
+        if (entity != null) {
+            return entity;
         }
         return getType((key.name()));
     }

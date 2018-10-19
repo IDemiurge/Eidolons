@@ -5,7 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.global.rules.TurnRule;
-import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
+import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -23,10 +23,10 @@ public class PerceptionRule extends TurnRule implements ActionRule {
     }
 
     public void actionComplete(ActiveObj activeObj) {
-        Unit unit = (Unit) activeObj.getOwnerObj();
+        Unit unit = (Unit) activeObj.getOwnerUnit();
         PERCEPTION_STATUS status;
         int actionNoise = activeObj.getIntParam(PARAMS.NOISE, false)
-         + activeObj.getOwnerObj().getIntParam(PARAMS.NOISE, false);
+         + activeObj.getOwnerUnit().getIntParam(PARAMS.NOISE, false);
         for (Unit source : getUnits(activeObj)) {
 //			status = getPerceptionStatus(source, activeObj, actionNoise);
             // map of statuses would be nice...
@@ -169,7 +169,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         // TODO max distance?
         List<Unit> list = new ArrayList<>();
         for (Obj unit : DC_Game.game
-         .getPlayer(activeObj.getOwnerObj().isMine())
+         .getPlayer(activeObj.getOwnerUnit().isMine())
          .getControlledUnits()) {
             list.add((Unit) unit);
         }

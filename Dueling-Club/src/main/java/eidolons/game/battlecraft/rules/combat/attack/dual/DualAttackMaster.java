@@ -67,7 +67,7 @@ public class DualAttackMaster {
 
         Ability setCooldown = new ActiveAbility(new AutoTargeting(new PropCondition(G_PROPS.ACTION_TAGS, "Dual", false)),
          new ModifyValueEffect(PARAMS.C_COOLDOWN,
-          MOD.SET, getCooldown(main.getOwnerObj())));
+          MOD.SET, getCooldown(main.getOwnerUnit())));
         Abilities abilities = new Abilities();
         abilities.add(activateAttacks);
         abilities.add(setCooldown);
@@ -80,7 +80,7 @@ public class DualAttackMaster {
                 continue;
             newType.setParam(p, cost.getPayment().getAmountFormula().toString());
         }
-        DC_UnitAction dual = new DC_UnitAction(newType, main.getOwner(), main.getGame(), new Ref(main.getOwnerObj()));
+        DC_UnitAction dual = new DC_UnitAction(newType, main.getOwner(), main.getGame(), new Ref(main.getOwnerUnit()));
         dual.setAbilities(abilities);
         dual.setCosts(costs);
         dual.setTargeting(main.getTargeting());

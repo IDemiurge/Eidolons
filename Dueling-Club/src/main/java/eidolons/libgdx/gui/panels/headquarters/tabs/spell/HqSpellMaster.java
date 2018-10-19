@@ -57,23 +57,23 @@ public class HqSpellMaster {
     public static boolean canMemorize(DC_SpellObj spell) {
         if (spell.getSpellPool() != SPELL_POOL.SPELLBOOK)
             return false;
-        if (spell.getOwnerObj().calculateRemainingMemory() < spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
+        if (spell.getOwnerUnit().calculateRemainingMemory() < spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
             return false;
         if (spell.isUpgrade()) {
-            if (LibraryManager.hasSpellVersion(spell.getOwnerObj(), spell, PROPS.MEMORIZED_SPELLS)) {
+            if (LibraryManager.hasSpellVersion(spell.getOwnerUnit(), spell, PROPS.MEMORIZED_SPELLS)) {
                 return false;
             }
         }
-        return spell.getGame().getRequirementsManager().check(spell.getOwnerObj(), spell
+        return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell
          , RequirementsManager.ALT_MODE) == null;
     }
 
     public static boolean canLearn(DC_SpellObj spell) {
-        return spell.getGame().getRequirementsManager().check(spell.getOwnerObj(), spell) == null;
+        return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell) == null;
     }
 
     public static boolean canLearnEnVerbatim(DC_SpellObj spell) {
-        return spell.getGame().getRequirementsManager().check(spell.getOwnerObj(), spell,
+        return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell,
          RequirementsManager.VERBATIM_MODE) == null;
     }
 

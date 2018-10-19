@@ -86,9 +86,9 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
             if (!activeObj.isThrow()) {
                 if (!activeObj.isRanged()) {
                     LogMaster.log(1, "*** MELEE ATTACK BY "
-                     + activeObj.getOwnerObj().getNameAndCoordinate() + " on "
+                     + activeObj.getOwnerUnit().getNameAndCoordinate() + " on "
                      + ref.getTargetObj().getNameAndCoordinate());
-                    if (PositionMaster.getDistance(activeObj.getOwnerObj(), ref.getTargetObj()) > 1) {
+                    if (PositionMaster.getDistance(activeObj.getOwnerUnit(), ref.getTargetObj()) > 1) {
                         LogMaster.log(1, "*** RANGE BUG ");
                         // AI_Manager.logFullInfo();
                     }

@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
@@ -11,8 +11,7 @@ import eidolons.game.core.Eidolons;
  *
  * TODO simple variant - added to aggro group if close by when combat starts
  */
-public class StalkerAi extends AiBehavior {
-    @Override
+public class StalkerAi   {
     public ActionSequence getOrders(UnitAI ai) {
         Unit hero = Eidolons.getMainHero();
 

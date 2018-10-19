@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.ai;
+package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.obj.unit.Unit;
@@ -6,6 +6,8 @@ import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.ai.explore.behavior.Patrol;
+import eidolons.game.battlecraft.ai.explore.behavior.WanderAiOld;
 import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;

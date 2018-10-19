@@ -107,7 +107,7 @@ public class AnimMaster3d {
         if (isOff())
             return false;
         if (!active.isAttackAny()) return false;
-        if (!active.getOwnerObj().isPlayerCharacter()){
+        if (!active.getOwnerUnit().isPlayerCharacter()){
             if (CoreEngine.isFastMode())
                 return false;
         }
@@ -350,7 +350,7 @@ public class AnimMaster3d {
 
         //TODO who is displayed above on the cell?
 //modify texture? coloring, sizing,
-//        float angle = PositionMaster.getAngle(activeObj.getOwnerObj(), targetObj);
+//        float angle = PositionMaster.getAngle(activeObj.getOwnerUnit(), targetObj);
 //float baseAngle =
 //        float rotation = angle * 2 / 3;
 
@@ -360,7 +360,7 @@ public class AnimMaster3d {
         float frameDuration = duration / regions.size;
         int loops = 0;
         if (aCase.isMissile()) {
-//            loops = Math.max(0,PositionMaster.getDistance(activeObj.getOwnerObj(), targetObj) - 1);
+//            loops = Math.max(0,PositionMaster.getDistance(activeObj.getOwnerUnit(), targetObj) - 1);
         }
         if (loops != 0)
             frameDuration /= loops;
