@@ -423,7 +423,7 @@ public class CONTENT_CONSTS2 {
             this.item_groups = item_groups;
         }
 
-        public String[] getItem_groups() {
+        public String[] getItemGroups() {
             return item_groups;
         }
 

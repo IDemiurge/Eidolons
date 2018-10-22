@@ -53,11 +53,18 @@ public class DialogueFactory {
     }
 
     protected String getFileRootPath() {
+        if (master.isRngDungeon()){
+            return getCommonDialoguePath();
+        }
         return
          PathUtils.buildPath(
           master.getMetaDataManager().getDataPath()
           , TextMaster.getLocale(),
           PathUtils.getPathSeparator());
+    }
+
+    protected String getCommonDialoguePath() {
+        return "text/dialogue/"+ TextMaster.getLocale();
     }
 
     protected String getFileName() {

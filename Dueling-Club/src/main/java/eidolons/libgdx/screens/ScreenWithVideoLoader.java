@@ -185,6 +185,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     protected void selectionPanelClosed() {
         try {
             selectionPanel.setStage(null);
+            selectionPanel.setVisible(false);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

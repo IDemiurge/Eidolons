@@ -29,7 +29,12 @@ public class GuardAi extends AiBehavior {
     }
 
     @Override
-    public ActionSequence getOrders(UnitAI ai) {
+    protected boolean isFollowOrAvoid() {
+        return true;
+    }
+
+    @Override
+    public ActionSequence getOrders( ) {
         if (isEnabled(ai))
             return null;
         //check mode
@@ -43,11 +48,6 @@ public class GuardAi extends AiBehavior {
     @Override
     protected float getTimeBeforeFail() {
         return 0;
-    }
-
-    @Override
-    protected void update(float delta) {
-
     }
 
     protected boolean isEnabled(UnitAI ai) {

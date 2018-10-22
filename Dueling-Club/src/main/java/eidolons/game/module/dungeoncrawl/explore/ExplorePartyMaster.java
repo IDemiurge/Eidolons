@@ -2,7 +2,6 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -51,16 +50,8 @@ public class ExplorePartyMaster extends ExplorationHandler {
             );
 
         }
-        initEnemyGroups();
     }
 
-    private void initEnemyGroups() {
-        List<GroupAI> groups = master.getGame().getAiManager().getGroups();
-        groups.forEach(groupAI -> {
-
-
-        });
-    }
 
     protected DequeImpl<Unit> initCompanions() {
         DequeImpl<Unit> companions = new DequeImpl<>(getAllies());

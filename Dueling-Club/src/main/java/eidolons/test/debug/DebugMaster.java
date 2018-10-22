@@ -847,7 +847,7 @@ public class DebugMaster {
         QUALITY_LEVEL quality = ItemEnums.QUALITY_LEVEL.NORMAL;
         // if (DialogMaster.confirm("Select material?"))
         selectedType = DataManager.getItem(quality, material, ListChooser
-         .chooseType(ItemGenerator.getBaseTypes(DC_TYPE.WEAPONS)));
+         .chooseType(ItemGenerator.getTypesForShop(DC_TYPE.WEAPONS)));
         return selectedType != null;
     }
 

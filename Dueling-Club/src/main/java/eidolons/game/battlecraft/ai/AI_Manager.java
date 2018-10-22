@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceCons
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;

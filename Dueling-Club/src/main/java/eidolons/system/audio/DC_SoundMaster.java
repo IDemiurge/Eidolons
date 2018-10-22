@@ -5,6 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -83,14 +84,14 @@ public class DC_SoundMaster extends SoundMaster {
         getSoundPlayer().play(s);
     }
 
-    public static void playTurnSound(Unit unit) {
+    public static void playTurnSound(BattleFieldObject unit) {
 //         setPositionFor(unit.getCoordinates());
 //        getSoundPlayer().play(STD_SOUNDS.SLING.getPath());
 
         playMoveSound(unit);
     }
 
-    public static void playMoveSound(Unit unit) {
+    public static void playMoveSound(BattleFieldObject unit) {
         String type = "soft";
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
@@ -101,7 +102,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static void playMissedSound(Unit attacker, DC_WeaponObj attackWeapon) {
+    public static void playMissedSound(BattleFieldObject attacker, DC_WeaponObj attackWeapon) {
 
         getPlayer().playRandomSoundVariant("soundsets\\weapon\\miss\\"
          + attackWeapon.getWeaponSize().toString().toLowerCase(), false);
@@ -113,7 +114,7 @@ public class DC_SoundMaster extends SoundMaster {
         getPlayer().playEffectSound(sound_type, obj);
     }
 
-    public static void playParrySound(Unit attacked, DC_WeaponObj attackWeapon) {
+    public static void playParrySound(BattleFieldObject attacked, DC_WeaponObj attackWeapon) {
         // TODO double weapon sound
         setPositionFor(attacked.getCoordinates());
         DC_WeaponObj parryWeapon = attacked.getActiveWeapon(true);
@@ -158,8 +159,8 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static void playAttackImpactSound(DC_WeaponObj weapon, final Unit attacker,
-                                             final Unit attacked, Integer final_amount, int blocked) {
+    public static void playAttackImpactSound(DC_WeaponObj weapon, final BattleFieldObject attacker,
+                                             final BattleFieldObject attacked, Integer final_amount, int blocked) {
         // TODO getDamageSeverity(fin
         String armor_type = attacked.getProperty(PROPS.OBJECT_ARMOR_TYPE);
         // int volume = 100;
@@ -206,7 +207,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    private static void playArmorSound(final Unit attacked, String armor_type,
+    private static void playArmorSound(final BattleFieldObject attacked, String armor_type,
                                        String damage_type, boolean natural) {
         String path = SoundMaster.getPath() + "soundsets\\" + (natural ? "obj\\" : "armor\\")
          + armor_type;
@@ -226,9 +227,8 @@ public class DC_SoundMaster extends SoundMaster {
         // double chance
         files.addAll(specialSounds);
         if (files.isEmpty()) {
-            if (attacked.isLiving()) {
-
-            }
+//            if (attacked.isLiving()) {
+//            }
 
             return;
         }

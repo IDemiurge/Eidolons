@@ -299,7 +299,12 @@ public class TextureCache {
             return ImageManager.isImage(property);
         if (!isReturnEmptyOnFail())
             return getOrCreate(property) != null;
-        return getOrCreate(property) != emptyTexture;
+        Texture t = null;
+        try {
+            t = getOrCreate(property);
+        } catch (Exception e) {
+        }
+        return t != emptyTexture;
     }
 
     public void dispose() {

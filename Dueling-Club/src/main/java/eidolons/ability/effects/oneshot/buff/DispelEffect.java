@@ -57,7 +57,7 @@ public class DispelEffect extends MicroEffect implements OneshotEffect {
             // REF.setID(KEYS.SUMMONER, buff.getOwnerUnit()); // is it owner or
             // // basis? ;)
             //
-            // Roll roll = new Roll(ROLL_TYPES.DISPEL, chance.getInt(ref));
+            // Roll roll = new Roll(ROLL_TYPES.DISPEL, chance.getLevel(ref));
             // result = RollMaster.roll(roll);
             // TODO ROLL!
 

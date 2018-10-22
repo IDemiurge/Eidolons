@@ -200,7 +200,10 @@ public class ArrayMaster<T> {
         return list;
     }
 
-    public boolean contains(T[] array, T t) {
+    public static boolean contains_(Object[] array, Object t) {
+       return new ArrayMaster<>().contains(array, t);
+    }
+        public boolean contains(T[] array, T t) {
         for (T d : array) {
             if (t == null) {
                 if (d == null) {

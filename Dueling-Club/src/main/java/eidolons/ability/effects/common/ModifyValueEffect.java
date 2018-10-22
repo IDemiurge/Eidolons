@@ -142,7 +142,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
          .getInt(ref)) : StringMaster.getBonusString(formula.getInt(ref)))
          + " " + getParamString();
         // return ((param != null) ? param : sparam) +
-        // " modified by " + mod_type + " " + formula.getInt(ref) + "%";
+        // " modified by " + mod_type + " " + formula.getLevel(ref) + "%";
     }
 
     @Override

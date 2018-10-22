@@ -90,7 +90,7 @@ public class ItemEnums {
     }
 
     public enum JEWELRY_GROUP {
-        RINGS, AMULETS
+        EMPTY, PASSIVE, PARAMETER, ACTIVE,ATTRIBUTE
     }
 
     public enum JEWELRY_TYPE {

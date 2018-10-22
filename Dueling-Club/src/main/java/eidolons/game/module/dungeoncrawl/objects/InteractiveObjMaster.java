@@ -83,6 +83,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         ObjType type = DataManager.getType("Fire Bolt", DC_TYPE.SPELLS);
         Ref ref = obj.getRef();
         ref.setTarget(unit.getId());
+        ref.setSource(obj.getId());
         DC_SpellObj spell = new DC_SpellObj(type, DC_Player.NEUTRAL, obj.getGame(), ref);
         spell.activateOn(unit);
     }

@@ -19,6 +19,7 @@ import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.stage.StageX;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
@@ -381,6 +382,18 @@ public class GdxMaster {
 
     public static void setBrightness(float brightness) {
         GdxMaster.brightness = brightness;
+    }
+
+    public static boolean hasController(InputProcessor inputProcessor, StageX gridStage) {
+        if (inputProcessor instanceof InputMultiplexer) {
+            for (InputProcessor processor : ((InputMultiplexer) inputProcessor).getProcessors()) {
+                if (hasController(processor, gridStage)) {
+                    return true;
+                }
+            }
+
+        }
+        return inputProcessor.equals(gridStage);
     }
 
     public enum CURSOR{

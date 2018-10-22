@@ -48,12 +48,12 @@ import java.util.*;
  * Created by JustMe on 4/15/2018.
  */
 public class HqDataMaster {
-    static Map<Unit, HqDataMaster> map = new HashMap<>();
+    private static Map<Unit, HqDataMaster> map = new HashMap<>();
+    protected boolean dirty;
+    protected Stack<List<HeroOperation>> undoStack = new Stack();
     Unit hero;
     HeroDataModel heroModel;
     Stack<Pair<ParamMap, PropMap>> stack;
-    protected boolean dirty;
-    protected Stack<List<HeroOperation>> undoStack = new Stack();
 
     public HqDataMaster(Unit hero) {
         this.hero = hero;
@@ -61,26 +61,26 @@ public class HqDataMaster {
             heroModel = createHeroDataModel(hero);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            if (map.get(hero) != null)
-                heroModel = map.get(hero).getHeroModel();
+            if (getMap().get(hero) != null)
+                heroModel = getMap().get(hero).getHeroModel();
         }
         stack = new Stack<>();
     }
 
     public static HeroDataModel getHeroModel(Unit hero) {
-        return map.get(hero).getHeroModel();
+        return getMap().get(hero).getHeroModel();
     }
 
     public static HqHeroDataSource getHeroDataSource(Unit hero) {
-        if (map.get(hero) == null) {
+        if (getMap().get(hero) == null) {
             createAndSaveInstance(hero);
         }
-        return new HqHeroDataSource(map.get(hero).getHeroModel());
+        return new HqHeroDataSource(getMap().get(hero).getHeroModel());
     }
 
     public static void saveAll() {
-        for (Unit sub : map.keySet()) {
-            map.get(sub).save();
+        for (Unit sub : getMap().keySet()) {
+            getMap().get(sub).save();
         }
     }
 
@@ -89,7 +89,7 @@ public class HqDataMaster {
     }
 
     public static void saveHero(HeroDataModel model, boolean type, boolean asNew) {
-        map.get(model.getHero()).save();
+        getMap().get(model.getHero()).save();
         EUtils.showInfoText(model.getName() + " saved");
         if (type) {
             if (asNew)
@@ -136,22 +136,25 @@ public class HqDataMaster {
                                  HERO_OPERATION operation,
                                  Object... args) {
         //        new Thread(() -> {
-        HqDataMaster master = getInstance(model.getHero());
-        master.applyOperation(model,
-         operation, args);
-        model.modified(operation, args);
-        master.reset();
+        Eidolons.onThisOrNonGdxThread(() -> {
+            HqDataMaster master = getInstance(model.getHero());
+            master.applyOperation(model,
+             operation, args);
+            model.modified(operation, args);
+            master.reset();
+        });
         //        }, operation+ " hq operation thread").start();
 
     }
 
-    public  void operation(HERO_OPERATION operation,
-                                 Object... args) {
-        applyOperation(heroModel,
-         operation, args);
-        heroModel.modified(operation, args);
-        heroModel.reset();
+    public static Map<Unit, HqDataMaster> getMap() {
+        return map;
     }
+
+    public static void setMap(Map<Unit, HqDataMaster> map) {
+        HqDataMaster.map = map;
+    }
+
     protected static DC_HeroItemObj getItem(Unit hero, Object arg) {
         DC_HeroItemObj item = (DC_HeroItemObj) arg;
         if (hero instanceof HeroDataModel) {
@@ -181,16 +184,23 @@ public class HqDataMaster {
     }
 
     public static void modelChanged(HeroDataModel entity) {
-        map.get(entity.getHero()).reset();
+        getMap().get(entity.getHero()).reset();
     }
 
     public static HqDataMaster createInstance(Unit unit) {
+        if (isSimulationOff()) {
+            return new HqDataMasterDirect(unit);
+        }
         return new HqDataMaster(unit);
+    }
+
+    public static final boolean isSimulationOff() {
+        return true;
     }
 
     public static HqDataMaster createAndSaveInstance(Unit unit) {
         HqDataMaster instance = new HqDataMaster(unit);
-        map.put(unit, instance);
+        getMap().put(unit, instance);
         return instance;
     }
 
@@ -199,20 +209,20 @@ public class HqDataMaster {
     }
 
     public static HqDataMaster getInstance(Unit unit) {
-        HqDataMaster instance = map.get(unit);
+        HqDataMaster instance = getMap().get(unit);
         if (instance == null) {
-            instance = new HqDataMaster(unit);
-            map.put(unit, instance);
+            instance = createInstance(unit);
+            getMap().put(unit, instance);
         }
         return instance;
     }
 
     public static void exit() {
-        map.clear();
+        getMap().clear();
     }
 
     public static void undoAll(HeroDataModel entity) {
-        map.get(entity.getHero()).undoAll_();
+        getMap().get(entity.getHero()).undoAll_();
     }
 
     public static void undo() {
@@ -220,11 +230,11 @@ public class HqDataMaster {
     }
 
     public static void undo(Unit hero) {
-        map.get(hero).undo_();
+        getMap().get(hero).undo_();
     }
 
     public static void redo(Unit hero) {
-        map.get(hero).redo_();
+        getMap().get(hero).redo_();
     }
 
     public static HqDataMaster getOrCreateInstance(Unit unit) {
@@ -235,6 +245,14 @@ public class HqDataMaster {
         else
             dataMaster = HqDataMaster.getInstance(unit);
         return dataMaster;
+    }
+
+    public void operation(HERO_OPERATION operation,
+                          Object... args) {
+        applyOperation(heroModel,
+         operation, args);
+        heroModel.modified(operation, args);
+        heroModel.reset();
     }
 
     public void save() {
@@ -333,15 +351,15 @@ public class HqDataMaster {
                 item = (DC_HeroItemObj) args[0]; //TODO fix?
                 Shop shop = (Shop) args[1];
                 if (operation == HERO_OPERATION.SELL) {
-                   if (!hero.removeFromInventory(item)){
-                       if (!Eidolons.getTown().removeFromStash(item))
-                           return;
-                   }
+                    if (!hero.removeFromInventory(item)) {
+                        if (!Eidolons.getTown().removeFromStash(item))
+                            return;
+                    }
                     Integer price = shop.sellItemTo(item, hero);
                     hero.modifyParameter(PARAMS.GOLD, price);
                 } else {
                     Integer price = shop.buyItemFrom(item, hero);
-                    if (price == null )
+                    if (price == null)
                         return;
                     hero.addItemToInventory(item);
                     hero.modifyParameter(PARAMS.GOLD, -price);

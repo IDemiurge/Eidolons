@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.FauxMacroGame;
 import eidolons.macro.entity.MacroRef;
@@ -11,6 +13,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 /**
@@ -27,6 +30,7 @@ public class TownMaster extends MetaGameHandler {
         super(master);
         shopManager = createShopManager();
         questMaster = new QuestMaster();
+        shopManager.init();
     }
 
     private ShopManager createShopManager() {
@@ -55,7 +59,16 @@ public class TownMaster extends MetaGameHandler {
         this.town = town;
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
         inTown = true;
-        boolean result = (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
+        if (CoreEngine.isFastMode()) {
+            new Thread(() -> {
+                HqDataMasterDirect.getInstance().operation(HERO_OPERATION.BUY,
+                 town.getShops().get(0).getItems().iterator().next());
+                WaitMaster.WAIT(100);
+                WaitMaster.receiveInput(TownPanel.DONE_OPERATION,  true);
+            }, " thread").start();
+        }
+        boolean result =
+         (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
         inTown = false;
         return result;
     }

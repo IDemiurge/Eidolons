@@ -8,6 +8,8 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
+import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
@@ -96,6 +98,14 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     }
 
+    protected boolean checkCanAddInventory() {
+        if (sim.isInventoryFull()) {
+            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
+             "Inventory is full!", sim);
+            return false;
+        }
+        return true;
+    }
     protected boolean isBlocked() {
         if (!ExplorationMaster.isExplorationOn())
             if (manager != null)

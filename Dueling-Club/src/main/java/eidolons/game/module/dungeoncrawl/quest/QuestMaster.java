@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class QuestMaster {
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public static final boolean ON = true;
 
     static {

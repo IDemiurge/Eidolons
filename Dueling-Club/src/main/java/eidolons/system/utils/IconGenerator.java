@@ -17,7 +17,9 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +34,6 @@ public class IconGenerator extends GdxUtil {
     private static final String BACKGROUND_OVERLAYS = "Background overlays";
     private static final String OVERLAYS = "overlays";
     private static final String OUTPUT_DEFAULT = "generated";
-
 
     private static IconGenerator generator;
     private static boolean rounded;
@@ -54,6 +55,7 @@ public class IconGenerator extends GdxUtil {
     private boolean subdirs;
     private int i = 0;
     private boolean flipUnderlayisOn = true;
+    private static boolean realNaming;
 
     public IconGenerator(String root, String underlay, String output, boolean subdirs) {
         this.root = root;
@@ -72,32 +74,15 @@ public class IconGenerator extends GdxUtil {
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
-        //        generateDefault();
-        //        generateAll();
-        //        generateArmor();
-        //        generateWeapons();
-        //        generateJewelry();
-        //        generateMasteries();
-        //        generateRoundedSkills();
-        //        sizeImages(64,
-        //         PathFinder.getImagePath() +
-        //          getGeneratorRootPath() +
-        //         "//large");
 
-
-        //        rounded = true;
-        //        generateByRoot("large\\paper", false);
-
-        //        generateByRoot("large\\spells", false);
-
-
-        rounded = true;
-        folderPerUnderlay = false;
+        rounded = false;
+        folderPerUnderlay = true;
         resizeAll = true;
         resizeImage = true;
         flipYisOn = false;
-        size = 50;
-        generateByRoot("50\\test\\", false);
+        size = 64;
+        realNaming = true;
+        generateByRoot("64/items/weapons", false);
     }
 
     private static void generateMasteries() {
@@ -165,7 +150,7 @@ public class IconGenerator extends GdxUtil {
     }
 
     private static String getGeneratorRootPath() {
-        return StrPathBuilder.build(ImageManager.getValueIconsPath(), "generator");
+        return   "generator/" ;
     }
 
     private static void generateAll() {
@@ -247,7 +232,7 @@ public class IconGenerator extends GdxUtil {
         int x = 0;
         int y = 0;
 
-        if (bgOverlay != null) {
+        if (TextureCache.isImage(bgOverlay)) {
             Texture bgOverlayTexture = TextureCache.getOrCreate(bgOverlay);
 
             if (resizeAll)
@@ -311,9 +296,12 @@ public class IconGenerator extends GdxUtil {
                         String path = sub.getPath().replace(PathFinder.getImagePath(), "");
 
                         if (FileManager.isDirectory(backgroundOverlays)) {
-                            for (File backgroundOverlay : FileManager.getFilesFromDirectory(backgroundOverlays, false, subdirs)) {
+                            List<String> bgOverlays = FileManager.getFilesFromDirectory(backgroundOverlays, false, subdirs).
+                             stream().map(file ->
+                             GdxImageMaster.cropImagePath(StrPathBuilder.build(backgroundOverlays, file.getName()))).collect(Collectors.toList());;
+                            bgOverlays.add(""); // none
+                            for (String bgOverlayPath : bgOverlays) {
 
-                                String bgOverlayPath = GdxImageMaster.cropImagePath(StrPathBuilder.build(backgroundOverlays, backgroundOverlay.getName()));
                                 if (FileManager.isDirectory(overlays)) {
                                     for (File overlay : FileManager.getFilesFromDirectory(overlays, false, subdirs)) {
                                         String overlayPath = GdxImageMaster.cropImagePath(StrPathBuilder.
@@ -323,8 +311,13 @@ public class IconGenerator extends GdxUtil {
                                         generateOverlaidIcon(underlayTexture, bgOverlayPath, overlayPath, path, handle, flipX, flipY);
                                     }
                                 } else {
+                                  if (realNaming){
+                                      handle = getOutputHandle(output,
+                                       getOutputFileName(sub,  bgOverlayPath, flipX, flipY));
+                                  } else
                                     handle = getOutputHandle(output,
                                      getOutputFileName(sub, underlaySuffix, bgOverlayPath, flipX, flipY));
+
                                     generateOverlaidIcon(underlayTexture, bgOverlayPath, null, path, handle, flipX, flipY);
                                 }
                             }
@@ -342,8 +335,25 @@ public class IconGenerator extends GdxUtil {
     }
 
     private String getOutputFileName(File imageFile, Object... suffixes) {
+       if (realNaming){
+           List<Object> list = new ArrayList<>();
+           for (Object suffix : suffixes) {
+               if (StringMaster.isEmpty(suffix.toString()))
+                   continue;
+               if (suffix instanceof String){
+                   list.add(StringMaster.cropFormat(StringMaster.getLastPathSegment(((String) suffix))));
+               } else {
+                   if (!suffix.toString().equalsIgnoreCase("false")) {
+                       list.add(suffix);
+                   }
+               }
+           }
+           String prefix =
+           StrPathBuilder._build(false, list.toArray());
+           return prefix + StringMaster.cropFormat(imageFile.getName());
+       }
         if (folderPerUnderlay) {
-            return imageFile.getName() + (i++);
+            return StringMaster.cropFormat(imageFile.getName()) + (i++);
         } else {
             return StringMaster.cropFormat(imageFile.getName()) + (folderPerImage ? PathUtils.getPathSeparator() : "_") + ContainerUtils.join("_",
              Arrays.stream(suffixes).map(suffix ->

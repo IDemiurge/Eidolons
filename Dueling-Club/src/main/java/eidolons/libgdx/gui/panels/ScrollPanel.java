@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.GdxMaster;
 import main.system.auxiliary.NumberUtils;
 
 public class ScrollPanel<T extends Actor> extends Container<Container> {
@@ -70,6 +71,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
     protected void pad(ScrollPanel<T> tScrollPanel) {
     }
+
     private void init() {
         this.setTouchable(Touchable.enabled);
         left().bottom();
@@ -94,32 +96,39 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
-                yy = y;
-                instantOffsetY = 0;
-                offsetY = 0;
-                return true;
+                if (isTouchScrolled()) {
+                    event.stop();
+                    yy = y;
+                    instantOffsetY = 0;
+                    offsetY = 0;
+                    return true;
+                }
+                return super.touchDown(event, x, y, pointer, button);
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (!isTouchScrolled()) {
+                    return;
+                }
                 offsetY += instantOffsetY * 6;
                 instantOffsetY = 0;
             }
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                instantOffsetY += y - yy;
+                if (isTouchScrolled()) {
+                    instantOffsetY += y - yy;
+                }
             }
 
             public boolean scrolled(InputEvent event, float x, float y, int amount) {
-               if (amount<0)
-                   if (innerScrollContainer.getY()<=-innerScrollContainer.getHeight())
-                   {
-                       offsetY=0;
-                       return true;
-                   }
-                offsetY += amount *6000;// getScrollAmount();
+                if (amount < 0)
+                    if (innerScrollContainer.getY() <= -innerScrollContainer.getHeight()) {
+                        offsetY = 0;
+                        return true;
+                    }
+                offsetY += amount * 6000;// getScrollAmount();
                 return true;
             }
 
@@ -127,14 +136,23 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (getStage() != null)
                     getStage().setScrollFocus(ScrollPanel.this);
+                super.enter(event, x, y, pointer, fromActor);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                if (getStage() != null)
-                    getStage().setScrollFocus(null);
+                if (getStage() != null) {
+                    if (toActor != ScrollPanel.this)
+                        if (!GdxMaster.getAncestors(toActor).contains(ScrollPanel.this))
+                            getStage().setScrollFocus(null);
+                }
+                super.exit(event, x, y, pointer, toActor);
             }
         });
+    }
+
+    protected boolean isTouchScrolled() {
+        return false;
     }
 
     @Override
@@ -156,10 +174,10 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         if (0 != offsetY ||
          instantOffsetY != 0) {
             float cy = innerScrollContainer.getY();
-           if (offsetY<0)
-               if (cy<=-innerScrollContainer.getHeight()/2) {
-                return;
-            }
+            if (offsetY < 0)
+                if (cy <= -innerScrollContainer.getHeight() / 2) {
+                    return;
+                }
 
             float step =
              new Float(NumberUtils.formatFloat(2,
@@ -172,7 +190,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
             step += instantOffsetY;
 
-            cy = Math.min(cy + step * delta, innerScrollContainer.getHeight()/2);
+            cy = Math.min(cy + step * delta, innerScrollContainer.getHeight() / 2);
             if (Math.abs(innerScrollContainer.getY() - cy) > 6f)
                 innerScrollContainer.setY(cy);
             if (offsetY != 0) {
@@ -183,7 +201,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
 
     protected boolean isAlwaysScrolled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -198,6 +216,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         if (a == null) {
             return null;
         }
-        return this;
+        getStage().setScrollFocus(this);
+        return a;
     }
 }

@@ -104,6 +104,10 @@ public class ClearShotCondition extends MicroCondition {
         return checkWallObstruction(source, target, Coordinates.get(x_, y_));
     }
 
+    public boolean check(Coordinates c, Coordinates c2) {
+        return check(game.getCellByCoordinate(c), game.getCellByCoordinate(c2));
+
+    }
     @Override
     public boolean check(Ref ref) {
         Obj obj = game.getObjectById(ref.getId(str2));

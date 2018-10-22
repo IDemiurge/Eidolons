@@ -494,7 +494,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             // duration
             int mod = 100;
             // mod =
-            // getDurationPriorityMod(buffEffect.getDurationFormula().getInt(action.getRef()));
+            // getDurationPriorityMod(buffEffect.getDurationFormula().getLevel(action.getRef()));
             return getSpellCustomHostileEffectPriority(target, action, buffEffect.getEffect())
              * mod / 100;
         }

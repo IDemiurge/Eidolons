@@ -216,6 +216,7 @@ public class MacroTimeMaster {
         delta = delta * speed;
         time += delta;
         timer += delta;
+
     }
 
     public float getTimer() {

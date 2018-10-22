@@ -26,7 +26,7 @@ public class QuestInfoPanel extends ItemInfoPanel {
     private final SmartButton cancel;
     private boolean disabled;
     public static final int WIDTH = 920;
-    public static final int HEIGHT = 700;
+    public static final int HEIGHT = 720;
 
     public QuestInfoPanel(SelectableItemData o) {
         super(o);

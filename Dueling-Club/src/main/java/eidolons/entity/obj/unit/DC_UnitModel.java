@@ -324,14 +324,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return getAction(DC_ActionManager.OFFHAND_ATTACK);
     }
 
-    @Override
-    public void setRef(Ref ref) {
-        ref.setSource(id);
-        super.setRef(ref);
-//        this.ref.setTarget(null);
-    }
-
-
     public FACING_DIRECTION getFacingOrNull() {
         return facing;
     }

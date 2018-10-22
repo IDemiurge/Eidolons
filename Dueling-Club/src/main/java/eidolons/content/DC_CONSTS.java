@@ -248,7 +248,7 @@ public class DC_CONSTS {
                 return value;
             }
             return value
-             + StringMaster.wrapInParenthesis(integers[level.getInt()]
+             + StringMaster.wrapInParenthesis(integers[level.getLevel()]
              + "");
         }
 
@@ -262,23 +262,29 @@ public class DC_CONSTS {
     }
 
     public enum MAGICAL_ITEM_LEVEL {
-        MINOR(0, 10, ""),
-        LESSER(1, 25, ""),
-        COMMON(2, 50, ""),
-        GREATER(3, 125, ""),
-        LEGENDARY(4, 300, "");
+        MINOR(100, 0, 10, ""),
+        LESSER(150,1, 25, ""),
+        COMMON(225,2, 50, ""),
+        GREATER(333,3, 125, ""),
+        LEGENDARY(500,4, 300, "");
 
+        private final int power;
         private int level;
         private int costFactor;
         private String iconSuffix;
 
-        MAGICAL_ITEM_LEVEL(int n, int costFactor, String iconSuffix) {
+        MAGICAL_ITEM_LEVEL(int power, int n, int costFactor, String iconSuffix) {
             this.costFactor = costFactor;
             this.iconSuffix = iconSuffix;
             this.level = n;
+            this.power = power;
         }
 
-        public int getInt() {
+        public int getPower() {
+            return power;
+        }
+
+        public int getLevel() {
             return level;
         }
 

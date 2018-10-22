@@ -171,7 +171,7 @@ public class DcHelper implements JUnitHelper {
         JUnitUtils.log_("Passing " + time + " seconds");
         if (ExplorationMaster.isExplorationOn()) {
             if (game.getTurnManager() instanceof AtbTurnManager) {
-                game.getDungeonMaster().getExplorationMaster().getTimeMaster().timePassed(time);
+                game.getDungeonMaster().getExplorationMaster().getTimeMaster().act(time);
 // TODO ???                game.getDungeonMaster().getExplorationMaster().getTimeMaster().checkTimedEvents();
             }
         } else {

@@ -243,8 +243,8 @@ public class DungeonScreen extends GameScreenWithTown {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
-
+        selectionPanelClosed();
+        checkInputController();
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
@@ -270,7 +270,6 @@ public class DungeonScreen extends GameScreenWithTown {
             if (dialogsStage != null) {
                 current.addProcessor(dialogsStage);
             }
-            current.addProcessor(controller);//new GestureDetector(controller));
         } else {
             if (TownPanel.getActiveInstance() != null) {
                 return new InputMultiplexer(guiStage, super.createInputController());
@@ -282,6 +281,11 @@ public class DungeonScreen extends GameScreenWithTown {
         return current;
     }
 
+    protected void checkInputController() {
+        if (!GdxMaster.hasController(Gdx.input.getInputProcessor(), gridStage)) {
+            updateInputController();
+        }
+    }
     protected void selectionPanelClosed() {
         if (TownPanel.getActiveInstance() != null) //TODO fix late events in auto-load
             return;
@@ -300,6 +304,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     public void renderMain(float delta) {
+        checkInputController();
         guiStage.act(delta);
         gridStage.act(delta);
         setBlocked(checkBlocked());
@@ -418,7 +423,7 @@ public class DungeonScreen extends GameScreenWithTown {
             if (manualPanel.isVisible())
                 return true;
         if (selectionPanel != null)
-            if (selectionPanel.isVisible())
+            if (selectionPanel.isVisible() && selectionPanel.getStage()!=null )
                 return true;
         return guiStage.isBlocked();
     }

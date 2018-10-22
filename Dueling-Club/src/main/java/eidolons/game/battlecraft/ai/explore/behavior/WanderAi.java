@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.explore.behavior;
 
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 
 /**
@@ -13,18 +12,15 @@ public class WanderAi extends AiBehavior {
     }
 
     @Override
-    protected void update(float delta) {
-
+    protected boolean isFollowOrAvoid() {
+            return false;
     }
+
 
     public int getMaxWanderDistance() {
         // default - percent of size? 'don't leave the Block'
         // getType()
         // checkMod(trueBrute)
         return 5;
-    }
-    @Override
-    public ActionSequence getOrders(UnitAI ai) {
-        return null;
     }
 }

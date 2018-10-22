@@ -84,7 +84,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
         setRef(ref);
-        this.ownerObj = (Unit) ref.getSourceObj();
+        this.ownerObj = (BattleFieldObject) ref.getSourceObj();
     }
 
     @Override
@@ -362,7 +362,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isFree() {
 
         if (!free) {
-            if (!getOwnerUnit().isAiControlled()) {
+            if (!getOwnerObj().isAiControlled()) {
                 if (game.isDebugMode()) {
                     return getGame().getTestMaster().isActionFree(getName());
                 }

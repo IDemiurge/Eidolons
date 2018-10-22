@@ -4,6 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.bf.overlays.WallMap;
@@ -493,11 +494,11 @@ public class ContentGenerator {
         return map;
     }
 
-    public static String getNaturalArmorTypeForUnit(Unit attacked) {
+    public static String getNaturalArmorTypeForUnit(BattleFieldObject attacked) {
         return StringMaster.getWellFormattedString(getObjectArmorTypeForUnit(attacked).toString());
     }
 
-    public static OBJECT_ARMOR_TYPE getObjectArmorTypeForUnit(Unit attacked) {
+    public static OBJECT_ARMOR_TYPE getObjectArmorTypeForUnit(BattleFieldObject attacked) {
         if (attacked.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
             return OBJECT_ARMOR_TYPE.ETHEREAL;
         }

@@ -17,6 +17,7 @@ import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
@@ -43,6 +44,7 @@ import java.util.*;
 
 public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
+    private static final boolean TEST_MODE = true;
     List<DC_HeroItemObj> items;
     private SHOP_TYPE shopType;
     private SHOP_LEVEL shopLevel;
@@ -119,7 +121,7 @@ public class Shop extends TownPlace implements ShopInterface {
         PROPERTY prop = getShopType().getFilterProp();
         int i = 0;
 
-        String[] item_groups = getShopType().getItem_groups();
+        String[] item_groups = getShopType().getItemGroups();
         // Up to 4 item groups!
         if (item_groups.length > MAX_ITEM_GROUPS) {
             List<String> list = new ArrayList<>(Arrays.asList(item_groups));
@@ -132,18 +134,24 @@ public class Shop extends TownPlace implements ShopInterface {
                 j++;
             }
         }
+        OBJ_TYPE itemsType = initItemsType(shopType);
+        List<ObjType> basis = ItemGenerator.getTypesForShop(itemsType);
+
         for (String group : item_groups) {
             List<ObjType> pool;
+            if (itemsType== DC_TYPE.JEWELRY) {
+                pool =     basis;
+            } else
             if (prop == null) {
                 pool = DataManager.toTypeList(DataManager
                   .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
                  C_OBJ_TYPE.ITEMS);
             } else {
-                pool = ItemGenerator.getBaseTypes(C_OBJ_TYPE.ITEMS);
+                pool = new ArrayList<>(basis);
                 FilterMaster.filter(pool, new PropCondition(prop, group));
             }
-            pool = constructPool(pool);
 
+            pool = constructPool(pool);
             pool.addAll(getSpecialItems(group));
 
             i++;
@@ -167,6 +175,25 @@ public class Shop extends TownPlace implements ShopInterface {
         }
     }
 
+    private OBJ_TYPE initItemsType(SHOP_TYPE shopType) {
+
+        switch (shopType) {
+            case JEWELER:
+                return DC_TYPE.JEWELRY;
+            case ALCHEMIST:
+                return DC_TYPE.ITEMS;
+            case WEAPONS:
+            case LIGHT_WEAPONS:
+            case HEAVY_WEAPONS:
+                return DC_TYPE.WEAPONS;
+            case ARMOR:
+            case LIGHT_ARMOR:
+            case HEAVY_ARMOR:
+                return DC_TYPE.ARMOR;
+        }
+        return C_OBJ_TYPE.ITEMS;
+    }
+
     // generateCustomItems(); randomly based on the repertoire spectrum
 
     private Collection<? extends ObjType> getSpecialItems(String group) {
@@ -180,19 +207,23 @@ public class Shop extends TownPlace implements ShopInterface {
 
         // TODO AND WHAT ABOUT NON-SLOT ITEMS?
         List<ObjType> filtered = new ArrayList<>();
-        for (MATERIAL material : ItemEnums.MATERIAL.values()) {
-            if (ShopMaster.checkMaterialAllowed(this, material)) {
-                for (ObjType t : pool) {
-                    if (!ItemMaster.checkMaterial(t, material.getGroup())) {
-                        continue;
+        for (ObjType t : pool) {
+            if (t.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY || t.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
+                filtered.add(t);
+            } else
+                for (MATERIAL material : ItemEnums.MATERIAL.values()) {
+                    //TODO TRAITS
+                    if (ShopMaster.checkMaterialAllowed(this, material)) {
+                        if (!ItemMaster.checkMaterial(t, material.getGroup())) {
+                            continue;
+                        }
+                        for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
+                            filtered.add(ItemGenerator.getOrCreateItemType(t,
+                             material, q));
+                        }
                     }
-                    for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
-                        filtered.add(ItemGenerator.getOrCreateItemType(t,
-                         material, q));
-                    }
-                }
 
-            }
+                }
         }
 
         // getShopLevel().getMaxCostFactor();
@@ -215,18 +246,18 @@ public class Shop extends TownPlace implements ShopInterface {
     }
 
     public Integer buyItemFrom(DC_HeroItemObj t, Unit buyer) {
-       if (!items.remove(t))
-           return null;
+        if (!items.remove(t))
+            return null;
 
         // some items should be infinite though... perhaps based on shop level?
-        Integer price = getPrice(t,buyer, true);
+        Integer price = getPrice(t, buyer, true);
         modifyParameter(PARAMS.GOLD, price);
         priceCache.put(t.getId(), price);
         return price;
     }
 
     public Integer sellItemTo(DC_HeroItemObj t, Unit seller) {
-        Integer price = getPrice(t,seller, false);
+        Integer price = getPrice(t, seller, false);
         itemBought(t, price);
         priceCache.put(t.getId(), price);
         return price;
@@ -240,14 +271,13 @@ public class Shop extends TownPlace implements ShopInterface {
 
     public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean sell) {
         Integer price = getPriceCache().get(t.getId());
-        if (price == null)
-        {
+        if (price == null) {
             price = t.getIntParam(PARAMS.GOLD_COST);
-            int i =1;
+            int i = 1;
             if (sell)
-                i=-1;
-            price = MathMaster.addFactor(price, i*getIntParam(PARAMS.GOLD_COST_REDUCTION));
-            price = MathMaster.addFactor(price, -i*unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));
+                i = -1;
+            price = MathMaster.addFactor(price, i * getIntParam(PARAMS.GOLD_COST_REDUCTION));
+            price = MathMaster.addFactor(price, -i * unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));
             // suppose these are -20 / 30 reduction for shop / hero
             // if shop sells, it will be at 90%
         }
@@ -260,12 +290,14 @@ public class Shop extends TownPlace implements ShopInterface {
 
     private boolean acquireItem(DC_HeroItemObj t) {
         Integer cost = t.getIntParam(PARAMS.GOLD_COST);
+        if (!TEST_MODE)
         if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
             return false;
         }
         itemBought(t, cost);
         return true;
     }
+
     @Override
     public List<String> getTabs() {
         return ContainerUtils.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS));
@@ -276,6 +308,7 @@ public class Shop extends TownPlace implements ShopInterface {
         return null;
     }
 
+    @Deprecated
     @Override
     public List<String> getItems(String groupList) {
         if (isFullRepertoire()) {

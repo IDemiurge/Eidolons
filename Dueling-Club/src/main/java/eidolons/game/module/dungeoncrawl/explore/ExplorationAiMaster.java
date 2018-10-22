@@ -6,9 +6,9 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.logic.action.context.Context;
 import main.system.datatypes.DequeImpl;
@@ -33,6 +33,9 @@ public class ExplorationAiMaster extends ExplorationHandler {
         activeUnitAIs = new DequeImpl<>();
     }
 
+    public void act(float delta) {
+        master.getGame().getAiManager().getBehaviorManager().act(delta);
+    }
     public void reset() {
 
         allies = master.getGame().getPlayer(true).getControlledUnits_();
@@ -170,7 +173,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             }
         //get orders?
         AiBehavior behavior = getAiBehavior(ai);
-        ActionSequence orders = behavior.getOrders(ai);
+        ActionSequence orders = behavior.getOrders();
         if (orders == null) {
 //            orders= getIdleOrders(ai);
         }

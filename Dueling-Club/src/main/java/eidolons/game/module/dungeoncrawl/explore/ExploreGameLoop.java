@@ -330,9 +330,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     public void act(float delta) {
         if (isPaused())
             return;
-        master.getTimeMaster().timePassed(delta);
+        master.getTimeMaster().act(delta);
 //        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
-        macroTimeMaster.act(delta * 5);
+        macroTimeMaster.act(delta  ); //
     }
 
     public Float getTime() {

@@ -24,6 +24,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
@@ -34,23 +35,21 @@ public class InvItemActor extends ItemActor {
     private LabelX goldLabel;
     private CELL_TYPE cellType;
     private InventoryClickHandler handler;
-    private ClickListener listener;
     private float clickTimer;
-    boolean goldPack;
+    private boolean goldPack;
 
 
 
     public InvItemActor(String customImage) {
         super(null);
         image.setImage(customImage);
-        initListener();
+        addListener(listener=createListener());
     }
 
     public InvItemActor(DC_HeroItemObj model, CELL_TYPE cellType, InventoryClickHandler handler) {
         super(model);
         this.cellType = cellType;
         this.handler = handler;
-        initListener();
         if (model == null) {
             image.setImageImmediately(getEmptyImage());
             return;
@@ -75,14 +74,8 @@ public class InvItemActor extends ItemActor {
         goldGroup.setY(-goldGroup.getHeight() / 3);
         goldGroup.setVisible(false);
     }
-
-    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        Actor a = super.hit(x, y, touchable);
-        if (a == null) {
-            return null;
-        }
-        return a;
+    protected boolean isListenerRequired() {
+        return true;
     }
 
     @Override
@@ -153,66 +146,63 @@ public class InvItemActor extends ItemActor {
         return super.getEmptyImage();
     }
 
-    private void initListener() {
+    protected ClickListener createListener() {
+        return new SmartClickListener(this) {
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                super.touchDragged(event, x, y, pointer);
+                if (model == null) {
+                    return;
+                }
+                if (handler.getDragged() == null)
+                    handler.singleClick(cellType, model);
+            }
 
-        addListener(
-         listener =
-          new ClickListener(-1) {
-              @Override
-              public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                  super.touchDragged(event, x, y, pointer);
-                  if (model == null) {
-                      return;
-                  }
-                  if (handler.getDragged() == null)
-                      handler.singleClick(cellType, model);
-              }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (handler.getDragged() != null) {
+                    Vector2 v = localToStageCoordinates(new Vector2(x, y));
 
-              @Override
-              public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                  if (handler.getDragged() != null) {
-                      Vector2 v = localToStageCoordinates(new Vector2(x, y));
+                    Group panel = findPanelToDragTo(new Vector2(x, y));
+                    if (panel == null) {
+                        super.touchUp(event, x, y, pointer, button);
+                        return;
+                    }
 
-                      Group panel = findPanelToDragTo(new Vector2(x, y));
-                      if (panel == null) {
-                          super.touchUp(event, x, y, pointer, button);
-                          return;
-                      }
+                    v = panel.stageToLocalCoordinates(v);
+                    Actor cell = panel.hit(v.x, v.y, true);
 
-                      v = panel.stageToLocalCoordinates(v);
-                      Actor cell = panel.hit(v.x, v.y, true);
-
-                      if (cell != null)
-                          if (!(cell instanceof InvItemActor))
-                              cell = GdxMaster.getFirstParentOfClass(cell, InvItemActor.class);
+                    if (cell != null)
+                        if (!(cell instanceof InvItemActor))
+                            cell = GdxMaster.getFirstParentOfClass(cell, InvItemActor.class);
 
 
-                      if (cell instanceof InvItemActor) {
-                          ((InvItemActor) cell).getListener().clicked(event, x, y);
-                          return;
-                      }
-                      super.touchUp(event, x, y, pointer, button);
-                      handler.setDragged(null);
-                  } else {
-                      super.touchUp(event, x, y, pointer, button);
-                  }
-              }
+                    if (cell instanceof InvItemActor) {
+                        ((InvItemActor) cell).getListener().clicked(event, x, y);
+                        return;
+                    }
+                    super.touchUp(event, x, y, pointer, button);
+                    handler.setDragged(null);
+                } else {
+                    super.touchUp(event, x, y, pointer, button);
+                }
+            }
 
-              @Override
-              public void clicked(InputEvent event, float x, float y) {
-                  if (clickTimer<0.05f)
-                      return;
-                  final int tapCount = this.getTapCount();
-                  final boolean isRightClicked = event.getButton() == Input.Buttons.RIGHT;
-                  final boolean isAltPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (clickTimer < 0.05f)
+                    return;
+                final int tapCount = this.getTapCount();
+                final boolean isRightClicked = event.getButton() == Input.Buttons.RIGHT;
+                final boolean isAltPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
 
-                  Eidolons.onNonGdxThread(() ->
-                   handler.cellClicked(cellType, tapCount, isRightClicked,
-                    isAltPressed, model));
-                  clickTimer = 0;
-                  event.stop();
-              }
-          });
+                Eidolons.onNonGdxThread(() ->
+                 handler.cellClicked(cellType, tapCount, isRightClicked,
+                  isAltPressed, model));
+                clickTimer = 0;
+                event.stop();
+            }
+        };
     }
 
     private Group findPanelToDragTo(Vector2 v) {
@@ -261,9 +251,6 @@ public class InvItemActor extends ItemActor {
         this.handler = handler;
     }
 
-    public ClickListener getListener() {
-        return listener;
-    }
 
 
 }

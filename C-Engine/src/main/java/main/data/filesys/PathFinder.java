@@ -3,7 +3,6 @@ package main.data.filesys;
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
@@ -408,8 +407,7 @@ public class PathFinder {
     }
 
     public static String getGeneratorRootPath() {
-        return StrPathBuilder.build(false,
-         ImageManager.getImageFolderPath(), "generator");
+        return  "generator/" ;
     }
 
     public static String getRoomTemplatesFolder() {

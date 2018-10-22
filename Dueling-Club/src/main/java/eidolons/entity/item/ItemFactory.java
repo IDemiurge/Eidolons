@@ -21,12 +21,15 @@ public class ItemFactory {
     public static DC_HeroItemObj createItemObj(String subString, OBJ_TYPE TYPE, Player originalOwner, GenericGame game,
                                                Ref ref, boolean quick) {
         String var = VariableManager.getVar(subString);
-        subString = VariableManager.removeVarPart(subString);
-        ObjType type = DataManager.getType(subString, TYPE);
-        TYPE = type.getOBJ_TYPE_ENUM();
+        String typeName = VariableManager.removeVarPart(subString);
+        ObjType type = DataManager.getType(typeName, TYPE);
+        if (type == null) {
+            type =DataManager.getType(subString, TYPE);
+        }
         if (type == null) {
             return null;
         }
+        TYPE = type.getOBJ_TYPE_ENUM();
         DC_HeroItemObj item = createItem(type, TYPE, originalOwner, ref, game, quick);
         if (GoldMaster.isGoldPack(type)) {
             try {

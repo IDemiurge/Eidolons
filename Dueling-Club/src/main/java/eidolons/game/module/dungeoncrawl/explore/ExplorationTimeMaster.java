@@ -69,8 +69,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 //        return ai.getExplorationTimePassed();
     }
 
-    public void timePassed(float delta) {
+    public void act(float delta) {
         time += delta;
+        master.act(delta);
     }
 
     public Boolean playerRests(float timeInSeconds) {

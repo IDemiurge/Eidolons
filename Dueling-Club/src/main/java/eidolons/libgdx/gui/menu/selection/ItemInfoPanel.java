@@ -13,6 +13,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -22,7 +23,7 @@ import main.system.images.ImageManager;
 /**
  * Created by JustMe on 11/29/2017.
  */
-public class ItemInfoPanel extends TablePanel implements SelectableItemDisplayer{
+public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplayer{
 
 
     public static final int WIDTH = 1020;

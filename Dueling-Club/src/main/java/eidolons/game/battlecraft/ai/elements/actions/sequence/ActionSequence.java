@@ -31,6 +31,9 @@ public class ActionSequence {
         }
     }
 
+    public ActionSequence(List<Action> actions,   UnitAI ai) {
+        this(actions, null, ai);
+    }
     public ActionSequence(List<Action> actions, Task task, UnitAI ai) {
         if (task != null) {
             this.type = task.getType();

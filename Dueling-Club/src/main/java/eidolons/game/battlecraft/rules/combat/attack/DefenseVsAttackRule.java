@@ -30,7 +30,7 @@ public class DefenseVsAttackRule {
     }
 
     //
-    public static int getDefenseValue(Unit attacker, BattleFieldObject attacked, DC_ActiveObj action) {
+    public static int getDefenseValue(BattleFieldObject attacker, BattleFieldObject attacked, DC_ActiveObj action) {
         int defense = attacked.getIntParam(PARAMS.DEFENSE)
          - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
@@ -46,7 +46,7 @@ public class DefenseVsAttackRule {
         return defense;
     }
 
-    public static int getAttackValue(boolean offhand, Unit attacker, BattleFieldObject attacked,
+    public static int getAttackValue(boolean offhand, BattleFieldObject attacker, BattleFieldObject attacked,
                                      DC_ActiveObj action) {
         int attack = attacker.getIntParam((offhand) ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         Boolean flying_mod = null;
@@ -70,8 +70,8 @@ public class DefenseVsAttackRule {
             int bonus = FlyingRule.getAttackBonus(attack, flying_mod);
             attack += bonus;
         }
-
-        if (WatchRule.checkWatched(attacker, attacked)) {
+        if (attacker instanceof Unit)
+        if (WatchRule.checkWatched((Unit) attacker, attacked)) {
             //increase attack if attacker watches attacked
             int bonus = MathMaster.applyMod(WatchRule.ATTACK_MOD, attacker
              .getIntParam(PARAMS.WATCH_ATTACK_MOD));
@@ -95,7 +95,7 @@ public class DefenseVsAttackRule {
          attack.getRef(), attack.isOffhand() );
     }
 
-    public static Boolean checkDodgedOrCrit(Unit attacker, BattleFieldObject attacked,
+    public static Boolean checkDodgedOrCrit(BattleFieldObject attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
 
@@ -105,7 +105,7 @@ public class DefenseVsAttackRule {
          offhand,   true);
     }
 
-    public static Boolean checkDodgedOrCrit(Unit attacker, BattleFieldObject attacked,
+    public static Boolean checkDodgedOrCrit(BattleFieldObject attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
 
@@ -156,7 +156,7 @@ public class DefenseVsAttackRule {
         return null;
     }
 
-    private static int getChance(DC_ActiveObj action, Unit attacker,
+    private static int getChance(DC_ActiveObj action, BattleFieldObject attacker,
                                  BattleFieldObject attacked, int attack, int defense, boolean critOrDodge) {
         int diff = defense - attack;
         // first preCheck ARITHMETIC difference...

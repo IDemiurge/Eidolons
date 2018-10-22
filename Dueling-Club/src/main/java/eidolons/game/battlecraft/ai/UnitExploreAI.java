@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior.BEHAVIOR_METHOD;
 
 import java.util.List;
 
@@ -17,17 +18,52 @@ public class UnitExploreAI {
     private float explorationTimeOfLastAction;
     private float explorationTimeOfModeEffect;
     private float explorationTimeOfRegenEffects;
-    private boolean autoFollow;
     private float explorationMoveSpeedMod = 1;
+    private boolean autoFollow; // re
 
+
+    AiBehavior activeBehavior;
     List<AiBehavior> behaviors;
 
+    BEHAVIOR_METHOD method;
 
     public void act(float delta) {
+        activeBehavior = updateBehavior();
+
+        activeBehavior.act(delta);
     }
+
+    private AiBehavior updateBehavior() {
+        return behaviors.get(0);
+    }
+
     public UnitExploreAI(Unit unit) {
         this.unit = unit;
 
+    }
+
+    public AiBehavior getActiveBehavior() {
+        return activeBehavior;
+    }
+
+    public void setActiveBehavior(AiBehavior activeBehavior) {
+        this.activeBehavior = activeBehavior;
+    }
+
+    public List<AiBehavior> getBehaviors() {
+        return behaviors;
+    }
+
+    public void setBehaviors(List<AiBehavior> behaviors) {
+        this.behaviors = behaviors;
+    }
+
+    public BEHAVIOR_METHOD getMethod() {
+        return method;
+    }
+
+    public void setMethod(BEHAVIOR_METHOD method) {
+        this.method = method;
     }
 
     public boolean isPathBlocked() {

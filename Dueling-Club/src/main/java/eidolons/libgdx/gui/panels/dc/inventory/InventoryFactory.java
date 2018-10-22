@@ -28,8 +28,8 @@ import java.util.*;
  * Created by JustMe on 3/31/2017.
  */
 public class InventoryFactory {
-    private InventoryClickHandler handler;
     private static Map<Entity, InvItemActor> cache = new HashMap<>();
+    private InventoryClickHandler handler;
 
     public InventoryFactory(InventoryClickHandler inventoryClickHandler) {
         this.handler = inventoryClickHandler;
@@ -44,11 +44,6 @@ public class InventoryFactory {
             return "";
         }
         DC_TYPE TYPE = (DC_TYPE) entity.getOBJ_TYPE_ENUM();
-        String baseType = entity.getName();
-        if (entity instanceof DC_HeroSlotItem) {
-            DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
-            baseType = item.getBaseTypeName();
-        }
         String basePath = "";
         switch (TYPE) {
             case ARMOR:
@@ -61,8 +56,27 @@ public class InventoryFactory {
                 basePath = PathFinder.getJewelryIconPath();
                 break;
         }
+        String typeName = entity.getName();
+
+
+        if (entity instanceof DC_HeroSlotItem) {
+            DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
+            typeName = item.getBaseTypeName();
+//            int durability = DataManager.getType(item.getBaseTypeName(),
+//             item.getOBJ_TYPE_ENUM()).getIntParam(PARAMS.DURABILITY);
+//TODO
+//            float perc = new Float(durability) / item.getIntParam(PARAMS.C_DURABILITY);
+//
+//            if (perc<0.75f){
+//                typeName += " 2";
+//            }
+//            if (perc<1.25f) {
+//                typeName += " 1";
+//            }
+        }
+
         String path = StrPathBuilder.build(basePath,
-         baseType + ".png");
+         typeName + ".png");
         if (!ImageManager.isImage(path))
             path = entity.getImagePath();
         return path;
@@ -123,30 +137,12 @@ public class InventoryFactory {
     }
 
     public InvItemActor get(Entity entity, CELL_TYPE cellType, boolean cached) {
-        InvItemActor c = get_(entity, cellType, cached);
-        if (c == null) {
-            return c;
-        }
-        return c;
-    }
-        public InvItemActor get_(Entity entity, CELL_TYPE cellType, boolean cached) {
-
         InvItemActor container = null;
         if (entity != null)
             if (cached) {
                 container = cache.get(entity);
                 if (container != null) {
                     container.setCellType(cellType);
-
-                    if (container.getListeners().size==0){
-                        return null ;
-                    }
-                    if (!container.isVisible()){
-                        return null;
-                    }
-                    if (container.getChildren().size==0){
-                        return null;
-                    }
                     return container;
                 }
             }
@@ -168,19 +164,11 @@ public class InventoryFactory {
             String vals = getTooltipsVals(entity);
             container.addListener(new ValueTooltip(entity.getName() + "\n" +
              vals).getController());
-        } if (entity != null)
+        }
+        if (entity != null)
             if (cached) {
-            cache.put(entity, container);
-        }
-        if (container.getListeners().size==0){
-            return null ;
-        }
-        if (!container.isVisible()){
-            return null;
-        }
-        if (container.getChildren().size==0){
-            return null;
-        }
+                cache.put(entity, container);
+            }
         return container;
     }
 

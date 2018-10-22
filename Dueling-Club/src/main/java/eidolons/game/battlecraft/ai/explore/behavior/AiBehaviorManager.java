@@ -37,6 +37,38 @@ public class AiBehaviorManager extends AiHandler{
             //group behavior?
         }
     }
+    private List<AiBehavior> initBehaviors(UnitAI ai) {
+        List<AiBehavior> behaviors = new ArrayList<>();
+if (ai.isLeader()){
+    behaviors.add(new PatrolAi(master, ai));
+} else
+    behaviors.add(new FollowAi(master, ai));
+
+        switch (ai.getGroupAI().getType()) {
+            case GUARDS:
+                break;
+            case PATROL:
+                behaviors.add(new FollowAi(master, ai));
+                break;
+            case AMBUSH:
+                break;
+            case CROWD:
+                break;
+            case IDLERS:
+                break;
+            case STALKER:
+                break;
+            case BOSS:
+                break;
+        }
+
+        behaviors.add(new WanderAi(master, ai));
+
+        switch (ai.getType()) {
+        }
+
+        return behaviors;
+    }
 
     public List<AI_BEHAVIOR_MODE> getBehaviors() {
         List<AI_BEHAVIOR_MODE> list = new ArrayList<>();
@@ -55,18 +87,5 @@ public class AiBehaviorManager extends AiHandler{
 //        }
 
         return list;
-    }
-    private List<AiBehavior> initBehaviors(UnitAI ai) {
-        AiBehavior behavior = new FollowAi(master, ai);
-
-        switch (ai.getGroupAI().getType()) {
-
-        }
-
-        switch (ai.getType()) {
-
-        }
-
-        return null;
     }
 }

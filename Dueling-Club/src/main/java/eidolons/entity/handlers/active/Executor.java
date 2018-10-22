@@ -129,7 +129,7 @@ public class Executor extends ActiveHandler {
     public void activateOnGameLoopThread() {
 
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), new Context(getAction().getOwnerUnit().getRef())));
+         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -161,10 +161,10 @@ public class Executor extends ActiveHandler {
             } else if (getAction().getTargetGroup() != null) {
                 targets = getAction().getTargetGroup().toString();
             }
-        log(getAction().getOwnerUnit().getNameAndCoordinate() + " activates "
+        log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
          + getAction().getName() + " on " + targets, false);
         if (gameLog)
-            log(getAction().getOwnerUnit().getNameIfKnown() + " activates "
+            log(getAction().getOwnerObj().getNameIfKnown() + " activates "
              + getAction().getNameIfKnown() + " " + targets, true);
 
         beingActivated();
@@ -213,17 +213,17 @@ public class Executor extends ActiveHandler {
         if (getAction() instanceof DC_QuickItemAction) {
             DC_QuickItemObj item = ((DC_QuickItemAction) getAction()).getItem();
             if (item.isAmmo()) {
-                getAction().getOwnerUnit().getRef().setID(KEYS.AMMO, item.getId());
+                getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
             }
         }
         //TODO  quickfix, replace with IdKey resolving
         if (getAction().getRef().getTargetObj() == null) {
-            if (getAction().getOwnerUnit().getRef().getTargetObj() != null) {
-                getAction().getRef().setTarget(getAction().getOwnerUnit().getRef().getTarget());
+            if (getAction().getOwnerObj().getRef().getTargetObj() != null) {
+                getAction().getRef().setTarget(getAction().getOwnerObj().getRef().getTarget());
             }
         }
 
-        getAction().setRef(getAction().getOwnerUnit().getRef());
+        getAction().setRef(getAction().getOwnerObj().getRef());
 
     }
 
@@ -274,14 +274,14 @@ public class Executor extends ActiveHandler {
                 StackingRule.actionMissed(getAction());
             }
         }
-        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(getAction())) {
+//        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(getAction())) {
             // return false; TODO
-        }
+//        }
     }
 
     private void initActivation() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_ACTIVATED, true);
-        getAction().getOwnerUnit().getRef().setID(KEYS.ACTIVE, getId());
+        getAction().getOwnerObj().getRef().setID(KEYS.ACTIVE, getId());
         triggered = getRef().isTriggered();
         getCalculator().calculateTimeCost();
         getInitializer().construct();
@@ -313,7 +313,7 @@ public class Executor extends ActiveHandler {
             for (Active active : getAction().getActives()) {
                 try {
                     setResult(isResult() & active.activatedOn(getRef()));
-                } catch (Exception e) {
+                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 if (!isResult()) {
@@ -347,10 +347,10 @@ public class Executor extends ActiveHandler {
 
     private void addStdPassives() {
         if (!StringMaster.isEmpty(getAction().getProperty(G_PROPS.STANDARD_PASSIVES))) {
-            getAction().getOwnerUnit().addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
+            getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
-            getAction().getOwnerUnit().addProperty(G_PROPS.STANDARD_PASSIVES,
+            getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES,
              getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
@@ -458,7 +458,7 @@ public class Executor extends ActiveHandler {
 //    public boolean activateChanneling() {
 //        initCosts();
 //        initChannelingCosts();
-//        game.getLogManager().log(">> " + getAction().getOwnerUnit().getName() + " has begun Channeling " + getName());
+//        game.getLogManager().log(">> " + getAction().getOwnerObj().getName() + " has begun Channeling " + getName());
 //        boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
 //        if (result) {
 //            this.channeling = true;
@@ -484,13 +484,16 @@ public class Executor extends ActiveHandler {
     }
 
     private void checkPendingAttacksOfOpportunity() {
+        if (getAction().getOwnerUnit() == null) {
+            return; //objects...
+        }
         for (DC_ActiveObj attack : new ArrayList<>(getPendingAttacksOpportunity())) {
             if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerUnit(), attack)) {
                 continue;
             }
             getPendingAttacksOpportunity().remove(attack);
             Ref REF = Ref.getCopy(attack.getRef());
-            REF.setTarget(getAction().getOwnerUnit().getId());
+            REF.setTarget(getAction().getOwnerObj().getId());
             attack.activatedOn(REF);
         }
     }

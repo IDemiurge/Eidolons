@@ -51,9 +51,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static main.system.GuiEventType.SHOW_QUESTS_INFO;
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
@@ -89,7 +87,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected QuestJournal journal;
     protected SmartButton menuButton;
     private boolean town;
-    private List<Actor> hiddenActors=    new ArrayList<>() ;
+    private Set<Actor> hiddenActors=    new HashSet<>() ;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);

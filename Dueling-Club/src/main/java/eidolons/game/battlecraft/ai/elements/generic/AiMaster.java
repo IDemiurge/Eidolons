@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstr
 import eidolons.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
@@ -61,9 +62,11 @@ public class AiMaster {
     private AiPriorityConstantMaster priorityConstantMaster;
     private PriorityProfileManager priorityProfileManager;
     private PriorityModifier priorityModifier;
+    private AiBehaviorManager behaviorManager;
 
     public AiMaster(DC_Game game) {
         this.game = game;
+        behaviorManager =new AiBehaviorManager(this);
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
         this.taskManager = new TaskManager(this);
         this.goalManager = new GoalManager(this);
@@ -254,5 +257,9 @@ public class AiMaster {
     }
     public AI_Manager getManager() {
         return game.getAiManager();
+    }
+
+    public AiBehaviorManager getBehaviorManager() {
+        return behaviorManager;
     }
 }

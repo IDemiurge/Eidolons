@@ -55,9 +55,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
      CONTAINER_CONTENTS.AMMO.name()
     };
     public static final String OPEN = "_open";
+    private static boolean test_mode = true;
     Map<ObjType, Map<CONTAINER_CONTENTS,
      Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
-    private boolean test_mode = false;
     private QUALITY_LEVEL[] exceptionalQualities;
     private QUALITY_LEVEL[] rareQualities;
     private QUALITY_LEVEL[] uncommonQualities;
@@ -82,7 +82,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForContainers() {
-        return !CoreEngine.isFastMode();
+        return !CoreEngine.isFastMode() || test_mode;
     }
 
     public static boolean loot(Unit unit, DC_Obj obj) {
@@ -333,7 +333,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (c == CONTAINER_CONTENTS.JEWELRY ||
          group.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             if (!ItemGenerator.isJewelryOn())
-                return null;
+                return     new ArrayList<>();
             return generateJewelry(rarity, group);
         }
         ItemGenerator generator = ItemGenerator.getDefaultGenerator();
@@ -362,8 +362,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private DC_TYPE getRandomTYPE(CONTAINER_CONTENTS c) {
         OBJ_TYPE TYPE = getTYPE(c);
-        if (TYPE instanceof C_OBJ_TYPE) {
-            while (true) {
+
+            while (TYPE instanceof C_OBJ_TYPE) {
                 TYPE = new RandomWizard<DC_TYPE>().getRandomListItem(
                  Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
                 if (TYPE == DC_TYPE.JEWELRY)
@@ -371,7 +371,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                         continue;
                 break;
             }
-        }
         return (DC_TYPE) TYPE;
     }
 
@@ -467,12 +466,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public void initContents(BattleFieldObject obj) {
+
         String contents = obj.getProperty(PROPS.INVENTORY);
 
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
-        if (test_mode)
-            prop = "Food(10);";
         Map<CONTAINER_CONTENTS, Integer> map =
          wizard.
           constructWeightMap(prop, CONTAINER_CONTENTS.class);

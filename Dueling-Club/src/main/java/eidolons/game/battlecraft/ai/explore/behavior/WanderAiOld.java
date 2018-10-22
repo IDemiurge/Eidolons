@@ -34,6 +34,11 @@ public class WanderAiOld extends AiBehavior {
         super(master, ai);
     }
 
+    @Override
+    protected boolean isFollowOrAvoid() {
+        return true;
+    }
+
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
         // permittedCells = ai.getGroup().getWanderBlocks();
@@ -289,13 +294,9 @@ public class WanderAiOld extends AiBehavior {
         return targetCoordinates;
     }
 
-    @Override
-    protected void update(float delta) {
-
-    }
 
     @Override
-    public ActionSequence getOrders(UnitAI ai) {
+    public ActionSequence getOrders( ) {
         if (ai.getGroupAI() == null)
             return null;
         Coordinates c1 = null;

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
+import eidolons.macro.entity.town.Shop;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * create shops for each mission!
  */
 public class ShopManager<E extends MetaGame> extends MetaGameHandler<E> {
-    protected List<ShopInterface> shops;
+    protected List<Shop> shops;
 
     public ShopManager(MetaGameMaster master) {
         super(master);
@@ -21,7 +21,7 @@ public class ShopManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     }
 
-    public List<ShopInterface> getShops() {
+    public List<Shop> getShops() {
         return shops;
     }
 }

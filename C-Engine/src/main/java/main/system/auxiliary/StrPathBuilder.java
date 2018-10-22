@@ -16,12 +16,12 @@ public class StrPathBuilder {
             build_(parts);
     }
 
-    public static String build(String... strings) {
-        return build(true, strings);
+    public static String build(Object... strings) {
+        return _build(true, strings);
 
     }
 
-    public static String build(boolean cropLast, String... strings) {
+    public static String _build(boolean cropLast, Object... strings) {
         return new StrPathBuilder().build_(cropLast, strings);
     }
 
@@ -34,12 +34,13 @@ public class StrPathBuilder {
         return builder.append(str + PathUtils.getPathSeparator());
     }
 
-    public String build_(String... strings) {
+    public String build_(Object... strings) {
         return build_(true, strings);
     }
 
-    public String build_(boolean cropLast, String... strings) {
-        for (String s : strings) {
+    public String build_(boolean cropLast, Object... strings) {
+        for (Object o : strings) {
+            String s = o.toString();
             if (s.endsWith(PathUtils.getPathSeparator()))
                 builder.append(s);
             else

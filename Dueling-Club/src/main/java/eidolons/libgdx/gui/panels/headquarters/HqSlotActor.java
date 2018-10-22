@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -17,13 +17,14 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
     protected FadeImageContainer border;
     protected FadeImageContainer image;
     protected boolean dirty;
+    protected ClickListener listener;
 
     public HqSlotActor(T model) {
         if (model == null) {
             addActor(image = new FadeImageContainer(getEmptyImage()));
         } else {
             this.model = model;
-            addActor(image = new FadeImageContainer(model.getImagePath()));
+            addActor(image = new FadeImageContainer( getImagePath(model)));
             addActor(border = new FadeImageContainer());
             if (isOverlayOn()){
                 addActor(overlay = new FadeImageContainer());
@@ -32,13 +33,21 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
                     overlay.setImage(overlayPath );
                 }
             }
-            addListener(getListener());
         }
-
+        if (isListenerRequired())
+            addListener(listener=createListener());
         if (model != null) {
             image.setSize(64, 64);
             setSize(64, 64);
         }
+    }
+
+    protected String getImagePath(T model) {
+        return model.getImagePath();
+    }
+
+    protected boolean isListenerRequired() {
+        return model!=null ;
     }
 
     public boolean isOverlayOn() {
@@ -56,7 +65,11 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
 
     protected abstract String getEmptyImage() ;
 
-    private EventListener getListener() {
+    public ClickListener getListener() {
+        return listener;
+    }
+
+    protected ClickListener createListener() {
         return new SmartClickListener(this){
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {

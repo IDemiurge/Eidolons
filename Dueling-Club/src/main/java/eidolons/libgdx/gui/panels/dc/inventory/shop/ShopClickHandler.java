@@ -5,8 +5,6 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerClickHandler;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.macro.entity.town.Shop;
@@ -23,7 +21,11 @@ public class ShopClickHandler extends ContainerClickHandler {
 
     public ShopClickHandler(Shop shop, Unit unit) {
         super(HqDataMasterDirect.getInstance(unit),
-         shop.getImagePath(), shop.getItems(),  shop);
+         shop.getImagePath(), shop.getItems(), shop);
+    }
+
+    public static void setStashOpen(boolean stashOpen) {
+        ShopClickHandler.stashOpen = stashOpen;
     }
 
     @Override
@@ -32,12 +34,22 @@ public class ShopClickHandler extends ContainerClickHandler {
             singleClick(cell_type, null);
             return false;
         }
-        if (sim.isInventoryFull()) {
-            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!", sim);
-            return false;
+
+        OPERATIONS operation = null;
+        if (clickCount > 1 || rightClick) {
+            if (cell_type == CELL_TYPE.CONTAINER) {
+                operation = OPERATIONS.BUY;
+            } else if (stashOpen) {
+                operation = OPERATIONS.STASH;
+            } else
+            {
+                if (rightClick)
+                    operation = OPERATIONS.SELL;
+            }
         }
-        OPERATIONS operation = getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+        if (operation==null) {
+            operation = getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+        }
 
         if (operation == OPERATIONS.DROP) {
             if (cell_type == CELL_TYPE.CONTAINER) {
@@ -52,7 +64,6 @@ public class ShopClickHandler extends ContainerClickHandler {
                 operation = OPERATIONS.BUY;
             } else if (stashOpen)
                 operation = OPERATIONS.STASH;
-
         }
         if (handleOperation(operation, cell_type, cellContents)) {
             return true;
@@ -103,13 +114,13 @@ public class ShopClickHandler extends ContainerClickHandler {
 
     @Override
     protected void execute(OPERATIONS operation, Entity type, Object arg) {
-        dataMaster.operation(  getHqOperation(operation), type, arg);
+        dataMaster.operation(getHqOperation(operation), type, arg);
         refreshPanel();
     }
 
     @Override
     public void refreshPanel() {
-        GuiEventManager.trigger(GuiEventType.UPDATE_SHOP );
+        GuiEventManager.trigger(GuiEventType.UPDATE_SHOP);
     }
 
     @Override
@@ -139,16 +150,15 @@ public class ShopClickHandler extends ContainerClickHandler {
             case STASH:
                 return !Eidolons.getTown().isStashFull();
             case UNSTASH:
-                return !Eidolons.getMainHero().isInventoryFull();
-
+                return checkCanAddInventory();
             case SELL:
 
             case BUY:
-                Shop shop= (Shop) container;
+                Shop shop = (Shop) container;
                 Integer gold = (operation == OPERATIONS.BUY ? dataMaster.getHeroModel() : container)
                  .getIntParam(PARAMS.GOLD);
-                if (gold >=shop.getPrice((DC_HeroItemObj) type, dataMaster.getHeroModel(),
-                 operation== OPERATIONS.SELL)) {
+                if (gold >= shop.getPrice((DC_HeroItemObj) type, dataMaster.getHeroModel(),
+                 operation == OPERATIONS.SELL)) {
                     return true;
                 }
                 GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
@@ -161,6 +171,7 @@ public class ShopClickHandler extends ContainerClickHandler {
         }
         return super.canDoOperation(operation, type, arg);
     }
+
 
     @Override
     protected Object getSecondArg(OPERATIONS operation, Entity type) {
@@ -175,10 +186,6 @@ public class ShopClickHandler extends ContainerClickHandler {
     @Override
     protected OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         return super.getOperation(cell_type, clickCount, rightClick, altClick, cellContents);
-    }
-
-    public static void setStashOpen(boolean stashOpen) {
-        ShopClickHandler.stashOpen = stashOpen;
     }
 
     public void repair() {

@@ -8,6 +8,7 @@ import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
@@ -44,11 +45,11 @@ public class ArmorMaster {
 
     public static int getShieldReducedAmountForDealDamageEffect(
      DealDamageEffect effect,
-     Unit targetObj, int amount, DC_ActiveObj active) {
+     BattleFieldObject targetObj, int amount, DC_ActiveObj active) {
 
         if (effect.getGame().getArmorMaster().checkCanShieldBlock(active, targetObj)) {
             int shieldBlock = effect.getGame().getArmorMaster().getShieldDamageBlocked(amount, targetObj,
-             (Unit) effect.getRef().getSourceObj(), active, null, effect.getDamageType());
+             (BattleFieldObject) effect.getRef().getSourceObj(), active, null, effect.getDamageType());
             // event?
             amount -= shieldBlock;
         }
@@ -57,18 +58,18 @@ public class ArmorMaster {
         return amount;
     }
 
-    public static boolean isArmorUnequipAllowed(Unit hero) {
+    public static boolean isArmorUnequipAllowed(BattleFieldObject hero) {
         return hero.getGame().isSimulation();
     }
 
     public int getArmorBlockDamage(Damage damage) {
         return getArmorBlockDamage(false, damage.isSpell(), damage.canCritOrBlock(),
-         damage.isAverage(), damage.getAmount(), (Unit) damage.getTarget(), damage.getSource(),
+         damage.isAverage(), damage.getAmount(), (BattleFieldObject) damage.getTarget(), damage.getSource(),
          damage.isOffhand(),
          damage.getDmgType(), damage.getAction());
     }
 
-    public int getArmorBlockDamage(int damage, Unit attacked, Unit attacker,
+    public int getArmorBlockDamage(int damage, BattleFieldObject attacked, BattleFieldObject attacker,
                                    DC_ActiveObj action) {
 
 
@@ -82,14 +83,14 @@ public class ArmorMaster {
         return Math.min(damage, blocked);
     }
 
-    private int getNaturalArmorBlock(int damage, Unit attacked, Unit attacker, DC_ActiveObj action) {
+    private int getNaturalArmorBlock(int damage, BattleFieldObject attacked, BattleFieldObject attacker, DC_ActiveObj action) {
 //        DurabilityRule.physicalDamage()
         return 0;
     }
 
     // for spells/special actions
     public int getArmorBlockForActionDamage(int amount, DAMAGE_TYPE damage_type,
-                                            Unit targetObj, DC_ActiveObj action) {
+                                            BattleFieldObject targetObj, DC_ActiveObj action) {
         boolean zone = (action.isZone());
         boolean canCritOrBlock = !zone;
         boolean average = zone;
@@ -99,12 +100,12 @@ public class ArmorMaster {
             }
         }
         return getArmorBlockDamage(false, action instanceof DC_SpellObj, canCritOrBlock, average,
-         amount, targetObj, action.getOwnerUnit(), action.isOffhand(),
+         amount, targetObj, action.getOwnerObj(), action.isOffhand(),
          action.getEnergyType(), action);
     }
 
     private int getArmorBlockDamage(boolean shield, boolean spell, boolean canCritOrBlock,
-                                    boolean average, Integer damage, Unit attacked, Unit attacker,
+                                    boolean average, Integer damage, BattleFieldObject attacked, BattleFieldObject attacker,
                                     boolean offhand, DAMAGE_TYPE dmg_type, DC_ActiveObj action) {
         /*
          * if blocks, apply armor's resistance values too
@@ -171,8 +172,8 @@ public class ArmorMaster {
         return blocked;
     }
 
-    public Integer getShieldBlockValue(int amount, DC_WeaponObj shield, Unit attacked,
-                                       Unit attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean zone) {
+    public Integer getShieldBlockValue(int amount, DC_WeaponObj shield, BattleFieldObject attacked,
+                                       BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean zone) {
         DAMAGE_TYPE dmg_type = action.getDamageType();
         if (dmg_type == null) {
             if (weapon == null) {
@@ -193,7 +194,7 @@ public class ArmorMaster {
         return blockValue;
     }
 
-    public boolean checkCanShieldBlock(DC_ActiveObj active, Unit targetObj) {
+    public boolean checkCanShieldBlock(DC_ActiveObj active, BattleFieldObject targetObj) {
         // if (active.isMissile())
         if (targetObj.getActiveWeapon(true) != null) {
             if (targetObj.getActiveWeapon(true).isShield()) {
@@ -203,8 +204,8 @@ public class ArmorMaster {
         return false;
     }
 
-    public Integer getShieldBlockChance(DC_WeaponObj shield, Unit attacked,
-                                        Unit attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean offhand,
+    public Integer getShieldBlockChance(DC_WeaponObj shield, BattleFieldObject attacked,
+                                        BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean offhand,
                                         boolean spell) {
 
         Integer chance = getBlockPercentage(true, spell, true, true, shield, offhand, attacker,
@@ -220,7 +221,7 @@ public class ArmorMaster {
         return chance;
     }
 
-    public int getShieldDamageBlocked(Integer damage, Unit attacked, Unit attacker,
+    public int getShieldDamageBlocked(Integer damage, BattleFieldObject attacked, BattleFieldObject attacker,
                                       DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
         if (!checkCanShieldBlock(action, attacked)) {
             return 0;
@@ -281,8 +282,8 @@ public class ArmorMaster {
 
     // % to block for shield; max % of attack's damage blocked for armor
     private int getBlockPercentage(boolean shield, boolean spell, boolean canCritOrBlock,
-                                   boolean average, DC_Obj armorObj, boolean offhand, Unit attacker,
-                                   Unit attacked, DC_ActiveObj action) {
+                                   boolean average, DC_Obj armorObj, boolean offhand, BattleFieldObject attacker,
+                                   BattleFieldObject attacked, DC_ActiveObj action) {
         if (!average)
             average = action.getGame().getCombatMaster().isDiceAverage();
         if (canCritOrBlock)
@@ -293,6 +294,7 @@ public class ArmorMaster {
         DC_WeaponObj weapon = attacker.getActiveWeapon(offhand);
 
         Integer area = action.getIntParam(PARAMS.IMPACT_AREA);
+        if (attacker instanceof Unit)
         if (action.isRanged() && !action.isThrow()) {
             if (weapon.isRanged()) {
                 try {
@@ -300,7 +302,7 @@ public class ArmorMaster {
                     if (ammo == null)
                     // ammo = attacker.getAmmo(weapon); TODO
                     {
-                        ammo = attacker.getQuickItems().get(0);
+                        ammo = ((Unit) attacker).getQuickItems().get(0);
                     }
                     weapon = ammo.getWrappedWeapon();
                 } catch (Exception e) {

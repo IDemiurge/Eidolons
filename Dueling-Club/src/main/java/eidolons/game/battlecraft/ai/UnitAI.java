@@ -6,22 +6,20 @@ import eidolons.game.battlecraft.ai.advanced.companion.MetaGoal;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
+import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
-import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UnitAI {
@@ -51,6 +49,14 @@ public class UnitAI {
         combatAI= new UnitCombatAI(unit);
 //        initType();
 
+    }
+
+    public UnitCombatAI getCombatAI() {
+        return combatAI;
+    }
+
+    public UnitExploreAI getExploreAI() {
+        return exploreAI;
     }
 
     public AI_TYPE getType() {
@@ -221,7 +227,7 @@ public class UnitAI {
     }
 
     public void setFree(boolean free) {
-        combatAI.setFree(false);
+        combatAI.setFree(free);
     }
 
     public boolean isOutsideCombat() {
@@ -248,13 +254,6 @@ public class UnitAI {
         combatAI.setExecutor(executor);
     }
 
-    public AI_BEHAVIOR_MODE getCurrentBehavior() {
-        return combatAI.getCurrentBehavior();
-    }
-
-    public void setCurrentBehavior(AI_BEHAVIOR_MODE currentBehavior) {
-        combatAI.setCurrentBehavior(currentBehavior);
-    }
 
     public int getEngagementDuration() {
         return combatAI.getEngagementDuration();
@@ -276,33 +275,6 @@ public class UnitAI {
         return combatAI.getForcedActions();
     }
 
-    public void setForcedActions(List<Action> forcedActions) {
-        combatAI.setForcedActions(forcedActions);
-    }
-
-    public Map<ObjType, Integer> getActionPriorityMods() {
-        return combatAI.getActionPriorityMods();
-    }
-
-    public void setActionPriorityMods(Map<ObjType, Integer> actionPriorityMods) {
-        combatAI.setActionPriorityMods(actionPriorityMods);
-    }
-
-    public Map<ObjType, Integer> getActionPriorityBonuses() {
-        return combatAI.getActionPriorityBonuses();
-    }
-
-    public void setActionPriorityBonuses(Map<ObjType, Integer> actionPriorityBonuses) {
-        combatAI.setActionPriorityBonuses(actionPriorityBonuses);
-    }
-
-    public boolean isOrdered() {
-        return combatAI.isOrdered();
-    }
-
-    public void setOrdered(boolean ordered) {
-        combatAI.setOrdered(ordered);
-    }
 
     public boolean isPathBlocked() {
         return exploreAI.isPathBlocked();

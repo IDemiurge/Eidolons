@@ -220,6 +220,11 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         }
 
         @Override
+        protected boolean isScrolled() {
+            return true;
+        }
+
+        @Override
         protected CELL_TYPE getCellType() {
             return CELL_TYPE.CONTAINER;
         }

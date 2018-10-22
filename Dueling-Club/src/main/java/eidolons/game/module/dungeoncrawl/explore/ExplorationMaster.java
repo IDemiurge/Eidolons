@@ -38,6 +38,9 @@ public class ExplorationMaster {
         enemyPartyMaster = new ExploreEnemyPartyMaster(this);
     }
 
+    public void act(float delta) {
+        aiMaster.act(delta);
+    }
     public static boolean isWaiting() {
         return waiting;
     }
@@ -166,4 +169,5 @@ public class ExplorationMaster {
             return null;
         return (ExploreGameLoop) game.getLoop();
     }
+
 }
