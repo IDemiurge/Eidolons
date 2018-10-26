@@ -91,13 +91,13 @@ public class ContainerPanel extends TablePanel implements Blocking {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
+//                event.stop();
                 return true;
             }
 
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-                event.stop();
+//                event.stop();
                 return true;
             }
         });

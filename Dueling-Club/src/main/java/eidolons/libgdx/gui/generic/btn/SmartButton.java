@@ -1,12 +1,14 @@
 package eidolons.libgdx.gui.generic.btn;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.ConfirmationPanel;
@@ -90,7 +92,10 @@ public class SmartButton extends TextButton implements EventListener {
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
         if (event.getType() == Type.touchUp) {
-            runnable.run();
+//            event.getTarget().getStage().hit()
+//            event.getTarget().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()))
+            if (GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true))
+                runnable.run();
         }
         return true;
     }

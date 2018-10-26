@@ -199,6 +199,11 @@ public class HqPanel extends TablePanel implements Blocking {
 //        ActorMaster.addFadeOutAction(this, 0.3f );
 //        ActorMaster.addHideAfter(this );
 //        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
+        HqMaster.closeHqPanel();
+
+    }
+
+    public void closed() {
         HqPanel.setActiveInstance(null  );
         getStageWithClosable().closeClosable(this);
 
@@ -206,7 +211,6 @@ public class HqPanel extends TablePanel implements Blocking {
             sub.getEntity().getModificationList().clear();
         }
     }
-
     @Override
     public void open() {
         HqPanel.setActiveInstance(this);

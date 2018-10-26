@@ -98,6 +98,12 @@ public enum DIRECTION {
         return DirectionMaster.rotate180(this);
     }
 
+    public DIRECTION flipHorizontally() {
+        return DirectionMaster.flipHorizontally(this);
+    }
+    public DIRECTION flipVertically() {
+        return DirectionMaster.flipVertically(this);
+    }
     public DIRECTION flip() {
         return DirectionMaster.flip(this);
     }
@@ -107,5 +113,15 @@ public enum DIRECTION {
             return DIAGONAL;
         }
         return diags_no_only ? clockwise : ORTHOGONAL;
+    }
+
+    public DIRECTION rotate(int degrees) {
+        DIRECTION d = this;
+        boolean clockwise= degrees<0;
+        int n = Math.abs(degrees) / 45;
+        for (int j = 0; j < n; j++) {
+            d= d.rotate45(clockwise);
+        }
+        return d;
     }
 }

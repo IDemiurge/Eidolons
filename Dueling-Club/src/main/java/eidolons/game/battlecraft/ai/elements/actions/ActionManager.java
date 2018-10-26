@@ -153,7 +153,7 @@ public class ActionManager extends AiHandler {
             return action;
         } else {
             if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
-                return chosenSequence.nextAction();
+                return chosenSequence.popNextAction();
 
         }
         if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_NONE) {
@@ -169,7 +169,7 @@ public class ActionManager extends AiHandler {
         }
         //TODO for behaviors? ai-issued-orders?
         ai.checkSetOrders(chosenSequence);
-        return chosenSequence.nextAction();
+        return chosenSequence.popNextAction();
     }
 
 
@@ -229,7 +229,7 @@ public class ActionManager extends AiHandler {
 
         getMaster().getMessageBuilder().append("Forced Task: " + sequence.getTask().toShortString());
 
-        action = sequence.nextAction();
+        action = sequence.popNextAction();
         if (action == null) {
             return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
         }

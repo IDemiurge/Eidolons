@@ -11,11 +11,14 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.launch.CoreEngine;
 
+import java.util.List;
 import java.util.Map;
 
 public class TownInitializer {
 
+    public static final boolean TEST_MODE = CoreEngine.isFastMode();
     private static final int default_shop_min = 2;
     private static final int default_shop_limit = 5;
 
@@ -59,8 +62,15 @@ public class TownInitializer {
         if (min == 0) {
             min = default_shop_min;
         }
-        for (String shopTypeName : ContainerUtils.open(town
-         .getProperty(MACRO_PROPS.SHOPS))) {
+
+        List<String> data = ContainerUtils.openContainer(town
+         .getProperty(MACRO_PROPS.SHOPS));
+        if (TEST_MODE) {
+            max = 999;
+            data = DataManager.getTypeNames(MACRO_OBJ_TYPES.SHOP);
+        }
+
+        for (String shopTypeName : data) {
             i++;
             if (i > max) {
                 break;

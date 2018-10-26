@@ -15,11 +15,11 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstr
 import eidolons.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
+import eidolons.game.battlecraft.ai.tools.path.PathBuilderAtomic;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
 import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
@@ -62,11 +62,9 @@ public class AiMaster {
     private AiPriorityConstantMaster priorityConstantMaster;
     private PriorityProfileManager priorityProfileManager;
     private PriorityModifier priorityModifier;
-    private AiBehaviorManager behaviorManager;
-
+    private PathBuilderAtomic pathBuilderAtomic;
     public AiMaster(DC_Game game) {
         this.game = game;
-        behaviorManager =new AiBehaviorManager(this);
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
         this.taskManager = new TaskManager(this);
         this.goalManager = new GoalManager(this);
@@ -88,6 +86,7 @@ public class AiMaster {
         this.priorityConstantMaster = new AiPriorityConstantMaster(this);
         this.priorityProfileManager = new PriorityProfileManager(this);
         this.priorityModifier = new PriorityModifier(this);
+        this.pathBuilderAtomic = new PathBuilderAtomic(this);
 
         executor = new AiExecutor(game);
 
@@ -116,6 +115,12 @@ public class AiMaster {
         this.priorityConstantMaster.initialize();
         this.priorityProfileManager.initialize();
         this.priorityModifier.initialize();
+        this.pathBuilderAtomic.initialize();
+
+    }
+
+    public PathBuilderAtomic getPathBuilderAtomic() {
+        return pathBuilderAtomic;
     }
 
     public PriorityProfile getProfile() {
@@ -259,7 +264,5 @@ public class AiMaster {
         return game.getAiManager();
     }
 
-    public AiBehaviorManager getBehaviorManager() {
-        return behaviorManager;
-    }
+
 }

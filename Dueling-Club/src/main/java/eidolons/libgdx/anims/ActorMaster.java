@@ -285,4 +285,10 @@ public class ActorMaster {
         addAction(actor, delayAction);
     }
 
+    public static Action getScaleAction(float scale, float v) {
+        ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);
+        action.setScale(scale);
+        action.setDuration(v);
+        return action;
+    }
 }

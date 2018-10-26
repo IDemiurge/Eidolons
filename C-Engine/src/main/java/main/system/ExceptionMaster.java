@@ -11,11 +11,13 @@ import java.util.List;
  */
 public class ExceptionMaster {
 
+    private static final boolean FULL_LOG = true;
     static List<String> printed = new ArrayList<>();
 
     public static void printStackTrace(Exception e) {
 //
         {
+            if (!FULL_LOG)
             if (CoreEngine.isJar() || LogMaster.isOff() || CoreEngine.isFastMode())
                 if (printed.contains(e.getMessage()))
                     return;

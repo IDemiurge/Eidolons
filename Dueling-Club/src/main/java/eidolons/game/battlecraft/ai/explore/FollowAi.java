@@ -1,9 +1,11 @@
-package eidolons.game.battlecraft.ai.explore.behavior;
+package eidolons.game.battlecraft.ai.explore;
 
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import eidolons.game.battlecraft.ai.explore.behavior.AiGroupBehavior;
 
 /**
  * Created by JustMe on 10/12/2018.
@@ -20,11 +22,16 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
  * are they all about moving?
  * perhaps I could just rob GdxAi of some good concepts
  */
-public class FollowAi extends AiBehavior {
+public abstract class FollowAi extends AiGroupBehavior {
     float lastDistanceFromLeader;
 
     public FollowAi(AiMaster master, UnitAI ai) {
         super(master, ai);
+    }
+
+    @Override
+    protected DC_Obj updateLeaderTarget() {
+        return null;
     }
 
     @Override

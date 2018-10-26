@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.shaders.ShaderMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -24,7 +25,7 @@ public class DragManager extends FadeImageContainer {
     }
 
     public static DragManager getInstance() {
-        if (instance==null )
+        if (instance == null)
             instance = new DragManager();
         return instance;
     }
@@ -35,11 +36,11 @@ public class DragManager extends FadeImageContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha==ShaderMaster.SUPER_DRAW)
+        if (parentAlpha == ShaderMaster.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null, false,false);
-//        b.draw(draggedRegion, x, y);
+            ShaderMaster.drawWithCustomShader(this, batch, null, false, false);
+        //        b.draw(draggedRegion, x, y);
     }
 
     protected boolean isResetImageAlways() {
@@ -65,9 +66,9 @@ public class DragManager extends FadeImageContainer {
     public void act(float delta) {
         checkDrawDraggedItemChanged(delta);
         if (draggedEntity != null) {
-            float x = Gdx.input.getX()  - getWidth() / 3  ;//draggedOffsetX;
-            float y = GdxMaster.getHeight()-
-             (Gdx.input.getY() + getHeight()  );// draggedOffsetY;
+            float x = Gdx.input.getX() - getWidth() / 3;//draggedOffsetX;
+            float y = GdxMaster.getHeight() -
+             (Gdx.input.getY() + getHeight());// draggedOffsetY;
             setPosition(x, y);
         }
         super.act(delta);
@@ -91,19 +92,16 @@ public class DragManager extends FadeImageContainer {
     }
 
     public void setDraggedEntity(Entity draggedEntity) {
-        if (draggedEntity == null)
+        if (draggedEntity == null) {
             if (this.draggedEntity != null) {
                 setEmpty();
                 this.draggedEntity = draggedEntity;
             }
-
-        if (draggedEntity != null)
-            if (this.draggedEntity != draggedEntity)
-            {
-                setImage((draggedEntity.getImagePath()));
-                fadeIn();
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
-            }
+        } else if (this.draggedEntity != draggedEntity) {
+            setImage((UiMaster.getSprite(draggedEntity.getImagePath())));
+            fadeIn();
+            GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
+        }
 
         this.draggedEntity = draggedEntity;
     }
@@ -113,11 +111,12 @@ public class DragManager extends FadeImageContainer {
         //additional - red cross if outside active zone
     }
 
+    public GuiStage getGuiStage() {
+        return guiStage;
+    }
+
     public void setGuiStage(GuiStage guiStage) {
         this.guiStage = guiStage;
     }
 
-    public GuiStage getGuiStage() {
-        return guiStage;
-    }
 }

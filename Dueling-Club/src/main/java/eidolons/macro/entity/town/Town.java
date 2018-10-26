@@ -1,6 +1,8 @@
 package eidolons.macro.entity.town;
 
+import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.macro.MacroGame;
@@ -10,8 +12,10 @@ import eidolons.macro.map.Place;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
 
@@ -30,6 +34,7 @@ public class Town extends Place {
     DequeImpl<TownPlace> townPlaces = new DequeImpl<>();
     DequeImpl<FactionQuarters> fqs = new DequeImpl<>();
     DequeImpl<Party> parties = new DequeImpl<>();
+
 
     FactionObj ownerFaction;
     private boolean readyToInit;
@@ -64,9 +69,24 @@ public class Town extends Place {
             //gonna need to store durability etc...
 
         }
-
+        for (String substring : ContainerUtils.openContainer(
+         Eidolons.getMainHero().getProperty(PROPS.STASH))) {
+            if (!NumberUtils.isInteger(substring)) {
+                continue;
+            }
+            int id = Integer.valueOf(substring);
+            Obj item = Eidolons.getGame().getObjectById(id);
+            if (item instanceof DC_HeroItemObj)
+                stash.add((DC_HeroItemObj) item);
+        }
     }
 
+    public void exited() {
+        for (Shop shop : shops) {
+            shop.exited();
+        }
+        Eidolons.getMainHero().setProperty(PROPS.STASH, ContainerUtils.toIdContainer(stash), true);
+    }
     public Tavern getTavern(String tabName) {
         for (Tavern s : getTaverns()) {
             if (s.getName().equals(tabName)) {
@@ -185,4 +205,5 @@ public class Town extends Place {
         getStash().add(item);
         item.setContainer(CONTAINER.STASH);
     }
+
 }

@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
-import eidolons.game.battlecraft.ai.explore.behavior.Patrol;
+import eidolons.game.battlecraft.ai.explore.Patrol;
+import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
@@ -18,6 +18,7 @@ import main.system.datatypes.DequeImpl;
 import java.util.*;
 
 public class GroupAI {
+    UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.CROWD;
     private ENCOUNTER_TYPE encounterType;
     private Unit leader;
     private DequeImpl<Unit> members = new DequeImpl<>();
@@ -37,7 +38,7 @@ public class GroupAI {
     private boolean clockwisePatrol;
     private boolean backAndForth;
     private Patrol patrol;
-    UNIT_GROUP_TYPE type=UNIT_GROUP_TYPE.CROWD;
+    private Unit originalLeader;
 
     public GroupAI() {
 
@@ -65,7 +66,7 @@ public class GroupAI {
         if (obj instanceof Unit) {
             Unit unit = (Unit) obj;
             if (leader == null) {
-                leader = unit;
+                setLeader(unit);
                 if (originCoordinates == null) {
                     originCoordinates = leader.getCoordinates();
                 }
@@ -85,10 +86,12 @@ public class GroupAI {
     }
 
     public Unit getLeader() {
-        if (!leader.canAct()) {
+        if (originalLeader.canAct()) {
+            setLeader(originalLeader);
+        } else if (!leader.canAct()) {
             for (Unit member : getMembers()) {
                 if (member.canAct()) {
-                    leader = member;
+                    setLeader(member);
                 }
             }
         }
@@ -96,6 +99,9 @@ public class GroupAI {
     }
 
     public void setLeader(Unit leader) {
+        if (this.leader == null) {
+            originalLeader = leader;
+        }
         this.leader = leader;
     }
 
@@ -203,7 +209,7 @@ public class GroupAI {
     }
 
     public Coordinates getOriginCoordinates() {
-        if (originCoordinates==null) {
+        if (originCoordinates == null) {
             originCoordinates = leader.getCoordinates();
         }
         return originCoordinates;

@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
+import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 
 /**
@@ -15,5 +16,15 @@ public class QuestTrigger extends Trigger {
     @Override
     public boolean isRemoveOnReset() {
         return false;
+    }
+
+    @Override
+    public boolean trigger() {
+        return super.trigger();
+    }
+
+    @Override
+    public boolean check(Event event) {
+        return super.check(event);
     }
 }

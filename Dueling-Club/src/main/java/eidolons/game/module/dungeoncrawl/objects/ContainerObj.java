@@ -57,7 +57,12 @@ public class ContainerObj extends DungeonObj {
         if (!itemsInitialized) {
             initInventory();
         }
-        items.forEach(itemObj -> itemObj.setContainer(CONTAINER.CONTAINER));
+        items.forEach(itemObj -> {
+            if (itemObj != null) {
+                itemObj.setContainer(CONTAINER.CONTAINER);
+                itemObj.getRef().setSource(getId());
+            }
+        });
         return items;
     }
 

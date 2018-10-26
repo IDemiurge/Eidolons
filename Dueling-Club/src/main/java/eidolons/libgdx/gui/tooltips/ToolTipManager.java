@@ -32,8 +32,8 @@ import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
-    private static final float DEFAULT_WAIT_TIME = 1.3f;
-    private static final float TOOLTIP_HIDE_DISTANCE = 60;
+    private static final float DEFAULT_WAIT_TIME = 1.5f;
+    private static final float TOOLTIP_HIDE_DISTANCE = 80;
     private final GuiStage guiStage;
     float tooltipTimer;
     private Tooltip tooltip;
@@ -78,6 +78,8 @@ public class ToolTipManager extends TablePanel {
             if (actorCell.getActor() != null)
                 ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
         }
+        if (object==null )
+            return;
         tooltip = (Tooltip) object;
         toWait = getTimeToWaitForTooltip(tooltip);
         if (toWait == 0) {
@@ -99,7 +101,7 @@ public class ToolTipManager extends TablePanel {
         if (!tooltip.isBattlefield()) {
             return 0;
         }
-        return DEFAULT_WAIT_TIME / OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) / 100;
+        return DEFAULT_WAIT_TIME / (OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) / 100);
     }
 
     @Override

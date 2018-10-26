@@ -12,10 +12,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
-import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
-import main.content.enums.entity.ItemEnums.JEWELRY_GROUP;
-import main.content.enums.entity.ItemEnums.MATERIAL;
-import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.content.enums.entity.ItemEnums.*;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
@@ -101,6 +98,7 @@ public class ItemGenerator implements GenericItemGenerator {
     private static ItemGenerator basicGenerator;
     private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
     private static List<ObjType> baseWeaponTypes = new ArrayList<>();
+    private static List<ObjType> baseWeaponTypesNoNatural ;
     private static List<ObjType> baseJewelryTypes = new ArrayList<>();
     private static List<ObjType> baseItemTypes = new ArrayList<>();
     private static List<ObjType> baseArmorTypes = new ArrayList<>();
@@ -582,7 +580,18 @@ public class ItemGenerator implements GenericItemGenerator {
             }
         } else {
             if (type.equals(DC_TYPE.WEAPONS)) {
-                return (baseWeaponTypes);
+                if (baseWeaponTypesNoNatural == null) {
+                    baseWeaponTypesNoNatural=     new ArrayList<>(baseWeaponTypes) ;
+                    baseWeaponTypesNoNatural.removeIf(t ->
+                     t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.name()));
+                    baseWeaponTypesNoNatural.removeIf(t ->
+                     t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.NATURAL.name()));
+                    baseWeaponTypesNoNatural.removeIf(t ->
+                     t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.FIREARMS.name()));
+                    baseWeaponTypesNoNatural.removeIf(t ->
+                     t.checkProperty(G_PROPS.WEAPON_CLASS, WEAPON_CLASS.DOUBLE.name()));
+                }
+                return (baseWeaponTypesNoNatural);
             }
             if (type.equals(DC_TYPE.ITEMS)|| type.equals(DC_TYPE.JEWELRY)) {
                 if (!jewelryGenerated){

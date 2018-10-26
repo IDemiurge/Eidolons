@@ -10,36 +10,58 @@ import main.entity.DataModel;
 /**
  * Created by JustMe on 4/18/2018.
  */
-public abstract class HqSlotActor<T extends DataModel> extends GroupX{
-    protected   String overlayPath;
-    protected   T model;
-    protected FadeImageContainer overlay;
+public abstract class HqSlotActor<T extends DataModel> extends GroupX {
+    protected String overlayPath;
+    protected T model;
     protected FadeImageContainer border;
+    protected FadeImageContainer overlay;
     protected FadeImageContainer image;
+    protected FadeImageContainer backgroundOverlay;
+    protected FadeImageContainer background;
     protected boolean dirty;
     protected ClickListener listener;
 
     public HqSlotActor(T model) {
+        background = createBackground();
+        if (background != null) {
+            addActor(background);
+        }
+        backgroundOverlay = createBackgroundOverlay();
+        if (backgroundOverlay != null) {
+            addActor(backgroundOverlay);
+        }
         if (model == null) {
             addActor(image = new FadeImageContainer(getEmptyImage()));
         } else {
             this.model = model;
-            addActor(image = new FadeImageContainer( getImagePath(model)));
+            addActor(image = new FadeImageContainer(getImagePath(model)));
             addActor(border = new FadeImageContainer());
-            if (isOverlayOn()){
+            if (isOverlayOn()) {
                 addActor(overlay = new FadeImageContainer());
-                overlayPath =  getOverlay(model);
-                if (overlayPath!=null ) {
-                    overlay.setImage(overlayPath );
+                overlayPath = getOverlay(model);
+                if (overlayPath != null) {
+                    overlay.setImage(overlayPath);
                 }
             }
         }
         if (isListenerRequired())
-            addListener(listener=createListener());
+            addListener(listener = createListener());
         if (model != null) {
-            image.setSize(64, 64);
-            setSize(64, 64);
+            initSize();
         }
+    }
+
+    protected void initSize() {
+        image.setSize(64, 64);
+        setSize(64, 64);
+    }
+
+    protected FadeImageContainer createBackgroundOverlay() {
+        return null;
+    }
+
+    protected FadeImageContainer createBackground() {
+        return null;
     }
 
     protected String getImagePath(T model) {
@@ -47,7 +69,7 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
     }
 
     protected boolean isListenerRequired() {
-        return model!=null ;
+        return model != null;
     }
 
     public boolean isOverlayOn() {
@@ -63,22 +85,21 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
 
     protected abstract String getOverlay(T model);
 
-    protected abstract String getEmptyImage() ;
+    protected abstract String getEmptyImage();
 
     public ClickListener getListener() {
         return listener;
     }
 
     protected ClickListener createListener() {
-        return new SmartClickListener(this){
+        return new SmartClickListener(this) {
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
                 if (event.getButton() == 1) {
-//                     rightClick();
+                    //                     rightClick();
                 }
 
             }
-
 
 
         };

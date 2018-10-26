@@ -115,8 +115,12 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (GoldMaster.isGoldPacksOn()) {
 
             for (DC_HeroItemObj item : items) {
+                if (item == null) {
+                    continue;
+                }
                 if (GoldMaster.isGoldPack(item)) {
                     dataMaster.operation(  HERO_OPERATION.PICK_UP, item);
+                    return;
                 }
             }
         } else {

@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.StreamUtils;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -27,7 +25,7 @@ import java.util.List;
  */
 public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public String path;
     private static List<String> broken=    new ArrayList<>() ;
 
@@ -61,6 +59,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
           path, PathFinder.getParticlePresetPath())),
          Gdx.files.internal(imagePath));
 
+//TODO         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
     }
     protected Texture loadTexture (FileHandle file) {
         return new Texture(file, false);
@@ -112,7 +111,20 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
          EmitterPresetMaster.getInstance().getImagePath(effectFile.path()).contains("sprites");
     }
 
+    @Override
+    public Array<ParticleEmitter> getEmitters() {
+        return super.getEmitters();
+    }
+
     public void loadEmitters(FileHandle effectFile) {
+        try {
+            loadEmitters_(effectFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        getEmitters().forEach(emitter -> emitter.setCleansUpBlendFunction(false));
+    }
+    public void loadEmitters_(FileHandle effectFile) throws IOException {
 //        if (CoreEngine.isMacro())
         if (!effectFile.exists()){
             broken.add(effectFile.path());
@@ -122,7 +134,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         InputStream input = effectFile.read();
         getEmitters().clear();
         BufferedReader reader = null;
-        try {
+
             reader = new BufferedReader(new InputStreamReader(input), 512);
             while (true) {
                 ParticleEmitter emitter = (checkSprite(effectFile)) ? new SpriteEmitter(reader
@@ -136,11 +148,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
                     break;
                 }
             }
-        } catch (IOException ex) {
-            throw new GdxRuntimeException("Error loading effect: " + effectFile, ex);
-        } finally {
-            StreamUtils.closeQuietly(reader);
-        }
+
     }
 
     public void setImagePath(String imagePath) {

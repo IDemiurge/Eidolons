@@ -47,6 +47,7 @@ public class IconGenerator extends GdxUtil {
     private static boolean roundedUnderlay;
     private static Integer size;
     private static boolean resizeAll;
+    private static boolean overwrite;
     String root;
     String underlay;
     String output;
@@ -82,9 +83,21 @@ public class IconGenerator extends GdxUtil {
         flipYisOn = false;
         size = 64;
         realNaming = true;
-        generateByRoot("64/items/weapons", false);
+        generateByRoot("64/items/Weapons", false );
+        //TODO IGNORE SIZED VARIANTS!!!
     }
 
+    private static void generateJewelry() {
+        generateByRoot("64/items/jewelry", false, "main/items/jewelry/sprites/");
+    }
+
+    private static void generateWeapons() {
+        generateByRoot("64/items/Weapons", false, "main/items/Weapons/sprites/");
+    }
+
+    private static void generateArmor() {
+        generateByRoot("64/items/armor", false, "main/items/armor/sprites/");
+    }
     private static void generateMasteries() {
         generateByRoot("mastery", false);
     }
@@ -125,23 +138,18 @@ public class IconGenerator extends GdxUtil {
         }
     }
 
-    private static void generateJewelry() {
-        generateByRoot("64\\items\\jewelry", false);
-    }
 
-    private static void generateWeapons() {
-        generateByRoot("64\\items\\weapons", false);
+    private static void generateByRoot(String rootPath, boolean subdirs ) {
+        generateByRoot(rootPath, subdirs, null );
     }
-
-    private static void generateArmor() {
-        generateByRoot("64\\items\\armor", false);
-    }
-
-    private static void generateByRoot(String rootPath, boolean subdirs) {
+    private static void generateByRoot(String rootPath, boolean subdirs, String customPath) {
         String path = StrPathBuilder.build(
          getGeneratorRootPath(), rootPath);
-
         String imagesPath = StrPathBuilder.build(PathFinder.getImagePath(), path, "images");
+
+        if (customPath!=null ) {
+            imagesPath = customPath;
+        }
 
         String underlaysPath = StrPathBuilder.
          build(PathFinder.getImagePath(), path, "underlays") +
@@ -212,6 +220,10 @@ public class IconGenerator extends GdxUtil {
 
     public static void generateOverlaidIcon(Texture underlayTexture, String bgOverlay, String overlay,
                                             String path, FileHandle outputHandle, boolean flipX, boolean flipY) {
+       if (outputHandle.exists())
+           if (!overwrite)
+               return;
+
         Pixmap pixMap = GdxImageMaster.getPixmap(underlayTexture);
         Texture texture = rounded ?
          GdxImageMaster.round(path, false).getTexture()

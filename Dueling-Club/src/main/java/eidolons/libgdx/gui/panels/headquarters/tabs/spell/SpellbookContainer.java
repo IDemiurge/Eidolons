@@ -53,6 +53,9 @@ public class SpellbookContainer extends HqSpellContainer {
     }
 
     protected List<DC_SpellObj> getSpells() {
+        if (getUserObject().getEntity().getSpellbook() == null) {
+            return new ArrayList<>();
+        }
         List<DC_SpellObj> list = new ArrayList<>(getUserObject().getEntity().getSpellbook());
         list= list.subList(0, Math.min(list.size(), size));
 

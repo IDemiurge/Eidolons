@@ -4,6 +4,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.InvItemActor;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
 
 import java.util.ArrayList;
@@ -23,4 +24,6 @@ public interface InventoryTableDataSource {
     List<InvItemActor> getInventorySlots();
 
     InventoryClickHandler getClickHandler();
+
+     int getPrice(DC_HeroItemObj model, CELL_TYPE cellType);
 }

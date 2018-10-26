@@ -2,8 +2,8 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.game.core.Eidolons;
-import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.libgdx.anims.AnimMaster;
+import eidolons.macro.global.time.MacroTimeMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
@@ -33,13 +33,13 @@ public class RealTimeThread extends Thread {
             if (!CoreEngine.isGraphicsOff())
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
                     Gdx.app.postRunnable(() ->
-                            {
-                                try {
-                                    AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                                } catch (Exception e) {
-                                    main.system.ExceptionMaster.printStackTrace(e);
-                                }
-                            }
+                     {
+                         try {
+                             AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                         } catch (Exception e) {
+                             main.system.ExceptionMaster.printStackTrace(e);
+                         }
+                     }
                     );
                 });
         } catch (Exception e) {
@@ -61,8 +61,12 @@ public class RealTimeThread extends Thread {
             if (ExplorationMaster.isRealTimePaused()) continue;
             try {
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().
-                        getTimeMaster().checkTimedEvents();
-
+                 getTimeMaster().checkTimedEvents();
+                //           do we really want time to pass while we're down in a dungeon?
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            try {
                 MacroTimeMaster.getInstance().timedCheck();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

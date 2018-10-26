@@ -71,36 +71,33 @@ public abstract class DC_Obj extends MicroObj {
     protected boolean blockingDiagonalSide;
     protected Coordinates blockingWallCoordinate;
     Coordinates blockingCoordinate;
-    VisionController visionController;
+    private VisionController visionController;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
-        if (!isSimulation())
-            visionController=getGame().getVisionMaster().getVisionController();
-
     }
 
     public OutlineMapper getOutlineMapper() {
-        return visionController.getOutlineMapper();
+        return getVisionController().getOutlineMapper();
     }
 
     public PlayerVisionMapper getPlayerVisionMapper() {
-        return visionController.getPlayerVisionMapper();
+        return getVisionController().getPlayerVisionMapper();
     }
 
     public VisibilityLevelMapper getVisibilityLevelMapper() {
-        return visionController.getVisibilityLevelMapper();
+        return getVisionController().getVisibilityLevelMapper();
     }
 
     public UnitVisionMapper getUnitVisionMapper() {
-        return visionController.getUnitVisionMapper();
+        return getVisionController().getUnitVisionMapper();
     }
 
     public DetectionMapper getDetectionMapper() {
-        return visionController.getDetectionMapper();
+        return getVisionController().getDetectionMapper();
     }
     public GammaMapper getGammaMapper() {
-        return visionController.getGammaMapper();
+        return getVisionController().getGammaMapper();
     }
 
     @Override
@@ -727,4 +724,16 @@ public abstract class DC_Obj extends MicroObj {
     public void setUnitVisionStatus(UNIT_VISION status, BattleFieldObject observer) {
         getUnitVisionMapper() .set(observer, this, status);
     }
+
+    public VisionController getVisionController() {
+        if (visionController == null) {
+            if (!isSimulation())
+                visionController=getGame().getVisionMaster().getVisionController();
+            else {
+                return null;
+            }
+        }
+        return visionController;
+    }
+
 }

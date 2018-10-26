@@ -157,54 +157,5 @@ public class ImageContainer extends SuperContainer {
             sprite.setFlip(flipX, flipY);
     }
 
-    @Override
-    public float getRotation() {
-        return getContent().getRotation();
-    }
 
-    @Override
-    public void setRotation(float degrees) {
-        getContent().setRotation(degrees);
-    }
-
-    @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        //        getContent().setPosition(x, y);
-    }
-
-    @Override
-    public void setSize(float width, float height) {
-        getContent().setSize(width, height);
-    }
-
-    @Override
-    public void setOrigin(float originX, float originY) {
-        getContent().setOrigin(originX, originY);
-    }
-
-    @Override
-    public void setScale(float scaleXY) {
-        getContent().setScale(scaleXY);
-    }
-
-    @Override
-    public void setOrigin(int alignment) {
-        getContent().setOrigin(alignment);
-    }
-
-    @Override
-    public void setScaleX(float scaleX) {
-        getContent().setScaleX(scaleX);
-    }
-
-    @Override
-    public void setScaleY(float scaleY) {
-        getContent().setScaleY(scaleY);
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-        getContent().setScale(scaleX, scaleY);
-    }
 }

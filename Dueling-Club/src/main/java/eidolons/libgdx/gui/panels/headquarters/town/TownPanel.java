@@ -23,7 +23,9 @@ import eidolons.libgdx.gui.menu.selection.town.shops.ShopSelectionPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.entity.town.Shop;
 import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.system.GuiEventManager;
@@ -50,6 +52,7 @@ public class TownPanel extends TabbedPanel {
     private final SmartButton hqBtn;
     private static TownPanel activeInstance;
     private final Texture frame;
+    private String tooltip;
 
     public TownPanel() {
         super();
@@ -64,7 +67,7 @@ public class TownPanel extends TabbedPanel {
         addActor(new NoHitImage(frame));
         addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()));
         addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
-
+        okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());
         tabTable.setZIndex(Integer.MAX_VALUE);
         headerBg = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON_ALT,
          BACKGROUND_NINE_PATCH.TRANSPARENT, GdxMaster.adjustFontSize(470), 100);
@@ -88,9 +91,41 @@ public class TownPanel extends TabbedPanel {
         GuiEventManager.bind(GuiEventType. SHOW_HQ_SCREEN, p-> {
             if (p.get() == null) {
                 updateRequired = true;
+                shopView. fadeIn();
+            } else {
+                shopView. fadeOut();
             }
         });
 
+    }
+
+    private String getDoneTooltip() {
+        if (!okBtn.isDisabled()) {
+            return "Leave " + getUserObject().getName();
+        }
+        return tooltip;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        okBtn.setDisabled(isDisabled());
+    }
+
+    private boolean isDisabled() {
+        for (Shop shop : getUserObject().getShops()) {
+            if (!shop.isBalanceOk())
+            {
+                tooltip = "You have to pay off your debts at " + shop.getName();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Town getUserObject() {
+        return (Town) super.getUserObject();
     }
 
     public static TownPanel getActiveInstance() {
@@ -156,7 +191,7 @@ public class TownPanel extends TabbedPanel {
         townName.setText(town.getName());
     }
 
-    private void done() {
+    public void done() {
         WaitMaster.receiveInput(DONE_OPERATION, true);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null );
 //        HqDataMasterDirect.applyModifications();

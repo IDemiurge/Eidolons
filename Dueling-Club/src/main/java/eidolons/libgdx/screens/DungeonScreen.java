@@ -383,11 +383,6 @@ public class DungeonScreen extends GameScreenWithTown {
                 }
 
             }
-        if (cam != null) {
-            //            cam.update();
-            //            getBatch().setTransformMatrix(cam.view);
-            //            getBatch().setProjectionMatrix(cam.projection);
-        }
         super.render(delta);
     }
 

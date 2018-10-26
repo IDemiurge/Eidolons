@@ -73,6 +73,7 @@ public class Eidolons {
     private static SCREEN_TYPE screenType;
     private static SCREEN_TYPE previousScreenType;
     private static boolean logicThreadBusy;
+    private static int customThreadsUsed=0;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -333,7 +334,7 @@ public class Eidolons {
 
     public static void onNonGdxThread(Runnable o) {
         if (logicThreadBusy) {
-            new Thread(o, "single task thread").start();
+            new Thread(o, "single task thread " + customThreadsUsed++).start();
         } else
             SwingUtilities.invokeLater(new Runnable() {
                 @Override

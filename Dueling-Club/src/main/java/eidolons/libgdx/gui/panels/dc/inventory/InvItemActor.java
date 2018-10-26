@@ -15,12 +15,17 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.gui.menu.selection.town.shops.ShopPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
@@ -28,6 +33,7 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
+import main.system.auxiliary.RandomWizard;
 import main.system.graphics.FontMaster.FONT;
 
 public class InvItemActor extends ItemActor {
@@ -37,13 +43,16 @@ public class InvItemActor extends ItemActor {
     private InventoryClickHandler handler;
     private float clickTimer;
     private boolean goldPack;
+    private float defaultScale = 1;
+    private float hoverScale = 1;
+    private float preferredSize = 64;
 
-
-
-    public InvItemActor(String customImage) {
+    public InvItemActor(String customImage, float preferredSize) {
         super(null);
+        this.preferredSize = preferredSize;
         image.setImage(customImage);
-        addListener(listener=createListener());
+        addListener(listener = createListener());
+        initSize();
     }
 
     public InvItemActor(DC_HeroItemObj model, CELL_TYPE cellType, InventoryClickHandler handler) {
@@ -57,7 +66,7 @@ public class InvItemActor extends ItemActor {
 
         goldPack = GoldMaster.isGoldPack(model);
         if (goldPack) {
-            image.setImage(GoldMaster.getImageVariant(model));
+            image.setImageImmediately(GoldMaster.getImageVariant(model));
         }
         goldGroup = new GroupX(true);
         NoHitImage img = new NoHitImage(TextureCache.getOrCreateR(Images.GOLD_INV_ITEM_OVERLAY));
@@ -70,12 +79,52 @@ public class InvItemActor extends ItemActor {
          GdxMaster.centerHeight(goldLabel));
         addActor(goldGroup);
 
+        initSize();
         goldGroup.setX(GdxMaster.right(goldGroup) + goldGroup.getWidth() / 3);
         goldGroup.setY(-goldGroup.getHeight() / 3);
-        goldGroup.setVisible(false);
+        if (!goldPack)
+            goldGroup.setVisible(false);
+
     }
+
     protected boolean isListenerRequired() {
         return true;
+    }
+
+    protected FadeImageContainer createBackground() {
+        if (model != null) {
+            switch (model.getOBJ_TYPE_ENUM()) {
+                case JEWELRY:
+                    return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
+                case WEAPONS:
+                    return new FadeImageContainer(Images.ITEM_BACKGROUND_STEEL);
+                case ARMOR:
+                    return new FadeImageContainer(Images.ITEM_BACKGROUND_STONE);
+                case ITEMS:
+                    return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
+            }
+        }
+        return new FadeImageContainer(Images.ITEM_BACKGROUND);
+    }
+
+    protected FadeImageContainer createBackgroundOverlay() {
+        FadeImageContainer overlay = new FadeImageContainer(
+
+         RandomWizard.random() ?
+          Images.ITEM_BACKGROUND_OVERLAY_LIGHT2 :
+          Images.ITEM_BACKGROUND_OVERLAY_LIGHT);
+        overlay.setAlphaTemplate(ALPHA_TEMPLATE.ITEM_BACKGROUND_OVERLAY);
+        return overlay;
+    }
+
+    @Override
+    public boolean isOverlayOn() {
+        return true;
+    }
+
+    @Override
+    protected String getImagePath(DC_HeroItemObj model) {
+        return UiMaster.getSprite(super.getImagePath(model));
     }
 
     @Override
@@ -96,31 +145,39 @@ public class InvItemActor extends ItemActor {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
+
+        if (userObject instanceof InventoryTableDataSource) {
+            handler = ((InventoryTableDataSource) userObject).getClickHandler();
+        }
         if (model == null) {
             return;
         }
-        if (!(userObject instanceof ShopDataSource)) {
-            return;
+        int price = 0;
+        if (goldPack) {
+            goldLabel.setColor(GdxColorMaster.YELLOW);
+            price = model.getIntParam(GoldMaster.GOLD_VALUE);
+        } else {
+            if ((userObject instanceof InventoryTableDataSource)) {
+                InventoryTableDataSource dataSource = (InventoryTableDataSource) userObject;
+                price = dataSource.getPrice(model, cellType);
+            }
+            if ((userObject instanceof ShopDataSource)) {
+                ShopDataSource shopDataSource = (ShopDataSource) userObject;
+
+                Obj buyer = shopDataSource.getInvDataSource().getUnit();
+                if (cellType == CELL_TYPE.STASH ||
+                 cellType == CELL_TYPE.INVENTORY)
+                    buyer = shopDataSource.getShop();
+                boolean canBuy = buyer.checkParam(PARAMS.GOLD, price);
+                goldLabel.setColor(canBuy ? Color.GREEN : Color.RED);
+            } else {
+                goldLabel.setColor(Color.YELLOW);
+            }
         }
-        ShopDataSource dataSource = (ShopDataSource) userObject;
-        handler= dataSource.getHandler();
-        int price =goldPack? model.getIntParam(PARAMS.GOLD_COST) : dataSource.getPrice(model, cellType);
+
         goldLabel.setText(price + "");
         goldLabel.setStyle(getGoldLabelStyle(price));
-
-        if (goldPack) {
-
-            goldLabel.setColor(GdxColorMaster.YELLOW);
-        } else {
-            Obj buyer = dataSource.getInvDataSource().getUnit();
-            if (cellType == CELL_TYPE.STASH ||
-             cellType == CELL_TYPE.INVENTORY)
-                buyer = dataSource.getShop();
-            boolean canBuy = buyer.checkParam(PARAMS.GOLD, price);
-            goldLabel.setColor(canBuy ? Color.GREEN : Color.RED);
-            goldLabel.pack();
-        }
-
+        goldLabel.pack();
 
         goldLabel.setPosition(GdxMaster.centerWidth(goldLabel),
          GdxMaster.centerHeight(goldLabel));
@@ -128,14 +185,17 @@ public class InvItemActor extends ItemActor {
 
     @Override
     public void act(float delta) {
-        clickTimer+=delta;
+        clickTimer += delta;
         super.act(delta);
         if (model == null) {
             return;
         }
-        if (!goldPack)
-        goldGroup.setVisible(cellType == CELL_TYPE.CONTAINER || cellType == CELL_TYPE.INVENTORY
-         || cellType == CELL_TYPE.STASH);
+        if (!goldPack) {
+            goldGroup.setVisible(cellType == CELL_TYPE.CONTAINER || cellType == CELL_TYPE.INVENTORY
+             || cellType == CELL_TYPE.STASH);
+        } else {
+            return;
+        }
     }
 
     @Override
@@ -146,16 +206,100 @@ public class InvItemActor extends ItemActor {
         return super.getEmptyImage();
     }
 
+    protected void initSize() {
+        image.getContent().pack();
+        defaultScale = preferredSize / image.getWidth();
+        hoverScale = defaultScale * getScaleFactor();
+        image.setScale(defaultScale, defaultScale);
+        image.getContent().pack();
+        setSize(image.getWidth() * defaultScale, image.getHeight() * defaultScale);
+        //        if (scaleListener == null && isScalingSupported())
+        //            addListener(scaleListener = createScalingListener());
+    }
+
+    private float getScaleFactor() {
+        return 1.1f;
+    }
+
+    private boolean isScalingSupported() {
+        return true;
+    }
+
+    protected ClickListener createScalingListener() {
+        return new SmartClickListener(background) {
+            @Override
+            protected void entered() {
+                super.entered();
+                if (image.getScaleX() != hoverScale)
+                    if (image.getActions().size < 3)
+                    //                        if (defaultScale != 1)
+                    {
+                        if (image.getActions().size == 0)
+                            ActorMaster.addScaleAction(image, hoverScale, 0.5f);
+                        else
+                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(hoverScale, 0.5f));
+                    }
+            }
+
+            @Override
+            protected void exited() {
+                super.exited();
+                if (image.getActions().size < 3)
+                    if (image.getScaleX() != defaultScale) {
+                        if (image.getActions().size == 0)
+                            ActorMaster.addScaleAction(image, defaultScale, 0.5f);
+                        else
+                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(defaultScale, 0.5f));
+                    }
+            }
+        };
+    }
+
     protected ClickListener createListener() {
         return new SmartClickListener(this) {
             @Override
+            protected void entered() {
+                if (!isScalingSupported()) {
+                    return;
+                }
+                if (image.getScaleX() != hoverScale)
+                    if (image.getActions().size < 3)
+                    //                        if (defaultScale != 1)
+                    {
+                        if (image.getActions().size == 0)
+                            ActorMaster.addScaleAction(image, hoverScale, 0.5f);
+                        else
+                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(hoverScale, 0.5f));
+                    }
+                super.entered();
+            }
+
+            @Override
+            protected void exited() {
+                if (!isScalingSupported()) {
+                    return;
+                }
+                if (image.getActions().size < 3)
+                    if (image.getScaleX() != defaultScale) {
+                        if (image.getActions().size == 0)
+                            ActorMaster.addScaleAction(image, defaultScale, 0.5f);
+                        else
+                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(defaultScale, 0.5f));
+                    }
+                super.exited();
+            }
+
+            @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                super.touchDragged(event, x, y, pointer);
+                //              TODO trying to fix   listener-removal
+                //  super.touchDragged(event, x, y, pointer);
                 if (model == null) {
                     return;
                 }
-                if (handler.getDragged() == null)
+                if (handler.getDragged() == null) {
+                    //                    if (x+y> GDX.size(100))
                     handler.singleClick(cellType, model);
+                }
             }
 
             @Override
@@ -200,7 +344,7 @@ public class InvItemActor extends ItemActor {
                  handler.cellClicked(cellType, tapCount, isRightClicked,
                   isAltPressed, model));
                 clickTimer = 0;
-                event.stop();
+//                event.stop();
             }
         };
     }
@@ -210,25 +354,30 @@ public class InvItemActor extends ItemActor {
         Group panel = GdxMaster.getFirstParentOfClass(
          InvItemActor.this,
          ShopPanel.class);
-        v = localToAscendantCoordinates(panel, v);
 
         if (panel instanceof ShopPanel) {
             ShopPanel shop = ((ShopPanel) panel);
+            Actor hit = shop.getParent().hit(v.x, v.y, true);
+            if (hit != null)
+                if (shop == GdxMaster.getFirstParentOfClass(
+                 hit, ShopPanel.class)) {
+                    v = localToAscendantCoordinates(panel, v);
 
-            Actor actor = shop.hit(v.x, v.y, true);
-            if (actor != null) {
-                Group container = GdxMaster.getFirstParentOfClass(actor, InventorySlotsPanel.class);
-                if (container != null) {
-                    return container;
+                    Actor actor = shop.hit(v.x, v.y, true);
+                    if (actor != null) {
+                        Group container = GdxMaster.getFirstParentOfClass(actor, InventorySlotsPanel.class);
+                        if (container != null) {
+                            return container;
+                        }
+                    }
+                    if (cellType == CELL_TYPE.CONTAINER) {
+                        return shop.getInventory();
+                    } else {
+                        return shop.getContainerSlotsPanel();
+                    }
+                } else {
+                    panel = null;
                 }
-            }
-            if (cellType == CELL_TYPE.CONTAINER) {
-                return shop.getInventory();
-            } else {
-                return shop.getContainerSlotsPanel();
-            }
-
-
         }
         if (panel == null) {
             panel = GdxMaster.getFirstParentOfClass(
@@ -250,7 +399,6 @@ public class InvItemActor extends ItemActor {
     public void setHandler(InventoryClickHandler handler) {
         this.handler = handler;
     }
-
 
 
 }

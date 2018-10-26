@@ -600,4 +600,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public DC_ArmorObj getArmor() {
         return null;
     }
+
+    public int getPower() {
+        return getIntParam(PARAMS.POWER);
+    }
+
+    public boolean isDisabled() {
+        return false;
+    }
 }

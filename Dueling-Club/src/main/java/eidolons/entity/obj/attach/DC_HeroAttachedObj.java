@@ -3,7 +3,6 @@ package eidolons.entity.obj.attach;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.core.Eidolons;
 import main.ability.AbilityObj;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
@@ -172,12 +171,15 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         if (getGame() == null) {
             return;
         }
-        try {
+        if (getGame().getObjectById(heroId) instanceof Unit) {
             setHero((Unit) getGame().getObjectById(heroId));
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            setHero(Eidolons.getMainHero());
         }
+//        try {
+//            setHero((Unit) getGame().getObjectById(heroId));
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//            setHero(Eidolons.getMainHero()); TODO why do that?
+//        }
     }
 
     protected void initProp(PROPERTY prop) {

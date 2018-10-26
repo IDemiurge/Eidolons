@@ -266,7 +266,7 @@ public class StyleHolder {
     }
 
     public static TextButtonStyle getTabStyle(TextButtonStyle style) {
-        TextureRegion buttonTexture = TextureCache.getOrCreateR("/UI/components/infopanel/buttons.png");
+        TextureRegion buttonTexture = TextureCache.getOrCreateR("/UI/components/generic/tabs/buttons.png");
         TextureRegion pressed = new TextureRegion(buttonTexture, 0, 0, 59, 28);
         TextureRegion released = new TextureRegion(buttonTexture, 60, 0, 59, 28);
         style.checked = style.down = new TextureRegionDrawable(pressed);

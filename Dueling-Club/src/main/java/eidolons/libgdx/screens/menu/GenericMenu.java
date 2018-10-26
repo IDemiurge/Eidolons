@@ -1,16 +1,18 @@
 package eidolons.libgdx.screens.menu;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
@@ -30,6 +32,7 @@ import java.util.Map;
  * Created by JustMe on 11/28/2017.
  */
 public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX implements Blocking {
+    private final InputListener keyListener;
     protected Map<T, TextButton> cache = new HashMap<>();
     OptionsWindow optionsWindow;
     private T currentItem;
@@ -46,7 +49,46 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
 //        texture.setMinHeight(getHeight());
         setBackground(texture);
         addButtons();
+
+        keyListener = createKeyListener();
     }
+
+    private InputListener createKeyListener() {
+        return  new InputListener(){
+            @Override
+            public boolean keyUp(InputEvent event, int keycode) {
+                switch (keycode) {
+                    case Keys.SPACE:
+                    case Keys.ENTER:
+                        selectCurrent();
+                        break;
+                    case Keys.UP:
+                    case Keys.W:
+                    case Keys.LEFT:
+                    case Keys.A:
+                        previous();
+                        break;
+                    case Keys.DOWN:
+                    case Keys.S:
+                    case Keys.RIGHT:
+                    case Keys.D:
+                        next();
+                        break;
+                }
+                return super.keyUp(event, keycode);
+            }
+        } ;
+    }
+
+    private void previous() {
+
+    }
+    private void next() {
+
+        }
+    private void selectCurrent() {
+    }
+
 
     public Map<T, TextButton> getCache() {
         return cache;
@@ -148,11 +190,10 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     protected TextButton getButton(T sub, String name) {
         TextButton button = getCache().get(sub);
         if (button == null || sub == null) {
-            button = new TextButton((name),
+            button = new SmartButton((name),
                     StyleHolder.getTextButtonStyle(getButtonStyle(),
-                            getFontStyle(), getFontColor(), getFontSize()));
+                            getFontStyle(), getFontColor(), getFontSize()), getClickRunnable(sub));
             getCache().put(sub, button);
-            button.addListener(getClickListener(sub));
         }
         return button;
     }
@@ -169,6 +210,29 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
 
     protected abstract STD_BUTTON getButtonStyle();
 
+    public Runnable getClickRunnable(T sub) {
+       return () -> {
+           if (sub == null) {
+               setCurrentItem(previousItem);
+               setPreviousItem(null);
+               updateRequired = true;
+               return  ;
+           }
+           if (currentItem == sub) {
+               return  ; //why duplicate events?!
+           }
+           Boolean result = GenericMenu.this.clicked(sub);
+           if (result == null) {
+               close();
+               return  ;
+           }
+           if (result) {
+               setPreviousItem(currentItem);
+               setCurrentItem(sub);
+               updateRequired = true;
+           }
+        };
+    }
     protected EventListener getClickListener(T sub) {
         return new ClickListener() {
             @Override
@@ -229,8 +293,25 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
+        if (keyListener!=null )
+            if (getStage() != null&& visible) {
+                getStage().addListener(keyListener);
+            } else {
+                if (getStage() != null)
+                    getStage().removeListener(keyListener);
+            }
     }
-
+    @Override
+    public void setStage(Stage stage) {
+        if (keyListener!=null )
+            if (stage != null) {
+                stage.addListener(keyListener);
+            } else {
+                if (getStage() != null)
+                    getStage().removeListener(keyListener);
+            }
+        super.setStage(stage);
+    }
     public void setCurrentItem(T currentItem) {
         main.system.auxiliary.log.LogMaster.log(1, "setCurrentItem " +
                 this.currentItem +

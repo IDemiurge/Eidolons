@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.GuardAi;
 import eidolons.game.battlecraft.ai.explore.PatrolMaster;
-import eidolons.game.battlecraft.ai.explore.behavior.WanderAiOld;
+import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -56,7 +56,7 @@ public class BehaviorMaster extends AiHandler {
         switch (type) {
 
             case WANDER:
-                behavior = new WanderAiOld(getMaster(), ai);
+                behavior = new WanderAiMaster(getMaster(), ai);
                 break;
             case AMBUSH:
                 break;
@@ -99,7 +99,7 @@ public class BehaviorMaster extends AiHandler {
             case SEARCH: // having already turned on the Mode
             case WANDER:
                 if (ai.isLeader()) {
-                    Boolean change = WanderAiOld.checkWanderDirectionChange(group, type);
+                    Boolean change = WanderAiMaster.checkWanderDirectionChange(group, type);
                     if (change == null) {
                         action = getIdleAction(ai, type);
                         change = true;
@@ -110,12 +110,12 @@ public class BehaviorMaster extends AiHandler {
                     if (change) {
                         group.getWanderStepCoordinateStack().push(
                          group.getLeader().getCoordinates());
-                        WanderAiOld.changeGroupMoveDirection(group, type);
+                        WanderAiMaster.changeGroupMoveDirection(group, type);
                     }
                 }
                 boolean wait = false;
                 // ActionSequenceConstructor.getSequence(targetAction, task)
-                Coordinates targetCoordinates = WanderAiOld.getCoordinates(type, ai);
+                Coordinates targetCoordinates = WanderAiMaster.getCoordinates(type, ai);
                 if (targetCoordinates == null) {
                     wait = true;
                     // if (!recursion)

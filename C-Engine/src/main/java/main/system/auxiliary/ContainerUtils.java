@@ -261,4 +261,7 @@ public class ContainerUtils {
         return builder.toString();
     }
 
+    public static String toIdContainer(Collection<? extends Entity> list) {
+        return constructContainer(convertToIdList(list));
+    }
 }

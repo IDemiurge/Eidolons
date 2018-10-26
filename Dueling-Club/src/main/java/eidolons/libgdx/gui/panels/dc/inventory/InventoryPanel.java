@@ -10,6 +10,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
@@ -66,12 +67,15 @@ public class InventoryPanel extends TablePanel {
 
         left.addElement(leftRingSlotsPanel).fill(0, 0);
 
-        avatarPanel = mid.addElement(null).fill(0, 0);
+        avatarPanel = mid.addElement(null).fill(0, 0).colspan(2).width(128);
         mid.row();
         armorSlot = mid.addElement(null).fill(0, 0).expand(0, 0).top();
         mid.row();
         amuletSlot = mid.addElement(null).fill(0, 0).top().pad(10, 0, 0, 0);
         mid.row();
+        right.setBackground(NinePatchFactory.getLightPanelDrawable());
+        left.setBackground(NinePatchFactory.getLightPanelDrawable());
+        mid.setBackground(NinePatchFactory.getLightDecorPanelDrawable());
 
 
         offWeapon = right.addElement(null).fill(0, 0).bottom();
@@ -95,13 +99,13 @@ public class InventoryPanel extends TablePanel {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
+//                event.stop();
                 return true;
             }
 
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-                event.stop();
+//                event.stop();
                 return true;
             }
         });

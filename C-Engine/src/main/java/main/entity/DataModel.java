@@ -33,7 +33,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
-import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
@@ -1004,9 +1003,9 @@ public abstract class DataModel {
 
     public void setProperty(PROPERTY prop, String value) {
         if (prop == G_PROPS.NAME) {
-            if (CoreEngine.isArcaneVault())
+//            if (CoreEngine.isArcaneVault()) wny not?
                 this.name = XML_Formatter.restoreXmlNodeName(value);
-            else this.name = value;
+//            else this.name = value;
         }
         putProperty(prop, value);
         getPropCache().remove(prop);

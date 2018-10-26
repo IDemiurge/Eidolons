@@ -56,7 +56,7 @@ public class GameLoop {
     protected boolean skippingToNext;
     protected boolean nextLevel;
     protected boolean exited;
-    protected DequeImpl<ActionInput> actionQueue = new DequeImpl<>();
+    protected DequeImpl<ActionInput> playerActionQueue = new DequeImpl<>();
     protected Thread thread;
     protected boolean started;
     private boolean stopped;
@@ -199,8 +199,8 @@ public class GameLoop {
         Boolean result = null;
         ActionInput action = null;
         boolean channeling = false;
-        if (!actionQueue.isEmpty()) {
-            action = (actionQueue.removeLast());
+        if (!playerActionQueue.isEmpty()) {
+            action = (playerActionQueue.removeLast());
         } else if (activeUnit.getHandler().getChannelingSpellData() != null) {
             action = activeUnit.getHandler().getChannelingSpellData();
             channeling = true;
@@ -351,7 +351,7 @@ public class GameLoop {
 
 
     public void queueActionInput(ActionInput actionInput) {
-        actionQueue.add(actionInput);
+        playerActionQueue.add(actionInput);
     }
 
     public void actionInput(ActionInput actionInput) {

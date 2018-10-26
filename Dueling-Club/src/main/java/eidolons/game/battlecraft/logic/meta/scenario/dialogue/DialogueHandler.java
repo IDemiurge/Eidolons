@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.DialogScenario;
+import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
@@ -24,10 +25,12 @@ public class DialogueHandler {
         this.dialogue = dialogue;
         this.game = game;
         this.list = actors;
+        this.map = new XLinkedMap<>();
         Speech line = dialogue.getRoot().getChildren().get(0);
         for (DialogScenario actor : actors) {
             map.put(actor, line);
-            line = line.getChildren().get(0);
+            if (!line.getChildren().isEmpty())
+               line = line.getChildren().get(0);
         }
 
     }

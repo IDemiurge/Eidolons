@@ -56,6 +56,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES );
+
         if (restart) {
             Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
             Eidolons.setParty(null);
@@ -78,6 +79,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO);
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, Eidolons.getMainHero());
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
+
+//        GuiEventManager.trigger(GuiEventType.SCREEN_LOADED);
 
     }
 

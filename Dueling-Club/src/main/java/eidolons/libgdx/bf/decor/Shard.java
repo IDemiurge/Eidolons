@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.decor;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.StyleHolder;
@@ -9,15 +10,12 @@ import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_TYPE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.particles.EMITTER_PRESET;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
-
-import java.util.List;
+import main.system.graphics.FontMaster.FONT;
 
 /**
  * Created by JustMe on 10/8/2018.
@@ -34,9 +32,8 @@ public class Shard extends SuperActor {
     ImageContainer background;
     ImageContainer foreground; //idea - fade between 2 variants?
     //list of overlays
-    List<EmitterActor> emitters;
 
-    public static final boolean TEST_MODE=true;
+    public static final boolean TEST_MODE=false;
     LabelX debugInfo;
 
     public Shard(int x, int y, SHARD_TYPE type, SHARD_SIZE size, SHARD_OVERLAY overlay, Object direction) {
@@ -51,11 +48,11 @@ public class Shard extends SuperActor {
         }
         init();
         if (TEST_MODE) {
-            debugInfo = new LabelX(
+          addActor( debugInfo = new LabelX(
+             direction +
              "" +
              "" +
-             "" +
-             "", StyleHolder.getDebugLabelStyle());
+             "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
         }
     }
 
@@ -141,13 +138,6 @@ public class Shard extends SuperActor {
         ALPHA_TEMPLATE template = ShardVisuals.getTemplateForOverlay(overlay);
         foreground.setAlphaTemplate(template);
 
-        EMITTER_PRESET[] presets = ShardVisuals.getEmitters(overlay, size);
-        for (EMITTER_PRESET preset : presets) {
-            EmitterActor actor = new EmitterActor(preset);
-            emitters.add(actor);
-            addActor(actor);
-            actor.start();
-        }
         //generic system for binding emitters to stuff?
     }
     public boolean isCachedPosition() {
@@ -157,6 +147,7 @@ public class Shard extends SuperActor {
     public void act(float delta) {
         if (isIgnored())
             return;
+        setDebug(false);
         super.act(delta);
     }
 }

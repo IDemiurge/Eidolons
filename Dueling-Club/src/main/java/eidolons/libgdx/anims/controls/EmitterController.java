@@ -289,7 +289,7 @@ public class EmitterController implements Controller {
             case MIRROR:
                 return EMITTER_VALUE_GROUP.Rotation;
             case TOGGLE_ALPHA:
-                return EMITTER_VALUE_GROUP.Premultiplied_Alpha;
+                return EMITTER_VALUE_GROUP.PremultipliedAlpha;
         }
         return null;
     }

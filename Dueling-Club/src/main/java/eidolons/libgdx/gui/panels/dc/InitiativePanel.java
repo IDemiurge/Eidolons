@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -153,8 +152,8 @@ public class InitiativePanel extends GroupX {
         addActor( container = new Container<>(queueGroup));
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
-         "components", "dc", "panels", "initiativepanel",
-         "initiativePanel plain.png"));
+         "components", "dc", "atb",
+         "atb background.png"));
         DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
         addActor(panelImage = new ValueContainer(textureRegion));
         panelImage.addListener(tooltip.getController());
@@ -537,8 +536,7 @@ public class InitiativePanel extends GroupX {
             }
 //            Image shadow = new Image(TextureCache.getOrCreateR(
 //             StrPathBuilder.build("UI",
-//              "components", "dc", "panels",
-//              "initiativepanel",
+//              "components", "dc", "atb",
 //              "initiativepanel unitview shadow.png")));
 //            shadow.setY(-48);
 //            actor.addActor(shadow);

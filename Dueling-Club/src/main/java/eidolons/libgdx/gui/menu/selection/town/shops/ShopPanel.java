@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.menu.selection.town.shops;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -38,6 +39,7 @@ import eidolons.macro.entity.town.Shop;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -69,7 +71,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
          stashPanel, () -> {
              stashOpen = !stashOpen;
              ShopClickHandler.setStashOpen(stashOpen);
-         }));
+         }, new Vector2(-50, 52)));
     }
 
     protected int getDefaultHeight() {
@@ -128,7 +130,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         containerSlotsPanel.setSize(bg.getRegionWidth(), bg.getRegionHeight());
 
         if (stashContainer != null) {
-            stashContainer.setY(header.getY() - stashContainer.getHeight() - 5);
+            stashContainer.setY(header.getY() - stashContainer.getHeight() -  45);
             stashContainer.setX(GdxMaster.centerWidth(stashContainer) - 245);
             //            stashPanel.setY(header.getY() - stashPanel.getHeight() - 150);
             //            stashPanel.setX(GdxMaster.centerWidth(stashPanel) - 300);
@@ -172,6 +174,19 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     }
 
     @Override
+    protected void update(InventoryDataSource invData, ContainerDataSource containerData) {
+        Pair<InventoryDataSource, ContainerDataSource> param = new ImmutablePair<>(invData, containerData);
+        setUserObject(containerData);
+//        inventory.setUserObject(invData); we don't do that here...
+
+        if (containerSlotsPanel.getListeners().size > 0)
+            inventory.addListener(containerSlotsPanel.getListeners().first());
+
+        updateUpperTable(param);
+        updateLowerTable(param);
+    }
+
+    @Override
     protected void updateLowerTable(Pair<InventoryDataSource, ? extends ContainerDataSource> param) {
         weightLabel.setImage(param.getKey().isOverburdened() ?
          Images.WEIGHT_BURDENED
@@ -182,7 +197,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         weightLabel2.setValueText(param.getValue().getPricesInfo());
         weightLabel2.clearListeners();
         weightLabel2.addListener(new ValueTooltip(
-         "You are charged " + weightLabel.getValueText() + " of the price").getController());
+         "You are charged " + weightLabel2.getValueText() + " of the price").getController());
         weightLabel2.setColor(param.getValue().getPricesColor());
         goldLabel2.setValueText(param.getValue().getGoldInfo());
 

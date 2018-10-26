@@ -106,6 +106,12 @@ public class Images {
     public static final String GOLD_PACK_LARGE = "UI/components/hq/inv/GOLD_PACK_LARGE.png";
     public static final String GOLD_PACK_AVERAGE = "UI/components/hq/inv/GOLD_PACK_AVERAGE.png";
     public static final String GOLD_PACK_SMALL = "UI/components/hq/inv/GOLD_PACK_SMALL.png";
+    public static final String ITEM_BACKGROUND_GOLD = "UI/components/hq/inv/ITEM BACKGROUND GOLD.png";
+    public static final String ITEM_BACKGROUND_STEEL = "UI/components/hq/inv/ITEM BACKGROUND STEEL.png";
+    public static final String ITEM_BACKGROUND_STONE = "UI/components/hq/inv/ITEM BACKGROUND STONE.png";
+    public static final String ITEM_BACKGROUND = "UI/components/hq/inv/ITEM BACKGROUND.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "UI/components/hq/inv/slots/overlay light.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "UI/components/hq/inv/slots/overlay light2.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

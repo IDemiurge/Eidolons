@@ -10,6 +10,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.NumberUtils;
 
 public class ItemFactory {
 
@@ -24,19 +25,18 @@ public class ItemFactory {
         String typeName = VariableManager.removeVarPart(subString);
         ObjType type = DataManager.getType(typeName, TYPE);
         if (type == null) {
-            type =DataManager.getType(subString, TYPE);
+            type = DataManager.getType(subString, TYPE);
         }
         if (type == null) {
             return null;
         }
         TYPE = type.getOBJ_TYPE_ENUM();
         DC_HeroItemObj item = createItem(type, TYPE, originalOwner, ref, game, quick);
-        if (GoldMaster.isGoldPack(type)) {
-            try {
-                item.setParameter(GoldMaster.GOLD_VALUE, Integer.valueOf(var));
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+        if (GoldMaster.isGoldPack(type)
+         && NumberUtils.isInteger(var)
+         ) {
+            item.setParameter(GoldMaster.GOLD_VALUE, Integer.valueOf(var));
+            item.getType(). setParameter(GoldMaster.GOLD_VALUE, Integer.valueOf(var));
         }
         return item;
     }

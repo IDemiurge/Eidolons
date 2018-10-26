@@ -122,7 +122,7 @@ public class UnitAI {
     }
 
     public boolean isLeader() {
-        if (getGroup() == null) return false;
+        if (getGroup() == null) return true;
         return getGroup().getLeader() == getUnit();
     }
 

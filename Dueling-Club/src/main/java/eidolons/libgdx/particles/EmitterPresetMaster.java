@@ -397,8 +397,8 @@ public class EmitterPresetMaster {
         Angle(true),
         Rotation(true),
         Scale,
-        Premultiplied_Alpha,
-        Percentage_Of_Lagging_Particles, Image_Paths;
+        PremultipliedAlpha,
+        Percentage_Of_Lagging_Particles, Image_Paths, Options;
         private boolean container;
         private String name;
 

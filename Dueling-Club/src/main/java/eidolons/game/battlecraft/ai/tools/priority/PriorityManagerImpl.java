@@ -71,6 +71,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.Param;
 import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
+import main.elements.costs.Costs;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
@@ -1498,6 +1499,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         applyMultiplier(dangerModifier, "danger factor");
         return base;
         // modifier * (DEFAULT_PRIORITY - percentage) / factor;
+    }
+
+    @Override
+    public int getCostFactor(Costs cost, Unit unit) {
+            return getParamAnalyzer().getCostPriorityFactor(cost, unit);
     }
 
     private int getRestorationPriorityMod(Unit unit) {

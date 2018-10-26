@@ -17,12 +17,16 @@ public abstract class GameScreenWithTown extends GameScreen {
         if (p.get() == null) {
             townPanel.fadeOut();
             overlayStage.setActive(false);
-            GdxMaster.setLoadingCursor();
+            if (!isTownInLoaderOnly())
+            {
+                loading = false;
+            } else {
+                GdxMaster.setLoadingCursor();
+            }
             TownPanel.setActiveInstance(null);
             updateInputController();
             guiStage.setTown(false);
-            if (!isTownInLoaderOnly())
-                loading = false;
+
 
         } else {
             loading = true;

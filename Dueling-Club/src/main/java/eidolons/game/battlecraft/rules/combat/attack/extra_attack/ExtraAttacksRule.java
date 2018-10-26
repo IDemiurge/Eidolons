@@ -19,8 +19,8 @@ public class ExtraAttacksRule {
     public static boolean checkInterrupted(DC_ActiveObj action, ENTRY_TYPE enclosingEntryType) {
         boolean result = false;
         String message = StringMaster
-         .getMessagePrefix(true, action.getOwnerUnit().getOwner().isMe())
-         + StringMaster.getPossessive(action.getOwnerUnit().getNameIfKnown())
+         .getMessagePrefix(true, action.getOwnerObj().getOwner().isMe())
+         + StringMaster.getPossessive(action.getOwnerObj().getNameIfKnown())
          + " "
          + action.getDisplayedName() + " has been interrupted";
         if (InstantAttackRule.checkInstantAttacksInterrupt(action)) {
@@ -41,10 +41,10 @@ public class ExtraAttacksRule {
     }
 
     private static boolean checkSourceInterrupted(DC_ActiveObj action) {
-        if (action.getOwnerUnit().isDead()) {
+        if (action.getOwnerObj().isDead()) {
             return true;
         }
-        return action.getOwnerUnit().isDisabled();
+        return action.getOwnerObj().isDisabled();
     }
 
     public static List<DC_ActiveObj> getCounterAttacks(DC_ActiveObj triggeringAction,
@@ -62,7 +62,7 @@ public class ExtraAttacksRule {
             }
         }
         SortMaster.sortEntitiesByExpression(list, action ->
-         FutureBuilder.precalculateDamage((DC_ActiveObj) action, triggeringAction.getOwnerUnit(), true)
+         FutureBuilder.precalculateDamage((DC_ActiveObj) action, triggeringAction.getOwnerObj(), true)
           * (action.getIntParam(PARAMS.COUNTER_MOD) +
           action.getIntParam(PARAMS.COUNTER_ATTACK_MOD)));
         return list;

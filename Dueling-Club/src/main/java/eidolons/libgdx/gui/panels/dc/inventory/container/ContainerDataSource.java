@@ -93,7 +93,10 @@ public class ContainerDataSource implements InventoryTableDataSource {
         return items.stream().mapToInt(item -> item == null ? 0 : item.getIntParam(PARAMS.WEIGHT)).sum() +
          "lb";
     }
-
+    @Override
+    public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
+        return model.getIntParam(PARAMS.GOLD_COST);
+    }
     public String getGoldInfo() {
         return obj.getIntParam(PARAMS.GOLD) + "gp";
     }

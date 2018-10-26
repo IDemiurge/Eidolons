@@ -15,9 +15,10 @@ public class GoldMaster {
     public static final PARAMETER GOLD_VALUE = PARAMS.GOLD_COST;
 
     public static boolean checkGoldPack(Entity item, Unit hero) {
-        if (isGoldPack(item)) {
+        if (!isGoldPack(item)) {
             return false;
         }
+        item.getRef().getSourceObj().modifyParameter(PARAMS.GOLD, -item.getIntParam(GOLD_VALUE));
         hero.modifyParameter(PARAMS.GOLD, item.getIntParam(GOLD_VALUE));
         return true;
     }

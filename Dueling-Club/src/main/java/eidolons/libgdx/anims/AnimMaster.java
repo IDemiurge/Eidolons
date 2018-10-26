@@ -16,6 +16,7 @@ import eidolons.libgdx.anims.std.BuffAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -496,6 +497,9 @@ public class AnimMaster extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         drawAnims(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
     }
 
     public void drawAnims(Batch batch, float parentAlpha) {

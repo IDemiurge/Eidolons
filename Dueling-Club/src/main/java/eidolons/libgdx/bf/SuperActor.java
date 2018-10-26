@@ -394,7 +394,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
 
-        SHARD_OVERLAY(0.3f, 0.5F, 1, 0.3f, 0.75f, 1f),
+        SHARD_OVERLAY(0.325f, 0.25F, 0.5F, 0.5f, 0.75f, 1f),
+        ITEM_BACKGROUND_OVERLAY(0.15f, 0, 1.25f, 0.4f, 0.80f, 1f),
 
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
         ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
@@ -404,7 +405,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         SHADE_CELL_GAMMA_SHADOW(0.05f, 0.5f, 0.2f, 0, 0.5f, 0.8f),
         SHADE_CELL_GAMMA_LIGHT(0.08f, 1.5f, 2.55f, 0.2f, 0.4f, 0.85f),
         SHADE_CELL_LIGHT_EMITTER(0.10f, 1.5f, 2.5f, 0.2f, 0.85f, 1),
-        LIGHT_EMITTER_RAYS(0.15f, 1.0f, 0.5f, 0.4f, 0.25f, 1.0f),
+        LIGHT_EMITTER_RAYS(0.25f, 1.0f, 0.5f, 0.4f, 0.25f, 1.0f),
 
         SHADE_CELL_HIGHLIGHT(0.4f, 1.5f, 0.3f, 0.4f, 0.15f, 1),
         ;

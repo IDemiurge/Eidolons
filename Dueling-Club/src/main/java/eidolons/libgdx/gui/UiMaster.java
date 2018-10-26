@@ -73,6 +73,10 @@ public class UiMaster {
         return 64;
     }
 
+    public static String getSprite(String imagePath) {
+        return imagePath.replace("icons", "sprites");
+    }
+
     public enum UI_ACTIONS {
         SCALE_ACTION_ICON(0),
         SCALE_UNIT_VIEW(0),

@@ -89,7 +89,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
         velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dst));
         if (CoreEngine.isGraphicTestMode()) {
-//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
+            //            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dst);
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
@@ -151,8 +151,9 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected void initDialogue() {
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
-            DialogueHandler handler = (DialogueHandler) obj.get();
-            final List<DialogScenario> list = handler.getList();
+            DialogueHandler handler =
+             (DialogueHandler) obj.get();
+            List<DialogScenario> list = handler.getList();
             if (dialogsStage == null) {
                 dialogsStage = new ChainedStage(viewPort, getBatch(), list);
                 updateInputController();

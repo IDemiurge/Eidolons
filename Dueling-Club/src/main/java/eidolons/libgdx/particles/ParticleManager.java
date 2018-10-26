@@ -1,11 +1,13 @@
 package eidolons.libgdx.particles;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.particles.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.system.GuiEventManager;
@@ -32,6 +34,14 @@ public class ParticleManager extends GroupX {
     Map<String, EmitterMap> cache = new HashMap<>();
 
     SmartAmbienceMap ambienceMap;
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+    }
 
     public ParticleManager() {
 

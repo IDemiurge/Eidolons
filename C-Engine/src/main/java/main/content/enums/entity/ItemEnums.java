@@ -211,7 +211,7 @@ public class ItemEnums {
         // trophies...
 
         ;
-
+public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         boolean magical;
         MATERIAL_TYPE type;
         private int durabilityMod;
@@ -232,7 +232,7 @@ public class ItemEnums {
         MATERIAL(int modifier, int durability, double weight, int cost, int magic,
                  ITEM_MATERIAL_GROUP g, int code, DAMAGE_TYPE dmg_type) {
             this(modifier, weight, cost, magic, g, dmg_type, code);
-            this.durabilityMod = durability;
+            this.durabilityMod = Math.round(durability * GLOBAL_DURABILITY_MODIFIER);
             this.group = g;
             magical = dmg_type != null;
         }
@@ -430,7 +430,10 @@ public class ItemEnums {
         BEAKS,
         EYES,
         FORCE,
-        MAWS,;
+        MAWS,
+        NATURAL,
+        FIREARMS,
+        ;
         private String type;
 
         WEAPON_GROUP(String type) {

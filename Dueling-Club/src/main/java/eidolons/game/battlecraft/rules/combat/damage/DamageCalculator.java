@@ -31,24 +31,24 @@ import java.util.List;
 /**
  * Created by JustMe on 3/14/2017.
  * <portrait>
- * Calculates final Endurance/Toughness losses that unit receives from Damage
+ * Calculates final Endurance/Toughness losses that BattleFieldObject receives from Damage
  * Also calculates damage for AI FutureBuilder, Unit's displayed value and PhaseAnimations
  */
 public class DamageCalculator {
 
-    protected static int calculateToughnessDamage(BattleFieldObject attacked, Unit attacker,
+    protected static int calculateToughnessDamage(BattleFieldObject attacked, BattleFieldObject attacker,
                                                   int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         return calculateDamage(false, attacked, attacker, base_damage, ref, blocked,
          damage_type);
     }
 
-    protected static int calculateEnduranceDamage(BattleFieldObject attacked, Unit attacker,
+    protected static int calculateEnduranceDamage(BattleFieldObject attacked, BattleFieldObject attacker,
                                                   int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
         return calculateDamage(true, attacked, attacker, base_damage, ref, blocked,
          damage_type);
     }
 
-    public static int calculateDamage(boolean endurance, BattleFieldObject attacked, Unit attacker,
+    public static int calculateDamage(boolean endurance, BattleFieldObject attacked, BattleFieldObject attacker,
                                       int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
         if (!endurance) {
@@ -85,7 +85,7 @@ public class DamageCalculator {
      */
     public static int precalculateDamage(Attack attack, Boolean min_max_normal) {
         BattleFieldObject attacked = attack.getAttacked();
-        Unit attacker = attack.getAttacker();
+        BattleFieldObject attacker = attack.getAttacker();
         if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
             attack.setSneak(SneakRule.checkSneak(attack.getRef()));
         }
@@ -127,7 +127,7 @@ public class DamageCalculator {
      * @return
      */
     public static int precalculateDamage(Ref ref) {
-        Unit sourceObj = (Unit) ref.getSourceObj();
+        BattleFieldObject sourceObj = (Unit) ref.getSourceObj();
         Damage damage = DamageFactory.getDamageForPrecalculate(ref);
         int amount = damage.getAmount();
         DAMAGE_TYPE damageType = damage.getDmgType();
@@ -276,7 +276,7 @@ public class DamageCalculator {
     }
 
     @Deprecated
-    private static int initializeDamageModifiers(int amount, boolean offhand, Unit unit,
+    private static int initializeDamageModifiers(int amount, boolean offhand, BattleFieldObject unit,
                                                  DC_WeaponObj weapon) {
         amount += weapon.getDamageModifiers();
         amount += weapon.getIntParam(PARAMS.DAMAGE_BONUS);

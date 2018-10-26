@@ -7,6 +7,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.atb.AtbController;
@@ -46,8 +47,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void aiActionActivated(UnitAI ai, DC_ActiveObj activeObj) {
-//        int time = getTimeForAction(activeObj);
-//        ai.setExplorationTimePassed(ai.getExplorationTimePassed() + time);
+        //        int time = getTimeForAction(activeObj);
+        //        ai.setExplorationTimePassed(ai.getExplorationTimePassed() + time);
         ai.setExplorationTimeOfLastAction(time);
     }
 
@@ -56,7 +57,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         return NumberUtils.getFormattedTimeString(((int) time / 3600), 2)
          + ":" + NumberUtils.getFormattedTimeString(((int) time / 60), 2)
          + ":" + NumberUtils.getFormattedTimeString(((int) time % 60), 2);
-//        return TimeMaster.getFormattedTime((long) time, true, false);
+        //        return TimeMaster.getFormattedTime((long) time, true, false);
     }
 
     public int getTimeForAction(DC_ActiveObj activeObj) {
@@ -66,7 +67,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public int getTimePassedSinceAiActions(UnitAI ai) {
         return (int) (time - ai.getExplorationTimeOfLastAction());
-//        return ai.getExplorationTimePassed();
+        //        return ai.getExplorationTimePassed();
     }
 
     public void act(float delta) {
@@ -110,9 +111,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                         if (time >= wakeUpTime)
                             break;
                         WaitMaster.WAIT(period);
-//                DungeonScreen.getInstance().render(actPeriod);
-//            act(actPeriod );
-//                checkTimedEvents();
+                        //                DungeonScreen.getInstance().render(actPeriod);
+                        //            act(actPeriod );
+                        //                checkTimedEvents();
                         if (!ExplorationMaster.isWaiting()) {
                             if (rest) {
                                 ExplorationMaster.setWaiting(true);
@@ -144,7 +145,19 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         lastTimeChecked = time;
         round_delta += delta;
         ai_delta = +delta;
-        master.getAiMaster().checkAiActs();
+        if (AiBehaviorManager.isNewAiOn()){
+        boolean aiActs = false;
+        try {
+            aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+            master.getAiMaster().setAiActs(aiActs);
+            if (aiActs)
+                master.getGame().getLoop().signal();
+        }
+        else
+            master.getAiMaster().checkAiActs();
         processTimedEffects();
         //TODO queue this on gameloop?
     }
@@ -160,12 +173,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         });
 
         if (round_delta >= getRoundEffectPeriod()) {
-//            round_delta -= getRoundEffectPeriod();
+            //            round_delta -= getRoundEffectPeriod();
             round_delta = 0;
             processEndOfRoundEffects();
         }
         if (ai_delta >= getAiCheckPeriod()) {
-//            ai_delta -= getAiCheckPeriod();
+            //            ai_delta -= getAiCheckPeriod();
             ai_delta = 0;
             processAiChecks();
         }
@@ -191,7 +204,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processEndOfRoundEffects() {
-//        processCounterRules();
+        //        processCounterRules();
         master.getGame().getStateManager().applyEndOfTurnRules();
         if (DC_Engine.isAtbMode()) {
             master.getGame().getRules().timePassed(getRoundEffectPeriod());
@@ -204,13 +217,13 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processCustomRules() {
-// List<RoundRule> list = new ArrayList<>();
+        // List<RoundRule> list = new ArrayList<>();
 
         master.getGame().getUnits().forEach(unit -> {
             float delta = getRoundEffectPeriod() / AtbController.TIME_IN_ROUND;
             unit.getResetter().regenerateToughness(delta);
             for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
-//                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {
+                //                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {
                 if (sub.check(unit)) {
                     sub.apply(unit, delta);
                     if (sub == master.getGame().getRules().getUnconsciousRule())
@@ -268,7 +281,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             }
         }
     }
-//restore focus/morale
+    //restore focus/morale
 
     private void processModeEffect(Unit unit, MODE mode) {
         if (mode.getParameter() == null)
@@ -294,8 +307,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             if (base != PARAMS.FOCUS) {
                 min = unit.getIntParam(base);
             }
-//                    max = unit.getIntParam(PARAMS.BASE_FOCUS);//*3/2;
-////                    unit.getIntParam(PARAMS.FOCUS_RETAINMENT) ;
+        //                    max = unit.getIntParam(PARAMS.BASE_FOCUS);//*3/2;
+        ////                    unit.getIntParam(PARAMS.FOCUS_RETAINMENT) ;
         value = MathMaster.getMinMax(value, min, max);
         if (value > 0) {
             unit.modifyParameter(param, value, max, true);
@@ -306,12 +319,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private int getParamRestoration(float delta, PARAMETER param, float modifier) {
-        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param)+getRegenBonus(param));
+        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param) + getRegenBonus(param));
     }
 
     private float getRegenModifier() {
         if (CoreEngine.isTestingMode())
-            return REGEN_MODIFIER*5;
+            return REGEN_MODIFIER * 5;
         return REGEN_MODIFIER;
     }
 
@@ -340,6 +353,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         }
         return 0f;
     }
+
     public float getTime() {
         return time;
     }

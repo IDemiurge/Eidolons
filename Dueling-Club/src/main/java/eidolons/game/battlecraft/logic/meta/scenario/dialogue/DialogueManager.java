@@ -32,7 +32,8 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         GameDialogue dialogue = null;//new LinearDialogue();
         dialogue =  getMaster().getDialogueFactory().getDialogue("Interrogation");
         List<DialogScenario> list = SceneFactory.getScenes(dialogue);
-        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
+        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,
+         new DialogueHandler(dialogue, getGame(), list));
     }
     public void startScenarioIntroDialogues() {
         String data = getMetaGame().getScenario().getProperty(PROPS.

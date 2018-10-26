@@ -17,6 +17,19 @@ public class XLine {
         this(new Point(coordinates.x, coordinates.y), new Point(coordinates2.x, coordinates2.y));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof XLine) {
+            if (((XLine) obj).getP1().equals(getP1())) {
+                if (((XLine) obj).getP2().equals(getP2())) {
+                    return true;
+                }
+            }
+
+        }
+        return super.equals(obj);
+    }
+
     public Point getP1() {
         return p1;
     }

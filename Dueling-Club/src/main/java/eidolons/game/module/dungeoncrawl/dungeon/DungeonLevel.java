@@ -7,6 +7,7 @@ import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.CONTENT_CONSTS.FLIP;
@@ -23,10 +24,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -331,5 +329,13 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (locationType.getGroup()== LOCATION_TYPE_GROUP.NATURAL)
             return false;
         return RngFillMaster.BOUND_SUPPORTED;
+    }
+
+    public DUNGEON_STYLE getMainStyle() {
+        TreeMap<Integer, DUNGEON_STYLE> map = new TreeMap<>() ;
+        for (LevelBlock block : getBlocks()) {
+            MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
+        }
+        return map.firstEntry().getValue();
     }
 }

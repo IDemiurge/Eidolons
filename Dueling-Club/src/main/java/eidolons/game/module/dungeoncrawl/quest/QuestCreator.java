@@ -85,7 +85,7 @@ public class QuestCreator extends QuestHandler {
             case FIND:
                 return 1;
             case HUNT:
-                return 10;
+                return 2;
         }
         return 0;
     }
@@ -129,4 +129,7 @@ public class QuestCreator extends QuestHandler {
         return new DungeonQuest(result);
     }
 
+    public static ObjType getItemType(int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
+        return DataManager.getType("Food", DC_TYPE.ITEMS);
+    }
 }

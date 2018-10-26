@@ -49,7 +49,7 @@ public abstract class SelectionPanel extends TablePanelX {
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
-        backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel());
+        backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel(true));
         startButton = new SmartButton(getDoneText(), STD_BUTTON.MENU, () -> tryDone());
 
         row();

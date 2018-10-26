@@ -20,6 +20,7 @@ public class DirectionMaster {
         if (degrees < 0) {
             degrees += 360;
         }
+
         switch (degrees) {
             case 0:
                 return DIRECTION.RIGHT;
@@ -57,6 +58,41 @@ public class DirectionMaster {
 
     public static DIRECTION rotate180(DIRECTION direction) {
         return flip(direction);
+    }
+
+    public static DIRECTION flipVertically(DIRECTION direction) {
+        switch (direction) {
+            case UP:
+                return DIRECTION.DOWN;
+            case DOWN:
+                return DIRECTION.UP;
+            case UP_LEFT:
+                return DIRECTION.DOWN_LEFT;
+            case UP_RIGHT:
+                return DIRECTION.DOWN_RIGHT;
+            case DOWN_RIGHT:
+                return DIRECTION.UP_RIGHT;
+            case DOWN_LEFT:
+                return DIRECTION.UP_LEFT;
+        }
+        return direction;
+    }
+    public static DIRECTION flipHorizontally(DIRECTION direction) {
+        switch (direction) {
+            case UP_LEFT:
+                return DIRECTION.UP_RIGHT;
+            case UP_RIGHT:
+                return DIRECTION.UP_LEFT;
+            case DOWN_RIGHT:
+                return DIRECTION.DOWN_LEFT;
+            case DOWN_LEFT:
+                return DIRECTION.DOWN_RIGHT;
+            case RIGHT:
+                return DIRECTION.LEFT;
+            case LEFT:
+                return DIRECTION.RIGHT;
+        }
+        return direction;
     }
 
     public static DIRECTION flip(DIRECTION direction) {
@@ -97,7 +133,8 @@ public class DirectionMaster {
         relative_directions[source.x][source.y][target.x][target.y] = d;
         return d;
     }
-        public static DIRECTION getRelativeDirectionNoCache(Coordinates source, Coordinates target) {
+
+    public static DIRECTION getRelativeDirectionNoCache(Coordinates source, Coordinates target) {
 
         if (PositionMaster.isAbove(source, target)) {
             if (PositionMaster.isToTheLeft(source, target)) {

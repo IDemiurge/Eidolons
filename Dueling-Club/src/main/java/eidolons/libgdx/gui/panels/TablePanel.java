@@ -3,11 +3,13 @@ package eidolons.libgdx.gui.panels;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -77,12 +79,26 @@ public class TablePanel<T extends Actor> extends Table {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (updateRequired) {
+        if (updateRequired && isVisibleEffectively()) {
             updateAct(delta);
             invalidate();
             afterUpdateAct(delta);
             updateRequired = false;
         }
+    }
+
+    private boolean isVisibleEffectively() {
+        if (!isVisible())
+            return false;
+        for (Group group : GdxMaster.getAncestors(this)) {
+            if (group == null) {
+                continue;
+            }
+            if (!group.isVisible()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void afterUpdateAct(float delta) {

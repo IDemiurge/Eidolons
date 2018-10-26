@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GDX;
@@ -14,9 +15,14 @@ import main.game.bf.directions.DIRECTION;
  */
 public class HideDecorator {
 
-    public static GroupX decorate(boolean hiddenDefault, STD_BUTTON style, DIRECTION at, Actor actor, Runnable runnable) {
+    public static GroupX decorate(boolean hiddenDefault, STD_BUTTON style, DIRECTION at,
+                                  Actor actor, Runnable runnable ) {
+        return decorate(hiddenDefault, style, at, actor, runnable, null);
+    }
+        public static GroupX decorate(boolean hiddenDefault, STD_BUTTON style, DIRECTION at,
+         Actor actor, Runnable runnable, Vector2 offset) {
         GroupX group = new GroupX(true);
-        Touchable touchable = actor.getTouchable();
+        Touchable touchable = Touchable.enabled; //TODO is this right?
         group.addActor(actor);
         if (hiddenDefault) {
             actor.setVisible(false);
@@ -48,7 +54,10 @@ public class HideDecorator {
         });
         group.addActor(btn);
         GDX.position(btn, at);
-
+            if (offset != null) {
+                btn.setPosition(btn.getX()+offset.x,
+                 btn.getY()+offset.y);
+            }
         return group;
     }
 }

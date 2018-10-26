@@ -6,7 +6,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import main.elements.costs.Costs;
 import main.entity.obj.Obj;
 
 import java.util.List;
@@ -29,14 +28,19 @@ public class DC_PriorityManager {
 
 
     private static PriorityManager impl;
-    private static AiMaster aiHandler;
+    private static AiMaster aiMaster;
     private static PriorityManager mainImpl;
+    private static PriorityManagerImpl alt;
 
-    public static PriorityManager
-    init(AiMaster handler) {
-        impl = new PriorityManagerImpl(handler);
+    public static PriorityManager alt(AiMaster master) {
+        alt = new PriorityManagerImpl(master);
+        return alt;
+    }
+
+    public static PriorityManager init(AiMaster master) {
+        impl = new PriorityManagerImpl(master);
         mainImpl = impl;
-        aiHandler = handler;
+        aiMaster = master;
         return impl;
     }
 
@@ -52,14 +56,14 @@ public class DC_PriorityManager {
     public static int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
         Unit unit = mainImpl.getMaster().getUnit();
         mainImpl.getMaster().setUnit(active.getOwnerUnit());
-//        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {
-//        });
+        //        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {
+        //        });
         int p = 0;
         try {
             p = impl.getAttackPriority(active, targetObj);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally{
+        } finally {
             mainImpl.getMaster().setUnit(unit);
         }
         return p;
@@ -91,17 +95,12 @@ public class DC_PriorityManager {
     }
 
     public static int getMeleeDangerFactor(Unit unit) {
-        return aiHandler.getSituationAnalyzer().getMeleeDangerFactor(unit);
+        return aiMaster.getSituationAnalyzer().getMeleeDangerFactor(unit);
     }
 
     public static int getMeleeThreat(Unit enemy) {
-        return aiHandler.getThreatAnalyzer().getMeleeThreat(enemy);
+        return aiMaster.getThreatAnalyzer().getMeleeThreat(enemy);
     }
-
-    public static int getCostFactor(Costs cost, Unit unit) {
-        return aiHandler.getParamAnalyzer().getCostPriorityFactor(cost, unit);
-    }
-
 
     public static ActionSequence chooseByPriority(List<ActionSequence> actions) {
         return impl.chooseByPriority(actions);

@@ -6,8 +6,7 @@ import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.ai.explore.behavior.Patrol;
-import eidolons.game.battlecraft.ai.explore.behavior.WanderAiOld;
+import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
 import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -201,7 +200,7 @@ public class PatrolMaster {
              .getCoordinates(), prefLessMoreMiddle);
         } else {
             if (distance == null) {
-                distance = WanderAiOld.getMaxWanderTotalDistance(patrol.getGroup(),
+                distance = WanderAiMaster.getMaxWanderTotalDistance(patrol.getGroup(),
                  AiEnums.GOAL_TYPE.PATROL);
                 patrol.setDistance(distance);
             }

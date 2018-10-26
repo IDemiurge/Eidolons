@@ -44,6 +44,7 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
@@ -1481,5 +1482,15 @@ public class Unit extends DC_UnitModel {
 
     public void setPerks(DequeImpl<Perk> perks) {
         this.perks = perks;
+    }
+
+    public List<DC_ActiveObj> getActions() {
+        ArrayList<ActiveObj> list = new ArrayList<>(getActives());
+        list.removeIf(activeObj -> !(activeObj instanceof DC_ActiveObj));
+        return new ArrayList<>(new DequeImpl<DC_ActiveObj>().addAllCast(list));
+    }
+
+    public List<DC_ActiveObj> getMoveActions() {
+        return getActions().stream().filter(a -> a.getActionGroup() == ACTION_TYPE_GROUPS.MOVE).collect(Collectors.toList());
     }
 }

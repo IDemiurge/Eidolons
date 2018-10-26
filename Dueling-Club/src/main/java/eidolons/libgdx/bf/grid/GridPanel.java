@@ -61,6 +61,7 @@ import static main.system.GuiEventType.*;
 
 public class GridPanel extends Group {
 
+    private final int square;
     protected GridCellContainer[][] cells;
     private int cols;
     private int rows;
@@ -88,6 +89,7 @@ public class GridPanel extends Group {
     public GridPanel(int cols, int rows) {
         this.cols = cols;
         this.rows = rows;
+        this.square = rows * cols;
     }
 
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
@@ -616,6 +618,9 @@ public class GridPanel extends Group {
 
             final GridCellContainer gridCellContainer = cells[coordinates.getX()]
              [rows - 1 - coordinates.getY()];
+            if (gridCellContainer == null) {
+                continue;
+            }
             views.forEach(gridCellContainer::addActor);
         }
 
@@ -815,6 +820,7 @@ public class GridPanel extends Group {
     }
 
     public void resetZIndices() {
+        List<GridCellContainer> topCells =     new ArrayList<>() ;
         loop:
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
@@ -827,22 +833,29 @@ public class GridPanel extends Group {
                 if (views.isEmpty()) {
                     cell.setZIndex(0);
                 } else {
-                    cell.setZIndex(y);
+                    if (!cell.getUserObject().isPlayerHasSeen()) {
+                        cell.setZIndex(x + y);
+                    } else {
+                        cell.setZIndex(square + x + y);
+                    }
                     //                TODO     cell.recalcUnitViewBounds();
                     for (GenericGridView sub : views) {
                         if (sub.isHovered() && sub instanceof GridUnitView
                          ) {
                             setHoverObj((GridUnitView) sub);
-                            cell.setZIndex(Integer.MAX_VALUE);
+                            topCells.add( cell);
                             cell.setTopUnitView(sub);
                             cell.setHovered(true);
                         } else if (sub.getUserObject().isPlayerCharacter()) {
-                            cell.setZIndex(Integer.MAX_VALUE);
+                            topCells.add( cell);
                         }
                     }
                 }
                 //                cell.resetZIndices();
             }
+        }
+        for (GridCellContainer cell : topCells) {
+            cell.setZIndex(Integer.MAX_VALUE);
         }
         wallMap.setVisible(WallMap.isOn());
         //        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);

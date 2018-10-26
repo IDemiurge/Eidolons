@@ -82,7 +82,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
             }
         }
         if (list == null || (getEntity().isItemsInitialized())) {
-            setProperty(prop, ContainerUtils.constructContainer(ContainerUtils.convertToIdList(list)));
+            setProperty(prop, ContainerUtils.toIdContainer(list));
         } else {
 
             List<String> idList = new ArrayList<>();

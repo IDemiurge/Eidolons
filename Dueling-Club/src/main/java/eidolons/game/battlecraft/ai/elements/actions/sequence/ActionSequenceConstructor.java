@@ -518,6 +518,8 @@ public class ActionSequenceConstructor extends AiHandler {
         this.prioritizedCells = prioritizedCells;
     }
 
+
+
     // perhaps it should build a move sequence for each cell *from which*
     // the targeting can be done? pruned of course by proximity...
     // this way flyers would be able to land behind their targets

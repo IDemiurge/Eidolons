@@ -31,9 +31,10 @@ public class ActionSequence {
         }
     }
 
-    public ActionSequence(List<Action> actions,   UnitAI ai) {
+    public ActionSequence(List<Action> actions, UnitAI ai) {
         this(actions, null, ai);
     }
+
     public ActionSequence(List<Action> actions, Task task, UnitAI ai) {
         if (task != null) {
             this.type = task.getType();
@@ -54,7 +55,7 @@ public class ActionSequence {
         // for (Action a : actions){
         //
         // }
-        return StringMaster.getWellFormattedString(getType().toString())
+        return StringMaster.toStringForm(getType())
          + ":" + actions.toString()
          // + " priority: " + priority
          ;
@@ -76,7 +77,14 @@ public class ActionSequence {
         return actions.get(i);
     }
 
-    public Action nextAction() {
+    public Action peekNextAction() {
+        if (actions.size() <= i) {
+            return null;
+        }
+        return actions.get(i);
+    }
+
+    public Action popNextAction() {
         if (actions.size() <= i) {
             return null;
         }
@@ -104,7 +112,7 @@ public class ActionSequence {
     }
 
     public Task getTask() {
-        if (task==null )
+        if (task == null)
             task = new Task(getAi(), getType(), "");
         return task;
     }

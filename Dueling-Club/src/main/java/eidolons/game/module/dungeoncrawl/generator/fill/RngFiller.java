@@ -197,7 +197,7 @@ public abstract class RngFiller implements RngFillerInterface {
 
         coordinateList.removeIf(c -> map.getMap().get(c) != getFilledRoomCellType());
 
-        coordinateList.removeIf(c -> TilesMaster.isEnclosedCell(room.relative(c), room));
+        coordinateList.removeIf(c -> TilesMaster.isWallWrappedCell(room.relative(c), room));
 
         if (isCornersOnly()) {
             coordinateList.removeIf(c -> !TilesMaster.isCornerCell(c, map));

@@ -26,22 +26,30 @@ public class TilesMaster {
 
     public static boolean hasConsecutiveAdjacent(Coordinates c, TileMap tileMap,
                                                  boolean passableOrNot, int n) {
+        return hasConsecutiveAdjacent(c, tileMap, passableOrNot, false, n);
+    }
+
+    public static boolean hasConsecutiveAdjacent(Coordinates c, TileMap tileMap,
+                                                 boolean passableOrNot, boolean orthagonalOnly, int n) {
         //at least 3 walls adjacent, and all adjacent between themselves!
         //or we could say that at least a streak of 3 when getting adjacent-direction by clockwise
         int i = 0;
-        for (DIRECTION direction : DIRECTION.clockwise) {
+        for (DIRECTION direction : orthagonalOnly ? DIRECTION.ORTHOGONAL : DIRECTION.clockwise) {
             ROOM_CELL cell = tileMap.getMap().get(c.getAdjacentCoordinate(direction));
-
             if (cell != null && isPassable(cell) != passableOrNot)
                 i = 0;
             else if (i >= n) {
                 return true;
-            } else i++;
+            } else
+                i++;
         }
 
         return false;
     }
 
+    public static boolean isEnclosedCell(Coordinates c,   TileMap tileMap) {
+        return hasConsecutiveAdjacent(c, tileMap, false, true, 4);
+    }
     public static boolean isCellAdjacentTo(Coordinates c,
                                            Room room, Boolean diags_no_only, ROOM_CELL... types) {
 
@@ -100,7 +108,7 @@ public class TilesMaster {
         return true;
     }
 
-    public static boolean isEnclosedCell(Coordinates c, Room room) {
+    public static boolean isWallWrappedCell(Coordinates c, Room room) {
         int wrap = getWallWrapForCell(c, room, false);
         return wrap > 1;
     }
@@ -113,6 +121,7 @@ public class TilesMaster {
          ROOM_CELL.WALL_WITH_LIGHT_OVERLAY, null).size() < 4;
     }
 
+    // a wrap is when there are walls on either side, e.g. on left and right, or up and down
     private static int getWallWrapForCell(Coordinates c, Room room, Boolean diags_no_only) {
         int wrap = 0;
         for (DIRECTION d : DIRECTION.getAdjacencyDirections(diags_no_only)) {
@@ -156,7 +165,7 @@ public class TilesMaster {
             return true;
 
         if (entranceSide != null) {
-            Coordinates nextC =entrance
+            Coordinates nextC = entrance
              .getAdjacentCoordinate(entranceSide.getDirection().rotate180());
             if (c.equals(nextC))
                 return true;

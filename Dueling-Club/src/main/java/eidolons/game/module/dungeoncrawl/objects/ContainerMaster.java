@@ -55,7 +55,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
      CONTAINER_CONTENTS.AMMO.name()
     };
     public static final String OPEN = "_open";
-    private static boolean test_mode = true;
+    private static boolean test_mode = false;
     Map<ObjType, Map<CONTAINER_CONTENTS,
      Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
     private QUALITY_LEVEL[] exceptionalQualities;
@@ -525,7 +525,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             }
         }
         if (contents.isEmpty()) {
-            main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
+            main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has NO contents!");
         } else
             main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
 
@@ -534,9 +534,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (gold > 0) {
             if (GoldMaster.isGoldPacksOn()) {
                 contents += VariableManager.getStringWithVariable("Gold", gold);
-            } else {
-                obj.setParam(PARAMS.GOLD, gold);
             }
+
+                obj.setParam(PARAMS.GOLD, gold);
+
         }
         obj.setProperty(PROPS.INVENTORY, contents);
 

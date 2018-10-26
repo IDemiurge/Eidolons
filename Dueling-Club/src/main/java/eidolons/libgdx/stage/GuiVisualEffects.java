@@ -1,25 +1,20 @@
 package eidolons.libgdx.stage;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.TiledNinePatchGenerator;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.AmbienceDataSource;
 import eidolons.libgdx.particles.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.EMITTER_PRESET;
 import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.VignetteShader;
-import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
@@ -41,6 +36,14 @@ public class GuiVisualEffects extends GroupX {
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
     private int emitterTypesCount;
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+    }
 
     public GuiVisualEffects() {
         if (isVignetteOn()) {

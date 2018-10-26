@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.rules.combat.damage;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.system.math.DC_MathManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -16,7 +15,7 @@ public class ResistMaster {
 
     private static final String RESISTANCE = "{TARGET_RESISTANCE}";
 
-    public static void initUnitResistances(Unit unit) {
+    public static void initUnitResistances(BattleFieldObject unit) {
         int resist = unit.getIntParam(PARAMS.RESISTANCE);
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             PARAMETER resistForDmgType = DC_ContentValsManager.getResistForDmgType(dmg_type);
@@ -38,7 +37,7 @@ public class ResistMaster {
     }
 
     public static int getResistanceForDamageType(BattleFieldObject attacked,
-                                                 Unit attacker, DAMAGE_TYPE type) {
+                                                 BattleFieldObject attacker, DAMAGE_TYPE type) {
         if (type == null) {
             return 0;
         }

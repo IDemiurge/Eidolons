@@ -9,6 +9,7 @@ import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
@@ -49,7 +50,7 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        constructDialogues(getFileRootPath() + getFileName());
+        constructDialogues(StrPathBuilder.build( PathFinder.getEnginePath()+getFileRootPath(), getFileName()));
     }
 
     protected String getFileRootPath() {
@@ -64,7 +65,7 @@ public class DialogueFactory {
     }
 
     protected String getCommonDialoguePath() {
-        return "text/dialogue/"+ TextMaster.getLocale();
+        return  PathFinder.getTextPath()+"/dialogue/"+ TextMaster.getLocale();
     }
 
     protected String getFileName() {

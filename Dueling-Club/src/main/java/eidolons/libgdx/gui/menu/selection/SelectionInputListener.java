@@ -29,7 +29,7 @@ public class SelectionInputListener extends InputListener {
     }
 
     @Override
-    public boolean keyDown(InputEvent event, int keycode) {
+    public boolean keyUp(InputEvent event, int keycode) {
         switch (keycode) {
             case Keys.UP:
             case Keys.W:
@@ -52,8 +52,10 @@ public class SelectionInputListener extends InputListener {
                 return false;
 
         }
-        return super.keyDown(event, keycode);
+        return super.keyUp(event, keycode);
     }
+
+
 
     @Override
     public boolean keyTyped(InputEvent event, char character) {

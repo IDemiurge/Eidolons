@@ -199,7 +199,7 @@ public class HqDataMaster {
     }
 
     public static HqDataMaster createAndSaveInstance(Unit unit) {
-        HqDataMaster instance = new HqDataMaster(unit);
+        HqDataMaster instance = createInstance(unit);
         getMap().put(unit, instance);
         return instance;
     }

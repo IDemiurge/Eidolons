@@ -40,7 +40,9 @@ public class NinePatchFactory {
     }
 
     public static NinePatch get3pxBorder() {
-        return new NinePatch(getOrCreateR("UI/components/background_3px_border.png"), 3, 3, 3, 3);
+        return new NinePatch(getOrCreateR(
+         StrPathBuilder.build(PathFinder.getComponentsPath(),
+          "ninepatch", "std", "background_3px_border.png")) , 3, 3, 3, 3);
     }
 
     public static NinePatch getMainMenuFrame() {
@@ -89,6 +91,9 @@ public class NinePatchFactory {
         return new NinePatchDrawable(getLightDecorPanelFilled());
     }
 
+    public static NinePatchDrawable getLightDecorPanelDrawable() {
+        return new NinePatchDrawable(getLightDecorPanel());
+    }
     private static NinePatch getLightDecorPanel() {
         return new NinePatch(getOrCreateR(
          LIGHT_DECOR_PANEL_PATH), 10, 10, 10, 10);
@@ -101,4 +106,5 @@ public class NinePatchFactory {
     public static NinePatchDrawable getLightPanelDrawable() {
         return new NinePatchDrawable(getLightPanel());
     }
+
 }

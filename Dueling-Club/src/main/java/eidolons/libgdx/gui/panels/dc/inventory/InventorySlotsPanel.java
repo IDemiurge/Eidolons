@@ -1,11 +1,11 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
+import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class InventorySlotsPanel extends TablePanelX {
         this.setCols(cols);
         setFixedSize(true);
         table = new TablePanelX<>();
-        table.setSize(cols * 64, rows * 64);
+        table.setSize(cols * 64+20, rows * 64);
         table.defaults().space(0).size(64, 64);
 
         if (isScrolled()) {
@@ -42,6 +42,9 @@ public class InventorySlotsPanel extends TablePanelX {
         } else {
             add(table);
         }
+    }
+    protected void updateAct() {
+        scroll.setBounds(5, 5, getWidth()  , getHeight() - 10);
     }
 
     protected boolean isScrolled() {
@@ -54,9 +57,9 @@ public class InventorySlotsPanel extends TablePanelX {
             return;
         super.afterUpdateAct(delta);
         final List<InvItemActor> inventorySlots = getSlotActors();
-//        if (slots != null)
-//            if (new ListMaster<InvItemActor>().compare(inventorySlots, slots))
-//                return;
+        if (slots != null)
+            if (new ListMaster<InvItemActor>().compare(inventorySlots, slots))
+                return;
         table.clear();
         slots = new ArrayList<>();
         int max = getRows() * getCols();
@@ -89,9 +92,6 @@ public class InventorySlotsPanel extends TablePanelX {
 
     }
 
-    protected void updateAct() {
-        scroll.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
-    }
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
@@ -100,9 +100,9 @@ public class InventorySlotsPanel extends TablePanelX {
             return null;
         }
 
-        if (actor instanceof Image) {
-            return null;
-        }
+//        if (actor instanceof Image) {
+//            return null;
+//        }
         return actor;
     }
 

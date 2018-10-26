@@ -44,6 +44,8 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         //        path =PathFinder.getVfxPath() + "templates\\sprite test";
         this.path = path;
         effect = EmitterPools.getEffect(path);
+        //TODO not very safe...
+        effect.getEmitters().forEach(emitter -> emitter.setAdditive(true));
     }
 
     @Override

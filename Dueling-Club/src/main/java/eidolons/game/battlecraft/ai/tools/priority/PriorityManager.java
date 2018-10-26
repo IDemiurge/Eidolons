@@ -15,6 +15,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
+import main.elements.costs.Costs;
 import main.entity.obj.Obj;
 import main.game.logic.action.context.Context;
 
@@ -136,6 +137,8 @@ public interface PriorityManager {
     int getModePriority(Unit unit, STD_MODES mode);
 
     AiMaster getMaster();
+
+    int getCostFactor(Costs cost, Unit unit);
 
 
     enum AI_EFFECT_PRIORITIZING {

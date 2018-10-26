@@ -1,14 +1,15 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
+import eidolons.macro.global.time.MacroTimeMaster;
 import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -16,6 +17,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -44,11 +46,13 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected GameScreen getGdxScreen() {
         return DungeonScreen.getInstance();
     }
+
     @Override
     public void resume() {
         super.resume();
         startRealTimeThread();
     }
+
     @Override
     public Thread startInNewThread() {
         if (!CoreEngine.isGraphicsOff()) {
@@ -57,8 +61,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             getGdxScreen().setRealTimeGameLoop(this);
         }
         if (!CoreEngine.isJUnit()) {
-//            if (realTimeThread == null)
-                startRealTimeThread();
+            //            if (realTimeThread == null)
+            startRealTimeThread();
 
         }
         return super.startInNewThread();
@@ -76,7 +80,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public void start() {
-//        game.getManager().reset();
+        //        game.getManager().reset();
         super.start();
     }
 
@@ -112,14 +116,13 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
 
-
     @Override
     protected Boolean makeAction() {
         if (exited)
             return true;
         if (isStopped())
             lock();
-        if (actionQueue.isEmpty()) {
+        if (playerActionQueue.isEmpty()) {
             if (!master.getAiMaster().isAiActs()) {
                 lock();
 
@@ -129,46 +132,16 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             game.getManager().reset();
             resetRequired = false;
         }
-        if (master.getAiMaster().isAiActs()) {
+        if (!handleAi())
+            return true;
 
-            while (!master.getAiMaster().getAiActionQueue().isEmpty()) {
-                //sort? change display?
-                // active unit?
-                try {
-                    ActionInput input = master.getAiMaster().getAiActionQueue().removeLast();
-                    activateAction(input);
-                    master.getTimeMaster().aiActionActivated(input.getAction().getOwnerUnit().getAI(), input.getAction());
-                    master.getPartyMaster().reset();
 
-                    if (input.getAction().getOwnerUnit().getAI().isLeader()) {
-//                        master.getEnemyPartyMaster().setGroupAI();
-                        master.getEnemyPartyMaster().leaderActionDone(input);
-                    }
-
-                    if (master.getResetter().isAggroCheckNeeded(input)) {
-//                        game.getVisionMaster().getVisionRule().
-//                         fullReset(input.getAction().getOwnerUnit());
-                        game.getManager().reset();
-
-                        getGame().getDungeonMaster().getExplorationMaster()
-                         .getAggroMaster().checkStatusUpdate();
-                        if (!ExplorationMaster.isExplorationOn()) {
-                            return true;
-                        }
-                    }
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            }
-            master.getAiMaster().setAiActs(false);
-        }
-
-//        if (activeUnit.getHandler().getChannelingSpellData() != null) {
-//            ActionInput data = activeUnit.getHandler().getChannelingSpellData();
-//            ChannelingRule.channelingResolves(activeUnit);
-//             activateAction(data);
-//        }
-        if (actionQueue.isEmpty()) {
+        //        if (activeUnit.getHandler().getChannelingSpellData() != null) {
+        //            ActionInput data = activeUnit.getHandler().getChannelingSpellData();
+        //            ChannelingRule.channelingResolves(activeUnit);
+        //             activateAction(data);
+        //        }
+        if (playerActionQueue.isEmpty()) {
             game.getMovementManager().promptContinuePath(activeUnit);
             return null;
         }
@@ -177,7 +150,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
-        ActionInput playerAction = actionQueue.removeLast();
+        ActionInput playerAction = playerActionQueue.removeLast();
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
             activateAction(playerAction);
@@ -192,6 +165,51 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         waitForPause();
         return exited;
     }
+
+    private boolean handleAi() {
+        if (master.getAiMaster().isAiActs()) {
+            DequeImpl<ActionInput> queue = getAiActionQueue();
+            while (!queue.isEmpty()) {
+                //sort? change display?
+                // active unit?
+                try {
+                    ActionInput input = queue.removeLast();
+                    activateAction(input);
+                    master.getTimeMaster().aiActionActivated(input.getAction().getOwnerUnit().getAI(), input.getAction());
+                    master.getPartyMaster().reset();
+
+                    if (input.getAction().getOwnerUnit().getAI().isLeader()) {
+                        //                        master.getEnemyPartyMaster().setGroupAI();
+                        master.getEnemyPartyMaster().leaderActionDone(input);
+                    }
+
+                    if (master.getResetter().isAggroCheckNeeded(input)) {
+                        //                        game.getVisionMaster().getVisionRule().
+                        //                         fullReset(input.getAction().getOwnerUnit());
+                        game.getManager().reset();
+
+                        getGame().getDungeonMaster().getExplorationMaster()
+                         .getAggroMaster().checkStatusUpdate();
+                        if (!ExplorationMaster.isExplorationOn()) {
+                            return false;
+                        }
+                    }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+            master.getAiMaster().setAiActs(false);
+        }
+        return true;
+    }
+
+    private DequeImpl<ActionInput> getAiActionQueue() {
+        if (AiBehaviorManager.isNewAiOn())
+            return game.getDungeonMaster().getExplorationMaster().getAiMaster().getExploreAiManager().getBehaviorManager().getAiActionQueue();
+
+        return master.getAiMaster().getAiActionQueue();
+    }
+
 
 
     protected boolean checkActionInputValid(ActionInput playerAction) {
@@ -220,44 +238,43 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
               )) {
                 WaitMaster.WAIT(100);
                 waitTime += 100;
-                main.system.auxiliary.log.LogMaster.log(1,"Explore loops waited for anim to draw: " +waitTime);
+                main.system.auxiliary.log.LogMaster.log(1, "Explore loops waited for anim to draw: " + waitTime);
             }
         }
     }
 
     @Override
     public void queueActionInput(ActionInput actionInput) {
-        if (actionQueue.size() > 0)
+        if (playerActionQueue.size() > 0)
             return;
-//        if (actionQueue.contains(actionInput))
-//            return;
-//        if (actionQueue.size() > 0) {
-//            new Thread(() -> {
-//                Loop loop = new Loop(20);
-//                while (loop.continues()) {
-//                    WaitMaster.WAIT(100);
-//                    if (actionQueue.isEmpty()) {
-//                        //check validity
-//                        tryAddPlayerActions(actionInput);
-//                        break;
-//                    }
-//                }
-//
-//            }, "Player ActionInput Thread").start();
-//        } else
+        //        if (actionQueue.contains(actionInput))
+        //            return;
+        //        if (actionQueue.size() > 0) {
+        //            new Thread(() -> {
+        //                Loop loop = new Loop(20);
+        //                while (loop.continues()) {
+        //                    WaitMaster.WAIT(100);
+        //                    if (actionQueue.isEmpty()) {
+        //                        //check validity
+        //                        tryAddPlayerActions(actionInput);
+        //                        break;
+        //                    }
+        //                }
+        //
+        //            }, "Player ActionInput Thread").start();
+        //        } else
         tryAddPlayerActions(actionInput);
     }
 
     @Override
     public void actionInput(ActionInput actionInput) {
-        if (isStopped()){
-            main.system.auxiliary.log.LogMaster.log(1,"action input in stopped " );
-            return ;
+        if (isStopped()) {
+            main.system.auxiliary.log.LogMaster.log(1, "action input in stopped ");
+            return;
         }
-        if (isPaused())
-        {
+        if (isPaused()) {
             EUtils.showInfoText(
-             RandomWizard.random()?
+             RandomWizard.random() ?
               "The game is Paused!" :
               "Game is paused now...");
             return;
@@ -272,15 +289,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     private void tryAddPlayerActions(ActionInput actionInput) {
-        actionQueue.add(actionInput);
+        playerActionQueue.add(actionInput);
     }
 
 
     @Override
     protected void loopExited() {
-//            if (ExplorationMaster.checkExplorationSupported(game)) {
-//                WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, false);
-//        master.switchExplorationMode(false);
+        //            if (ExplorationMaster.checkExplorationSupported(game)) {
+        //                WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, false);
+        //        master.switchExplorationMode(false);
         if (ExplorationMaster.isExplorationOn()) //TODO refactor!
             super.loopExited();
         else {
@@ -313,8 +330,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                     break;
                 }
             }
-            if (!ExplorationMaster.isExplorationOn())
-            {
+            if (!ExplorationMaster.isExplorationOn()) {
                 lock();
             }
         }
@@ -331,8 +347,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (isPaused())
             return;
         master.getTimeMaster().act(delta);
-//        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
-        macroTimeMaster.act(delta  ); //
+        //        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
+        macroTimeMaster.act(delta); //
     }
 
     public Float getTime() {

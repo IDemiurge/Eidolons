@@ -15,14 +15,23 @@ import main.system.math.Formula;
  */
 public class QuestReward {
     private final String title;
-    String xpFormula;
-    String goldFormula;
-    String itemDescriptor;
+    String xpFormula="";
+    String goldFormula="";
+    String reputationFormula="";
+    String itemDescriptor="";
 
     @Override
     public String toString() {
-        String s = "Reward: ";
-        return super.toString();
+        String s = "Reward: \n";
+        if (!goldFormula.isEmpty())
+            s+="Gold: " + new Formula(goldFormula).getInt();
+        if (!xpFormula.isEmpty())
+            s+="Experience: " + new Formula(xpFormula).getInt();
+        if (!itemDescriptor.isEmpty())
+            s+="Item: " + itemDescriptor;
+        if (!reputationFormula.isEmpty())
+            s+="Reputation: " + new Formula(reputationFormula).getInt();
+        return s;
     }
 
     public QuestReward(ObjType type, DungeonQuest quest) {

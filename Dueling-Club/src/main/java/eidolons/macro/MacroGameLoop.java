@@ -67,7 +67,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         } finally {
             lock.unlock();
         }
-        if (actionQueue.isEmpty()) {
+        if (playerActionQueue.isEmpty()) {
         }
 
         //        ActionInput playerAction = actionQueue.removeLast();

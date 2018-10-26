@@ -503,6 +503,7 @@ public class DC_GameManager extends GameManager {
         if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
+        if (event.getRef().getSourceObj() != null) {
         if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
             if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
                 if (!Showcase.isRunning())
@@ -514,6 +515,9 @@ public class DC_GameManager extends GameManager {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
             }
+        } else {
+            event.getRef().getSourceObj(); //TODO debug this
+        }
         checkDefaultEventTriggers(event);
         return super.handleEvent(event);
     }

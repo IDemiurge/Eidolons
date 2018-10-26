@@ -37,6 +37,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     public LightLayer(boolean uiStage) {
         super();
         this.uiStage = uiStage;
+        setTransform(false);
     }
 
     public static String getPath() {
@@ -232,6 +233,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         public LightContainer(String path, LIGHT_LAYER lightLayer) {
             super(path);
             this.lightLayer = lightLayer;
+            setTransform(false);
         }
 
         @Override

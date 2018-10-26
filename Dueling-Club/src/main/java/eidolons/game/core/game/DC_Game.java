@@ -31,6 +31,7 @@ import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import eidolons.game.core.CombatLoop;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.atb.AtbController;
@@ -65,8 +66,8 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.game.bf.GraveyardManager;
+import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
@@ -136,6 +137,7 @@ public class DC_Game extends GenericGame {
     public DC_Game(boolean simulation) {
         this(simulation, true);
     }
+
     public DC_Game(boolean simulation, boolean readyToInit) {
         Game.game = this;
         game = this;
@@ -249,6 +251,7 @@ public class DC_Game extends GenericGame {
         if (AI_ON) {
             aiManager = new AI_Manager(this);
             aiManager.init();
+            dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
         }
         setBattleInit(true);
     }
@@ -316,7 +319,7 @@ public class DC_Game extends GenericGame {
         else
             exploreLoop.startInNewThread();
         if (isStarted())
-                musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
+            musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
 
     }
@@ -327,9 +330,9 @@ public class DC_Game extends GenericGame {
         if (combatLoop.isStarted())
             combatLoop.resume();
         else
-             loop.startInNewThread() ;
+            loop.startInNewThread();
 
-            musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
+        musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
     }
 
 
@@ -670,7 +673,7 @@ public class DC_Game extends GenericGame {
     @Deprecated
     @Override
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
-//        return getMaster().getObjectsOnCoordinate(c);
+        //        return getMaster().getObjectsOnCoordinate(c);
         return null;
     }
 
@@ -801,6 +804,7 @@ public class DC_Game extends GenericGame {
         for (Obj sub : cachedObjects) {
             getState().addObject(sub);
         }
+        getState().addObject(Eidolons.getMainHero());
         dungeonMaster.getExplorationMaster().
          getResetter().setResetNotRequired(false);
         visionMaster.reinit();

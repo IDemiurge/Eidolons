@@ -100,4 +100,61 @@ public class SuperContainer extends SuperActor {
     public Color getColor() {
         return getContent().getColor();
     }
+
+
+    @Override
+    public float getRotation() {
+        return getContent().getRotation();
+    }
+
+    @Override
+    public void setRotation(float degrees) {
+        getContent().setRotation(degrees);
+    }
+
+
+    @Override
+    public void setSize(float width, float height) {
+        getContent().setSize(width, height);
+    }
+
+    @Override
+    public void setOrigin(float originX, float originY) {
+        getContent().setOrigin(originX, originY);
+    }
+
+    @Override
+    public void setScale(float scaleXY) {
+        getContent().setScale(scaleXY);
+    }
+
+    @Override
+    public void setOrigin(int alignment) {
+        getContent().setOrigin(alignment);
+    }
+
+    @Override
+    public void setScaleX(float scaleX) {
+        getContent().setScaleX(scaleX);
+    }
+
+    @Override
+    public void setScaleY(float scaleY) {
+        getContent().setScaleY(scaleY);
+    }
+
+    @Override
+    public void setScale(float scaleX, float scaleY) {
+        getContent().setScale(scaleX, scaleY);
+    }
+
+    @Override
+    public float getScaleX() {
+        return getContent().getScaleX();
+    }
+
+    @Override
+    public float getScaleY() {
+        return getContent().getScaleY();
+    }
 }

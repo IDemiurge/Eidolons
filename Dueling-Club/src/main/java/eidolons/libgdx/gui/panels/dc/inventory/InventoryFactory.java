@@ -12,6 +12,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -62,17 +63,25 @@ public class InventoryFactory {
         if (entity instanceof DC_HeroSlotItem) {
             DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
             typeName = item.getBaseTypeName();
-//            int durability = DataManager.getType(item.getBaseTypeName(),
-//             item.getOBJ_TYPE_ENUM()).getIntParam(PARAMS.DURABILITY);
-//TODO
-//            float perc = new Float(durability) / item.getIntParam(PARAMS.C_DURABILITY);
-//
-//            if (perc<0.75f){
-//                typeName += " 2";
-//            }
-//            if (perc<1.25f) {
-//                typeName += " 1";
-//            }
+            boolean versioned=false;
+            if (TYPE == DC_TYPE.ARMOR ) {
+                versioned =true;
+            }
+            if (item instanceof DC_WeaponObj) {
+                versioned=((DC_WeaponObj) item).isAmmo();
+            }
+            if (versioned){
+                int durability = DataManager.getType(item.getBaseTypeName(),
+                 item.getOBJ_TYPE_ENUM()).getIntParam(PARAMS.DURABILITY);
+                float perc = new Float(durability) / item.getIntParam(PARAMS.C_DURABILITY);
+
+                if (perc < 0.75f) {
+                    typeName += " 2";
+                }
+                if (perc < 1.25f) {
+                    typeName += " 1";
+                }
+        }
         }
 
         String path = StrPathBuilder.build(basePath,
@@ -151,7 +160,7 @@ public class InventoryFactory {
             item = (DC_HeroItemObj) entity;
         } else {
             if (entity instanceof Unit) {
-                container = new InvItemActor(entity.getImagePath());
+                container = new InvItemActor(entity.getImagePath(), 128);
             }
         }
         if (container == null)

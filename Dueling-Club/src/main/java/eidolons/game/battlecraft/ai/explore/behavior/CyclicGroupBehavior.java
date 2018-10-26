@@ -6,27 +6,31 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 
 /**
  * Created by JustMe on 10/20/2018.
- *
+ * <p>
  * For leader
- *
  */
-public abstract class CyclicBehavior extends AiBehavior{
+public abstract class CyclicGroupBehavior extends AiGroupBehavior {
 
     DC_Obj[] cycledArgs;
     int step;
-    public CyclicBehavior(AiMaster master, UnitAI ai) {
+
+    public CyclicGroupBehavior(AiMaster master, UnitAI ai) {
         super(master, ai);
     }
 
+
     @Override
-    protected DC_Obj updateTarget() {
-if (cycledArgs==null || isArgUpdateRequired()){
-    cycledArgs = new DC_Obj[getCycledStepsNumber()];
-    for (int i = 0; i < getCycledStepsNumber(); i++) {
-        cycledArgs[i]= createCycledArg(i, cycledArgs);
-    }
-    step =0;
-}
+    protected DC_Obj updateLeaderTarget() {
+        if (cycledArgs == null || isArgUpdateRequired()) {
+            cycledArgs = new DC_Obj[getCycledStepsNumber()];
+            for (int i = 0; i < getCycledStepsNumber(); i++) {
+                cycledArgs[i] = createCycledArg(i, cycledArgs);
+            }
+            step = 0;
+        }
+        if (step>=cycledArgs.length) {
+            step=0;
+        }
         return cycledArgs[step++];
     }
 
@@ -39,9 +43,9 @@ if (cycledArgs==null || isArgUpdateRequired()){
     protected abstract int getCycledStepsNumber();
 
     //    public DC_Obj getAltArg(DC_Obj obj){
-//
-//    }
-//    public boolean isArgValid(DC_Obj obj){
-//
-//    }
+    //
+    //    }
+    //    public boolean isArgValid(DC_Obj obj){
+    //
+    //    }
 }

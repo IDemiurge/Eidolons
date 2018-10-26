@@ -24,9 +24,7 @@ public class PathUtils {
         }
         List<String> segments = null;
         if (path.contains("/")) {
-            if (!path.contains(Pattern.quote(PATH_SEPARATOR))) {
-                segments =  Arrays.asList(path.split("/"));
-            }
+            path =   path.replace("/", PATH_SEPARATOR);
         }
         if (segments == null)
             segments =      Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));

@@ -8,7 +8,6 @@ import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
-import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
@@ -350,7 +349,7 @@ public class PathBuilder extends AiHandler {
 
     private Integer getPathPriority() {
         Costs cost = getPathCosts(path);
-        int result = DC_PriorityManager.getCostFactor(cost, unit);
+        int result = getPriorityManager().getCostFactor(cost, unit);
 //        try {
         // result += getAoOPenalty(); TODO instant atks preCheck !
 //        } catch (Exception e) {
@@ -410,7 +409,7 @@ public class PathBuilder extends AiHandler {
         this.timeLimit = timeLimit;
         return this;
     }
-
+@Deprecated
     public PathBuilder getInstance(Unit source) {
         PathBuilder clone = new PathBuilder(new AiMaster(game));
         clone.setUnit(source);
@@ -419,5 +418,9 @@ public class PathBuilder extends AiHandler {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+        if (targetAction == null) {
+            targetAction = new Action(unit.getTurnAction(true));
+        }
+        init(unit.getMoveActions(), targetAction);
     }
 }

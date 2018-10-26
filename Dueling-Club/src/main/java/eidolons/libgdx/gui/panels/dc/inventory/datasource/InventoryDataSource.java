@@ -99,6 +99,11 @@ public class InventoryDataSource implements QuickSlotDataSource,
         return handler;
     }
 
+    @Override
+    public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
+        return model.getIntParam(PARAMS.GOLD_COST);
+    }
+
     public List<InvItemActor> getInventorySlots(Collection<DC_HeroItemObj> items) {
         List<DC_HeroItemObj> inv = applyFilter(items, filter);
         ListMaster.fillWithNullElements(inv

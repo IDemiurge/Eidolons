@@ -5,6 +5,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -28,15 +29,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class WanderAiOld extends AiBehavior {
+public class WanderAiMaster extends AiBehavior {
 
-    public WanderAiOld(AiMaster master, UnitAI ai) {
+    public WanderAiMaster(AiMaster master, UnitAI ai) {
         super(master, ai);
     }
 
     @Override
     protected boolean isFollowOrAvoid() {
         return true;
+    }
+
+    @Override
+    protected AI_BEHAVIOR_MODE getType() {
+        return AI_BEHAVIOR_MODE.WANDER;
     }
 
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
@@ -59,7 +65,7 @@ public class WanderAiOld extends AiBehavior {
         return list;
     }
 
-    private static int getMaxWanderDistance() {
+    protected static int getMaxWanderDistance() {
         return 5;
     }
 
@@ -85,7 +91,7 @@ public class WanderAiOld extends AiBehavior {
 
     }
 
-    private static boolean isAheadOfLeader(UnitAI ai) {
+    protected static boolean isAheadOfLeader(UnitAI ai) {
         Coordinates c = ai.getGroup().getOriginCoordinates();
         return PositionMaster.getDistance(c, ai.getUnit().getCoordinates()) > PositionMaster
          .getDistance(c, ai.getGroup().getLeader().getCoordinates());
@@ -93,7 +99,7 @@ public class WanderAiOld extends AiBehavior {
 
     }
 
-    private static boolean checkUnitArrived(UnitAI ai, GOAL_TYPE type) {
+    protected static boolean checkUnitArrived(UnitAI ai, GOAL_TYPE type) {
         return ai.isPathBlocked();
         //        GroupAI group = ai.getGroup();
         //        Coordinates c = group.getOriginCoordinates();
@@ -111,7 +117,7 @@ public class WanderAiOld extends AiBehavior {
         //        return false;
     }
 
-    private static int getMaxWanderStepDistance(GroupAI group, GOAL_TYPE type) {
+    protected static int getMaxWanderStepDistance(GroupAI group, GOAL_TYPE type) {
         // TODO Auto-generated method stub
         return getMaxWanderTotalDistance(group, type) / 2;
     }
@@ -138,20 +144,20 @@ public class WanderAiOld extends AiBehavior {
         // small...
     }
 
-    private static float getDistanceFactor(GOAL_TYPE type, GroupAI group) {
+    protected static float getDistanceFactor(GOAL_TYPE type, GroupAI group) {
         return 0.3f;
     }
 
-    private static boolean isProgressObstructed(DIRECTION direction,
+    protected static boolean isProgressObstructed(DIRECTION direction,
                                                 UnitAI ai, GOAL_TYPE type) {
         //      TODO cache needed? if (ai.isPathBlocked()!=null )
         //           return ai.isPathBlocked();
-        boolean blocked = checkProgressObstructed(direction, ai, type);
+        boolean blocked = checkProgressObstructed(direction, ai );
         ai.setPathBlocked(blocked);
         return blocked;
     }
 
-    private static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai, GOAL_TYPE type) {
+    protected static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai ) {
         Coordinates c =
          ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
         if (c == null)
@@ -206,11 +212,11 @@ public class WanderAiOld extends AiBehavior {
         return change;
     }
 
-    private static float getCatchUpFactor(GroupAI group, GOAL_TYPE type) {
+    protected static float getCatchUpFactor(GroupAI group, GOAL_TYPE type) {
         return 0.5f;
     }
 
-    private static boolean isFollowLeader(GOAL_TYPE type) {
+    protected static boolean isFollowLeader(GOAL_TYPE type) {
         switch (type) {
             case SEARCH:
             case AGGRO:
@@ -264,7 +270,7 @@ public class WanderAiOld extends AiBehavior {
     }
 
     public static Coordinates getCoordinates(GOAL_TYPE type, UnitAI ai) {
-        Coordinates targetCoordinates = WanderAiOld.getWanderTargetCoordinatesCell(ai, type);
+        Coordinates targetCoordinates = WanderAiMaster.getWanderTargetCoordinatesCell(ai, type);
         Unit unit = ai.getUnit();
         GroupAI group = ai.getGroup();
         boolean adjust = targetCoordinates == null;
@@ -279,7 +285,7 @@ public class WanderAiOld extends AiBehavior {
                 c = Positioner.adjustCoordinate(targetCoordinates, null);
                 if (c == null) {
                     group.getWanderStepCoordinateStack().push(group.getLeader().getCoordinates());
-                    WanderAiOld.changeGroupMoveDirection(group, type);
+                    WanderAiMaster.changeGroupMoveDirection(group, type);
                     return null;
                 }
                 if (DirectionMaster.getRelativeDirection(unit.getCoordinates(), c) != group
@@ -348,7 +354,13 @@ public class WanderAiOld extends AiBehavior {
         //        return sequences.get(0);
     }
 
-    private Predicate<Coordinates> getWanderPredicate(Unit unit,
+    @Override
+    protected Coordinates chooseMoveTarget(List<Coordinates> validCells) {
+        return null;
+    }
+
+    //ensure that units don't end up in corners too often
+    protected Predicate<Coordinates> getWanderPredicate(Unit unit,
                                                       FACING_DIRECTION facing,
                                                       Coordinates c1) {
         return new Predicate<Coordinates>() {

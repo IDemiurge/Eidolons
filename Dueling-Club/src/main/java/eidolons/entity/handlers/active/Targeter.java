@@ -31,7 +31,7 @@ public class Targeter extends ActiveHandler {
     protected Map<Coordinates, Map<FACING_DIRECTION, Boolean>> targetingAnyCache;
     protected Map<Coordinates, Map<FACING_DIRECTION, Map<Integer, Boolean>>> targetingCache;
 
-    protected Obj presetTarget;
+    private Obj presetTarget;
     protected boolean forcePresetTarget;
     private TARGETING_MODE targetingMode;
     private boolean targetingInitialized;
@@ -42,9 +42,9 @@ public class Targeter extends ActiveHandler {
 
     public void initTarget() {
 
-        if (presetTarget != null) { //TODO figure out when to get source's ref and when not!!!
-            getRef().setTarget(presetTarget.getId());
-            presetTarget = null;
+        if (getPresetTarget() != null) { //TODO figure out when to get source's ref and when not!!!
+            getRef().setTarget(getPresetTarget().getId());
+            setPresetTarget(null);
         } else {
             if (getEntity().getTargeting() != null) {
                 if (!isForcePresetTarget()) {
@@ -271,5 +271,9 @@ public class Targeter extends ActiveHandler {
         if (getTargeting() instanceof AutoTargeting) {
             selectTarget(getRef());
         }
+    }
+
+    public void setPresetTarget(Obj presetTarget) {
+        this.presetTarget = presetTarget;
     }
 }

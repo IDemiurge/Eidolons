@@ -47,7 +47,9 @@ public class HeroDataModel extends Unit {
     public HeroDataModel(ObjType type, int x, int y, Player originalOwner, DC_Game game, Ref ref) {
         super(type, x, y, originalOwner, game, ref);
     }
-
+    public boolean isPlayerCharacter() {
+        return getHero().isPlayerCharacter();
+    }
     @Override
     public boolean isSimulation() {
         return true;

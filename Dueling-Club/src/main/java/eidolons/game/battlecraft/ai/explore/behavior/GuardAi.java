@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.ai.explore.behavior;
 
+import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -24,6 +26,8 @@ import java.util.List;
  */
 public class GuardAi extends AiBehavior {
 
+    DC_Obj guarded;
+
     public GuardAi(AiMaster master, UnitAI ai) {
         super(master, ai);
     }
@@ -31,6 +35,11 @@ public class GuardAi extends AiBehavior {
     @Override
     protected boolean isFollowOrAvoid() {
         return true;
+    }
+
+    @Override
+    protected AI_BEHAVIOR_MODE getType() {
+        return AI_BEHAVIOR_MODE.GUARD;
     }
 
     @Override

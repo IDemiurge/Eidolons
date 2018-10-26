@@ -46,6 +46,7 @@ public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
     private static final boolean TEST_MODE = true;
     List<DC_HeroItemObj> items;
+    int balance;
     private SHOP_TYPE shopType;
     private SHOP_LEVEL shopLevel;
     private SHOP_MODIFIER shopModifier;
@@ -66,7 +67,19 @@ public class Shop extends TownPlace implements ShopInterface {
         }
     }
 
-    private void exited() {
+    /*
+    confirm selling for balance
+    or buying in credit?
+
+
+
+     */
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void exited() {
         for (Integer id : priceCache.keySet()) {
             //       TODO save     addProperty(MACRO_PROPS.SHOP_CACHED_PRICES,
             //             VariableManager.getStringWithVariable(id , price));
@@ -139,10 +152,9 @@ public class Shop extends TownPlace implements ShopInterface {
 
         for (String group : item_groups) {
             List<ObjType> pool;
-            if (itemsType== DC_TYPE.JEWELRY) {
-                pool =     basis;
-            } else
-            if (prop == null) {
+            if (itemsType == DC_TYPE.JEWELRY) {
+                pool = basis;
+            } else if (prop == null) {
                 pool = DataManager.toTypeList(DataManager
                   .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
                  C_OBJ_TYPE.ITEMS);
@@ -264,9 +276,33 @@ public class Shop extends TownPlace implements ShopInterface {
     }
 
     private void itemBought(DC_HeroItemObj itemObj, int cost) {
-        modifyParameter(PARAMS.GOLD, -cost);
+        givesGold(cost);
         items.add(itemObj);
         itemObj.setContainer(CONTAINER.SHOP);
+    }
+
+    public boolean isBalanceOk() {
+        if (balance < 0) {
+            if (-balance > getIntParam(MACRO_PARAMS.MAX_CREDIT)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void takesGold(int cost, Unit from) {
+
+    }
+        private void givesGold(int cost) {
+        Integer gold = getIntParam(PARAMS.GOLD);
+        if (gold < cost) {
+            int balanceChange = gold - cost;
+            balance += balanceChange;
+            //notify
+            setParam(PARAMS.GOLD, 0);
+        } else {
+            modifyParameter(PARAMS.GOLD, -cost);
+        }
     }
 
     public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean sell) {
@@ -291,9 +327,9 @@ public class Shop extends TownPlace implements ShopInterface {
     private boolean acquireItem(DC_HeroItemObj t) {
         Integer cost = t.getIntParam(PARAMS.GOLD_COST);
         if (!TEST_MODE)
-        if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
-            return false;
-        }
+            if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
+                return false;
+            }
         itemBought(t, cost);
         return true;
     }

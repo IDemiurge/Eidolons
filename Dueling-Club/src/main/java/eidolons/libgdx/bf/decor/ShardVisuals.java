@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.decor;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
@@ -7,18 +8,18 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.Bools;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 10/8/2018.
@@ -37,11 +38,21 @@ public class ShardVisuals extends GroupX {
     List<Shard> last = new ArrayList<>();
     private GridPanel grid;
     private Map<Coordinates, Shard> map = new XLinkedMap<>();
+    Map<Shard, List<EmitterActor>> emittersMap = new XLinkedMap<>();
+    GroupX emitterLayer = new GroupX();
 
     public ShardVisuals(GridPanel grid) {
         this.grid = grid;
         init();
-        return;
+        addActor(emitterLayer);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
     }
 
     public static ALPHA_TEMPLATE getTemplateForOverlay(SHARD_OVERLAY overlay) {
@@ -49,11 +60,56 @@ public class ShardVisuals extends GroupX {
     }
 
     public static EMITTER_PRESET[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
-        return new EMITTER_PRESET[]{
-         //            EMITTER_PRESET.MIST_ARCANE,
-         //         EMITTER_PRESET.MIST_BLACK  ,
-         //         EMITTER_PRESET.MIST_WHITE
-        };
+        List<EMITTER_PRESET> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
+        int n = 2;
+        switch (size) {
+            case SMALL:
+                n = 1;
+                break;
+            case LARGE:
+                n = 3;
+                break;
+        }
+        EMITTER_PRESET[] array = new EMITTER_PRESET[n];
+        for (int i = 0; i < n; i++) {
+            array[i] = list.remove(
+             RandomWizard.getRandomIndex(list));
+        }
+        return array;
+    }
+
+    private static EMITTER_PRESET[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
+        switch (overlay) {
+            case MIST:
+                return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.MIST_ARCANE,
+//                 EMITTER_PRESET.MIST_TRUE2,
+                 EMITTER_PRESET.MIST_WHITE,
+                 EMITTER_PRESET.MIST_WHITE2,
+                 EMITTER_PRESET.MIST_WHITE3
+                };
+            case DARKNESS:
+                return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.CINDERS3,
+                 EMITTER_PRESET.ASH,
+                 EMITTER_PRESET.MIST_WHITE,
+                 EMITTER_PRESET.MIST_WHITE2,
+                 EMITTER_PRESET.MIST_WHITE3
+                };
+            case NETHER:
+                return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.CINDERS3,
+                 EMITTER_PRESET.WISPS,
+                 EMITTER_PRESET.STARS,
+                 EMITTER_PRESET.MIST_BLACK,
+                 EMITTER_PRESET.MIST_BLACK,
+                 EMITTER_PRESET.MIST_WIND,
+                 EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
+                 EMITTER_PRESET.MIST_WIND
+                };
+        }
+        return new EMITTER_PRESET[0];
     }
 
     public void init() {
@@ -80,47 +136,54 @@ public class ShardVisuals extends GroupX {
                 AbstractCoordinates c = new AbstractCoordinates(x, y);
                 SHARD_SIZE size = chooseSize(x, y, direction);
                 SHARD_TYPE type = SHARD_TYPE.ROCKS;
-                SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().getRandomEnumConst(SHARD_OVERLAY.class);
+                SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
+                 getRandomEnumConst(SHARD_OVERLAY.class);
 
                 try {
                     Shard shard = new Shard(x, y, type, size, overlay, direction);
 
                     addActor(shard);
-                    float offsetX = shard.getWidth() / 2 - 64;
-                    float offsetY = shard.getHeight() / 2 - 64;
+                    float offsetX = -(shard.getWidth() / 2 - 64);
+                    float offsetY = -(shard.getHeight() / 2 - 64);
 
                     if (direction instanceof DIRECTION) {
                         DIRECTION d = ((DIRECTION) direction);
 
                         if (d.isVertical() || d.isDiagonal()) {
-                            if (d.isGrowY())
-                            {
+                            if (d.isGrowY()) {
                                 offsetY = 0;
                             } else {
-                                offsetY*=2;
+                                offsetY *= 2;
                             }
                         }
-                        if (!d.isVertical() || d.isDiagonal())
-                        {
-                            if (d.isGrowX())
-                            {
+                        if (!d.isVertical() || d.isDiagonal()) {
+                            if (!d.isGrowX()) {
                                 offsetX = 0;
                             } else {
-                                offsetX*=2;
+                                offsetX *= 2;
                             }
                         }
 
 
                     }
-
                     shard.setPosition(
                      x * GridMaster.CELL_W + offsetX,
                      y * GridMaster.CELL_H + offsetY);
-
                     last.add(shard);
-                    while (last.size()>4){
-                         last.remove(0);
-                     }
+
+
+                    EMITTER_PRESET[] presets = ShardVisuals.getEmitters(overlay, size);
+                    for (EMITTER_PRESET preset : presets) {
+                        EmitterActor actor = new EmitterActor(preset);
+                        MapMaster.addToListMap(emittersMap, shard, actor);
+                       emitterLayer.addActor(actor);
+                       actor.setPosition(shard.getX() + shard.getWidth()/2-55, shard.getY()+ shard.getHeight()/2-55);
+                        actor.start();
+                    }
+
+                    while (last.size() > 4) {
+                        last.remove(0);
+                    }
                     map.put(c, shard);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -163,7 +226,7 @@ public class ShardVisuals extends GroupX {
             return false;
         }
         if (direction.isVertical()) {
-           direction=direction.flip();
+            direction = direction.flip();
         }
         Coordinates c = Coordinates.get(true, x, y);
 
@@ -193,10 +256,10 @@ public class ShardVisuals extends GroupX {
         }
 
         for (Shard shard : last) {
-            if (new AbstractCoordinates(shard.x, shard.y).dst_(c)>3) {
+            if (new AbstractCoordinates(shard.x, shard.y).dst_(c) > 3) {
                 continue;
             }
-            if (shard.size== SHARD_SIZE.LARGE) {
+            if (shard.size == SHARD_SIZE.LARGE) {
                 return false;
             }
         }
@@ -241,7 +304,7 @@ public class ShardVisuals extends GroupX {
                 adj.add(d);
                 n++;
             } else {
-                n = 0;
+                n = 0; //counting consecutive adjacency
             }
             if (n > 2) {
                 List<DIRECTION> diag = new ArrayList<>(adj);
@@ -253,10 +316,9 @@ public class ShardVisuals extends GroupX {
                             if (adj.contains(direction.rotate45(false)))
                                 corner = direction; //check corner
                         if (corner == null) {
-                            continue;
+                            continue; //prevents "diag-orth-diag" adjacency which is rly just a line
                         }
-                        if (corner.isVertical())
-                            corner = corner.flip();
+                        corner = corner.flipVertically();
                         return corner.getDegrees();
                     }
 
@@ -282,12 +344,14 @@ public class ShardVisuals extends GroupX {
         DIRECTION result = adj.get(0);
         if (result.isVertical())
             result = result.flip();
+
         return result.getDegrees();
     }
 
     private int getIsleChancePerAdjacent() {
         return 5;
     }
+
     private int getIsleChanceEmpty() {
         return 12;
     }

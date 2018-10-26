@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.ai.explore.behavior;
+package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;

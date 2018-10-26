@@ -16,7 +16,7 @@ public class Damage {
     protected boolean attack;
     protected Integer amount;
     protected BattleFieldObject target;
-    protected Unit source;
+    protected BattleFieldObject source;
     protected boolean offhand;
     protected DAMAGE_TYPE dmg_type;
     protected DAMAGE_MODIFIER[] modifiers;
@@ -94,7 +94,7 @@ public class Damage {
         this.target = target;
     }
 
-    public Unit getSource() {
+    public BattleFieldObject getSource() {
         return source;
     }
 
@@ -133,7 +133,7 @@ public class Damage {
     public void setRef(Ref ref) {
         this.ref = ref;
         target = (BattleFieldObject) ref.getTargetObj();
-        source = (Unit) ref.getSourceObj();
+        source = (BattleFieldObject) ref.getSourceObj();
     }
 
 

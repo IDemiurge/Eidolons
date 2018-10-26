@@ -209,6 +209,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SECOND_CLASS("chars", "Second Class"),
     REQUIREMENTS("Requirements", true, "spells", "skills", "classes"),
     INVENTORY(null, true, "units", "chars"),
+    STASH(null, true,   "chars"),
     QUICK_ITEMS(null, true, "units", "chars"),
     JEWELRY(null, true, "chars"),
     OFFHAND_NATURAL_WEAPON(null, false, "units", "chars"),

@@ -6,11 +6,13 @@ import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.entity.ItemEnums.ITEM_SHOP_CATEGORY;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.Localization;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.datatypes.WeightMap;
 
@@ -42,16 +44,16 @@ public class ItemTraits {
     static Map<ITEM_TRAIT_TYPE, List<String>> commonTraits;
     static List<ITEM_TRAIT> traits = new ArrayList<>(Arrays.asList(ITEM_TRAIT.values()));
 
-    public ObjType generateRandomItemWithTraits(MAGICAL_ITEM_LEVEL level,  DC_TYPE TYPE, Object... args) {
+    public ObjType generateRandomItemWithTraits(MAGICAL_ITEM_LEVEL level, DC_TYPE TYPE, Object... args) {
         ITEM_TRAIT_RARITY rarity = chooseRarity(level);
-        RPG_STYLE style= chooseStyle(level);
+        RPG_STYLE style = chooseStyle(level);
         String group = null;
-            if (args[0] instanceof ITEM_SHOP_CATEGORY) {
-//                group=chooseItemGroup(TYPE, level);
-            } else {
-                //loot?
-            }
-       return generateItemWithTraits(TYPE, style, rarity, level, group);
+        if (args[0] instanceof ITEM_SHOP_CATEGORY) {
+            //                group=chooseItemGroup(TYPE, level);
+        } else {
+            //loot?
+        }
+        return generateItemWithTraits(TYPE, style, rarity, level, group);
     }
 
     private RPG_STYLE chooseStyle(MAGICAL_ITEM_LEVEL level) {
@@ -62,10 +64,10 @@ public class ItemTraits {
         return ITEM_TRAIT_RARITY.UNCOMMON;
     }
 
-    private ObjType generateItemWithTraits( DC_TYPE TYPE,RPG_STYLE style,
-                                         ITEM_TRAIT_RARITY rarity,
-                                         MAGICAL_ITEM_LEVEL level,
-                                         String group) {
+    private ObjType generateItemWithTraits(DC_TYPE TYPE, RPG_STYLE style,
+                                           ITEM_TRAIT_RARITY rarity,
+                                           MAGICAL_ITEM_LEVEL level,
+                                           String group) {
         ObjType type = chooseType(TYPE, group, level);
         ObjType newType = new ObjType(type);
 
@@ -80,8 +82,38 @@ public class ItemTraits {
             traits.add(trait);
         }
 
-//        name = getName(type, traits);
+             String   name = getName(type, traits);
         return newType;
+    }
+
+    //TODO LOCALIZATION?!
+    private String getName(ObjType type, List<ItemTrait> traits) {
+        String base = type.getProperty(G_PROPS.BASE_TYPE);
+        String prefix = "";
+        String suffix= "";
+        //traits are sorted by power... first is the most powerful
+        switch (traits.size()) {
+            case 1:
+                if (isValid(traits.get(0).template.nouns[0]))
+                    suffix= Localization.of(traits.get(0).template.nouns[0]);
+                else
+                    prefix= (traits.get(0).template.adjectives[0]);
+                break;
+            case 2:
+                //suf + pre
+                break;
+            case 3:
+                // pref for suf!
+                break;
+        }
+        return (prefix + " " + base + " " + suffix).trim();
+    }
+
+    private boolean isValid(String noun) {
+        if (noun.isEmpty()) {
+            return false;
+        }
+        return !noun.equals(".");
     }
 
     private ObjType chooseType(DC_TYPE type, String group, MAGICAL_ITEM_LEVEL level) {
@@ -111,13 +143,12 @@ public class ItemTraits {
         ITEM_TRAIT pick = traits.stream().filter(
          trait -> {
 
-                 if (trait.rarity == rarity)
-                     if (ArrayMaster.contains_(trait.types, type))
-                     {
-                         RPG_STYLE pickedStyle = trait.styleMap.getRandomByWeight();
-                         if (pickedStyle == style)
+             if (trait.rarity == rarity)
+                 if (ArrayMaster.contains_(trait.types, type)) {
+                     RPG_STYLE pickedStyle = trait.styleMap.getRandomByWeight();
+                     if (pickedStyle == style)
                          return true;
-                     }
+                 }
              return false;
          }
         ).findAny().orElse(null);
@@ -136,6 +167,182 @@ public class ItemTraits {
         }
         return 1;
     }
+
+    /*
+    ++ generate special named items from trait combinations
+
+    DEVOURING
+    HUNGERING
+    VOICELESS
+    GUILE
+    VILE
+    DOOMRIDDEN
+    GRIM
+    Ill-Fated
+    Crawling
+    Perdition
+    Enthralling
+    Wanton
+    Ornery
+    Weightsome
+    Grave
+    Furor
+    Waning
+    Ire
+
+    Eclipse
+    Veiled
+
+    Mournful
+
+
+    FEL,
+    SEARING,
+    FRIGHTFUL,
+    AGONIZING,
+    TORMENTING,
+    DEMENTIA,
+    FEROCIOUS,
+    OBLIVION,
+    DEATHLESS,
+
+    BLEEDING,
+    PENETRATING,
+    OMNISCIOUS,
+
+    WEARY,
+
+    BEREAVEMENT,
+    UNWAKING,
+    FRIGID,
+    WHISPERING,
+
+    PRIMEVAL,
+
+    ILL,
+    FETID,
+    SCORNFUL,
+    CRIMSON,
+
+    BAT,
+    WOLF,
+    RAVEN,
+    OWL,
+    EAGLE,
+    LION,
+
+    BLAZING,
+    SOARING,
+
+    BINDING,
+    HAZE,
+    GHOSTLY,
+    SPECTRAL,
+
+
+
+
+
+     */
+
+    //how many levels should they have?
+    public enum ITEM_TRAIT {
+        VICIOUS("", "", ITEM_TRAIT_TYPE.VALUE, ITEM_TRAIT_RARITY.COMMON,
+         map().chain(BLOOD, 10).chain(CHAOS, 6).chain(FLAME, 4).chain(EVIL, 2),
+         "Attack mod($var/4);ATTACK_AP_PENALTY($var/-3)", DC_TYPE.WEAPONS),
+        ROTTEN("", "", ITEM_TRAIT_TYPE.VALUE, ITEM_TRAIT_RARITY.COMMON,
+         map().chain(BLOOD, 10).chain(CHAOS, 6).chain(FLAME, 4).chain(EVIL, 2),
+         "Attack mod($var/4);ATTACK_AP_PENALTY($var/-3)", DC_TYPE.WEAPONS),;
+
+        /*
+        specifically good for gameplay
+Illumination("Glimmer;Shining;.;Radiance", ".;.;Luminous",
+
+        total must have for the setting
+
+Consternation
+Oblivion
+Deceit
+Damnation
+
+Void(Hollow;
+Requiem(Passing
+
+Dissolution
+Ascension
+Tranquility
+
+Retribution
+Sombra
+Sepulchre
+Ancient
+
+
+
+
+
+I don't know Eidolons gameplay anymore... I've spent so long in the shadows of the Code...
+perhaps I need a feature map indeed...
+or just a new look, free mind - and then bind it into mechanics...
+
+
+         */
+
+          final String args;
+          final DC_TYPE[] types;
+          final int levels;
+        ITEM_TRAIT_TYPE type;
+        ITEM_TRAIT_RARITY rarity;
+        WeightMap<RPG_STYLE> styleMap;
+        String[] nouns;
+        String[] adjectives;
+
+        ITEM_TRAIT( String nouns, String adjectives, ITEM_TRAIT_TYPE type, ITEM_TRAIT_RARITY rarity,
+                   WeightMap<RPG_STYLE> styleMap, String args,
+                   DC_TYPE... types) {
+            this.type = type;
+            this.styleMap = styleMap;
+            this.rarity = rarity;
+            this.args = args;
+            this.types = types;
+            this.nouns = ContainerUtils.open(nouns);
+            this.adjectives = ContainerUtils.open(adjectives);
+            levels =  ContainerUtils.openContainer(nouns).size();
+        }
+
+        private static WeightMap<RPG_STYLE> map() {
+            return new WeightMap<>();
+        }
+
+        private ObjType chooseType(DC_TYPE weapons, String group, MAGICAL_ITEM_LEVEL level) {
+            return DataManager.getRandomType(weapons, group);
+        }
+    }
+
+    public enum ITEM_TRAIT_RARITY {
+        COMMON,
+        UNCOMMON,
+        RARE,
+        EXCEPTIONAL,
+    }
+
+    public enum ITEM_TRAIT_TYPE {
+        VALUE,
+
+        ON_HIT,
+        ON_ATTACK,
+        ON_DEATH,
+        ON_KILL,
+        AURA,
+        AURA_ALLIES,
+        AURA_ENEMIES,
+        AURA_RECURRING,
+
+        ACTIVE_CHARGES,//adds special action to weapon's actives
+        ACTIVE,//adds special action to weapon's actives
+
+    }
+
 
     public enum RPG_STYLE {
         EVIL,
@@ -156,119 +363,11 @@ public class ItemTraits {
         CRYSTAL,
         SUN,
     }
-    public enum ITEM_TRAIT {
-        VICIOUS(ITEM_TRAIT_TYPE.VALUE,ITEM_TRAIT_RARITY.COMMON,
-         map().chain(  BLOOD, 10).chain(  CHAOS, 6).chain(  FLAME, 4).chain(  EVIL, 2),
-         "Attack mod($var/4);ATTACK_AP_PENALTY($var/-3)", DC_TYPE.WEAPONS),
-        ROTTEN(ITEM_TRAIT_TYPE.VALUE,ITEM_TRAIT_RARITY.COMMON,
-         map().chain(  BLOOD, 10).chain(  CHAOS, 6).chain(  FLAME, 4).chain(  EVIL, 2),
-         "Attack mod($var/4);ATTACK_AP_PENALTY($var/-3)", DC_TYPE.WEAPONS),
-
-/*
-FEL,
-SEARING,
-FRIGHTFUL,
-AGONIZING,
-TORMENTING,
-DEMENTIA,
-FEROCIOUS,
-OBLIVION,
-DEATHLESS,
-
-BLEEDING,
-PENETRATING,
-OMNISCIOUS,
-
-WEARY,
-
-BEREAVEMENT,
-UNWAKING,
-FRIGID,
-WHISPERING,
-
-PRIMEVAL,
-
-ILL,
-FETID,
-SCORNFUL,
-CRIMSON,
-
-BAT,
-WOLF,
-RAVEN,
-OWL,
-EAGLE,
-LION,
-
-BLAZING,
-SOARING,
-
-BINDING,
-HAZE,
-GHOSTLY,
-SPECTRAL,
-
-
-
-
-
- */
-
-        ;
-
-        private ObjType chooseType(DC_TYPE weapons, String group, MAGICAL_ITEM_LEVEL level) {
-            return DataManager.getRandomType(weapons, group );
-        }
-
-
-        private static WeightMap<RPG_STYLE> map() {
-            return new WeightMap<>();
-        }
-        String noun;
-        private final String args;
-        private final DC_TYPE[] types;
-        ITEM_TRAIT_TYPE type;
-        ITEM_TRAIT_RARITY rarity;
-        WeightMap<RPG_STYLE> styleMap;
-        ITEM_TRAIT(ITEM_TRAIT_TYPE type,ITEM_TRAIT_RARITY rarity,
-                   WeightMap<RPG_STYLE> styleMap, String args,
-                   DC_TYPE... types) {
-            this.type = type;
-            this.styleMap = styleMap;
-            this.rarity = rarity;
-            this.args = args;
-            this.types = types;
-        }
-    }
-
-    public enum ITEM_TRAIT_RARITY {
-        COMMON,
-        UNCOMMON,
-        RARE,
-        EXCEPTIONAL ,
-    }
-
-
-    public enum ITEM_TRAIT_TYPE {
-        VALUE,
-
-        ON_HIT,
-        ON_ATTACK,
-        ON_DEATH,
-        ON_KILL,
-        AURA,
-        AURA_ALLIES,
-        AURA_ENEMIES,
-        AURA_RECURRING,
-
-        ACTIVE_CHARGES,//adds special action to weapon's actives
-        ACTIVE,//adds special action to weapon's actives
-
-    }
 
     public class ItemTrait {
         ITEM_TRAIT template;
         MAGICAL_ITEM_LEVEL level;
+
         String arg;
 
         public ItemTrait(ITEM_TRAIT template, MAGICAL_ITEM_LEVEL level) {

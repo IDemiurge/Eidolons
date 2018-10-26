@@ -12,6 +12,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestCreator;
 import main.content.DC_TYPE;
@@ -55,6 +56,8 @@ public class RngMainSpawner {
      UNIT_GROUP_TYPE.PATROL,
     };
     private static final float POWER_FILL_COEF = 1.25f;
+    private static final boolean SPAWN_GROUP_ON_ONE_CELL = true;
+    private static final boolean SPAWN_GROUP_IN_CENTER = true;
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
@@ -232,7 +235,7 @@ public class RngMainSpawner {
             n = QuestCreator.getNumberRequired(quest);
             quest.setNumberRequired(n);
         }
-        LevelZone zone=new FuncMaster<LevelZone>().getGreatest_(level.getZones(),
+        LevelZone zone = new FuncMaster<LevelZone>().getGreatest_(level.getZones(),
          zone1 -> zone1.getSubParts().size());
         ObjType type = QuestCreator.getPreyType(level.getPowerLevel(), quest,
          zone.getStyle());
@@ -241,16 +244,16 @@ public class RngMainSpawner {
         int perGroup = 1 + level.getPowerLevel() / type.getIntParam(PARAMS.POWER) / 2;
         int groups = n / perGroup;
         for (LevelBlock block : zone.getSubParts()) {
-             List<ObjType> units = new ArrayList<>();
+            List<ObjType> units = new ArrayList<>();
             for (int i = 0; i < perGroup; i++) {
                 units.add(type);
             }
             List<ObjAtCoordinate> list = spawnUnits(block, units);
             block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
             groups--;
-            if (groups==0)
-                perGroup=n%perGroup;
-            if (groups<0)
+            if (groups == 0)
+                perGroup = n % perGroup;
+            if (groups < 0)
                 break;
         }
     }
@@ -258,23 +261,22 @@ public class RngMainSpawner {
     private void spawnQuestUnits(DungeonQuest quest) {
 
     }
+
     private void spawnQuestBoss(DungeonQuest quest) {
-        LevelZone zone=new RandomWizard<LevelZone>().getRandomListItem(level.getZones());
+        LevelZone zone = new RandomWizard<LevelZone>().getRandomListItem(level.getZones());
         for (LevelZone levelZone : level.getZones()) {
-            if (levelZone.getType()== ZONE_TYPE.BOSS_AREA)
-            {
+            if (levelZone.getType() == ZONE_TYPE.BOSS_AREA) {
                 zone = levelZone;
                 break;
             }
         }
-        ObjType type = QuestCreator.getBossType(level.getPowerLevel(), quest,
-        zone.getStyle());
+        ObjType type = (ObjType) quest.getArg();
         List<ObjType> units = new ArrayList<>();
         units.add(type);
 
-        LevelBlock block= getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone).get(0);
+        LevelBlock block = getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone).get(0);
         List<ObjAtCoordinate> list = spawnUnits(block, units);
-       block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
+        block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
         ObjAtCoordinate objAt = list.get(0);
 
         quest.setArg(objAt);
@@ -722,37 +724,36 @@ public class RngMainSpawner {
 
         List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
          .filter(c -> levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR).
-          filter(c-> checkCellForSpawn(c, levelBlock)).
-         sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-          -c.dst(center))).limit(units.size() * maxStack).
-         collect(Collectors.toList());
+          filter(c -> checkCellForSpawn(c, levelBlock)).
+          sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
+           -c.dst(center))).limit(Math.max(1,  units.size() / maxStack)).
+          collect(Collectors.toList());
 
-
+        if (checkCellForSpawn(center, levelBlock))
+            emptyCells.add(0, center);
 
         List<ObjAtCoordinate> list = new ArrayList<>();
         if (emptyCells.isEmpty())
             return list;
         Collections.shuffle(emptyCells);
         Iterator<Coordinates> iterator = emptyCells.listIterator();
+        Coordinates c = iterator.next();
         for (ObjType unit : units) {
-            if (!iterator.hasNext())
-                iterator = emptyCells.listIterator();
-            Coordinates c = iterator.next();
             ObjAtCoordinate at = new ObjAtCoordinate(unit, c);
             addUnit(at, levelBlock);
             list.add(at);
-
+            if (!SPAWN_GROUP_ON_ONE_CELL)
+                if (!iterator.hasNext())
+                    iterator = emptyCells.listIterator();
+            if (!SPAWN_GROUP_IN_CENTER)
+                c = iterator.next();
         }
         return list;
     }
 
     private boolean checkCellForSpawn(Coordinates c, LevelBlock levelBlock) {
-        for (ObjAtCoordinate at : levelBlock.getObjects()) {
-            if (at.getCoordinates().equals(c)) {
-
-            }
-        }
-
+       if (TilesMaster.isEnclosedCell(c, levelBlock.getTileMap() ))
+           return false;
         return true;
     }
 

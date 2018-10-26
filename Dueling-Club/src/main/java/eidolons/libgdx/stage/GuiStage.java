@@ -346,10 +346,10 @@ public class GuiStage extends StageX implements StageWithClosable {
                     confirm("Save changes?", true, () ->
                     {
                         HqDataMaster.saveAll();
-                        hqPanel.close();
-                    }, () -> hqPanel.close());
+                        hqPanel.closed();
+                    }, () -> hqPanel.closed());
                 else
-                    hqPanel.close();
+                    hqPanel.closed();
                 return;
             }
 

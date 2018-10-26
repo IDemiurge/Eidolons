@@ -39,6 +39,9 @@ public class EmitterMaster extends GdxUtil {
     private static final int MAX_IMAGE_SIZE = 200;
     static Map<VFX_ATLAS,Map<String, String>> maps = new HashMap<>();
     static Map<String, String> broken = new HashMap<>();
+    static List<String> group1 = new ArrayList<>();
+    static List<String> group2 = new ArrayList<>();
+    static List<String> group3 = new ArrayList<>();
     static String[] exceptions = {
      "custom", "atlas", "atlases", "broken", "templates", "workspace", "export", "target"
     };
@@ -131,6 +134,22 @@ public class EmitterMaster extends GdxUtil {
                             }
                         }
                     }
+                    Boolean p = new Boolean(EmitterPresetMaster.getInstance().getValueFromGroup(path, EMITTER_VALUE_GROUP.Options,
+                     EMITTER_VALUE_GROUP.PremultipliedAlpha.name()));
+                    Boolean additive = new Boolean(EmitterPresetMaster.getInstance().getValueFromGroup(path, EMITTER_VALUE_GROUP.Options,
+                     "Additive"));
+
+                    if (p) {
+                        group1.add(path);
+                    } else {
+                        if (additive) {
+                            group2.add(path);
+                        } else {
+                            group3.add(path);
+                        }
+                    }
+
+
 
                     String data = EmitterPresetMaster.getInstance().getModifiedData(path,
                      EMITTER_VALUE_GROUP.Image_Path, imagesData);
@@ -162,6 +181,12 @@ public class EmitterMaster extends GdxUtil {
         }
         main.system.auxiliary.log.LogMaster.log(1, broken.size() + " vfx imagepath broken: "
          + broken);
+        main.system.auxiliary.log.LogMaster.log(1, group1.size() + " vfx w/ premultiplied: "
+         + group1);
+        main.system.auxiliary.log.LogMaster.log(1, group2.size() + " vfx w/ additive: "
+         + group2);
+        main.system.auxiliary.log.LogMaster.log(1, group3.size() + " vfx w/o additive: "
+         + group2);
 
         System.exit(0);
     }

@@ -2,8 +2,6 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.FauxMacroGame;
 import eidolons.macro.entity.MacroRef;
@@ -61,15 +59,20 @@ public class TownMaster extends MetaGameHandler {
         inTown = true;
         if (CoreEngine.isFastMode()) {
             new Thread(() -> {
-                HqDataMasterDirect.getInstance().operation(HERO_OPERATION.BUY,
-                 town.getShops().get(0).getItems().iterator().next());
-                WaitMaster.WAIT(100);
-                WaitMaster.receiveInput(TownPanel.DONE_OPERATION,  true);
+//                try {
+//                    HqDataMasterDirect.getInstance().operation(HERO_OPERATION.BUY,
+//                     town.getShops().get(0).getItems().iterator().next());
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                }
+                WaitMaster.WAIT(900);
+                TownPanel.getActiveInstance().done();
             }, " thread").start();
         }
         boolean result =
          (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
         inTown = false;
+        town.exited();
         return result;
     }
 

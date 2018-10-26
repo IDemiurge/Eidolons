@@ -97,7 +97,7 @@ public class Executor extends ActiveHandler {
 //            Ref ref = getAction().getRef();
 //            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
-            targeter.presetTarget = context.getTargetObj();
+            targeter.setPresetTarget(context.getTargetObj());
             getAction().setTargetObj(context.getTargetObj());
             getAction().setTargetGroup(context.getGroup());
         } else
@@ -118,7 +118,7 @@ public class Executor extends ActiveHandler {
     public void activateOn(DC_Obj t) {
         if (Thread.currentThread() == getGame().getGameLoopThread()) {
             // for triggered activation, e.g. Extra Attacks
-            targeter.presetTarget = t;
+            targeter.setPresetTarget(t);
             activate();
             return;
         }

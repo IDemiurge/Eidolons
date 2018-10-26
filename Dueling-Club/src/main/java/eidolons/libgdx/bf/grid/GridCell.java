@@ -131,6 +131,7 @@ public class GridCell extends Group implements Borderable {
         if (parentAlpha == ShaderMaster.SUPER_DRAW || batch.getShader() == GrayscaleShader.getGrayscaleShader()) {
             super.draw(batch, 1);
         } else {
+//            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)
             ShaderMaster.drawWithCustomShader(this,
              batch,
              !getUserObject().isPlayerHasSeen() ?

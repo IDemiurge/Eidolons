@@ -1,5 +1,6 @@
 package eidolons.macro.global.time;
 
+import eidolons.macro.FauxMacroGame;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
@@ -193,6 +194,8 @@ public class MacroTimeMaster {
 
     private void processMapObjects() {
         if (MacroGame.getGame() == null)
+            return;
+        if (MacroGame.getGame() instanceof FauxMacroGame)
             return;
         Coordinates c = MacroGame.getGame().getPlayerParty().getCoordinates();
         for (Place place : MacroGame.getGame().getState().getPlaces()) {

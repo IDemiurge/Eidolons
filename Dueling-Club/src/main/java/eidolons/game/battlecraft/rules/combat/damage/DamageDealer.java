@@ -119,14 +119,14 @@ public class DamageDealer {
      * This method accepts amount of damage already reduced by everything <b>except Resistance and Armor</b>  (defense, shield...)
      *
      * @param damage_type enum const, null will be set to active.getEnergyType()
-     * @param targetObj   unit to deal dmg to
+     * @param targetObj   BattleFieldObject to deal dmg to
      * @param ref         contains all the other info we may need
      * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and dealt as PURE
      * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance, Endurance dmg))
      */
     private static int dealDamageOfType(DAMAGE_TYPE damage_type, BattleFieldObject targetObj, Ref ref,
                                         int amount, boolean bonus) {
-        Unit attacker = (Unit) ref.getSourceObj();
+        BattleFieldObject attacker = (BattleFieldObject) ref.getSourceObj();
         // if (global_damage_mod != 0) IDEA - Difficulty modifier
         // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod)/100;
         if (!processDamageEvent(damage_type, ref, amount,
@@ -179,7 +179,7 @@ public class DamageDealer {
         }
         ref = Ref.getCopy(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        Unit attacker = (Unit) ref.getSourceObj();
+        BattleFieldObject attacker = (Unit) ref.getSourceObj();
         BattleFieldObject attacked = (BattleFieldObject) ref.getTargetObj();
         if (dmg_type == null) {
             dmg_type = active.getEnergyType();
@@ -308,7 +308,7 @@ public class DamageDealer {
         return (event.fire());
     }
 
-    private static int dealPureDamage(BattleFieldObject attacked, Unit attacker,
+    private static int dealPureDamage(BattleFieldObject attacked, BattleFieldObject attacker,
                                       Integer toughness_dmg, Integer endurance_dmg, Ref ref) {
         // apply Absorption here?
 
@@ -389,8 +389,8 @@ public class DamageDealer {
 
         boolean dead = DamageCalculator.isDead(attacked);
 
-        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
-        boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
+        boolean annihilated = attacked instanceof BattleFieldObject && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
+        boolean unconscious = attacked instanceof BattleFieldObject && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
 
         if (!dead) {
             if (attacked.checkBool(STD_BOOLS.FAUX)){

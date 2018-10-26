@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.explore.ExploreAiManager;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
@@ -26,15 +27,17 @@ public class ExplorationAiMaster extends ExplorationHandler {
     private boolean aiActs;
     private DequeImpl<ActionInput> aiActionQueue;
     private Set<Unit> allies;
+    private ExploreAiManager aiManager;
 
     public ExplorationAiMaster(ExplorationMaster master) {
         super(master);
         aiActionQueue = new DequeImpl<>();
         activeUnitAIs = new DequeImpl<>();
+        aiManager = new ExploreAiManager(master.game);
     }
 
     public void act(float delta) {
-        master.getGame().getAiManager().getBehaviorManager().act(delta);
+        aiManager.getBehaviorManager().act(delta);
     }
     public void reset() {
 
@@ -89,7 +92,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
 
     private boolean tryMoveAi(UnitAI ai) {
         ActionSequence orders = ai.getStandingOrders();
-        if (ai.getStandingOrders() == null) {
+        if (ai.getStandingOrders() == null && isAltOrdersOn()) {
             ai.setStandingOrders(orders =getOrders(ai));
         }
         if (orders == null) {
@@ -105,6 +108,10 @@ public class ExplorationAiMaster extends ExplorationHandler {
             return true;
         }
 
+        return false;
+    }
+
+    private boolean isAltOrdersOn() {
         return false;
     }
 
@@ -230,4 +237,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
         return deque;
     }
 
+    public ExploreAiManager getExploreAiManager() {
+        return aiManager;
+    }
 }
