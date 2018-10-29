@@ -345,7 +345,7 @@ public class InitiativePanel extends GroupX {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
-        if (actor == this) {
+         if (actor == this) {
             actor = null;
         }
         return actor;

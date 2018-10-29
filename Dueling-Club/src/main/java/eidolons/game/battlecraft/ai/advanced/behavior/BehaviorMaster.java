@@ -9,11 +9,10 @@ import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
-import eidolons.game.battlecraft.ai.explore.behavior.GuardAi;
 import eidolons.game.battlecraft.ai.explore.PatrolMaster;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
+import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -67,7 +66,6 @@ public class BehaviorMaster extends AiHandler {
             case PATROL:
                 break;
             case GUARD:
-                behavior = new GuardAi(getMaster(), ai);
                 break;
         }
         behaviorMap.put(type, behavior);

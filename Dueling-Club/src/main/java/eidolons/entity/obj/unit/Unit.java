@@ -534,6 +534,9 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean isInventoryFull() {
+        if (getInventory() == null) {
+            return false;
+        }
         return getInventory().size() >= InventorySlotsPanel.COLUMNS * InventorySlotsPanel.ROWS;
     }
 

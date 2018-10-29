@@ -606,7 +606,7 @@ public class MusicMaster {
     }
 
     public enum MUSIC_SCOPE {
-        MENU, ATMO, BATTLE
+        MENU, ATMO, MAP,BATTLE
     }
 
     public enum MUSIC_THEME {

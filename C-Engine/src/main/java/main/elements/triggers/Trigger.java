@@ -17,12 +17,12 @@ public class Trigger {
     protected Runnable callback;
     protected boolean replacing = false;
     protected boolean altering = false;
-    private boolean saving = false;
-    private boolean removeAfterTriggers = false;
-    private boolean forceTargeting = true;
-    private Condition retainCondition;
-    private Game game;
-    private Event event;
+    protected boolean saving = false;
+    protected boolean removeAfterTriggers = false;
+    protected boolean forceTargeting = true;
+    protected Condition retainCondition;
+    protected Game game;
+    protected Event event;
 
     public Trigger(EVENT_TYPE eventType, Condition conditions, Ability abilities) {
         this(eventType, conditions, abilities, abilities.getRef().getGame(),
@@ -46,6 +46,9 @@ public class Trigger {
 
     @Override
     public String toString() {
+        if (abilities == null) {
+            return "Custom Trigger";
+        }
         return "Trigger: " + abilities.getEffects().toString() + " on " + eventType.toString();
     }
 
@@ -54,10 +57,11 @@ public class Trigger {
             LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
              + " has been triggered!");
         if (callback!=null )
+        {
             callback.run();
+        }
         if (abilities==null )
             return true;
-
         abilities.setForceTargeting(forceTargeting);
         if (removeAfterTriggers) {
             remove();
@@ -93,6 +97,7 @@ public class Trigger {
         if (eventType.equals((event.getType()))) {
             ref.setEvent(event);
             if (conditions == null) {
+                this.event = event;
                 return trigger();
             }
             ref.getGame().getManager().setTriggerBeingChecked(true);
@@ -164,7 +169,7 @@ public class Trigger {
         saving = s;
     }
 
-    private void remove() {
+    protected void remove() {
         game.getState().removeTrigger(this);
     }
 

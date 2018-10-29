@@ -6,6 +6,8 @@ import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.FauxMacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.town.Town;
+import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -19,6 +21,7 @@ import main.system.threading.WaitMaster;
  */
 public class TownMaster extends MetaGameHandler {
 
+    private static final java.lang.String DEFAULT_TOWN = "Strangeville"; //"Headquarters"
     ShopManager shopManager;
     QuestMaster questMaster;
     private boolean inTown;
@@ -39,7 +42,7 @@ public class TownMaster extends MetaGameHandler {
     public boolean initTownPhase() {
         try {
             Town town = getOrCreateTown();
-            town.setQuests(questMaster.getQuestTypePool());
+            town.setQuests(questMaster.getQuestsPool());
             return enterTown(town);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -57,17 +60,20 @@ public class TownMaster extends MetaGameHandler {
         this.town = town;
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
         inTown = true;
-        if (CoreEngine.isFastMode()) {
+        if (CoreEngine.isFullFastMode()) {
             new Thread(() -> {
-//                try {
-//                    HqDataMasterDirect.getInstance().operation(HERO_OPERATION.BUY,
-//                     town.getShops().get(0).getItems().iterator().next());
-//                } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
-//                }
+                //                try {
+                //                    HqDataMasterDirect.getInstance().operation(HERO_OPERATION.BUY,
+                //                     town.getShops().get(0).getItems().iterator().next());
+                //                } catch (Exception e) {
+                //                    main.system.ExceptionMaster.printStackTrace(e);
+                //                }
+                GuiEventManager.trigger(GuiEventType.QUEST_TAKEN, "To the Rescue");
                 WaitMaster.WAIT(900);
                 TownPanel.getActiveInstance().done();
             }, " thread").start();
+        } else {
+            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
         }
         boolean result =
          (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
@@ -81,10 +87,16 @@ public class TownMaster extends MetaGameHandler {
     }
 
     private Town getOrCreateTown() {
-        //        master.get
-        ObjType type = DataManager.getType("Headquarters", MACRO_OBJ_TYPES.TOWN);
-        return new Town(FauxMacroGame.getInstance(), type, MacroRef.getMainRef());
-    }
+        Town town = getGame().town; //TODO [refactor] !!!
+        if (town != null) {
+            return town;
+        }
+        ObjType type = DataManager.getType(DEFAULT_TOWN, MACRO_OBJ_TYPES.TOWN);
+        town = new Town(new FauxMacroGame()
+//         FauxMacroGame.getInstance() not safe?
+         , type, MacroRef.getMainRef());
+        getGame().town= town;
+        return town; }
 
 
     public boolean isInTown() {

@@ -135,7 +135,9 @@ public class GridCell extends Group implements Borderable {
             ShaderMaster.drawWithCustomShader(this,
              batch,
              !getUserObject().isPlayerHasSeen() ?
-              DarkShader.getShader() : null, true);
+              DarkShader.getShader()
+//             FishEyeShader.getShader()
+              : null, true);
         }
 
     }

@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.macro.global.time.MacroTimeMaster;
 import main.system.launch.CoreEngine;
@@ -14,16 +15,23 @@ public class RealTimeThread extends Thread {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
     private final ExploreGameLoop loop;
+    private final DC_Game game;
+    private boolean done;
 
     public RealTimeThread(ExploreGameLoop exploreGameLoop) {
         super("RT thread - " + exploreGameLoop.getThreadName());
         this.loop = exploreGameLoop;
-
+        game = loop.getGame();
     }
 
     @Override
     public void run() {
         realTimeLogic();
+        done = true;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 
     protected void realTimeLogic() {
@@ -56,6 +64,9 @@ public class RealTimeThread extends Thread {
             if (loop.isStopped()) {
                 return;
             }
+            if (Eidolons.getGame() != game)
+                return;
+
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
             if (ExplorationMaster.isRealTimePaused()) continue;

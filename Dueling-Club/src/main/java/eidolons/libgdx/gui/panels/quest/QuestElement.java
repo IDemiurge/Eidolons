@@ -3,9 +3,9 @@ package eidolons.libgdx.gui.panels.quest;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import static eidolons.libgdx.gui.panels.quest.QuestProgressPanel.WIDTH;
@@ -17,6 +17,7 @@ public class QuestElement extends TablePanelX{
     private final LabelX title;
     private final LabelX progress;
     DungeonQuest quest;
+    private boolean done;
 
     public QuestElement(DungeonQuest quest) {
         this.quest = quest;
@@ -37,12 +38,19 @@ public class QuestElement extends TablePanelX{
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);
+        if (done)
+            return;
         //italic?
+
+        progress.setText(quest.getProgressText());
         if (quest.isComplete()) {
-            fadeOut();
-            ActorMaster.addRemoveAfter(this);
-        } else {
-            progress.setText(quest.getProgressText());
+            title.setText(title.getText() + StringMaster.wrapInParenthesis("complete"));
+            title.getColor().a=0.6f;
+            progress.getColor().a=0.6f;
+            done = true;
+//            fadeOut();
+//            ActorMaster.addRemoveAfter(this);
         }
+
     }
 }

@@ -200,6 +200,26 @@ public class SoundMaster {
         SoundMaster.on = on;
     }
 
+    public enum BUTTON_SOUND_MAP {
+        //drag? scroll?
+        MENU(STD_SOUNDS.CLICK, STD_SOUNDS.ERASE, STD_SOUNDS.ACTION_CANCELLED, STD_SOUNDS.CLICK_ERROR),;
+
+        public STD_SOUNDS down;
+        public STD_SOUNDS hover;
+        public STD_SOUNDS up;
+        public STD_SOUNDS disabled;
+        BUTTON_SOUND_MAP(STD_SOUNDS down, STD_SOUNDS hover, STD_SOUNDS up, STD_SOUNDS disabled) {
+            this.down = down;
+            this.hover = hover;
+            this.up = up;
+            this.disabled = disabled;
+        }
+    }
+
+    public enum SCREEN_SOUND_MAP {
+
+    }
+
     public enum SOUNDS {
         ATTACK, HIT, WHAT, MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, DEATH, READY, SPEC_ACTION,
         // spell

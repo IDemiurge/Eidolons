@@ -9,6 +9,7 @@ import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.ability.construct.VariableManager;
+import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  */
 public class DungeonQuest {
 
+    private final ObjType objType;
     protected Integer numberRequired = 0;
     protected Integer numberAchieved = 0;
     LOCATION_TYPE locationType;
@@ -41,19 +43,20 @@ public class DungeonQuest {
     private Coordinates coordinate;
     private String image;
     private DUNGEON_STYLE style;
+    private float powerCoef;
 
     public DungeonQuest(ObjType type) {
-        initArg();
+        this.objType=type;
         initValues(type);
-        reward = new QuestReward(type, this);
-
+        initArg();
+        description = parseDescriptionVars(type, description);
+        description+="\n" + getReward().toString();
         //create a trigger?
     }
 
     private void initArg() {
         int powerLevel= Eidolons.getMainHero().getPower();
-        style =
-        Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
+        style =  Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
         switch (type) {
             case BOSS:
                 setArg(QuestCreator.getBossType(powerLevel, this,
@@ -62,25 +65,25 @@ public class DungeonQuest {
             case HUNT:
                 setArg(QuestCreator.getPreyType(powerLevel, this,
                  style ));
+                break;
             case FIND:
                 setArg(QuestCreator.getItemType(powerLevel, this,
                  style ));
+                break;
             case ESCAPE:
                 break;
         }
     }
 
     public void update() {
-        progressText = VariableManager.substitute(progressTextTemplate,
-         getNumberTooltip(),
-         getDescriptor(),
-         timeLeft
-        );
+        progressText = parseVars(true, objType, progressTextTemplate,
+         getDescriptor(), getNumberTooltip());
+
         GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, this);
     }
 
     private String getNumberTooltip() {
-        if (numberRequired == 0) {
+        if (getNumberRequired() == 0) {
             return null;
         }
         return StringMaster.wrapInBraces(
@@ -104,9 +107,14 @@ public class DungeonQuest {
     private void initValues(ObjType type) {
         this.title = type.getName();
         this.image = type.getImagePath();
+        this.group = new EnumMaster<QUEST_GROUP>().retrieveEnumConst(QUEST_GROUP.class,
+         type.getProperty(MACRO_PROPS.QUEST_GROUP));
+        this.type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(QUEST_TYPE.class,
+         type.getProperty(MACRO_PROPS.QUEST_TYPE));
+
+        reward = new QuestReward(type);
+
         this.description = type.getDescription();
-        description = parseDescriptionVars(type, description);
-        description+="\n" + getReward().toString();
 
         this.progressTextTemplate = type.getProperty(G_PROPS.TOOLTIP);
         if (type.checkProperty(MACRO_PROPS.QUEST_TIME_LIMIT)) {
@@ -115,30 +123,35 @@ public class DungeonQuest {
               type.getProperty(MACRO_PROPS.QUEST_TIME_LIMIT));
             this.timeLeft = QuestCreator.getTimeInSeconds(this, timing);
         }
-        this.group = new EnumMaster<QUEST_GROUP>().retrieveEnumConst(QUEST_GROUP.class,
-         type.getProperty(MACRO_PROPS.QUEST_GROUP));
-        this.type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(QUEST_TYPE.class,
-         type.getProperty(MACRO_PROPS.QUEST_TYPE));
-        update();
     }
 
     private String parseDescriptionVars(ObjType type, String description) {
+       return parseVars(false, type, description, getDescriptor(),
+         ""+getNumberRequired());
+    }
+
+    private String parseVars(boolean inverse, ObjType type, String template,
+                             String name,
+                             String number) {
         if (type.getProperty(G_PROPS.VARIABLES).isEmpty()) {
-            return VariableManager.substitute(description,
+            if (inverse) {
+                return VariableManager.substitute(template,
+                 getNumberRequired(),getDescriptor());
+            }
+            return VariableManager.substitute(template,
              getDescriptor(),
-             numberRequired
-            );
+             getNumberRequired());
         }
         ArrayList<Object> vars = new ArrayList<>();
 
         for (String var : ContainerUtils.openContainer(type.getProperty(G_PROPS.VARIABLES))) {
             if (var.equalsIgnoreCase("name")) {
-                vars.add(getDescriptor());
+                vars.add(name);
             } else if (var.equalsIgnoreCase("number")) {
-                vars.add(numberRequired);
+                vars.add(number);
             }
         }
-        return VariableManager.substitute(description,vars);
+        return VariableManager.substitute(template,vars);
     }
 
     public String getTitle() {
@@ -163,6 +176,9 @@ public class DungeonQuest {
 
     public void setArg(Object arg) {
         this.arg = arg;
+        if (arg instanceof Entity){
+            image = ((Entity) arg).getImagePath();
+        }
         update();
     }
 
@@ -183,6 +199,9 @@ public class DungeonQuest {
     }
 
     public Integer getNumberRequired() {
+        if (numberRequired <= 0) {
+            numberRequired = QuestCreator.getNumberRequired(this);
+        }
         return numberRequired;
     }
 
@@ -220,5 +239,13 @@ public class DungeonQuest {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public float getPowerCoef() {
+        return powerCoef;
+    }
+
+    public void setPowerCoef(float powerCoef) {
+        this.powerCoef = powerCoef;
     }
 }

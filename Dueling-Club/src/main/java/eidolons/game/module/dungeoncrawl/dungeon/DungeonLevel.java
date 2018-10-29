@@ -332,10 +332,12 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public DUNGEON_STYLE getMainStyle() {
-        TreeMap<Integer, DUNGEON_STYLE> map = new TreeMap<>() ;
+         TreeMap<DUNGEON_STYLE, Integer> map = new TreeMap<>() ;
         for (LevelBlock block : getBlocks()) {
             MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
         }
-        return map.firstEntry().getValue();
+        return map.firstKey();
+//        return new ArrayList<>(map.values()).get(0);
+//        return map.values().iterator().next();
     }
 }

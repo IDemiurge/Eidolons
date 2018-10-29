@@ -20,7 +20,6 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
-import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
@@ -84,6 +83,7 @@ public class GridPanel extends Group {
     private boolean updateRequired;
     private boolean firstUpdateDone;
     private boolean welcomeInfoShown;
+    private float autoResetVisibleOnInterval=0.5f;
 
 
     public GridPanel(int cols, int rows) {
@@ -209,7 +209,7 @@ public class GridPanel extends Group {
             if (DC_Game.game != null)
                 if (DC_Game.game.getVisionMaster().getVisible() != null) {
                     if (resetTimer <= 0) {
-                        resetTimer = 0.5f;
+                        resetTimer = autoResetVisibleOnInterval;
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
                             setVisible(viewMap.get(sub), true);
                             Debugger.validateVisibleUnitView(viewMap.get(sub));
@@ -537,7 +537,7 @@ public class GridPanel extends Group {
         } else {
             if (!view.isVisible())
                 return;
-            if (view.getActionsOfClass(FadeOutAction.class, false).size > 0)
+            if (view.getColor().a> 0&& view.getColor().a<1)//            if (view.getActionsOfClass(FadeOutAction.class, false).size > 0)
                 return;
         }
         if (isFadeAnimForUnitsOn()) {

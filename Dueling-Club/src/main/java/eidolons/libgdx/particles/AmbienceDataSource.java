@@ -245,12 +245,12 @@ public class AmbienceDataSource {
                     MIST_SAND_WIND,
                     ASH,
                     CINDERS,
-                    SMOKE
+                    ASH
             );
             HELL.setNightly(
                     ASH,
                     CINDERS,
-                    SMOKE,
+                     ASH,
                     MIST_SAND_WIND
             );
 

@@ -26,6 +26,7 @@ public class MainLauncher extends GenericLauncher {
             args =args[0].split(",");
         }
         CoreEngine.setFastMode(args.length > 1);
+        CoreEngine.setFullFastMode(args.length > 3);
 
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);

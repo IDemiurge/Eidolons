@@ -76,8 +76,9 @@ public class DC_MovementManager implements MovementManager {
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
          unit.getCoordinates(), coordinates);
         if (relative == FACING_SINGLE.IN_FRONT) {
-            if (new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
-                return AiActionFactory.newAction("Move", unit.getAI());
+            if (!new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
+                return null;
+            return AiActionFactory.newAction("Move", unit.getAI());
         }
         boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
          PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)

@@ -26,6 +26,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.entity.town.Shop;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
@@ -40,6 +41,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -195,6 +197,8 @@ public class HqDataMaster {
     }
 
     public static final boolean isSimulationOff() {
+        if (HeroCreationMaster.isHeroCreationInProgress())
+            return false;
         return true;
     }
 
@@ -357,18 +361,22 @@ public class HqDataMaster {
                     }
                     Integer price = shop.sellItemTo(item, hero);
                     hero.modifyParameter(PARAMS.GOLD, price);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
                 } else {
                     Integer price = shop.buyItemFrom(item, hero);
                     if (price == null)
                         return;
                     hero.addItemToInventory(item);
                     hero.modifyParameter(PARAMS.GOLD, -price);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
                 }
                 break;
             case PICK_UP:
                 item = (DC_HeroItemObj) args[0];
                 if (!GoldMaster.checkGoldPack(item, hero))
                     hero.addItemToInventory(item); //TODO fix pickup!
+
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__KNIFE);
                 break;
             case DROP:
                 hero.dropItemFromInventory(item);

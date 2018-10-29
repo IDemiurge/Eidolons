@@ -54,7 +54,7 @@ public class PatrolAi extends CyclicGroupBehavior {
     }
 
     @Override
-    protected AI_BEHAVIOR_MODE getType() {
+    public AI_BEHAVIOR_MODE getType() {
         return AI_BEHAVIOR_MODE.PATROL;
     }
 

@@ -38,18 +38,17 @@ public abstract class AiGroupBehavior extends AiBehavior {
             return false;
         }
         if (action.getActive().isMove()) {
-            return checkWaitForGroup();
+            return  checkGroupIsKeepingUp();
         }
 
         return true;
     }
 
-    protected boolean checkWaitForGroup() {
+    protected boolean checkGroupIsKeepingUp() {
         if (ai.getGroupAI() == null)
             return false;
 
-
-        boolean wait = false;
+        boolean keepsUp = false;
         List<UnitAI> forwards = new ArrayList<>();
         for (Unit unit : group.getMembers()) {
             UnitAI ai = unit.getUnitAI();
@@ -62,16 +61,15 @@ public abstract class AiGroupBehavior extends AiBehavior {
             // m.getUnit().getCoordinates()) > max)
             {
                 forwards.add(ai);
-                if (
-                 group.getMembers().size() == 1 ||
+                if (group.getMembers().size() == 1 ||
                   forwards.size() > Math.round(group.getMembers().size()
                    * getCatchUpFactor())) {
-                    wait = true;
+                    keepsUp = true;
                     break;
                 }
             }
         }
-        return wait;
+        return keepsUp;
     }
 
     protected boolean isProgressObstructed(UnitAI ai) {

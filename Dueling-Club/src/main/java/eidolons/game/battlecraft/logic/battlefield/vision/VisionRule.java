@@ -158,6 +158,8 @@ public class VisionRule {
                 return observer.isHostileTo(sub.getOwner());
         if (sub.isDead())
             return false;
+        if (sub.isVisibilityOverride())
+            return false;
         return true;
     }
 
@@ -168,6 +170,9 @@ public class VisionRule {
         if (observer.isDead())
             return false;
         if (observer.isPlayerCharacter()) {
+            if (observer.getGame().isDebugMode()) {
+                return true;
+            }
             if (PositionMaster.getExactDistance(observer, cell) >
             1+ observer.getMaxVisionDistance()) {
                 return false;

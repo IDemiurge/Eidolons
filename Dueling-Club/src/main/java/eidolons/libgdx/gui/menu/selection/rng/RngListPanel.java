@@ -18,7 +18,8 @@ public class RngListPanel extends ItemListPanel {
         for (Entity sub : objTypes) {
             SelectableItemData item = new SelectableItemData(sub);
             list.add(item);
-            item.setDescription("Deep, treacherous dungeon brought to you by Machine's Imagination");
+            if (sub.getDescription().isEmpty())
+                item.setDescription("Deep, treacherous dungeon brought to you by Machine's Imagination");
             item.setFullsizeImagePath(item.getEntity().getProperty(G_PROPS.FULLSIZE_IMAGE));
         }
 

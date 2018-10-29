@@ -16,7 +16,11 @@ import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_REMAINS;
 import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -67,9 +71,9 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (cellContents == null) {
             return false;
         }
-        if (sim.isInventoryFull()) {
+        if (hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!", sim);
+             "Inventory is full!", hero);
             return false;
         }
         DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
@@ -82,8 +86,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     protected void update() {
         dataMaster.applyModifications();
         Pair<InventoryDataSource, ContainerDataSource> param =
-         new ImmutablePair<>(new InventoryDataSource(sim.getHero()),
-          new ContainerDataSource(container, sim.getHero()));
+         new ImmutablePair<>(new InventoryDataSource(hero.getHero()),
+          new ContainerDataSource(container, hero.getHero()));
         GuiEventManager.trigger(getGuiEvent(), param);
 
     }
@@ -95,16 +99,16 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         for (DC_HeroItemObj item : new ArrayList<>(items)) {
             if (item == null)
                 continue;
-            if (sim.isInventoryFull()) {
+            if (hero.isInventoryFull()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-                 "Inventory is full!", sim);
+                 "Inventory is full!", hero);
                 return;
             }
             items.remove(item);
             if (container instanceof DC_Cell) {
                 item.getGame().getDroppedItemManager().pickedUp(item);
             }
-            dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
+            dataMaster.operation(hero, HERO_OPERATION.PICK_UP, item);
         }
         takeGold();
 
@@ -138,7 +142,10 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (container instanceof DC_Cell) {
             item.getGame().getDroppedItemManager().pickedUp(item);
         }
-        dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
+        dataMaster.operation(hero, HERO_OPERATION.PICK_UP, item);
+        Ref ref = hero.getHero().getRef().getCopy();
+        ref.setObj(KEYS.ITEM, item);
+        hero.getHero(). getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
         update();
     }
 

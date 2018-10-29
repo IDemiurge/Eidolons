@@ -179,7 +179,7 @@ public class DamageDealer {
         }
         ref = Ref.getCopy(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        BattleFieldObject attacker = (Unit) ref.getSourceObj();
+        BattleFieldObject attacker = (BattleFieldObject) ref.getSourceObj();
         BattleFieldObject attacked = (BattleFieldObject) ref.getTargetObj();
         if (dmg_type == null) {
             dmg_type = active.getEnergyType();
@@ -193,7 +193,7 @@ public class DamageDealer {
                     if (isAttack(ref)) {
                         blocked = attacked.getGame()
                          .getArmorMaster().getArmorBlockDamage(amount,
-                          (Unit) attacked, attacker, active);
+                           attacked, attacker, active);
                     } else {
                         blocked = attacked.getGame()
                          .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
@@ -389,8 +389,8 @@ public class DamageDealer {
 
         boolean dead = DamageCalculator.isDead(attacked);
 
-        boolean annihilated = attacked instanceof BattleFieldObject && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
-        boolean unconscious = attacked instanceof BattleFieldObject && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
+        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
+        boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
 
         if (!dead) {
             if (attacked.checkBool(STD_BOOLS.FAUX)){

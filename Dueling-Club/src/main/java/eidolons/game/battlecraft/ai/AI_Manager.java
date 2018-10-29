@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
@@ -9,7 +10,6 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceCons
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
@@ -17,12 +17,14 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.SortMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
@@ -31,6 +33,7 @@ import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AI_Manager extends AiMaster {
     public static final boolean BRUTE_AI_MODE = false;
@@ -111,7 +114,7 @@ public class AI_Manager extends AiMaster {
              getAllyGroup();
         }
         if (isCustomGroups())
-            return null;
+            return new GroupAI(unit);
         return getEnemyGroup();
     }
 
@@ -261,14 +264,9 @@ public class AI_Manager extends AiMaster {
                 GroupAI group = new GroupAI();
                 group.setType(block.getUnitGroups().get(list));
                 for (ObjAtCoordinate at : list) {
-                    Unit member = game.getUnits().
-                     stream().filter(u -> u.getCoordinates().equals(at.getCoordinates())
-                     && u.getName().equals(at.getType().getName())).findFirst().orElse(null);
-                    if (member == null) {
-                        continue;
-                    }
-                    group.add(member);
-
+                    game.getUnitsForCoordinates(at.getCoordinates()).stream().filter(
+                     u -> u.getName().equals(at.getType().getName())
+                    ).collect(Collectors.toList()).forEach(obj -> group.add(obj));
                 }
                 if (group.getMembers().isEmpty())
                     continue;
@@ -276,10 +274,46 @@ public class AI_Manager extends AiMaster {
                  unit -> unit.getIntParam(PARAMS.POWER)
                 )).findFirst().get();
                 group.setLeader(leader);
+                try {
+                    group.setArg(getArg(group.getType(), block, leader));
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
                 groups.add(group);
             }
         }
         return;
+    }
+
+    private Object getArg(UNIT_GROUP_TYPE type, LevelBlock block, Unit leader) {
+        switch (type) {
+            case BOSS:
+            case GUARDS:
+                List<Coordinates> sorted = block.getCoordinatesList().stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
+                 c -> -c.dst(leader.getCoordinates())
+                )).collect(Collectors.toList());
+
+                for (Coordinates coordinates : sorted) {
+                    DC_Cell cell = game.getCellByCoordinate(coordinates);
+                    switch (block.getTileMap().getMap().get(coordinates)) {
+                        case DOOR:
+                        case CONTAINER:
+                            return cell;
+                    }
+                }
+                DIRECTION d = leader.getFacing().getDirection();
+                DC_Cell cell = game.getCellByCoordinate(leader.getCoordinates().getAdjacentCoordinate(
+                 d).getAdjacentCoordinate(
+                 d));
+                if (cell != null) {
+                    return cell;
+                }
+                cell = game.getCellByCoordinate(leader.getCoordinates().getAdjacentCoordinate(d));
+                if (cell != null) {
+                    return cell;
+                }
+        }
+        return null;
     }
 
     private void resetGroups() {

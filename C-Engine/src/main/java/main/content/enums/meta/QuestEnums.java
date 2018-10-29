@@ -12,7 +12,15 @@ public class QuestEnums {
     }
 
     public enum QUEST_LEVEL {
-        EASY,
+        EASY(1),
+        AVERAGE(1.5f),
+        HARD(2),
+        ;
+        public float factor ;
+
+        QUEST_LEVEL(float factor) {
+            this.factor = factor;
+        }
     }
 
     public enum QUEST_REWARD_TYPE {

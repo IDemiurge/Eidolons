@@ -36,23 +36,15 @@ import java.util.*;
 public class ShardVisuals extends GroupX {
 
     List<Shard> last = new ArrayList<>();
-    private GridPanel grid;
-    private Map<Coordinates, Shard> map = new XLinkedMap<>();
     Map<Shard, List<EmitterActor>> emittersMap = new XLinkedMap<>();
     GroupX emitterLayer = new GroupX();
+    private GridPanel grid;
+    private Map<Coordinates, Shard> map = new XLinkedMap<>();
 
     public ShardVisuals(GridPanel grid) {
         this.grid = grid;
         init();
         addActor(emitterLayer);
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).resetBlending();
-        }
     }
 
     public static ALPHA_TEMPLATE getTemplateForOverlay(SHARD_OVERLAY overlay) {
@@ -79,11 +71,15 @@ public class ShardVisuals extends GroupX {
     }
 
     private static EMITTER_PRESET[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
+        if (overlay == null) {
+            overlay = new EnumMaster<SHARD_OVERLAY>().
+             getRandomEnumConst(SHARD_OVERLAY.class);
+        }
         switch (overlay) {
             case MIST:
                 return new EMITTER_PRESET[]{
                  EMITTER_PRESET.MIST_ARCANE,
-//                 EMITTER_PRESET.MIST_TRUE2,
+                 //                 EMITTER_PRESET.MIST_TRUE2,
                  EMITTER_PRESET.MIST_WHITE,
                  EMITTER_PRESET.MIST_WHITE2,
                  EMITTER_PRESET.MIST_WHITE3
@@ -112,6 +108,14 @@ public class ShardVisuals extends GroupX {
         return new EMITTER_PRESET[0];
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+    }
+
     public void init() {
         setSize(grid.getWidth(), grid.getHeight());
 
@@ -138,6 +142,10 @@ public class ShardVisuals extends GroupX {
                 SHARD_TYPE type = SHARD_TYPE.ROCKS;
                 SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
                  getRandomEnumConst(SHARD_OVERLAY.class);
+                if (!(direction instanceof DIRECTION)) {
+                    overlay = null;
+                } else if (((DIRECTION) direction).isDiagonal())
+                    overlay = null;
 
                 try {
                     Shard shard = new Shard(x, y, type, size, overlay, direction);
@@ -176,8 +184,8 @@ public class ShardVisuals extends GroupX {
                     for (EMITTER_PRESET preset : presets) {
                         EmitterActor actor = new EmitterActor(preset);
                         MapMaster.addToListMap(emittersMap, shard, actor);
-                       emitterLayer.addActor(actor);
-                       actor.setPosition(shard.getX() + shard.getWidth()/2-55, shard.getY()+ shard.getHeight()/2-55);
+                        emitterLayer.addActor(actor);
+                        actor.setPosition(shard.getX() + shard.getWidth() / 2 - 55, shard.getY() + shard.getHeight() / 2 - 55);
                         actor.start();
                     }
 

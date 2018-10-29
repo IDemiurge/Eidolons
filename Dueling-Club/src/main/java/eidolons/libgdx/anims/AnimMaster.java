@@ -246,7 +246,7 @@ public class AnimMaster extends Group {
     }
 
     private void initActionAnimation(DC_ActiveObj activeObj, AnimContext context) {
-        if (isAnimationOffFor(activeObj.getOwnerUnit(), null)) {
+        if (isAnimationOffFor(activeObj.getOwnerObj(), null)) {
             return;
         }
         boolean attachToNext = context.isAttachToNext();
@@ -330,7 +330,7 @@ public class AnimMaster extends Group {
 //            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
 ////                switch (((STANDARD_EVENT_TYPE) event.getType())) {
 //                if (event.getType() == DeathAnim.EVENT_TYPE) {
-//                    if (active.getRef().getTargetObj() != active.getOwnerUnit())
+//                    if (active.getRef().getTargetObj() != active.getOwnerObj())
 //                    if (active.getChecker().isPotentiallyHostile()) {
             return getParentAnim(active.getRef());
 //                    }
@@ -547,8 +547,8 @@ public class AnimMaster extends Group {
         boolean result = false;
         if (ExplorationMaster.isExplorationOn())
             if (anim.getActive_() != null)
-                if (anim.getActive_().getOwnerUnit().isMine())
-                    if (anim.getActive_().getOwnerUnit().isMainHero())
+                if (anim.getActive_().getOwnerObj().isMine())
+                    if (anim.getActive_().getOwnerObj().isMainHero())
                         drawingPlayer = true;
 
         try {
@@ -559,8 +559,8 @@ public class AnimMaster extends Group {
 
         if (ExplorationMaster.isExplorationOn())
             if (anim.getActive_() != null)
-                if (anim.getActive_().getOwnerUnit().isMine())
-                    if (anim.getActive_().getOwnerUnit().isMainHero())
+                if (anim.getActive_().getOwnerObj().isMine())
+                    if (anim.getActive_().getOwnerObj().isMainHero())
                         drawingPlayer = result;
 
         return result;

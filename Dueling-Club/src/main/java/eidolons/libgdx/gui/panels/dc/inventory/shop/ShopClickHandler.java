@@ -2,15 +2,19 @@ package eidolons.libgdx.gui.panels.dc.inventory.shop;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerClickHandler;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.macro.entity.town.Shop;
+import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 /**
  * Created by JustMe on 10/13/2018.
@@ -18,10 +22,12 @@ import main.system.GuiEventType;
 public class ShopClickHandler extends ContainerClickHandler {
 
     private static boolean stashOpen;
+    private final Shop shop;
 
     public ShopClickHandler(Shop shop, Unit unit) {
         super(HqDataMasterDirect.getInstance(unit),
          shop.getImagePath(), shop.getItems(), shop);
+        this.shop = shop;
     }
 
     public static void setStashOpen(boolean stashOpen) {
@@ -188,6 +194,29 @@ public class ShopClickHandler extends ContainerClickHandler {
         return super.getOperation(cell_type, clickCount, rightClick, altClick, cellContents);
     }
 
-    public void repair() {
+    public void askRepair() {
+        int gold = 0;
+        for (DC_HeroSlotItem item : hero.getSlotItems()) {
+            int percentage = 100 -
+             item.getIntParam(PARAMS.C_DURABILITY) * 100 / item.getIntParam(PARAMS.DURABILITY);
+            Integer price = shop.getPrice(item, hero, false)*percentage/100;
+            gold += price;
+        }
+        int gold_=gold;
+        if (hero.checkParameter(PARAMS.GOLD , gold))
+        EUtils.onConfirm("Repair all equipped items for " +
+         gold+
+         " gold?" , true, ()-> {
+            repairEquipped();
+            hero.modifyParameter(PARAMS.GOLD, -gold_);
+        });
+    }
+
+    private void repairEquipped() {
+        for (DC_HeroSlotItem item : hero.getSlotItems()) {
+            item.setParam(PARAMS.C_DURABILITY, item.getIntParam(PARAMS.DURABILITY));
+        }
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
     }
 }

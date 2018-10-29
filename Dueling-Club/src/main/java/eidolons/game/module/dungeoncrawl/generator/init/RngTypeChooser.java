@@ -8,6 +8,7 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.data.xml.XML_Formatter;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -27,6 +28,8 @@ public class RngTypeChooser {
 
         DUNGEON_STYLE style = block.getStyle();
         String mapString = RngBfObjProvider.getWeightString(value, style);
+        mapString = XML_Formatter.restoreXmlNodeName(mapString);
+        //for all special chars!
         if (mapString == null)
             return null;
         mapString = filter(mapString, c, block, dungeonLevel);

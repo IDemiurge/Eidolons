@@ -9,9 +9,9 @@ import main.entity.type.ObjType;
  * Created by JustMe on 10/13/2018.
  */
 public class FauxMacroGame extends MacroGame {
-    private static FauxMacroGame instance;
+    private static FauxMacroGame instance; //why singleton?
 
-    private FauxMacroGame() {
+    public FauxMacroGame() {
     }
 
     public static FauxMacroGame getInstance() {

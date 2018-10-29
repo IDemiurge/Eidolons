@@ -102,6 +102,8 @@ public class SoundPlayer extends Player {
                     float volume =
                      Math.max(10, getVolume() / Math.max(1, (distance) / 200)) / 100;
                     soundFx.setVolume(volume);
+                    if (volume<=0.1f)
+                        return;
                 }
             playNow(soundFx);
         }

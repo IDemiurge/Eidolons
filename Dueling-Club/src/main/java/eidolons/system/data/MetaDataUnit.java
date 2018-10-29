@@ -36,11 +36,17 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
         return instance;
     }
 
+    @Override
+    public Class<? extends META_DATA> getEnumClazz() {
+        return META_DATA.class;
+    }
+
     public static void setInstance(MetaDataUnit instance) {
         MetaDataUnit.instance = instance;
     }
 
     public enum META_DATA{
+        LAST_PREGEN_LVL_INDEX,
         LAST_PREGEN_LVL_INDEX_MAP,
 
         TIMES_LAUNCHED,

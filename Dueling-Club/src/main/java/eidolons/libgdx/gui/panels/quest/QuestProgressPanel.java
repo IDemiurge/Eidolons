@@ -32,6 +32,7 @@ public class QuestProgressPanel extends TablePanelX {
         GuiEventManager.bind(GuiEventType.QUEST_ENDED,
          p -> {
              updateRequired = true;
+
          });
         GuiEventManager.bind(GuiEventType.QUEST_STARTED,
          p -> {

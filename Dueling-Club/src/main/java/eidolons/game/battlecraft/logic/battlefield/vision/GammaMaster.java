@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class GammaMaster {
 
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
     private static final Float CELL_GAMMA_MODIFIER = 0.004F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
     private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.02f;

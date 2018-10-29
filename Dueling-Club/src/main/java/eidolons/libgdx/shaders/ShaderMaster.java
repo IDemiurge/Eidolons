@@ -14,6 +14,31 @@ import java.util.Map;
 public class ShaderMaster {
     public static final float SUPER_DRAW = 100;
     private static Map<Actor, Runnable> map = new HashMap<>();
+    private static Map<SHADER, ShaderProgram> shaderMap = new HashMap<>();
+
+    public static ShaderProgram getShader(SHADER shader) {
+        ShaderProgram program = shaderMap.get(shader);
+        if (program == null) {
+            String vert = null;
+            String frag = null;
+            program = new ShaderProgram(vert, frag);
+            shaderMap.put(shader, program);
+        }
+        return program;
+    }
+
+    public enum SHADER{
+    DARKEN,
+    GRAYSCALE,
+    FISH_EYE,
+
+}
+
+// substitute vars
+    public static void compileDynamicShader(){
+//        PathFinder.getShadersPath()
+//        ShaderProgram shader = new ShaderProgram(vert, frag);
+    }
 
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader) {

@@ -12,7 +12,10 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.ConfirmationPanel;
+import eidolons.system.audio.DC_SoundMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -91,13 +94,39 @@ public class SmartButton extends TextButton implements EventListener {
                 return true;
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
+        STD_SOUNDS sound=null ;
         if (event.getType() == Type.touchUp) {
-//            event.getTarget().getStage().hit()
-//            event.getTarget().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()))
             if (GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true))
+            {
                 runnable.run();
+                if (getSoundMap() != null)
+                    sound= getSoundMap().up;
+            }
+        } else {
+            if (getSoundMap() != null)
+            switch (event.getType()) {
+                case touchDown:
+                    if (isDisabled()) {
+                        sound= getSoundMap().disabled;
+                    } else {
+                        sound= getSoundMap().down;
+                    }
+                    break;
+                case enter:
+                    sound= getSoundMap().hover;
+                    break;
+            }
         }
+        if (sound!=null )
+            DC_SoundMaster.playStandardSound(getSound());
         return true;
+    }
+
+    protected BUTTON_SOUND_MAP getSoundMap() {
+        return null;
+    }
+    protected STD_SOUNDS getSound() {
+        return null;
     }
 
     public boolean isFixedSize() {

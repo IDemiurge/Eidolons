@@ -239,6 +239,8 @@ public abstract class DataModel {
         if (doubleParam.isEmpty()) {
             return 0.0;
         }
+        if (NumberUtils.isIntegerOrNumber(doubleParam)==null )
+            return (Double) new Formula(doubleParam).evaluate(getRef());
         return NumberUtils.getDouble(getDoubleParam(param, false));
     }
 
@@ -546,10 +548,10 @@ public abstract class DataModel {
     }
 
     public void setRef(Ref ref) {
-//        if (game instanceof GenericGame) {
-//            ref.setGame(game);
-//        }
-//        this is dangerous!
+        //        if (game instanceof GenericGame) {
+        //            ref.setGame(game);
+        //        }
+        //        this is dangerous!
         ref.setPlayer(owner);
         // this.ref = ref;
         this.ref = ref.getCopy(); // what does it change?
@@ -1003,9 +1005,9 @@ public abstract class DataModel {
 
     public void setProperty(PROPERTY prop, String value) {
         if (prop == G_PROPS.NAME) {
-//            if (CoreEngine.isArcaneVault()) wny not?
-                this.name = XML_Formatter.restoreXmlNodeName(value);
-//            else this.name = value;
+            //            if (CoreEngine.isArcaneVault()) wny not?
+            this.name = XML_Formatter.restoreXmlNodeName(value);
+            //            else this.name = value;
         }
         putProperty(prop, value);
         getPropCache().remove(prop);

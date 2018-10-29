@@ -182,6 +182,7 @@ public class EmitterMap extends Group {
             return;
         }
         addActor(ambience);
+        ambience.setVisible(true);
         if (ambience.getEffect().isComplete()) {
             ambience.reset();
         }

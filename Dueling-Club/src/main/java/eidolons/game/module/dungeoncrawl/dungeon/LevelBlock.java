@@ -33,6 +33,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private Map<Coordinates, Coordinates> boundCells;
     private boolean customCoordinateList;
     private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
+    private Coordinates centerCoordinate;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -194,5 +195,12 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return unitGroups;
     }
 
+
+    public Coordinates getCenterCoordinate() {
+        if (centerCoordinate == null) {
+        centerCoordinate = coordinates.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
+    }
+        return centerCoordinate;
+    }
 
 }

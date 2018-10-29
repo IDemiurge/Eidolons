@@ -145,7 +145,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         weightLabel2.setImage(Images.SHOP_PRICES);
         weightLabel2.overrideImageSize(51, 40);
         table.getActor().add(repairButton =
-         new SmartButton(STD_BUTTON.REPAIR, () -> getUserObject().getHandler().repair()));
+         new SmartButton(STD_BUTTON.REPAIR, () -> getUserObject().getHandler().askRepair()));
         //selective repair => hammer cursor!
         return table;
     }

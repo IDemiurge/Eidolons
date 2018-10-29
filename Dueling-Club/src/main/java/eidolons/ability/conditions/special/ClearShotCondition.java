@@ -105,9 +105,18 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     public boolean check(Coordinates c, Coordinates c2) {
-        return check(game.getCellByCoordinate(c), game.getCellByCoordinate(c2));
+        Obj ce = game.getCellByCoordinate(c);
+        if (ce == null) {
+            return false;
+        }
+        Obj ce2 = game.getCellByCoordinate(c2);
+        if (ce2 == null) {
+            return false;
+        }
+        return check(ce, ce2);
 
     }
+
     @Override
     public boolean check(Ref ref) {
         Obj obj = game.getObjectById(ref.getId(str2));

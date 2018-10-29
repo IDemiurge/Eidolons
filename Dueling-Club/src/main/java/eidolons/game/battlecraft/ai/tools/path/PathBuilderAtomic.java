@@ -22,35 +22,40 @@ public class PathBuilderAtomic extends AiHandler {
     public List<Coordinates> getPathChain(Unit unit, Coordinates coordinates, Coordinates cell,
                                           Boolean diagonals, int tries) {
         List<List<Coordinates>> lists = new ArrayList<>();
-        while(new Loop(tries).continues()){
-        Coordinates last=unit.getCoordinates();
-        List<Coordinates> list = new ArrayList<>();
-        loop: while(true){
-            for (Coordinates c1 : coordinates.getAdjacentCoordinates(diagonals)) {
-                if (check(last, c1, cell, unit))
-                {
-                    last = coordinates;
-                    coordinates= c1;
-                    list.add(coordinates);
-                    continue loop;
+        Loop loop = new Loop(tries);
+        while (loop.continues()) {
+            //        Coordinates last=unit.getCoordinates();
+            List<Coordinates> list = new ArrayList<>();
+            coordinates = unit.getCoordinates();
+            steps:
+            while (true) { //randomized 'cause it's a hashset
+                for (Coordinates c1 :  (coordinates.getAdjacentCoordinates(diagonals))) {
+                    if (check(coordinates, c1, cell, unit)) {
+                        //                    last = coordinates;
+                        coordinates = c1;
+                        list.add(coordinates);
+                        if (coordinates.equals(cell))
+                            return list;
+                        continue steps;
+                    }
                 }
+                break;
             }
-            if (coordinates.equals(cell))
-                return list;
             lists.add(list);
-            break;
         }
-}
         return lists.stream().sorted(new SortMaster<List>()
-         .getSorterByExpression_(l-> l.size())).findFirst().orElse(null);
+         .getSorterByExpression_(l -> l.size())).findFirst().orElse(null);
     }
 
     private boolean check(Coordinates last, Coordinates c1, Coordinates cell, Unit unit) {
-        if (c1.equals(cell))
-            return false; //ends
-        if (last.dst_(cell)<c1.dst_(cell)) {
+        if (last.dst_(cell) < c1.dst_(cell)) {
             return false;
         }
+        if (!getGame().getMovementManager().canMove(unit, c1)) {
+            return false;
+        }
+        if (c1.equals(cell))
+            return true;
         //girth check?
         return true;
     }

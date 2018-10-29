@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.explore.behavior;
 
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -9,26 +10,34 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
+import main.system.SortMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by JustMe on 10/15/2018.
  */
 public class AiBehaviorManager extends AiHandler {
 
-    public static final AI_BEHAVIOR_MODE TESTED = AI_BEHAVIOR_MODE.WANDER;
+    public static final AI_BEHAVIOR_MODE TESTED = null; // AI_BEHAVIOR_MODE.WANDER;
+    public static final boolean TEST_MODE = TESTED!=null ;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
-    private DequeImpl<ActionInput> aiActionQueue= new DequeImpl<>();
-    private Integer maxActiveCount=1;
+    private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
+    private Integer maxActiveCount = null;
+    private List<GroupAI> activeGroups = new ArrayList<>();
+    private boolean testMode = false;
 
     public AiBehaviorManager(AiMaster master) {
         super(master);
+    }
+
+    public static boolean isNewAiOn() {
+        return true;
     }
 
     public void act(float delta) {
@@ -40,26 +49,45 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     public boolean update() {
-//        List<Action> toExecute = new ArrayList<>();
-//        Set<Unit> units = master.getGame().getUnits();
-//        if (maxActiveCount!=null ){
-//            units = units.stream().filter(unit -> unit.isAiControlled()).
-//             sorted(
-//             SortMaster.getObjSorterByExpression(obj -> obj.getCoordinates().
-//              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toSet()) ;
-//            for (Unit unit : new HashSet<>(units)) {
-//                units.addAll(unit.getAI().getGroup().getMembers());
-//            }
-//        }
-        Integer n=0;
-        for (GroupAI group : getGame().getAiManager().getGroups()) {
-            if (checkGroupActs(group))
-                n++;
-            if (maxActiveCount!=null )
-                if (maxActiveCount==n)
-                    break;
+        //        List<Action> toExecute = new ArrayList<>();
+        //        Set<Unit> units = master.getGame().getUnits();
+        //        if (maxActiveCount!=null ){
+        //            units = units.stream().filter(unit -> unit.isAiControlled()).
+        //             sorted(
+        //             SortMaster.getObjSorterByExpression(obj -> obj.getCoordinates().
+        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toSet()) ;
+        //            for (Unit unit : new HashSet<>(units)) {
+        //                units.addAll(unit.getAI().getGroup().getMembers());
+        //            }
+        //        }
+        List<GroupAI> groups = getGame().getAiManager().getGroups();
+        if (testMode) {
+            Collections.sort(groups,
+             new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
+              dst(Eidolons.getMainHero().getCoordinates())));
         }
-        return n>0;
+        Integer n = 0;
+        for (GroupAI group : groups) {
+            if (maxActiveCount != null)
+                if (activeGroups.size() >= maxActiveCount) {
+                    if (!activeGroups.contains(group)) {
+                        continue;
+                    }
+                }
+            try {
+                if (checkGroupActs(group)) {
+                    n++;
+                    if (maxActiveCount != null) {
+                        activeGroups.add(group);
+                        if (maxActiveCount == n)
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        return n > 0;
 
     }
 
@@ -72,7 +100,15 @@ public class AiBehaviorManager extends AiHandler {
                     return false;
                 if (!behavior.update())
                     return false; //unit is not ready to act
-                if (behavior.canAct()){
+
+                if (testMode) {
+                    unit.setPlayerVisionStatus(PLAYER_VISION.DETECTED);
+                    unit.setVisibilityLevelForPlayer(VISIBILITY_LEVEL.CLEAR_SIGHT);
+                    unit.setDetectedByPlayer(true);
+                    unit.setVisibilityOverride(false);
+                }
+
+                if (behavior.canAct()) {
                     Action action = behavior.nextAction();
                     // check action has been executed?
                     aiActionQueue.add(new ActionInput(action.getActive(),
@@ -116,11 +152,12 @@ public class AiBehaviorManager extends AiHandler {
             return behaviors;
         }
         switch (ai.getGroupAI().getType()) {
+//            case PATROL:
+//                behaviors.add(new PatrolAi(master, ai));
+//                break;
             case GUARDS:
-                behaviors.add(new GuardAi(master, ai));
-                break;
-            case PATROL:
-                behaviors.add(new PatrolAi(master, ai));
+            case BOSS:
+                behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));
                 break;
             default:
                 behaviors.add(new WanderAi(master, ai));
@@ -147,9 +184,5 @@ public class AiBehaviorManager extends AiHandler {
         //        }
 
         return list;
-    }
-
-    public static boolean isNewAiOn() {
-        return true;
     }
 }

@@ -3,6 +3,7 @@ package eidolons.macro.entity.town;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.macro.MacroGame;
@@ -38,7 +39,7 @@ public class Town extends Place {
 
     FactionObj ownerFaction;
     private boolean readyToInit;
-    private Set<ObjType> quests;
+    private Set<DungeonQuest> quests;
     private Set<DC_HeroItemObj> stash;
 
     public Town(MacroGame game, ObjType t, MacroRef ref) {
@@ -50,6 +51,14 @@ public class Town extends Place {
 
     public boolean isVisible() {
         return true;
+    }
+
+    public Set<DungeonQuest> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(Set<DungeonQuest> quests) {
+        this.quests = quests;
     }
 
     @Override
@@ -164,14 +173,6 @@ public class Town extends Place {
 
     public void addTavern(Tavern tavern) {
         getTaverns().add(tavern);
-    }
-
-    public Set<ObjType> getQuests() {
-        return quests;
-    }
-
-    public void setQuests(Set<ObjType> quests) {
-        this.quests = quests;
     }
 
     public AMBIENCE getAmbience() {

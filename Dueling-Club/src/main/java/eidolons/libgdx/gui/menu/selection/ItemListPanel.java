@@ -29,6 +29,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.*;
 
@@ -103,6 +104,10 @@ public abstract class ItemListPanel extends TablePanel {
             button = new SmartButton((sub.name),
              StyleHolder.getTextButtonStyle(getButtonStyle(),
               getFontStyle(), getFontColor(), getFontSize())) {
+                @Override
+                protected STD_SOUNDS getSound() {
+                    return STD_SOUNDS.CLICK;
+                }
 
                 @Override
                 public boolean isFixedSize() {

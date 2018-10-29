@@ -39,6 +39,7 @@ public class GroupAI {
     private boolean backAndForth;
     private Patrol patrol;
     private Unit originalLeader;
+    private Object arg;
 
     public GroupAI() {
 
@@ -248,4 +249,11 @@ public class GroupAI {
         return encounterType;
     }
 
+    public Object getArg() {
+        return arg;
+    }
+
+    public void setArg(Object arg) {
+        this.arg = arg;
+    }
 }

@@ -82,7 +82,7 @@ public class AnimMultiplicator implements Runnable {
         emitterList.forEach(e -> {
             if (e.getTarget() != null) {
                 float offset = 1 * (float) GeometryMaster.getAngle(
-                 getActive().getOwnerUnit().getCoordinates(),
+                 getActive().getOwnerObj().getCoordinates(),
 //             getRef().getTargetObj().getCoordinates()
                  e.getTarget());
                 offset += 90;
@@ -143,7 +143,7 @@ public class AnimMultiplicator implements Runnable {
     private Collection<Coordinates> filterCoordinates(SPELL_ANIMS template, Set<Coordinates> coordinates) {
 
         if (template != null) {
-            FACING_DIRECTION facing = getActive().getOwnerUnit().getFacing();
+            FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
             List<Coordinates> filtered = new ArrayList<>(coordinates);
             Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
              (facing.getDirection(),

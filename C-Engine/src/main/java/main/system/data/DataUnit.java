@@ -81,7 +81,8 @@ public class DataUnit<T extends Enum<T>> {
     public T getEnumConst(String string) {
         if (enumClass == null) {
             enumClass = getEnumClazz();
-            return null;
+            if (enumClass == null)
+                return null ;
         }
         return (T) new EnumMaster<>().getEnum(string, getEnumClazz().getEnumConstants());
     }
@@ -171,6 +172,9 @@ public class DataUnit<T extends Enum<T>> {
             val = val.split(": ")[0];
         }
         T mapVal = getEnumConst(stat + "_MAP");
+        if (mapVal == null) {
+            return;
+        }
         WeightMap<String> map = new WeightMap<>(getValue(mapVal), String.class);
         MapMaster.addToIntegerMap(map, val, 1);
         if (max != 0)

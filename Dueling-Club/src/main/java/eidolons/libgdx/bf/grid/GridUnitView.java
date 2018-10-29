@@ -4,24 +4,59 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
+import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GDX;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster.FONT;
 
 import java.util.function.Supplier;
 
 public class GridUnitView extends GenericGridView {
 
+    private   LabelX debugInfo;
     protected QueueView initiativeQueueUnitView;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
         initQueueView(o);
+        if (AiBehaviorManager.TEST_MODE)
+        addActor( debugInfo = new LabelX(
+          "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (debugInfo == null) {
+            return;
+        }
+        if (DC_Game.game.isDebugMode()) {
+            if (getUserObject() instanceof Unit) {
+                if (!getUserObject().isAiControlled()) {
+                    return;
+                }
+
+                //color for enabled
+                AiBehavior behavior = ((Unit) getUserObject()).getAI().getExploreAI().getActiveBehavior();
+                debugInfo.setText(behavior.getType()
+                +":\n " +behavior.getDebugInfo());
+            }
+            debugInfo.setVisible(true);
+            debugInfo.pack();
+            debugInfo.setY(GDX.top(debugInfo));
+        } else {
+            debugInfo.setVisible(false);
+        }
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (mainHero) {
@@ -67,10 +102,6 @@ public class GridUnitView extends GenericGridView {
             initiativeQueueUnitView.setGreyedOut(greyedOut);
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
 
     @Override
     public void setToolTip(Tooltip tooltip) {

@@ -337,7 +337,7 @@ public class AnimMaster3d {
         DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
         String name = action.getItem().getName();
         String level = name.split(" ")[0];
-        return StrPathBuilder.build(PathFinder.getSpritesPathNew(),
+        return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPathNew(),
          "potions", "atlas", level, name + ".txt").replace(" ", "_");
 
     }

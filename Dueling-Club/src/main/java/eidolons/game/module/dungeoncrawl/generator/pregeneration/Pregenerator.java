@@ -62,6 +62,7 @@ public class Pregenerator implements Runnable {
             //     AVRG_EXITS_DISTANCE,
     };
     private static final int THREADS = 2;
+    private static final int LEVELS_TO_GENERATE_PER_TYPE = 10;
     private static final Boolean RANDOM = null;
     public static LOCATION_TYPE[] LOCATION_TYPES = {
             LOCATION_TYPE.CAVE,
@@ -72,12 +73,11 @@ public class Pregenerator implements Runnable {
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
             {
-                    LOCATION_TYPE.DUNGEON,
                     LOCATION_TYPE.CRYPT,
+             LOCATION_TYPE.TEMPLE,
             },
             {
-                    LOCATION_TYPE.TOWER,
-                    LOCATION_TYPE.CEMETERY,
+                    LOCATION_TYPE.CASTLE,
                     LOCATION_TYPE.CAVE,
             },
     };
@@ -142,8 +142,11 @@ public class Pregenerator implements Runnable {
 
         SUBLEVEL_TYPE[] sublevelTypes = GENERATED_SUBLEVELS_ALL;
         LOCATION_TYPE[] locationTypes = GENERATED_LOCATIONS[i];
-        return new PregeneratorData(factory.constructDataString(),
+        PregeneratorData data= new PregeneratorData(factory.constructDataString(),
                 sublevelTypes, locationTypes);
+        data.setValue(PREGENERATOR_VALUES.LEVELS_REQUIRED,
+         ""+ LEVELS_TO_GENERATE_PER_TYPE);
+        return  data;
     }
 
     public static boolean isRunning() {

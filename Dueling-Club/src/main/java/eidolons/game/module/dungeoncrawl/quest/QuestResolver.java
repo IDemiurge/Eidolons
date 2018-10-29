@@ -29,23 +29,13 @@ public class QuestResolver  extends QuestHandler{
 
     public   void questTaken(DungeonQuest quest){
 
-        Runnable runnable = getCompletionRunnable(quest);
+        Runnable completionRunnable = getCompletionRunnable(quest);
         EVENT_TYPE event = getEvent(quest);
-        Condition condition = getConditions(quest);
-        Trigger trigger = new Trigger(event, condition);
-        trigger.setCallback(runnable);
-        trigger.setRemoveAfterTriggers(true);
-        Eidolons.getGame().getState().addTrigger(trigger);
+        Condition completionConditions = getCompletionConditions(quest);
+        Condition  condition = getUpdateConditions(quest);
 
-        condition = getUpdateConditions(quest);
-        Trigger updateTrigger= new QuestTrigger(event, condition);
-        updateTrigger.setRemoveAfterTriggers(false);
-        updateTrigger.setCallback(()->{
-            quest.numberAchieved++;
-            quest.update();
-         }
-        );
-
+        Trigger updateTrigger= new QuestTrigger(event, condition,
+         completionConditions, completionRunnable, quest);
         Eidolons.getGame().getState().addTrigger(updateTrigger);
 
     }
@@ -61,7 +51,7 @@ public class QuestResolver  extends QuestHandler{
 
         return null;
     }
-    private Condition getConditions(DungeonQuest quest) {
+    private Condition getCompletionConditions(DungeonQuest quest) {
        return new DynamicCondition<>(q -> {
             if (q.getNumberRequired() <=
              q.getNumberAchieved())

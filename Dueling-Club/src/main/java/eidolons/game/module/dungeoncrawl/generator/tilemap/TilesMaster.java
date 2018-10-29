@@ -48,7 +48,7 @@ public class TilesMaster {
     }
 
     public static boolean isEnclosedCell(Coordinates c,   TileMap tileMap) {
-        return hasConsecutiveAdjacent(c, tileMap, false, true, 4);
+        return hasConsecutiveAdjacent(c, tileMap, false, true, 3);
     }
     public static boolean isCellAdjacentTo(Coordinates c,
                                            Room room, Boolean diags_no_only, ROOM_CELL... types) {

@@ -41,7 +41,7 @@ public class WanderAiMaster extends AiBehavior {
     }
 
     @Override
-    protected AI_BEHAVIOR_MODE getType() {
+    public AI_BEHAVIOR_MODE getType() {
         return AI_BEHAVIOR_MODE.WANDER;
     }
 
@@ -64,6 +64,7 @@ public class WanderAiMaster extends AiBehavior {
         }
         return list;
     }
+
 
     protected static int getMaxWanderDistance() {
         return 5;

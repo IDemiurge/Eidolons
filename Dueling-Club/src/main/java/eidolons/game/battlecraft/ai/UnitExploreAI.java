@@ -29,7 +29,6 @@ public class UnitExploreAI {
 
     public void act(float delta) {
         activeBehavior = updateBehavior();
-
         activeBehavior.act(delta);
     }
 
@@ -43,6 +42,9 @@ public class UnitExploreAI {
     }
 
     public AiBehavior getActiveBehavior() {
+        if (activeBehavior == null) {
+            activeBehavior = updateBehavior();
+        }
         return activeBehavior;
     }
 

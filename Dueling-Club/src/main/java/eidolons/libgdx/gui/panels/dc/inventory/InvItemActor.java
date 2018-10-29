@@ -30,6 +30,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
@@ -291,6 +292,8 @@ public class InvItemActor extends ItemActor {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                if (DragManager.isOff())
+                    return;
                 //              TODO trying to fix   listener-removal
                 //  super.touchDragged(event, x, y, pointer);
                 if (model == null) {

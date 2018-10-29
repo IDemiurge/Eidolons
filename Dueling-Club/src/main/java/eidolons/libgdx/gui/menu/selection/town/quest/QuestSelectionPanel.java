@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static eidolons.game.module.dungeoncrawl.quest.QuestMaster.isPrecreatedQuests;
+
 /**
  * Created by JustMe on 10/5/2018.
  */
@@ -74,7 +76,7 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
     @Override
     protected List<SelectableItemData> createListData() {
         if (isPrecreatedQuests()) {
-            List<DungeonQuest> quests = (List<DungeonQuest>) getUserObject();
+            Collection<DungeonQuest> quests = (Collection<DungeonQuest>) getUserObject();
             return toDataList(quests);
         }
         Collection<? extends Entity> list = null;
@@ -87,18 +89,16 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
         return listPanel.toDataList(list);
     }
 
-    private List<SelectableItemData> toDataList(List<DungeonQuest> quests) {
+    private List<SelectableItemData> toDataList(Collection<DungeonQuest> quests) {
         List<SelectableItemData> items = new ArrayList<>();
-//        for (DungeonQuest quest : quests) {
-//            //parse here?
-//            item = new SelectableItemData(name, descr, big, img);
-//            items.add(item);
-//        }
+        for (DungeonQuest quest : quests) {
+            //parse here?
+            SelectableItemData item = new SelectableItemData(quest.getTitle(), quest.getDescription(),
+             null, quest.getImage());
+            items.add(item);
+        }
         return items;
     }
 
-    private boolean isPrecreatedQuests() {
-        return false;
-    }
 
 }

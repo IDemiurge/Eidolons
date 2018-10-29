@@ -47,7 +47,7 @@ public class AmbientMaster {
                     return alt ? MINE : CAVE;
                 case BARROW:
                 case CRYPT:
-                    return alt ? HAUNTED : CAVE;
+                    return alt ? EVIL : HAUNTED;
                 case DUNGEON:
                     return alt ? CAVE : MINE;
 

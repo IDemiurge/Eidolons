@@ -19,6 +19,15 @@ public class DragManager extends FadeImageContainer {
     private static DragManager instance;
     private Entity draggedEntity;
     private GuiStage guiStage;
+    public static boolean off=true;
+
+    public static boolean isOff() {
+        return off;
+    }
+
+    public static void setOff(boolean off) {
+        DragManager.off = off;
+    }
 
     private DragManager() {
         setTouchable(Touchable.disabled);

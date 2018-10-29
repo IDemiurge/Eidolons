@@ -8,7 +8,6 @@ import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.content.values.properties.MACRO_PROPS;
@@ -23,7 +22,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +32,8 @@ import java.util.stream.Collectors;
  * Created by JustMe on 3/10/2018.
  */
 public class ScenarioGenerator {
+
+    private static final LOCATION_TYPE DEFAULT_LOCATION = LOCATION_TYPE.CAVE;
 
     public static ObjType generateScenarioType(Place place) {
         if (isRandomGenerationOn()) {
@@ -88,32 +88,48 @@ public class ScenarioGenerator {
          place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
     }
 
+    private static int getNumberOfLevels(ObjType scenarioType, LOCATION_TYPE locationType) {
+        //        scenarioType.getProperty()
+        return 3;
+    }
+
     public static ObjType generateRandomLevelScenario(int tries, String scenarioName, String locationTypeName) {
         ObjType templateType =
          DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
-
-        ObjType scenarioType = new ObjType(
-         NameMaster.getUniqueVersionedName(scenarioName, DC_TYPE.SCENARIOS), templateType);
-
-
         LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
          retrieveEnumConst(LOCATION_TYPE.class, locationTypeName);
 
-        locationType=checkAltLocationType(locationType);
-        int n = 3;
+        ObjType scenarioType =
+         locationType == null ? DataManager.getType(scenarioName, DC_TYPE.SCENARIOS) :
+          new ObjType(NameMaster.getUniqueVersionedName(scenarioName, DC_TYPE.SCENARIOS),
+           templateType);
+
+
+        List<LOCATION_TYPE> locationTypes = new ArrayList<>();
+        if (locationType == null) {
+            locationTypes = getLocationTypes(scenarioType);
+        } else
+            locationType = checkAltLocationType(locationType);
+        int n = getNumberOfLevels(scenarioType, locationType);
         List<SUBLEVEL_TYPE> types =
          createSublevelTypes(n, locationType);
 
         String levelPaths = "";
-        if (isUsePregenerated()) {
-            for (SUBLEVEL_TYPE type : types) {
+        int i = 0;
+        for (SUBLEVEL_TYPE type : types) {
+            if (locationTypes.size() > i)
+                locationType = locationTypes.get(i++);
+            if (isUsePregenerated()) {
+                String level = choosePregenLevel(type, locationType);
+                if (level == null ) {
+                    level = getAltPregenLevel(type, locationType);
+                    locationType =  DEFAULT_LOCATION;
+                }
                 String path =
                  StrPathBuilder.build(
-                  getPath(locationType), choosePregenLevel(type, locationType));
+                  getPath(locationType), level);
                 levelPaths += (path) + ContainerUtils.getContainerSeparator();
-            }
-        } else
-            for (SUBLEVEL_TYPE type : types) {
+            } else {
                 DungeonLevel level = new LevelGenerator(tries).generateLevel(type, locationType);
 
                 String stringData = level.toXml();
@@ -127,11 +143,23 @@ public class ScenarioGenerator {
 
                 Coordinates.resetCaches();
             }
+        }
         scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
         DataManager.addType(scenarioType);
         scenarioType.setGroup("Random", false);
         return scenarioType;
     }
+
+    private static List<LOCATION_TYPE> getLocationTypes(ObjType scenarioType) {
+        List<LOCATION_TYPE> list = new ArrayList<>();
+        for (String locationTypeName : ContainerUtils.openContainer(scenarioType.getProperty(PROPS.SCENARIO_MISSIONS))) {
+            LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
+             retrieveEnumConst(LOCATION_TYPE.class, locationTypeName);
+            list.add(locationType);
+        }
+        return list;
+    }
+
 
     private static LOCATION_TYPE checkAltLocationType(LOCATION_TYPE locationType) {
         switch (locationType) {
@@ -142,7 +170,7 @@ public class ScenarioGenerator {
             case CASTLE:
                 return LOCATION_TYPE.TEMPLE;
             case BARROW:
-              return  LOCATION_TYPE.CRYPT;
+                return LOCATION_TYPE.CRYPT;
             case HIVE:
             case DEN:
             case RUIN:
@@ -173,54 +201,63 @@ public class ScenarioGenerator {
         List<File> levels = FileManager.getFilesFromDirectory(getPath(locationType), false);
         levels = levels.stream().filter(file -> file.getName()
          .startsWith(getLevelName(locationType, type))).collect(Collectors.toList());
-     if (levels.isEmpty()){
-         return getAltPregenLevel(type, locationType);
-     }
-        if (isSequentialPregenChoice()){
-            int index=getNextSequentialPregenIndex(locationType, type, levels.size());
-            return levels.get(index).getName();
-        } else
+        if (levels.isEmpty()) {
+            return null;
+        }
+        if (isSequentialPregenChoice()) {
+            try {
+                int index = getNextSequentialPregenIndex(locationType, type, levels.size());
+                if (levels.size()<=index) {
+                    index= 0;
+                }
+                return levels.get(index).getName();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         return FileManager.getRandomFile(levels).getName();
     }
 
     private static String getAltPregenLevel(SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
-        return choosePregenLevel(SUBLEVEL_TYPE.COMMON, LOCATION_TYPE.CAVE);
+        return choosePregenLevel(SUBLEVEL_TYPE.COMMON, DEFAULT_LOCATION);
     }
 
-    private static int getNextSequentialPregenIndex(LOCATION_TYPE locationType, SUBLEVEL_TYPE type, int size) {
+    private static int getNextSequentialPregenIndex(LOCATION_TYPE locationType, SUBLEVEL_TYPE type,
+                                                    int size) {
         MetaDataUnit data = MetaDataUnit.getInstance();
         WeightMap map = data.getWeightMapValue(META_DATA.LAST_PREGEN_LVL_INDEX_MAP);
-        String val=type+" " +locationType;
-        data.addCount(META_DATA.LAST_PREGEN_LVL_INDEX_MAP, val, size);
-        int index = (int) map.get(val);
+        String val = type + " " + locationType;
+        data.addCount(META_DATA.LAST_PREGEN_LVL_INDEX, val, size );
+        int index = map.get(val) == null ? 0 : (int) map.get(val);
         return index;
     }
 
     private static boolean isSequentialPregenChoice() {
-        return false; //TODO options
+        return true; //TODO options
     }
 
     private static List<SUBLEVEL_TYPE> createSublevelTypes(int n, LOCATION_TYPE locationType) {
         List<SUBLEVEL_TYPE> list = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            if (CoreEngine.isFastMode()){
-                list.add(SUBLEVEL_TYPE.BOSS);
-            } else
-            switch (i) {
-                case 0:
-                    list.add(SUBLEVEL_TYPE.COMMON);
-                    break;
-                case 1:
-                    list.add(SUBLEVEL_TYPE.PRE_BOSS);
-                    break;
-                case 2:
-                    list.add(SUBLEVEL_TYPE.BOSS);
-                    break;
-                default:
-                    list.add(SUBLEVEL_TYPE.COMMON);
-                    break;
-            }
+//            if (CoreEngine.isFastMode()) {
+//                list.add(SUBLEVEL_TYPE.BOSS);
+//            }
+//            else
+                switch (i) {
+                    case 0:
+                        list.add(SUBLEVEL_TYPE.COMMON);
+                        break;
+                    case 1:
+                        list.add(SUBLEVEL_TYPE.PRE_BOSS);
+                        break;
+                    case 2:
+                        list.add(SUBLEVEL_TYPE.BOSS);
+                        break;
+                    default:
+                        list.add(SUBLEVEL_TYPE.COMMON);
+                        break;
+                }
 
         }
         return list;

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.8.4";
+    public static final String VERSION = "0.8.5";
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -59,6 +59,7 @@ public class CoreEngine {
     private static boolean crashSafeMode=true;
     private static boolean utility;
     private static float memoryLevel;
+    private static boolean fullFastMode;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -421,5 +422,13 @@ public class CoreEngine {
 
     public static float getMemoryLevel() {
         return memoryLevel;
+    }
+
+    public static boolean isFullFastMode() {
+        return fullFastMode;
+    }
+
+    public static void setFullFastMode(boolean fullFastMode) {
+        CoreEngine.fullFastMode = fullFastMode;
     }
 }

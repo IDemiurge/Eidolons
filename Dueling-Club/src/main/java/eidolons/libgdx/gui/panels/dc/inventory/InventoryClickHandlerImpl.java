@@ -29,12 +29,12 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     protected final HqDataMaster dataMaster;
     protected final DC_InventoryManager manager;
     //IDEA: FOR NON-COMBAT, DROP == SELL!
-    protected HeroDataModel sim;
+    protected HeroDataModel hero;
     protected boolean dirty;
 
-    public InventoryClickHandlerImpl(HqDataMaster dataMaster, HeroDataModel sim) {
+    public InventoryClickHandlerImpl(HqDataMaster dataMaster, HeroDataModel hero) {
         this.dataMaster = dataMaster;
-        this.sim = sim;
+        this.hero = hero;
         manager = Eidolons.game.getInventoryManager();
     }
 
@@ -99,9 +99,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     protected boolean checkCanAddInventory() {
-        if (sim.isInventoryFull()) {
+        if (hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!", sim);
+             "Inventory is full!", hero);
             return false;
         }
         return true;
@@ -203,7 +203,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
              type.getName() + " is dropped down!");
 
-        HqDataMaster.operation(sim, getHqOperation(operation), type, arg);
+        HqDataMaster.operation(hero, getHqOperation(operation), type, arg);
         if (manager != null)
             manager.operationDone(operation);
         dirty = true;
@@ -309,7 +309,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case CONTAINER:
             case INVENTORY:
                 if (altClick) {
-                    if (sim.getRemainingQuickSlots() > 0)
+                    if (hero.getRemainingQuickSlots() > 0)
                         return OPERATIONS.EQUIP_QUICK_SLOT;
                     else {
                         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Not enough quick slots!");
@@ -321,7 +321,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 }
                 if (clickCount > 1) {
                     if (HeroManager.isQuickSlotOnly(cellContents))
-                        if (sim.getRemainingQuickSlots() > 0) {
+                        if (hero.getRemainingQuickSlots() > 0) {
                             return OPERATIONS.EQUIP_QUICK_SLOT;
                         } else {
                             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Not enough quick slots!");

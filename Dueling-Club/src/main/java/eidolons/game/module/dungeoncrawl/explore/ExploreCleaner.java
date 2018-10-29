@@ -22,6 +22,9 @@ public class ExploreCleaner extends ExplorationHandler {
     }
 
     public void cleanUpAfterAction(DC_ActiveObj activeObj, Unit unit) {
+        if (unit == null) {
+            return;
+        }
         if (activeObj.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
             ModeEffect e = (ModeEffect) EffectFinder.getFirstEffectOfClass(activeObj, ModeEffect.class);
             if (e != null)

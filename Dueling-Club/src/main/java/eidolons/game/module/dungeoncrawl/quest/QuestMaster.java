@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
+import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.meta.QuestEnums;
 import main.content.values.properties.MACRO_PROPS;
@@ -10,6 +11,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -21,13 +23,13 @@ import java.util.Set;
  */
 public class QuestMaster {
 
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = CoreEngine.isFastMode();
     public static final boolean ON = true;
 
-    static {
-        if (TEST_MODE)
-            CoreEngine.setFastMode(true);
-    }
+//    static {
+//        if (TEST_MODE)
+//            CoreEngine.setFastMode(true);
+//    }
 
     QuestResolver resolver;
     QuestCreator creator;
@@ -35,6 +37,7 @@ public class QuestMaster {
 
     List<DungeonQuest> quests = new ArrayList<>();
     private boolean started;
+    private Set<DungeonQuest> questsPool;
 
     public QuestMaster() {
         resolver = new QuestResolver(this);
@@ -47,13 +50,15 @@ public class QuestMaster {
         GuiEventManager.bind(GuiEventType.QUEST_TAKEN,
          p -> {
              questTaken(p.get().toString());
+             DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__KNIFE);
          });
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED,
          p -> {
              if (p.get() == null) {
                  questsCancelled();
              } else
-             questCancelled(p.get().toString());
+                 questCancelled(p.get().toString());
+
          });
         GuiEventManager.bind(GuiEventType.QUESTS_UPDATE_REQUIRED,
          p -> {
@@ -61,6 +66,10 @@ public class QuestMaster {
                  startedQuests();
              } else updateQuests();
          });
+    }
+
+    public static final boolean isPrecreatedQuests() {
+        return true;
     }
 
     public QuestResolver getResolver() {
@@ -89,7 +98,17 @@ public class QuestMaster {
 
     public void questTaken(String name) {
         ObjType type = DataManager.getType(name, MACRO_OBJ_TYPES.QUEST);
-        DungeonQuest quest = getCreator().create(type);
+        DungeonQuest quest = null;
+        if (isPrecreatedQuests())
+            for (DungeonQuest q : getQuestsPool()) {
+                if (q.getTitle().equals(type.getName())) {
+                    quest = q;
+                    break;
+                }
+            }
+        else
+            quest = getCreator().create(type);
+
         quests.add(quest);
     }
 
@@ -101,8 +120,6 @@ public class QuestMaster {
     public void startQuests() {
         quests.removeIf(quest -> quest.isComplete());
         quests.forEach(quest -> getResolver().questTaken(quest));
-        if (TEST_MODE)
-            CoreEngine.setFastMode(true);
         startedQuests();
     }
 
@@ -128,4 +145,18 @@ public class QuestMaster {
          filter, MACRO_PROPS.QUEST_GROUP));
 
     }
+
+    public Set<DungeonQuest> getQuestsPool() {
+        if (questsPool != null) {
+            return questsPool;
+        }
+        questsPool = new LinkedHashSet<>();
+        Set<ObjType> pool = getQuestTypePool();
+        for (ObjType type : pool) {
+            DungeonQuest quest = getCreator().create(type);
+            questsPool.add(quest);
+        }
+        return questsPool;
+    }
+
 }

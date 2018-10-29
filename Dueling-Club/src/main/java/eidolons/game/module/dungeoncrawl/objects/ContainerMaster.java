@@ -11,6 +11,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
+import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
@@ -55,7 +56,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
      CONTAINER_CONTENTS.AMMO.name()
     };
     public static final String OPEN = "_open";
-    private static boolean test_mode = false;
+    private static boolean test_mode = QuestMaster.TEST_MODE;
     Map<ObjType, Map<CONTAINER_CONTENTS,
      Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
     private QUALITY_LEVEL[] exceptionalQualities;
@@ -532,11 +533,14 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
-            if (GoldMaster.isGoldPacksOn()) {
-                contents += VariableManager.getStringWithVariable("Gold", gold);
-            }
-
+            if (RandomWizard.chance(gold * 3)) {
+                contents += "Food";
+            } else {
+                if (GoldMaster.isGoldPacksOn()) {
+                    contents += VariableManager.getStringWithVariable("Gold", gold);
+                }
                 obj.setParam(PARAMS.GOLD, gold);
+            }
 
         }
         obj.setProperty(PROPS.INVENTORY, contents);

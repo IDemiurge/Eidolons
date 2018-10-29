@@ -26,7 +26,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 9/9/2017.
  */
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
-    private Thread realTimeThread;
+    private RealTimeThread realTimeThread;
     private MacroTimeMaster macroTimeMaster;
     private ExplorationMaster master;
     private boolean resetRequired;
@@ -69,9 +69,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     private void startRealTimeThread() {
-
-        realTimeThread = new RealTimeThread(this);
-        realTimeThread.start();
+        if (realTimeThread == null || realTimeThread.isDone()) {
+            realTimeThread = new RealTimeThread(this);
+            realTimeThread.start();
+        } else {
+            main.system.auxiliary.log.LogMaster.log(1,"realTimeThread already running! " );
+        }
     }
 
     public Thread getRealTimeThread() {

@@ -8,6 +8,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
@@ -72,6 +73,7 @@ public abstract class DC_Obj extends MicroObj {
     protected Coordinates blockingWallCoordinate;
     Coordinates blockingCoordinate;
     private VisionController visionController;
+    private boolean visibilityOverride;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -711,6 +713,7 @@ public abstract class DC_Obj extends MicroObj {
         if (source.isPlayerCharacter()) {
             {
                 setGamma(i);
+                if (GammaMaster.DEBUG_MODE)
                 if (game.isDebugMode())
                     main.system.auxiliary.log.LogMaster.log(1,this + " gamma = " +i);
             }
@@ -736,4 +739,11 @@ public abstract class DC_Obj extends MicroObj {
         return visionController;
     }
 
+    public boolean isVisibilityOverride() {
+        return visibilityOverride;
+    }
+
+    public void setVisibilityOverride(boolean visibilityOverride) {
+        this.visibilityOverride = visibilityOverride;
+    }
 }

@@ -44,6 +44,7 @@ import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
 import eidolons.system.audio.MusicMaster;
@@ -129,6 +130,8 @@ public class DC_Game extends GenericGame {
     protected Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
     protected MusicMaster musicMaster;
     protected DC_BattleFieldGrid grid;
+    @Refactor
+    public Town town; //TODO
 
     public DC_Game() {
         this(false);

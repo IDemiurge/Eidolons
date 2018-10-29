@@ -430,21 +430,21 @@ public class Coordinates {
 
     public Set<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
 
-        Set<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
-        if (list != null)
-            return list;
-        list = new HashSet<>();
+        Set<Coordinates> set = getAdjacenctMap(diagonals_included_not_only).get(this);
+        if (set != null)
+            return set;
+        set = new HashSet<>();
 
         if (diagonals_included_not_only != null) {
             if (diagonals_included_not_only) {
-                list.addAll(getAdjacentDiagonal());
+                set.addAll(getAdjacentDiagonal());
             }
-            list.addAll(getAdjacentOrthagonal());
+            set.addAll(getAdjacentOrthagonal());
         } else {
-            list.addAll(getAdjacentDiagonal());
+            set.addAll(getAdjacentDiagonal());
         }
-        getAdjacenctMap(diagonals_included_not_only).put(this, list);
-        return list;
+        getAdjacenctMap(diagonals_included_not_only).put(this, set);
+        return set;
 
     }
 

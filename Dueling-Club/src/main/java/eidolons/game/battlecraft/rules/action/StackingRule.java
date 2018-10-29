@@ -10,14 +10,12 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.game.module.herocreator.logic.HeroCreator;
-import main.content.DC_TYPE;
-import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
@@ -54,7 +52,7 @@ public class StackingRule implements ActionRule {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
                 LogMaster.log(1, c
-                        + "******* Cell already has max number of overlaying Objects!");
+                 + "******* Cell already has max number of overlaying Objects!");
             }
 
             return result;
@@ -72,9 +70,9 @@ public class StackingRule implements ActionRule {
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
         Set<BattleFieldObject> units = action.getGame().getObjectsAt(
-                action.getOwnerUnit().getCoordinates());
+         action.getOwnerUnit().getCoordinates());
         units.addAll(action.getGame().getObjectsAt(
-                target.getCoordinates()));
+         target.getCoordinates()));
         units.remove(action.getOwnerUnit());
         units.remove(target);
         if (units.isEmpty()) {
@@ -127,7 +125,7 @@ public class StackingRule implements ActionRule {
                         continue;
                     }
                 if (!u.isAnnihilated())
-//                    continue; TODO why was Type necessary?
+                    //                    continue; TODO why was Type necessary?
                     units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
@@ -140,7 +138,9 @@ public class StackingRule implements ActionRule {
 
 
         if (unit == null) {
-            unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
+            // unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
+            // instead, just empty type with 0 girth!
+            unit = new ObjType();
         }
         Obj cell;
         if (!game.isSimulation()) {
@@ -191,7 +191,7 @@ public class StackingRule implements ActionRule {
                 girth += u.getIntParam(PARAMS.GIRTH) / CORPSE_GIRTH_FACTOR;
             } else
                 girth += u.getIntParam(PARAMS.GIRTH);
-//           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
+            //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
         }
         // [QUICK FIX]
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {

@@ -138,6 +138,9 @@ public class ActorMaster {
     }
 
         public static AlphaAction addAlphaAction(Actor actor, float dur, float alpha) {
+            if (alpha==actor.getColor().a) {
+                return null;
+            }
         AlphaAction action = (AlphaAction) getAction(
          alpha<actor.getColor().a ? FadeOutAction.class : FadeInAction.class );
 

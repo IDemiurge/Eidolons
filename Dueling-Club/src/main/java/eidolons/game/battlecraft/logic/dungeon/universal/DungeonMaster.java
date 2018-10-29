@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -64,7 +65,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void init() {
-        dungeonWrapper = initializer.initDungeon();
+        if (dungeonWrapper == null)
+            dungeonWrapper = initializer.initDungeon();
         getBuilder().initLevel();
 
 
@@ -173,6 +175,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public DungeonLevel getDungeonLevel() {
+        if (dungeonLevel == null) {
+            dungeonWrapper=getBuilder().buildDungeon(
+             Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionName());
+        }
         return dungeonLevel;
     }
 

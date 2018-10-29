@@ -21,6 +21,7 @@ import main.system.graphics.FontMaster.FONT;
  * Created by JustMe on 10/8/2018.
  */
 public class Shard extends SuperActor {
+    public static final boolean TEST_MODE = false;
     SHARD_TYPE type;
     SHARD_SIZE size;
     SHARD_OVERLAY overlay;
@@ -28,12 +29,9 @@ public class Shard extends SuperActor {
     int y;
     Object arg;
     DIRECTION direction;
-
     ImageContainer background;
-    ImageContainer foreground; //idea - fade between 2 variants?
     //list of overlays
-
-    public static final boolean TEST_MODE=false;
+    ImageContainer foreground; //idea - fade between 2 variants?
     LabelX debugInfo;
 
     public Shard(int x, int y, SHARD_TYPE type, SHARD_SIZE size, SHARD_OVERLAY overlay, Object direction) {
@@ -48,11 +46,11 @@ public class Shard extends SuperActor {
         }
         init();
         if (TEST_MODE) {
-          addActor( debugInfo = new LabelX(
+            addActor(debugInfo = new LabelX(
              direction +
-             "" +
-             "" +
-             "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
+              "" +
+              "" +
+              "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
         }
     }
 
@@ -96,14 +94,6 @@ public class Shard extends SuperActor {
     }
 
     private String getForegroundTexturePath(Object arg) {
-        if (!(arg instanceof DIRECTION)) {
-            arg = direction.DOWN;
-        }
-        if (arg instanceof DIRECTION) {
-            if (((DIRECTION) arg).isDiagonal()) {
-                arg = direction.DOWN;
-            }
-        }
         return StrPathBuilder.build("UI", "cells", "shards", "overlay",
          overlay.toString(),
          //         size.toString() +
@@ -130,19 +120,25 @@ public class Shard extends SuperActor {
         addActor(background = new ImageContainer(getBackgroundTexturePath()));
         setSize(background.getWidth(), background.getHeight());
 
+        if (overlay == null)
+            return;
+
         if (!TextureCache.isImage(getForegroundTexturePath())) {
             GdxImageMaster.flip(getForegroundTexturePath(direction.flip()),
              !direction.isVertical(), direction.isVertical(), true, getForegroundTexturePath());
         }
+
         addActor(foreground = new ImageContainer(getRandomForegroundTexturePath(arg)));
         ALPHA_TEMPLATE template = ShardVisuals.getTemplateForOverlay(overlay);
         foreground.setAlphaTemplate(template);
 
         //generic system for binding emitters to stuff?
     }
+
     public boolean isCachedPosition() {
         return true;
     }
+
     @Override
     public void act(float delta) {
         if (isIgnored())

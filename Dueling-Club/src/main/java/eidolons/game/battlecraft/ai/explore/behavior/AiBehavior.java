@@ -20,6 +20,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
+import main.system.auxiliary.ContainerUtils;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -43,14 +44,22 @@ public abstract class AiBehavior {
     protected LevelBlock block;
     protected Coordinates preferredPosition;
     protected DC_Obj target;
-    protected float timer;
-    protected ActionSequence orders;
+    protected float sinceLastAction;
+    protected float globalTimer;
+    protected Orders orders;
     protected float timeRequired;
     protected float speed;
     protected Action queuedAction;
     protected Map<XLine, List<Coordinates>> pathCache = new HashMap<>();
+    private Action lastAction;
+    private List<Action> actionLog=    new ArrayList<>() ;
+    private List<Orders> ordersLog=    new ArrayList<>() ;
 
+public void log(){
+     log( "Orders: \n" + ContainerUtils.toStringContainer(ordersLog, "\n"));
+     log( "Actions: \n" + ContainerUtils.toStringContainer(actionLog, "\n"));
 
+}
     public AiBehavior(AiMaster master, UnitAI ai) {
         this.master = master;
         this.ai = ai;
@@ -70,24 +79,28 @@ public abstract class AiBehavior {
     }
 
     protected float getDefaultSpeed() {
-        return 1;
+        return isTestMode()? 5f : 1;
     }
 
     //    getConstraints() {
     //    }
 
     public void act(float delta) {
-        timer += delta;
+        sinceLastAction += delta;
+        globalTimer += delta;
     }
 
     public boolean canAct() {
+        if (queuedAction == null) {
+            return false;
+        }
         if (timeRequired == 0) {
             return false;
         }
         if (!checkNextActionCanBeMade(queuedAction)) {
             return false;
         }
-        return timeRequired <= timer;
+        return timeRequired <= sinceLastAction;
     }
 
     public void queueNextAction() {
@@ -96,7 +109,7 @@ public abstract class AiBehavior {
         }
         queuedAction = orders.peekNextAction();
         if (queuedAction == null) {
-            orders = null;
+            orders = null; //done
             timeRequired = 0;
         } else
             timeRequired = getTimeRequired(queuedAction);
@@ -104,7 +117,7 @@ public abstract class AiBehavior {
 
     protected float getTimeRequired(Action action) {
         Double cost = action.getActive().getParamDouble(PARAMS.AP_COST);
-        return (float) (10 * cost / getSpeed());
+        return (float) ( cost / getSpeed());
     }
 
     public Coordinates getCoordinates() {
@@ -129,22 +142,38 @@ public abstract class AiBehavior {
             status = BEHAVIOR_STATUS.WAITING;
             return false;
         }
-        target = updateTarget();
+        if (target != (target = updateTarget())){
+            log("target: " + target);
+        }
+        boolean failed = isFailed();
+        if (failed){
+            if (failed())
+                return false;
+        }
         if (!checkNeedsNewOrdersForTarget())
             return true;
         method = updateMethod();
         preferredPosition = updatePreferredPosition();
-        boolean lost = isFailed();
-        if (lost)
-            if (checkCanTeleport()) {
-                teleportToLeader();
-                resetTimer();
-            }
         if (status != BEHAVIOR_STATUS.RUNNING)
             log("running...");
         status = BEHAVIOR_STATUS.RUNNING;
         initOrders();
         return false; //don't act immediately, but on the next cycle *if* orders are OK by then still
+    }
+
+    protected boolean failed() {
+        log("failed, applying a fix...");
+        if (checkCanTeleport()) {
+            teleportToLeader();
+        } else {
+
+        }
+        resetSinceLastAction();
+        return true;
+    }
+
+    protected boolean isTestMode() {
+        return AiBehaviorManager.TEST_MODE;
     }
 
     protected boolean checkNeedsNewOrdersForTarget() {
@@ -154,10 +183,13 @@ public abstract class AiBehavior {
         return true;
     }
 
-    protected void resetTimer() {
-        timer = 0;
+    protected void resetSinceLastAction() {
+        sinceLastAction = 0;
     }
 
+    protected void resetTimer() {
+        globalTimer = 0;
+    }
     protected boolean checkNeedsToUpdate() {
         //        if (target == null) why?
         //            return true;
@@ -219,7 +251,7 @@ public abstract class AiBehavior {
         return getUnit().getNameAndCoordinate() + " " + getType() + " ai";
     }
 
-    protected abstract AI_BEHAVIOR_MODE getType();
+    public abstract AI_BEHAVIOR_MODE getType();
 
     protected boolean isEnabled() {
         if (AiBehaviorManager.TESTED != null) {
@@ -233,13 +265,17 @@ public abstract class AiBehavior {
     }
 
     protected void initOrders() {
-        orders = getOrders();
-        if (orders == null) {
-            log("null orders!");
+        ActionSequence actions = getOrders();
+        if (actions == null) {
+//            log("null orders!");
             return; // can it be? 
         }
+        orders =new Orders(actions);
         log("new orders: " + orders);
-        ai.setStandingOrders(orders);
+
+        ordersLog.add(orders);
+
+//        ai.setStandingOrders(orders);
     }
 
     public Action nextAction() {
@@ -252,8 +288,12 @@ public abstract class AiBehavior {
         //TODO last action
         orders.popNextAction(); //ensure sync
 
-        log("next action: " + queuedAction);
-        return queuedAction;
+        log("Action to execute: " + queuedAction);
+        lastAction = queuedAction;
+        actionLog.add(lastAction);
+        queuedAction=null;
+        resetSinceLastAction();
+        return lastAction;
     }
 
     protected boolean checkNextActionCanBeMade(Action action) {
@@ -283,7 +323,7 @@ public abstract class AiBehavior {
         return orders;
     }
 
-    protected boolean checkOrdersValid(ActionSequence orders) {
+    protected boolean checkOrdersValid(Orders orders) {
         if (orders == null) {
             return false;
         }
@@ -337,17 +377,6 @@ public abstract class AiBehavior {
     public ActionSequence getMoveOrders(List<Coordinates> validCells) {
 
         Coordinates cell = chooseMoveTarget(validCells);
-        boolean atomic = false;
-        if (isAtomicAllowed()) {
-            if (cell.isAdjacent(ai.getUnit().getCoordinates()))
-                atomic = true;
-        }
-        if (atomic) {
-            Action action = master.getAtomicAi().getAtomicMove(cell, ai.getUnit());
-            //                action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
-            if (action != null)
-                return new ActionSequence(GOAL_TYPE.WANDER, action);
-        }
 
         XLine line = new XLine(getCoordinates(), cell);
         List<Coordinates> pathChain = pathCache.get(line);
@@ -356,9 +385,28 @@ public abstract class AiBehavior {
              getUnit(), getCoordinates(), cell, false, 15);
             pathCache.put(line, pathChain);
         }
-        int n = Math.min(4, pathChain.size() / 2);
+        boolean atomic = false;
+        if (isAtomicAllowed()) {
+//            if (cell.isAdjacent(ai.getUnit().getCoordinates()))
+                atomic = true;
+        }
 
+        int n =atomic? 0:  Math.min(4, pathChain.size() / 2);
+        if (pathChain.size()<=n) {
+            if (pathChain.size()<=1) {
+                return null;
+            }
+            n=0;
+        }
         Coordinates goal = pathChain.get(n);
+
+        if (atomic) {
+            Action action = master.getAtomicAi().getAtomicMove(goal, ai.getUnit());
+            //                action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
+            if (action != null)
+                return new ActionSequence(GOAL_TYPE.WANDER, action);
+        }
+
         List<Coordinates> preferred = validCells.stream().filter(c -> c == goal).collect(Collectors.toList());
 
         master.getPathBuilder().setUnit(ai.getUnit());
@@ -380,7 +428,10 @@ public abstract class AiBehavior {
 
     public void teleportToLeader() {
         //yeah...
-        ai.getUnit().setCoordinates(preferredPosition);
+        if (target == null) {
+            return;
+        }
+        ai.getUnit().setCoordinates(target.getCoordinates());
     }
 
     protected boolean isNearby() {
@@ -423,11 +474,11 @@ public abstract class AiBehavior {
     }
 
     protected boolean isFailed() {
-        return timer > getTimeBeforeFail();
+        return sinceLastAction > getTimeBeforeFail();
     }
 
     protected float getTimeBeforeFail() {
-        return 50;
+        return 50/speed;
     }
 
     protected AiMaster getMaster(UnitAI ai) {
@@ -440,6 +491,11 @@ public abstract class AiBehavior {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public String getDebugInfo() {
+        return sinceLastAction + " "
+         + queuedAction + " " + group.getLeader().getName();
     }
 
 

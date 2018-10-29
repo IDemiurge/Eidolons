@@ -13,4 +13,7 @@ public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
         return null;
     }
 
+    public String getMissionName() {
+        return null;
+    }
 }
