@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import eidolons.entity.obj.Structure;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.GridMaster;
@@ -232,7 +233,7 @@ public class GridCellContainer extends GridCell {
         for (GenericGridView actor : views) {
             if (!actor.isVisible())
                 continue;
-            if (actor.isCellBackground())
+            if (actor.isCellBackground() || actor.getUserObject() instanceof Structure)
                 actor.setZIndex(1); //over cell at least
             else if (actor.isHovered())
                 hovered = actor;

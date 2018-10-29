@@ -66,7 +66,7 @@ public class GammaMaster {
         if (gamma != null)
             return gamma;
         return master.getIlluminationMaster().getIllumination(source, target)
-                - master.getIlluminationMaster().getConcealment(source, target);
+         - master.getIlluminationMaster().getConcealment(source, target);
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_CELL type) {
@@ -91,7 +91,7 @@ public class GammaMaster {
         }
         float alpha = 0;
         DC_Cell cell = Eidolons.game.getCellByCoordinate(
-                Coordinates.get(x, y));
+         Coordinates.get(x, y));
         if (cell == null) {
             if (type == SHADE_CELL.GAMMA_SHADOW)
                 return 1;
@@ -140,10 +140,10 @@ public class GammaMaster {
                 break;
             case CONCEALMENT:
                 alpha =
-                        //             Eidolons.game.getCellByCoordinate(
-                        //              Coordinates.get(x, y)).getIntParam(
-                        //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
-                        master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
+                 //             Eidolons.game.getCellByCoordinate(
+                 //              Coordinates.get(x, y)).getIntParam(
+                 //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
+                 master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
                     alpha += getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
@@ -155,41 +155,43 @@ public class GammaMaster {
     public float getLightEmitterAlpha(int x, int y) {
         return getLightEmitterAlpha(x, y, false);
     }
-        public float getLightEmitterAlpha(int x, int y, boolean unit) {
+
+    public float getLightEmitterAlpha(int x, int y, boolean unit) {
         float alpha = 0;
 
         for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
-            if ((sub instanceof Unit)!=unit) {
+            if ((sub instanceof Unit) != unit) {
                 continue; //TODO illuminate some other way for units...
             }
             if (sub.getCoordinates().x == x)
                 if (sub.getCoordinates().y == y) {
-                    float value =getLightEmitterAlpha(sub, alpha);
-                        alpha += value;
-                        //                        log(1, x + " " + y + " has " + alpha + " light alpha with " + sub);
+                    float value = getLightEmitterAlpha(sub, alpha);
+                    alpha += value;
+                    //                        log(1, x + " " + y + " has " + alpha + " light alpha with " + sub);
                 }
         }
-
+        int units = 1 + master.getGame().getMaster().getUnitsOnCoordinates(new Coordinates(x, y)).size();
+        alpha = alpha / units;
         return alpha;
     }
 
     public float getLightEmitterAlpha(Obj sub, float alpha) {
         UNIT_VISION visionStatus = ((DC_Obj) sub).getUnitVisionStatus(Eidolons.getMainHero());
 
-        if (Eidolons.getMainHero()!=sub){
+        if (Eidolons.getMainHero() != sub) {
             if (visionStatus == UNIT_VISION.BLOCKED)
                 return 0;
         }
 
         float dst = 1 + (float) Coordinates.get(
-               sub.getX(), sub.getY()).dst_(Eidolons.getMainHero().getCoordinates());
+         sub.getX(), sub.getY()).dst_(Eidolons.getMainHero().getCoordinates());
         if (dst > Eidolons.getMainHero().
-                getMaxVisionDistanceTowards(sub.getCoordinates()))
+         getMaxVisionDistanceTowards(sub.getCoordinates()))
             return 0;
 
         float value = (float) (LIGHT_EMITTER_ALPHA_FACTOR / Math.sqrt(dst) *
-                        master.getGame().getRules().getIlluminationRule()
-                                .getLightEmission((DC_Obj) sub));
+         master.getGame().getRules().getIlluminationRule()
+          .getLightEmission((DC_Obj) sub));
 
         boolean overlaying = ((BattleFieldObject) sub).isOverlaying();
 
@@ -241,9 +243,9 @@ public class GammaMaster {
             }
         }
         float dst = (float) c.dst_(cell.getCoordinates());
-//         (float) master.getGame().getCells().stream().sorted(new SortMaster<Obj>().getSorterByExpression_(
-//          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.get(x, y))
-//          ))).findFirst().get().getCoordinates().dst_(c); too performance heavy!
+        //         (float) master.getGame().getCells().stream().sorted(new SortMaster<Obj>().getSorterByExpression_(
+        //          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.get(x, y))
+        //          ))).findFirst().get().getCoordinates().dst_(c); too performance heavy!
         dst = (float) Math.sqrt(dst * 2);
         alpha = alpha / (Math.max(1, dst));
         voidAlphaCache[x][y] = alpha;
@@ -254,7 +256,7 @@ public class GammaMaster {
         //tutorial info
         if (master.getGame().getDungeonMaster().getDungeonWrapper() instanceof Location) {
             Entrance exit = ((Location) master.getGame().getDungeonMaster().
-                    getDungeonWrapper()).getMainExit();
+             getDungeonWrapper()).getMainExit();
             if (exit != null) {
                 if (exit.getX() == x)
                     if (exit.getY() == y)
@@ -263,7 +265,10 @@ public class GammaMaster {
         }
         if (master.getGame().getMetaMaster().getQuestMaster() != null) {
             for (DungeonQuest quest : master.getGame().getMetaMaster().getQuestMaster().getQuests()) {
-                if (quest.getCoordinate()!=null ){
+                if (quest.isComplete()) {
+                    continue;
+                }
+                if (quest.getCoordinate() != null) {
                     if (quest.getCoordinate().getX() == x)
                         if (quest.getCoordinate().getY() == y)
                             return 1;
@@ -308,7 +313,7 @@ public class GammaMaster {
 
         //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
-                cell.getGamma();
+         cell.getGamma();
         //        return new Random().nextInt(50)/100 + 0.5f;
     }
 

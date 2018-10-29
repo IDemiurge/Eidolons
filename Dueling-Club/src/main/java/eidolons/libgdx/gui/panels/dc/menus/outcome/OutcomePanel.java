@@ -24,12 +24,14 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -52,7 +54,19 @@ public class OutcomePanel extends TablePanel implements EventListener {
     private Label message;
     private TabbedPanel unitStatTabs;
 
-    public OutcomePanel(OutcomeDatasource outcomeDatasource) {
+    public OutcomePanel(   ) {
+
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        if (getUserObject() instanceof OutcomeDatasource) {
+            init((OutcomeDatasource) getUserObject());
+        }
+        super.updateAct(delta);
+    }
+
+    public void init (OutcomeDatasource outcomeDatasource) {
         addListener(this);
         Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
          NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
@@ -77,7 +91,11 @@ public class OutcomePanel extends TablePanel implements EventListener {
          MigMaster.center(textureRegion.getRegionHeight(), picture.getHeight() * picture.getScaleY()
          ));
 
+        STD_SOUNDS sound=STD_SOUNDS.DEATH;
+
         String messageText = VICTORY_MESSAGE;
+        if (outcome != null)
+            sound = outcome ? STD_SOUNDS.VICTORY : STD_SOUNDS.DEATH;
         if (outcome != null)
             messageText = outcome ? VICTORY_MESSAGE : DEFEAT_MESSAGE;
         message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));
@@ -87,6 +105,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
          MigMaster.center(textureRegion.getRegionWidth(), message.getWidth()),
          MigMaster.top(textureRegion.getRegionHeight(), message.getHeight() + 55
          ));
+
+        DC_SoundMaster.playStandardSound(sound);
 
         TablePanel<Actor> stats = new TablePanel<>();
         datasource.getPlayerStatsContainers().forEach(c -> {
@@ -180,8 +200,4 @@ public class OutcomePanel extends TablePanel implements EventListener {
         return false;
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
 }

@@ -31,6 +31,11 @@ public class RngSelectionPanel extends ScenarioSelectionPanel {
     }
 
     @Override
+    protected String getTitle() {
+        return "Select a Destination";
+    }
+
+    @Override
     protected ItemListPanel createListPanel() {
         return new RngListPanel();
     }

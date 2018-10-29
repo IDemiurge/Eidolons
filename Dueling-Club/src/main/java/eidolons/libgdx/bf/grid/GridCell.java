@@ -155,9 +155,6 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
-        if (gridX == 0)
-            if (gridY == 0)
-                gridX = 0;
         if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
          ) {
             return;
@@ -174,20 +171,6 @@ public class GridCell extends Group implements Borderable {
                   getGammaForCell(getGridX(), getGridY())
                   + "\n illumination="
                   + cell.getIntParam(PARAMS.ILLUMINATION)
-                 /*             Additional Debug Info
-
-                  + "\n" + cell.getVisibilityLevel()
-                   +cell.getOutlineType()==null ? "" : ("\n" + cell.getOutlineType())
-                  + cell.getActivePlayerVisionStatus()==null ? "" :("\n" +
-                  cell.getActivePlayerVisionStatus())
-                 +"\n gamma="
-                 + DC_Game.game.getVisionMaster().getGammaMaster().
-                 getGammaForCell(getGridX(), getGridY())+"\n Illumination="
-                 + DC_Game.game.getVisionMaster().getIlluminationMaster().
-                 getIllumination(getGridX(), getGridY()))+"\n gamma="
-                 + DC_Game.game.getVisionMaster().getGammaMaster().
-                 getGammaForCell(getGridX(), getGridY())
-                 */
                 );
                 cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
 

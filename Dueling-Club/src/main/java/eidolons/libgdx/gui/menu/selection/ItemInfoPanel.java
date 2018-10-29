@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.menu.selection;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GDX;
@@ -11,6 +10,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -18,7 +18,6 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 11/29/2017.
@@ -29,8 +28,8 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     public static final int WIDTH = 1020;
     public static final int HEIGHT = 850;
     protected DescriptionPanel description;
-    protected Image preview;
-    protected Image fullsizePortrait;
+    protected FadeImageContainer preview;
+    protected FadeImageContainer fullsizePortrait;
     protected Label title;
     protected SelectableItemData item;
 
@@ -63,10 +62,9 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
         description = new DescriptionPanel();
         description.setText(getDefaultText());
         title = new Label(getDefaultTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 30));
-        preview = new Image(TextureCache.getOrCreateR(getEmptyImagePath()));
+        preview = new FadeImageContainer( (getEmptyImagePath()), 1.4f);
         fullsizePortrait =
-         new Image(TextureCache.getOrCreateR(getEmptyImagePathFullSize()));
-
+         new FadeImageContainer(getEmptyImagePathFullSize(), 1.4f);
 
     }
 
@@ -129,11 +127,13 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
 
 
     protected String getEmptyImagePath() {
-        return ImageManager.getEmptyUnitIconPath();
+//        return ImageManager.getEmptyUnitIconPath();
+        return "";
     }
 
     protected String getEmptyImagePathFullSize() {
-        return ImageManager.getEmptyUnitIconFullSizePath();
+//        return ImageManager.getEmptyUnitIconFullSizePath();
+        return "";
     }
 
     @Override
@@ -143,15 +143,21 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
         super.updateAct(delta);
         description.setText(item.description);
         if (StringMaster.isEmpty(item.imagePath))
-            preview.setDrawable(null);
+            preview.setImage(getEmptyImagePathFullSize());
         else
-            preview.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.imagePath));
+            preview.setImage( (item.imagePath));
+        getCell(preview).size(preview.getWidth(), preview.getHeight());
 
         if (item.fullsizeImagePath == null)
-            fullsizePortrait.setDrawable(null);
+            fullsizePortrait.fadeOut();
         else
-            fullsizePortrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
-             item.fullsizeImagePath));
+        {
+            if (!TextureCache.isImage(item.fullsizeImagePath))
+                fullsizePortrait.setImage(getEmptyImagePathFullSize());
+            else
+                fullsizePortrait.setImage((item.fullsizeImagePath));
+        }
+        getCell(fullsizePortrait).size(fullsizePortrait.getWidth(), fullsizePortrait.getHeight());
 
         title.setText(getTitle());
         pack();

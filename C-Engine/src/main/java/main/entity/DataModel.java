@@ -1291,9 +1291,11 @@ public abstract class DataModel {
         }
     }
 
+    public void addParam(PARAMETER parameter, int value) {
+        modifyParameter(parameter, value);
+    }
     public void addParam(PARAMETER parameter, String param, boolean base) {
         modifyParameter(parameter, NumberUtils.getInteger(param), base);
-
     }
 
     public void copyValues(Entity type, List<VALUE> list) {

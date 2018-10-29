@@ -236,7 +236,9 @@ public class RngMainSpawner {
         Integer n = quest.getNumberRequired();
         LevelZone zone = new FuncMaster<LevelZone>().getGreatest_(level.getZones(),
          zone1 -> zone1.getSubParts().size());
-        ObjType type = QuestCreator.getPreyType(level.getPowerLevel(), quest,
+
+        ObjType type = quest.getArg() instanceof ObjType? (ObjType) quest.getArg()
+         : QuestCreator.getPreyType(level.getPowerLevel(), quest,
          zone.getStyle());
         //field to draw units from?
         quest.setArg(type);
@@ -738,10 +740,11 @@ public class RngMainSpawner {
          .getOffset(levelBlock.getCoordinates());
 
         List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
-         .filter(c -> levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR).
-          filter(c -> checkCellForSpawn(c, levelBlock)).
+         .filter(c -> checkCellForSpawn(c, levelBlock)).
           filter(c -> !levelBlock.getUnitGroups().keySet().stream()
            .anyMatch(list -> list.stream().anyMatch(at -> at.getCoordinates().equals(c)))).
+          //no other units there
+
           sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
            -c.dst(center))).limit(Math.max(1, units.size() / maxStack)).
           collect(Collectors.toList());
@@ -769,6 +772,9 @@ public class RngMainSpawner {
     }
 
     private boolean checkCellForSpawn(Coordinates c, LevelBlock levelBlock) {
+       if ( !TilesMaster.isPassable(levelBlock.getTileMap().getMap().get(c)))
+           return false;
+
         if (TilesMaster.isEnclosedCell(c, levelBlock.getTileMap()))
             return false;
         return true;

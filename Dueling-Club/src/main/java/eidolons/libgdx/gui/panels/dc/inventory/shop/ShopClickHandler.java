@@ -35,7 +35,7 @@ public class ShopClickHandler extends ContainerClickHandler {
     }
 
     @Override
-    public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
+    public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents, boolean ctrlClick) {
         if (cellContents == null) {
             singleClick(cell_type, null);
             return false;
@@ -53,8 +53,18 @@ public class ShopClickHandler extends ContainerClickHandler {
                     operation = OPERATIONS.SELL;
             }
         }
+        if (ctrlClick) {
+            if (cell_type == CELL_TYPE.CONTAINER) {
+                operation = OPERATIONS.BUY;
+            } else {
+                if (cell_type == CELL_TYPE.INVENTORY) {
+                    operation = OPERATIONS.SELL;
+                } else
+                    operation = OPERATIONS.UNEQUIP;
+            }
+        }
         if (operation==null) {
-            operation = getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+            operation = getInvOperation(cell_type, clickCount, rightClick, altClick,ctrlClick , cellContents);
         }
 
         if (operation == OPERATIONS.DROP) {
@@ -79,14 +89,14 @@ public class ShopClickHandler extends ContainerClickHandler {
 
     @Override
     protected OPERATIONS getInvOperation(CELL_TYPE cell_type,
-                                         int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
+                                         int clickCount, boolean rightClick, boolean altClick, boolean ctrlClick, Entity cellContents) {
         if (stashOpen)
             if (altClick || clickCount > 1) {
                 if (cell_type == CELL_TYPE.INVENTORY) {
                     return OPERATIONS.STASH;
                 }
             }
-        return super.getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+        return super.getInvOperation(cell_type, clickCount, rightClick, altClick, ctrlClick, cellContents);
     }
 
     @Override
@@ -164,7 +174,7 @@ public class ShopClickHandler extends ContainerClickHandler {
                 Integer gold = (operation == OPERATIONS.BUY ? dataMaster.getHeroModel() : container)
                  .getIntParam(PARAMS.GOLD);
                 if (gold >= shop.getPrice((DC_HeroItemObj) type, dataMaster.getHeroModel(),
-                 operation == OPERATIONS.SELL)) {
+                 operation == OPERATIONS.BUY)) {
                     return true;
                 }
                 GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
@@ -189,10 +199,7 @@ public class ShopClickHandler extends ContainerClickHandler {
         return super.getSecondArg(operation, type);
     }
 
-    @Override
-    protected OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
-        return super.getOperation(cell_type, clickCount, rightClick, altClick, cellContents);
-    }
+
 
     public void askRepair() {
         int gold = 0;
@@ -201,6 +208,10 @@ public class ShopClickHandler extends ContainerClickHandler {
              item.getIntParam(PARAMS.C_DURABILITY) * 100 / item.getIntParam(PARAMS.DURABILITY);
             Integer price = shop.getPrice(item, hero, false)*percentage/100;
             gold += price;
+        }
+        if (gold==0){
+            EUtils.showInfoText("Your equpped items don't need repair yet!");
+            return;
         }
         int gold_=gold;
         if (hero.checkParameter(PARAMS.GOLD , gold))

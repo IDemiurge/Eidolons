@@ -10,6 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
@@ -27,6 +28,7 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.math.MathMaster;
 
 import static main.system.GuiEventType.*;
 
@@ -68,6 +70,8 @@ public class ToolTipManager extends TablePanel {
 
     private void requestedShow(Object object) {
         if (tooltip == object) {
+            originalPosition = GdxMaster.getCursorPosition(this);
+            tooltip.fadeIn();
             if (isLogged()) LogMaster.log(1, "Update ignored " );
             return;
         }
@@ -168,7 +172,13 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void act(float delta) {
+        setVisible(true);
         super.act(delta);
+        if (tooltip!=null){
+            if (tooltip.getColor().a==0) {
+                tooltip.fadeIn();
+            }
+        }
         if (toWait > 0)
             if (tooltip != null) {
                 if (tooltip.isMouseHasMoved()) {
@@ -199,6 +209,11 @@ public class ToolTipManager extends TablePanel {
 
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+    }
+
     private void initTooltipPosition() {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
@@ -212,7 +227,7 @@ public class ToolTipManager extends TablePanel {
         float y = (v2.y - tooltip.getPrefHeight() - getPreferredPadding());
         boolean bot = false;
         if (y < 0) {
-            actorCell.top();
+            actorCell.bottom();
             actorCell.padBottom(
                     Math.max(-y / 2 - getPreferredPadding(), 64));
             bot = true;
@@ -223,18 +238,18 @@ public class ToolTipManager extends TablePanel {
             if (bot) {
                 actorCell.center();
             } else
-                actorCell.bottom();
+                actorCell.top();
             actorCell.padTop((y - GdxMaster.getHeight()) / 2 - getPreferredPadding());
         }
         float x = v2.x - tooltip.getPrefWidth() - getPreferredPadding();
         if (x < 0) {
-            actorCell.right();
+            actorCell.left();
             actorCell.padLeft((-x) / 2 - getPreferredPadding());
         }
         x = v2.x + tooltip.getPrefWidth() + getPreferredPadding();
         boolean right=true ;
         if (x > GdxMaster.getWidth()) {
-            actorCell.left();
+            actorCell.right();
             actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());
             right = true;
         }
@@ -251,7 +266,12 @@ public class ToolTipManager extends TablePanel {
 //            if (right){
 //                actorCell.setActorX(actorCell.getActorX()-actorCell.getActorWidth()*2);
 //            }
+            actorCell.setActorY(MathMaster.minMax(actorCell.getActorY()+offset.y,
+             GDX.height(-200-offset.y), GDX.height(200+offset.y)));
         }
+
+//        actorCell.setActorY(MathMaster.minMax(actorCell.getActorX(),
+//         GDX.height(-200), GDX.height(200)));
     }
 
     private boolean isLogged() {

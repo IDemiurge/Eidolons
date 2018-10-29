@@ -310,7 +310,7 @@ public class LevelDataMaker {
                 break;
 
             case NO_FILL:
-                n = 2;
+                n = 0;
             case DOUBLE_FILL:
                 if (n != 0)
                     n = 2;

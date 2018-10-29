@@ -32,6 +32,16 @@ public class HeroInfoPanel extends ItemInfoPanel {
     }
 
     @Override
+    protected String getEmptyImagePath() {
+        return "";
+    }
+
+    @Override
+    protected String getEmptyImagePathFullSize() {
+        return "";
+    }
+
+    @Override
     protected String getTitle() {
         return super.getTitle() + StringMaster.NEW_LINE + item.
          getEntity().getProperty(G_PROPS.DESCRIPTION);

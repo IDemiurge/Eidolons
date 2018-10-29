@@ -319,7 +319,7 @@ public class SoundMaster {
         DIS__BLESS(true),
         CLICK1,
         ButtonUp,
-        ButtonDown,;
+        ButtonDown, VICTORY;
         String path;
         private boolean alt;
 

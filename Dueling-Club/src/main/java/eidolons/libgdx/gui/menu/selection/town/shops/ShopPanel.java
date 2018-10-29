@@ -8,14 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.gui.HideDecorator;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitGroup;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
@@ -33,12 +37,14 @@ import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.StashPanel;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.entity.town.Shop;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -50,6 +56,7 @@ import java.util.List;
 public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer {
     private final TablePanelX header;
     private final StashPanel stashPanel;
+    private   SmartButton help;
     private GroupX stashContainer;
     private boolean stashOpen;
     private SmartButton repairButton;
@@ -72,6 +79,33 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
              stashOpen = !stashOpen;
              ShopClickHandler.setStashOpen(stashOpen);
          }, new Vector2(-50, 52)));
+
+        String header = "Shop controls:";
+        String on= DragManager.isOff() ? "OFF": "ON";
+        String info= "\n**Drag'n'drop is [" +
+         on +
+         "]**\n" +
+         "[Right click]: unequip, buy or sell\n" +
+         "[Double left-click]: default equip/unequip \n" +
+         "[Alt-Click]: equip weapon in quick slot \n" +
+         "[Ctrl-Click]: sell or unequip \n";
+        if (true) {
+            help = new SmartButton(STD_BUTTON.HELP, () -> {
+                EUtils.onConfirm(
+                info, false, ()-> { });
+            });
+            addActor(help);
+            help.setPosition(GDX.centerWidth(help), 50);
+        } else {
+        ValueContainer controls = new ValueContainer(
+         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
+         header,
+        info);
+      GroupX  container = HideDecorator.decorate(true,   DIRECTION.UP_RIGHT, controls);
+         addActor(container);
+            container.setPosition(GDX.centerWidth(container), 100);
+        }
+
     }
 
     protected int getDefaultHeight() {
@@ -129,6 +163,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         containerSlotsPanel.setBackground(new TextureRegionDrawable(bg));
         containerSlotsPanel.setSize(bg.getRegionWidth(), bg.getRegionHeight());
 
+        help.setPosition(GDX.centerWidth(help)+100, 50);
         if (stashContainer != null) {
             stashContainer.setY(header.getY() - stashContainer.getHeight() -  45);
             stashContainer.setX(GdxMaster.centerWidth(stashContainer) - 245);

@@ -214,9 +214,11 @@ public class ValueContainer extends TablePanel {
 
     public void setNameText(CharSequence newText) {
         nameLabel.setText(newText);
+        valueLabel.pack();
     }
     public void setValueText(CharSequence newText) {
         valueLabel.setText(newText);
+        valueLabel.pack();
     }
     public void setImage(String newPic) {
         imageContainer.getActor().setImage(newPic);
@@ -320,7 +322,13 @@ public class ValueContainer extends TablePanel {
     }
 
 
-    public void setStyle(LabelStyle labelStyle) {
+    public void setNameStyle(LabelStyle labelStyle) {
+        getNameLabel().setStyle(labelStyle);
+    }
+    public void setValueStyle(LabelStyle labelStyle) {
+        getValueLabel().setStyle(labelStyle);
+    }
+        public void setStyle(LabelStyle labelStyle) {
         if (getNameLabel() != null)
             getNameLabel().setStyle(labelStyle);
         if (getValueLabel() != null)

@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -66,7 +65,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public void init() {
         if (dungeonWrapper == null)
-            dungeonWrapper = initializer.initDungeon();
+            dungeonWrapper = initDungeon();
         getBuilder().initLevel();
 
 
@@ -80,6 +79,15 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         }
 
 
+    }
+
+    protected E initDungeon() {
+        try {
+            return initializer.initDungeon();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return dungeonWrapper;
     }
 
     protected abstract FacingAdjuster<E> createFacingAdjuster();
@@ -176,8 +184,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public DungeonLevel getDungeonLevel() {
         if (dungeonLevel == null) {
-            dungeonWrapper=getBuilder().buildDungeon(
-             Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionName());
+            dungeonWrapper = initDungeon();
         }
         return dungeonLevel;
     }
@@ -186,4 +193,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         this.dungeonLevel = dungeonLevel;
     }
 
+    public void next() {
+        dungeonWrapper = null;
+    }
 }

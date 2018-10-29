@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ExceptionMaster {
 
-    private static final boolean FULL_LOG = true;
+    private static final boolean FULL_LOG = false;
     static List<String> printed = new ArrayList<>();
 
     public static void printStackTrace(Exception e) {

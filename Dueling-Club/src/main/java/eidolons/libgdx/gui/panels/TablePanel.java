@@ -32,6 +32,22 @@ public class TablePanel<T extends Actor> extends Table {
     }
 
     @Override
+    public <T extends Actor> Cell<T> getCell(T actor) {
+        Cell<T> cell = super.getCell(actor);
+        if (cell == null) {
+            for (Actor actor1 : getChildren()) {
+                if (actor1 instanceof Table) {
+                    cell = ((Table) actor1).getCell(actor);
+                    if (cell != null) {
+                        return cell;
+                    }
+                }
+            }
+        }
+        return cell;
+    }
+
+    @Override
     public float getPrefHeight() {
         if (isFixedSize())
             return getHeight();

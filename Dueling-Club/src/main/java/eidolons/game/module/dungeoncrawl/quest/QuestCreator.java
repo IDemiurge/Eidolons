@@ -3,15 +3,25 @@ package eidolons.game.module.dungeoncrawl.quest;
 import eidolons.content.PARAMS;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.DC_TYPE;
+import main.content.enums.entity.ItemEnums.ITEM_RARITY;
+import main.content.enums.entity.ItemEnums.MATERIAL;
+import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.content.enums.meta.QuestEnums.QUEST_TIME_LIMIT;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.SortMaster;
 import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -34,7 +44,7 @@ public class QuestCreator extends QuestHandler {
         switch (quest.getType()) {
             case BOSS:
                 return 1;
-            case FIND:
+            case COMMON_ITEMS:
             case HUNT:
                 return Math.max(1, Math.round(quest.getPowerCoef() * 10));
         }
@@ -93,7 +103,40 @@ public class QuestCreator extends QuestHandler {
         return tryGetQuestUnitType(powerLevel, -0.25f, quest, style);
     }
 
-        public static ObjType getItemType(int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
+        public static ObjType getItemTypeSpecial(ObjType questObjType, int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
+            String arg = questObjType.getProperty(MACRO_PROPS.QUEST_ARG);
+            DC_TYPE TYPE = DC_TYPE.getType(arg);
+            if (TYPE == null) {
+                TYPE = DC_TYPE.WEAPONS;
+            }
+//            switch (TYPE) {
+//                case WEAPONS:
+//                    name= "";
+//                    break;
+//                case ARMOR:
+//                    break;
+//            }
+//            ObjType base=DataManager.getType(TYPE, name);
+            MATERIAL m= MATERIAL.DARK_STEEL;
+            ObjType base=DataManager.getRandomType(TYPE);
+//            DataManager.getBaseWeaponTypes()
+            if (base.isGenerated()) {
+                base = base.getType();
+            }
+            for (MATERIAL material : new HashSet<>(Arrays.asList(ContainerMaster.getMaterials(
+             RandomWizard.random()?
+              ITEM_RARITY.RARE : ITEM_RARITY.EXCEPTIONAL)))) {
+                if (ItemMaster.checkMaterial(base, material)) {
+                   m=material;
+                   break;
+                }
+            }
+            QUALITY_LEVEL q= QUALITY_LEVEL.ANCIENT;
+            ObjType type = ItemGenerator.getOrCreateItemType(base.getType(), m, q);
+
+            return type;
+        }
+        public static ObjType getItemTypeCommon(int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
 //        quest.getArg().toString()
 //        DataManager.getTypesGroup()
             return DataManager.getType("Food", DC_TYPE.ITEMS);

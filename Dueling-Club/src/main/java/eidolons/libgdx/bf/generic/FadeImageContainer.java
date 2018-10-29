@@ -14,6 +14,11 @@ public class FadeImageContainer extends ImageContainer {
     private Image previousImage;
     private float fadeDuration = 2f;
 
+    public FadeImageContainer(String path, float fadeDuration) {
+        super(path);
+        this.fadeDuration = fadeDuration;
+    }
+
     public FadeImageContainer(Image image) {
         super(image);
     }

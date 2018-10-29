@@ -16,11 +16,21 @@ import main.game.bf.directions.DIRECTION;
 public class HideDecorator {
 
     public static GroupX decorate(boolean hiddenDefault, STD_BUTTON style, DIRECTION at,
-                                  Actor actor, Runnable runnable ) {
+                                  Actor actor, Runnable runnable) {
         return decorate(hiddenDefault, style, at, actor, runnable, null);
     }
-        public static GroupX decorate(boolean hiddenDefault, STD_BUTTON style, DIRECTION at,
-         Actor actor, Runnable runnable, Vector2 offset) {
+    public static GroupX decorate(boolean hiddenDefault, DIRECTION d, Actor actor) {
+        return decorate(hiddenDefault, d, actor, null, new Vector2());
+    }
+
+    public static GroupX decorate(boolean hiddenDefault, DIRECTION at,
+                                  Actor actor, Runnable runnable, Vector2 offset) {
+        return decorate(hiddenDefault, STD_BUTTON.EYE, at, actor, runnable, offset);
+    }
+
+
+    public static GroupX decorate(boolean hiddenDefault, STD_BUTTON style, DIRECTION at,
+                                  Actor actor, Runnable runnable, Vector2 offset) {
         GroupX group = new GroupX(true);
         Touchable touchable = Touchable.enabled; //TODO is this right?
         group.addActor(actor);
@@ -29,7 +39,7 @@ public class HideDecorator {
             actor.setTouchable(Touchable.disabled);
             group.setTouchable(Touchable.childrenOnly);
         }
-        SmartButton btn= new SmartButton(style, ()->{
+        SmartButton btn = new SmartButton(style, () -> {
 
             if (actor.isVisible()) {
                 actor.setTouchable(Touchable.disabled);
@@ -54,10 +64,11 @@ public class HideDecorator {
         });
         group.addActor(btn);
         GDX.position(btn, at);
-            if (offset != null) {
-                btn.setPosition(btn.getX()+offset.x,
-                 btn.getY()+offset.y);
-            }
+        if (offset != null) {
+            btn.setPosition(btn.getX() + offset.x,
+             btn.getY() + offset.y);
+        }
         return group;
     }
+
 }

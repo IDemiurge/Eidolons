@@ -116,7 +116,7 @@ public class DataUnit<T extends Enum<T>> {
         if (value == null) {
             removeValue(name);
         }
-        values.put(name.name(), value);
+        setValue(name.name(), value);
     }
 
     public void addValue(T name, String value) {

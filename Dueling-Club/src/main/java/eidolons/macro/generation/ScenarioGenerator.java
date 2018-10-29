@@ -67,7 +67,7 @@ public class ScenarioGenerator {
          DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
         ObjType scenarioType = new ObjType(
          NameMaster.getUniqueVersionedName(place.getName(), DC_TYPE.SCENARIOS), templateType);
-        scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, missions);
+        scenarioType.setProperty(PROPS.SCENARIO_PATHS, missions);
 
         DataManager.addType(scenarioType);
         //place types
@@ -144,7 +144,7 @@ public class ScenarioGenerator {
                 Coordinates.resetCaches();
             }
         }
-        scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
+        scenarioType.setProperty(PROPS.SCENARIO_PATHS, levelPaths);
         DataManager.addType(scenarioType);
         scenarioType.setGroup("Random", false);
         return scenarioType;

@@ -21,7 +21,7 @@ public class ArmorPanel extends TablePanel {
 
         for (ValueContainer valueContainer : source.getParamValues()) {
             valueContainer.setBorder(getOrCreateR(
-             "UI/components/infopanel/simple_value_border.png"));
+             "UI/components/ninepatch/std/background_3px_border.png"));
             addElement(valueContainer);
             row();
         }

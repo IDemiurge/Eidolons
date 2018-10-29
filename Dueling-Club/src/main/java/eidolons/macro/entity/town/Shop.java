@@ -185,6 +185,13 @@ public class Shop extends TownPlace implements ShopInterface {
                 }
             }
         }
+
+        if (TEST_MODE) {
+            Integer base = Math.max(200, getType().getIntParam(PARAMS.GOLD));
+            addParam(PARAMS.GOLD, RandomWizard.getRandomIntBetween(
+             base/3*2, base*3/2
+            ));
+        }
     }
 
     private OBJ_TYPE initItemsType(SHOP_TYPE shopType) {
@@ -305,12 +312,12 @@ public class Shop extends TownPlace implements ShopInterface {
         }
     }
 
-    public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean sell) {
+    public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean buy) {
         Integer price = getPriceCache().get(t.getId());
         if (price == null) {
             price = t.getIntParam(PARAMS.GOLD_COST);
             int i = 1;
-            if (sell)
+            if (buy)
                 i = -1;
             price = MathMaster.addFactor(price, i * getIntParam(PARAMS.GOLD_COST_REDUCTION));
             price = MathMaster.addFactor(price, -i * unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));

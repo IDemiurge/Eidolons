@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
@@ -35,6 +38,8 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private UnitInfoPanelNew infoPanel;
+    protected OutcomePanel outcomePanel;
+
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
@@ -61,7 +66,22 @@ public class BattleGuiStage extends GuiStage {
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
         this.addActor(combatInventory);
 
+        outcomePanel = new OutcomePanel();
+        addActor(outcomePanel);
+        outcomePanel.setVisible(false);
+    }
 
+    @Override
+    protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
+        if (ancestors.contains(outcomePanel)){
+            return false;
+        }
+            return super.checkContainsNoOverlaying(ancestors);
+    }
+
+    @Override
+    protected boolean checkBlocked() {
+        return super.checkBlocked()  || outcomePanel.isVisible();
     }
 
     public static boolean isNewUnitInfoPanelWIP() {
@@ -91,12 +111,25 @@ public class BattleGuiStage extends GuiStage {
             }
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
+        GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
+            CharSequence text = "";
+            CharSequence v= "";
+            try {
+                ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
+                text = m.getMetaGame().getScenario().getName();
+                v = m.getMetaDataManager().getMissionName()
+                 +", Level [" + (m.getMetaGame().getMissionIndex()+1)+"/" +
+                 m.getMetaGame().getMissionNumber() +"]";
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            locationLabel.setNameText(text);
+            locationLabel.setValueText(v);
+            locationLabel.pack();
+        });
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
-            if (outcomePanel != null)
-                outcomePanel.remove();
-            outcomePanel = new OutcomePanel(new OutcomeDatasource((DC_Game) p.get()));
-            addActor(outcomePanel);
-            outcomePanel.setZIndex(getActors().size);
+            outcomePanel.setUserObject(new OutcomeDatasource((DC_Game) p.get()));
+            outcomePanel.fadeIn();
             //            outcomePanel.setColor(new Color(1, 1, 1, 0));
             //            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
             float y = GdxMaster.getHeight() -
@@ -118,7 +151,10 @@ public class BattleGuiStage extends GuiStage {
 
     public void update() {
         getBottomPanel().setX(
-         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2   );
+         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2);
+
+        locationLabel.setPosition(25,
+         GdxMaster.getHeight() - locationLabel.getHeight() - initiativePanel.getHeight()-30);
     }
 
     @Override

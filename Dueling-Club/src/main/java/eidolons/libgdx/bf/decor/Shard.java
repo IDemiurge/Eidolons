@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.StyleHolder;
@@ -145,5 +146,12 @@ public class Shard extends SuperActor {
             return;
         setDebug(false);
         super.act(delta);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (isIgnored())
+            return;
+        super.draw(batch, parentAlpha);
     }
 }

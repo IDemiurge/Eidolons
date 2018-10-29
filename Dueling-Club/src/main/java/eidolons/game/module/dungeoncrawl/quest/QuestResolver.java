@@ -43,7 +43,7 @@ public class QuestResolver  extends QuestHandler{
     private Condition getUpdateConditions(DungeonQuest quest) {
         switch (quest.getType()) {
             case BOSS:
-                return new ObjComparison(()->(Integer) quest.getArg(), KEYS.TARGET.name());
+                return new ObjComparison(()->((Obj) quest.getArg()).getId(), KEYS.TARGET.name());
             case HUNT:
                 return new DynamicCondition<Obj>(obj ->
              (obj.getType()).equalsAsBaseType(quest.getArg()));
@@ -67,7 +67,8 @@ public class QuestResolver  extends QuestHandler{
             case BOSS:
             case HUNT:
                 return STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED;
-            case FIND:
+            case COMMON_ITEMS:
+            case SPECIAL_ITEM:
                 return STANDARD_EVENT_TYPE.ITEM_ACQUIRED;
             case ESCAPE:
 //                return STANDARD_EVENT_TYPE.;

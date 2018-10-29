@@ -5,6 +5,8 @@ package eidolons.game.battlecraft.logic.meta.universal;
  */
 public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
 
+    private String missionPath;
+
     public MetaDataManager(MetaGameMaster master) {
         super(master);
     }
@@ -15,5 +17,13 @@ public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     public String getMissionName() {
         return null;
+    }
+
+    public String getMissionPath() {
+        return missionPath;
+    }
+
+    public void setMissionPath(String missionPath) {
+        this.missionPath = missionPath;
     }
 }

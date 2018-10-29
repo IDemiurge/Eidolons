@@ -21,6 +21,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.auxiliary.ContainerUtils;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -261,7 +262,7 @@ public void log(){
     }
 
     protected boolean isLogged() {
-        return true;
+        return CoreEngine.isIDE();
     }
 
     protected void initOrders() {

@@ -13,12 +13,16 @@ public class HqControlPanel extends HqElement{
 
     public HqControlPanel() {
 //        setFixedSize(true);
+
+        if (!HqDataMaster.isSimulationOff())
         add(new SmartButton(  STD_BUTTON.UNDO, () -> {
             HqDataMaster.undo();
         }));
         add(new SmartButton( STD_BUTTON.OK, () -> {
             save();
         }));
+
+        if (!HqDataMaster.isSimulationOff())
         add(new SmartButton(  STD_BUTTON.CANCEL, () -> {
             close();
         }));

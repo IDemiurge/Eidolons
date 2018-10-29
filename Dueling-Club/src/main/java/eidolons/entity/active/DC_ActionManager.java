@@ -44,8 +44,8 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.generic.ActionManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -781,7 +781,8 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private boolean checkAddThrowAction(Unit unit, DC_WeaponObj weapon) {
-
+if (!RuleKeeper.checkFeature(FEATURE.THROW_WEAPON))
+    return false;
         if (weapon == null) {
             return false;
         }

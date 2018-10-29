@@ -54,6 +54,7 @@ public class ResistPanel extends TablePanel {
 
             row();
         }
+        pack();
     }
 
     private static DAMAGE_TYPE getFromParams(PARAMS parameter) {

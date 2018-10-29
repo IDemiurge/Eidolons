@@ -10,30 +10,44 @@ import main.system.data.DataUnit;
  */
 public class MetaDataUnit extends DataUnit<META_DATA> {
 
+    public static final String EXIT_OK = "ok";
     private static MetaDataUnit instance;
+    private   static boolean initialized;
 
-    public MetaDataUnit(String text) {
+    private MetaDataUnit(String text) {
         super(text);
+        initialized = true;
     }
 
     public static void write() {
-        getInstance().setValue(META_DATA.EXIT, "ok");
-        FileManager.write(PathFinder.getMetaDataUnitPath(), getInstance().getData());
+        if (initialized)
+            FileManager.write(getInstance().getData(), PathFinder.getMetaDataUnitPath());
     }
-        public static MetaDataUnit getInstance() {
+
+    public static MetaDataUnit getInstance() {
         if (instance == null) {
             String data = FileManager.readFile(PathFinder.getMetaDataUnitPath());
             if (data.isEmpty()) {
-                FileManager.write( "",PathFinder.getMetaDataUnitPath());
+                FileManager.write("", PathFinder.getMetaDataUnitPath());
             }
-            instance = new MetaDataUnit(data );
-            instance.addToInt(META_DATA.TIMES_LAUNCHED,1);
-            if (!"ok".equalsIgnoreCase(instance.getValue(META_DATA.EXIT))){
-                instance.addToInt(META_DATA.CRASHED,1);
+            instance = new MetaDataUnit(data);
+            instance.addToInt(META_DATA.TIMES_LAUNCHED, 1);
+            if (!EXIT_OK.equalsIgnoreCase(instance.getValue(META_DATA.EXIT))) {
+                instance.addToInt(META_DATA.CRASHED, 1);
             }
             instance.setValue(META_DATA.EXIT, "?");
         }
         return instance;
+    }
+
+    public static void setInstance(MetaDataUnit instance) {
+        MetaDataUnit.instance = instance;
+    }
+
+    @Override
+    public void setValue(String name, String value) {
+        super.setValue(name, value);
+        write();
     }
 
     @Override
@@ -41,11 +55,7 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
         return META_DATA.class;
     }
 
-    public static void setInstance(MetaDataUnit instance) {
-        MetaDataUnit.instance = instance;
-    }
-
-    public enum META_DATA{
+    public enum META_DATA {
         LAST_PREGEN_LVL_INDEX,
         LAST_PREGEN_LVL_INDEX_MAP,
 

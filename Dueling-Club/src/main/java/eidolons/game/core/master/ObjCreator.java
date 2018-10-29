@@ -78,7 +78,7 @@ public class ObjCreator extends Master {
 
         for (DungeonQuest quest : game.getMetaMaster().getQuestMaster().getQuests()) {
             if (quest.getArg() instanceof ObjAtCoordinate) {
-                if (((ObjAtCoordinate) quest.getArg()).getType().equals(obj.getType())) {
+                if (((ObjAtCoordinate) quest.getArg()).getType().equalsAsBaseType(obj.getType())) {
                     if (((ObjAtCoordinate) quest.getArg()).getCoordinates().equals(obj.getCoordinates())) {
                         quest.setArg(obj );
                     }

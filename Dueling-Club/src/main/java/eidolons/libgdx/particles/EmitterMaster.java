@@ -228,8 +228,10 @@ public class EmitterMaster extends GdxUtil {
         }
         switch (folder) {
             case "mist":
+            case "black mist":
             case "snow":
             case "ambience":
+            case "ambient":
             case "woods":
                 return VFX_ATLAS.AMBIENCE;
 
@@ -251,7 +253,6 @@ public class EmitterMaster extends GdxUtil {
             case "waters":
             case "moons":
                 return VFX_ATLAS.MAP;
-
 
             case "export":
             case "modified":

@@ -62,6 +62,10 @@ public class ShardVisuals extends GroupX {
                 n = 3;
                 break;
         }
+        n = RandomWizard.getRandomInt(n);
+        if( n<0){
+            return new EMITTER_PRESET[0];
+        }
         EMITTER_PRESET[] array = new EMITTER_PRESET[n];
         for (int i = 0; i < n; i++) {
             array[i] = list.remove(
@@ -79,27 +83,53 @@ public class ShardVisuals extends GroupX {
             case MIST:
                 return new EMITTER_PRESET[]{
                  EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_ARCANE,
                  //                 EMITTER_PRESET.MIST_TRUE2,
                  EMITTER_PRESET.MIST_WHITE,
-                 EMITTER_PRESET.MIST_WHITE2,
-                 EMITTER_PRESET.MIST_WHITE3
+                 EMITTER_PRESET.MIST_WIND,
+                 EMITTER_PRESET.MIST_BLACK,
+                 EMITTER_PRESET.MIST_WIND,
+                 EMITTER_PRESET.STARS,
+                 EMITTER_PRESET.ASH,
+                 EMITTER_PRESET.MOTHS_TIGHT2,
+                 EMITTER_PRESET.WISPS,
+                 EMITTER_PRESET.SNOW_TIGHT2,
+                 EMITTER_PRESET.SNOW,
+                 EMITTER_PRESET.MOTHS_TIGHT2,
+                 EMITTER_PRESET.STARS
                 };
             case DARKNESS:
                 return new EMITTER_PRESET[]{
                  EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_BLACK,
                  EMITTER_PRESET.CINDERS3,
                  EMITTER_PRESET.ASH,
                  EMITTER_PRESET.MIST_WHITE,
-                 EMITTER_PRESET.MIST_WHITE2,
-                 EMITTER_PRESET.MIST_WHITE3
+                 EMITTER_PRESET.MIST_BLACK,
+                 EMITTER_PRESET.MIST_WIND,
+                 EMITTER_PRESET.STARS,
+                 EMITTER_PRESET.ASH,
+                 EMITTER_PRESET.MOTHS_TIGHT2,
+                 EMITTER_PRESET.WISPS,
+                 EMITTER_PRESET.SNOW_TIGHT2,
+                 EMITTER_PRESET.SNOW,
+                 EMITTER_PRESET.MOTHS_TIGHT2,
+                 EMITTER_PRESET.STARS
                 };
             case NETHER:
                 return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.MIST_BLACK,
                  EMITTER_PRESET.CINDERS3,
                  EMITTER_PRESET.WISPS,
                  EMITTER_PRESET.STARS,
                  EMITTER_PRESET.MIST_BLACK,
                  EMITTER_PRESET.MIST_BLACK,
+                 EMITTER_PRESET.MIST_WHITE3,
                  EMITTER_PRESET.MIST_WIND,
                  EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
                  EMITTER_PRESET.MIST_WIND
@@ -185,8 +215,11 @@ public class ShardVisuals extends GroupX {
                         EmitterActor actor = new EmitterActor(preset);
                         MapMaster.addToListMap(emittersMap, shard, actor);
                         emitterLayer.addActor(actor);
-                        actor.setPosition(shard.getX() + shard.getWidth() / 2 - 55, shard.getY() + shard.getHeight() / 2 - 55);
+                        actor.setPosition(shard.getX() + shard.getWidth() / 2
+                         +50 - RandomWizard.getRandomInt(100), shard.getY() + shard.getHeight() / 2
+                         +50 - RandomWizard.getRandomInt(100));
                         actor.start();
+                        actor.act(RandomWizard.getRandomFloat());
                     }
 
                     while (last.size() > 4) {

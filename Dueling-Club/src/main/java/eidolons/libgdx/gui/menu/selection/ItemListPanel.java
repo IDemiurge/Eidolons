@@ -65,7 +65,7 @@ public abstract class ItemListPanel extends TablePanel {
             setFixedSize(true);
             addActor(new Image(generated));
         } else {
-            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+            setBackground(NinePatchFactory.getLightPanelFilledDrawable());
             setSize( getDefaultWidth()
              , getDefaultHeight());
         }

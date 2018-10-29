@@ -67,7 +67,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 
 
     @Override
-    public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
+    public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents, boolean ctrlClick) {
         if (cellContents == null) {
             return false;
         }
@@ -156,8 +156,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     }
 
     @Override
-    protected OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
-        return OPERATIONS.PICK_UP;//super.getOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+    protected OPERATIONS getInvOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, boolean ctrlClick, Entity cellContents) {
+        return OPERATIONS.PICK_UP;
     }
 
     @Override

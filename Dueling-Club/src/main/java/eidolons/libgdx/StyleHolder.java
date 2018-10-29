@@ -164,17 +164,11 @@ public class StyleHolder {
         return getDefaultLabelStyle(DEFAULT_COLOR);
     }
 
-    public static Label.LabelStyle getAVQLabelStyle() {
+    public static Label.LabelStyle getAVQLabelStyle(int size) {
+        return getSizedLabelStyle(FONT.AVQ, size);
+    }
+        public static Label.LabelStyle getAVQLabelStyle() {
         return getLabelStyle(FONT.AVQ, DEFAULT_COLOR);
-        //        if (avqLabelStyle == null) {
-        //            avqLabelStyle = new Label.LabelStyle(new BitmapFont(
-        //             new FileHandle(
-        //              PathFinder.getFontPath()+ FONT.AVQ.path
-        //             )
-        //            ),
-        //             DEFAULT_COLOR);
-        //        }
-        //        return avqLabelStyle;
     }
 
     public static TextButton.TextButtonStyle getDefaultTextButtonStyle() {

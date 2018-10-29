@@ -6,7 +6,7 @@ import main.entity.Entity;
 public interface InventoryClickHandler {
     //IDEA: FOR NON-COMBAT, DROP == SELL!
     boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                        boolean altClick, Entity cellContents);
+                        boolean altClick, Entity cellContents, boolean ctrlClick);
 
     boolean itemDragAndDropped(CELL_TYPE cell_type,
                                Entity cellContents, Entity droppedItem

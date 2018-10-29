@@ -61,6 +61,18 @@ public class RngUnitProvider {
         switch (group) {
             case ELEMENTALS:
                 break;
+            case CELESTIALS:
+                break;
+            case HUMANS_BARBARIANS:
+                break;
+            case ORCS:
+                break;
+            case PALE_ORCS:
+                break;
+            case ANIMALS:
+                break;
+            case FOREST:
+                break;
             case Ravenguard:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -104,6 +116,8 @@ public class RngUnitProvider {
                  : new WeightMap<String>().
                  chain(MISTBORN_GARGANTUAN, 5);
 
+            case MAGI:
+            case CULT_DEATH:
             case CULT_CERBERUS:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -134,8 +148,6 @@ public class RngUnitProvider {
                  chain(ONYX_MASKED_CULTIST, 1).
                  chain(STEEL_MASKED_CULTIST, 1).
                  chain(MISTBORN_GARGANTUAN, 5);
-            case CULT_DEATH:
-                break;
             case CULT_DARK:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -167,11 +179,7 @@ public class RngUnitProvider {
                  chain(ONYX_MASKED_CULTIST, 1).
                  chain(STEEL_MASKED_CULTIST, 1).
                  chain(MISTBORN_GARGANTUAN, 5).
-                 chain(DARK_ANGEL, 10);
-            case CULT_CHAOS:
-                break;
-
-            case DARK_ONES:
+                 chain(DARK_ANGEL, 10);            case DARK_ONES:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
                      chain(BLACK_WOLF, 10).
@@ -267,10 +275,6 @@ public class RngUnitProvider {
                  : new WeightMap<String>().
                  chain(MECHANICUM_TITAN, 20);
 
-            case CELESTIALS:
-                break;
-            case HUMANS_BARBARIANS:
-                break;
             case HUMANS:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -317,8 +321,6 @@ public class RngUnitProvider {
                  : new WeightMap<String>().
                  chain(DEFENDER_OF_LIGHT, 2).
                  chain(SILVERLANCE_COMMANDER, 5);
-            case ORCS:
-                break;
             case HUMANS_BANDITS:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -342,6 +344,7 @@ public class RngUnitProvider {
                  chain(SORCERESS, 3).
                  chain(ENCHANTRESS, 2).
                  chain(WARLOCK, 2);
+            case NORTH:
             case DWARVES:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -363,10 +366,6 @@ public class RngUnitProvider {
                  chain(DWARF_GUARDSMAN, 5).
                  chain(DWARF_WARRIOR, 5).
                  chain(DWARF_SHARPEYE, 10);
-            case NORTH:
-                break;
-            case PALE_ORCS:
-                break;
             case UNDEAD:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -466,6 +465,9 @@ public class RngUnitProvider {
                  chain(DEATH_KNIGHT, 10).
                  chain(LICH, 10)
                  ;
+            case CULT_CHAOS:
+            case DEMONS_ABYSS:
+            case DEMONS_WARPED:
             case DEMONS:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -499,8 +501,6 @@ public class RngUnitProvider {
                  chain(LORD_OF_PAIN, 4).
                  chain(LORD_OF_TERROR, 4)
                  ;
-            case ANIMALS:
-                break;
             case DEMONS_HELLFIRE:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -515,20 +515,15 @@ public class RngUnitProvider {
                 return elite_boss_regular ? new WeightMap<String>().
                  chain(DEMON_CARNIFEX, 10).
                  chain(DEMON_GORGER, 5).
-                 chain(FIEND, 10).
+                 chain(FIEND, 15).
                  chain(DEVIL_MAGE, 4).
-                 chain(INFERI_SORCEROR, 11).
-                 chain(INFERNAL_GOLEM, 12)
+                 chain(INFERI_SORCEROR, 11)
                  : new WeightMap<String>().
                  chain(DEMON_LORD, 10).
                  chain(DEMON_PRINCE, 10).
                  chain(LORD_OF_HATRED, 4).
                  chain(LORD_OF_TERROR, 4)
                  ;
-            case DEMONS_ABYSS:
-                break;
-            case DEMONS_WARPED:
-                break;
             case CRITTERS_COLONY:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
@@ -607,8 +602,6 @@ public class RngUnitProvider {
                  chain(MINOTAUR_PRAETOR, 4).
                  chain(BLACK_DRAGON, 5).
                  chain(CORRUPTED_MIND_FLAYER, 4);
-            case FOREST:
-                break;
             case REPTILES:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().

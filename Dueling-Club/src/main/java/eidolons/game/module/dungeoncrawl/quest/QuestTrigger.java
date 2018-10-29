@@ -47,7 +47,9 @@ public class QuestTrigger extends Trigger {
 
     private void specialAction(DungeonQuest quest, Event event) {
         switch (quest.getType()) {
-            case FIND: {
+            case SPECIAL_ITEM:
+            case COMMON_ITEMS:
+                {
                 Obj item = event.getRef().getObj(KEYS.ITEM);
                 EUtils.showInfoText("Quest item found: " + item.getName());
                 Unit hero = (Unit) event.getRef().getSourceObj();

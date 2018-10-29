@@ -20,7 +20,9 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -65,15 +67,15 @@ public class CombatInventory extends TablePanel implements Blocking {
 
         actionPointsText = lower.addElement(null).left();
 
-        //        lower.addElement(
-        undoButton = new SymbolButton(STD_BUTTON.UNDO)
-        //     TODO            ).fill(false).expand(0, 0).right()
-        //                .pad(20, 0, 20, 0)
-        ;
+        if (!HqDataMaster.isSimulationOff())
+            lower.addElement(
+             undoButton = new SymbolButton(STD_BUTTON.UNDO)).fill(false).expand(0, 0).right()
+             .pad(20, 0, 20, 0);
 
-        lower.addElement(cancelButton = new SymbolButton(STD_BUTTON.CANCEL))
-         .fill(false).expand(0, 0).right()
-         .pad(20, 10, 20, 0);
+        if (!HqDataMaster.isSimulationOff())
+            lower.addElement(cancelButton = new SymbolButton(STD_BUTTON.CANCEL))
+             .fill(false).expand(0, 0).right()
+             .pad(20, 10, 20, 0);
 
         lower.add(doneButton = new SymbolButton(STD_BUTTON.OK))
          .fill(false).expand(0, 0).right()
@@ -123,10 +125,13 @@ public class CombatInventory extends TablePanel implements Blocking {
 
 
     private void initButtonListeners() {
-        final InventoryDataSource source = (InventoryDataSource) getUserObject();
+        final InventoryDataSource source = getUserObject();
         doneButton.setRunnable(source.getDoneHandler());
-        cancelButton.setRunnable(source.getCancelHandler());
-        undoButton.setRunnable(source.getUndoHandler());
+
+        if (!HqDataMaster.isSimulationOff()){
+            cancelButton.setRunnable(source.getCancelHandler());
+            undoButton.setRunnable(source.getUndoHandler());
+        }
     }
 
     @Override
@@ -143,18 +148,23 @@ public class CombatInventory extends TablePanel implements Blocking {
 
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
         String header = "Free Mode";
-        cancelButton.setVisible(false);
+
+        if (cancelButton != null) {
+            cancelButton.setVisible(!ExplorationMaster.isExplorationOn());
+        }
         if (!ExplorationMaster.isExplorationOn()) {
             header = "Operations:\n" +
              source.getOperationsString();
-            cancelButton.setVisible(true);
         }
+        String on= DragManager.isOff() ? "OFF": "ON";
         ValueContainer controls = new ValueContainer(
          StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
          header,
-         "\n**Drag'n'drop is [ON]**\n" +
+         "\n**Drag'n'drop is [" +
+          on +
+          "]**\n" +
           "[Right click]: unequip or drop onto the ground\n" +
-          "[Double left-click]: default equip \n" +
+          "[Double left-click]: default equip/unequip \n" +
           "[Alt-Click]: equip weapon in quick slot \n");
         controls.setBackground(NinePatchFactory.getLightPanelDrawable());
         actionPointsText.setActor(controls

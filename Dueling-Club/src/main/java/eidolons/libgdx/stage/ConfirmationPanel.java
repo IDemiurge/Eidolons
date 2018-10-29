@@ -24,28 +24,27 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  */
 public class ConfirmationPanel extends TablePanelX implements Blocking, InputProcessor {
     private static ConfirmationPanel instance;
+    Label label;
+    SmartButton ok;
+    SmartButton cancel;
     private boolean canCancel;
     private Runnable onConfirm;
     private Runnable onCancel;
     private String text;
-
-    Label label;
-    SmartButton ok;
-    SmartButton cancel;
     private boolean result;
 
     private ConfirmationPanel() {
-        setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         setSize(600, 300);
-        add(label= new Label("", StyleHolder.getSizedLabelStyle(getFONT(), getFontSize())))
-         .center().colspan(2).minWidth(400).top(). row();
+        add(label = new Label("", StyleHolder.getSizedLabelStyle(getFONT(), getFontSize())))
+         .center().colspan(2).minWidth(400).top().row();
         TablePanel<Actor> btns = new TablePanel<>();
-        add( btns)
-         .center().colspan(2).fill().minWidth(400) ;
+        add(btns)
+         .center().colspan(2).fill().minWidth(400);
         btns.addNormalSize(cancel = new SmartButton(STD_BUTTON.CANCEL, () -> {
             cancel();
         })).left();
-        btns. addNormalSize(ok = new SmartButton(STD_BUTTON.OK, () -> {
+        btns.addNormalSize(ok = new SmartButton(STD_BUTTON.OK, () -> {
             ok();
         })).right();
         ok.setIgnoreConfirmBlock(true);
@@ -53,9 +52,18 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         setVisible(false);
 
     }
-    public boolean isPausing(){
+
+    public static ConfirmationPanel getInstance() {
+        if (instance == null)
+            instance = new ConfirmationPanel();
+        return instance;
+
+    }
+
+    public boolean isPausing() {
         return false;
     }
+
     private Integer getFontSize() {
         return 20;
     }
@@ -64,19 +72,12 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         return FONT.METAMORPH;
     }
 
-    public static ConfirmationPanel getInstance() {
-        if (instance==null )
-            instance = new ConfirmationPanel();
-        return instance;
-
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha== ShaderMaster.SUPER_DRAW )
+        if (parentAlpha == ShaderMaster.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null );
+            ShaderMaster.drawWithCustomShader(this, batch, null);
     }
 
 
@@ -84,9 +85,13 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     public void open() {
         getStageWithClosable().openClosable(this);
         cancel.setVisible(canCancel);
-        label.setText(TextWrapper.wrapWithNewLine(text,
-         FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
-          (int) (getWidth() / 3 * 2))));
+        String wrapped = text;
+        if (!wrapped.contains("\n")) {
+            wrapped = TextWrapper.wrapWithNewLine(text,
+             FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
+              (int) (getWidth() / 3 * 2)));
+        }
+        label.setText(wrapped);
         label.pack();
         setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));
     }
@@ -129,21 +134,22 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     @Override
     public void close() {
-//        Eidolons.getScreen().updateInputController();
+        //        Eidolons.getScreen().updateInputController();
         getStageWithClosable().closeClosable(this);
         WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, result);
     }
+
     private void ok() {
         result = true;
         close();
-        if (onConfirm!=null )
+        if (onConfirm != null)
             onConfirm.run();
     }
 
     private void cancel() {
         result = false;
         close();
-        if (onCancel!=null )
+        if (onCancel != null)
             onCancel.run();
     }
 

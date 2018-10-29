@@ -11,6 +11,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
@@ -20,12 +21,14 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.DungeonObjEnums.CONTAINER_CONTENTS;
 import main.content.enums.entity.DungeonObjEnums.CONTAINER_CONTENT_VALUE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
+import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -41,6 +44,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
+import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -56,17 +60,17 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
      CONTAINER_CONTENTS.AMMO.name()
     };
     public static final String OPEN = "_open";
+    public static QUALITY_LEVEL[] exceptionalQualities;
+    public static QUALITY_LEVEL[] rareQualities;
+    public static QUALITY_LEVEL[] uncommonQualities;
+    public static QUALITY_LEVEL[] commonQualities;
+    public static MATERIAL[] exceptionalMaterials;
+    public static MATERIAL[] rareMaterials;
+    public static MATERIAL[] uncommonMaterials;
+    public static MATERIAL[] commonMaterials;
     private static boolean test_mode = QuestMaster.TEST_MODE;
     Map<ObjType, Map<CONTAINER_CONTENTS,
      Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
-    private QUALITY_LEVEL[] exceptionalQualities;
-    private QUALITY_LEVEL[] rareQualities;
-    private QUALITY_LEVEL[] uncommonQualities;
-    private QUALITY_LEVEL[] commonQualities;
-    private MATERIAL[] exceptionalMaterials;
-    private MATERIAL[] rareMaterials;
-    private MATERIAL[] uncommonMaterials;
-    private MATERIAL[] commonMaterials;
     private boolean noDuplicates = true;
 
 
@@ -95,6 +99,42 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
         unit.getGame().getManager().reset();
         return result;
+    }
+
+    public static final MATERIAL[] getMaterials(ITEM_RARITY rarity) {
+        switch (rarity) {
+            case EXCEPTIONAL:
+                if (exceptionalMaterials == null) {
+                    exceptionalMaterials = Arrays.asList(MATERIAL.values()).
+                     stream().filter(material -> material.getCost() > 200
+                     && material.isMagical()).toArray(MATERIAL[]::new);
+                }
+                return exceptionalMaterials;
+            case RARE:
+                if (rareMaterials == null) {
+                    rareMaterials = Arrays.asList(MATERIAL.values()).stream().
+                     filter(material -> material.getCost() > 150
+                      || material.isMagical()).toArray(MATERIAL[]::new);
+                }
+                return rareMaterials;
+            case UNCOMMON:
+                if (uncommonMaterials == null) {
+                    uncommonMaterials =
+                     Arrays.stream(MATERIAL.values()).filter(material -> material.getCost()
+                      >= 100
+                      || material.isMagical()).toArray(MATERIAL[]::new);
+
+                }
+                return uncommonMaterials;
+            case COMMON:
+                if (commonMaterials == null) {
+                    commonMaterials = Arrays.asList(MATERIAL.values()).stream().
+                     filter(material -> material.getCost() < 100
+                      && !material.isMagical()).toArray(MATERIAL[]::new);
+                }
+                return commonMaterials;
+        }
+        return ItemGenerator.BASIC_MATERIALS_WOOD;
     }
 
     public ObjType getItem(CONTAINER_CONTENTS c, int maxCost) {
@@ -334,7 +374,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (c == CONTAINER_CONTENTS.JEWELRY ||
          group.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             if (!ItemGenerator.isJewelryOn())
-                return     new ArrayList<>();
+                return new ArrayList<>();
             return generateJewelry(rarity, group);
         }
         ItemGenerator generator = ItemGenerator.getDefaultGenerator();
@@ -364,14 +404,14 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     private DC_TYPE getRandomTYPE(CONTAINER_CONTENTS c) {
         OBJ_TYPE TYPE = getTYPE(c);
 
-            while (TYPE instanceof C_OBJ_TYPE) {
-                TYPE = new RandomWizard<DC_TYPE>().getRandomListItem(
-                 Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
-                if (TYPE == DC_TYPE.JEWELRY)
-                    if (!ItemGenerator.isJewelryOn())
-                        continue;
-                break;
-            }
+        while (TYPE instanceof C_OBJ_TYPE) {
+            TYPE = new RandomWizard<DC_TYPE>().getRandomListItem(
+             Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
+            if (TYPE == DC_TYPE.JEWELRY)
+                if (!ItemGenerator.isJewelryOn())
+                    continue;
+            break;
+        }
         return (DC_TYPE) TYPE;
     }
 
@@ -530,12 +570,15 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         } else
             main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
 
+        contents = checkSpecialContents(contents, obj);
 
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
-            if (RandomWizard.chance(gold * 3)) {
+            if (RandomWizard.chance(Math.min(35,  gold * 3))) {
                 contents += "Food";
-            } else {
+                gold -= 50;
+            }
+            if (gold>0){
                 if (GoldMaster.isGoldPacksOn()) {
                     contents += VariableManager.getStringWithVariable("Gold", gold);
                 }
@@ -548,8 +591,46 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         //        contents+=goldItem
     }
 
+    private String checkSpecialContents(String contents, BattleFieldObject obj) {
+        for (DungeonQuest quest : obj.getGame().getMetaMaster().getQuestMaster().getQuests()) {
+            if (quest.getType()== QUEST_TYPE.SPECIAL_ITEM) {
+                if (quest.getArg() instanceof ObjType) {
+                    Integer n = quest.getNumberPrepared();
+                    if (quest.getNumberRequired()<= n) {
+                        continue;
+                    }
+                    if (checkCanPlaceQuestItem(quest, contents, obj)){
+                        contents += ((ObjType) quest.getArg()).getName() + ";";
+                        quest.setNumberPrepared(quest.getNumberPrepared()+1);
+                        quest.setCoordinate(obj.getCoordinates());
+                        //TODO multiple!
+                    }
+                }
+            }
+        }
+        return contents;
+    }
+
+    private boolean checkCanPlaceQuestItem(DungeonQuest quest, String contents, BattleFieldObject obj) {
+        if (obj instanceof ContainerObj) {
+            if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString())) {
+                return true;
+            }
+        }
+//        obj.getCoordinates().dst(Eidolons.getMainHero().getOriginCoordinates)
+
+        return false;
+    }
+
     private int getAmountOfGold(BattleFieldObject obj, int totalCost) {
-        float c =
+        float c = 0;
+        if (obj instanceof Unit) {
+            float coef = RandomWizard.getRandomFloatBetween(1.5f, 3f);
+           coef= coef -  totalCost/100;
+            coef = MathMaster.minMax(coef, 0.1f, 0.5f);
+            c =  coef * obj.getIntParam(PARAMS.POWER)  ;
+
+        } else c =
          RandomWizard.getRandomIntBetween(5, 15)
           + RandomWizard.getRandomFloatBetween(0.6f, 2f)
           * obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost;
@@ -604,42 +685,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 return commonQualities;
         }
         return QUALITY_LEVEL.values();
-    }
-
-    private MATERIAL[] getMaterials(ITEM_RARITY rarity) {
-        switch (rarity) {
-            case EXCEPTIONAL:
-                if (exceptionalMaterials == null) {
-                    exceptionalMaterials = Arrays.asList(MATERIAL.values()).
-                     stream().filter(material -> material.getCost() > 200
-                     && material.isMagical()).toArray(MATERIAL[]::new);
-                }
-                return exceptionalMaterials;
-            case RARE:
-                if (rareMaterials == null) {
-                    rareMaterials = Arrays.asList(MATERIAL.values()).stream().
-                     filter(material -> material.getCost() > 150
-                      || material.isMagical()).toArray(MATERIAL[]::new);
-                }
-                return rareMaterials;
-            case UNCOMMON:
-                if (uncommonMaterials == null) {
-                    uncommonMaterials =
-                     Arrays.stream(MATERIAL.values()).filter(material -> material.getCost()
-                      >= 100
-                      || material.isMagical()).toArray(MATERIAL[]::new);
-
-                }
-                return uncommonMaterials;
-            case COMMON:
-                if (commonMaterials == null) {
-                    commonMaterials = Arrays.asList(MATERIAL.values()).stream().
-                     filter(material -> material.getCost() < 100
-                      && !material.isMagical()).toArray(MATERIAL[]::new);
-                }
-                return commonMaterials;
-        }
-        return ItemGenerator.BASIC_MATERIALS_WOOD;
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

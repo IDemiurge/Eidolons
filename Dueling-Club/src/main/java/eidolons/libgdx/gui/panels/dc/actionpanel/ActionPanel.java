@@ -133,6 +133,21 @@ public class ActionPanel extends GroupX {
         return background.getImageWidth();
     }
 
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+    }
+
+    @Override
+    public void setBounds(float x, float y, float width, float height) {
+        super.setBounds(x, y, width, height);
+    }
+
     private void showSpellbook() {
         HqMaster.openHqPanel();
     }

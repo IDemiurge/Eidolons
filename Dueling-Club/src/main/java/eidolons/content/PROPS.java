@@ -20,6 +20,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PARTY_MAIN_HERO(null, false, "party"),
     SCENARIO_TYPE(null, false, "scenarios"),
     SCENARIO_MISSIONS(null, true, "scenarios"),
+    SCENARIO_PATHS(null, true, "scenarios"),
     SCENARIO_STARTING_PLACE(null, false, "scenarios"),
     SCENARIO_INTRO_DIALOGUES(null, true, "scenarios"),
     SCENARIO_INTRO_DATA(null, false, "scenarios"),

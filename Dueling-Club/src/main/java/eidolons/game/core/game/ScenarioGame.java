@@ -28,6 +28,10 @@ public class ScenarioGame extends DC_Game {
         return (ScenarioMetaMaster) super.getMetaMaster();
     }
 
+    public static ScenarioGame getGame(){
+        return (ScenarioGame) game;
+    }
+
     @Override
     public void start(boolean first) {
         simulation = false;

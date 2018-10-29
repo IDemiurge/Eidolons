@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import main.system.auxiliary.data.ListMaster;
@@ -38,7 +37,7 @@ public class ValueTooltip extends Tooltip {
 
     @Override
     public float getMaxWidth() {
-        return GdxMaster.getWidth()/3;
+        return getDefaultBackground().getMinWidth();
     }
 
     public ValueTooltip() {
@@ -61,9 +60,9 @@ public class ValueTooltip extends Tooltip {
 
         values.forEach(el -> {
             if (el.getValueText() != null)
-                el.setValueText(TextWrapper.processText((int) getMaxWidth(), el.getValueText(), el.getValueLabel().getStyle()));
+                el.setValueText(TextWrapper.processText((int) (getMaxWidth()*0.86f), el.getValueText(), el.getValueLabel().getStyle()));
             if (el.getNameLabel() != null)
-                el.getNameLabel().setText(TextWrapper.processText((int) getMaxWidth(),
+                el.getNameLabel().setText(TextWrapper.processText((int) (getMaxWidth()*0.86f),
                  el.getNameLabel().getText().toString(),
                  el.getNameLabel().getStyle()));
 
@@ -82,7 +81,7 @@ public class ValueTooltip extends Tooltip {
     }
 
     protected Drawable getDefaultBackground() {
-        return  new NinePatchDrawable(NinePatchFactory.getLightPanelFilled());
+        return  new NinePatchDrawable(NinePatchFactory.getLightDecorPanelFilledDrawable());
     }
 
     public int getValueAlign() {

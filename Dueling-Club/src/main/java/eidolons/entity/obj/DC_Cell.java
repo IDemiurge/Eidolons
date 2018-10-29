@@ -24,11 +24,16 @@ public class DC_Cell extends DC_Obj implements Cell {
     private static ObjType EMPTY_CELL_TYPE;
     private boolean playerHasSeen;
 
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+        return;
+    }
+
     public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
         super(t, Player.NEUTRAL, game, ref);
         this.x = i;
         this.y = j;
-
+        this.coordinates = Coordinates.get(x, y);
         if (dungeon != null) {
             setZ(dungeon.getZ());
         }

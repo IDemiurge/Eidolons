@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -342,10 +343,12 @@ public class InvItemActor extends ItemActor {
                 final int tapCount = this.getTapCount();
                 final boolean isRightClicked = event.getButton() == Input.Buttons.RIGHT;
                 final boolean isAltPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+                final boolean isCtrlPressed = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) ||
+                 Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT);
 
                 Eidolons.onNonGdxThread(() ->
                  handler.cellClicked(cellType, tapCount, isRightClicked,
-                  isAltPressed, model));
+                  isAltPressed, model, isCtrlPressed ));
                 clickTimer = 0;
 //                event.stop();
             }

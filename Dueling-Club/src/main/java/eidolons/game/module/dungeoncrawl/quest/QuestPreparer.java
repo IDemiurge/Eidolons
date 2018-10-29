@@ -15,7 +15,7 @@ public class QuestPreparer {
                 break;
             case HUNT:
                 break;
-            case FIND:
+            case COMMON_ITEMS:
                 break;
             case ESCAPE:
                 break;

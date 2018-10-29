@@ -7,12 +7,16 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.launch.CoreEngine;
 
+import java.util.List;
+
 /**
  * Created by JustMe on 5/12/2017.
  */
 public class ScenarioMeta extends MetaGame {
     private Scenario scenario;
     private int missionIndex;
+    private List<String> missions;
+    private int missionNumber;
 
     public ScenarioMeta(Scenario scenario, MetaGameMaster<ScenarioMeta> master) {
         super(master);
@@ -65,5 +69,18 @@ public class ScenarioMeta extends MetaGame {
             return true;
         }
         return false;
+    }
+
+    public void setMissions(List<String> missions) {
+        this.missions = missions;
+        missionNumber = missions.size();
+    }
+
+    public List<String> getMissions() {
+        return missions;
+    }
+
+    public int getMissionNumber() {
+        return missionNumber;
     }
 }

@@ -40,10 +40,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                               boolean altClick, Entity cellContents) {
+                               boolean altClick, Entity cellContents, boolean ctrlClick) {
 
-        OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
-         altClick, cellContents);
+        OPERATIONS operation = getInvOperation(cell_type, clickCount, rightClick,
+         altClick,ctrlClick, cellContents);
         return handleOperation(operation, cell_type, cellContents);
     }
 
@@ -249,13 +249,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
 
-    protected OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                                      boolean altClick, Entity cellContents) {
-        return getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
-    }
 
     protected OPERATIONS getInvOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
-                                         boolean altClick, Entity cellContents) {
+                                         boolean altClick, boolean ctrlClick, Entity cellContents) {
         if (cell_type == null) {
             return null;
         }
@@ -316,7 +312,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                         return null;
                     }
                 }
-                if (rightClick) {
+                if (rightClick || ctrlClick) {
                     return OPERATIONS.DROP;
                 }
                 if (clickCount > 1) {

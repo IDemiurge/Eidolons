@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
+import eidolons.game.core.Eidolons;
 import main.content.DC_TYPE;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
@@ -43,14 +44,14 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         return new DungeonData(formatted);
     }
 
-    @Deprecated
-    public E initDungeon(String path) {
-        setDungeonPath(path);
-        return (E) getBuilder().buildDungeon(path);
-    }
-
     public E initDungeon() {
-        setDungeonPath(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.PATH));
+        String data =
+         Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionPath();
+        if (data!=null )
+            setDungeonPath(data);
+        else
+            setDungeonPath(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.PATH));
+
         setPresetDungeonType(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.TYPE_NAME));
 
         if (getDungeonPath() != null) {
@@ -68,9 +69,6 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
                  pickRandomDungeon();
                 return createDungeon(type);
             } else if (type == null) {
-//                    type = DataManager.getType(ListChooser.chooseType(DC_TYPE.DUNGEONS));
-//                }
-//                if (type == null) {
                 return initDungeonLevelChoice();
             }
         }

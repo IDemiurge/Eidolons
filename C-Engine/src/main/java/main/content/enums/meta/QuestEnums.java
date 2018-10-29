@@ -43,7 +43,8 @@ public class QuestEnums {
     public enum QUEST_TYPE {
         BOSS,
         HUNT,
-        FIND,
+        COMMON_ITEMS,
+        SPECIAL_ITEM,
         ESCAPE,
     }
 }

@@ -354,6 +354,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                   UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
 
                 ));
+//                c.add(new NotCondition(new RefCondition(KEYS.TARGET, KEYS.SOURCE)));
                 c.add(ConditionMaster.getAttackConditions());
                 c.add(getClearShotCondition(KEYS.MATCH.name()));
 //                c.add(AirborneRule.getMeleeAttackCondition()); TODO

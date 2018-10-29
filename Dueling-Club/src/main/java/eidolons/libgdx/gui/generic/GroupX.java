@@ -42,7 +42,7 @@ public class GroupX extends Group {
 
     protected void initResolutionScaling() {
         float coef = (float) Math.pow(GdxMaster.getFontSizeMod(), 0.3f);
-        if (coef < 1)
+        if (coef < 1.2f)
             return;
         setScale(coef, coef);
         setWidth(getWidth() * getScaleX());

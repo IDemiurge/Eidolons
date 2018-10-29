@@ -73,12 +73,12 @@ public class Pregenerator implements Runnable {
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
             {
-                    LOCATION_TYPE.CRYPT,
-             LOCATION_TYPE.TEMPLE,
+                    LOCATION_TYPE.CEMETERY,
+             LOCATION_TYPE.TOWER,
             },
             {
-                    LOCATION_TYPE.CASTLE,
-                    LOCATION_TYPE.CAVE,
+//                    LOCATION_TYPE.CASTLE,
+//                    LOCATION_TYPE.CAVE,
             },
     };
     private static List<Pregenerator> running = new ArrayList<>();

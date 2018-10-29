@@ -13,6 +13,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
@@ -24,13 +25,13 @@ import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
-import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -68,7 +69,6 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected OverlayTextPanel textPanel;
     protected Closable displayedClosable;
     protected GameMenu gameMenu;
-    protected OutcomePanel outcomePanel;
     protected Blackout blackout;
     protected TextInputPanel tf;
     protected List<String> charsUp = new ArrayList<>();
@@ -86,8 +86,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected QuestProgressPanel questProgressPanel;
     protected QuestJournal journal;
     protected SmartButton menuButton;
-    private boolean town;
-    private Set<Actor> hiddenActors=    new HashSet<>() ;
+    protected boolean town;
+    protected Set<Actor> hiddenActors=    new HashSet<>() ;
+    protected ValueContainer locationLabel;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -209,6 +210,21 @@ public class GuiStage extends StageX implements StageWithClosable {
          btnBg.getHeight());
         group.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
          GdxMaster.getHeight() - btnBg.getHeight());
+
+
+        addActor(locationLabel = new ValueContainer("", ""){
+            @Override
+            protected boolean isVertical() {
+                return true;
+            }
+        });
+        locationLabel.setNameStyle(StyleHolder.getAVQLabelStyle(19));
+        locationLabel.setValueStyle(StyleHolder.getAVQLabelStyle(17));
+
+        locationLabel.padTop(12);
+        locationLabel.padBottom(12);
+        locationLabel.setPosition(0,
+         GdxMaster.getHeight() - locationLabel.getHeight());
     }
 
     protected GameMenu createGameMenu() {
@@ -252,6 +268,8 @@ public class GuiStage extends StageX implements StageWithClosable {
                 }
             }
         }
+        locationLabel.setPosition(0,
+         GdxMaster.getHeight() - locationLabel.getHeight());
         super.act(delta);
         resetZIndices();
     }
@@ -285,22 +303,29 @@ public class GuiStage extends StageX implements StageWithClosable {
                     return actor;
 
                 List<Group> ancestors = GdxMaster.getAncestors(actor);
-                if (!ancestors.contains(textPanel))
-                    if (!ancestors.contains(confirmationPanel))
-                        if (!ancestors.contains(gameMenu))
-                            if (!ancestors.contains(OptionsWindow.getInstance())) {
-                                if (GdxMaster.getFirstParentOfClass(
-                                 actor, RadialValueContainer.class) == null) {
-                                    if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
-                                        return null;
-                                } else if (confirmationPanel.isVisible())
-                                    return null;
-                            } else {
-                                return actor;
-                            }
+                if (checkContainsNoOverlaying(ancestors)) {
+                    if (!ancestors.contains(OptionsWindow.getInstance())) {
+                        if (GdxMaster.getFirstParentOfClass(
+                         actor, RadialValueContainer.class) == null) {
+                            if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
+                                return null;
+                        } else if (confirmationPanel.isVisible())
+                            return null;
+                    } else {
+                        return actor;
+                    }
+                }
             }
-
         return actor;
+    }
+
+    protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
+           if (!ancestors.contains(textPanel))
+                if (!ancestors.contains(confirmationPanel))
+                    if (!ancestors.contains(gameMenu))
+                        return true;
+
+        return false;
     }
 
     public Closable getDisplayedClosable() {
@@ -561,9 +586,6 @@ public class GuiStage extends StageX implements StageWithClosable {
         return menuButton;
     }
 
-    public OutcomePanel getOutcomePanel() {
-        return outcomePanel;
-    }
 
     public void resetZIndices() {
         if (infoTooltipContainer != null)

@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
+import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -17,6 +18,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.math.MathMaster;
 
 import java.util.ArrayList;
 
@@ -28,6 +30,7 @@ public class DungeonQuest {
     private final ObjType objType;
     protected Integer numberRequired = 0;
     protected Integer numberAchieved = 0;
+    protected Integer numberPrepared = 0;
     LOCATION_TYPE locationType;
     private String title;
     private String description;
@@ -63,16 +66,28 @@ public class DungeonQuest {
                  style ));
                 break;
             case HUNT:
-                setArg(QuestCreator.getPreyType(powerLevel, this,
+                ObjType unitType = QuestCreator.getPreyType(powerLevel, this,
+                 style );
+                float coef = getMobPower(powerLevel, unitType);
+                setPowerCoef(coef);
+                setArg(unitType);
+                break;
+            case COMMON_ITEMS:
+                setArg(QuestCreator.getItemTypeCommon(powerLevel, this,
                  style ));
                 break;
-            case FIND:
-                setArg(QuestCreator.getItemType(powerLevel, this,
+            case SPECIAL_ITEM:
+                setArg(QuestCreator.getItemTypeSpecial(objType, powerLevel, this,
                  style ));
                 break;
             case ESCAPE:
                 break;
         }
+    }
+
+    private float getMobPower(int powerLevel, ObjType unitType) {
+        return MathMaster.minMax(new Float(powerLevel) / unitType.getIntParam(PARAMS.POWER)
+          , 0.25f, 3);
     }
 
     public void update() {
@@ -93,14 +108,10 @@ public class DungeonQuest {
 
     private String getDescriptor() {
         switch (type) {
-            case BOSS:
-            case HUNT:
-            case FIND:
-                return StringMaster.toStringForm(arg);
             case ESCAPE:
-                break;
+                return null;
         }
-        return null;
+        return StringMaster.toStringForm(arg);
     }
 
 
@@ -136,11 +147,11 @@ public class DungeonQuest {
         if (type.getProperty(G_PROPS.VARIABLES).isEmpty()) {
             if (inverse) {
                 return VariableManager.substitute(template,
-                 getNumberRequired(),getDescriptor());
+                 number,name);
             }
             return VariableManager.substitute(template,
-             getDescriptor(),
-             getNumberRequired());
+             name,
+             number);
         }
         ArrayList<Object> vars = new ArrayList<>();
 
@@ -196,6 +207,14 @@ public class DungeonQuest {
 
     public Integer getTimeLeft() {
         return timeLeft;
+    }
+
+    public Integer getNumberPrepared() {
+        return numberPrepared;
+    }
+
+    public void setNumberPrepared(Integer numberPrepared) {
+        this.numberPrepared = numberPrepared;
     }
 
     public Integer getNumberRequired() {

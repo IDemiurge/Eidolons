@@ -36,7 +36,8 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     public void initMissionName() {
         String missionName =
          getMissionName();
-
+        getMetaGame().setMissions(ContainerUtils.openContainer(getMetaGame().getScenario().
+         getProperty(PROPS.SCENARIO_MISSIONS)));
         if (StringMaster.isEmpty(missionName)) {
             int missionIndex = (ScenarioLauncher.missionIndex);
 
@@ -45,6 +46,8 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
             setMissionName(ContainerUtils.openContainer(getMetaGame().getScenario().
              getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
 
+            setMissionPath(ContainerUtils.openContainer(getMetaGame().getScenario().
+             getProperty(PROPS.SCENARIO_PATHS)).get(missionIndex));
         } else {
             getMetaGame().setMissionIndex(ContainerUtils.openContainer(getMetaGame().getScenario().
              getProperty(PROPS.SCENARIO_MISSIONS)).indexOf(missionName));

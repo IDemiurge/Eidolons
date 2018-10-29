@@ -22,6 +22,7 @@ import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.data.MetaDataUnit;
+import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -111,7 +112,7 @@ public class GenericLauncher extends Game {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
-            MetaDataUnit.write();
+            MetaDataUnit.getInstance().setValue(META_DATA.EXIT, MetaDataUnit.EXIT_OK);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
