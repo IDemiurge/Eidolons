@@ -92,21 +92,16 @@ public class MainMenuHandler {
             case NEXT_SCENARIO:
                 return startMicro(getScenarioTypes(),
                  false);
+            case PLAY:
+                if (item.getItems().length>0) {
+                    break;
+                }
             case RANDOM_SCENARIO:
                 return startMicro(getScenarioTypes(getScenarioGroup(true)),
                  true);
             case SELECT_SCENARIO:
                 return startMicro(getScenarioTypes(),
                  null);
-            case PLAY:
-                //          TODO   case STANDOFF:
-                //            case SKIRMISH:
-                //                if (!DC_Engine.isRngSupported())
-//                if ( CoreEngine.isFastMode())
-                    break;
-//                return startMicro(getScenarioTypes(),
-//                 null);
-            //                break;
             case MAP_PREVIEW:
                 AdventureInitializer.launchAdventureGame(null);
                 return null;

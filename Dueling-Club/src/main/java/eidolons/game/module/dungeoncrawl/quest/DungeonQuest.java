@@ -58,7 +58,7 @@ public class DungeonQuest {
     }
 
     private void initArg() {
-        int powerLevel= Eidolons.getMainHero().getPower();
+        int powerLevel=25+Eidolons.getMainHero().getIntParam(PARAMS.HERO_LEVEL)*40;
         style =  Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
         switch (type) {
             case BOSS:
@@ -73,6 +73,7 @@ public class DungeonQuest {
                 setArg(unitType);
                 break;
             case COMMON_ITEMS:
+                setPowerCoef(new Float(powerLevel)/70);
                 setArg(QuestCreator.getItemTypeCommon(powerLevel, this,
                  style ));
                 break;

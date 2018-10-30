@@ -22,15 +22,16 @@ import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.town.shops.ShopSelectionPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopClickHandler;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.macro.entity.town.Shop;
 import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -65,7 +66,11 @@ public class TownPanel extends TabbedPanel {
 
         initContainer();
         addActor(new NoHitImage(frame));
-        addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()));
+        addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()){
+            protected BUTTON_SOUND_MAP getSoundMap() {
+                return BUTTON_SOUND_MAP.ENTER;
+            }
+        });
         addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
         okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());
         tabTable.setZIndex(Integer.MAX_VALUE);
@@ -113,13 +118,13 @@ public class TownPanel extends TabbedPanel {
     }
 
     private boolean isDisabled() {
-        for (Shop shop : getUserObject().getShops()) {
-            if (!shop.isBalanceOk())
-            {
-                tooltip = "You have to pay off your debts at " + shop.getName();
-                return true;
-            }
-        }
+//        for (Shop shop : getUserObject().getShops()) {
+//            if (!shop.isBalanceOk())
+//            {
+//                tooltip = "You have to pay off your debts at " + shop.getName();
+//                return true;
+//            }
+//        }
         return false;
     }
 
@@ -192,6 +197,7 @@ public class TownPanel extends TabbedPanel {
     }
 
     public void done() {
+        ShopClickHandler.stashOpen = false;
         WaitMaster.receiveInput(DONE_OPERATION, true);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null );
 //        HqDataMasterDirect.applyModifications();

@@ -196,14 +196,19 @@ public class ItemGenerator implements GenericItemGenerator {
         String value = ench.getValue(level);
         type.addProperty(ench.getProp(), value);
         String string = StringMaster.cropFormat(type.getImagePath());
-        string += ench.getIconVariantLetter();
+
+        String suffix = ench.getIconVariantLetter();
         type.setProperty(PROPS.JEWELRY_PASSIVE_ENCHANTMENT, string);
         int costMod = ench.getCostBase();
         if (level != null) {
             if (level.getLevel() > 0) {
-                string += (level.getLevel());
+                suffix += (level.getLevel());
             }
             costMod = costMod * level.getCostFactor();
+        }
+        if (ImageManager.isImage(string + ench.getIconVariantLetter()
+         +ImageManager.PNG)) {
+            string += suffix;
         }
         string += ImageManager.DEFAULT_ENTITY_IMAGE_FORMAT;
         type.modifyParameter(PARAMS.GOLD_COST, costMod);
@@ -582,6 +587,8 @@ public class ItemGenerator implements GenericItemGenerator {
             if (type.equals(DC_TYPE.WEAPONS)) {
                 if (baseWeaponTypesNoNatural == null) {
                     baseWeaponTypesNoNatural=     new ArrayList<>(baseWeaponTypes) ;
+                    baseWeaponTypesNoNatural.removeIf(t ->
+                     t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.name()));
                     baseWeaponTypesNoNatural.removeIf(t ->
                      t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.name()));
                     baseWeaponTypesNoNatural.removeIf(t ->

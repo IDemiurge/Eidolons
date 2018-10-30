@@ -77,7 +77,8 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
             add(rowContainer);
             row();
         }
-        add(new SmartButton("Weave", STD_BUTTON.MENU, () -> WeaveMaster.openWeave()));
+        if (WeaveMaster.isOn())
+            add(new SmartButton("Weave", STD_BUTTON.MENU, () -> WeaveMaster.openWeave()));
     }
 
     @Override

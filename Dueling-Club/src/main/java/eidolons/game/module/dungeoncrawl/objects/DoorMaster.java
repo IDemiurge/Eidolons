@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
+import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -18,6 +19,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,14 +75,20 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
                 open(door, unit.getRef().getTargetingRef(obj));
                 return true;
             case CLOSE:
-                obj.getGame().fireEvent(
-                 new Event(STANDARD_EVENT_TYPE.DOOR_CLOSES,
-                  unit.getRef().getTargetingRef(obj)));
+                close(door,  unit.getRef().getTargetingRef(obj) );
                 break;
         }
         DOOR_STATE state = getState(sub);
         door.setState(state);
         return true;
+    }
+
+    private void close(Door door, Ref targetingRef) {
+        door.getGame().fireEvent(
+         new Event(STANDARD_EVENT_TYPE.DOOR_CLOSES,
+         targetingRef));
+        door.setState(DOOR_STATE.CLOSED);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
     }
 
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
@@ -167,6 +175,8 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         obj.getGame().fireEvent(
          new Event(STANDARD_EVENT_TYPE.DOOR_OPENS,
           ref));
+        door.setState(DOOR_STATE.OPEN);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
     }
 
 

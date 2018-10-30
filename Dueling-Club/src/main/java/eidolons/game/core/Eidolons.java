@@ -73,7 +73,7 @@ public class Eidolons {
     private static SCREEN_TYPE screenType;
     private static SCREEN_TYPE previousScreenType;
     private static boolean logicThreadBusy;
-    private static int customThreadsUsed=0;
+    private static int customThreadsUsed = 0;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -123,6 +123,18 @@ public class Eidolons {
     }
 
     public static Unit getMainHero() {
+        Unit hero = justGetMainHero();
+        if (hero == null) {
+            hero = justGetMainHero();
+        }
+        return hero;
+    }
+
+    public static void setMainHero(Unit mainHero) {
+        Eidolons.mainHero = mainHero;
+    }
+
+    public static Unit justGetMainHero() {
         if (mainHero == null) {
             if (game == null)
                 return null;
@@ -140,10 +152,6 @@ public class Eidolons {
             }
         }
         return mainHero;
-    }
-
-    public static void setMainHero(Unit mainHero) {
-        Eidolons.mainHero = mainHero;
     }
 
     public static boolean isFullscreen() {
@@ -279,7 +287,7 @@ public class Eidolons {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.game != null) {
                 if (MacroGame.game.getLoop() != null) {
-                        MacroGame.game.getLoop().setExited(true);
+                    MacroGame.game.getLoop().setExited(true);
                 }
 
             }

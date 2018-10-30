@@ -47,6 +47,7 @@ import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.hotkey.DC_KeyManager;
@@ -78,6 +79,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.util.Refactor;
 
 import java.util.*;
@@ -325,6 +327,8 @@ public class DC_Game extends GenericGame {
             musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
 
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+
     }
 
     private void startCombat() {
@@ -336,6 +340,7 @@ public class DC_Game extends GenericGame {
             loop.startInNewThread();
 
         musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__BATTLE_START);
     }
 
 

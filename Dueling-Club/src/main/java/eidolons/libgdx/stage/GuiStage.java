@@ -279,12 +279,14 @@ public class GuiStage extends StageX implements StageWithClosable {
              dragManager,
              confirmationPanel,
              hqPanel,
+             textPanel,
              getMenuButton().getParent(),
              getGameMenu(),
              getTooltips(),
              blackout,
              actionTooltipContainer,
-             infoTooltipContainer
+             infoTooltipContainer,
+             OptionsWindow.getInstance()
             }));
     }
     protected boolean checkBlocked() {
@@ -461,7 +463,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         tooltip.layout();
         tooltip.pack();
         SuperContainer container = (SuperContainer) tooltip.getParent();
-
+        if (container != null)
         container.setFluctuateAlpha(false);
         tooltip.getParent().setPosition(
          ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2,

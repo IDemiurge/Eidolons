@@ -38,4 +38,8 @@ public class WeaveMaster {
         WeaveScreen.getInstance().getSpace().setViewMode(mode);
         WeaveScreen.getInstance().getSpace().refresh();
     }
+
+    public static boolean isOn() {
+        return false;
+    }
 }

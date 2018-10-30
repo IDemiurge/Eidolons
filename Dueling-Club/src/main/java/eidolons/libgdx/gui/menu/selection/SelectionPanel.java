@@ -22,6 +22,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -50,7 +51,12 @@ public abstract class SelectionPanel extends TablePanelX {
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
         backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel(true));
-        startButton = new SmartButton(getDoneText(), STD_BUTTON.MENU, () -> tryDone());
+        startButton = new SmartButton(getDoneText(), STD_BUTTON.MENU, () -> tryDone()){
+            @Override
+            protected BUTTON_SOUND_MAP getSoundMap() {
+                return BUTTON_SOUND_MAP.ENTER;
+            }
+        };
 
         row();
 

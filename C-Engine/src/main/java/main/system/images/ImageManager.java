@@ -48,6 +48,7 @@ public class ImageManager {
     public static final String separator = PathUtils.getPathSeparator();
     public static final String DEFAULT_EMBLEM = "UI"+separator+"deities.png";
     public static final String DEFAULT_ENTITY_IMAGE_FORMAT = ".jpg";
+    public static final String PNG = ".PNG";
     public static final int CENTERED = -999;
     public static final String VALUE_ICONS_PATH = "UI"+separator+"value icons"+separator;
     public static final String DEAD_ICON = "UI"+separator+"dead.png";

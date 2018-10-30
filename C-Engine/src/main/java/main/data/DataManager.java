@@ -678,7 +678,7 @@ public class DataManager {
         return toTypeList(ContainerUtils.openContainer(string), TYPE);
     }
 
-    public static List<ObjType> toTypeList(List<String> strings, OBJ_TYPE TYPE) {
+    public static List<ObjType> toTypeList(Collection<String> strings, OBJ_TYPE TYPE) {
         if (strings == null) {
             return null;
         }

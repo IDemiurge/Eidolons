@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
@@ -94,9 +95,12 @@ public class Assets {
         boolean result = false;
         if (AnimationConstructor.isPreconstructAllOnGameInit()) {
             for (BattleFieldObject sub : objects) {
+                if (!checkPreloadUnit(sub)) {
+                    continue;
+                }
                 if (sub instanceof Unit)
                     try {
-                        AnimationConstructor.preconstruct((Unit) sub);
+                         AnimationConstructor.preconstruct((Unit) sub);
                     } catch (Exception e) {
                          main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL,"FAILED TO CONSTRUCT ANIMS FOR " +sub);
                         main.system.ExceptionMaster.printStackTrace(e);
@@ -109,6 +113,13 @@ public class Assets {
         EmitterPools.init(get().getManager());
 
         return result;
+    }
+
+    private static boolean checkPreloadUnit(BattleFieldObject sub) {
+        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates())>30) {
+            return false;
+        }
+        return true;
     }
 
     public AssetManager getManager() {

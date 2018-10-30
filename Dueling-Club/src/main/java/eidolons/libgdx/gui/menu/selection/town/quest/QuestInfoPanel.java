@@ -10,6 +10,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 10/5/2018.
@@ -27,6 +28,16 @@ public class QuestInfoPanel extends ItemInfoPanel {
     private boolean disabled;
     public static final int WIDTH = 920;
     public static final int HEIGHT = 720;
+
+    @Override
+    protected String getEmptyImagePath() {
+                return ImageManager.getEmptyUnitIconPath();
+    }
+
+    @Override
+    protected String getEmptyImagePathFullSize() {
+                return ImageManager.getEmptyUnitIconFullSizePath();
+    }
 
     public QuestInfoPanel(SelectableItemData o) {
         super(o);

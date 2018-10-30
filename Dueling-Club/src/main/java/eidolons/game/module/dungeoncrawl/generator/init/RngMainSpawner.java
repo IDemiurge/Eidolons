@@ -71,13 +71,24 @@ public class RngMainSpawner {
         if (zone.getUnitGroupWeightMap() != null) {
             return zone.getUnitGroupWeightMap().getRandomByWeight();
         }
+        //        return getUnitGroup(locationType.isSurface(),
+        //         zone.getStyle(), groupType);
+        //    }
+        //        public static UNIT_GROUP getUnitGroup(
+        //         boolean surface, DUNGEON_STYLE style,
+        //         UNIT_GROUP_TYPE groupType) {
+
         //2 unit grops per zone?
+
         boolean surface = locationType.isSurface();
+        DUNGEON_STYLE style = zone.getStyle();
+
         WeightMap<UNIT_GROUP> map = new WeightMap<>();
         zone.setUnitGroupWeightMap(map);
+
         int n = getMaxGroupsForType(groupType);
         for (int i = 0; i < n; i++) {
-            UNIT_GROUP group = getUnitGroup(surface, zone.getStyle());
+            UNIT_GROUP group = getUnitGroup(surface, style);
             map.put(group, i + 1);
         }
         return map.getRandomByWeight();
@@ -237,7 +248,7 @@ public class RngMainSpawner {
         LevelZone zone = new FuncMaster<LevelZone>().getGreatest_(level.getZones(),
          zone1 -> zone1.getSubParts().size());
 
-        ObjType type = quest.getArg() instanceof ObjType? (ObjType) quest.getArg()
+        ObjType type = quest.getArg() instanceof ObjType ? (ObjType) quest.getArg()
          : QuestCreator.getPreyType(level.getPowerLevel(), quest,
          zone.getStyle());
         //field to draw units from?
@@ -743,10 +754,10 @@ public class RngMainSpawner {
          .filter(c -> checkCellForSpawn(c, levelBlock)).
           filter(c -> !levelBlock.getUnitGroups().keySet().stream()
            .anyMatch(list -> list.stream().anyMatch(at -> at.getCoordinates().equals(c)))).
-          //no other units there
+         //no other units there
 
           sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-           -c.dst(center))).limit(Math.max(1, units.size() / maxStack)).
+          -c.dst(center))).limit(Math.max(1, units.size() / maxStack)).
           collect(Collectors.toList());
 
         if (checkCellForSpawn(center, levelBlock))
@@ -772,8 +783,8 @@ public class RngMainSpawner {
     }
 
     private boolean checkCellForSpawn(Coordinates c, LevelBlock levelBlock) {
-       if ( !TilesMaster.isPassable(levelBlock.getTileMap().getMap().get(c)))
-           return false;
+        if (!TilesMaster.isPassable(levelBlock.getTileMap().getMap().get(c)))
+            return false;
 
         if (TilesMaster.isEnclosedCell(c, levelBlock.getTileMap()))
             return false;

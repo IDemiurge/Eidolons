@@ -376,7 +376,7 @@ public class HqDataMaster {
                 if (!GoldMaster.checkGoldPack(item, hero))
                     hero.addItemToInventory(item); //TODO fix pickup!
 
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__KNIFE);
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
                 break;
             case DROP:
                 hero.dropItemFromInventory(item);

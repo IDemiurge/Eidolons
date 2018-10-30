@@ -1,14 +1,14 @@
 package eidolons.libgdx.gui.panels;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,21 +81,11 @@ public class TabbedPanel<T extends Actor>  extends TablePanelX  {
     }
 
     public void addTab(T actor, String tabName) {
-        TextButton b = new TextButton(tabName, getTabStyle());
+        TextButton b = new SmartButton(tabName, getTabStyle(), ()-> tabSelected(tabName) , STD_BUTTON.TAB_HIGHLIGHT);
 
         if (tabTable == null) {
             initContainer();
         }
-
-        b.addListener(new InputListener() {
-                          @Override
-                          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                              tabSelected(tabName);
-                              return true;
-
-                          }
-                      }
-        );
 
         buttonGroup.add(b);
         addTabActor(b);
@@ -129,6 +119,6 @@ public class TabbedPanel<T extends Actor>  extends TablePanelX  {
 
     protected TextButton.TextButtonStyle getTabStyle() {
         return
-         StyleHolder.getDefaultTabStyle();
+         StyleHolder.getHqTabStyle();
     }
 }

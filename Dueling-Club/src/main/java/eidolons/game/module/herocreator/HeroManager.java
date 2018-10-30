@@ -16,6 +16,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
@@ -164,7 +165,7 @@ public class HeroManager {
     }
 
     public static ITEM_SLOT getItemSlot(Unit hero, Entity type) {
-        return getItemSlot(hero, type, true);
+        return getItemSlot(hero, type, !HqDataMaster.isSimulationOff());
     }
 
     public static ITEM_SLOT getItemSlot(Unit hero, Entity type, boolean askSwap) {

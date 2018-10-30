@@ -271,7 +271,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         TRANSPARENT,
         BLACK,
         SEMI,
-        PATTERN,;
+        PATTERN, SEMI_THICK;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
          "ninepatch", "background", name().toLowerCase() + ".png");
 

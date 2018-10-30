@@ -132,7 +132,6 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     }
 
     protected String getEmptyImagePathFullSize() {
-//        return ImageManager.getEmptyUnitIconFullSizePath();
         return "";
     }
 

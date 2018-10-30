@@ -34,6 +34,11 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
         weapon.offset(xDif, yDif);
         border.offset(xDif, yDif);
         toggleUnarmed.setPosition(toggleUnarmed.getX() + xDif, toggleUnarmed.getY() + yDif);
+
+        weapon.setVisible(false);
+        radial.setVisible(false);
+        border.setVisible(false);
+        toggleUnarmed.setVisible(false);
     }
 
     @Override

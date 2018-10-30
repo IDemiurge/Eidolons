@@ -357,7 +357,7 @@ public class UnitDataSource  implements
     }
 
     @Override
-    public List<Pair<PARAMETER, String>> getMagickResists() {
+    public List<Pair<PARAMETER, String>> getMagicResistList() {
         return Arrays.stream(RESISTANCES).map(p -> {
             String ps = unit.getStrParam(p);
             return new ImmutablePair<>(p, ps);

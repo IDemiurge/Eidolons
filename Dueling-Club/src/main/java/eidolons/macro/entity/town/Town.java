@@ -73,27 +73,14 @@ public class Town extends Place {
         TownInitializer.initTownPlaces(this);
 
         stash = new LinkedHashSet<>();
-        for (String substring : ContainerUtils.openContainer(
-         getProperty(MACRO_PROPS.TOWN_STASH))) {
-            //gonna need to store durability etc...
 
-        }
-        for (String substring : ContainerUtils.openContainer(
-         Eidolons.getMainHero().getProperty(PROPS.STASH))) {
-            if (!NumberUtils.isInteger(substring)) {
-                continue;
-            }
-            int id = Integer.valueOf(substring);
-            Obj item = Eidolons.getGame().getObjectById(id);
-            if (item instanceof DC_HeroItemObj)
-                stash.add((DC_HeroItemObj) item);
-        }
     }
 
     public void exited() {
         for (Shop shop : shops) {
             shop.exited();
         }
+
         Eidolons.getMainHero().setProperty(PROPS.STASH, ContainerUtils.toIdContainer(stash), true);
     }
     public Tavern getTavern(String tabName) {
@@ -207,4 +194,21 @@ public class Town extends Place {
         item.setContainer(CONTAINER.STASH);
     }
 
+    public void enter() {
+        for (String substring : ContainerUtils.openContainer(
+         getProperty(MACRO_PROPS.TOWN_STASH))) {
+            //gonna need to store durability etc...
+
+        }
+        for (String substring : ContainerUtils.openContainer(
+         Eidolons.getMainHero().getProperty(PROPS.STASH))) {
+            if (!NumberUtils.isInteger(substring)) {
+                continue;
+            }
+            int id = Integer.valueOf(substring);
+            Obj item = Eidolons.getGame().getObjectById(id);
+            if (item instanceof DC_HeroItemObj)
+                stash.add((DC_HeroItemObj) item);
+        }
+    }
 }

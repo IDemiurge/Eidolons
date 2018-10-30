@@ -45,8 +45,13 @@ public class QuestResolver  extends QuestHandler{
             case BOSS:
                 return new ObjComparison(()->((Obj) quest.getArg()).getId(), KEYS.TARGET.name());
             case HUNT:
+            case COMMON_ITEMS:
                 return new DynamicCondition<Obj>(obj ->
              (obj.getType()).equalsAsBaseType(quest.getArg()));
+            case SPECIAL_ITEM:
+                return new DynamicCondition<Obj>(obj ->
+                 (obj).equals(quest.getArg()));
+
         }
 
         return null;

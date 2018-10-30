@@ -6,7 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 
 public interface ResistSource {
-    List<Pair<PARAMETER, String>> getMagickResists();
+    List<Pair<PARAMETER, String>> getMagicResistList();
 
     List<Pair<PARAMETER, String>> getArmorResists();
 

@@ -11,14 +11,13 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
 
 import java.util.List;
 import java.util.Map;
 
 public class TownInitializer {
 
-    public static final boolean TEST_MODE = CoreEngine.isFastMode();
+    public static final boolean TEST_MODE = true;
     private static final int default_shop_min = 2;
     private static final int default_shop_limit = 5;
 

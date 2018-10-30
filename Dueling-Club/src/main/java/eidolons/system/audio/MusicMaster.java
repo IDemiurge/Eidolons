@@ -31,7 +31,7 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 
-import static main.system.auxiliary.log.LogMaster.*;
+import static main.system.auxiliary.log.LogMaster.log;
 //a folder tree per music theme!
 //standard path structure
 
@@ -181,6 +181,7 @@ public class MusicMaster {
         resetVolume(getVolume());
 
     }
+
     public void resetAmbientVolume() {
         resetAmbientVolume(getAmbientVolume());
 
@@ -191,6 +192,7 @@ public class MusicMaster {
             getPlayedMusic().setVolume(volume);
         }
     }
+
     private void resetAmbientVolume(Float volume) {
         if (getPlayedAmbient() != null) {
             getPlayedAmbient().setVolume(volume);
@@ -208,6 +210,7 @@ public class MusicMaster {
         }
         if (!isOn())
             return;
+        playedAmbient=null;
         if (ListMaster.isNotEmpty(playList))
             playList.clear();
         pause();
@@ -312,7 +315,7 @@ public class MusicMaster {
             cachedPlayList.addAll(playList);
             break;
         }
-//       TODO what was the idea? checkUpdateTypes();
+        //       TODO what was the idea? checkUpdateTypes();
     }
 
     private void checkAmbience() {
@@ -321,17 +324,28 @@ public class MusicMaster {
         if (playedAmbient == null || !playedAmbient.isPlaying()) {
             boolean alt = false;
             boolean global = true; //TODO
-            AMBIENCE newAmbience = AmbientMaster.getCurrentAmbience(alt, global);
-            if (playedAmbient == null ||ambience != newAmbience) {
+            AMBIENCE newAmbience = null;
+            try {
+                newAmbience = AmbientMaster.getCurrentAmbience(alt, global);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+            if (newAmbience == null) {
+                if (playedAmbient != null)
+                    playedAmbient.stop();
+                return;
+            }
+            if (playedAmbient == null || ambience != newAmbience) {
                 ambience = newAmbience;
                 playedAmbient = new PreloadedMusic(ambience.getPath());
-                log(1,"playedAmbient= " +ambience.getPath());
+                log(1, "playedAmbient= " + ambience.getPath());
 
                 Float volume = getAmbientVolume();
                 playedAmbient.setVolume(volume);
             }
 
-            log(1,"playing Ambient: " +ambience.getPath());
+            log(1, "playing Ambient: " + ambience.getPath());
             playedAmbient.play();
         }
     }
@@ -340,13 +354,15 @@ public class MusicMaster {
         if (scope == MUSIC_SCOPE.MENU) {
             return false;
         }
-        if (scope==MUSIC_SCOPE.BATTLE)
+        if (scope == MUSIC_SCOPE.BATTLE)
             return false;
         return true;
     }
 
     private String getMusicFolder() {
         if (MASTER_MODE) {
+            if (scope == MUSIC_SCOPE.MAP)
+                return MASTER_PATH + "map";
             if (Eidolons.game != null && Eidolons.game.isStarted())
                 if (scope == MUSIC_SCOPE.BATTLE)
                     return MASTER_PATH + "battle";
@@ -462,18 +478,14 @@ public class MusicMaster {
     }
 
     public Float getAmbientVolume() {
-        if (ambientVolume == null) {
             ambientVolume = OptionsMaster.getSoundOptions().
              getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
-        }
         return ambientVolume * SoundMaster.getMasterVolume() / 100;
     }
 
     private Float getVolume() {
-        if (musicVolume == null) {
             musicVolume = OptionsMaster.getSoundOptions().
              getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
-        }
         return musicVolume * SoundMaster.getMasterVolume() / 100;
     }
 
@@ -601,12 +613,12 @@ public class MusicMaster {
         WELCOME; // VARIANTS?
 
         public String getCorePath() {
-            return  name();
+            return name();
         }
     }
 
     public enum MUSIC_SCOPE {
-        MENU, ATMO, MAP,BATTLE
+        MENU, ATMO, MAP, BATTLE
     }
 
     public enum MUSIC_THEME {

@@ -155,7 +155,7 @@ public class ResistPanel extends TablePanel {
     public void updateAct(float delta) {
         List<Pair<PARAMETER, String>> source = null;
         if (getUserObject() instanceof ResistSource) {
-            source = ((ResistSource) getUserObject()).getMagickResists();
+            source = ((ResistSource) getUserObject()).getMagicResistList();
         } else source = (List<Pair<PARAMETER, String>>) getUserObject();
 
         source.forEach(pair -> {

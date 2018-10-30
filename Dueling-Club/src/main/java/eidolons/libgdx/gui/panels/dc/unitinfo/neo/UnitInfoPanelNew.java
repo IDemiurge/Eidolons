@@ -195,9 +195,9 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         if (userObject != null) {
             open();
         }
-        weapon.debugAll();
-        avatarPanel.debugAll();
-        secondWeapon.debugAll();
+//        weapon.debugAll();
+//        avatarPanel.debugAll();
+//        secondWeapon.debugAll();
     }
 
     @Override

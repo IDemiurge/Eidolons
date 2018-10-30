@@ -387,7 +387,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         MOON(0.1f, 0, 1, 0.5f),
         SUN(0.1f, 0, 5, 0.5f, 0.7f, 1f),
         TOP_LAYER(0.2f, 1, 2, 0.6f, 0.15f, 0.5f),
-        LIGHT(0.24f, 3, 1, 2.6f, 0.1f, 0.5f),
+        LIGHT(0.28f, 4, 0.8f, 2.6f, 0.1f, 0.4f),
 
         MOONLIGHT(0.4f, 5, 0.5F, 0.6f, 0.1f, 0.9f),
         CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),

@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.menu.selection.town;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
-import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 
 import java.util.List;
@@ -47,8 +46,10 @@ public class TownPlaceListPanel extends ItemListPanel {
     @Override
     public void setItems(List<SelectableItemData> items) {
         super.setItems(items);
-        setHeight(getDefaultHeight());
         //TODO should not be necessary....
-        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        initBg();
+        setHeight(getDefaultHeight());
+        setWidth(getDefaultWidth());
     }
+
 }

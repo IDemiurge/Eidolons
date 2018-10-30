@@ -52,15 +52,15 @@ public class HcNameAndGenderPanel extends SelectionTable<SmartButton> {
         TablePanelX<Actor> upper = new TablePanelX<>();
         add(upper).colspan(wrap);
         upper.add(new SmartButton("Male",
-         StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT, 22), () -> {
+         StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT, 22), () -> {
             HeroCreationMaster.modified(G_PROPS.GENDER, "Male");
             randomize();
-        })).top();
+        }, STD_BUTTON.MENU)).top();
         upper.add(new SmartButton("Female",
-         StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT, 22), () -> {
+         StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT, 22), () -> {
             HeroCreationMaster.modified(G_PROPS.GENDER, "Female");
             randomize();
-        })).top();
+        }, STD_BUTTON.MENU)).top();
         row();
         add(new ImageContainer(Images.SEPARATOR)).colspan(wrap);
         row();
@@ -96,7 +96,7 @@ public class HcNameAndGenderPanel extends SelectionTable<SmartButton> {
 
     @Override
     protected SmartButton createElement(SelectableItemData datum) {
-        SmartButton btn = new SmartButton(datum.getName(), STD_BUTTON.HIGHLIGHT, () -> {
+        SmartButton btn = new SmartButton(datum.getName(), STD_BUTTON.TAB_HIGHLIGHT, () -> {
         });
         btn.setRunnable(() -> {
             selected(datum);

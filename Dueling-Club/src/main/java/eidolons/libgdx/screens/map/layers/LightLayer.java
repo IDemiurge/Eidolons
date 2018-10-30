@@ -207,7 +207,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         private float scaleRange = 0.15f;
 
         LIGHT_LAYER(float delay, float scaleRange, int maxCount, ALPHA_TEMPLATE alphaTemplate, boolean vertical, DAY_TIME... times) {
-            this.delay = delay;
+            this.delay = delay*1.5f;
             this.scaleRange = scaleRange;
             this.maxCount = maxCount;
             this.alphaTemplate = alphaTemplate;

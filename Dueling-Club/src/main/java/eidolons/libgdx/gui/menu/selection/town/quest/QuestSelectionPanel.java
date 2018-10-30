@@ -28,7 +28,6 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
         super();
         bindEvents();
     }
-
     public QuestSelectionPanel(Supplier<List<? extends Entity>> dataSupplier) {
         super();
         this.dataSupplier = dataSupplier;

@@ -75,6 +75,7 @@ public class TownMaster extends MetaGameHandler {
         } else {
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
         }
+        town.enter();
         boolean result =
          (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
         inTown = false;

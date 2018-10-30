@@ -51,7 +51,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
                 return true;
             }
         },
-        BRIGHTNESS(80, 20, 100);
+        BRIGHTNESS(80, 20, 100), ADD_SHARDS_ALWAYS(true), ADD_SHARDS_NEVER(false);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

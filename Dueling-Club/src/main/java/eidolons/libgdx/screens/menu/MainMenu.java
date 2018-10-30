@@ -77,13 +77,13 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
-        NEXT_SCENARIO,
-        RANDOM_SCENARIO,
-        SELECT_SCENARIO(),
+        NEXT_SCENARIO(true),
+        RANDOM_SCENARIO(true),
+        SELECT_SCENARIO(true),
         STANDOFF(true),
         SKIRMISH(true),
-        PLAY(NEXT_SCENARIO, SELECT_SCENARIO, RANDOM_SCENARIO),
-        MAP_PREVIEW(false),LOAD(),
+        PLAY(),//NEXT_SCENARIO, SELECT_SCENARIO, RANDOM_SCENARIO),
+        MAP_PREVIEW(true),LOAD(true),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),

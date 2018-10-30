@@ -2,9 +2,7 @@ package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
-import eidolons.macro.global.persist.Loader;
 import eidolons.macro.global.persist.Saver;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
@@ -50,27 +48,27 @@ public class GameMenuHandler {
             case RESTART:
                 Eidolons.restart();
                 break;
-            case QUESTS:
-                Eidolons.onThisOrNonGdxThread(() -> {
-                    if (QuestMaster.TEST_MODE) {
-                        Eidolons.getGame().getMetaMaster().getQuestMaster().initQuests();
-                        Eidolons.getGame().getMetaMaster().getQuestMaster().startedQuests();
-                        Eidolons.getGame().getMetaMaster().getQuestMaster().updateQuests();
-                    } else {
-                        GuiEventManager.trigger(GuiEventType.SHOW_QUESTS_INFO,
-                         Eidolons.getGame().getMetaMaster().getQuestMaster().getQuests()  );
-                    }
-                });
-                return null;
+//            case QUESTS:
+//                Eidolons.onThisOrNonGdxThread(() -> {
+//                    if (QuestMaster.TEST_MODE) {
+//                        Eidolons.getGame().getMetaMaster().getQuestMaster().initQuests();
+//                        Eidolons.getGame().getMetaMaster().getQuestMaster().startedQuests();
+//                        Eidolons.getGame().getMetaMaster().getQuestMaster().updateQuests();
+//                    } else {
+//                        GuiEventManager.trigger(GuiEventType.SHOW_QUESTS_INFO,
+//                         Eidolons.getGame().getMetaMaster().getQuestMaster().getQuests()  );
+//                    }
+//                });
+//                return null;
             case PASS_TIME:
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster()
                  .getTimeMaster().playerWaits();
                 break;
 
-            case LOAD:
-                GameMenu.menuOpen = false;
-                Loader.load();
-                break;
+//            case LOAD:
+//                GameMenu.menuOpen = false;
+//                Loader.load();
+//                break;
 
             case SAVE:
                 GameMenu.menuOpen = false;

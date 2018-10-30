@@ -31,6 +31,7 @@ public class AiBehaviorManager extends AiHandler {
     private Integer maxActiveCount = null;
     private List<GroupAI> activeGroups = new ArrayList<>();
     private boolean testMode = false;
+    private List<GroupAI> groups;
 
     public AiBehaviorManager(AiMaster master) {
         super(master);
@@ -60,14 +61,17 @@ public class AiBehaviorManager extends AiHandler {
         //                units.addAll(unit.getAI().getGroup().getMembers());
         //            }
         //        }
-        List<GroupAI> groups = getGame().getAiManager().getGroups();
+        if (groups == null)
+        {
+            groups = new ArrayList<>(getGame().getAiManager().getGroups());
+        }
         if (testMode) {
             Collections.sort(groups,
              new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
               dst(Eidolons.getMainHero().getCoordinates())));
         }
         Integer n = 0;
-        for (GroupAI group : groups) {
+        for (GroupAI group :     new ArrayList<>(groups)) {
             if (maxActiveCount != null)
                 if (activeGroups.size() >= maxActiveCount) {
                     if (!activeGroups.contains(group)) {
@@ -84,6 +88,7 @@ public class AiBehaviorManager extends AiHandler {
                     }
                 }
             } catch (Exception e) {
+                groups.remove(group);
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }

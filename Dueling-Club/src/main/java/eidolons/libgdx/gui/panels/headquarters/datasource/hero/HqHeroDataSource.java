@@ -238,8 +238,8 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     }
 
     @Override
-    public List<Pair<PARAMETER, String>> getMagickResists() {
-        return unitDataSource.getMagickResists();
+    public List<Pair<PARAMETER, String>> getMagicResistList() {
+        return unitDataSource.getMagicResistList();
     }
 
     @Override

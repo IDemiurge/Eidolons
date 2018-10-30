@@ -7,6 +7,7 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
@@ -49,7 +50,8 @@ public class TexturePackerLaunch {
 
     static String mainFolders[] = {
 //     "gen",
-     "ui",
+     "K:\\[Eidolons v.0.8.6 Halloween]\\test",
+//     "ui",
 //     "main",
     };
 
@@ -81,10 +83,16 @@ public class TexturePackerLaunch {
         for (String sub : folders) {
 //            List<File> files = FileManager.getFilesFromDirectory(PathFinder.getImagePath() + sub, false, true);
 //            for (File folder : files) {
-            String inputDir = PathFinder.getImagePath() + sub;
+            String inputDir = null ;
 //            Math.sqrt(files.size())
+            if (sub.contains(":")) {
+                inputDir = sub;
+            } else {
+                inputDir = PathFinder.getImagePath() + sub;
+            }
+
             String outputDir = inputDir;
-            String packFileName = sub;
+            String packFileName = StringMaster.getLastPathSegment(sub);
 
             TexturePacker.process(settings, inputDir, outputDir, packFileName);
 //            }

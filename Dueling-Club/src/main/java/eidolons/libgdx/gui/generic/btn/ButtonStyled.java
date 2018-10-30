@@ -95,7 +95,7 @@ public class ButtonStyled extends ImageContainer {
 
         STAT(StrPathBuilder.build(PathFinder.getUiPath(),
          "components", "hq" ,"stats" ,"cross.png")),
-        HIGHLIGHT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "highlight.png")),
+        TAB_HIGHLIGHT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "highlight.png")),
         SPELLBOOK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
          "bottom panel", "spellbook btn.png")),
         INV(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",

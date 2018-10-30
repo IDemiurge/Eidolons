@@ -60,14 +60,14 @@ public class HcPersonalityPanel extends SelectionTable<SmartButton> {
 
     @Override
     protected SmartButton createElement(SelectableItemData datum) {
-        return new SmartButton(datum.getName(), StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT, 24),
+        return new SmartButton(datum.getName(), StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT, 24),
          () -> {
 
              selectedData=datum;
              selected(datum);
              DC_SoundMaster.playRandomSound(
               new EnumMaster<HERO_SOUNDSET>().retrieveEnumConst(HERO_SOUNDSET.class, datum.getName()));
-         });
+         }, STD_BUTTON.MENU);
     }
 
     @Override

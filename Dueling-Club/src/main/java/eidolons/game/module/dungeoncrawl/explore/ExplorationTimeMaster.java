@@ -146,12 +146,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         round_delta += delta;
         ai_delta = +delta;
         if (AiBehaviorManager.isNewAiOn()){
-        boolean aiActs = false;
-        try {
-            aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);
             if (aiActs)
                 master.getGame().getLoop().signal();

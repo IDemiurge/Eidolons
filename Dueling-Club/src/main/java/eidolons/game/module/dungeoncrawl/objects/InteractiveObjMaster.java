@@ -1,10 +1,12 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -12,6 +14,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
@@ -63,6 +66,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             case MAGE_CIRCLE:
                 //random spell?
                 doMagic(obj,unit);
+                obj.kill(unit, false, false);
                 break;
             case MECHANISM:
                 break;
@@ -80,7 +84,19 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     private void doMagic(InteractiveObj obj, Unit unit) {
-        ObjType type = DataManager.getType("Fire Bolt", DC_TYPE.SPELLS);
+        String name = RandomWizard.getRandomListObject(ListMaster.toStringList(
+         "Arcane Bolt", "Fire Bolt", "Celestial Bolt","Death Bolt","Shadow Bolt",
+         "Feral Impulse", "Scare", "Hallucinations", "Cure", "Heal",
+         "Warp Shock", "Cripple", "Wraith Touch", "Fire Ball", "Shock Grasp",
+         "Cure", "Cure", "Cure", "Cure", "Cure",
+         "Fortify", "Touch of Warp", "Cure", "Cure", "Cure"
+        )).toString();
+        ObjType type = DataManager.getType(name, DC_TYPE.SPELLS);
+        if (type == null) {
+            return;
+        }
+        obj.setParam(PARAMS.SPELLPOWER, RandomWizard.getRandomIntBetween(20, 50));
+        EUtils.showInfoText("Ancient spell awakens... the " + name);
         Ref ref = obj.getRef();
         ref.setTarget(unit.getId());
         ref.setSource(obj.getId());

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.menu.selection.manual;
 
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
@@ -12,7 +13,9 @@ import java.util.List;
  */
 public class ManualArticles extends ItemListPanel {
 
-
+    protected BACKGROUND_NINE_PATCH getNinePatchBackground() {
+        return BACKGROUND_NINE_PATCH.BLACK;
+    }
     @Override
     public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         return super.toDataList(objTypes);

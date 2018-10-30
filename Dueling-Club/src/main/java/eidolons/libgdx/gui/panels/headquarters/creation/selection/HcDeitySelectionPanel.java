@@ -106,7 +106,7 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
             add(new ImageContainer(entity.getEmblemPath()));
 
             add(button = new SmartButton( entity.getName(),
-             StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT,  26), () -> clicked(entity)));
+             StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT,  26), () -> clicked(entity), STD_BUTTON.MENU));
 
             add(new ImageContainer(entity.getEmblemPath()));
         }

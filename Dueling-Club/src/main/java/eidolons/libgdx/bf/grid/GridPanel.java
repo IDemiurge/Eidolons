@@ -83,7 +83,7 @@ public class GridPanel extends Group {
     private boolean updateRequired;
     private boolean firstUpdateDone;
     private boolean welcomeInfoShown;
-    private float autoResetVisibleOnInterval=0.5f;
+    private float autoResetVisibleOnInterval = 0.5f;
 
 
     public GridPanel(int cols, int rows) {
@@ -179,7 +179,22 @@ public class GridPanel extends Group {
     }
 
     private boolean isShardsOn() {
-        return true;
+        boolean v = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADD_SHARDS_ALWAYS);
+        if (v)
+            return true;
+        v = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADD_SHARDS_NEVER);
+        if (v)
+            return false;
+
+        if (DC_Game.game.getDungeonMaster().getDungeonLevel() == null) {
+            switch (DC_Game.game.getDungeonMaster().getDungeonLevel().getLocationType().getGroup()) {
+                case NATURAL:
+                case AVERAGE:
+                case SURFACE:
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -537,7 +552,7 @@ public class GridPanel extends Group {
         } else {
             if (!view.isVisible())
                 return;
-            if (view.getColor().a> 0&& view.getColor().a<1)//            if (view.getActionsOfClass(FadeOutAction.class, false).size > 0)
+            if (view.getColor().a > 0 && view.getColor().a < 1)//            if (view.getActionsOfClass(FadeOutAction.class, false).size > 0)
                 return;
         }
         if (isFadeAnimForUnitsOn()) {
@@ -820,7 +835,7 @@ public class GridPanel extends Group {
     }
 
     public void resetZIndices() {
-        List<GridCellContainer> topCells =     new ArrayList<>() ;
+        List<GridCellContainer> topCells = new ArrayList<>();
         loop:
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
@@ -843,11 +858,11 @@ public class GridPanel extends Group {
                         if (sub.isHovered() && sub instanceof GridUnitView
                          ) {
                             setHoverObj((GridUnitView) sub);
-                            topCells.add( cell);
+                            topCells.add(cell);
                             cell.setTopUnitView(sub);
                             cell.setHovered(true);
                         } else if (sub.getUserObject().isPlayerCharacter()) {
-                            topCells.add( cell);
+                            topCells.add(cell);
                         }
                     }
                 }

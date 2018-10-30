@@ -49,7 +49,13 @@ public class LightEmittingEffect extends SpectrumEffect {
                   ref.getSourceObj().getCoordinates()))) {
                     setAmount(getFormula().getInt(ref));
                 }
-                ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, getAmount(), true);
+
+                int plus=getAmount();
+                Integer light = ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION);
+                if (light>0) {
+                    plus =plus/3*2;// (int) Math.round(math.sqrt(plus));
+                }
+                ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, plus, true);
 //             if (game.isDebugMode())
 //                 main.system.auxiliary.log.LogMaster.log(1, ref.getTargetObj()+"'s ILLUMINATION: +" + getAmount()
 //                  + "="+ ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION));

@@ -29,7 +29,7 @@ public class MapMenu extends GameMenu {
             case MANUAL:
             case OPTIONS:
             case SAVE:
-            case LOAD:
+//            case LOAD:
             case RESUME:
             case EXIT:
                 return false;

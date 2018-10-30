@@ -21,7 +21,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  */
 public class ShopClickHandler extends ContainerClickHandler {
 
-    private static boolean stashOpen;
+    public static boolean stashOpen;
     private final Shop shop;
 
     public ShopClickHandler(Shop shop, Unit unit) {
@@ -80,6 +80,11 @@ public class ShopClickHandler extends ContainerClickHandler {
                 operation = OPERATIONS.BUY;
             } else if (stashOpen)
                 operation = OPERATIONS.STASH;
+        }
+        if (operation == null) {
+            if (stashOpen) {
+                operation=OPERATIONS.UNSTASH;
+            }
         }
         if (handleOperation(operation, cell_type, cellContents)) {
             return true;
@@ -229,5 +234,6 @@ public class ShopClickHandler extends ContainerClickHandler {
         }
         DC_SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
+        update();
     }
 }

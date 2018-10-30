@@ -30,11 +30,13 @@ import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.audio.DC_SoundMaster;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -79,6 +81,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
 
         if (getGuiEvent() != null)
             GuiEventManager.bind(getGuiEvent(), (obj) -> {
+
                 final Pair<InventoryDataSource, ContainerDataSource> param = (Pair<InventoryDataSource, ContainerDataSource>) obj.get();
                 if (param == null) {
                     close();
@@ -101,6 +104,12 @@ public class ContainerPanel extends TablePanel implements Blocking {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void open() {
+        getStageWithClosable().openClosable(this);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
     }
 
     protected InventorySlotsPanel createContainerSlots() {
@@ -191,7 +200,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         if (isButtonRequired()) {
             lower.row();
             mainButton = new SmartButton(
-             getButtonText(), StyleHolder.getHqTextButtonStyle(20), () -> mainButton());
+             getButtonText(), StyleHolder.getHqTextButtonStyle(20), () -> mainButton(), STD_BUTTON.MENU);
             lower.add(mainButton).colspan(2).right().fillX().growX();
         }
         return addElement(lower).pad(0, 30, 20, 20);
@@ -324,7 +333,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void close() {
         getStageWithClosable().closeClosable(this);
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
 
     }
 

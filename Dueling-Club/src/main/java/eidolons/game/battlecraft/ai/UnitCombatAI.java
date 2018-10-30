@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
+import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import main.content.C_OBJ_TYPE;
@@ -44,7 +45,7 @@ public class UnitCombatAI {
         type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
          .getProperty(PROPS.AI_TYPE));
         if (unit.isMine() || type == null) {
-            //            CompanionMaster.initCompanionAiParams(this);
+            CompanionMaster.initCompanionAiParams(unit);
         }
     }
 

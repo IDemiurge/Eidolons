@@ -35,7 +35,7 @@ public class Player {
     private static final String ALT_FORMAT = ".wav";
     private static final String SOUNDSET_FOLDER_PATH = PathFinder.getSoundPath() + SOUNDSETS;
     private static Stack<String> lastplayed = new Stack<>();
-    private static boolean neverRepeat = true;
+    private static boolean neverRepeat = false;
     private static boolean switcher = true;
     private int volume;
     private int delay = 0;
@@ -195,7 +195,7 @@ public class Player {
 
             soundFile.setVolume(0, sound.getVolume());
             soundFile.play();
-
+            if (neverRepeat)
             lastplayed.push(sound.getSound());
 
         } catch (Exception ex) {

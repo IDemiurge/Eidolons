@@ -269,7 +269,7 @@ public class StyleHolder {
     }
 
     public static TextButtonStyle getHqTabStyle() {
-        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.HIGHLIGHT,
+        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT,
          FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
         return style;
     }

@@ -61,7 +61,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     public static boolean checkUnitRecovers(Unit unit) {
         // toughness barrier... ++ focus? ++status?
-        if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= 25) {
+        int req = unit.isPlayerCharacter() ? 20 : 40;
+        req*= MathMaster.MULTIPLIER;//TODO
+        if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= req) {
             if (unit.getIntParam(PARAMS.C_FOCUS) >=
              unit.getCalculator().getFocusRecoveryRequirement()
                 // Math.min(unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ),

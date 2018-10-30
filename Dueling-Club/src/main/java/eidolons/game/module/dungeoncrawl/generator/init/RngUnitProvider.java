@@ -12,6 +12,12 @@ import static main.content.enums.entity.UnitEnums.UNITS_TYPES.*;
  * Created by JustMe on 8/1/2018.
  */
 public class RngUnitProvider {
+
+
+    public static final Boolean BOSS = false;
+    public static final Boolean ELITE = true;
+    public static final Boolean REGULAR = null;
+
     public static WeightMap<String> getGroupWeightMap(DUNGEON_STYLE style, boolean underground) {
         switch (style) {
             case Knightly:
@@ -53,7 +59,7 @@ public class RngUnitProvider {
     }
 
     public static WeightMap<String> getBossWeightMap(UNIT_GROUP group) {
-        return getUnitWeightMap(group, true);
+        return getUnitWeightMap(group, BOSS);
     }
 
     public static WeightMap<String> getUnitWeightMap
@@ -179,7 +185,8 @@ public class RngUnitProvider {
                  chain(ONYX_MASKED_CULTIST, 1).
                  chain(STEEL_MASKED_CULTIST, 1).
                  chain(MISTBORN_GARGANTUAN, 5).
-                 chain(DARK_ANGEL, 10);            case DARK_ONES:
+                 chain(DARK_ANGEL, 10);
+            case DARK_ONES:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
                      chain(BLACK_WOLF, 10).

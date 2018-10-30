@@ -242,8 +242,7 @@ public class DataUnit<T extends Enum<T>> {
         String data = "";
         for (String v : set) {
             data += v + DataUnitFactory.getPairSeparator(format)
-             + values.get(v) + DataUnitFactory.getSeparator(format)
-             + "\n";
+             + values.get(v) + DataUnitFactory.getSeparator(format);
         }
         return data;
     }

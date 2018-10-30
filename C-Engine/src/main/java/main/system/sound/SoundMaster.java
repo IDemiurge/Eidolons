@@ -11,6 +11,8 @@ import main.system.auxiliary.RandomWizard;
 import java.io.File;
 import java.util.Arrays;
 
+import static main.system.sound.SoundMaster.STD_SOUNDS.*;
+
 public class SoundMaster {
 
     public static final String ALT = "_ALT";
@@ -189,7 +191,7 @@ public class SoundMaster {
     }
 
     public static void playScribble() {
-        playRandomStandardSound(STD_SOUNDS.SCRIBBLE, STD_SOUNDS.SCRIBBLE2, STD_SOUNDS.SCRIBBLE3);
+        playRandomStandardSound(SCRIBBLE, SCRIBBLE2, SCRIBBLE3);
     }
 
     public static boolean isOn() {
@@ -202,7 +204,14 @@ public class SoundMaster {
 
     public enum BUTTON_SOUND_MAP {
         //drag? scroll?
-        MENU(STD_SOUNDS.CLICK, STD_SOUNDS.ERASE, STD_SOUNDS.ACTION_CANCELLED, STD_SOUNDS.CLICK_ERROR),;
+        MENU(NEW__CLICK, null , NEW__CLICK_UP, NEW__CLICK_DISABLED),
+        TAB(NEW__TAB, null , null, null),
+        STAT(NEW__PLUS,null  ,null  , CLICK_ERROR),
+        ENTER(null , null ,NEW__ENTER  , NEW__CLICK_DISABLED),
+        CHEST(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
+
+
+        ;
 
         public STD_SOUNDS down;
         public STD_SOUNDS hover;
@@ -319,7 +328,14 @@ public class SoundMaster {
         DIS__BLESS(true),
         CLICK1,
         ButtonUp,
-        ButtonDown, VICTORY;
+        ButtonDown, VICTORY, NEW__CLICK, NEW__HOVER, NEW__CLICK_DISABLED, NEW__CLICK_UP
+        , NEW__ENTER
+        , NEW__TAB
+        , NEW__BATTLE_START
+        , NEW__CONTAINER,
+        NEW__PLUS,
+
+        NEW__OPEN_MENU;
         String path;
         private boolean alt;
 
@@ -328,10 +344,10 @@ public class SoundMaster {
         }
 
         STD_SOUNDS(boolean alt) {
-            this.alt = alt;
+            this.alt = alt || toString().contains("__");
             path = STD_SOUND_PATH
-             + (alt ? toString().replace("__", "\\").replace("_", " ") + ALT_FORMAT
-             : toString() + FORMAT);
+             + (alt ? toString() + ALT_FORMAT
+             : toString() + FORMAT).replace("__", "\\").replace("_", " ");
 
         }
 

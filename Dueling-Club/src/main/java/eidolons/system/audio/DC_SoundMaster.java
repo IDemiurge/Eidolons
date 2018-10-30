@@ -92,6 +92,11 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public static void playMoveSound(BattleFieldObject unit) {
+        if (!unit.isMine())
+            if (!unit.isPlayerDetected())
+                if (RandomWizard.chance(80))
+                    return;
+
         String type = "soft";
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()

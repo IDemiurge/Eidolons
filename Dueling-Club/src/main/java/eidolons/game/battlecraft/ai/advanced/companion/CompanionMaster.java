@@ -4,7 +4,6 @@ import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.UnitAI;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.system.auxiliary.EnumMaster;
 
@@ -23,10 +22,10 @@ public class CompanionMaster {
          *  enemy preferences
          *
          */
-    public static void initCompanionAiParams(UnitAI ai) {
+    public static void initCompanionAiParams(Unit u) {
         // prefs, ai type, ...
 
-        ai.setType(getAiType(ai.getUnit()));
+        u.getAI().setType(getAiType(u));
     }
 
     private static AI_TYPE getAiType(Unit hero) {

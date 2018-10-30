@@ -9,6 +9,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopClickHandler;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -35,7 +36,7 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
  * Created by JustMe on 11/16/2017.
  */
 public class ContainerClickHandler extends InventoryClickHandlerImpl {
-    protected final  Obj container;
+    protected final Obj container;
     protected String containerImagePath;
     protected Collection<DC_HeroItemObj> items;
     protected CharSequence containerName;
@@ -46,10 +47,11 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         this(HqDataMaster.getInstance(unit),
          containerImagePath, items, container);
     }
+
     public ContainerClickHandler(HqDataMaster dataMaster,
-     String containerImagePath,
-     Collection<DC_HeroItemObj> items,  Obj container) {
-        super(dataMaster,dataMaster.getHeroModel());
+                                 String containerImagePath,
+                                 Collection<DC_HeroItemObj> items, Obj container) {
+        super(dataMaster, dataMaster.getHeroModel());
         this.containerImagePath = containerImagePath;
         this.containerName = container.getName();
         if (container instanceof DC_Cell) {
@@ -95,6 +97,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     protected EventType getGuiEvent() {
         return SHOW_LOOT_PANEL;
     }
+
     public void takeAllClicked() {
         for (DC_HeroItemObj item : new ArrayList<>(items)) {
             if (item == null)
@@ -123,17 +126,17 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
                     continue;
                 }
                 if (GoldMaster.isGoldPack(item)) {
-                    dataMaster.operation(  HERO_OPERATION.PICK_UP, item);
+                    dataMaster.operation(HERO_OPERATION.PICK_UP, item);
                     return;
                 }
             }
         } else {
-        Integer gold = container.getIntParam(PARAMS.GOLD);
-        if (gold>0){
-            dataMaster.operation(  HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
-            container.setParam(PARAMS.GOLD,0);
-            update();
-        }
+            Integer gold = container.getIntParam(PARAMS.GOLD);
+            if (gold > 0) {
+                dataMaster.operation(HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
+                container.setParam(PARAMS.GOLD, 0);
+                update();
+            }
         }
     }
 
@@ -145,7 +148,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         dataMaster.operation(hero, HERO_OPERATION.PICK_UP, item);
         Ref ref = hero.getHero().getRef().getCopy();
         ref.setObj(KEYS.ITEM, item);
-        hero.getHero(). getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
+        ref.setObj(KEYS.TARGET, item);
+        hero.getHero().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
         update();
     }
 
@@ -157,6 +161,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 
     @Override
     protected OPERATIONS getInvOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, boolean ctrlClick, Entity cellContents) {
+        if (this instanceof ShopClickHandler)//this is the worst quick fix ever!
+            return super.getInvOperation(cell_type, clickCount, rightClick, altClick, ctrlClick, cellContents);
         return OPERATIONS.PICK_UP;
     }
 

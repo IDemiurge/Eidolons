@@ -37,7 +37,7 @@ public class BattleGuiStage extends GuiStage {
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
-    private UnitInfoPanelNew infoPanel;
+    private Group infoPanel;
     protected OutcomePanel outcomePanel;
 
 
@@ -60,7 +60,7 @@ public class BattleGuiStage extends GuiStage {
 
         init();
 
-        addActor(infoPanel = UnitInfoPanelNew.getInstance());
+        addActor( infoPanel = UnitInfoPanelNew.getInstance());
 
         combatInventory = new CombatInventory();
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
@@ -106,9 +106,9 @@ public class BattleGuiStage extends GuiStage {
         super.bindEvents();
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
             Unit unit = (Unit) obj.get();
-            if (isNewUnitInfoPanelWIP()) {
-                addActor(infoPanel = UnitInfoPanelNew.getInstance());
-            }
+//            if (isNewUnitInfoPanelWIP()) {
+//                addActor(infoPanel = UnitInfoPanelNew.getInstance());
+//            }
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {

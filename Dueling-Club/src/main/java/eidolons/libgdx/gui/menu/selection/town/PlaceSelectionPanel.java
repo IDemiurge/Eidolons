@@ -41,7 +41,7 @@ public abstract class PlaceSelectionPanel extends SelectionPanel {
     @Override
     public void init() {
         super.init();
-        getCell(listPanel).left().top().padRight(50);
+        getCell(listPanel).left().top().padRight(50).padTop(50);
         addActor(infoPanel.getActor());
     }
 

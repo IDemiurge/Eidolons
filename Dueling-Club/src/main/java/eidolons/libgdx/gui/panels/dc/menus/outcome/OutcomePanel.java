@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.menus.outcome;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -23,6 +24,8 @@ import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
@@ -38,7 +41,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 /**
  * Created by JustMe on 8/15/2017.
  */
-public class OutcomePanel extends TablePanel implements EventListener {
+public class OutcomePanel extends TablePanelX implements EventListener {
     public static final boolean TEST_MODE = false;
     public static final boolean TEST_OUTCOME = false;
     private static final String VICTORY_MESSAGE =
@@ -55,7 +58,21 @@ public class OutcomePanel extends TablePanel implements EventListener {
     private TabbedPanel unitStatTabs;
 
     public OutcomePanel(   ) {
+        addListener(this);
+        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
+         NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
+        TextureRegion textureRegion = new TextureRegion(background);
+        setBackground(new TextureRegionDrawable(textureRegion));
+    }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+            return;
+        }
+        ShaderMaster.drawWithCustomShader(this, batch, null);
     }
 
     @Override
@@ -67,12 +84,6 @@ public class OutcomePanel extends TablePanel implements EventListener {
     }
 
     public void init (OutcomeDatasource outcomeDatasource) {
-        addListener(this);
-        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
-         NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
-        TextureRegion textureRegion = new TextureRegion(background);
-        setBackground(new TextureRegionDrawable(textureRegion));
-
         outcome = outcomeDatasource.getOutcome();
         if (outcome == null)
             outcome = TEST_OUTCOME;
@@ -87,8 +98,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
         picture.setAlign(Align.center);
         picture.setScale(GdxMaster.getFontSizeModSquareRoot());
         picture.setPosition(
-         MigMaster.center(textureRegion.getRegionWidth(), picture.getWidth() * picture.getScaleX()),
-         MigMaster.center(textureRegion.getRegionHeight(), picture.getHeight() * picture.getScaleY()
+         MigMaster.center(getWidth(), picture.getWidth() * picture.getScaleX()),
+         MigMaster.center(getHeight(), picture.getHeight() * picture.getScaleY()
          ));
 
         STD_SOUNDS sound=STD_SOUNDS.DEATH;
@@ -102,8 +113,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
         addActor(message);
         message.setAlignment(Align.top);
         message.setPosition(
-         MigMaster.center(textureRegion.getRegionWidth(), message.getWidth()),
-         MigMaster.top(textureRegion.getRegionHeight(), message.getHeight() + 55
+         MigMaster.center(getWidth(), message.getWidth()),
+         MigMaster.top(getWidth(), message.getHeight() + 55
          ));
 
         DC_SoundMaster.playStandardSound(sound);
@@ -143,7 +154,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
         //        continueButton.getActor().addListener(this);
         addActor(buttonTable);
         buttonTable.setPosition(
-         MigMaster.center(textureRegion.getRegionWidth(), buttonTable.getWidth()),
+         MigMaster.center(getWidth(), buttonTable.getWidth()),
          55
         );
         //        addElement(buttonTable).pad(0, 20, 20, 20);

@@ -13,6 +13,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.system.audio.DC_SoundMaster;
+import main.system.auxiliary.EnumMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -22,24 +23,17 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  */
 public class SmartButton extends TextButton implements EventListener {
 
+    private STD_BUTTON style;
     private Runnable runnable;
     private boolean fixedSize;
     private boolean ignoreConfirmBlock;
 
     public SmartButton(String text, TextButtonStyle style) {
-        this(text, style, null);
-
+        this(text, style, null, STD_BUTTON.MENU);
     }
 
     public SmartButton(STD_BUTTON button, Runnable runnable) {
         this("", button, runnable);
-    }
-
-
-    public SmartButton(String text, STD_BUTTON button, Runnable runnable,
-                       FONT font, int size, Color color_) {
-        this(text, StyleHolder.getTextButtonStyle(button,
-         font, color_, size), runnable);
     }
 
     public SmartButton(String text, STD_BUTTON button, Runnable runnable) {
@@ -47,10 +41,18 @@ public class SmartButton extends TextButton implements EventListener {
          FONT.MAGIC, 20, GdxColorMaster.GOLDEN_WHITE);
     }
 
-    public SmartButton(String text, TextButtonStyle style, Runnable runnable) {
+    public SmartButton(String text, STD_BUTTON button, Runnable runnable,
+                       FONT font, int size, Color color_) {
+        this(text, StyleHolder.getTextButtonStyle(button,
+         font, color_, size), runnable, button);
+        this.style = button;
+    }
+
+    public SmartButton(String text, TextButtonStyle style, Runnable runnable, STD_BUTTON btnStyle) {
         super(text, style);
         this.runnable = runnable;
         addListener(this);
+        this.style = btnStyle;
     }
 
     public SmartButton(STD_BUTTON button) {
@@ -58,10 +60,8 @@ public class SmartButton extends TextButton implements EventListener {
     }
 
     public SmartButton(String text, Runnable runnable) {
-        this(text, StyleHolder.getHqTextButtonStyle(16), runnable);
+        this(text, StyleHolder.getHqTextButtonStyle(16), runnable, STD_BUTTON.MENU);
     }
-
-
 
 
     @Override
@@ -77,54 +77,70 @@ public class SmartButton extends TextButton implements EventListener {
             return getHeight();
         return super.getPrefHeight();
     }
-//    addListener(new SmartClickListener(this) {
-//        @Override
-//        public void clicked(InputEvent event, float x, float y) {
-//            super.clicked(event, x, y);
-//            runnable.run();
-//        }
-//    }
-//        );
+
+    //    addListener(new SmartClickListener(this) {
+    //        @Override
+    //        public void clicked(InputEvent event, float x, float y) {
+    //            super.clicked(event, x, y);
+    //            runnable.run();
+    //        }
+    //    }
+    //        );
     @Override
     public boolean handle(Event e) {
-        if (runnable == null)
-            return true;
         if (!isIgnoreConfirmBlock())
             if (ConfirmationPanel.getInstance().isVisible())
                 return true;
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
-        STD_SOUNDS sound=null ;
+        STD_SOUNDS sound = null;
         if (event.getType() == Type.touchUp) {
-            if (GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true))
-            {
-                runnable.run();
+            if (GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
+                if (runnable != null)
+                    runnable.run();
                 if (getSoundMap() != null)
-                    sound= getSoundMap().up;
+                    sound = getSoundMap().up;
             }
         } else {
             if (getSoundMap() != null)
-            switch (event.getType()) {
-                case touchDown:
-                    if (isDisabled()) {
-                        sound= getSoundMap().disabled;
-                    } else {
-                        sound= getSoundMap().down;
-                    }
-                    break;
-                case enter:
-                    sound= getSoundMap().hover;
-                    break;
-            }
+                switch (event.getType()) {
+                    case touchDown:
+                        if (isDisabled()) {
+                            sound = getSoundMap().disabled;
+                        } else {
+                            sound = getSoundMap().down;
+                        }
+                        break;
+                    case enter:
+                        sound = getSoundMap().hover;
+                        break;
+                }
         }
-        if (sound!=null )
-            DC_SoundMaster.playStandardSound(getSound());
+        if (sound != null) {
+
+            DC_SoundMaster.playStandardSound(sound);
+        }
         return true;
     }
 
     protected BUTTON_SOUND_MAP getSoundMap() {
+        if (style != null) {
+            BUTTON_SOUND_MAP map = new EnumMaster<BUTTON_SOUND_MAP>().retrieveEnumConst(BUTTON_SOUND_MAP.class, style.name());
+            if (map != null) {
+                return map;
+            }
+            switch (style) {
+                case STAT:
+                return BUTTON_SOUND_MAP.STAT;
+                case TAB_HIGHLIGHT:
+                    return BUTTON_SOUND_MAP.TAB;
+                case MENU:
+                    return BUTTON_SOUND_MAP.MENU;
+            }
+        }
         return null;
     }
+
     protected STD_SOUNDS getSound() {
         return null;
     }

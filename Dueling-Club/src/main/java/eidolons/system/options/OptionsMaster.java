@@ -214,7 +214,8 @@ public class OptionsMaster {
             if (!NumberUtils.isInteger(value)) {
                 switch (key) {
                     case SOUNDS_OFF:
-                        SoundMaster.setOn(false);
+                        SoundMaster.setOn(!OptionsMaster.getSoundOptions().
+                         getBooleanValue(SOUND_OPTION.SOUNDS_OFF));
                         //                        MusicMaster.resetSwitcher();
                         break;
                     case MUSIC_OFF:

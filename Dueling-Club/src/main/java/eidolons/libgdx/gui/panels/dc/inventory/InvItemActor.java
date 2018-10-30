@@ -340,6 +340,7 @@ public class InvItemActor extends ItemActor {
             public void clicked(InputEvent event, float x, float y) {
                 if (clickTimer < 0.05f)
                     return;
+                clickTimer = 0;
                 final int tapCount = this.getTapCount();
                 final boolean isRightClicked = event.getButton() == Input.Buttons.RIGHT;
                 final boolean isAltPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
@@ -349,7 +350,7 @@ public class InvItemActor extends ItemActor {
                 Eidolons.onNonGdxThread(() ->
                  handler.cellClicked(cellType, tapCount, isRightClicked,
                   isAltPressed, model, isCtrlPressed ));
-                clickTimer = 0;
+
 //                event.stop();
             }
         };

@@ -65,15 +65,17 @@ public abstract class ItemListPanel extends TablePanel {
             setFixedSize(true);
             addActor(new Image(generated));
         } else {
-            setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+            pack(); //hurray!..
+            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
             setSize( getDefaultWidth()
              , getDefaultHeight());
+            pack();
         }
 
     }
 
     protected BACKGROUND_NINE_PATCH getNinePatchBackground() {
-        return BACKGROUND_NINE_PATCH.SEMI;
+        return BACKGROUND_NINE_PATCH.SEMI_THICK;
     }
     protected NINE_PATCH getNinePatch() {
         return NINE_PATCH.FRAME;

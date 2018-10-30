@@ -17,11 +17,13 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -192,7 +194,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         if (button == null || sub == null) {
             button = new SmartButton((name),
                     StyleHolder.getTextButtonStyle(getButtonStyle(),
-                            getFontStyle(), getFontColor(), getFontSize()), getClickRunnable(sub));
+                            getFontStyle(), getFontColor(), getFontSize()), getClickRunnable(sub), STD_BUTTON.MENU);
             getCache().put(sub, button);
         }
         return button;
@@ -278,6 +280,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         setCurrentItem(null);
         setPreviousItem(null);
         getStageWithClosable().openClosable(this);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OPEN_MENU);
     }
 
     @Override
@@ -287,7 +290,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
 
     public void close() {
         getStageWithClosable().closeClosable(this);
-
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
     }
 
     @Override

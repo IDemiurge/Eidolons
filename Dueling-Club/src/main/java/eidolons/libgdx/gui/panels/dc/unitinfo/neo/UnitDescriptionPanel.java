@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.DescriptionPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
-import eidolons.system.text.HelpMaster;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -35,8 +34,8 @@ public class UnitDescriptionPanel extends DescriptionPanel{
         HqHeroDataSource dataSource = (HqHeroDataSource) getUserObject();
         String text =dataSource==null  ?"" : dataSource.getDescription();
         if (text.isEmpty()) {
-            text = HelpMaster.getHelpText();
-        }
+            text = "There isn't anything else to be said  here.";
+        } text = "I am too deeply depressed by the state of this panel.\n"+text;
         setText(text);
         super.updateAct();
     }

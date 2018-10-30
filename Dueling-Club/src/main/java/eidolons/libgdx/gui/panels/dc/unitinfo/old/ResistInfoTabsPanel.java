@@ -21,7 +21,7 @@ public class ResistInfoTabsPanel extends InfoPanelTabsPanel<ResistPanel> {
 
         ResistSource source = (ResistSource) userObject;
 
-        tabsToNamesMap.get("Resistance").setUserObject((Supplier) source::getMagickResists);
+        tabsToNamesMap.get("Resistance").setUserObject((Supplier) source::getMagicResistList);
         tabsToNamesMap.get("Armor").setUserObject((Supplier) source::getArmorResists);
         tabsToNamesMap.get("Durability").setUserObject((Supplier) source::getDurabilityResists);
     }

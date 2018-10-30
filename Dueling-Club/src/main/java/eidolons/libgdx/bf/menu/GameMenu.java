@@ -101,11 +101,9 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         if (TownPanel.getActiveInstance()!=null ){
             if (item== GAME_MENU_ITEM.MAP_INFO
               ) {
-                return false;
+                return true;
             }
-            if (item== GAME_MENU_ITEM.QUESTS) {
-                return false;
-            }
+
         }
         if (item==GAME_MENU_ITEM.RUN)
             return !CoreEngine.isMacro();
@@ -138,7 +136,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     public enum GAME_MENU_ITEM implements MenuItem<GAME_MENU_ITEM> {
         QUICK_HELP,
         HERO_INFO,
-        MAP_INFO,
+        MAP_INFO(true),
         MANUAL,
         //        SEND_FEEDBACK,
 //        SEND_LOG,
@@ -147,12 +145,12 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         OPTIONS,
         RESTART(true),
         PASS_TIME(true),
-        QUESTS(),
+//        QUESTS(),
         RUN(true),
         SAVE(true),
-        LOAD(true),
+//        LOAD(true),
         RESUME,
-        CLICK_ME(QUICK_HELP, HERO_INFO, MAP_INFO, MANUAL),
+        CLICK_ME(QUICK_HELP, HERO_INFO,   MANUAL),
         WEBSITE(true),
         ABOUT(true), LAUNCH_GAME(true),
         MAIN_MENU(true),

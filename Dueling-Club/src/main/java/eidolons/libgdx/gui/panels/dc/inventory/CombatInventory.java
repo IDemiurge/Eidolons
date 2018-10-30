@@ -109,7 +109,10 @@ public class CombatInventory extends TablePanel implements Blocking {
         GuiEventManager.bind(SHOW_INVENTORY, (obj) -> {
             final Object param = obj.get();
             if (param instanceof Boolean) {
-                close((Boolean) param);
+                if (HqDataMaster.isSimulationOff()) {
+                    close(true);
+                } else
+                    close((Boolean) param);
             } else {
                 GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
                 if (!isVisible())
@@ -128,7 +131,7 @@ public class CombatInventory extends TablePanel implements Blocking {
         final InventoryDataSource source = getUserObject();
         doneButton.setRunnable(source.getDoneHandler());
 
-        if (!HqDataMaster.isSimulationOff()){
+        if (!HqDataMaster.isSimulationOff()) {
             cancelButton.setRunnable(source.getCancelHandler());
             undoButton.setRunnable(source.getUndoHandler());
         }
@@ -156,7 +159,7 @@ public class CombatInventory extends TablePanel implements Blocking {
             header = "Operations:\n" +
              source.getOperationsString();
         }
-        String on= DragManager.isOff() ? "OFF": "ON";
+        String on = DragManager.isOff() ? "OFF" : "ON";
         ValueContainer controls = new ValueContainer(
          StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
          header,
@@ -190,12 +193,18 @@ public class CombatInventory extends TablePanel implements Blocking {
     }
 
     public void close() {
-        close(false);
+        close(HqDataMaster.isSimulationOff());
     }
 
     public void close(Boolean result) {
         if (result == null)
             result = false;
+
+        if (!result)
+            if (!HqDataMaster.isSimulationOff()) {
+                result = true;
+            }
+
         if (!result)
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
              "Inventory operations cancelled!");
