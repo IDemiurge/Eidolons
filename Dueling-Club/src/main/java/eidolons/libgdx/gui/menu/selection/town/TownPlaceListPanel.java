@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.menu.selection.town;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class TownPlaceListPanel extends ItemListPanel {
         return null;
     }
 
+    protected BUTTON_SOUND_MAP getButtonSoundMap() {
+        return    BUTTON_SOUND_MAP.SELECTION_SCROLL;
+    }
     @Override
     public boolean isBlocked(SelectableItemData item) {
         if (disabled)

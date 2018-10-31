@@ -15,12 +15,12 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.anim3d.*;
-import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterPools;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.ability.effects.Effect;
@@ -68,19 +68,19 @@ public class AnimationConstructor {
      PROPS.ANIM_SPRITE_AFTEREFFECT,
      PROPS.ANIM_MISSILE_SPRITE,
      PROPS.ANIM_MODS_SPRITE,
-     PROPS.ANIM_MISSILE_SFX,
+     PROPS.ANIM_MISSILE_VFX,
 //
-     PROPS.ANIM_SFX_PRECAST,
-     PROPS.ANIM_SFX_CAST,
-     PROPS.ANIM_SFX_RESOLVE,
-     PROPS.ANIM_SFX_MAIN,
-     PROPS.ANIM_SFX_IMPACT,
-     PROPS.ANIM_SFX_AFTEREFFECT,
-     PROPS.ANIM_MODS_SFX,
+     PROPS.ANIM_VFX_PRECAST,
+     PROPS.ANIM_VFX_CAST,
+     PROPS.ANIM_VFX_RESOLVE,
+     PROPS.ANIM_VFX_MAIN,
+     PROPS.ANIM_VFX_IMPACT,
+     PROPS.ANIM_VFX_AFTEREFFECT,
+     PROPS.ANIM_MODS_VFX,
 //
 //
 //     PROPS.ANIM_SPRITE_COLOR,
-//     PROPS.ANIM_SFX_COLOR,
+//     PROPS.ANIM_VFX_COLOR,
 //     PROPS.ANIM_LIGHT_COLOR,
 //
 //
@@ -121,9 +121,22 @@ public class AnimationConstructor {
                     data =   AnimationConstructor.getInstance().getStandardData(active, part, i);
                     for (ANIM_VALUES val : ANIM_VALUES.values()) {
                         String identifier;
+
+                        String value = data.getValue(val);
+                        if (StringMaster.isEmpty(value))
+                            continue;
+                        value = value.replace(PathFinder.getImagePath().toLowerCase(), "");
+                        i++;
                         switch (val) {
                             case PARTICLE_EFFECTS:
-                                identifier = "SFX";
+                                identifier = "VFX";
+//                                getInstance().getPath(val)+ value
+//                                String vfxdata =  PathFinder.getVfxPath() +
+//                                String newPath = PathFinder.getVfxPath() + PathUtils.getPathSeparator() + "atlas" + PathUtils.getPathSeparator() + path;
+//                                FileManager.write(data, newPath);
+                                main.system.auxiliary.log.LogMaster.log(1,"PARTICLE_EFFECTS =" +
+                                 value +
+                                 " for " +type);
                                 break;
                             case SPRITES:
                                 identifier = "SPRITE";
@@ -131,11 +144,7 @@ public class AnimationConstructor {
                             default:
                                 continue;
                         }
-                        String value = data.getValue(val);
-                        if (StringMaster.isEmpty(value))
-                            continue;
-                        value = value.replace(PathFinder.getImagePath().toLowerCase(), "");
-                        i++;
+
                         PROPERTY prop = ContentValsManager.findPROP("anim" +
                          "_" + identifier + "_" + part);
                         if (prop == null)
@@ -643,7 +652,7 @@ public class AnimationConstructor {
         String path = null;
         switch (s) {
             case PARTICLE_EFFECTS:
-                path = PathFinder.getVfxPath();
+                path = PathFinder.getVfxPath()+ "spell/";
                 break;
             case SPRITES:
                 path = PathFinder.getSpritesPath();

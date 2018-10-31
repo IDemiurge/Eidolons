@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;

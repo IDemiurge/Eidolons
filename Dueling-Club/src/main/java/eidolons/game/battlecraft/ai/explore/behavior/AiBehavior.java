@@ -133,6 +133,10 @@ public void log(){
     public boolean update() {
         if (!isEnabled())
             return false;
+        if (!isUnitActive()){
+            resetSinceLastAction();
+            return false;
+        }
         master.setUnit(ai.getUnit());
         if (checkOrdersValid(orders))
             return true;
@@ -160,6 +164,10 @@ public void log(){
         status = BEHAVIOR_STATUS.RUNNING;
         initOrders();
         return false; //don't act immediately, but on the next cycle *if* orders are OK by then still
+    }
+
+    private boolean isUnitActive() {
+        return getUnit().canAct();
     }
 
     protected boolean failed() {

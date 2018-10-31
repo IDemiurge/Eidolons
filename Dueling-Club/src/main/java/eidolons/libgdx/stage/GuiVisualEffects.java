@@ -6,6 +6,8 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.decor.ShardVisuals;
+import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.AmbienceDataSource;
@@ -31,36 +33,28 @@ import java.util.List;
  * Created by JustMe on 3/16/2018.
  */
 public class GuiVisualEffects extends GroupX {
-    private   DungeonLevel level;
     LightLayer lightLayer;
+    private DungeonLevel level;
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
     private int emitterTypesCount;
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).resetBlending();
-        }
-    }
-
     public GuiVisualEffects() {
         if (isVignetteOn()) {
-            addActor(  vignette =
-                    VignetteShader.createVignetteActor());
+            addActor(vignette =
+             VignetteShader.createVignetteActor());
         }
         //        initEmitters();
         addActor(lightLayer = new LightLayer(true));
 
-        GuiEventManager.bind(GuiEventType.GAME_STARTED, p->
+        GuiEventManager.bind(GuiEventType.GAME_STARTED, p ->
         {
             DC_Game game = (DC_Game) p.get();
-              level = game.getDungeonMaster().getDungeonLevel();
+            level = game.getDungeonMaster().getDungeonLevel();
             //set current block?
         });
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
-//                getEmitterData((DAY_TIME) p.get());
+            //                getEmitterData((DAY_TIME) p.get());
             if (!isCustomEmitters())
                 return;
             LevelBlock block = level.getBlockForCoordinate(
@@ -70,6 +64,13 @@ public class GuiVisualEffects extends GroupX {
         });
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+    }
 
     private boolean isCustomEmitters() {
         return true;
@@ -112,7 +113,7 @@ public class GuiVisualEffects extends GroupX {
                 createEmitters(false, EMITTER_PRESET.MIST_NEW, 250);
                 break;
         }
-        if (night){
+        if (night) {
             switch (template) {
                 case COLD:
                     createEmitters(false, EMITTER_PRESET.SNOW, 250);
@@ -138,30 +139,29 @@ public class GuiVisualEffects extends GroupX {
                 case DEEP_MIST:
                     break;
             }
-        }
-        else
-        switch (template) {
-            case CAVE:
+        } else
+            switch (template) {
+                case CAVE:
                     createEmitters(false, EMITTER_PRESET.MIST_WHITE, 200);
                     break;
-            case COLD:
-                createEmitters(false, EMITTER_PRESET.SNOW, 250);
-                break;
-            case POISON:
-                break;
-            case DUNGEON:
-                break;
-            case CRYPT:
-                break;
-            case HELL:
-                break;
-            case HALL:
-                break;
-            case FOREST:
-                break;
-            case DEEP_MIST:
-                break;
-        }
+                case COLD:
+                    createEmitters(false, EMITTER_PRESET.SNOW, 250);
+                    break;
+                case POISON:
+                    break;
+                case DUNGEON:
+                    break;
+                case CRYPT:
+                    break;
+                case HELL:
+                    break;
+                case HALL:
+                    break;
+                case FOREST:
+                    break;
+                case DEEP_MIST:
+                    break;
+            }
     }
 
     public void resized() {
@@ -196,17 +196,28 @@ public class GuiVisualEffects extends GroupX {
 
     private void createEmitters(boolean bottom, EMITTER_PRESET preset, int gap) {
         emitterTypesCount++;
-        int chance = (int) (80-emitterTypesCount*10-emitterTypesCount*5*GdxMaster.getFontSizeModSquareRoot());
+        int chance = (int) Math.max(15, 50 - emitterTypesCount * 10 - emitterTypesCount * 5 * GdxMaster.getFontSizeModSquareRoot());
         for (int i = 0; i < GdxMaster.getWidth(); i += gap) {
-            if (!RandomWizard.chance(chance))
+            EMITTER_PRESET preset_ = preset;
+            if (!RandomWizard.chance(chance*2)) {
                 continue;
-            EmitterActor actor = new EmitterActor(preset);
+            }
+            if (!RandomWizard.chance(chance*2)) {
+                try {
+                    preset_ = ShardVisuals.getEmitters(null , SHARD_SIZE.NORMAL)[0];
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+            EmitterActor actor = new EmitterActor(preset_);
             addActor(actor);
             emitters.add(actor);
             int x = i;
             int y = bottom ? 0 : GdxMaster.getHeight() - 100;
+
             actor.start();
-            actor.setPosition(x, y);
+            actor.setPosition(x + (50 - RandomWizard.getRandomInt(100)) / 2, y
+             + (50 - RandomWizard.getRandomInt(100)) / 2);
             actor.act(RandomWizard.getRandomFloatBetween(0, 2));
         }
     }

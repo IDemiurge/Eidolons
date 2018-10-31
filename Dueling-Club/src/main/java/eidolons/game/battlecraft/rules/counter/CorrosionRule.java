@@ -31,7 +31,7 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
-        return 0;
+        return 1;
     }
 
     @Override

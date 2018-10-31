@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;

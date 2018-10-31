@@ -87,7 +87,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected QuestJournal journal;
     protected SmartButton menuButton;
     protected boolean town;
-    protected Set<Actor> hiddenActors=    new HashSet<>() ;
+    protected Set<Actor> hiddenActors = new HashSet<>();
     protected ValueContainer locationLabel;
 
     public GuiStage(Viewport viewport, Batch batch) {
@@ -199,7 +199,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         ));
         group.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
         group.addActor(btnBg);
-         menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
+        menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
          gameMenu.toggle());
 
         menuButton.setPosition(-8, 13);
@@ -212,7 +212,7 @@ public class GuiStage extends StageX implements StageWithClosable {
          GdxMaster.getHeight() - btnBg.getHeight());
 
 
-        addActor(locationLabel = new ValueContainer("", ""){
+        addActor(locationLabel = new ValueContainer("", "") {
             @Override
             protected boolean isVertical() {
                 return true;
@@ -262,7 +262,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 if (getActorsForTown().contains(actor)) {
                     continue;
                 }
-                if (actor.isVisible()){
+                if (actor.isVisible()) {
                     actor.setVisible(false);
                     hiddenActors.add(actor);
                 }
@@ -274,21 +274,22 @@ public class GuiStage extends StageX implements StageWithClosable {
         resetZIndices();
     }
 
-        public List<Actor>  getActorsForTown(){
-            return new ArrayList<>(Arrays.asList(new Actor[]{
-             dragManager,
-             confirmationPanel,
-             hqPanel,
-             textPanel,
-             getMenuButton().getParent(),
-             getGameMenu(),
-             getTooltips(),
-             blackout,
-             actionTooltipContainer,
-             infoTooltipContainer,
-             OptionsWindow.getInstance()
-            }));
+    public List<Actor> getActorsForTown() {
+        return new ArrayList<>(Arrays.asList(new Actor[]{
+         dragManager,
+         confirmationPanel,
+         hqPanel,
+         textPanel,
+         getMenuButton().getParent(),
+         getGameMenu(),
+         getTooltips(),
+         blackout,
+         actionTooltipContainer,
+         infoTooltipContainer,
+         OptionsWindow.getInstance()
+        }));
     }
+
     protected boolean checkBlocked() {
         return confirmationPanel.isVisible() || textPanel.isVisible() ||
          HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
@@ -322,10 +323,10 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
-           if (!ancestors.contains(textPanel))
-                if (!ancestors.contains(confirmationPanel))
-                    if (!ancestors.contains(gameMenu))
-                        return true;
+        if (!ancestors.contains(textPanel))
+            if (!ancestors.contains(confirmationPanel))
+                if (!ancestors.contains(gameMenu))
+                    return true;
 
         return false;
     }
@@ -464,7 +465,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         tooltip.pack();
         SuperContainer container = (SuperContainer) tooltip.getParent();
         if (container != null)
-        container.setFluctuateAlpha(false);
+            container.setFluctuateAlpha(false);
+        else
+            return;
         tooltip.getParent().setPosition(
          ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2,
          action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
@@ -618,13 +621,13 @@ public class GuiStage extends StageX implements StageWithClosable {
         return draggedEntity;
     }
 
-    public DragManager getDragManager() {
-        return dragManager;
-    }
-
     public void setDraggedEntity(Entity draggedEntity) {
         this.draggedEntity = draggedEntity;
         dragManager.setDraggedEntity(draggedEntity);
+    }
+
+    public DragManager getDragManager() {
+        return dragManager;
     }
 
     @Override
@@ -634,17 +637,17 @@ public class GuiStage extends StageX implements StageWithClosable {
         return super.setScrollFocus(actor);
     }
 
+    public boolean isTown() {
+        return town;
+    }
+
     public void setTown(boolean town) {
         this.town = town;
         if (!town) {
-            for (Actor actor :    new ArrayList<>( hiddenActors)) {
+            for (Actor actor : new ArrayList<>(hiddenActors)) {
                 actor.setVisible(true);
                 hiddenActors.remove(actor);
             }
         }
-    }
-
-    public boolean isTown() {
-        return town;
     }
 }

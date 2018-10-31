@@ -5,6 +5,7 @@ import eidolons.system.text.HelpMaster;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,7 +22,9 @@ public class HeroListPanel extends ItemListPanel {
          !item.getEntity().getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(WORKSPACE_GROUP
           .COMPLETE.toString());
     }
-
+    protected BUTTON_SOUND_MAP getButtonSoundMap() {
+        return    BUTTON_SOUND_MAP.SELECTION_SHARP;
+    }
     @Override
     public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         List<SelectableItemData> list = new LinkedList<>();

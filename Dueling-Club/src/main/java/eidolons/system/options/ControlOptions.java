@@ -25,7 +25,7 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
         CENTER_CAMERA_AFTER_TIME(2, 1, 10),
         CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),
         CENTER_CAMERA_ON_ALLIES_ONLY(false),
-        ALWAYS_CAMERA_CENTER_ON_ACTIVE(false);
+        ALWAYS_CAMERA_CENTER_ON_ACTIVE(false), SCROLL_SPEED(100, 25, 200);
 //        BINDING_PROFILE, ;
         private Boolean exclusive;
         private Integer min;

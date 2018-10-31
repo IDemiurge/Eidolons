@@ -2,7 +2,7 @@ package eidolons.libgdx.particles;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.StringMaster;
 

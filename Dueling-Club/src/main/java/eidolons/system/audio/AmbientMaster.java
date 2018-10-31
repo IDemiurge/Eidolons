@@ -3,7 +3,7 @@ package eidolons.system.audio;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -57,6 +57,8 @@ public class AmbientMaster {
                 case DUNGEON:
                     return alt ? CAVE : MINE;
 
+                case TEMPLE:
+                    return alt ? MIST : EVIL;
                 case TOWER:
                     return alt ? EVIL : MIST;
                 case RUIN:
@@ -73,8 +75,6 @@ public class AmbientMaster {
                 case DEN:
                     break;
                 case CAMP:
-                    break;
-                case TEMPLE:
                     break;
                 case HOUSE:
                     break;

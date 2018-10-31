@@ -77,7 +77,7 @@ public enum GuiEventType implements EventType {
     LOG_ENTRY_ADDED,
     FULL_LOG_ENTRY_ADDED,
 
-    SFX_PLAY_LAST,
+    VFX_PLAY_LAST,
     SHOW_PHASE_ANIM,
     UPDATE_PHASE_ANIM,
     UPDATE_PHASE_ANIMS,

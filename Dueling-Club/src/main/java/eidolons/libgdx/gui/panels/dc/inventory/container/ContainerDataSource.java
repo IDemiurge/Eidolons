@@ -84,7 +84,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
     }
 
     public String getPricesInfo() {
-        return (100 - unit.getIntParam(PARAMS.GOLD_COST_REDUCTION) -
+        return (100 - unit.getIntParam(PARAMS.GOLD_COST_REDUCTION) +
          obj.getIntParam(PARAMS.GOLD_COST_REDUCTION)) +
          "%";
     }

@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.atb.AtbController;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.ContentValsManager;
@@ -23,6 +24,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -84,9 +86,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public Boolean playerWaits(float timeInSeconds, boolean rest) {
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         if (wait(timeInSeconds, rest))
             return false;
-
         Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
         return result;
     }

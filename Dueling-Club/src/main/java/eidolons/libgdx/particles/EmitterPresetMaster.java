@@ -172,7 +172,7 @@ public class EmitterPresetMaster {
             imagePath = searchImage(FileManager.getFile(PathFinder.getSpritesPath()), name);
         }
         if (StringMaster.isEmpty(imagePath)) {
-            LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR SFX: " + path);
+            LogMaster.log(1, imagePath + " - NO IMAGE FOUND FOR VFX: " + path);
         }
 
         return imagePath;

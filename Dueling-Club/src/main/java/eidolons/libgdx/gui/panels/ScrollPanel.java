@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxMaster;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.NumberUtils;
 
 public class ScrollPanel<T extends Actor> extends Container<Container> {
@@ -19,6 +21,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     private float instantOffsetY;
     private float offsetY;
     private boolean widgetPosChanged;
+    private Integer scrollAmount;
 
     public ScrollPanel() {
         init();
@@ -128,7 +131,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
                         offsetY = 0;
                         return true;
                     }
-                offsetY += amount * 6000;// getScrollAmount();
+                offsetY += amount * getScrollAmount();
                 return true;
             }
 
@@ -218,5 +221,16 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         }
         getStage().setScrollFocus(this);
         return a;
+    }
+
+    public Integer getScrollAmount() {
+        if (scrollAmount == null) {
+            scrollAmount =60* OptionsMaster.getControlOptions().getIntValue(CONTROL_OPTION.SCROLL_SPEED);
+        }
+        return scrollAmount;
+    }
+
+    public void setScrollAmount(int scrollAmount) {
+        this.scrollAmount = scrollAmount;
     }
 }

@@ -373,10 +373,12 @@ public class HqDataMaster {
                 break;
             case PICK_UP:
                 item = (DC_HeroItemObj) args[0];
-                if (!GoldMaster.checkGoldPack(item, hero))
+                if (GoldMaster.checkGoldPack(item, hero)) {
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
+                } else {
                     hero.addItemToInventory(item); //TODO fix pickup!
-
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+                }
                 break;
             case DROP:
                 hero.dropItemFromInventory(item);

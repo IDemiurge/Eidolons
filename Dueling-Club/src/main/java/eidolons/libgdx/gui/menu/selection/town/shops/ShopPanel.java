@@ -264,6 +264,10 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     }
 
+    public void update() {
+        setUserObject(getUserObject());
+    }
+
     public class ShopSlotsPanel extends InventorySlotsPanel {
         public ShopSlotsPanel(int rows, int cols) {
             super(rows, cols);

@@ -27,7 +27,8 @@ public interface StageWithClosable {
             if (closable instanceof Blocking) {
                 if (((Blocking) closable).isPausing())
                 if (DC_Game.game != null)
-                    DC_Game.game.getLoop().setPaused(false, false);
+                    if (DC_Game.game .isStarted())
+                        DC_Game.game.getLoop().setPaused(false, false);
 
             }
         setDisplayedClosable(null);
@@ -49,6 +50,7 @@ public interface StageWithClosable {
             if (closable instanceof Blocking) {
                 if (((Blocking) closable).isPausing())
                     if (DC_Game.game != null)
+                        if (DC_Game.game .isStarted())
                     if (DC_Game.game.getLoop() != null) {
                         DC_Game.game.getLoop().setPaused(true, false);
                         return;
@@ -73,7 +75,6 @@ public interface StageWithClosable {
             return false;
         getDisplayedClosable().close();
         setDisplayedClosable(null);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
         return true;
     }
 }

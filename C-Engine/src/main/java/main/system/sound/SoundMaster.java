@@ -205,9 +205,21 @@ public class SoundMaster {
     public enum BUTTON_SOUND_MAP {
         //drag? scroll?
         MENU(NEW__CLICK, null , NEW__CLICK_UP, NEW__CLICK_DISABLED),
+        SELECTION_SHARP(NEW__CLICK, null  , NEW__CLICK_UP2, NEW__CLICK_DISABLED),
+
+        SELECTION_SCROLL(NEW__TAB, null  , NEW__OPEN_MENU , NEW__CLICK_DISABLED),
+        HELP(NEW__TAB, null  , NEW__OPEN_MENU , NEW__CLICK_DISABLED),
+
+        SELECTION(NEW__TAB, null  , null , NEW__CLICK_DISABLED),
+        EYE(NEW__TAB, null  , null , NEW__CLICK_DISABLED),
+
         TAB(NEW__TAB, null , null, null),
         STAT(NEW__PLUS,null  ,null  , CLICK_ERROR),
-        ENTER(null , null ,NEW__ENTER  , NEW__CLICK_DISABLED),
+        ENTER(null , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
+        OK(NEW__OK , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
+        CANCEL(NEW__CLICK_DISABLED , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
+
+//        REPAIR(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
         CHEST(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
 
 
@@ -328,14 +340,17 @@ public class SoundMaster {
         DIS__BLESS(true),
         CLICK1,
         ButtonUp,
-        ButtonDown, VICTORY, NEW__CLICK, NEW__HOVER, NEW__CLICK_DISABLED, NEW__CLICK_UP
+        ButtonDown, VICTORY, NEW__CLICK, NEW__HOVER, NEW__CLICK_DISABLED
+        , NEW__CLICK_UP2
+        , NEW__CLICK_UP
         , NEW__ENTER
         , NEW__TAB
         , NEW__BATTLE_START
+        , NEW__BATTLE_START2
         , NEW__CONTAINER,
         NEW__PLUS,
 
-        NEW__OPEN_MENU;
+        NEW__OPEN_MENU, NEW__GOLD, NEW__OK;
         String path;
         private boolean alt;
 

@@ -31,6 +31,9 @@ public class DifficultySelectionPanel extends SelectionPanel {
         return WAIT_OPERATION;
     }
 
+    protected boolean isBackSupported() {
+        return false;
+    }
     @Override
     protected ItemInfoPanel createInfoPanel() {
         return new DifficultyInfoPanel(getItemFromDiff(getDefaultDifficulty()));

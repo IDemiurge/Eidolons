@@ -6,8 +6,9 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
+import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.RandomWizard;
@@ -148,7 +149,7 @@ public class ZoneCreator {
                   COLOR_THEME.PURPLE,
                  };
         }
-        return getColors(DUNGEON_STYLE.Somber);
+        return getColors(DungeonEnums.DUNGEON_STYLE.Somber);
     }
 
     public static DUNGEON_STYLE getStyle(ZONE_TYPE zone_type,

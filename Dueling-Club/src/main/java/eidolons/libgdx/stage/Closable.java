@@ -10,7 +10,6 @@ public interface Closable {
 
     default void close() {
         getStageWithClosable().closeClosable(this);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
 
     }
 

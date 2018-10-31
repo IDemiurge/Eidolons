@@ -9,7 +9,6 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -19,7 +18,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.text.TextParser;
 
@@ -166,14 +164,7 @@ public class InventoryFactory {
         if (container == null)
             container = new InvItemActor(
              item, cellType, handler);
-        if (entity == null) {
-            container.addListener(new ValueTooltip(StringMaster.getWellFormattedString(cellType.toString()) +
-             " slot").getController());
-        } else {
-            String vals = getTooltipsVals(entity);
-            container.addListener(new ValueTooltip(entity.getName() + "\n" +
-             vals).getController());
-        }
+
         if (entity != null)
             if (cached) {
                 cache.put(entity, container);

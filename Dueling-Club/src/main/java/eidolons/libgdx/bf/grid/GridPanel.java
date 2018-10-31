@@ -14,10 +14,12 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -48,6 +50,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -404,8 +407,11 @@ public class GridPanel extends Group {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
                  "No targets available!",
                  Eidolons.getGame().getManager().getControlledObj());
+                GdxMaster.setDefaultCursor();
+                EUtils.playSound(STD_SOUNDS.NEW__CLICK_DISABLED);
                 return;
             }
+            EUtils.playSound(STD_SOUNDS.NEW__TAB);
             Map<Borderable, Runnable> map = new HashMap<>();
 
             for (DC_Obj obj1 : p.getLeft()) {

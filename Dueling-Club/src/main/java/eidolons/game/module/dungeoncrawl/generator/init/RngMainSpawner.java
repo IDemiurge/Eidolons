@@ -12,7 +12,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestCreator;
@@ -101,6 +101,20 @@ public class RngMainSpawner {
     public static UNIT_GROUP getUnitGroup(
      boolean surface, DUNGEON_STYLE style) {
         switch (style) {
+            case Brimstone:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
+                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
+                  .chain(UNIT_GROUP.CULT_CHAOS, 4)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
+                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
+                  .getRandomByWeight();
             case PureEvil:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -116,11 +130,12 @@ public class RngMainSpawner {
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
-                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 10)
-                  .chain(UNIT_GROUP.DEMONS_WARPED, 6)
+                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
                   .chain(UNIT_GROUP.CULT_DEATH, 7)
-                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 5)
-                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 4)
+                  .chain(UNIT_GROUP.UNDEAD, 14)
+                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 8)
+                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 6)
                   .chain(UNIT_GROUP.CULT_DARK, 5)
                   .getRandomByWeight();
             case Grimy:
@@ -255,13 +270,26 @@ public class RngMainSpawner {
         quest.setArg(type);
         int perGroup = 1 + level.getPowerLevel() / type.getIntParam(PARAMS.POWER) / 2;
         int groups = n / perGroup;
-        for (LevelBlock block : zone.getSubParts()) {
+        List<LevelBlock> blocks = new ArrayList<>(level.getBlocks());
+        blocks.removeIf(block -> {
+            if (!isBlockForGroup(block, UNIT_GROUP_TYPE.IDLERS))
+                if (!isBlockForGroup(block, UNIT_GROUP_TYPE.GUARDS))
+                    if (!isBlockForGroup(block, UNIT_GROUP_TYPE.CROWD))
+                        if (!isBlockForGroup(block, UNIT_GROUP_TYPE.PATROL))
+                    {
+                        return true;
+                    }
+            return false;
+        });
+//        Collections.sort(blocks, );
+        for (LevelBlock block : blocks) {
+
             List<ObjType> units = new ArrayList<>();
             for (int i = 0; i < perGroup; i++) {
                 units.add(type);
             }
             List<ObjAtCoordinate> list = spawnUnits(block, units);
-            block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
+            block.getUnitGroups().put(list, UNIT_GROUP_TYPE.IDLERS);
             groups--;
             if (groups == 0)
                 perGroup = n % perGroup;

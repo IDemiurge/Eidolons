@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;

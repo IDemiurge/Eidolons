@@ -162,7 +162,6 @@ public class Shop extends TownPlace implements ShopInterface {
                 pool = new ArrayList<>(basis);
                 FilterMaster.filter(pool, new PropCondition(prop, group));
             }
-
             pool = constructPool(pool);
             pool.addAll(getSpecialItems(group));
 

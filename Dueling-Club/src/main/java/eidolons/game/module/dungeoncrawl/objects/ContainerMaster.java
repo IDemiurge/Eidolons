@@ -18,6 +18,7 @@ import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
+import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -45,6 +46,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -79,7 +81,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isPregenerateItems() {
-        return CoreEngine.isIDE();
+        return true;
     }
 
     public static boolean isGenerateItemsForUnits() {
@@ -96,6 +98,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         Pair<InventoryDataSource, ContainerDataSource> param =
          new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
+        if (RandomWizard.random()) {
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+        } else
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
         boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
         unit.getGame().getManager().reset();
         return result;
@@ -632,8 +638,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
         } else c =
          RandomWizard.getRandomIntBetween(5, 15)
-          + RandomWizard.getRandomFloatBetween(0.6f, 2f)
-          * obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost;
+          + RandomWizard.getRandomFloatBetween(0.7f, 1f)
+          * (obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost);
         return Math.round(c);
     }
 

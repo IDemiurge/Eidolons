@@ -9,6 +9,7 @@ import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
@@ -22,7 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE.*;
+import static main.content.enums.DungeonEnums.DUNGEON_STYLE.*;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -226,23 +227,6 @@ public class TileConverter {
                 break;
         }
         return map.toString();
-    }
-
-    /**
-     * Encapsulates Ambience, decor, illumination
-     */
-    public enum DUNGEON_STYLE {
-        Knightly,
-        Holy,
-        Stony,
-        Pagan,
-        DarkElegance,
-        PureEvil,
-        Brimstone,
-        Grimy,
-        Somber,
-        Arcane,
-        Cold,
     }
 
 

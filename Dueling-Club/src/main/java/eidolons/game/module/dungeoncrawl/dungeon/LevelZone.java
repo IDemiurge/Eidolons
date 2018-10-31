@@ -5,7 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;

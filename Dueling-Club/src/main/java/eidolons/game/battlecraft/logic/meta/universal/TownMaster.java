@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.FauxMacroGame;
 import eidolons.macro.entity.MacroRef;
@@ -51,12 +52,19 @@ public class TownMaster extends MetaGameHandler {
     }
 
     public boolean enterTown(Town town) {
-        if (this.town == null)
+        if (this.town == null) {
+            try {
+                SkillMaster.initMasteryRanks(
+                 Eidolons.getMainHero());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             try {
                 Eidolons.getMainHero().reset();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+        }
         this.town = town;
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
         inTown = true;

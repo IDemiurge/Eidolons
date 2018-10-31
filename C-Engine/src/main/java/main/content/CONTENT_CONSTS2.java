@@ -403,7 +403,7 @@ public class CONTENT_CONSTS2 {
         ARMOR("chain", "leather", "bucklers"),
         HEAVY_ARMOR("chain", "plate", "shields"), //
 
-        ALCHEMIST("potions", "poisons", "elixirs", "concoctions"),
+        ALCHEMIST("potions"),//, "poisons", "elixirs", "concoctions"),
         UNDERTAKER,
         BLACK_MARKET,
 

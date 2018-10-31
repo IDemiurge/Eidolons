@@ -53,7 +53,7 @@ public class EmitterController implements Controller {
                 addRandom();
             }
         });
-        GuiEventManager.bind(GuiEventType.SFX_PLAY_LAST, p -> replay());
+        GuiEventManager.bind(GuiEventType.VFX_PLAY_LAST, p -> replay());
     }
 
     public static EmitterController getInstance() {
@@ -170,8 +170,8 @@ public class EmitterController implements Controller {
         if (presetmod) {
 //            random = DialogMaster.confirm("random?");
 //            lastPreset = random ?
-//             new EnumMaster<SFX_MODIFICATION_PRESET>().
-//              getRandomEnumConst(SFX_MODIFICATION_PRESET.class) :
+//             new EnumMaster<VFX_MODIFICATION_PRESET>().
+//              getRandomEnumConst(VFX_MODIFICATION_PRESET.class) :
             lastPreset = new EnumMaster<VFX_MODIFICATION_PRESET>().selectEnum(VFX_MODIFICATION_PRESET.class);
             modify(lastPreset);
         } else {
@@ -406,7 +406,7 @@ public class EmitterController implements Controller {
                     }
                 }
                 break;
-            case PICK_SFX:
+            case PICK_VFX:
                 break;
         }
     }
@@ -414,7 +414,7 @@ public class EmitterController implements Controller {
     public enum EMITTER_CONTROLLER_FUNCTIONS {
 
         SET_DEFAULT_ADD_PATH,
-        PICK_SFX,
+        PICK_VFX,
         ADD,
         ADD_RANDOM,
         MODIFY,

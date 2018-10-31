@@ -115,8 +115,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static void fallUnconscious(Unit unit) {
-        if (unit.getAI().isOutsideCombat()) {
-            unit.getAI().isOutsideCombat();
+        if (!unit.getAI().isOutsideCombat()) {
+            if (unit.getAI().getCombatAI().getEngagementDuration()>0) {
+                unit.getAI().getCombatAI().setEngagementDuration(0);
+            }
         }
         unit.getGame().
          fireEvent(new Event(

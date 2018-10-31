@@ -19,6 +19,16 @@ public class ShopSelectionPanel extends PlaceSelectionPanel {
         //set size from parent
     }
 
+    @Override
+    public void update() {
+        getInfoPanel().update();
+    }
+
+    @Override
+    public ShopPanel getInfoPanel() {
+        return (ShopPanel) super.getInfoPanel();
+    }
+
     protected String getTitle() {
         return "Available Shops";
     }

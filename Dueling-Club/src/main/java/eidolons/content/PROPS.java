@@ -18,8 +18,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PARTY_MISSIONS_NEXT(null, false, "party"),
     PARTY_MISSION(null, false, "party"),
     PARTY_MAIN_HERO(null, false, "party"),
-    SCENARIO_TYPE(null, false, "scenarios"),
-    SCENARIO_MISSIONS(null, true, "scenarios"),
+
+    SCENARIO_TYPE(null, false, "scenarios")
+    , DUNGEON_STYLE(null, false, "scenarios")
+    , SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PATHS(null, true, "scenarios"),
     SCENARIO_STARTING_PLACE(null, false, "scenarios"),
     SCENARIO_INTRO_DIALOGUES(null, true, "scenarios"),
@@ -431,15 +433,15 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
      ("", true, "spells", "actions"),
     ANIM_MISSILE_SPRITE
      ("", true, "spells", "actions"), ANIM_MODS_SPRITE
-     ("", true, "spells", "actions"), ANIM_MISSILE_SFX
+     ("", true, "spells", "actions"), ANIM_MISSILE_VFX
 //
-     ("", true, "spells", "actions"), ANIM_SFX_PRECAST
-     ("", true, "spells", "actions"), ANIM_SFX_CAST
-     ("", true, "spells", "actions"), ANIM_SFX_RESOLVE
-     ("", true, "spells", "actions"), ANIM_SFX_MAIN
-     ("", true, "spells", "actions"), ANIM_SFX_IMPACT
-     ("", true, "spells", "actions"), ANIM_SFX_AFTEREFFECT
-     ("", true, "spells", "actions"), ANIM_MODS_SFX
+     ("", true, "spells", "actions"), ANIM_VFX_PRECAST
+     ("", true, "spells", "actions"), ANIM_VFX_CAST
+     ("", true, "spells", "actions"), ANIM_VFX_RESOLVE
+     ("", true, "spells", "actions"), ANIM_VFX_MAIN
+     ("", true, "spells", "actions"), ANIM_VFX_IMPACT
+     ("", true, "spells", "actions"), ANIM_VFX_AFTEREFFECT
+     ("", true, "spells", "actions"), ANIM_MODS_VFX
      ("", true, "spells", "actions"),
 
     SPRITE_PATH("weapons", null), UNLOCKED_MASTERIES(null,true ,"chars", "units" ),

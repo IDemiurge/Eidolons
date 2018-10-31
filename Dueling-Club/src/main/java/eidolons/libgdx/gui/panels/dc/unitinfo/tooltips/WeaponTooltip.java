@@ -34,7 +34,8 @@ public class WeaponTooltip extends ValueTooltip {
         addElement(container);
         row();
         LabelStyle style = StyleHolder.getHqLabelStyle(15);
-        String text = TextWrapper.processText(GdxMaster.getWidth() / 3, InventoryFactory.getTooltipsVals(source.getItem()), style);
+        String text = TextWrapper.processText(GdxMaster.getWidth() / 3,
+         InventoryFactory.getTooltipsVals(source.getItem()), style);
         container = new ValueContainer(text);
         container.setStyle(style);
         addElement(container).left();

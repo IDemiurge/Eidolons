@@ -136,12 +136,12 @@ public class DebugMaster {
     };
     public static final DEBUG_FUNCTIONS[] group_sfx = {
 
-     DEBUG_FUNCTIONS.SFX_ADD,
-     DEBUG_FUNCTIONS.SFX_SET,
-     DEBUG_FUNCTIONS.SFX_PLAY_LAST,
-     DEBUG_FUNCTIONS.SFX_ADD_RANDOM,
-     DEBUG_FUNCTIONS.SFX_MODIFY,
-     DEBUG_FUNCTIONS.SFX_SAVE,
+     DEBUG_FUNCTIONS.VFX_ADD,
+     DEBUG_FUNCTIONS.VFX_SET,
+     DEBUG_FUNCTIONS.VFX_PLAY_LAST,
+     DEBUG_FUNCTIONS.VFX_ADD_RANDOM,
+     DEBUG_FUNCTIONS.VFX_MODIFY,
+     DEBUG_FUNCTIONS.VFX_SAVE,
     };
     public static final DEBUG_FUNCTIONS[] group_graphics = {
      DEBUG_FUNCTIONS.TOGGLE_LIGHTING,
@@ -793,25 +793,25 @@ public class DebugMaster {
                       retrieveEnumConst(GuiEventType.class,
                        string), null);
                     break;
-                case SFX_PLAY_LAST:
+                case VFX_PLAY_LAST:
                     EmitterController.getInstance();
-                    GuiEventManager.trigger(GuiEventType.SFX_PLAY_LAST, null);
+                    GuiEventManager.trigger(GuiEventType.VFX_PLAY_LAST, null);
                     break;
-                case SFX_ADD:
+                case VFX_ADD:
                     EmitterController.getInstance();
                     GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, null);
                     break;
-                case SFX_ADD_RANDOM:
+                case VFX_ADD_RANDOM:
                     EmitterController.getInstance().getInstance();
                     GuiEventManager.trigger(GuiEventType.CREATE_EMITTER, true);
                     break;
-                case SFX_MODIFY:
+                case VFX_MODIFY:
                     EmitterController.getInstance().modify();
                     break;
-                case SFX_SET:
+                case VFX_SET:
                     EmitterController.getInstance().setForActive();
                     break;
-                case SFX_SAVE:
+                case VFX_SAVE:
                     EmitterController.getInstance().save();
                     break;
             }
@@ -1332,11 +1332,11 @@ public class DebugMaster {
 
 
         TOGGLE_LIGHTING,
-        TOGGLE_FOG, SFX_ADD,
-        SFX_ADD_RANDOM,
-        SFX_MODIFY,
-        SFX_SAVE,
-        SFX_PLAY_LAST, SFX_SET, GUI_EVENT;
+        TOGGLE_FOG, VFX_ADD,
+        VFX_ADD_RANDOM,
+        VFX_MODIFY,
+        VFX_SAVE,
+        VFX_PLAY_LAST, VFX_SET, GUI_EVENT;
 
         boolean transmitted;
 

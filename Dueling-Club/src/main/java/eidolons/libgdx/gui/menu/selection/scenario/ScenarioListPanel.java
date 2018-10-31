@@ -4,6 +4,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.system.text.HelpMaster;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -15,6 +16,9 @@ import java.util.List;
 public class ScenarioListPanel extends ItemListPanel {
 
 
+    protected BUTTON_SOUND_MAP getButtonSoundMap() {
+        return    BUTTON_SOUND_MAP.SELECTION_SHARP;
+    }
     @Override
     public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         List<SelectableItemData> list = new LinkedList<>();

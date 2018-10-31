@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior.BEHAVIOR_METHOD;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
@@ -29,10 +30,16 @@ public class UnitExploreAI {
 
     public void act(float delta) {
         activeBehavior = updateBehavior();
+        if (activeBehavior == null) {
+            return;
+        }
         activeBehavior.act(delta);
     }
 
     private AiBehavior updateBehavior() {
+        if (!ListMaster.isNotEmpty(behaviors)) {
+            return null;
+        }
         return behaviors.get(0);
     }
 

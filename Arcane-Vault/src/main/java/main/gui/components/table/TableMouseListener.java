@@ -2,11 +2,11 @@ package main.gui.components.table;
 
 import eidolons.content.DC_CONSTS;
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.*;
-import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
@@ -66,13 +66,13 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     public static final String SPRITE_PATH =
      PathFinder.getSpritesPath();
 
-    public static final VALUE[] SFX_IDS = {
-     PROPS.ANIM_SFX_CAST,
-     PROPS.ANIM_SFX_RESOLVE,
-     PROPS.ANIM_SFX_MAIN,
-     PROPS.ANIM_SFX_IMPACT,
-     PROPS.ANIM_SFX_AFTEREFFECT,
-     PROPS.ANIM_MISSILE_SFX,
+    public static final VALUE[] VFX_IDS = {
+     PROPS.ANIM_VFX_CAST,
+     PROPS.ANIM_VFX_RESOLVE,
+     PROPS.ANIM_VFX_MAIN,
+     PROPS.ANIM_VFX_IMPACT,
+     PROPS.ANIM_VFX_AFTEREFFECT,
+     PROPS.ANIM_MISSILE_VFX,
     };
     public static final String VFX_PATH =
      PathFinder.getVfxPath();
@@ -99,7 +99,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     };
     public static final String[] SINGLE_ENUM_LIST_IDS = {
-
+     PROPS.DUNGEON_STYLE.name(),
      MACRO_PROPS.QUEST_GROUP.name(), MACRO_PROPS.QUEST_TYPE.name(),
      MACRO_PROPS.QUEST_REWARD_TYPE.name(),
      MACRO_PROPS.QUEST_TIME_LIMIT.name(),
@@ -184,9 +184,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     };
     public static final OBJ_TYPE[] MULTI_TYPE_LIST = {
-    MACRO_OBJ_TYPES.FACTIONS,
+     MACRO_OBJ_TYPES.FACTIONS,
      DC_TYPE.CHARS, DC_TYPE.DUNGEONS,
-     DC_TYPE.DUNGEONS,MACRO_OBJ_TYPES.FACTIONS, DC_TYPE.UNITS,
+     DC_TYPE.DUNGEONS, MACRO_OBJ_TYPES.FACTIONS, DC_TYPE.UNITS,
      MACRO_OBJ_TYPES.AREA,
      DC_TYPE.DEITIES,
      DC_TYPE.SPELLS,
@@ -222,7 +222,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      G_PROPS.ARMOR_ITEM.name(),};
 
     public static final OBJ_TYPE[] SINGLE_TYPE_LIST = {
-    MACRO_OBJ_TYPES.FACTIONS,
+     MACRO_OBJ_TYPES.FACTIONS,
      DC_TYPE.CLASSES, DC_TYPE.CLASSES,
      DC_TYPE.UNITS, DC_TYPE.WEAPONS, DC_TYPE.WEAPONS, DC_TYPE.ARMOR,};
     public static final String[] MAP_EDITOR_IDS = {MACRO_PROPS.AREA.name(),};
@@ -419,7 +419,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
             });
         }
-        for (VALUE val : SFX_IDS) {
+        for (VALUE val : VFX_IDS) {
             String id = StringMaster.getWellFormattedString(val.name());
             editorMap.put(id, new FileChooser(false, true) {
                 protected String getDefaultFileLocation() {

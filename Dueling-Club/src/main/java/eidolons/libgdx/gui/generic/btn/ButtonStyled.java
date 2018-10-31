@@ -105,7 +105,8 @@ public class ButtonStyled extends ImageContainer {
         CIRCLE(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
          "buttons","special", "circle.png")),
         CHEST(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
-         "buttons","special", "chest.png")), REPAIR(
+         "buttons","special", "chest.png")),
+        REPAIR(
           PathFinder.getUiPath()+
          "components/hq/inv/repair.png");
 

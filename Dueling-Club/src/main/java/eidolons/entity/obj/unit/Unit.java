@@ -267,6 +267,7 @@ public class Unit extends DC_UnitModel {
     @Override
     public void reset() {
         super.reset();
+        checkRemoveQuickItems();
     }
 
     @Override
@@ -908,7 +909,6 @@ public class Unit extends DC_UnitModel {
             return;
         } else if (getArmor() == item) {
             unequip(ItemEnums.ITEM_SLOT.ARMOR, drop);
-            checkRemoveQuickItems();
             return;
         }
         boolean result = removeJewelryItem(item);
@@ -926,9 +926,12 @@ public class Unit extends DC_UnitModel {
 
     private void checkRemoveQuickItems() {
         int n = getIntParam(PARAMS.QUICK_SLOTS);
-
-        for (int i = n; i < getQuickItems().size(); i++) {
-            unequip(getQuickItems().get(i), false);
+        int size = getQuickItems().size();
+        if (size<=n)
+            return;
+        List<DC_QuickItemObj> toRemove = new ArrayList<>(getQuickItems()).subList(n - 1, size - 1);
+        for (DC_QuickItemObj q : toRemove) {
+            unequip(q, false);
         }
     }
 

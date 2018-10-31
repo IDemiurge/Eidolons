@@ -55,7 +55,7 @@ public class DebugController implements Controller {
 //         FUNC_ADD_NON_BF(DebugMaster.group_add),
 //         FUNC_GLOBAL(DebugMaster.group_bf),
 //         FUNC_GRAPHICS(DebugMaster.group_graphics),
-//         FUNC_SFX(DebugMaster.group_sfx),
+//         FUNC_VFX(DebugMaster.group_sfx),
         return false;
     }
 }

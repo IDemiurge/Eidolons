@@ -44,7 +44,7 @@ public class EUtils {
     }
 
     public static void playSound(STD_SOUNDS sound) {
-//        GuiEventManager.trigger(GuiEventType.SFX_PLAY_LAST);
+//        GuiEventManager.trigger(GuiEventType.VFX_PLAY_LAST);
         DC_SoundMaster.playStandardSound(sound);
     }
 

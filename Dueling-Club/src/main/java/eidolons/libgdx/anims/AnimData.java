@@ -84,11 +84,11 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
             case ANIM_SPRITE_AFTEREFFECT:
                 setValue(ANIM_VALUES.SPRITES, value);
                 break;
-            case ANIM_SFX_CAST:
-            case ANIM_SFX_MAIN:
-            case ANIM_SFX_IMPACT:
-            case ANIM_SFX_RESOLVE:
-            case ANIM_SFX_AFTEREFFECT:
+            case ANIM_VFX_CAST:
+            case ANIM_VFX_MAIN:
+            case ANIM_VFX_IMPACT:
+            case ANIM_VFX_RESOLVE:
+            case ANIM_VFX_AFTEREFFECT:
                 setValue(ANIM_VALUES.PARTICLE_EFFECTS, value);
                 break;
         }

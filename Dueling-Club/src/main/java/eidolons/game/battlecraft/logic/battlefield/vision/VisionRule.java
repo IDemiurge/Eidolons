@@ -175,6 +175,14 @@ public class VisionRule {
             }
             if (PositionMaster.getExactDistance(observer, cell) >
             1+ observer.getMaxVisionDistance()) {
+                if (master.getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof Structure) {
+                    Structure o = ((Structure) master.getGame().getObjectByCoordinate(cell.getCoordinates()));
+                    if (o.isWall()) {
+                        if (o.isPlayerDetected()) {
+                            return true;
+                        }
+                    }
+                }
                 return false;
             }
             return true;
@@ -184,7 +192,6 @@ public class VisionRule {
         else if (getPlayerUnseenMode()) {
             return false;
         }
-
         if (PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance()) {
             return false;
         }
@@ -255,7 +262,14 @@ public class VisionRule {
             case BLOCKED:
                 if (object.isWall()) {
                     if (object.isDetected(source.getOwner())) {
+                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
+                         object + " DETECTED at" +
+                         object.getCoordinates() );
                         return PLAYER_VISION.KNOWN;
+                    } else {
+                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
+                         object + " undetected at" +
+                         object.getCoordinates() );
                     }
                 }
             case UNSEEN:

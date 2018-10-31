@@ -50,7 +50,7 @@ public class TexturePackerLaunch {
 
     static String mainFolders[] = {
 //     "gen",
-     "K:\\[Eidolons v.0.8.6 Halloween]\\test",
+     "K:\\[Eidolons v.0.8.6 Halloween]\\resources\\img\\ui",
 //     "ui",
 //     "main",
     };

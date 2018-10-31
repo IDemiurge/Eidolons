@@ -98,7 +98,7 @@ public class ItemGenerator implements GenericItemGenerator {
     private static ItemGenerator basicGenerator;
     private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
     private static List<ObjType> baseWeaponTypes = new ArrayList<>();
-    private static List<ObjType> baseWeaponTypesNoNatural ;
+    private static List<ObjType> baseWeaponTypesForShops;
     private static List<ObjType> baseJewelryTypes = new ArrayList<>();
     private static List<ObjType> baseItemTypes = new ArrayList<>();
     private static List<ObjType> baseArmorTypes = new ArrayList<>();
@@ -585,20 +585,20 @@ public class ItemGenerator implements GenericItemGenerator {
             }
         } else {
             if (type.equals(DC_TYPE.WEAPONS)) {
-                if (baseWeaponTypesNoNatural == null) {
-                    baseWeaponTypesNoNatural=     new ArrayList<>(baseWeaponTypes) ;
-                    baseWeaponTypesNoNatural.removeIf(t ->
+                if (baseWeaponTypesForShops == null) {
+                    baseWeaponTypesForShops =     new ArrayList<>(baseWeaponTypes) ;
+                    baseWeaponTypesForShops.removeIf(t ->
                      t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.name()));
-                    baseWeaponTypesNoNatural.removeIf(t ->
+                    baseWeaponTypesForShops.removeIf(t ->
                      t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.name()));
-                    baseWeaponTypesNoNatural.removeIf(t ->
+                    baseWeaponTypesForShops.removeIf(t ->
                      t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.NATURAL.name()));
-                    baseWeaponTypesNoNatural.removeIf(t ->
+                    baseWeaponTypesForShops.removeIf(t ->
                      t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.FIREARMS.name()));
-                    baseWeaponTypesNoNatural.removeIf(t ->
+                    baseWeaponTypesForShops.removeIf(t ->
                      t.checkProperty(G_PROPS.WEAPON_CLASS, WEAPON_CLASS.DOUBLE.name()));
                 }
-                return (baseWeaponTypesNoNatural);
+                return (baseWeaponTypesForShops);
             }
             if (type.equals(DC_TYPE.ITEMS)|| type.equals(DC_TYPE.JEWELRY)) {
                 if (!jewelryGenerated){
@@ -607,11 +607,14 @@ public class ItemGenerator implements GenericItemGenerator {
                 if (!usablesGenerated){
                     getDefaultGenerator().generateUsableItems();
                 }
-                list.addAll(DataManager.getTypes(type));
-                list.removeIf(type1 -> !type1.isGenerated());
                 if (type.equals(DC_TYPE.JEWELRY)) {
+                    list.addAll(DataManager.getTypes(type));
+                    list.removeIf(type1 -> !type1.isGenerated());
                     list.removeIf(type1 -> type1.checkProperty(
                      G_PROPS.JEWELRY_GROUP, JEWELRY_GROUP.EMPTY.name()));
+                } else {
+                    list.addAll(DataManager.getTypesGroup(DC_TYPE.ITEMS, ITEM_GROUP.POTIONS.name()));
+                    list.removeIf(type1 -> !type1.isGenerated());
                 }
 
             }

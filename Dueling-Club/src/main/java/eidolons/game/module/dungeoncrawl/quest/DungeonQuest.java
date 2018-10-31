@@ -2,13 +2,16 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
+import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_HANGING;
 import main.content.enums.meta.QuestEnums.QUEST_GROUP;
 import main.content.enums.meta.QuestEnums.QUEST_TIME_LIMIT;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
+import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
@@ -71,6 +74,14 @@ public class DungeonQuest {
                 float coef = getMobPower(powerLevel, unitType);
                 setPowerCoef(coef);
                 setArg(unitType);
+                break;
+            case OBJECTS:
+                setPowerCoef(new Float(powerLevel)/40);
+                setArg(DataManager.getType(BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE.getName(), DC_TYPE.BF_OBJ));
+                break;
+            case SECRETS:
+                setPowerCoef(new Float(powerLevel)/180);
+                setArg(DataManager.getType("Old Stone Wall", DC_TYPE.BF_OBJ));
                 break;
             case COMMON_ITEMS:
                 setPowerCoef(new Float(powerLevel)/70);

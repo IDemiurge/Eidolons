@@ -7,6 +7,7 @@ import main.elements.conditions.ObjComparison;
 import main.elements.triggers.Trigger;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
@@ -46,7 +47,7 @@ public class QuestResolver  extends QuestHandler{
                 return new ObjComparison(()->((Obj) quest.getArg()).getId(), KEYS.TARGET.name());
             case HUNT:
             case COMMON_ITEMS:
-                return new DynamicCondition<Obj>(obj ->
+                return new DynamicCondition<ObjType>(obj ->
              (obj.getType()).equalsAsBaseType(quest.getArg()));
             case SPECIAL_ITEM:
                 return new DynamicCondition<Obj>(obj ->
@@ -72,6 +73,10 @@ public class QuestResolver  extends QuestHandler{
             case BOSS:
             case HUNT:
                 return STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED;
+            case OBJECTS:
+                return STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED;
+            case SECRETS:
+                return STANDARD_EVENT_TYPE.SECRET_FOUND;
             case COMMON_ITEMS:
             case SPECIAL_ITEM:
                 return STANDARD_EVENT_TYPE.ITEM_ACQUIRED;

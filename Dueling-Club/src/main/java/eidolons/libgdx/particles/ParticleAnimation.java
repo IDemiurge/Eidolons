@@ -40,7 +40,7 @@ public class ParticleAnimation implements ParticleInterface {
     states: start, run, done
     params: length, delay,
     templates
-    args: SFX...effects
+    args: VFX...effects
 
      */
 }

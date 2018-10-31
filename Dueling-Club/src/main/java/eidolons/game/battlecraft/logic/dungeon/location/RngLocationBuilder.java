@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -21,7 +22,7 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.texture.TextureCache;
@@ -35,7 +36,6 @@ import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
-import main.entity.obj.MicroObj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -60,13 +60,19 @@ import static eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster.UNIT
  */
 public class RngLocationBuilder extends LocationBuilder {
     private String entranceData;
+    private DUNGEON_STYLE mainStyle;
 
     public RngLocationBuilder(LocationMaster locationMaster) {
         super(locationMaster);
     }
 
     public Location buildDungeon(String path) {
-        String data = FileManager.readFile(path);
+        if (game.getMetaMaster().getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
+            String prop = ((ScenarioMeta) game.getMetaMaster().getMetaDataManager().getMetaGame()).getScenario().getProperty(
+             PROPS.DUNGEON_STYLE);
+            mainStyle =new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class, prop);
+        }
+         String data = FileManager.readFile(path);
 
         if (data.isEmpty()) {
             data = FileManager.readFile(
@@ -78,6 +84,14 @@ public class RngLocationBuilder extends LocationBuilder {
         }
         DungeonLevel level = loadLevel(path);
         master.setDungeonLevel(level);
+
+        if (mainStyle!=null ){
+        for (LevelZone zone : level.getZones()) {
+                if (zone.getStyle()==level.getMainStyle())
+                    zone.setStyle(mainStyle);
+            }
+            level.setMainStyle(mainStyle);
+        }
         new RngLevelInitializer().init(level);
         Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
         initWidthAndHeight(location);
@@ -88,6 +102,9 @@ public class RngLocationBuilder extends LocationBuilder {
                 ||  c.getCoordinates().equals(location.getMainExit().getCoordinates())
         );
         //        initDynamicObjData();
+
+
+
         return location;
     }
 
@@ -240,8 +257,9 @@ public class RngLocationBuilder extends LocationBuilder {
             String name = node.getNodeName().toUpperCase();
             switch (name) {
                 case RngXmlMaster.ZONE_STYLE_NODE:
-                    zone.setStyle(new EnumMaster<DUNGEON_STYLE>()
-                     .retrieveEnumConst(DUNGEON_STYLE.class, node.getTextContent()));
+                    DUNGEON_STYLE style = new EnumMaster<DUNGEON_STYLE>()
+                     .retrieveEnumConst(DUNGEON_STYLE.class, node.getTextContent());
+                    zone.setStyle(style);
                     break;
                 case RngXmlMaster.ZONE_TYPE_NODE:
                     zone.setType(new EnumMaster<ZONE_TYPE>()

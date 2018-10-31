@@ -40,6 +40,7 @@ public class MusicMaster {
     public static final String MASTER_PATH = PathFinder.getMusicPath() + "\\main\\";
     public static final boolean MASTER_MODE = true;
     public static final String AMBIENT_FOLDER = "atmo";
+    private static   boolean ALT_AMBIENCE = RandomWizard.random();
 
     static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
     static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
@@ -322,11 +323,11 @@ public class MusicMaster {
         if (!isAmbientOn())
             return;
         if (playedAmbient == null || !playedAmbient.isPlaying()) {
-            boolean alt = false;
+
             boolean global = true; //TODO
             AMBIENCE newAmbience = null;
             try {
-                newAmbience = AmbientMaster.getCurrentAmbience(alt, global);
+                newAmbience = AmbientMaster.getCurrentAmbience(ALT_AMBIENCE, global);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -398,8 +399,9 @@ public class MusicMaster {
             checkNewMusicToPlay();
             return;
         }
-        thread =
-         new Thread(() -> {
+        ALT_AMBIENCE = RandomWizard.chance(28);
+
+        thread = new Thread(() -> {
              while (true) {
                  checkAmbience();
                  if (!stopped) {

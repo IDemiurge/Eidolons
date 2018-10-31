@@ -1,8 +1,9 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.libgdx.bf.overlays.WallMap;
+import main.content.enums.DungeonEnums;
 import main.content.enums.entity.BfObjEnums.*;
 import main.system.datatypes.WeightMap;
 
@@ -14,7 +15,7 @@ import static main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_WALL.*;
  */
 public class RngBfObjProvider {
 
-    private static final DUNGEON_STYLE DEFAULT_STYLE = DUNGEON_STYLE.Somber;
+    private static final DUNGEON_STYLE DEFAULT_STYLE = DungeonEnums.DUNGEON_STYLE.Somber;
 
     public static String getWeightString(ROOM_CELL cell, DUNGEON_STYLE style) {
         //objGroups like unitGroups?
@@ -346,6 +347,15 @@ public class RngBfObjProvider {
 
     private static WeightMap<String> getEntranceWeightMap(DUNGEON_STYLE style, boolean exit) {
         switch (style) {
+            case Stony:
+                return exit
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_ENTRANCE.CAVE_EXIT, 2).
+                 chain(BF_OBJ_SUB_TYPES_ENTRANCE.DARK_WINDING_DOWNWARD_STAIRS, 10)
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_ENTRANCE.CAVE_ENTRANCE, 2).
+                 chain(BF_OBJ_SUB_TYPES_ENTRANCE.DARK_WINDING_UPWARD_STAIRS, 10)
+                 ;
             case Somber:
                 return exit
                  ? new WeightMap<String>().
@@ -356,7 +366,7 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_ENTRANCE.DARK_WINDING_UPWARD_STAIRS, 10)
                  ;
         }
-        return getEntranceWeightMap(DUNGEON_STYLE.Somber, exit);
+        return getEntranceWeightMap(DungeonEnums.DUNGEON_STYLE.Somber, exit);
     }
 
     private static WeightMap<String> getWallWeightMap(DUNGEON_STYLE style,

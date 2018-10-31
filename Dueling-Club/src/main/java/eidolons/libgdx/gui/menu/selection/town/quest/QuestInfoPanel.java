@@ -11,42 +11,52 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 10/5/2018.
- *
+ * <p>
  * separate info:
- *
+ * <p>
  * reward
  * objective
  * description
- *
  */
 public class QuestInfoPanel extends ItemInfoPanel {
+    public static final int WIDTH = 920;
+    public static final int HEIGHT = 720;
     private final SmartButton accept;
     private final SmartButton cancel;
     private boolean disabled;
-    public static final int WIDTH = 920;
-    public static final int HEIGHT = 720;
-
-    @Override
-    protected String getEmptyImagePath() {
-                return ImageManager.getEmptyUnitIconPath();
-    }
-
-    @Override
-    protected String getEmptyImagePathFullSize() {
-                return ImageManager.getEmptyUnitIconFullSizePath();
-    }
 
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
         row();
         addActor(accept = new SmartButton("Accept Quest",
-         STD_BUTTON.MENU, () -> accept()));
+         STD_BUTTON.MENU, () -> accept()) {
+            @Override
+            protected BUTTON_SOUND_MAP getSoundMap() {
+                return BUTTON_SOUND_MAP.OK;
+            }
+        });
         addActor(cancel = new SmartButton("Cancel Quest",
-         STD_BUTTON.MENU, () -> cancel()));
+         STD_BUTTON.MENU, () -> cancel()) {
+            @Override
+            protected BUTTON_SOUND_MAP getSoundMap() {
+                return BUTTON_SOUND_MAP.CANCEL;
+            }
+        });
 
+    }
+
+    @Override
+    protected String getEmptyImagePath() {
+        return ImageManager.getEmptyUnitIconPath();
+    }
+
+    @Override
+    protected String getEmptyImagePathFullSize() {
+        return ImageManager.getEmptyUnitIconFullSizePath();
     }
 
     @Override
@@ -55,9 +65,11 @@ public class QuestInfoPanel extends ItemInfoPanel {
         accept.setPosition(GdxMaster.centerWidth(accept) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
         cancel.setPosition(GdxMaster.centerWidth(cancel) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
     }
+
     protected void initSize() {
-            setSize(GdxMaster.adjustSize(WIDTH),  GdxMaster.adjustSize(HEIGHT));
+        setSize(GdxMaster.adjustSize(WIDTH), GdxMaster.adjustSize(HEIGHT));
     }
+
     @Override
     public void act(float delta) {
         super.act(delta);

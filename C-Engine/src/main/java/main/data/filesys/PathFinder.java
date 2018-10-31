@@ -195,11 +195,6 @@ public class PathFinder {
         return ENGINE_PATH + PathUtils.getPathSeparator() + RES_FOLDER_NAME + PathUtils.getPathSeparator();
     }
 
-    public static String getThemedBgPicsPath() {
-        init();
-        return IMG_PATH + PathUtils.getPathSeparator() + "mini" + PathUtils.getPathSeparator() + "bg" + PathUtils.getPathSeparator();
-    }
-
     public static String getMACRO_TYPES_PATH() {
         init();
         return MACRO_TYPES_PATH;

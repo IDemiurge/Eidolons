@@ -43,7 +43,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                                boolean altClick, Entity cellContents, boolean ctrlClick) {
 
         OPERATIONS operation = getInvOperation(cell_type, clickCount, rightClick,
-         altClick,ctrlClick, cellContents);
+         altClick, ctrlClick, cellContents);
         return handleOperation(operation, cell_type, cellContents);
     }
 
@@ -86,12 +86,16 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             if (arg == null)
                 arg = getSecondArg(operation, getDragged());
 
-            if (!isBlocked())
+            if (!isBlocked()) {
                 if (canDoOperation(operation, getDragged(), arg)) {
                     execute(operation, getDragged(), arg);
                     setDragged(cellContents);
+                } else{
+                    if (cellContents==null ){
+                        setDragged(null);
+                    }
                 }
-
+            }
         } else {
             setDragged(cellContents);
         }
@@ -106,6 +110,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         }
         return true;
     }
+
     protected boolean isBlocked() {
         if (!ExplorationMaster.isExplorationOn())
             if (manager != null)
@@ -128,6 +133,12 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 if (!HeroManager.isQuickItem(type)) {
                     return false;
                 }
+                if (hero.isQuickSlotsFull()) {
+                    GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+                     "Quick slots are full!");
+                    return false;
+                }
+                break;
         }
         if (manager == null) {
             return true;
@@ -249,7 +260,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
 
-
     protected OPERATIONS getInvOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                          boolean altClick, boolean ctrlClick, Entity cellContents) {
         if (cell_type == null) {
@@ -277,11 +287,11 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                     return OPERATIONS.UNEQUIP_QUICK_SLOT;
                 }
                 if (clickCount > 1) {
-//                  dangerous!!!  if (HeroManager.isQuickSlotWeapon(cellContents)) {
-//                        return OPERATIONS.EQUIP;
-//                    } else {
-                        return OPERATIONS.UNEQUIP_QUICK_SLOT;
-//                    }
+                    //                  dangerous!!!  if (HeroManager.isQuickSlotWeapon(cellContents)) {
+                    //                        return OPERATIONS.EQUIP;
+                    //                    } else {
+                    return OPERATIONS.UNEQUIP_QUICK_SLOT;
+                    //                    }
                 }
                 if (altClick) {
                     return OPERATIONS.DROP;

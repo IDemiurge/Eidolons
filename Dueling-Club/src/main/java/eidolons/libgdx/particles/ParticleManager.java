@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleManager extends GroupX {
-    private static final EMITTER_PRESET FOG_SFX = EMITTER_PRESET.SMOKE_TEST;
+    private static final EMITTER_PRESET FOG_VFX = EMITTER_PRESET.SMOKE_TEST;
     private static boolean ambienceOn = true;
     private static boolean ambienceMoveOn;
     private static Dungeon dungeon_;

@@ -119,6 +119,23 @@ public class DungeonEnums {
         Cult,
     }
 
+    /**
+     * Encapsulates Ambience, decor, illumination
+     */
+    public enum DUNGEON_STYLE {
+        Knightly,
+        Holy,
+        Stony,
+        Pagan,
+        DarkElegance,
+        PureEvil,
+        Brimstone,
+        Grimy,
+        Somber,
+        Arcane,
+        Cold,
+    }
+
     public enum DUNGEON_SUBFOLDER {
         // ARCADE,
         BATTLE,

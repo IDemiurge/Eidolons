@@ -58,9 +58,9 @@ public class EmitterMaster extends GdxUtil {
         List<File> files = FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true);
         for (VFX_ATLAS type : VFX_ATLAS.values()) {
             switch (type) {
-                case AMBIENCE:
-                    break;
                 case SPELL:
+                    break;
+                case AMBIENCE:
                 case MAP:
                 case MISC:
                     continue;

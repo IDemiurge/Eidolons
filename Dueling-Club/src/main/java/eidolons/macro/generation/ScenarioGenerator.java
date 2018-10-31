@@ -6,6 +6,8 @@ import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
 import eidolons.macro.map.Place;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -184,7 +186,7 @@ public class ScenarioGenerator {
     }
 
     private static boolean isUsePregenerated() {
-        return true;
+        return OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.PREGENERATED_RNG_LEVELS);
     }
 
     public static String getPath(LOCATION_TYPE locationType) {
@@ -233,7 +235,7 @@ public class ScenarioGenerator {
     }
 
     private static boolean isSequentialPregenChoice() {
-        return true; //TODO options
+        return OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.SEQUENTIAL_RNG); //TODO options
     }
 
     private static List<SUBLEVEL_TYPE> createSublevelTypes(int n, LOCATION_TYPE locationType) {
@@ -244,7 +246,7 @@ public class ScenarioGenerator {
 //                list.add(SUBLEVEL_TYPE.BOSS);
 //            }
 //            else
-                switch (i) {
+                switch (i%3) {
                     case 0:
                         list.add(SUBLEVEL_TYPE.COMMON);
                         break;

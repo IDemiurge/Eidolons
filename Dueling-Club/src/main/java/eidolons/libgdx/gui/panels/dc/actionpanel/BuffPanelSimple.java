@@ -19,7 +19,6 @@ public class BuffPanelSimple extends TablePanel {
             el.overrideImageSize(32, 32);
             add(el).left().bottom();
         });
-        row();
 
         source.getAbilities().forEach(el -> {
             el.overrideImageSize(32, 32);

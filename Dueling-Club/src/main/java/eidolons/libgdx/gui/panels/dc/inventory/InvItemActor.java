@@ -31,11 +31,13 @@ import eidolons.libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 public class InvItemActor extends ItemActor {
@@ -150,6 +152,7 @@ public class InvItemActor extends ItemActor {
 
         if (userObject instanceof InventoryTableDataSource) {
             handler = ((InventoryTableDataSource) userObject).getClickHandler();
+            initListeners();
         }
         if (model == null) {
             return;
@@ -183,6 +186,21 @@ public class InvItemActor extends ItemActor {
 
         goldLabel.setPosition(GdxMaster.centerWidth(goldLabel),
          GdxMaster.centerHeight(goldLabel));
+    }
+
+    private void initListeners() {
+        clearListeners();
+        addListener(createListener());
+        if (model == null) {
+            if (cellType!=null)
+             addListener(new ValueTooltip(
+              StringMaster.getWellFormattedString(cellType.toString()) +
+             " slot").getController());
+        } else {
+            String vals = InventoryFactory.getTooltipsVals(model);
+            addListener(new ValueTooltip(model.getName() + "\n" +
+             vals).getController());
+        }
     }
 
     @Override
@@ -225,36 +243,6 @@ public class InvItemActor extends ItemActor {
 
     private boolean isScalingSupported() {
         return true;
-    }
-
-    protected ClickListener createScalingListener() {
-        return new SmartClickListener(background) {
-            @Override
-            protected void entered() {
-                super.entered();
-                if (image.getScaleX() != hoverScale)
-                    if (image.getActions().size < 3)
-                    //                        if (defaultScale != 1)
-                    {
-                        if (image.getActions().size == 0)
-                            ActorMaster.addScaleAction(image, hoverScale, 0.5f);
-                        else
-                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(hoverScale, 0.5f));
-                    }
-            }
-
-            @Override
-            protected void exited() {
-                super.exited();
-                if (image.getActions().size < 3)
-                    if (image.getScaleX() != defaultScale) {
-                        if (image.getActions().size == 0)
-                            ActorMaster.addScaleAction(image, defaultScale, 0.5f);
-                        else
-                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(defaultScale, 0.5f));
-                    }
-            }
-        };
     }
 
     protected ClickListener createListener() {
@@ -303,6 +291,7 @@ public class InvItemActor extends ItemActor {
                 if (handler.getDragged() == null) {
                     //                    if (x+y> GDX.size(100))
                     handler.singleClick(cellType, model);
+                    initListeners();
                 }
             }
 
@@ -338,7 +327,7 @@ public class InvItemActor extends ItemActor {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (clickTimer < 0.05f)
+                if (clickTimer < 0.15f)
                     return;
                 clickTimer = 0;
                 final int tapCount = this.getTapCount();

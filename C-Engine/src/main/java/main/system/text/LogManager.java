@@ -509,6 +509,8 @@ public abstract class LogManager {
 
     public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
+        modValue = Math.abs(modValue);
+        name = StringMaster.getWellFormattedString(name);
         if (modValue > 0) {
             logInfo(modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "
              + name + "s: " + value);

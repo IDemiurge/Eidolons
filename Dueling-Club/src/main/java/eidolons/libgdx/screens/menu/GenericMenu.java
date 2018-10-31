@@ -280,7 +280,6 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         setCurrentItem(null);
         setPreviousItem(null);
         getStageWithClosable().openClosable(this);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OPEN_MENU);
     }
 
     @Override

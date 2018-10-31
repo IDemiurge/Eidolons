@@ -7,16 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.system.text.TextMaster.LOCALE;
 import eidolons.system.text.Tips.*;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /*
  * Perhaps I should also make some use of these in-game while in TUTORIAL
@@ -25,6 +22,7 @@ import java.util.List;
  * 
  */
 public class TipMaster {
+    static Map<String, List<String>> tipsMap ;
     private static final Class<?>[] TIP_ENUMS = {
      COMBAT_TIP_CATEGORY.class,
      COMBAT_TIPS.class,
@@ -42,6 +40,13 @@ public class TipMaster {
 
     public static String getTip() {
         return getTip(0);
+    }
+
+    public static Map<String, List<String>> getTipsMap() {
+        if (tipsMap == null) {
+            readTooltipText();
+        }
+        return tipsMap;
     }
 
     public static String getTip(int combat_hero_misc) {
@@ -64,30 +69,59 @@ public class TipMaster {
                 break;
         }
         String tip = "";
+
         Loop loop = new Loop(200); //if we check 200 tips and they all have been displayed,
         //well, let's go for another round!
         while (loop.continues()) {
 //            int i = RandomWizard.getRandomInt(tipClass.getEnumConstants().length);
-            List<TIP> list = new EnumMaster<TIP>().getEnumList((Class<TIP>) tipClass);
-            TIP tipp = new RandomWizard<TIP>().getRandomListItem(list);
-            if (displayedTips.contains(tipp)) {
-                continue;
+            if (isNewTips()) {
+                List<String> tips = getTipsMap().get(tipClass.getSimpleName());
+                //            displayed
+                tip = RandomWizard.getRandomListObject(tips).toString();
+            } else {
+                List<TIP> list = new EnumMaster<TIP>().getEnumList((Class<TIP>) tipClass);
+                TIP tipp = new RandomWizard<TIP>().getRandomListItem(list);
+                tip = tipp.getText();
             }
-            tip = tipp.getText();
             if (tip.isEmpty())
                 continue;
-            displayedTips.add(tipp);
+            if (displayedTips.contains(tip)) {
+                continue;
+            }
+            displayedTips.add(tip);
             return tip;
         }
         displayedTips.clear();
         return getTip();
     }
-public static void main(String[] args){
+
+    private static boolean isNewTips() {
+        return true;
+    }
+
+    public static void main(String[] args){
     CoreEngine.systemInit();
         generateDefaultTooltipText();
 }
     //overwrites!
-    public static void generateDefaultTooltipText() {
+    public static void readTooltipText() {
+        tipsMap = new HashMap<>();
+        for (Class<?> clazz : TIP_ENUMS) {
+            String path = getPath(clazz);
+            String contents = FileManager.readFile(path);
+            ArrayList<String> lines = new ArrayList<>(Arrays.asList(StringMaster.splitLines(contents)));
+            lines.removeIf(line -> line.isEmpty());
+            if (lines.isEmpty()) {
+                continue;
+            }
+            lines.remove(0);
+            for (String tip: lines) {
+                MapMaster.addToListMap(tipsMap, clazz.getSimpleName(), tip );
+            }
+
+        }
+    }
+        public static void generateDefaultTooltipText() {
         for (Class<?> clazz : TIP_ENUMS) {
             String path = getPath(clazz);
             String contents = "\n" + clazz.getSimpleName();

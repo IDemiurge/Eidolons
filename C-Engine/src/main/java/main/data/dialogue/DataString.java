@@ -38,7 +38,7 @@ public class DataString {
     }
 
     public enum SPEECH_VALUE {
-        SFX,
+        VFX,
         SOUND,
         MUSIC,
         ACTOR,

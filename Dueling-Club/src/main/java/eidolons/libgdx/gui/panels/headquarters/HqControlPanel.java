@@ -9,30 +9,33 @@ import main.system.GuiEventType;
 /**
  * Created by JustMe on 4/13/2018.
  */
-public class HqControlPanel extends HqElement{
+public class HqControlPanel extends HqElement {
 
     public HqControlPanel() {
-//        setFixedSize(true);
+        //        setFixedSize(true);
 
         if (!HqDataMaster.isSimulationOff())
-        add(new SmartButton(  STD_BUTTON.UNDO, () -> {
-            HqDataMaster.undo();
-        }));
-        add(new SmartButton( STD_BUTTON.OK, () -> {
-            save();
+            add(new SmartButton(STD_BUTTON.UNDO, () -> {
+                HqDataMaster.undo();
+            }));
+        add(new SmartButton(STD_BUTTON.OK, () -> {
+            if (!HqDataMaster.isSimulationOff())
+                save();
+            else
+                close();
         }));
 
         if (!HqDataMaster.isSimulationOff())
-        add(new SmartButton(  STD_BUTTON.CANCEL, () -> {
-            close();
-        }));
+            add(new SmartButton(STD_BUTTON.CANCEL, () -> {
+                close();
+            }));
     }
 
     private void save() {
         if (!HqDataMaster.getInstance(dataSource.getEntity().getHero()).isDirty())
             close();
         else
-        HqDataMaster.saveHero(dataSource.getEntity());
+            HqDataMaster.saveHero(dataSource.getEntity());
     }
 
     private void close() {

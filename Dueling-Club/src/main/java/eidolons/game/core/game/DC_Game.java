@@ -75,6 +75,7 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
@@ -340,7 +341,9 @@ public class DC_Game extends GenericGame {
             loop.startInNewThread();
 
         musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__BATTLE_START);
+        DC_SoundMaster.playStandardSound(
+         RandomWizard.random()? STD_SOUNDS.NEW__BATTLE_START2
+          :STD_SOUNDS.NEW__BATTLE_START);
     }
 
 

@@ -108,6 +108,12 @@ public class ShopClickHandler extends ContainerClickHandler {
     protected OPERATIONS getDragOperation(CELL_TYPE cell_type, Entity cellContents, Entity dragged) {
         switch (cell_type) {
             case INVENTORY:
+            case WEAPON_MAIN:
+            case WEAPON_OFFHAND:
+            case ARMOR:
+            case QUICK_SLOT:
+            case AMULET:
+            case RING:
                 if (dragged instanceof DC_HeroItemObj) {
                     switch (((DC_HeroItemObj) dragged).getContainer()) {
                         case EQUIPPED:

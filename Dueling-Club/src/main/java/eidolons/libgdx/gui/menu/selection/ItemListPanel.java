@@ -29,7 +29,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 import java.util.*;
 
@@ -107,8 +107,8 @@ public abstract class ItemListPanel extends TablePanel {
              StyleHolder.getTextButtonStyle(getButtonStyle(),
               getFontStyle(), getFontColor(), getFontSize())) {
                 @Override
-                protected STD_SOUNDS getSound() {
-                    return STD_SOUNDS.CLICK;
+                protected BUTTON_SOUND_MAP getSoundMap() {
+                  return getButtonSoundMap();
                 }
 
                 @Override
@@ -129,6 +129,10 @@ public abstract class ItemListPanel extends TablePanel {
 
         }
         return button;
+    }
+
+    protected BUTTON_SOUND_MAP getButtonSoundMap() {
+        return    BUTTON_SOUND_MAP.SELECTION;
     }
 
     protected Color getFontColor() {

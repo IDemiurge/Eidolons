@@ -19,7 +19,7 @@ public class DragManager extends FadeImageContainer {
     private static DragManager instance;
     private Entity draggedEntity;
     private GuiStage guiStage;
-    public static boolean off=true;
+    public static boolean off=false;
 
     public static boolean isOff() {
         return off;

@@ -3,11 +3,12 @@ package eidolons.game.module.dungeoncrawl.quest;
 import eidolons.content.PARAMS;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.init.RngUnitProvider;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
@@ -46,9 +47,17 @@ public class QuestCreator extends QuestHandler {
         switch (quest.getType()) {
             case BOSS:
                 return 1;
+            case OBJECTS:
+                return Math.max(1, Math.round(quest.getPowerCoef() * 15));
+            case SECRETS:
             case COMMON_ITEMS:
-            case HUNT:
                 return Math.max(1, Math.round(quest.getPowerCoef() * 10));
+            case HUNT:
+                return Math.max(1, Math.round(quest.getPowerCoef() * 7));
+            case SPECIAL_ITEM:
+                break;
+            case ESCAPE:
+                break;
         }
         return 1;
     }
@@ -57,7 +66,7 @@ public class QuestCreator extends QuestHandler {
                                               DUNGEON_STYLE style) {
         ObjType t = getQuestUnitType(type, powerLevel, powerRange, quest, style);
         if (t == null) {
-            t = getQuestUnitType(type, powerLevel, powerRange, quest, DUNGEON_STYLE.Somber);
+            t = getQuestUnitType(type, powerLevel, powerRange, quest, DungeonEnums.DUNGEON_STYLE.Somber);
         }
         return t;
     }
@@ -122,6 +131,9 @@ public class QuestCreator extends QuestHandler {
         DC_TYPE TYPE = DC_TYPE.getType(arg);
         if (TYPE == null) {
             TYPE = DC_TYPE.WEAPONS;
+            if (RandomWizard.chance(20)) {
+                TYPE = DC_TYPE.ARMOR;
+            }
         }
         //            switch (TYPE) {
         //                case WEAPONS:
@@ -132,8 +144,9 @@ public class QuestCreator extends QuestHandler {
         //            }
         //            ObjType base=DataManager.getType(TYPE, name);
         MATERIAL m = MATERIAL.DARK_STEEL;
-        ObjType base = DataManager.getRandomType(TYPE);
+        ObjType base = (ObjType) RandomWizard.getRandomListObject(ItemGenerator.getTypesForShop(TYPE));
         //            DataManager.getBaseWeaponTypes()
+
         if (base.isGenerated()) {
             base = base.getType();
         }

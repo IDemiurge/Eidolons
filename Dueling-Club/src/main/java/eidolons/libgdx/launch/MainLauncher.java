@@ -27,7 +27,7 @@ public class MainLauncher extends GenericLauncher {
         }
         CoreEngine.setFastMode(args.length > 1);
         CoreEngine.setFullFastMode(args.length > 3);
-        CoreEngine.setJarlike(true);
+        CoreEngine.setJarlike(!CoreEngine.isFastMode());
 
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);

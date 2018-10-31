@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -26,6 +27,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.Images;
@@ -34,8 +36,10 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -109,7 +113,6 @@ public class ContainerPanel extends TablePanel implements Blocking {
     @Override
     public void open() {
         getStageWithClosable().openClosable(this);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
     }
 
     protected InventorySlotsPanel createContainerSlots() {
@@ -213,12 +216,14 @@ public class ContainerPanel extends TablePanel implements Blocking {
         for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
             filters.add(new SmartButton(getButtonStyle(filter),
              () -> {
-                 try {
-                     applyFilter(filter);
-                 } catch (Exception e) {
-                     main.system.ExceptionMaster.printStackTrace(e);
-                 }
+                 EUtils.showInfoText("Filters are under construction...");
+//                 try {
+//                     applyFilter(filter);
+//                 } catch (Exception e) {
+//                     main.system.ExceptionMaster.printStackTrace(e);
+//                 }
              })).row();
+            filters.addListener(new ValueTooltip("Under construction...").getController());
         }
 
         middle.addElement(inventory).left();
@@ -333,7 +338,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void close() {
         getStageWithClosable().closeClosable(this);
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
 
     }
 

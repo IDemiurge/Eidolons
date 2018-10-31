@@ -95,13 +95,18 @@ public class TownPanel extends TabbedPanel {
 
         GuiEventManager.bind(GuiEventType. SHOW_HQ_SCREEN, p-> {
             if (p.get() == null) {
-                updateRequired = true;
+                update();
                 shopView. fadeIn();
             } else {
                 shopView. fadeOut();
             }
         });
 
+    }
+
+    @Override
+    public void update() {
+        shopView.update();
     }
 
     private String getDoneTooltip() {

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.menu.selection.rng;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -12,6 +13,9 @@ import java.util.List;
  * Created by JustMe on 10/11/2018.
  */
 public class RngListPanel extends ItemListPanel {
+    protected BUTTON_SOUND_MAP getButtonSoundMap() {
+        return    BUTTON_SOUND_MAP.SELECTION_SHARP;
+    }
     @Override
     public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {
         List<SelectableItemData> list = new LinkedList<>();

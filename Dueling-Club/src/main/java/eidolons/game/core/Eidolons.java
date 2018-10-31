@@ -27,6 +27,7 @@ import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.town.Town;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -42,6 +43,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
 import java.awt.*;
@@ -283,6 +285,8 @@ public class Eidolons {
     }
 
     public static void exitToMenu() {
+
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         try {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.game != null) {
@@ -323,6 +327,7 @@ public class Eidolons {
     }
 
     public static void exitGame() {
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         SpecialLogger.getInstance().writeLogs();
         Debugger.writeLog();
         try {
