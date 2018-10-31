@@ -72,6 +72,10 @@ public class GuardAi extends AiBehavior {
 
         List<Coordinates> validCells = new ArrayList<>(guardedZone);
         validCells.removeIf(c -> getCoordinates().dst(c) < 2);
+        if (validCells.isEmpty()) {
+            validCells = new ArrayList<>(guardedZone);
+            validCells.removeIf(c -> getCoordinates().dst(c) < 3);
+        }
         return getCell( validCells.get(RandomWizard.getRandomIndex(validCells)));
     }
 

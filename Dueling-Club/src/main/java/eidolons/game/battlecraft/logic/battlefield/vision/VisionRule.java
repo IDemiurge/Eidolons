@@ -262,14 +262,14 @@ public class VisionRule {
             case BLOCKED:
                 if (object.isWall()) {
                     if (object.isDetected(source.getOwner())) {
-                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
-                         object + " DETECTED at" +
-                         object.getCoordinates() );
+//                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
+//                         object + " DETECTED at" +
+//                         object.getCoordinates() );
                         return PLAYER_VISION.KNOWN;
                     } else {
-                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
-                         object + " undetected at" +
-                         object.getCoordinates() );
+//                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
+//                         object + " undetected at" +
+//                         object.getCoordinates() );
                     }
                 }
             case UNSEEN:

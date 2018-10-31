@@ -17,6 +17,46 @@ public class RngUnitProvider {
     public static final Boolean BOSS = false;
     public static final Boolean ELITE = true;
     public static final Boolean REGULAR = null;
+    private static final WeightMap<String> DEFAULT_MAP_REGULAR = new WeightMap<String>()
+     .chain(BLACK_WOLF, 10)
+     .chain(DEMENTED_PRISONER, 10)
+     .chain(DEMENTED_WOMAN, 10)
+     .chain(ABOMINATION, 10)
+     .chain(MUZZLED_MAN, 10)
+     .chain(FRENZIED_WOMAN, 10)
+     .chain(FRENZIED_MAN, 10)
+     .chain(RABID_MAN, 10)
+     .chain(DEADLY_SPIDER, 10)
+     .chain(STAG_BEETLE, 10)
+     .chain(RHINO_BEETLE, 10)
+     .chain(NIGHT_BAT, 10)
+     .chain(ESCAPED_PRISONER, 10)
+     ;
+    private static final WeightMap<String> DEFAULT_MAP_ELITE = new WeightMap<String>()
+     .chain(BLACK_WIDOW, 10)
+     .chain(PALE_WEAVER, 10)
+     .chain(DARK_SCALES, 10)
+     .chain(MIST_EYE, 10)
+     .chain(MURKBORN, 10)
+     .chain(MURKBORN_DEFILER, 10)
+     .chain(CRIMSON_MASKED_CULTIST, 10)
+     .chain(WOLF_MASKED_CULTIST, 10)
+     .chain(WORM_MASKED_CULTIST, 10)
+     .chain(ONYX_MASKED_CULTIST, 10)
+     .chain(STEEL_MASKED_CULTIST, 10)
+     .chain(MURK_SPIDER, 10)
+     .chain(MURK_WEAVER, 10)
+     .chain(SKULL_MASKED_CULTIST, 10)
+     .chain(FERAL_CULTIST, 10)
+     .chain(DEMON_CULTIST, 10)
+     .chain(SCORCHED_CULTIST, 10)
+     .chain(SHADOW_WOLF, 10)
+     ;
+    private static final WeightMap<String> DEFAULT_MAP_BOSS = new WeightMap<String>()
+     .chain(MISTBORN_GARGANTUAN, 20)
+     .chain(RAVENGUARD_COMMANDER, 10)
+
+     ;
 
     public static WeightMap<String> getGroupWeightMap(DUNGEON_STYLE style, boolean underground) {
         switch (style) {
@@ -629,8 +669,11 @@ public class RngUnitProvider {
                  chain(YOUNG_WYVERN, 5).
                  chain(BLACK_DRAGON, 5);
         }
-        return new WeightMap<String>().
-         chain(VENOMOUS_HAIRY_SPIDER, 10);
+
+        if (elite_boss_regular == null)
+            return DEFAULT_MAP_REGULAR;
+        return elite_boss_regular ? DEFAULT_MAP_ELITE : DEFAULT_MAP_BOSS
+         ;
     }
 
     public static WeightMap<String> getWeightMap(UNIT_GROUP group, UNIT_GROUP_TYPE groupType

@@ -35,12 +35,10 @@ public class ContentValsManager {
     public static final String NEW_EMPTY_VALUE = "-";
     public static final String DEFAULT_EMPTY_VALUE = "";
     public static final String OLD_EMPTY_VALUE = "[...]";
-    private static final String MASTERY = "_MASTERY";
-    private static final boolean LOWER_CASE_CACHED = true;
     public static final String RETAINMENT = "_RETAINMENT";
     public static final String RESTORATION = "_RESTORATION";
-
-
+    private static final String MASTERY = "_MASTERY";
+    private static final boolean LOWER_CASE_CACHED = true;
     private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<>();
 
     private static Map<String, List<String>> valueNamesMapAV = new ConcurrentMap<>();
@@ -175,10 +173,10 @@ public class ContentValsManager {
         currentCache.put(baseParam, param);
         return baseParam;
     }
-//  TODO refactor?
-//  public static PARAMETER getParameterVersion(PARAMETER param, String versionId) {
-//        Map<PARAMETER, PARAMETER> cache = getCache(versionId);
-//    }
+    //  TODO refactor?
+    //  public static PARAMETER getParameterVersion(PARAMETER param, String versionId) {
+    //        Map<PARAMETER, PARAMETER> cache = getCache(versionId);
+    //    }
 
     public static PARAMETER getPercentageParam(PARAMETER param) {
         if (param.isDynamic() && param.name().startsWith(StringMaster.CURRENT)) {
@@ -207,9 +205,10 @@ public class ContentValsManager {
         PARAMETER param = getPARAM(mastery.getName() + (StringMaster.SCORE));
         return param;
     }
+
     public static PARAMETER getMasteryFromScore(PARAMETER mastery) {
         PARAMETER param = getPARAM(mastery.getName()
-         .replace (StringMaster.SCORE, ""));
+         .replace(StringMaster.SCORE, ""));
         return param;
     }
 
@@ -325,13 +324,13 @@ public class ContentValsManager {
             }
         }
         //TODO this created bugs, but why?..
-//        if (!strict) {
-//            for (PARAMETER p : params) {
-//                if (StringMaster.compare(valueName, p.toString(), strict)) {
-//                    return p;
-//                }
-//            }
-//        }
+        //        if (!strict) {
+        //            for (PARAMETER p : params) {
+        //                if (StringMaster.compare(valueName, p.toString(), strict)) {
+        //                    return p;
+        //                }
+        //            }
+        //        }
         return null;
     }
 
@@ -811,11 +810,11 @@ public class ContentValsManager {
 
         OBJ_TYPE type = null;
 
-        if (XML_Reader.isMacro()) {
-            type = MACRO_OBJ_TYPES.getType(typeName);
-        } else {
-            type = DC_TYPE.getType(typeName);
-        }
+        type = DC_TYPE.getType(typeName);
+        if (type == null)
+            if (XML_Reader.isMacro()) {
+                type = MACRO_OBJ_TYPES.getType(typeName);
+            }
 
         if (type == null) {
             if (!CoreEngine.isMapEditor())
@@ -1076,6 +1075,10 @@ public class ContentValsManager {
          "/" + obj.getValue(getBaseParameterFromCurrent(value));
     }
 
+    public static PARAMETER getDefaultAttribute(PARAMETER sub) {
+        return getPARAM(StringMaster.DEFAULT + sub.getName());
+    }
+
     public void init() {
 
     }
@@ -1090,10 +1093,6 @@ public class ContentValsManager {
 
     public boolean isTextAlwaysShownInListItems(OBJ_TYPE TYPE) {
         return false;
-    }
-
-    public static PARAMETER getDefaultAttribute(PARAMETER sub) {
-        return getPARAM(StringMaster.DEFAULT + sub.getName());
     }
 
     public enum AV_EDITOR_TYPES {

@@ -336,6 +336,9 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused, boolean logged) {
+        if (!game.isStarted()) {
+            return;
+        }
         if (logged)
             if (CoreEngine.isIDE())
                 game.getLogManager().log(paused ? "Game paused" : "Game resumed");

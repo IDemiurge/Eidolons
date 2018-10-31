@@ -212,6 +212,32 @@ public class RngMainSpawner {
                   .chain(UNIT_GROUP.CULT_DARK, 5)
                   .chain(UNIT_GROUP.PRISONERS, 5)
                   .getRandomByWeight();
+            case Cold:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.DWARVES, 17)
+                  .chain(UNIT_GROUP.PRISONERS, 14)
+                  .chain(UNIT_GROUP.MUTANTS, 14)
+                  .chain(UNIT_GROUP.NORTH, 9)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 27)
+                  .chain(UNIT_GROUP.DARK_ONES, 8)
+                  .chain(UNIT_GROUP.CULT_DEATH, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 10)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DUNGEON, 10)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.DWARVES, 27)
+                  .chain(UNIT_GROUP.PRISONERS, 14)
+                  .chain(UNIT_GROUP.MUTANTS, 14)
+                  .chain(UNIT_GROUP.NORTH, 9)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 17)
+                  .chain(UNIT_GROUP.DARK_ONES, 8)
+                  .chain(UNIT_GROUP.CULT_DEATH, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 10)
+                  .getRandomByWeight();
         }
         return UNIT_GROUP.Ravenguard;
     }

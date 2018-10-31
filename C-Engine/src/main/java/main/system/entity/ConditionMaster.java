@@ -15,6 +15,7 @@ import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
 import main.elements.conditions.standard.DynamicCondition;
 import main.elements.conditions.standard.OwnershipCondition;
+import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -565,9 +566,6 @@ public class ConditionMaster {
     }
 
     public static ConditionMaster getInstance() {
-        if (instance == null) {
-            instance = new ConditionMaster();
-        }
         return instance;
     }
 
@@ -613,6 +611,14 @@ public class ConditionMaster {
 
     public Condition getDynamicCondition(String s) {
 
+        return null;
+    }
+
+    public static Condition getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES template) {
+        return getInstance().getSelectiveTemplateConditions(template);
+    }
+
+    public Condition getSelectiveTemplateConditions(SELECTIVE_TARGETING_TEMPLATES template) {
         return null;
     }
 

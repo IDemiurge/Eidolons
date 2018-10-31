@@ -209,7 +209,7 @@ public class Executor extends ActiveHandler {
         }
          }
 
-    private void syncActionRefWithSource() {
+    protected void syncActionRefWithSource() {
         if (getAction() instanceof DC_QuickItemAction) {
             DC_QuickItemObj item = ((DC_QuickItemAction) getAction()).getItem();
             if (item.isAmmo()) {

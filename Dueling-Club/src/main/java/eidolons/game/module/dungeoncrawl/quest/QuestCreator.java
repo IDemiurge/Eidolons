@@ -98,7 +98,7 @@ public class QuestCreator extends QuestHandler {
             return null;
         }
         new SortMaster<ObjType>().sortByExpression_(pool,
-         type -> type.getIntParam(PARAMS.POWER));
+         type -> RandomWizard.getRandomInt(20 )+(int)(RandomWizard.getRandomFloatBetween(0.5f, 2)*type.getIntParam(PARAMS.POWER)));
         return pool.get(0);
     }
 
@@ -114,14 +114,18 @@ public class QuestCreator extends QuestHandler {
 
     public static ObjType getBossType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
-        return tryGetQuestUnitType(RngUnitProvider.BOSS, powerLevel, 0.5f, quest, style);
+        return tryGetQuestUnitType(RngUnitProvider.BOSS, powerLevel, 0.33f, quest, style);
     }
 
     public static ObjType getPreyType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
-        ObjType type = tryGetQuestUnitType(RngUnitProvider.REGULAR, powerLevel, -0.25f, quest, style);
+        boolean elite = RandomWizard.random();
+        ObjType type = tryGetQuestUnitType(elite?RngUnitProvider.ELITE  : RngUnitProvider.REGULAR,
+         powerLevel, -0.25f, quest, style);
         if (type == null) {
-            type = tryGetQuestUnitType(RngUnitProvider.ELITE, powerLevel, -0.25f, quest, style);
+            elite = !elite;
+            type = tryGetQuestUnitType(elite?RngUnitProvider.ELITE  : RngUnitProvider.REGULAR,
+             powerLevel, -0.33f, quest, style);
         }
         return type;
     }

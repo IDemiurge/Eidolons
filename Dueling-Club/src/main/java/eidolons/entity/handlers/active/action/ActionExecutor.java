@@ -18,6 +18,7 @@ import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.system.entity.ConditionMaster;
 
 /**
@@ -36,6 +37,13 @@ public class ActionExecutor extends Executor {
         return super.activate();
     }
 
+    protected void syncActionRefWithSource() {
+        super.syncActionRefWithSource();
+        if (getEntity().isAttackAny()){
+            getRef().setID(KEYS.ATTACK_WEAPON, getEntity().isOffhand()? getRef().getId(KEYS.OFFHAND)
+             :  getRef().getId(KEYS.WEAPON));
+        }
+    }
     //will remove all mode buffs?
     private boolean checkContinuousMode() {
         ModeEffect effect = getAction().getModeEffect();

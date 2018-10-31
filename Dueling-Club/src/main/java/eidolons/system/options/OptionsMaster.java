@@ -18,6 +18,7 @@ import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -128,6 +129,9 @@ public class OptionsMaster {
             boolean booleanValue = options.getBooleanValue(key);
             float floatValue = new Float(intValue) / 100;
             switch (key) {
+                case SCROLL_SPEED:
+                    ScrollPanel.setScrollAmount(intValue);
+                    break;
                 case ZOOM_STEP:
                     InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
                     break;

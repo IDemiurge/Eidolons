@@ -208,8 +208,12 @@ public class DC_ConditionMaster extends ConditionMaster {
         }
         return new CellCondition(obj_ref, CONST);
     }
+    public static Condition  getSelectiveTargetingTemplateConditions(
+     SELECTIVE_TARGETING_TEMPLATES template) {
+        return getInstance().getSelectiveTemplateConditions(template);
+    }
 
-    public static Conditions getSelectiveTargetingTemplateConditions(
+    public   Condition  getSelectiveTemplateConditions(
      SELECTIVE_TARGETING_TEMPLATES template) {
         Conditions c = new Conditions();
 

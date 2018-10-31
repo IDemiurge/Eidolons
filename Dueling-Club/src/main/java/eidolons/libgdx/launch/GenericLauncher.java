@@ -273,9 +273,9 @@ public class GenericLauncher extends Game {
                         return;
                 Eidolons.onThisOrNonGdxThread(() -> {
                     main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + data.getName());
+                    DC_Engine.gameStartInit();
                     if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
                         return; // INIT FAILED
-                    DC_Engine.gameStartInit();
                     MusicMaster.preload(MUSIC_SCOPE.ATMO);
                     Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                     firstInitDone = true;

@@ -18,6 +18,8 @@ import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.content.ContentGenerator;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.GENDER;
@@ -96,7 +98,9 @@ public class DC_SoundMaster extends SoundMaster {
             if (!unit.isPlayerDetected())
                 if (RandomWizard.chance(80))
                     return;
-
+if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF)){
+    return;
+}
         String type = "soft";
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()

@@ -21,7 +21,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     private float instantOffsetY;
     private float offsetY;
     private boolean widgetPosChanged;
-    private Integer scrollAmount;
+    private static Integer scrollAmount;
 
     public ScrollPanel() {
         init();
@@ -230,7 +230,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         return scrollAmount;
     }
 
-    public void setScrollAmount(int scrollAmount) {
-        this.scrollAmount = scrollAmount;
+    public static void setScrollAmount(Integer scrollAmount) {
+        ScrollPanel.scrollAmount = 60*scrollAmount;
     }
 }

@@ -17,6 +17,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSour
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +67,9 @@ public class ContainerDataSource implements InventoryTableDataSource {
 
     @Override
     public List<InvItemActor> getInventorySlots() {
+        if (items == null) {
+            items = new ArrayList<>();
+        }
         ListMaster.fillWithNullElements(items
          , InventorySlotsPanel.SIZE);
         return factory.getList(items, CELL_TYPE.CONTAINER);

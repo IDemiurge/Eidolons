@@ -33,7 +33,15 @@ public class DynamicCondition<T> extends ConditionImpl {
                     return predicate.test((T) ref.getMatchObj());
                 }
                 if (ref.getTarget() != null) {
-                    return predicate.test((T) ref.getTargetObj());
+                    try {
+                        return predicate.test((T) ref.getTargetObj());
+                    } catch (Exception e) {
+                        try {
+                            return predicate.test((T) ref.getTargetObj().getType());
+                        } catch (Exception e1) {
+                            main.system.ExceptionMaster.printStackTrace(e1);
+                        }
+                    }
                 }
             } else
                 return predicate.test(arg);

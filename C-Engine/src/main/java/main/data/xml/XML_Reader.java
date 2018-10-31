@@ -55,6 +55,7 @@ public class XML_Reader {
     private static boolean brokenXml;
     private static boolean macroLoaded;
     private static boolean microLoaded;
+    private static boolean macroAndMicro;
 
     private static void constructTypeMap(Document doc, String key,
                                          Map<String, Set<String>> tabGroupMap,

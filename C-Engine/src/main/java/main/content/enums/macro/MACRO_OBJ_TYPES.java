@@ -127,15 +127,6 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
 
     }
 
-    private static MACRO_OBJ_TYPES getFromName(String name) {
-        MACRO_OBJ_TYPES objTypes = searchMap.get(name);
-        if (objTypes == null) {
-            name = name.toLowerCase();
-            objTypes = searchMap.get(name);
-        }
-
-        return objTypes;
-    }
 
     public static OBJ_TYPE getTypeByCode(int code) {
         for (OBJ_TYPE type : values()) {
@@ -148,8 +139,6 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
 
     public static MACRO_OBJ_TYPES getType(String s) {
         MACRO_OBJ_TYPES type = null;
-
-        type = getFromName(s);
 
         if (type == null) {
             type = new EnumMaster<MACRO_OBJ_TYPES>().retrieveEnumConst(MACRO_OBJ_TYPES.class, s);

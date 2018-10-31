@@ -53,6 +53,11 @@ public class SelectiveTargeting extends TargetingImpl {
 //        }
         if (template != null) {
             filteredType = (getTYPEforTemplate(template));
+//          needed a hack at some time... hopefully won't again
+            //  if (template== SELECTIVE_TARGETING_TEMPLATES.ATTACK) {
+//            if (ref.getObj(KEYS.OFFHAND) == ref.getObj(KEYS.ATTACK_WEAPON))
+//                filter.setConditions(ConditionMaster.getSelectiveTargetingTemplateConditions(template));
+//            }
         }
         if (filteredType != null) {
             filter.setTYPE(filteredType);
