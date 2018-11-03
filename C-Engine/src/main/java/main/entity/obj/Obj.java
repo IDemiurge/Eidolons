@@ -305,7 +305,12 @@ public class Obj extends Entity {
     public void toBase() {
         super.toBase();
         if (!game.isSimulation())
-            construct();
+            if (isConstructOnToBase())
+                construct();
+    }
+
+    protected boolean isConstructOnToBase() {
+        return true;
     }
 
     public void resetObjects() {

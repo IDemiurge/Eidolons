@@ -20,6 +20,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
@@ -73,6 +74,7 @@ public class DungeonScreen extends GameScreenWithTown {
     protected GridPanel gridPanel;
     private boolean blocked;
     private ActTimer cameraTimer;
+    private GridCellContainer stackView;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -498,5 +500,13 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected boolean isTownInLoaderOnly() {
         return true;
+    }
+
+    public void setStackView(GridCellContainer stackView) {
+        this.stackView = stackView;
+    }
+
+    public GridCellContainer getStackView() {
+        return stackView;
     }
 }

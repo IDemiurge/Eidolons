@@ -1,6 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
@@ -16,6 +21,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
+import main.system.threading.Waiter;
 
 /**
  * Created by JustMe on 10/13/2018.
@@ -31,7 +37,7 @@ public class TownMaster extends MetaGameHandler {
     public TownMaster(MetaGameMaster master) {
         super(master);
         shopManager = createShopManager();
-        questMaster = new QuestMaster();
+        questMaster = new QuestMaster(master);
         shopManager.init();
     }
 
@@ -44,14 +50,25 @@ public class TownMaster extends MetaGameHandler {
         try {
             Town town = getOrCreateTown();
             town.setQuests(questMaster.getQuestsPool());
-            return enterTown(town);
+            return enterTown(town, false);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return false;
     }
 
-    public boolean enterTown(Town town) {
+    public void reenterTown() {
+        getMaster().getGame().getLoop().setPaused(true);
+        boolean result = enterTown(town, true);
+        if (!result) {
+            EUtils.info("Something went wrong in this town...");
+            Eidolons.exitToMenu();
+            return;
+        }
+        getMaster().getGame().getLoop().setPaused(true);
+    }
+
+    public boolean enterTown(Town town, boolean reenter) {
         if (this.town == null) {
             try {
                 SkillMaster.initMasteryRanks(
@@ -66,16 +83,11 @@ public class TownMaster extends MetaGameHandler {
             }
         }
         this.town = town;
+        town.enter(reenter);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
         inTown = true;
         if (CoreEngine.isFullFastMode()) {
             new Thread(() -> {
-                //                try {
-                //                    HqDataMasterDirect.getInstance().operation(HERO_OPERATION.BUY,
-                //                     town.getShops().get(0).getItems().iterator().next());
-                //                } catch (Exception e) {
-                //                    main.system.ExceptionMaster.printStackTrace(e);
-                //                }
                 GuiEventManager.trigger(GuiEventType.QUEST_TAKEN, "To the Rescue");
                 WaitMaster.WAIT(900);
                 TownPanel.getActiveInstance().done();
@@ -83,9 +95,13 @@ public class TownMaster extends MetaGameHandler {
         } else {
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
         }
-        town.enter();
         boolean result =
          (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
+        Waiter t = WaitMaster.getWaiters().remove(TownPanel.DONE_OPERATION);
+        if (t != null) {
+            main.system.auxiliary.log.LogMaster.log(1, "WAITERS ARE SCREWED ");
+        }
+
         inTown = false;
         town.exited();
         return result;
@@ -102,10 +118,11 @@ public class TownMaster extends MetaGameHandler {
         }
         ObjType type = DataManager.getType(DEFAULT_TOWN, MACRO_OBJ_TYPES.TOWN);
         town = new Town(new FauxMacroGame()
-//         FauxMacroGame.getInstance() not safe?
+         //         FauxMacroGame.getInstance() not safe?
          , type, MacroRef.getMainRef());
-        getGame().town= town;
-        return town; }
+        getGame().town = town;
+        return town;
+    }
 
 
     public boolean isInTown() {
@@ -114,5 +131,35 @@ public class TownMaster extends MetaGameHandler {
 
     public QuestMaster getQuestMaster() {
         return questMaster;
+    }
+
+    public void tryReenterTown() {
+        if (!ExplorationMaster.isExplorationOn()) {
+            EUtils.info("You cannot travel back while in battle!" );
+            return;
+        }
+        Entrance entrance = ((Location) master.getGame().getDungeonMaster().
+         getDungeonWrapper()).getMainEntrance();
+        int dst = Eidolons.getMainHero().getCoordinates().dst(
+         entrance.getOriginalCoordinates());
+        int n = 2 +dst/8;
+        if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
+            n += 2 * ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getMissionIndex();
+        }
+        if (!Eidolons.getMainHero().hasItems("Food", n)) {
+            EUtils.info("You need at least " +
+             n + " Food to travel back to " +
+             town.getName() +
+             " (Get closer to where you entered here to reduce the cost)");
+            return;
+        }
+        int finalN = n;
+        EUtils.onConfirm("Traveling back to " +
+         town.getName() +
+         " will require " +finalN+
+         "Food. Shall we get underway?", true, () -> {
+            Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
+            reenterTown();
+        }, true);
     }
 }

@@ -108,7 +108,7 @@ public class AnimationConstructor {
     }
 
     private static boolean isPreconstructOn() {
-        return CoreEngine.isJar() || CoreEngine.isFastMode(); //TODO;
+        return CoreEngine.isJar() || !CoreEngine.isFastMode(); //TODO;
     }
 
     public static void preconstructAllForAV() {
@@ -194,7 +194,7 @@ public class AnimationConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return  !CoreEngine.isFastMode()  ;
+        return   !CoreEngine.isIDE()  ;
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {

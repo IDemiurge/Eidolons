@@ -295,4 +295,10 @@ public class SkillMaster {
         }
         return null;
     }
+
+    public static boolean isMasteryAvailable(PARAMETER p, Unit hero) {
+//        ValuePageManager.getGenericValuesForInfoPages()
+
+        return false;
+    }
 }

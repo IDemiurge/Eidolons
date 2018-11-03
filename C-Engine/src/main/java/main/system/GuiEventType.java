@@ -55,7 +55,7 @@ public enum GuiEventType implements EventType {
 
     MOUSE_HOVER,
     SHOW_UNIT_INFO_PANEL,
-    SHOW_INVENTORY,
+    SHOW_INVENTORY, TOGGLE_INVENTORY,
     SHOW_LOOT_PANEL,
     SHOW_TOOLTIP,
     ADD_FLOATING_TEXT,

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,6 +17,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
@@ -171,12 +173,28 @@ public class InitiativePanel extends GroupX {
     }
 
     private EventListener getClockListener() {
+
         return new ClickListener() {
             @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (!GdxMaster.isWithin(event.getTarget(),
+                 new Vector2(event.getStageX(), event.getStageY()), true))
+                    return;
+                if (button == 0) {
+                    DC_Game.game.getLoop().togglePaused();
+                }
+
+                super.touchUp(event, x, y, pointer, button);
+            }
+
+            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                DC_Game.game.getDungeonMaster().
-                 getExplorationMaster().
-                 getTimeMaster().playerWaits();
+                if (button == 1) {
+                    if (!DC_Game.game.getLoop().isPaused())
+                    DC_Game.game.getDungeonMaster().
+                     getExplorationMaster().
+                     getTimeMaster().playerWaits();
+                }
                 return super.touchDown(event, x, y, pointer, button);
             }
         };

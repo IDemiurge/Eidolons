@@ -14,6 +14,7 @@ import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.text.TextWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +48,9 @@ public class AttackTooltipFactory {
         }
         int min_damage = FutureBuilder.precalculateDamage(el, target, true, true);
         int max_damage = FutureBuilder.precalculateDamage(el, target, true, false);
+
+        LogMaster.log(1, el.getName() + " on " + target.getName()
+         + " - damage precalculated: " + min_damage + " - " + max_damage);
         DAMAGE_TYPE dmgType = el.getDamageType();
 //        TODO display all bonus damage!
 //          Attack attack = EffectFinder.getAttackFromAction(el);

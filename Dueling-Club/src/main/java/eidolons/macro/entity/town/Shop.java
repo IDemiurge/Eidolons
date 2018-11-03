@@ -35,16 +35,18 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.FilterMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.*;
 
 public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
-    private static final boolean TEST_MODE = true;
+    private static final boolean TEST_MODE = false;
     List<DC_HeroItemObj> items;
     int balance;
     private SHOP_TYPE shopType;
@@ -70,9 +72,6 @@ public class Shop extends TownPlace implements ShopInterface {
     /*
     confirm selling for balance
     or buying in credit?
-
-
-
      */
 
     public int getBalance() {
@@ -112,8 +111,11 @@ public class Shop extends TownPlace implements ShopInterface {
         return s;
     }
 
-    private void initItems() {
+    @Override
+    public void init() {
+        super.init();
         if (!getProperty(MACRO_PROPS.SHOP_ITEMS).isEmpty()) {
+            //preset items
             DataManager.toTypeList(ContainerUtils
               .openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
              C_OBJ_TYPE.ITEMS);
@@ -124,46 +126,42 @@ public class Shop extends TownPlace implements ShopInterface {
         if (getIntParam(PARAMS.GOLD_MOD) == 0) {
             setParam(PARAMS.GOLD_MOD, ShopMaster.getBaseGoldCostMod(this), true);
         }
-
         if (getIntParam(MACRO_PARAMS.SHOP_INCOME) == 0) {
             setParam(MACRO_PARAMS.SHOP_INCOME,
              ShopMaster.getBaseGoldIncome(this), true);
         }
+    }
+
+    private void initItems() {
         items = new ArrayList<>();
-        // addStandardItems(); then randomize
+        getIncome(1000);
+        stockItems(spareGoldPercentage );
+        //additional initial gold!
+        if (!CoreEngine.isMacro()) {
+            Integer base = Math.max(200, getType().getIntParam(PARAMS.GOLD));
+            addParam(PARAMS.GOLD, RandomWizard.getRandomIntBetween(
+             base / 3 * 2, base * 3 / 2
+            ));
+        }
+    }
+
+    public void getIncome(float timeCoef) {
+        addParam(PARAMS.GOLD, (int) (timeCoef*getIntParam(MACRO_PARAMS.SHOP_INCOME)));
+        checkStockCommonItems(timeCoef);
+    }
+    //TODO sell stock on time
+
+    public void stockItems(int spareGoldPercentage ) {
+
         PROPERTY prop = getShopType().getFilterProp();
         int i = 0;
 
-        String[] item_groups = getShopType().getItemGroups();
-        // Up to 4 item groups!
-        if (item_groups.length > MAX_ITEM_GROUPS) {
-            List<String> list = new ArrayList<>(Arrays.asList(item_groups));
-            item_groups = new String[MAX_ITEM_GROUPS];
-            int j = 0;
-            while (j < MAX_ITEM_GROUPS) {
-                String e = list.get(RandomWizard.getRandomIndex(list));
-                list.remove(e);
-                item_groups[j] = e;
-                j++;
-            }
-        }
-        OBJ_TYPE itemsType = initItemsType(shopType);
+        String[] item_groups = initItemGroups();
+        OBJ_TYPE itemsType = getItemsType(shopType);
         List<ObjType> basis = ItemGenerator.getTypesForShop(itemsType);
 
         for (String group : item_groups) {
-            List<ObjType> pool;
-            if (itemsType == DC_TYPE.JEWELRY) {
-                pool = basis;
-            } else if (prop == null) {
-                pool = DataManager.toTypeList(DataManager
-                  .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
-                 C_OBJ_TYPE.ITEMS);
-            } else {
-                pool = new ArrayList<>(basis);
-                FilterMaster.filter(pool, new PropCondition(prop, group));
-            }
-            pool = constructPool(pool);
-            pool.addAll(getSpecialItems(group));
+            List<ObjType> pool= createItemPool(itemsType, basis, prop, group);
 
             i++;
             goldToSpendPercentage = (100 - spareGoldPercentage - i * 5)
@@ -177,23 +175,76 @@ public class Shop extends TownPlace implements ShopInterface {
                 if (t == null) {
                     continue;
                 } //TODO check first, then create!!!
-                DC_HeroItemObj item = ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
-                 DC_Game.game, new Ref(), false); // MacroGame.getGame()!
+                DC_HeroItemObj item = createItem (t ); // MacroGame.getGame()!
                 if (acquireItem(item)) {
                     max--; // second loop based on cheapest items?
                 }
             }
         }
 
-        if (TEST_MODE) {
-            Integer base = Math.max(200, getType().getIntParam(PARAMS.GOLD));
-            addParam(PARAMS.GOLD, RandomWizard.getRandomIntBetween(
-             base/3*2, base*3/2
-            ));
+    }
+
+    private DC_HeroItemObj createItem(ObjType t ) {
+       return ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
+        DC_Game.game, new Ref(), false);
+    }
+
+    private void checkStockCommonItems(float timeCoef) {
+        OBJ_TYPE itemsType = getItemsType(getShopType());
+        if (itemsType.equals(DC_TYPE.ITEMS)) {
+            ObjType itemType = DataManager.getType(ItemMaster.FOOD, DC_TYPE.ITEMS);
+            int n = Math.round(RandomWizard.getRandomFloat()*  timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
+            for (int i = 0; i < n; i++) {
+                DC_HeroItemObj item = createItem(itemType);
+                itemBought(item , 0);
+            }
+//         TODO    itemType = DataManager.getType(ItemMaster.TORCH, DC_TYPE.ITEMS);
+//            List<ObjType> pool = constructPool(itemType);
+//
+//              n = Math.round(RandomWizard.getRandomFloat()* timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
+//            for (int i = 0; i < n; i++) {
+//                itemType= pool.get(i);
+//                DC_HeroItemObj item = createItem(itemType);
+//                itemBought(item , 0);
+//            }
         }
     }
 
-    private OBJ_TYPE initItemsType(SHOP_TYPE shopType) {
+    private String[] initItemGroups() {
+        // Up to 4 item groups!
+        String[] item_groups = getShopType().getItemGroups();
+        if (item_groups.length > MAX_ITEM_GROUPS) {
+            List<String> list = new ArrayList<>(Arrays.asList(item_groups));
+            item_groups = new String[MAX_ITEM_GROUPS];
+            int j = 0;
+            while (j < MAX_ITEM_GROUPS) {
+                String e = list.get(RandomWizard.getRandomIndex(list));
+                list.remove(e);
+                item_groups[j] = e;
+                j++;
+            }
+        }
+        return item_groups;
+    }
+
+    private List<ObjType> createItemPool(OBJ_TYPE itemsType, List<ObjType> basis, PROPERTY prop, String group) {
+        List<ObjType> pool;
+        if (itemsType == DC_TYPE.JEWELRY) {
+            pool = basis;
+        } else if (prop == null) {
+            pool = DataManager.toTypeList(DataManager
+              .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
+             C_OBJ_TYPE.ITEMS);
+        } else {
+            pool = new ArrayList<>(basis);
+            FilterMaster.filter(pool, new PropCondition(prop, group));
+        }
+        pool = constructPool(pool);
+        pool.addAll(getSpecialItems(group));
+        return pool;
+    }
+
+    private OBJ_TYPE getItemsType(SHOP_TYPE shopType) {
 
         switch (shopType) {
             case JEWELER:
@@ -221,7 +272,10 @@ public class Shop extends TownPlace implements ShopInterface {
         return list;
     }
 
-    private List<ObjType> constructPool(List<ObjType> pool) {
+    private List<ObjType> constructPool(ObjType... types) {
+        return constructPool(new ListMaster<ObjType>().asList(types));
+    }
+        private List<ObjType> constructPool(List<ObjType> pool) {
 
         // TODO AND WHAT ABOUT NON-SLOT ITEMS?
         List<ObjType> filtered = new ArrayList<>();
@@ -299,7 +353,8 @@ public class Shop extends TownPlace implements ShopInterface {
     private void takesGold(int cost, Unit from) {
 
     }
-        private void givesGold(int cost) {
+
+    private void givesGold(int cost) {
         Integer gold = getIntParam(PARAMS.GOLD);
         if (gold < cost) {
             int balanceChange = gold - cost;

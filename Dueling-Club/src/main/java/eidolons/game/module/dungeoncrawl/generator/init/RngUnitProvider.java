@@ -57,51 +57,6 @@ public class RngUnitProvider {
      .chain(RAVENGUARD_COMMANDER, 10)
 
      ;
-
-    public static WeightMap<String> getGroupWeightMap(DUNGEON_STYLE style, boolean underground) {
-        switch (style) {
-            case Knightly:
-                break;
-            case Holy:
-                break;
-            case Pagan:
-                break;
-            case DarkElegance:
-                break;
-            case PureEvil:
-                break;
-            case Brimstone:
-                break;
-            case Stony:
-                break;
-            case Grimy:
-                return underground ? new WeightMap<String>()
-                 .chain(UNIT_GROUP.DUNGEON, 10)
-                 .chain(UNIT_GROUP.DWARVES, 10)
-                 .chain(UNIT_GROUP.UNDEAD, 10)
-                 : new WeightMap<String>()
-                 .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-                 .chain(UNIT_GROUP.DWARVES, 10)
-                 .chain(UNIT_GROUP.UNDEAD_CRIMSON, 10)
-                 .chain(UNIT_GROUP.UNDEAD_PLAGUE, 10);
-            case Somber:
-                return new WeightMap<String>()
-                 .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-                 .chain(UNIT_GROUP.UNDEAD, 10)
-                 .chain(UNIT_GROUP.Ravenguard, 10);
-            case Arcane:
-                break;
-            case Cold:
-                break;
-        }
-        return new WeightMap<String>().chain(UNIT_GROUP.HUMANS_BANDITS, 10);
-
-    }
-
-    public static WeightMap<String> getBossWeightMap(UNIT_GROUP group) {
-        return getUnitWeightMap(group, BOSS);
-    }
-
     public static WeightMap<String> getUnitWeightMap
      (UNIT_GROUP group, Boolean elite_boss_regular) {
         switch (group) {
@@ -702,5 +657,190 @@ public class RngUnitProvider {
                 elite_boss_regular = false;
         }
         return getUnitWeightMap(group, elite_boss_regular);
+    }
+
+    public static UNIT_GROUP getUnitGroup(
+     boolean surface, DUNGEON_STYLE style) {
+        switch (style) {
+            case Arcane:
+                return  new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.CONSTRUCTS, 12)
+                  .chain(UNIT_GROUP.MAGI, 7)
+                  .chain(UNIT_GROUP.CULT_DARK, 4)
+                  .chain(UNIT_GROUP.CULT_CERBERUS, 4)
+                  .chain(UNIT_GROUP.MUTANTS, 5)
+                  .chain(UNIT_GROUP.Ravenguard, 3)
+                  .getRandomByWeight();
+            case Holy:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.Ravenguard, 10)
+                  .chain(UNIT_GROUP.HUMANS_KNIGHTS, 7)
+                  .chain(UNIT_GROUP.HUMANS, 4)
+                  .chain(UNIT_GROUP.HUMANS_CRUSADERS, 4)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.Ravenguard,  5)
+                  .chain(UNIT_GROUP.HUMANS_KNIGHTS, 3)
+                  .chain(UNIT_GROUP.HUMANS, 2)
+                  .chain(UNIT_GROUP.HUMANS_CRUSADERS, 2)
+                  .getRandomByWeight();
+
+            case Knightly:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.Ravenguard, 10)
+                  .chain(UNIT_GROUP.HUMANS_KNIGHTS, 3)
+                  .chain(UNIT_GROUP.HUMANS, 4)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.Ravenguard, 15)
+                  .chain(UNIT_GROUP.HUMANS, 6)
+                  .getRandomByWeight();
+
+
+            case Brimstone:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
+                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
+                  .chain(UNIT_GROUP.CULT_CHAOS, 4)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
+                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
+                  .getRandomByWeight();
+            case DarkElegance:
+                break;
+            case PureEvil:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 10)
+                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 7)
+                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 9)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 7)
+                  .chain(UNIT_GROUP.DARK_ONES, 8)
+                  .chain(UNIT_GROUP.CULT_DEATH, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 10)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
+                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
+                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
+                  .chain(UNIT_GROUP.CULT_DEATH, 7)
+                  .chain(UNIT_GROUP.UNDEAD, 14)
+                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 8)
+                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 6)
+                  .chain(UNIT_GROUP.CULT_DARK, 5)
+                  .getRandomByWeight();
+            case Grimy:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+                  .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
+                  .chain(UNIT_GROUP.PRISONERS, 5)
+                  .chain(UNIT_GROUP.ANIMALS, 5)
+                  .chain(UNIT_GROUP.MUTANTS, 5)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DWARVES, 15)
+                  .chain(UNIT_GROUP.DUNGEON, 10)
+                  .chain(UNIT_GROUP.MUTANTS, 6)
+                  .chain(UNIT_GROUP.PALE_ORCS, 6)
+                  .chain(UNIT_GROUP.CRITTERS, 6)
+                  .getRandomByWeight();
+            case Pagan:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.NORTH, 12)
+                  .chain(UNIT_GROUP.ANIMALS, 5)
+                  .chain(UNIT_GROUP.DWARVES, 5)
+                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DWARVES, 15)
+                  .chain(UNIT_GROUP.DUNGEON, 10)
+                  .chain(UNIT_GROUP.ELEMENTALS, 6)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
+                  .chain(UNIT_GROUP.PALE_ORCS, 5)
+                  .getRandomByWeight();
+            case Stony:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+                  .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
+                  .chain(UNIT_GROUP.PRISONERS, 5)
+                  .chain(UNIT_GROUP.ANIMALS, 5)
+                  .chain(UNIT_GROUP.MUTANTS, 5)
+                  //                  .chain(UNIT_GROUP.BARBARIANS, 3)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DUNGEON, 20)
+                  .chain(UNIT_GROUP.DWARVES, 12)
+                  .chain(UNIT_GROUP.MUTANTS, 6)
+                  .chain(UNIT_GROUP.PALE_ORCS, 6)
+                  .chain(UNIT_GROUP.CRITTERS, 6)
+                  .getRandomByWeight();
+            case Somber:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 7)
+                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 9)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 7)
+                  .chain(UNIT_GROUP.DARK_ONES, 8)
+                  .chain(UNIT_GROUP.CULT_DEATH, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 10)
+                  .chain(UNIT_GROUP.PRISONERS, 4)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.CULT_DEATH, 7)
+                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 5)
+                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 4)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 5)
+                  .chain(UNIT_GROUP.CRITTERS, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 5)
+                  .chain(UNIT_GROUP.PRISONERS, 5)
+                  .getRandomByWeight();
+            case Cold:
+                return surface ?
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.DWARVES, 17)
+                  .chain(UNIT_GROUP.PRISONERS, 14)
+                  .chain(UNIT_GROUP.MUTANTS, 14)
+                  .chain(UNIT_GROUP.NORTH, 9)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 27)
+                  .chain(UNIT_GROUP.DARK_ONES, 8)
+                  .chain(UNIT_GROUP.CULT_DEATH, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 10)
+                  .getRandomByWeight()
+                 :
+                 new WeightMap<>(UNIT_GROUP.class)
+                  .chain(UNIT_GROUP.DUNGEON, 10)
+                  .chain(UNIT_GROUP.UNDEAD, 10)
+                  .chain(UNIT_GROUP.DWARVES, 27)
+                  .chain(UNIT_GROUP.PRISONERS, 14)
+                  .chain(UNIT_GROUP.MUTANTS, 14)
+                  .chain(UNIT_GROUP.NORTH, 9)
+                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 17)
+                  .chain(UNIT_GROUP.DARK_ONES, 8)
+                  .chain(UNIT_GROUP.CULT_DEATH, 5)
+                  .chain(UNIT_GROUP.CULT_DARK, 10)
+                  .getRandomByWeight();
+        }
+        return UNIT_GROUP.Ravenguard;
     }
 }

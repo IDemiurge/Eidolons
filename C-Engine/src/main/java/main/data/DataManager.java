@@ -49,6 +49,7 @@ public class DataManager {
     private static ObjType[] baseAllItemTypes;
     private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
     private static int log = 0;
+    private static Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
 
     public static void init() {
         subGroupsMaps = new HashMap<>();
@@ -94,13 +95,28 @@ public class DataManager {
     }
 
     public static ObjType getType(String typeName, OBJ_TYPE obj_type) {
+        Map<String, ObjType> cache = caches.get(obj_type);
+        if (cache == null)
+            caches.put(obj_type, cache = new HashMap<>());
+
+        ObjType t = cache.get(typeName.toLowerCase());
+        if (t != null) {
+            return t;
+        }
+        t = getTypeNoCache(typeName, obj_type);
+        cache.put(typeName.toLowerCase(), t);
+        return t;
+    }
+
+    public static ObjType getTypeNoCache(String typeName, OBJ_TYPE obj_type) {
+
         if (typeName.isEmpty())
             return null;
         ObjType type = getType(typeName, obj_type, true);
         if (type == null) {
             if (C_OBJ_TYPE.ITEMS.equals(obj_type))
                 try {
-                    return Game.game.getItemGenerator().generateItemType( StringMaster.getWellFormattedString(
+                    return Game.game.getItemGenerator().generateItemType(StringMaster.getWellFormattedString(
                      typeName), obj_type);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -212,11 +228,11 @@ public class DataManager {
                 return type;
             }
         }
-//        if (typeName.contains(" ")) {
+        //        if (typeName.contains(" ")) {
         LogMaster.log(log, "Type getWellFormattedString: " + TYPE
          + ":" + typeName);
         return getType(StringMaster.getWellFormattedString(typeName), TYPE, false);
-//        }
+        //        }
 
     }
 
@@ -308,17 +324,13 @@ public class DataManager {
         ObjType[] list = null;
         if (obj_type.equals(C_OBJ_TYPE.ITEMS)) {
             list = (baseAllItemTypes);
-        } else
-        if (obj_type.equals(DC_TYPE.ARMOR)) {
+        } else if (obj_type.equals(DC_TYPE.ARMOR)) {
             list = (baseArmorTypes);
-        } else
-        if (obj_type.equals(DC_TYPE.WEAPONS)) {
+        } else if (obj_type.equals(DC_TYPE.WEAPONS)) {
             list = (baseWeaponTypes);
-        } else
-        if (obj_type.equals(DC_TYPE.ITEMS)) {
+        } else if (obj_type.equals(DC_TYPE.ITEMS)) {
             list = (baseItemTypes);
-        } else
-        if (obj_type.equals(DC_TYPE.JEWELRY)) {
+        } else if (obj_type.equals(DC_TYPE.JEWELRY)) {
             list = (baseJewelryTypes);
         }
 
@@ -438,7 +450,8 @@ public class DataManager {
         types.removeIf(t -> t.isGenerated());
         return types;
     }
-        public static List<ObjType> getTypes(OBJ_TYPE key) {
+
+    public static List<ObjType> getTypes(OBJ_TYPE key) {
         return getTypes(key, false);
     }
 
@@ -509,18 +522,18 @@ public class DataManager {
         // if (list != null)
         // return list;
 
-//        List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
-//         .toString());
-//        // TODO preCheck TYPES!
-//        if (groupsList.isEmpty()) {
-//            if (DC_TYPE.isOBJ_TYPE(subgroup)) {
-//                groupsList = toStringList(getTypes(DC_TYPE.getType(subgroup)));
-//            } else {
-//                if (isTypeName(subgroup)) {
-//                    groupsList = toStringList(getTypes(getType(subgroup).getOBJ_TYPE_ENUM()));
-//                }
-//            }
-//        }
+        //        List<String> groupsList = EnumMaster.findEnumConstantNames(TYPE.getSubGroupingKey()
+        //         .toString());
+        //        // TODO preCheck TYPES!
+        //        if (groupsList.isEmpty()) {
+        //            if (DC_TYPE.isOBJ_TYPE(subgroup)) {
+        //                groupsList = toStringList(getTypes(DC_TYPE.getType(subgroup)));
+        //            } else {
+        //                if (isTypeName(subgroup)) {
+        //                    groupsList = toStringList(getTypes(getType(subgroup).getOBJ_TYPE_ENUM()));
+        //                }
+        //            }
+        //        }
         // if (ListMaster.contains(groupsList, subgroup, true)
         // || isCustomGroup(subgroup)) {
         list = new ArrayList<>();
@@ -560,7 +573,7 @@ public class DataManager {
         return list;
     }
 
-    public static List<ObjType> getFilteredTypes( OBJ_TYPE OBJ_TYPE,String filter, VALUE filterValue) {
+    public static List<ObjType> getFilteredTypes(OBJ_TYPE OBJ_TYPE, String filter, VALUE filterValue) {
         Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
 
         List<ObjType> list = new ArrayList<>();
@@ -938,6 +951,7 @@ public class DataManager {
     public static ObjType getRandomType(OBJ_TYPE TYPE) {
         return getRandomType(TYPE, null);
     }
+
     public static ObjType getRandomType(OBJ_TYPE TYPE, String group) {
         List<ObjType> list = getTypesGroup(TYPE, group);
         return list.get(RandomWizard.getRandomIndex(list));
@@ -991,11 +1005,11 @@ public class DataManager {
         DataManager.baseWeaponTypes = baseWeaponTypes;
     }
 
-    public static void setBaseAllItemTypes(ObjType[] baseAllItemTypes) {
-        DataManager.baseAllItemTypes = baseAllItemTypes;
-    }
-
     public static ObjType[] getBaseAllItemTypes() {
         return baseAllItemTypes;
+    }
+
+    public static void setBaseAllItemTypes(ObjType[] baseAllItemTypes) {
+        DataManager.baseAllItemTypes = baseAllItemTypes;
     }
 }

@@ -12,6 +12,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.ModMaster;
 import main.ability.Abilities;
@@ -212,10 +213,18 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isConstructed() {
         return super.isConstructed();
     }
+    protected boolean isConstructOnToBase() {
+        if (!ExplorationMaster.isExplorationOn())
+            return true;
+        return false;
+    }
 
+    @Override
+    public boolean isConstructAlways() {
+        return super.isConstructAlways();
+    }
 
     public boolean canBeActivated() {
-
         return canBeActivated(ref);
     }
 

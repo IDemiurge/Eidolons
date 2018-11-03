@@ -11,7 +11,7 @@ import main.entity.obj.BuffObj;
 public class AtbMaster {
     public static float getReadinessCost(DC_ActiveObj action) {
         if (action.isExtraAttackMode()) {
-           return  0;
+            return 0;
         }
         return (float) (
          action.getParamDouble(PARAMS.AP_COST)
@@ -32,8 +32,8 @@ public class AtbMaster {
 
     public static double reduceReadiness(DC_ActiveObj action) {
         float initiativeCost = getReadinessCost(action);
-if (initiativeCost<=0)
-    return 0;
+        if (initiativeCost <= 0)
+            return 0;
         action.getOwnerUnit().modifyParameter(PARAMS.C_INITIATIVE,
          -initiativeCost + "", 0, false);
 

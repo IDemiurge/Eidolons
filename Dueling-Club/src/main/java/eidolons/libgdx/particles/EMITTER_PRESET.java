@@ -27,7 +27,7 @@ public enum EMITTER_PRESET {
     CAST_celestial2,
     CAST_celestial3,
 
-    DARK_MIST("mist","dark mist"),
+    DARK_MIST("mist","dark mist2"),
     DARK_MIST_LITE("mist","dark mist2 light"),
     SMOKE_TEST("Smoke_Test1.pt"),
     DARK_SOULS("dark souls"),

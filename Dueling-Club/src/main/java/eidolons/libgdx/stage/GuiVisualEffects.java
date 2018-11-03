@@ -24,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
 import main.system.auxiliary.RandomWizard;
+import main.system.datatypes.WeightMap;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
@@ -82,8 +83,16 @@ public class GuiVisualEffects extends GroupX {
                 emitter.hide();
             }
         }
+        emitterTypesCount=0;
         emitters = new ArrayList<>();
         boolean night = time.isNight();
+        WeightMap<EMITTER_PRESET> map = getEmittersWeightMap(template, night);
+        int n = getEmitterCount(template, time);
+        for (int i = 0; i < n; i++) {
+            EMITTER_PRESET preset = map.getRandomByWeight();
+            boolean bottom=RandomWizard.random();
+            createEmitters(bottom, preset, 220 - 50 + RandomWizard.getRandomInt(100));
+        }
         switch (template) {
             case CAVE:
                 createEmitters(false, EMITTER_PRESET.MIST_WIND, 250);
@@ -93,12 +102,11 @@ public class GuiVisualEffects extends GroupX {
                 break;
             case POISON:
                 createEmitters(false, EMITTER_PRESET.MIST_BLACK, 250);
-                createEmitters(false, EMITTER_PRESET.FLIES, 250);
+                createEmitters(false, EMITTER_PRESET.ASH, 250);
                 break;
             case DUNGEON:
-                break;
             case CRYPT:
-                break;
+                createEmitters(false, EMITTER_PRESET.MIST_BLACK, 250);
             case HELL:
                 createEmitters(false, EMITTER_PRESET.ASH, 250);
                 break;
@@ -162,6 +170,60 @@ public class GuiVisualEffects extends GroupX {
                 case DEEP_MIST:
                     break;
             }
+    }
+
+    private int getEmitterCount(AMBIENCE_TEMPLATE template, DAY_TIME time) {
+        return 3;
+    }
+
+    private WeightMap<EMITTER_PRESET> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
+        WeightMap<EMITTER_PRESET> map = new WeightMap<>();
+        int fog = night ? 10 : 5;
+        int down = night? 5 : 10;
+        EMITTER_PRESET special = night ? EMITTER_PRESET.STARS : EMITTER_PRESET.MOTHS;
+        EMITTER_PRESET special2 = night ? EMITTER_PRESET.WISPS : EMITTER_PRESET.CINDERS;
+
+        switch (template) {
+            case CAVE:
+                map.chain(EMITTER_PRESET.MIST_WIND, fog);
+                map.chain(EMITTER_PRESET.MIST_WIND, fog);
+
+                map.chain(EMITTER_PRESET.ASH, down);
+                map.chain(EMITTER_PRESET.SNOWFALL, down);
+                map.chain(EMITTER_PRESET.SNOWFALL_THICK, down);
+                map.chain(EMITTER_PRESET.SNOWFALL_THICK, down);
+                map.chain(EMITTER_PRESET.SNOW, down);
+                map.chain(EMITTER_PRESET.SNOW_TIGHT, down);
+
+                map.chain(EMITTER_PRESET.MIST_WIND, fog);
+                map.chain(EMITTER_PRESET.MIST_ARCANE, fog);
+                map.chain(EMITTER_PRESET.MIST_BLACK, fog);
+                map.chain(EMITTER_PRESET.MIST_CYAN, fog);
+                map.chain(EMITTER_PRESET.MIST_WHITE3, fog);
+                map.chain(EMITTER_PRESET.DARK_MIST_LITE, fog);
+                map.chain(EMITTER_PRESET.DARK_MIST, fog);
+                map.chain(EMITTER_PRESET.POISON_MIST, fog);
+                map.chain(EMITTER_PRESET.POISON_MIST2, fog);
+
+                break;
+            case COLD:
+                break;
+            case POISON:
+                break;
+            case DUNGEON:
+                break;
+            case CRYPT:
+                break;
+            case HELL:
+                break;
+            case HALL:
+                break;
+            case FOREST:
+                break;
+            case DEEP_MIST:
+                break;
+        }
+        return map;
     }
 
     public void resized() {

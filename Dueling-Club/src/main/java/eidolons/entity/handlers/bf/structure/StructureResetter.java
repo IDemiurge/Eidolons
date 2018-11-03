@@ -1,5 +1,6 @@
 package eidolons.entity.handlers.bf.structure;
 
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.DC_UnitModel;
@@ -15,13 +16,21 @@ import main.system.auxiliary.EnumMaster;
  */
 public class StructureResetter extends EntityResetter<Structure> {
 
+    private boolean firstResetDone;
+
     public StructureResetter(Structure entity, EntityMaster<Structure> entityMaster) {
         super(entity, entityMaster);
     }
 
     @Override
     public void toBase() {
+        if (firstResetDone){
+            if (getEntity().isFull(PARAMS.ENDURANCE))
+                if (getEntity().isFull(PARAMS.TOUGHNESS))
+                    return;
+        }
         super.toBase();
+        firstResetDone=true;
     }
 
     public void resetFacing() {

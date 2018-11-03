@@ -105,7 +105,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         return hero;
     }
 
-    public void setHero(Unit hero) {
+    public void setOwnerObj(Unit hero) {
         this.hero = hero;
     }
 
@@ -172,7 +172,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
             return;
         }
         if (getGame().getObjectById(heroId) instanceof Unit) {
-            setHero((Unit) getGame().getObjectById(heroId));
+            setOwnerObj((Unit) getGame().getObjectById(heroId));
         }
 //        try {
 //            setHero((Unit) getGame().getObjectById(heroId));

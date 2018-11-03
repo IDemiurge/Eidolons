@@ -175,10 +175,14 @@ public class AbilityConstructor {
         checkAbilsMerge(entity, true);
         checkAbilsMerge(entity, false);
         constructPassives(entity);
-        if (!entity.getGame().isSimulation()) {
+        if (!entity.getGame().isSimulation() && isFullConstructOnInit()) {
             constructActives(entity);
             entity.setConstructed(true);
         }
+    }
+
+    private static boolean isFullConstructOnInit() {
+        return true;
     }
 
     private static void checkAbilsMerge(Entity entity, boolean PASSIVES) {

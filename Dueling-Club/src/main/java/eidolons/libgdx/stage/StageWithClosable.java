@@ -46,7 +46,7 @@ public interface StageWithClosable {
         if (closable instanceof GroupX) {
             ((GroupX) closable).fadeIn();
         } else ((Actor) closable).setVisible(true);
-        if (ExplorationMaster.isExplorationOn() || AI_Manager.isRunning())
+        if (ExplorationMaster.isExplorationOn())// wtf || AI_Manager.isRunning())
             if (closable instanceof Blocking) {
                 if (((Blocking) closable).isPausing())
                     if (DC_Game.game != null)

@@ -5,6 +5,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.StringMaster;
+import main.system.datatypes.WeightMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,28 +97,41 @@ public class AmbienceDataSource {
     }
 
     public static AMBIENCE_TEMPLATE getTemplate(DUNGEON_STYLE style) {
+        return getTemplateMap(style).getRandomByWeight();
+    }
+
+    public static WeightMap<AMBIENCE_TEMPLATE> getTemplateMap(DUNGEON_STYLE style) {
+        WeightMap<AMBIENCE_TEMPLATE> map = new WeightMap<>();
         switch (style) {
             case Knightly:
             case Holy:
-                return HALL;
-            case Stony:
-            case Pagan:
-                return CAVE;
-
-            case Brimstone:
-                return HELL;
+                map.chain(HALL, 20);
+                break;
             case Grimy:
-                return POISON;
-            case Somber:
-            case DarkElegance:
+                map.chain(POISON, 30);
+            case Pagan:
+                map.chain(COLD, 10);
+            case Stony:
+                map.chain(CAVE, 15);
+                break;
+            case Brimstone:
+                map.chain(HELL, 20).chain(CAVE, 5);
+                break;
             case PureEvil:
-                return CRYPT;
+                map.chain(POISON, 10).chain(COLD, 10);
+            case Somber:
+                map.chain(DEEP_MIST, 10);
+            case DarkElegance:
+                map.chain(CRYPT, 25);
+                break;
             case Arcane:
-                return DEEP_MIST;
+                map.chain(DEEP_MIST, 20);
+                break;
             case Cold:
-                return COLD;
+                map.chain(COLD, 20);
+                break;
         }
-        return DEEP_MIST;
+        return map;
     }
 
     private float getDayness(DAY_TIME time) {
@@ -174,11 +188,13 @@ public class AmbienceDataSource {
         HALL,
         FOREST,
         DEEP_MIST,;
+
         static {
             COLD.setDaily(
              SNOW,
              MIST_ARCANE,
              MIST_WIND,
+             DARK_MIST_LITE,
              SNOWFALL,
              MIST_CYAN,
              MIST_CYAN,
@@ -186,6 +202,8 @@ public class AmbienceDataSource {
             );
             COLD.setNightly(
              MIST_CYAN,
+             DARK_MIST,
+             DARK_MIST_LITE,
              SNOW,
              SNOWFALL,
              STARS
@@ -194,7 +212,7 @@ public class AmbienceDataSource {
             POISON.setDaily(
              POISON_MIST,
              POISON_MIST2,
-             FLIES,
+             ASH,
              MIST_BLACK
             );
             POISON.setNightly(
@@ -214,6 +232,7 @@ public class AmbienceDataSource {
             );
             CRYPT.setNightly(
              MIST_ARCANE,
+             DARK_MIST_LITE,
              MIST_CYAN,
              MIST_WIND
             );
@@ -242,6 +261,7 @@ public class AmbienceDataSource {
 
             DEEP_MIST.setDaily(
              MIST_WIND,
+             DARK_MIST,
              MIST_WHITE3,
              MIST_BLACK,
              MIST_TRUE2
@@ -249,6 +269,8 @@ public class AmbienceDataSource {
 
             DEEP_MIST.setNightly(
              MIST_WIND,
+             DARK_MIST,
+             DARK_MIST,
              MIST_WHITE3,
              MIST_ARCANE,
              MIST_TRUE,
@@ -284,6 +306,7 @@ public class AmbienceDataSource {
              MIST_WIND,
              MIST_TRUE2,
              MIST_WHITE,
+             DARK_MIST_LITE,
              WISPS,
              STARS
 

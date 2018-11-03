@@ -123,7 +123,7 @@ public class ParticleManager extends GroupX {
 
         });
     }
-
+@Deprecated
     public static AMBIENCE_TEMPLATE getTemplate(Dungeon dungeon_) {
         if (dungeon_.getDungeonSubtype()!=null )
         switch (dungeon_.getDungeonSubtype()) {

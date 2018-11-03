@@ -18,6 +18,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +50,9 @@ public class GlobalController implements Controller {
             case Keys.F3:
                 WeaveMaster.openWeave();
                 break;
-//            case Keys.F4: already implemented?
-//                Eidolons.exitToMenu();
-//                break;
+            //            case Keys.F4: already implemented?
+            //                Eidolons.exitToMenu();
+            //                break;
             case Keys.ESCAPE:
                 escape();
                 break;
@@ -78,12 +79,17 @@ public class GlobalController implements Controller {
         index++;
         if (list.size() <= index)
             index = 0;
-
-        GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
-        GenericGridView newFocus = list.get(index);
-        cell.popupUnitView(newFocus);
-        GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip());
+        int finalIndex = index;
+        Eidolons.onNonGdxThread(() -> {
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
+            GenericGridView newFocus = list.get(finalIndex);
+            WaitMaster.WAIT(100);
+            cell.popupUnitView(newFocus);
+            WaitMaster.WAIT(100);
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
+            WaitMaster.WAIT(100);
+            GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip());
+        });
 
 
     }
@@ -103,6 +109,9 @@ public class GlobalController implements Controller {
         }
         if (guiStage.closeDisplayed())
             return;
+
+//        guiStage.getTooltips().stackOff();
+
         guiStage.getGameMenu().open();
     }
 
@@ -119,7 +128,7 @@ public class GlobalController implements Controller {
             case 'i':
             case 'I':
                 if (ExplorationMaster.isExplorationOn()) {
-                    GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
+                    GuiEventManager.trigger(GuiEventType.TOGGLE_INVENTORY,
                      new InventoryDataSource(DC_Game.game.getLoop().getActiveUnit()));
                 }
                 break;

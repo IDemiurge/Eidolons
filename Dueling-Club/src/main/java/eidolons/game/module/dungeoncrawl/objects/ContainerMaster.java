@@ -10,6 +10,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
@@ -623,11 +624,13 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private boolean checkCanPlaceQuestItem(DungeonQuest quest, String contents, BattleFieldObject obj) {
         if (obj instanceof ContainerObj) {
+            if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates())>20) {
+                return false;
+            }
             if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString())) {
                 return true;
             }
         }
-//        obj.getCoordinates().dst(Eidolons.getMainHero().getOriginCoordinates)
 
         return false;
     }

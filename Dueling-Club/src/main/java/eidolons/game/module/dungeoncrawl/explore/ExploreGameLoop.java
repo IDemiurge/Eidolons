@@ -10,10 +10,11 @@ import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.macro.global.time.MacroTimeMaster;
+import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
@@ -26,10 +27,10 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
  * Created by JustMe on 9/9/2017.
  */
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
-    private RealTimeThread realTimeThread;
-    private MacroTimeMaster macroTimeMaster;
-    private ExplorationMaster master;
-    private boolean resetRequired;
+    protected RealTimeThread realTimeThread;
+    protected MacroTimeMaster macroTimeMaster;
+    protected ExplorationMaster master;
+    protected boolean resetRequired;
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -68,7 +69,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return super.startInNewThread();
     }
 
-    private void startRealTimeThread() {
+    protected void startRealTimeThread() {
         if (realTimeThread == null || realTimeThread.isDone()) {
             realTimeThread = new RealTimeThread(this);
             realTimeThread.start();
@@ -156,20 +157,20 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         ActionInput playerAction = playerActionQueue.removeLast();
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
-            activateAction(playerAction);
-            master.getActionHandler().playerActionActivated(playerAction.getAction());
+            Boolean result = activateAction(playerAction);
+            master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
             master.getTimeMaster().setGuiDirtyFlag(true);
             master.getPartyMaster().leaderActionDone(playerAction);
 
 
-            waitForAnimations();
+            waitForAnimations(playerAction);
 
         }
         waitForPause();
         return exited;
     }
 
-    private boolean handleAi() {
+    protected boolean handleAi() {
         if (master.getAiMaster().isAiActs()) {
             DequeImpl<ActionInput> queue = getAiActionQueue();
             while (!queue.isEmpty()) {
@@ -206,7 +207,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return true;
     }
 
-    private DequeImpl<ActionInput> getAiActionQueue() {
+    protected DequeImpl<ActionInput> getAiActionQueue() {
         if (AiBehaviorManager.isNewAiOn())
             return game.getDungeonMaster().getExplorationMaster().getAiMaster().getExploreAiManager().getBehaviorManager().getAiActionQueue();
 
@@ -225,25 +226,21 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return true;
     }
 
-    @Override
-    protected void waitForAnimations() {
-        if (AnimMaster.getInstance().isDrawingPlayer()) {
-            int maxTime = 1000;
-            Loop loop = new Loop(20);
-            int waitTime = 0;
-            while (
-             waitTime < maxTime &&
-              loop.continues() &&
-              (
-               DungeonScreen.getInstance().getGridPanel()
-                .getViewMap().get(activeUnit).getActions().size > 0 ||
-                AnimMaster.getInstance().isDrawingPlayer()
-              )) {
-                WaitMaster.WAIT(100);
-                waitTime += 100;
-                main.system.auxiliary.log.LogMaster.log(1, "Explore loops waited for anim to draw: " + waitTime);
-            }
-        }
+
+    protected int getAnimWaitPeriod() {
+        return 100;
+    }
+
+    protected int getMaxAnimWaitTime(ActionInput action) {
+        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
+    }
+
+    protected int getMinAnimWaitTime(ActionInput action) {
+        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME);
+    }
+    protected boolean isMustWaitForAnim(ActionInput action) {
+        return DungeonScreen.getInstance().getGridPanel()
+         .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
     }
 
     @Override
@@ -291,7 +288,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     }
 
-    private void tryAddPlayerActions(ActionInput actionInput) {
+    protected void tryAddPlayerActions(ActionInput actionInput) {
         playerActionQueue.add(actionInput);
     }
 

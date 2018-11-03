@@ -296,6 +296,15 @@ public class InvItemActor extends ItemActor {
             }
 
             @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (button==1){
+                    clicked(event, x, y);
+                    return false;
+                }
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
+            @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (handler.getDragged() != null) {
                     Vector2 v = localToStageCoordinates(new Vector2(x, y));

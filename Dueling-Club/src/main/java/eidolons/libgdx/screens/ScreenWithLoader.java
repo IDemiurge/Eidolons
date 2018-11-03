@@ -46,6 +46,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     private float tooltipTimer = getTooltipPeriod();
     private boolean loadingAtlases;
     private int assetLoadTimer = getAssetLoadTimeLimit();
+    private boolean loaded;
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
@@ -158,8 +159,16 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected abstract void afterLoad();
 
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
     protected void hideLoader() {
         this.loading = false;
+        setLoaded(true);
         loadingStage.done();
         if (introStage != null)
             if (introStage.isDone()) {

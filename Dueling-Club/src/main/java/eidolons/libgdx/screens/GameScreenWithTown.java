@@ -17,8 +17,7 @@ public abstract class GameScreenWithTown extends GameScreen {
         if (p.get() == null) {
             townPanel.fadeOut();
             overlayStage.setActive(false);
-            if (!isTownInLoaderOnly())
-            {
+            if (!isTownInLoaderOnly() || isLoaded()) {
                 loading = false;
             } else {
                 GdxMaster.setLoadingCursor();
@@ -34,7 +33,7 @@ public abstract class GameScreenWithTown extends GameScreen {
             if (townPanel == null || TownPanel.TEST_MODE) {
                 overlayStage.addActor(townPanel = new TownPanel());
             } else {
-                townPanel.setVisible(true);
+                townPanel.fadeIn();
             }
             townPanel.setUserObject(town);
 
@@ -56,4 +55,5 @@ public abstract class GameScreenWithTown extends GameScreen {
             guiStage.draw();
         }
     }
+
 }

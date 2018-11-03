@@ -55,7 +55,7 @@ public class TileConverter {
                 return Grimy;
             case CASTLE:
                 if (alt)
-                    return RandomWizard.random() ? Arcane : DarkElegance;
+                    return RandomWizard.random() ? Knightly : DarkElegance;
                 return Knightly;
             case SEWER:
                 if (alt)

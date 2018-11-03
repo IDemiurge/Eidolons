@@ -44,8 +44,8 @@ public abstract class InputController implements InputProcessor {
     protected int mouseButtonPresed;
     protected float xTouchPos;
     protected float yTouchPos;
-    float halfWidth;
-    float halfHeight;
+    protected static  float halfWidth;
+    protected static float halfHeight;
     private Set<SuperActor> cachedPosActors = new HashSet<>();
     private static boolean unlimitedZoom;
     private static boolean dragOff;
@@ -64,6 +64,14 @@ public abstract class InputController implements InputProcessor {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    public static float getHalfWidth() {
+        return halfWidth;
+    }
+
+    public static float getHalfHeight() {
+        return halfHeight;
     }
 
     protected void initZoom() {

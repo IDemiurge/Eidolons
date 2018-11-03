@@ -49,12 +49,14 @@ public class ValueContainer extends TablePanel {
         init(texture, null, value);
     }
 
-    public ValueContainer(String name ) {
-        init(null, name, null );
+    public ValueContainer(String name) {
+        init(null, name, null);
     }
+
     public ValueContainer(String name, String value) {
         init(null, name, value);
     }
+
     public ValueContainer(LabelStyle style, String name, String value) {
         init(null, name, value);
         setStyle(style);
@@ -133,7 +135,7 @@ public class ValueContainer extends TablePanel {
             row();
         }
 
-        if (value!=null ) {
+        if (value != null) {
             valueLabel = new Label(value, style);
         }
         valueContainer.setActor(
@@ -216,10 +218,7 @@ public class ValueContainer extends TablePanel {
         nameLabel.setText(newText);
         valueLabel.pack();
     }
-    public void setValueText(CharSequence newText) {
-        valueLabel.setText(newText);
-        valueLabel.pack();
-    }
+
     public void setImage(String newPic) {
         imageContainer.getActor().setImage(newPic);
     }
@@ -256,7 +255,6 @@ public class ValueContainer extends TablePanel {
 
     }
 
-
     public float getImageScaleX() {
         return imageScaleX;
     }
@@ -268,30 +266,29 @@ public class ValueContainer extends TablePanel {
     public void overrideImageSize(float w, float h) {
         w = Math.max(0, w);
         h = Math.max(0, h);
-//        imageContainer.maxSize(w, h);
+        //        imageContainer.maxSize(w, h);
         if (imageContainer.getActor() != null) {
             if (isScaledOnHover()) {
                 imageContainer.setActorX(
-                 imageContainer.getActor().getWidth()/2 - w/2);
+                 imageContainer.getActor().getWidth() / 2 - w / 2);
                 imageContainer.setActorY(
-                 imageContainer.getActor().getHeight()/2  - h/2);
+                 imageContainer.getActor().getHeight() / 2 - h / 2);
                 imageScaleX = w / imageContainer.getActor().getWidth();
                 imageScaleY = h / imageContainer.getActor().getHeight();
                 imageContainer.getActor().setScale(getImageScaleX(),
                  getImageScaleY());
                 setFixedSize(true);
                 setSize(w, h);
-            } else
-            {
+            } else {
                 imageContainer.size(w, h);
-//                defaults().size(w, h);
+                //                defaults().size(w, h);
                 setFixedSize(true);
                 setSize(w, h);
-//                imageContainer.getActor().    setSize(w, h);
+                //                imageContainer.getActor().    setSize(w, h);
                 imageContainer.setActorX(
-                 imageContainer.getActor().getWidth()/2 - w/2);
+                 imageContainer.getActor().getWidth() / 2 - w / 2);
                 imageContainer.setActorY(
-                 imageContainer.getActor().getHeight()/2  - h/2);
+                 imageContainer.getActor().getHeight() / 2 - h / 2);
             }
         }
     }
@@ -300,7 +297,6 @@ public class ValueContainer extends TablePanel {
     public float getWidth() {
         return super.getWidth();
     }
-
 
     @Override
     public float getHeight() {
@@ -321,14 +317,15 @@ public class ValueContainer extends TablePanel {
         return imageContainer;
     }
 
-
     public void setNameStyle(LabelStyle labelStyle) {
         getNameLabel().setStyle(labelStyle);
     }
+
     public void setValueStyle(LabelStyle labelStyle) {
         getValueLabel().setStyle(labelStyle);
     }
-        public void setStyle(LabelStyle labelStyle) {
+
+    public void setStyle(LabelStyle labelStyle) {
         if (getNameLabel() != null)
             getNameLabel().setStyle(labelStyle);
         if (getValueLabel() != null)
@@ -336,9 +333,18 @@ public class ValueContainer extends TablePanel {
     }
 
     public String getValueText() {
-        if (getValueLabel()==null )
-            return null ;
+        if (getValueLabel() == null)
+            return null;
         return getValueLabel().getText().toString();
+    }
+
+    public void setValueText(CharSequence newText) {
+        valueLabel.setText(newText);
+        try {
+            valueLabel.pack();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 }
 

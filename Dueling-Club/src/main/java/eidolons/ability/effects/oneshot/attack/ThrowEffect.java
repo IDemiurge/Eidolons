@@ -52,6 +52,10 @@ public class ThrowEffect extends AttackEffect {
             return result;
         }
         DC_WeaponObj weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
+        if (!fromHand)
+        {
+            weapon =  ((DC_QuickItemObj) ref.getObj(KEYS.ITEM)).getWrappedWeapon();
+        }
         try {
             if (offhand
              || ref.getObj(KEYS.ACTIVE).checkProperty(G_PROPS.ACTION_TAGS,
@@ -76,6 +80,13 @@ public class ThrowEffect extends AttackEffect {
     }
 
     private boolean throwWeapon(DC_WeaponObj weapon) {
+        if (ref.getTargetObj()==ref.getSourceObj()){
+            Unit hero = (Unit) ref.getSourceObj();
+            if (!hero.equip(weapon, ITEM_SLOT.MAIN_HAND)){
+                hero.equip(weapon, ITEM_SLOT.OFF_HAND);
+            }
+            return true;
+        }
         ref.setID(KEYS.WEAPON, weapon.getId());
         ref.setValue(KEYS.DAMAGE_TYPE, weapon.getDamageType().getName());
         setWeapon(weapon);

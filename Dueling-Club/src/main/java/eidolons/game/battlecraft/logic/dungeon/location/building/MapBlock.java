@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.building;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -111,7 +112,7 @@ public class MapBlock {
         setObjects(getObjectsByCoordinates());
         map.clear();
         for (Coordinates c : getCoordinates()) {
-            for (Unit obj : DC_Game.game.getObjectsOnCoordinate(c)) {
+            for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(c)) {
                 if (map.containsKey(c)) {
                     ZCoordinates coordinates = new ZCoordinates(c.x, c.y, new Random().nextInt());
                     map.put(coordinates, obj);

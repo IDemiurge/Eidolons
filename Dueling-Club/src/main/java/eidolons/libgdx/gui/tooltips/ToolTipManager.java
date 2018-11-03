@@ -14,9 +14,8 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.bf.grid.LastSeenView;
+import eidolons.libgdx.bf.grid.*;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderMaster;
@@ -25,10 +24,16 @@ import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
+import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.MathMaster;
+import main.system.math.PositionMaster;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static main.system.GuiEventType.*;
 
@@ -37,11 +42,20 @@ public class ToolTipManager extends TablePanel {
     private static final float DEFAULT_WAIT_TIME = 1.5f;
     private static final float TOOLTIP_HIDE_DISTANCE = 80;
     private final GuiStage guiStage;
-    float tooltipTimer;
+    private float tooltipTimer;
+    private float stackTimer;
+    private float waitToHideStack;
+    private Map<GenericGridView, Vector2> posMap = new HashMap<>();
+    private Map<GenericGridView, Float> scaleMap = new HashMap<>();
     private Tooltip tooltip;
     private Cell actorCell;
     private float toWait;
     private Vector2 originalPosition;
+    private int minStackSize = 2;
+    private float offsetX = 32;
+    private float offsetY = 32;
+    private Boolean bottom;
+    private Boolean right;
 
     public ToolTipManager(GuiStage battleGuiStage) {
         guiStage = battleGuiStage;
@@ -54,14 +68,26 @@ public class ToolTipManager extends TablePanel {
             if (DungeonScreen.getInstance().isBlocked())
                 return;
             BaseView object = (BaseView) event.get();
-            hovered(object);
+            boolean canShowStack = true;
+            if (object instanceof GenericGridView) {
+                if (((GenericGridView) object).isStackView()) {
+                    canShowStack = false;
+                }
+            }
+            hovered(object, canShowStack);
             if (object instanceof LastSeenView)
                 return;
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
             BaseView object = (BaseView) event.get();
-            hoverOff(object);
+            boolean canShowStack = true;
+            if (object instanceof GenericGridView) {
+                if (((GenericGridView) object).isStackView()) {
+                    canShowStack = false;
+                }
+            }
+            hoverOff(object, canShowStack);
         });
 
         actorCell = addElement(null);
@@ -69,29 +95,41 @@ public class ToolTipManager extends TablePanel {
 
 
     private void requestedShow(Object object) {
-        if (tooltip == object) {
-            originalPosition = GdxMaster.getCursorPosition(this);
-            tooltip.fadeIn();
-            if (isLogged()) LogMaster.log(1, "Update ignored " );
+        if (object != null)
+            if (tooltip == object) {
+                //            TODO dangerous?     originalPosition = GdxMaster.getCursorPosition(this);
+                tooltip.fadeIn();
+                if (isLogged()) LogMaster.log(1, "Update ignored ");
+                return;
+            }
+        if (tooltip != null)
+            ActorMaster.addFadeOutAction(tooltip, 0.35f);
+        if (object == null) {
+            actorCell.setActor(tooltip = null);
             return;
         }
-        if (isRemoveImmediately(actorCell.getActor())) {
-            actorCell.setActor(null);
-            //                    immediate removal
-        } else {
-            if (actorCell.getActor() != null)
-                ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
-        }
-        if (object==null )
-            return;
         tooltip = (Tooltip) object;
+
         toWait = getTimeToWaitForTooltip(tooltip);
         if (toWait == 0) {
-            if (isLogged()) LogMaster.log(1, "Immediate show: " );
+            if (isLogged()) LogMaster.log(1, "Immediate show: ");
             show();
-        } else if (isLogged()) LogMaster.log(1, "Wait for tooltip: " );
+        } else if (isLogged()) LogMaster.log(1, "Wait for tooltip: ");
 
+        if (!isUseTable())
+            if (tooltip instanceof UnitViewTooltip) {
+                Vector2 v = new Vector2(
+                 ((UnitViewTooltip) tooltip).getView().getX() + 200,
+                 ((UnitViewTooltip) tooltip).getView().getY());
+                addActor(tooltip);
+                tooltip.setPosition(v.x, v.y);
+                return;
+            }
         initTooltipPosition();
+    }
+
+    private boolean isUseTable() {
+        return true;
     }
 
     private void show() {
@@ -102,16 +140,16 @@ public class ToolTipManager extends TablePanel {
         if (tooltip == null) {
             return -1;
         }
-        if (!tooltip.isBattlefield()) {
-            return 0;
-        }
+                if (!tooltip.isBattlefield()) {
+                    return 0;
+                }
         return DEFAULT_WAIT_TIME / (OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) / 100);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (parentAlpha == ShaderMaster.SUPER_DRAW ||
-                ConfirmationPanel.getInstance().isVisible())
+         ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
         else
             ShaderMaster.drawWithCustomShader(this, batch, null, false, false);
@@ -121,36 +159,6 @@ public class ToolTipManager extends TablePanel {
         return false;
     }
 
-    public void entityHover(Entity entity) {
-        if (entity instanceof DC_ActiveObj) {
-            GuiEventManager.trigger(ACTION_HOVERED, entity);
-        }
-        if (entity instanceof DC_UnitAction) {
-            if (((DC_UnitAction) entity).isAttackAny())
-                AnimMaster3d.initHover((DC_UnitAction) entity);
-            return;
-        }
-
-        guiStage.getRadial().hover(entity);
-        //differentiate radial from bottom panel? no matter really ... sync :)
-
-        //        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
-
-    }
-
-    public void entityHoverOff(Entity entity) {
-        if (entity instanceof DC_ActiveObj) {
-            GuiEventManager.trigger(ACTION_HOVERED_OFF, entity);
-            if (DC_Engine.isAtbMode())
-                if (!ExplorationMaster.isExplorationOn())
-                    GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
-        }
-        if (entity instanceof DC_UnitAction) {
-            AnimMaster3d.hoverOff((DC_UnitAction) entity);
-        }
-        guiStage.getRadial().hoverOff(entity);
-    }
-
 
     private void init(Tooltip tooltip) {
 
@@ -158,10 +166,15 @@ public class ToolTipManager extends TablePanel {
         tooltip.setManager(this);
 
         tooltip.invalidate();
-        actorCell.setActor(tooltip);
+        if (actorCell.getTable() != this) {
+            actorCell = addElement(tooltip);
+        } else
+            actorCell.setActor(tooltip);
 
         originalPosition = GdxMaster.getCursorPosition(this);
-        setPosition(originalPosition.x + 10, originalPosition.y);
+        bottom = null;
+        right = null;
+        updatePosition();
 
         tooltip.getColor().a = 0;
         tooltip.clearActions();
@@ -174,8 +187,14 @@ public class ToolTipManager extends TablePanel {
     public void act(float delta) {
         setVisible(true);
         super.act(delta);
-        if (tooltip!=null){
-            if (tooltip.getColor().a==0) {
+        if (waitToHideStack > 0) {
+            stackTimer += delta;
+            if (stackTimer >= waitToHideStack) {
+                stackOff();
+            }
+        }
+        if (tooltip != null) {
+            if (tooltip.getColor().a == 0) {
                 tooltip.fadeIn();
             }
         }
@@ -183,6 +202,7 @@ public class ToolTipManager extends TablePanel {
             if (tooltip != null) {
                 if (tooltip.isMouseHasMoved()) {
                     tooltipTimer = 0;
+                    tooltip.exited();
                     if (isLogged()) LogMaster.log(1, "MouseHasMoved for tooltip ");
                 } else {
                     tooltipTimer += delta;
@@ -197,16 +217,82 @@ public class ToolTipManager extends TablePanel {
                 }
             }
 
-        float dst = 0;
-        if (originalPosition != null)
-            dst = originalPosition.dst(GdxMaster.getCursorPosition(this));
-        if (dst > TOOLTIP_HIDE_DISTANCE * GdxMaster.getFontSizeModSquareRoot()
-                || Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+
+        if (tooltip != null)
+            if (tooltip.isBattlefield())
+                if (originalPosition != null)
+                    if (originalPosition.dst(GdxMaster.getCursorPosition(this))
+                     > 300 * GdxMaster.getFontSizeModSquareRoot()) {
+                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
+                        requestedShow(null);
+                        if (isStackHoverOn())
+                            waitToHideStack = 2;
+                    }
+        //         ||
+        //
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             setVisible(false);
         } else {
             setVisible(true);
         }
+        if (tooltip == null) {
+            return;
+        }
+        updatePosition();
+    }
 
+
+    private void updatePosition() {
+        float x = GdxMaster.getCursorPosition(this).x;
+        float y = GdxMaster.getCursorPosition(this).y;
+
+        //        if (isSimplePositioning()) {
+        //            setPosition(x + offsetX, y + offsetY);
+        //            return;
+        //        }
+        boolean setBottom = y > InputController.getHalfHeight() + tooltip.getHeight();
+        boolean setTop = y < InputController.getHalfHeight() - tooltip.getHeight();
+        boolean setLeft = x > InputController.getHalfWidth() + tooltip.getHeight();
+        boolean setRight = x < InputController.getHalfWidth() - tooltip.getHeight();
+
+        if (setBottom)
+            bottom = true;
+        if (setTop)
+            bottom = false;
+        if (setRight)
+            right = true;
+        if (setLeft)
+            right = false;
+
+        if (bottom == null)
+            y += offsetY;
+        else if (bottom) {
+            y -= +offsetY;
+            if (!isSimplePositioning())
+                y -= tooltip.getHeight();
+        } else {
+            y += offsetY;
+            if (!isSimplePositioning())
+                y += tooltip.getHeight();
+        }
+
+        if (right == null)
+            x += offsetX;
+        else if (right) {
+            x += offsetX;
+            if (!isSimplePositioning())
+                x += tooltip.getWidth();
+        } else {
+            x -= offsetX;
+            if (!isSimplePositioning())
+                x -= tooltip.getWidth();
+        }
+        //        tooltip.
+        setPosition(x, y);
+    }
+
+    private boolean isSimplePositioning() {
+        return true;
     }
 
     @Override
@@ -225,21 +311,23 @@ public class ToolTipManager extends TablePanel {
             return;
         }
         float y = (v2.y - tooltip.getPrefHeight() - getPreferredPadding());
-        boolean bot = false;
+        boolean bottom = false;
         if (y < 0) {
             actorCell.bottom();
             actorCell.padBottom(
-                    Math.max(-y / 2 - getPreferredPadding(), 64));
-            bot = true;
+             Math.max(-y / 2 - getPreferredPadding(), 64));
+            bottom = true;
         }
 
         y = v2.y + tooltip.getPrefHeight() + getPreferredPadding();
         if (y > GdxMaster.getHeight()) {
-            if (bot) {
+            if (bottom) {
                 actorCell.center();
             } else
                 actorCell.top();
             actorCell.padTop((y - GdxMaster.getHeight()) / 2 - getPreferredPadding());
+
+
         }
         float x = v2.x - tooltip.getPrefWidth() - getPreferredPadding();
         if (x < 0) {
@@ -247,7 +335,7 @@ public class ToolTipManager extends TablePanel {
             actorCell.padLeft((-x) / 2 - getPreferredPadding());
         }
         x = v2.x + tooltip.getPrefWidth() + getPreferredPadding();
-        boolean right=true ;
+        boolean right = true;
         if (x > GdxMaster.getWidth()) {
             actorCell.right();
             actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());
@@ -256,22 +344,28 @@ public class ToolTipManager extends TablePanel {
 
         Vector2 offset = tooltip.getDefaultOffset();
         if (offset != null) {
-            int difX = right? -3 : 2;
-//            int difY = bot? -3 : 2;
+            int difX = right ? -3 : 2;
+            //            int difY = bot? -3 : 2;
             if (right) {
-                actorCell.padRight(actorCell.getPadRight() + offset.x*difX+actorCell.getActorWidth());
+                actorCell.padRight(actorCell.getPadRight() + offset.x * difX + actorCell.getActorWidth());
             } else {
-                actorCell.padLeft(actorCell.getPadLeft() + offset.x*difX+actorCell.getActorWidth());
+                actorCell.padLeft(actorCell.getPadLeft() + offset.x * difX + actorCell.getActorWidth());
             }
-//            if (right){
-//                actorCell.setActorX(actorCell.getActorX()-actorCell.getActorWidth()*2);
-//            }
-            actorCell.setActorY(MathMaster.minMax(actorCell.getActorY()+offset.y,
-             GDX.height(-200-offset.y), GDX.height(200+offset.y)));
+            //            if (right){
+            //                actorCell.setActorX(actorCell.getActorX()-actorCell.getActorWidth()*2);
+            //            }
+            float offsetY = offset.y;
+            if (bottom) {
+                offsetY = -offsetY;
+            }
+            if (isSimplePositioning()) {
+                actorCell.setActorY(MathMaster.minMax(actorCell.getActorY() + offsetY,
+                 GDX.height(-200 - offset.y), GDX.height(200 + offset.y)));
+            }
         }
 
-//        actorCell.setActorY(MathMaster.minMax(actorCell.getActorX(),
-//         GDX.height(-200), GDX.height(200)));
+        //        actorCell.setActorY(MathMaster.minMax(actorCell.getActorX(),
+        //         GDX.height(-200), GDX.height(200)));
     }
 
     private boolean isLogged() {
@@ -282,9 +376,37 @@ public class ToolTipManager extends TablePanel {
         return 65 * GdxMaster.getFontSizeMod();
     }
 
+    public void entityHoverOff(Entity entity) {
+        if (entity instanceof DC_ActiveObj) {
+            GuiEventManager.trigger(ACTION_HOVERED_OFF, entity);
+            if (DC_Engine.isAtbMode())
+                if (!ExplorationMaster.isExplorationOn())
+                    GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
+        }
+        if (entity instanceof DC_UnitAction) {
+            AnimMaster3d.hoverOff((DC_UnitAction) entity);
+        }
+        guiStage.getRadial().hoverOff(entity);
+    }
+
+    public void entityHover(Entity entity) {
+        if (entity instanceof DC_ActiveObj) {
+            GuiEventManager.trigger(ACTION_HOVERED, entity);
+        }
+        if (entity instanceof DC_UnitAction) {
+            if (((DC_UnitAction) entity).isAttackAny())
+                AnimMaster3d.initHover((DC_UnitAction) entity);
+            return;
+        }
+
+        guiStage.getRadial().hover(entity);
+        //differentiate radial from bottom panel? no matter really ... sync :)
+        //        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
+
+    }
 
 
-    private void hovered(BaseView object) {
+    private void hovered(BaseView object, boolean canShowStack) {
         float scaleX = getDefaultScale(object);
         if (object.getScaleX() == getDefaultScale(object))
             scaleX = getZoomScale(object);
@@ -293,7 +415,7 @@ public class ToolTipManager extends TablePanel {
             scaleY = getZoomScale(object);
 
         ActorMaster.
-                addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
+         addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
 
         if (object instanceof GridUnitView) {
             if (scaleX == getDefaultScale(object))
@@ -301,15 +423,93 @@ public class ToolTipManager extends TablePanel {
             if (scaleY == getDefaultScale(object))
                 scaleY = getZoomScale(object);
             ActorMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleX, scaleY, 0.35f);
+             addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+              , scaleX, scaleY, 0.35f);
         }
         object.setHovered(true);
+
+        if (isStackHoverOn()) {
+            if (canShowStack) {
+                Coordinates c = object.getUserObject().getCoordinates();
+                GridCellContainer cell = DungeonScreen.getInstance().getGridPanel().getCells()[c.x][
+                 PositionMaster.getLogicalY(c.y)];
+                if (cell.isStackView()) {
+                    waitToHideStack = 0;
+                } else
+                    stackOn(cell);
+            }
+        }
+
         DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
 
     }
 
-    private void hoverOff(BaseView object) {
+    private void stackOn(GridCellContainer cell) {
+        //        showingStack = true;
+        List<GenericGridView> views = cell.getUnitViews(true);
+
+        if (views.size() < minStackSize) {
+            return;
+        }
+        cell.setStackView(true);
+        int size = 128;
+        boolean horizontal = bottom != null;
+        int x = horizontal ? -size * views.size() / 2 + size / 2 : 0;
+        int y = !horizontal ? -size * views.size() / 2 + size / 2 : 0;
+        for (GenericGridView view : views) {
+            //sorted?
+            ActorMaster.addMoveByAction(view, x, y, 0.9f);
+            posMap.put(view, new Vector2(-x, -y));
+            if (horizontal) {
+                x += 140;
+            } else {
+                y += 140;
+            }
+            view.setStackView(true);
+            view.setHovered(true);
+
+            ActorMaster.addScaleAction(view, 1, 1.2f);
+            //                DungeonScreen.getInstance().getGridPanel().getCells()[c.x][c.y];
+            //stackView(true);
+            scaleMap.put(view, view.getScaleX());
+
+            //scaling on?
+
+            //highlight by color ally
+
+        }
+        DungeonScreen.getInstance().setStackView(cell);
+        //ESC to cancel
+        main.system.auxiliary.log.LogMaster.log(1, "Stack on! \n" + cell + "\n" + posMap + "\n" + scaleMap);
+    }
+
+    public void stackOff() {
+        main.system.auxiliary.log.LogMaster.log(1, "Stack off!\n " + posMap + "\n" + scaleMap);
+        for (GenericGridView view : posMap.keySet()) {
+            Vector2 v = posMap.get(view);
+            view.setHovered(false);
+            view.setStackView(false);
+            ActorMaster.addMoveByAction(view, v.x, v.y, 1.2f);
+        }
+        for (GenericGridView view : scaleMap.keySet()) {
+            ActorMaster.addScaleAction(view, scaleMap.get(view), 1.4f);
+        }
+        posMap.clear();
+        scaleMap.clear();
+        waitToHideStack = 0;
+        stackTimer = 0;
+        if (DungeonScreen.getInstance().getStackView() == null) {
+            return;
+        }
+        DungeonScreen.getInstance().getStackView().setStackView(false);
+        DungeonScreen.getInstance().setStackView(null);
+    }
+
+    private boolean isStackHoverOn() {
+        return false;
+    }
+
+    private void hoverOff(BaseView object, boolean canShowStack) {
         if (object instanceof LastSeenView) {
             return;
         }
@@ -321,20 +521,28 @@ public class ToolTipManager extends TablePanel {
             scaleX = object.getScaledWidth();
             scaleY = object.getScaledHeight();
             ActorMaster.
-                    addScaleAction(object, scaleX, scaleY, 0.35f);
+             addScaleAction(object, scaleX, scaleY, 0.35f);
             scaleX = getDefaultScale(object);
             scaleY = getDefaultScale(object);
             ActorMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleX, scaleY, 0.35f);
+             addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+              , scaleX, scaleY, 0.35f);
         } else {
             scaleX = getDefaultScale(object);
             scaleY = getDefaultScale(object);
             ActorMaster.
-                    addScaleAction(object, scaleX, scaleY, 0.35f);
+             addScaleAction(object, scaleX, scaleY, 0.35f);
         }
 
         object.setHovered(false);
+
+        if (isStackHoverOn()) {
+            if (canShowStack) {
+                stackOff();
+            } else {
+                //                waitToHideStack = 2;
+            }
+        }
         DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
 
     }

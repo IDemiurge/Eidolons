@@ -19,6 +19,7 @@ public class MicroObj extends Obj {
     protected boolean overlaying;
     private int z;
     private Boolean overlayingInitialized; //for performance
+    private Coordinates originalCoordinates;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -54,15 +55,17 @@ public class MicroObj extends Obj {
         if (coordinates == null) {
             coordinates = Coordinates.get(getX(), getY());
         } else {
-//            coordinates.setX(getX());
-//            coordinates.setY(getY());
+            //            coordinates.setX(getX());
+            //            coordinates.setY(getY());
         }
         // coordinates.setZ(getZ()); better use separately
         return coordinates;
     }
 
     public void setCoordinates(Coordinates coordinates) {
-
+        if (this.coordinates == null) {
+            originalCoordinates = coordinates;
+        }
         this.coordinates = coordinates;
         setX(coordinates.getX());
         setY(coordinates.getY());
@@ -141,6 +144,10 @@ public class MicroObj extends Obj {
 
     public boolean isTurnable() {
         return false;
+    }
+
+    public Coordinates getOriginalCoordinates() {
+        return originalCoordinates;
     }
 
 }

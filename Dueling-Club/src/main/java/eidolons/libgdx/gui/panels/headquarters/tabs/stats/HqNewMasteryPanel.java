@@ -133,11 +133,16 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
 
     @Override
     protected PARAMETER[] initDataArray() {
+
         List<PARAMETER> availableMasteries = new ArrayList<>(
          DC_ContentValsManager.getMasteries());
+
         List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
         availableMasteries.removeIf(p ->
          unlocked.contains(p));
+
+        availableMasteries.removeIf(p ->
+         SkillMaster.isMasteryAvailable(p, getUserObject().getEntity() ));
         return availableMasteries.toArray(new PARAMETER[availableMasteries.size()]);
     }
 

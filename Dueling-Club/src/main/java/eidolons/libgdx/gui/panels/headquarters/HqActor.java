@@ -9,7 +9,11 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 public interface HqActor {
 
     default void modelChanged() {
-        HqDataMaster.modelChanged(getUserObject().getEntity());
+        try {
+            HqDataMaster.modelChanged(getUserObject().getEntity());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     HqHeroDataSource getUserObject();

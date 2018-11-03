@@ -95,6 +95,7 @@ public class Debugger {
                 }
                 if (view.getParent() instanceof GridCellContainer) {
                     GridCellContainer cell = ((GridCellContainer) view.getParent());
+                    if (!cell.isStackView())
                     if (view.getX() != cell.getViewX(view) ||
                      view.getY() != cell.getViewY(view)) {
                         cell.recalcUnitViewBounds();

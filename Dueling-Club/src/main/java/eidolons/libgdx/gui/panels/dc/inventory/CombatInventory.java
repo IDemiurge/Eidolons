@@ -106,24 +106,35 @@ public class CombatInventory extends TablePanel implements Blocking {
             }
         });
 
+        GuiEventManager.bind(TOGGLE_INVENTORY, (obj) -> {
+            if (isVisible()) {
+                show(null);
+            } else {
+                show(obj.get());
+            }
+        });
         GuiEventManager.bind(SHOW_INVENTORY, (obj) -> {
             final Object param = obj.get();
-            if (param instanceof Boolean) {
-                if (HqDataMaster.isSimulationOff()) {
-                    close(true);
-                } else
-                    close((Boolean) param);
-            } else {
-                GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
-                if (!isVisible())
-                    open();
-                setUserObject(param);
-                initButtonListeners();
-            }
+            show(param);
         });
         GuiEventManager.bind(UPDATE_INVENTORY_PANEL, (obj) -> {
             setUserObject(getUserObject());
         });
+    }
+
+    private void show(Object param) {
+        if (param instanceof Boolean) {
+            if (HqDataMaster.isSimulationOff()) {
+                close(true);
+            } else
+                close((Boolean) param);
+        } else {
+            //                GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
+            if (!isVisible())
+                open();
+            setUserObject(param);
+            initButtonListeners();
+        }
     }
 
 
@@ -219,7 +230,7 @@ public class CombatInventory extends TablePanel implements Blocking {
         //            GuiEventManager.trigger(GuiEventType.GAME_RESET );
         //        }
         //        setVisible(false);
-        //        GuiEventManager.trigger(GuiEventType.GAME_RESUMED );
+        //        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
         getStageWithClosable().closeClosable(this);
     }
 

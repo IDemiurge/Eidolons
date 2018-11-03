@@ -323,13 +323,13 @@ public class GdxMaster {
     public static Group getFirstParentOfClass(Actor child, Class clazz) {
         Group actor = child.getParent();
         while (true) {
-            actor = actor.getParent();
             if (actor == null) {
                 break;
             }
             if (ClassMaster.isInstanceOf(actor, clazz)) {
                 return actor;
             }
+            actor = actor.getParent();
 
         }
         return null;

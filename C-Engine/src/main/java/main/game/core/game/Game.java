@@ -305,9 +305,7 @@ public abstract class Game implements Serializable {
         return null;
     }
 
-    public List<? extends Obj> getObjectsOnCoordinate(Coordinates c) {
-        return null;
-    }
+
 
     public boolean isOnline() {
         return !isOffline();

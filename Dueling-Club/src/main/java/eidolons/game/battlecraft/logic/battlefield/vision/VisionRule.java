@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.test.debug.DebugMaster;
@@ -163,7 +164,13 @@ public class VisionRule {
         return true;
     }
 
-    private boolean isResetRequired(Unit observer, DC_Obj cell) {
+    public boolean isResetRequiredSafe(Unit observer, DC_Obj cell) {
+        return isResetRequired(observer, cell, 2f);
+    }
+    public boolean isResetRequired(Unit observer, DC_Obj cell) {
+        return isResetRequired(observer, cell, 1f);
+    }
+        public boolean isResetRequired(Unit observer, DC_Obj cell, float dstCoef) {
         //changed position
         //is close enough
         //is hostile
@@ -174,7 +181,7 @@ public class VisionRule {
                 return true;
             }
             if (PositionMaster.getExactDistance(observer, cell) >
-            1+ observer.getMaxVisionDistance()) {
+            1+ observer.getMaxVisionDistance()*dstCoef) {
                 if (master.getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof Structure) {
                     Structure o = ((Structure) master.getGame().getObjectByCoordinate(cell.getCoordinates()));
                     if (o.isWall()) {
@@ -192,7 +199,7 @@ public class VisionRule {
         else if (getPlayerUnseenMode()) {
             return false;
         }
-        if (PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance()) {
+        if (PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance()*dstCoef) {
             return false;
         }
         return true;
@@ -379,17 +386,32 @@ public class VisionRule {
 
 
     public boolean isAggro(Unit hero, Unit unit) {
-
-        if (controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+        VISIBILITY_LEVEL visibility = controller.getVisibilityLevelMapper().get(unit, hero);
+        switch (visibility) {
+            case CLEAR_SIGHT:
+                break;
+            case UNSEEN:
+                if (!isResetRequired(unit, hero, 0.5f))
+                    return false;
+            case OUTLINE:
+            case VAGUE_OUTLINE:
+            case CONCEALED:
+                if (!ExplorationMaster.isExplorationOn())
+                    break;
+                else
+                    return false;
+            case BLOCKED:
+                return false;
+        }
+//        if (controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT
+//         || !ExplorationMaster.isExplorationOn()
+//         &&  controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.BLOCKED
+//         ) {
             if (isResetRequired(unit, hero))
                 return true;
             else {
                 main.system.auxiliary.log.LogMaster.log(1, "  TODO beta quick fix...");
             }
-        }
-
-        //        if (isDisplayedOnGrid(unit, hero))
-        //            return true;
 
         return false;
     }

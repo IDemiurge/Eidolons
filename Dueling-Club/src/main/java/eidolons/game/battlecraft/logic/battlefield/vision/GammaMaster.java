@@ -34,6 +34,7 @@ public class GammaMaster {
     private VisionMaster master;
     private Map<DC_Obj, Integer> cache = new HashMap<>();
     private boolean dirty;
+    private Coordinates mainExitCoordingates;
 
     public GammaMaster(VisionMaster visionManager) {
         master = visionManager;
@@ -254,15 +255,21 @@ public class GammaMaster {
 
     private float getHiglightAlpha(int x, int y) {
         //tutorial info
-        if (master.getGame().getDungeonMaster().getDungeonWrapper() instanceof Location) {
-            Entrance exit = ((Location) master.getGame().getDungeonMaster().
-             getDungeonWrapper()).getMainExit();
-            if (exit != null) {
-                if (exit.getX() == x)
-                    if (exit.getY() == y)
+
+            if (mainExitCoordingates == null ){
+                if (master.getGame().getDungeonMaster().getDungeonWrapper() instanceof Location) {
+                    Entrance exit = ((Location) master.getGame().getDungeonMaster().
+                     getDungeonWrapper()).getMainExit();
+                    mainExitCoordingates = exit.getCoordinates();
+            }
+            if (mainExitCoordingates != null) {
+                if (mainExitCoordingates.getX() == x)
+                    if (mainExitCoordingates.getY() == y)
                         return 1;
             }
         }
+//       TODO  questMaster = master.getGame().getMetaMaster().getQuestMaster();
+//        questMaster .getQuestCoordinates()
         if (master.getGame().getMetaMaster().getQuestMaster() != null) {
             for (DungeonQuest quest : master.getGame().getMetaMaster().getQuestMaster().getQuests()) {
                 if (quest.isComplete()) {

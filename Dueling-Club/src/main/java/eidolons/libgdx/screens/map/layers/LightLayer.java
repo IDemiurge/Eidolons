@@ -1,13 +1,14 @@
 package eidolons.libgdx.screens.map.layers;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.particles.EMITTER_PRESET;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer.LightContainer;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -33,6 +34,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     boolean uiStage;
     Map<LIGHT_LAYER, Float> timerMap = new HashMap<>();
     Map<LIGHT_LAYER, Float> triggerMap = new HashMap<>();
+    private static Boolean additive;
 
     public LightLayer(boolean uiStage) {
         super();
@@ -101,6 +103,9 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     @Override
     protected void spawnLayer() {
+        setVisible(!OptionsMaster.getGraphicsOptions().
+         getBooleanValue(GRAPHIC_OPTION.SIDE_LIGHT_OFF));
+
         if (uiStage)
             setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         else
@@ -172,7 +177,24 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (isAdditive()) {
+            //            batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            //            ((CustomSpriteBatch) batch).resetBlending();
+            batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+        }
         super.draw(batch, parentAlpha);
+
+    }
+
+    public Boolean isAdditive() {
+        if (additive == null) {
+            additive=OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADDITIVE_LIGHT);
+        }
+        return additive;
+    }
+
+    public static void setAdditive(Boolean b) {
+         additive = b;
     }
 
 

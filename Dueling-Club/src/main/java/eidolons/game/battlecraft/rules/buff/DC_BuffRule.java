@@ -37,6 +37,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Unit target;
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
     private Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
+    private Map<Obj, Boolean> checkCache = new HashMap<>();
 
     public DC_BuffRule(GenericGame game) {
         super(game);
@@ -48,16 +49,25 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         return super.toString() + level;
     }
 
+    public void clearCache() {
+        checkCache.clear();
+    }
     public boolean check(Obj obj) {
         if (!applyToBfObjs()) {
             if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                 return false;
             }
         }
+      Boolean result =checkCache.get(obj);
+        if (result != null) {
+            return result;
+        }
         Ref ref = obj.getRef().getCopy();
         ref.setMatch(obj.getId());
         ref.setTarget(obj.getId());
-        return (conditions.preCheck(ref));
+        result= (conditions.preCheck(ref));
+        checkCache.put(obj, result);
+        return result;
     }
 
     protected boolean applyToBfObjs() {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -36,10 +37,8 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -77,7 +76,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         pad(NINE_PATCH_PADDING.SAURON);
 
         inventory = createInventory();
-        containerSlotsPanel =createContainerSlots();
+        containerSlotsPanel = createContainerSlots();
 
         initUpperTable().row();
         initMiddleTable().row();
@@ -98,13 +97,13 @@ public class ContainerPanel extends TablePanel implements Blocking {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                event.stop();
+                //                event.stop();
                 return true;
             }
 
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-//                event.stop();
+                //                event.stop();
                 return true;
             }
         });
@@ -113,11 +112,16 @@ public class ContainerPanel extends TablePanel implements Blocking {
     @Override
     public void open() {
         getStageWithClosable().openClosable(this);
+        try {
+            DC_Game.game.getLoop().setPaused(true, false);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     protected InventorySlotsPanel createContainerSlots() {
         return new InventorySlotsPanel(getContainerRowCount(),
-         getContainerColumnCount()){
+         getContainerColumnCount()) {
             @Override
             protected CELL_TYPE getCellType() {
                 return CELL_TYPE.CONTAINER;
@@ -217,11 +221,11 @@ public class ContainerPanel extends TablePanel implements Blocking {
             filters.add(new SmartButton(getButtonStyle(filter),
              () -> {
                  EUtils.showInfoText("Filters are under construction...");
-//                 try {
-//                     applyFilter(filter);
-//                 } catch (Exception e) {
-//                     main.system.ExceptionMaster.printStackTrace(e);
-//                 }
+                 //                 try {
+                 //                     applyFilter(filter);
+                 //                 } catch (Exception e) {
+                 //                     main.system.ExceptionMaster.printStackTrace(e);
+                 //                 }
              })).row();
             filters.addListener(new ValueTooltip("Under construction...").getController());
         }

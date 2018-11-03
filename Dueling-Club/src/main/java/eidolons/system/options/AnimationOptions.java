@@ -27,7 +27,11 @@ static {
         BLOOD_ANIMS_OFF(false),
 
         WAIT_FOR_ANIM(false),
+        MIN_ANIM_WAIT_TIME(300, 150, 1000),
+        MIN_ANIM_WAIT_TIME_COMBAT(500, 250, 1500),
+
         MAX_ANIM_WAIT_TIME(1000, 0, 3000),
+        MAX_ANIM_WAIT_TIME_COMBAT(1500, 0, 4500),
         PARALLEL_DRAWING(false),
         SPEED(350, 50, 1500),
         //        INFO_LEVEL(1, 0, 1),

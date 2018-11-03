@@ -95,6 +95,7 @@ public class PathChoiceMaster {
                 }
                 Targeting targeting = a.getTargeting();
                 Collection<Obj> objects = null;
+                if (targeting != null)
                 if (targeting instanceof FixedTargeting) {
                     Targeting t = a.getAbilities().getTargeting();
                     if (t != null) {

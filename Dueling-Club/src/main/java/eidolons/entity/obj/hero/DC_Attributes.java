@@ -4,6 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_Formulas;
@@ -52,6 +53,7 @@ public class DC_Attributes {
                 hero.modifyParameter(PARAMS.REST_BONUS, DC_Formulas
                  .getRestBonusFromVitality(amount), modifierKey);
 
+                if (RuleKeeper.isHeroEnduranceRegenOn() || !hero.isHero())
                 if (DC_ConditionMaster.checkLiving(hero)) {
                     hero.modifyParameter(PARAMS.ENDURANCE_REGEN, DC_Formulas
                      .getEnduranceRegenFromVitality(amount), modifierKey);

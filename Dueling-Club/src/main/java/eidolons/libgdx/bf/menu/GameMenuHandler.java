@@ -74,7 +74,12 @@ public class GameMenuHandler {
                 GameMenu.menuOpen = false;
                 Saver.save();
                 break;
-            case RUN:
+            case BACK_TO_TOWN:
+                GameMenu.menuOpen = false;
+                Eidolons.onNonGdxThread(()->
+                 Eidolons.getGame().getMetaMaster().getTownMaster().tryReenterTown());
+                break;
+            case RETREAT:
                 GameMenu.menuOpen = false;
                 GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                 break;

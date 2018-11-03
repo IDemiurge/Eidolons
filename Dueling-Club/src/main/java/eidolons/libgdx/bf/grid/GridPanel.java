@@ -522,9 +522,10 @@ public class GridPanel extends Group {
 
     private void updateHpBar(Object o) {
         GridUnitView view = null;
-        if (o instanceof BattleFieldObject)
-            view = (GridUnitView) viewMap.get(o);
-        else if (o instanceof GridUnitView)
+        if (o instanceof BattleFieldObject) {
+            if (viewMap.get(o) instanceof GridUnitView)
+                view = (GridUnitView) viewMap.get(o);
+        } else if (o instanceof GridUnitView)
             view = (GridUnitView) (o);
         if (view != null)
             view.animateHpBarChange();
@@ -865,7 +866,6 @@ public class GridPanel extends Group {
                          ) {
                             setHoverObj((GridUnitView) sub);
                             topCells.add(cell);
-                            cell.setTopUnitView(sub);
                             cell.setHovered(true);
                         } else if (sub.getUserObject().isPlayerCharacter()) {
                             topCells.add(cell);

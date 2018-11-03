@@ -62,6 +62,9 @@ public class InventoryFactory {
             DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
             typeName = item.getBaseTypeName();
             boolean versioned=false;
+            if (TYPE.getName().contains("Crossbow")){
+                typeName = "Crossbow";
+            }
             if (TYPE == DC_TYPE.ARMOR ) {
                 versioned =true;
             }

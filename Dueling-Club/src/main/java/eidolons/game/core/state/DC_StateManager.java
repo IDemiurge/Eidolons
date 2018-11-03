@@ -14,6 +14,7 @@ import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.config.ConfigMaster;
@@ -37,9 +38,15 @@ import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -49,7 +56,7 @@ public class DC_StateManager extends StateManager {
     private StatesKeeper keeper;
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
     private boolean savingOn = ConfigMaster.getInstance()
-            .getBoolean("SAVING_ON_DEFAULT");
+     .getBoolean("SAVING_ON_DEFAULT");
 
     private Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
@@ -79,33 +86,78 @@ public class DC_StateManager extends StateManager {
 
     @Override
     public void resetAllSynchronized() {
+        resetAllSynchronized_(true);
+    }
+
+    public void resetAllSynchronized_(boolean recursion) {
+        if (!recursion)
+            if (CoreEngine.isIDE()) {
+                Eidolons.tryIt(() -> resetAllSynchronized_(false));
+                return;
+            }
         if (!resetting) {
-            try {
-                resetLock.lock();
-                if (!resetting) {
+            resetLock.lock();
+            if (!resetting) {
+                if (!isSelectiveResetOn() || (ExplorationMaster.isExplorationOn() && !isSelectiveResetInExplore())) {
                     objectsToReset = new LinkedHashSet<>(getGame().getBfObjects());
                     unitsToReset = new LinkedHashSet<>(getGame().getUnits());
-                    resetAll();
-                    resetting = false;
+                } else {
+                    objectsToReset = new LinkedHashSet<>();
+                    unitsToReset = new LinkedHashSet<>();
+                    for (BattleFieldObject obj : getGame().getBfObjects()) {
+                        if ((ExplorationMaster.isExplorationOn() && obj.isOutsideCombat()) ||
+                         getGame().getVisionMaster().getVisionRule().
+                          isResetRequiredSafe(Eidolons.getMainHero(), obj)) {
+                            objectsToReset.add(obj);
+                            if (obj instanceof Unit) {
+                                unitsToReset.add((Unit) obj);
+                            }
+                        }
+                    }
+                    //                    objectsToReset=getGame().getBfObjects().stream().filter(obj -> {
+                    //                        if (!obj.isOutsideCombat())
+                    //                            return true;
+                    //                        return  getGame().getVisionMaster().getVisionRule().
+                    //                         isResetRequiredSafe(Eidolons.getMainHero(), obj) ;
+                    //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
+                    //
+                    //                    unitsToReset= getGame().getUnits().stream().filter(obj -> {
+                    //                        if (!obj.isOutsideCombat())
+                    //                            return true;
+                    //                        return  getGame().getVisionMaster().getVisionRule().
+                    //                         isResetRequiredSafe(Eidolons.getMainHero(), obj) ;
+                    //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
                 }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
 
-            } finally {
-                resetLock.unlock();
+                log(1, objectsToReset.size() + " objects To Reset   "  );
+
+                log(1, unitsToReset.size() + " Units to reset = " +
+                 unitsToReset);
+
+                resetAll();
+                resetting = false;
             }
+            resetLock.unlock();
         }
+    }
+
+    private boolean isSelectiveResetOn() {
+        return true;
+    }
+
+    private boolean isSelectiveResetInExplore() {
+        return true;
     }
 
     @Override
     protected void makeSnapshotsOfUnitStates() {
-//       TODO
+        //       TODO
     }
 
     private void resetAll() {
         if (getGame().getDungeonMaster().getExplorationMaster() != null) {
             getGame().getDungeonMaster().getExplorationMaster()
-                    .getAggroMaster().checkStatusUpdate();
+             .getAggroMaster().checkStatusUpdate();
         }
 
         getGame().getDroppedItemManager().reset();
@@ -116,7 +168,7 @@ public class DC_StateManager extends StateManager {
 
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
             if (getGame().getDungeonMaster().getExplorationMaster().
-                    getResetter().isResetNotRequired()) {
+             getResetter().isResetNotRequired()) {
                 objectsToReset.forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
                 triggerOnResetGuiEvents();
                 return;
@@ -124,6 +176,9 @@ public class DC_StateManager extends StateManager {
                 getGame().getDungeonMaster().getExplorationMaster().getResetter().setResetNotRequired(true);
 
         }
+        getGame().getRules().getBuffRules().forEach(
+         buffRule -> buffRule.clearCache());
+
         super.resetAllSynchronized();
         if (getGame().isStarted()) {
             checkCellBuffs();
@@ -138,19 +193,16 @@ public class DC_StateManager extends StateManager {
 
 
     private void triggerOnResetGuiEvents() {
-        List<BattleFieldObject> list = new ArrayList<>(objectsToReset);
-        list.removeIf(obj -> {
+        GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, objectsToReset.stream().filter(obj -> {
             if (!VisionManager.checkVisible(obj))
                 return true;
             if ((obj).isWall())
                 return true;
             return (obj).isOverlaying();
-        });
-        GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, list);
+        }).collect(Collectors.toList()));
     }
 
     /**
-     * 
      * @param unit
      */
     public void reset(Unit unit) {
@@ -173,10 +225,11 @@ public class DC_StateManager extends StateManager {
         unit.resetPercentages();
     }
 
-    protected void applyDifficulty( ) {
+    protected void applyDifficulty() {
         if (!getGame().isSimulation())
             unitsToReset.forEach(unit -> applyDifficulty(unit));
     }
+
     private void applyDifficulty(Unit unit) {
         getGame().getBattleMaster().getOptionManager().applyDifficulty(unit);
     }
@@ -292,10 +345,9 @@ public class DC_StateManager extends StateManager {
     }
 
 
-    public void  resetUnitObjects() {
+    public void resetUnitObjects() {
         for (Unit unit : unitsToReset) {
-            if (!checkUnitIgnoresReset(unit))
-            {
+            if (!checkUnitIgnoresReset(unit)) {
                 unit.resetObjects();
             }
         }
@@ -336,12 +388,12 @@ public class DC_StateManager extends StateManager {
     }
 
     public boolean checkUnitIgnoresReset(BattleFieldObject obj) {
-//        if (obj.isDead())
-//            return true;
-////        if (!ExplorationMaster.isExplorationOn())
-//            if (obj instanceof Unit)
-//                if (((Unit) obj).getAI().isOutsideCombat())
-//                    return true;
+        //        if (obj.isDead())
+        //            return true;
+        ////        if (!ExplorationMaster.isExplorationOn())
+        //            if (obj instanceof Unit)
+        //                if (((Unit) obj).getAI().isOutsideCombat())
+        //                    return true;
 
 
         return checkObjIgnoresToBase(obj);
@@ -391,12 +443,10 @@ public class DC_StateManager extends StateManager {
     }
 
     public void newRound() {
-//        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
+        //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
         game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<"
         );
-        main.system.auxiliary.log.LogMaster.log(1, "Units= " +
-                unitsToReset);
         newTurnTick();
         Ref ref = new Ref(getGame());
         ref.setAmount(state.getRound());
@@ -406,7 +456,7 @@ public class DC_StateManager extends StateManager {
         if (started) {
             getGameManager().reset();
             getGameManager().resetValues();
-//            IlluminationRule.applyLightEmission(getGame());
+            //            IlluminationRule.applyLightEmission(getGame());
             game.getTurnManager().newRound();
         } else {
 
@@ -417,9 +467,9 @@ public class DC_StateManager extends StateManager {
                 getGame().getRules().getIlluminationRule().applyLightEmission();
             }
             game.getTurnManager().newRound();
-//            getGameManager().refreshAll();
+            //            getGameManager().refreshAll();
         }
-//        getGameManager().reset();
+        //        getGameManager().reset();
 
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.GAME_STARTED, game));
         game.getLogManager().doneLogEntryNode();
@@ -480,7 +530,7 @@ public class DC_StateManager extends StateManager {
         if (map != null) {
             map.remove(id);
         }
-//        super.removeObject(id);
+        //        super.removeObject(id);
 
     }
 

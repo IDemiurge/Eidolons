@@ -8,6 +8,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_GROUP;
 import eidolons.game.battlecraft.rules.action.StackingRule;
@@ -19,7 +20,6 @@ import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.AnimMaster;
@@ -133,6 +133,10 @@ public class Executor extends ActiveHandler {
     }
 
     public boolean activate() {
+//        if (!getEntity().isConstructed()){
+//            AbilityConstructor.constructActives(getEntity());
+//            getEntity().construct(); already done?
+//        }
         reset();
         syncActionRefWithSource();
 

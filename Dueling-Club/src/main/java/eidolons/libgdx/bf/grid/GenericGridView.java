@@ -33,6 +33,7 @@ public class GenericGridView extends UnitView {
     protected boolean cellBackground;
     protected LastSeenView lastSeenView;
     protected FadeImageContainer torch;
+    private boolean stackView;
 
     public GenericGridView(UnitViewOptions o) {
         super(o);
@@ -290,6 +291,14 @@ public class GenericGridView extends UnitView {
 
     public void setLastSeenView(LastSeenView lastSeenView) {
         this.lastSeenView = lastSeenView;
+    }
+
+    public void setStackView(boolean stackView) {
+        this.stackView = stackView;
+    }
+
+    public boolean isStackView() {
+        return stackView;
     }
 }
 

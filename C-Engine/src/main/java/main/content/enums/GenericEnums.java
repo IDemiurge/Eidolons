@@ -161,15 +161,20 @@ public class GenericEnums {
     public enum DIFFICULTY {
         NEOPHYTE(50, 25 ),
         NOVICE(65, 35 ),
-        DISCIPLE(80, 50 ),
-        ADEPT(100, 75),
-        CHAMPION(125, 100),
-        AVATAR(150, 150);
+        DISCIPLE(80, 50,true ),
+        ADEPT(100, 75,true),
+        CHAMPION(125, 100,true),
+        AVATAR(150, 150,true);
 
         private int attributePercentage;
         private int masteryPercentage;
+        private boolean enemySneakAttacksOn;
 
-
+        DIFFICULTY(int attributePercentage, int masteryPercentage, boolean enemySneakAttacksOn) {
+            this.attributePercentage = attributePercentage;
+            this.masteryPercentage = masteryPercentage;
+            this.enemySneakAttacksOn = enemySneakAttacksOn;
+        }
 
         DIFFICULTY(int attributePercentage, int masteryPercentage) {
             this.attributePercentage = attributePercentage;
@@ -182,6 +187,14 @@ public class GenericEnums {
 
         public int getMasteryPercentage() {
             return masteryPercentage;
+        }
+
+        public boolean isEnemySneakAttacksOn() {
+            return enemySneakAttacksOn;
+        }
+
+        public void setEnemySneakAttacksOn(boolean enemySneakAttacksOn) {
+            this.enemySneakAttacksOn = enemySneakAttacksOn;
         }
     }
 

@@ -154,4 +154,24 @@ public class Shard extends SuperActor {
             return;
         super.draw(batch, parentAlpha);
     }
+
+    public SHARD_TYPE getType() {
+        return type;
+    }
+
+    public SHARD_SIZE getSize() {
+        return size;
+    }
+
+    public SHARD_OVERLAY getOverlay() {
+        return overlay;
+    }
+
+    public Object getArg() {
+        return arg;
+    }
+
+    public DIRECTION getDirection() {
+        return direction;
+    }
 }

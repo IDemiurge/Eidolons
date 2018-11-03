@@ -194,7 +194,7 @@ public class Town extends Place {
         item.setContainer(CONTAINER.STASH);
     }
 
-    public void enter() {
+    public void enter(boolean reenter) {
         for (String substring : ContainerUtils.openContainer(
          getProperty(MACRO_PROPS.TOWN_STASH))) {
             //gonna need to store durability etc...
@@ -209,6 +209,13 @@ public class Town extends Place {
             Obj item = Eidolons.getGame().getObjectById(id);
             if (item instanceof DC_HeroItemObj)
                 stash.add((DC_HeroItemObj) item);
+        }
+        if (reenter) {
+            for (Shop shop1 : shops) {
+                shop1.getIncome( 500);
+                shop1.stockItems(30 );
+
+            }
         }
     }
 }

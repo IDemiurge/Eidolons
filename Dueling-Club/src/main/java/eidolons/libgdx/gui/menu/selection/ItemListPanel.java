@@ -239,7 +239,11 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected void addButtons() {
-        buttons.forEach(button -> button.remove());
+        if (getBackground()!=null )
+            clear(); //some funny issue with rows without clear()...
+        else
+            buttons.forEach(button -> button.remove());
+
         buttons.clear();
         for (SelectableItemData sub : items) {
             //            boolean selected = sub == currentItem;
@@ -249,11 +253,6 @@ public abstract class ItemListPanel extends TablePanel {
             element.setDisabled(isBlocked(sub));
             row();
         }
-        //        float top= getTopPadding(items.size());
-        //        float left= getLeftPadding();
-        //        float botton= getBottonPadding(items.size());
-        //        float right= getRightPadding();
-        //        pad(top, left, botton, right);
         pad(50, 25, 50, 25);
 
 
@@ -370,6 +369,18 @@ public abstract class ItemListPanel extends TablePanel {
             emblem = entity.getEmblemPath();
         }
 
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            return toString().equals(obj.toString());
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
 
         public String[] getSubItems() {
             return subItems;

@@ -6,6 +6,8 @@ import eidolons.entity.obj.unit.Unit;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,8 +54,8 @@ public class ExplorationActionHandler extends ExplorationHandler {
             sub.getPayment().getAmountFormula().append("*" + FOC_MODIFIER);
     }
 
-    public void playerActionActivated(DC_ActiveObj activeObj) {
-
+    public void playerActionActivated(DC_ActiveObj activeObj, Boolean result) {
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_FINISHED, result );
 //        int time = getTimeForAction(activeObj);
 //        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
 //        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));

@@ -3,10 +3,10 @@ package eidolons.game.core;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.particles.EMITTER_PRESET;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.libgdx.particles.EMITTER_PRESET;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -33,6 +33,16 @@ public class EUtils {
         return GdxMaster.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
     }
 
+    public static void info(String text) {
+        onConfirm(text, false, null);
+    }
+
+    public static void onConfirm(String text, boolean cancel, Runnable o, boolean onAnotherThread) {
+        if (onAnotherThread)
+            onConfirm(text, cancel, () -> Eidolons.onNonGdxThread(o));
+        else onConfirm(text, cancel, o);
+    }
+
     public static void onConfirm(String text, boolean cancel, Runnable o) {
         GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text, cancel, o));
     }
@@ -44,7 +54,7 @@ public class EUtils {
     }
 
     public static void playSound(STD_SOUNDS sound) {
-//        GuiEventManager.trigger(GuiEventType.VFX_PLAY_LAST);
+        //        GuiEventManager.trigger(GuiEventType.VFX_PLAY_LAST);
         DC_SoundMaster.playStandardSound(sound);
     }
 
@@ -63,6 +73,7 @@ public class EUtils {
     public static void bind(GuiEventType eventType, EventCallback callback) {
         GuiEventManager.bind(eventType, callback);
     }
+
     public static void event(GuiEventType eventType, Object param) {
         GuiEventManager.trigger(eventType, param);
     }

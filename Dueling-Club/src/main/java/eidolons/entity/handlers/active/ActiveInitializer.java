@@ -6,6 +6,7 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -46,6 +47,14 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
         }
         getMaster().getHandler().getTargeter().initTargetingMode();
+
+            if (EffectFinder.getEffectsFromAbilities(getEntity().getAbilities()).size()==0){
+                main.system.auxiliary.log.LogMaster.log(1,">>> NO EFFECTS AFTER CONSTRUCT: " +getEntity());
+                if (getEntity().isAttackAny()) {
+                    main.system.auxiliary.log.LogMaster.log(1,">>> ATTACK CONSTRUCT FAILeD: " +getEntity());
+
+            }
+        }
     }
 
     public void initCosts() {

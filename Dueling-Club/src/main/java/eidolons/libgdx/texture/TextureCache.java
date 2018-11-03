@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static final boolean uiAtlasesOn = !CoreEngine.isFastMode();
+    private static final boolean uiAtlasesOn = CoreEngine.isJar();
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);

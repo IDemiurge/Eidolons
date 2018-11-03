@@ -64,7 +64,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     protected void initHero() {
         String TARGET_KEYWORD = getProperty(G_PROPS.KEYS);
         if (!StringMaster.isEmpty(TARGET_KEYWORD)) {
-            setHero((Unit) getGame().getObjectById(ref.getId(TARGET_KEYWORD)));
+            setOwnerObj((Unit) getGame().getObjectById(ref.getId(TARGET_KEYWORD)));
         } else {
             super.initHero();
         }

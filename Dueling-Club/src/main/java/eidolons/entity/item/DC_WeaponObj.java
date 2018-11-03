@@ -279,8 +279,11 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         }
         super.setRef(ref);
-        if (isRanged() && getHero() != null) {
-            getHero().setRangedWeapon(this);
+        if (ref.getSourceObj() instanceof Unit) {
+            setOwnerObj((Unit) ref.getSourceObj());
+            if (isRanged() && getHero() != null) {
+                getHero().setRangedWeapon(this);
+            }
         }
     }
 
@@ -464,16 +467,16 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public int calculateDamageMin(Ref ref) {
         Unit source = (Unit) ref.getSourceObj();
         int damage = getIntParam(PARAMS.DAMAGE_BONUS) + getIntParam(PARAMS.DICE);
-        damage += source.getIntParam(PARAMS.STRENGTH) * getIntParam(PARAMS.STR_DMG_MODIFIER)/100;
-        damage += source.getIntParam(PARAMS.AGILITY) * getIntParam(PARAMS.AGI_DMG_MODIFIER)/100;
-        damage += source.getIntParam(PARAMS.SPELLPOWER) * getIntParam(PARAMS.SP_DMG_MODIFIER)/100;
-        damage += source.getIntParam(PARAMS.INTELLIGENCE) * getIntParam(PARAMS.INT_DMG_MODIFIER)/100;
+        damage += source.getIntParam(PARAMS.STRENGTH) * getIntParam(PARAMS.STR_DMG_MODIFIER) / 100;
+        damage += source.getIntParam(PARAMS.AGILITY) * getIntParam(PARAMS.AGI_DMG_MODIFIER) / 100;
+        damage += source.getIntParam(PARAMS.SPELLPOWER) * getIntParam(PARAMS.SP_DMG_MODIFIER) / 100;
+        damage += source.getIntParam(PARAMS.INTELLIGENCE) * getIntParam(PARAMS.INT_DMG_MODIFIER) / 100;
 
-        damage = damage*getIntParam(PARAMS.DAMAGE_MOD)/100;
+        damage = damage * getIntParam(PARAMS.DAMAGE_MOD) / 100;
         return damage;
     }
 
     public int calculateDiceMax() {
-       return getIntParam(PARAMS.DICE) * getIntParam(PARAMS.DIE_SIZE)*getIntParam(PARAMS.DAMAGE_MOD)/100;
+        return getIntParam(PARAMS.DICE) * getIntParam(PARAMS.DIE_SIZE) * getIntParam(PARAMS.DAMAGE_MOD) / 100;
     }
 }

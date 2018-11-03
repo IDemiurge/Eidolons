@@ -20,6 +20,17 @@ public class ShopSelectionPanel extends PlaceSelectionPanel {
     }
 
     @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        update();
+    }
+
+    @Override
+    protected void setUserObjectForChildren(Object userObject) {
+        listPanel.setUserObject(userObject);
+    }
+
+    @Override
     public void update() {
         getInfoPanel().update();
     }

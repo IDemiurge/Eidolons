@@ -191,12 +191,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public List<ObjAtCoordinate> getUnits() {
-        if (!ListMaster.isNotEmpty(units)) {
             units = new ArrayList<>();
             for (LevelBlock block : getBlocks()) {
                 units.addAll(block.getUnits());
             }
-        }
         return units;
     }
 

@@ -11,7 +11,6 @@ import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.List;
@@ -114,8 +113,6 @@ public class FutureBuilder {
             }
         }
         // active.toBase();
-        LogMaster.log(1, active.getName() + " on " + targetObj.getName()
-         + " - damage precalculated: " + damage);
         return damage;
     }
 

@@ -12,6 +12,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.anim3d.Ready3dAnim;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -52,21 +53,21 @@ public class AnimMaster3d {
      256, 320, 384, 448, 512,
     };
     private static final String[][] substitutesWeapons = {
-//     {"halbert", "axe"},
+     //     {"halbert", "axe"},
 
      {"golem fist", "armored fist"},
      {"tail", "insect claws"},
      {"tentacle", "insect claws"},
-//     {"lance", "spear"},
-//     {"pike", "spear"},
-//     {"staff", "spear"},
-//     {"battle staff", "spear"},
-//     {"scythe", "spear"},
+     //     {"lance", "spear"},
+     //     {"pike", "spear"},
+     //     {"staff", "spear"},
+     //     {"battle staff", "spear"},
+     //     {"scythe", "spear"},
      {"sickle", "hand axe"},
 
 
-//     {"broad sword", "long sword"},
-//     {"falchion", "scimitar"},
+     //     {"broad sword", "long sword"},
+     //     {"falchion", "scimitar"},
      {"orcish arrows", "arrows"},
      {"elven arrows", "arrows"},
 
@@ -74,9 +75,9 @@ public class AnimMaster3d {
      {"heavy crossbow", "crossbow"},
      {"hand crossbow", "crossbow"},
      {"longbow", "short bow"},
-//     {"war axe", "battle axe"},
-//     {"great axe", "battle axe"},
-//     {"kriss", "stiletto"},
+     //     {"war axe", "battle axe"},
+     //     {"great axe", "battle axe"},
+     //     {"kriss", "stiletto"},
 
 
     };
@@ -107,7 +108,7 @@ public class AnimMaster3d {
         if (isOff())
             return false;
         if (!active.isAttackAny()) return false;
-        if (!active.getOwnerUnit().isPlayerCharacter()){
+        if (!active.getOwnerUnit().isPlayerCharacter()) {
             if (CoreEngine.isFastMode())
                 return false;
         }
@@ -131,20 +132,20 @@ public class AnimMaster3d {
     }
 
     private static boolean is3dSupported(DC_WeaponObj weapon) {
-//        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
-//            return false;
+        //        if (weapon.getWeaponType() == WEAPON_TYPE.POLE_ARM)
+        //            return false;
 
-//        if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
-//            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
-//                return false;
+        //        if (weapon.getWeaponType() == WEAPON_TYPE.NATURAL)
+        //            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
+        //                return false;
 
-//        return !CoreEngine.isFastMode();
+        //        return !CoreEngine.isFastMode();
         return true;
     }
 
 
     public static void preloadAtlases(Unit unit) {
-        if (!unit.isPlayerCharacter()){
+        if (!unit.isPlayerCharacter()) {
             if (CoreEngine.isFastMode())
                 return;
         }
@@ -171,7 +172,7 @@ public class AnimMaster3d {
                     try {
                         path = getPotionAtlasPath(sub.getActive());
                     } catch (Exception e) {
-                        main.system.auxiliary.log.LogMaster.log(1,"FAILED TO LOAD A QUICK ITEM ATLAS: " +sub);
+                        main.system.auxiliary.log.LogMaster.log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
                         main.system.ExceptionMaster.printStackTrace(e);
                         return;
                     }
@@ -196,9 +197,9 @@ public class AnimMaster3d {
           actionName, ANIM, projection
          ));
 
-//       TODO  if (BooleanMaster.isTrue(offhand))
-//            s.append(SEPARATOR + "l");
-//        if (BooleanMaster.isFalse(offhand))
+        //       TODO  if (BooleanMaster.isTrue(offhand))
+        //            s.append(SEPARATOR + "l");
+        //        if (BooleanMaster.isFalse(offhand))
         if (offhand != null)
             s.append(SEPARATOR + "r");
         String string = s.toString();
@@ -214,10 +215,10 @@ public class AnimMaster3d {
         String actionName = null;
         String projectionString = "to";
 
-//        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
+        //        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
         projectionString = (projection == null ? "hor" :
          (projection ? "from" : "to"));
-//        }
+        //        }
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
                 return null;
@@ -229,7 +230,7 @@ public class AnimMaster3d {
         } else
             switch (aCase) {
                 case RELOAD:
-//                    weapon
+                    //                    weapon
                     actionName = "reload";
                     break;
                 case MISSILE:
@@ -282,7 +283,7 @@ public class AnimMaster3d {
                 if (weapon.getOwnerObj().getArmor().getArmorType() ==
                  ARMOR_TYPE.HEAVY)
                     name = "Armored Fist";
-                else
+                else if (ItemMaster.isGlovedFistOn())
                     name = "Gloved Fist";
             }
         }
@@ -349,10 +350,10 @@ public class AnimMaster3d {
         // loops,
 
         //TODO who is displayed above on the cell?
-//modify texture? coloring, sizing,
-//        float angle = PositionMaster.getAngle(activeObj.getOwnerUnit(), targetObj);
-//float baseAngle =
-//        float rotation = angle * 2 / 3;
+        //modify texture? coloring, sizing,
+        //        float angle = PositionMaster.getAngle(activeObj.getOwnerUnit(), targetObj);
+        //float baseAngle =
+        //        float rotation = angle * 2 / 3;
 
         Array<AtlasRegion> regions = getRegions(aCase, activeObj, projection);
 
@@ -360,14 +361,14 @@ public class AnimMaster3d {
         float frameDuration = duration / regions.size;
         int loops = 0;
         if (aCase.isMissile()) {
-//            loops = Math.max(0,PositionMaster.getDistance(activeObj.getOwnerUnit(), targetObj) - 1);
+            //            loops = Math.max(0,PositionMaster.getDistance(activeObj.getOwnerUnit(), targetObj) - 1);
         }
         if (loops != 0)
             frameDuration /= loops;
 
         SpriteAnimation sprite = SpriteAnimationFactory.
          getSpriteAnimation(regions, frameDuration, loops);
-//        sprite.setRotation(rotation);
+        //        sprite.setRotation(rotation);
         return sprite;
     }
 
@@ -377,6 +378,11 @@ public class AnimMaster3d {
         TextureAtlas atlas = getAtlas(activeObj, aCase);
 
         Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
+        if (regions.size == 0) {
+            regions = atlas instanceof SmartTextureAtlas
+              ? ((SmartTextureAtlas) atlas).findRegionsClosest(name.toLowerCase())
+              : null;
+        }
         if (regions.size == 0) {
             regions = atlas.findRegions(name.toLowerCase()
              .replace(ANIM + SEPARATOR, ""));
@@ -483,9 +489,8 @@ public class AnimMaster3d {
     private static void preloadAtlas(String path) {
         if (atlasMap.containsKey(path))
             return;
-        if (!FileManager.isFile(path))
-        {
-//            brokenPaths.add(path)
+        if (!FileManager.isFile(path)) {
+            //            brokenPaths.add(path)
             main.system.auxiliary.log.LogMaster.log(1, path + " needs to preload, but it is not a file!..");
             return;
         }
@@ -572,8 +577,8 @@ public class AnimMaster3d {
 
     private static boolean isReadyAnimSupported(DC_UnitAction entity) {
         return false;
-//        return is3dAnim(entity);
-//        return entity.getActiveWeapon().getName().contains("Short Sword");
+        //        return is3dAnim(entity);
+        //        return entity.getActiveWeapon().getName().contains("Short Sword");
     }
 
     private static Anim getReadyAnim(DC_UnitAction entity) {

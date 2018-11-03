@@ -90,6 +90,7 @@ public class WaitMaster {
     }
 
     public static boolean receiveInput(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
+        if (isLogged(operation))
         LogMaster.log(LOG_CHANNEL.WAIT_DEBUG, " received input for "
          + operation.toString() + ": " + input);
         Waiter waiter = waiters.get(operation);
@@ -102,6 +103,14 @@ public class WaitMaster {
         waiter.setInput(input);
 
         return true;
+    }
+
+    private static boolean isLogged(WAIT_OPERATIONS operation) {
+        switch (operation) {
+            case TOWN_DONE:
+                return true;
+        }
+        return false;
     }
 
     public static void interrupt(WAIT_OPERATIONS waiter) {
@@ -154,7 +163,7 @@ public class WaitMaster {
         AUTO_TEST_INPUT,
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
-        GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, WAIT_COMPLETE
+        GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, PLAYER_ACTION_FINISHED, WAIT_COMPLETE
     }
 
 }

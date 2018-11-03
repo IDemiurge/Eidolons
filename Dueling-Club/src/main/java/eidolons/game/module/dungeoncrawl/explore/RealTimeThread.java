@@ -13,7 +13,7 @@ import main.system.threading.WaitMaster;
  */
 public class RealTimeThread extends Thread {
 
-    private static final int REAL_TIME_LOGIC_PERIOD = 350;
+    private static final int REAL_TIME_LOGIC_PERIOD = 500;
     private final ExploreGameLoop loop;
     private final DC_Game game;
     private boolean done;

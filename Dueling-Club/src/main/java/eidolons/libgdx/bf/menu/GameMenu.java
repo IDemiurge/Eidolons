@@ -105,8 +105,10 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
             }
 
         }
-        if (item==GAME_MENU_ITEM.RUN)
+        if (item==GAME_MENU_ITEM.RETREAT)
             return !CoreEngine.isMacro();
+        if (item==GAME_MENU_ITEM.BACK_TO_TOWN)
+            return  CoreEngine.isMacro();
         return item.hidden;
     }
 
@@ -146,7 +148,8 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         RESTART(true),
         PASS_TIME(true),
 //        QUESTS(),
-        RUN(true),
+        BACK_TO_TOWN( ),
+        RETREAT(true),
         SAVE(true),
 //        LOAD(true),
         RESUME,

@@ -200,6 +200,7 @@ public class StackingRule implements ActionRule {
             girth += unit.getIntParam(PARAMS.GIRTH);
         }
         space = space * maxSpaceTakenPercentage / 100;
+        cell.setParam(PARAMS.GIRTH, girth);
         if (space >= girth) {
             result = true;
         } else {

@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.init.RngUnitProvider;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
@@ -78,7 +77,7 @@ public class QuestCreator extends QuestHandler {
         Loop loop = new Loop(30);
         while (loop.continues()) {
             try {
-                UNIT_GROUP unitGroup = RngMainSpawner.getUnitGroup(false, style);
+                UNIT_GROUP unitGroup = RngUnitProvider.getUnitGroup(false, style);
                 WeightMap<String> weightMap = RngUnitProvider.getUnitWeightMap(unitGroup, TYPE);
                 pool = DataManager.toTypeList(weightMap.keySet(), DC_TYPE.UNITS);
                 filter(pool, powerRange, powerLevel);

@@ -455,6 +455,8 @@ public class UnitResetter extends EntityResetter<Unit> {
         regenerateToughness(1f);
     }
     public void regenerateToughness(float delta) {
+        if (getEntity().isFull(PARAMS.TOUGHNESS))
+            return;
         Integer amount = Math.round(getIntParam(PARAMS.TOUGHNESS_RECOVERY)
          * getIntParam(PARAMS.TOUGHNESS)
          / 100*delta);

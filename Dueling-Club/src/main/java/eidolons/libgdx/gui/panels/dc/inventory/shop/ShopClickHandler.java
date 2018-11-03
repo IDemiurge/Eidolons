@@ -12,6 +12,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.macro.entity.town.Shop;
 import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Entity;
+import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -240,6 +241,16 @@ public class ShopClickHandler extends ContainerClickHandler {
         }
         DC_SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
-        update();
+         update();
     }
+
+    @Override
+    protected void update() {
+        GuiEventManager.trigger(getGuiEvent(), shop);
+    }
+    @Override
+    protected EventType getGuiEvent() {
+        return GuiEventType.UPDATE_SHOP ;
+    }
+
 }

@@ -124,19 +124,12 @@ public class Eidolons {
         Eidolons.selectedMainHero = selectedMainHero;
     }
 
-    public static Unit getMainHero() {
-        Unit hero = justGetMainHero();
-        if (hero == null) {
-            hero = justGetMainHero();
-        }
-        return hero;
-    }
 
     public static void setMainHero(Unit mainHero) {
         Eidolons.mainHero = mainHero;
     }
 
-    public static Unit justGetMainHero() {
+    public static Unit getMainHero() {
         if (mainHero == null) {
             if (game == null)
                 return null;
@@ -420,6 +413,14 @@ public class Eidolons {
 
     public static Town getTown() {
         return getGame().getMetaMaster().getTownMaster().getTown();
+    }
+
+    public static void tryIt(Runnable o) {
+        try {
+            o.run();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public enum SCOPE {

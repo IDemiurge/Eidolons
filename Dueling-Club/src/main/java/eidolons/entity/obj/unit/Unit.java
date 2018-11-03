@@ -246,7 +246,7 @@ public class Unit extends DC_UnitModel {
         itemObj.setContainer(CONTAINER.QUICK_SLOTS);
     }
 
-    public boolean removeQuickItem(DC_QuickItemObj itemObj) {
+    public boolean removeQuickItem(DC_HeroItemObj itemObj) {
         if (getQuickItems() == null)
             return false;
         if (getQuickItems().remove(itemObj)) {
@@ -681,7 +681,7 @@ public class Unit extends DC_UnitModel {
     public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
         DC_HeroItemObj prevItem = getItem(slot);
         setItem(item, slot);
-        item.setRef(ref);
+        item.equipped(ref);
         if (prevItem != null) {
             addItemToInventory(prevItem);
         }
@@ -927,7 +927,7 @@ public class Unit extends DC_UnitModel {
     private void checkRemoveQuickItems() {
         int n = getIntParam(PARAMS.QUICK_SLOTS);
         int size = getQuickItems().size();
-        if (size<=n)
+        if (size <= n)
             return;
         List<DC_QuickItemObj> toRemove = new ArrayList<>(getQuickItems()).subList(n - 1, size - 1);
         for (DC_QuickItemObj q : toRemove) {
@@ -1166,6 +1166,44 @@ public class Unit extends DC_UnitModel {
         // StringMaster.wrapInParenthesis(StringMaster.constructStringContainer(upgrades));
         // setProperty(PROPS.SPELL_UPGRADES, value);
 
+    }
+
+    public boolean hasItems(String typeName, int n) {
+        for (DC_QuickItemObj item : getQuickItems())
+            if (item.getName().equalsIgnoreCase(typeName))
+                n--;
+        for (Obj item : getInventory())
+            if (item.getName().equalsIgnoreCase(typeName))
+                n--;
+        for (Obj item : getSlotItems())
+            if (item.getName().equalsIgnoreCase(typeName))
+                n--;
+        return n <= 0;
+    }
+
+    public DC_HeroItemObj findItemAnywhere(String typeName) {
+        DC_HeroItemObj item = findItem(typeName, false);
+        if (item == null) {
+            item = findItem(typeName, true);
+        }
+        if (item == null) {
+            item = findItem(typeName, null);
+        }
+        return item;
+    }
+
+    public boolean removeItemsFromAnywhere(String name, int n) {
+        for (int i = 0; i < n; i++) {
+            DC_HeroItemObj item = findItemAnywhere(name);
+            if (!removeFromInventory(item))
+                if (!removeJewelryItem(item))
+                    if (!removeQuickItem(item)) {
+                        unequip(item, false);
+                       if (!removeFromInventory(item))
+                           return false;
+                    }
+        }
+        return true;
     }
 
     public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
@@ -1499,4 +1537,6 @@ public class Unit extends DC_UnitModel {
     public List<DC_ActiveObj> getMoveActions() {
         return getActions().stream().filter(a -> a.getActionGroup() == ACTION_TYPE_GROUPS.MOVE).collect(Collectors.toList());
     }
+
+
 }

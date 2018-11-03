@@ -4,6 +4,7 @@ import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.data.xml.XML_Formatter;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.datatypes.WeightMap;
@@ -15,6 +16,7 @@ public class RandomWizard<E> {
     public static final long seed = System.nanoTime();
     static Random randomGenerator = new Random(seed);
     private static boolean averaged;
+    private static Map<String, WeightMap> weighMapCache = new HashMap<>();
     private LinkedHashMap<Integer, E> invertedMap;
 
     public static boolean isWeightMap(String property) {
@@ -31,7 +33,13 @@ public class RandomWizard<E> {
     }
 
     public static Map<ObjType, Integer> constructWeightMap(String property, OBJ_TYPE TYPE) {
-        return new RandomWizard<ObjType>().constructWeightMap(property, ObjType.class, TYPE);
+        WeightMap<ObjType> map = weighMapCache.get(property);
+        if (map != null) {
+            return map;
+        }
+         map = new RandomWizard<ObjType>().constructWeightMap(property, ObjType.class, TYPE);
+        weighMapCache.put(property, map);
+        return map;
     }
 
     public static ObjType getObjTypeByWeight(String property, OBJ_TYPE TYPE) {
@@ -326,6 +334,7 @@ public class RandomWizard<E> {
                     object = (E) string;
                 else {
                     if (CLASS == ObjType.class) {
+                        string = XML_Formatter.restoreXmlNodeName(string);
                         object = (E) DataManager.getType(string, TYPE);
                         if (object == null) {
                             object = (E) DataManager.findType(string, TYPE);

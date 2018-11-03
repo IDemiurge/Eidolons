@@ -38,7 +38,8 @@ public class AmbientMaster {
             style = hero.getGame().getDungeonMaster().getDungeonLevel().
                     getBlockForCoordinate(hero.getCoordinates()).getStyle();
         } catch (Exception e) {
-            style = hero.getGame().getDungeon().getStyle();
+            style = hero.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
+//            style = hero.getGame().getDungeon().getStyle();
             locationType = hero.getGame().getDungeon().getDungeonSubtype();
         }
 

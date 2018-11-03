@@ -61,6 +61,9 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     private boolean stashOpen;
     private SmartButton repairButton;
 
+    public void update() {
+        setUserObject(getUserObject());
+    }
     public ShopPanel() {
         super();
         GuiEventManager.bind(GuiEventType.UPDATE_SHOP, p ->
@@ -264,9 +267,6 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     }
 
-    public void update() {
-        setUserObject(getUserObject());
-    }
 
     public class ShopSlotsPanel extends InventorySlotsPanel {
         public ShopSlotsPanel(int rows, int cols) {

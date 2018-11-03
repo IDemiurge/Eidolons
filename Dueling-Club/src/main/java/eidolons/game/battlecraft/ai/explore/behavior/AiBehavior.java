@@ -270,7 +270,7 @@ public void log(){
     }
 
     protected boolean isLogged() {
-        return CoreEngine.isIDE();
+        return CoreEngine.isIDE() && AiBehaviorManager.TEST_MODE;
     }
 
     protected void initOrders() {

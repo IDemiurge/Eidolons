@@ -50,6 +50,7 @@ public class DungeonQuest {
     private String image;
     private DUNGEON_STYLE style;
     private float powerCoef;
+    private boolean started;
 
     public DungeonQuest(ObjType type) {
         this.objType=type;
@@ -254,6 +255,7 @@ public class DungeonQuest {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+        setStarted(!complete);
     }
 
     public Coordinates getCoordinate() {
@@ -278,5 +280,13 @@ public class DungeonQuest {
 
     public void setPowerCoef(float powerCoef) {
         this.powerCoef = powerCoef;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

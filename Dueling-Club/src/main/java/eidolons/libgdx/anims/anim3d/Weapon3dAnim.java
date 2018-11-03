@@ -43,8 +43,8 @@ public class Weapon3dAnim extends ActionAnim {
 
     public static AnimData init3dAnimData(DC_ActiveObj active) {
         //duration, speed,
-//        ANIM_VALUES.SCALE;
-//        ANIM_VALUES.PARTICLE_EFFECTS;
+        //        ANIM_VALUES.SCALE;
+        //        ANIM_VALUES.PARTICLE_EFFECTS;
         return new AnimData();
     }
 
@@ -86,8 +86,8 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     protected void resetSprites() {
-//        if (sprite != null)
-//        sprite.dispose(); //or cache per projection!
+        //        if (sprite != null)
+        //        sprite.dispose(); //or cache per projection!
         sprite = get3dSprite();
         if (sprite == null)
             return;
@@ -113,7 +113,7 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     private boolean isRandomized() {
-//        return getActive().isMelee();
+        //        return getActive().isMelee();
         return false;
     }
 
@@ -166,11 +166,11 @@ public class Weapon3dAnim extends ActionAnim {
         if (sprite != null) {
             return sprite;
         }
-        try {
-            sprite = AnimMaster3d.getSpriteForAction(getDuration(),
-             getActive(), getCase(), projection);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+
+        sprite = AnimMaster3d.getSpriteForAction(getDuration(),
+         getActive(), getCase(), projection);
+        if (sprite.getRegions().size == 0) {
+            return null;
         }
         projectionsMap.put(projection, sprite);
         return sprite;
@@ -190,11 +190,11 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     protected WEAPON_ANIM_CASE getCase() {
-//        return WEAPON_ANIM_CASE. BLOCKED;
+        //        return WEAPON_ANIM_CASE. BLOCKED;
 
         if (getActive().isFailedLast())
             return WEAPON_ANIM_CASE.MISS;
-//        return WEAPON_ANIM_CASE.PARRY; counter?
+        //        return WEAPON_ANIM_CASE.PARRY; counter?
 
 
         return WEAPON_ANIM_CASE.NORMAL;

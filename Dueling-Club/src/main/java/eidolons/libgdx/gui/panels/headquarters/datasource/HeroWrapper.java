@@ -747,7 +747,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean removeQuickItem(DC_QuickItemObj itemObj) {
+    public boolean removeQuickItem(DC_HeroItemObj itemObj) {
         return getHero().removeQuickItem(itemObj);
     }
 

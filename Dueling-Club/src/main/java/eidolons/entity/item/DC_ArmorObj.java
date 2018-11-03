@@ -96,7 +96,7 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
         if (!equipped) {
             equipped(ref);
         }
-
+//          super.setRef(ref);
     }
 
     @Override

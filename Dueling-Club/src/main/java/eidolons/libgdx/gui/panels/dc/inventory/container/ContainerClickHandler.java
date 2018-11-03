@@ -24,6 +24,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventType;
 import main.system.GuiEventManager;
+import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -150,7 +151,11 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         ref.setObj(KEYS.ITEM, item);
         ref.setObj(KEYS.TARGET, item);
         hero.getHero().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
-        update();
+        if (ListMaster.isNotEmpty(items)) {
+            update();
+        } else {
+            close();
+        }
     }
 
     protected void close() {

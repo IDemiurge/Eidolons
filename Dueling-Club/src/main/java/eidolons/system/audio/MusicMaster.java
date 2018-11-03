@@ -222,6 +222,7 @@ public class MusicMaster {
         if (playedMusic == null) {
             checkNewMusicToPlay();
         }
+        checkAmbience();
         resume();
         //fade? :)
         //
@@ -339,6 +340,9 @@ public class MusicMaster {
             }
             if (playedAmbient == null || ambience != newAmbience) {
                 ambience = newAmbience;
+                if (playedAmbient != null) {
+                    playedAmbient.stop();
+                }
                 playedAmbient = new PreloadedMusic(ambience.getPath());
                 log(1, "playedAmbient= " + ambience.getPath());
 

@@ -107,9 +107,9 @@ public class GameLoop {
         main.system.auxiliary.log.LogMaster.log(1, this + " exited!");
         setExited(false);
 
-            if (game.getLoop() == this)
-        SpecialLogger.getInstance().appendSpecialLog(
-         SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
+        if (game.getLoop() == this)
+            SpecialLogger.getInstance().appendSpecialLog(
+             SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
     }
 
     public Thread startInNewThread() {
@@ -158,9 +158,9 @@ public class GameLoop {
                 }
                 continue;
             }
-//            if (!retainActiveUnit)
-//                activeUnit = game.getTurnManager().getActiveUnit();
-//            retainActiveUnit = false;
+            //            if (!retainActiveUnit)
+            //                activeUnit = game.getTurnManager().getActiveUnit();
+            //            retainActiveUnit = false;
 
             if (activeUnit == null) {
                 break;
@@ -224,7 +224,7 @@ public class GameLoop {
         if (channeling)
             ChannelingRule.channelingResolves(activeUnit);
 
-        waitForAnimations();
+        waitForAnimations(action);
 
         result =
          activateAction(action);
@@ -238,11 +238,43 @@ public class GameLoop {
     protected void waitForPause() {
         if (paused) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE);
-            paused = false;
+            //      not very smart      paused = false;
         }
     }
 
-    protected void waitForAnimations() {
+    protected void waitForAnimations(ActionInput action) {
+        if (isMustWaitForAnim(action)) {
+            int maxTime = getMaxAnimWaitTime(action);
+            int minTime = getMinAnimWaitTime(action);
+            //*speed ?
+            int period = getAnimWaitPeriod();
+            int waitTime = 0;
+            while (waitTime < minTime || (isMustWaitForAnim(action) &&  waitTime< maxTime)){
+                WaitMaster.WAIT(period);
+                waitTime += period;
+                main.system.auxiliary.log.LogMaster.log(1, toString() + " waited for anim to draw: " + waitTime);
+
+            }
+        }
+    }
+
+    protected int getMinAnimWaitTime(ActionInput action) {
+        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME_COMBAT);
+    }
+
+    protected int getMaxAnimWaitTime(ActionInput action) {
+        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME_COMBAT);
+    }
+
+    protected int getAnimWaitPeriod() {
+        return 50;
+    }
+
+    protected boolean isMustWaitForAnim(ActionInput action) {
+        return AnimMaster.getInstance().isDrawing();
+    }
+
+    protected void waitForAnimationsOld() {
         Integer MAX_ANIM_TIME =
          OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
         if (MAX_ANIM_TIME != null) {
@@ -360,9 +392,8 @@ public class GameLoop {
     public void actionInput(ActionInput actionInput) {
         if (AI_Manager.isRunning())
             EUtils.showInfoText(RandomWizard.random() ? "The enemy has the initiative!" : "The enemy has initiative...");
-        if (isPaused())
-        {
-            EUtils.showInfoText(RandomWizard.random()?"The game is Paused!" : "Game is paused now...");
+        if (isPaused()) {
+            EUtils.showInfoText(RandomWizard.random() ? "The game is Paused!" : "Game is paused now...");
             return;
         }
 

@@ -125,7 +125,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
         AbilityConstructor.constructActives(getEntity());
         // }
-//        setActivesReady(true);
+        //        setActivesReady(true);
     }
 
     public void initSpells(boolean reset) {
@@ -183,12 +183,12 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     public void initInventory() {
         if (!getEntity().isPlayerCharacter())
-        if (ContainerMaster.isGenerateItemsForUnits())
-            if (ContainerMaster.isPregenerateItems()) {
-                ContainerMaster master =
-                 (ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
-                master.initContents(getEntity());
-            }
+            if (ContainerMaster.isGenerateItemsForUnits())
+                if (ContainerMaster.isPregenerateItems())
+                    if (!ListMaster.isNotEmpty(getEntity().getInventory())){
+                        ContainerMaster master =(ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
+                    master.initContents(getEntity());
+                }
 
         getEntity().setInventory(
          new DequeImpl<>(initContainedItems(PROPS.INVENTORY,
@@ -331,7 +331,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public DC_HeroItemObj initItem(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
-        if (getEntity().isLoaded()){
+        if (getEntity().isLoaded()) {
             return getLoadedItem(prop);
         }
         if (game.isSimulation() || !getEntity().isItemsInitialized()) {
@@ -345,17 +345,15 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
                     if (game.isSimulation()) {
                         if (item == null || !item.isSimulation()) {
-                            if (item == null)
-                            {
+                            if (item == null) {
                                 item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(StringMaster.toInt(property));
                             }
-                            if (item != null)
-                            {
+                            if (item != null) {
                                 DC_HeroItemObj simItem = createItem(prop, item.getType());
-                                HqMaster.getSimCache().addSim(item, simItem) ;
+                                HqMaster.getSimCache().addSim(item, simItem);
                                 Integer durability = item.getIntParam(PARAMS.C_DURABILITY);
                                 simItem.setParam(PARAMS.C_DURABILITY, durability);
-                                item=simItem;
+                                item = simItem;
                             }
                         }
                     }
@@ -444,7 +442,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
     }
 
-//    public boolean isItemsInitialized() {
-//        return getEntity().isItemsInitialized();
-//    }
+    //    public boolean isItemsInitialized() {
+    //        return getEntity().isItemsInitialized();
+    //    }
 }

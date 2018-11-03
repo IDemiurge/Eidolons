@@ -16,6 +16,9 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 10/31/2017.
  */
 public class ItemMaster {
+    public static final java.lang.String FOOD = "Food";
+    public static final java.lang.String TORCH = "Torch";
+
     public static boolean isBreakable(DC_HeroItemObj item) {
         if (item instanceof DC_QuickItemObj) {
             DC_QuickItemObj q = (DC_QuickItemObj) item;
@@ -68,6 +71,10 @@ public class ItemMaster {
             case QUEST:
                 break;
         }
+        return false;
+    }
+
+    public static boolean isGlovedFistOn() {
         return false;
     }
 }

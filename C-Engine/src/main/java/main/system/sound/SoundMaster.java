@@ -204,7 +204,7 @@ public class SoundMaster {
 
     public enum BUTTON_SOUND_MAP {
         //drag? scroll?
-        MENU(NEW__CLICK, null , NEW__CLICK_UP, NEW__CLICK_DISABLED),
+        MENU(null, null , NEW__CLICK_UP, NEW__CLICK_DISABLED),
         SELECTION_SHARP(NEW__CLICK, null  , NEW__CLICK_UP2, NEW__CLICK_DISABLED),
 
         SELECTION_SCROLL(NEW__TAB, null  , NEW__OPEN_MENU , NEW__CLICK_DISABLED),
@@ -350,7 +350,7 @@ public class SoundMaster {
         , NEW__CONTAINER,
         NEW__PLUS,
 
-        NEW__OPEN_MENU, NEW__GOLD, NEW__OK;
+        NEW__OPEN_MENU, NEW__GOLD, NEW__OK, NEW__DEFEAT, NEW__VICTORY;
         String path;
         private boolean alt;
 

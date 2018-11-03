@@ -88,7 +88,7 @@ public class RngMainSpawner {
 
         int n = getMaxGroupsForType(groupType);
         for (int i = 0; i < n; i++) {
-            UNIT_GROUP group = getUnitGroup(surface, style);
+            UNIT_GROUP group = RngUnitProvider.getUnitGroup(surface, style);
             map.put(group, i + 1);
         }
         return map.getRandomByWeight();
@@ -96,150 +96,6 @@ public class RngMainSpawner {
 
     private static int getMaxGroupsForType(UNIT_GROUP_TYPE groupType) {
         return 2;
-    }
-
-    public static UNIT_GROUP getUnitGroup(
-     boolean surface, DUNGEON_STYLE style) {
-        switch (style) {
-            case Brimstone:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
-                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
-                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
-                  .chain(UNIT_GROUP.CULT_CHAOS, 4)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
-                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
-                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
-                  .getRandomByWeight();
-            case PureEvil:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.UNDEAD, 10)
-                  .chain(UNIT_GROUP.DEMONS_WARPED, 10)
-                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 7)
-                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 9)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 7)
-                  .chain(UNIT_GROUP.DARK_ONES, 8)
-                  .chain(UNIT_GROUP.CULT_DEATH, 5)
-                  .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
-                  .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
-                  .chain(UNIT_GROUP.DEMONS_WARPED, 4)
-                  .chain(UNIT_GROUP.CULT_DEATH, 7)
-                  .chain(UNIT_GROUP.UNDEAD, 14)
-                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 8)
-                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 6)
-                  .chain(UNIT_GROUP.CULT_DARK, 5)
-                  .getRandomByWeight();
-            case Grimy:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-                  .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
-                  .chain(UNIT_GROUP.PRISONERS, 5)
-                  .chain(UNIT_GROUP.ANIMALS, 5)
-                  .chain(UNIT_GROUP.MUTANTS, 5)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DWARVES, 15)
-                  .chain(UNIT_GROUP.DUNGEON, 10)
-                  .chain(UNIT_GROUP.MUTANTS, 6)
-                  .chain(UNIT_GROUP.PALE_ORCS, 6)
-                  .chain(UNIT_GROUP.CRITTERS, 6)
-                  .getRandomByWeight();
-            case Pagan:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.NORTH, 12)
-                  .chain(UNIT_GROUP.ANIMALS, 5)
-                  .chain(UNIT_GROUP.DWARVES, 5)
-                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DWARVES, 15)
-                  .chain(UNIT_GROUP.DUNGEON, 10)
-                  .chain(UNIT_GROUP.ELEMENTALS, 6)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
-                  .chain(UNIT_GROUP.PALE_ORCS, 5)
-                  .getRandomByWeight();
-            case Stony:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-                  .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
-                  .chain(UNIT_GROUP.PRISONERS, 5)
-                  .chain(UNIT_GROUP.ANIMALS, 5)
-                  .chain(UNIT_GROUP.MUTANTS, 5)
-                  //                  .chain(UNIT_GROUP.BARBARIANS, 3)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DUNGEON, 20)
-                  .chain(UNIT_GROUP.DWARVES, 12)
-                  .chain(UNIT_GROUP.MUTANTS, 6)
-                  .chain(UNIT_GROUP.PALE_ORCS, 6)
-                  .chain(UNIT_GROUP.CRITTERS, 6)
-                  .getRandomByWeight();
-            case Somber:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.UNDEAD, 10)
-                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 7)
-                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 9)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 7)
-                  .chain(UNIT_GROUP.DARK_ONES, 8)
-                  .chain(UNIT_GROUP.CULT_DEATH, 5)
-                  .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .chain(UNIT_GROUP.PRISONERS, 4)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.UNDEAD, 10)
-                  .chain(UNIT_GROUP.CULT_DEATH, 7)
-                  .chain(UNIT_GROUP.UNDEAD_PLAGUE, 5)
-                  .chain(UNIT_GROUP.UNDEAD_CRIMSON, 4)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 5)
-                  .chain(UNIT_GROUP.CRITTERS, 5)
-                  .chain(UNIT_GROUP.CULT_DARK, 5)
-                  .chain(UNIT_GROUP.PRISONERS, 5)
-                  .getRandomByWeight();
-            case Cold:
-                return surface ?
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.UNDEAD, 10)
-                  .chain(UNIT_GROUP.DWARVES, 17)
-                  .chain(UNIT_GROUP.PRISONERS, 14)
-                  .chain(UNIT_GROUP.MUTANTS, 14)
-                  .chain(UNIT_GROUP.NORTH, 9)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 27)
-                  .chain(UNIT_GROUP.DARK_ONES, 8)
-                  .chain(UNIT_GROUP.CULT_DEATH, 5)
-                  .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .getRandomByWeight()
-                 :
-                 new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DUNGEON, 10)
-                  .chain(UNIT_GROUP.UNDEAD, 10)
-                  .chain(UNIT_GROUP.DWARVES, 27)
-                  .chain(UNIT_GROUP.PRISONERS, 14)
-                  .chain(UNIT_GROUP.MUTANTS, 14)
-                  .chain(UNIT_GROUP.NORTH, 9)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 17)
-                  .chain(UNIT_GROUP.DARK_ONES, 8)
-                  .chain(UNIT_GROUP.CULT_DEATH, 5)
-                  .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .getRandomByWeight();
-        }
-        return UNIT_GROUP.Ravenguard;
     }
 
     public void spawn(DungeonLevel level) {
@@ -397,11 +253,13 @@ public class RngMainSpawner {
                 if (!isBlockForGroup(block, groupType)) {
                     continue blocks;
                 }
-                if (block.getUnitGroups().size() > getMaxGroupsForBlock(block))
-                    for (UNIT_GROUP_TYPE group_type : block.getUnitGroups().values()) {
-                        if (group_type == groupType)
+                if (block.getUnitGroups().size() > getMaxGroupsForBlock(block)){
+//                    for (UNIT_GROUP_TYPE group_type : block.getUnitGroups().values())
+//                        if (group_type == groupType)
                             continue blocks;
                     }
+
+
                 if (calculatePowerFill(block) > getMaxPowerFill(block))
                     continue blocks;
                 float powerCoef = getPowerCoef(block, groupType);
@@ -712,7 +570,9 @@ public class RngMainSpawner {
             if (loop.ended())
                 break;
             String unit = (oneFromAboveRank ? altMap : map).getRandomByWeight();
-
+            if (unit == null) {
+                continue;
+            }
             ObjType type = DataManager.getType(unit, DC_TYPE.UNITS);
             if (type == null) {
                 unit = XML_Formatter.restoreXmlNodeName(unit);
@@ -846,9 +706,7 @@ public class RngMainSpawner {
     }
 
     private void addUnit(ObjAtCoordinate at, LevelBlock levelBlock) {
-        level.getUnits().add(at);
         levelBlock.getUnits().add(at);
-
         log(1, at + " spawned for " + levelBlock.getRoomType());
     }
 

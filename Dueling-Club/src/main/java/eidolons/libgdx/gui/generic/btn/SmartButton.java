@@ -27,6 +27,7 @@ public class SmartButton extends TextButton implements EventListener {
     private Runnable runnable;
     private boolean fixedSize;
     private boolean ignoreConfirmBlock;
+    private Runnable disabledRunnable;
 
     public SmartButton(String text, TextButtonStyle style) {
         this(text, style, null, STD_BUTTON.MENU);
@@ -96,10 +97,16 @@ public class SmartButton extends TextButton implements EventListener {
         STD_SOUNDS sound = null;
         if (event.getType() == Type.touchUp) {
             if (GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
-                if (runnable != null)
-                    runnable.run();
-                if (getSoundMap() != null)
-                    sound = getSoundMap().up;
+                if (!isDisabled()) {
+                    if (getSoundMap() != null)
+                        sound = getSoundMap().up;
+
+                    if (runnable != null)
+                        runnable.run();
+                } else {
+                    if (disabledRunnable != null)
+                        disabledRunnable.run();
+                }
             }
         } else {
             if (getSoundMap() != null)
@@ -131,7 +138,7 @@ public class SmartButton extends TextButton implements EventListener {
             }
             switch (style) {
                 case STAT:
-                return BUTTON_SOUND_MAP.STAT;
+                    return BUTTON_SOUND_MAP.STAT;
                 case TAB_HIGHLIGHT:
                     return BUTTON_SOUND_MAP.TAB;
                 case MENU:
@@ -163,5 +170,9 @@ public class SmartButton extends TextButton implements EventListener {
 
     public void setIgnoreConfirmBlock(boolean ignoreConfirmBlock) {
         this.ignoreConfirmBlock = ignoreConfirmBlock;
+    }
+
+    public void setDisabledRunnable(Runnable disabledRunnable) {
+        this.disabledRunnable = disabledRunnable;
     }
 }

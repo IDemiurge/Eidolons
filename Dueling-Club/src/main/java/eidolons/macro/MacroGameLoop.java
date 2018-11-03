@@ -187,7 +187,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public void enter(Place entered) {
         if (entered instanceof Town) {
             //            entered.getGame().get
-            DC_Game.game.getMetaMaster().getTownMaster().enterTown((Town) entered);
+            DC_Game.game.getMetaMaster().getTownMaster().enterTown((Town) entered, false);
             return;
         }
         Eidolons.onThisOrNonGdxThread(() -> {

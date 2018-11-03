@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
@@ -31,6 +33,7 @@ import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -70,6 +73,9 @@ public class TownPanel extends TabbedPanel {
             protected BUTTON_SOUND_MAP getSoundMap() {
                 return BUTTON_SOUND_MAP.ENTER;
             }
+        });
+        okBtn.setDisabledRunnable(()->{
+            EUtils.info(tooltip);
         });
         addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
         okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());
@@ -123,6 +129,14 @@ public class TownPanel extends TabbedPanel {
     }
 
     private boolean isDisabled() {
+        if (CoreEngine.isIDE()) {
+            return false;
+        }
+        for (DungeonQuest quest : getUserObject().getQuests()) {
+            if (quest.isStarted()) {
+                return false;
+            }
+        }
 //        for (Shop shop : getUserObject().getShops()) {
 //            if (!shop.isBalanceOk())
 //            {
@@ -130,7 +144,8 @@ public class TownPanel extends TabbedPanel {
 //                return true;
 //            }
 //        }
-        return false;
+                        tooltip = "You need a good reason - a quest - to leave the town's safety...";
+        return true;
     }
 
     @Override

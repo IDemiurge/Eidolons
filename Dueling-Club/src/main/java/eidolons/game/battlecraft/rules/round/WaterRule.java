@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.rules.round;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
@@ -14,7 +15,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.obj.ActiveObj;
 import main.system.math.Formula;
 
-import java.util.List;
+import java.util.Set;
 
 public class WaterRule extends RoundRule implements ActionRule {
 
@@ -138,13 +139,13 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     @Override
     public boolean check(Unit unit) {
-        List<Unit> units = game.getObjectsOnCoordinate(unit.getCoordinates());
+        Set<BattleFieldObject> units = game.getObjectsOnCoordinate(unit.getCoordinates());
 
-        for (Unit u : units) {
-            if (isWater(u)) {
-                waterObj = u;
-                return true;
-            }
+        for (BattleFieldObject u : units) {
+//            if (isWater(u)) {
+//                waterObj = u;
+//                return true;
+//            }
         }
 
         return false;

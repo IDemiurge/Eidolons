@@ -7,11 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.Structure;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GDX;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
@@ -34,6 +38,9 @@ public class GridCellContainer extends GridCell {
     Map<Integer, GenericGridView> indexMap = new HashMap<>();
     private int Z=2;
     private boolean hovered;
+    private boolean stackView;
+    ValueContainer info;
+    private float maxY;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -46,7 +53,13 @@ public class GridCellContainer extends GridCell {
     @Override
     public GridCellContainer init() {
         super.init();
-
+        addActor(info = new ValueContainer(StyleHolder.getHqLabelStyle(20), "", ""){
+            @Override
+            protected boolean isVertical() {
+                return true;
+            }
+        });
+        info.setVisible(false);
         graveyard = new GraveyardView();
         addActor(graveyard);
         graveyard.setWidth(getWidth());
@@ -129,6 +142,9 @@ public class GridCellContainer extends GridCell {
             actor.setScaledWidth(scaleX);
 
             recalcImagesPos(actor, offset, offset, i++);
+            if (actor.getY()+actor.getHeight() > maxY){
+                maxY = actor.getY() + actor.getHeight();
+            }
         }
         if (graveyard != null) {
             graveyard.setZIndex(Integer.MAX_VALUE);
@@ -258,6 +274,8 @@ public class GridCellContainer extends GridCell {
         }
         if (hovered != null)
             hovered.setZIndex(Integer.MAX_VALUE);
+        if (getTopUnitView()!=null )
+            getTopUnitView().setZIndex(Integer.MAX_VALUE);
         graveyard.setZIndex(Integer.MAX_VALUE);
         if (n != unitViewCount || secondCheck) {
             dirty = true;
@@ -268,6 +286,7 @@ public class GridCellContainer extends GridCell {
             unitViewCount = n;
             recalcUnitViewBounds();
         }
+        info.setPosition(GDX.centerWidth(info), maxY+10);
     }
 
     private boolean isStaticZindex() {
@@ -353,6 +372,7 @@ public class GridCellContainer extends GridCell {
     public void popupUnitView(GenericGridView uv) {
       uv.remove();
       addActor(uv);
+      uv.setHovered(true);
         uv.setZIndex(getChildren().size);
         recalcImagesPos();
         graveyard.setZIndex(Integer.MAX_VALUE);
@@ -394,7 +414,6 @@ public class GridCellContainer extends GridCell {
     }
 
     public GenericGridView getTopUnitView() {
-
         return topUnitView;
     }
 
@@ -413,5 +432,20 @@ public class GridCellContainer extends GridCell {
 
     public void setHovered(boolean hovered) {
         this.hovered = hovered;
+    }
+
+    public void setStackView(boolean stackView) {
+        this.stackView = stackView;
+        info.setVisible(stackView);
+        info.setNameText("[" +getUnitViews(true).size()+ " in stack, ESC to hide]");
+        info.setValueText("[" +
+         getUserObject().getParam(PARAMS.GIRTH) +
+         " girth on " + 1000 +
+//         getUserObject().getIntParam() +
+         "space]");
+    }
+
+    public boolean isStackView() {
+        return stackView;
     }
 }

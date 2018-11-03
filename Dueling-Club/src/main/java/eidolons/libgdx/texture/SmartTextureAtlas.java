@@ -56,6 +56,15 @@ public class SmartTextureAtlas extends TextureAtlas {
         return matched;
     }
 
+    public Array<AtlasRegion> findRegionsClosest(String name) {
+        Array<AtlasRegion> matched = new Array();
+        name = name.toLowerCase();
+        for (int i = 0, n = getRegions().size; i < n; i++) {
+            AtlasRegion region = getRegions().get(i);
+            if (region.name.toLowerCase(). contains(name)) matched.add(new AtlasRegion(region));
+        }
+        return matched;
+    }
     @Override
     public Sprite createSprite(String name) {
         Sprite sprite = super.createSprite(name);

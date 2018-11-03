@@ -1,14 +1,18 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.meta.QuestEnums;
+import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -21,25 +25,23 @@ import java.util.Set;
 /**
  * Created by JustMe on 10/6/2018.
  */
-public class QuestMaster {
+public class QuestMaster extends MetaGameHandler {
 
     public static final boolean TEST_MODE = CoreEngine.isFastMode();
     public static final boolean ON = true;
 
-//    static {
-//        if (TEST_MODE)
-//            CoreEngine.setFastMode(true);
-//    }
-
+    //    static {
+    //        if (TEST_MODE)
+    //            CoreEngine.setFastMode(true);
+    //    }
     QuestResolver resolver;
     QuestCreator creator;
     QuestSelector selector;
-
     List<DungeonQuest> quests = new ArrayList<>();
     private boolean started;
     private Set<DungeonQuest> questsPool;
-
-    public QuestMaster() {
+    public QuestMaster(MetaGameMaster master) {
+        super(master);
         resolver = new QuestResolver(this);
         creator = new QuestCreator(this);
         selector = new QuestSelector(this);
@@ -85,12 +87,13 @@ public class QuestMaster {
     }
 
     public void questsCancelled() {
-        quests.clear();
+        quests.forEach(q -> questCancelled(q.getTitle()));
     }
 
     public void questCancelled(String name) {
         for (DungeonQuest quest : new ArrayList<>(quests)) {
             if (quest.getTitle().equalsIgnoreCase(name)) {
+                quest.setStarted(false);
                 quests.remove(quest);
             }
         }
@@ -109,6 +112,7 @@ public class QuestMaster {
         else
             quest = getCreator().create(type);
 
+        quest.setStarted(true);
         quests.add(quest);
     }
 
@@ -141,9 +145,42 @@ public class QuestMaster {
 
     public Set<ObjType> getQuestTypePool() {
         String filter = QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
-        return new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
+        Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
          filter, MACRO_PROPS.QUEST_GROUP));
 
+        pool.removeIf(q -> !checkQuestForLocation(q));
+
+        return pool;
+
+    }
+
+    private boolean checkQuestForLocation(ObjType q) {
+//        if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
+//            ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getScenario()
+//        }
+        QUEST_TYPE type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(
+         QUEST_TYPE.class, q.getProperty(MACRO_PROPS.QUEST_TYPE));
+        switch (type) {
+
+            case BOSS:
+                break;
+            case HUNT:
+                break;
+            case OBJECTS:
+                switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
+                    case Somber:
+                        return true;
+                }
+                return false;
+            case COMMON_ITEMS:
+            case SPECIAL_ITEM:
+                switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
+                    case Somber:
+                        return false;
+                }
+                break;
+        }
+        return true;
     }
 
     public Set<DungeonQuest> getQuestsPool() {

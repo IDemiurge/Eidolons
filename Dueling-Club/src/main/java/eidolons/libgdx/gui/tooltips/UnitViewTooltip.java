@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.BaseView;
@@ -19,9 +20,14 @@ public class UnitViewTooltip extends ValueTooltip {
         this.view = view;
     }
 
-    public Vector2 getDefaultOffset() {
-        return new Vector2(128 , 128 );
+    public BaseView getView() {
+        return view;
     }
+
+    public Vector2 getDefaultOffset() {
+        return new Vector2(128, 128);
+    }
+
     @Override
     protected boolean isBattlefield() {
         return true;
@@ -41,8 +47,8 @@ public class UnitViewTooltip extends ValueTooltip {
             return;
         }
         super.onMouseMoved(event, x, y);
-        if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
-            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
+        //        if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        //            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
 
     }
 
@@ -63,6 +69,18 @@ public class UnitViewTooltip extends ValueTooltip {
         if (view instanceof GridUnitView) {
             if (GdxMaster.getAncestors(toActor).contains(((GridUnitView) view).getInitiativeQueueUnitView()))
                 return false;
+        }
+        if (toActor != null) {
+        Group anotherViewThere = GdxMaster.getFirstParentOfClass(toActor, GridUnitView.class);
+        if (anotherViewThere instanceof GridUnitView) {
+            if (view.getUserObject().getCoordinates().equals(((GridUnitView) anotherViewThere).getUserObject().getCoordinates()))
+            {
+                if (manager != null)
+                    manager.entityHoverOff(getEntity());
+                return false;
+            }
+        }
+
         }
         return super.checkActorExitRemoves(toActor);
     }

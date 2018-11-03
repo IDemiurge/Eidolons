@@ -23,6 +23,7 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
@@ -321,6 +322,9 @@ public class OptionsMaster {
 
     private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
+            case ADDITIVE_LIGHT:
+                LightLayer.setAdditive(bool);
+                break;
             case BRIGHTNESS:
                 GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
                 break;

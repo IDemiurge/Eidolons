@@ -35,6 +35,7 @@ import java.util.*;
  */
 public class ShardVisuals extends GroupX {
 
+    private static final int LARGE_SHARD_CHANCE = 85;
     List<Shard> last = new ArrayList<>();
     Map<Shard, List<EmitterActor>> emittersMap = new XLinkedMap<>();
     GroupX emitterLayer = new GroupX();
@@ -63,7 +64,7 @@ public class ShardVisuals extends GroupX {
                 break;
         }
         n = RandomWizard.getRandomInt(n);
-        if( n<0){
+        if (n < 0) {
             return new EMITTER_PRESET[0];
         }
         EMITTER_PRESET[] array = new EMITTER_PRESET[n];
@@ -82,8 +83,12 @@ public class ShardVisuals extends GroupX {
         switch (overlay) {
             case MIST:
                 return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.DARK_MIST,
+                 EMITTER_PRESET.DARK_MIST,
                  EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.DARK_MIST_LITE,
+                 EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
+                 EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
                  //                 EMITTER_PRESET.MIST_TRUE2,
                  EMITTER_PRESET.MIST_WHITE,
                  EMITTER_PRESET.MIST_WIND,
@@ -100,9 +105,12 @@ public class ShardVisuals extends GroupX {
                 };
             case DARKNESS:
                 return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.DARK_MIST,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.MIST_ARCANE,
+                 EMITTER_PRESET.DARK_MIST_LITE,
+                 EMITTER_PRESET.DARK_MIST_LITE,
                  EMITTER_PRESET.MIST_BLACK,
                  EMITTER_PRESET.CINDERS3,
                  EMITTER_PRESET.ASH,
@@ -120,6 +128,10 @@ public class ShardVisuals extends GroupX {
                 };
             case NETHER:
                 return new EMITTER_PRESET[]{
+                 EMITTER_PRESET.DARK_MIST,
+                 EMITTER_PRESET.DARK_MIST_LITE,
+                 EMITTER_PRESET.DARK_MIST_LITE,
+                 EMITTER_PRESET.DARK_MIST_LITE,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.MIST_ARCANE,
@@ -216,8 +228,8 @@ public class ShardVisuals extends GroupX {
                         MapMaster.addToListMap(emittersMap, shard, actor);
                         emitterLayer.addActor(actor);
                         actor.setPosition(shard.getX() + shard.getWidth() / 2
-                         +50 - RandomWizard.getRandomInt(100), shard.getY() + shard.getHeight() / 2
-                         +50 - RandomWizard.getRandomInt(100));
+                         + 50 - RandomWizard.getRandomInt(100), shard.getY() + shard.getHeight() / 2
+                         + 50 - RandomWizard.getRandomInt(100));
                         actor.start();
                         actor.act(RandomWizard.getRandomFloat());
                     }
@@ -304,12 +316,31 @@ public class ShardVisuals extends GroupX {
                 return false;
             }
         }
+
+        for (Coordinates coordinates : c.getAdjacent()) {
+            if (checkSize(coordinates, SHARD_SIZE.LARGE))
+                return false;
+            for (Coordinates c1 : coordinates.getAdjacent()) {
+                if (checkSize(c1, SHARD_SIZE.LARGE))
+                    return false;
+            }
+        }
+
         // not adjacent to large? no more than 3 in line
-        if (RandomWizard.chance(25))
-            return false;
+        if (RandomWizard.chance(LARGE_SHARD_CHANCE))
+            return true;
 
         //add to map so we know where large ones are
-        return true;
+        return false;
+    }
+
+    private boolean checkSize(Coordinates coordinates, SHARD_SIZE size) {
+        if (map.get(coordinates) != null) {
+            if (map.get(coordinates).getSize() == size) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Boolean checkAdjacent(Coordinates adj) {

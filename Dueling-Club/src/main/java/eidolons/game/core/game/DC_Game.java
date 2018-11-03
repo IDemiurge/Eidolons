@@ -681,11 +681,9 @@ public class DC_Game extends GenericGame {
         return inventoryManager;
     }
 
-    @Deprecated
-    @Override
-    public List<Unit> getObjectsOnCoordinate(Coordinates c) {
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c) {
         //        return getMaster().getObjectsOnCoordinate(c);
-        return null;
+        return getObjectsOnCoordinate(null, c, false, true, false);
     }
 
     public Obj getObjectByCoordinate(Coordinates

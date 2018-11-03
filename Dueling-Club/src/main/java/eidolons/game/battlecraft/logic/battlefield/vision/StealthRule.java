@@ -99,7 +99,7 @@ public class StealthRule implements ActionRule {
                 // if (checkInSight((DC_UnitObj) obj, unit))
                 // continue; TODO Used to be like this? If within sight range,
                 // no stealth possible?
-                int detection = getDetection(unit, obj);
+                int detection = getDetection(unit, obj, null );
                 if (obj.isPlayerCharacter())
                         detection += DETECTION_BONUS_MAIN_HERO;
 
@@ -119,18 +119,27 @@ public class StealthRule implements ActionRule {
         return result;
     }
 
-    private static int getDetection(DC_Obj target, Obj source) {
+    private static int getDetection(DC_Obj target, Obj source, DC_ActiveObj action) {
         int distance = PositionMaster.getDistance(source, target);
         if (distance == 0) {
             distance = 1; // TODO ++ CONCEALMENT
         }
-        Integer factor = source.getIntParam(PARAMS.SIGHT_RANGE);
+        Integer factor =2* source.getIntParam(PARAMS.SIGHT_RANGE);
 
         if (FacingMaster.getSingleFacing((DC_UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.BEHIND) {
             factor = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
         } else if (FacingMaster.getSingleFacing((DC_UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             factor -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
+        if (action != null) {
+        if (action.isAttackAny()){
+            factor=factor*2;
+        }
+        if (action.isSpell()){
+            factor=factor*3/2;
+        }
+        }
+
         int detection = factor * source.getIntParam(PARAMS.DETECTION) / distance;
         return detection;
     }
@@ -168,13 +177,13 @@ public class StealthRule implements ActionRule {
 
             if ((d <= getMaxDistance( unit, source))) {
                 if (isSpotRollAllowed(unit, source)) {
-                    rollSpotted(unit, source);
+                    rollSpotted(unit, source, action);
                 }
             }
 
             if ((d <= getMaxDistance(source, unit ))) {
                 if (isSpotRollAllowed(source,unit)) {
-                    rollSpotted(source, unit);
+                    rollSpotted(source, unit, action);
                 }
             }
         }
@@ -219,11 +228,11 @@ public class StealthRule implements ActionRule {
     }
 
     // ++ SEARCH ACTION!
-    public boolean rollSpotted(Unit activeUnit, Unit target) {
-        return rollSpotted(activeUnit, target, false);
+    public boolean rollSpotted(Unit activeUnit, Unit target, DC_ActiveObj action) {
+        return rollSpotted(activeUnit, target, false, action);
     }
 
-    public boolean rollSpotted(Unit activeUnit, Unit target, boolean hearing) {
+    public boolean rollSpotted(Unit activeUnit, Unit target, boolean hearing, DC_ActiveObj action) {
         if (activeUnit.isOwnedBy(target.getOwner())) {
             return false;
         }
@@ -232,7 +241,7 @@ public class StealthRule implements ActionRule {
         ref.setTarget(target.getId());
         // TODO mind-affecting vs Spell Invisibility!
 
-        int detection = getDetection(target, activeUnit);
+        int detection = getDetection(target, activeUnit, action);
         int base_detection = activeUnit.getIntParam(PARAMS.DETECTION);
         activeUnit.setParam(PARAMS.DETECTION, detection);
 

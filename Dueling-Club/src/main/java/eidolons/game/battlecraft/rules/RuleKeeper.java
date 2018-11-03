@@ -345,6 +345,10 @@ public class RuleKeeper implements Controller {
         overrideMap.put(obj, b);
     }
 
+    public static boolean isHeroEnduranceRegenOn() {
+        return false;
+    }
+
     public enum COMBAT_RULES {
         UNCONSCIOUS, FOCUS, MORALE, MORALE_KILL, STAMINA, WOUNDS, BLEEDING, WEIGHT,
     }

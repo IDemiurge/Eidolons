@@ -6,6 +6,8 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.mode.STD_MODES;
@@ -32,6 +34,13 @@ public class RestEffect extends DC_Effect {
          block actions
          add shader
          */
+
+        if (!ExplorationMaster.isExplorationOn()){
+            ref.getActive().setCancelled(true);
+            EUtils.info("You cannot do this while in combat!");
+            return false;
+        }
+
         List<Unit> allies = getGame().getMetaMaster().getPartyManager().getParty().getMembers();
         for (Unit sub : allies) {
             Ref REF = sub.getRef().getTargetingRef(sub);

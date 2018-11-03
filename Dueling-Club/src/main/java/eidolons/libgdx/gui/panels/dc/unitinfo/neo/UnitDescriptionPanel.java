@@ -35,7 +35,8 @@ public class UnitDescriptionPanel extends DescriptionPanel{
         String text =dataSource==null  ?"" : dataSource.getDescription();
         if (text.isEmpty()) {
             text = "There isn't anything else to be said  here.";
-        } text = "I am too deeply depressed by the state of this panel.\n"+text;
+        }
+        text = "I am too deeply depressed by the state of this panel.\n"+text;
         setText(text);
         super.updateAct();
     }
