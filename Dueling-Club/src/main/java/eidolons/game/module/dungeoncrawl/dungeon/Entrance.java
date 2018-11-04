@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.ScenarioGame;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -41,10 +40,10 @@ public class Entrance extends Structure { //ScenarioUnit
         return PLAYER_VISION.DETECTED;
     }
 
-    @Override
-    public VISIBILITY_LEVEL getVisibilityLevel() {
-        return VISIBILITY_LEVEL.CLEAR_SIGHT;
-    }
+//    @Override
+//    public VISIBILITY_LEVEL getVisibilityLevel() {
+//        return VISIBILITY_LEVEL.CLEAR_SIGHT;
+//    }
 
     @Override
     public ScenarioGame getGame() {

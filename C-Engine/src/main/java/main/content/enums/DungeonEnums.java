@@ -2,6 +2,7 @@ package main.content.enums;
 
 import main.content.enums.entity.OBJ_TYPE_ENUM;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 
 /**
@@ -158,17 +159,22 @@ public class DungeonEnums {
 
     public enum LOCATION_TYPE {
         CEMETERY(true), CAVE, CRYPT,
-       DUNGEON,        TOWER, TEMPLE(true),
-        CASTLE(true),
+       DUNGEON,        TOWER(33), TEMPLE(50),
+        CASTLE(75),
 
 
         HOUSE(true),
-        GROVE(true),DEN, RUIN(true),
+        GROVE(true),DEN, RUIN(66),
         CAMP(true),  BARROW,
         SEWER, HELL, ASTRAL,
         HIVE, ;
 
         private boolean surface;
+        private int surfaceChance;
+
+        LOCATION_TYPE(int surfaceChance) {
+            this.surfaceChance = surfaceChance;
+        }
 
         LOCATION_TYPE(boolean surface) {
             this.surface = surface;
@@ -178,6 +184,8 @@ public class DungeonEnums {
         }
 
         public boolean isSurface() {
+            if (surfaceChance!=0)
+                return RandomWizard.chance(surfaceChance);
             return surface;
         }
 
@@ -252,15 +260,20 @@ public class DungeonEnums {
         // NORDHEIM("big","new","nordheim.jpg"),
         // MISTY_MOUNTAINS("big","death combat","Misty Mountains Onyx Spire.jpg"),
 
+        BASTION(PathFinder.getBgPicsPath(),"bastion.jpg"),
         CAVE(PathFinder.getBgPicsPath(),"ship flip.jpg"),
         SHIP(PathFinder.getBgPicsPath(),"dungeon.png"),
         ELVEN_RUINS(PathFinder.getBgPicsPath(), "RUINS.jpg"),
-        RAVENWOOD(PathFinder.getBgPicsPath(), "RAVENWOOD.jpg"),
+        RAVENWOOD(PathFinder.getBgPicsPath(), "RAVENWOOD.png"),
+        RAVENWOOD_EVENING(PathFinder.getBgPicsPath(), "RAVENWOOD evening.png"),
         TUNNEL(PathFinder.getBgPicsPath(), "Ironhelm Tunnel.png"),
         CEMETERY(PathFinder.getBgPicsPath(), "OLD CEMETERY.png"),
         TOWER(PathFinder.getBgPicsPath(), "moon valley.jpg"),
 
-        SPIDER_GROVE(PathFinder.getBgPicsPath(), "spider grove.png");
+        SPIDER_GROVE(PathFinder.getBgPicsPath(), "spider grove.png"),
+        ERSIDRIS(PathFinder.getBgPicsPath(), "ERSIDRIS.png")
+
+        ;
         private String backgroundFilePath;
 
         MAP_BACKGROUND(String... backgroundPathSegments) {

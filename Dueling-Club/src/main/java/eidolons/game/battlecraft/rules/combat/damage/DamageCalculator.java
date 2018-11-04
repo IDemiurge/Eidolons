@@ -99,6 +99,10 @@ public class DamageCalculator {
             }
         int amount = calculator.calculateFinalDamage();
         DAMAGE_TYPE dmg_type = attack.getDamageType();
+        return precalculateDamage(amount, dmg_type, attacked, attacker, attack.getWeapon(), attack.getAction());
+    }
+
+    public static int precalculateDamage(int amount, DAMAGE_TYPE dmg_type, BattleFieldObject attacked, BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action) {
         if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
         }
@@ -106,17 +110,14 @@ public class DamageCalculator {
             return amount;
         }
         int blocked = attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
-         (Unit) attacked, attacker, attack.getAction(), attack.getWeapon(), attack.getDamageType());
+         attacked, attacker,  action,  weapon, dmg_type);
 
         blocked += attacked.getGame()
-         .getArmorSimulator().getArmorBlockDamage(amount, (Unit) attacked, attacker, attack.getAction());
+         .getArmorSimulator().getArmorBlockDamage(amount, attacked, attacker, action);
 
         amount = calculateDamage(true, attacked, attacker, amount,
-         null, blocked, attack.getDamageType());
+         null, blocked, dmg_type);
 
-        if (attack.getAction().isAttackGeneric()) {
-            return amount;
-        }
         return amount;
     }
 

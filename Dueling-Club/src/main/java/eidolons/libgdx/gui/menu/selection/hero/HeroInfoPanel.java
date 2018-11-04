@@ -2,9 +2,11 @@ package eidolons.libgdx.gui.menu.selection.hero;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
@@ -29,6 +31,18 @@ public class HeroInfoPanel extends ItemInfoPanel {
         super(item);
 
 
+    }
+
+    protected void afterLayout() {
+        super.afterLayout();
+        Cell c = getCell(fullsizePortrait);
+        c.setActorY(c.getActorY()+ NINE_PATCH_PADDING.SAURON.bottom);
+        description.setY(description.getY()+GDX.height(20));
+        fullsizePortrait.setY(NINE_PATCH_PADDING.SAURON.bottom);
+    }
+    @Override
+    protected float getDescriptionHeight() {
+        return super.getDescriptionHeight()*3/4;
     }
 
     @Override
@@ -70,6 +84,7 @@ public class HeroInfoPanel extends ItemInfoPanel {
         mainInfo.setWrap(true);
         mainInfo.setMaxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500);
         mainInfo.setText("A touch of Fate...");
+
         header.add(mainInfo).maxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500). padLeft(50). padTop(50);
 
     }

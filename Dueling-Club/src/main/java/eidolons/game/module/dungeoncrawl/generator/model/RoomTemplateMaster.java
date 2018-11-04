@@ -423,9 +423,11 @@ public class RoomTemplateMaster {
         }
         Collections.sort(dimensions,
          new SortMaster<Dimension>().getSorterByExpression_((Dimension dim)
-          -> (int) -(dim.getHeight() * dim.getWidth()
+          -> (int)
+          -(dim.getHeight() * dim.getWidth())
+
           * (RandomWizard.chance(data.getIntValue(LEVEL_VALUES.RANDOMIZED_SIZE_SORT_CHANCE))
-          ? RandomWizard.getRandomIntBetween(0, 100) : 1))));
+          ? RandomWizard.getRandomIntBetween(0, 100) : 1)));
 
         for (Dimension dimension : dimensions) {
             roomPoolStack.add(pools.get(dimension));

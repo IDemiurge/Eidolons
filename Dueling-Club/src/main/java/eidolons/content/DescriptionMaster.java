@@ -1,11 +1,15 @@
 package eidolons.content;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.text.TextMaster;
 import main.content.CONTENT_CONSTS.DEITY;
 import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.content.values.parameters.PARAMETER;
+import main.data.filesys.PathFinder;
+import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 public class DescriptionMaster {
 
@@ -328,5 +332,22 @@ public class DescriptionMaster {
 
         }
         return null;
+    }
+
+    public static String getDescription(Entity entity) {
+        return getDescription(entity, true);
+    }
+    public static String getDescription(Entity entity, boolean fallback) {
+        String text = null;
+        text = FileManager.readFile(getDescriptionPath(entity));
+        if (fallback&&text.isEmpty()){
+            text = entity.getDescription();
+        }
+        return text;
+    }
+
+    public static String getDescriptionPath(Entity entity) {
+        return PathFinder.getTextPath() + "/" + TextMaster.getLocale() + "/descriptions/"
+         + entity.getOBJ_TYPE()+ "/"  +entity.getName()+ ".txt";
     }
 }

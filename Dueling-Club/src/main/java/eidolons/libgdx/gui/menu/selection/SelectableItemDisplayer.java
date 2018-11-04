@@ -14,4 +14,10 @@ public interface SelectableItemDisplayer {
     default void subItemClicked(SelectableItemData item, String sub) {
 
     }
+
+    void addActor(Actor actor);
+
+    void setDoneDisabled(boolean doneDisabled);
+
+    void initStartButton(String doneText, Runnable o);
 }

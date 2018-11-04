@@ -23,6 +23,11 @@ public class ScenarioInfoPanel extends ItemInfoPanel {
     }
 
     @Override
+    protected void initComponents() {
+        super.initComponents();
+    }
+
+    @Override
     public void updateAct(float delta) {
         super.updateAct(delta);
 
@@ -52,6 +57,7 @@ public class ScenarioInfoPanel extends ItemInfoPanel {
     protected void initHeader(TablePanel<Actor> header) {
         super.initHeader(header);
 
+//        header.setBackground(NinePatchFactory.getLightDecorPanelDrawable());
         header.row();
         TablePanel<Actor> infoTable = new TablePanel<>();
         header.addNoGrow(infoTable);

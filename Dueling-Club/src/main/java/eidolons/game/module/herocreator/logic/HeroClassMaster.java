@@ -4,7 +4,9 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
@@ -87,5 +89,12 @@ public class HeroClassMaster {
             }
         }
         return list;
+    }
+    public static String getImgPath(Entity data) {
+        String path = "main/skills/gen/" + data.getName() + ".png";
+        if (TextureCache.isImage(path))
+            return path;
+
+        return GdxImageMaster.getRoundedPath(data.getImagePath());
     }
 }

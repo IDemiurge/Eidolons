@@ -52,7 +52,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         if (Bools.isTrue(outcome)) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__VICTORY);
         }
-        WaitMaster.WAIT(500);
+        WaitMaster.WAIT(1500);
         GuiEventManager.trigger(GuiEventType.GAME_FINISHED, getGame());
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, outcome);
     }

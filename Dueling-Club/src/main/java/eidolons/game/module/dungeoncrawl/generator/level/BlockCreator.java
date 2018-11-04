@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
+import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
@@ -35,7 +36,8 @@ public class BlockCreator {
                 b.getCoordinatesList(), new ListMaster<Coordinates>().asList(c), 3)
                ))).findFirst().get();
             block.getTileMap().getMapModifiable().put(c, model.getAdditionalCells().get(c));
-            System.out.println(c + " assinged to " + block);
+if (Pregenerator.TEST_MODE)
+  System.out.println(c + " assinged to " + block);
 
         }
         return;

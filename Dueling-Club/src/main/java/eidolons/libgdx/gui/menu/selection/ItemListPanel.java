@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.content.DescriptionMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -351,7 +352,7 @@ public abstract class ItemListPanel extends TablePanel {
             name = entity.getName();
             imagePath = entity.getImagePath();
             fullsizeImagePath = ImageManager.getFullSizeImage(entity);
-            description = entity.getDescription();
+            description = DescriptionMaster.getDescription(entity);
             this.entity = entity;
         }
 

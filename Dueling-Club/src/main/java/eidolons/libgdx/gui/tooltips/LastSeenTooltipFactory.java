@@ -25,12 +25,15 @@ public class LastSeenTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
         return ()->{
             List<ValueContainer> list=    new ArrayList<>() ;
             String time =
-             String.format(Locale.US, "%.1f",
+             String.format(Locale.US, "%.0f",
              (data.getGame().getLoop().getTime() -
              data.getLastSeenTime())) ;
-            String info =  "Has been seen here " +
-             time +" seconds ago";
             String name=data.getName();
+            String info =  "You have seen " +
+             name +
+             " here " +time +
+             "" +
+             "seconds ago";
             if (!data.isDetectedByPlayer()){
                 OUTLINE_TYPE outline = data.getLastSeenOutline();
                 if (outline!=null )
@@ -40,7 +43,7 @@ public class LastSeenTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                     info+=", facing " + data.getLastSeenFacing();
                 }
             }
-            list.add(new ValueContainer(name, info));
+            list.add(new ValueContainer("You  recall...", info));
 
             return list;
         };

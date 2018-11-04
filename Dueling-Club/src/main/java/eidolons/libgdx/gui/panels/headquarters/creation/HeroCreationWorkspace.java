@@ -99,6 +99,16 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
     }
 
     @Override
+    public void setDoneDisabled(boolean doneDisabled) {
+
+    }
+
+    @Override
+    public void initStartButton(String doneText, Runnable o) {
+
+    }
+
+    @Override
     protected void update(float delta) {
         if (item == previousItem)
             return;

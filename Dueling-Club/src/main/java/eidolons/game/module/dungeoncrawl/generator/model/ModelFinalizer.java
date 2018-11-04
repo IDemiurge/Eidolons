@@ -13,6 +13,7 @@ import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
 import eidolons.game.module.dungeoncrawl.generator.graph.GraphPath;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
+import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
@@ -111,7 +112,7 @@ public class ModelFinalizer {
                 } else template = EXIT_TEMPLATE.ANGLE;
             }
 
-            log(1, "Substituting cells for " + room + " with "
+            if (Pregenerator.TEST_MODE) log(1, "Substituting cells for " + room + " with "
              + template);
 
             RoomModel roomModel = templateMaster.getRandomModelToSubstitute(room.getWidth(),
@@ -130,7 +131,7 @@ public class ModelFinalizer {
              roomModel.getRotations(), room.getExits()));
 
 
-            log(1, "New cells for " + room);
+            if (Pregenerator.TEST_MODE) log(1, "New cells for " + room);
             if (ZoneCreator.TEST_MODE) {
                 room.setZone(new LevelZone(9));
             }
@@ -187,7 +188,7 @@ public class ModelFinalizer {
             }
         }
         model.rebuildCells();
-        System.out.println("Made " +
+        if (Pregenerator.TEST_MODE) log(1,"Made " +
          (maxNewPath - remaining) +
          "additional connections for " +
          model);
@@ -198,7 +199,7 @@ public class ModelFinalizer {
         Room link = builder.findFitting(room, EXIT_TEMPLATE.THROUGH, ROOM_TYPE.CORRIDOR, side, true);
         {
             if (link != null) {
-                System.out.println("LINKED VIA " + link);
+                if (Pregenerator.TEST_MODE) log(1,"LINKED VIA " + link);
                 builder.makeExits(side, side, room, link, room2, false, false);
                 return true;
             }
@@ -285,13 +286,13 @@ public class ModelFinalizer {
         if (aligned.size() < 3)
             return false;
 
-        System.out.println("CONNECTING " +
+        if (Pregenerator.TEST_MODE) log(1,"CONNECTING " +
          room + " with " + room2 + " on " + side
          + "\n\n\n" + model);
         //        if (tryConnectViaLink(room, room2, side)) {
         //            return true;
         //        }
-        //        System.out.println("MANUAL LINK FOR " +
+        //        if (Pregenerator.TEST_MODE) log(1,"MANUAL LINK FOR " +
         //         room + " and " + room2);
         List<Coordinates> list = room.getCoordinatesList();
         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
@@ -328,21 +329,21 @@ public class ModelFinalizer {
             boolean assigned = false;
             if (CoordinatesMaster.isWithinBounds(c, 0, room.getWidth() - 1, 0, room.getHeight() - 1)) {
                 room.getCells()[c.x][c.y] = cell.getSymbol();
-                System.out.println("changed " +
+                if (Pregenerator.TEST_MODE) log(1,  "changed " +
                  room + " on " + c);
                 assigned = true;
             }
             c = room2.relative(pathCoordinate);
             if (CoordinatesMaster.isWithinBounds(c, 0, room2.getWidth() - 1, 0, room2.getHeight() - 1)) {
                 room2.getCells()[c.x][c.y] = cell.getSymbol();
-                System.out.println("changed " +
+                if (Pregenerator.TEST_MODE) log(1,"changed " +
                  room2 + " on " + c);
                 assigned = true;
             }
             if (assigned)
                 continue;
             model.getAdditionalCells().put(pathCoordinate, cell);
-            System.out.println("between " + c);
+            if (Pregenerator.TEST_MODE) log(1,"between " + c);
         }
         room.getUsedExits().add(side);
         room2.getUsedExits().add(side.flip());
@@ -391,7 +392,7 @@ public class ModelFinalizer {
 
     public void finalize(LevelModel model) {
         this.model = model;
-        log(1, "FINALIZING: \n" + model);
+        if (Pregenerator.TEST_MODE) log(1, "FINALIZING: \n" + model);
         maxRooms =
          //model.getRoomMap().size() + 4;
          model.getData().getReqs().getIntValue(LEVEL_REQUIREMENTS.maxRooms);
@@ -428,7 +429,7 @@ public class ModelFinalizer {
     private void tryAdditionalBuild(LevelModel model) {
         List<Room> edgeRooms = ModelMaster.getEdgeRooms(model);
         LevelValidator validator = new LevelValidator(false);
-        log(1, "tryAdditionalBuild: edgeRooms=" + edgeRooms);
+        if (Pregenerator.TEST_MODE) log(1, "tryAdditionalBuild: edgeRooms=" + edgeRooms);
         Loop loop = new Loop(500);
         //        (!validator.validateModel(builder.graph, model) TODO
         //         || !checkBuildDone(model, model.getData()))
@@ -442,7 +443,7 @@ public class ModelFinalizer {
             FACING_DIRECTION roomExit = room.getSortedUnusedExit(new SortMaster<FACING_DIRECTION>().getSorterByExpression_(exit ->
              ModelMaster.getExitSortValue(exit, room, model)));
             LevelGraphNode node = createAdditionalNode(model, model.getData());
-            log(1, "additional Build for" + room +
+            if (Pregenerator.TEST_MODE) log(1, "additional Build for" + room +
              "\n; node= " + node);
             Room newRoom = builder.findFittingAndAttach(room,
              getTemplate(room, node), node.getRoomType(),
@@ -451,7 +452,7 @@ public class ModelFinalizer {
                 //                builder.graph.addNode()
                 edgeRooms.remove(room);
                 builder.makeExits(roomExit, null, room, null, newRoom, false);
-                log(1, "ADDITIONAL ROOM: " + newRoom +
+                if (Pregenerator.TEST_MODE) log(1, "ADDITIONAL ROOM: " + newRoom +
                  "\n; attached to " + room + "\n" + model);
             }
         }
@@ -476,7 +477,7 @@ public class ModelFinalizer {
          node -> !builder.nodeModelMap.containsKey(node)
         ).collect(Collectors.toList());
 
-        log(1, "tryBuildUnbuiltGraphNodes: edgeRooms=" + edgeRooms +
+        if (Pregenerator.TEST_MODE) log(1, "tryBuildUnbuiltGraphNodes: edgeRooms=" + edgeRooms +
          "\n; nodes= " + unbuiltNodes);
 
         buildNodes(model, edgeRooms, unbuiltNodes);
@@ -523,7 +524,7 @@ public class ModelFinalizer {
              roomExit, room.getZone());
             if (newRoom != null) {
                 builder.makeExits(roomExit, null, room, null, newRoom, false);
-                log(1, "UNBUILT ADDITIONAL ROOM: " + newRoom +
+                if (Pregenerator.TEST_MODE) log(1, "UNBUILT ADDITIONAL ROOM: " + newRoom +
                  "\n; attached to " + room);
                 continue;
             }

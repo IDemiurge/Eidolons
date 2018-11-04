@@ -61,7 +61,7 @@ public class ArcaneVault {
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
     public final static String presetTypes = "units;bf obj;chars;party;missions;scenarios;" +
-//     "abils;spells;skills;"+
+     //     "abils;spells;skills;"+
      "weapons;armor;" +
      "actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
@@ -83,7 +83,7 @@ public class ArcaneVault {
     private static JFrame window;
     private static Dimension size = new Dimension(WIDTH, HEIGHT);
     private static boolean dirty = false;
-    private static boolean macroMode  ;
+    private static boolean macroMode;
     private static DC_Game microGame;
     private static boolean showTime = true;
     private static ObjType previousSelectedType;
@@ -115,13 +115,13 @@ public class ArcaneVault {
 
     public static void main(String[] args) {
         CoreEngine.setArcaneVault(true);
-            if (args.length > 0) {
-                setMacroMode(true);
-                if (args.length > 1) {
-                    worldEditAutoInit = true;
-                }
-                selectiveLaunch=false;
-                types=microForMacro;
+        if (args.length > 0) {
+            setMacroMode(true);
+            if (args.length > 1) {
+                worldEditAutoInit = true;
+            }
+            selectiveLaunch = false;
+            types = microForMacro;
         }
 
         GuiManager.init();
@@ -192,10 +192,9 @@ public class ArcaneVault {
          .log(3,
           "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
         initialize();
-if (macroMode)
-{
-    ContentGenerator.generatePlaces();
-}
+        if (macroMode) {
+            ContentGenerator.generatePlaces();
+        }
 
         if (artGen) {
             // ResourceMaster.createArtFolders(types);
@@ -218,7 +217,7 @@ if (macroMode)
         showAndCreateGUI();
 
         if (worldEditAutoInit) {
-//			WorldEditor.editDefaultCampaign();
+            //			WorldEditor.editDefaultCampaign();
         }
 
         ModelManager.startSaving();

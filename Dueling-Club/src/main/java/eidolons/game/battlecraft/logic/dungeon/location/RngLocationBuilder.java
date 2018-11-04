@@ -22,20 +22,17 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums.DUNGEONS_OBJ_TYPES;
-import main.content.enums.DungeonEnums.LOCATION_TYPE;
-import main.content.enums.DungeonEnums.MAP_BACKGROUND;
-import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.content.enums.DungeonEnums.*;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -70,9 +67,9 @@ public class RngLocationBuilder extends LocationBuilder {
         if (game.getMetaMaster().getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
             String prop = ((ScenarioMeta) game.getMetaMaster().getMetaDataManager().getMetaGame()).getScenario().getProperty(
              PROPS.DUNGEON_STYLE);
-            mainStyle =new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class, prop);
+            mainStyle = new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class, prop);
         }
-         String data = FileManager.readFile(path);
+        String data = FileManager.readFile(path);
 
         if (data.isEmpty()) {
             data = FileManager.readFile(
@@ -85,9 +82,9 @@ public class RngLocationBuilder extends LocationBuilder {
         DungeonLevel level = loadLevel(path);
         master.setDungeonLevel(level);
 
-        if (mainStyle!=null ){
-        for (LevelZone zone : level.getZones()) {
-                if (zone.getStyle()==level.getMainStyle())
+        if (mainStyle != null) {
+            for (LevelZone zone : level.getZones()) {
+                if (zone.getStyle() == level.getMainStyle())
                     zone.setStyle(mainStyle);
             }
             level.setMainStyle(mainStyle);
@@ -98,11 +95,12 @@ public class RngLocationBuilder extends LocationBuilder {
         location.setEntranceData(entranceData);
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
-        level.getObjects().removeIf(c -> c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
-                ||  c.getCoordinates().equals(location.getMainExit().getCoordinates())
+        level.getObjects().removeIf(c ->
+          !EntityCheckMaster.isEntrance(c.getType()) &&(
+         c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
+         || c.getCoordinates().equals(location.getMainExit().getCoordinates()))
         );
         //        initDynamicObjData();
-
 
 
         return location;
@@ -123,7 +121,7 @@ public class RngLocationBuilder extends LocationBuilder {
         }
         for (ObjAtCoordinate at : level.getUnits()) {
             Unit unit = (Unit) game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
-                    game.getPlayer(false));
+             game.getPlayer(false));
             UnitTrainingMaster.train(unit);
             main.system.auxiliary.log.LogMaster.log(1, at + " unit spawed");
         }
@@ -325,8 +323,8 @@ public class RngLocationBuilder extends LocationBuilder {
             type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
         }
         if (!type.checkProperty(PROPS.MAP_BACKGROUND)
-         || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND)))
-        {
+         || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND))
+         || isPresetBackground()) {
             type.setProperty(PROPS.MAP_BACKGROUND, getBackground(level.getLocationType()).getBackgroundFilePath());
         }
         node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
@@ -341,33 +339,57 @@ public class RngLocationBuilder extends LocationBuilder {
 
     }
 
+    private boolean isPresetBackground() {
+        return true;
+    }
+
     private MAP_BACKGROUND getBackground(LOCATION_TYPE locationType) {
         switch (locationType) {
-            case CRYPT:
             case CEMETERY:
+                if (RandomWizard.chance(35)) {
+                    return RandomWizard.random() ? MAP_BACKGROUND.RAVENWOOD_EVENING : MAP_BACKGROUND.RAVENWOOD;
+                }
+                return MAP_BACKGROUND.CEMETERY;
+            case CRYPT:
+                if (RandomWizard.chance(45)) {
+                    return MAP_BACKGROUND.BASTION;
+                }
                 return MAP_BACKGROUND.CEMETERY;
 
             case DUNGEON:
+                if (RandomWizard.chance(35)) {
+                    return MAP_BACKGROUND.CAVE;
+                }
                 return MAP_BACKGROUND.TUNNEL;
 
+            case CAVE:
+            case BARROW:
+                return MAP_BACKGROUND.CAVE;
+            //            case SHIP:
+            //                return MAP_BACKGROUND.SHIP;
+
+            case CASTLE:
+                if (RandomWizard.chance(65)) {
+                    return MAP_BACKGROUND.BASTION;
+                }
+            case TEMPLE:
+                if (RandomWizard.chance(50)) {
+                    return MAP_BACKGROUND.ELVEN_RUINS;
+                }
+                return MAP_BACKGROUND.TOWER;
+            case TOWER:
+                if (RandomWizard.chance(50)) {
+                    return MAP_BACKGROUND.SHIP;
+                }
+                return MAP_BACKGROUND.TOWER;
+
+
             case GROVE:
-                return MAP_BACKGROUND.RAVENWOOD;
+                return RandomWizard.random() ? MAP_BACKGROUND.RAVENWOOD_EVENING : MAP_BACKGROUND.RAVENWOOD;
 
             case HIVE:
             case DEN:
                 return MAP_BACKGROUND.SPIDER_GROVE;
-            case CAVE:
-            case BARROW:
-                return MAP_BACKGROUND.CAVE;
-//            case SHIP:
-//                return MAP_BACKGROUND.SHIP;
-
-            case TEMPLE:
-            case CASTLE:
-            case TOWER:
-                return MAP_BACKGROUND.TOWER;
-
-
             case RUIN:
                 return MAP_BACKGROUND.ELVEN_RUINS;
         }
@@ -405,7 +427,7 @@ public class RngLocationBuilder extends LocationBuilder {
                 } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME)) {
                     b.setColorTheme(new EnumMaster<COLOR_THEME>().
                      retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
-                }else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME_ALT)) {
+                } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME_ALT)) {
                     b.setAltColorTheme(new EnumMaster<COLOR_THEME>().
                      retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
                 }

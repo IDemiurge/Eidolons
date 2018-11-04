@@ -296,8 +296,15 @@ public abstract class RngFiller implements RngFillerInterface {
             if (!TilesMaster.isCornerCell(coordinates, block.getTileMap()))
                 return;
         }
+        if (RandomWizard.chance(getJustDontChance(block ,filler))){
+            return;
+        }
         model.placeCell(coordinates, block, filler);
 
+    }
+
+    protected int getJustDontChance(LevelBlock block, ROOM_CELL filler) {
+        return 0;
     }
 
 

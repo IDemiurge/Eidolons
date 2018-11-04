@@ -30,6 +30,7 @@ import main.system.graphics.FontMaster.FONT;
 import main.system.threading.WaitMaster;
 
 import static main.system.GuiEventType.SHOW_INVENTORY;
+import static main.system.GuiEventType.TOGGLE_INVENTORY;
 import static main.system.GuiEventType.UPDATE_INVENTORY_PANEL;
 
 public class CombatInventory extends TablePanel implements Blocking {

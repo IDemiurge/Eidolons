@@ -101,7 +101,8 @@ public class TownMaster extends MetaGameHandler {
         if (t != null) {
             main.system.auxiliary.log.LogMaster.log(1, "WAITERS ARE SCREWED ");
         }
-
+//        if (reenter)
+            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
         inTown = false;
         town.exited();
         return result;
@@ -135,14 +136,14 @@ public class TownMaster extends MetaGameHandler {
 
     public void tryReenterTown() {
         if (!ExplorationMaster.isExplorationOn()) {
-            EUtils.info("You cannot travel back while in battle!" );
+            EUtils.info("You cannot travel back while in battle!");
             return;
         }
         Entrance entrance = ((Location) master.getGame().getDungeonMaster().
          getDungeonWrapper()).getMainEntrance();
         int dst = Eidolons.getMainHero().getCoordinates().dst(
          entrance.getOriginalCoordinates());
-        int n = 2 +dst/8;
+        int n = 2 + dst / 8;
         if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
             n += 2 * ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getMissionIndex();
         }
@@ -156,7 +157,7 @@ public class TownMaster extends MetaGameHandler {
         int finalN = n;
         EUtils.onConfirm("Traveling back to " +
          town.getName() +
-         " will require " +finalN+
+         " will require " + finalN +
          "Food. Shall we get underway?", true, () -> {
             Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
             reenterTown();

@@ -168,6 +168,9 @@ public class RngFillMaster {
 
     private static int getClearChanceForCell(
      ROOM_CELL c) {
+        if (c == null) {
+            return 0;
+        }
         switch ((c)) {
             case CONTAINER:
                 return 45;

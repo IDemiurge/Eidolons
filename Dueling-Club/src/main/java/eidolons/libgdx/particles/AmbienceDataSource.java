@@ -101,7 +101,7 @@ public class AmbienceDataSource {
     }
 
     public static WeightMap<AMBIENCE_TEMPLATE> getTemplateMap(DUNGEON_STYLE style) {
-        WeightMap<AMBIENCE_TEMPLATE> map = new WeightMap<>();
+        WeightMap<AMBIENCE_TEMPLATE> map = new WeightMap<>(AMBIENCE_TEMPLATE.class);
         switch (style) {
             case Knightly:
             case Holy:

@@ -271,6 +271,9 @@ public class GuiVisualEffects extends GroupX {
                     continue;
                 }
             }
+            if (preset_ == null) {
+                continue;
+            }
             EmitterActor actor = new EmitterActor(preset_);
             addActor(actor);
             emitters.add(actor);

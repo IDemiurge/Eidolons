@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.UnitEnums;
 import main.entity.obj.ActiveObj;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 /**
@@ -42,15 +43,15 @@ public class CounterAttackRule {
     }
 
     public ActiveObj tryCounter(Attack attack, boolean checkAnimationFinished) {
-//        if (checkAnimationFinished) {
-//        }
+        //        if (checkAnimationFinished) {
+        //        }
 
         ActiveObj counter = null;
         if (attack.getAttackedUnit() != null)
             if (!attack.isCounter() &&
              (RuleKeeper.isRuleTestOn(RULE.COUNTER_ATTACK) ||
               (attack.isCanCounter() &&
-//           attack.getAttackedUnit().
+               //           attack.getAttackedUnit().
                canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
              ) {
                 counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit());
@@ -61,11 +62,18 @@ public class CounterAttackRule {
     }
 
     private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
-//        game.getLog().combatLog();
-        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " tries to counter-attack against " + action.getOwnerUnit());
+        //        game.getLog().combatLog();
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
+         + action.getOwnerUnit());
         ActiveObj activeObj = game.getActionManager().activateCounterAttack(action,
-                attacked);
-        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " makes a counter-attack:" + activeObj );
+         attacked);
+        if (activeObj == null) {
+            game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " fails to counter-attack against " +
+             action.getOwnerUnit());
+        }
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " makes a counter-attack against " +
+         action.getOwnerUnit() +
+         " " + StringMaster.wrapInParenthesis(activeObj.getName()));
         return activeObj;
     }
 }

@@ -697,6 +697,7 @@ public class RngUnitProvider {
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.Ravenguard, 15)
+                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
                   .chain(UNIT_GROUP.HUMANS, 6)
                   .getRandomByWeight();
 
@@ -746,7 +747,6 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
                   .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
                   .chain(UNIT_GROUP.PRISONERS, 5)
-                  .chain(UNIT_GROUP.ANIMALS, 5)
                   .chain(UNIT_GROUP.MUTANTS, 5)
                   .getRandomByWeight()
                  :
@@ -760,18 +760,20 @@ public class RngUnitProvider {
             case Pagan:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.NORTH, 12)
-                  .chain(UNIT_GROUP.ANIMALS, 5)
-                  .chain(UNIT_GROUP.DWARVES, 5)
-                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
+//                  .chain(UNIT_GROUP.NORTH, 12)
+                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+                  .chain(UNIT_GROUP.DWARVES, 12)
+//                  .chain(UNIT_GROUP.ANIMALS, 5)
+//                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
                   .getRandomByWeight()
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DWARVES, 15)
                   .chain(UNIT_GROUP.DUNGEON, 10)
-                  .chain(UNIT_GROUP.ELEMENTALS, 6)
-                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
-                  .chain(UNIT_GROUP.PALE_ORCS, 5)
+                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+//                  .chain(UNIT_GROUP.ELEMENTALS, 6)
+//                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
+//                  .chain(UNIT_GROUP.PALE_ORCS, 5)
                   .getRandomByWeight();
             case Stony:
                 return surface ?

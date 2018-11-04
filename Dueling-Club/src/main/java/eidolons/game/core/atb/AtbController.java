@@ -19,7 +19,7 @@ import java.util.Comparator;
  */
 public class AtbController implements Comparator<Unit> {
     public static final int ATB_READINESS_PER_AP = 20; //20% readiness per Action Point
-    public static final float TIME_IN_ROUND = 12; //seconds; to sync with clock
+    public static final float SECONDS_IN_ROUND = 12; //seconds; to sync with clock
     public static final float TIME_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 10f;
     private AtbTurnManager manager;
@@ -73,8 +73,8 @@ public class AtbController implements Comparator<Unit> {
         this.processTimeElapsed(timeElapsed + 0.0001f);
         this.updateTimeTillTurn();
         this.updateTurnOrder();
-        if (this.time >= TIME_IN_ROUND) {
-            addTime(-TIME_IN_ROUND);
+        if (this.time >= SECONDS_IN_ROUND) {
+            addTime(-SECONDS_IN_ROUND);
             setNextTurn(true);
             return null;
 //            manager.getGame().getManager().endRound();
@@ -115,7 +115,7 @@ public class AtbController implements Comparator<Unit> {
 
     public void passTime(Float time) {
         while (time>0){
-            float timeToPass = Math.min(time, TIME_IN_ROUND);
+            float timeToPass = Math.min(time, SECONDS_IN_ROUND);
             time -= timeToPass;
             processTimeElapsed(timeToPass);
             processAtbRelevantEvent();
@@ -132,7 +132,7 @@ public class AtbController implements Comparator<Unit> {
 
         if (!isPrecalc())
             manager.getGame().getLogManager().log(getTimeString(time) + " passed, " +
-             getTimeString(TIME_IN_ROUND - this.time) +
+             getTimeString(SECONDS_IN_ROUND - this.time) +
              " until end of round");
         for (AtbUnit unit : this.unitsInAtb) {
             unit.setAtbReadiness(unit.getAtbReadiness() + time * unit.getInitiative());
@@ -236,7 +236,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     public String getTimeString() {
-        return getTimeString(TIME_IN_ROUND - getTime());
+        return getTimeString(SECONDS_IN_ROUND - getTime());
     }
 
     public float getTime() {

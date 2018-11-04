@@ -217,7 +217,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         // List<RoundRule> list = new ArrayList<>();
 
         master.getGame().getUnits().forEach(unit -> {
-            float delta = getRoundEffectPeriod() / AtbController.TIME_IN_ROUND;
+            float delta = getRoundEffectPeriod() / AtbController.SECONDS_IN_ROUND;
             unit.getResetter().regenerateToughness(delta);
             for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
                 //                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {

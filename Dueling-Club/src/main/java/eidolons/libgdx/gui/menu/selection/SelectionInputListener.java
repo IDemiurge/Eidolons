@@ -48,13 +48,13 @@ public class SelectionInputListener extends InputListener {
                 selectionPanel.tryDone();
                 return false;
             case Keys.ESCAPE:
-                selectionPanel.cancel();
+                if (selectionPanel.isBackSupported())
+                    selectionPanel.cancel();
                 return false;
 
         }
         return super.keyUp(event, keycode);
     }
-
 
 
     @Override

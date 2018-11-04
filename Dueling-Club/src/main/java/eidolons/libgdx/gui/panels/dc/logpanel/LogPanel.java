@@ -1,6 +1,8 @@
 package eidolons.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.libgdx.gui.panels.ScrollPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -18,7 +20,29 @@ public class LogPanel extends ScrollTextPanel {
         if (getCallbackEvent() != null)
             bind();
     }
+    protected ScrollPanel<Message> createScrollPanel() {
+        return   new ScrollPanel() {
+            @Override
+            protected void initAlignment() {
+                left().bottom();
+            }
 
+            @Override
+            protected void pad(ScrollPanel scrollPanel) {
+                padScroll(scrollPanel);
+            }
+
+            @Override
+            protected boolean isAlwaysScrolled() {
+                return isScrolledAlways();
+            }
+
+            @Override
+            public int getDefaultOffsetY() {
+                return getInitialYOffset();
+            }
+        };
+    }
     protected boolean isScrolledAlways() {
         return true;
     }

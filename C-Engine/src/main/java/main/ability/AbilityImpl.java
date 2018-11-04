@@ -8,8 +8,6 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
@@ -124,17 +122,13 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public boolean resolve() {
-        Event event = new Event(STANDARD_EVENT_TYPE.ABILITY_BEING_RESOLVED,
-         ref.getCopy() // important - don't override the event!
-        );
-        if (game.fireEvent(event)) {
-
+//        Event event = new Event(STANDARD_EVENT_TYPE.ABILITY_BEING_RESOLVED,
+//         ref.getCopy() // TODO could be useful, but why does it overwrite REF?
+//        );
+//        if (game.fireEvent(event)) {
             GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES, this);
 
             return effects.apply(ref);
-        } else {
-            return false;
-        }
     }
 
     @Override

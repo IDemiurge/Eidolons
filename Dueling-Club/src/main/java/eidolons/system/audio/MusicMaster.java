@@ -36,14 +36,15 @@ import static main.system.auxiliary.log.LogMaster.log;
 //standard path structure
 
 public class MusicMaster {
-    public static final int PERIOD = 500; //millis
+    public static final int PERIOD = 100; //millis
     public static final String MASTER_PATH = PathFinder.getMusicPath() + "\\main\\";
     public static final boolean MASTER_MODE = true;
     public static final String AMBIENT_FOLDER = "atmo";
-    private static   boolean ALT_AMBIENCE = RandomWizard.random();
-
+    private static final int ALT_AMBIENCE_TOGGLE_CHANCE_BASE = 5;
     static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
     static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
+    private static int ALT_AMBIENCE_TOGGLE_CHANCE = ALT_AMBIENCE_TOGGLE_CHANCE_BASE;
+    private static boolean ALT_AMBIENCE = RandomWizard.random();
     private static MusicMaster instance;
     private static Boolean on;
     Stack<String> playList;
@@ -211,7 +212,7 @@ public class MusicMaster {
         }
         if (!isOn())
             return;
-        playedAmbient=null;
+        playedAmbient = null;
         if (ListMaster.isNotEmpty(playList))
             playList.clear();
         pause();
@@ -222,7 +223,7 @@ public class MusicMaster {
         if (playedMusic == null) {
             checkNewMusicToPlay();
         }
-        checkAmbience();
+        checkAmbience(true);
         resume();
         //fade? :)
         //
@@ -321,9 +322,17 @@ public class MusicMaster {
     }
 
     private void checkAmbience() {
-        if (!isAmbientOn())
+        checkAmbience(false);
+    }
+
+    private void checkAmbience(boolean interrupt) {
+        if (!isAmbientOn()) {
+            if (playedAmbient != null)
+                playedAmbient.stop();
             return;
-        if (playedAmbient == null || !playedAmbient.isPlaying()) {
+        }
+
+        if (playedAmbient == null || !playedAmbient.isPlaying() || interrupt) {
 
             boolean global = true; //TODO
             AMBIENCE newAmbience = null;
@@ -332,26 +341,33 @@ public class MusicMaster {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-
             if (newAmbience == null) {
                 if (playedAmbient != null)
                     playedAmbient.stop();
                 return;
             }
-            if (playedAmbient == null || ambience != newAmbience) {
+
+            if (ambience != newAmbience) {
                 ambience = newAmbience;
                 if (playedAmbient != null) {
                     playedAmbient.stop();
                 }
+            }
+            if (playedAmbient == null ) {
                 playedAmbient = new PreloadedMusic(ambience.getPath());
-                log(1, "playedAmbient= " + ambience.getPath());
-
+                log(1, "loaded Ambient: " + ambience.getPath());
                 Float volume = getAmbientVolume();
                 playedAmbient.setVolume(volume);
             }
 
             log(1, "playing Ambient: " + ambience.getPath());
             playedAmbient.play();
+
+
+            if (RandomWizard.chance(ALT_AMBIENCE_TOGGLE_CHANCE)) {
+                ALT_AMBIENCE = !ALT_AMBIENCE;
+                ALT_AMBIENCE_TOGGLE_CHANCE = ALT_AMBIENCE_TOGGLE_CHANCE_BASE;
+            } else ALT_AMBIENCE_TOGGLE_CHANCE++;
         }
     }
 
@@ -359,8 +375,8 @@ public class MusicMaster {
         if (scope == MUSIC_SCOPE.MENU) {
             return false;
         }
-        if (scope == MUSIC_SCOPE.BATTLE)
-            return false;
+        //        if (scope == MUSIC_SCOPE.BATTLE)
+        //            return false;
         return true;
     }
 
@@ -406,25 +422,25 @@ public class MusicMaster {
         ALT_AMBIENCE = RandomWizard.chance(28);
 
         thread = new Thread(() -> {
-             while (true) {
-                 checkAmbience();
-                 if (!stopped) {
-                     if (playedMusic != null) {
-                         if (!playedMusic.isPlaying()) {
-                             checkNewMusicToPlay();
-                         }
-                     } else {
-                         checkNewMusicToPlay();
-                     }
-                 }
-                 try {
-                     WaitMaster.WAIT(PERIOD);
-                 } catch (Exception e) {
-                     main.system.ExceptionMaster.printStackTrace(e);
-                 }
-             }
-             //        MusicMaster.this.running=false;
-         }, "Music Thread");
+            while (true) {
+                checkAmbience();
+                if (!stopped) {
+                    if (playedMusic != null) {
+                        if (!playedMusic.isPlaying()) {
+                            checkNewMusicToPlay();
+                        }
+                    } else {
+                        checkNewMusicToPlay();
+                    }
+                }
+                try {
+                    WaitMaster.WAIT(PERIOD);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+            //        MusicMaster.this.running=false;
+        }, "Music Thread");
         thread.start();
         running = true;
     }
@@ -484,14 +500,14 @@ public class MusicMaster {
     }
 
     public Float getAmbientVolume() {
-            ambientVolume = OptionsMaster.getSoundOptions().
-             getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
+        ambientVolume = OptionsMaster.getSoundOptions().
+         getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
         return ambientVolume * SoundMaster.getMasterVolume() / 100;
     }
 
     private Float getVolume() {
-            musicVolume = OptionsMaster.getSoundOptions().
-             getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
+        musicVolume = OptionsMaster.getSoundOptions().
+         getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
         return musicVolume * SoundMaster.getMasterVolume() / 100;
     }
 

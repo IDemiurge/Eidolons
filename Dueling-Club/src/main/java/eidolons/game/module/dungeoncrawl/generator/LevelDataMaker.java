@@ -499,8 +499,10 @@ public class LevelDataMaker {
         data.setValue(LEVEL_VALUES.VOID_CELL_TYPE,
          ROOM_CELL.FLOOR.getSymbol());
         data.setValue(LEVEL_VALUES.WRAP_ROOMS, "2");
-        data.setValue(LEVEL_VALUES.SIZE_MOD, "200");
-        data.setValue(LEVEL_VALUES.ROOM_COUNT_MOD, "70");
+        data.setValue(LEVEL_VALUES.SIZE_MOD,
+         data.getIntValue(LEVEL_VALUES.SIZE_MOD)*2 + "");
+        data.setValue(LEVEL_VALUES.ROOM_COUNT_MOD,
+         data.getIntValue(LEVEL_VALUES.ROOM_COUNT_MOD)*2 + "");
 
         data.setValue(LEVEL_VALUES.SURFACE, "true");
     }

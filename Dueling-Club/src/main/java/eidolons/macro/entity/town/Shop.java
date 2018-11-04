@@ -30,6 +30,7 @@ import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
 import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -175,18 +176,47 @@ public class Shop extends TownPlace implements ShopInterface {
                 if (t == null) {
                     continue;
                 } //TODO check first, then create!!!
-                DC_HeroItemObj item = createItem (t ); // MacroGame.getGame()!
-                if (acquireItem(item)) {
+               // MacroGame.getGame()!
+                if (acquireItem(t)) {
                     max--; // second loop based on cheapest items?
                 }
             }
         }
 
     }
-
+    private boolean acquireItem(ObjType t) {
+        Integer cost = t.getIntParam(PARAMS.GOLD_COST);
+        if (!TEST_MODE)
+            if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
+                return false;
+            }
+        DC_HeroItemObj item = createItem (t );
+        itemBought(item, cost);
+        return true;
+    }
     private DC_HeroItemObj createItem(ObjType t ) {
-       return ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
-        DC_Game.game, new Ref(), false);
+        DC_HeroItemObj item = ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
+         DC_Game.game, new Ref(), false);
+
+        item.getRef().setID(KEYS.THIS, item.getId());
+        item.getRef().setID(KEYS.SOURCE,  getId());
+//        TODO item.getRef().setID(KEYS.SHOP,  getId());
+
+        switch (item.getOBJ_TYPE_ENUM()) {
+            case WEAPONS:
+                item.getRef().setID(KEYS.WEAPON, item.getId());
+                break;
+            case ARMOR:
+                item.getRef().setID(KEYS.ARMOR, item.getId());
+                break;
+            case JEWELRY:
+            case ITEMS:
+                item.getRef().setID(KEYS.ITEM, item.getId());
+                break;
+        }
+
+
+        return item;
     }
 
     private void checkStockCommonItems(float timeCoef) {
@@ -385,15 +415,7 @@ public class Shop extends TownPlace implements ShopInterface {
         return priceCache;
     }
 
-    private boolean acquireItem(DC_HeroItemObj t) {
-        Integer cost = t.getIntParam(PARAMS.GOLD_COST);
-        if (!TEST_MODE)
-            if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
-                return false;
-            }
-        itemBought(t, cost);
-        return true;
-    }
+
 
     @Override
     public List<String> getTabs() {

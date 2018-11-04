@@ -52,7 +52,16 @@ public class ScrollTextPanel extends TablePanelX {
         if (scrollPanel != null) {
             scrollPanel.remove();
         }
-        scrollPanel = new ScrollPanel() {
+        scrollPanel =createScrollPanel();
+
+        scrollPanel.pad(1, 10, 1, 10);
+        scrollPanel.fill();
+
+        addActor(scrollPanel);
+    }
+
+    protected ScrollPanel<Message> createScrollPanel() {
+      return   new ScrollPanel() {
             @Override
             protected void pad(ScrollPanel scrollPanel) {
                 padScroll(scrollPanel);
@@ -68,11 +77,6 @@ public class ScrollTextPanel extends TablePanelX {
                 return getInitialYOffset();
             }
         };
-
-        scrollPanel.pad(1, 10, 1, 10);
-        scrollPanel.fill();
-
-        addActor(scrollPanel);
     }
 
     protected void padScroll(ScrollPanel scrollPanel) {

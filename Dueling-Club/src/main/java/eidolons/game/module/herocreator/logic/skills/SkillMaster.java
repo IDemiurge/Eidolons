@@ -8,6 +8,8 @@ import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.HeroManager;
+import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.SkillEnums.MASTERY;
@@ -298,7 +300,14 @@ public class SkillMaster {
 
     public static boolean isMasteryAvailable(PARAMETER p, Unit hero) {
 //        ValuePageManager.getGenericValuesForInfoPages()
-
         return false;
+    }
+
+    public static String getSkillImgPath(Entity left) {
+        String path = "main/skills/gen/" + left.getName() + ".png";
+        if (TextureCache.isImage(path))
+            return path;
+
+        return GdxImageMaster.getRoundedPath(left.getImagePath());
     }
 }

@@ -38,7 +38,6 @@ public class ClassMaster {
 
         return list;
     }
-
     public static boolean hasInstanceOf(Object object, Class<?> CLASS) {
         if (isInstanceOf(object, CLASS)) {
             return true;
@@ -51,8 +50,9 @@ public class ClassMaster {
                 }
             }
         }
-
         return false;
     }
+
+
 
 }

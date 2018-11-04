@@ -16,12 +16,12 @@ import main.system.auxiliary.NumberUtils;
 public class ScrollPanel<T extends Actor> extends Container<Container> {
 
 
-    private TablePanel table;
-    private InnerScrollContainer<Table> innerScrollContainer;
-    private float instantOffsetY;
-    private float offsetY;
-    private boolean widgetPosChanged;
-    private static Integer scrollAmount;
+    private TablePanelX table;
+    protected InnerScrollContainer<Table> innerScrollContainer;
+    protected float instantOffsetY;
+    protected float offsetY;
+    protected boolean widgetPosChanged;
+    protected static Integer scrollAmount;
 
     public ScrollPanel() {
         init();
@@ -30,9 +30,9 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
-        table.setSize(width, height);
+        getTable().setSize(width, height);
         innerScrollContainer.setSize(width, height);
-        table.setFixedSize(true);
+        getTable().setFixedSize(true);
         offsetY = getDefaultOffsetY();
     }
 
@@ -57,9 +57,9 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     }
 
     public Cell addElement(T obj) {
-        Cell cell = table.addNormalSize(obj).fill();
-        table.row();
-        table.pack();
+        Cell cell = getTable().addNormalSize(obj).fill();
+        getTable().row();
+        getTable().pack();
         offsetY = 200;
         return cell;
     }
@@ -75,27 +75,32 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     protected void pad(ScrollPanel<T> tScrollPanel) {
     }
 
-    private void init() {
+    protected void init() {
         this.setTouchable(Touchable.enabled);
-        left().bottom();
+        initAlignment();
         pad(this);
         setClip(true);
 
-        table = new TablePanel();
-        table.setFillParent(true);
-        table.align(Align.left);
+        setTable(new TablePanelX());
+        getTable().setFillParent(true);
+        getTable().align(getInnerTableAlignment());
 
-        table.setLayoutEnabled(true);
-        table.pack();
+        getTable().setLayoutEnabled(true);
+        getTable().pack();
         innerScrollContainer = new InnerScrollContainer<>();
-        innerScrollContainer.left().bottom();
-        innerScrollContainer.setActor(table);
+        alignInnerScroll();
+        innerScrollContainer.setActor(getTable());
         innerScrollContainer.setX(0);
         innerScrollContainer.setY(0);
         super.setActor(innerScrollContainer);
+        initScrollListener();
 
+    }
+
+    public void initScrollListener() {
+        clearListeners();
         addCaptureListener(new InputListener() {
-            private float yy;
+            protected float yy;
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -152,6 +157,18 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
                 super.exit(event, x, y, pointer, toActor);
             }
         });
+    }
+
+    protected void initAlignment() {
+        left().top();
+    }
+
+    protected int getInnerTableAlignment() {
+        return Align.top;
+    }
+
+    protected void alignInnerScroll() {
+        innerScrollContainer.left().bottom();
     }
 
     protected boolean isTouchScrolled() {
@@ -232,5 +249,13 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
     public static void setScrollAmount(Integer scrollAmount) {
         ScrollPanel.scrollAmount = 60*scrollAmount;
+    }
+
+    public TablePanelX getTable() {
+        return table;
+    }
+
+    public void setTable(TablePanelX table) {
+        this.table = table;
     }
 }

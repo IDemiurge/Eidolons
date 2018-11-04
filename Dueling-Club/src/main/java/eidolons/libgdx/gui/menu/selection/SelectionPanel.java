@@ -22,7 +22,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -51,12 +50,6 @@ public abstract class SelectionPanel extends TablePanelX {
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
         backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel(true));
-        startButton = new SmartButton(getDoneText(), STD_BUTTON.MENU, () -> tryDone()){
-            @Override
-            protected BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.ENTER;
-            }
-        };
 
         row();
 
@@ -81,9 +74,7 @@ public abstract class SelectionPanel extends TablePanelX {
         addElement(null).bottom().size(getWidth(), 70);
 
         if (isDoneSupported()) {
-            addActor(startButton);
-            startButton.setPosition(GdxMaster.centerWidth(startButton) - 40,
-             (40 + GdxMaster.getHeight() / 25));
+            infoPanel.initStartButton(getDoneText(), ()->tryDone());
         }
         if (isBackSupported()) {
             addActor(backButton);
@@ -122,7 +113,8 @@ public abstract class SelectionPanel extends TablePanelX {
     @Override
     public void act(float delta) {
         super.act(delta);
-        startButton.setDisabled(isDoneDisabled());
+        infoPanel.setDoneDisabled(isDoneDisabled());
+
     }
 
     @Override
@@ -148,7 +140,6 @@ public abstract class SelectionPanel extends TablePanelX {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
 
-        startButton.setY(GdxMaster.getHeight() / 2 - infoPanel.getActor().getHeight() / 2 + 80);
 
         if (isAutoDoneEnabled())
         if (CoreEngine.isMacro()

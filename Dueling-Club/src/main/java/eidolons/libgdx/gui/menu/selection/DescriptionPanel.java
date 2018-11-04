@@ -9,6 +9,7 @@ import main.system.graphics.FontMaster.FONT;
  */
 public class DescriptionPanel extends ScrollTextPanel {
     public DescriptionPanel() {
+        super();
     }
     @Override
     protected String getBgPath() {
@@ -18,6 +19,19 @@ public class DescriptionPanel extends ScrollTextPanel {
     @Override
     public void initBg() {
 
+    }
+
+    @Override
+    public void init() {
+        super.init();
+//        scrollPanel.pad(10, 10, 10, 10);
+//        scrollPanel.getTable().padLeft(20);
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+        scrollPanel.initScrollListener();
     }
 
     @Override
@@ -36,7 +50,12 @@ public class DescriptionPanel extends ScrollTextPanel {
     }
 
     @Override
+    protected float getTextLineWidth() {
+        return getWidth()*0.86f;
+    }
+
+    @Override
     protected float getDefaultWidth() {
-        return GdxMaster.adjustSize(430);
+        return GdxMaster.adjustSize(415);
     }
 }

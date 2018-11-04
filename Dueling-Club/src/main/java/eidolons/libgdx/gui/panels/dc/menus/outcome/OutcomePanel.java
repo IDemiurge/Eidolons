@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
@@ -31,6 +32,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
+import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.launch.CoreEngine;
@@ -143,21 +145,37 @@ public class OutcomePanel extends TablePanelX implements EventListener {
           StyleHolder.getMenuTextButtonStyle(18))
         ).fill(false).expand(0, 0).center()
          .pad(20, 10, 20, 10);
+        buttonTable.row();
         exitButton.getActor().addListener(this);
-
-        //        continueButton = buttonTable.addElement(
-        //         new TextButton("Explore",
-        //          StyleHolder.getMenuTextButtonStyle(16))
-        //        ).fill(false).expand(0, 0).right()
-        //         .pad(20, 10, 20, 10);
-        ////         .size(50, 30);
-        //        continueButton.getActor().addListener(this);
+                continueButton = buttonTable.addElement(
+                 new TextButton(getContinueText(outcome ),
+                  StyleHolder.getMenuTextButtonStyle(16))
+                ).fill(false).expand(0, 0).right()
+                 .pad(20, 10, 20, 10);
+        //         .size(50, 30);
+                continueButton.getActor().addListener(this);
         addActor(buttonTable);
         buttonTable.setPosition(
          MigMaster.center(getWidth(), buttonTable.getWidth()),
          55
         );
         //        addElement(buttonTable).pad(0, 20, 20, 20);
+    }
+
+    private String getContinueText(Boolean outcome) {
+        if (Bools.isTrue(outcome) )
+            return new WeightMap<String>().
+             chain("For Glory!", 10).
+             chain("Can this be?", 10).
+             chain("Yes, but how?", 7).
+             getRandomByWeight();
+
+        return new WeightMap<String>().
+         chain("What happened?", 10).
+         chain("How did I die?", 10).
+         chain("No...", 7).
+         chain("Not again...", 5).
+         getRandomByWeight();
     }
 
     @Override
@@ -178,7 +196,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
             if (actor.getParent() instanceof TextButton) {
                 ActorMaster.addMoveToAction(this, getX(), GdxMaster.getHeight(), 1.5f);
                 //                ActorMaster.addRemoveAfter(this);
-                final Boolean exit_continue_next = true;
+                final Boolean exit_continue_next = getEventType(actor);
                 if (exit_continue_next == null) {
                     if (!ExplorationMaster.isExplorationOn())
                         Eidolons.getGame().getMaster().nextLevel();
@@ -197,6 +215,11 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
 
                 } else {
+                    //TODO display stats!
+                    String stats= getGameStats(datasource);
+                    EUtils.onConfirm(stats +
+                     " Exit to menu?", true, ()->
+                     Eidolons.exitToMenu());
                     WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                      false);
 
@@ -209,6 +232,23 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
 
         return false;
+    }
+
+    private String getGameStats(OutcomeDatasource datasource) {
+        String stats="";
+        stats += "\n Glory rating:" + datasource.getGlory();
+        stats += "\n Units Slain:" + datasource.getUnitsSlain();
+        stats += "\n Damage dealt:" + datasource.getDAMAGE_DEALT();
+        stats += "\n Damage taken:" + datasource.getDAMAGE_TAKEN();
+//class outcome!
+        return stats;
+    }
+
+    private Boolean getEventType(Actor actor) {
+        if (actor==continueButton.getActor()) {
+            return false;
+        }
+        return true;
     }
 
 }

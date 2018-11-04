@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.fill;
 
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
@@ -13,6 +14,9 @@ public class RngLightFiller extends RngFiller {
         super(fillerMap);
     }
 
+    protected int getJustDontChance(LevelBlock block, ROOM_CELL filler) {
+        return 40;
+    }
     protected int getWrapByExitChance(Room room) {
         return 0;
     }

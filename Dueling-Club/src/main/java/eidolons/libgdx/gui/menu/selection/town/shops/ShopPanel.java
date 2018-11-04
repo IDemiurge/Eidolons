@@ -267,6 +267,16 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     }
 
+    @Override
+    public void setDoneDisabled(boolean doneDisabled) {
+
+    }
+
+    @Override
+    public void initStartButton(String doneText, Runnable o) {
+
+    }
+
 
     public class ShopSlotsPanel extends InventorySlotsPanel {
         public ShopSlotsPanel(int rows, int cols) {

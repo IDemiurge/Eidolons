@@ -21,6 +21,11 @@ public class PerkSelectionMenu extends SlotSelectionRadialMenu {
     }
 
     @Override
+    protected String getImagePath(ObjType type) {
+        return type.getImagePath();
+    }
+
+    @Override
     protected String getReqReason(ObjType type) {
         return  dataSource.getEntity() .getGame().getRequirementsManager()
          .check(dataSource.getEntity() , type);

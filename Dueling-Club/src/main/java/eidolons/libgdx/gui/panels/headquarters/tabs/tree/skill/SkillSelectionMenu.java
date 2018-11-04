@@ -22,6 +22,11 @@ public class SkillSelectionMenu extends SlotSelectionRadialMenu {
     }
 
     @Override
+    protected String getImagePath(ObjType type) {
+        return SkillMaster.getSkillImgPath(type);
+    }
+
+    @Override
     protected String getReqReason(ObjType type) {
         return  SkillMaster.getReqReasonForSkill(dataSource.getEntity(), type);
     }

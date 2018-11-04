@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  * Created by JustMe on 7/27/2018.
  */
 public class LevelValidator {
+    private static final float SIZE_GAP_DEFAULT = 0.2f;
     LevelStats stats;
     boolean logFail = true;
     private LevelModel model;
@@ -40,6 +41,7 @@ public class LevelValidator {
     private float maxDimension;
     private DataUnit<LEVEL_REQUIREMENTS> reqs;
     private Traverser traverser;
+    private static float sizeGap=SIZE_GAP_DEFAULT;
 
     public LevelValidator() {
     }
@@ -213,19 +215,28 @@ public class LevelValidator {
     }
 
     private boolean checkSize() {
+        boolean result = checkSize_();
+        if (result){
+            sizeGap= SIZE_GAP_DEFAULT;
+            return true;
+        }
+        sizeGap+=0.01f;
+        return false;
+    }
+    private boolean checkSize_() {
         float w = model.getCurrentWidth();
         float h = model.getCurrentHeight();
 
-        float sizeGap = 0.2f;
+        float sizeGap_ = sizeGap;
         if (model.getData().getSublevelType()== SUBLEVEL_TYPE.BOSS)
-            sizeGap=0.4f;
+            sizeGap_*=1.3f;
         if (model.getData().getSublevelType()== SUBLEVEL_TYPE.PRE_BOSS)
-            sizeGap=0.35f;
-        if (h / maxDimension - 1 >= sizeGap)
+            sizeGap_*=1.2f;
+        if (h / maxDimension - 1 >= sizeGap_)
             return false;
-        if (w / maxDimension - 1 >= sizeGap)
+        if (w / maxDimension - 1 >= sizeGap_)
             return false;
-        if (maxSquare <= h * w)
+        if (maxSquare /(h * w) < sizeGap_ )
             return false;
         if (minDimensionRatio >= Math.min(w / h, h / w)) {
             return false;

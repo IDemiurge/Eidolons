@@ -23,6 +23,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.DungeonObjEnums.CONTAINER_CONTENTS;
 import main.content.enums.entity.DungeonObjEnums.CONTAINER_CONTENT_VALUE;
@@ -589,7 +590,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 contents += "Food";
                 gold -= 50;
             }
-            if (gold>0){
+            if (gold>0 && !obj.checkBool(STD_BOOLS.NO_GOLD)){
                 if (GoldMaster.isGoldPacksOn()) {
                     contents += VariableManager.getStringWithVariable("Gold", gold);
                 }

@@ -19,10 +19,10 @@ public class SoundOptions extends Options<SOUND_OPTION, SOUND_OPTION> {
         VOICE_OFF(false),
         FOOTSTEPS_OFF(false),
         MUSIC_OFF(false),
-        MASTER_VOLUME(100, 0, 100),
+        MASTER_VOLUME(70, 0, 100),
         MUSIC_VOLUME(45, 0, 100),
         VOICE_VOLUME(75, 0, 100),
-        AMBIENCE_VOLUME(50, 0, 100),
+        AMBIENCE_VOLUME(40, 0, 100),
         //        EFFECT_VOLUME(100, 0, 100),
         MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values()) {
             @Override

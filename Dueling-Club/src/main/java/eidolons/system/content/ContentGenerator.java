@@ -1,6 +1,7 @@
 package eidolons.system.content;
 
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
@@ -35,6 +36,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
+import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -51,7 +53,30 @@ import java.util.Map;
 
 public class ContentGenerator {
 
+    private static final boolean OVERWRITE_DESCR = false;
     static PARAMS[] params = {PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.ARMOR,};
+    static PROPERTY[] heroProps = {
+     PROPS.SKILLS,
+     PROPS.CLASSES,
+     PROPS.PERKS,
+     PROPS.INVENTORY,
+    };
+
+    public static void markPartyUsedContent() {
+        String partyName = "Dark Heroes";
+        for (String substring : ContainerUtils.openContainer(DataManager.getType(partyName, DC_TYPE.PARTY).getProperty(PROPS.MEMBERS))) {
+            ObjType hero = DataManager.getType(substring, DC_TYPE.CHARS);
+            for (PROPERTY prop : heroProps) {
+                for (String s : ContainerUtils.openContainer(hero.getProperty(prop))) {
+                    ObjType t = DataManager.getType(s);
+                    if (t == null) {
+                        continue;
+                    }
+                    t.setProperty(G_PROPS.DEV_NOTES, "Used");
+                }
+            }
+        }
+    }
 
     public static void generateUnitGroupsEnumsTxt() {
         String contents = "";
@@ -147,6 +172,33 @@ public class ContentGenerator {
             generateFalseWalls();
         if (!DataManager.getTypes(DC_TYPE.SCENARIOS).isEmpty())
             generateRngScenarios();
+        if (!DataManager.getTypes(DC_TYPE.PARTY).isEmpty())
+            try {
+                markPartyUsedContent();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+            writeDataToText();
+    }
+
+    private static void writeDataToText() {
+//        DataManager.getTypeMap()
+        for (String s : XML_Reader.getTypeMaps().keySet()) {
+            for (ObjType t : XML_Reader.getTypeMaps().get(s).values()) {
+                String data = t.getDescription();
+                if (!data.isEmpty())
+                {
+                    String old = DescriptionMaster.getDescription(t, false);
+                    if (!old.isEmpty()){
+                        if (!OVERWRITE_DESCR){
+                            continue;
+                        }
+                    }
+                    FileManager.write(data, DescriptionMaster.getDescriptionPath(t));
+                }
+            }
+        }
     }
 
     public static void generateFalseWalls() {
@@ -181,10 +233,10 @@ public class ContentGenerator {
                 case CAVE:
                 case CRYPT:
 
-                    default:
-                        newType.setImage(Images.EMPTY_SPELL);
-                        newType.setProperty(G_PROPS.FULLSIZE_IMAGE,
-                         "demo/previews/Ironhelm Tunnel.png");
+                default:
+                    newType.setImage(Images.EMPTY_SPELL);
+                    newType.setProperty(G_PROPS.FULLSIZE_IMAGE,
+                     "demo/previews/Ironhelm Tunnel.png");
             }
             newType.setProperty(PROPS.SUBDUNGEON_TYPE,
              type.toString());

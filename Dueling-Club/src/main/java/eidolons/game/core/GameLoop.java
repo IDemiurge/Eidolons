@@ -475,7 +475,7 @@ public class GameLoop {
 
     public void stop() {
         stopped = true;
-
+        playerActionQueue.clear();
 
     }
 

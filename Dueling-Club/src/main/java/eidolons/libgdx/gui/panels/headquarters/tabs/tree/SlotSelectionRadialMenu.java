@@ -186,7 +186,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         for (ObjType type : available) {
             String reason = getReqReason(type);
             boolean valid = reason == null;
-            TextureRegion region = TextureCache.getOrCreateR(type.getImagePath());
+            TextureRegion region = TextureCache.getOrCreateR(getImagePath(type));
             RadialValueContainer node = new RadialValueContainer(region, () -> {
 
                 if (valid)
@@ -215,6 +215,8 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         }
         return list;
     }
+
+    protected abstract String getImagePath(ObjType type);
 
     protected boolean isFree() {
         return false;

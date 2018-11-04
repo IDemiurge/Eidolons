@@ -61,7 +61,7 @@ public class TownPanel extends TabbedPanel {
     public TownPanel() {
         super();
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
-        addActor(new NoHitImage(TextureCache.getOrCreateR(MAP_BACKGROUND.TUNNEL.getBackgroundFilePath())));
+        addActor(new NoHitImage(TextureCache.getOrCreateR(MAP_BACKGROUND.ERSIDRIS.getBackgroundFilePath())));
         addActor(new NoHitImage(TextureCache.getOrCreateR(BACKGROUND_NINE_PATCH.SEMI.getPath())));
 
          frame = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,

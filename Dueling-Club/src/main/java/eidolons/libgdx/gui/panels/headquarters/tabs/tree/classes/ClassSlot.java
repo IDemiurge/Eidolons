@@ -9,6 +9,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;
+import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.NumberUtils;
 
 import java.util.List;
@@ -54,8 +55,9 @@ public class ClassSlot extends HtNode {
     public void update(float delta) {
         if (data != null) {
             enable();
-            GdxImageMaster.round(data.getImagePath(), true);
-            setRootPath(GdxImageMaster.getRoundedPath(data.getImagePath()));
+            setRootPath(HeroClassMaster.getImgPath(data));
+//            GdxImageMaster.round(data.getImagePath(), true);
+//            setRootPath(GdxImageMaster.getRoundedPath(data.getImagePath()));
         } else {
             resetToOriginal();
             available = HeroClassMaster.getAllClasses(hero,
