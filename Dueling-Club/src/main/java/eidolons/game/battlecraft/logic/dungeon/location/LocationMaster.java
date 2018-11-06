@@ -15,6 +15,12 @@ public class LocationMaster extends DungeonMaster<Location> {
     @Override
     public void init() {
         super.init();
+        if (getDungeonWrapper().getMainEntrance() != null) {
+            getGame().getMaster().tryAddUnit(getDungeonWrapper().getMainEntrance());
+        }
+        if (getDungeonWrapper().getMainExit() != null) {
+            getGame().getMaster().tryAddUnit(getDungeonWrapper().getMainExit());
+        }
     }
 
     protected LocationBuilder createBuilder() {

@@ -202,10 +202,10 @@ public class AmbienceDataSource {
             );
             COLD.setNightly(
              MIST_CYAN,
-             DARK_MIST,
              DARK_MIST_LITE,
              SNOW,
              SNOWFALL,
+             DARK_MIST,
              STARS
             );
 
@@ -238,12 +238,16 @@ public class AmbienceDataSource {
             );
 
             HELL.setDaily(
-             MIST_SAND_WIND,
+             MIST_WIND,
+             POISON_MIST2,
              ASH,
+             MIST_SAND_WIND,
              CINDERS,
              ASH
             );
             HELL.setNightly(
+             POISON_MIST,
+             POISON_MIST2,
              ASH,
              CINDERS,
              ASH,
@@ -261,19 +265,18 @@ public class AmbienceDataSource {
 
             DEEP_MIST.setDaily(
              MIST_WIND,
-             DARK_MIST,
              MIST_WHITE3,
              MIST_BLACK,
+             DARK_MIST,
              MIST_TRUE2
             );
 
             DEEP_MIST.setNightly(
              MIST_WIND,
-             DARK_MIST,
-             DARK_MIST,
              MIST_WHITE3,
              MIST_ARCANE,
              MIST_TRUE,
+             DARK_MIST,
              MIST_TRUE2
             );
             DUNGEON.setDaily(
@@ -292,6 +295,7 @@ public class AmbienceDataSource {
             );
             HALL.setNightly(
              MIST_WIND,
+             MIST_ARCANE,
              MOTHS,
              MOTHS_TIGHT2
             );

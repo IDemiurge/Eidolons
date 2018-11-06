@@ -34,6 +34,7 @@ public abstract class GameScreenWithTown extends GameScreen {
                 overlayStage.addActor(townPanel = new TownPanel());
             } else {
                 townPanel.fadeIn();
+                townPanel.entered();
             }
             townPanel.setUserObject(town);
 

@@ -163,13 +163,7 @@ public abstract class GameManager implements GenericGameManager {
         if (event.getRef().isQuiet()) {
             return true;
         }
-        LogMaster.log(LogMaster.EVENT_DEBUG, "*** Event being handled: " + event);
-        if (statMaster != null)
-            try {
-                statMaster.eventBeingHandled(event);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+
         getState().checkTriggers(event);
         getState().checkRules(event);
         if (getState().isDirty()) {

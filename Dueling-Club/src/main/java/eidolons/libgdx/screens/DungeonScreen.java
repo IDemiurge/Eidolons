@@ -372,7 +372,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (speed != null) {
             delta = delta * speed;
         }
-        if (!CoreEngine.isJar() || CoreEngine.isJarlike())
+        if (!CoreEngine.isJar() )
             if (DC_Game.game != null) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
                  Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
@@ -386,6 +386,12 @@ public class DungeonScreen extends GameScreenWithTown {
 
             }
         super.render(delta);
+    }
+
+    @Override
+    protected void renderLoaderAndOverlays(float delta) {
+        setBlocked(checkBlocked());
+        super.renderLoaderAndOverlays(delta);
     }
 
     protected void checkShaderReset() {

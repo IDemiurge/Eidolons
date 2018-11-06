@@ -132,7 +132,9 @@ public class RngFillMaster {
 
             Map<Coordinates, ROOM_CELL> map = block.getTileMap().getMap();
             List<Coordinates> filledCells = map.keySet().stream().
-             filter(c -> map.get(c) != ROOM_CELL.FLOOR).
+             filter(c -> block.getOriginalTileMap().
+              getMap().get(c)==ROOM_CELL.FLOOR
+              && isClearable(map.get(c)) && TilesMaster.getAdjacentCount(map, c, ROOM_CELL.DOOR) ==0).
              collect(Collectors.toList());
 
             float wallCells = 0;

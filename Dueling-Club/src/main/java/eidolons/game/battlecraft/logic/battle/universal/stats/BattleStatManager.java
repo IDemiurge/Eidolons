@@ -13,6 +13,7 @@ import main.game.core.game.StatMaster;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.Map;
@@ -25,22 +26,22 @@ import java.util.Map;
  * Usability stats!
  */
 public class BattleStatManager<E extends Battle> extends BattleHandler<E> implements StatMaster {
-    BattleStats stats;
+    protected BattleStats stats;
 
     public BattleStatManager(BattleMaster master) {
         super(master);
         initializeBattle();
     }
 
-    private void attachStatWatcher() {
+    protected void attachStatWatcher() {
 
     }
 
-    private void initializeBattle() {
-        stats = new BattleStats();
-//        battle.setValue(BATTLE_STATS.PLAYER_STARTING_PARTY, game.getPlayerParty());
-//        battle.setValue(BATTLE_STATS.LEVEL, getBattleLevel() + "");
-//        battle.setValue(BATTLE_STATS.ROUND, "1");
+    protected void initializeBattle() {
+        stats = new BattleStats(game);
+        //        battle.setValue(BATTLE_STATS.PLAYER_STARTING_PARTY, game.getPlayerParty());
+        //        battle.setValue(BATTLE_STATS.LEVEL, getBattleLevel() + "");
+        //        battle.setValue(BATTLE_STATS.ROUND, "1");
 
     }
 
@@ -59,8 +60,8 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
         if ((event.getRef().getTargetObj() instanceof Unit))
             target = (Unit) event.getRef().getTargetObj();
         if (event.getType() instanceof STANDARD_EVENT_TYPE) {
-
-            switch ((STANDARD_EVENT_TYPE) event.getType()) {
+            STANDARD_EVENT_TYPE eventType = (STANDARD_EVENT_TYPE) event.getType();
+            switch (eventType) {
                 case UNIT_FALLS_UNCONSCIOUS:
                     modifyUnitStat(COMBAT_STATS.DIED, source, 1);
                     break;
@@ -69,9 +70,51 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
                     break;
                 }
                 case UNIT_HAS_BEEN_KILLED: {
-                    unitKilled(source, target);
-                    break;
+                    unitKilled(target, source);
                 }
+                //                case ACTION_ACTIVATED:
+                case UNIT_ACTION_COMPLETE:
+                case ATTACK_CRITICAL:
+                case ATTACK_SNEAK:
+                case ATTACK_DODGED:
+
+                case ATTACK_PARRIED:
+
+                case ATTACK_BLOCKED:
+
+                case ATTACK_MISSED:
+
+                case ATTACK_OF_OPPORTUNITY:
+
+                case ATTACK_COUNTER:
+
+                case ATTACK_INSTANT:
+
+                case ACTION_MISSED:
+                case UNIT_HAS_FALLEN_UNCONSCIOUS:
+                case UNIT_HAS_BEEN_ANNIHILATED:
+                case UNIT_HAS_CHANGED_FACING:
+                case ITEM_BROKEN:
+                case ITEM_ACQUIRED:
+                case NEW_ROUND:
+                case SPELL_RESOLVED:
+                case UNIT_HAS_USED_QUICK_ITEM:
+
+                case TIME_ELAPSED:
+
+                case INTERACTIVE_OBJ_USED:
+
+                case SECRET_FOUND: {
+                    String name = getStatName(eventType);
+                    Integer n = getStatAmount(event, eventType);
+                    MapMaster.addToIntegerMap(stats.getMainStatMap(), name, n);
+                    MapMaster.addToIntegerMap(stats.getUnitStats(
+                     source).getGeneralStats(), name, n);
+
+                    if (source.isPlayerCharacter())
+                        checkAddGlory(target, event, eventType, n);
+                }
+
             }
         } else if (AiTrainingRunner.running)
             if (event.getRef().getAmount() != null) {
@@ -84,7 +127,22 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
     }
 
-    private void unitDealtDamage(Unit source, Unit target, Integer amount) {
+    protected void checkAddGlory(Unit target, Event event, STANDARD_EVENT_TYPE eventType, Integer n) {
+    }
+
+    protected String getStatName(STANDARD_EVENT_TYPE eventType) {
+        return StringMaster.getWellFormattedString(eventType.name());
+    }
+
+    protected Integer getStatAmount(Event event, STANDARD_EVENT_TYPE eventType) {
+        switch (eventType) {
+
+        }
+        return 1;
+    }
+
+
+    protected void unitDealtDamage(Unit source, Unit target, Integer amount) {
         if (source.isEnemyTo(target.getOwner())) {
             modifyUnitStat(COMBAT_STATS.DAMAGE_DEALT_ENEMIES, source, amount);
         } else {
@@ -99,7 +157,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
          target.getOwner(), amount);
     }
 
-    private void modifyUnitModStat(boolean hostile, String stat, Unit sourceObj, int mod) {
+    protected void modifyUnitModStat(boolean hostile, String stat, Unit sourceObj, int mod) {
         PARAMETER p = ContentValsManager.getPARAM(stat);
         Map<PARAMETER, Integer> map = hostile ? stats.getUnitStats(sourceObj).getEnemyModMap()
          : stats.getUnitStats(sourceObj).getAllyModMap();
@@ -130,17 +188,17 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
              killed.getOwner(), 1);
     }
 
-    private void modifyUnitStat(STAT stat, Unit sourceObj, int mod) {
+    protected void modifyUnitStat(STAT stat, Unit sourceObj, int mod) {
         MapMaster.addToIntegerMap(
          stats.getUnitStats(sourceObj).getStatMap(), stat, mod);
     }
 
-    private void modifyPlayerStat(PLAYER_STATS stat, DC_Player owner, int i) {
+    protected void modifyPlayerStat(PLAYER_STATS stat, DC_Player owner, int i) {
         MapMaster.addToIntegerMap(
          stats.getPlayerStats(owner).getStatsMap(), stat, i);
     }
 
-    private void stat(STAT stat, Obj sourceObj, Obj targetObj) {
+    protected void stat(STAT stat, Obj sourceObj, Obj targetObj) {
 
     }
 

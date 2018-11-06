@@ -233,7 +233,7 @@ public class GridCellContainer extends GridCell {
     private Integer getZIndexForView(GenericGridView actor) {
         if (actor.isCellBackground())
             return 1;
-       if (!actor.isHpBarVisible()) {
+        if (actor.getUserObject() instanceof Structure || !actor.isHpBarVisible()) {
             return Z++;
         } else
            return Z++ +1;
@@ -250,7 +250,18 @@ public class GridCellContainer extends GridCell {
             if (!actor.isVisible())
                 continue;
             if (actor.isCellBackground() || actor.getUserObject() instanceof Structure)
-                actor.setZIndex(1); //over cell at least
+            {
+                Integer i = (Integer) MapMaster.getKeyForValue_(indexMap, actor);
+                if (i == null) {
+                    i = 0;
+                }
+                i = Math.max(1, i);
+                actor.setZIndex(Math.max(i - 1,
+//                 i / 2 +1
+                 i*2-views.size()
+                )); //over cell at least
+
+            }
             else if (actor.isHovered())
                 hovered = actor;
             else if (actor.isActive()) {
@@ -323,6 +334,7 @@ public class GridCellContainer extends GridCell {
             {
                 ActorMaster.addFadeInAction(actor, getFadeDuration());
             }
+            //recalc all
             indexMap.put(getZIndexForView( view), view);
             recalcUnitViewBounds();
 

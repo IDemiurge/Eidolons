@@ -40,7 +40,7 @@ public class WoundsBuffRule extends DC_BuffRule {
     protected Effect getEffect() {
         switch (level) {
             case 0: {
-                ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.N_OF_ACTIONS,
+                ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.DAMAGE_MOD,
                  MOD.MODIFY_BY_PERCENT, getCriticalApPenalty());
                 return new IfElseEffect(modifyValueEffect, new NotCondition(
                  new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), new Effects(
@@ -50,7 +50,7 @@ public class WoundsBuffRule extends DC_BuffRule {
 
             }
             case 1: {
-                ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.N_OF_ACTIONS,
+                ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.DAMAGE_MOD,
                  MOD.MODIFY_BY_PERCENT, getApPenalty());
                 ModifyValueEffect modifyValueEffect2 = new ModifyValueEffect(PARAMS.DAMAGE_MOD,
                  MOD.MODIFY_BY_PERCENT, BERSERK_WOUNDS_DAMAGE_MOD);

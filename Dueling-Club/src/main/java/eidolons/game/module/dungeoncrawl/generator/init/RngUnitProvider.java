@@ -6,6 +6,8 @@ import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
 
+import static main.content.enums.DungeonEnums.DUNGEON_STYLE.PureEvil;
+import static main.content.enums.DungeonEnums.DUNGEON_STYLE.Somber;
 import static main.content.enums.entity.UnitEnums.UNITS_TYPES.*;
 
 /**
@@ -30,8 +32,7 @@ public class RngUnitProvider {
      .chain(STAG_BEETLE, 10)
      .chain(RHINO_BEETLE, 10)
      .chain(NIGHT_BAT, 10)
-     .chain(ESCAPED_PRISONER, 10)
-     ;
+     .chain(ESCAPED_PRISONER, 10);
     private static final WeightMap<String> DEFAULT_MAP_ELITE = new WeightMap<String>()
      .chain(BLACK_WIDOW, 10)
      .chain(PALE_WEAVER, 10)
@@ -50,13 +51,11 @@ public class RngUnitProvider {
      .chain(FERAL_CULTIST, 10)
      .chain(DEMON_CULTIST, 10)
      .chain(SCORCHED_CULTIST, 10)
-     .chain(SHADOW_WOLF, 10)
-     ;
+     .chain(SHADOW_WOLF, 10);
     private static final WeightMap<String> DEFAULT_MAP_BOSS = new WeightMap<String>()
      .chain(MISTBORN_GARGANTUAN, 20)
-     .chain(RAVENGUARD_COMMANDER, 10)
+     .chain(RAVENGUARD_COMMANDER, 10);
 
-     ;
     public static WeightMap<String> getUnitWeightMap
      (UNIT_GROUP group, Boolean elite_boss_regular) {
         switch (group) {
@@ -83,19 +82,22 @@ public class RngUnitProvider {
                      chain(SWORDSMAN, 6).
                      chain(RAVENGUARD_SPECIALIST, 6).
                      chain(PIKEMAN, 4).
-                     chain(RAVENGUARD_TORTURER, 5).
-                     chain(RAVENGUARD_WARDEN, 5);
+                     chain(RAVENGUARD_TORTURER, 3).
+                     chain(RAVENGUARD_WARDEN, 4);
                 return elite_boss_regular ? new WeightMap<String>().
                  chain(RAVENGUARD_KNIGHT, 10).
                  chain(RAVENGUARD_SPECIALIST, 9).
-                 chain(RAVENGUARD_CROSSBOWMAN, 8).
+                 chain(RAVENGUARD_EXECUTIONER, 9).
+                 chain(RAVENGUARD_CROSSBOWMAN, 5).
                  chain(RAVENGUARD_TORTURER, 5).
                  chain(RAVENGUARD_WITCHUNICODE45CODEENDKNIGHT, 5).
-                 chain(RAVENGUARD_WARDEN, 4)
+                 chain(RAVENGUARD_LIEUTENANT, 4).
+                 chain(RAVENGUARD_WARDEN, 5)
                  : new WeightMap<String>().
                  chain(RAVENGUARD_COMMANDER, 10).
+                 chain(RAVENGUARD_WITCHUNICODE45CODEENDKNIGHT, 4).
+                 chain(RAVENGUARD_LIEUTENANT, 2).
                  chain(RAVENGUARD_KNIGHT, 1).
-                 chain(RAVENGUARD_WITCHUNICODE45CODEENDKNIGHT, 1).
                  chain(RAVENGUARD_SPECIALIST, 1);
             case PRISONERS:
                 if (elite_boss_regular == null)
@@ -331,6 +333,7 @@ public class RngUnitProvider {
                      chain(DESERTER, 10).
                      chain(BANDIT_ARCHER, 10).
                      chain(MARAUDER, 7).
+                     chain(CANNIBAL, 3).
                      chain(GRAVE_LOOTER, 5);
                 return elite_boss_regular ? new WeightMap<String>().
                  chain(ASSASSIN, 10).
@@ -340,7 +343,7 @@ public class RngUnitProvider {
                  chain(MERCENARY_RANGER, 5).
                  chain(SNIPER, 5)
                  : new WeightMap<String>().
-                 chain(BANDIT_LORD, 15).
+                 chain(BANDIT_LORD, 25).
                  chain(ASSASSIN, 10).
                  chain(SNIPER, 12).
                  chain(SORCERESS, 3).
@@ -376,7 +379,7 @@ public class RngUnitProvider {
                      chain(SKELETON_ARCHER, 10).
                      chain(DEATH_WORSHIPPER, 11).
                      chain(ZOMBIE, 10).
-                     chain(ZOMBIE_BEAST, 6).
+//                     chain(ZOMBIE_BEAST, 6).
                      chain(GHAST_ZOMBIE, 6).
                      chain(GHOUL, 5);
 
@@ -392,11 +395,11 @@ public class RngUnitProvider {
                  chain(VAMPIRE_BEAST, 4)
                  : new WeightMap<String>().
                  chain(VAMPIRE_LORD, 10).
-                 chain(DEATH_KNIGHT, 10).
-                 chain(DEATH_LORD, 10).
-                 chain(LICH, 10).
-                 chain(VAMPIRE, 6).
-                 chain(BONE_DRAGON, 8)
+                 //                 chain(DEATH_KNIGHT, 10).
+                  chain(DEATH_LORD, 10).
+                 //                 chain(LICH, 10).
+                 // chain(BONE_DRAGON, 8)
+                  chain(VAMPIRE, 6)
                  ;
             case UNDEAD_PLAGUE:
                 if (elite_boss_regular == null)
@@ -406,8 +409,7 @@ public class RngUnitProvider {
                      chain(PLAGUE_SERVANT, 10).
                      chain(PLAGUE_RAT, 10).
                      chain(ZOMBIE, 7).
-                     chain(CORPSE_SLUG, 6).
-                     chain(ZOMBIE_BEAST, 6);
+                     chain(CORPSE_SLUG, 6);
 
                 return elite_boss_regular ? new WeightMap<String>().
                  chain(PLAGUE_BRINGER, 12).
@@ -417,10 +419,11 @@ public class RngUnitProvider {
                  chain(CORPSE_SLUG, 6).
                  chain(UNDEAD_BEAST, 6)
                  : new WeightMap<String>().
-                 chain(UNDEAD_MONSTROCITY, 10).
-                 chain(DEATH_KNIGHT, 5).
-                 chain(LICH, 5).
-                 chain(BONE_DRAGON, 3)
+                 chain(VAMPIRE_LORD, 10).
+                 //                 chain(UNDEAD_MONSTROCITY, 10).
+                 //                 chain(DEATH_KNIGHT, 5).
+                  chain(LICH, 5).
+                  chain(BONE_DRAGON, 1)
                  ;
             case UNDEAD_CRIMSON:
                 if (elite_boss_regular == null)
@@ -463,9 +466,9 @@ public class RngUnitProvider {
                  chain(GHAST_WRAITH, 7)
                  : new WeightMap<String>().
                  chain(DEATH_LORD, 15).
-                 chain(KING_OF_THE_DEAD, 10).
-                 chain(DEATH_KNIGHT, 10).
-                 chain(LICH, 10)
+                 //                 chain(KING_OF_THE_DEAD, 10).
+                 //                 chain(DEATH_KNIGHT, 10).
+                  chain(LICH, 10)
                  ;
             case CULT_CHAOS:
             case DEMONS_ABYSS:
@@ -477,31 +480,31 @@ public class RngUnitProvider {
                      chain(IMP, 10).
                      chain(HELLGUARD, 10).
                      chain(DEMON_BRUTE, 10).
-                     chain(DEMON_WORSHIPPER, 5).
-                     chain(FIEND, 4);
+                     //                     chain(DEMON_WORSHIPPER, 5).
+                      chain(FIEND, 4);
 
                 return elite_boss_regular ? new WeightMap<String>().
 
                  chain(DEMON_CARNIFEX, 10).
                  chain(DEMON_GORGER, 10).
                  chain(FIEND, 10).
-                 chain(WARP_HUNTER, 10).
-                 chain(INCUBUS, 10).
-                 chain(SUCCUBUS, 10).
-                 chain(DEMON_CALLER, 5).
-                 chain(DEMON_TORMENTOR, 4).
-                 chain(SCREAMER, 4).
-                 chain(SATYR_DEMONCALLER, 4).
-                 chain(HELLUNICODE39CODEENDS_TYRANT, 4)
+                 //                 chain(WARP_HUNTER, 10).
+                 //                 chain(INCUBUS, 10).
+                 //                 chain(SUCCUBUS, 10).
+                 //                 chain(DEMON_CALLER, 5).
+                 //                 chain(DEMON_TORMENTOR, 4).
+                 //                 chain(SCREAMER, 4).
+                 //                 chain(SATYR_DEMONCALLER, 4).
+                  chain(HELLUNICODE39CODEENDS_TYRANT, 4)
                  : new WeightMap<String>().
                  chain(DEMON_LORD, 10).
-                 chain(DEMON_PRINCE, 10).
-                 chain(DEVIL_MAGE, 5).
-                 chain(ABYSSAL_FIEND, 4).
-                 chain(LORD_OF_DESPAIR, 4).
-                 chain(LORD_OF_HATRED, 4).
-                 chain(LORD_OF_PAIN, 4).
-                 chain(LORD_OF_TERROR, 4)
+                 //                 chain(DEMON_PRINCE, 10).
+                  chain(DEVIL_MAGE, 3).
+                  chain(ABYSSAL_FIEND, 7)
+                 //                 chain(LORD_OF_HATRED, 4).
+                 //                 chain(LORD_OF_PAIN, 4).
+                 //                 chain(LORD_OF_DESPAIR, 4).
+                 //                 chain(LORD_OF_TERROR, 4)
                  ;
             case DEMONS_HELLFIRE:
                 if (elite_boss_regular == null)
@@ -586,8 +589,11 @@ public class RngUnitProvider {
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
                      chain(TROGLODYTE, 10).
-                     chain(TROGLODYTE_MUTANT, 4).
+                     chain(TROGLODYTE_MUTANT, 1).
                      chain(HARPY, 5).
+                     chain(BASILISK, 3).
+                     chain(SLAAG, 3).
+                     chain(DRAKE, 3).
                      chain(MINOTAUR, 4).
                      chain(EVIL_EYE, 6);
 
@@ -596,6 +602,8 @@ public class RngUnitProvider {
                  chain(MINOTAUR, 6).
                  chain(MIND_FLAYER, 5).
                  chain(CORRUPTED_MIND_FLAYER, 4).
+                 chain(SLAAG, 3).
+                 chain(DRAKE, 3).
                  chain(MANTICORE, 4).
                  chain(EVIL_EYE, 6)
                  : new WeightMap<String>().
@@ -639,10 +647,12 @@ public class RngUnitProvider {
             case IDLERS:
                 break;
             case PATROL:
-                if (RandomWizard.random())
+                if (RandomWizard.chance(65))
+                    break;
+            case GUARDS:
+                if (RandomWizard.chance(35))
                     break;
             case STALKER:
-            case GUARDS:
             case AMBUSH:
                 elite_boss_regular = true;
                 break;
@@ -659,18 +669,18 @@ public class RngUnitProvider {
         return getUnitWeightMap(group, elite_boss_regular);
     }
 
-    public static UNIT_GROUP getUnitGroup(
+    public static WeightMap<UNIT_GROUP> getUnitGroup(
      boolean surface, DUNGEON_STYLE style) {
         switch (style) {
             case Arcane:
-                return  new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.CONSTRUCTS, 12)
-                  .chain(UNIT_GROUP.MAGI, 7)
-                  .chain(UNIT_GROUP.CULT_DARK, 4)
-                  .chain(UNIT_GROUP.CULT_CERBERUS, 4)
-                  .chain(UNIT_GROUP.MUTANTS, 5)
-                  .chain(UNIT_GROUP.Ravenguard, 3)
-                  .getRandomByWeight();
+                return new WeightMap<>(UNIT_GROUP.class)
+                 .chain(UNIT_GROUP.CONSTRUCTS, 12)
+                 .chain(UNIT_GROUP.MAGI, 7)
+                 .chain(UNIT_GROUP.CULT_DARK, 4)
+                 .chain(UNIT_GROUP.CULT_CERBERUS, 4)
+                 .chain(UNIT_GROUP.MUTANTS, 5)
+                 .chain(UNIT_GROUP.Ravenguard, 3)
+                 ;
             case Holy:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -678,14 +688,14 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.HUMANS_KNIGHTS, 7)
                   .chain(UNIT_GROUP.HUMANS, 4)
                   .chain(UNIT_GROUP.HUMANS_CRUSADERS, 4)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.Ravenguard,  5)
+                  .chain(UNIT_GROUP.Ravenguard, 5)
                   .chain(UNIT_GROUP.HUMANS_KNIGHTS, 3)
                   .chain(UNIT_GROUP.HUMANS, 2)
                   .chain(UNIT_GROUP.HUMANS_CRUSADERS, 2)
-                  .getRandomByWeight();
+                 ;
 
             case Knightly:
                 return surface ?
@@ -693,13 +703,13 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.Ravenguard, 10)
                   .chain(UNIT_GROUP.HUMANS_KNIGHTS, 3)
                   .chain(UNIT_GROUP.HUMANS, 4)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.Ravenguard, 15)
                   .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
                   .chain(UNIT_GROUP.HUMANS, 6)
-                  .getRandomByWeight();
+                 ;
 
 
             case Brimstone:
@@ -709,15 +719,15 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
                   .chain(UNIT_GROUP.DEMONS_WARPED, 4)
                   .chain(UNIT_GROUP.CULT_CHAOS, 4)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
                   .chain(UNIT_GROUP.DEMONS_HELLFIRE, 7)
                   .chain(UNIT_GROUP.DEMONS_WARPED, 4)
-                  .getRandomByWeight();
+                 ;
             case DarkElegance:
-                break;
+                return getUnitGroup(surface, Somber).merge(getUnitGroup(surface, PureEvil));
             case PureEvil:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -729,7 +739,7 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.DARK_ONES, 8)
                   .chain(UNIT_GROUP.CULT_DEATH, 5)
                   .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DEMONS_ABYSS, 10)
@@ -740,7 +750,7 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.UNDEAD_PLAGUE, 8)
                   .chain(UNIT_GROUP.UNDEAD_CRIMSON, 6)
                   .chain(UNIT_GROUP.CULT_DARK, 5)
-                  .getRandomByWeight();
+                 ;
             case Grimy:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -748,33 +758,34 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
                   .chain(UNIT_GROUP.PRISONERS, 5)
                   .chain(UNIT_GROUP.MUTANTS, 5)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DWARVES, 15)
                   .chain(UNIT_GROUP.DUNGEON, 10)
                   .chain(UNIT_GROUP.MUTANTS, 6)
-                  .chain(UNIT_GROUP.PALE_ORCS, 6)
+//                  .chain(UNIT_GROUP.PALE_ORCS, 6)
                   .chain(UNIT_GROUP.CRITTERS, 6)
-                  .getRandomByWeight();
+                  .chain(UNIT_GROUP.CRITTERS_SPIDERS, 6)
+                 ;
             case Pagan:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
-//                  .chain(UNIT_GROUP.NORTH, 12)
+                  //                  .chain(UNIT_GROUP.NORTH, 12)
                   .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
                   .chain(UNIT_GROUP.DWARVES, 12)
-//                  .chain(UNIT_GROUP.ANIMALS, 5)
-//                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
-                  .getRandomByWeight()
+                 //                  .chain(UNIT_GROUP.ANIMALS, 5)
+                 //                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DWARVES, 15)
                   .chain(UNIT_GROUP.DUNGEON, 10)
                   .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-//                  .chain(UNIT_GROUP.ELEMENTALS, 6)
-//                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
-//                  .chain(UNIT_GROUP.PALE_ORCS, 5)
-                  .getRandomByWeight();
+                 //                  .chain(UNIT_GROUP.ELEMENTALS, 6)
+                 //                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
+                 //                  .chain(UNIT_GROUP.PALE_ORCS, 5)
+                 ;
             case Stony:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -783,16 +794,16 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.PRISONERS, 5)
                   .chain(UNIT_GROUP.ANIMALS, 5)
                   .chain(UNIT_GROUP.MUTANTS, 5)
-                  //                  .chain(UNIT_GROUP.BARBARIANS, 3)
-                  .getRandomByWeight()
+                 //                  .chain(UNIT_GROUP.BARBARIANS, 3)
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DUNGEON, 20)
                   .chain(UNIT_GROUP.DWARVES, 12)
                   .chain(UNIT_GROUP.MUTANTS, 6)
-                  .chain(UNIT_GROUP.PALE_ORCS, 6)
+//                  .chain(UNIT_GROUP.PALE_ORCS, 6)
                   .chain(UNIT_GROUP.CRITTERS, 6)
-                  .getRandomByWeight();
+                 ;
             case Somber:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -804,7 +815,7 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.CULT_DEATH, 5)
                   .chain(UNIT_GROUP.CULT_DARK, 10)
                   .chain(UNIT_GROUP.PRISONERS, 4)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.UNDEAD, 10)
@@ -815,7 +826,7 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.CRITTERS, 5)
                   .chain(UNIT_GROUP.CULT_DARK, 5)
                   .chain(UNIT_GROUP.PRISONERS, 5)
-                  .getRandomByWeight();
+                 ;
             case Cold:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
@@ -828,7 +839,7 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.DARK_ONES, 8)
                   .chain(UNIT_GROUP.CULT_DEATH, 5)
                   .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .getRandomByWeight()
+
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DUNGEON, 10)
@@ -841,8 +852,13 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.DARK_ONES, 8)
                   .chain(UNIT_GROUP.CULT_DEATH, 5)
                   .chain(UNIT_GROUP.CULT_DARK, 10)
-                  .getRandomByWeight();
+                 ;
         }
-        return UNIT_GROUP.Ravenguard;
+        return  new WeightMap<>(UNIT_GROUP.class)
+         .chain(UNIT_GROUP.Ravenguard, 10)
+         .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+         .chain(UNIT_GROUP.PRISONERS, 10)
+         .chain(UNIT_GROUP.MUTANTS, 10)
+         ;
     }
 }

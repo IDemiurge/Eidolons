@@ -32,7 +32,8 @@ public class UnitViewFactory {
         GridUnitView view = new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
-            if (!bfObj.isWall()) {
+            if (!bfObj.isPlayerCharacter())
+             if (!bfObj.isWall()) {
                 LastSeenView lsv = new LastSeenView(options, view);
                 view.setLastSeenView(lsv);
                 new LastSeenTooltipFactory().add(lsv, bfObj);
@@ -97,6 +98,10 @@ public class UnitViewFactory {
                             if (bfObj.isPlayerCharacter()) {
                                 HqMaster.openHqPanel();
                                 event.stop();
+                                return;
+                            } else {
+                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                                event.cancel();
                                 return;
                             }
                     //TODO control options

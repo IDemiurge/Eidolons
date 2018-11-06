@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -31,6 +32,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
@@ -40,17 +42,18 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+import java.util.Map;
+
 /**
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanelX implements EventListener {
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = true;
     public static final boolean TEST_OUTCOME = false;
     private static final String VICTORY_MESSAGE =
      "+++That's It - You are Victorious!+++";
     private static final String DEFEAT_MESSAGE =
      "***All is lost - the Enemy has Prevailed!***";
-    Cell<TextButton> doneButton;
     Cell<TextButton> exitButton;
     Cell<TextButton> continueButton;
     private Boolean outcome;
@@ -59,7 +62,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     private Label message;
     private TabbedPanel unitStatTabs;
 
-    public OutcomePanel(   ) {
+    public OutcomePanel() {
         addListener(this);
         Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
          NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
@@ -69,8 +72,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha== ShaderMaster.SUPER_DRAW)
-        {
+        if (parentAlpha == ShaderMaster.SUPER_DRAW) {
             super.draw(batch, 1);
             return;
         }
@@ -85,7 +87,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         super.updateAct(delta);
     }
 
-    public void init (OutcomeDatasource outcomeDatasource) {
+    public void init(OutcomeDatasource outcomeDatasource) {
+        clear();
+        setVisible(true);
         outcome = outcomeDatasource.getOutcome();
         if (outcome == null)
             outcome = TEST_OUTCOME;
@@ -104,7 +108,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
          MigMaster.center(getHeight(), picture.getHeight() * picture.getScaleY()
          ));
 
-        STD_SOUNDS sound=STD_SOUNDS.DEATH;
+        STD_SOUNDS sound = STD_SOUNDS.DEATH;
 
         String messageText = VICTORY_MESSAGE;
         if (outcome != null)
@@ -132,38 +136,37 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
 
         final TablePanel<TextButton> buttonTable = new TablePanel<>();
-
-        //        doneButton = buttonTable.addElement(
-        //         new TextButton(outcome ? "Next" : "Restart",
-        //          StyleHolder.getMenuTextButtonStyle(16))
-        //        ).fill(false).expand(0, 0).right()
-        //         .pad(20, 10, 20, 10);
-        //        doneButton.getActor().addListener(this);
+        continueButton = buttonTable.addElement(
+         new TextButton("Achievements", //getContinueText(outcome),
+          StyleHolder.getMenuTextButtonStyle(16))
+        ).fill(false).expand(0, 0).right()
+         .pad(20, 10, 20, 10);
+        continueButton.getActor().addListener(this);
 
         exitButton = buttonTable.addElement(
          new TextButton("Main Menu",
           StyleHolder.getMenuTextButtonStyle(18))
         ).fill(false).expand(0, 0).center()
          .pad(20, 10, 20, 10);
-        buttonTable.row();
         exitButton.getActor().addListener(this);
-                continueButton = buttonTable.addElement(
-                 new TextButton(getContinueText(outcome ),
-                  StyleHolder.getMenuTextButtonStyle(16))
-                ).fill(false).expand(0, 0).right()
-                 .pad(20, 10, 20, 10);
-        //         .size(50, 30);
-                continueButton.getActor().addListener(this);
+
+        buttonTable.row();
+
         addActor(buttonTable);
         buttonTable.setPosition(
          MigMaster.center(getWidth(), buttonTable.getWidth()),
          55
         );
+
+        float y = GdxMaster.getHeight() -
+         (GdxMaster.getHeight() -  getHeight() / 2);
+        float x = (GdxMaster.getWidth() -  getWidth()) / 2;
+        ActorMaster.addMoveToAction(this, x, y, 2.5f);
         //        addElement(buttonTable).pad(0, 20, 20, 20);
     }
 
     private String getContinueText(Boolean outcome) {
-        if (Bools.isTrue(outcome) )
+        if (Bools.isTrue(outcome))
             return new WeightMap<String>().
              chain("For Glory!", 10).
              chain("Can this be?", 10).
@@ -194,7 +197,10 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         Actor actor = event.getTarget();
         if (actor instanceof Label) {
             if (actor.getParent() instanceof TextButton) {
-                ActorMaster.addMoveToAction(this, getX(), GdxMaster.getHeight(), 1.5f);
+                if (CoreEngine.isIDE() &&TEST_MODE){
+                    setVisible(false);
+                } else
+                rollBack();
                 //                ActorMaster.addRemoveAfter(this);
                 final Boolean exit_continue_next = getEventType(actor);
                 if (exit_continue_next == null) {
@@ -210,16 +216,16 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                     if (CoreEngine.isMacro()) {
                         GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                     } else {
-                        Eidolons.exitToMenu();
+                        Eidolons.exitFromGame();
                     }
 
 
                 } else {
                     //TODO display stats!
-                    String stats= getGameStats(datasource);
+                    String stats = MissionStatManager.getGameStatsText( );
                     EUtils.onConfirm(stats +
-                     " Exit to menu?", true, ()->
-                     Eidolons.exitToMenu());
+                     "\n Exit to menu?", true, () ->
+                     Eidolons.exitFromGame());
                     WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                      false);
 
@@ -234,18 +240,36 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         return false;
     }
 
+    private void rollBack() {
+        ActorMaster.addMoveToAction(this, getX(),
+         GdxMaster.getHeight() - exitButton.getActorHeight(), 1.5f);
+    }
+
     private String getGameStats(OutcomeDatasource datasource) {
-        String stats="";
-        stats += "\n Glory rating:" + datasource.getGlory();
+        String stats = "";
+        stats += "\n Glory rating:" + datasource.getGlory() + StringMaster.wrapInParenthesis(
+         getCodename(datasource.getGlory())
+        );
         stats += "\n Units Slain:" + datasource.getUnitsSlain();
         stats += "\n Damage dealt:" + datasource.getDAMAGE_DEALT();
         stats += "\n Damage taken:" + datasource.getDAMAGE_TAKEN();
-//class outcome!
+        Map<String, Integer> map = datasource.getHeroStats().getGeneralStats();
+        for (String s : map.keySet()) {
+            stats+="\n" + s + ": " + map.get(s);
+        }
+//        for (String s : datasource.getHeroStats().getStatMap()) {
+//            stats+="\n" + s + ": " + datasource.getMainStats().get(s);
+//        }
+        //class outcome!
         return stats;
     }
 
+    private String getCodename(Integer glory) {
+        return "Einherjar";
+    }
+
     private Boolean getEventType(Actor actor) {
-        if (actor==continueButton.getActor()) {
+        if (actor == continueButton.getActor().getLabel()) {
             return false;
         }
         return true;

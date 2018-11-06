@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
@@ -83,6 +84,15 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     private void doMagic(InteractiveObj obj, Unit unit) {
+        Ref ref = obj.getRef();
+        ref.setTarget(obj.getId());
+        ref.setID(KEYS.ITEM, obj.getId());
+        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
+        if (RandomWizard.chance(80)) {
+        EUtils.showInfoText("Ancient lore has lessons to teach you...");
+        HeroLevelManager.addXp(unit, RandomWizard.getRandomIntBetween(5, 5*unit.getLevel()));
+            return;
+        }
         String name = RandomWizard.getRandomListObject(ListMaster.toStringList(
          "Arcane Bolt", "Fire Bolt", "Celestial Bolt", "Death Bolt", "Shadow Bolt",
          "Feral Impulse", "Scare", "Hallucinations", "Cure", "Heal",
@@ -93,10 +103,6 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         ObjType type = DataManager.getType(name, DC_TYPE.SPELLS);
         obj.setParam(PARAMS.SPELLPOWER, RandomWizard.getRandomIntBetween(20, 50));
         EUtils.showInfoText("Ancient spell awakens... the " + name);
-        Ref ref = obj.getRef();
-        ref.setTarget(obj.getId());
-        ref.setID(KEYS.ITEM, obj.getId());
-        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
 
         if (type == null) {
             return;

@@ -149,6 +149,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         PASS_TIME(true),
 //        QUESTS(),
         BACK_TO_TOWN( ),
+        ACHIEVEMENTS( ),
         RETREAT(true),
         SAVE(true),
 //        LOAD(true),

@@ -59,6 +59,7 @@ public class Town extends Place {
 
     public void setQuests(Set<DungeonQuest> quests) {
         this.quests = quests;
+        quests.forEach(quest -> quest.setTown(this));
     }
 
     @Override
@@ -198,7 +199,6 @@ public class Town extends Place {
         for (String substring : ContainerUtils.openContainer(
          getProperty(MACRO_PROPS.TOWN_STASH))) {
             //gonna need to store durability etc...
-
         }
         for (String substring : ContainerUtils.openContainer(
          Eidolons.getMainHero().getProperty(PROPS.STASH))) {
@@ -213,9 +213,11 @@ public class Town extends Place {
         if (reenter) {
             for (Shop shop1 : shops) {
                 shop1.getIncome( 500);
+                shop1.sellItems(30 );
                 shop1.stockItems(30 );
 
             }
         }
     }
+
 }

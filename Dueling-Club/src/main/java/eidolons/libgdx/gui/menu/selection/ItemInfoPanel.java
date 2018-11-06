@@ -36,7 +36,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     protected FadeImageContainer fullsizePortrait;
     protected Label title;
     protected SelectableItemData item;
-    private SmartButton startButton;
+    protected SmartButton startButton;
 
     public ItemInfoPanel(SelectableItemData item) {
         //bg
@@ -71,6 +71,15 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
             protected float getDefaultHeight() {
                 return getDescriptionHeight();
             }
+
+            @Override
+            protected float getDefaultWidth() {
+
+                 if (getDescriptionWidth()!=0)
+                return getDescriptionWidth();
+                return super.getDefaultWidth();
+            }
+
         };
         description.setText(getDefaultText());
         title = new Label(getDefaultTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 30));
@@ -78,6 +87,10 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
         fullsizePortrait =
          new FadeImageContainer(getEmptyImagePathFullSize(), 1.4f);
 
+    }
+
+    protected float getDescriptionWidth() {
+        return 0;
     }
 
     @Override
@@ -95,7 +108,12 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        description.setY(description.getY() + GDX.height(70));
+        float offset=GDX.height(70);
+        if (GdxMaster.getHeight()>1000){
+            offset= 20;
+        }
+        description.setY(description.getY() + offset);
+//        description.setHeight(getDescriptionHeight());
     }
 
     protected float getDescriptionHeight() {

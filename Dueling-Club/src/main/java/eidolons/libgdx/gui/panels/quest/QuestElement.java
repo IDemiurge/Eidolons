@@ -39,7 +39,12 @@ public class QuestElement extends TablePanelX{
     public void updateAct(float delta) {
         super.updateAct(delta);
         if (done)
+        {
+            if (quest.isRewardTaken()) {
+                remove();
+            }
             return;
+        }
         //italic?
 
         progress.setText(quest.getProgressText());

@@ -74,7 +74,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             realTimeThread = new RealTimeThread(this);
             realTimeThread.start();
         } else {
-            main.system.auxiliary.log.LogMaster.log(1,"realTimeThread already running! " );
+            main.system.auxiliary.log.LogMaster.log(1, "realTimeThread already running! ");
         }
     }
 
@@ -157,7 +157,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         ActionInput playerAction = playerActionQueue.removeLast();
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
-            Boolean result = activateAction(playerAction);
+            activateAction(playerAction);
+            boolean result =playerAction.getAction().getHandler().isResult();
             master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
             master.getTimeMaster().setGuiDirtyFlag(true);
             master.getPartyMaster().leaderActionDone(playerAction);
@@ -215,7 +216,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
 
-
     protected boolean checkActionInputValid(ActionInput playerAction) {
         if (!playerAction.getAction().canBeActivated(playerAction.getContext(), true))
             return false;
@@ -238,6 +238,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected int getMinAnimWaitTime(ActionInput action) {
         return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME);
     }
+
     protected boolean isMustWaitForAnim(ActionInput action) {
         return DungeonScreen.getInstance().getGridPanel()
          .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
@@ -321,11 +322,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                     break;
                 }
-                if (checkNextLevel()) {
-                    game.getBattleMaster().getOutcomeManager().next();
-                    game.getVisionMaster().refresh();
-                    break;
-                }
+                if (checkNextLevel())
+                    if (confirmExit()) {
+                        game.getBattleMaster().getOutcomeManager().next();
+                        game.getVisionMaster().refresh();
+                        break;
+                    }
                 if (result) {
                     break;
                 }
@@ -335,6 +337,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             }
         }
         return true;
+    }
+
+    private boolean confirmExit() {
+        EUtils.onConfirm("Leave this location? " +
+          "Don't forget to check your achievements from the menu...", () ->
+          WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true),
+         () ->
+          WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false));
+        return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
     }
 
     @Override

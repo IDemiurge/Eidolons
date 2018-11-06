@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
+import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -51,6 +52,8 @@ public class DungeonQuest {
     private DUNGEON_STYLE style;
     private float powerCoef;
     private boolean started;
+    private boolean rewardTaken;
+    private Town town;
 
     public DungeonQuest(ObjType type) {
         this.objType=type;
@@ -62,7 +65,8 @@ public class DungeonQuest {
     }
 
     private void initArg() {
-        int powerLevel=25+Eidolons.getMainHero().getIntParam(PARAMS.HERO_LEVEL)*40;
+        int powerLevel= Eidolons.getMainHero().getIntParam(PARAMS.POWER) ;
+        main.system.auxiliary.log.LogMaster.log(1,"powerLevel= " +powerLevel);
         style =  Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
         switch (type) {
             case BOSS:
@@ -288,5 +292,21 @@ public class DungeonQuest {
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public boolean isRewardTaken() {
+        return rewardTaken;
+    }
+
+    public void setRewardTaken(boolean rewardTaken) {
+        this.rewardTaken = rewardTaken;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    public Town getTown() {
+        return town;
     }
 }

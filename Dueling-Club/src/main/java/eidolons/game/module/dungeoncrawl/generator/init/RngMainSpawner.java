@@ -88,7 +88,7 @@ public class RngMainSpawner {
 
         int n = getMaxGroupsForType(groupType);
         for (int i = 0; i < n; i++) {
-            UNIT_GROUP group = RngUnitProvider.getUnitGroup(surface, style);
+            UNIT_GROUP group = RngUnitProvider.getUnitGroup(surface, style).getRandomByWeight();
             map.put(group, i + 1);
         }
         return map.getRandomByWeight();
@@ -121,9 +121,9 @@ public class RngMainSpawner {
     }
 
     private void spawnForQuests() {
-        List<DungeonQuest> quests = null;
+        Collection<DungeonQuest> quests = null;
         try {
-            quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuests();
+            quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuestsPool();
         } catch (Exception e) {
             return;
         }
@@ -546,11 +546,11 @@ public class RngMainSpawner {
     }
 
     private float getBaseMax(UNIT_GROUP group) {
-        return 6;
+        return 4;
     }
 
     private float getBaseMin(UNIT_GROUP group) {
-        return 3;
+        return 2;
     }
 
     private List<ObjType> getUnitsForGroup(float powerCoef,
@@ -565,6 +565,8 @@ public class RngMainSpawner {
         WeightMap<String> altMap = RngUnitProvider.getWeightMap(group, groupType, true);
         boolean oneOfAType = isOneOfAType(groupType, map, minPreferred);
         while (true) {
+            if (units.size()>max)
+                break;
             if (map.isEmpty())
                 map = RngUnitProvider.getWeightMap(group, groupType, false);
             if (loop.ended())
@@ -632,11 +634,11 @@ public class RngMainSpawner {
     private boolean isOneFromAboveRank(UNIT_GROUP_TYPE group, int max) {
         switch (group) {
             case GUARDS:
-                return RandomWizard.chance(20 + max * 10);
+                return RandomWizard.chance(20 + max * 6);
             case PATROL:
-                return RandomWizard.chance(25 + max * 12);
+                return RandomWizard.chance(22 + max * 5);
             case AMBUSH:
-                return RandomWizard.chance(10 + max * 15);
+                return RandomWizard.chance(10 + max * 11);
         }
         return false;
     }

@@ -1,11 +1,13 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
@@ -22,6 +24,8 @@ import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.Waiter;
+
+import java.util.ArrayList;
 
 /**
  * Created by JustMe on 10/13/2018.
@@ -60,12 +64,36 @@ public class TownMaster extends MetaGameHandler {
     public void reenterTown() {
         getMaster().getGame().getLoop().setPaused(true);
         boolean result = enterTown(town, true);
+        getMaster().getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerWaits();
+        try {
+            getMaster().getGame().getManager().reset();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         if (!result) {
             EUtils.info("Something went wrong in this town...");
             Eidolons.exitToMenu();
             return;
         }
-        getMaster().getGame().getLoop().setPaused(true);
+        getMaster().getGame().getLoop().setPaused(false);
+    }
+
+    private void updateQuests(Town town) {
+        Unit hero = Eidolons.getMainHero();
+        for (DungeonQuest quest : new ArrayList<>(questMaster.getRunningQuests())) {
+            if (quest.isComplete()) {
+                EUtils.onConfirm(true, "You have succeeded in our quest " +
+                  quest.getTitle() +
+                  "? Strange, well, here is your reward of " +
+                  quest.getReward().getGoldFormula() +
+                  " gold pieces...",
+                 false, () -> {
+                     hero.getGame().getMetaMaster().getQuestMaster().questComplete(quest);
+                 }, true);
+            }
+        }
+        town.setQuests(questMaster.getQuestsPool());
+
     }
 
     public boolean enterTown(Town town, boolean reenter) {
@@ -83,6 +111,7 @@ public class TownMaster extends MetaGameHandler {
             }
         }
         this.town = town;
+        updateQuests(town);
         town.enter(reenter);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
         inTown = true;
@@ -94,6 +123,7 @@ public class TownMaster extends MetaGameHandler {
             }, " thread").start();
         } else {
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
+            MusicMaster.getInstance().stopAmbience();
         }
         boolean result =
          (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
@@ -101,8 +131,10 @@ public class TownMaster extends MetaGameHandler {
         if (t != null) {
             main.system.auxiliary.log.LogMaster.log(1, "WAITERS ARE SCREWED ");
         }
-//        if (reenter)
-            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
+        master.getQuestMaster().startQuests();
+
+
+        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
         inTown = false;
         town.exited();
         return result;
@@ -139,6 +171,7 @@ public class TownMaster extends MetaGameHandler {
             EUtils.info("You cannot travel back while in battle!");
             return;
         }
+
         Entrance entrance = ((Location) master.getGame().getDungeonMaster().
          getDungeonWrapper()).getMainEntrance();
         int dst = Eidolons.getMainHero().getCoordinates().dst(
@@ -147,19 +180,23 @@ public class TownMaster extends MetaGameHandler {
         if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
             n += 2 * ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getMissionIndex();
         }
-        if (!Eidolons.getMainHero().hasItems("Food", n)) {
-            EUtils.info("You need at least " +
-             n + " Food to travel back to " +
-             town.getName() +
-             " (Get closer to where you entered here to reduce the cost)");
-            return;
-        }
+        if (!CoreEngine.isFastMode())
+            if (!Eidolons.getMainHero().hasItems("Food", n)) {
+                EUtils.info("You need at least " +
+                 n + " Food to travel back to " +
+                 town.getName() +
+                 " (Get closer to where you entered here to reduce the cost)");
+                return;
+            }
         int finalN = n;
         EUtils.onConfirm("Traveling back to " +
          town.getName() +
          " will require " + finalN +
          "Food. Shall we get underway?", true, () -> {
-            Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
+            if (!CoreEngine.isFastMode())
+                Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
+            Eidolons.getMainHero().setCoordinates(entrance.getCoordinates());
+            GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Eidolons.getMainHero());
             reenterTown();
         }, true);
     }

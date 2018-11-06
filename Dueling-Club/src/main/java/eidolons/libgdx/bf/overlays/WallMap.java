@@ -36,7 +36,7 @@ public class WallMap extends SuperActor {
 
     public WallMap() {
         bindEvents();
-
+        setAlphaTemplate(ALPHA_TEMPLATE.DOORS);
     }
 
     public static boolean isOn() {
@@ -108,6 +108,11 @@ public class WallMap extends SuperActor {
     @Override
     public void act(float delta) {
         super.act(delta);
+    }
+
+    @Override
+    public boolean isTeamColorBorder() {
+        return true;
     }
 
     @Override

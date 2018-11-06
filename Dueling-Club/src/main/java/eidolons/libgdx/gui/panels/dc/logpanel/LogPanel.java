@@ -3,7 +3,9 @@ package eidolons.libgdx.gui.panels.dc.logpanel;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.ColorManager;
@@ -13,7 +15,7 @@ import static main.system.GuiEventType.LOG_ENTRY_ADDED;
 /**
  * Created by JustMe on 1/5/2017.
  */
-public class LogPanel extends ScrollTextPanel {
+public class LogPanel extends ScrollTextWrapper {
 
     public LogPanel() {
         super(250, 400);
@@ -21,7 +23,11 @@ public class LogPanel extends ScrollTextPanel {
             bind();
     }
     protected ScrollPanel<Message> createScrollPanel() {
-        return   new ScrollPanel() {
+        return   new TextScroll() {
+
+            public int getMaxTableElements() {
+                return OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.LOG_LENGTH_LIMIT);
+            }
             @Override
             protected void initAlignment() {
                 left().bottom();
@@ -82,8 +88,10 @@ public class LogPanel extends ScrollTextPanel {
             LogMessage message = builder.build(getWidth() - offsetX);
             message.setFillParent(true);
             scrollPanel.addElement(message);
+
         });
     }
+
 
 
     public void initBg() {

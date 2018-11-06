@@ -123,6 +123,7 @@ public class ScenarioGenerator {
                 locationType = locationTypes.get(i++);
             if (isUsePregenerated()) {
                 String level = choosePregenLevel(type, locationType);
+                main.system.auxiliary.log.LogMaster.log(1,"LEVEL CHOSEN:  " +level);
                 if (level == null ) {
                     level = getAltPregenLevel(type, locationType);
                     locationType =  DEFAULT_LOCATION;
@@ -212,6 +213,7 @@ public class ScenarioGenerator {
                 if (levels.size()<=index) {
                     index= 0;
                 }
+                main.system.auxiliary.log.LogMaster.log(1,"Sequential LEVEL index:  " +index);
                 return levels.get(index).getName();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -248,20 +250,33 @@ public class ScenarioGenerator {
 //            else
                 switch (i%3) {
                     case 0:
-                        list.add(SUBLEVEL_TYPE.COMMON);
+                        list.add(
+                         isInvertedSize()
+                          ? SUBLEVEL_TYPE.BOSS
+                        : SUBLEVEL_TYPE.COMMON);
                         break;
                     case 1:
                         list.add(SUBLEVEL_TYPE.PRE_BOSS);
                         break;
                     case 2:
-                        list.add(SUBLEVEL_TYPE.BOSS);
+                        list.add(
+                         !isInvertedSize()
+                          ? SUBLEVEL_TYPE.BOSS
+                          : SUBLEVEL_TYPE.COMMON);
                         break;
                     default:
-                        list.add(SUBLEVEL_TYPE.COMMON);
+                        list.add(
+                         isInvertedSize()
+                          ? SUBLEVEL_TYPE.BOSS
+                          : SUBLEVEL_TYPE.COMMON);
                         break;
                 }
 
         }
         return list;
+    }
+
+    private static boolean isInvertedSize() {
+        return true;
     }
 }

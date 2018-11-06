@@ -7,10 +7,10 @@ import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.CONTENT_CONSTS.FLIP;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
@@ -49,6 +49,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private Coordinates exitCoordinates;
     private LevelStats stats;
     private DUNGEON_STYLE mainStyle;
+    private boolean surface;
 
     public DungeonLevel(LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         //        this.tileMap = TileMapper.createTileMap(model);
@@ -56,7 +57,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (model != null)
             this.tileMap = new TileMapper(model, model.getData()).joinTileMaps();
         this.sublevelType = type;
-        this.locationType = locationType;
+        setLocationType(locationType);
         if (tileMap != null)
             initEntranceAndExit();
     }
@@ -131,7 +132,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         String s = "";
         for (LevelBlock block : getBlocks()) {
             for (Coordinates c : block.getBoundCells().keySet()) {
-                if (block.getBoundCells().get(c)==null )
+                if (block.getBoundCells().get(c) == null)
                     continue;
                 s += c + "=" + block.getBoundCells().get(c).toString() + ";";
             }
@@ -178,6 +179,8 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public void setLocationType(LOCATION_TYPE locationType) {
         this.locationType = locationType;
+        if (locationType != null)
+            surface = locationType.isSurface();
     }
 
     public List<ObjAtCoordinate> getObjects() {
@@ -191,10 +194,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public List<ObjAtCoordinate> getUnits() {
-            units = new ArrayList<>();
-            for (LevelBlock block : getBlocks()) {
-                units.addAll(block.getUnits());
-            }
+        units = new ArrayList<>();
+        for (LevelBlock block : getBlocks()) {
+            units.addAll(block.getUnits());
+        }
         return units;
     }
 
@@ -325,25 +328,30 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public boolean isBoundObjectsSupported() {
-        if (locationType.getGroup()== LOCATION_TYPE_GROUP.NATURAL)
+        if (locationType.getGroup() == LOCATION_TYPE_GROUP.NATURAL)
             return false;
         return RngFillMaster.BOUND_SUPPORTED;
     }
 
     public DUNGEON_STYLE getMainStyle() {
-        if (mainStyle!=null )
+        if (mainStyle != null)
             return mainStyle;
-         TreeMap<DUNGEON_STYLE, Integer> map = new TreeMap<>() ;
+        TreeMap<DUNGEON_STYLE, Integer> map = new TreeMap<>();
         for (LevelBlock block : getBlocks()) {
             MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
         }
-        return mainStyle=map.firstKey();
-//        return new ArrayList<>(map.values()).get(0);
-//        return map.values().iterator().next();
+        return mainStyle = map.firstKey();
+        //        return new ArrayList<>(map.values()).get(0);
+        //        return map.values().iterator().next();
     }
 
 
     public void setMainStyle(DUNGEON_STYLE mainStyle) {
         this.mainStyle = mainStyle;
     }
+
+    public boolean isSurface() {
+        return surface;
+    }
+
 }

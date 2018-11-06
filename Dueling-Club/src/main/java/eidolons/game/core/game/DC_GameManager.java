@@ -186,7 +186,7 @@ public class DC_GameManager extends GameManager {
     private void updateGraphics() {
         //set dirty flag?
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
-//        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
+        //        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, getMainHero());
     }
 
@@ -286,8 +286,8 @@ public class DC_GameManager extends GameManager {
         Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
             if (ref.getActive() instanceof DC_ActiveObj) {
                 //TODO CLICK ON ANY OTHER OBJ MUST RESULT IN SELECTION STOP!
-//                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
-//                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
+                //                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
+                //                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
                 t.invokeClicked();
             }
         });
@@ -307,8 +307,8 @@ public class DC_GameManager extends GameManager {
         this.selectingSet = selectingSet;
 
         if (selectingSet.isEmpty()) {
-//            getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
-//             "No targets available!");
+            //            getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
+            //             "No targets available!");
             DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
             return null;
         }
@@ -504,40 +504,47 @@ public class DC_GameManager extends GameManager {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
         if (event.getRef().getSourceObj() != null) {
-        if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
-            if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
-                if (!Showcase.isRunning())
-                    AnimMaster.getInstance().getConstructor().preconstruct(event);
-                else
-                    try {
+            if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
+                if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
+                    if (!Showcase.isRunning())
                         AnimMaster.getInstance().getConstructor().preconstruct(event);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-            }
+                    else
+                        try {
+                            AnimMaster.getInstance().getConstructor().preconstruct(event);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                }
         } else {
             event.getRef().getSourceObj(); //TODO debug this
         }
         checkDefaultEventTriggers(event);
-        return super.handleEvent(event);
+        boolean result = super.handleEvent(event);
+
+        try {
+            getGame().getBattleMaster().getStatManager().eventBeingHandled(event);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return result;
     }
 
     private void checkDefaultEventTriggers(Event event) {
         if (HpBar.isResetOnLogicThread())
-        if (event.getType()==STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT ||
+            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT ||
 
-         event.getType().name().startsWith("PARAM_MODIFIED")
-            && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
+             event.getType().name().startsWith("PARAM_MODIFIED")
+              && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
 
-                    try {
-                        DungeonScreen.getInstance().getGridPanel().getGridManager().
-                         checkHpBarReset(event.getRef().getSourceObj());
-                    } catch (NullPointerException e) {
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
+                try {
+                    DungeonScreen.getInstance().getGridPanel().getGridManager().
+                     checkHpBarReset(event.getRef().getSourceObj());
+                } catch (NullPointerException e) {
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
-        }
+    }
 
 
     @Override

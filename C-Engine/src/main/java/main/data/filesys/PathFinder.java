@@ -159,6 +159,10 @@ public class PathFinder {
         return FONT_PATH;
     }
 
+    public static String getFontsHieroPath() {
+        init();
+        return FONT_PATH+"hiero/";
+    }
     public static String getTemplatesPath() {
         init();
         return XML_PATH + ABILITY_TEMPLATES_PATH;

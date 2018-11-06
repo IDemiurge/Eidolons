@@ -5,6 +5,7 @@ import main.data.XLinkedMap;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.Map;
 
@@ -43,6 +44,12 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         return this;
     }
 
+    public WeightMap<E> merge(WeightMap<E> map) {
+        for (E e : map.keySet()) {
+            MapMaster.addToIntegerMap(this, e, map.get(e));
+        }
+        return this;
+    }
     @Override
     public String toString() {
         String string = "";

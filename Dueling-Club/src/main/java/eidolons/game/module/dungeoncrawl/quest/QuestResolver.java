@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.ability.conditions.DynamicCondition;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import main.elements.conditions.Condition;
 import main.elements.conditions.ObjComparison;
@@ -89,9 +90,21 @@ public class QuestResolver  extends QuestHandler{
     private Runnable getCompletionRunnable(DungeonQuest quest) {
         QuestReward reward = quest.getReward();
         return () -> {
-            GuiEventManager.trigger(GuiEventType.QUEST_ENDED, quest);
-            reward.award(Eidolons.getMainHero());
-            quest.setComplete(true);
+            EUtils.onConfirm("Congratulations! You have completed the quest " +
+             quest.getTitle() +
+             "! " +
+             "Your exploits have given you " +
+//             "You have gained " +
+             reward.getXpFormula() +
+             " Experience and the " +
+             reward.getGoldFormula() +
+             " gold pieces promised to you await you in " +
+             quest.getTown().getName() +
+             ". Probably...", false, ()->{
+                GuiEventManager.trigger(GuiEventType.QUEST_ENDED, quest);
+                reward.award(Eidolons.getMainHero(), false);
+                quest.setComplete(true);
+            } );
         };
     }
 }

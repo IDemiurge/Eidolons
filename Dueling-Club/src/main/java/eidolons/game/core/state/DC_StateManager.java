@@ -506,7 +506,7 @@ public class DC_StateManager extends StateManager {
             return;
         }
         super.addObject(obj);
-        getGame().getMaster().checkAddUnit(obj);
+        getGame().getMaster().tryAddUnit(obj);
 
     }
 

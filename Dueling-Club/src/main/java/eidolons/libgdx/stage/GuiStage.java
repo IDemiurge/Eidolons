@@ -428,8 +428,11 @@ public class GuiStage extends StageX implements StageWithClosable {
         });
 
         GuiEventManager.bind(GuiEventType.CONFIRM, p -> {
-            Triple<String, Boolean, Runnable> triple = (Triple<String, Boolean, Runnable>) p.get();
-            confirm(triple.getLeft(), triple.getMiddle(), triple.getRight(), null);
+            Triple<String, Object, Runnable> triple = (Triple<String, Object, Runnable>) p.get();
+            if (triple.getMiddle() instanceof Runnable) {
+                confirm(triple.getLeft(), true, triple.getRight(),  ((Runnable) triple.getMiddle()));
+            } else
+                confirm(triple.getLeft(), (Boolean) triple.getMiddle(), triple.getRight(), null);
 
         });
     }

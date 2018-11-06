@@ -2,13 +2,13 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.meta.QuestEnums;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
-import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -46,9 +46,9 @@ public class QuestMaster extends MetaGameHandler {
         creator = new QuestCreator(this);
         selector = new QuestSelector(this);
 
-        if (!CoreEngine.isMacro()) {
-            XML_Reader.readTypeFile(true, MACRO_OBJ_TYPES.QUEST);
-        }
+//        if (!CoreEngine.isMacro()) {
+//            XML_Reader.readTypeFile(true, MACRO_OBJ_TYPES.QUEST);
+//        }
         GuiEventManager.bind(GuiEventType.QUEST_TAKEN,
          p -> {
              questTaken(p.get().toString());
@@ -130,6 +130,7 @@ public class QuestMaster extends MetaGameHandler {
     public void startedQuests() {
         quests.forEach(quest ->
          GuiEventManager.trigger(GuiEventType.QUEST_STARTED, quest));
+        GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED );
         started = true;
     }
 
@@ -139,7 +140,7 @@ public class QuestMaster extends MetaGameHandler {
         return !quests.isEmpty();
     }
 
-    public List<DungeonQuest> getQuests() {
+    public List<DungeonQuest> getRunningQuests() {
         return quests;
     }
 
@@ -169,6 +170,9 @@ public class QuestMaster extends MetaGameHandler {
             case OBJECTS:
                 switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
                     case Somber:
+                    case Grimy:
+                    case Pagan:
+                    case Arcane:
                         return true;
                 }
                 return false;
@@ -196,4 +200,13 @@ public class QuestMaster extends MetaGameHandler {
         return questsPool;
     }
 
+    public void questComplete(DungeonQuest quest) {
+        questCancelled(quest.getTitle()); // just in case?..
+        GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, quest.getTitle());
+        GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED );
+        questsPool.remove(quest); //can't retake it
+        updateQuests();
+        quest.getReward().award( Eidolons.getMainHero(), true);
+        quest.setRewardTaken(true);
+    }
 }

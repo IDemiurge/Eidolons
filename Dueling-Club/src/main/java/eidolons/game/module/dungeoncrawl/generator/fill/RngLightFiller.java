@@ -15,7 +15,7 @@ public class RngLightFiller extends RngFiller {
     }
 
     protected int getJustDontChance(LevelBlock block, ROOM_CELL filler) {
-        return 40;
+        return 53;
     }
     protected int getWrapByExitChance(Room room) {
         return 0;

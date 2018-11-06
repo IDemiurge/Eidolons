@@ -17,7 +17,9 @@ public abstract class PlaceSelectionPanel extends SelectionPanel {
     public void cancel() {
     //disable ESC
     }
-
+    protected boolean isShadersEnabled() {
+        return true;
+    }
     @Override
     protected boolean isListOnTheRight() {
         return true;

@@ -62,7 +62,7 @@ public enum G_PROPS implements PROPERTY {
     PASSIVES("all", "Passives"),
 
     DEITY("Deity", "units", "chars"),
-    FLAVOR("Flavor", false, "weapons", "armor", "items", "jewelry", "classes", "skills", "spells"),
+    FLAVOR("Flavor", false, "scenarios", "weapons", "armor", "items", "jewelry", "classes", "skills", "spells"),
     DESCRIPTION("all", "Description"),
     LORE("all", "Lore"),
     // "chars"

@@ -498,6 +498,7 @@ public final class UnitEnums {
         public String getSubgroups() {
             return subgroups;
         }
+
     }
 
     public enum UNITS_TYPES implements OBJ_TYPE_ENUM {

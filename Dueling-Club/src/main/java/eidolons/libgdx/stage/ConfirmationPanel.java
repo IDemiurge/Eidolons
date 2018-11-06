@@ -83,6 +83,7 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     @Override
     public void open() {
+        setSize(600, 300);
         getStageWithClosable().openClosable(this);
         cancel.setVisible(canCancel);
         String wrapped = text;
@@ -94,6 +95,8 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         label.setText(wrapped);
         label.pack();
         setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));
+        setFixedSize(false);
+        pack();
     }
 
     public void setText(String text) {

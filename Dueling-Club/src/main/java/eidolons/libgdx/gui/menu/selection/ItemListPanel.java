@@ -160,8 +160,11 @@ public abstract class ItemListPanel extends TablePanel {
         clicked(i);
     }
 
+    public int getIndex() {
+        return  getItems().indexOf(currentItem);
+    }
     public void selectWithOffset(int offset) {
-        int index = getItems().indexOf(currentItem);
+        int index = getIndex();
         index += offset;
         if (index >= buttons.size())
             index = 0;

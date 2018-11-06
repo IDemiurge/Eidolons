@@ -436,6 +436,9 @@ public class RngBfObjProvider {
             default:
                 return null;
         }
+        if (map.isEmpty()) {
+            return getDecorWeightMap(DUNGEON_STYLE.Somber, overlaying);
+        }
         return map;
     }
 

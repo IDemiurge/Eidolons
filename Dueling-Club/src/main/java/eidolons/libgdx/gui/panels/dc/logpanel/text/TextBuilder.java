@@ -15,6 +15,7 @@ public class TextBuilder {
     protected Message message;
 
     protected StringBuilder sb;
+    private LabelStyle defaultHiero;
 
     public TextBuilder() {
         sb = new StringBuilder();
@@ -55,6 +56,12 @@ public class TextBuilder {
     }
 
     protected LabelStyle getDefaultLabelStyle() {
+        if (StyleHolder.isHieroOn())
+        {
+            if (defaultHiero==null)
+                defaultHiero=  new LabelStyle(StyleHolder.getHieroFontHigh(), getColor());
+            return defaultHiero;
+        }
         return
          StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(),
           getColor());

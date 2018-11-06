@@ -23,7 +23,8 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.8.8";
+    public static final String VERSION = "0.8.8b";
+    public static   String filesVersion ="v"+VERSION.replace(".","-");
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -431,4 +432,5 @@ public class CoreEngine {
     public static void setFullFastMode(boolean fullFastMode) {
         CoreEngine.fullFastMode = fullFastMode;
     }
+
 }

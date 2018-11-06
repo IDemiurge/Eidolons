@@ -74,6 +74,10 @@ public class GameMenuHandler {
                 GameMenu.menuOpen = false;
                 Saver.save();
                 break;
+            case ACHIEVEMENTS:
+                GuiEventManager.trigger(GuiEventType.SHOW_ACHIEVEMENTS);
+                GameMenu.menuOpen = false;
+                break;
             case BACK_TO_TOWN:
                 GameMenu.menuOpen = false;
                 Eidolons.onNonGdxThread(()->

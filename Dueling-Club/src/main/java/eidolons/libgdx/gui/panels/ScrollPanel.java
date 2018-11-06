@@ -16,15 +16,16 @@ import main.system.auxiliary.NumberUtils;
 public class ScrollPanel<T extends Actor> extends Container<Container> {
 
 
-    private TablePanelX table;
+    protected static Integer scrollAmount;
     protected InnerScrollContainer<Table> innerScrollContainer;
     protected float instantOffsetY;
     protected float offsetY;
     protected boolean widgetPosChanged;
-    protected static Integer scrollAmount;
+    private TablePanelX table;
 
     public ScrollPanel() {
         init();
+        offsetY = getDefaultOffsetY();
     }
 
     @Override
@@ -60,8 +61,25 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         Cell cell = getTable().addNormalSize(obj).fill();
         getTable().row();
         getTable().pack();
-        offsetY = 200;
+        if (offsetY == 0)
+            offsetY = 200;
+        checkClear();
         return cell;
+    }
+
+    private void checkClear() {
+        int max = getMaxTableElements();
+        if (max != 0) {
+            while (table.getChildren().size > max) {
+                Actor child = table.getChildren().first();
+                offsetY -= child.getHeight();
+                child.remove();
+            }
+        }
+    }
+
+    public int getMaxTableElements() {
+        return 0;
     }
 
     @Override
@@ -95,6 +113,18 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         super.setActor(innerScrollContainer);
         initScrollListener();
 
+    }
+
+    protected void initAlignment() {
+        left().top();
+    }
+
+    protected int getInnerTableAlignment() {
+        return Align.top;
+    }
+
+    protected void alignInnerScroll() {
+        innerScrollContainer.left().bottom();
     }
 
     public void initScrollListener() {
@@ -159,17 +189,6 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         });
     }
 
-    protected void initAlignment() {
-        left().top();
-    }
-
-    protected int getInnerTableAlignment() {
-        return Align.top;
-    }
-
-    protected void alignInnerScroll() {
-        innerScrollContainer.left().bottom();
-    }
 
     protected boolean isTouchScrolled() {
         return false;
@@ -194,10 +213,15 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         if (0 != offsetY ||
          instantOffsetY != 0) {
             float cy = innerScrollContainer.getY();
-            if (offsetY < 0)
-                if (cy <= -innerScrollContainer.getHeight() / 2) {
+            if (offsetY < 0) {
+                if (cy <= -getUpperLimit()) {
                     return;
                 }
+            } else {
+                if (cy >= getLowerLimit()) {
+                    return;
+                }
+            }
 
             float step =
              new Float(NumberUtils.formatFloat(2,
@@ -219,6 +243,14 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         }
     }
 
+    protected float getLowerLimit() {
+        return getHeight() * 0.82f;
+    }
+
+    protected float getUpperLimit() {
+        return innerScrollContainer.getHeight() * 0.73f;
+    }
+
 
     protected boolean isAlwaysScrolled() {
         return true;
@@ -236,19 +268,22 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         if (a == null) {
             return null;
         }
+        if (getStage() == null) {
+            return null;
+        }
         getStage().setScrollFocus(this);
         return a;
     }
 
     public Integer getScrollAmount() {
         if (scrollAmount == null) {
-            scrollAmount =60* OptionsMaster.getControlOptions().getIntValue(CONTROL_OPTION.SCROLL_SPEED);
+            scrollAmount = 60 * OptionsMaster.getControlOptions().getIntValue(CONTROL_OPTION.SCROLL_SPEED);
         }
         return scrollAmount;
     }
 
     public static void setScrollAmount(Integer scrollAmount) {
-        ScrollPanel.scrollAmount = 60*scrollAmount;
+        ScrollPanel.scrollAmount = 60 * scrollAmount;
     }
 
     public TablePanelX getTable() {
@@ -258,4 +293,5 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     public void setTable(TablePanelX table) {
         this.table = table;
     }
+
 }

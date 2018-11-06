@@ -179,7 +179,7 @@ public class ContentGenerator {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-            writeDataToText();
+//            writeDataToText();
     }
 
     private static void writeDataToText() {

@@ -16,7 +16,7 @@ import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
 
 public class CorrosionRule extends DC_CounterRule {
-    private static final String DURABILITY_PER_COUNTER = "(-0.5)";
+    private static final String DURABILITY_PER_COUNTER = "(-0.1)";
     private static final String RESIST_PER_COUNTER = "(-1)";
     private static final String ARMOR_MOD_PER_COUNTER = "(-2)";
     private static final String ARMOR_PER_COUNTER = "(-0.5)";

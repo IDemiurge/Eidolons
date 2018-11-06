@@ -74,6 +74,7 @@ public class MusicMaster {
 
     private Float musicVolume;
     private Float ambientVolume;
+    private float PAUSE;
     // IDEA: map music per scope to resume()
     // TODO AMBIENT SOUNDS -
 
@@ -92,11 +93,7 @@ public class MusicMaster {
         GuiEventManager.bind(GuiEventType.MUSIC_START, p -> {
             Object data = p.get();
             if (data == null) {
-                try {
-                    checkNewMusicToPlay();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+                checkNewMusicToPlay();
                 return;
             }
             if (data instanceof String) {
@@ -206,13 +203,16 @@ public class MusicMaster {
     }
 
     public void scopeChanged(MUSIC_SCOPE scope) {
+        if (this.scope == scope) {
+            return;
+        }
         setScope(scope);
         if (!isRunning()) {
             startLoop();
         }
         if (!isOn())
             return;
-        playedAmbient = null;
+        stopAmbience();
         if (ListMaster.isNotEmpty(playList))
             playList.clear();
         pause();
@@ -223,7 +223,6 @@ public class MusicMaster {
         if (playedMusic == null) {
             checkNewMusicToPlay();
         }
-        checkAmbience(true);
         resume();
         //fade? :)
         //
@@ -288,7 +287,10 @@ public class MusicMaster {
                 if (playedMusic.isPlaying())
                     return;
         if (ListMaster.isNotEmpty(playList)) {
-            playMusic(playList.pop());
+            if (playedMusic != null)
+                if (checkMakePause())
+                    return;
+                playMusic(playList.pop());
             return;
         }
         if (!autoplay)
@@ -321,18 +323,47 @@ public class MusicMaster {
         //       TODO what was the idea? checkUpdateTypes();
     }
 
-    private void checkAmbience() {
-        checkAmbience(false);
+    private boolean checkMakePause() {
+        int chance = 0;
+        int length = 0;
+        if (scope == MUSIC_SCOPE.BATTLE) {
+            chance = 10;
+            length = 100 * 1000;
+        }
+        if (scope == MUSIC_SCOPE.MENU) {
+            chance = 100;
+            length = 30 * 1000;
+        }
+        if (scope == MUSIC_SCOPE.MAP) {
+            chance = 6;
+            length = 15 * 1000;
+        }
+        if (RandomWizard.chance(chance)) {
+            PAUSE = length;
+            ALT_AMBIENCE = !ALT_AMBIENCE;
+            return true;
+        }
+        return false;
     }
 
-    private void checkAmbience(boolean interrupt) {
+    public void stopAmbience() {
+        if (playedAmbient != null)
+            if (playedAmbient.isPlaying())
+            {
+                playedAmbient.stop();
+                playedAmbient = null;
+            }
+    }
+
+    private void checkAmbience() {
         if (!isAmbientOn()) {
             if (playedAmbient != null)
-                playedAmbient.stop();
+                if (playedAmbient.isPlaying())
+                    playedAmbient.stop();
             return;
         }
 
-        if (playedAmbient == null || !playedAmbient.isPlaying() || interrupt) {
+        if (playedAmbient == null || !playedAmbient.isPlaying()) {
 
             boolean global = true; //TODO
             AMBIENCE newAmbience = null;
@@ -351,17 +382,22 @@ public class MusicMaster {
                 ambience = newAmbience;
                 if (playedAmbient != null) {
                     playedAmbient.stop();
+//                    playedAmbient = null;
+                    return;
                 }
             }
-            if (playedAmbient == null ) {
+            if (playedAmbient == null) {
                 playedAmbient = new PreloadedMusic(ambience.getPath());
                 log(1, "loaded Ambient: " + ambience.getPath());
                 Float volume = getAmbientVolume();
                 playedAmbient.setVolume(volume);
             }
-
-            log(1, "playing Ambient: " + ambience.getPath());
-            playedAmbient.play();
+            if (playedAmbient.isPlaying()) {
+                log(1, "WTF  " + ambience.getPath());
+            } else {
+                log(1, "playing Ambient: " + ambience.getPath());
+                playedAmbient.play();
+            }
 
 
             if (RandomWizard.chance(ALT_AMBIENCE_TOGGLE_CHANCE)) {
@@ -375,8 +411,12 @@ public class MusicMaster {
         if (scope == MUSIC_SCOPE.MENU) {
             return false;
         }
-        //        if (scope == MUSIC_SCOPE.BATTLE)
-        //            return false;
+        if (scope == MUSIC_SCOPE.BATTLE)
+        {
+            if (PAUSE>0)
+                return true;
+            return ALT_AMBIENCE;
+        }
         return true;
     }
 
@@ -423,26 +463,33 @@ public class MusicMaster {
 
         thread = new Thread(() -> {
             while (true) {
-                checkAmbience();
-                if (!stopped) {
-                    if (playedMusic != null) {
-                        if (!playedMusic.isPlaying()) {
-                            checkNewMusicToPlay();
-                        }
-                    } else {
-                        checkNewMusicToPlay();
-                    }
-                }
                 try {
-                    WaitMaster.WAIT(PERIOD);
+                    runLoop();
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
-            //        MusicMaster.this.running=false;
         }, "Music Thread");
         thread.start();
         running = true;
+    }
+
+    private void runLoop() {
+        checkAmbience();
+        if (!stopped) {
+            if (PAUSE > 0) {
+                PAUSE -= PERIOD;
+            } else {
+                if (playedMusic != null) {
+                    if (!playedMusic.isPlaying()) {
+                        checkNewMusicToPlay();
+                    }
+                } else {
+                    checkNewMusicToPlay();
+                }
+            }
+        }
+        WaitMaster.WAIT(PERIOD);
     }
 
     public void resume() {
@@ -473,13 +520,9 @@ public class MusicMaster {
         Float volume =
          getVolume();
         playedMusic.setVolume(volume);
-        try {
-            playedMusic.play();
-            trackCache.put(this.scope, playedMusic);
-            log(1, "Music playing: " + path);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        playedMusic.play();
+        trackCache.put(this.scope, playedMusic);
+        log(1, "Music playing: " + path);
     }
 
     private Music getMusic(String path) {

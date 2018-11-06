@@ -261,6 +261,7 @@ public class DungeonEnums {
         // MISTY_MOUNTAINS("big","death combat","Misty Mountains Onyx Spire.jpg"),
 
         BASTION(PathFinder.getBgPicsPath(),"bastion.jpg"),
+        BASTION_DARK(PathFinder.getBgPicsPath(),"bastion_1.1.png"),
         CAVE(PathFinder.getBgPicsPath(),"ship flip.jpg"),
         SHIP(PathFinder.getBgPicsPath(),"dungeon.png"),
         ELVEN_RUINS(PathFinder.getBgPicsPath(), "RUINS.jpg"),

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.logpanel.text;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.ScrollPanel;
@@ -15,7 +16,7 @@ import main.system.graphics.FontMaster.FONT;
 /**
  * Created by JustMe on 11/29/2017.
  */
-public class ScrollTextPanel extends TablePanelX {
+public class ScrollTextWrapper extends TablePanelX {
     protected boolean updatePos = false;
     protected float offsetX = 20;
     protected ScrollPanel<Message> scrollPanel;
@@ -25,13 +26,13 @@ public class ScrollTextPanel extends TablePanelX {
     private FONT fontStyle;
     private Image bg;
 
-    public ScrollTextPanel(float defaultHeight, float defaultWidth) {
+    public ScrollTextWrapper(float defaultHeight, float defaultWidth) {
         this.defaultHeight = defaultHeight;
         this.defaultWidth = defaultWidth;
         init();
     }
 
-    public ScrollTextPanel() {
+    public ScrollTextWrapper() {
         init();
     }
 
@@ -48,12 +49,13 @@ public class ScrollTextPanel extends TablePanelX {
             bg.setZIndex(0);
         updatePos = true;
     }
+
     protected void initScrollPanel() {
         if (scrollPanel != null) {
             scrollPanel.remove();
         }
-        scrollPanel =createScrollPanel();
-
+        scrollPanel = createScrollPanel();
+        //        scrollPanel.setMaxTableElements()
         scrollPanel.pad(1, 10, 1, 10);
         scrollPanel.fill();
 
@@ -61,22 +63,11 @@ public class ScrollTextPanel extends TablePanelX {
     }
 
     protected ScrollPanel<Message> createScrollPanel() {
-      return   new ScrollPanel() {
-            @Override
-            protected void pad(ScrollPanel scrollPanel) {
-                padScroll(scrollPanel);
-            }
+        return new TextScroll();
+    }
 
-            @Override
-            protected boolean isAlwaysScrolled() {
-                return isScrolledAlways();
-            }
-
-            @Override
-            public int getDefaultOffsetY() {
-                return getInitialYOffset();
-            }
-        };
+    protected void initAlignmentScroll(ScrollPanel scrollPanel) {
+        scrollPanel.left().top();
     }
 
     protected void padScroll(ScrollPanel scrollPanel) {
@@ -100,7 +91,6 @@ public class ScrollTextPanel extends TablePanelX {
     protected Drawable getNinePatch() {
         return NinePatchFactory.getLightDecorPanelFilledDrawable();
     }
-
 
     protected int getFontSize() {
         if (fontSize != 0) {
@@ -150,18 +140,17 @@ public class ScrollTextPanel extends TablePanelX {
         return getWidth();
     }
 
-
     protected TextBuilder getTextBuilder() {
         return new TextBuilder() {
             @Override
             protected FONT getFontStyle() {
                 return
-                 ScrollTextPanel.this.getFontStyle();
+                 ScrollTextWrapper.this.getFontStyle();
             }
 
             @Override
             protected int getFontSize() {
-                return ScrollTextPanel.this.getFontSize();
+                return ScrollTextWrapper.this.getFontSize();
             }
 
             @Override
@@ -178,7 +167,6 @@ public class ScrollTextPanel extends TablePanelX {
     protected boolean isScrolledAlways() {
         return false;
     }
-
 
     @Override
     public void act(float delta) {
@@ -204,5 +192,31 @@ public class ScrollTextPanel extends TablePanelX {
             return null;
         }
         return actor;
+    }
+
+    public class TextScroll extends ScrollPanel {
+        @Override
+        protected void initAlignment() {
+            initAlignmentScroll(this);
+        }
+
+        protected int getInnerTableAlignment() {
+            return Align.top;
+        }
+
+        @Override
+        protected void pad(ScrollPanel scrollPanel) {
+            padScroll(scrollPanel);
+        }
+
+        @Override
+        protected boolean isAlwaysScrolled() {
+            return isScrolledAlways();
+        }
+
+        @Override
+        public int getDefaultOffsetY() {
+            return getInitialYOffset();
+        }
     }
 }

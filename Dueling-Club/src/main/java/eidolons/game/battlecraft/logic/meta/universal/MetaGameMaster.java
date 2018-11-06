@@ -22,6 +22,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 
@@ -141,7 +142,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void preStart() {
         partyManager.preStart();
-        getBattleMaster().getOptionManager().selectDifficulty();
+//        getBattleMaster().getOptionManager().selectDifficulty();
         //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
@@ -217,6 +218,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         AnimMaster.getInstance().cleanUp();
         Coordinates.clearCaches();
 
+        LogMaster.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());
     }
 
 

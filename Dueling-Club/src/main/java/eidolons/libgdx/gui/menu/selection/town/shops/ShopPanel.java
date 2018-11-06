@@ -13,7 +13,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.gui.HideDecorator;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -160,8 +159,15 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     @Override
     public void layout() {
         super.layout();
-        header.setPosition(GdxMaster.right(header) - NINE_PATCH_PADDING.SAURON.right,
-         getHeight() - header.getHeight() / 2);
+
+        header.setPosition(
+         containerSlotsPanel.getX() + (containerSlotsPanel.getWidth()-header.getWidth())+11,
+//         GdxMaster.right(header) - NINE_PATCH_PADDING.SAURON.right*3+5,
+         containerSlotsPanel.getY() + containerSlotsPanel.getHeight()+10
+//         getHeight() - header.getHeight() / 2- Math.max(1130-GdxMaster.getHeight(), 45 )
+        );
+
+
         TextureRegion bg = TextureCache.getOrCreateR("ui/components/hq/inv/inv slots bg.png");
         containerSlotsPanel.setBackground(new TextureRegionDrawable(bg));
         containerSlotsPanel.setSize(bg.getRegionWidth(), bg.getRegionHeight());

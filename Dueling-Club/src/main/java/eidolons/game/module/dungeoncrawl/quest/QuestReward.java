@@ -4,6 +4,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
@@ -13,6 +14,7 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -35,8 +37,9 @@ public class QuestReward {
           level =
          new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
           objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
-        int gold=25;
-        int xp=25;
+        int gold=20*Eidolons.getMainHero().getLevel();
+        int xp=20*Eidolons.getMainHero().getLevel();
+
         if (type == null) {
             xp+=50;
             gold+=50;
@@ -63,6 +66,13 @@ public class QuestReward {
         xp=Math.round(xp*level.factor);
         gold=Math.round(gold*level.factor);
         }
+        float r = RandomWizard.getRandomFloatBetween(0.6f, 1.4f);
+        xp=Math.round(xp*r);
+        gold=Math.round(gold*(1/r));
+
+        xp = xp-xp%5;
+        gold = gold-gold%5;
+
         goldFormula=""+gold;
         xpFormula=""+xp;
     }
@@ -81,20 +91,13 @@ public class QuestReward {
         return s;
     }
 
-    public void award(Unit hero) {
+    public void award(Unit hero, boolean inTown) {
 
         //TODO special menu with congrats?
 
         EUtils.showInfoText(title + " is complete!"  );
 
-        Integer xp = new Formula(xpFormula).getInt(hero.getRef());
-        Integer gold = new Formula(goldFormula).getInt(hero.getRef());
-
-        HeroLevelManager.addXp(hero, xp);
-        HeroLevelManager.addGold(hero, gold);
-
         switch (level) {
-
             case EASY:
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOON_SMALL);
                 break;
@@ -105,14 +108,48 @@ public class QuestReward {
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOON_LARGE);
                 break;
         }
+        Integer xp = new Formula(xpFormula).getInt(hero.getRef());
+        Integer gold = new Formula(goldFormula).getInt(hero.getRef());
 
+        if (!inTown)
+            HeroLevelManager.addXp(hero, xp);
+        if (inTown)
+        {
+            HeroLevelManager.addGold(hero, gold);
         if (DataManager.isTypeName(itemDescriptor, C_OBJ_TYPE.ITEMS) ) {
             DC_HeroItemObj item = ItemFactory.createItemObj(DataManager.getType(itemDescriptor,
              C_OBJ_TYPE.ITEMS), hero, false);
              hero.addItemToInventory(item);
-
             EUtils.showInfoText( "Added to inventory: " + item  );
         }
+        }
+    }
 
+    public QUEST_REWARD_TYPE getType() {
+        return type;
+    }
+
+    public QUEST_LEVEL getLevel() {
+        return level;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getXpFormula() {
+        return xpFormula;
+    }
+
+    public String getReputationFormula() {
+        return reputationFormula;
+    }
+
+    public String getItemDescriptor() {
+        return itemDescriptor;
+    }
+
+    public String getGoldFormula() {
+        return goldFormula;
     }
 }

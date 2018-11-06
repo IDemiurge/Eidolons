@@ -39,11 +39,11 @@ public class StaminaBuffRule extends DC_BuffRule {
                 );
             }
             case 1: {
-                return new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
+                return new ModifyValueEffect(PARAMS.N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
                  getEffectFormula());
             }// ++ Endurance regen?
             case 2: {
-                return new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
+                return new ModifyValueEffect(PARAMS.N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
                  getEffectFormula());
 
             }
@@ -59,11 +59,13 @@ public class StaminaBuffRule extends DC_BuffRule {
             case 1: {
                 return "(" + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
                  + ")*5";
+                //-5% ATB for each point of Stamina below 10
             }
             case 2: {
                 // "5*sqrt(" +
                 return StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[2];
                 // + ")";
+                //+1% ATB for each point of Stamina above 150
             }
 
         }

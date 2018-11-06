@@ -1,8 +1,0 @@
-<Level><Custom_Props><Dungeon_Subfolder>TEST</Dungeon_Subfolder>
-<Workspace_Group>IMPLEMENT</Workspace_Group>
-<Filler_Type>Stone Wall</Filler_Type>
-</Custom_Props><Custom_Params><Bf_Width>15</Bf_Width>
-<Bf_Height>11</Bf_Height>
-</Custom_Params><Wall_Objects>1-2=Witchfire Brazier,1-2=Witchfire Brazier,1-2=Witchfire Brazier,1-2=Witchfire Brazier,1-2=Witchfire Brazier,1-2=Witchfire Brazier,</Wall_Objects>
-<Plan><Dungeon_Type>Ancient Ruins</Dungeon_Type>
-<Zones><Zone_UNICODE35CODEEND0UNICODE44CODEEND_X0UNICODE45CODEEND15UNICODE59CODEEND_Y0UNICODE45CODEEND11><Blocks></Blocks></Zone_UNICODE35CODEEND0UNICODE44CODEEND_X0UNICODE45CODEEND15UNICODE59CODEEND_Y0UNICODE45CODEEND11></Zones></Plan></Level>

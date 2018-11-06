@@ -2,7 +2,10 @@ package eidolons.game.battlecraft.logic.battle.universal.stats;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager.PLAYER_STATS;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStats.BATTLE_STATS;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;
 import main.system.data.DataUnit;
 import main.system.datatypes.DequeImpl;
@@ -17,7 +20,7 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
     // record)
 
     private Boolean outcome;
-    private Integer glory;
+    private Integer glory=0;
     private DequeImpl<Unit> slainSummonedAllies = new DequeImpl<>();
     private DequeImpl<Unit> slainSummonedEnemies = new DequeImpl<>();
     private DequeImpl<Unit> slainEnemyUnits = new DequeImpl<>();
@@ -26,10 +29,31 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
 
     private Map<Unit, UnitStats> unitStatMap = new XLinkedMap<>();
     private Map<DC_Player, PlayerStats> playerStatMap = new XLinkedMap<>();
+    private Map<String, Integer> mainStatMap = new XLinkedMap<>();
+
+    DC_Game game;
+
+    public BattleStats(DC_Game game) {
+        this.game = game;
+    }
 
     public int getLevel() {
         return getIntValue(BATTLE_STATS.LEVEL);
 
+    }
+
+    @Override
+    public String toString() {
+        String stats = "";
+        Map<String, Integer> map = getUnitStats(Eidolons.getMainHero()).getGeneralStats();
+        for (String s : map.keySet()) {
+            stats+="\n" + s + ": " + map.get(s);
+        }
+        return stats;
+    }
+
+    public Map<String, Integer> getMainStatMap() {
+        return mainStatMap;
     }
 
     public int getRound() {
@@ -50,6 +74,9 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
 
     public void setGlory(Integer glory) {
         this.glory = glory;
+    }
+    public void addGlory(Integer glory) {
+        this.glory += glory;
     }
 
     public DequeImpl<Unit> getSlainSummonedAllies() {
@@ -92,6 +119,35 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
             getUnitStatMap().put(unit, new UnitStats(unit));
         }
         return getUnitStatMap().get(unit);
+    }
+
+    public UnitStats getHeroStats() {
+        return game.getBattleMaster().getStatManager().
+         getStats().getUnitStats(Eidolons.getMainHero());
+    }
+    private PlayerStats getPlayerStats() {
+        return game.getBattleMaster().getStatManager().
+         getStats().getPlayerStats(game.getPlayer(true));
+    }
+
+    private Integer getPlayerStat(PLAYER_STATS stat) {
+        return getPlayerStats().getStatsMap().get(stat);
+    }
+
+    public Integer getUnitsSlain() {
+        return getPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED);
+    }
+
+    public Integer getALLIES_DIED() {
+        return getPlayerStat(PLAYER_STATS.ALLIES_DIED);
+    }
+
+    public Integer getDAMAGE_DEALT() {
+        return getPlayerStat(PLAYER_STATS.ALLIES_DAMAGE_DEALT);
+    }
+
+    public Integer getDAMAGE_TAKEN() {
+        return getPlayerStat(PLAYER_STATS.ALLIES_DAMAGE_TAKEN);
     }
 
     public enum BATTLE_STATS {

@@ -68,8 +68,12 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             dungeonWrapper = initDungeon();
         getBuilder().initLevel();
 
-
         //TODO remove this!
+
+        if (dungeonWrapper == null){
+            dungeonWrapper = initDungeon();
+            getBuilder().initLevel();
+        }
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
         if (!ImageManager.isImage(dungeonWrapper.getMapBackground())) {

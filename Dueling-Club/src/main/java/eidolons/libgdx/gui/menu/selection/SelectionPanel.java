@@ -25,6 +25,8 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -42,6 +44,7 @@ public abstract class SelectionPanel extends TablePanelX {
     public SelectionPanel() {
         this(null);
     }
+
     public SelectionPanel(Object data) {
         this.data = data;
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
@@ -53,7 +56,7 @@ public abstract class SelectionPanel extends TablePanelX {
 
         row();
 
-        TablePanel<Actor> container = new TablePanelX<>(getWidth()-listPanel.getWidth(), getHeight());
+        TablePanel<Actor> container = new TablePanelX<>(getWidth() - listPanel.getWidth(), getHeight());
 
         if (isListOnTheRight()) {
             container.addNormalSize(infoPanel.getActor()).left();
@@ -74,7 +77,7 @@ public abstract class SelectionPanel extends TablePanelX {
         addElement(null).bottom().size(getWidth(), 70);
 
         if (isDoneSupported()) {
-            infoPanel.initStartButton(getDoneText(), ()->tryDone());
+            infoPanel.initStartButton(getDoneText(), () -> tryDone());
         }
         if (isBackSupported()) {
             addActor(backButton);
@@ -119,14 +122,22 @@ public abstract class SelectionPanel extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (isShadersEnabled()) {
+            super.draw(batch, 1);
+            return;
+        }
         if (getStage() != null) {
             if (parentAlpha == ShaderMaster.SUPER_DRAW) {
-                    super.draw(batch, 1);
+                super.draw(batch, 1);
                 return;
             }
 
             ShaderMaster.drawWithCustomShader(this, batch, null);
         }
+    }
+
+    protected boolean isShadersEnabled() {
+        return false;
     }
 
     protected boolean isDoneDisabled() {
@@ -137,27 +148,35 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     public void init() {
-        listPanel.setItems(createListData());
+        List<SelectableItemData> list = createListData();
+        Comparator<? super SelectableItemData> sorter = getDataSorter();
+        if (sorter != null)
+            Collections.sort(list, sorter);
+        listPanel.setItems(list);
         listener = new SelectionInputListener(this);
 
 
         if (isAutoDoneEnabled())
-        if (CoreEngine.isMacro()
-         || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
-            listPanel.updateAct(0);
-            tryDone();
-        }
+            if (CoreEngine.isMacro()
+             || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
+                listPanel.updateAct(0);
+                tryDone();
+            }
+    }
+
+    protected Comparator<? super SelectableItemData> getDataSorter() {
+        return null;
     }
 
     @Override
     public void setStage(Stage stage) {
-        if (listener!=null )
-        if (stage != null) {
-            stage.addListener(listener);
-        } else {
-            if (getStage() != null)
-                getStage().removeListener(listener);
-        }
+        if (listener != null)
+            if (stage != null) {
+                stage.addListener(listener);
+            } else {
+                if (getStage() != null)
+                    getStage().removeListener(listener);
+            }
         super.setStage(stage);
     }
 
@@ -247,6 +266,12 @@ public abstract class SelectionPanel extends TablePanelX {
         else
             WaitMaster.interrupt(getWaitOperation());
         fadeOut();
+    }
+
+    @Override
+    public void fadeOut() {
+        super.fadeOut();
+        GdxMaster.setDefaultCursor();
     }
 
     public WAIT_OPERATIONS getWaitOperation() {

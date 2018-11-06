@@ -4,18 +4,19 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager.COMBAT_STATS;
 import main.content.values.parameters.PARAMETER;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Created by JustMe on 8/3/2017.
  */
 public class UnitStats {
-    Map<PARAMETER, Integer> allyModMap = new HashMap<>();
-    Map<PARAMETER, Integer> enemyModMap = new HashMap<>();
+    Map<PARAMETER, Integer> allyModMap = new LinkedHashMap<>();
+    Map<PARAMETER, Integer> enemyModMap = new LinkedHashMap<>();
     private Unit unit;
-    private Map<Unit, Integer> killsMap = new HashMap<>();
-    private Map<COMBAT_STATS, Integer> statMap = new HashMap<>();
+    private Map<Unit, Integer> killsMap = new LinkedHashMap<>();
+    private Map<COMBAT_STATS, Integer> statMap = new LinkedHashMap<>();
+    private Map<String, Integer> generalStats= new  LinkedHashMap<>();
 
 
     public UnitStats(Unit unit) {
@@ -42,4 +43,9 @@ public class UnitStats {
     public Map<PARAMETER, Integer> getEnemyModMap() {
         return enemyModMap;
     }
+
+    public Map<String, Integer> getGeneralStats() {
+        return generalStats;
+    }
+
 }

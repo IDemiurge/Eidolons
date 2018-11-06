@@ -3,11 +3,16 @@ package eidolons.libgdx.gui.menu.selection.rng;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
+import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.macro.generation.ScenarioGenerator;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.SortMaster;
+import main.system.auxiliary.NumberUtils;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -19,6 +24,10 @@ public class RngSelectionPanel extends ScenarioSelectionPanel {
         super(dataSupplier);
     }
 
+    protected Comparator<? super SelectableItemData> getDataSorter() {
+        return new SortMaster<SelectableItemData>().getSorterByExpression_(t ->
+         NumberUtils.getInteger(t.getEntity().getProperty(G_PROPS.ID)));
+    }
     @Override
     protected void scenarioChosen(final ObjType scenario) {
         Eidolons.onThisOrNonGdxThread(() -> {

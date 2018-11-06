@@ -114,6 +114,12 @@ public class Shard extends SuperActor {
     }
 
     public void init() {
+        main.system.auxiliary.log.LogMaster.log(1,"Shard init: " +
+         "overlay=" +overlay +
+         "size =" +size+
+         "type" + type+
+         "BackgroundTexture=" +
+         getBackgroundTexturePath() );
         //        if (getBackgroundTexturePath() == null) {
         //            GdxImageMaster.flip(getBackgroundTexturePath(direction.flip()),
         //             !direction.isVertical(), direction.isVertical(), true, getBackgroundTexturePath());
@@ -133,6 +139,7 @@ public class Shard extends SuperActor {
         ALPHA_TEMPLATE template = ShardVisuals.getTemplateForOverlay(overlay);
         foreground.setAlphaTemplate(template);
 
+        main.system.auxiliary.log.LogMaster.log(1, "Shard init done ");
         //generic system for binding emitters to stuff?
     }
 

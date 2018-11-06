@@ -20,7 +20,6 @@ import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.math.MathMaster;
 
 public class DurabilityRule extends DC_RuleImpl {
 
@@ -48,7 +47,8 @@ public class DurabilityRule extends DC_RuleImpl {
             reduceDurability(false, armor, weapon, m1, m2, damage, blocked, self_damage_mod);
         }
         if (weapon != null) {
-            if (!weapon.isRanged()){ //TODO check ranged atk
+            if (!weapon.isNatural())
+                if (!weapon.isRanged()){ //TODO check ranged atk
             self_damage_mod = weapon.getIntParam(DC_ContentValsManager
              .getArmorSelfDamageParamForDmgType(damage_type));
             reduceDurability(true, weapon, weapon, m2, m1, damage, blocked, self_damage_mod);

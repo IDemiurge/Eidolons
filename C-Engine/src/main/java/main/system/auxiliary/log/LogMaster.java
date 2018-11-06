@@ -14,10 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LogMaster {
     public static final int PRIORITY_INFO = 0;
@@ -144,7 +141,7 @@ public class LogMaster {
     private static boolean off = false;
     private static int PRIORITY = 1;
     private static Map<LOG_CHANNEL, StringBuilder> logBufferMap;
-    private static List<Exception> exceptionList = new ArrayList<>();
+    private static Set<Exception> exceptions = new LinkedHashSet<>();
     private static String criticalLogFilePath;
     private static String fullLogFilePath;
     private static PrintStream exceptionPrintStream;
@@ -207,7 +204,7 @@ public class LogMaster {
     public static void writeAll() throws IOException {
         StringBuilder msg = new StringBuilder();
 
-//        for (Exception sub : exceptionList) {
+//        for (Exception sub : exceptions) {
 //            sub.printStackTrace(new PrintStream(getLogFilePath()));
 //        }
         if (isFullLogging()){
@@ -225,6 +222,11 @@ public class LogMaster {
 //        FileManager.write(msg.toString(), getLogFilePath());
     }
 
+    public static void writeStatInfo(String string) {
+                FileManager.write(string, getStatFilePath());
+    }
+
+
     private static boolean isChannelLogged(LOG_CHANNEL sub) {
         if (sub == null)
             return false;
@@ -237,17 +239,21 @@ public class LogMaster {
     private static String getLogFilePath() {
         if (fullLogFilePath == null)
             fullLogFilePath = StrPathBuilder.build(PathFinder.getLogPath(),
-              "full " + TimeMaster.getTimeStampForThisSession() + ".txt");
+             CoreEngine.filesVersion+ " full " + TimeMaster.getTimeStampForThisSession() + ".txt");
         return fullLogFilePath;
     }
 
     private static String getCriticalLogFilePath() {
         if (criticalLogFilePath == null)
             criticalLogFilePath = StrPathBuilder.build(PathFinder.getLogPath(),
-              "critical " + TimeMaster.getTimeStampForThisSession() + ".txt");
+             CoreEngine.filesVersion+ " critical " + TimeMaster.getTimeStampForThisSession() + ".txt");
         return criticalLogFilePath;
     }
 
+    private static String getStatFilePath() {
+        return PathFinder.getLogPath()+
+        "/stats/"+CoreEngine.filesVersion + " game stats "+TimeMaster.getTimeStampForThisSession() + ".txt";
+    }
     public static void log(int priority, String s) {
 
         if (priority < 0) {
@@ -503,8 +509,8 @@ public class LogMaster {
 
     }
 
-    public static List<Exception> getExceptionList() {
-        return exceptionList;
+    public static Set<Exception> getExceptions() {
+        return exceptions;
     }
 
     public static void logException(Exception e) {
@@ -542,6 +548,7 @@ public class LogMaster {
     public static void setLogBufferOn(boolean logBufferOn) {
         LogMaster.logBufferOn = logBufferOn;
     }
+
 
 
     public enum LOG {

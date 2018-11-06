@@ -124,7 +124,7 @@ OOO##
         COMMON_ROOM_COEF(5, 0, 12),
         SECRET_ROOM_COEF(1, 0, 10),
 
-        SIZE_MOD(80, 10, 300),
+        SIZE_MOD(73, 10, 300),
         ROOM_COUNT_MOD(50, 10, 300),
         MAIN_PATHS(1, 0, 5),
         BONUS_PATHS(2, 0, 10),

@@ -22,6 +22,7 @@ import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
@@ -106,6 +107,7 @@ public class ToolTipManager extends TablePanel {
             ActorMaster.addFadeOutAction(tooltip, 0.35f);
         if (object == null) {
             actorCell.setActor(tooltip = null);
+            originalPosition= null;
             return;
         }
         tooltip = (Tooltip) object;
@@ -506,7 +508,7 @@ public class ToolTipManager extends TablePanel {
     }
 
     private boolean isStackHoverOn() {
-        return false;
+        return OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.SPLIT_OBJECT_STACKS_ON_HOVER);
     }
 
     private void hoverOff(BaseView object, boolean canShowStack) {

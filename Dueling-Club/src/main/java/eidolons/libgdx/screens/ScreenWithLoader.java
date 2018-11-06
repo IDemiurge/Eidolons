@@ -195,7 +195,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         checkShader();
 
-
         renderLoader(delta);
         waited(delta);
         checkShaderReset();

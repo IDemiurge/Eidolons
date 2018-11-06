@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.menu.selection.town.quest;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -28,6 +29,7 @@ public class QuestInfoPanel extends ItemInfoPanel {
     private final SmartButton accept;
     private final SmartButton cancel;
     private boolean disabled;
+    private SelectableItemData chosen;
 
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
@@ -47,6 +49,21 @@ public class QuestInfoPanel extends ItemInfoPanel {
             }
         });
 
+        GuiEventManager.bind(GuiEventType.QUEST_CANCELLED, p -> {
+            chosen = null;
+            setDisabled(false);
+        });
+    }
+
+    @Override
+    protected float getDescriptionWidth() {
+//        return 920 * 0.76f;
+        return GDX.width(WIDTH*0.76f);
+    }
+
+    @Override
+    protected float getDescriptionHeight() {
+        return GDX.height(HEIGHT*0.5f);
     }
 
     @Override
@@ -54,27 +71,32 @@ public class QuestInfoPanel extends ItemInfoPanel {
         return ImageManager.getEmptyUnitIconPath();
     }
 
+    //
     @Override
     protected String getEmptyImagePathFullSize() {
-        return ImageManager.getEmptyUnitIconFullSizePath();
+        return ImageManager.getReallyEmptyUnitIconFullSizePath();
     }
 
     @Override
-    public void layout() {
-        super.layout();
+    protected void afterLayout() {
+        super.afterLayout();
         accept.setPosition(GdxMaster.centerWidth(accept) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
         cancel.setPosition(GdxMaster.centerWidth(cancel) + GdxMaster.adjustWidth(200), NINE_PATCH_PADDING.SAURON.bottom);
+        description.setWidth(getDescriptionWidth());
     }
 
     protected void initSize() {
-        setSize(GdxMaster.adjustSize(WIDTH), GdxMaster.adjustSize(HEIGHT));
+        setSize(GdxMaster.adjustWidth(WIDTH), GdxMaster.adjustHeight(HEIGHT));
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
+        disabled = chosen != null;
         cancel.setVisible(disabled);
         accept.setVisible(!disabled);
+        accept.setChecked(false);
+        cancel.setChecked(false);
     }
 
     @Override
@@ -83,11 +105,16 @@ public class QuestInfoPanel extends ItemInfoPanel {
     }
 
     private void accept() {
+        chosen = getItem();
         GuiEventManager.trigger(GuiEventType.QUEST_TAKEN, getItem().getName());
     }
 
     private void cancel() {
-        GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, getItem().getName());
+        if (chosen == null) {
+            return;
+        }
+        GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, chosen.getName());
+        chosen = null;
     }
 
     @Override
@@ -102,5 +129,6 @@ public class QuestInfoPanel extends ItemInfoPanel {
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
         accept.setDisabled(disabled);
+        //        accept.getClickListener()
     }
 }

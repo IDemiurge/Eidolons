@@ -101,9 +101,9 @@ public class InventoryFactory {
         if (entity != null) {
             Ref ref = Eidolons.getMainHero().getRef().getCopy();
             ref.setID(KEYS.SKILL, entity.getId());
-
+            DC_TYPE t = (DC_TYPE) entity.getOBJ_TYPE_ENUM();
             if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
-                switch (((DC_TYPE) entity.getOBJ_TYPE_ENUM())) {
+                switch (t) {
                     case WEAPONS:
                         DC_WeaponObj weapon = null;
                         if (entity instanceof DC_QuickItemObj) {
@@ -132,12 +132,18 @@ public class InventoryFactory {
                 }
 
             }
-
             text += "\n" + entity.getName();
+            switch (t) {
+                case JEWELRY:
+                case ITEMS:
+                    break;
+
+                    default:
+                        text += "\n" + TextParser.parse(entity.getDescription(),
+                         ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+                        text += "\n" + PARAMS.WEIGHT.getName() + ": " + entity.getParam(PARAMS.WEIGHT);
+            }
             //            text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
-            text += "\n" + TextParser.parse(entity.getDescription(),
-             ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
-            text += "\n" + PARAMS.WEIGHT.getName() + ": " + entity.getParam(PARAMS.WEIGHT);
         }
         return text;
     }

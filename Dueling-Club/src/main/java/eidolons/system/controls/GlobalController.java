@@ -2,6 +2,7 @@ package eidolons.system.controls;
 
 import com.badlogic.gdx.Input.Keys;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.grid.GenericGridView;
@@ -9,8 +10,11 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.menu.MainMenu;
+import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
@@ -64,8 +68,21 @@ public class GlobalController implements Controller {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 break;
+            case Keys.ENTER:
+//                    enter();
+                if (TownPanel.getActiveInstance() != null) {
+                    TownPanel.getActiveInstance().done();
+                }
+                if (Eidolons.getScope()== SCOPE.MENU){
+                    MainMenu.getInstance().getHandler().handle(MAIN_MENU_ITEM.PLAY);
+                }
+                break;
         }
     }
+
+//    private void enter() {
+//
+//    }
 
     private void tab() {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();

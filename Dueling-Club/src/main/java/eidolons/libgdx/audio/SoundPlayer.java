@@ -106,9 +106,14 @@ public class SoundPlayer extends Player {
                         return;
                 }
             playNow(soundFx);
+            setVolume(OptionsMaster.getSoundOptions().getIntValue(SOUND_OPTION.MASTER_VOLUME));
         }
         //fade in or out?
         //pause sounds
     }
 
+    @Override
+    public void setVolume(int volume) {
+        super.setVolume(volume);
+    }
 }

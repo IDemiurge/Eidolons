@@ -2,9 +2,11 @@ package eidolons.libgdx;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeBitmapFontData;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -13,13 +15,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StyleHolder {
@@ -43,7 +51,10 @@ public class StyleHolder {
     private static final int DEFAULT_SIZE = 16;
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static final float SMART_FONT_SIZE_COEF = 0.15f;
+    public static Boolean HIERO_ON = null;
     static Map<STD_BUTTON, Map<LabelStyle, TextButtonStyle>> textButtonStyleMap = new HashMap<>();
+    static Map<FONT, List<Integer>> hieroMap = new HashMap<>();
+    static Map<FONT, Map<Integer, LabelStyle>> hieroStyleMap = new HashMap<>();
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
     private static TextButton.TextButtonStyle defaultTextButtonStyle;
@@ -52,12 +63,36 @@ public class StyleHolder {
     private static Map<FONT, Map<Pair<Integer, Color>, Label.LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
     private static TextButtonStyle defaultTabStyle;
 
+    static {
+        for (FONT font : FONT.values()) {
+            List<Integer> list;
+            hieroMap.put(font, list = new ArrayList<>());
+            hieroStyleMap.put(font, new HashMap<>());
+            String path = getHieroPath(font);
+            for (File file : FileManager.getFilesFromDirectory(path, false)) {
+                String size = StringMaster.cropFormat(file.getName().replace(StringMaster.getStringBeforeNumerals(file.getName()), "")).trim();
+                list.add(NumberUtils.getInteger(size));
+            }
+
+        }
+    }
+
+    public static Boolean isHieroOn() {
+        if (HIERO_ON == null) {
+            HIERO_ON = Math.abs(GdxMaster.getFontSizeMod() - 1) < 0.6f;
+        }
+        return HIERO_ON;
+    }
+
     public static Label.LabelStyle getStyledLabelStyle(Label.LabelStyle style, boolean italic, boolean bold) {
         //TODO
         return null;
     }
 
     public static Label.LabelStyle getSizedLabelStyle(FONT fontStyle, Integer size) {
+        if (fontStyle == FONT.METAMORPH) {
+            return getHqLabelStyle(size);
+        }
         return getSizedColoredLabelStyle(fontStyle, size, DEFAULT_COLOR);
     }
 
@@ -143,21 +178,96 @@ public class StyleHolder {
     }
 
     private static BitmapFont getFont(FONT font, Color color, int size) {
-        return getFont(font.path, color, size);
+        //        Integer i = getHieroClosestSize(font, size);
+        //        boolean hiero = i != null && font.isHieroSupported() && HIERO_ON;
+        //        if (hiero) {
+        //            return getFont(getHieroPath(font), color, i, true);
+        //        }
+        return getFont(font.path, color, size, false);
     }
 
-    private static BitmapFont getFont(String fontpath, Color color, int size) {
-        final String path = PathFinder.getFontPath() + fontpath;
+    private static String getHieroPath(FONT font) {
+        return PathFinder.getFontsHieroPath() + "/" + font.name();
+    }
 
+    private static String getHieroPath(FONT font, int size) {
+        return PathFinder.getFontsHieroPath() + "/" + font.name() + "/" + font.name() + " " + size;
+    }
+
+    private static Integer getHieroClosestSize(FONT font, int size) {
+        size += 2;
+        int sizeGap = 3;
+        int smallestDiff = Integer.MAX_VALUE;
+        Integer closest = null;
+        for (Integer i : hieroMap.get(font)) {
+            if (Math.abs(i - size) < smallestDiff) {
+                smallestDiff = Math.abs(i - size);
+                closest = i;
+            }
+
+        }
+        if (closest != null)
+            if (Math.abs(closest - size) <= sizeGap)
+                return closest;
+        return closest;
+    }
+
+    private static BitmapFont getFont(String fontpath, Color color, int size, boolean hiero) {
+        String path = (hiero ? fontpath
+         : PathFinder.getFontPath()
+        ) + fontpath;
+        if (hiero) {
+            path =
+             StringMaster.cropFormat(path) + ".fnt";
+        }
         final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
          new FreeTypeFontGenerator.FreeTypeFontParameter();
+
         parameter.color = color;
         parameter.size = size;
         parameter.characters = FONT_CHARS;
-        final BitmapFont bitmapFont = generator.generateFont(parameter);
-        generator.dispose();
-        return bitmapFont;
+        if (hiero) {
+            TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/high.png"));
+            FreeTypeBitmapFontData data = new FreeTypeBitmapFontData();
+            data.fontFile = new FileHandle(path);
+            data.imagePaths = new String[]{
+             StringMaster.cropFormat(path) + ".png"
+            };
+            BitmapFont bitmapFont = new BitmapFont(data, tex, true);
+
+            return bitmapFont;
+        } else {
+            BitmapFont bitmapFont = generator.generateFont(parameter);
+            generator.dispose();
+            return bitmapFont;
+        }
+    }
+
+    public static BitmapFont getHieroFontMagic() {
+        TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/magic/magic 20.png"));
+        return new BitmapFont(new FileHandle(PathFinder.getFontPath() + "hiero/magic/magic 20.fnt"), tex);
+    }
+
+    public static BitmapFont getHieroFontHigh() {
+        TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/high/high 22.png"));
+        return new BitmapFont(new FileHandle(PathFinder.getFontPath() + "hiero/high/high 22.fnt"), tex);
+    }
+
+    public static BitmapFont getHieroFontHQ(int fontSize) {
+        return getHieroFont(FONT.METAMORPH, fontSize);
+    }
+
+    public static BitmapFont getHieroFont(FONT font, int fontSize) {
+        Integer size = getHieroClosestSize(font, fontSize);
+        if (size == null) {
+            return getFont(font, GdxColorMaster.getDefaultTextColor(), fontSize);
+        }
+        TextureRegion tex = new TextureRegion(new Texture(getHieroPath(font, size) +
+         ".png"));
+        return new BitmapFont(new FileHandle(getHieroPath(font, size) +
+         ".fnt"), tex);
+
     }
 
     public static Label.LabelStyle getDefaultLabelStyle() {
@@ -167,7 +277,8 @@ public class StyleHolder {
     public static Label.LabelStyle getAVQLabelStyle(int size) {
         return getSizedLabelStyle(FONT.AVQ, size);
     }
-        public static Label.LabelStyle getAVQLabelStyle() {
+
+    public static Label.LabelStyle getAVQLabelStyle() {
         return getLabelStyle(FONT.AVQ, DEFAULT_COLOR);
     }
 
@@ -194,16 +305,18 @@ public class StyleHolder {
 
     public static TextButton.TextButtonStyle getMenuTextButtonStyle(
      int size) {
-        return getTextButtonStyle(STD_BUTTON.MENU, FontMaster.FONT.METAMORPH, DEFAULT_COLOR, size);
+        return getTextButtonStyle(STD_BUTTON.MENU,
+         FontMaster.FONT.METAMORPH, DEFAULT_COLOR, size);
     }
 
     public static TextButton.TextButtonStyle getButtonStyle(
-     STD_BUTTON button ) {
+     STD_BUTTON button) {
         return getTextButtonStyle(button, FONT.AVQ, GdxColorMaster.getDefaultTextColor(),
          20);
     }
-        public static TextButton.TextButtonStyle getTextButtonStyle(
-         STD_BUTTON button, FONT FONT, Color color, int size) {
+
+    public static TextButton.TextButtonStyle getTextButtonStyle(
+     STD_BUTTON button, FONT FONT, Color color, int size) {
         Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
         LabelStyle labelStyle = getSizedColoredLabelStyle(FONT, size, color);
         TextButtonStyle style = null;
@@ -231,8 +344,13 @@ public class StyleHolder {
                 style.disabled = button.getTexture();
             }
         }
-
-        style.font = getFont(FONT, color, size);
+        if (button == STD_BUTTON.MENU) {
+            if (isHieroOn()) {
+                style.font = getHieroFontMagic();
+            }
+        }
+        if (style.font == null)
+            style.font = getFont(FONT, color, size);
         style.fontColor = new Color(color);
         style.disabledFontColor = new Color(color);
         style.checkedFontColor = new Color(color);
@@ -281,7 +399,15 @@ public class StyleHolder {
     }
 
     public static LabelStyle getHqLabelStyle(int fontSize) {
-        return getSizedLabelStyle(FONT.METAMORPH, fontSize);
+        if (true) {
+            LabelStyle style = hieroStyleMap.get(FONT.METAMORPH).get(fontSize);
+            if (style == null) {
+                style = new LabelStyle(getHieroFontHQ(fontSize), GdxColorMaster.getDefaultTextColor());
+                hieroStyleMap.get(FONT.METAMORPH).put(fontSize, style);
+            }
+            return style;
+        }
+        return getSizedColoredLabelStyle(FONT.METAMORPH, fontSize, DEFAULT_COLOR);
     }
 
 

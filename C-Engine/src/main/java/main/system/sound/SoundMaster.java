@@ -216,7 +216,7 @@ public class SoundMaster {
         TAB(NEW__TAB, null , null, null),
         STAT(NEW__PLUS,null  ,null  , CLICK_ERROR),
         ENTER(null , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
-        OK(NEW__OK , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
+        OK(NEW__OK , NEW__TAB ,null   , NEW__CLICK_DISABLED),
         CANCEL(NEW__CLICK_DISABLED , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
 
 //        REPAIR(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),

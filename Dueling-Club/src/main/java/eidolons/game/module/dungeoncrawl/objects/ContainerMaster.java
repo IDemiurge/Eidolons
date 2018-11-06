@@ -604,7 +604,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String checkSpecialContents(String contents, BattleFieldObject obj) {
-        for (DungeonQuest quest : obj.getGame().getMetaMaster().getQuestMaster().getQuests()) {
+        for (DungeonQuest quest : obj.getGame().getMetaMaster().getQuestMaster().
+         getQuestsPool()) {
             if (quest.getType()== QUEST_TYPE.SPECIAL_ITEM) {
                 if (quest.getArg() instanceof ObjType) {
                     Integer n = quest.getNumberPrepared();

@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
@@ -99,47 +100,45 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (!new RestCondition().preCheck(new Ref())) {
             return false;
         }
-        new Thread(new Runnable() {
-            public void run() {
-                float wakeUpTime = time + timeInSeconds;
-                float speedFactor = rest ? 25 : 10;
-                int period = 100;
-                float actPeriod = period * speedFactor / 1000;
-                ExplorationMaster.setWaiting(true);
-                Boolean result = true;
-                try {
-                    DungeonScreen.getInstance().setSpeed(speedFactor);
-                    while (true) {
-                        if (time >= wakeUpTime)
-                            break;
-                        WaitMaster.WAIT(period);
-                        //                DungeonScreen.getInstance().render(actPeriod);
-                        //            act(actPeriod );
-                        //                checkTimedEvents();
-                        if (!ExplorationMaster.isWaiting()) {
-                            if (rest) {
-                                ExplorationMaster.setWaiting(true);
-                            } else {
-                                //interrupted
-                                break;
-                            }
-                        }
-                        master.getAggroMaster().checkStatusUpdate();
-                        if (!ExplorationMaster.isExplorationOn()) {
-                            result = false;
+        Eidolons.onThisOrNonGdxThread(() -> {
+            float wakeUpTime = time + timeInSeconds;
+            float speedFactor = rest ? 25 : 10;
+            int period = 100;
+            float actPeriod = period * speedFactor / 1000;
+            ExplorationMaster.setWaiting(true);
+            Boolean result = true;
+            try {
+                DungeonScreen.getInstance().setSpeed(speedFactor);
+                while (true) {
+                    if (time >= wakeUpTime)
+                        break;
+                    WaitMaster.WAIT(period);
+                    //                DungeonScreen.getInstance().render(actPeriod);
+                    //            act(actPeriod );
+                    //                checkTimedEvents();
+                    if (!ExplorationMaster.isWaiting()) {
+                        if (rest) {
+                            ExplorationMaster.setWaiting(true);
+                        } else {
+                            //interrupted
                             break;
                         }
                     }
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    master.getAggroMaster().checkStatusUpdate();
+                    if (!ExplorationMaster.isExplorationOn()) {
+                        result = false;
+                        break;
+                    }
                 }
-                DungeonScreen.getInstance().setSpeed(null);
-                ExplorationMaster.setWaiting(false);
-                WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
-        }, " thread").start();
+            DungeonScreen.getInstance().setSpeed(null);
+            ExplorationMaster.setWaiting(false);
+            WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
+    });
         return true;
-    }
+}
 
     public void checkTimedEvents() {
         delta = time - lastTimeChecked;
@@ -147,13 +146,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         lastTimeChecked = time;
         round_delta += delta;
         ai_delta = +delta;
-        if (AiBehaviorManager.isNewAiOn()){
-        boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
+        if (AiBehaviorManager.isNewAiOn()) {
+            boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);
             if (aiActs)
                 master.getGame().getLoop().signal();
-        }
-        else
+        } else
             master.getAiMaster().checkAiActs();
         processTimedEffects();
         //TODO queue this on gameloop?

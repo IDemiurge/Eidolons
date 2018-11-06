@@ -130,10 +130,13 @@ public class AtbController implements Comparator<Unit> {
         GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
 
-        if (!isPrecalc())
+        if (!isPrecalc()) {
+            if (time>0)
             manager.getGame().getLogManager().log(getTimeString(time) + " passed, " +
              getTimeString(SECONDS_IN_ROUND - this.time) +
              " until end of round");
+        }
+
         for (AtbUnit unit : this.unitsInAtb) {
             unit.setAtbReadiness(unit.getAtbReadiness() + time * unit.getInitiative());
         }

@@ -32,6 +32,7 @@ import main.elements.conditions.PropCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
+import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
@@ -47,7 +48,7 @@ import java.util.*;
 
 public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
-    private static final boolean TEST_MODE = false;
+    private static final boolean TEST_MODE = true;
     List<DC_HeroItemObj> items;
     int balance;
     private SHOP_TYPE shopType;
@@ -57,6 +58,7 @@ public class Shop extends TownPlace implements ShopInterface {
     private int spareGoldPercentage = 20;
     private Map<Integer, Integer> priceCache; //current session, fixed prices for sell/buy
     private Map<Integer, Integer> priceCacheMax; //item has been in this shop; can't sell at higher price than it was bought for
+    private boolean initDone;
 
     public Shop(MacroGame game, ObjType type, Ref ref, Town town) {
         super(game, type, ref);
@@ -131,19 +133,33 @@ public class Shop extends TownPlace implements ShopInterface {
             setParam(MACRO_PARAMS.SHOP_INCOME,
              ShopMaster.getBaseGoldIncome(this), true);
         }
+
+        initDone = true;
     }
 
     private void initItems() {
         items = new ArrayList<>();
-        getIncome(1000);
+        if (!TEST_MODE)
+            getIncome(1000);
         stockItems(spareGoldPercentage );
-        //additional initial gold!
+        if (TEST_MODE)
+            getIncome(10);
+
+        //randomize initial gold!
         if (!CoreEngine.isMacro()) {
             Integer base = Math.max(200, getType().getIntParam(PARAMS.GOLD));
             addParam(PARAMS.GOLD, RandomWizard.getRandomIntBetween(
              base / 3 * 2, base * 3 / 2
             ));
         }
+        if (isItemsSortedOnInit()) {
+            Collections.sort(items, SortMaster.getObjSorterByExpression(item ->
+             item.getIntParam(PARAMS.GOLD_COST)));
+        }
+    }
+
+    private boolean isItemsSortedOnInit() {
+        return true;
     }
 
     public void getIncome(float timeCoef) {
@@ -186,7 +202,7 @@ public class Shop extends TownPlace implements ShopInterface {
     }
     private boolean acquireItem(ObjType t) {
         Integer cost = t.getIntParam(PARAMS.GOLD_COST);
-        if (!TEST_MODE)
+        if (!TEST_MODE || initDone)
             if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
                 return false;
             }
@@ -400,14 +416,18 @@ public class Shop extends TownPlace implements ShopInterface {
         Integer price = getPriceCache().get(t.getId());
         if (price == null) {
             price = t.getIntParam(PARAMS.GOLD_COST);
-            int i = 1;
-            if (buy)
-                i = -1;
-            price = MathMaster.addFactor(price, i * getIntParam(PARAMS.GOLD_COST_REDUCTION));
-            price = MathMaster.addFactor(price, -i * unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));
+            price = getPrice(price, unit, buy);
             // suppose these are -20 / 30 reduction for shop / hero
             // if shop sells, it will be at 90%
         }
+        return price;
+    }
+    public Integer getPrice(Integer price, Unit unit, boolean buy) {
+        int i = 1;
+        if (buy)
+            i = -1;
+        price = MathMaster.addFactor(price, i * getIntParam(PARAMS.GOLD_COST_REDUCTION));
+        price = MathMaster.addFactor(price, -i * unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));
         return price;
     }
 
@@ -506,4 +526,12 @@ public class Shop extends TownPlace implements ShopInterface {
 
     }
 
+    public void sellItems(int percentage) {
+        int toSell = items.size() * percentage / 100;
+        for (int i = 0; i < toSell; i++) {
+            int n = RandomWizard.getRandomIndex(items);
+//            sellItemTo()
+            items.remove(n);
+        }
+    }
 }

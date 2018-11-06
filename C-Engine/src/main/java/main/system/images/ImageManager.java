@@ -159,6 +159,9 @@ public class ImageManager {
     public static String getEmptyUnitIconFullSizePath() {
         return "UI"+separator+"Empty Full.jpg";
     }
+    public static String getReallyEmptyUnitIconFullSizePath() {
+        return "UI"+separator+"Really Empty Full.png";
+    }
 
     public static ImageIcon getEmptyUnitIcon() {
         return new ImageIcon(getImageFolderPath() + getEmptyUnitIconPath());

@@ -177,7 +177,7 @@ public class GuiVisualEffects extends GroupX {
     }
 
     private WeightMap<EMITTER_PRESET> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
-        WeightMap<EMITTER_PRESET> map = new WeightMap<>();
+        WeightMap<EMITTER_PRESET> map = new WeightMap<>(EMITTER_PRESET.class);
         int fog = night ? 10 : 5;
         int down = night? 5 : 10;
         EMITTER_PRESET special = night ? EMITTER_PRESET.STARS : EMITTER_PRESET.MOTHS;

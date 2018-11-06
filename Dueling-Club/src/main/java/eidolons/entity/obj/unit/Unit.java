@@ -83,6 +83,8 @@ import main.system.math.MathMaster;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static eidolons.game.battlecraft.logic.meta.universal.PartyManager.PRESET_POWER;
+
 public class Unit extends DC_UnitModel {
     protected DC_WeaponObj offhandNaturalWeapon;
     protected DC_WeaponObj naturalWeapon;
@@ -124,9 +126,12 @@ public class Unit extends DC_UnitModel {
         if (isHero()) {
             String message = this + " hero created " + getId();
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+
+
+
+
         }
     }
-
     public Unit(Unit hero) {
         this(new ObjType(hero.getType(), true), hero.getX(), hero.getY(), hero.getOriginalOwner(),
          hero.getGame(), hero.getRef().getCopy());
@@ -153,6 +158,17 @@ public class Unit extends DC_UnitModel {
         initDeity();
         initEmblem();
         initIntegrityAlignments();
+        if (PRESET_POWER) {
+            getType().setParam(PARAMS.POWER, 50);
+            getType().setParam(PARAMS.HERO_LEVEL, 1);
+            getType().setParam(PARAMS.LEVEL, 3);
+            setParam(PARAMS.POWER, 50);
+            setParam(PARAMS.HERO_LEVEL, 1);
+            setParam(PARAMS.LEVEL, 3);
+            setParam(PARAMS.TOTAL_XP, DC_Formulas.getTotalXpForLevel(getLevel()));
+            addParam(PARAMS.XP, 100);
+
+        }
     }
 
     @Override

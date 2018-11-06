@@ -54,6 +54,8 @@ import java.io.IOException;
  */
 public class Eidolons {
     public static final boolean DEV_MODE = true;
+    private static final Integer WIDTH_WINDOWED = 95;
+    private static final Integer HEIGHT_WINDOWED = 90;
     public static DC_Game game;
     public static DC_GameManager gameManager;
     public static DC_GameObjMaster gameMaster;
@@ -199,9 +201,13 @@ public class Eidolons {
           parts[0]);
         Integer h =
          NumberUtils.getInteger(parts[1]);
+//        if (Gdx.graphics.getDisplayMode())
         if (!fullscreen) {
-            w = w * 95 / 100;
-            h = h * 90 / 100;
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            if (screenSize.width<=w)
+                w = w * WIDTH_WINDOWED / 100;
+            if (screenSize.height<=h)
+                h = h * HEIGHT_WINDOWED / 100;
         }
         return new Dimension(w, h);
     }
@@ -277,6 +283,9 @@ public class Eidolons {
         }, "restart thread").start();
     }
 
+    public static void exitFromGame() {
+
+    }
     public static void exitToMenu() {
 
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
@@ -422,6 +431,7 @@ public class Eidolons {
             main.system.ExceptionMaster.printStackTrace(e);
         }
     }
+
 
     public enum SCOPE {
         MENU, BATTLE, MAP

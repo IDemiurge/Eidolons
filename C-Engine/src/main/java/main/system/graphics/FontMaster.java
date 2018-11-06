@@ -242,18 +242,32 @@ public class FontMaster {
         AVQ("/Avqest.ttf"),
         SC("/Starcraft.ttf"),
         DARK("/Dark.ttf"),
-        NYALA("/nyala.ttf"),
+        NYALA("/nyala.ttf", true),
         RU("/Philosopher-Regular.ttf"),
         MAIN("/main.otf"),
-        METAMORPH("/Metamorphous-Regular.ttf"),
+        METAMORPH("/Metamorphous-Regular.ttf", true),
         MAGIC("/MagicMedieval.ttf"),
         MANORLY_("/Manorly_.ttf"),
         FERTIGO("/Fertigo_PRO.otf"),;
         public Font font;
         public String path;
+        private boolean hieroSupported;
+
+        FONT(String path, boolean hieroSupported) {
+            this.path = path;
+            this.hieroSupported = hieroSupported;
+        }
 
         FONT(String path) {
             this.path = path;
+        }
+
+        public boolean isHieroSupported() {
+            return hieroSupported;
+        }
+
+        public void setHieroSupported(boolean hieroSupported) {
+            this.hieroSupported = hieroSupported;
         }
     }
 

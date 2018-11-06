@@ -13,6 +13,8 @@ import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.TextWrapper;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 /**
@@ -37,12 +39,32 @@ public class EUtils {
         onConfirm(text, false, null);
     }
 
+    public static void onConfirm(boolean wait, String text, boolean cancel, Runnable o, boolean onAnotherThread) {
+        if (wait) {
+            onConfirm(text, cancel, () -> {
+                o.run();
+                WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true);
+            }, onAnotherThread);
+            if (WaitMaster.getWaiters().get(WAIT_OPERATIONS.CONFIRM) != null) {
+                WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+                WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+            } else {
+                WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+            }
+        } else {
+            onConfirm(text, cancel, o);
+        }
+
+    }
     public static void onConfirm(String text, boolean cancel, Runnable o, boolean onAnotherThread) {
         if (onAnotherThread)
             onConfirm(text, cancel, () -> Eidolons.onNonGdxThread(o));
         else onConfirm(text, cancel, o);
     }
 
+    public static void onConfirm(String text, Runnable o, Runnable onCancel) {
+        GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text, onCancel, o));
+    }
     public static void onConfirm(String text, boolean cancel, Runnable o) {
         GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text, cancel, o));
     }

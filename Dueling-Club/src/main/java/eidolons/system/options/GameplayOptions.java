@@ -53,7 +53,8 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         , SHUFFLE_LEVELS(false)
         , REVERSE_LEVELS(false),
         GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300), NEXT_SCENARIO_INDEX(0,0,6),
-        IMMORTALITY(false), AUTOSAVE_ON(true), SEQUENTIAL_RNG(false), PREGENERATED_RNG_LEVELS(true);
+        IMMORTALITY(false), AUTOSAVE_ON(true), SEQUENTIAL_RNG(false), PREGENERATED_RNG_LEVELS(true),
+            LOG_LENGTH_LIMIT(100, 50, 500);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

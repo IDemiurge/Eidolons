@@ -96,9 +96,9 @@ public class RngLocationBuilder extends LocationBuilder {
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
         level.getObjects().removeIf(c ->
-          !EntityCheckMaster.isEntrance(c.getType()) &&(
-         c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
-         || c.getCoordinates().equals(location.getMainExit().getCoordinates()))
+         !EntityCheckMaster.isEntrance(c.getType()) && (
+          c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
+           || c.getCoordinates().equals(location.getMainExit().getCoordinates()))
         );
         //        initDynamicObjData();
 
@@ -150,10 +150,12 @@ public class RngLocationBuilder extends LocationBuilder {
         DungeonLevel level = new RestoredDungeonLevel();
         Party party = getGame().getMetaMaster().getPartyManager().
          getParty();
-
-        level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
-         getParty().getParamSum(PARAMS.POWER) * (1 + party.getMembers().size()) / party.getMembers().size());
-
+        try {
+            level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
+             getParty().getParamSum(PARAMS.POWER) * (1 + party.getMembers().size()) / party.getMembers().size());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         int n = 0;
 
         for (Node node : XML_Converter.getNodeListFromFirstChild(XML_Converter.getDoc(xml), true)) {
@@ -351,7 +353,10 @@ public class RngLocationBuilder extends LocationBuilder {
                 }
                 return MAP_BACKGROUND.CEMETERY;
             case CRYPT:
-                if (RandomWizard.chance(45)) {
+                if (RandomWizard.chance(35)) {
+                    return MAP_BACKGROUND.BASTION_DARK;
+                }
+                if (RandomWizard.chance(35)) {
                     return MAP_BACKGROUND.BASTION;
                 }
                 return MAP_BACKGROUND.CEMETERY;
@@ -372,14 +377,17 @@ public class RngLocationBuilder extends LocationBuilder {
                 if (RandomWizard.chance(65)) {
                     return MAP_BACKGROUND.BASTION;
                 }
-            case TEMPLE:
-                if (RandomWizard.chance(50)) {
-                    return MAP_BACKGROUND.ELVEN_RUINS;
+                if (RandomWizard.chance(35)) {
+                    return MAP_BACKGROUND.BASTION_DARK;
                 }
-                return MAP_BACKGROUND.TOWER;
             case TOWER:
                 if (RandomWizard.chance(50)) {
                     return MAP_BACKGROUND.SHIP;
+                }
+                return MAP_BACKGROUND.TOWER;
+            case TEMPLE:
+                if (RandomWizard.chance(30)) {
+                    return MAP_BACKGROUND.ELVEN_RUINS;
                 }
                 return MAP_BACKGROUND.TOWER;
 

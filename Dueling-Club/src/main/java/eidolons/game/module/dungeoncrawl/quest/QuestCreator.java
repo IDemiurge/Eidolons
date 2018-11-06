@@ -1,13 +1,14 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.init.RngUnitProvider;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
@@ -52,7 +53,7 @@ public class QuestCreator extends QuestHandler {
             case COMMON_ITEMS:
                 return Math.max(1, Math.round(quest.getPowerCoef() * 10));
             case HUNT:
-                return Math.max(1, Math.round(quest.getPowerCoef() * 7));
+                return Math.max(1, Math.round(quest.getPowerCoef() * 5));
             case SPECIAL_ITEM:
                 break;
             case ESCAPE:
@@ -74,17 +75,13 @@ public class QuestCreator extends QuestHandler {
                                            float powerRange, DungeonQuest quest,
                                            DUNGEON_STYLE style) {
         List<ObjType> pool = null;
+        boolean surface = Eidolons.getGame().getDungeonMaster().getDungeonLevel().isSurface();
         Loop loop = new Loop(30);
         while (loop.continues()) {
             try {
-                UNIT_GROUP unitGroup = RngUnitProvider.getUnitGroup(false, style);
+                UNIT_GROUP unitGroup = RngUnitProvider.getUnitGroup(surface, style).getRandomByWeight();
                 WeightMap<String> weightMap = RngUnitProvider.getUnitWeightMap(unitGroup, TYPE);
                 pool = DataManager.toTypeList(weightMap.keySet(), DC_TYPE.UNITS);
-                filter(pool, powerRange, powerLevel);
-                if (pool.isEmpty()) {
-                    pool = DataManager.getFilteredTypes(DC_TYPE.UNITS,
-                     unitGroup.toString(), G_PROPS.UNIT_GROUP);
-                }
                 filter(pool, powerRange, powerLevel);
                 if (!pool.isEmpty()) {
                     break;
@@ -93,18 +90,33 @@ public class QuestCreator extends QuestHandler {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        if (pool.isEmpty()) {
-            return null;
+        loop = new Loop(30);
+        while (loop.continues()) {
+            try {
+                UNIT_GROUP unitGroup = RngUnitProvider.getUnitGroup(surface, style).getRandomByWeight();
+                pool = DataManager.getFilteredTypes(DC_TYPE.UNITS,
+                 unitGroup.toString(), G_PROPS.UNIT_GROUP);
+                filter(pool, powerRange, powerLevel);
+                if (!pool.isEmpty()) {
+                    break;
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            if (pool.isEmpty()) {
+                return null;
+            }
         }
         new SortMaster<ObjType>().sortByExpression_(pool,
-         type -> RandomWizard.getRandomInt(20 )+(int)(RandomWizard.getRandomFloatBetween(0.5f, 2)*type.getIntParam(PARAMS.POWER)));
+         type -> RandomWizard.getRandomInt(20) + (int) (RandomWizard.getRandomFloatBetween(0.5f, 2) * type.getIntParam(PARAMS.POWER)));
         return pool.get(0);
     }
 
     private static void filter(List<ObjType> pool, float powerRange, int powerLevel) {
         if (powerRange < 0) {
             pool.removeIf(type ->
-             (1 - type.getIntParam(PARAMS.POWER)) / powerLevel < powerRange);
+             (1 - type.getIntParam(PARAMS.POWER)) / powerLevel < powerRange
+            || type.getName().contains("Placeholder"));
         } else {
             pool.removeIf(type -> Math.abs(1 -
              type.getIntParam(PARAMS.POWER) / powerLevel) > powerRange);
@@ -119,11 +131,11 @@ public class QuestCreator extends QuestHandler {
     public static ObjType getPreyType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
         boolean elite = RandomWizard.random();
-        ObjType type = tryGetQuestUnitType(elite?RngUnitProvider.ELITE  : RngUnitProvider.REGULAR,
+        ObjType type = tryGetQuestUnitType(elite ? RngUnitProvider.ELITE : RngUnitProvider.REGULAR,
          powerLevel, -0.25f, quest, style);
         if (type == null) {
             elite = !elite;
-            type = tryGetQuestUnitType(elite?RngUnitProvider.ELITE  : RngUnitProvider.REGULAR,
+            type = tryGetQuestUnitType(elite ? RngUnitProvider.ELITE : RngUnitProvider.REGULAR,
              powerLevel, -0.33f, quest, style);
         }
         return type;

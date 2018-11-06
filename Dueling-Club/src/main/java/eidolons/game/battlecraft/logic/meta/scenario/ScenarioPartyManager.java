@@ -153,6 +153,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     }
 
+
+
     private boolean isCreateNewHero() {
         return HeroCreationMaster.NEW_ON_LAUNCH;
     }

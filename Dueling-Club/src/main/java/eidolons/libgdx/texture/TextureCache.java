@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static final boolean uiAtlasesOn = CoreEngine.isJar();
+    private static final boolean uiAtlasesOn = !CoreEngine.isIDE();
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -188,7 +188,13 @@ public class TextureCache {
         }
         String name = StringMaster.getLastPathSegment(path).toLowerCase();
         switch (name) {
+//                imgPath = outcome ? "UI\\big\\victory.png" : "UI\\big\\defeat.jpg";
             case "logo fullscreen.png":
+            case "defeat.png":
+            case "defeat.jpg":
+            case "defeat2.jpg":
+            case "victory.jpg":
+            case "victory.png":
             case "weapon background.png":
                 return true;
         }

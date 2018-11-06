@@ -11,30 +11,32 @@ import java.util.List;
  */
 public class ExceptionMaster {
 
-    private static final boolean FULL_LOG = true;
+    private static  boolean PRINT_ALL = CoreEngine.isFastMode();
     static List<String> printed = new ArrayList<>();
 
     public static void printStackTrace(Exception e) {
-//
         {
-            if (!FULL_LOG)
-            if (CoreEngine.isJar() || LogMaster.isOff() || CoreEngine.isFastMode())
-                if (printed.contains(e.getMessage()))
-                    return;
-            LogMaster.getExceptionList().add(e);
-            LogMaster.logException(e);
-
-            printed.add(e.getMessage());
+            if (!PRINT_ALL) {
+                if (CoreEngine.isJar() || LogMaster.isOff() || CoreEngine.isFastMode())
+                    if (printed.contains(e.getMessage()))
+                        return;
+                printed.add(e.getMessage());
+            }
             e.printStackTrace();
+            if (PRINT_ALL) {
+                return;
+            }
+            LogMaster.getExceptions().add(e);
+            LogMaster.logException(e);
         }
-//        else
-//            try {
-//                SpecialLogger.getInstance().appendExceptionToFileLog(
-//                 e.toString() + " from " + e.getStackTrace()[0]);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        {
-//        }
+        //        else
+        //            try {
+        //                SpecialLogger.getInstance().appendExceptionToFileLog(
+        //                 e.toString() + " from " + e.getStackTrace()[0]);
+        //            } catch (Exception ex) {
+        //                ex.printStackTrace();
+        //            }
+        //        {
+        //        }
     }
 }

@@ -63,7 +63,7 @@ public class AmbientMaster {
                 case RUIN:
                     return alt ? MIST : EVIL;
                 case CASTLE:
-                    return alt ? INTERIOR : MINE;
+                    return alt ? MIST : MINE;
 
                 case SEWER:
                     break;

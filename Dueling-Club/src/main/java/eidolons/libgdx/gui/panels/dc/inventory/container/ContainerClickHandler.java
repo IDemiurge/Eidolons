@@ -74,12 +74,12 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (cellContents == null) {
             return false;
         }
-        if (hero.isInventoryFull()) {
+        DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
+        if (!GoldMaster.isGoldPack(item) && hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
              "Inventory is full!", hero);
             return false;
         }
-        DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
         pickUp(item);
 
 

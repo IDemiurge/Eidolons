@@ -7,6 +7,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -38,6 +39,11 @@ public class RestEffect extends DC_Effect {
         if (!ExplorationMaster.isExplorationOn()){
             ref.getActive().setCancelled(true);
             EUtils.info("You cannot do this while in combat!");
+            return false;
+        }
+        if (!Eidolons.getMainHero().isLiving()) {
+            ref.getActive().setCancelled(true);
+            EUtils.info("You are a restless living corpse, you must feed on blood!");
             return false;
         }
 

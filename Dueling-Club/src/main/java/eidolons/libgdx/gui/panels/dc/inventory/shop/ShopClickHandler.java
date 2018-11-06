@@ -218,6 +218,8 @@ public class ShopClickHandler extends ContainerClickHandler {
         for (DC_HeroSlotItem item : hero.getSlotItems()) {
             int percentage = 100 -
              item.getIntParam(PARAMS.C_DURABILITY) * 100 / item.getIntParam(PARAMS.DURABILITY);
+
+
             Integer price = shop.getPrice(item, hero, false)*percentage/100;
             gold += price;
         }
@@ -225,6 +227,8 @@ public class ShopClickHandler extends ContainerClickHandler {
             EUtils.showInfoText("Your equpped items don't need repair yet!");
             return;
         }
+        gold -= gold* hero.getIntParam(PARAMS.ARMORER_MASTERY)/100;
+
         int gold_=gold;
         if (hero.checkParameter(PARAMS.GOLD , gold))
         EUtils.onConfirm("Repair all equipped items for " +

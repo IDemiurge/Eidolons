@@ -47,6 +47,7 @@ public class CounterAttackRule {
         //        }
 
         ActiveObj counter = null;
+        if (!attack.isRanged())
         if (attack.getAttackedUnit() != null)
             if (!attack.isCounter() &&
              (RuleKeeper.isRuleTestOn(RULE.COUNTER_ATTACK) ||
@@ -63,8 +64,8 @@ public class CounterAttackRule {
 
     private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
         //        game.getLog().combatLog();
-        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
-         + action.getOwnerUnit());
+//        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
+//         + action.getOwnerUnit());
         ActiveObj activeObj = game.getActionManager().activateCounterAttack(action,
          attacked);
         if (activeObj == null) {

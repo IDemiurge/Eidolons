@@ -14,9 +14,9 @@ import main.system.graphics.FontMaster.FONT;
  * Created by JustMe on 11/30/2017.
  */
 public class ScenarioInfoPanel extends ItemInfoPanel {
-    private LabelX mainInfo;
-    private LabelX missionsInfo;
-    private LabelX partyInfo;
+    protected LabelX mainInfo;
+    protected LabelX missionsInfo;
+    protected LabelX partyInfo;
 
     public ScenarioInfoPanel(SelectableItemData item) {
         super(item);

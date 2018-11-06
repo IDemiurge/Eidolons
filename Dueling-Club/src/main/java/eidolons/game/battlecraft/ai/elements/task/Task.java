@@ -28,11 +28,15 @@ public class Task {
     }
 
     public String toShortString() {
-        return StringMaster.getWellFormattedString(type.toString()) + " on "
-         +
-         (arg instanceof Integer ?
-          getUnit().getGame().getObjectById((Integer) arg).getNameIfKnown() :
-          arg == null ? "" : arg);
+        try {
+            return StringMaster.getWellFormattedString(type.toString()) + " on "
+             +
+             (arg instanceof Integer ?
+              getUnit().getGame().getObjectById((Integer) arg).getNameIfKnown() :
+              arg == null ? "" : arg);
+        } catch (Exception e) {
+            return toString();
+        }
     }
 
     @Override

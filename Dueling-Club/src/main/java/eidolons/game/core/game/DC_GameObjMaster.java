@@ -312,7 +312,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         return unitCache;
     }
 
-    public void checkAddUnit(Obj obj) {
+    public void tryAddUnit(Obj obj) {
         if (obj instanceof Unit) {
             if (!getUnits().contains(obj)) {
                 getUnits().add((Unit) obj);

@@ -163,6 +163,9 @@ public class Targeter extends ActiveHandler {
     }
 
     public boolean canBeTargeted(Integer id, boolean caching) {
+        return canBeTargeted(id, caching, false);
+    }
+        public boolean canBeTargeted(Integer id, boolean caching, boolean recursion) {
 
         Targeting targeting = getTargeting();
         Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
@@ -192,7 +195,10 @@ public class Targeter extends ActiveHandler {
                     return true;
                 }
             }
-            return false;
+            if (recursion)
+                return false;
+            ActivesConstructor.constructActive(TARGETING_MODE.SINGLE, getEntity());
+            return canBeTargeted(id, caching, true);
         }
         Ref REF = getEntity().getRef().getCopy();
         REF.setMatch(id);

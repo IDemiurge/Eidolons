@@ -1,9 +1,0 @@
-<Level><Custom_Props><Workspace_Group>IMPLEMENT</Workspace_Group>
-<Dungeon_Subfolder>TEST</Dungeon_Subfolder>
-<Dungeon_Main_Entrances>Eerie Portal(5-0);</Dungeon_Main_Entrances>
-</Custom_Props><Custom_Params><Bf_Width>11</Bf_Width>
-<Bf_Height>7</Bf_Height>
-</Custom_Params><Wall_Objects></Wall_Objects>
-<Plan><Dungeon_Type>Underworld Keep</Dungeon_Type>
-<Zones><Zone__0765_X0-11845_Y0-7><Blocks><Room-0><Block_Type>Room</Block_Type>
-<Coordinates>10-6;10-5;10-4;10-3;10-2;10-1;10-0;9-6;9-5;9-4;9-3;9-2;9-1;9-0;8-6;8-5;8-4;8-3;8-2;8-1;8-0;7-6;7-5;7-4;7-3;7-2;7-1;7-0;6-6;6-5;6-4;6-3;6-2;6-1;6-0;5-6;5-5;5-4;5-3;5-2;5-1;5-0;4-6;4-5;4-4;4-3;4-2;4-1;4-0;3-6;3-5;3-4;3-3;3-2;3-1;3-0;2-6;2-5;2-4;2-3;2-2;2-1;2-0;1-6;1-5;1-4;1-3;1-2;1-1;1-0;0-6;0-5;0-4;0-3;0-2;0-1;0-0;</Coordinates><Objects>0-1=Cave Wall,0-2=Cave Wall,0-4=Cave Wall,0-5=Cave Wall,6-6=Altar,1-1=Cave Wall,1-5=Stalactite,1-6=Cave Wall,8-1=Stalagmite,2-0=Cave Wall,2-3=Natural Column,2-5=Dark Water,2-4=Dark Water,9-2=Natural Column,9-5=Stalagmite,9-4=Stalactite,9-1=Icy Spring,3-0=Stalactite,9-0=Cave Wall,3-5=Stalagmite,10-1=Cave Wall,9-6=Cave Wall,4-6=Altar,10-4=Cave Wall,10-5=Cave Wall,5-0=Eerie Portal,5-6=Witch Statues,</Objects></Room-0></Blocks></Zone__0765_X0-11845_Y0-7></Zones><Entrances>Center North</Entrances></Plan></Level>

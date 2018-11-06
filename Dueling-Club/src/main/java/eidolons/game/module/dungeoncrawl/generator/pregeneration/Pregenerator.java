@@ -198,7 +198,7 @@ public class Pregenerator implements Runnable {
         while (true) {
             int i = RandomWizard.getRandomIndex(sublevelTypes);
             SUBLEVEL_TYPE type = sublevelTypes.get(i);
-            i = RandomWizard.getRandomIndex(sublevelTypes);
+            i = RandomWizard.getRandomIndex(locationTypes);
             LOCATION_TYPE locationType = locationTypes.get(i);
             if (checkDone(type, locationType)) {
                 for (SUBLEVEL_TYPE t : sublevelTypes) {

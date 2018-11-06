@@ -81,7 +81,8 @@ public class TownPanel extends TabbedPanel {
         okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());
         tabTable.setZIndex(Integer.MAX_VALUE);
         headerBg = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON_ALT,
-         BACKGROUND_NINE_PATCH.TRANSPARENT, GdxMaster.adjustFontSize(470), 100);
+         BACKGROUND_NINE_PATCH.TRANSPARENT,
+         468, 100);
         tabTable.setBackground(new TextureRegionDrawable(
          new TextureRegion(headerBg)));
 
@@ -100,6 +101,8 @@ public class TownPanel extends TabbedPanel {
         resetCheckedTab();
 
         GuiEventManager.bind(GuiEventType. SHOW_HQ_SCREEN, p-> {
+            if (getActiveInstance()==null )
+                return;
             if (p.get() == null) {
                 update();
                 shopView. fadeIn();
@@ -220,8 +223,15 @@ public class TownPanel extends TabbedPanel {
         ShopClickHandler.stashOpen = false;
         WaitMaster.receiveInput(DONE_OPERATION, true);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null );
+        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK  );
 //        HqDataMasterDirect.applyModifications();
 
+    }
+
+    public void entered() {
+        tabSelected(TOWN_VIEWS.QUESTS.toString());
+        questPanel.next();
+//        update();
     }
 
     public enum TOWN_VIEWS {

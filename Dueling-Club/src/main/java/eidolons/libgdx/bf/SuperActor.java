@@ -227,6 +227,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     }
 
     private float randomizeAlpha(float fluctuatingAlpha) {
+
         if (fluctuatingAlphaRandomness > 0) {
             //            if (RandomWizard.chance())
             return  fluctuatingAlpha* (1+ RandomWizard.getRandomFloatBetween(
@@ -395,7 +396,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
 
         SHARD_OVERLAY(0.325f, 0.25F, 0.5F, 0.5f, 0.75f, 1f),
-        ITEM_BACKGROUND_OVERLAY(0.15f, 0, 1.25f, 0.4f, 0.80f, 1f),
+        ITEM_BACKGROUND_OVERLAY(0.15f, 0, 1.25f, 0.6f, 0.70f, 1f),
 
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
         ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
@@ -408,6 +409,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         LIGHT_EMITTER_RAYS(0.25f, 1.0f, 0.5f, 0.4f, 0.25f, 1.0f),
 
         SHADE_CELL_HIGHLIGHT(0.4f, 1.5f, 0.3f, 0.4f, 0.15f, 1),
+        DOORS(0.325f, 1.25F, 0.5F, 0.5f, 0.0f, 1f),
         ;
         float alphaStep;
         float fluctuatingAlphaPauseDuration;

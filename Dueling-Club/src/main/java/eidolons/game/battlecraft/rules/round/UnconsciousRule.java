@@ -23,6 +23,7 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -62,7 +63,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     public static boolean checkUnitRecovers(Unit unit) {
         // toughness barrier... ++ focus? ++status?
         int req = unit.isPlayerCharacter() ? 20 : 40;
-        req*= MathMaster.MULTIPLIER;//TODO
+        req *= MathMaster.MULTIPLIER;//TODO
         if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= req) {
             if (unit.getIntParam(PARAMS.C_FOCUS) >=
              unit.getCalculator().getFocusRecoveryRequirement()
@@ -115,18 +116,16 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static void fallUnconscious(Unit unit) {
-        if (!unit.getAI().isOutsideCombat()) {
-            if (unit.getAI().getCombatAI().getEngagementDuration()>0) {
-                unit.getAI().getCombatAI().setEngagementDuration(0);
-            }
-        }
+        getUnconsciousEffect(unit).apply();
+        unit.getAI().getCombatAI().setEngagementDuration(0);
+        unit.getAI().getCombatAI().setEngaged(false);
         unit.getGame().
          fireEvent(new Event(
           STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS, unit.getRef()));
 
-        DC_SoundMaster.playEffectSound(SOUNDS.DEATH, unit);
-        DC_SoundMaster.playEffectSound(SOUNDS.FALL, unit);
-        getUnconsciousEffect(unit).apply();
+
+        DC_SoundMaster.playEffectSound(RandomWizard.chance(35)?
+         SOUNDS.FALL : SOUNDS.HIT, unit);
         unit.getGame().fireEvent(
          new Event(STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS,
           unit.getRef()));
@@ -229,7 +228,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                 }
             return false;
         } else if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
-            unit.getGame().getManager().unitDies(activeObj, unit,activeObj.getOwnerUnit(),  true, false);
+            unit.getGame().getManager().unitDies(activeObj, unit, activeObj.getOwnerUnit(), true, false);
             return false;
         }
         if (unit.isUnconscious()) {

@@ -50,7 +50,7 @@ public class TexturePackerLaunch {
 
     static String mainFolders[] = {
 //     "gen",
-     "K:\\[Eidolons v.0.8.6 Halloween]\\resources\\img\\ui",
+     "K:\\[Eidolons v.0.8.8 Halloween]\\resources\\img\\ui",
 //     "ui",
 //     "main",
     };
@@ -110,6 +110,7 @@ public class TexturePackerLaunch {
         settings.format = Format.RGBA4444;
         settings.limitMemory = false;
         settings.jpegQuality = 0.9f;
+        settings.combineSubdirectories = true;
         return settings;
     }
 

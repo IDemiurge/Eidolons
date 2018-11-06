@@ -138,7 +138,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
         if (getSoundPlayer() != null)
             try {
                 getSoundPlayer().setPosition(
-                 GridMaster.getPosWithOffset(c));
+                 GridMaster.getCenteredPos(c));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

@@ -142,7 +142,10 @@ public class ShopDataSource extends ContainerDataSource
          s -> new ShopValueContainerList(getTextures(s))).
          collect(Collectors.toList());
     }
-
+    public String getPricesInfo() {
+        return shop.getPrice(100, invDataSource.getUnit(), true)+
+         "%";
+    }
     public List<ValueContainer> getTextures(String groupList) {
         return shop.getItems(groupList).stream().map(
          s -> new ValueContainer(TextureCache.getOrCreateR(s))).
