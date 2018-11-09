@@ -114,6 +114,7 @@ public class ArcaneVault {
     }
 
     public static void main(String[] args) {
+        CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
         if (args.length > 0) {
             setMacroMode(true);

@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.data.FileManager;
 
 import java.io.FileNotFoundException;
 
@@ -64,7 +64,7 @@ public class VideoMaster {
         player = VideoPlayerCreator.createVideoPlayer();
 //        player.resize((int)GDX.size(w), (int)GDX.size(h));
         player.resize(w, h);
-        FileHandle file = new FileHandle(FileManager.getFile(path));
+        FileHandle file = GDX.file((path));
         try {
             player.play(file);
         } catch (UnsatisfiedLinkError e) {

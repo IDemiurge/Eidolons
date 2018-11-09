@@ -178,10 +178,10 @@ public class TextMaster {
             String path = getParamsPath();
             String name = p.getName();
             if (p.isMastery()) {
-                path += "mastery\\";
+                path += "mastery/";
             }
             if (p.isAttribute()) {
-                path += "attributes\\";
+                path += "attributes/";
             }
             if (p.isDynamic()) {
                 name = name.replace("c ", "");
@@ -195,7 +195,7 @@ public class TextMaster {
             String path = getPropsPath();
             String name = p.getName();
             if (p.isPrinciple()) {
-                path += "principles\\";
+                path += "principles/";
             }
             String descr = FileManager.readFile(path + name);
             if (!descr.isEmpty()) {
@@ -206,17 +206,17 @@ public class TextMaster {
 
     public static void writeAllToFolder() {
         for (ATTRIBUTE p : ATTRIBUTE.values()) {
-            FileManager.write(p.getParameter().getDescription(), getParamsPath() + "attributes\\"
+            FileManager.write(p.getParameter().getDescription(), getParamsPath() + "attributes/"
              + p.toString() + ".txt");
         }
         for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
-            FileManager.write(p.getDescription(), getPropsPath() + "principles\\" + p.toString()
+            FileManager.write(p.getDescription(), getPropsPath() + "principles/" + p.toString()
              + ".txt");
         }
     }
 
     public static void initEntityPropText(String prop) {
-        String filepath = getTextPath() + "types\\" + prop + "\\";
+        String filepath = getTextPath() + "types/" + prop + "/";
         for (File dir : FileManager.getFilesFromDirectory(filepath, true)) {
             if (!dir.isDirectory()) {
                 continue;
@@ -236,8 +236,8 @@ public class TextMaster {
     public static void main(String[] args) {
 
         generateMissingDescrTemplate();
-        // processDescriptionFile(FileManager.getFile("X:\\Dropbox\\" +
-        // "FocusWriting\\2016-7\\"
+        // processDescriptionFile(FileManager.getFile("X:/Dropbox/" +
+        // "FocusWriting/2016-7/"
         // + "param descr.odt"));
         // extractTypeText();
         // merge();
@@ -245,12 +245,12 @@ public class TextMaster {
 
     private static void merge() {
         String mergeContents = "";
-        for (File f : FileManager.getFilesFromDirectory("X:\\Dropbox\\"
-         + "FocusWriting\\2016-Lore\\", true)) {
+        for (File f : FileManager.getFilesFromDirectory("X:/Dropbox/"
+         + "FocusWriting/2016-Lore/", true)) {
             mergeContents += getOdtDescriptionFilesContents(f.getPath());
         }
 
-        FileManager.write(mergeContents, "X:\\Dropbox\\FocusWriting\\2016-Lore\\" + "descr merge "
+        FileManager.write(mergeContents, "X:/Dropbox/FocusWriting/2016-Lore/" + "descr merge "
          + TimeMaster.getFormattedTimeAlt(false) + ".txt");
     }
 
@@ -261,7 +261,7 @@ public class TextMaster {
         for (String description : content.split(getDescriptionSeparator())) {
             String name = content.split(getNameSeparator())[0];
             description = description.replace(name, "");
-            FileManager.write(description, path + "\\" + name + ".txt");
+            FileManager.write(description, path + "/" + name + ".txt");
         }
 
     }
@@ -377,7 +377,7 @@ public class TextMaster {
     }
 
     public static void writeEntityTextToFolder(String prop) {
-        String filepath = getTextPath() + "types\\" + prop + "\\";
+        String filepath = getTextPath() + "types/" + prop + "/";
         for (String t : XML_Reader.getTypeMaps().keySet()) {
             Map<String, ObjType> map = XML_Reader.getTypeMaps().get(t);
             for (String name : map.keySet()) {
@@ -390,20 +390,20 @@ public class TextMaster {
     }
 
     public static String getParamsPath() {
-        return getTextPath() + "parameters\\";
+        return getTextPath() + "parameters/";
     }
 
     public static String getPropsPath() {
-        return getTextPath() + "properties\\";
+        return getTextPath() + "properties/";
     }
 
     public static String getCompendiumPath() {
 
-        return getTextPath() + "compendium\\";
+        return getTextPath() + "compendium/";
     }
 
     public static String getTextPath() {
-        return PathFinder.getEnginePath() + PathFinder.getTextPath() + locale + "\\";
+        return PathFinder.getEnginePath() + PathFinder.getTextPath() + locale + "/";
     }
 
     public static String getLocale() {

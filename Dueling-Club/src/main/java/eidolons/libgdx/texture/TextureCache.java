@@ -1,11 +1,11 @@
 package eidolons.libgdx.texture;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.system.graphics.GreyscaleUtils;
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static final boolean uiAtlasesOn = !CoreEngine.isIDE();
+    private static   Boolean uiAtlasesOn ;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -49,6 +49,9 @@ public class TextureCache {
     private Pattern pattern;
 
     private TextureCache() {
+        if (uiAtlasesOn == null) {
+            uiAtlasesOn =  CoreEngine.isJarlike() ||  !CoreEngine.isIDE();
+        }
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
@@ -62,7 +65,7 @@ public class TextureCache {
             }
         }
 
-        pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
+        pattern = Pattern.compile("^.*[///]([a-z _/-0-9]*)/..*$");
 
         GuiEventManager.bind(GuiEventType.DISPOSE_TEXTURES, p -> {
             dispose();
@@ -188,7 +191,7 @@ public class TextureCache {
         }
         String name = StringMaster.getLastPathSegment(path).toLowerCase();
         switch (name) {
-//                imgPath = outcome ? "UI\\big\\victory.png" : "UI\\big\\defeat.jpg";
+//                imgPath = outcome ? "UI/big/victory.png" : "UI/big/defeat.jpg";
             case "logo fullscreen.png":
             case "defeat.png":
             case "defeat.jpg":
@@ -255,8 +258,8 @@ public class TextureCache {
     }
 
     public static String formatTexturePath(String path) {
-        path = path.toLowerCase().replace("\\\\", "\\")
-         .replace("\\", "/");
+        path = path.toLowerCase()
+         .replace("\\", "/").replace("//", "/");
         if (path.endsWith("/"))
             return path.substring(0, path.length() - 1);
         return path;
@@ -393,7 +396,7 @@ public class TextureCache {
         Texture t = null;
         if (checkAltTexture(filePath))
             try {
-                t = new Texture(new FileHandle(getAltTexturePath(filePath)),
+                t = new Texture(GDX.file(getAltTexturePath(filePath)) ,
                  Pixmap.Format.RGBA8888, false);
                 if (putIntoCache)
                     cache.put(path, t);
@@ -402,7 +405,7 @@ public class TextureCache {
             }
         if (t == null)
             try {
-                t = new Texture(new FileHandle(filePath), Pixmap.Format.RGBA8888, false);
+                t = new Texture(GDX.file(filePath), Pixmap.Format.RGBA8888, false);
                 if (putIntoCache) {
                     cache.put(path, t);
                 }

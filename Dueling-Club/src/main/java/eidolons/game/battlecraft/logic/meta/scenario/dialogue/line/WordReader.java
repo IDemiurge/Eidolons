@@ -9,8 +9,8 @@ public class WordReader {
 //    public static void main(String[] args){
 //
 //        //Alternate between the two to check what works.
-//        //String FilePath = "D:\\Users\\username\\Desktop\\Doc1.docx";
-//        String FilePath = "D:\\Users\\username\\Desktop\\Bob.doc";
+//        //String FilePath = "D:/Users/username/Desktop/Doc1.docx";
+//        String FilePath = "D:/Users/username/Desktop/Bob.doc";
 //        FileInputStream fis;
 //
 //        if(FilePath.substring(FilePath.length() -1).equals("x")){ //is a docx

@@ -32,17 +32,18 @@ public class AmbienceDataSource {
         float priority = 1f;
         if (daynessCoef != 0)
             for (EMITTER_PRESET preset : template.daily) {
-                float chance = daynessCoef;
+                float chance = (daynessCoef)*5/template.daily.length;
                 emitters.add(string(preset, (int) (chance * 100 * priority)));
-                priority -= 0.2f;
+                priority -= 0.05f;
+                priority = priority * 4 / 5;
             }
         priority = 1f;
         if (daynessCoef != 1)
             for (EMITTER_PRESET preset : template.nightly) {
-                float chance = 1 - daynessCoef;
+                float chance = (1 - daynessCoef)*5/template.nightly.length;
                 emitters.add(string(preset, (int) (chance * 100 * priority)));
-                priority -= 0.07f;
-                priority = priority * 2 / 3;
+                priority -= 0.05f;
+                priority = priority * 4 / 5;
             }
 
         if (emitters.isEmpty()) {
@@ -194,19 +195,21 @@ public class AmbienceDataSource {
              SNOW,
              MIST_ARCANE,
              MIST_WIND,
-             DARK_MIST_LITE,
              SNOWFALL,
              MIST_CYAN,
+             DARK_MIST_LITE,
              MIST_CYAN,
              SNOWFALL_THICK
             );
             COLD.setNightly(
              MIST_CYAN,
-             DARK_MIST_LITE,
+             MIST_WIND,
+             MIST_ARCANE,
              SNOW,
              SNOWFALL,
-             DARK_MIST,
-             STARS
+             DARK_MIST_LITE,
+             STARS,
+             DARK_MIST
             );
 
             POISON.setDaily(
@@ -231,6 +234,8 @@ public class AmbienceDataSource {
              MIST_TRUE2
             );
             CRYPT.setNightly(
+             MIST_ARCANE,
+             MIST_WIND,
              MIST_ARCANE,
              DARK_MIST_LITE,
              MIST_CYAN,
@@ -308,9 +313,10 @@ public class AmbienceDataSource {
             );
             CAVE.setNightly(
              MIST_WIND,
-             MIST_TRUE2,
              MIST_WHITE,
+             MIST_ARCANE,
              DARK_MIST_LITE,
+             MIST_TRUE2,
              WISPS,
              STARS
 

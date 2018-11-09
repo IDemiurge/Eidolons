@@ -26,6 +26,9 @@ public class LogPanel extends ScrollTextWrapper {
         return   new TextScroll() {
 
             public int getMaxTableElements() {
+                if (!OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.LIMIT_LOG_LENGTH)) {
+                    return 0;
+                }
                 return OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.LOG_LENGTH_LIMIT);
             }
             @Override

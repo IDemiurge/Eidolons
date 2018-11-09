@@ -41,10 +41,10 @@ public class StrPathBuilder {
     public String build_(boolean cropLast, Object... strings) {
         for (Object o : strings) {
             String s = o.toString();
-            if (s.endsWith(PathUtils.getPathSeparator()))
+            if (s.endsWith(PathUtils.getUniversalPathSeparator()))
                 builder.append(s);
             else
-                builder.append(s + PathUtils.getPathSeparator());
+                builder.append(s + PathUtils.getUniversalPathSeparator());
         }
         String result = builder.toString();
         if (cropLast)

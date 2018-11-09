@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.bf.SuperActor.BLENDING;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.shaders.GrayscaleShader;
@@ -108,7 +109,7 @@ public enum MIXER_LAUNCH{
 
     public void mix() {
 
-        FileHandle handle = new FileHandle(
+        FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
           getPath());
 

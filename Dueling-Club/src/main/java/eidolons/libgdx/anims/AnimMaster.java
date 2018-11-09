@@ -1,6 +1,7 @@
 package eidolons.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -8,13 +9,19 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
 import eidolons.libgdx.anims.controls.AnimController;
+import eidolons.libgdx.anims.sprite.FadeSprite;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.BuffAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.SuperActor.BLENDING;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.audio.DC_SoundMaster;
@@ -25,6 +32,7 @@ import main.data.ConcurrentMap;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallback;
@@ -45,15 +53,16 @@ import java.util.List;
  * Created by JustMe on 1/9/2017.
  */
 public class AnimMaster extends Group {
-// Animation does not support ZOOM!
+    // Animation does not support ZOOM!
 
+    public static final boolean FADE_SPRITE_TEST = CoreEngine.isIDE();
     static private boolean off;
     private static AnimMaster instance;
     private final FloatTextLayer floatTextLayer;
+    private   FadeSprite fadeTest;
     //    private   SpriteCache spriteCache;
     DequeImpl<CompositeAnim> leadQueue = new DequeImpl<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
-
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
     DequeImpl<Animation> attachedAnims = new DequeImpl<>();
     private AnimController controller;
@@ -69,19 +78,34 @@ public class AnimMaster extends Group {
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
         instance = this;
-//        spriteCache = new SpriteCache();
-//        spriteCache.add();
+        //        spriteCache = new SpriteCache();
+        //        spriteCache.add();
         continuousAnimsOn =
          false;
-//         FAST_DC.getGameLauncher().FAST_MODE ||
-//          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
+        //         FAST_DC.getGameLauncher().FAST_MODE ||
+        //          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
 
-        constructor =   AnimationConstructor.getInstance();
+        constructor = AnimationConstructor.getInstance();
         controller = new AnimController();
         addActor(floatTextLayer = new FloatTextLayer());
-//        AnimMaster3d.init();
-//        bindEvents(); now in GridPanel.bindEvents()
+        //        AnimMaster3d.init();
+        //        bindEvents(); now in GridPanel.bindEvents()
 
+        if (FADE_SPRITE_TEST) {
+            Coordinates c = Eidolons.getMainHero().getCoordinates();
+            SpriteAnimation animation = SpriteAnimationFactory.getSpriteAnimation("sprite shadow.png");
+            addActor(fadeTest = new FadeSprite(animation));
+            fadeTest.setBlending(BLENDING.SCREEN);
+            Vector2 v = GridMaster.getCenteredPos(c);
+            fadeTest.setPosition(v.x, v.y);
+
+            c = c.getOffsetByX(1);
+            animation = SpriteAnimationFactory.getSpriteAnimation("sprite dark.png");
+            addActor(fadeTest = new FadeSprite(animation));
+            fadeTest.setBlending(BLENDING.SCREEN);
+              v = GridMaster.getCenteredPos(c);
+            fadeTest.setPosition(v.x, v.y);
+        }
     }
 
     public static boolean isOn() {
@@ -97,15 +121,15 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-//        if (anim.getDestination().equals(anim.getOrigin()))
-//        return true;
+        //        if (anim.getDestination().equals(anim.getOrigin()))
+        //        return true;
         return false;
 
     }
 
     public static boolean isAnimationOffFor(Obj sourceObj, BaseView baseView) {
-//        if (true )
-//            return false;
+        //        if (true )
+        //            return false;
         if (!ExplorationMaster.isExplorationOn())
             return false;
         if (baseView != null)
@@ -128,9 +152,9 @@ public class AnimMaster extends Group {
     }
 
     public Boolean getParallelDrawing() {
-//        if (parallelDrawing == null)
-//            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
-//        return parallelDrawing;
+        //        if (parallelDrawing == null)
+        //            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
+        //        return parallelDrawing;
         return true;
     }
 
@@ -169,7 +193,7 @@ public class AnimMaster extends Group {
             leadAnimation.interrupt();
         });
         GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-//            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) portrait.get());
+            //            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) portrait.get());
 
         });
 
@@ -183,7 +207,7 @@ public class AnimMaster extends Group {
                 animation.start(context);
             }
         });
-            GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p -> {
+        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES, p -> {
 
             if (!isOn()) {
                 return;
@@ -196,17 +220,17 @@ public class AnimMaster extends Group {
             }
 
         });
-//        GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {
-//            updateContinuousAnims();
-//        });
-//        GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
-//            if (!isOn()) {
-//                return;
-//            }
-//            Ability ability = (Ability) p.get();
+        //        GuiEventManager.bind(GuiEventType.UPDATE_BUFFS, p -> {
+        //            updateContinuousAnims();
+        //        });
+        //        GuiEventManager.bind(GuiEventType.ABILITY_RESOLVES, p -> {
+        //            if (!isOn()) {
+        //                return;
+        //            }
+        //            Ability ability = (Ability) p.get();
         //what about triggers?
-//            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
-//        });
+        //            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
+        //        });
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
             if (!isOn()) {
                 return;
@@ -260,19 +284,19 @@ public class AnimMaster extends Group {
         if (animation.isRunning())
             return;
 
-//        animation.reset();
+        //        animation.reset();
         animation.setWaitingForNext(attachToNext);
-//        if (leadAnimation == null && !attachToNext) {
-//            leadAnimation = animation;
-//            leadAnimation.start(context);
-//        } else {
+        //        if (leadAnimation == null && !attachToNext) {
+        //            leadAnimation = animation;
+        //            leadAnimation.start(context);
+        //        } else {
         animation.setRef(context);
         add(animation);
         if (getParallelDrawing()) {
             animation.start(context);
         }
-//            controller.store(animation);
-//        }
+        //            controller.store(animation);
+        //        }
     }
 
     private void initEventAnimation(Event event) {
@@ -327,20 +351,20 @@ public class AnimMaster extends Group {
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {
         DC_ActiveObj active = (DC_ActiveObj) event.getRef().getActive();
         if (active != null) {
-//            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
-////                switch (((STANDARD_EVENT_TYPE) event.getType())) {
-//                if (event.getType() == DeathAnim.EVENT_TYPE) {
-//                    if (active.getRef().getTargetObj() != active.getOwnerObj())
-//                    if (active.getChecker().isPotentiallyHostile()) {
+            //            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
+            ////                switch (((STANDARD_EVENT_TYPE) event.getType())) {
+            //                if (event.getType() == DeathAnim.EVENT_TYPE) {
+            //                    if (active.getRef().getTargetObj() != active.getOwnerObj())
+            //                    if (active.getChecker().isPotentiallyHostile()) {
             return getParentAnim(active.getRef());
-//                    }
-//                }
-//            }
-//
+            //                    }
+            //                }
+            //            }
+            //
         }
-//        if (leadAnimation!=null )
-//            if (leadAnimation.getActive()!=active)
-//        return leadAnimation;
+        //        if (leadAnimation!=null )
+        //            if (leadAnimation.getActive()!=active)
+        //        return leadAnimation;
 
         return new CompositeAnim();
     }
@@ -355,7 +379,7 @@ public class AnimMaster extends Group {
             LogMaster.log(LogMaster.ANIM_DEBUG, anim + " created for: " + parentAnim);
             parentAnim.addEffectAnim(anim, effect); //TODO}
         } else {
-//                        add(anim);// when to start()?
+            //                        add(anim);// when to start()?
         }
     }
 
@@ -472,7 +496,7 @@ public class AnimMaster extends Group {
             if (drawing) {
                 drawing = false;
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
-//                GuiEventManager.trigger(GuiEventType.ANIMATION_QUEUE_FINISHED);
+                //                GuiEventManager.trigger(GuiEventType.ANIMATION_QUEUE_FINISHED);
             }
             drawingPlayer = false;
             return null;
@@ -490,7 +514,7 @@ public class AnimMaster extends Group {
          "; " +
          leadQueue.size() +
          " in Queue= " + leadQueue);
-//        leadAnimation.resetRef();
+        //        leadAnimation.resetRef();
         return leadAnimation;
     }
 

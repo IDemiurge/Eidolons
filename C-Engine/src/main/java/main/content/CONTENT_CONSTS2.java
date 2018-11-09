@@ -100,7 +100,7 @@ public class CONTENT_CONSTS2 {
         String units;
         String group = "Standard";
         FACTION[] allies;
-        private String image = "mini\\special\\pirate.jpg";
+        private String image = "mini/special/pirate.jpg";
 
         FACTION() {
 
@@ -272,7 +272,7 @@ public class CONTENT_CONSTS2 {
         }
 
         public String getImageFileName() {
-            return "UI\\components\\ht\\" + "LINK_" + name() + ".png";
+            return "ui/components/ht/" + "LINK_" + name() + ".png";
         }
 
         public int getXOffset() {

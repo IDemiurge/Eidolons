@@ -229,7 +229,7 @@
 <Hired_Mercenaries></Hired_Mercenaries>
 <Custom_Props></Custom_Props>
 <Vision_Mode></Vision_Mode>
-<Image>\mini\char\std\dwarf\\dwarf iron.jpg</Image>
+<Image>\mini\char\std\dwarf/dwarf iron.jpg</Image>
 <Visibility_Status></Visibility_Status>
 <Detection_Status></Detection_Status>
 <Skills>Greater Strength;</Skills>

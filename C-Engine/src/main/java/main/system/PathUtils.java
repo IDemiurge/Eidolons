@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  */
 public class PathUtils {
     private static final String PATH_SEPARATOR = System.getProperty("file.separator");
+    public static final String PATH_SEPARATOR_UNIVERSAL = "/";
 
     public static String getPathSeparator() {
         return PATH_SEPARATOR;
@@ -128,5 +129,9 @@ public class PathUtils {
             builder.append(sub + separator);
         }
         return builder.toString();
+    }
+
+    public static String getUniversalPathSeparator() {
+        return PATH_SEPARATOR_UNIVERSAL;
     }
 }

@@ -41,6 +41,14 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float ai_delta = 0;
     private float delta;
     private boolean guiDirtyFlag;
+    private static  float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
+      getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+    private static float speed=defaultSpeed;
+
+    public static void setDefaultSpeed(float daSpeed) {
+        defaultSpeed = daSpeed;
+        speed = defaultSpeed;
+    }
 
     public ExplorationTimeMaster(ExplorationMaster master) {
         super(master);
@@ -74,6 +82,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void act(float delta) {
+        delta *= speed;
         time += delta;
         master.act(delta);
     }

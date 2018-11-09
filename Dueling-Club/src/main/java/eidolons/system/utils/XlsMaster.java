@@ -156,7 +156,7 @@ public class XlsMaster {
             types += type.getName() + ";";
         }
         CoreEngine.setSelectivelyReadTypes(types);
-        String path = "Y:\\Google Drive\\Project Eidolons\\content\\"; // args[0];
+        String path = "Y:/Google Drive/Project Eidolons/content/"; // args[0];
         String filename = path +
          "content.xls";
         DC_Engine.mainMenuInit();

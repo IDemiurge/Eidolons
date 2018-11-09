@@ -48,7 +48,7 @@ public class DeathAnim extends ActionAnim {
 
     private static AnimData getDeathAnimData(Event e) {
         AnimData data = new AnimData();
-        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, "impact\\Crimson Death");
+        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, "impact/Crimson Death");
         return data;
     }
 
@@ -114,7 +114,7 @@ public class DeathAnim extends ActionAnim {
         if (actor != null)
             return actor;
         if (skull == null) {
-            skull = new Image(TextureCache.getOrCreate("UI\\Empty.png")) {
+            skull = new Image(TextureCache.getOrCreate("UI/Empty.png")) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
                     act(Gdx.graphics.getDeltaTime());

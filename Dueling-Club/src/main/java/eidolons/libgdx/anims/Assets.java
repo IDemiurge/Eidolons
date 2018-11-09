@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
@@ -39,7 +40,7 @@ public class Assets {
         });
         if (EmitterPools.isPreloaded())
             manager.setLoader(ParticleEffect.class,
-             new ParticleEffectLoader(fileName -> new FileHandle(fileName)) {
+             new ParticleEffectLoader(fileName -> GDX.file(fileName)) {
                  @Override
                  public ParticleEffect load(AssetManager am, String fileName,
                                             FileHandle file, ParticleEffectParameter param) {
@@ -54,7 +55,7 @@ public class Assets {
                  }
              });
         manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(
-         fileName -> new FileHandle(fileName)
+         fileName -> GDX.file(fileName)
         ) {
             @Override
             public TextureAtlas load(AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
@@ -63,7 +64,7 @@ public class Assets {
                 TextureAtlasData data = new ReflectionMaster<TextureAtlasData>()
                  .getFieldValue("data", this, TextureAtlasLoader.class);
                 for (Page page : data.getPages()) {
-                    Texture texture = assetManager.get(page.textureFile.path().replaceAll("\\\\", "/"), Texture.class);
+                    Texture texture = assetManager.get(page.textureFile.path().replaceAll("//", "/"), Texture.class);
                     page.texture = texture;
                 }
                 TextureAtlas atlas = new SmartTextureAtlas(data);

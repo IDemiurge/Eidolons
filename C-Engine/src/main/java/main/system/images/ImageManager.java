@@ -409,7 +409,7 @@ public class ImageManager {
          || visibility == UNIT_VISION.BEYOND_SIGHT) {
             suffix += " hidden";
         }
-        return getIcon("UI//CELL for " + suffix + ".png");
+        return getIcon("ui//CELL for " + suffix + ".png");
 
     }
 
@@ -422,7 +422,7 @@ public class ImageManager {
     }
 
     public static String getEmptyCellPath(int version) {
-        return "UI//cells//Empty Cell v" + version + ".png";
+        return "ui//cells//Empty Cell v" + version + ".png";
     }
 
     public static ImageIcon getHighlightedCellIcon() {
@@ -430,11 +430,11 @@ public class ImageManager {
     }
 
     public static ImageIcon getEmptyEmblem() {
-        return getIcon("UI//emblems//empty emblem.jpg");
+        return getIcon("ui//emblems//empty emblem.jpg");
     }
 
     public static String getEmptyEmblemPath() {
-        return ("UI//emblems//auto//Knights.png");
+        return ("ui//emblems//auto//Knights.png");
     }
 
     // public static ImageIcon getHighlightedVersion(ImageIcon pic, HIGHLIGHT
@@ -449,7 +449,7 @@ public class ImageManager {
     // }
 
     public static ImageIcon getHighlightedCellIcon(int version) {
-        return getIcon("UI//cells//Highlight Green Cell v" + version + ".png");
+        return getIcon("ui//cells//Highlight Green Cell v" + version + ".png");
     }
 
     public static ImageIcon getHiddenCellIcon() {
@@ -457,7 +457,7 @@ public class ImageManager {
     }
 
     public static ImageIcon getHiddenCellIcon(int version) {
-        return getIcon("UI//cells//Hidden Cell v" + version + ".png");
+        return getIcon("ui//cells//Hidden Cell v" + version + ".png");
     }
 
     public static ImageIcon getUnknownCellIcon() {
@@ -465,20 +465,20 @@ public class ImageManager {
     }
 
     public static ImageIcon getUnknownCellIcon(int version) {
-        return getIcon("UI//cells//Unknown Cell v" + version + ".png");
+        return getIcon("ui//cells//Unknown Cell v" + version + ".png");
     }
 
     public static String getEmptyCellIconNoBorder() {
-        return "UI//EMPTY_CELL_NO_BORDER" + ".png";
+        return "ui//EMPTY_CELL_NO_BORDER" + ".png";
     }
 
     public static ImageIcon getEmptyCellBfObjBackgroundIcon() {
-        return getIcon("UI//EMPTY_CELL_BF_OBJ_BG" + ".png");
+        return getIcon("ui//EMPTY_CELL_BF_OBJ_BG" + ".png");
 
     }
 
     public static String getUnknownSmallItemIconPath() {
-        return "UI//unknown buff" + ".jpg";
+        return "ui//unknown buff" + ".jpg";
     }
 
     public static JLabel getLabel(String img, int w, int h) {

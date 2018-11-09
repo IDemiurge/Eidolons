@@ -11,7 +11,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -110,8 +109,7 @@ public class BattleGuiStage extends GuiStage {
         GuiEventManager.bind(GuiEventType. SHOW_ACHIEVEMENTS, p-> {
             String stats = MissionStatManager.getGameStatsText( );
             EUtils.onConfirm(stats +
-             "\n Exit to menu?", true, () ->
-             Eidolons.exitFromGame());
+             "\n Press the Assault!", false, null );
         });
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
             Unit unit = (Unit) obj.get();

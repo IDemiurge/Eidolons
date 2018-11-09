@@ -1,7 +1,6 @@
 package eidolons.system.options;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,6 +18,7 @@ import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -68,7 +68,7 @@ public class OptionsWindow extends VisWindow {
 
     public static OptionsWindow getInstance() {
         if (instance == null) {
-            VisUI.load(new FileHandle(PathFinder.getSkinPath()));
+            VisUI.load(GDX.file(PathFinder.getSkinPath()));
             instance = new OptionsWindow();
         }
         return instance;

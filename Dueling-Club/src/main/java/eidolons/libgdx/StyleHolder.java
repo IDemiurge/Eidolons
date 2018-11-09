@@ -1,6 +1,5 @@
 package eidolons.libgdx;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -42,7 +41,7 @@ public class StyleHolder {
     //        for (int i = 0x20; i < 0x7B; i++) FONT_CHARS += (char) i;
     //        for (int i = 0x401; i < 0x452; i++) FONT_CHARS += (char) i;
     //    }
-    final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
+    final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|//?-+=()*&.;:,{}\"´`'<>";
     private static final String DISABLED = "_disabled";
     private static final String OVER = "_over";
     private static final String DOWN = "_down";
@@ -187,11 +186,11 @@ public class StyleHolder {
     }
 
     private static String getHieroPath(FONT font) {
-        return PathFinder.getFontsHieroPath() + "/" + font.name();
+        return PathFinder.getFontsHieroPath() + "/" + font.name().toLowerCase();
     }
 
     private static String getHieroPath(FONT font, int size) {
-        return PathFinder.getFontsHieroPath() + "/" + font.name() + "/" + font.name() + " " + size;
+        return PathFinder.getFontsHieroPath() + "/" + font.name().toLowerCase() + "/" + font.name().toLowerCase() + " " + size;
     }
 
     private static Integer getHieroClosestSize(FONT font, int size) {
@@ -220,7 +219,7 @@ public class StyleHolder {
             path =
              StringMaster.cropFormat(path) + ".fnt";
         }
-        final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
+        final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(GDX.file(path));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
          new FreeTypeFontGenerator.FreeTypeFontParameter();
 
@@ -230,7 +229,7 @@ public class StyleHolder {
         if (hiero) {
             TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/high.png"));
             FreeTypeBitmapFontData data = new FreeTypeBitmapFontData();
-            data.fontFile = new FileHandle(path);
+            data.fontFile = GDX.file(path);
             data.imagePaths = new String[]{
              StringMaster.cropFormat(path) + ".png"
             };
@@ -246,12 +245,12 @@ public class StyleHolder {
 
     public static BitmapFont getHieroFontMagic() {
         TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/magic/magic 20.png"));
-        return new BitmapFont(new FileHandle(PathFinder.getFontPath() + "hiero/magic/magic 20.fnt"), tex);
+        return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/magic/magic 20.fnt"), tex);
     }
 
     public static BitmapFont getHieroFontHigh() {
         TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/high/high 22.png"));
-        return new BitmapFont(new FileHandle(PathFinder.getFontPath() + "hiero/high/high 22.fnt"), tex);
+        return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/high/high 22.fnt"), tex);
     }
 
     public static BitmapFont getHieroFontHQ(int fontSize) {
@@ -265,7 +264,7 @@ public class StyleHolder {
         }
         TextureRegion tex = new TextureRegion(new Texture(getHieroPath(font, size) +
          ".png"));
-        return new BitmapFont(new FileHandle(getHieroPath(font, size) +
+        return new BitmapFont(GDX.file(getHieroPath(font, size) +
          ".fnt"), tex);
 
     }

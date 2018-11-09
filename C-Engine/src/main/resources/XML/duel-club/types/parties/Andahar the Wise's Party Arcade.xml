@@ -484,7 +484,7 @@
 <Deity>Faithless</Deity>
 <Name>Gubi</Name>
 <Quick_Items></Quick_Items>
-<Image>\mini\char\std\dwarf\\Deep Dwarf.jpg</Image>
+<Image>\mini\char\std\dwarf/Deep Dwarf.jpg</Image>
 <Skills>Greater Strength;Pollaxe Specialization;</Skills>
 <Classes>Fighter;</Classes>
 <Classifications>Humanoid;Hero</Classifications>

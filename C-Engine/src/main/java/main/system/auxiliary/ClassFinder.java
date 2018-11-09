@@ -73,7 +73,7 @@ public class ClassFinder {
     //
     // public static Class[] getClasses(String packageName)
     // throws ClassNotFoundException, IOException {
-    // return getClasses(PathFinder.getENGINE_PATH() + "bin\\", packageName);
+    // return getClasses(PathFinder.getENGINE_PATH() + "bin/", packageName);
     // }
     //
     // public static Class[] getClasses(String root, String packageName)

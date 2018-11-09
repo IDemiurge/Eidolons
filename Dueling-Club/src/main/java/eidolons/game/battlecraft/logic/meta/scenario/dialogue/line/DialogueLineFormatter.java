@@ -22,11 +22,11 @@ public class DialogueLineFormatter {
     public static final String ACTOR_SEPARATOR = "::";
     public static final String DIALOGUE_SEPARATOR = "***";
     public static final String LINE_SEPARATOR = ">>";
-    private static final String dialogueTextPath = "\\raw\\";
-    private static final String linearDialoguePath = "\\linear dialogues.xml";
-    private static final String introsPath = "\\intros.xml";
-    private static final String linesFilePath = "\\lines.xml";
-    //    private static final String linesFilePathIntros = "\\lines - intros.xml";
+    private static final String dialogueTextPath = "/raw/";
+    private static final String linearDialoguePath = "/linear dialogues.xml";
+    private static final String introsPath = "/intros.xml";
+    private static final String linesFilePath = "/lines.xml";
+    //    private static final String linesFilePathIntros = "/lines - intros.xml";
     private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
     private static final String TEXT_NODE = SPEECH_VALUE.MESSAGE.name();
     private static final String INTRO_IDENTIFIER = "Intro:";
@@ -135,7 +135,7 @@ public class DialogueLineFormatter {
                 newLinesFileContents += xml;
                 id++;
 //            lineCreated(id, lineText);
-                //IDEA: keep a copy of previous raw\\ folder and match?
+                //IDEA: keep a copy of previous raw/ folder and match?
             }
 
             if (id != 0) {

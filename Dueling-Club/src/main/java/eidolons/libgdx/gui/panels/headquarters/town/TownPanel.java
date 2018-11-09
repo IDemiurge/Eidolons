@@ -48,13 +48,13 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 public class TownPanel extends TabbedPanel {
     public static final WAIT_OPERATIONS DONE_OPERATION = WAIT_OPERATIONS.TOWN_DONE;
     public static final boolean TEST_MODE = false;
+    private static TownPanel activeInstance;
     private final ShopSelectionPanel shopView;
     private final QuestSelectionPanel questPanel;
     private final LabelX townName;
     private final Texture headerBg;
     private final SmartButton okBtn;
     private final SmartButton hqBtn;
-    private static TownPanel activeInstance;
     private final Texture frame;
     private String tooltip;
 
@@ -64,17 +64,17 @@ public class TownPanel extends TabbedPanel {
         addActor(new NoHitImage(TextureCache.getOrCreateR(MAP_BACKGROUND.ERSIDRIS.getBackgroundFilePath())));
         addActor(new NoHitImage(TextureCache.getOrCreateR(BACKGROUND_NINE_PATCH.SEMI.getPath())));
 
-         frame = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
+        frame = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
          BACKGROUND_NINE_PATCH.TRANSPARENT, GdxMaster.getWidth(), GdxMaster.getHeight());
 
         initContainer();
         addActor(new NoHitImage(frame));
-        addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()){
+        addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()) {
             protected BUTTON_SOUND_MAP getSoundMap() {
                 return BUTTON_SOUND_MAP.ENTER;
             }
         });
-        okBtn.setDisabledRunnable(()->{
+        okBtn.setDisabledRunnable(() -> {
             EUtils.info(tooltip);
         });
         addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
@@ -96,21 +96,29 @@ public class TownPanel extends TabbedPanel {
          townName = new LabelX("", StyleHolder.getHqLabelStyle(24))).center()
          .padTop(4);
         tabTable.row();
-        tabTable.add(labelTable).colspan(2). center();
+        tabTable.add(labelTable).colspan(2).center();
 
         resetCheckedTab();
 
-        GuiEventManager.bind(GuiEventType. SHOW_HQ_SCREEN, p-> {
-            if (getActiveInstance()==null )
+        GuiEventManager.bind(GuiEventType.SHOW_HQ_SCREEN, p -> {
+            if (getActiveInstance() == null)
                 return;
             if (p.get() == null) {
                 update();
-                shopView. fadeIn();
+                shopView.fadeIn();
             } else {
-                shopView. fadeOut();
+                shopView.fadeOut();
             }
         });
 
+    }
+
+    public static TownPanel getActiveInstance() {
+        return activeInstance;
+    }
+
+    public static void setActiveInstance(TownPanel activeInstance) {
+        TownPanel.activeInstance = activeInstance;
     }
 
     @Override
@@ -140,14 +148,14 @@ public class TownPanel extends TabbedPanel {
                 return false;
             }
         }
-//        for (Shop shop : getUserObject().getShops()) {
-//            if (!shop.isBalanceOk())
-//            {
-//                tooltip = "You have to pay off your debts at " + shop.getName();
-//                return true;
-//            }
-//        }
-                        tooltip = "You need a good reason - a quest - to leave the town's safety...";
+        //        for (Shop shop : getUserObject().getShops()) {
+        //            if (!shop.isBalanceOk())
+        //            {
+        //                tooltip = "You have to pay off your debts at " + shop.getName();
+        //                return true;
+        //            }
+        //        }
+        tooltip = "You need a good reason - a quest - to leave the town's safety...";
         return true;
     }
 
@@ -156,12 +164,12 @@ public class TownPanel extends TabbedPanel {
         return (Town) super.getUserObject();
     }
 
-    public static TownPanel getActiveInstance() {
-        return activeInstance;
-    }
-
-    public static void setActiveInstance(TownPanel activeInstance) {
-        TownPanel.activeInstance = activeInstance;
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        Town town = (Town) userObject;
+        shopView.setUserObject(town.getShops());
+        questPanel.setUserObject(town.getQuests());
     }
 
     private void openHq() {
@@ -183,29 +191,20 @@ public class TownPanel extends TabbedPanel {
         return new TablePanelX(frame.getWidth(), frame.getHeight());
     }
 
-
     @Override
     public void layout() {
         super.layout();
         contentTable.setX(NINE_PATCH_PADDING.FRAME.left);
-        okBtn.setX(frame.getWidth()-okBtn.getWidth()-2*NINE_PATCH_PADDING.FRAME.right);
-        okBtn.setY(NINE_PATCH_PADDING.FRAME.bottom/4);
-        hqBtn.setX(2*NINE_PATCH_PADDING.FRAME.right);
-        hqBtn.setY(NINE_PATCH_PADDING.FRAME.bottom/4);
-//         contentTable.getX()+contentTable.getWidth()+40);
+        okBtn.setX(frame.getWidth() - okBtn.getWidth() - 2 * NINE_PATCH_PADDING.FRAME.right);
+        okBtn.setY(NINE_PATCH_PADDING.FRAME.bottom / 4);
+        hqBtn.setX(2 * NINE_PATCH_PADDING.FRAME.right);
+        hqBtn.setY(NINE_PATCH_PADDING.FRAME.bottom / 4);
+        //         contentTable.getX()+contentTable.getWidth()+40);
 
 
         tabTable.setSize(headerBg.getWidth(), headerBg.getHeight());
         tabTable.setPosition(GdxMaster.centerWidth(tabTable),
          GdxMaster.top(tabTable));
-    }
-
-    @Override
-    public void setUserObject(Object userObject) {
-        super.setUserObject(userObject);
-        Town town = (Town) userObject;
-        shopView.setUserObject(town.getShops());
-        questPanel.setUserObject(town.getQuests());
     }
 
     @Override
@@ -222,16 +221,26 @@ public class TownPanel extends TabbedPanel {
     public void done() {
         ShopClickHandler.stashOpen = false;
         WaitMaster.receiveInput(DONE_OPERATION, true);
-        GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null );
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK  );
-//        HqDataMasterDirect.applyModifications();
+        GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null);
+        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+        //        HqDataMasterDirect.applyModifications();
 
     }
 
     public void entered() {
         tabSelected(TOWN_VIEWS.QUESTS.toString());
-        questPanel.next();
-//        update();
+//        if (questPanel.getInfoPanel() instanceof QuestInfoPanel) {
+//            SelectableItemData chosen = ((QuestInfoPanel) questPanel.getInfoPanel()).getChosen();
+//            if ( chosen !=null) {
+//                chosen
+//                try {
+//                    questPanel.next();
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                }
+//            }
+//        }
+        //        update();
     }
 
     public enum TOWN_VIEWS {

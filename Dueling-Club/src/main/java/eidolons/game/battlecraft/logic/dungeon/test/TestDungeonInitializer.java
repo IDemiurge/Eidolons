@@ -33,7 +33,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
     public static final String PRESET_PLAN = "Spire";
     static final VALUE[] encounterDungeonValues = {PROPS.DUNGEON_MAP_MODIFIER,
      PROPS.DUNGEON_MAP_TEMPLATE, PROPS.MAP_PRESET_OBJECTS, PROPS.MAP_OBJECTS,};
-    private static final String DUNGEON_BACKGROUND_FOLDER = "\\big\\dungeons";
+    private static final String DUNGEON_BACKGROUND_FOLDER = "/big/dungeons";
     private static final String RANDOM_DUNGEON_WORKSPACE_FILTER =
      MetaEnums.WORKSPACE_GROUP.FOCUS
       + "" + MetaEnums.WORKSPACE_GROUP.COMPLETE;
@@ -151,7 +151,7 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         String subFolder = ListChooser.chooseEnum(DUNGEON_SUBFOLDER.class, SELECTION_MODE.SINGLE);
         // DialogMaster.inputText("generic folder (empty for root", "");
         if (!StringMaster.isEmpty(subFolder)) {
-            path += subFolder.replace(";", "") + "\\";
+            path += subFolder.replace(";", "") + "/";
         }
         File folder = FileManager.getFile(path);
         List<String> files = FileManager.getFileNames(FileManager.findFiles(folder, ".xml", false,
@@ -167,6 +167,6 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         if (subFolder == null) {
             return level;
         }
-        return subFolder.replace(";", "") + "\\" + level;
+        return subFolder.replace(";", "") + "/" + level;
     }
 }

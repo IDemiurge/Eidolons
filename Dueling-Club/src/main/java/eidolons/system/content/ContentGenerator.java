@@ -40,10 +40,12 @@ import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.images.ImageManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -157,8 +159,8 @@ public class ContentGenerator {
             type.setProperty(MACRO_PROPS.DUNGEON_TYPES, getDUNGEON_TYPES(sub));
             type.setProperty(MACRO_PROPS.PLACE_TYPE, getPLACE_TYPE(sub));
             type.setProperty(MACRO_PROPS.PLACE_SUBTYPE, name);
-            type.setProperty(MACRO_PROPS.MAP_ICON, "global\\map\\icons\\places\\" + name + ".png");
-            type.setProperty(G_PROPS.IMAGE, "global\\map\\icons\\places\\preview\\" + name + ".png");
+            type.setProperty(MACRO_PROPS.MAP_ICON, "global/map/icons/places/" + name + ".png");
+            type.setProperty(G_PROPS.IMAGE, "global/map/icons/places/preview/" + name + ".png");
             DataManager.addType(type);
             //            type = new ObjType(name+ " alt" ,type);
             //            DataManager.addType(type);
@@ -179,7 +181,21 @@ public class ContentGenerator {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
+            updateImagePaths();
+
 //            writeDataToText();
+    }
+
+    private static void updateImagePaths() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.UNITS)) {
+            String path = type.getImagePath();
+            path =path.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
+            if (!ImageManager.isImage(path)){
+                main.system.auxiliary.log.LogMaster.log(1,path+ " - is not a valid img for " +type);
+                continue;
+            }
+            type.setImage(path);
+        }
     }
 
     private static void writeDataToText() {

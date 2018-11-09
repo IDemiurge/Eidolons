@@ -239,7 +239,7 @@
 <Gender>MALE</Gender>
 <Name>Daenur</Name>
 <Aspect>Neutral</Aspect>
-<Image>\mini\char\std\elf\\high\high elf warrior2.jpg</Image>
+<Image>\mini\char\std\elf/high\high elf warrior2.jpg</Image>
 <Offhand_Natural_Weapon>Petty Fist</Offhand_Natural_Weapon>
 <Learned_Spells>Sky Bolt;Lucent Beam;</Learned_Spells>
 <Quick_Items>Minor Healing Potion;</Quick_Items>

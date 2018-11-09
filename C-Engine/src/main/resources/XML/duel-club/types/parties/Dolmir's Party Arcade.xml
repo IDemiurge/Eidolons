@@ -116,7 +116,7 @@
 <Known_Spells></Known_Spells>
 <Offhand_Natural_Weapon>Average Fist</Offhand_Natural_Weapon>
 <Natural_Weapon>Average Fist</Natural_Weapon>
-<Image>\mini\char\std\dwarf\\dworfius4.jpg</Image>
+<Image>\mini\char\std\dwarf/dworfius4.jpg</Image>
 <Standard_Passives></Standard_Passives>
 <Deity>Allfather</Deity>
 <Rank>New Hero</Rank>
@@ -240,7 +240,7 @@
 <Background>Dwarf</Background>
 <Offhand_Natural_Weapon>Sizable Fist</Offhand_Natural_Weapon>
 <Natural_Weapon>Sizable Fist</Natural_Weapon>
-<Image>\mini\char\std\dwarf\\ScenEdit 2012-01-01 14-39-06-78.jpg</Image>
+<Image>\mini\char\std\dwarf/ScenEdit 2012-01-01 14-39-06-78.jpg</Image>
 <Standard_Passives></Standard_Passives>
 <Deity>Allfather</Deity>
 <Rank>New Hero</Rank>

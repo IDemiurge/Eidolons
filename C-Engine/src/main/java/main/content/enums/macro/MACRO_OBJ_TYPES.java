@@ -118,7 +118,7 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     MACRO_OBJ_TYPES(String name, PROPERTY v, int code) {
         this(name, v);
         this.code = code;
-        this.setImage("UI\\" + name + ".jpg");
+        this.setImage("ui/" + name + ".jpg");
     }
 
     MACRO_OBJ_TYPES(String name, PROPERTY v) {

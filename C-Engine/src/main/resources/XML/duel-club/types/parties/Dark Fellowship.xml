@@ -117,7 +117,7 @@
 <Learned_Spells>Drain Life;</Learned_Spells>
 <Description></Description>
 <Emblem>UI\emblems\std\death\3bloody.jpg</Emblem>
-<Image>\mini\char\std\elf\\dark\w_DE120.jpg</Image>
+<Image>\mini\char\std\elf/dark\w_DE120.jpg</Image>
 <Lore></Lore>
 <Main_Hand_Item>Inferior Palewood Staff</Main_Hand_Item>
 <Natural_Weapon>Petty Fist</Natural_Weapon>

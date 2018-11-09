@@ -18,6 +18,9 @@ public class DC_Engine extends CoreEngine {
     static {
         jarInit();
     }
+    public static void analyzeUserSystem() {
+
+    }
 
     private static boolean trainingOff;
 

@@ -73,6 +73,9 @@ public class FadeImageContainer extends ImageContainer {
     }
     @Override
     public void setContents(Actor contents) {
+        if (previousImage == contents)
+            return;
+
         if (previousImage != null)
             previousImage.remove();
         previousImage = getContent();

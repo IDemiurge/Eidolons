@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
@@ -107,7 +108,7 @@ public class IconGenerator extends GdxUtil {
         rounded = true;
         resizeImage = true;
         generateByRoot("large", false);
-        //        generateByRoot("64\\skills\\generated", false);
+        //        generateByRoot("64/skills/generated", false);
 
     }
 
@@ -376,7 +377,7 @@ public class IconGenerator extends GdxUtil {
     }
 
     private FileHandle getOutputHandle(String output, String name) {
-        return new FileHandle(output + (name.replace(" 64", "")
+        return GDX.file(output + (name.replace(" 64", "")
          .replace(" 128", "").replace(" 96", "")) + ".png");
     }
 

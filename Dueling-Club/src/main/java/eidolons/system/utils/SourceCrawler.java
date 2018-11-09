@@ -30,7 +30,7 @@ public class SourceCrawler {
     }
 
     private String getDirPath() {
-        return PathFinder.getXML_PATH() + "testing presets\\src crawl\\";
+        return PathFinder.getXML_PATH() + "testing presets/src crawl/";
     }
 
     public String modifyFile(String className, String text) {

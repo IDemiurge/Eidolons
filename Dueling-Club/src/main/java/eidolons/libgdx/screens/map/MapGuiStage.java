@@ -34,7 +34,7 @@ import static main.system.MapEvent.CREATE_PARTY;
  * Created by JustMe on 2/9/2018.
  */
 public class MapGuiStage extends GuiStage {
-    protected final String vignettePath = "ui\\macro\\vignette.png";
+    protected final String vignettePath = "ui/macro/vignette.png";
     protected final LightLayer lights;
     PartyActor mainPartyMarker;
     protected PartyInfoPanel partyInfoPanel;

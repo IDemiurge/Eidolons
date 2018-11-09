@@ -108,10 +108,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     @Override
     public String getImagePath() {
-        if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
-            return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
-             .getDungeonMaster().getDungeonWrapper().getColorTheme());
-        }
         return super.getImagePath();
     }
 

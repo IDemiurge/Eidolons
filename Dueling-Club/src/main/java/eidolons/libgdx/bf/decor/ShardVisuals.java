@@ -83,7 +83,6 @@ public class ShardVisuals extends GroupX {
         switch (overlay) {
             case MIST:
                 return new EMITTER_PRESET[]{
-                 EMITTER_PRESET.DARK_MIST,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.DARK_MIST_LITE,
                  EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
@@ -109,7 +108,6 @@ public class ShardVisuals extends GroupX {
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.DARK_MIST_LITE,
-                 EMITTER_PRESET.DARK_MIST_LITE,
                  EMITTER_PRESET.MIST_BLACK,
                  EMITTER_PRESET.CINDERS3,
                  EMITTER_PRESET.ASH,
@@ -128,7 +126,6 @@ public class ShardVisuals extends GroupX {
             case NETHER:
                 return new EMITTER_PRESET[]{
                  EMITTER_PRESET.DARK_MIST,
-                 EMITTER_PRESET.DARK_MIST_LITE,
                  EMITTER_PRESET.DARK_MIST_LITE,
                  EMITTER_PRESET.MIST_ARCANE,
                  EMITTER_PRESET.MIST_ARCANE,

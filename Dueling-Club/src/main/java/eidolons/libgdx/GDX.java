@@ -1,5 +1,6 @@
 package eidolons.libgdx;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.system.graphics.RESOLUTION;
 import main.game.bf.directions.DIRECTION;
@@ -100,5 +101,9 @@ public class GDX {
 
     public static float centerHeight(Actor actor) {
         return GdxMaster.centerHeight(actor);
+    }
+
+    public static FileHandle file(String path) {
+        return new FileHandle(path.toLowerCase());
     }
 }

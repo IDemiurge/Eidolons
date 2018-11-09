@@ -35,8 +35,8 @@ import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
  */
 public class MapScreen extends GameScreenWithTown {
 
-    public final static String defaultPath = "global\\map\\ersidris plain.jpg";
-    public final static String timeVersionRootPath = "global\\map\\ersidris at ";
+    public final static String defaultPath = "global/map/ersidris plain.jpg";
+    public final static String timeVersionRootPath = "global/map/ersidris at ";
     public static final int defaultSize = 2988;
     protected static MapScreen instance;
     //    protected RealTimeGameLoop realTimeGameLoop;

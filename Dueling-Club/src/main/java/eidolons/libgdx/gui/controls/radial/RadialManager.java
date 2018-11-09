@@ -402,7 +402,7 @@ public class RadialManager {
              target);
 
         };
-        final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR("UI/components\\dc\\radial/examine.png"), runnable);
+        final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR("UI/components/dc/radial/examine.png"), runnable);
         addSimpleTooltip(valueContainer, "Examine");
         return valueContainer;
     }
@@ -621,15 +621,15 @@ public class RadialManager {
 
     public enum RADIAL_PARENT_NODE {
         OFFHAND_ATTACKS,
-        TURN_ACTIONS("/UI/components\\dc\\radial\\turns.png"),
-        SPELLS("/UI/components\\dc\\radial\\spells.png"),
-        MOVES("UI\\components\\dc\\radial\\moves.png"),
+        TURN_ACTIONS("/UI/components/dc/radial/turns.png"),
+        SPELLS("/UI/components/dc/radial/spells.png"),
+        MOVES("UI/components/dc/radial/moves.png"),
         MAIN_HAND_ATTACKS,
-        SPECIAL("UI\\components\\dc\\radial\\special actions.png"),
-        QUICK_ITEMS("UI\\components\\dc\\radial\\quick items.png"),
-        MODES("UI\\components\\dc\\radial\\additional actions.png"),
-        ORDERS("UI\\components\\dc\\radial\\orders.png"),
-        DUAL_ATTACKS("UI\\components\\dc\\radial\\DUAL_ATTACKS.png");
+        SPECIAL("UI/components/dc/radial/special actions.png"),
+        QUICK_ITEMS("UI/components/dc/radial/quick items.png"),
+        MODES("UI/components/dc/radial/additional actions.png"),
+        ORDERS("UI/components/dc/radial/orders.png"),
+        DUAL_ATTACKS("UI/components/dc/radial/DUAL_ATTACKS.png");
 
         protected String iconPath;
 

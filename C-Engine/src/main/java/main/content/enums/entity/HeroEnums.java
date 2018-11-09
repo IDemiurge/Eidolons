@@ -199,27 +199,27 @@ public class HeroEnums {
     }
 
     public enum HERO_SOUNDSET {
-        ANGEL("chars\\male\\angel\\", false),
-        FIGHTER("chars\\male\\quiet\\", false),
-        TOUGH("chars\\male\\dwarf\\", false),
-        JOVIAL("chars\\male\\trickster\\", false),
-        CAUTOUS("chars\\male\\rogue\\", false),
-        LEADER("chars\\male\\fighter\\", false),
-        LEARNED("chars\\male\\wizard\\", false),
-        VALIANT("chars\\male\\champion\\", false),
-        NOBLE("chars\\male\\noble\\", false),
-        MANIAC("chars\\male\\blackguard\\", false),
+        ANGEL("chars/male/angel/", false),
+        FIGHTER("chars/male/quiet/", false),
+        TOUGH("chars/male/dwarf/", false),
+        JOVIAL("chars/male/trickster/", false),
+        CAUTOUS("chars/male/rogue/", false),
+        LEADER("chars/male/fighter/", false),
+        LEARNED("chars/male/wizard/", false),
+        VALIANT("chars/male/champion/", false),
+        NOBLE("chars/male/noble/", false),
+        MANIAC("chars/male/blackguard/", false),
 
-        W_INNOCENT("chars\\female\\human\\", true),
-        W_PLAYFUL("chars\\female\\bad girl\\", true),
-        W_JOVIAL("chars\\female\\wood elf\\", true),
-        W_NOBLE("chars\\female\\good girl\\", true),
-        W_VALIANT("chars\\female\\fighter\\", true),
-        W_FEISTY("chars\\female\\feisty\\", true),
-        W_LEARNED("chars\\female\\noble\\", true),
-        W_TOUGH("chars\\female\\husky\\", true),
-        W_DEMENTED("chars\\female\\vampire female\\", true),
-        W_VILE("chars\\female\\succubus\\", true),
+        W_INNOCENT("chars/female/human/", true),
+        W_PLAYFUL("chars/female/bad girl/", true),
+        W_JOVIAL("chars/female/wood elf/", true),
+        W_NOBLE("chars/female/good girl/", true),
+        W_VALIANT("chars/female/fighter/", true),
+        W_FEISTY("chars/female/feisty/", true),
+        W_LEARNED("chars/female/noble/", true),
+        W_TOUGH("chars/female/husky/", true),
+        W_DEMENTED("chars/female/vampire female/", true),
+        W_VILE("chars/female/succubus/", true),
 
         // ++ quiet =))
         ;
@@ -268,7 +268,7 @@ public class HeroEnums {
         FORTITUDE(3, 6, 12, false, "Hardy"),
 
         ENDURANCE_REGEN(15, 45, 135, false, "Undying"),
-        STAMINA_REGEN(1, 3, 9, false, "Crafty"),
+         STAMINA_REGEN(1, 3, 9, false, "Crafty"),
         ESSENCE_REGEN(7, 20, 50, false, "Meditative"),
         FOCUS_REGEN(4, 10, 25, false, "Recovering"),
 

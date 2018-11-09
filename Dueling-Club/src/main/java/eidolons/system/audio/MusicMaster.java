@@ -37,7 +37,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class MusicMaster {
     public static final int PERIOD = 100; //millis
-    public static final String MASTER_PATH = PathFinder.getMusicPath() + "\\main\\";
+    public static final String MASTER_PATH = PathFinder.getMusicPath() + "/main/";
     public static final boolean MASTER_MODE = true;
     public static final String AMBIENT_FOLDER = "atmo";
     private static final int ALT_AMBIENCE_TOGGLE_CHANCE_BASE = 5;

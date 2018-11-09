@@ -95,7 +95,7 @@ public class PresetLauncher {
         };
 
         LAUNCH.JUnit.graphicsOff = true;
-        LAUNCH.Profiling.dungeonPath = "Test\\Broken Ravenguard Fort.xml";
+        LAUNCH.Profiling.dungeonPath = "Test/Broken Ravenguard Fort.xml";
     }
 
     static {

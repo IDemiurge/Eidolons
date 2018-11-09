@@ -262,8 +262,8 @@ public class DungeonEnums {
 
         BASTION(PathFinder.getBgPicsPath(),"bastion.jpg"),
         BASTION_DARK(PathFinder.getBgPicsPath(),"bastion_1.1.png"),
-        CAVE(PathFinder.getBgPicsPath(),"ship flip.jpg"),
-        SHIP(PathFinder.getBgPicsPath(),"dungeon.png"),
+        CAVE(PathFinder.getBgPicsPath(),"dungeon.png"),
+        SHIP(PathFinder.getBgPicsPath(),"ship flip.jpg"),
         ELVEN_RUINS(PathFinder.getBgPicsPath(), "RUINS.jpg"),
         RAVENWOOD(PathFinder.getBgPicsPath(), "RAVENWOOD.png"),
         RAVENWOOD_EVENING(PathFinder.getBgPicsPath(), "RAVENWOOD evening.png"),

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.generic;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Array;
@@ -166,5 +167,9 @@ public class GroupX extends Group {
         } else {
             fadeIn();
         }
+    }
+
+    public void setStage_(Stage s) {
+        setStage(s);
     }
 }

@@ -26,7 +26,7 @@ public class LogFileMaster {
     private static boolean writingPaused;
 
     public static String getLogFilePath() {
-        return PathFinder.getXML_PATH() + "logs\\" + TimeMaster.getFormattedDate(false);
+        return PathFinder.getXML_PATH() + "logs/" + TimeMaster.getFormattedDate(false);
 
     }
 
@@ -82,7 +82,7 @@ public class LogFileMaster {
             setDirty(true);
             return;
         }
-        String string = channel.getLog().toString() + "\\" + channel.toString();
+        String string = channel.getLog().toString() + "/" + channel.toString();
         write(entries, string);
 
     }
@@ -191,7 +191,7 @@ public class LogFileMaster {
             if (!ListMaster.isNotEmpty(entries)) {
                 continue;
             }
-            final String string = channel.getLog().toString() + "\\" + channel.toString();
+            final String string = channel.getLog().toString() + "/" + channel.toString();
             new Thread(new Runnable() {
                 public void run() {
                     write(entries, string);

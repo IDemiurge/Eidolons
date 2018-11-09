@@ -95,9 +95,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
             outcome = TEST_OUTCOME;
 
         datasource = outcomeDatasource;
-        String imgPath = "UI\\big\\victory.png";
+        String imgPath = "UI/big/victory.png";
         if (outcome != null)
-            imgPath = outcome ? "UI\\big\\victory.png" : "UI\\big\\defeat.jpg";
+            imgPath = outcome ? "UI/big/victory.png" : "UI/big/defeat.jpg";
         picture = new Image(TextureCache.getOrCreateR(imgPath));
 
         addActor(picture);

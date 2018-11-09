@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.libgdx.GDX;
 import main.data.filesys.PathFinder;
 
 /**
@@ -17,7 +18,7 @@ public class AudioMaster {
     ObjectMap<String, Sound> sounds = new ObjectMap<String, Sound>();
     ObjectMap<String, FileHandle> files = new ObjectMap<String, FileHandle>();
     Array<String> badFiles = new Array<String>();
-    String soundPath = PathFinder.getSoundPath().replaceAll("\\\\", "/");
+    String soundPath = PathFinder.getSoundPath().replaceAll("//", "/");
     String badSoundsPath = soundPath + "/badSounds";
 
     private AudioMaster() {
@@ -31,9 +32,9 @@ public class AudioMaster {
         Gdx.app.log("AudioMaster::AudioMaster()", "-- sounds.size:" + sounds.size);
         Gdx.app.log("AudioMaster::AudioMaster()", "-- files.size:" + files.size);
         Gdx.app.log("AudioMaster::AudioMaster()", "-- badFiles.size:" + badFiles.size);
-        FileHandle logWithBadFiles = new FileHandle(badSoundsPath + "Log.txt");
+        FileHandle logWithBadFiles = GDX.file(badSoundsPath + "Log.txt");
         logWithBadFiles.writeString(badFiles.toString().replaceAll(", ", "\n"), false);
-//        Sound sound = audio.newSound(new FileHandle(new File("")));
+//        Sound sound = audio.newSound(GDX.file(new File("")));
 //        sound.setVolume(id, volume);
 //        String soundPath = sounds.keys().toArray().get(1);
 //        Sound firstSound = sounds.get(soundPath);
@@ -76,7 +77,7 @@ public class AudioMaster {
 //                            Gdx.app.error("AudioMaster::foundSoundInDir()", "-- Exp:" + exp);
 //                            String filePath = fileHandle.path();
 //                            String shortFilePath = filePath.replace(soundPath, "");
-//                            FileHandle newFile = new FileHandle(badSoundsPath + "/" + shortFilePath);
+//                            FileHandle newFile = GDX.file(badSoundsPath + "/" + shortFilePath);
 //                            fileHandle.copyTo(newFile);
 //                            badFiles.add(shortFilePath);
                         }

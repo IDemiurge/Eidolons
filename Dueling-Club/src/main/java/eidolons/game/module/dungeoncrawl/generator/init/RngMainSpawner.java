@@ -12,12 +12,12 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestCreator;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.data.DataManager;
@@ -108,7 +108,11 @@ public class RngMainSpawner {
         //some meta data to take from?
 
         log(1, "Spawning for quests ");
-        spawnForQuests();
+        try {
+            spawnForQuests();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         log(1, "Spawning for symbols ");
         spawnForSymbols();
         log(1, "Spawning  Mandatory ");
@@ -157,13 +161,12 @@ public class RngMainSpawner {
             if (!isBlockForGroup(block, UNIT_GROUP_TYPE.IDLERS))
                 if (!isBlockForGroup(block, UNIT_GROUP_TYPE.GUARDS))
                     if (!isBlockForGroup(block, UNIT_GROUP_TYPE.CROWD))
-                        if (!isBlockForGroup(block, UNIT_GROUP_TYPE.PATROL))
-                    {
-                        return true;
-                    }
+                        if (!isBlockForGroup(block, UNIT_GROUP_TYPE.PATROL)) {
+                            return true;
+                        }
             return false;
         });
-//        Collections.sort(blocks, );
+        //        Collections.sort(blocks, );
         for (LevelBlock block : blocks) {
 
             List<ObjType> units = new ArrayList<>();
@@ -195,11 +198,25 @@ public class RngMainSpawner {
         ObjType type = (ObjType) quest.getArg();
         List<ObjType> units = new ArrayList<>();
         units.add(type);
+        List<LevelBlock> blocks = getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone);
+        if (blocks.isEmpty()) {
+            for (LevelZone levelZone : level.getZones()) {
+                blocks = getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, levelZone);
+                if (!blocks.isEmpty()) {
+                    zone = levelZone;
+                    break;
+                }
+            }
+        }
 
+        if (blocks.isEmpty()) {
+            blocks = level.getBlocks().stream().filter(b -> b.getRoomType() != ROOM_TYPE.ENTRANCE_ROOM).collect(Collectors.toList());
+        }
+        int n = RandomWizard.getRandomIndex(blocks);
         LevelBlock block =
          QuestMaster.TEST_MODE
           ? level.getBlocks().stream().filter(b -> b.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM).findFirst().get()
-          : getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone).get(0);
+          : blocks.get(n);
 
         List<ObjAtCoordinate> list = spawnUnits(block, units);
         block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
@@ -253,11 +270,11 @@ public class RngMainSpawner {
                 if (!isBlockForGroup(block, groupType)) {
                     continue blocks;
                 }
-                if (block.getUnitGroups().size() > getMaxGroupsForBlock(block)){
-//                    for (UNIT_GROUP_TYPE group_type : block.getUnitGroups().values())
-//                        if (group_type == groupType)
-                            continue blocks;
-                    }
+                if (block.getUnitGroups().size() > getMaxGroupsForBlock(block)) {
+                    //                    for (UNIT_GROUP_TYPE group_type : block.getUnitGroups().values())
+                    //                        if (group_type == groupType)
+                    continue blocks;
+                }
 
 
                 if (calculatePowerFill(block) > getMaxPowerFill(block))
@@ -565,7 +582,7 @@ public class RngMainSpawner {
         WeightMap<String> altMap = RngUnitProvider.getWeightMap(group, groupType, true);
         boolean oneOfAType = isOneOfAType(groupType, map, minPreferred);
         while (true) {
-            if (units.size()>max)
+            if (units.size() > max)
                 break;
             if (map.isEmpty())
                 map = RngUnitProvider.getWeightMap(group, groupType, false);
@@ -686,6 +703,9 @@ public class RngMainSpawner {
         Iterator<Coordinates> iterator = emptyCells.listIterator();
         Coordinates c = iterator.next();
         for (ObjType unit : units) {
+            if (unit == null) {
+                continue;
+            }
             ObjAtCoordinate at = new ObjAtCoordinate(unit, c);
             addUnit(at, levelBlock);
             list.add(at);

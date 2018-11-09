@@ -58,7 +58,7 @@ public final class UnitEnums {
         }
 
         public String getImagePath() {
-            return "UI\\value icons\\classifications\\" + getName() + ".jpg";
+            return "ui/value icons/classifications/" + getName() + ".jpg";
 
         }
 
@@ -143,7 +143,7 @@ public final class UnitEnums {
          StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
 
         COUNTER() {
-            imagePath = ImageManager.getValueIconsPath() + "counters\\" + toString() + ".png";
+            imagePath = ImageManager.getValueIconsPath() + "counters/" + toString() + ".png";
         }
 
         public boolean isNegativeAllowed() {
@@ -315,7 +315,7 @@ public final class UnitEnums {
         }
 
         public String getImagePath() {
-            return "UI\\value icons\\passives\\" + getName() + ".jpg";
+            return "ui/value icons/passives/" + getName() + ".jpg";
 
         }
 

@@ -120,7 +120,7 @@
 <Principles>Law;Honor;</Principles>
 <Group>Custom</Group>
 <Emblem>UI\emblems\std\neutral\xp2_textures_bif-0000000215.jpg</Emblem>
-<Image>\mini\char\std\dwarf\\fsilver.jpg</Image>
+<Image>\mini\char\std\dwarf/fsilver.jpg</Image>
 <Displayed_Name>Base Hero Type</Displayed_Name>
 <Off_Hand_Item></Off_Hand_Item>
 <Race>Dwarf</Race>

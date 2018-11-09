@@ -159,7 +159,7 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     public static File chooseFile(String path, String filter, SELECTION_MODE mode) {
-        return FileManager.getFile(path + "\\" + chooseFile(path, filter, mode, false));
+        return FileManager.getFile(path + "/" + chooseFile(path, filter, mode, false));
     }
 
     public static String chooseFile(String path, String filter, SELECTION_MODE mode, boolean dirs) {

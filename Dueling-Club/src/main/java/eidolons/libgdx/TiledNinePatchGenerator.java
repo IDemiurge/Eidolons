@@ -136,7 +136,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
      boolean preventOverlapping,
      boolean fillWithBlack) {
 
-        FileHandle handle = new FileHandle(
+        FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
           path);
 

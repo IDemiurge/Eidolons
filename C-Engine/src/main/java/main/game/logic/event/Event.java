@@ -77,7 +77,7 @@ public class Event implements Referred {
     }
 
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<GETTERS&SETTERS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    // \\
+    // /
 
     public void setEvent(Event event) {
         ref.event = event;

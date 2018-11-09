@@ -2,18 +2,18 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.BattleFieldObject;
 
 /**
  * Created by JustMe on 4/1/2018.
- *
+ * <p>
  * special tooltip
  * never in outline
  * emblem?
- *
  */
-public class LastSeenView extends  GenericGridView{
+public class LastSeenView extends GenericGridView {
 
     private GridUnitView parentView;
 
@@ -34,15 +34,23 @@ public class LastSeenView extends  GenericGridView{
     }
 
     @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if (getColor().a != 1) {
+            return null;
+        }
+        return super.hit(x, y, touchable);
+    }
+
+    @Override
     public void setVisible(boolean visible) {
         if (!visible)
-            if (this.isVisible()!=visible){
+            if (this.isVisible() != visible) {
                 super.setVisible(visible);
             }
         super.setVisible(visible);
-//        if (visible) {
-//            arrow.setRotation(getParentView().arrow.getRotation());
-//        }
+        //        if (visible) {
+        //            arrow.setRotation(getParentView().arrow.getRotation());
+        //        }
     }
 
     @Override
@@ -52,7 +60,7 @@ public class LastSeenView extends  GenericGridView{
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        setVisible(!getParentView().isVisible());
+        //        setVisible(!getParentView().isVisible());
         if (getUserObject().isPlayerCharacter())
             return;
         super.draw(batch, parentAlpha);
@@ -66,7 +74,7 @@ public class LastSeenView extends  GenericGridView{
 
     @Override
     public String toString() {
-        return isVisible()+ " LSV for " +getParentView() + getColor().a +
+        return isVisible() + " LSV for " + getParentView() + getColor().a +
          getActionsOfClass(AlphaAction.class);
     }
 
@@ -75,14 +83,14 @@ public class LastSeenView extends  GenericGridView{
         if (getUserObject().isPlayerCharacter())
             return;
         super.addAction(action);
-//        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
-    }
-
-    public void setParentView(GridUnitView parentView) {
-        this.parentView = parentView;
+        //        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
     }
 
     public GridUnitView getParentView() {
         return parentView;
+    }
+
+    public void setParentView(GridUnitView parentView) {
+        this.parentView = parentView;
     }
 }

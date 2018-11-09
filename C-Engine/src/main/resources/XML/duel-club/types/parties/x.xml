@@ -212,7 +212,7 @@
 <Race>Dwarf</Race>
 <Aspect></Aspect>
 <Passives></Passives>
-<Image>\mini\char\std\dwarf\\Dwarf Moonsilver.jpg</Image>
+<Image>\mini\char\std\dwarf/Dwarf Moonsilver.jpg</Image>
 <Prepared_Spells></Prepared_Spells>
 <Memorized_Spells>Conjure Armor;Conjure Weapon;</Memorized_Spells>
 <Visibility_Status></Visibility_Status>

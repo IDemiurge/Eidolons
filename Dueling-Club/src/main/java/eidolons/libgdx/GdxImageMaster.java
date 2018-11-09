@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class GdxImageMaster extends LwjglApplication {
 
-    private static final String PATH = "gen\\round\\";
+    private static final String PATH = "gen/round/";
     private static Map<Texture, Pixmap> pixmaps = new HashMap<>();
 
     public GdxImageMaster() {
@@ -74,7 +74,7 @@ public class GdxImageMaster extends LwjglApplication {
                 suffix += " flip y";
             newPath = StringMaster.cropFormat(path) + " " + suffix + StringMaster.getFormat(path);
         }
-        FileHandle handle = new FileHandle(
+        FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
           newPath);
         if (handle.exists())
@@ -140,7 +140,7 @@ public class GdxImageMaster extends LwjglApplication {
         }
         String newPath = getSizedImagePath(path, size);
 
-        FileHandle handle = new FileHandle(
+        FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
           newPath);
         if (handle.exists())
@@ -194,7 +194,7 @@ public class GdxImageMaster extends LwjglApplication {
                 return roundedRegion;
 
         Pixmap rounded = roundTexture(textureRegion);
-        FileHandle handle = new FileHandle(
+        FileHandle handle = GDX.file(
          PathFinder.getImagePath() + newPath);
         if (write) {
             PixmapIO.writePNG(handle, rounded);
@@ -208,7 +208,7 @@ public class GdxImageMaster extends LwjglApplication {
         CoreEngine.systemInit();
         for (String filePath : FileManager.getFileNames(FileManager.
          getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
-            //            FileHandle handle=new FileHandle(filePath);
+            //            FileHandle handle=GDX.file(filePath);
             round(directory + filePath, true);
 
         }
@@ -285,7 +285,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String cropImagePath(String s) {
-        return s.replace('/', '\\').toLowerCase().replace(PathFinder.getImagePath().toLowerCase(), "");
+        return s.replace('/', '/').toLowerCase().replace(PathFinder.getImagePath().toLowerCase(), "");
     }
 
     public static String getAttackActionPath(DC_ActiveObj obj) {

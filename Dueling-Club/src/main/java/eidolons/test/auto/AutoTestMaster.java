@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AutoTestMaster {
-    public static final String TEST_DUNGEON = "Test\\Underworld Keep.xml";
+    public static final String TEST_DUNGEON = "Test/Underworld Keep.xml";
     public static final String SKILL_PRESET_TEST_TYPES = "Spinning Axes;";
     public static final String CLASS_PRESET_TEST_TYPES = "Rogue;Swashbuckler;Thug;Squire;Knight;Man-at-Arms;Scout;Ranger;Marksman;";
     private static final Integer PRESET = null;
@@ -103,7 +103,7 @@ public class AutoTestMaster {
         for (String line : logStrings) {
             contents += line + "\n";
         }
-        FileManager.write(contents, PathFinder.getLogPath() + "\\tests\\" + TYPE
+        FileManager.write(contents, PathFinder.getLogPath() + "/tests/" + TYPE
          + TimeMaster.getFormattedTime(false, true) + ".txt");
     }
 

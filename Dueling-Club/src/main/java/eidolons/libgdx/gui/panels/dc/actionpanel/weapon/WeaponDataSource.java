@@ -87,7 +87,7 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     private String getDefaultSpriteImage() {
-        return "main\\item\\weapon\\sprites\\battle axe.png";
+        return "main/item/weapon/sprites/battle axe.png";
     }
 
     public Unit getOwnerObj() {

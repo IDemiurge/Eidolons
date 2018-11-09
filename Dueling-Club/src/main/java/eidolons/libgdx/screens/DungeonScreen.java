@@ -210,7 +210,9 @@ public class DungeonScreen extends GameScreenWithTown {
         MusicMaster.getInstance().scopeChanged(ATMO);
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
-        gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
+        gridPanel = new GridPanel(param.getGridW(), param.getGridH());
+        //do not chain - will fail ...
+        gridPanel.init(param.getObjects());
         controller = new DungeonInputController(cam);
 
         gridStage.addActor(gridPanel);

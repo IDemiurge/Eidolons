@@ -92,26 +92,26 @@ public class GraphicComponent extends JComponent {
 
     public enum STD_COMP_IMAGES {
 
-        ARROW_2_DOWN("UI\\components\\down2.png"),
-        ARROW_2_UP("UI\\components\\up2.png"),
-        ARROW_2_LEFT("UI\\components\\left2.png"),
-        ARROW_2_RIGHT("UI\\components\\right2.png"),
+        ARROW_2_DOWN("ui/components/down2.png"),
+        ARROW_2_UP("ui/components/up2.png"),
+        ARROW_2_LEFT("ui/components/left2.png"),
+        ARROW_2_RIGHT("ui/components/right2.png"),
 
-        ARROW_3_DOWN("UI\\components\\down3.png"),
-        ARROW_3_UP("UI\\components\\up3.png"),
-        ARROW_3_LEFT("UI\\components\\left3.png"),
-        ARROW_3_RIGHT("UI\\components\\right3.png"),
+        ARROW_3_DOWN("ui/components/down3.png"),
+        ARROW_3_UP("ui/components/up3.png"),
+        ARROW_3_LEFT("ui/components/left3.png"),
+        ARROW_3_RIGHT("ui/components/right3.png"),
 
-        ARROW_4_DOWN("UI\\components\\down4.png"),
-        ARROW_4_UP("UI\\components\\up4.png"),
-        ARROW_4_LEFT("UI\\components\\left4.png"),
-        ARROW_4_RIGHT("UI\\components\\right4.png"),
+        ARROW_4_DOWN("ui/components/down4.png"),
+        ARROW_4_UP("ui/components/up4.png"),
+        ARROW_4_LEFT("ui/components/left4.png"),
+        ARROW_4_RIGHT("ui/components/right4.png"),
 
-        GOLD("UI\\components\\small\\crowns2.png"),
-        XP("UI\\components\\small\\xp.png"),
-        LOCK("UI\\components\\small\\locked.png"),
-        QUESTION("UI\\components\\small\\question.png"),
-        GLORY("UI\\components\\small\\glory.png"),;
+        GOLD("ui/components/small/crowns2.png"),
+        XP("ui/components/small/xp.png"),
+        LOCK("ui/components/small/locked.png"),
+        QUESTION("ui/components/small/question.png"),
+        GLORY("ui/components/small/glory.png"),;
 
         public Image img;
         private String s;

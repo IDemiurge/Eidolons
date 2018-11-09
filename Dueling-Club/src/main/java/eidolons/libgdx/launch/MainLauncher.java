@@ -18,7 +18,7 @@ import java.util.Stack;
  */
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
-    private static final String LAST_CHOICE_FILE ="xml\\last dc.xml" ;
+    private static final String LAST_CHOICE_FILE ="xml/last dc.xml" ;
     private static Stack<String> lastChoiceStack;
 
     public static void main(String[] args) {
@@ -30,17 +30,17 @@ public class MainLauncher extends GenericLauncher {
         if (CoreEngine.isIDE())
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
 
+        String[] commands = args;
+        if (commands.length == 1) {
+            CoreEngine.setJarlike(true);
+        }
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
 //        if (CoreEngine.isFastMode()) {
 //            CoreEngine.setJar(true);
 //        }
-        if (args.length > 0) {
-            String[] commands = args;
-            if (commands.length == 1) {
-                CoreEngine.setJarlike(true);
-                return;
-            }
+        if (commands.length > 1) {
+
             for (String command : commands) {
                 command = command.trim();
                 MAIN_MENU_ITEM item =

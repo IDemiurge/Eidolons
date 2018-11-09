@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class ChannelingRule {
 
-    private static final String PATH = "effects\\channeling\\";
+    private static final String PATH = "effects/channeling/";
     private static final PARAMS[] costParamsResolve = {
      PARAMS.AP_COST,
      PARAMS.ESS_COST,

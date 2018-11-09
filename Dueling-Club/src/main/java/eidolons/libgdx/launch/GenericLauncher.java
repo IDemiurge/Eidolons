@@ -52,6 +52,7 @@ public class GenericLauncher extends Game {
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
+    private boolean initRunning;
 
     public static void setFirstInitDone(boolean firstInitDone) {
         GenericLauncher.firstInitDone = firstInitDone;
@@ -268,17 +269,23 @@ public class GenericLauncher extends Game {
             GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         switch (data.getType()) {
             case BATTLE:
-                if (!CoreEngine.isMacro())
+                if (!CoreEngine.isMacro()) {
                     if (firstInitDone)
                         return;
+                    if (initRunning)
+                        return;
+                }
+                initRunning=true;
                 Eidolons.onThisOrNonGdxThread(() -> {
                     main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + data.getName());
                     DC_Engine.gameStartInit();
+                    //how to prevent this from being called twice?
                     if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
                         return; // INIT FAILED
                     MusicMaster.preload(MUSIC_SCOPE.ATMO);
                     Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                     firstInitDone = true;
+                    initRunning=false;
                 });
                 break;
             case MAIN_MENU:

@@ -211,7 +211,7 @@
 <Detection_Status></Detection_Status>
 <Actives></Actives>
 <Armor_Item>Inferior Iron Breastplate</Armor_Item>
-<Image>\mini\char\std\dwarf\\Dwarf Moonsilver.jpg</Image>
+<Image>\mini\char\std\dwarf/Dwarf Moonsilver.jpg</Image>
 <Base_Type></Base_Type>
 <Custom_Params></Custom_Params>
 <Race>Dwarf</Race>

@@ -166,7 +166,7 @@ public class XML_Reader {
 
     public static XML_File readFile(File file) {
         String text = FileManager.readFile(file);
-        if (FileManager.readFile(file).length() < 15) {
+        if (text.length() < 15) {
             main.system.auxiliary.log.LogMaster.log(1, "empty xml file " + file.getName());
             return null;
         }

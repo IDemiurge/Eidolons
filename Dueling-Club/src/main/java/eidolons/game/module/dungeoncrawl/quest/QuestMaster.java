@@ -203,6 +203,7 @@ public class QuestMaster extends MetaGameHandler {
     public void questComplete(DungeonQuest quest) {
         questCancelled(quest.getTitle()); // just in case?..
         GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, quest.getTitle());
+        GuiEventManager.trigger(GuiEventType.QUEST_COMPLETED, quest.getTitle());
         GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED );
         questsPool.remove(quest); //can't retake it
         updateQuests();

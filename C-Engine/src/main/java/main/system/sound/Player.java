@@ -30,7 +30,7 @@ import java.util.Stack;
 
 public class Player {
     public static final String ALT = "_ALT";
-    private static final String SOUNDSETS = "\\soundsets\\";
+    private static final String SOUNDSETS = "/soundsets/";
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
     private static final String SOUNDSET_FOLDER_PATH = PathFinder.getSoundPath() + SOUNDSETS;
@@ -99,7 +99,10 @@ public class Player {
         if (StringMaster.isEmpty(SoundMaster.getPath())) {
             return;
         }
-        String format = (alt) ? ALT_FORMAT : FORMAT;
+        String format //= (alt) ? ALT_FORMAT : FORMAT;
+          = StringMaster.getFormat(basePath);
+        basePath = StringMaster.cropFormat(basePath);
+
         if (!basePath.contains(SoundMaster.getPath())) {
             basePath = SoundMaster.getPath() + basePath;
         }
@@ -266,9 +269,9 @@ public class Player {
 
         if (!result) {
             if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
-                String autopath = SOUNDSET_FOLDER_PATH + "\\spells\\"
-                 + obj.getAspect().toString().toLowerCase() + "\\"
-                 + obj.getProperty(G_PROPS.SPELL_GROUP) + "\\" + obj.getName();
+                String autopath = SOUNDSET_FOLDER_PATH + "/spells/"
+                 + obj.getAspect().toString().toLowerCase() + "/"
+                 + obj.getProperty(G_PROPS.SPELL_GROUP) + "/" + obj.getName();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
                 if (result) {
@@ -305,7 +308,7 @@ public class Player {
         if (checkSoundTypeOff(sound_type))
             return false;
         if (!prop.contains("soundsets")) {
-            prop = "soundsets\\" + prop;
+            prop = "soundsets/" + prop;
         }
         String path = PathFinder.getSoundPath()
          // SOUNDSET_FOLDER_PATH + "//"
@@ -415,10 +418,10 @@ public class Player {
 
         masteryGroup = ContentValsManager.getMasteryGroup(mastery, masteryGroup);
 
-        String soundPath = SoundMaster.getPath() + "std\\skills\\" + "NEW_SKILL_" + masteryGroup
+        String soundPath = SoundMaster.getPath() + "std/skills/" + "NEW_SKILL_" + masteryGroup
          + FORMAT;
         if (!FileManager.getFile(soundPath).isFile()) {
-            soundPath = SoundMaster.getPath() + "std\\skills\\" + "NEW_SKILL_GENERIC" + FORMAT;
+            soundPath = SoundMaster.getPath() + "std/skills/" + "NEW_SKILL_GENERIC" + FORMAT;
         }
         play(soundPath);
     }

@@ -41,7 +41,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
 
     @Override
     public String getTexturePath() {
-        return ImageManager.getValueIconsPath() + "masteries\\"
+        return ImageManager.getValueIconsPath() + "masteries/"
          + StringMaster.getWellFormattedString(group.toString()) + ".png";
     }
 }

@@ -175,7 +175,7 @@ public class PresetMaster {
 
     public static Preset createNetPreset(String data) {
 
-        Preset newPreset = new Preset(null, "net\\", data);
+        Preset newPreset = new Preset(null, "net/", data);
         // newPreset.setNet(true);
 
         // swapped players
@@ -205,7 +205,7 @@ public class PresetMaster {
 
     private static String generatePath(String party, String enemies, String levelFilePath) {
         // preCheck multi-dungeon; preCheck party-type, preCheck encounter
-        return "test\\";
+        return "test/";
     }
 
     private static String generateName(String party, String enemies, String levelFilePath) {
@@ -290,8 +290,8 @@ public class PresetMaster {
     }
 
     private static String getAutoPresetPath() {
-        return getPresetFolderPath() + AUTO + "\\" + TimeMaster.getMonthString() + "\\"
-         + TimeMaster.getDayString() + "\\";
+        return getPresetFolderPath() + AUTO + "/" + TimeMaster.getMonthString() + "/"
+         + TimeMaster.getDayString() + "/";
     }
 
     private static String getFormat() {
@@ -358,7 +358,7 @@ public class PresetMaster {
 
     public static List<Preset> getRecentPresets() {
         int maximum = 10;
-        String autoFolderPath = getPresetFolderPath() + AUTO + "\\";
+        String autoFolderPath = getPresetFolderPath() + AUTO + "/";
         File root = FileManager.getFile(autoFolderPath);
         List<File> list =
          // new ArrayList<File>(Arrays.asList(root.listFiles()));
@@ -437,7 +437,7 @@ public class PresetMaster {
                 list.addAll(getPresetFiles(sub, auto));
             }
         } else if (file.isFile()) {
-            if (Bools.isTrue(auto) || !file.getPath().contains(AUTO + "\\")) {
+            if (Bools.isTrue(auto) || !file.getPath().contains(AUTO + "/")) {
                 list.add((file));
             }
         }
@@ -455,7 +455,7 @@ public class PresetMaster {
                 list.addAll(loadPresets(sub, auto));
             }
         } else if (file.isFile()) {
-            if (Bools.isTrue(auto) || !file.getPath().contains(AUTO + "\\")) {
+            if (Bools.isTrue(auto) || !file.getPath().contains(AUTO + "/")) {
                 list.add(loadPreset(file));
             }
         }
@@ -496,7 +496,7 @@ public class PresetMaster {
     }
 
     private static String getPresetFolderPath() {
-        return PathFinder.getXML_PATH() + "presets\\";
+        return PathFinder.getXML_PATH() + "presets/";
     }
 
     public static Preset getPreset() {

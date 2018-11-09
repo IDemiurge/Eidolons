@@ -129,7 +129,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
                 TextureRegion frame = getOffsetFrame(stateTime, -i);
                 if (frame == null) {
-                    main.system.auxiliary.log.LogMaster.log(1, stateTime+" null" );
+                    main.system.auxiliary.log.LogMaster.log(1, stateTime + " null");
                     return true;
                 }
                 i++;
@@ -146,14 +146,15 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     private int getTrailingFramesNumber() {
-        return 0;
-//        return (int) (getFrameNumber() - 1);
+        return (int) (getFrameNumber() - 1);
     }
 
     private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha
-    , float offsetX, float offsetY
+     , float offsetX, float offsetY
     ) {
-
+        if (alpha<=0) {
+            return;
+        }
 
         if (sprite == null) {
             sprite = new Sprite(currentFrame);
@@ -178,12 +179,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
 
     private void updateSpeed() {
-//        setFrameDuration(); TODO (de)acceleration !
+        //        setFrameDuration(); TODO (de)acceleration !
     }
 
     public void dispose() {
-//        spriteBatch.dispose();
-//        sheet.dispose();
+        //        spriteBatch.dispose();
+        //        sheet.dispose();
     }
 
     public Array<AtlasRegion> getRegions() {
@@ -266,17 +267,24 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return getOffset(texture, 1);
     }
 
+    public TextureRegion getCurrentFrame() {
+        return getKeyFrame(stateTime, looping);
+    }
+
     public TextureRegion getOffsetFrame(
      float time, int offset) {
         int index = getKeyFrameIndex(time);
         index += offset;
 
-        if (index < 0 || index >  getFrameNumber()) {
+        if (index < 0 || index > getFrameNumber()) {
             return null;
         }
-//        Object region = getKeyFrames()[index];
-//        if (region instanceof TextureRegion)
-//            return (TextureRegion) region;
+        //        Object region = getKeyFrames()[index];
+        //        if (region instanceof TextureRegion)
+        //            return (TextureRegion) region;
+        if (regions == null) {
+            return getKeyFrames()[index];
+        }
         return regions.get(index);
     }
 

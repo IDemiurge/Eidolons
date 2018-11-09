@@ -237,7 +237,7 @@
 <Race>Dwarf</Race>
 <Variables></Variables>
 <Attack_Of_Opportunity_Action></Attack_Of_Opportunity_Action>
-<Image>\mini\char\std\dwarf\\dwarf iron.jpg</Image>
+<Image>\mini\char\std\dwarf/dwarf iron.jpg</Image>
 <On_Kill></On_Kill>
 <Gender></Gender>
 <Aspect></Aspect>

@@ -73,11 +73,11 @@ public class DC_SoundMaster extends SoundMaster {
     public static void playRangedAttack(DC_WeaponObj weapon) {
         // TODO double weapon sound
         if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
-            getPlayer().playRandomSoundVariant("soundsets\\weapon\\crossbow\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("soundsets/weapon/crossbow/" + weapon.getWeaponSize(), false);
         } else if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOLTS) {
-            getPlayer().playRandomSoundVariant("soundsets\\weapon\\bow\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("soundsets/weapon/bow/" + weapon.getWeaponSize(), false);
         } else {
-            getPlayer().playRandomSoundVariant("soundsets\\weapon\\throw\\" + weapon.getWeaponSize(), false);
+            getPlayer().playRandomSoundVariant("soundsets/weapon/throw/" + weapon.getWeaponSize(), false);
         }
 
     }
@@ -105,7 +105,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
         getPlayer().playRandomSoundFromFolder(
-         "effects\\movement\\" + type
+         "effects/movement/" + type
 //          + unit.getSize()
         );
 
@@ -113,7 +113,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
 
     public static void playMissedSound(BattleFieldObject attacker, DC_WeaponObj attackWeapon) {
 
-        getPlayer().playRandomSoundVariant("soundsets\\weapon\\miss\\"
+        getPlayer().playRandomSoundVariant("soundsets/weapon/miss/"
          + attackWeapon.getWeaponSize().toString().toLowerCase(), false);
 
     }
@@ -128,9 +128,9 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
         setPositionFor(attacked.getCoordinates());
         DC_WeaponObj parryWeapon = attacked.getActiveWeapon(true);
 
-        getPlayer().playRandomSoundFromFolder("soundsets\\" + "weapon\\"
-         + attackWeapon.getWeaponGroup() + "\\");
-        getPlayer().playRandomSoundVariant("soundsets\\" + "weapon\\" + "parry\\"
+        getPlayer().playRandomSoundFromFolder("soundsets/" + "weapon/"
+         + attackWeapon.getWeaponGroup() + "/");
+        getPlayer().playRandomSoundVariant("soundsets/" + "weapon/" + "parry/"
          + parryWeapon.getDamageType(), false);
     }
 
@@ -151,17 +151,17 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
          || shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.SMALL) {
             if (RandomWizard.chance(75, new Random())) {
                 getPlayer().playRandomSoundVariant(
-                 "armor\\buckler\\s " + weaponObj.getDamageType(), false);
+                 "armor/buckler/s " + weaponObj.getDamageType(), false);
             } else {
-                getPlayer().playRandomSoundVariant("soundsets\\" + "armor\\buckler\\s", false);
+                getPlayer().playRandomSoundVariant("soundsets/" + "armor/buckler/s", false);
             }
         } else {
             if (weaponObj != null) {
                 if (RandomWizard.chance(75)) {
-                    getPlayer().playRandomSoundVariant("soundsets\\" + "armor\\shield\\s "
+                    getPlayer().playRandomSoundVariant("soundsets/" + "armor/shield/s "
                      + weaponObj.getDamageType(), false);
                 } else {
-                    getPlayer().playRandomSoundVariant("soundsets\\" + "armor\\shield\\s", false);
+                    getPlayer().playRandomSoundVariant("soundsets/" + "armor/shield/s", false);
                 }
             }
         }
@@ -218,7 +218,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
 
     private static void playArmorSound(final BattleFieldObject attacked, String armor_type,
                                        String damage_type, boolean natural) {
-        String path = SoundMaster.getPath() + "soundsets\\" + (natural ? "obj\\" : "armor\\")
+        String path = SoundMaster.getPath() + "soundsets/" + (natural ? "obj/" : "armor/")
          + armor_type;
         File folder = FileManager.getFile(path);
         if (!folder.isDirectory()) {
@@ -364,7 +364,8 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
                 file =
                  FileManager.findFirstFile(path, identifier, true);
             if (file != null) {
-                String corePath = StringMaster.cropFormat(StrPathBuilder.build(path, file));
+                String corePath = StringMaster.cropFormat(StrPathBuilder.build(path,
+                 StringMaster.cropFormat(file)));
                 try {
                     file = FileManager.getRandomFilePathVariant(corePath, StringMaster.getFormat(file), false);
                 } catch (Exception e) {
@@ -388,7 +389,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
     }
 
     private static String getSpellSoundPath() {
-        return getPath() + "soundsets\\spells\\";
+        return getPath() + "soundsets/spells/";
     }
 
     private static void playImpact(DC_ActiveObj activeObj) {

@@ -12,7 +12,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
     }
 
     static {
-        GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1680x1050);
+        GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1920x1080);
     }
 
     @Override

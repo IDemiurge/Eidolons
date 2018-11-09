@@ -72,7 +72,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         if (max != 0) {
             while (table.getChildren().size > max) {
                 Actor child = table.getChildren().first();
-                offsetY -= child.getHeight();
+//                offsetY -= child.getHeight();
                 child.remove();
             }
         }

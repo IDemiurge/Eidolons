@@ -474,7 +474,7 @@ public class LogMaster {
         if (append) {
             FileManager.appendToTextFile(content, path, fileName);
         } else {
-            FileManager.write(content, path + "\\" + fileName);
+            FileManager.write(content, path + "/" + fileName);
         }
 
     }

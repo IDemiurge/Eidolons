@@ -102,6 +102,8 @@ public class QuestResolver  extends QuestHandler{
              quest.getTown().getName() +
              ". Probably...", false, ()->{
                 GuiEventManager.trigger(GuiEventType.QUEST_ENDED, quest);
+                GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest);
+                GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED);
                 reward.award(Eidolons.getMainHero(), false);
                 quest.setComplete(true);
             } );

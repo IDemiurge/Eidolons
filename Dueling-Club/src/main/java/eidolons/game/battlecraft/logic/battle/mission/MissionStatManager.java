@@ -39,7 +39,8 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
     }
 
     public static String getCodename(Integer glory) {
-        int rank = glory / 10;
+        //just a formula for N => enumeration...
+        int rank = glory / 100;
         for (int i = rank; i <= rank * 5; i++) {
             switch (rank) {
                 case 0:
@@ -49,7 +50,7 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
                 case 3:
                     return "Forlorn";
                 case 6:
-                    return "Disgraced";
+                    return "Disfavored";
                 case 10:
                     return "Unforgiven";
                 case 15:

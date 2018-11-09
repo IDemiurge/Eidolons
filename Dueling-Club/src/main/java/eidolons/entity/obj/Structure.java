@@ -16,6 +16,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -42,6 +43,16 @@ public class Structure extends BattleFieldObject {
             } catch (Exception e) {
             }
         }
+    }
+
+    @Override
+    public String getImagePath() {
+        //     this is insanity...
+           if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
+                    return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
+                     .getDungeonMaster().getDungeonWrapper().getColorTheme());
+                }
+        return super.getImagePath();
     }
 
     public boolean isWall() {

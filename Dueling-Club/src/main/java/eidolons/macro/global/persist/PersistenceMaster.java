@@ -111,7 +111,7 @@ public class PersistenceMaster {
 
     }
 //    private static String getTypeDataPath() {
-//        return PathFinder.getTYPES_PATH() + (!isSave() ? "\\campaign\\" : "\\save\\")
-//         + getCampaignName() + "\\";
+//        return PathFinder.getTYPES_PATH() + (!isSave() ? "/campaign/" : "/save/")
+//         + getCampaignName() + "/";
 //    }
 }

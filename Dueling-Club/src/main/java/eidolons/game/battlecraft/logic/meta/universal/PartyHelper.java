@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class PartyHelper {
     private static final String DEFAULT_TYPE_NAME = "Inglorious Bastards";
-    private static final String PARTY_FOLDER = "\\parties";
+    private static final String PARTY_FOLDER = "/parties";
     private static final String XML_ROOT = "Party";
     private static final String PARTY_NAME_TIP = "This fellowship was called...";
     private static final int MAX_PARTY_MEMBERS_DEFAULT = 4;
@@ -45,7 +45,7 @@ public class PartyHelper {
     private static List<Party> parties = new ArrayList<>();
 
     private static File getPartyFile(String typeName) {
-        return FileManager.getFile(getPartyFolderPath() + "\\" + typeName + ".xml");
+        return FileManager.getFile(getPartyFolderPath() + "/" + typeName + ".xml");
     }
 
     public static void addMember(Unit hero) {

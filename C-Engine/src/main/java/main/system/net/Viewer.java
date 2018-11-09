@@ -86,7 +86,7 @@ public class Viewer extends JPanel {
     }
 
     private void setCustomIcon() {
-        ImageIcon img = ImageManager.getIcon("UI\\" + "custom\\node.jpg");
+        ImageIcon img = ImageManager.getIcon("ui/" + "custom/node.jpg");
 
         frame.setIconImage(img.getImage());
     }

@@ -197,7 +197,7 @@
 <Learned_Spells>Force Field;Lucent Beam;</Learned_Spells>
 <Second_Class></Second_Class>
 <Group>Custom</Group>
-<Image>\mini\char\std\dwarf\\MeisterDwarf.jpg</Image>
+<Image>\mini\char\std\dwarf/MeisterDwarf.jpg</Image>
 <Emblem>UI\emblems\std\neutral\xp2_textures_bif-0000000208.jpg</Emblem>
 <Mode></Mode>
 <Standard_Passives></Standard_Passives>
@@ -428,7 +428,7 @@
 <Learned_Spells></Learned_Spells>
 <Second_Class></Second_Class>
 <Group>Preset</Group>
-<Image>\mini\char\std\dwarf\\ScenEdit 2012-01-01 14-38-34-10.jpg</Image>
+<Image>\mini\char\std\dwarf/ScenEdit 2012-01-01 14-38-34-10.jpg</Image>
 <Emblem>UI\emblems\std\neutral\xp2_textures_bif-0000000209.jpg</Emblem>
 <Mode></Mode>
 <Standard_Passives></Standard_Passives>

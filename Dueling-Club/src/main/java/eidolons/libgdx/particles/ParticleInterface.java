@@ -43,13 +43,13 @@ public interface ParticleInterface {
 ////            ParticleEffect pf = new ParticleEffect();
 ////            PathFinder.init();
 ////
-//////        particleEffect.load(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\particle.pt"),Gdx.files.internal(""));
-//////            pf.load(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\Smoke_Test.pt"),Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT"));
+//////        particleEffect.load(Gdx.files.internal("D:/NewRepos/battlecraft/Dueling-Club/src/main/java/main/test/libgdx/resOUT/particle.pt"),Gdx.files.internal(""));
+//////            pf.load(Gdx.files.internal("D:/NewRepos/battlecraft/Dueling-Club/src/main/java/main/test/libgdx/resOUT/Smoke_Test.pt"),Gdx.files.internal("D:/NewRepos/battlecraft/Dueling-Club/src/main/java/main/test/libgdx/resOUT"));
 ////            ;
 ////            pf.load(Gdx.files.internal(PathFinder.getImagePath() +
-////             "mini\\sprites\\particles\\" +
+////             "mini/sprites/particles/" +
 ////              "Smoke_Test1.pt"),
-////             Gdx.files.internal(PathFinder.getImagePath() + "\\mini\\sprites\\particles\\" +
+////             Gdx.files.internal(PathFinder.getImagePath() + "/mini/sprites/particles/" +
 ////              ""
 ////             ));
 ////            pf.getEmitters().first().setPosition(200 + i * 400, 200);
@@ -58,16 +58,16 @@ public interface ParticleInterface {
 //
 //        particleEffect = new ParticleEffect();
 //        particleEffect.load(Gdx.files.internal(PathFinder.getImagePath() +
-//                        "mini\\sprites\\particles\\" +
+//                        "mini/sprites/particles/" +
 //                        "Smoke_Test1.pt"),
 //                Gdx.files.internal(PathFinder.getImagePath() +
-//                 "\\mini\\sprites\\particles\\" +
+//                 "/mini/sprites/particles/" +
 //                        ""
 //                ));
 //        particleEffect.getEmitters().first().setPosition(200, 200);
 //        particleEffect.getEmitters().first().start();
-////        particleEffect.load(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\particle.pt"),Gdx.files.internal(""));
-////        particleEffect.load(Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT\\Smoke_Test.pt"),Gdx.files.internal("D:\\NewRepos\\battlecraft\\Dueling-Club\\src\\main\\java\\main\\test\\libgdx\\resOUT"));
+////        particleEffect.load(Gdx.files.internal("D:/NewRepos/battlecraft/Dueling-Club/src/main/java/main/test/libgdx/resOUT/particle.pt"),Gdx.files.internal(""));
+////        particleEffect.load(Gdx.files.internal("D:/NewRepos/battlecraft/Dueling-Club/src/main/java/main/test/libgdx/resOUT/Smoke_Test.pt"),Gdx.files.internal("D:/NewRepos/battlecraft/Dueling-Club/src/main/java/main/test/libgdx/resOUT"));
 ////        particleEffect.getEmitters().first().setPosition(getX()+200,getY()+200);
 ////        particleEffect.start();
 ////        for (int i = 0; i < array.size(); i++) {

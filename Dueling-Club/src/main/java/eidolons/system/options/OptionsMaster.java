@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
@@ -24,6 +25,7 @@ import eidolons.libgdx.particles.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
+import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
@@ -31,11 +33,11 @@ import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
-import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
+import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -173,6 +175,15 @@ public class OptionsMaster {
             String value = gameplayOptions.getValue(key);
             if (!NumberUtils.isInteger(value)) {
                 switch (key) {
+                    case GAME_SPEED:
+                        try {
+                            float speed = gameplayOptions.getFloatValue(key) / 100;
+                            ExplorationTimeMaster.setDefaultSpeed(speed);
+                            MacroTimeMaster.getInstance().setSpeed(speed);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                        break;
                     case GHOST_MODE:
                         if (!CoreEngine.isFastMode())
                             VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
@@ -318,7 +329,7 @@ public class OptionsMaster {
                 break;
         }
 
-        }
+    }
 
     private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
@@ -579,19 +590,19 @@ public class OptionsMaster {
                 break;
             case SYSTEM:
                 long memory = Runtime.getRuntime().maxMemory();
-                float level=0.9f;
-                if (memory >   3*(1024e3))
+                float level = 0.9f;
+                if (memory > 3 * (1024e3))
                     level = 3f;
-              else   if (memory >   2*(1024e3))
+                else if (memory > 2 * (1024e3))
                     level = 2f;
-               else if (memory >   1.5f*(1024e3))
-                    level =  1.5f ;
-              else   if (memory >   1.25f*(1024e3))
-                    level =  1.25f ;
-              else   if (memory >   1.0f*(1024e3))
-                    level =  1.0f ;
+                else if (memory > 1.5f * (1024e3))
+                    level = 1.5f;
+                else if (memory > 1.25f * (1024e3))
+                    level = 1.25f;
+                else if (memory > 1.0f * (1024e3))
+                    level = 1.0f;
 
-                    CoreEngine.setMemoryLevel(level);
+                CoreEngine.setMemoryLevel(level);
                 break;
         }
 
@@ -722,7 +733,7 @@ public class OptionsMaster {
     }
 
     public static SystemOptions getEngineOptions() {
-                return (SystemOptions) getOptions(OPTIONS_GROUP.SYSTEM);
+        return (SystemOptions) getOptions(OPTIONS_GROUP.SYSTEM);
     }
 
     public static ControlOptions getControlOptions() {

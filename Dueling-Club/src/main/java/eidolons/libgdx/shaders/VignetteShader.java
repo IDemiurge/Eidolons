@@ -76,7 +76,7 @@ public class VignetteShader {
      "}";
     private static boolean used;
     private static ShaderProgram shader;
-    private static final String vignettePath = "ui\\macro\\vignette.png";
+    private static final String vignettePath = "ui/macro/vignette.png";
 
     public static boolean isUsed() {
         return used;

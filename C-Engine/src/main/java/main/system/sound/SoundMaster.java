@@ -17,7 +17,7 @@ public class SoundMaster {
 
     public static final String ALT = "_ALT";
     public static final String STD_FORMATS = "mp3;flac;ogg;m4a;wav";
-    private static final String STD_SOUND_PATH = PathFinder.getSoundPath() + "STD\\";
+    private static final String STD_SOUND_PATH = PathFinder.getSoundPath() + "STD/";
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
     public static int masterVolume = 100;
@@ -260,7 +260,7 @@ public class SoundMaster {
         FALL;
 
         public String getPath() {
-            return "effects\\" + name().toLowerCase() + "\\" + name();
+            return "effects/" + name().toLowerCase() + "/" + name();
         }
     }
 
@@ -362,7 +362,7 @@ public class SoundMaster {
             this.alt = alt || toString().contains("__");
             path = STD_SOUND_PATH
              + (alt ? toString() + ALT_FORMAT
-             : toString() + FORMAT).replace("__", "\\").replace("_", " ");
+             : toString() + FORMAT).replace("__", "/").replace("_", " ");
 
         }
 

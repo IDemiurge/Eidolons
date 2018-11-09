@@ -44,7 +44,7 @@ public class Saver {
     }
 
     public static String getSavePath() {
-        return PathFinder.getXML_PATH() + "duel-club\\saves\\";
+        return PathFinder.getXML_PATH() + "duel-club/saves/";
     }
 
     public static String getTriggersNodeXml(DC_GameState state) {

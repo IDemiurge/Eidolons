@@ -118,7 +118,7 @@ public class DescriptionPanel extends ScrollTextWrapper {
 
     @Override
     protected FONT getFontStyle() {
-        return FONT.NYALA;
+        return FONT.MAIN;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package eidolons.libgdx.screens.map.layers;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.path.PixmapPathBuilder;
 import main.data.filesys.PathFinder;
@@ -18,7 +18,7 @@ public class AlphaMap {
 
     public AlphaMap(ALPHA_MAP sub) {
         this.sub = sub;
-        map = new Pixmap(new FileHandle(getPath(sub)));
+        map = new Pixmap(GDX.file(getPath(sub)));
         if (isWritePoints(sub)) {
             PixmapPathBuilder.writePathFile(map, getPointsPath(sub));
         }

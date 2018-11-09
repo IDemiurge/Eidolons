@@ -92,7 +92,29 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
+        //don't want invisible stuff to act...
+        setRoot(new GroupX() {
+            @Override
+            public void act(float delta) {
+                if (!town){
+                    super.act(delta);
+                    return;
+                }
+                Actor[] actors = getChildren().begin();
+                for (int i = 0, n = actors.length; i < n; i++) {
+                    if (actors[i].isVisible()) {
+                        actors[i].act(delta);
+                    }
+                }
+                getChildren().end();
+            }
+        });
+        getRoot().setStage_(this);
+    }
 
+    @Override
+    public GroupX getRoot() {
+        return (GroupX) super.getRoot();
     }
 
     public void openOptionsMenu() {
@@ -430,7 +452,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         GuiEventManager.bind(GuiEventType.CONFIRM, p -> {
             Triple<String, Object, Runnable> triple = (Triple<String, Object, Runnable>) p.get();
             if (triple.getMiddle() instanceof Runnable) {
-                confirm(triple.getLeft(), true, triple.getRight(),  ((Runnable) triple.getMiddle()));
+                confirm(triple.getLeft(), true, triple.getRight(), ((Runnable) triple.getMiddle()));
             } else
                 confirm(triple.getLeft(), (Boolean) triple.getMiddle(), triple.getRight(), null);
 

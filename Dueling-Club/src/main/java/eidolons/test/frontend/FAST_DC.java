@@ -25,7 +25,7 @@ public class FAST_DC {
     private static final boolean GLOBAL_HOTKEYS_ON = true;
     private static final boolean BEHAVIOR_TEST_ON = false;
 
-    public static String DEFAULT_TEST_DUNGEON = "test\\Clearshot Test.xml";//Clearshot
+    public static String DEFAULT_TEST_DUNGEON = "test/Clearshot Test.xml";//Clearshot
     public static String DEFAULT_DUNGEON = null;
     public static Boolean FAST_MODE = false;
     public static int ENEMY_CODE = CODE.CHOOSE;

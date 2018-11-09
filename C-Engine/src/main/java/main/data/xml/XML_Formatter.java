@@ -30,7 +30,7 @@ public class XML_Formatter {
     private static final CharSequence CLOSE_PARANTHESIS_CODE = "92";
     private static final String FIRST_CHAR = "FIRST_CHAR";
     protected static String replacedTextContent = "&";
-    static String replaced = "~?[]><!@#$%^&*()-=\\/;+',\"`";
+    static String replaced = "~?[]><!@#$%^&*()-=//;+',\"`";
     static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
     private static Map<String, String> xmlFormatReplacements = new HashMap<>();
     private static Map<String, String> cache = new HashMap<>();
@@ -109,7 +109,7 @@ public class XML_Formatter {
 
 
     private static String repair(String result) {
-        return result.replaceAll("\\s+", " ");//.replace("\n", "").replace("  ", " ");
+        return result.replaceAll("/s+", " ");//.replace("\n", "").replace("  ", " ");
     }
 
     private static boolean isRepairMode() {
@@ -148,7 +148,7 @@ public class XML_Formatter {
 
     public static String restoreXmlNodeNameOld(String s) {
         return s.replace(COMMA_CODE, ",").replace(COLON_CODE, ":").replace(SEMICOLON_CODE, ";")
-         .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "\\");
+         .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "/");
     }
 
     public static String formatStringForXmlNodeName(String s) {

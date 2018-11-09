@@ -30,6 +30,7 @@ import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.awt.*;
@@ -55,7 +56,7 @@ public class ShadeLightCell extends SuperContainer {
         this(type, null);
     }
 
-    public ShadeLightCell(SHADE_CELL type, Object arg ) {
+    public ShadeLightCell(SHADE_CELL type, Object arg) {
         super(new Image(TextureCache.getOrCreateR(getTexturePath(type, arg))));
         this.type = type;
         randomize();
@@ -84,7 +85,7 @@ public class ShadeLightCell extends SuperContainer {
             case VOID:
                 return FileManager.getRandomFilePathVariant(
                  PathFinder.getImagePath(),
-                 type.getTexturePath(), ".png", false, false);
+                 StringMaster.cropFormat(type.getTexturePath()), ".png", false, false);
         }
         return type.getTexturePath();
     }
@@ -111,8 +112,8 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected boolean isTransformDisabled() {
-//        if (type == SHADE_CELL.LIGHT_EMITTER)
-//            return false;
+        //        if (type == SHADE_CELL.LIGHT_EMITTER)
+        //            return false;
         return true;
     }
 

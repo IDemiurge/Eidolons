@@ -42,7 +42,7 @@ public class EmitterController implements Controller {
     boolean cursorAttached;
     private LinkedList<EmitterActor> sfx;
     private VFX_MODIFICATION_PRESET lastPreset;
-    private String randomSfxPath = "modified\\work";
+    private String randomSfxPath = "modified/work";
 
     public EmitterController() {
         sfx = new LinkedList<>();
@@ -236,8 +236,8 @@ public class EmitterController implements Controller {
                   new ImageChooser(PathFinder.getSpritesPath()).launch("", "");
 
             case IMAGE:
-                return PathFinder.getVfxPath() + "images\\" +
-                 new ImageChooser(PathFinder.getVfxPath() + "images\\").launch("", "");
+                return PathFinder.getVfxPath() + "images/" +
+                 new ImageChooser(PathFinder.getVfxPath() + "images/").launch("", "");
         }
         return null;
     }

@@ -30,7 +30,7 @@ public class LogPane extends G_Panel {
         // setComponentZOrder(bg, 1);
         // setComponentZOrder(scrollPane, 0);
         textArea.setForeground(Color.white);
-        textArea.setBg(ImageManager.getIcon("UI//custom//GRID_BG_WIDE.png")
+        textArea.setBg(ImageManager.getIcon("ui//custom//GRID_BG_WIDE.png")
          .getImage());
         // scrollPane.setOpaque(false);
         ((JComponent) scrollPane.getParent()).setOpaque(false);
@@ -61,7 +61,7 @@ public class LogPane extends G_Panel {
 
     private void setBackground() {
         bg = new JLabel(
-         ImageManager.getIcon("UI//custom//GRID_BG_WIDE - Copy.png"));
+         ImageManager.getIcon("ui//custom//GRID_BG_WIDE - Copy.png"));
         textArea.setOpaque(false);
         textArea.setBackground(ColorManager.TRANSPARENT);
     }

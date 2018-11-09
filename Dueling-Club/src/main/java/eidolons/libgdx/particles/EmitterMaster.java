@@ -3,6 +3,7 @@ package eidolons.libgdx.particles;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
@@ -126,7 +127,7 @@ public class EmitterMaster extends GdxUtil {
                         }
                         if (writeImage) {
                             Texture texture = (new Texture(s));
-                            FileHandle handle = new FileHandle(newPath);
+                            FileHandle handle = GDX.file(newPath);
                             if (!handle.exists() || overwriteImage) {
                                 GdxImageMaster.writeImage(handle, texture);
                                 main.system.auxiliary.log.LogMaster.log(1,

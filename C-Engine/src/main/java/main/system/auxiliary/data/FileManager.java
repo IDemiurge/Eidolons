@@ -42,6 +42,12 @@ public class FileManager {
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file)) {
             if (CoreEngine.isJar()) {
+                if (!CoreEngine.isWindows()){
+                    String lowerCase = file.getPath().toLowerCase();
+                    if (!lowerCase.equals(file.getPath()))
+                        return readFile(new File(file.getPath().toLowerCase()));
+
+                }
                 System.out.println("Failed to read " + file.getPath());
                 try {
                     throw new RuntimeException();
@@ -213,9 +219,9 @@ public class FileManager {
     private static String formatPath(String path) {
         String formatted = "";
         for (String sub : PathUtils.splitPath(path)) {
-            formatted += StringMaster.replace(true, sub, "\\", "") + "\\";
+            formatted += StringMaster.replace(true, sub, "/", "") + "/";
         }
-        return formatted;
+        return formatted.toLowerCase();
     }
 
     public static String getRandomFilePathVariant(String corePath, String format) {
@@ -378,7 +384,7 @@ public class FileManager {
 
     public static void appendToTextFile(String content, String path,
                                         String fileName) {
-        String fullPath = path + "\\" + fileName;
+        String fullPath = path + "/" + fileName;
         appendToTextFile(content, fullPath);
     }
         public static void appendToTextFile(String content, String fullPath) {
@@ -388,7 +394,7 @@ public class FileManager {
 
     public static boolean write(String content, String filepath) {
         if (!filepath.contains(":")) {
-            filepath = PathFinder.getEnginePath() + "\\" + filepath;
+            filepath = PathFinder.getEnginePath() + "/" + filepath;
         }
         filepath = filepath.trim();
         try {

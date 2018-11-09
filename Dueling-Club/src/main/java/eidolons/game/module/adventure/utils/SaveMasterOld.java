@@ -1,7 +1,7 @@
 package eidolons.game.module.adventure.utils;
 
-import eidolons.macro.MacroGame;
 import eidolons.macro.AdventureInitializer;
+import eidolons.macro.MacroGame;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Region;
@@ -19,7 +19,6 @@ import main.system.auxiliary.data.FileManager;
 import main.system.threading.Weaver;
 import org.w3c.dom.Node;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class SaveMasterOld {
          * load types... init world from save -
 		 * dynamic values - can they be set for Type? 
 		 */
-        String content = FileManager.readFile(new File(getSavePath() + fileName + ".xml"));
+        String content = FileManager.readFile( (getSavePath() + fileName + ".xml"));
         for (Node node : XML_Converter.getNodeList(XML_Converter.getDoc(content))) {
             OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(node.getNodeName());
             XML_Reader.createCustomTypeList(XML_Converter.getStringFromXML(node), TYPE, MacroGame
@@ -92,7 +91,7 @@ public class SaveMasterOld {
     }
 
     private static String getSavePath() {
-        return PathFinder.getXML_PATH() + "macro\\saves\\";
+        return PathFinder.getXML_PATH() + "macro/saves/";
     }
 
     public static void saveTheWorld() {

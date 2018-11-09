@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;
@@ -31,6 +32,10 @@ public class QuestInfoPanel extends ItemInfoPanel {
     private boolean disabled;
     private SelectableItemData chosen;
 
+    public SelectableItemData getChosen() {
+        return chosen;
+    }
+
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
         row();
@@ -48,6 +53,7 @@ public class QuestInfoPanel extends ItemInfoPanel {
                 return BUTTON_SOUND_MAP.CANCEL;
             }
         });
+
 
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED, p -> {
             chosen = null;

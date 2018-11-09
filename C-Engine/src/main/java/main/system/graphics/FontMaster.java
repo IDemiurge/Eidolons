@@ -254,7 +254,7 @@ public class FontMaster {
         private boolean hieroSupported;
 
         FONT(String path, boolean hieroSupported) {
-            this.path = path;
+            this.path = path.toLowerCase();
             this.hieroSupported = hieroSupported;
         }
 

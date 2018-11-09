@@ -781,7 +781,7 @@ public class StringMaster {
         if (!cropPathSeparator) {
             return cropped;
         }
-        return replaceLast(cropped, "\\", "");
+        return replaceLast(cropped, "/", "");
     }
 
     public static String cropLastSegment(String path, String separator) {
@@ -1146,7 +1146,10 @@ public class StringMaster {
     }
 
     public static String[] splitLines(String data, boolean allowEmptyLines) {
-        return splitLines(data, allowEmptyLines, "\\r?\\n");
+        String[] lines = splitLines(data, allowEmptyLines, "\r?\n");
+        if (lines.length>1)
+            return lines;
+        return splitLines(data, allowEmptyLines, "\n");
     }
 
     public static String[] splitLines(String data, boolean allowEmptyLines, String separator) {

@@ -110,7 +110,7 @@ public class ContainerUtils {
     public static void formatResList(List<String> listData) {
         int i = 0;
         for (String item : listData) {
-            item = item.substring(item.indexOf("\\", item.length()));
+            item = item.substring(item.indexOf("/", item.length()));
             listData.set(i, item);
             i++;
         }

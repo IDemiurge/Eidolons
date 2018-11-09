@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.generic;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
@@ -11,13 +12,17 @@ import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by JustMe on 2/10/2018.
  */
 public class ImageContainer extends SuperContainer {
-    boolean flipX, flipY;
-    private Sprite sprite;
-    private String path;
+    protected boolean flipX, flipY;
+    protected Sprite sprite;
+    protected String path;
+    protected Map<TextureRegion, Image> imageCache = new HashMap<>();
 
     public ImageContainer(Image content) {
         super(content);
@@ -58,7 +63,14 @@ public class ImageContainer extends SuperContainer {
     public void setImage(Image image) {
         setContents(image);
     }
-
+    public void setImage(TextureRegion region) {
+        Image image = imageCache.get(region);
+        if (image==null ){
+            image = new Image(sprite = new Sprite(region));
+            imageCache.put(region, image);
+        }
+        setImage(image);
+    }
     public void setImage(String path) {
         if (ImageManager.isImage(path)) {
             this.path = path;

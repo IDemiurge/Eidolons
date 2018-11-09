@@ -13,7 +13,7 @@ public class CostsPanel extends TablePanel {
     private Cell costsPanel;
 
     public CostsPanel() {
-        addElement(new ValueContainer(getOrCreateR("UI\\components\\infopanel\\action_cost_header.png")))
+        addElement(new ValueContainer(getOrCreateR("UI/components/infopanel/action_cost_header.png")))
          .fill(1, 0).expand(1, 0).top();
         row();
         final CostTableTooltip tooltip = new CostTableTooltip();

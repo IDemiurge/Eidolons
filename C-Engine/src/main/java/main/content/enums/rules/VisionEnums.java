@@ -60,7 +60,7 @@ public class VisionEnums {
         BRILLIANT_OUTLINE, CLEAR_OUTLINE, MASS_OUTLINE, BLOCKED_OUTLINE, FLAT_OUTLINE,
         UNKNOWN;
 
-        String outlinePath = "ui\\outlines\\" + toString()+".jpg";
+        String outlinePath = "ui/outlines/" + toString()+".jpg";
         String path;
         private Image image;
 
@@ -84,7 +84,7 @@ public class VisionEnums {
         }
 
         public Image getImage128() {
-            String outlinePath = "ui\\outlines\\raw\\" + toString();
+            String outlinePath = "ui/outlines/raw/" + toString();
             return ImageManager.getImage(outlinePath + ".jpg");
         }
 

@@ -75,12 +75,12 @@ public class EmitterPresetMaster {
         }
         String newName = (name != null) ? name :
          FileManager.getUniqueVersion(new File(PathFinder.getVfxPath() + prefix +
-          "\\" + last.path + suffix));
+          "/" + last.path + suffix));
 
         String path = StringMaster.replace(true, last.path,
          PathFinder.getVfxPath(), "").replace(prefix, "");
         String pathAndName = PathFinder.getVfxPath() + prefix +
-         "\\" +
+         "/" +
          StringMaster.cropLastPathSegment(path) +
          newName;
         XML_Writer.write(c, pathAndName);
@@ -122,7 +122,7 @@ public class EmitterPresetMaster {
         String name = StringMaster.getLastPathSegment(imagePath);
         //generic
         imagePath = PathFinder.getParticleImagePath();
-        file = Gdx.files.internal(imagePath + "\\" + name);
+        file = Gdx.files.internal(imagePath + "/" + name);
         if (file.exists()) {
             return imagePath;
         }
@@ -135,10 +135,10 @@ public class EmitterPresetMaster {
 //        if (file.exists())
 //            return imagePath;
 
-        imagePath += "particles\\";
-        file = Gdx.files.internal(imagePath + "\\" + name);
+        imagePath += "particles/";
+        file = Gdx.files.internal(imagePath + "/" + name);
         if (file.exists()) {
-            return imagePath +"\\" + name;
+            return imagePath +"/" + name;
         }
 
         imagePath =
@@ -159,7 +159,7 @@ public class EmitterPresetMaster {
         if (spriteEmitterTest) {
 //            effect.getEmitters().forEach(e -> {
             String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
-             "impact\\").getPath();
+             "impact/").getPath();
             return randomPath;
 //        ((Emitter) e).offset(20, "scale");
 //        e.setImagePath(randomPath);

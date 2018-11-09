@@ -113,7 +113,7 @@ public class UnitGroupMaster {
     }
 
     private static String getReadyGroupsPath() {
-        return PathFinder.getUnitGroupPath() + "ready\\";
+        return PathFinder.getUnitGroupPath() + "ready/";
     }
 
     public static String getUnitGroupData(String groupName, int level) {
@@ -291,7 +291,7 @@ public class UnitGroupMaster {
     }
 
     private static String getGroupFilePath(String faction) {
-        return PathFinder.getUnitGroupPath() + "\\faction\\" + "" + "" + faction.toString();
+        return PathFinder.getUnitGroupPath() + "/faction/" + "" + "" + faction.toString();
     }
 
     private static ObjType chooseUnit(ObjType factionType, int power, int max_power) {
@@ -565,7 +565,7 @@ public class UnitGroupMaster {
 
     public static String readGroupFile(String path) {
         if (!PathFinder.isFullPath(path)) {
-            path = PathFinder.getUnitGroupPath() + "\\" + path;
+            path = PathFinder.getUnitGroupPath() + "/" + path;
         }
         return FileManager.readFile(path);
     }

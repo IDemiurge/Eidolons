@@ -30,7 +30,7 @@ public class GdxUnitPosSizeTest extends LibgdxTest {
     private GridCellContainer container;
 
     protected String getDungeonPath() {
-        return "test\\empty.xml";
+        return "test/empty.xml";
     }
 
     protected String getPlayerParty() {

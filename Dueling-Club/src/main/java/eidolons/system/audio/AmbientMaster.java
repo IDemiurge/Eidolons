@@ -42,7 +42,9 @@ public class AmbientMaster {
 //            style = hero.getGame().getDungeon().getStyle();
             locationType = hero.getGame().getDungeon().getDungeonSubtype();
         }
-
+        if (locationType == null) {
+            return null;
+        }
 
         if (global) {
             switch (locationType) {

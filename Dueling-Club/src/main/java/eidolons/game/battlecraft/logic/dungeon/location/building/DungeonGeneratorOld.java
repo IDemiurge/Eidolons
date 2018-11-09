@@ -357,7 +357,7 @@ public class DungeonGeneratorOld {
 //    }
 //
 //    public String getMapsPath() {
-//        return PathFinder.getTYPES_PATH() + "dungeon maps\\";
+//        return PathFinder.getTYPES_PATH() + "dungeon maps/";
 //    }
 //
 //

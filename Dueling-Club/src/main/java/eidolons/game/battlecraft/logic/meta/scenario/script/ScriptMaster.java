@@ -8,7 +8,7 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 5/31/2017.
  */
 public class ScriptMaster {
-    public static final String scripts_path = PathFinder.getTextPath() + "scripts\\";
+    public static final String scripts_path = PathFinder.getTextPath() + "scripts/";
     public static final String generated_scripts_path =
      scripts_path + "generated_scripts.xml";
     public static final String dev_scripts_path =

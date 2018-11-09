@@ -369,6 +369,9 @@ public class RngLocationBuilder extends LocationBuilder {
 
             case CAVE:
             case BARROW:
+                if (RandomWizard.chance(35)) {
+                    return MAP_BACKGROUND.TUNNEL;
+                }
                 return MAP_BACKGROUND.CAVE;
             //            case SHIP:
             //                return MAP_BACKGROUND.SHIP;

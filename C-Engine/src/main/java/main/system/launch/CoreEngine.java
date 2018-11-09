@@ -24,11 +24,12 @@ import java.util.List;
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
     public static final String VERSION = "0.8.8b";
-    public static   String filesVersion ="v"+VERSION.replace(".","-");
-    public static final boolean DEV_MODE =true ;
+    public static final boolean DEV_MODE = true;
+    public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
     public static boolean animationTestMode;
+    public static long BUILD; //read from POM!
     private static CoreEngine engineObject;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;
@@ -57,16 +58,33 @@ public class CoreEngine {
     private static boolean jUnit;
     private static boolean initializing;
     private static boolean initialized;
-    private static boolean crashSafeMode=true;
+    private static boolean crashSafeMode = true;
     private static boolean utility;
     private static float memoryLevel;
     private static boolean fullFastMode;
+    private static boolean windows;
+    private static long HEAP_SIZE;
+    private static long TOTAL_MEMORY;
+    private static int CPU_NUMBER;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
+
+        System.getProperties().list(System.out);
+
+        windows = System.getProperty("os.name").startsWith("Windows");
+        System.out.println("Heap size:  " +
+         (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
+        System.out.println("CPU's available:  " +
+         (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
+//        System.out.println("Total Memory:  " +
+//         (TOTAL_MEMORY =
+//          Runtime.getRuntime().totalMemory()));
+
         ImageManager.init();
         if (!graphicsOff) {
-            FontMaster.init();
+            if (isSwingOn())
+                FontMaster.init();
             GuiManager.init();
 
         }
@@ -232,6 +250,10 @@ public class CoreEngine {
         return swingOn;
     }
 
+    public static void setSwingOn(boolean swingOn) {
+        CoreEngine.swingOn = swingOn;
+    }
+
     public static boolean isGraphicsOff() {
         return graphicsOff;
     }
@@ -270,22 +292,22 @@ public class CoreEngine {
 
         XML_Reader.readTypes(macro);
         WaitMaster.receiveInput(WAIT_OPERATIONS.XML_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.XML_READY );
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.XML_READY);
         List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
-//         if (dialogueDataRequired){
-//             classFolders.add( "main.data.dialogue" );
-//             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
-//         }
+        //         if (dialogueDataRequired){
+        //             classFolders.add( "main.data.dialogue" );
+        //             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
+        //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
-            try {
-                Chronos.mark("MAPPER INIT");
-                Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-                 classFolders);
-                Chronos.logTimeElapsedForMark("MAPPER INIT");
-            } catch (ClassNotFoundException | SecurityException | IOException e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+        try {
+            Chronos.mark("MAPPER INIT");
+            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+             classFolders);
+            Chronos.logTimeElapsedForMark("MAPPER INIT");
+        } catch (ClassNotFoundException | SecurityException | IOException e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
     }
 
@@ -322,7 +344,7 @@ public class CoreEngine {
     }
 
     public static boolean isIDE() {
-        return !exe && !jar && !jarlike;
+        return !exe && !jar;
     }
 
     public static boolean isExe() {
@@ -417,12 +439,12 @@ public class CoreEngine {
         CoreEngine.utility = utility;
     }
 
-    public static void setMemoryLevel(float memoryLevel) {
-        CoreEngine.memoryLevel = memoryLevel;
-    }
-
     public static float getMemoryLevel() {
         return memoryLevel;
+    }
+
+    public static void setMemoryLevel(float memoryLevel) {
+        CoreEngine.memoryLevel = memoryLevel;
     }
 
     public static boolean isFullFastMode() {
@@ -433,4 +455,11 @@ public class CoreEngine {
         CoreEngine.fullFastMode = fullFastMode;
     }
 
+    public static boolean isWindows() {
+        return windows;
+    }
+
+    public static void setWindows(boolean windows) {
+        CoreEngine.windows = windows;
+    }
 }

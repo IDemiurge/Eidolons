@@ -114,7 +114,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
     //TODO different for each Type?
     protected String getDungeonLevelSubfolder() {
-        return "battle\\";
+        return "battle/";
     }
 
 

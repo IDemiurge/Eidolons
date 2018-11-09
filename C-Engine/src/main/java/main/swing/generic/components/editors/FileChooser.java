@@ -107,9 +107,9 @@ public class FileChooser implements EDITOR {
 
     protected boolean checkFile(String fileLocation) {
         if (directoryOnly) {
-            return new File(getDefaultFileLocation() + "\\" + fileLocation).isDirectory();
+            return new File(getDefaultFileLocation() + "/" + fileLocation).isDirectory();
         }
-        return new File(getDefaultFileLocation() + "\\" + fileLocation).isFile();
+        return new File(getDefaultFileLocation() + "/" + fileLocation).isFile();
     }
 
     protected String getDefaultFileLocation() {

@@ -424,7 +424,7 @@
 <Rank>New Hero</Rank>
 <Hired_Mercenaries></Hired_Mercenaries>
 <Custom_Soundset></Custom_Soundset>
-<Image>\mini\char\std\dwarf\\Dwarf Moonsilver.jpg</Image>
+<Image>\mini\char\std\dwarf/Dwarf Moonsilver.jpg</Image>
 <Counter_Attack_Action></Counter_Attack_Action>
 <Memorized_Spells>Conjure Golem;Conjure Gargoyle;Summon Eagle;</Memorized_Spells>
 <Spellbook></Spellbook>

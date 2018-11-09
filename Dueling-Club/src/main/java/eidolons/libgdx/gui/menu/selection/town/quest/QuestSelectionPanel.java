@@ -6,6 +6,8 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.town.PlaceSelectionPanel;
 import main.entity.Entity;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
         super();
         bindEvents();
     }
+
     public QuestSelectionPanel(Supplier<List<? extends Entity>> dataSupplier) {
         super();
         this.dataSupplier = dataSupplier;
@@ -34,14 +37,21 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
     }
 
     protected void bindEvents() {
-//        GuiEventManager.bind(GuiEventType.QUEST_TAKEN, p -> {
-//            ((QuestListPanel) listPanel).setDisabled(true);
-//            ((QuestInfoPanel) infoPanel).setDisabled(true);
-//        });
-//        GuiEventManager.bind(GuiEventType.QUEST_CANCELLED, p -> {
-//            ((QuestListPanel) listPanel).setDisabled(false);
-//            ((QuestInfoPanel) infoPanel).setDisabled(false);
-//        });
+        GuiEventManager.bind(GuiEventType.QUEST_COMPLETED, p -> {
+            try {
+                next();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        });
+        //        GuiEventManager.bind(GuiEventType.QUEST_TAKEN, p -> {
+        //            ((QuestListPanel) listPanel).setDisabled(true);
+        //            ((QuestInfoPanel) infoPanel).setDisabled(true);
+        //        });
+        //        GuiEventManager.bind(GuiEventType.QUEST_CANCELLED, p -> {
+        //            ((QuestListPanel) listPanel).setDisabled(false);
+        //            ((QuestInfoPanel) infoPanel).setDisabled(false);
+        //        });
     }
 
     protected String getDoneText() {

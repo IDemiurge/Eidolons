@@ -135,7 +135,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     DC_TYPE(DC_TYPE parent, String name, PROPERTY groupingKey, int code) {
         this(name, groupingKey);
         this.code = code;
-        this.setImage("UI\\" + name + ".jpg");
+        this.setImage("ui/" + name + ".jpg");
         this.parent = parent;
     }
 

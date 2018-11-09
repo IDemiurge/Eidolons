@@ -262,7 +262,7 @@ public class GdxMaster {
          Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(
-         new FileHandle(PathFinder.getImagePath() + "big\\screenshots\\" +
+         GDX.file(PathFinder.getImagePath() + "big/screenshots/" +
           main.system.auxiliary.TimeMaster.getTimeStamp() + (".png")), pixmap);
         pixmap.dispose();
     }
@@ -427,17 +427,17 @@ public class GdxMaster {
     }
 
     public static void setDefaultCursor() {
-        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getCursorPath()));
+        Pixmap pm = new Pixmap(GDX.file(PathFinder.getCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     }
 
     public static void setLoadingCursor() {
-        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getLoadingCursorPath()));
+        Pixmap pm = new Pixmap(GDX.file(PathFinder.getLoadingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
 
     public static void setTargetingCursor() {
-        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getTargetingCursorPath()));
+        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
 
@@ -450,11 +450,11 @@ public class GdxMaster {
 
     }
     //    protected static void setAttackTargetingCursor() {
-    //        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getTargetingCursorPath()));
+    //        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
     //        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     //    }
     //    protected static void setSpellTargetingCursor() {
-    //        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getTargetingCursorPath()));
+    //        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
     //        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     //    }
 }

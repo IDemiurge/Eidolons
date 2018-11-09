@@ -13,8 +13,8 @@ import main.system.PathUtils;
  */
 public class ProfileWriter {
 
-    public static String root = "duel-club\\ai-data\\training\\profiles";
-    public static String dataRoot = "duel-club\\ai-data\\training\\init-data";
+    public static String root = "duel-club/ai-data/training/profiles";
+    public static String dataRoot = "duel-club/ai-data/training/init-data";
     public static String separator = ",";
     public static String DEFAULT_CRITERIA = "default criteria.txt";
     public static String DEFAULT_PARAMETERS = "default parameters.txt";

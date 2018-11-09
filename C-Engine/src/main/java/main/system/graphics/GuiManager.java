@@ -30,7 +30,6 @@ public class GuiManager {
     private static int battleFieldCellsY = 7;
     private static boolean fullscreen;
     private static KeyListener keyListener;
-    private static DISPLAY_MODE displayMode;
     private static int bfObjSize;
     private static int tinyObjSize;
     private static Dimension portraitSize;
@@ -50,8 +49,6 @@ public class GuiManager {
 //        FontMaster.setUIFont();
         size = Toolkit.getDefaultToolkit().getScreenSize();
         Builder.setScreenSize(size);
-
-        initDisplayMode();
 
         if (size.getWidth() > 1280) {
             squareCellSize = 132;
@@ -87,15 +84,7 @@ public class GuiManager {
         }
     }
 
-    private static void initDisplayMode() {
-        if (size.getWidth() >= 1920) {
-            displayMode = (size.getHeight() > 1080) ? DISPLAY_MODE._1920x1200_
-             : DISPLAY_MODE._1920x1080_;
-        } else {
-            displayMode = DISPLAY_MODE._1680x1050_;
-        }
 
-    }
 
     public static Dimension getPortraitSize() {
         if (portraitSize == null) {
@@ -340,10 +329,6 @@ public class GuiManager {
     public static Point getCenterPoint(Dimension size) {
         return new Point(MigMaster.getCenteredPosition(getScreenWidthInt(), size.width), MigMaster
          .getCenteredPosition(getScreenHeightInt(), size.height));
-    }
-
-    public static DISPLAY_MODE getDisplayMode() {
-        return displayMode;
     }
 
     public static int getCellNumber() {

@@ -209,7 +209,7 @@ public class XML_Writer {
     }
 
     private static String getXML() {
-        return FileManager.readFile(new File(path + fileName));
+        return FileManager.readFile((path + fileName));
     }
 
     private static void constructSubStrings() {

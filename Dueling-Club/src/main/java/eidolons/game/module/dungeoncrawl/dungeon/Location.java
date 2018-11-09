@@ -239,7 +239,7 @@ public class Location {
             dungeonType.setName(type.getName() + ", Level " + level);
         }
         String group = type.getSubGroupingKey();
-        String path = PathFinder.getDungeonLevelFolder() + group + "\\";
+        String path = PathFinder.getDungeonLevelFolder() + group + "/";
 
         File file = FileManager.getRandomFile(path);
         String data = FileManager.readFile(file);

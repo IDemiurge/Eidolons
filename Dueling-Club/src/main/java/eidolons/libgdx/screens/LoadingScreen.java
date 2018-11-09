@@ -1,11 +1,11 @@
 package eidolons.libgdx.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import main.data.filesys.PathFinder;
@@ -20,7 +20,7 @@ public class LoadingScreen extends ScreenAdapter {
     private final SpriteBatch batch;
 
     public LoadingScreen() {
-        background = new Image(new Texture(new FileHandle(
+        background = new Image(new Texture(GDX.file(
          PathFinder.getImagePath() + "UI/logo fullscreen.png")));
         background.setPosition(GdxMaster.centerWidth(background),
          GdxMaster.centerHeight(background));

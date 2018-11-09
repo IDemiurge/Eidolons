@@ -30,10 +30,10 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
             if (!StringMaster.getFormat(name).equalsIgnoreCase(".xml")) {
                 if (getGame().getMetaMaster().isRngDungeon())
                 {
-                    name = "generated\\" + name + ".xml";
+                    name = "generated/" + name + ".xml";
                 }
                 else {
-                    name = "crawl\\" + name + ".xml";
+                    name = "crawl/" + name + ".xml";
 
                 }
             } //TODO temporary

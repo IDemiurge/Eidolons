@@ -44,9 +44,9 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
     @Override
     public String getDungeonPath() {
         if (isDiagonal()) {
-            return "test\\clearshot test diagonal.xml";
+            return "test/clearshot test diagonal.xml";
         }
-        return "test\\clearshot test rectangle.xml";
+        return "test/clearshot test rectangle.xml";
     }
 
     public int getInnerWidth() {

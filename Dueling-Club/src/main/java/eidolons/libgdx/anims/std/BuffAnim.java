@@ -57,7 +57,7 @@ public class BuffAnim extends ActionAnim {
             return data;
         }
         String sfx = PathFinder.getVfxPath() + getStdSfx(name);
-        String sprites = PathFinder.getSpritesPath() + "buffs\\razorsharp 20 1.png";
+        String sprites = PathFinder.getSpritesPath() + "buffs/razorsharp 20 1.png";
 //        String std = PathFinder.getSpritesPath() + getStdSprites(name);
 //        if (FileManager.isFile(std))
 //        sprites=std+";";
@@ -72,7 +72,7 @@ public class BuffAnim extends ActionAnim {
     }
 
     private static String getStdSprites(STD_BUFF_NAMES name) {
-        return "buffs\\" + name.getName() + ".png";
+        return "buffs/" + name.getName() + ".png";
     }
 
     private static String getStdSfx(STD_BUFF_NAMES name) {
@@ -103,7 +103,7 @@ public class BuffAnim extends ActionAnim {
             case Entangled:
                 break;
         }
-        return "buffs\\" + name.getName();
+        return "buffs/" + name.getName();
     }
 
     private boolean isPlayContinuous() {

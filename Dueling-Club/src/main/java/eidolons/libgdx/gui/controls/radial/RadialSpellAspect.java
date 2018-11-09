@@ -47,7 +47,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
 
     @Override
     public String getTexturePath() {
-        return "ui\\value icons\\aspects\\" + aspect.name().toLowerCase() + ".png";
+        return "ui/value icons/aspects/" + aspect.name().toLowerCase() + ".png";
     }
 
 }
