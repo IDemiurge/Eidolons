@@ -86,6 +86,10 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         return true;
     }
 
+    public Obj getContainer() {
+        return container;
+    }
+
     protected void update() {
         dataMaster.applyModifications();
         Pair<InventoryDataSource, ContainerDataSource> param =

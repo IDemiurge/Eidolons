@@ -2,13 +2,13 @@ package main.system.graphics;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class FontMaster {
@@ -70,7 +70,8 @@ public class FontMaster {
 
         for (FONT F : FONT.values()) {
             try {
-                F.font = Font.createFont(Font.TRUETYPE_FONT, new File(path + F.path));
+                F.font = Font.createFont(Font.TRUETYPE_FONT, FileManager.getFile(
+                (path + F.path)));
             } catch (FontFormatException e) {
                 // TODO Auto-generated catch block
                 main.system.ExceptionMaster.printStackTrace(e);

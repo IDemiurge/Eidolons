@@ -38,7 +38,7 @@ public class FadeSprite extends FadeImageContainer {
             }
         }
         super.draw(batch, parentAlpha);
-        debug();
+//        debug();
 
     }
 

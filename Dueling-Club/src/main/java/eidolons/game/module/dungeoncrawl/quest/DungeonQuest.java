@@ -203,6 +203,9 @@ public class DungeonQuest {
     }
 
     public void setArg(Object arg) {
+        if (arg==null){
+            this.arg = arg;
+        }
         this.arg = arg;
         if (arg instanceof Entity){
             image = ((Entity) arg).getImagePath();

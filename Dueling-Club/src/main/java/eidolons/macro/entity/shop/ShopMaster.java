@@ -1,11 +1,25 @@
-package eidolons.macro.entity.town;
+package eidolons.macro.entity.shop;
 
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
+import main.content.CONTENT_CONSTS2.SHOP_TYPE;
+import main.content.C_OBJ_TYPE;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
+import main.elements.conditions.PropCondition;
+import main.entity.type.ObjType;
+import main.system.auxiliary.RandomWizard;
+import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
 import java.util.ArrayList;
@@ -242,4 +256,101 @@ public class ShopMaster {
         return list;
     }
 
+    protected static List<ObjType> createItemPool(Shop shop,
+                                                  OBJ_TYPE itemsType, List<ObjType> basis, PROPERTY prop, String group) {
+        List<ObjType> pool;
+        if (itemsType == DC_TYPE.JEWELRY) {
+            pool = basis;
+        } else if (prop == null) {
+            pool = DataManager.toTypeList(DataManager
+              .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
+             C_OBJ_TYPE.ITEMS);
+        } else {
+            pool = new ArrayList<>(basis);
+            FilterMaster.filter(pool, new PropCondition(prop, group));
+        }
+        pool = constructPool(pool, shop);
+//        pool.addAll(getSpecialItems(group));
+        return pool;
+    }
+
+    public static List<ObjType> constructPool(List<ObjType> pool, Shop shop) {
+        // TODO AND WHAT ABOUT NON-SLOT ITEMS?
+        List<ObjType> filtered = new ArrayList<>();
+        for (ObjType t : pool) {
+            if (t.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY || t.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
+                filtered.add(t);
+            } else
+                for (MATERIAL material : MATERIAL.values()) {
+                    //TODO TRAITS
+                    if (checkMaterialAllowed(shop, material)) {
+                        if (!ItemMaster.checkMaterial(t, material.getGroup())) {
+                            continue;
+                        }
+                        if (!rollMaterial(material, shop))
+                            continue;
+                        for (QUALITY_LEVEL q : getQualityLevels(shop)) {
+                            if (!rollQuality(q, shop))
+                                continue;
+                            filtered.add(ItemGenerator.getOrCreateItemType(t,
+                             material, q));
+                            //less chance if already in repertoire!
+                        }
+                    }
+
+                }
+        }
+//        repertoire.addAll(filtered);
+        // getShopLevel().getMaxCostFactor();
+
+        return filtered;
+    }
+
+    private static boolean rollQuality(QUALITY_LEVEL q, Shop shop) {
+        int chance =MathMaster.getMinMax(20 + shop.getGold() / shop.getIntParam(MACRO_PARAMS.SHOP_INCOME)
+         , 33, 50);
+        return RandomWizard.chance(chance);
+    }
+
+    private static boolean rollMaterial(MATERIAL material, Shop shop) {
+        int chance = MathMaster.getMinMax(25 + shop.getGold() / shop.getIntParam(MACRO_PARAMS.SHOP_INCOME)
+         , 42, 63);
+        return RandomWizard.chance(chance);
+    }
+
+    public static   String[] initItemGroups(SHOP_TYPE type) {
+        // Up to 4 item groups!
+        String[] item_groups = type.getItemGroups();
+        if (item_groups.length > ShaderMaster.MAX_ITEM_GROUPS) {
+            List<String> list = new ArrayList<>(Arrays.asList(item_groups));
+            item_groups = new String[ShaderMaster.MAX_ITEM_GROUPS];
+            int j = 0;
+            while (j < ShaderMaster.MAX_ITEM_GROUPS) {
+                String e = list.get(RandomWizard.getRandomIndex(list));
+                list.remove(e);
+                item_groups[j] = e;
+                j++;
+            }
+        }
+        return item_groups;
+    }
+
+    public static   OBJ_TYPE getItemsType(SHOP_TYPE shopType) {
+
+        switch (shopType) {
+            case JEWELER:
+                return DC_TYPE.JEWELRY;
+            case ALCHEMIST:
+                return DC_TYPE.ITEMS;
+            case WEAPONS:
+            case LIGHT_WEAPONS:
+            case HEAVY_WEAPONS:
+                return DC_TYPE.WEAPONS;
+            case ARMOR:
+            case LIGHT_ARMOR:
+            case HEAVY_ARMOR:
+                return DC_TYPE.ARMOR;
+        }
+        return C_OBJ_TYPE.ITEMS;
+    }
 }

@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class ShaderMaster {
     public static final float SUPER_DRAW = 100;
+    public static final int MAX_ITEM_GROUPS = 4;
     private static Map<Actor, Runnable> map = new HashMap<>();
     private static Map<SHADER, ShaderProgram> shaderMap = new HashMap<>();
 

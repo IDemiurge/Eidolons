@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.FactionObj;
+import eidolons.macro.entity.shop.Shop;
 import eidolons.macro.map.Place;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.values.parameters.MACRO_PARAMS;

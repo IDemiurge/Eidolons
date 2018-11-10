@@ -281,6 +281,10 @@ public class EntityHandler<E extends Entity> {
         getEntity().addProperty(prop, value);
     }
 
+    public void addParam(PARAMETER parameter, int i) {
+        getEntity().addParam(parameter, i);
+    }
+
     public void addParam(PARAMETER parameter, String param, boolean base) {
         getEntity().addParam(parameter, param, base);
     }

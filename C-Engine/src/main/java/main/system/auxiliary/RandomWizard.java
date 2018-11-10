@@ -37,7 +37,7 @@ public class RandomWizard<E> {
         if (map != null) {
             return map;
         }
-         map = new RandomWizard<ObjType>().constructWeightMap(property, ObjType.class, TYPE);
+        map = new RandomWizard<ObjType>().constructWeightMap(property, ObjType.class, TYPE);
         weighMapCache.put(property, map);
         return map;
     }
@@ -230,8 +230,11 @@ public class RandomWizard<E> {
     }
 
     public static float getRandomFloatBetween(float alphaMin, float alphaMax) {
-        return new Float(getRandomIntBetween((int) (alphaMin * 100),
-         (int) (alphaMax * 100))) / 100;
+        return
+         alphaMin + (randomGenerator.nextFloat() * alphaMax - alphaMin);
+        //       brutish...
+        // return new Float(getRandomIntBetween((int) (alphaMin * 100),
+        //         (int) (alphaMax * 100))) / 100;
     }
 
     public E getObjectByWeight(String string, Class<? extends E> CLASS) {
@@ -241,6 +244,7 @@ public class RandomWizard<E> {
     public E getRandomSetItem(Set<E> set) {
         return (E) set.toArray()[getRandomIndex(set)];
     }
+
     public E getRandomListItem(List<E> list) {
         return list.get(getRandomIndex(list));
     }
@@ -351,7 +355,7 @@ public class RandomWizard<E> {
         // if (object != null) //EMPTY option allowed!
 
         return map;
-}
+    }
 
     public LinkedHashMap<Integer, E> getInvertedMap() {
         return invertedMap;

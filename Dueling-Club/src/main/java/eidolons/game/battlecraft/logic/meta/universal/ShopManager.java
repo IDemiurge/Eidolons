@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.macro.entity.town.Shop;
+import eidolons.macro.entity.shop.Shop;
 
 import java.util.List;
 

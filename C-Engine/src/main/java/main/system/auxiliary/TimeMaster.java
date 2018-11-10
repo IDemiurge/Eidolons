@@ -11,7 +11,7 @@ public class TimeMaster {
     private static final String TIME_DELIMITER = ":";
     private static final String ALT_TIME_DELIMITER = "-";
     private static Integer millisInDay;
-
+    static Calendar calendar = Calendar.getInstance();
     public static String getFormattedTime() {
         return getFormattedTime(true);
     }
@@ -29,7 +29,7 @@ public class TimeMaster {
     }
 
     public static String getFormattedTime(boolean secondsIn, boolean alt) {
-        return getFormattedTime(Calendar.getInstance().getTime(), secondsIn, alt);
+        return getFormattedTime(calendar.getTime(), secondsIn, alt);
     }
 
     public static String getFormattedTime(Date time, boolean secondsIn, boolean alt) {
@@ -105,7 +105,7 @@ public class TimeMaster {
     }
 
     public static long getTime() {
-        return Calendar.getInstance().getTime().getTime();
+        return System.currentTimeMillis();// Calendar.getInstance().getTime().getTime();
     }
 
     public static int getMonth() {

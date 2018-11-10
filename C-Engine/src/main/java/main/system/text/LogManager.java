@@ -15,8 +15,8 @@ import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -249,7 +249,14 @@ public abstract class LogManager {
         if (CoreEngine.isGraphicsOff())
             return;
         getTopDisplayedEntries().add(entry);
-        getDisplayedLines().addAll(TextWrapper.wrap(entry, EntryNodeMaster.getWrapLength(true)));
+        if (!isWrapped())
+            getDisplayedLines().add(entry);
+        else
+            getDisplayedLines().addAll(TextWrapper.wrap(entry, EntryNodeMaster.getWrapLength(true)));
+    }
+
+    private boolean isWrapped() {
+        return false;
     }
 
     // getCaseLogChannel()

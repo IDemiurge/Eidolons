@@ -15,13 +15,11 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSour
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.QuickSlotDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
-import eidolons.libgdx.gui.panels.headquarters.datasource.inv.ShopValueContainerList;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.macro.entity.town.Shop;
+import eidolons.macro.entity.shop.Shop;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/21/2017.
@@ -137,19 +135,9 @@ public class ShopDataSource extends ContainerDataSource
     }
 
 
-    public List<ShopValueContainerList> getGroupLists(String tabName) {
-        return shop.getItemSubgroups(tabName).stream().map(
-         s -> new ShopValueContainerList(getTextures(s))).
-         collect(Collectors.toList());
-    }
     public String getPricesInfo() {
         return shop.getPrice(100, invDataSource.getUnit(), true)+
          "%";
-    }
-    public List<ValueContainer> getTextures(String groupList) {
-        return shop.getItems(groupList).stream().map(
-         s -> new ValueContainer(TextureCache.getOrCreateR(s))).
-         collect(Collectors.toList());
     }
 
     public ValueContainer getName() {
@@ -157,7 +145,7 @@ public class ShopDataSource extends ContainerDataSource
     }
 
     public ValueContainer getGold() {
-        return new ValueContainer("Gold: ", shop.getGold());
+        return new ValueContainer("Gold: ", ""+shop.getGold());
     }
 
     public ValueContainer getIcon() {

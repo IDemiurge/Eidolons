@@ -9,7 +9,8 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerClickHandler;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
-import eidolons.macro.entity.town.Shop;
+import eidolons.macro.entity.shop.Shop;
+import eidolons.macro.entity.shop.ShopTransactions;
 import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Entity;
 import main.system.EventType;
@@ -48,8 +49,7 @@ public class ShopClickHandler extends ContainerClickHandler {
                 operation = OPERATIONS.BUY;
             } else if (stashOpen) {
                 operation = OPERATIONS.STASH;
-            } else
-            {
+            } else {
                 if (rightClick)
                     operation = OPERATIONS.SELL;
             }
@@ -64,8 +64,8 @@ public class ShopClickHandler extends ContainerClickHandler {
                     operation = OPERATIONS.UNEQUIP;
             }
         }
-        if (operation==null) {
-            operation = getInvOperation(cell_type, clickCount, rightClick, altClick,ctrlClick , cellContents);
+        if (operation == null) {
+            operation = getInvOperation(cell_type, clickCount, rightClick, altClick, ctrlClick, cellContents);
         }
 
         if (operation == OPERATIONS.DROP) {
@@ -84,7 +84,7 @@ public class ShopClickHandler extends ContainerClickHandler {
         }
         if (operation == null) {
             if (stashOpen) {
-                operation=OPERATIONS.UNSTASH;
+                operation = OPERATIONS.UNSTASH;
             }
         }
         if (handleOperation(operation, cell_type, cellContents)) {
@@ -174,32 +174,58 @@ public class ShopClickHandler extends ContainerClickHandler {
 
     @Override
     protected boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
+        DC_HeroItemObj item = (DC_HeroItemObj) type;
         switch (operation) {
             case STASH:
                 return !Eidolons.getTown().isStashFull();
             case UNSTASH:
                 return checkCanAddInventory();
             case SELL:
-
+//                if (!getShop().canSellTo(item, dataMaster.getHeroModel(), false)) {
+//                    if (getShop().canSellTo(item, dataMaster.getHeroModel(), true)) {
+//                        if (ShopTransactions.confirmSell())
+//                            return true;
+//                    }
+//                    GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+//                     "Shopkeeper cannot afford to buy this!");
+//                    return false;
+//                }
+//                return true;
             case BUY:
-                Shop shop = (Shop) container;
-                Integer gold = (operation == OPERATIONS.BUY ? dataMaster.getHeroModel() : container)
-                 .getIntParam(PARAMS.GOLD);
-                if (gold >= shop.getPrice((DC_HeroItemObj) type, dataMaster.getHeroModel(),
-                 operation == OPERATIONS.BUY)) {
-                    return true;
+                boolean heroBuys = operation == OPERATIONS.BUY;
+                int debt =Math.abs( getShop().getBalanceForBuy(item, dataMaster.getHeroModel(), heroBuys));
+                int max = heroBuys ? shop.getMaxDebt() : shop.getMinBalance();
+                if (debt > 0) {
+                    if (debt < Math.abs(max)) {
+                        if (ShopTransactions.confirm(debt, max, item, shop, heroBuys))
+                            return true;
+                    }
+                    GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+                     heroBuys ? "You cannot afford to buy this!"
+                    : "Shopkeeper cannot afford to buy this!");
+                    return false;
                 }
-                GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-                 (operation == OPERATIONS.BUY ?
-                  "You need " + (type.getIntParam(PARAMS.GOLD_COST) - gold) + " more gold!"
-                  :
-                  "Shopkeeper needs " + (type.getIntParam(PARAMS.GOLD_COST) - gold) + " more gold!"
-                 ));
-                return false;
+                return true;
+            //                Integer gold = (operation == OPERATIONS.BUY ? dataMaster.getHeroModel() : container)
+            //                 .getIntParam(PARAMS.GOLD);
+            //                if (gold >= getShop().getPrice((DC_HeroItemObj) type, dataMaster.getHeroModel(),
+            //                 operation == OPERATIONS.BUY)) {
+            //                    return true;
+            //                }
+            //                GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+            //                 (operation == OPERATIONS.BUY ?
+            //                  "You need " + (type.getIntParam(PARAMS.GOLD_COST) - gold) + " more gold!"
+            //                  :
+            //                  "Shopkeeper needs " + (type.getIntParam(PARAMS.GOLD_COST) - gold) + " more gold!"
+            //                 ));
+            //                return false;
         }
         return super.canDoOperation(operation, type, arg);
     }
 
+    public Shop getShop() {
+        return (Shop) super.getContainer();
+    }
 
     @Override
     protected Object getSecondArg(OPERATIONS operation, Entity type) {
@@ -212,31 +238,28 @@ public class ShopClickHandler extends ContainerClickHandler {
     }
 
 
-
     public void askRepair() {
         int gold = 0;
         for (DC_HeroSlotItem item : hero.getSlotItems()) {
             int percentage = 100 -
              item.getIntParam(PARAMS.C_DURABILITY) * 100 / item.getIntParam(PARAMS.DURABILITY);
-
-
-            Integer price = shop.getPrice(item, hero, false)*percentage/100;
+            Integer price = shop.getPrice(item, hero, false) * percentage / 100;
             gold += price;
         }
-        if (gold==0){
+        if (gold == 0) {
             EUtils.showInfoText("Your equpped items don't need repair yet!");
             return;
         }
-        gold -= gold* hero.getIntParam(PARAMS.ARMORER_MASTERY)/100;
+        gold -= gold * hero.getIntParam(PARAMS.ARMORER_MASTERY) / 100;
 
-        int gold_=gold;
-        if (hero.checkParameter(PARAMS.GOLD , gold))
-        EUtils.onConfirm("Repair all equipped items for " +
-         gold+
-         " gold?" , true, ()-> {
-            repairEquipped();
-            hero.modifyParameter(PARAMS.GOLD, -gold_);
-        });
+        int gold_ = gold;
+        if (hero.checkParameter(PARAMS.GOLD, gold))
+            EUtils.onConfirm("Repair all equipped items for " +
+             gold +
+             " gold?", true, () -> {
+                repairEquipped();
+                hero.modifyParameter(PARAMS.GOLD, -gold_);
+            });
     }
 
     private void repairEquipped() {
@@ -245,16 +268,17 @@ public class ShopClickHandler extends ContainerClickHandler {
         }
         DC_SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
-         update();
+        update();
     }
 
     @Override
     protected void update() {
         GuiEventManager.trigger(getGuiEvent(), shop);
     }
+
     @Override
     protected EventType getGuiEvent() {
-        return GuiEventType.UPDATE_SHOP ;
+        return GuiEventType.UPDATE_SHOP;
     }
 
 }

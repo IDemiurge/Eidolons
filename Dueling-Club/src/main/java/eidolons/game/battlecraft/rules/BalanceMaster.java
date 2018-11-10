@@ -72,6 +72,12 @@ public class BalanceMaster {
 
     private float calcLongevity(Unit entity) {
         //how long will the unit survive if taking [dmg] each round?
+
+        float physical = 0;
+//        DamageDealer.dealDamage(damage, entity);
+
+//        DC_AttackMaster.
+
         float val = 0;
         return val;
     }

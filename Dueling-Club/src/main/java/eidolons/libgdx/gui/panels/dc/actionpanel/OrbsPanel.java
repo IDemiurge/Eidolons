@@ -28,7 +28,8 @@ public class OrbsPanel extends TablePanel {
     public static void addTooltip(OrbElement el, String name, String val) {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(el.getIconRegion(), name, val)));
-        el.addListener(tooltip.getController());
+       el.clearListeners();
+       el.addListener(tooltip.getController());
     }
 
     //TODO smooth update?

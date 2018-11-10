@@ -39,7 +39,8 @@ public class EUtils {
         onConfirm(text, false, null);
     }
 
-    public static void onConfirm(boolean wait, String text, boolean cancel, Runnable o, boolean onAnotherThread) {
+    public static boolean onConfirm(boolean wait, String text, boolean cancel,
+                                    Runnable o, boolean onAnotherThread) {
         if (wait) {
             onConfirm(text, cancel, () -> {
                 o.run();
@@ -47,15 +48,17 @@ public class EUtils {
             }, onAnotherThread);
             if (WaitMaster.getWaiters().get(WAIT_OPERATIONS.CONFIRM) != null) {
                 WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
-                WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+                return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
             } else {
-                WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+                return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
             }
         } else {
             onConfirm(text, cancel, o);
         }
 
+        return false;
     }
+
     public static void onConfirm(String text, boolean cancel, Runnable o, boolean onAnotherThread) {
         if (onAnotherThread)
             onConfirm(text, cancel, () -> Eidolons.onNonGdxThread(o));
@@ -65,6 +68,7 @@ public class EUtils {
     public static void onConfirm(String text, Runnable o, Runnable onCancel) {
         GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text, onCancel, o));
     }
+
     public static void onConfirm(String text, boolean cancel, Runnable o) {
         GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text, cancel, o));
     }

@@ -1,6 +1,7 @@
 package main.system.graphics;
 
 import main.swing.generic.components.Builder;
+import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,7 +72,8 @@ public class GuiManager {
 
         setBattleFieldHeight(getBF_CompDisplayedCellsY() * cellHeight);
         setBattleFieldWidth(getBF_CompDisplayedCellsX() * cellHeight);
-        // if (!isWide())
+
+        if (CoreEngine.isSwingOn())
         try {
             UIManager.setLookAndFeel("" + "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
              // "main.system.auxiliary.DarkNimbus"

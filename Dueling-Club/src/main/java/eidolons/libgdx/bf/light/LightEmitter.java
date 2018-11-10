@@ -23,7 +23,6 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
-import org.python.modules.math;
 
 import java.awt.*;
 import java.util.*;
@@ -290,7 +289,7 @@ public class LightEmitter extends SuperActor {
     public void setBaseAlphaForChildren(float alpha) {
         for (int i = 0; i < rays.size(); i++) {
             LightRay ray = (LightRay) rays.values().toArray()[i];
-            ray.setBaseAlpha((float) (alpha / math.sqrt(i + 1)));
+            ray.setBaseAlpha((float) (alpha / Math.sqrt(i + 1)));
         }
         if (center != null)
             center.setBaseAlpha(alpha);
@@ -299,7 +298,7 @@ public class LightEmitter extends SuperActor {
     public void setAlpha(float alpha, boolean changed) {
         for (int i = 0; i < rays.size(); i++) {
             LightRay ray = (LightRay) rays.values().toArray()[i];
-            float a = ray.getColor().a * alpha / 2 + (float) (alpha / math.sqrt(i + 1));
+            float a = ray.getColor().a * alpha / 2 + (float) (alpha / Math.sqrt(i + 1));
             if (changed) ray.setFluctuatingAlpha(a);
             ray.getColor().a = a;
         }

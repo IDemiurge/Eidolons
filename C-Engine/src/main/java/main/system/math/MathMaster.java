@@ -165,7 +165,7 @@ public abstract class MathMaster {
     }
 
     public static String formatFormula(String formula) {
-
+        formula = formula.toLowerCase();
         if (formula.charAt(0) == '-') {
             while (formula.startsWith("(", 1)) {
                 formula = StringMaster.replaceFirst(formula, "(", "");

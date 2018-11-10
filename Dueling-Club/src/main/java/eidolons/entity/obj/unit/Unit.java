@@ -1554,5 +1554,7 @@ public class Unit extends DC_UnitModel {
         return getActions().stream().filter(a -> a.getActionGroup() == ACTION_TYPE_GROUPS.MOVE).collect(Collectors.toList());
     }
 
-
+    public int getGold() {
+        return getIntParam(PARAMS.GOLD);
+    }
 }

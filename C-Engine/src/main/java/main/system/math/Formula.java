@@ -5,9 +5,12 @@ import com.graphbuilder.math.ExpressionTree;
 import com.graphbuilder.math.FuncMap;
 import com.graphbuilder.math.VarMap;
 import main.entity.Ref;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Regulus
@@ -18,6 +21,7 @@ public class Formula {
     private static FuncMap functionMap;
     private String formula;
     private String buffer;
+    private static Map<String, Expression> expressionMap = new HashMap<>();
 
     public Formula(String formula) {
         this.formula = formula;
@@ -52,7 +56,11 @@ public class Formula {
         buffer = new DynamicValueParser().parseDynamicValues(buffer, ref);
         buffer = MathMaster.formatFormula(buffer);
 
-        Expression expression = ExpressionTree.parse(buffer);
+        Expression expression = expressionMap.get(buffer);
+        if (expression == null) {
+            expression = ExpressionTree.parse(buffer);
+            expressionMap.put(buffer, expression);
+        }
 
         double result = expression.eval(vm, getFunctionMap());
         return result;

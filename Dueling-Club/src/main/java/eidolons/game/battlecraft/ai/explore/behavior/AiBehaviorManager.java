@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class AiBehaviorManager extends AiHandler {
 
-    public static final AI_BEHAVIOR_MODE TESTED = null; // AI_BEHAVIOR_MODE.WANDER;
+    public static final AI_BEHAVIOR_MODE TESTED = AI_BEHAVIOR_MODE.PATROL; // AI_BEHAVIOR_MODE.WANDER;
     public static final boolean TEST_MODE = TESTED!=null ;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
@@ -157,9 +157,11 @@ public class AiBehaviorManager extends AiHandler {
             return behaviors;
         }
         switch (ai.getGroupAI().getType()) {
-//            case PATROL:
-//                behaviors.add(new PatrolAi(master, ai));
-//                break;
+            case PATROL:
+                if (TEST_MODE) {
+                    behaviors.add(new PatrolAi(master, ai));
+                    break;
+                }
             case GUARDS:
             case BOSS:
                 behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));

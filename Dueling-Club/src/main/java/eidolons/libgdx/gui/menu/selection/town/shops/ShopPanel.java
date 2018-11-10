@@ -39,7 +39,7 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.macro.entity.town.Shop;
+import eidolons.macro.entity.shop.Shop;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

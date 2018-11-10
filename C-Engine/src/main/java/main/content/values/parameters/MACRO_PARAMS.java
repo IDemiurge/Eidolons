@@ -31,7 +31,9 @@ public enum MACRO_PARAMS implements PARAMETER {
     HIRE_COST(null, "", false, 0, "chars"),
     SHOP_INCOME(null, "", false, 15, "shop"),
     SHOP_INCOME_GROWTH(null, "", false, 1, "shop"),
-    MAX_CREDIT(null, "", false, 150, "shop"),
+
+    MIN_BALANCE(null, "", false, -300, "shop"),
+    MAX_DEBT(null, "", false, 100, "shop"),
 
     ROUTE_PROGRESS(null, "", true, 0, "party"),
     ROUTE_PROGRESS_PERCENTAGE(null, "", false, 0, "place", "route", "town"),
@@ -72,7 +74,7 @@ public enum MACRO_PARAMS implements PARAMETER {
     CREEP_POWER_MAX_FACTOR(null, "", false, 2, "campaign"),
     HOURS_INTO_TURN(null, "", false, 0, "campaign"),
 
-    TOWN_STASH_SIZE(null, "", false, 40, "town");
+    TOWN_STASH_SIZE(null, "", false, 40, "town"),;
     // POWER,
     // NUMBER_OF_HEROES,
     // NUMBER_0F_unitsS,

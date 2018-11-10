@@ -77,7 +77,7 @@ public class PathFinder {
         System.out.println("IMG_PATH PATH= " + IMG_PATH);
         SND_PATH = ENGINE_PATH + RES_PATH + "sound" + PathUtils.getPathSeparator();
 
-        FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts" + PathUtils.getPathSeparator();
+        FONT_PATH = ENGINE_PATH + RES_PATH + "fonts" + PathUtils.getPathSeparator();
 
         MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();
 

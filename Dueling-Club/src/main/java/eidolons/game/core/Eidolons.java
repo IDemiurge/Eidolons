@@ -66,6 +66,7 @@ public class Eidolons {
     private static LwjglApplication application;
     private static String selectedMainHero;
     private static Unit mainHero;
+    public static Unit MAIN_HERO;
     private static boolean fullscreen;
     private static RESOLUTION resolution;
     private static ScreenViewport mainViewport;
@@ -147,6 +148,7 @@ public class Eidolons {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
+            MAIN_HERO=mainHero;
         }
         return mainHero;
     }

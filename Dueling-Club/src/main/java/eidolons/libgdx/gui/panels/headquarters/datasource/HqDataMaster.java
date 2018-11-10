@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -25,7 +24,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HeroOper
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.macro.entity.town.Shop;
+import eidolons.macro.entity.shop.Shop;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.NameMaster;
@@ -359,16 +358,16 @@ public class HqDataMaster {
                         if (!Eidolons.getTown().removeFromStash(item))
                             return;
                     }
-                    Integer price = shop.sellItemTo(item, hero);
-                    hero.modifyParameter(PARAMS.GOLD, price);
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
+                     shop.sellItemTo(item, hero);
+//                    hero.modifyParameter(PARAMS.GOLD, price); all gold is handled by ShopItemManager!
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
                 } else {
                     Integer price = shop.buyItemFrom(item, hero);
                     if (price == null)
                         return;
                     hero.addItemToInventory(item);
-                    hero.modifyParameter(PARAMS.GOLD, -price);
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
+//                    hero.modifyParameter(PARAMS.GOLD, -price); all gold is handled by ShopItemManager!
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
                 }
                 break;
             case PICK_UP:

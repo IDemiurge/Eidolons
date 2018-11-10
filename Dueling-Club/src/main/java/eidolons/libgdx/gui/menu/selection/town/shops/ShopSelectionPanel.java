@@ -4,7 +4,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.town.PlaceSelectionPanel;
-import eidolons.macro.entity.town.Shop;
+import eidolons.macro.entity.shop.Shop;
 
 import java.util.Collection;
 import java.util.List;

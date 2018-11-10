@@ -8,7 +8,7 @@ import main.system.math.PositionMaster;
 
 public class DirectionMaster {
     public static final DIRECTION FLIP_DIRECTION = DIRECTION.LEFT;
-    private static DIRECTION[][][][] relative_directions;
+    private static DIRECTION[][] relative_directions;
 
     public static DIRECTION getDirectionByFacing(FACING_DIRECTION f, UNIT_DIRECTION d) {
         return getDirectionByDegree(f.getDirection().getDegrees() + d.getDegrees());
@@ -77,6 +77,7 @@ public class DirectionMaster {
         }
         return direction;
     }
+
     public static DIRECTION flipHorizontally(DIRECTION direction) {
         switch (direction) {
             case UP_LEFT:
@@ -121,16 +122,39 @@ public class DirectionMaster {
         if (relative_directions == null) {
             return getRelativeDirectionNoCache(source, target);
         }
-        DIRECTION d = relative_directions[source.x][source.y][target.x][target.y];
+        int diffX = source.x - target.x;
+        int diffY = source.y - target.y;
+        int absX = Math.abs(diffX);
+        int absY = Math.abs(diffY);
+
+        DIRECTION d = relative_directions[absX][absY];
         if (d != null) {
+            if (diffX < 0) {
+                d = d.flipHorizontally();
+            }
+            if (diffY < 0) {
+                d = d.flipVertically();
+            }
             return d;
         }
-        d = relative_directions[target.x][target.y][source.x][source.y];
-        if (d != null) {
-            return d.flip();
+        //        d = relative_directions[-diffX][-diffY];
+        //        if (d != null) {
+        //            return d.flip();
+        //        }
+        source = new Coordinates(source.x, source.y);
+        target = new Coordinates(target.x, target.y);
+        if (diffX < 0) {
+            int x = target.getX();
+            target.setX(source.getX());
+            source.setX(x);
+        }
+        if (diffY < 0) {
+            int y = target.getY();
+            target.setY(source.getY());
+            source.setY(y);
         }
         d = getRelativeDirectionNoCache(source, target);
-        relative_directions[source.x][source.y][target.x][target.y] = d;
+        relative_directions[absX][absY] = d;
         return d;
     }
 
@@ -205,6 +229,6 @@ public class DirectionMaster {
 
     public static void initCache(Integer cellsX, Integer cellsY) {
         //save over TODO
-        relative_directions = new DIRECTION[cellsX][cellsY][cellsX][cellsY];
+        relative_directions = new DIRECTION[cellsX][cellsY];
     }
 }

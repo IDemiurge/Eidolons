@@ -13,9 +13,7 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderMaster;
-import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.text.TextWrapper;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -87,11 +85,13 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         getStageWithClosable().openClosable(this);
         cancel.setVisible(canCancel);
         String wrapped = text;
-        if (!wrapped.contains("\n")) {
-            wrapped = TextWrapper.wrapWithNewLine(text,
-             FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
-              (int) (getWidth() / 3 * 2)));
-        }
+//        if (!wrapped.contains("\n")) {
+//            wrapped = TextWrapper.wrapWithNewLine(text,
+//             label.getStyle().font.getSpaceWidth()
+//             FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
+//              (int) (getWidth() / 3 * 2)));
+//        }
+        label.setWrap(true);
         label.setText(wrapped);
         label.pack();
         setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));

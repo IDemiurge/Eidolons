@@ -27,7 +27,7 @@ public class CoreEngine {
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
-    public static boolean swingOn = false;
+    public static boolean swingOn = true;
     public static boolean animationTestMode;
     public static long BUILD; //read from POM!
     private static CoreEngine engineObject;

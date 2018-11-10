@@ -22,6 +22,7 @@ public class MainLauncher extends GenericLauncher {
     private static Stack<String> lastChoiceStack;
 
     public static void main(String[] args) {
+        CoreEngine.setSwingOn(false);
         if (args.length > 0) {
             args =args[0].split(",");
         }
