@@ -477,7 +477,7 @@ public class PresetMaster {
     }
 
     public static Preset loadPreset(String relativePath) {
-        return loadPreset(new File(getPresetFolderPath() + relativePath));
+        return loadPreset(FileManager.getFile(getPresetFolderPath() + relativePath));
     }
 
     public static Preset loadPreset(File file) {

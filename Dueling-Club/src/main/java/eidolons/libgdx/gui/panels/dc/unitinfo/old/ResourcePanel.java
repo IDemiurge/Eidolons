@@ -27,24 +27,24 @@ public class ResourcePanel extends TablePanel {
 
         pad(16, 20, 16, 20);
 
-        toughness = new VerticalValueContainer(getOrCreateR("UI/value icons/toughness.jpg"), "Toughness", "");
+        toughness = new VerticalValueContainer(getOrCreateR("ui/value icons/toughness.jpg"), "Toughness", "");
         addElement(toughness).grow();
 
-        endurance = new VerticalValueContainer(getOrCreateR("UI/value icons/endurance.png"), "Endurance", "");
+        endurance = new VerticalValueContainer(getOrCreateR("ui/value icons/endurance.png"), "Endurance", "");
         addElement(endurance).grow();
 
-        stamina = new VerticalValueContainer(getOrCreateR("UI/value icons/stamina.png"), "Stamina", "");
+        stamina = new VerticalValueContainer(getOrCreateR("ui/value icons/stamina.png"), "Stamina", "");
         addElement(stamina).grow();
 
         row().padTop(18);
 
-        morale = new VerticalValueContainer(getOrCreateR("UI/value icons/morale.png"), "Morale", "");
+        morale = new VerticalValueContainer(getOrCreateR("ui/value icons/morale.png"), "Morale", "");
         addElement(morale).grow();
 
-        essence = new VerticalValueContainer(getOrCreateR("UI/value icons/essence.png"), "Essence", "");
+        essence = new VerticalValueContainer(getOrCreateR("ui/value icons/essence.png"), "Essence", "");
         addElement(essence).grow();
 
-        focus = new VerticalValueContainer(getOrCreateR("UI/value icons/focus.png"), "Focus", "");
+        focus = new VerticalValueContainer(getOrCreateR("ui/value icons/focus.png"), "Focus", "");
         addElement(focus).grow();
     }
 

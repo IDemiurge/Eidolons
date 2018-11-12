@@ -153,7 +153,7 @@ public class InitiativePanel extends GroupX {
         queueGroup = new WidgetGroup();
         addActor( container = new Container<>(queueGroup));
 
-        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
+        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
          "components", "dc", "atb",
          "atb background.png"));
         DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
@@ -553,7 +553,7 @@ public class InitiativePanel extends GroupX {
                 return;
             }
 //            Image shadow = new Image(TextureCache.getOrCreateR(
-//             StrPathBuilder.build("UI",
+//             StrPathBuilder.build("ui",
 //              "components", "dc", "atb",
 //              "initiativepanel unitview shadow.png")));
 //            shadow.setY(-48);

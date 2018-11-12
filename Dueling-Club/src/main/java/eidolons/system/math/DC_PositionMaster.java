@@ -1,5 +1,7 @@
 package eidolons.system.math;
 
+import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.data.XList;
 import main.game.bf.Coordinates;
@@ -133,5 +135,17 @@ public class DC_PositionMaster {
         }
         return list;
 
+    }
+
+    public static Coordinates getRandomValidAdjacent(Coordinates originalCoordinates, Unit unit) {
+        for (Coordinates coordinates : originalCoordinates.getAdjacentCoordinates()) {
+            DC_Cell cell = unit.getGame().getCellByCoordinate(coordinates);
+            if (cell==null )
+                continue;
+            if (unit.getGame().getRules().getStackingRule().canBeMovedOnto(unit, coordinates))
+                return coordinates;
+
+        }
+        return originalCoordinates;
     }
 }

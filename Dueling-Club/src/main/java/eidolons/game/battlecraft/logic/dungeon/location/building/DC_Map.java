@@ -4,6 +4,7 @@ import eidolons.game.core.game.DC_Game;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.data.MapData;
 import main.system.images.ImageManager;
@@ -109,7 +110,7 @@ public class DC_Map {
     }
 
     private String initRandomBackground() {
-        File f = new File(ImageManager.getDefaultImageLocation()
+        File f = FileManager.getFile(ImageManager.getDefaultImageLocation()
          + PathFinder.getBgPicsPath());
         if (!f.isDirectory()) {
             LogMaster.log(4, "failed to init bg!");

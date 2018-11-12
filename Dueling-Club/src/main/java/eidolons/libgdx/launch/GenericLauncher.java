@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
@@ -275,13 +276,19 @@ public class GenericLauncher extends Game {
                     if (initRunning)
                         return;
                 }
+                if (DC_Game.game !=null ){
+                    return;
+                }
                 initRunning=true;
                 Eidolons.onThisOrNonGdxThread(() -> {
                     main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + data.getName());
                     DC_Engine.gameStartInit();
                     //how to prevent this from being called twice?
                     if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
-                        return; // INIT FAILED
+                    {
+                        initRunning=false;
+                        return; // INIT FAILED or EXITED
+                    }
                     MusicMaster.preload(MUSIC_SCOPE.ATMO);
                     Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                     firstInitDone = true;
@@ -289,6 +296,7 @@ public class GenericLauncher extends Game {
                 });
                 break;
             case MAIN_MENU:
+                initRunning=false;
                 GuiEventManager.trigger(SCREEN_LOADED,
                  new ScreenData(SCREEN_TYPE.MAIN_MENU, null));
                 break;

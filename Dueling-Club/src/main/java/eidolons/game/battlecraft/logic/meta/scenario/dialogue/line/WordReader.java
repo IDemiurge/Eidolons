@@ -15,7 +15,7 @@ public class WordReader {
 //
 //        if(FilePath.substring(FilePath.length() -1).equals("x")){ //is a docx
 //            try {
-//                fis = new FileInputStream(new File(FilePath));
+//                fis = new FileInputStream(FileManager.getFile(FilePath));
 //                XWPFDocument doc = new XWPFDocument(fis);
 //                XWPFWordExtractor extract = new XWPFWordExtractor(doc);
 //                System.out.println(extract.getText());
@@ -25,7 +25,7 @@ public class WordReader {
 //            }
 //        } else { //is not a docx
 //            try {
-//                fis = new FileInputStream(new File(FilePath));
+//                fis = new FileInputStream(FileManager.getFile(FilePath));
 //                HWPFDocument doc = new HWPFDocument(fis);
 //                WordExtractor extractor = new WordExtractor(doc);
 //                System.out.println(extractor.getText());

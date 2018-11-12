@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static   Boolean uiAtlasesOn ;
+    private static Boolean uiAtlasesOn;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -47,10 +47,11 @@ public class TextureCache {
     private SmartTextureAtlas mainAtlas;
     private SmartTextureAtlas genAtlas;
     private Pattern pattern;
+    private boolean silent;
 
     private TextureCache() {
         if (uiAtlasesOn == null) {
-            uiAtlasesOn =  CoreEngine.isJarlike() ||  !CoreEngine.isIDE();
+            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE();
         }
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
@@ -109,9 +110,20 @@ public class TextureCache {
         return texture;
     }
 
+    public static Texture getOrCreate(String path, boolean silent) {
+        getInstance().setSilent(silent);
+        Texture texture = null;
+        try {
+            texture = getInstance()._getOrCreate(path);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            texture = null;
+        }
+        getInstance().setSilent(false);
+        return texture;
+    }
+
     public static Texture getOrCreate(String path) {
-
-
         return getInstance()._getOrCreate(path);
     }
 
@@ -191,7 +203,7 @@ public class TextureCache {
         }
         String name = StringMaster.getLastPathSegment(path).toLowerCase();
         switch (name) {
-//                imgPath = outcome ? "UI/big/victory.png" : "UI/big/defeat.jpg";
+            //                imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
             case "logo fullscreen.png":
             case "defeat.png":
             case "defeat.jpg":
@@ -394,9 +406,9 @@ public class TextureCache {
         Path p = Paths.get(imagePath, path);
         String filePath = p.toString();
         Texture t = null;
-        if (checkAltTexture(filePath))
+        if (checkAltTexture(filePath)) //TODO remove this already
             try {
-                t = new Texture(GDX.file(getAltTexturePath(filePath)) ,
+                t = new Texture(GDX.file(getAltTexturePath(filePath)),
                  Pixmap.Format.RGBA8888, false);
                 if (putIntoCache)
                     cache.put(path, t);
@@ -416,7 +428,8 @@ public class TextureCache {
                     if (path.contains(".jpg"))
                         return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
                 }
-                main.system.ExceptionMaster.printStackTrace(e);
+                if (!silent)
+                    main.system.ExceptionMaster.printStackTrace(e);
                 if (!isReturnEmptyOnFail())
                     return null;
                 if (!cache.containsKey(getEmptyPath())) {
@@ -443,6 +456,14 @@ public class TextureCache {
         TextureRegion r = new TextureRegion(texture);
         regionCache.put(path, r);
         return r;
+    }
+
+    public boolean isSilent() {
+        return silent;
+    }
+
+    public void setSilent(boolean silent) {
+        this.silent = silent;
     }
 }
 

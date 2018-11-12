@@ -55,16 +55,17 @@ import java.util.List;
 public class AnimMaster extends Group {
     // Animation does not support ZOOM!
 
-    public static final boolean FADE_SPRITE_TEST = CoreEngine.isIDE();
+    public static final boolean FADE_SPRITE_TEST =false;
     static private boolean off;
     private static AnimMaster instance;
+    private static Float animationSpeedFactor;
     private final FloatTextLayer floatTextLayer;
-    private   FadeSprite fadeTest;
     //    private   SpriteCache spriteCache;
     DequeImpl<CompositeAnim> leadQueue = new DequeImpl<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
     DequeImpl<Animation> attachedAnims = new DequeImpl<>();
+    private FadeSprite fadeTest;
     private AnimController controller;
     private AnimationConstructor constructor;
     private boolean continuousAnimsOn;
@@ -73,7 +74,6 @@ public class AnimMaster extends Group {
     private boolean drawing;
     private boolean drawingPlayer;
     private Boolean parallelDrawing;
-    private Float animationSpeedFactor;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -92,19 +92,23 @@ public class AnimMaster extends Group {
         //        bindEvents(); now in GridPanel.bindEvents()
 
         if (FADE_SPRITE_TEST) {
-            Coordinates c = Eidolons.getMainHero().getCoordinates();
-            SpriteAnimation animation = SpriteAnimationFactory.getSpriteAnimation("sprite shadow.png");
-            addActor(fadeTest = new FadeSprite(animation));
-            fadeTest.setBlending(BLENDING.SCREEN);
-            Vector2 v = GridMaster.getCenteredPos(c);
-            fadeTest.setPosition(v.x, v.y);
+            try {
+                Coordinates c = Eidolons.getMainHero().getCoordinates();
+                SpriteAnimation animation = SpriteAnimationFactory.getSpriteAnimation("sprite shadow.png");
+                addActor(fadeTest = new FadeSprite(animation));
+                fadeTest.setBlending(BLENDING.SCREEN);
+                Vector2 v = GridMaster.getCenteredPos(c);
+                fadeTest.setPosition(v.x, v.y);
 
-            c = c.getOffsetByX(1);
-            animation = SpriteAnimationFactory.getSpriteAnimation("sprite dark.png");
-            addActor(fadeTest = new FadeSprite(animation));
-            fadeTest.setBlending(BLENDING.SCREEN);
-              v = GridMaster.getCenteredPos(c);
-            fadeTest.setPosition(v.x, v.y);
+                c = c.getOffsetByX(1);
+                animation = SpriteAnimationFactory.getSpriteAnimation("sprite dark.png");
+                addActor(fadeTest = new FadeSprite(animation));
+                fadeTest.setBlending(BLENDING.SCREEN);
+                v = GridMaster.getCenteredPos(c);
+                fadeTest.setPosition(v.x, v.y);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
 
@@ -145,6 +149,17 @@ public class AnimMaster extends Group {
 
     public static boolean isPreconstructEventAnims() {
         return false;
+    }
+
+    public static float getAnimationSpeedFactor() {
+        if (animationSpeedFactor == null) {
+            animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;
+        }
+        return animationSpeedFactor;
+    }
+
+    public static void setAnimationSpeedFactor(float speedFactor) {
+        animationSpeedFactor = speedFactor;
     }
 
     public void setOff(boolean off) {
@@ -604,17 +619,6 @@ public class AnimMaster extends Group {
 
     public void setDrawingPlayer(boolean drawingPlayer) {
         this.drawingPlayer = drawingPlayer;
-    }
-
-    public float getAnimationSpeedFactor() {
-        if (animationSpeedFactor == null) {
-            animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;
-        }
-        return animationSpeedFactor;
-    }
-
-    public void setAnimationSpeedFactor(float animationSpeedFactor) {
-        this.animationSpeedFactor = animationSpeedFactor;
     }
 
     public void cleanUp() {

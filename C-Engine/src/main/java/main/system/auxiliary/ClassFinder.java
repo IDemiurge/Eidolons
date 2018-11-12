@@ -1,6 +1,7 @@
 package main.system.auxiliary;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
@@ -15,92 +16,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassFinder {
-
-    private static String path;
-
-    private static Class<?> filterClass;
-
     private static String[] ignoredpaths;
-
-    // public static Class<?>[] getClasses(String packageName, Class c)
-    // throws ClassNotFoundException, IOException {
-    // if (path == null)
-    // path = PathFinder.getENGINE_PATH();
-    // filterClass = c;
-    // Class[] classes = getClasses(packageName);
-    // filterClass = null;
-    // return classes;
-    // }
-    //
-    // private static List<Class> findClasses(File directory, String
-    // packageName)
-    // throws ClassNotFoundException {
-    // if (path == null)
-    // path = PathFinder.getENGINE_PATH();
-    // List<Class> classes = new ArrayList<Class>();
-    // if (!directory.exists()) {
-    // return classes;
-    // }
-    // File[] files = directory.listFiles();
-    // for (File file : files) {
-    // if (file.isDirectory()) {
-    // assert !file.getName().contains(".");
-    // classes.addAll(findClasses(file, packageName + "."
-    // + file.getName()));
-    // } else if (file.getName().endsWith(".class")) {
-    //
-    // try {
-    // Class c = Class.forName(packageName
-    // + '.'
-    // + file.getName().substring(0, file.getName()
-    // .length() - 6));
-    // if (filterClass != null) {
-    // if (c.getSuperclass() == filterClass
-    // || Arrays.asList(c.getInterfaces())
-    // .contains(filterClass)) {
-    // classes.add(c);
-    // }
-    // } else
-    // classes.add(c);
-    // } catch (ClassNotFoundException e) {
-    // // logger.info("Class not found or faulty");
-    // continue;
-    // }
-    // }
-    // }
-    // return classes;
-    // }
-    //
-    // public static Class[] getClasses(String packageName)
-    // throws ClassNotFoundException, IOException {
-    // return getClasses(PathFinder.getENGINE_PATH() + "bin/", packageName);
-    // }
-    //
-    // public static Class[] getClasses(String root, String packageName)
-    // throws ClassNotFoundException, IOException {
-    //
-    // ClassLoader classLoader = Thread.currentThread()
-    // .getContextClassLoader();
-    // assert classLoader != null;
-    // String path = root +
-    //
-    // packageName.replace('.', '/');
-    // // logger.info("Searching for classes in: " + path);
-    // Enumeration<URL> resources = classLoader.getResources(path);
-    // assert resources != null;
-    // List<File> dirs = new ArrayList<File>();
-    // while (resources.hasMoreElements()) {
-    // URL resource = resources.nextElement();
-    // // logger.info("Element: " + resource.toString());
-    //
-    // dirs.add(new File(resource.getFile()));
-    // }
-    // ArrayList<Class> classes = new ArrayList<Class>();
-    // for (File directory : dirs) {
-    // classes.addAll(findClasses(directory, packageName));
-    // }
-    // return classes.toArray(new Class[classes.size()]);
-    // }
 
     /**
      * Recursive method used to find all classes in a given directory and
@@ -136,7 +52,7 @@ public class ClassFinder {
         List<File> dirs = new ArrayList<>();
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
-            dirs.add(new File(resource.getFile()));
+            dirs.add(FileManager.getFile(resource.getFile()));
         }
         ArrayList<Class> classes = new ArrayList<>();
         for (File directory : dirs) {
@@ -147,6 +63,7 @@ public class ClassFinder {
 
     private static Class[] getClassesFromJar(String packageName) {
         String pathToJar = PathFinder.getJarPath();
+
         List<Class> classes = new ArrayList<>();
         try {
             JarFile jarFile = new JarFile(pathToJar);
@@ -158,7 +75,7 @@ public class ClassFinder {
             while (e.hasMoreElements()) {
                 JarEntry je = e.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {
-//                    System.out.println("Jar entry passed: " +je.getName());
+                    System.out.println("Jar entry passed: " +je.getName());
                     continue;
                 }
 
@@ -174,7 +91,7 @@ public class ClassFinder {
                 className = className.substring(0, je.getName().length() - 6);
 
                 Class c = cl.loadClass(className);
-//                System.out.println(packageName+ "- Class found: " +c.getName());
+                System.out.println(packageName+ "- Class found: " +c.getName());
                 classes.add(c);
             }
         } catch (IOException e) {
@@ -183,7 +100,7 @@ public class ClassFinder {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-//        System.out.println(classes.size()+ " classes found: " +classes);
+        System.out.println(classes.size()+ " classes found: " +classes);
         return classes.toArray(new Class[classes.size()]);
     }
 

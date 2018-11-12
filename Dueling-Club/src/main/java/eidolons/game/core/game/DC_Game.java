@@ -328,7 +328,6 @@ public class DC_Game extends GenericGame {
             musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
 
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
 
     }
 

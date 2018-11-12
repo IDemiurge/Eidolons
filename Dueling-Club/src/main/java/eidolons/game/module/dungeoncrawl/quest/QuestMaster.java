@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class QuestMaster extends MetaGameHandler {
 
-    public static final boolean TEST_MODE = CoreEngine.isFastMode();
+    public static final boolean TEST_MODE = CoreEngine.isFastMode() && !CoreEngine.isFullFastMode();
     public static final boolean ON = true;
 
     //    static {
@@ -52,7 +52,7 @@ public class QuestMaster extends MetaGameHandler {
         GuiEventManager.bind(GuiEventType.QUEST_TAKEN,
          p -> {
              questTaken(p.get().toString());
-             DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__KNIFE);
+             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_TAKEN);
          });
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED,
          p -> {
@@ -61,6 +61,7 @@ public class QuestMaster extends MetaGameHandler {
              } else
                  questCancelled(p.get().toString());
 
+             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_CANCELLED);
          });
         GuiEventManager.bind(GuiEventType.QUESTS_UPDATE_REQUIRED,
          p -> {
@@ -209,5 +210,6 @@ public class QuestMaster extends MetaGameHandler {
         updateQuests();
         quest.getReward().award( Eidolons.getMainHero(), true);
         quest.setRewardTaken(true);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_COMPLETED);
     }
 }

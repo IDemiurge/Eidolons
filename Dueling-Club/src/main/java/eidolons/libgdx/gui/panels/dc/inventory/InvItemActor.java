@@ -170,11 +170,21 @@ public class InvItemActor extends ItemActor {
                 ShopDataSource shopDataSource = (ShopDataSource) userObject;
 
                 Obj buyer = shopDataSource.getInvDataSource().getUnit();
-                if (cellType == CELL_TYPE.STASH ||
-                 cellType == CELL_TYPE.INVENTORY)
+                boolean sell = cellType == CELL_TYPE.STASH ||
+                 cellType == CELL_TYPE.INVENTORY;
+                if (sell)
                     buyer = shopDataSource.getShop();
                 boolean canBuy = buyer.checkParam(PARAMS.GOLD, price);
+
                 goldLabel.setColor(canBuy ? Color.GREEN : Color.RED);
+                if (!canBuy) {
+                    boolean canBuyInCredit =
+                     sell ? shopDataSource.getShop().canSellTo(
+                      model, shopDataSource.getInvDataSource().getUnit(), true) :
+                      shopDataSource.getShop().canBuy(
+                       model, shopDataSource.getInvDataSource().getUnit(), true);
+                    goldLabel.setColor(canBuyInCredit ? Color.PURPLE : Color.RED);
+                }
             } else {
                 goldLabel.setColor(Color.YELLOW);
             }
@@ -192,10 +202,10 @@ public class InvItemActor extends ItemActor {
         clearListeners();
         addListener(createListener());
         if (model == null) {
-            if (cellType!=null)
-             addListener(new ValueTooltip(
-              StringMaster.getWellFormattedString(cellType.toString()) +
-             " slot").getController());
+            if (cellType != null)
+                addListener(new ValueTooltip(
+                 StringMaster.getWellFormattedString(cellType.toString()) +
+                  " slot").getController());
         } else {
             String vals = InventoryFactory.getTooltipsVals(model);
             addListener(new ValueTooltip(model.getName() + "\n" +
@@ -297,7 +307,7 @@ public class InvItemActor extends ItemActor {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button==1){
+                if (button == 1) {
                     clicked(event, x, y);
                     return false;
                 }
@@ -347,9 +357,9 @@ public class InvItemActor extends ItemActor {
 
                 Eidolons.onNonGdxThread(() ->
                  handler.cellClicked(cellType, tapCount, isRightClicked,
-                  isAltPressed, model, isCtrlPressed ));
+                  isAltPressed, model, isCtrlPressed));
 
-//                event.stop();
+                //                event.stop();
             }
         };
     }

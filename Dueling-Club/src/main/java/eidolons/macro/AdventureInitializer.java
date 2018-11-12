@@ -218,7 +218,7 @@ public class AdventureInitializer {
     // }
     //
     // }
-    // File file = new File(filePath);
+    // File file = FileManager.getFile(filePath);
     // String fullXml = FileManager.readFile(file);
     // // OR parse into Doc and use nodes ... but would this xml be a proper
     // // one? it should be...

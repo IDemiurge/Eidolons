@@ -116,7 +116,7 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
     }
 
     private ImageIcon getDefaultIcon(String string) {
-        String def = "UI/ATTRS/";
+        String def = "ui/ATTRS/";
         // TODO Auto-generated method stub
         return ImageManager.getIcon(def + string + ".jpg");
     }

@@ -168,7 +168,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
 
     protected String getBackgroundPath() {
         return StrPathBuilder.build(
-         "UI",
+         "ui",
          "components",
          "dc",
          "dialog",

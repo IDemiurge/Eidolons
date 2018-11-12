@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.system.graphics.RESOLUTION;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.awt.*;
@@ -104,6 +105,7 @@ public class GDX {
     }
 
     public static FileHandle file(String path) {
+        path = FileManager.formatPath(path);
         return new FileHandle(path.toLowerCase());
     }
 }

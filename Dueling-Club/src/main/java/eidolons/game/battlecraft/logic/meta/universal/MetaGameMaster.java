@@ -48,7 +48,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DC_Game game;
     protected DialogueManager dialogueManager;
     protected DialogueActorMaster dialogueActorMaster;
-    protected  TownMaster townMaster;
+    protected TownMaster townMaster;
 
 
     public MetaGameMaster(String data) {
@@ -122,6 +122,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     private boolean isTownEnabled() {
+        if (CoreEngine.isFullFastMode()) {
+            return false;
+        }
         if (CoreEngine.isMacro()) {
             return false;
         }
@@ -129,7 +132,11 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             return false;
         return true;
     }
+
     private boolean isQuestsEnabled() {
+        if (CoreEngine.isFullFastMode()) {
+            return false;
+        }
         if (!QuestMaster.ON)
             return false;
         if (!isRngDungeon())
@@ -142,7 +149,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void preStart() {
         partyManager.preStart();
-//        getBattleMaster().getOptionManager().selectDifficulty();
+        //        getBattleMaster().getOptionManager().selectDifficulty();
         //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
@@ -215,7 +222,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        AnimMaster.getInstance().cleanUp();
+        if (game.isStarted())
+            try {
+                AnimMaster.getInstance().cleanUp();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         Coordinates.clearCaches();
 
         LogMaster.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());

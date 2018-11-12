@@ -110,7 +110,7 @@ public class LogPanel extends ScrollTextWrapper {
     }
 
     protected String getBgPath() {
-//        return new StrPathBuilder().build_("UI",
+//        return new StrPathBuilder().build_("ui",
 //         "components",
 //         "dc",
 //         "dialog",

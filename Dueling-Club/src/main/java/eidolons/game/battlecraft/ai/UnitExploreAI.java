@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior.BEHAVIOR_METHOD;
+import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
@@ -27,8 +28,11 @@ public class UnitExploreAI {
     List<AiBehavior> behaviors;
 
     BEHAVIOR_METHOD method;
+    private boolean behaviorOff=  AiBehaviorManager.TEST_MODE;
 
     public void act(float delta) {
+        if (behaviorOff)
+            return;
         activeBehavior = updateBehavior();
         if (activeBehavior == null) {
             return;
@@ -131,4 +135,20 @@ public class UnitExploreAI {
         this.explorationMoveSpeedMod = explorationMoveSpeedMod;
     }
 
+    public void toggleBehaviorOff() {
+        behaviorOff = !behaviorOff;
+    }
+    public void toggleGroupBehaviorOff() {
+        for (Unit unit1 : unit.getAI().getGroupAI().getMembers()) {
+            unit1.getAI().getExploreAI().toggleBehaviorOff();
+        }
+    }
+
+    public boolean isBehaviorOff() {
+        return behaviorOff;
+    }
+
+    public void setBehaviorOff(boolean behaviorOff) {
+        this.behaviorOff = behaviorOff;
+    }
 }

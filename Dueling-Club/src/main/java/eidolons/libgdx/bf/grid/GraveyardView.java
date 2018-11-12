@@ -30,8 +30,8 @@ public class GraveyardView extends TablePanel {
     public GraveyardView() {
         graveyardButton = new Button(new Image(
          TextureCache.getOrCreate(
-          "UI/components/small/skulls_32x32.png")),
-//                StyleHolder.getCustomButtonStyle("UI/components/small/skulls_32x32.png")
+          "ui/components/small/skulls_32x32.png")),
+//                StyleHolder.getCustomButtonStyle("ui/components/small/skulls_32x32.png")
          StyleHolder.getDefaultTextButtonStyle()
         );
 

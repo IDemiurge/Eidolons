@@ -88,11 +88,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForUnits() {
-        return true;
+        return !CoreEngine.isFullFastMode();
     }
 
     public static boolean isGenerateItemsForContainers() {
-        return !CoreEngine.isFastMode() || test_mode;
+        return !CoreEngine.isFullFastMode() || test_mode;
     }
 
     public static boolean loot(Unit unit, DC_Obj obj) {

@@ -24,7 +24,7 @@ public class RngDecorFiller extends RngFiller {
 
     @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
-        return 2;
+        return 1;
     }
 
     @Override

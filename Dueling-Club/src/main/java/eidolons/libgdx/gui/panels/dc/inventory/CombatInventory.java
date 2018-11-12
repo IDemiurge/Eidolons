@@ -124,6 +124,10 @@ public class CombatInventory extends TablePanel implements Blocking {
     }
 
     private void show(Object param) {
+        if (param==null ){
+            close(true);
+            return;
+        }
         if (param instanceof Boolean) {
             if (HqDataMaster.isSimulationOff()) {
                 close(true);

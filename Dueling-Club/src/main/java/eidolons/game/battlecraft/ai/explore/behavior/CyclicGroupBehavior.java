@@ -11,13 +11,39 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
  */
 public abstract class CyclicGroupBehavior extends AiGroupBehavior {
 
-    DC_Obj[] cycledArgs;
-    int step;
+   protected DC_Obj[] cycledArgs;
+    protected int step;
 
     public CyclicGroupBehavior(AiMaster master, UnitAI ai) {
         super(master, ai);
     }
 
+    @Override
+    protected boolean failed() {
+        cycledArgs=null;
+        return super.failed();
+    }
+
+    @Override
+    protected void ordersCompleted(Orders orders) {
+        super.ordersCompleted(orders);
+       nextStep();
+    }
+    protected void arrivedAtTargetDestination() {
+       super.arrivedAtTargetDestination();
+       nextStep();
+    }
+
+    protected void nextStep() {
+        if (!isLeader())
+            return;
+        step++;
+        if (step>=getCycledStepsNumber()) {
+            step=0;
+        }
+        log( "NEXT STEP: " + step );
+
+    }
 
     @Override
     protected DC_Obj updateLeaderTarget() {
@@ -28,10 +54,7 @@ public abstract class CyclicGroupBehavior extends AiGroupBehavior {
             }
             step = 0;
         }
-        if (step>=cycledArgs.length) {
-            step=0;
-        }
-        return cycledArgs[step++];
+        return cycledArgs[step];
     }
 
     protected boolean isArgUpdateRequired() {

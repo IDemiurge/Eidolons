@@ -34,12 +34,15 @@ public class PathFinder {
     private static String jarName;
     private static String spritesPath;
 
+    public static final String HOME=System.getProperty("user.home");
+    public static final String OPTIONS_PATH =HOME+ "/Eidolons/" ;
+
     private static void _init() {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
         if (classLoader.getResource("") != null) {
-            File temp = new File(classLoader.getResource("").getFile());
+            File temp =  new File(classLoader.getResource("").getFile());
             ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
-            XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
+            XML_PATH =  new File(temp.getParentFile() + File.separator + "xml") + File.separator;
             System.out.println("Engine path: " + ENGINE_PATH);
         } else {
             //FOR JARS
@@ -67,7 +70,7 @@ public class PathFinder {
             System.out.println("Engine path for Jar: " + path);
 
             ENGINE_PATH = path + File.separator;
-            XML_PATH = path + File.separator + "XML" + File.separator;
+            XML_PATH = path + File.separator + "xml" + File.separator;
 
         }
 
@@ -361,7 +364,7 @@ public class PathFinder {
     public static String getSkinPath() {
         return StrPathBuilder.build(
          getImagePath() ,
-          "UI",
+          "ui",
            "components" ,
            "skin" ,
            "neutralizer-ui.json");

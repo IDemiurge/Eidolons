@@ -2,6 +2,7 @@ package main.swing.generic.components.editors;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,11 +59,11 @@ public class FileChooser implements EDITOR {
     // }
     public String launch(String v, Component parent) {
         // fc.get setSize(800, 600);
-        fc.setCurrentDirectory(new File(getDefaultFileLocation()));
+        fc.setCurrentDirectory(FileManager.getFile(getDefaultFileLocation()));
         if (!directoryOnly) {
             fileLocation = v;
             if (checkFile(fileLocation)) {
-                fc.setCurrentDirectory(new File(getDefaultFileLocation() + fileLocation));
+                fc.setCurrentDirectory(FileManager.getFile(getDefaultFileLocation() + fileLocation));
             }
         }
 
@@ -107,9 +108,9 @@ public class FileChooser implements EDITOR {
 
     protected boolean checkFile(String fileLocation) {
         if (directoryOnly) {
-            return new File(getDefaultFileLocation() + "/" + fileLocation).isDirectory();
+            return FileManager.getFile(getDefaultFileLocation() + "/" + fileLocation).isDirectory();
         }
-        return new File(getDefaultFileLocation() + "/" + fileLocation).isFile();
+        return FileManager.getFile(getDefaultFileLocation() + "/" + fileLocation).isFile();
     }
 
     protected String getDefaultFileLocation() {

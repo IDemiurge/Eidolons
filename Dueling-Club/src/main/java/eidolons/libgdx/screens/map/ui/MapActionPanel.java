@@ -28,7 +28,7 @@ public class MapActionPanel extends BaseSlotPanel {
         final MacroParty source = (MacroParty) getUserObject();
 
         final List<ActionValueContainer> sources = getActions(source);
-        initContainer(sources, "UI/EMPTY_LIST_ITEM.jpg");
+        initContainer(sources, "ui/empty_list_item.jpg");
     }
 
     private List<ActionValueContainer> getActions(MacroParty source) {

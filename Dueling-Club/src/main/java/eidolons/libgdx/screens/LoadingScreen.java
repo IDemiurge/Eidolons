@@ -21,7 +21,7 @@ public class LoadingScreen extends ScreenAdapter {
 
     public LoadingScreen() {
         background = new Image(new Texture(GDX.file(
-         PathFinder.getImagePath() + "UI/logo fullscreen.png")));
+         PathFinder.getImagePath() + "ui/logo fullscreen.png")));
         background.setPosition(GdxMaster.centerWidth(background),
          GdxMaster.centerHeight(background));
 

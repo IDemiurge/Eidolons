@@ -20,6 +20,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class FileManager {
+    private static List<String> missing = new ArrayList<>();
+
     public static String readFile(String filePath) {
         File file = getFile(filePath);
         return readFile(file);
@@ -42,10 +44,10 @@ public class FileManager {
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file)) {
             if (CoreEngine.isJar()) {
-                if (!CoreEngine.isWindows()){
+                if (!CoreEngine.isWindows()) {
                     String lowerCase = file.getPath().toLowerCase();
                     if (!lowerCase.equals(file.getPath()))
-                        return readFile(new File(file.getPath().toLowerCase()));
+                        return readFile(FileManager.getFile(file.getPath().toLowerCase()));
 
                 }
                 System.out.println("Failed to read " + file.getPath());
@@ -57,16 +59,16 @@ public class FileManager {
                 return "";
             }
             if (!file.getPath().contains(PathFinder.getEnginePath()))
-                return readFile(new File(PathFinder.getEnginePath() + file.getPath()),
+                return readFile(FileManager.getFile(PathFinder.getEnginePath() + file.getPath()),
                  lineSeparator);
             return "";
         }
 
         String result = "";
 
-//        Charset charset= Charset.availableCharsets().get("Windows-1251");
-//        if (charset==null )
-//            charset= Charset.defaultCharset();
+        //        Charset charset= Charset.availableCharsets().get("Windows-1251");
+        //        if (charset==null )
+        //            charset= Charset.defaultCharset();
         try {
             result = new String(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
@@ -179,7 +181,7 @@ public class FileManager {
     }
 
     public static boolean isFile(String file) {
-        return isFile(new File(file));
+        return isFile(FileManager.getFile(file));
     }
 
     public static boolean isFile(File file) {
@@ -193,7 +195,7 @@ public class FileManager {
     }
 
     public static boolean isDirectory(String file) {
-        return isDirectory(new File(file));
+        return isDirectory(FileManager.getFile(file));
     }
 
     public static boolean isDirectory(File file) {
@@ -209,19 +211,45 @@ public class FileManager {
 
     public static File getFile(String path, boolean first) {
         File file = new File(path);
-        if (!first || file.isFile() || file.isDirectory()) {
+        if (file.isFile() || file.isDirectory()) {
             return file;
         }
-        file = getFile(formatPath(path), false);
+        if (first) {
+            file = getFile(formatPath(path), false);
+            if (file.isFile() || file.isDirectory()) {
+                return file;
+            }
+        }
+
+                if (!CoreEngine.isFullFastMode())
+        {
+            if (!missing.contains(file.getPath())) {
+                main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
+                missing.add(file.getPath());
+            }
+        }
         return file;
     }
 
-    private static String formatPath(String path) {
-        String formatted = "";
-        for (String sub : PathUtils.splitPath(path)) {
-            formatted += StringMaster.replace(true, sub, "/", "") + "/";
+    public static String formatPath(String path) {
+        StringBuilder formatted = new StringBuilder();
+        int index = path.lastIndexOf(PathFinder.getEnginePath(), PathFinder.getEnginePath().length() - 1);
+        if (index == -1) {
+            return path.toLowerCase();
         }
-        return formatted.toLowerCase();
+        if (index == 0) {
+            index += PathFinder.getEnginePath().length() - 1;
+        }
+        String afterClass = path.substring(
+         index, path.length());
+
+        //fix slashes
+        for (String sub : PathUtils.splitPath(afterClass)) {
+            formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
+        }
+
+        //fix case
+        return PathFinder.getEnginePath() + formatted.toString().toLowerCase();
     }
 
     public static String getRandomFilePathVariant(String corePath, String format) {
@@ -243,16 +271,16 @@ public class FileManager {
     public static String getRandomFilePathVariant(String prefixPath, String corePath,
                                                   String format, boolean underslash, boolean recursion) {
         corePath = StringMaster.cropFormat(corePath);
-        File file = new File(prefixPath + corePath + format);
+        File file = getFile(prefixPath + corePath + format);
         if (!file.isFile()) {
-            LogMaster.log(1, "no  file available for " + corePath + " - " + format);
+            LogMaster.log(1, "no  file available for " + file.getPath());
             return null;
         }
         int i = 2;
         while (file.isFile()) {
 
             String newPath = prefixPath + corePath + ((underslash) ? "_" : "") + i + format;
-            file = new File(newPath);
+            file = FileManager.getFile(newPath);
             if (!file.isFile()) {
 
                 break;
@@ -387,20 +415,30 @@ public class FileManager {
         String fullPath = path + "/" + fileName;
         appendToTextFile(content, fullPath);
     }
-        public static void appendToTextFile(String content, String fullPath) {
+
+    public static void appendToTextFile(String content, String fullPath) {
         String prevContent = readFile(fullPath);
         write(prevContent + content, fullPath);
     }
 
     public static boolean write(String content, String filepath) {
-        if (!filepath.contains(":")) {
-            filepath = PathFinder.getEnginePath() + "/" + filepath;
-        }
-        filepath = filepath.trim();
+        return write(content, filepath, false);
+    }
+
+    public static boolean write(String content, String filepath, boolean formatPath) {
+        if (CoreEngine.isWindows())
+            if (!filepath.contains(":")) {
+                filepath = PathFinder.getEnginePath() + "/" + filepath;
+            }
+        if (formatPath) {
+            filepath = formatPath(filepath);
+        } else
+            filepath = filepath.trim();
+
         try {
-            File file = new File(filepath);
+            File file = FileManager.getFile(filepath);
             if (!file.exists()) {
-                File parent = new File(file.getParent());
+                File parent = FileManager.getFile(file.getParent());
                 if (!parent.isDirectory()) {
                     parent.mkdirs();
                 }
@@ -434,8 +472,8 @@ public class FileManager {
     }
 
     //    public static List<String> listFiles(File file, boolean allowDirs) {
-//        return getFileNames(getFilesFromDirectory(file.getPath(), allowDirs));
-//    }
+    //        return getFileNames(getFilesFromDirectory(file.getPath(), allowDirs));
+    //    }
     public static List<String> listFiles(String path) {
         return getFileNames((getFilesFromDirectory(path, true)));
     }
@@ -459,7 +497,7 @@ public class FileManager {
     }
 
     public static boolean isImageFile(String name) {
-        if (name==null )
+        if (name == null)
             return false;
         String format = StringMaster.getFormat(name);
         for (String f : ImageManager.STD_FORMATS) {
@@ -473,7 +511,7 @@ public class FileManager {
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
                                                    boolean subDirectories) {
         List<File> list = new ArrayList<>();
-        File folder = new File(path);
+        File folder = FileManager.getFile(path);
         if (!folder.isDirectory()) {
             return list;
         }

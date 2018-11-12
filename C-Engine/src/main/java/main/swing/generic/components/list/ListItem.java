@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 
 public class ListItem<E> extends JLabel {
 
-    public static final String EMPTY_LIST_ITEM = "ui/EMPTY_LIST_ITEM.jpg";
+    public static final String EMPTY_LIST_ITEM = "ui/empty_list_item.jpg";
     protected E value;
     protected ActionListener listener;
     protected int obj_size;

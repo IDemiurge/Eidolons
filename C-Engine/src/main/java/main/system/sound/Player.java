@@ -210,7 +210,7 @@ public class Player {
     private String getRandomSound(SOUNDS sound_type, SOUNDSET soundSet) {
         String corePath = getFullPath(sound_type, soundSet);
 
-        File file = new File(corePath + "_1" + FORMAT);
+        File file = FileManager.getFile(corePath + "_1" + FORMAT);
         if (!file.isFile()) {
             LogMaster.log(1, "no sound file available for " + sound_type + " - " + soundSet);
             return null;
@@ -219,7 +219,7 @@ public class Player {
         while (file.isFile()) {
 
             String newPath = corePath + "_" + i + FORMAT;
-            file = new File(newPath);
+            file = FileManager.getFile(newPath);
             if (!file.isFile()) {
                 break;
             }
@@ -313,7 +313,7 @@ public class Player {
         String path = PathFinder.getSoundPath()
          // SOUNDSET_FOLDER_PATH + "//"
          + prop.replace(PathFinder.getSoundPath(), "");
-        File folder = new File(path);
+        File folder = FileManager.getFile(path);
         String fileName = "";
         if (!folder.isDirectory()) {
             fileName = StringMaster.cropFormat(StringMaster.getLastPathSegment(prop));
@@ -551,7 +551,7 @@ public class Player {
         Clip clip = null;
         try {
             clip = AudioSystem.getClip();
-            AudioInputStream ulawIn = AudioSystem.getAudioInputStream(new File(sound));
+            AudioInputStream ulawIn = AudioSystem.getAudioInputStream(FileManager.getFile(sound));
 
             // define a target AudioFormat that is likely to be supported by
             // your audio hardware,

@@ -167,6 +167,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getSizedImagePath(String path, int size) {
+        path= FileManager.formatPath( path);
         return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
     }
 
@@ -249,6 +250,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getRoundedPath(String path) {
+        path= FileManager.formatPath( path);
         return StringMaster.cropFormat(path) + " rounded.png";
     }
 

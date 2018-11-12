@@ -49,7 +49,7 @@ public class StrPathBuilder {
         String result = builder.toString();
         if (cropLast)
             result = result.substring(0, result.length() - 1);
-        return result;
+        return result.toLowerCase();
     }
 
     public StringBuilder getBuilder() {

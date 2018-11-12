@@ -299,7 +299,7 @@ public class GridPanel extends Group {
             suffix = hor ? "right" : "left";
             Image image = new Image(TextureCache.getOrCreateR(
              StrPathBuilder.build(
-              "UI", "bf", "gridBorder " +
+              "ui", "bf", "gridBorder " +
                suffix +
                ".png")));
             addActor(image);
@@ -312,7 +312,7 @@ public class GridPanel extends Group {
             int i = vert ? 1 : -1;
             suffix = vert ? "up" : "down";
             Image image = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(
-             "UI", "bf", "gridBorder " +
+             "ui", "bf", "gridBorder " +
               suffix +
               ".png")));
             addActor(image);
@@ -710,16 +710,16 @@ public class GridPanel extends Group {
             return;
         }
         Coordinates c = object.getCoordinates();
-        if (!(object instanceof Entrance))
-            if (c.equals(Eidolons.getMainHero().getCoordinates())) {
-                if (object != Eidolons.getMainHero()) {
-                    uv = uv;// it's a trap!!
-                }
-            }
+//        if (!(object instanceof Entrance))
+//            if (c.equals(Eidolons.getMainHero().getCoordinates())) {
+//                if (object != Eidolons.getMainHero()) {
+//                    uv = uv;// it's a trap!!
+//                }
+//            }
         //        uv.setVisible(true);
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
-
+            GuiEventManager.trigger(GuiEventType. UNIT_VIEW_MOVED, uv);
             if (uv.getLastSeenView() != null) {
                 if (LastSeenMaster.isUpdateRequired(object))
                     cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());

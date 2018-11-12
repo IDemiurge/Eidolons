@@ -41,10 +41,10 @@ public class ShopDataSource extends ContainerDataSource
         this.shop = shop;
         stash = shop.getTown().getStash();
         items = new ArrayList<>(shop.getItems());
-        invDataSource = new InventoryDataSource(unit){
+        invDataSource = new InventoryDataSource(unit) {
             @Override
             protected HqDataMaster getDataMaster(Unit unit) {
-                return HqDataMasterDirect.getOrCreateInstance( unit);
+                return HqDataMasterDirect.getOrCreateInstance(unit);
             }
         };
         handler = createClickHandler();
@@ -57,7 +57,7 @@ public class ShopDataSource extends ContainerDataSource
         if (shop == null) {
             return null;
         }
-        ContainerClickHandler  handler = handlerCache.get(shop);
+        ContainerClickHandler handler = handlerCache.get(shop);
         if (handler == null) {
             handler = new ShopClickHandler(shop, unit);
             handlerCache.put(shop, (ShopClickHandler) handler);
@@ -136,7 +136,7 @@ public class ShopDataSource extends ContainerDataSource
 
 
     public String getPricesInfo() {
-        return shop.getPrice(100, invDataSource.getUnit(), true)+
+        return shop.getPrice(100, invDataSource.getUnit(), true) +
          "%";
     }
 
@@ -145,7 +145,7 @@ public class ShopDataSource extends ContainerDataSource
     }
 
     public ValueContainer getGold() {
-        return new ValueContainer("Gold: ", ""+shop.getGold());
+        return new ValueContainer("Gold: ", "" + shop.getGold());
     }
 
     public ValueContainer getIcon() {
@@ -154,5 +154,19 @@ public class ShopDataSource extends ContainerDataSource
 
     public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
         return shop.getPrice(model, invDataSource.getUnit(), cellType == CELL_TYPE.CONTAINER);
+    }
+
+    public String getDebtTooltip() {
+        return "You owe this shop " +
+         shop.getMaxDebt() +
+         ". You can have  maximum credit of " +
+         ", and the shop would repay you a debt of up to " +
+         -shop.getMinBalance();
+    }
+
+    public String getDebtInfo() {
+        if (shop.getDebt() < 0)
+            return  shop.getDebt() + "/" + (shop.getMinBalance());
+        return shop.getDebt() + "/" + (shop.getMaxDebt());
     }
 }

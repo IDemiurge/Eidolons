@@ -375,6 +375,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             return;
         int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
          GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
+        if (CoreEngine.isFastMode()){
+            defaultWaitTime*=100;
+        }
         wait(defaultWaitTime, false);
     }
 }

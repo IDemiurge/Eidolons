@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -53,14 +54,9 @@ public abstract class AiBehavior {
     protected Action queuedAction;
     protected Map<XLine, List<Coordinates>> pathCache = new HashMap<>();
     private Action lastAction;
-    private List<Action> actionLog=    new ArrayList<>() ;
-    private List<Orders> ordersLog=    new ArrayList<>() ;
+    private List<Action> actionLog = new ArrayList<>();
+    private List<Orders> ordersLog = new ArrayList<>();
 
-public void log(){
-     log( "Orders: \n" + ContainerUtils.toStringContainer(ordersLog, "\n"));
-     log( "Actions: \n" + ContainerUtils.toStringContainer(actionLog, "\n"));
-
-}
     public AiBehavior(AiMaster master, UnitAI ai) {
         this.master = master;
         this.ai = ai;
@@ -79,13 +75,18 @@ public void log(){
         }
     }
 
+    public void log() {
+        log("Orders: \n" + ContainerUtils.toStringContainer(ordersLog, "\n"));
+        log("Actions: \n" + ContainerUtils.toStringContainer(actionLog, "\n"));
+
+    }
+
     protected float getDefaultSpeed() {
-        return isTestMode()? 5f : 1;
+        return isTestMode() ? 5f : 1;
     }
 
     //    getConstraints() {
     //    }
-
     public void act(float delta) {
         sinceLastAction += delta;
         globalTimer += delta;
@@ -110,15 +111,20 @@ public void log(){
         }
         queuedAction = orders.peekNextAction();
         if (queuedAction == null) {
-            orders = null; //done
-            timeRequired = 0;
+            ordersCompleted(orders);
         } else
             timeRequired = getTimeRequired(queuedAction);
     }
 
+    protected void ordersCompleted(Orders orders) {
+        this.orders = null; //done
+        timeRequired = 0;
+        log(">>>> Orders completed:  " + orders);
+    }
+
     protected float getTimeRequired(Action action) {
         Double cost = action.getActive().getParamDouble(PARAMS.AP_COST);
-        return (float) ( cost / getSpeed());
+        return (float) (cost / getSpeed());
     }
 
     public Coordinates getCoordinates() {
@@ -133,7 +139,7 @@ public void log(){
     public boolean update() {
         if (!isEnabled())
             return false;
-        if (!isUnitActive()){
+        if (!isUnitActive()) {
             resetSinceLastAction();
             return false;
         }
@@ -147,11 +153,16 @@ public void log(){
             status = BEHAVIOR_STATUS.WAITING;
             return false;
         }
-        if (target != (target = updateTarget())){
-            log("target: " + target);
+        if (target == null) {
+            target = updateTarget();
+            if (target != null) {
+                newTargetAcquired();
+            }
+        } else if (target.getCoordinates() != (target = updateTarget()).getCoordinates()) {
+            newTargetAcquired();
         }
         boolean failed = isFailed();
-        if (failed){
+        if (failed) {
             if (failed())
                 return false;
         }
@@ -166,6 +177,10 @@ public void log(){
         return false; //don't act immediately, but on the next cycle *if* orders are OK by then still
     }
 
+    protected void newTargetAcquired() {
+        log("target: " + target);
+    }
+
     private boolean isUnitActive() {
         return getUnit().canAct();
     }
@@ -175,7 +190,7 @@ public void log(){
         if (checkCanTeleport()) {
             teleportToLeader();
         } else {
-
+            log("cannot teleport To Leader! ");
         }
         resetSinceLastAction();
         return true;
@@ -199,14 +214,16 @@ public void log(){
     protected void resetTimer() {
         globalTimer = 0;
     }
+
     protected boolean checkNeedsToUpdate() {
         //        if (target == null) why?
         //            return true;
         if (orders == null) {
             return true;
         }
+
         if (ai.isLeader())
-            if (isFollowOrAvoid() != isNearby()) {
+            if (checkArrived()) {
                 return true;
             }
         if (!ai.isLeader())
@@ -214,6 +231,18 @@ public void log(){
                 return false;
             }
         return isCustomActionRequired();
+    }
+
+    protected boolean checkArrived() {
+        if (isNearby()) {
+            arrivedAtTargetDestination();
+            return true;
+        }
+        return false;
+    }
+
+    protected void arrivedAtTargetDestination() {
+        log("arrived at Target Destination: " + target);
     }
 
     protected boolean isCustomActionRequired() {
@@ -276,15 +305,15 @@ public void log(){
     protected void initOrders() {
         ActionSequence actions = getOrders();
         if (actions == null) {
-//            log("null orders!");
+            //            log("null orders!");
             return; // can it be? 
         }
-        orders =new Orders(actions);
+        orders = new Orders(actions);
         log("new orders: " + orders);
 
         ordersLog.add(orders);
 
-//        ai.setStandingOrders(orders);
+        //        ai.setStandingOrders(orders);
     }
 
     public Action nextAction() {
@@ -300,7 +329,7 @@ public void log(){
         log("Action to execute: " + queuedAction);
         lastAction = queuedAction;
         actionLog.add(lastAction);
-        queuedAction=null;
+        queuedAction = null;
         resetSinceLastAction();
         return lastAction;
     }
@@ -395,17 +424,16 @@ public void log(){
             pathCache.put(line, pathChain);
         }
         boolean atomic = false;
-        if (isAtomicAllowed()) {
-//            if (cell.isAdjacent(ai.getUnit().getCoordinates()))
-                atomic = true;
+        if (isAtomicAllowed(cell)) {
+            atomic = true;
         }
 
-        int n =atomic? 0:  Math.min(4, pathChain.size() / 2);
-        if (pathChain.size()<=n) {
-            if (pathChain.size()<=1) {
+        int n = atomic ? 0 : Math.min(4, pathChain.size() / 2);
+        if (pathChain.size() <= n) {
+            if (pathChain.size() <= 1) {
                 return null;
             }
-            n=0;
+            n = 0;
         }
         Coordinates goal = pathChain.get(n);
 
@@ -415,19 +443,27 @@ public void log(){
             if (action != null)
                 return new ActionSequence(GOAL_TYPE.WANDER, action);
         }
+        List<Coordinates> preferred = validCells.stream().filter(
+         c -> c == cell).collect(Collectors.toList());
 
-        List<Coordinates> preferred = validCells.stream().filter(c -> c == goal).collect(Collectors.toList());
-
-        master.getPathBuilder().setUnit(ai.getUnit());
+        master.getPathBuilder().init(ai.getUnit(), new ArrayList<>(), null);
         ActionPath path = master.getPathBuilder().getPathByPriority(preferred);
-        if (path == null)
-            return null;
+        if (path == null) {
+            path = master.getPathBuilder().getPathByPriority(validCells);
+            if (path == null)
+                return null;
+            log("Path chosen for " +
+             cell + "" + validCells);
+        } else {
+            log("Path chosen for " +
+             cell + "" + path);
+        }
         ActionSequence sequence = master.getActionSequenceConstructor().getSequenceFromPath(path, ai);
 
         return sequence;
     }
 
-    protected boolean isAtomicAllowed() {
+    protected boolean isAtomicAllowed(Coordinates cell) {
         return true;
     }
 
@@ -437,10 +473,16 @@ public void log(){
 
     public void teleportToLeader() {
         //yeah...
-        if (target == null) {
+        if (ai.isLeader())
+            return;
+        if (group == null) {
             return;
         }
-        ai.getUnit().setCoordinates(target.getCoordinates());
+        log("teleportToLeader: " + group.getLeader().getCoordinates());
+        ai.getUnit().setCoordinates(group.getLeader().getCoordinates());
+        orders=null;
+        queuedAction=null;
+
     }
 
     protected boolean isNearby() {
@@ -462,6 +504,13 @@ public void log(){
         return true;
     }
 
+    public boolean isTargetValid(Coordinates c, Coordinates from) {
+        return master.getGame().getRules().getStackingRule().canBeMovedOnto(getUnit(), c)
+         && (!isTargetInClearshotOnly() ||
+         master.getGame().getVisionMaster().getSightMaster().
+          getClearShotCondition().check(from, c));
+    }
+
     public boolean isPositionValid(Coordinates c) {
         if (!block.getCoordinatesList().contains(c)) {
             return false;
@@ -469,10 +518,19 @@ public void log(){
         return c.dst_(preferredPosition) <= getDistanceForNearby();
     }
 
+    protected boolean isTargetInClearshotOnly() {
+        return true;
+    }
+
     public Coordinates updatePreferredPosition() {
         //follow from behind...
         if (target instanceof Unit) {
-            DIRECTION d = ((Unit) target).getFacing().flip().getDirection();
+            FACING_DIRECTION f = FacingMaster.getRelativeFacing(getCoordinates(),
+             target.getCoordinates());
+            if (f == null) {
+                f = ((Unit) target).getFacing().flip();
+            }
+            DIRECTION d = f.getDirection();
             Coordinates c = target.getCoordinates().getAdjacentCoordinate(d);
             if (c != null) {
                 return c;
@@ -487,7 +545,7 @@ public void log(){
     }
 
     protected float getTimeBeforeFail() {
-        return 50/speed;
+        return 50 / speed;
     }
 
     protected AiMaster getMaster(UnitAI ai) {

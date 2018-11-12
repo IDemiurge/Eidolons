@@ -90,6 +90,8 @@ public class TownMaster extends MetaGameHandler {
                  false, () -> {
                      hero.getGame().getMetaMaster().getQuestMaster().questComplete(quest);
                  }, true);
+
+                town.reputationImpact(quest.getReward().getReputationImpactComplete());
             }
         }
         town.setQuests(questMaster.getQuestsPool());
@@ -111,10 +113,14 @@ public class TownMaster extends MetaGameHandler {
             }
         }
         this.town = town;
-        updateQuests(town);
-        town.enter(reenter);
-        GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
         inTown = true;
+        GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
+        try {
+            updateQuests(town);
+            town.enter(reenter);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         if (CoreEngine.isFullFastMode()) {
             new Thread(() -> {
                 GuiEventManager.trigger(GuiEventType.QUEST_TAKEN, "To the Rescue");

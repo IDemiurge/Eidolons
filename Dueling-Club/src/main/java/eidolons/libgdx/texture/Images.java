@@ -13,7 +13,7 @@ public class Images {
      "hq", "spell", "empty.png");
     public static final String SPELLBOOK = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "spell", "spellbook.png");
-    public static final String EMPTY_LIST_ITEM = StrPathBuilder.build(PathFinder.getUiPath(), "EMPTY_LIST_ITEM.jpg");
+    public static final String EMPTY_LIST_ITEM = StrPathBuilder.build(PathFinder.getUiPath(), "empty_list_item.jpg");
     public static final String EMPTY_CONTAINER_SPACE = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "inv", "empty.png");
 
@@ -95,23 +95,24 @@ public class Images {
      PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
     public static final String SEPARATOR = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
-    public static final  String TINY_CHEST = "UI/components/tiny/chest.png";
-    public static final  String TINY_GOLD = "UI/components/tiny/gold.png";
-    public static final java.lang.String GOLD_INV_ITEM_OVERLAY = "UI/components/hq/inv/gold overlay.png";
-    public static final String CHEST_OPEN = "UI/components/hq/inv/stash.png";
-    public static final String STASH_LANTERN = "UI/components/hq/inv/stash LANTERN.png";
-    public static final  String WEIGHT = "UI/components/hq/inv/WEIGHT.png";
-    public static final  String WEIGHT_BURDENED = "UI/components/hq/inv/WEIGHT burdened.png";
-    public static final String SHOP_PRICES = "UI/components/hq/inv/prices.png";
-    public static final String GOLD_PACK_LARGE = "UI/components/hq/inv/GOLD_PACK_LARGE.png";
-    public static final String GOLD_PACK_AVERAGE = "UI/components/hq/inv/GOLD_PACK_AVERAGE.png";
-    public static final String GOLD_PACK_SMALL = "UI/components/hq/inv/GOLD_PACK_SMALL.png";
-    public static final String ITEM_BACKGROUND_GOLD = "UI/components/hq/inv/ITEM BACKGROUND GOLD.png";
-    public static final String ITEM_BACKGROUND_STEEL = "UI/components/hq/inv/ITEM BACKGROUND STEEL.png";
-    public static final String ITEM_BACKGROUND_STONE = "UI/components/hq/inv/ITEM BACKGROUND STONE.png";
-    public static final String ITEM_BACKGROUND = "UI/components/hq/inv/ITEM BACKGROUND.png";
-    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "UI/components/hq/inv/slots/overlay light.png";
-    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "UI/components/hq/inv/slots/overlay light2.png";
+    public static final  String TINY_CHEST = "ui/components/tiny/chest.png";
+    public static final  String TINY_GOLD = "ui/components/tiny/gold.png";
+    public static final java.lang.String GOLD_INV_ITEM_OVERLAY = "ui/components/hq/inv/gold overlay.png";
+    public static final String CHEST_OPEN = "ui/components/hq/inv/stash.png";
+    public static final String STASH_LANTERN = "ui/components/hq/inv/stash LANTERN.png";
+    public static final  String WEIGHT = "ui/components/hq/inv/WEIGHT.png";
+    public static final  String WEIGHT_BURDENED = "ui/components/hq/inv/WEIGHT burdened.png";
+    public static final String SHOP_PRICES = "ui/components/hq/inv/prices.png";
+    public static final String SHOP_DEBT =  "ui/components/hq/inv/prices.png";
+    public static final String GOLD_PACK_LARGE = "ui/components/hq/inv/GOLD_PACK_LARGE.png";
+    public static final String GOLD_PACK_AVERAGE = "ui/components/hq/inv/GOLD_PACK_AVERAGE.png";
+    public static final String GOLD_PACK_SMALL = "ui/components/hq/inv/GOLD_PACK_SMALL.png";
+    public static final String ITEM_BACKGROUND_GOLD = "ui/components/hq/inv/ITEM BACKGROUND GOLD.png";
+    public static final String ITEM_BACKGROUND_STEEL = "ui/components/hq/inv/ITEM BACKGROUND STEEL.png";
+    public static final String ITEM_BACKGROUND_STONE = "ui/components/hq/inv/ITEM BACKGROUND STONE.png";
+    public static final String ITEM_BACKGROUND = "ui/components/hq/inv/ITEM BACKGROUND.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "ui/components/hq/inv/slots/overlay light.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "ui/components/hq/inv/slots/overlay light2.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

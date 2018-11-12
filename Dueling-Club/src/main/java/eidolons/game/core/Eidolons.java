@@ -235,7 +235,6 @@ public class Eidolons {
         DC_Game.game = null;
         Game.game = null;
 
-        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
         //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
     }
 
@@ -286,7 +285,8 @@ public class Eidolons {
     }
 
     public static void exitFromGame() {
-
+        exitToMenu();
+        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
     }
     public static void exitToMenu() {
 

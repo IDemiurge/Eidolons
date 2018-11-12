@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -78,11 +79,11 @@ public class QueueView extends UnitView {
         if (isInitialized())
             reset();
 
-//        Image image = clockImage;
-//        if (image != null) {
-//            image.setScaleX(getScaledWidth());
-//            image.setScaleY(getScaledHeight());
-//        }
+        //        Image image = clockImage;
+        //        if (image != null) {
+        //            image.setScaleX(getScaledWidth());
+        //            image.setScaleY(getScaledHeight());
+        //        }
     }
 
     public int getInitiativeIntVal() {
@@ -143,21 +144,24 @@ public class QueueView extends UnitView {
         return true;
     }
 
-//    @Override
-//    public void draw(Batch batch, float parentAlpha) {
-//        if (parentAlpha== ShaderMaster.SUPER_DRAW)
-//            super.draw(batch, 1);
-//        else
-//        ShaderMaster.drawWithCustomShader(this, batch,
-//         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
-//    }
+    //    @Override
+    //    public void draw(Batch batch, float parentAlpha) {
+    //        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+    //            super.draw(batch, 1);
+    //        else
+    //        ShaderMaster.drawWithCustomShader(this, batch,
+    //         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
+    //    }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 
-    protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
-        return new TextureRegion(GdxImageMaster.size(path, InitiativePanel.imageSize, true));
+    protected TextureRegion processPortraitTexture(TextureRegion region, String path) {
+        Texture texture = GdxImageMaster.size(path, InitiativePanel.imageSize, true);
+        if (texture == null)
+            return region;
+        return new TextureRegion(texture);
     }
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
@@ -169,10 +173,10 @@ public class QueueView extends UnitView {
             this.hpBar.remove();
         }
         this.hpBar = hpBar;
-//        if (!GridPanel.isHpBarsOnTop()) {
+        //        if (!GridPanel.isHpBarsOnTop()) {
         addActor(hpBar);
         hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
-//        }
+        //        }
         hpBar.setQueue(true);
     }
 

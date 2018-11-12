@@ -48,7 +48,7 @@ import java.util.Map;
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanelX implements EventListener {
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = !CoreEngine.isFullFastMode();
     public static final boolean TEST_OUTCOME = false;
     private static final String VICTORY_MESSAGE =
      "+++That's It - You are Victorious!+++";
@@ -95,9 +95,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
             outcome = TEST_OUTCOME;
 
         datasource = outcomeDatasource;
-        String imgPath = "UI/big/victory.png";
+        String imgPath = "ui/big/victory.png";
         if (outcome != null)
-            imgPath = outcome ? "UI/big/victory.png" : "UI/big/defeat.jpg";
+            imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
         picture = new Image(TextureCache.getOrCreateR(imgPath));
 
         addActor(picture);

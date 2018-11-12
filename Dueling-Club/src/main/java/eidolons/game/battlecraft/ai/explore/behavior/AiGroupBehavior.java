@@ -22,11 +22,16 @@ public abstract class AiGroupBehavior extends AiBehavior {
         if (ai.getGroupAI() == null) {
             return super.updateTarget();
         }
-        if (ai.isLeader()) {
+        if (isLeader()) {
             return updateLeaderTarget();
         } else {
             return ai.getGroupAI().getLeader();
+//            return getCell(ai.getGroupAI().getLeader().getCoordinates());
         }
+    }
+
+    public boolean isLeader() {
+        return ai.isLeader();
     }
 
     protected abstract DC_Obj updateLeaderTarget();
@@ -37,37 +42,40 @@ public abstract class AiGroupBehavior extends AiBehavior {
         if (action == null) {
             return false;
         }
-        if (action.getActive().isMove()) {
-            return  checkGroupIsKeepingUp();
-        }
+        if (isLeader())
+            if (action.getActive().isMove()) {
+                return checkGroupIsKeepingUp();
+            }
 
         return true;
     }
 
     protected boolean checkGroupIsKeepingUp() {
         if (ai.getGroupAI() == null)
-            return false;
+            return true;
 
         boolean keepsUp = false;
         List<UnitAI> forwards = new ArrayList<>();
         for (Unit unit : group.getMembers()) {
+            if (unit == getUnit()) {
+                continue;
+            }
             UnitAI ai = unit.getUnitAI();
-            boolean done = unit.getCoordinates().dst(preferredPosition) <=getDistanceForNearby();
-            if (!done) {
-                done = isProgressObstructed(  ai );
-            }
-            if (done)
-            // if (PositionMaster.getDistance(c,
-            // m.getUnit().getCoordinates()) > max)
-            {
+            boolean closeEnough = unit.getCoordinates().dst(getCoordinates()) <= getDistanceForNearby();
+            //            if (!closeEnough) {
+            //                closeEnough = isProgressObstructed(  ai );
+            //            }
+            if (closeEnough) {
                 forwards.add(ai);
-                if (group.getMembers().size() == 1 ||
-                  forwards.size() > Math.round(group.getMembers().size()
-                   * getCatchUpFactor())) {
-                    keepsUp = true;
-                    break;
-                }
             }
+        }
+        if (group.getMembers().size() == 1 ||
+         forwards.size() >= Math.round((group.getMembers().size() - 1)
+          * getCatchUpFactor())) {
+            keepsUp = true;
+            status=BEHAVIOR_STATUS.RUNNING;
+        } else {
+           status=BEHAVIOR_STATUS.WAITING;
         }
         return keepsUp;
     }

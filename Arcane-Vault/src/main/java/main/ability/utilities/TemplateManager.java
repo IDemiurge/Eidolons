@@ -65,7 +65,7 @@ public class TemplateManager implements ActionListener {
                 // String itemName = "\\";
                 // if (item != null)
                 // itemName += item.getArg().name();
-                File directory = new File(path + "\\" + templateType
+                File directory = FileManager.getFile(path + "\\" + templateType
 
                 );
                 if (!directory.isDirectory()) {

@@ -203,6 +203,7 @@ public class Mapper {
 
     public static void compileArgMap(List<Argument> args1, List<String> classFolders1)
      throws ClassNotFoundException, SecurityException, IOException {
+        main.system.auxiliary.log.LogMaster.log(1,"Mapper: compile Arg Map for " + classFolders1);
         args = args1;
         classFolders = classFolders1;
         for (Argument arg : args) {

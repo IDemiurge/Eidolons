@@ -42,6 +42,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
@@ -116,6 +117,12 @@ public class RngLocationBuilder extends LocationBuilder {
         DC_Game game = getGame();
         for (ObjAtCoordinate at : level.getObjects()) {
             //            DC_ObjInitializer.initMapBlockObjects()
+           if (CoreEngine.isFullFastMode()){
+               if (!EntityCheckMaster.isWall(at.getType()))
+               if (!EntityCheckMaster.isEntrance(at.getType()))
+               if (!EntityCheckMaster.isDoor(at.getType()))
+                   continue;
+           }
             game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y, DC_Player.NEUTRAL);
             main.system.auxiliary.log.LogMaster.log(1, at + " spawed");
         }

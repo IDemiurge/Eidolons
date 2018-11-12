@@ -127,7 +127,7 @@ public class GlobalController implements Controller {
         if (guiStage.closeDisplayed())
             return;
 
-//        guiStage.getTooltips().stackOff();
+        guiStage.getTooltips().getStackMaster().stackOff();
 
         guiStage.getGameMenu().open();
     }

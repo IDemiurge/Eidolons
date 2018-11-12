@@ -164,4 +164,25 @@ public class Shop extends TownPlace implements ShopInterface {
     public void exited() {
         itemManager.exited();
     }
+
+    public int getDebt() {
+        return itemManager.getPlayerDebt();
+    }
+
+    public void handleDebt() {
+        itemManager.handleDebt();
+    }
+
+    public int getReputation() {
+        Integer rep = getTown().getReputation();
+        rep += rep * getIntParam(MACRO_PARAMS.REPUTATION) / 100;
+        if (rep != 0)
+            return rep;
+        return getIntParam(MACRO_PARAMS.REPUTATION);
+    }
+
+    public void enter() {
+
+        itemManager.handleDebt();
+    }
 }

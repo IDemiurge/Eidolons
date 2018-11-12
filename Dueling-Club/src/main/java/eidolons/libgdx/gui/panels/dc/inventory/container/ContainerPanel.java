@@ -62,6 +62,8 @@ public class ContainerPanel extends TablePanel implements Blocking {
     protected ValueContainer goldLabel;
     protected ValueContainer weightLabel2;
     protected ValueContainer goldLabel2;
+    protected TablePanelX lowerLeft;
+    protected TablePanelX lowerRight;
 
     public ContainerPanel() {
         init();
@@ -173,8 +175,8 @@ public class ContainerPanel extends TablePanel implements Blocking {
 
     protected Cell<Table> initLowerTable() {
         TablePanelX lower = new TablePanelX<>();
-        TablePanelX lowerLeft = new TablePanelX<>();
-        TablePanelX lowerRight = new TablePanelX<>();
+       lowerLeft = new TablePanelX<>();
+       lowerRight = new TablePanelX<>();
 
         lowerLeft.add(weightLabel = new ValueContainer(
          TextureCache.getOrCreateR(Images.WEIGHT), "")).left().fillX().growX()

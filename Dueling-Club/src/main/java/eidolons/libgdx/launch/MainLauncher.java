@@ -3,6 +3,8 @@ package eidolons.libgdx.launch;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import eidolons.system.options.OptionsMaster;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -18,28 +20,36 @@ import java.util.Stack;
  */
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
-    private static final String LAST_CHOICE_FILE ="xml/last dc.xml" ;
+    private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
     private static Stack<String> lastChoiceStack;
 
     public static void main(String[] args) {
         CoreEngine.setSwingOn(false);
         if (args.length > 0) {
-            args =args[0].split(",");
+            args = args[0].split(",");
         }
         CoreEngine.setFastMode(args.length > 1);
         CoreEngine.setFullFastMode(args.length > 3);
         if (CoreEngine.isIDE())
+        {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
+            if (CoreEngine.isFullFastMode()) {
+                OptionsMaster.setOptionsPath("C:\\Users\\JustMe\\Eidolons\\fast options.xml");
+            }
+        }
 
         String[] commands = args;
         if (commands.length == 1) {
-            CoreEngine.setJarlike(true);
+            if (PathUtils.splitPath(commands[0]).size() > 1)
+                OptionsMaster.setOptionsPath(commands[0]);
+            else
+                CoreEngine.setJarlike(true);
         }
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-//        if (CoreEngine.isFastMode()) {
-//            CoreEngine.setJar(true);
-//        }
+        //        if (CoreEngine.isFastMode()) {
+        //            CoreEngine.setJar(true);
+        //        }
         if (commands.length > 1) {
 
             for (String command : commands) {
@@ -50,9 +60,9 @@ public class MainLauncher extends GenericLauncher {
                     MainMenu.getInstance().getHandler().handle(item);
                 else {
                     if (NumberUtils.isInteger(command)) {
-                    int i = NumberUtils.getInteger(command);
-                        if (i<0){
-                            i =getLast();
+                        int i = NumberUtils.getInteger(command);
+                        if (i < 0) {
+                            i = getLast();
                         }
                         presetNumbers.add(0, i);
                     }
@@ -63,11 +73,11 @@ public class MainLauncher extends GenericLauncher {
     }
 
     private static int getLast() {
-if (lastChoiceStack == null ){
-    lastChoiceStack = new Stack<>();
-    lastChoiceStack.addAll(ContainerUtils.openContainer(
-     FileManager.readFile(LAST_CHOICE_FILE)));
-}
+        if (lastChoiceStack == null) {
+            lastChoiceStack = new Stack<>();
+            lastChoiceStack.addAll(ContainerUtils.openContainer(
+             FileManager.readFile(LAST_CHOICE_FILE)));
+        }
         return NumberUtils.getInteger(lastChoiceStack.remove(0));
     }
 

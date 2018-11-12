@@ -34,7 +34,7 @@ public class AudioMaster {
         Gdx.app.log("AudioMaster::AudioMaster()", "-- badFiles.size:" + badFiles.size);
         FileHandle logWithBadFiles = GDX.file(badSoundsPath + "Log.txt");
         logWithBadFiles.writeString(badFiles.toString().replaceAll(", ", "\n"), false);
-//        Sound sound = audio.newSound(GDX.file(new File("")));
+//        Sound sound = audio.newSound(GDX.file(FileManager.getFile("")));
 //        sound.setVolume(id, volume);
 //        String soundPath = sounds.keys().toArray().get(1);
 //        Sound firstSound = sounds.get(soundPath);

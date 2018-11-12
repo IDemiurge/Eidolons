@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -31,6 +30,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
+import main.system.launch.CoreEngine;
 import main.system.math.FuncMaster;
 
 import java.util.*;
@@ -108,6 +108,7 @@ public class RngMainSpawner {
         //some meta data to take from?
 
         log(1, "Spawning for quests ");
+        if (!CoreEngine.isFullFastMode())
         try {
             spawnForQuests();
         } catch (Exception e) {
@@ -270,7 +271,7 @@ public class RngMainSpawner {
                 if (!isBlockForGroup(block, groupType)) {
                     continue blocks;
                 }
-                if (block.getUnitGroups().size() > getMaxGroupsForBlock(block)) {
+                if (block.getUnitGroups().size() >= getMaxGroupsForBlock(block)) {
                     //                    for (UNIT_GROUP_TYPE group_type : block.getUnitGroups().values())
                     //                        if (group_type == groupType)
                     continue blocks;
@@ -499,11 +500,11 @@ public class RngMainSpawner {
     }
 
     private boolean isBlockForGroup(LevelBlock block, UNIT_GROUP_TYPE group) {
-        if (AiBehaviorManager.TEST_MODE) {
-            if (block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM) {
-                return true;
-            }
-        }
+//       madness  if (AiBehaviorManager.TEST_MODE) {
+//            if (block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM) {
+//                return true;
+//            }
+//        }
         switch (group) {
             case GUARDS:
                 return block.getRoomType() == ROOM_TYPE.TREASURE_ROOM
@@ -690,7 +691,10 @@ public class RngMainSpawner {
          //no other units there
 
           sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-          -c.dst(center))).limit(Math.max(1, units.size() / maxStack)).
+          -c.dst(center)
+           +RandomWizard.getRandomInt( (levelBlock.getWidth())))
+//           +RandomWizard.getRandomInt((int) Math.sqrt(levelBlock.getSquare())))
+         ).limit(Math.max(1, units.size() / maxStack)).
           collect(Collectors.toList());
 
         if (checkCellForSpawn(center, levelBlock))

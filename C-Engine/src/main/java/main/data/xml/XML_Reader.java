@@ -14,7 +14,6 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
@@ -24,6 +23,8 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.*;
+
+import static main.system.auxiliary.log.LogMaster.*;
 
 /**
  * contains methods for reading Types' xml files, constructing ObjType's and putting them into maps
@@ -62,7 +63,7 @@ public class XML_Reader {
                                          Map<String, Set<String>> treeSubGroupMap
     ) {
         key = key.replace("_", " ").toLowerCase();
-        LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
+        log(DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> typeMap =
          typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
@@ -96,7 +97,7 @@ public class XML_Reader {
                     treeSubGroupMap.computeIfAbsent(aspect, k -> new HashSet<>()).add(subKey);
 
                     typeMap.put(name, type);
-                    LogMaster.log(LogMaster.DATA_DEBUG, typeNode.getNodeName()
+                    log(DATA_DEBUG, typeNode.getNodeName()
                      + " has been put into map as " + type);
                 }
             }
@@ -114,26 +115,41 @@ public class XML_Reader {
     }
 
     public static void loadXml(String path) {
-        File folder = new File(path);
-
+        File folder = FileManager.getFile(path);
+        if (CoreEngine.isJar())
+            log(1, "ENGINE INIT >> Loading xml files from: \n " + path);
         final File[] files = folder.listFiles();
+
         if (files != null) {
             //DO NOT FOREACH - its slow on arrays
             for (int i = 0; i < files.length; i++) {
                 File file = files[i];
+                if (file.isDirectory()) {
+                    continue;
+                }
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
+                        if (CoreEngine.isJar())
+                            log(1, "ENGINE INIT >> " + file + " is read!");
                         if (xmlFile == null)
                             continue;
                         loadFile(xmlFile);
+                        if (CoreEngine.isJar())
+                            log(1, "ENGINE INIT >> " + file + " is loaded!");
                     } catch (Exception e) {
                         brokenXml = true;
-                        main.system.auxiliary.log.LogMaster.log(1, file + " is broken!");
+                        if (CoreEngine.isJar())
+                            log(1, "ENGINE INIT >> " + file + " is broken!");
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
+                } else {
+                    if (CoreEngine.isJar())
+                        log(1, "ENGINE INIT >> not a valid xml file: \n " + file);
                 }
             }
+            if (CoreEngine.isJar())
+                log(1, "ENGINE INIT >> Done loading xml files from: \n " + path);
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)
                     .forEach(el -> {
@@ -167,7 +183,7 @@ public class XML_Reader {
     public static XML_File readFile(File file) {
         String text = FileManager.readFile(file);
         if (text.length() < 15) {
-            main.system.auxiliary.log.LogMaster.log(1, "empty xml file " + file.getName());
+            log(1, "empty xml file " + file.getName());
             return null;
         }
         final String name = file.getName();
@@ -332,7 +348,7 @@ public class XML_Reader {
 
         constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
 
-        LogMaster.getInstance().log(LogMaster.INFO,
+        getInstance().log(INFO,
          "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
@@ -372,7 +388,7 @@ public class XML_Reader {
             groups = getTabGroupMap(!macro).get(strings);
         }
         if (groups == null) {
-            LogMaster.log(1, "NO SUB GROUP SET!" + strings);
+            log(1, "NO SUB GROUP SET!" + strings);
         }
         return groups;
     }
@@ -455,15 +471,15 @@ public class XML_Reader {
 
     private static void reloadHeroFiles() {
         for (XML_File heroFile : heroFiles.values()) {
-            LogMaster.setOff(true);
+            setOff(true);
             try {
                 loadMap(heroFile.getType().getName(), FileManager.readFile(heroFile.getFile()));
             } catch (Exception e) {
-                LogMaster.setOff(false);
-                LogMaster.log(1, "Hero File failed to load:" + heroFile);
+                setOff(false);
+                log(1, "Hero File failed to load:" + heroFile);
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
-                LogMaster.setOff(false);
+                setOff(false);
             }
             // loadTypeFile(heroFile);
         }
@@ -479,7 +495,7 @@ public class XML_Reader {
                 }
             }
             if (oldType == null) {
-                LogMaster.log(1, "New Hero loaded:" + type.getName());
+                log(1, "New Hero loaded:" + type.getName());
                 bufferCharTypeMap.put(type.getName(), type);
                 originalCharTypeMap.put(type.getName(), type);
             }

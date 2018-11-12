@@ -26,7 +26,7 @@ public class MapActor extends SuperActor {
 
     public void init() {
         highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
-         StrPathBuilder.build("UI", "outlines", "shadows", "a new light.png"))), true);
+         StrPathBuilder.build("ui", "outlines", "shadows", "a new light.png"))), true);
         highlight.setTouchable(Touchable.disabled);
         highlight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
         highlight.setColor(getTeamColor());

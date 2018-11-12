@@ -1,6 +1,5 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.math.DC_PositionMaster;
@@ -21,7 +20,7 @@ import java.util.*;
 public class ClearShotCondition extends MicroCondition {
 
     public static final float SIGHT_RANGE_FACTOR = 2.5f;
-    static Map<BattleFieldObject, Map<Obj, Boolean>> cache = new HashMap<>();
+    static Map<DC_Obj, Map<Obj, Boolean>> cache = new HashMap<>();
     private static boolean unitTestBreakMode;
     boolean showVisuals;
     private boolean vision;
@@ -44,7 +43,7 @@ public class ClearShotCondition extends MicroCondition {
         cache.values().forEach(map -> map.clear());
     }
 
-    public static Map<BattleFieldObject, Map<Obj, Boolean>> getCache() {
+    public static Map<DC_Obj, Map<Obj, Boolean>> getCache() {
         return cache;
     }
 
@@ -64,8 +63,8 @@ public class ClearShotCondition extends MicroCondition {
         eidolons.ability.conditions.special.ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
     }
 
-    public static final boolean isOverlayingWithinSightAngle(BattleFieldObject target,
-                                                             BattleFieldObject source) {
+    public static final boolean isOverlayingWithinSightAngle(DC_Obj target,
+                                                             DC_Obj source) {
         return isOverlayingWithinSightAngle(target.getCoordinates(), target.getDirection(), source.getCoordinates());
 
     }
@@ -91,7 +90,7 @@ public class ClearShotCondition extends MicroCondition {
 
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
-        for (BattleFieldObject obj :
+        for (DC_Obj obj :
          target.getGame().getMaster().getObjectsOnCoordinate(
           Coordinates.get(x_, y_), null))
         //         target.getGame().getMaster().getObjects(x_, y_))
@@ -119,26 +118,27 @@ public class ClearShotCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        Obj obj = game.getObjectById(ref.getId(str2));
-        if (!(obj instanceof DC_Obj)) {
+        Obj obj2 = game.getObjectById(ref.getId(str2));
+        if (!(obj2 instanceof DC_Obj)) {
             return false;
         }
-        DC_Obj target = (DC_Obj) game.getObjectById(ref.getId(str2));
-        if (target == null) {
-            return false;
-        }
+        DC_Obj target = (DC_Obj) obj2;
         Coordinates c2 = target.getCoordinates();
         if (c2 == null)
             return false;
-        BattleFieldObject source = (BattleFieldObject) game.getObjectById(ref.getId(str1));
+//        Obj obj1 = game.getObjectById(ref.getId(str1));
+//        if (obj1 instanceof DC_Cell){
+//            return getForCell(((DC_Cell) obj1), target);
+//        }
+        DC_Obj source = (DC_Obj) game.getObjectById(ref.getId(str1));
         if (source == null)
             return false;
         if (c2.equals(source.getCoordinates()))
             return true;
 
         if (target.isOverlaying()) {
-            if (target instanceof BattleFieldObject) {
-                if (isOverlayingWithinSightAngle((BattleFieldObject) target, source))
+            if (target instanceof DC_Obj) {
+                if (isOverlayingWithinSightAngle((DC_Obj) target, source))
                     return false;
 
             }
@@ -189,7 +189,8 @@ public class ClearShotCondition extends MicroCondition {
         return cacheResult(source, target, result);
     }
 
-    private boolean cacheResult(BattleFieldObject source, DC_Obj target, boolean result) {
+
+    private boolean cacheResult(DC_Obj source, DC_Obj target, boolean result) {
         if (wallObstruction)
             source.getGame().getVisionMaster().getVisionController().
              getWallObstructionMapper().set(source.getCoordinates(),

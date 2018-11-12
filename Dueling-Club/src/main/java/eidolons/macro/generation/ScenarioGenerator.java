@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 public class ScenarioGenerator {
 
     private static final LOCATION_TYPE DEFAULT_LOCATION = LOCATION_TYPE.CAVE;
+    private static final String DEFAULT_LEVEL = PathFinder.getDungeonLevelFolder()+"/default.xml";
 
     public static ObjType generateScenarioType(Place place) {
         if (isRandomGenerationOn()) {
@@ -123,17 +124,25 @@ public class ScenarioGenerator {
                 locationType = locationTypes.get(i++);
             if (isUsePregenerated()) {
                 String level = choosePregenLevel(type, locationType);
-                main.system.auxiliary.log.LogMaster.log(1,"LEVEL CHOSEN:  " +level);
                 if (level == null ) {
                     level = getAltPregenLevel(type, locationType);
                     locationType =  DEFAULT_LOCATION;
                 }
-                String path =
-                 StrPathBuilder.build(
-                  getPath(locationType), level);
-                levelPaths += (path) + ContainerUtils.getContainerSeparator();
+                if (level == null) {
+                    main.system.auxiliary.log.LogMaster.log(1,"NO LEVEL CHOSEN! USING DEFAULT:  " + DEFAULT_LEVEL);
+                    levelPaths+= DEFAULT_LEVEL+ ContainerUtils.getContainerSeparator();
+                    continue;
+                }
+                else {
+                    main.system.auxiliary.log.LogMaster.log(1,"LEVEL CHOSEN:  " +level);
+                    String path =
+                     StrPathBuilder.build(
+                      getPath(locationType), level);
+                    levelPaths += (path) + ContainerUtils.getContainerSeparator();
+                }
             } else {
                 DungeonLevel level = new LevelGenerator(tries).generateLevel(type, locationType);
+//              TODO   Pregenerator.saveLevel(level);
 
                 String stringData = level.toXml();
                 String name = getLevelName(locationType, type) + ".xml";
@@ -202,8 +211,8 @@ public class ScenarioGenerator {
     private static String choosePregenLevel(SUBLEVEL_TYPE type,
                                             LOCATION_TYPE locationType) {
         List<File> levels = FileManager.getFilesFromDirectory(getPath(locationType), false);
-        levels = levels.stream().filter(file -> file.getName()
-         .startsWith(getLevelName(locationType, type))).collect(Collectors.toList());
+        levels = levels.stream().filter(file -> file.getName().toLowerCase()
+         .startsWith(getLevelName(locationType, type).toLowerCase())).collect(Collectors.toList());
         if (levels.isEmpty()) {
             return null;
         }

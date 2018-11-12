@@ -35,6 +35,9 @@ public class EUtils {
         return GdxMaster.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
     }
 
+    public static void info(String text, boolean wait) {
+        onConfirm(wait, text, false, null, false);
+    }
     public static void info(String text) {
         onConfirm(text, false, null);
     }
@@ -43,7 +46,8 @@ public class EUtils {
                                     Runnable o, boolean onAnotherThread) {
         if (wait) {
             onConfirm(text, cancel, () -> {
-                o.run();
+                if (o != null)
+                    o.run();
                 WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true);
             }, onAnotherThread);
             if (WaitMaster.getWaiters().get(WAIT_OPERATIONS.CONFIRM) != null) {

@@ -84,13 +84,18 @@ public class MapMaster<E, T> {
         return map.keySet().toArray()[i];
     }
 
-    public static void addToStringMap(Map<String, String> values, String name, String value) {
+    public static void addToStringMap(Map<String, String> values, String name, String value
+   ) {
+        addToStringMap(values, name, value, ContainerUtils.getContainerSeparator());
+    }
+        public static void addToStringMap(Map<String, String> values, String name, String value
+         , String separator) {
         String val = values.get(name);
         if (val == null) {
             values.put(name, value);
             return;
         }
-        val += ContainerUtils.getContainerSeparator() + value;
+        val += separator + value;
         values.put(name, val);
     }
 

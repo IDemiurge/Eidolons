@@ -81,7 +81,7 @@ public class WeaponTooltip extends ValueTooltip {
                 valueContainer.background(NinePatchFactory.
                  getLightPanelFilledSmallDrawable());
 //                valueContainer.setBorder(getOrCreateR(
-//                 "UI/components/infopanel/simple_value_border.png"));
+//                 "ui/components/infopanel/simple_value_border.png"));
                 table.addElement(valueContainer);
             }
 

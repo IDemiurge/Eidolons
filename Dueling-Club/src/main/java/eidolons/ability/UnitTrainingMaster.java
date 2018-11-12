@@ -30,8 +30,9 @@ public class UnitTrainingMaster {
     public static void train(Unit unit) {
         if (FAST_DC.isRunning())
             return;
-        if (CoreEngine.isFastMode())
-        {
+        if (CoreEngine.isFullFastMode())
+            return;
+        if (CoreEngine.isFastMode()) {
             if (isSpellsOn()) {
                 try {
                     UnitLibrary.learnSpellsForUnit(unit);
@@ -43,11 +44,11 @@ public class UnitTrainingMaster {
         }
         if (DC_Engine.isTrainingOff())
             return;
-//        if (!FAST_DC.getLauncher().getFAST_MODE()) {
-//            if (CoreEngine.isGraphicTestMode()) {
-//                return;
-//            }
-//        }
+        //        if (!FAST_DC.getLauncher().getFAST_MODE()) {
+        //            if (CoreEngine.isGraphicTestMode()) {
+        //                return;
+        //            }
+        //        }
 
         int perc = DEFAULT_XP_MOD;
 

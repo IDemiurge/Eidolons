@@ -44,7 +44,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
 
     public GenericMenu() {
         TextureRegionDrawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
-                "UI", "components", "generic", "game menu", "background.png"));
+                "ui", "components", "generic", "game menu", "background.png"));
         //TODO initResolutionScaling();
 //        setSize(texture.getRegion().getRegionWidth()*getScaleX(), texture.getRegion().getRegionHeight()*getScaleY());
 //        texture.setMinWidth(getWidth());

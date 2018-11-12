@@ -44,6 +44,7 @@ public class GameMenuHandler {
                 //                DC_Game.game.getBattleMaster().getOutcomeManager().next();
                 //                DC_Game.game.exit(true);
                 Eidolons.exitToMenu();
+//                GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
                 return false;
             case RESTART:
                 Eidolons.restart();

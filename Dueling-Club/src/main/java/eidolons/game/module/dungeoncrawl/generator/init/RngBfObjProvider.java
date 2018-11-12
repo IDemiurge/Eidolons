@@ -25,7 +25,12 @@ public class RngBfObjProvider {
             if (style != DEFAULT_STYLE)
                 map = getWeightMap(cell, DEFAULT_STYLE);
         if (map == null) {
-            throw new RuntimeException();
+            {
+                    main.system.auxiliary.log.LogMaster.log(1, cell + " with " + style+
+                     " can't be translated to obj!");
+                    return null ;
+//                throw new RuntimeException();
+            }
         }
         return map.toString();
     }

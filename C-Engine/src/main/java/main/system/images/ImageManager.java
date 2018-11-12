@@ -46,25 +46,25 @@ public class ImageManager {
 
     public final static String[] STD_FORMATS = {"jpg", "png",};
     public static final String separator = PathUtils.getPathSeparator();
-    public static final String DEFAULT_EMBLEM = "UI"+separator+"deities.png";
+    public static final String DEFAULT_EMBLEM = "ui"+separator+"deities.png";
     public static final String DEFAULT_ENTITY_IMAGE_FORMAT = ".jpg";
     public static final String PNG = ".PNG";
     public static final int CENTERED = -999;
-    public static final String VALUE_ICONS_PATH = "UI"+separator+"value icons"+separator;
-    public static final String DEAD_ICON = "UI"+separator+"dead.png";
-    private static final String EMPTY_LIST_ITEM = "UI"+separator+"EMPTY_ITEM.jpg";
-    private static final String EMPTY_LIST_ITEM_ALT = "UI"+separator+"EMPTY_ITEM_ALT.jpg";
-    private static final String EMPTY_LIST_ITEM_SMALL = "UI"+separator+"EMPTY_ITEM_SMALL.jpg";
-    private static final String HL_CELL = "UI"+separator+"HIGHLIGHTED_CELL.png";
-    private static final String CONCEALED_CELL = "UI"+separator+"HIDDEN_CELL.png";
-    private static final String UNSEEN_CELL = "UI"+separator+"UNDETECTED_CELL.png";
-    private static final String CELL = "UI"+separator+"EMPTY CELL2.png";
-    private static final String DEFAULT_IMAGE_PATH = "UI"+separator+"Empty1.jpg";
+    public static final String VALUE_ICONS_PATH = "ui"+separator+"value icons"+separator;
+    public static final String DEAD_ICON = "ui"+separator+"dead.png";
+    private static final String EMPTY_LIST_ITEM = "ui"+separator+"empty_item.jpg";
+    private static final String EMPTY_LIST_ITEM_ALT = "ui"+separator+"empty_item_alt.jpg";
+    private static final String EMPTY_LIST_ITEM_SMALL = "ui"+separator+"empty_item_small.jpg";
+    private static final String HL_CELL = "ui"+separator+"highlighted_cell.png";
+    private static final String CONCEALED_CELL = "ui"+separator+"hidden_cell.png";
+    private static final String UNSEEN_CELL = "ui"+separator+"undetected_cell.png";
+    private static final String CELL = "ui"+separator+"empty cell2.png";
+    private static final String DEFAULT_IMAGE_PATH = "ui"+separator+"empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;
     public static final int LARGE_ICON = MAX_TYPE_ICON_SIZE;
-    private static final String DEFAULT_CURSOR = "UI"+separator+"cursor.png";
+    private static final String DEFAULT_CURSOR = "ui"+separator+"cursor.png";
     private static final String PORTRAIT_ROOT_PATH = separator+"mini"+separator+"char"+separator+"std"+separator;
-    private static final String EMBLEM_PATH = "UI"+separator+"emblems"+separator+"std"+separator;
+    private static final String EMBLEM_PATH = "ui"+separator+"emblems"+separator+"std"+separator;
     private static String PATH;
     private static String DEFAULT;
     private static ImageObserver observer = new ImageObserver() {
@@ -140,27 +140,27 @@ public class ImageManager {
     }
 
     public static ImageIcon getEmptyIcon(int obj_size) {
-        return new ImageIcon(getImageFolderPath() + "UI"+separator+"empty" + obj_size + ".jpg");
+        return new ImageIcon(getImageFolderPath() + "ui"+separator+"empty" + obj_size + ".jpg");
     }
 
 
     public static String getEmptyItemIconPath(boolean alt) {
         if (alt) {
-            return "UI"+separator+"EMPTY_ITEM_ALT.jpg";
+            return "ui"+separator+"empty_item_ALT.jpg";
         }
-        return "UI"+separator+"EMPTY_ITEM.jpg";
+        return "ui"+separator+"empty_item.jpg";
 
     }
 
     public static String getEmptyUnitIconPath() {
-        return "UI"+separator+"Empty.jpg";
+        return "ui"+separator+"Empty.jpg";
     }
 
     public static String getEmptyUnitIconFullSizePath() {
-        return "UI"+separator+"Empty Full.jpg";
+        return "ui"+separator+"Empty Full.jpg";
     }
     public static String getReallyEmptyUnitIconFullSizePath() {
-        return "UI"+separator+"Really Empty Full.png";
+        return "ui"+separator+"Really Empty Full.png";
     }
 
     public static ImageIcon getEmptyUnitIcon() {
@@ -387,7 +387,7 @@ public class ImageManager {
 
     public static String getArrowImagePath(boolean vertical, boolean forward, int version) {
         String compVersion = (version == 1) ? "" : "" + version;
-        String path = "UI"+separator+"components"+separator;
+        String path = "ui"+separator+"components"+separator;
         if (forward) {
             path += vertical ? "up" : "right";
         } else
@@ -507,7 +507,7 @@ public class ImageManager {
     }
 
     public static Image getDeadIconBig() {
-        return getImage("UI"+separator+"Empty1.jpg");
+        return getImage("ui"+separator+"Empty1.jpg");
     }
 
     public static Image getEmblem(String property) {
@@ -1015,15 +1015,15 @@ public class ImageManager {
         }
 
         for (String path : paths) {
-            folder = new File(getImageFolderPath() + path);
+            folder = FileManager.getFile(getImageFolderPath() + path);
             path += ""+separator;
             for (String file : FileManager.listFiles(folder)) {
-                if (new File(getImageFolderPath() + path + file).isFile()) {
+                if (FileManager.getFile(getImageFolderPath() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
                         list.add(path + file);
                     }
-                } else if (new File(getImageFolderPath() + path + file).isDirectory()) {
-                    for (String subfile : new File(getImageFolderPath() + path + file).list()) {
+                } else if (FileManager.getFile(getImageFolderPath() + path + file).isDirectory()) {
+                    for (String subfile : FileManager.getFile(getImageFolderPath() + path + file).list()) {
                         if (!ListMaster.contains(list, subfile, false)) {
                             list.add(path + file + ""+separator + subfile);
                         } else {
@@ -1058,7 +1058,7 @@ public class ImageManager {
         for (ASPECT a : aspects) {
 
             path = EMBLEM_PATH + (a.toString().toLowerCase());
-            File folder = new File(PATH + path);
+            File folder = FileManager.getFile(PATH + path);
 
             path += ""+separator;
             for (String file : FileManager.listFiles(folder)) {
@@ -1123,7 +1123,7 @@ public class ImageManager {
     }
 
     public static Image getGlowFrame(FLAG_COLOR flagColor, int size) {
-        return getImage("UI"+separator+"Borders"+separator+"neo"+separator+"color flag"+separator + flagColor.toString() + " " + size);
+        return getImage("ui"+separator+"Borders"+separator+"neo"+separator+"color flag"+separator + flagColor.toString() + " " + size);
     }
 
     public static Image applyGlowFrame(Image image, Image frameImage) {
@@ -1140,7 +1140,7 @@ public class ImageManager {
         if (luck != null) {
             luckVariant = luck ? "good" : "bad";
         }
-        String imgPath = "UI"+separator+"Components"+separator+"small"+separator+"dice " + luckVariant;
+        String imgPath = "ui"+separator+"Components"+separator+"small"+separator+"dice " + luckVariant;
         if (glow) {
             imgPath += " glow";
         }
@@ -1231,7 +1231,7 @@ public class ImageManager {
     }
 
     public static String getRadialSpellIconPath() {
-        return "UI"+separator+"Spellbook.png";
+        return "ui"+separator+"Spellbook.png";
     }
 
     public static String getFullSizeImage(Entity entity) {
@@ -1343,7 +1343,7 @@ public class ImageManager {
         private Image img;
 
         BORDER(String filename) {
-            this.setFilename("UI"+separator+"Borders"+separator + filename);
+            this.setFilename("ui"+separator+"Borders"+separator + filename);
 
         }
 
@@ -1408,13 +1408,13 @@ public class ImageManager {
     }
 
     public enum STD_IMAGES {
-        LIGHT("UI"+separator+"outlines"+separator+"shadows"+separator+"light emitter.png"),
-        SCROLL_ATTACK_CHOICE("UI"+separator+"components"+separator+"neo"+separator+"attack choice scroll.png"),
-        SCROLL_ATTACK_TEXT("UI"+separator+"components"+separator+"neo"+separator+"choose attack.png"),
-        SCROLL_END_HORIZONTAL_DOUBLE("UI"+separator+"components"+separator+"neo"+separator+"scroll.png"),
+        LIGHT("ui"+separator+"outlines"+separator+"shadows"+separator+"light emitter.png"),
+        SCROLL_ATTACK_CHOICE("ui"+separator+"components"+separator+"neo"+separator+"attack choice scroll.png"),
+        SCROLL_ATTACK_TEXT("ui"+separator+"components"+separator+"neo"+separator+"choose attack.png"),
+        SCROLL_END_HORIZONTAL_DOUBLE("ui"+separator+"components"+separator+"neo"+separator+"scroll.png"),
 
-        EYE("UI"+separator+"bf"+separator+"eye.png"),
-        THROW("UI"+separator+"components"+separator+"small"+separator+"throw.png"),
+        EYE("ui"+separator+"bf"+separator+"eye.png"),
+        THROW("ui"+separator+"components"+separator+"small"+separator+"throw.png"),
         ATTACK_OF_OPPORTUNITY("ui"+separator+"actions"+separator+"modes"+separator+"misc"+separator+"ATTACK OF OPPORTUNITY.png"),
         COUNTER_ATTACK("ui"+separator+"actions"+separator+"modes"+separator+"misc"+separator+"COUNTER ATTACK.png"),
         INSTANT_ATTACK("ui"+separator+"actions"+separator+"modes"+separator+"misc"+separator+"INSTANT ATTACK.png"),

@@ -454,6 +454,7 @@ public class GameLoop {
         if (exited) {
             main.system.auxiliary.log.LogMaster.log(1, this + " interrupting thread... ");
             WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
+            if (thread!=null )
             try {
                 thread.interrupt();
                 main.system.auxiliary.log.LogMaster.log(1, this + " interrupted thread!");

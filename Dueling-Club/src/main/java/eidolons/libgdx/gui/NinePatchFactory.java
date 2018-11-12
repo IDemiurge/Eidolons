@@ -36,7 +36,7 @@ public class NinePatchFactory {
 
     public static NinePatch getTooltip() {
         return getLightPanelFilled();
-//        return new NinePatch(getOrCreateR("UI/components/tooltip_background.png"), 16, 16, 14, 14);
+//        return new NinePatch(getOrCreateR("ui/components/tooltip_background.png"), 16, 16, 14, 14);
     }
 
     public static NinePatch get3pxBorder() {
@@ -46,7 +46,7 @@ public class NinePatchFactory {
     }
 
     public static NinePatch getMainMenuFrame() {
-        return new NinePatch(getOrCreateR("UI/components/MainMenu ninepatch.png"), 120, 120, 146, 128);
+        return new NinePatch(getOrCreateR("ui/components/MainMenu ninepatch.png"), 120, 120, 146, 128);
     }
 
     public static NinePatch getHqEmpty() {
@@ -67,7 +67,7 @@ public class NinePatchFactory {
          LIGHT_PANEL_HQ_PATH), 10, 10, 10, 10));
     }
     public static NinePatch getInfoPanel() {
-        return new NinePatch(getOrCreateR("UI/components/panel ninepatch.png"), 50, 50, 50, 50);
+        return new NinePatch(getOrCreateR("ui/components/panel ninepatch.png"), 50, 50, 50, 50);
     }
     public static NinePatch getLightPanelFilledSmall() {
         return new NinePatch(getOrCreateR(

@@ -438,7 +438,7 @@ public class XML_Writer {
             return false;
         }
 
-        File dir = new File(path);
+        File dir = FileManager.getFile(path);
         if (!dir.isDirectory()) {
             try {
                 dir.mkdirs();

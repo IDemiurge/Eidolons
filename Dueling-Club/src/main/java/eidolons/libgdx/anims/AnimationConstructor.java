@@ -225,6 +225,9 @@ public class AnimationConstructor {
         }
         if (!checkAnimationSupported((DC_ActiveObj) active))
             return null;
+        if (active instanceof DC_SpellObj) {
+            main.system.auxiliary.log.LogMaster.log(1,"Construct spell anim for: " +active);
+        }
         CompositeAnim anim = map.get(active);
         if (!isReconstruct()) {
             if (anim != null) {

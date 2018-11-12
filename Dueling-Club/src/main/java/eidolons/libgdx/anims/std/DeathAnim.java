@@ -114,7 +114,7 @@ public class DeathAnim extends ActionAnim {
         if (actor != null)
             return actor;
         if (skull == null) {
-            skull = new Image(TextureCache.getOrCreate("UI/Empty.png")) {
+            skull = new Image(TextureCache.getOrCreate("ui/empty.png")) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
                     act(Gdx.graphics.getDeltaTime());

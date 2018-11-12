@@ -90,7 +90,7 @@ public class HcFullPortraitPanel extends HcElement {
         HeroCreationMaster.modified(G_PROPS.IMAGE, this.current);
     }
     private String getDefaultPortrait() {
-        return getImagePath(new File(getPath() + "default.jpg"));
+        return getImagePath(FileManager.getFile(getPath() + "default.jpg"));
     }
 
     private String getPath() {

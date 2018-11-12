@@ -18,7 +18,7 @@ public class MetaManager {
     private static ObjType data;
 
     public static void init() {
-        File file = new File(getInitFilePath() + FILE_NAME);
+        File file = FileManager.getFile(getInitFilePath() + FILE_NAME);
         if (!file.isFile()) {
             data = new ObjType(ENTITY_NAME);
         } else {

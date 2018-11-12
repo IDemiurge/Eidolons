@@ -21,11 +21,11 @@ public class GridMaster {
     public static final int CELL_W = 128;
     public static final int CELL_H = 128;
     public static final String emptyCellPath = StrPathBuilder.build(
-     "UI", "cells", "Empty Cell v3.png");
+     "ui", "cells", "Empty Cell v3.png");
     public static final String emptyCellPathFloor = StrPathBuilder.build(
-     "UI", "cells", "Floor.png");
+     "ui", "cells", "Floor.png");
     public static final String gridCornerElementPath = StrPathBuilder.build(
-     "UI", "bf", "gridCorner.png");
+     "ui", "bf", "gridCorner.png");
 
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 = getCenteredPos(coordinates);

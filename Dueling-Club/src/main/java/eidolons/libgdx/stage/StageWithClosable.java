@@ -60,7 +60,10 @@ public interface StageWithClosable {
                         MacroGame.game.getLoop().setPaused(true);
                     }
             }
+        if (this instanceof BattleGuiStage) {
+            ((BattleGuiStage) this).getTooltips().getStackMaster().stackOff();
 
+        }
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OPEN_MENU);
     }
 

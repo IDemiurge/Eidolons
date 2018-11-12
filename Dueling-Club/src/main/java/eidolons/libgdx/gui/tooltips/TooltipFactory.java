@@ -71,7 +71,7 @@ public abstract class TooltipFactory<T, A extends Actor> {
 
          TextureCache.getOrCreateR(
           ImageManager.getValueIconPath(max)
-//          "UI/value icons/" +
+//          "ui/value icons/" +
 //         name.replaceAll("_", " ") + ".png"
          );
         final ValueContainer valueContainer = new ValueContainer(iconTexture, name, v + "/" + cv);

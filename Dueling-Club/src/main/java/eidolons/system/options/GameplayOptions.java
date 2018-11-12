@@ -21,6 +21,11 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
         GAMEPLAY_OPTION.REVERSE_LEVELS.setDevOnly(true);
         GAMEPLAY_OPTION.SHUFFLE_LEVELS.setDevOnly(true);
+        GAMEPLAY_OPTION.PREGENERATED_RNG_LEVELS.setDevOnly(true);
+        GAMEPLAY_OPTION.AUTOSAVE_ON.setDevOnly(true);
+
+        GAMEPLAY_OPTION.IMMORTALITY.setDevOnly(true);
+        GAMEPLAY_OPTION.GHOST_MODE.setDevOnly(true);
     }
 
     @Override
@@ -28,33 +33,34 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         return GAMEPLAY_OPTION.class;
     }
 
-    public enum LOGGING_DETAIL_LEVEL  {
-        CONCISE,
-        ESSENTIAL,
-        FULL,
-        DEV,;
-    }
-        public enum GAMEPLAY_OPTION implements Options.OPTION {   RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
+    public enum GAMEPLAY_OPTION implements Options.OPTION {
+        RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
 
         //        AI_SPEED,
         DEFAULT_ACTIONS(true),
-//        ALT_DEFAULT_ACTIONS,
+        //        ALT_DEFAULT_ACTIONS,
 
         RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
-            LOG_DETAIL_LEVEL(LOGGING_DETAIL_LEVEL.values()),
+        LOG_DETAIL_LEVEL(LOGGING_DETAIL_LEVEL.values()),
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
         DEFAULT_WAIT_TIME(60, 10, 300),
         HP_BARS_ALWAYS_VISIBLE(false), GAME_SPEED(100, 10, 300),
-        ATB_WAIT_TIME(5, 0, 10)
-        , SHUFFLE_LEVELS(false)
-        , REVERSE_LEVELS(false),
-        GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300), NEXT_SCENARIO_INDEX(0,0,6),
-        IMMORTALITY(false), AUTOSAVE_ON(true), SEQUENTIAL_RNG(false), PREGENERATED_RNG_LEVELS(true),
-            LOG_LENGTH_LIMIT(500, 50, 1500), LIMIT_LOG_LENGTH(false);
+        ATB_WAIT_TIME(5, 0, 10),
+        SHUFFLE_LEVELS(false),
+        REVERSE_LEVELS(false),
+        GHOST_MODE(false),
+        AI_TIME_LIMIT_MOD(100, 10, 300),
+        NEXT_SCENARIO_INDEX(0, 0, 6),
+        IMMORTALITY(false),
+        AUTOSAVE_ON(true),
+        SEQUENTIAL_RNG(false),
+        PREGENERATED_RNG_LEVELS(true),
+        LOG_LENGTH_LIMIT(500, 50, 1500),
+        LIMIT_LOG_LENGTH(false);
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -108,12 +114,13 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
             return options;
         }
 
-        public void setHidden(boolean hidden) {
-            this.hidden = hidden;
-        }
         @Override
         public boolean isHidden() {
             return hidden;
+        }
+
+        public void setHidden(boolean hidden) {
+            this.hidden = hidden;
         }
 
         @Override
@@ -125,5 +132,12 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
             this.devOnly = devOnly;
         }
 
+    }
+
+    public enum LOGGING_DETAIL_LEVEL {
+        CONCISE,
+        ESSENTIAL,
+        FULL,
+        DEV,;
     }
 }

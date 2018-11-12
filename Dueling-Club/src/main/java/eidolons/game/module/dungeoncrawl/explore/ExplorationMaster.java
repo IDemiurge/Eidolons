@@ -1,12 +1,15 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimationConstructor;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
+import main.system.auxiliary.RandomWizard;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -111,6 +114,11 @@ public class ExplorationMaster {
             getResetter().setResetNotRequired(false);
 
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
+
+            DC_SoundMaster.playStandardSound(RandomWizard.random()
+             ? STD_SOUNDS.NEW__BATTLE_END
+             : STD_SOUNDS.NEW__BATTLE_END2);
+
         } else {
             game.getLogManager().logBattleStarts();
             if (AnimationConstructor.isPreconstructEnemiesOnCombatStart())

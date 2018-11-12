@@ -240,16 +240,16 @@ public class FontMaster {
     }
 
     public enum FONT {
-        AVQ("/Avqest.ttf"),
-        SC("/Starcraft.ttf"),
-        DARK("/Dark.ttf"),
+        AVQ("/avqest.ttf"),
+        SC("/starcraft.ttf"),
+        DARK("/dark.ttf"),
         NYALA("/nyala.ttf", true),
-        RU("/Philosopher-Regular.ttf"),
+        RU("/philosopher-regular.ttf"),
         MAIN("/main.otf"),
-        METAMORPH("/Metamorphous-Regular.ttf", true),
-        MAGIC("/MagicMedieval.ttf"),
-        MANORLY_("/Manorly_.ttf"),
-        FERTIGO("/Fertigo_PRO.otf"),;
+        METAMORPH("/metamorphous-regular.ttf", true),
+        MAGIC("/magicmedieval.ttf"),
+        MANORLY_("/manorly_.ttf"),
+        FERTIGO("/fertigo_pro.otf"),;
         public Font font;
         public String path;
         private boolean hieroSupported;

@@ -67,18 +67,18 @@ public class Shard extends SuperActor {
     private String getBackgroundTexturePath(Object arg) {
         String path = null;
         if (direction == null) {
-            path = StrPathBuilder.build("UI", "cells", "shards",
+            path = StrPathBuilder.build("ui", "cells", "shards",
              type.toString(), "isles", "isle");
         } else if (direction.isDiagonal()) {
-            path = StrPathBuilder.build("UI", "cells", "shards",
+            path = StrPathBuilder.build("ui", "cells", "shards",
              type.toString(), arg.toString());
         } else {
             path = size == SHARD_SIZE.SMALL
              ?
-             StrPathBuilder.build("UI", "cells", "shards",
+             StrPathBuilder.build("ui", "cells", "shards",
               type.toString(), arg.toString(), size + "up")
              :
-             StrPathBuilder.build("UI", "cells", "shards",
+             StrPathBuilder.build("ui", "cells", "shards",
               type.toString(), arg.toString(), size + "down");
         }
         String file = FileManager.getRandomFilePathVariant(
@@ -95,7 +95,7 @@ public class Shard extends SuperActor {
     }
 
     private String getForegroundTexturePath(Object arg) {
-        return StrPathBuilder.build("UI", "cells", "shards", "overlay",
+        return StrPathBuilder.build("ui", "cells", "shards", "overlay",
          overlay.toString(),
          //         size.toString() +
          arg + ".png");

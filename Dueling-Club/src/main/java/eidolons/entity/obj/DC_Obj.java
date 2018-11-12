@@ -35,6 +35,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.MicroObj;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -745,5 +746,13 @@ public abstract class DC_Obj extends MicroObj {
 
     public void setVisibilityOverride(boolean visibilityOverride) {
         this.visibilityOverride = visibilityOverride;
+    }
+
+    public boolean isObstructing(Obj source, DC_Obj target) {
+        return false;
+    }
+
+    public DIRECTION getDirection() {
+        return null;
     }
 }

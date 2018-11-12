@@ -21,7 +21,7 @@ public class ModeActionsPanel extends BaseSlotPanel {
         final UnitActionsDataSource source = (UnitActionsDataSource) getUserObject();
 
         final List<ActionValueContainer> sources = source.getDisplayedActions();
-        initContainer(sources, "UI/EMPTY_LIST_ITEM.jpg");
+        initContainer(sources, "ui/empty_list_item.jpg");
     }
 
 

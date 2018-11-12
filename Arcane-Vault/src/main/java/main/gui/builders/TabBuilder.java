@@ -547,7 +547,7 @@ public class TabBuilder extends Builder implements ChangeListener {
         if (CLASS == MACRO_OBJ_TYPES.class) {
             path = PathFinder.getMACRO_TYPES_PATH();
         }
-        File file = new File(path + name + ".xml");
+        File file = FileManager.getFile(path + name + ".xml");
         List<File> files = new ArrayList<>();
         if (file.isFile()) {
             files.add(file);

@@ -8,6 +8,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.entity.obj.Obj;
+import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -15,95 +16,36 @@ import java.util.List;
 import java.util.Set;
 
 public class AggroMaster extends ExplorationHandler {
-    private int minDistance = 4;
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static final int DEFAULT_ENGAGEMENT_DURATION = 3;
     private static boolean aiTestOn = true;
     private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
+    private int minDistance = 4;
 
     public AggroMaster(ExplorationMaster master) {
         super(master);
     }
 
-    private boolean checkEngaged() {
-        List<Unit> aggroGroup = AggroMaster.getAggroGroup();
-
-        if (!aggroGroup.isEmpty()) {
-            for (Unit sub : aggroGroup) {
-                sub.getAI().setStandingOrders(null);
-            }
-            for (Unit sub : master.getGame().getUnits()) {
-                sub.getAI().setOutsideCombat(false);
-                if (!aggroGroup.contains(sub))
-                    if (!sub.isMine())
-//                    if (!master.getAiMaster().getAllies().contains(sub))
-                        sub.getAI().setOutsideCombat(true);
-            }
-            return true;
-        }
-//        for (Unit ally :allies) {
-        // check block if (unit.getCoordinates())
-//         TODO    if (master. getGame().getVisionMaster().getDetectionMaster().checkDetected(ally))
-//                return true;
-//        }
-        return false;
-    }
-
-    public boolean checkExplorationDefault() {
-        return !checkEngaged();
-    }
-
-    public void checkStatusUpdate() {
-        if (checkEngaged()) {
-            master.switchExplorationMode(false);
-        } else {
-            if (checkDanger()) {
-                //?
-            } else {
-                master.switchExplorationMode(true);
-            }
-        }
-
-    }
-
-
-
-    public enum CRAWL_STATUS {
-        EXPLORE,
-        DANGER, //rounds on? behaviors ?
-        ENGAGED,
-        TIME_RUN
-    }
-
-
-
-    private boolean checkDanger() {
-        //range? potential vision?
-//        for (Unit unit : allies) {
-//            if (master. getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(unit)
-//                > minDistance)
-//                return true;
-//        }
-        return false;
-
-    }
     public static List<Unit> getAggroGroup() {
-//        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
+        //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
         for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
-//            if (sightRequiredForAggro) {
-//                if (!VisionManager.checkDetected(ally, true)) {
-//                    continue;
-//                }
-//            }
+            //            if (sightRequiredForAggro) {
+            //                if (!VisionManager.checkDetected(ally, true)) {
+            //                    continue;
+            //                }
+            //            }
             for (Unit unit : getAggroGroup(ally)) {
                 if (!list.contains(unit))
                     list.add(unit);
             }
         }
-        main.system.auxiliary.log.LogMaster.log(1, "Aggro group: " + list + "; last: " + lastAggroGroup);
+
+        if (ListMaster.isNotEmpty(list) ||ListMaster.isNotEmpty(lastAggroGroup))
+            main.system.auxiliary.log.LogMaster.log(1, "Aggro group: " + list +
+             "; last: " + lastAggroGroup);
         if (!ExplorationMaster.isExplorationOn()) if (!list.isEmpty()) {
             logAggro(list);
         }
@@ -131,8 +73,8 @@ public class AggroMaster extends ExplorationHandler {
     public static Set<Unit> getAggroGroup(Unit hero) {
         Set<Unit> set =
          new ConcurrentHashSet<>();
-//        Analyzer.getEnemies(hero, false, false, false);
-//            if (ExplorationMaster.isExplorationOn())
+        //        Analyzer.getEnemies(hero, false, false, false);
+        //            if (ExplorationMaster.isExplorationOn())
 
         boolean newAggro = false;
         for (Unit unit : DC_Game.game.getUnits()) {
@@ -150,13 +92,13 @@ public class AggroMaster extends ExplorationHandler {
                 newAggro = true;
                 unit.getAI().setEngaged(false);
             }
-            if (!unit.getGame(). getVisionMaster().getVisionRule().isAggro(hero, unit))
+            if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
                 continue;
             //TODO these units will instead 'surprise attack' you or stalk
 
             newAggro = true;
             set.add(unit);
-//            }
+            //            }
         }
         //TODO add whole group of each unit
 
@@ -195,7 +137,7 @@ public class AggroMaster extends ExplorationHandler {
 
     public static boolean checkEngaged(UnitAI ai) {
         return false;
-//        Unit unit = ai.getUnit();
+        //        Unit unit = ai.getUnit();
         // PERCEPTION_STATUS_PLAYER status =
         // ai.getGroup().getPerceptionStatus();
 
@@ -204,18 +146,18 @@ public class AggroMaster extends ExplorationHandler {
         // don't see you
         // HEARING would be an important factor...
         // for (DC_HeroObj unit : getCreeps()) {
-//        List<Unit> relevantEnemies = getRelevantEnemies(unit);
-//        for (Unit hero : relevantEnemies) {
-            // preCheck detections - perhaps it's really just about making a preCheck
-            // before AS-constr.
-            // sometimes creeps may be engaged but not know what hit them...
-            // different aggro levels?
-            // if (status == PERCEPTION_STATUS_PLAYER.KNOWN_TO_BE_THERE)
-            // return true;
-//            if (VisionManager.checkVisible(hero)) {
-//                return true;
-//            }
-//        }
+        //        List<Unit> relevantEnemies = getRelevantEnemies(unit);
+        //        for (Unit hero : relevantEnemies) {
+        // preCheck detections - perhaps it's really just about making a preCheck
+        // before AS-constr.
+        // sometimes creeps may be engaged but not know what hit them...
+        // different aggro levels?
+        // if (status == PERCEPTION_STATUS_PLAYER.KNOWN_TO_BE_THERE)
+        // return true;
+        //            if (VisionManager.checkVisible(hero)) {
+        //                return true;
+        //            }
+        //        }
         // }
     }
 
@@ -226,18 +168,77 @@ public class AggroMaster extends ExplorationHandler {
              getAI().setEngaged(true);
         } else {
             ((Unit) targetObj).getAI().setEngaged(true);
-//                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
-//                                //TODO
-//                                if (g == null) {
-//                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
-//                                } else g.
-//                                 getMembers().forEach(
-//                                 unit -> unit.getAI().setEngagementDuration(2)
-//                                );
+            //                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
+            //                                //TODO
+            //                                if (g == null) {
+            //                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
+            //                                } else g.
+            //                                 getMembers().forEach(
+            //                                 unit -> unit.getAI().setEngagementDuration(2)
+            //                                );
         }
 
 
-//        }
+        //        }
+    }
+
+    private boolean checkEngaged() {
+        List<Unit> aggroGroup = AggroMaster.getAggroGroup();
+
+        if (!aggroGroup.isEmpty()) {
+            for (Unit sub : aggroGroup) {
+                sub.getAI().setStandingOrders(null);
+            }
+            for (Unit sub : master.getGame().getUnits()) {
+                sub.getAI().setOutsideCombat(false);
+                if (!aggroGroup.contains(sub))
+                    if (!sub.isMine())
+                        //                    if (!master.getAiMaster().getAllies().contains(sub))
+                        sub.getAI().setOutsideCombat(true);
+            }
+            return true;
+        }
+        //        for (Unit ally :allies) {
+        // check block if (unit.getCoordinates())
+        //         TODO    if (master. getGame().getVisionMaster().getDetectionMaster().checkDetected(ally))
+        //                return true;
+        //        }
+        return false;
+    }
+
+    public boolean checkExplorationDefault() {
+        return !checkEngaged();
+    }
+
+    public void checkStatusUpdate() {
+        if (checkEngaged()) {
+            master.switchExplorationMode(false);
+        } else {
+            if (checkDanger()) {
+                //?
+            } else {
+                master.switchExplorationMode(true);
+            }
+        }
+
+    }
+
+    private boolean checkDanger() {
+        //range? potential vision?
+        //        for (Unit unit : allies) {
+        //            if (master. getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(unit)
+        //                > minDistance)
+        //                return true;
+        //        }
+        return false;
+
+    }
+
+    public enum CRAWL_STATUS {
+        EXPLORE,
+        DANGER, //rounds on? behaviors ?
+        ENGAGED,
+        TIME_RUN
     }
 
 

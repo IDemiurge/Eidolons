@@ -32,9 +32,12 @@ public class RandomWizard<E> {
         return false;
     }
 
-    public static Map<ObjType, Integer> constructWeightMap(String property, OBJ_TYPE TYPE) {
+    public static WeightMap<ObjType> constructWeightMap(String property, OBJ_TYPE TYPE) {
+        return constructWeightMap(property, TYPE, true);
+    }
+        public static WeightMap<ObjType> constructWeightMap(String property, OBJ_TYPE TYPE, boolean cache) {
         WeightMap<ObjType> map = weighMapCache.get(property);
-        if (map != null) {
+        if (cache && map != null) {
             return map;
         }
         map = new RandomWizard<ObjType>().constructWeightMap(property, ObjType.class, TYPE);
@@ -231,7 +234,7 @@ public class RandomWizard<E> {
 
     public static float getRandomFloatBetween(float alphaMin, float alphaMax) {
         return
-         alphaMin + (randomGenerator.nextFloat() * alphaMax - alphaMin);
+         alphaMin + (randomGenerator.nextFloat() * (alphaMax - alphaMin));
         //       brutish...
         // return new Float(getRandomIntBetween((int) (alphaMin * 100),
         //         (int) (alphaMax * 100))) / 100;

@@ -211,14 +211,20 @@ public class Town extends Place {
             if (item instanceof DC_HeroItemObj)
                 stash.add((DC_HeroItemObj) item);
         }
-        if (reenter) {
             for (Shop shop1 : shops) {
+            shop1.handleDebt();
+                if (reenter) {
                 shop1.getIncome( 500);
                 shop1.sellItems(30 );
                 shop1.stockItems(30 );
-
-            }
+                }
         }
     }
 
+    public Integer getReputation() {
+       return getIntParam(MACRO_PARAMS.REPUTATION );
+    }
+    public void reputationImpact(int i) {
+        modifyParameter(MACRO_PARAMS.REPUTATION, i);
+    }
 }

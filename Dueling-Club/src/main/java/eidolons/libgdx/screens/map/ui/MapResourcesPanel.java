@@ -57,7 +57,7 @@ public class MapResourcesPanel extends TablePanel {
             case PROVISIONS:
                 return STD_IMAGES.BAG.getPath();
             case WATER:
-                return "UI/components/small/glory.png";
+                return "ui/components/small/glory.png";
             case SANITY:
                 break;
             case GOLD:

@@ -26,8 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.system.auxiliary.log.LogMaster.*;
-
 public class GridCellContainer extends GridCell {
     Map<Integer, GenericGridView> indexMap = new HashMap<>();
     ValueContainer info;
@@ -64,6 +62,8 @@ public class GridCellContainer extends GridCell {
                 return true;
             }
         });
+        info.padTop(12);
+        info.padBottom(12);
         info.setVisible(false);
         graveyard = new GraveyardView();
         addActor(graveyard);
@@ -88,14 +88,20 @@ public class GridCellContainer extends GridCell {
         return getUnitViews(true);
     }
 
+    private boolean isViewCacheOn() {
+        return true;
+    }
+
     public List<GenericGridView> getUnitViews(boolean visibleOnly) {
-        if (visibleOnly) {
-            if (visibleViews != null && !main)
-                return visibleViews;
-        } else {
-            if (allViews != null && !main)
-                return allViews;
-        }
+
+        if (isViewCacheOn())
+            if (visibleOnly) {
+                if (visibleViews != null && !main)
+                    return visibleViews;
+            } else {
+                if (allViews != null && !main)
+                    return allViews;
+            }
         List<GenericGridView> list = new ArrayList<>();
         main = false;
         for (Actor actor : getChildren()) {
@@ -119,12 +125,12 @@ public class GridCellContainer extends GridCell {
         if (visibleOnly) {
             visibleViews = list;
             if (main) {
-                log(1, "visibleViews = " + list);
+                //                log(1, "visibleViews = " + list);
             }
         } else {
             allViews = list;
             if (main) {
-                log(1, " allViews = " + list);
+                //                log(1, " allViews = " + list);
             }
         }
         return list;
@@ -501,6 +507,7 @@ public class GridCellContainer extends GridCell {
          " girth on " + 1000 +
          //         getUserObject().getIntParam() +
          "space]");
+        info.pack();
     }
 
     public SortMaster<GenericGridView> getSorter() {

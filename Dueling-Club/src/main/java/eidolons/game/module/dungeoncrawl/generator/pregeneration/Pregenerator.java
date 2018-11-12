@@ -132,7 +132,7 @@ public class Pregenerator implements Runnable {
          "pregenerated", "reports");
         String name = NameMaster.getUniqueVersionedFileName("report.txt",
          path);
-        FileManager.write(text, StrPathBuilder.build(path, name));
+        FileManager.write(text, StrPathBuilder.build(path, name), true);
         System.out.println(" " + text);
         //pregen data
     }
@@ -175,7 +175,7 @@ public class Pregenerator implements Runnable {
          "pregenerated", "reports");
         String name = NameMaster.getUniqueVersionedFileName("single report.txt",
          path);
-        FileManager.write(text, StrPathBuilder.build(path, name));
+        FileManager.write(text, StrPathBuilder.build(path, name), true);
         System.out.println(" " + text);
         //pregen data
     }
@@ -332,15 +332,16 @@ public class Pregenerator implements Runnable {
     }
 
 
-    private void saveLevel(DungeonLevel level) {
+    public static void saveLevel(DungeonLevel level) {
 
         String stringData = level.toXml();
         String name = ScenarioGenerator.getLevelName(level.getLocationType(), level.getSublevelType()) + ".xml";
 
         name = NameMaster.getUniqueVersionedFileName(name, getPath(level.getLocationType()));
-
+        name = name.toLowerCase();
         String path = StrPathBuilder.build(getPath(level.getLocationType()), name);
-        FileManager.write(stringData, path);
+
+        FileManager.write(stringData, path, true);
 
     }
 
@@ -348,7 +349,7 @@ public class Pregenerator implements Runnable {
     private void error(LOCATION_TYPE locationType, SUBLEVEL_TYPE type) {
     }
 
-    private String getPath(LOCATION_TYPE locationType) {
+    private static String getPath(LOCATION_TYPE locationType) {
         return StrPathBuilder.build(PathFinder.getRandomLevelPath(),
          "pregenerated", locationType.name());
     }

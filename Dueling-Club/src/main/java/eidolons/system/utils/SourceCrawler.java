@@ -22,7 +22,7 @@ public class SourceCrawler {
                     FileManager.write(text, file.getAbsolutePath());
             }
         });
-//    dir = new File(getDirPath());
+//    dir = FileManager.getFile(getDirPath());
     }
 
     public static void main(String[] args) {

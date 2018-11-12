@@ -104,7 +104,7 @@ public class ResourceMaster {
         if (!segments.get(2).contains(".")) {
             pathPart += segments.get(2) + "\\";
         }
-        File outputfile = new File(ImageManager.getImageFolderPath() + folderName +
+        File outputfile = FileManager.getFile(ImageManager.getImageFolderPath() + folderName +
          UNUSED_FOLDER + pathPart
          + "\\" + f.getName());
 
@@ -174,7 +174,7 @@ public class ResourceMaster {
     }
 
     private static void writeImage(String oldPath, String path) {
-        File outputfile = new File(ImageManager.getImageFolderPath() + path);
+        File outputfile = FileManager.getFile(ImageManager.getImageFolderPath() + path);
         BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
         if (!ImageManager.isValidImage(bufferedImage)) {
             throw new RuntimeException() ;
@@ -212,7 +212,8 @@ public class ResourceMaster {
          + USED_FOLDER + "\\"
         +propString
          + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + typeName + "."
-         + getNewImageFormat();
+         + getNewImageFormat()
+         .toLowerCase();
     }
 
     private static String getNewImageFormat() {

@@ -74,7 +74,7 @@ public class EmitterPresetMaster {
             }
         }
         String newName = (name != null) ? name :
-         FileManager.getUniqueVersion(new File(PathFinder.getVfxPath() + prefix +
+         FileManager.getUniqueVersion(FileManager.getFile(PathFinder.getVfxPath() + prefix +
           "/" + last.path + suffix));
 
         String path = StringMaster.replace(true, last.path,

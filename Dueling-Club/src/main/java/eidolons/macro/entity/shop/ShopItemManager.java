@@ -5,10 +5,13 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
+import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -29,6 +32,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.*;
 
@@ -37,7 +41,7 @@ import java.util.*;
  */
 public class ShopItemManager extends EntityHandler<Shop> {
     protected static final boolean TEST_MODE = true;
-    protected int playerBalance;
+    protected int playerDebt=0;
     protected List<DC_HeroItemObj> items;
     protected int goldToSpendPercentage = 100;
     protected int spareGoldPercentage = 20;
@@ -49,6 +53,10 @@ public class ShopItemManager extends EntityHandler<Shop> {
         super(entity, entityMaster);
     }
 
+    public int getPlayerDebt() {
+        return playerDebt;
+    }
+
     public int getBalanceForBuy(DC_HeroItemObj item, Unit hero, boolean heroBuys) {
         Integer price = getPrice(item, hero, heroBuys);
         return heroBuys ? hero.getGold() - price
@@ -58,7 +66,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
     public boolean canBuy(DC_HeroItemObj item, Unit buyer, boolean canUseDebt) {
         Integer price = getPrice(item, buyer, false);
         if (canUseDebt) {
-            price -= getMaxDebt();
+            price -= getMaxDebt() - playerDebt;
         }
         if (buyer.getGold() < price)
             return false;
@@ -68,7 +76,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
     public boolean canSellTo(DC_HeroItemObj item, Unit seller, boolean canUseDebt) {
         Integer price = getPrice(item, seller, false);
         if (canUseDebt) {
-            price += getMinBalance();
+            price += getMinBalance()+ playerDebt;
         }
         if (getGold() < price)
             return false;
@@ -76,11 +84,15 @@ public class ShopItemManager extends EntityHandler<Shop> {
     }
 
     private Integer getMinBalance() {
-        return getEntity().getMinBalance() + playerBalance;
+        int max = getEntity().getMinBalance();
+        max+= max*(getEntity().getReputation())/100;
+        return  max ;
     }
 
     private Integer getMaxDebt() {
-        return getEntity().getMaxDebt() - playerBalance;
+        int max = getEntity().getMaxDebt();
+        max+= max*(getEntity().getReputation())/100;
+        return max;
     }
 
     public void stockItems(int spareGoldPercentage) {
@@ -123,7 +135,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
                 return false;
             }
         DC_HeroItemObj item = createItem(t);
-        itemBought(item, cost);
+        itemBought(item, cost, null );
         return true;
     }
 
@@ -159,7 +171,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             int n = Math.round(RandomWizard.getRandomFloat() * timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
             for (int i = 0; i < n; i++) {
                 DC_HeroItemObj item = createItem(itemType);
-                itemBought(item, 0);
+                itemBought(item, 0, null );
             }
             //         TODO    itemType = DataManager.getType(ItemMaster.TORCH, DC_TYPE.ITEMS);
             //            List<ObjType> pool = constructPool(itemType);
@@ -188,30 +200,55 @@ public class ShopItemManager extends EntityHandler<Shop> {
 
     public Integer sellItemTo(DC_HeroItemObj t, Unit seller) {
         Integer price = getPrice(t, seller, false);
-        itemBought(t, price);
-
-        //                    hero.modifyParameter(PARAMS.GOLD, -price); all gold is handled by ShopItemManager!
         priceCache.put(t.getId(), price);
+
+        int balanceChange = itemBought(t, price, seller);
+        price -= balanceChange;
+        seller.modifyParameter(PARAMS.GOLD, price);
         return price;
     }
 
-    protected void itemBought(DC_HeroItemObj itemObj, int cost) {
-        givesGold(cost);
+    protected int itemBought(DC_HeroItemObj itemObj, int cost, Unit hero) {
         items.add(itemObj);
         itemObj.setContainer(CONTAINER.SHOP);
+        return givesGold(cost, hero );
     }
 
 
-    protected void givesGold(int cost) {
+    protected int givesGold(int cost, Unit hero) {
         Integer gold = getGold();
+        int balanceChange = 0;
         if (gold < cost) {
-            int balanceChange = cost - gold;
-            playerBalance += balanceChange;
-            //notify
+            if (hero != null) {
+                if (playerDebt < 0) {
+                    balanceChange = gold -  cost;
+                }
+                playerDebt +=gold -  cost;
+                //notify
+            }
             setParam(PARAMS.GOLD, 0);
         } else {
+            if (hero != null) {
+                if (playerDebt>0){
+                    balanceChange = Math.min(cost, playerDebt);
+                }
+                playerDebt -=balanceChange;
+                cost -= balanceChange;
+            }
             getEntity().modifyParameter(PARAMS.GOLD, -cost);
         }
+        if (hero!=null )
+        {
+            int paid = Math.min(gold, cost);
+            hero.addParam(PARAMS.GOLD, paid);
+        }
+        return balanceChange;
+    }
+    protected void takesGold(int cost, Unit buyer) {
+        int paid = Math.min(cost, buyer.getIntParam(PARAMS.GOLD));
+        buyer.modifyParameter(PARAMS.GOLD, -paid);
+        getEntity().modifyParameter(PARAMS.GOLD, paid);
+        playerDebt +=cost - paid  ;
     }
 
     public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean buy) {
@@ -229,21 +266,20 @@ public class ShopItemManager extends EntityHandler<Shop> {
         int i = 1;
         if (buy)
             i = -1;
-        price = MathMaster.addFactor(price, i * getIntParam(PARAMS.GOLD_COST_REDUCTION));
+        price = MathMaster.addFactor(price, i * getCostMod());
         price = MathMaster.addFactor(price, -i * unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));
         return price;
     }
 
-    public Map<Integer, Integer> getPriceCache() {
-        return priceCache;
+    private int getCostMod() {
+        Integer reduction = getIntParam(PARAMS.GOLD_COST_REDUCTION);
+        reduction+= reduction*(getIntParam(MACRO_PARAMS.REPUTATION)-100) /100  ;
+        reduction+= reduction*(getEntity().getTown().getReputation()-100)/100;
+        return reduction;
     }
 
-
-    protected void takesGold(int cost, Unit buyer) {
-        int paid = Math.min(cost, buyer.getIntParam(PARAMS.GOLD));
-        buyer.modifyParameter(PARAMS.GOLD, -paid);
-        getEntity().modifyParameter(PARAMS.GOLD, paid);
-        playerBalance += paid - cost;
+    public Map<Integer, Integer> getPriceCache() {
+        return priceCache;
     }
 
 
@@ -274,6 +310,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
              ShopMaster.getBaseGoldIncome(getEntity()), true);
         }
         initPriceCache();
+        initItems();
         initDone = true;
     }
 
@@ -309,6 +346,17 @@ public class ShopItemManager extends EntityHandler<Shop> {
             Integer price = priceCache.get(id);
             priceCacheMax.put(id, price);
         }
+        addInterest();
+        getEntity().setParam(MACRO_PARAMS.BALANCE , playerDebt);
+    }
+
+    private void addInterest() {
+        if (playerDebt >0){
+            Integer interest = getEntity().getIntParam(MACRO_PARAMS.DEBT_INTEREST);
+            playerDebt = playerDebt *interest/100;
+        }
+
+
     }
 
     private void initPriceCache() {
@@ -343,4 +391,38 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return getEntity().getShopType();
     }
 
+    public void handleDebt() {
+        if (playerDebt ==0)
+            return;
+        Unit hero = Eidolons.getMainHero();
+        int transferred = 0;
+        boolean ok = false;
+        boolean gives = false;
+        if (playerDebt > 0) {
+            transferred = Math.min(Math.abs(playerDebt), hero.getGold());
+            takesGold(transferred, hero);
+        } else {
+            transferred = Math.min(Math.abs(playerDebt), getGold());
+            givesGold(transferred, hero);
+            gives = true;
+        }
+        if (transferred>0){
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
+        } else {
+            return;
+        }
+        ok = playerDebt ==0;
+        String message = ShopTransactions.getDebtHandleMessage(getEntity(),
+         ok, gives, transferred, playerDebt);
+
+        if (!ok) {
+            if (!gives) {
+                addInterest();
+                getEntity().getTown().reputationImpact(-15);
+            }
+        }
+        //reputation impact?!
+
+        EUtils.info(message, true);
+    }
 }

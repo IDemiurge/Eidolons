@@ -222,6 +222,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
+        if (isWall())
+            return true;
         if (this instanceof Door) {
             return true;
         }

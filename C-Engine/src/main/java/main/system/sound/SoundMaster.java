@@ -350,7 +350,10 @@ public class SoundMaster {
         , NEW__CONTAINER,
         NEW__PLUS,
 
-        NEW__OPEN_MENU, NEW__GOLD, NEW__OK, NEW__DEFEAT, NEW__VICTORY;
+        NEW__OPEN_MENU, NEW__GOLD, NEW__OK, NEW__DEFEAT, NEW__VICTORY
+        , NEW__BATTLE_END
+        , NEW__BATTLE_END2,
+        NEW__QUEST_TAKEN, NEW__QUEST_CANCELLED, NEW__QUEST_COMPLETED;
         String path;
         private boolean alt;
 

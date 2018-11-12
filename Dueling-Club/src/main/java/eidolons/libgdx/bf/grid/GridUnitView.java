@@ -14,6 +14,7 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.tooltips.Tooltip;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -22,15 +23,25 @@ import java.util.function.Supplier;
 
 public class GridUnitView extends GenericGridView {
 
-    private   LabelX debugInfo;
     protected QueueView initiativeQueueUnitView;
+    private LabelX debugInfo;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
         initQueueView(o);
         if (AiBehaviorManager.TEST_MODE)
-        addActor( debugInfo = new LabelX(
-          "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
+            addActor(debugInfo = new LabelX(
+             "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
+                @Override
+                public void draw(Batch batch, float parentAlpha) {
+                    if (parentAlpha == ShaderMaster.SUPER_DRAW) {
+                        super.draw(batch, 1);
+                    } else {
+                        ShaderMaster.drawWithCustomShader(this,
+                         batch, null);
+                    }
+                }
+            });
     }
 
     @Override
@@ -48,7 +59,7 @@ public class GridUnitView extends GenericGridView {
                 //color for enabled
                 AiBehavior behavior = ((Unit) getUserObject()).getAI().getExploreAI().getActiveBehavior();
                 debugInfo.setText(behavior.getType()
-                +":\n " +behavior.getDebugInfo());
+                 + ":\n " + behavior.getDebugInfo());
             }
             debugInfo.setVisible(true);
             debugInfo.pack();
@@ -57,34 +68,9 @@ public class GridUnitView extends GenericGridView {
             debugInfo.setVisible(false);
         }
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (mainHero) {
-            //TODO so we still have this issue when the hero is drawn on 0-0 momentarily when they start/end moving...
-
-//            Vector2 assumed = GridMaster.getCenteredPos(getUserObject().getCoordinates());
-//            if (getActionsOfClass(MoveByActionLimited.class).size > 0) {
-                //set pos, don't draw
-//                Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
-//                if (pos.dst(assumed)
-//                 > 128) {
-//                    setPosition(assumed.x, assumed.y);
-//                    return;
-//                }
-            } else {
-//               Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
-//                if (pos.dst(assumed)
-//                 > 256) {
-//                    main.system.auxiliary.log.LogMaster.log(1,"PC VIEW IS MISPLACED AT " +pos);
-//                    ExceptionMaster.printStackTrace(new RuntimeException("PC VIEW IS MISPLACED AT " +pos));
-//                    getParent(). setTransform(true);
-//                    pos = stageToLocalCoordinates(new Vector2(assumed.x , assumed.y ));
-//                    setPosition(pos.x, pos.y);
-//                    return;
-//                }
-//            }
-
-        }
         super.draw(batch, parentAlpha);
     }
 
@@ -226,8 +212,8 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void validateArrowRotation() {
-        if (arrow.getRotation()!=arrowRotation){
-             updateRotation(arrowRotation-ARROW_ROTATION_OFFSET);
+        if (arrow.getRotation() != arrowRotation) {
+            updateRotation(arrowRotation - ARROW_ROTATION_OFFSET);
         }
     }
 }

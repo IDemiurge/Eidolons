@@ -55,14 +55,12 @@ import java.util.List;
 public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer {
     private final TablePanelX header;
     private final StashPanel stashPanel;
-    private   SmartButton help;
+    private SmartButton help;
     private GroupX stashContainer;
     private boolean stashOpen;
     private SmartButton repairButton;
+    private ValueContainer debtLabel;
 
-    public void update() {
-        setUserObject(getUserObject());
-    }
     public ShopPanel() {
         super();
         GuiEventManager.bind(GuiEventType.UPDATE_SHOP, p ->
@@ -83,8 +81,8 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
          }, new Vector2(-50, 52)));
 
         String header = "Shop controls:";
-        String on= DragManager.isOff() ? "OFF": "ON";
-        String info= "\n**Drag'n'drop is [" +
+        String on = DragManager.isOff() ? "OFF" : "ON";
+        String info = "\n**Drag'n'drop is [" +
          on +
          "]**\n" +
          "[Right click]: unequip, buy or sell\n" +
@@ -94,20 +92,25 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         if (true) {
             help = new SmartButton(STD_BUTTON.HELP, () -> {
                 EUtils.onConfirm(
-                info, false, ()-> { });
+                 info, false, () -> {
+                 });
             });
             addActor(help);
             help.setPosition(GDX.centerWidth(help), 50);
         } else {
-        ValueContainer controls = new ValueContainer(
-         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
-         header,
-        info);
-      GroupX  container = HideDecorator.decorate(true,   DIRECTION.UP_RIGHT, controls);
-         addActor(container);
+            ValueContainer controls = new ValueContainer(
+             StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
+             header,
+             info);
+            GroupX container = HideDecorator.decorate(true, DIRECTION.UP_RIGHT, controls);
+            addActor(container);
             container.setPosition(GDX.centerWidth(container), 100);
         }
 
+    }
+
+    public void update() {
+        setUserObject(getUserObject());
     }
 
     protected int getDefaultHeight() {
@@ -120,8 +123,9 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     @Override
     public void setItem(SelectableItemData sub) {
-        update((Shop) sub.getEntity());
-
+        Shop shop=(Shop) sub.getEntity();
+        update(shop);
+        shop.enter();
     }
 
     private void update(Shop shop) {
@@ -136,7 +140,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     protected InventorySlotsPanel createContainerSlots() {
         return new ShopSlotsPanel(getContainerRowCount(),
-         getContainerColumnCount()) ;
+         getContainerColumnCount());
     }
 
     protected TablePanel createInventory() {
@@ -161,10 +165,10 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         super.layout();
 
         header.setPosition(
-         containerSlotsPanel.getX() + (containerSlotsPanel.getWidth()-header.getWidth())+11,
-//         GdxMaster.right(header) - NINE_PATCH_PADDING.SAURON.right*3+5,
-         containerSlotsPanel.getY() + containerSlotsPanel.getHeight()+10
-//         getHeight() - header.getHeight() / 2- Math.max(1130-GdxMaster.getHeight(), 45 )
+         containerSlotsPanel.getX() + (containerSlotsPanel.getWidth() - header.getWidth()) + 11,
+         //         GdxMaster.right(header) - NINE_PATCH_PADDING.SAURON.right*3+5,
+         containerSlotsPanel.getY() + containerSlotsPanel.getHeight() + 10
+         //         getHeight() - header.getHeight() / 2- Math.max(1130-GdxMaster.getHeight(), 45 )
         );
 
 
@@ -172,9 +176,9 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         containerSlotsPanel.setBackground(new TextureRegionDrawable(bg));
         containerSlotsPanel.setSize(bg.getRegionWidth(), bg.getRegionHeight());
 
-        help.setPosition(GDX.centerWidth(help)+100, 50);
+        help.setPosition(GDX.centerWidth(help) + 100, 50);
         if (stashContainer != null) {
-            stashContainer.setY(header.getY() - stashContainer.getHeight() -  45);
+            stashContainer.setY(header.getY() - stashContainer.getHeight() - 45);
             stashContainer.setX(GdxMaster.centerWidth(stashContainer) - 245);
             //            stashPanel.setY(header.getY() - stashPanel.getHeight() - 150);
             //            stashPanel.setX(GdxMaster.centerWidth(stashPanel) - 300);
@@ -185,12 +189,19 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     @Override
     protected Cell<Table> initLowerTable() {
-        Cell<Table> table = super.initLowerTable();//.width(getWidth()).fillX().growX().space(100);
+        Cell<Table> table = super.initLowerTable();
         weightLabel2.setImage(Images.SHOP_PRICES);
         weightLabel2.overrideImageSize(51, 40);
-        table.getActor().add(repairButton =
+        //.width(getWidth()).fillX().growX().space(100);
+        TablePanelX<Actor> rightMost = new TablePanelX<>();
+
+        debtLabel = new ValueContainer("Debt:", "");
+        rightMost.add(debtLabel);
+        rightMost.row();
+        rightMost.add(repairButton =
          new SmartButton(STD_BUTTON.REPAIR, () -> getUserObject().getHandler().askRepair()));
         //selective repair => hammer cursor!
+        table.getActor().add(rightMost);
         return table;
     }
 
@@ -221,13 +232,17 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     protected void update(InventoryDataSource invData, ContainerDataSource containerData) {
         Pair<InventoryDataSource, ContainerDataSource> param = new ImmutablePair<>(invData, containerData);
         setUserObject(containerData);
-//        inventory.setUserObject(invData); we don't do that here...
+        //        inventory.setUserObject(invData); we don't do that here...
 
         if (containerSlotsPanel.getListeners().size > 0)
             inventory.addListener(containerSlotsPanel.getListeners().first());
 
         updateUpperTable(param);
         updateLowerTable(param);
+
+        debtLabel.setValueText(getUserObject().getDebtInfo());
+        debtLabel.clearListeners();
+        debtLabel.addListener(new ValueTooltip(getUserObject().getDebtTooltip()).getController());
     }
 
     @Override
@@ -244,6 +259,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
          "You are charged " + weightLabel2.getValueText() + " of the price").getController());
         weightLabel2.setColor(param.getValue().getPricesColor());
         goldLabel2.setValueText(param.getValue().getGoldInfo());
+
 
     }
 
@@ -298,6 +314,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         protected CELL_TYPE getCellType() {
             return CELL_TYPE.CONTAINER;
         }
+
         @Override
         protected List<InvItemActor> getSlotActors() {
             return ShopPanel.this.getUserObject().getShopSlots();

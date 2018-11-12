@@ -2,9 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.RestoredDungeonLevel;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -122,12 +120,9 @@ public class RngLevelInitializer {
         //just write into new xml?
         if (value == null)
             return;
-        if (!isCellTranslated(value))
-            return;
+
         ObjType type = chooseType(c, value, block);
         if (type == null) {
-            main.system.auxiliary.log.LogMaster.log(1, value + " at " + c +
-                    " can't be translated to obj!");
             return;
         }
         if (EntityCheckMaster.isOverlaying(type)) {
@@ -138,40 +133,6 @@ public class RngLevelInitializer {
                 " translated to obj: " + type);
     }
 
-
-    private boolean isCellTranslated(ROOM_CELL value) {
-        switch (value) {
-            case VOID:
-            case TRAP:
-            case GUARDS:
-            case PATROL:
-            case AMBUSH:
-            case CROWD:
-            case IDLERS:
-            case STALKER:
-            case MINI_BOSS:
-            case BOSS:
-            case LOCAL_KEY:
-            case GLOBAL_KEY:
-            case RANDOM_PASSAGE:
-            case RANDOM_SPAWN_GROUP:
-            case RANDOM_OBJECT:
-            case FLOOR:
-            case ROOM_EXIT:
-            case TREASURE_ROOM:
-            case THRONE_ROOM:
-            case DEATH_ROOM:
-            case GUARD_ROOM:
-            case COMMON_ROOM:
-            case EXIT_ROOM:
-            case SECRET_ROOM:
-            case ENTRANCE_ROOM:
-            case CORRIDOR:
-                return false;
-
-        }
-        return true;
-    }
 
     private void clear(LevelBlock block, Coordinates coordinates) {
         dungeonLevel.getObjects().removeIf(at -> at.getCoordinates().equals(coordinates));

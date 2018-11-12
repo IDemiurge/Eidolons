@@ -32,7 +32,7 @@ public class StatsPanel extends TablePanel {
                 for (int x = 0; x < 2; x++) {
                     if (iter.hasNext()) {
                         ValueContainer next = iter.next();
-                        next.setBorder(getOrCreateR("UI/components/ninepatch/std/background_3px_border.png"), false);
+                        next.setBorder(getOrCreateR("ui/components/ninepatch/std/background_3px_border.png"), false);
                         next.cropName();
                         next.setNameAlignment(Align.left);
                         next.setValueAlignment(Align.right);

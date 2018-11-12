@@ -17,9 +17,9 @@ public class MicroObj extends Obj {
     protected int y;
     protected Coordinates coordinates;
     protected boolean overlaying;
-    private int z;
-    private Boolean overlayingInitialized; //for performance
-    private Coordinates originalCoordinates;
+    protected int z;
+    protected Boolean overlayingInitialized; //for performance
+    protected Coordinates originalCoordinates;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -64,6 +64,10 @@ public class MicroObj extends Obj {
 
     public void setCoordinates(Coordinates coordinates) {
         if (this.coordinates == null) {
+            if (coordinates.x == 0)
+                if (coordinates.y == 0) {
+                    return;
+                }
             originalCoordinates = coordinates;
         }
         this.coordinates = coordinates;

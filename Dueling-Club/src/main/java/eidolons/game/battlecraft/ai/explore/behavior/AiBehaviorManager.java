@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
@@ -24,7 +25,8 @@ import java.util.*;
  */
 public class AiBehaviorManager extends AiHandler {
 
-    public static final AI_BEHAVIOR_MODE TESTED = AI_BEHAVIOR_MODE.PATROL; // AI_BEHAVIOR_MODE.WANDER;
+    public static final AI_BEHAVIOR_MODE TESTED = AI_BEHAVIOR_MODE.PATROL;
+    private static final UNIT_GROUP_TYPE TESTED_GROUP = UNIT_GROUP_TYPE.PATROL;
     public static final boolean TEST_MODE = TESTED!=null ;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
@@ -88,7 +90,8 @@ public class AiBehaviorManager extends AiHandler {
                     }
                 }
             } catch (Exception e) {
-                groups.remove(group);
+                if (!TEST_MODE)
+                    groups.remove(group);
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
@@ -101,10 +104,10 @@ public class AiBehaviorManager extends AiHandler {
             master.setUnit(unit);
             UnitExploreAI ai = unit.getAI().getExploreAI();
             for (AiBehavior behavior : ai.getBehaviors()) {
-                if (!isUpdated(behavior))
-                    return false;
+                if (!isUpdated(ai, behavior))
+                    continue;
                 if (!behavior.update())
-                    return false; //unit is not ready to act
+                    continue;//unit is not ready to act
 
                 if (testMode) {
                     unit.setPlayerVisionStatus(PLAYER_VISION.DETECTED);
@@ -121,7 +124,7 @@ public class AiBehaviorManager extends AiHandler {
                     return true;
                 } else {
                     behavior.queueNextAction();
-                    return false;
+                    continue;
                 }
             }
         }
@@ -129,8 +132,9 @@ public class AiBehaviorManager extends AiHandler {
         return false;
     }
 
-    private boolean isUpdated(AiBehavior behavior) {
-
+    private boolean isUpdated(UnitExploreAI ai, AiBehavior behavior) {
+if (ai.isBehaviorOff())
+    return false;
         return true;
     }
 
@@ -152,16 +156,20 @@ public class AiBehaviorManager extends AiHandler {
 
     private List<AiBehavior> createBehaviors(UnitAI ai) {
         List<AiBehavior> behaviors = new ArrayList<>();
+
+        if (TEST_MODE) {
+            ai.getGroupAI().setType(TESTED_GROUP);
+            behaviors.add(new PatrolAi(master, ai));
+            return behaviors;
+        }
         if (ai.getGroupAI() == null) {
             behaviors.add(new WanderAi(master, ai));
             return behaviors;
         }
         switch (ai.getGroupAI().getType()) {
             case PATROL:
-                if (TEST_MODE) {
                     behaviors.add(new PatrolAi(master, ai));
                     break;
-                }
             case GUARDS:
             case BOSS:
                 behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));

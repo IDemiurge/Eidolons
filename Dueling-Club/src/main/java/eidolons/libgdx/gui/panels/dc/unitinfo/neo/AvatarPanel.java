@@ -27,15 +27,15 @@ public class AvatarPanel extends TablePanelX {
         row();
 
         nameLabel = new Label("", StyleHolder.getHqLabelStyle(19));
-        addElement(nameLabel).uniformX().center().expand();
+        addElement(nameLabel).uniformX().center();
         row();
 
         param1Label = new Label("", StyleHolder.getHqLabelStyle(18));
-        addElement(param1Label).uniformX().center().expand();
+        addElement(param1Label).uniformX().center();//.expand();
         row();
 
         param2Label = new Label("", StyleHolder.getHqLabelStyle(18));
-        addElement(param2Label).uniformX().center().expand();
+        addElement(param2Label).uniformX().center() ;
         pack();
     }
 

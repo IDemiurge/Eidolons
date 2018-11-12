@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class TextureManager {
     public static final int CELL_TEXTURE_ID = 1;
-    private static final String emptyCellPath = "UI/cells/Empty Cell v3.png";
+    private static final String emptyCellPath = "ui/cells/Empty Cell v3.png";
     //    public static final int CELL_SHADOW_TEXTURE_ID = 1;
 //    public static final int CELL_SHADE_TEXTURE_ID = 1;
 //    public static final int CELL_LIGHT_TEXTURE_ID = 1;

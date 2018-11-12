@@ -31,7 +31,7 @@ public class Place extends MapObj {
 
         }
         if (!checkProperty(MACRO_PROPS.MAP_ICON)) {
-            setProperty(MACRO_PROPS.MAP_ICON, "UI/macro/sign.png", true);
+            setProperty(MACRO_PROPS.MAP_ICON, "ui/macro/sign.png", true);
         }
     }
 

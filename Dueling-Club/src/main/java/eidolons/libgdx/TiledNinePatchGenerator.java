@@ -223,9 +223,11 @@ public class TiledNinePatchGenerator implements ApplicationListener {
                                                BACKGROUND_NINE_PATCH background,
                                                int w, int h,
                                                boolean fillWithBlack) {
-        Texture texture = TextureCache.getOrCreate(getPath(ninePatch, background, w, h));
+        String path = getPath(ninePatch, background, w, h);
+        Texture texture = TextureCache.getOrCreate(path, true);
         if (texture != null && texture != TextureCache.getEmptyTexture())
             return texture;
+        main.system.auxiliary.log.LogMaster.log(1,"NinePatch generated " + path );
         return generate(ninePatch, background, w, h,
          fillWithBlack);
     }

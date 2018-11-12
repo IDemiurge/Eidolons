@@ -38,6 +38,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
@@ -77,6 +78,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         super(type, owner, game, ref);
         this.x = x;
         this.y = y;
+        setCoordinates(Coordinates.get(x, y));
+        originalCoordinates = getCoordinates();
         if (this.game == null) {
             setGame(game);
         }

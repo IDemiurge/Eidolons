@@ -67,6 +67,7 @@ public class OptionsMaster {
     private static OptionsPanelSwing optionsPanel;
     private static boolean initialized;
     private static JDialog modalOptionsPanelFrame;
+    private static String optionsPath;
 
     private static void applyAnimOptions(AnimationOptions animOptions) {
 
@@ -173,7 +174,6 @@ public class OptionsMaster {
               gameplayOptions.getValues().get(sub).toString());
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
             String value = gameplayOptions.getValue(key);
-            if (!NumberUtils.isInteger(value)) {
                 switch (key) {
                     case GAME_SPEED:
                         try {
@@ -201,7 +201,6 @@ public class OptionsMaster {
                                 Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
                         break;
                 }
-            }
         }
     }
 
@@ -454,10 +453,17 @@ public class OptionsMaster {
             content.append(XML_Converter.closeXml(sub.toString()) + StringMaster.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
-        FileManager.write(content.toString(), getOptionsPath());
+        FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
+        FileManager.write(content.toString(), getGlobalOptionsPath());
     }
 
-    private static String getOptionsPath() {
+    private static String getGlobalOptionsPath() {
+        if (optionsPath!=null )
+            return optionsPath;
+        return PathFinder.OPTIONS_PATH+ "options.xml";
+    }
+
+    private static String getLocalOptionsPath() {
         return PathFinder.getXML_PATH() + "options.xml";
     }
 
@@ -537,10 +543,16 @@ public class OptionsMaster {
         return options;
     }
 
+    private static boolean isLocalOptionsPreferred() {
+        return CoreEngine.isMe() && CoreEngine.isJar();
+    }
     public static void init() {
         if (initialized)
             return;
-        String data = FileManager.readFile(getOptionsPath());
+        String data = FileManager.readFile(getGlobalOptionsPath());
+        if (data.isEmpty()  || isLocalOptionsPreferred()) {
+            data = FileManager.readFile(getLocalOptionsPath());
+        }
         if (data.isEmpty()) {
             optionsMap = initDefaults();
         } else {
@@ -562,6 +574,7 @@ public class OptionsMaster {
         }
 
     }
+
 
     private static void addMissingDefaults(Map<OPTIONS_GROUP, Options> optionsMap) {
 
@@ -746,6 +759,14 @@ public class OptionsMaster {
 
     public static Map<OPTIONS_GROUP, Options> getOptionsMap() {
         return optionsMap;
+    }
+
+    public static void setOptionsPath(String optionsPath) {
+        OptionsMaster.optionsPath = optionsPath;
+    }
+
+    public static String getOptionsPath() {
+        return optionsPath;
     }
 
 

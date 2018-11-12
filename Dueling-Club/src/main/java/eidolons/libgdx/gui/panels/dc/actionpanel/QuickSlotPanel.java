@@ -34,7 +34,7 @@ public class QuickSlotPanel extends BaseSlotPanel {
             if (sources.size() > i) {
                 valueContainer = sources.get(i);
 //                if (page == null)
-//                    emptyImagePath = ("UI/empty_pack.jpg");
+//                    emptyImagePath = ("ui/empty_pack.jpg");
             }
             addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
         }

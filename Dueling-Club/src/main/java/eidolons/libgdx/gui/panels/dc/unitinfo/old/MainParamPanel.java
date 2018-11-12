@@ -45,7 +45,7 @@ public class MainParamPanel extends TablePanel {
 
     private void addAttributeContainer(String sub) {
         ValueContainer container = new ValueContainer(
-         getOrCreateR("UI/value icons/attributes/" + sub +
+         getOrCreateR("ui/value icons/attributes/" + sub +
           ".png"), StringMaster.getWellFormattedString(sub), "");
         container.overrideImageSize(
          UiMaster.getSmallIconSize(), UiMaster.getSmallIconSize());

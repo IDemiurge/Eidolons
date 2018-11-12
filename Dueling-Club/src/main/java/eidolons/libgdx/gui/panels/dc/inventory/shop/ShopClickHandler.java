@@ -181,19 +181,22 @@ public class ShopClickHandler extends ContainerClickHandler {
             case UNSTASH:
                 return checkCanAddInventory();
             case SELL:
-//                if (!getShop().canSellTo(item, dataMaster.getHeroModel(), false)) {
-//                    if (getShop().canSellTo(item, dataMaster.getHeroModel(), true)) {
-//                        if (ShopTransactions.confirmSell())
-//                            return true;
-//                    }
-//                    GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-//                     "Shopkeeper cannot afford to buy this!");
-//                    return false;
-//                }
-//                return true;
+                //                if (!getShop().canSellTo(item, dataMaster.getHeroModel(), false)) {
+                //                    if (getShop().canSellTo(item, dataMaster.getHeroModel(), true)) {
+                //                        if (ShopTransactions.confirmSell())
+                //                            return true;
+                //                    }
+                //                    GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+                //                     "Shopkeeper cannot afford to buy this!");
+                //                    return false;
+                //                }
+                //                return true;
             case BUY:
                 boolean heroBuys = operation == OPERATIONS.BUY;
-                int debt =Math.abs( getShop().getBalanceForBuy(item, dataMaster.getHeroModel(), heroBuys));
+                int debt = getShop().getBalanceForBuy(item, dataMaster.getHeroModel(), heroBuys);
+                if (debt < 0) {
+                    debt = Math.abs(debt);
+                } else debt = 0;
                 int max = heroBuys ? shop.getMaxDebt() : shop.getMinBalance();
                 if (debt > 0) {
                     if (debt < Math.abs(max)) {
@@ -202,7 +205,7 @@ public class ShopClickHandler extends ContainerClickHandler {
                     }
                     GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
                      heroBuys ? "You cannot afford to buy this!"
-                    : "Shopkeeper cannot afford to buy this!");
+                      : "Shopkeeper cannot afford to buy this!");
                     return false;
                 }
                 return true;

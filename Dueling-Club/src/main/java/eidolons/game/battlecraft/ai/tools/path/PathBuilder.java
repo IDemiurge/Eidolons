@@ -350,11 +350,11 @@ public class PathBuilder extends AiHandler {
     private Integer getPathPriority() {
         Costs cost = getPathCosts(path);
         int result = getPriorityManager().getCostFactor(cost, unit);
-//        try {
+        //        try {
         // result += getAoOPenalty(); TODO instant atks preCheck !
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
+        //        } catch (Exception e) {
+        //            main.system.ExceptionMaster.printStackTrace(e);
+        //        }
         int size = path.getActions().size();
         result = result
          * getParamAnalyzer().getActionNumberFactor(size) / 100;
@@ -409,18 +409,13 @@ public class PathBuilder extends AiHandler {
         this.timeLimit = timeLimit;
         return this;
     }
-@Deprecated
-    public PathBuilder getInstance(Unit source) {
-        PathBuilder clone = new PathBuilder(new AiMaster(game));
-        clone.setUnit(source);
-        return clone;
-    }
 
-    public void setUnit(Unit unit) {
+    public void init(Unit unit, List<DC_ActiveObj> moveActions, Action targetAction) {
         this.unit = unit;
         if (targetAction == null) {
             targetAction = new Action(unit.getTurnAction(true));
         }
-        init(unit.getMoveActions(), targetAction);
+        init(moveActions, targetAction);
+
     }
 }

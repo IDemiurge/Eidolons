@@ -288,6 +288,10 @@ public class DefaultActionHandler {
     private static boolean doDebugStuff(Unit source, BattleFieldObject target) {
         target.getGame().getVisionMaster().getVisionController().log(source, target);
         target.getGame().getVisionMaster().getVisionController().logFor(target);
+
+        if (target instanceof Unit){
+            ((Unit) target).getAI().getExploreAI().toggleGroupBehaviorOff();
+        }
         return false;
     }
 
