@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
@@ -10,6 +11,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltip;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.texture.TextureCache;
+import main.entity.Entity;
 import main.entity.obj.ActiveObj;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class InfoAttackRadial extends QuickAttackRadial {
 
     public InfoAttackRadial(UnitInfoWeapon panel, boolean offhand) {
         super(panel, offhand);
+        closeButton.setVisible(false);
 
     }
 
@@ -46,10 +49,36 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     @Override
+    protected void setCurrentNode(RadialValueContainer node) {
+        super.setCurrentNode(node);
+    }
+
+    @Override
+    protected String getCloseNodePath() {
+        return super.getCloseNodePath();
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return super.hit(x, y, touchable);
+    }
+
+    @Override
+    public void hover(Entity entity) {
+        super.hover(entity);
+    }
+
+    @Override
+    public void hoverOff(Entity entity) {
+        super.hoverOff(entity);
+    }
+
+    @Override
     public void open() {
         currentNode.setChildVisible(true);
         setVisible(true);
         updatePosition();
+        closeButton.setVisible(false);
     }
 
     @Override
@@ -75,7 +104,7 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     protected double getRadiusBase() {
-        return 112;
+        return 102;
     }
     @Override
     protected Vector2 getInitialPosition() {

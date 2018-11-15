@@ -1,5 +1,6 @@
 package eidolons.libgdx.texture;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -415,13 +416,17 @@ public class TextureCache {
             } catch (Exception e) {
 
             }
-        if (t == null)
+        if (t == null) {
+            FileHandle fullPath = GDX.file(filePath);
+            if (fullPath.exists())
             try {
-                t = new Texture(GDX.file(filePath), Pixmap.Format.RGBA8888, false);
+                t = new Texture(fullPath, Pixmap.Format.RGBA8888, false);
                 if (putIntoCache) {
                     cache.put(path, t);
                 }
             } catch (Exception e) {
+            }
+            if (t == null) {
                 if (!recursion) {
                     if (path.contains(".png"))
                         return _createTexture(path.replace(".png", ".jpg"), putIntoCache, true);
@@ -429,7 +434,7 @@ public class TextureCache {
                         return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
                 }
                 if (!silent)
-                    main.system.ExceptionMaster.printStackTrace(e);
+                   main.system.auxiliary.log.LogMaster.log(1,"No texture for " +fullPath);
                 if (!isReturnEmptyOnFail())
                     return null;
                 if (!cache.containsKey(getEmptyPath())) {
@@ -440,6 +445,7 @@ public class TextureCache {
                 return cache.get(getEmptyPath());
 
             }
+        }
         return t;
     }
 

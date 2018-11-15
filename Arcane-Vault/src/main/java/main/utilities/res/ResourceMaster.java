@@ -1,7 +1,7 @@
 package main.utilities.res;
 
-import main.content.DC_TYPE;
 import eidolons.content.PROPS;
+import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -23,22 +23,22 @@ import java.util.List;
 import java.util.Map;
 
 public class ResourceMaster {
-    private static final String  ignoredTypes = "chars;";
+    private static final String ignoredTypes = "chars;";
     private static final String ignoreGroupTypes = "encounters;dungeons;units;deities;";
-    private static final String  ignoreSubGroupTypes =
+    private static final String ignoreSubGroupTypes =
      "abils;actions;buffs;weapons;armor;actions;";
 
-//    ignore {} img path
-//    add item variants (generate if missing?)
+    //    ignore {} img path
+    //    add item variants (generate if missing?)
 
-    private static final PROPERTY[] props = {PROPS.MAP_BACKGROUND,G_PROPS.IMAGE, };
+    private static final PROPERTY[] props = {PROPS.MAP_BACKGROUND, G_PROPS.IMAGE,};
     private static final String UNUSED_FOLDER = "\\unused\\";
     private static final String USED_FOLDER = "entity";
-    private static String folderName = "gen";
-    private static Map<String, ObjType> map = new XLinkedMap<>();
     static boolean setProperty = true;
     static boolean useFirstEntityIfOverlap = true;
-    private static boolean writeUnused=false;
+    private static String folderName = "gen";
+    private static Map<String, ObjType> map = new XLinkedMap<>();
+    private static boolean writeUnused = false;
 
     public static void updateImagePaths() {
 
@@ -50,14 +50,14 @@ public class ResourceMaster {
 
     private static void updateImagePath(ObjType type) {
         for (PROPERTY prop : props) {
-            if (!type.checkProperty(prop))continue;
+            if (!type.checkProperty(prop)) continue;
             String path = getNewImagePath(prop, type);
             type.setProperty(prop, path);
         }
     }
 
     public static void createUpdatedArtDirectory() {
-//        Map<String, ObjType> map = new XLinkedMap<>();
+        //        Map<String, ObjType> map = new XLinkedMap<>();
         // String path;
         for (PROPERTY prop : props) {
             for (DC_TYPE t : DC_TYPE.values()) {
@@ -66,23 +66,24 @@ public class ResourceMaster {
                 for (ObjType type : DataManager.getTypes(t)) {
                     if (!type.checkProperty(prop))
                         continue;
-                try {
-                    writeAndUpdateImage(type, setProperty, prop, map);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+                    try {
+                        writeAndUpdateImage(type, setProperty, prop, map);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
                 }
             }
         }
-// unused
+        // unused
         if (!writeUnused)
-            return ;
+            return;
         for (File f : FileManager.getFilesFromDirectory
          (ImageManager.getImageFolderPath() + "mini\\", false,
-         true)) {
-            try {   if (!ImageManager.isImageFile(f.getName())) {
-                continue;
-            }
+          true)) {
+            try {
+                if (!ImageManager.isImageFile(f.getName())) {
+                    continue;
+                }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 continue;
@@ -131,41 +132,39 @@ public class ResourceMaster {
                                            Map<String, ObjType> map) {
 
 
-            String oldPath = type.getProperty(imgProp);
+        String oldPath = type.getProperty(imgProp);
         if (oldPath.contains(StringMaster.FORMULA_REF_OPEN_CHAR))
-            return ; // variable value!
+            return; // variable value!
 
-            String path = getNewImagePath(imgProp, type);
+        String path = getNewImagePath(imgProp, type);
         path = checkDuplicate(path, map);
         Entity cached = map.get(oldPath);
-            if (cached != null) {
-                if (useFirstEntityIfOverlap)
-                    path = getNewImagePath(imgProp, cached);
-                //else  ???
-            } else {
-                try {
-                    writeImage(oldPath, path);
-                    map.put(oldPath, type);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    return ;
-                }
+        if (cached != null) {
+            if (useFirstEntityIfOverlap)
+                path = getNewImagePath(imgProp, cached);
+            //else  ???
+        } else {
+            try {
+                writeImage(oldPath, path);
+                map.put(oldPath, type);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return;
             }
-            if (update) {
-                type.setProperty(imgProp, path);
-            }
+        }
+        if (update) {
+            type.setProperty(imgProp, path);
+        }
     }
 
     private static String checkDuplicate(String oldPath, Map<String, ObjType> map) {
-        for (String path: map.keySet()){
+        for (String path : map.keySet()) {
             if (StringMaster.getLastPathSegment(oldPath).equals(
-             StringMaster.getLastPathSegment(path)))
-            {
-                File f1 = FileManager.getFile(ImageManager.getImageFolderPath()+ oldPath);
-                File f2 = FileManager.getFile(ImageManager.getImageFolderPath()+path);
-                if (f1.length()==f2.length())
-                {
-                    oldPath= path;
+             StringMaster.getLastPathSegment(path))) {
+                File f1 = FileManager.getFile(ImageManager.getImageFolderPath() + oldPath);
+                File f2 = FileManager.getFile(ImageManager.getImageFolderPath() + path);
+                if (f1.length() == f2.length()) {
+                    oldPath = path;
                     break;
                 }
             }
@@ -177,7 +176,7 @@ public class ResourceMaster {
         File outputfile = FileManager.getFile(ImageManager.getImageFolderPath() + path);
         BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
         if (!ImageManager.isValidImage(bufferedImage)) {
-            throw new RuntimeException() ;
+            throw new RuntimeException();
         }
         try {
             if (!outputfile.isFile())
@@ -201,16 +200,16 @@ public class ResourceMaster {
         if (ignoreSubGroupTypes.contains(type.getOBJ_TYPE()))
             subgroup = "";
 
-        String propString=   imgProp.getName() + "\\";
-        if (imgProp==G_PROPS.IMAGE)
+        String propString = imgProp.getName() + "\\";
+        if (imgProp == G_PROPS.IMAGE)
             propString = "";
 
-        String typeName=type.getName().replace(":", "-");
-//        for (String s: XML_Writer.)
+        String typeName = type.getName().replace(":", "-");
+        //        for (String s: XML_Writer.)
 
-        return  folderName + "\\"
+        return folderName + "\\"
          + USED_FOLDER + "\\"
-        +propString
+         + propString
          + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + typeName + "."
          + getNewImageFormat()
          .toLowerCase();

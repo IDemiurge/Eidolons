@@ -75,6 +75,6 @@ public class ItemMaster {
     }
 
     public static boolean isGlovedFistOn() {
-        return false;
+        return true;
     }
 }

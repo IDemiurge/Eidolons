@@ -143,6 +143,9 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
 
     protected void unitDealtDamage(Unit source, Unit target, Integer amount) {
+        if (source==null || target==null ){
+            return;
+        }
         if (source.isEnemyTo(target.getOwner())) {
             modifyUnitStat(COMBAT_STATS.DAMAGE_DEALT_ENEMIES, source, amount);
         } else {

@@ -35,6 +35,8 @@ public class TexturePackerLaunch {
 
     public static final String TEST_WEAPONS_WORKSPACE =
      "Y:\\[Eidolons demos]\\weapons3d workspace//";
+    public static final String TEST_WEAPONS_OUTPUT =
+     "Y:\\[Eidolons demos]\\weapons3d lite//";
 
     static String packs[] = {
      //     "long swords",
@@ -156,23 +158,21 @@ public class TexturePackerLaunch {
             args =  FileManager.getFilesFromDirectory(TEST_WEAPONS_WORKSPACE, true).stream().map(
              file -> file.getName()). collect(Collectors.toList()) . toArray(new String[124]);
             WORKSPACE_PATH=TEST_WEAPONS_WORKSPACE;
-            outputDir = TEST_WEAPONS_WORKSPACE + "//atlas//";
+            outputDir = TEST_WEAPONS_OUTPUT;
         }
         for (String sub : args) {
-            String dir = POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH
-             + sub;
-            List<File> subFolders = FileManager.getFilesFromDirectory(dir, true);
+            String dir = POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH;
+            dir =  FileManager.formatPath(dir, true);
+            List<File> subFolders = FileManager.getFilesFromDirectory(dir + sub, true);
             boolean processed = false;
             for (File subFolder : subFolders) {
                 if (!subFolder.isDirectory())
                     continue;
-                String inputDir =
-                 //                 PathFinder.getWeaponAnimPath() + "workspace//"
-                 //                 + sub + "//" +
-                 subFolder.getPath();
+                String inputDir = subFolder.getPath();
                 String packFileName = subFolder.getName();
-
-                pack(inputDir, outputDir, packFileName);
+                inputDir =  FileManager.formatPath(inputDir, true);
+                String suffix = inputDir.replace(dir, "");
+                pack(inputDir, outputDir+"/"+suffix, packFileName);
                 processed = true;
             }
             if (!processed) {

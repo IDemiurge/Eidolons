@@ -33,7 +33,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
 //
         setSize(GdxMaster.getWidth() / 3 * 2, 64);
         TextButtonStyle style = StyleHolder.getTextButtonStyle(FONT.AVQ,
-         GdxColorMaster.GOLDEN_WHITE, 18);
+         GdxColorMaster.PALE_GOLD, 18);
         for (MAP_EDITOR_FUNCTION sub : MAP_EDITOR_FUNCTION.values()) {
             TextButton button = new TextButton(sub.name(), style);
             button.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));

@@ -22,8 +22,8 @@ public class ScenarioLauncher {
 
     public static void main(String[] args) {
         running = true;
-        if (args.length > 2)
-            DemoLauncher.initQuickLaunch();
+//        if (args.length > 2)
+//            DemoLauncher.initQuickLaunch();
 
 
         if (args.length > 1)
@@ -41,7 +41,7 @@ public class ScenarioLauncher {
 
     public static void launch(String typeName) {
         DC_Engine.jarInit();
-        DemoLauncher.main(null);
+        MainLauncher.main(null);
         DC_Engine.mainMenuInit();
 //        Eidolons.mainGame.getMetaMaster().preStart();
         master = new ScenarioMetaMaster(typeName);

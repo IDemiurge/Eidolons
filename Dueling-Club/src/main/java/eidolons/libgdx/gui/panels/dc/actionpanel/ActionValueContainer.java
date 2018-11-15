@@ -280,4 +280,8 @@ public class ActionValueContainer extends ValueContainer {
     public void setSize(float size) {
         this.size = size;
     }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
 }

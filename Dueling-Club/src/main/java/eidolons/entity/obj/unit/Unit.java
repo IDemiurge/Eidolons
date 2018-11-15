@@ -1,9 +1,6 @@
 package eidolons.entity.obj.unit;
 
-import eidolons.content.DC_ContentValsManager;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
-import eidolons.content.ValuePages;
+import eidolons.content.*;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -174,6 +171,14 @@ public class Unit extends DC_UnitModel {
     @Override
     public UnitHandler getHandler() {
         return (UnitHandler) super.getHandler();
+    }
+
+    @Override
+    public String getDescription() {
+        if (isHero()) {
+            return DescriptionMaster.getDescription(this);
+        }
+        return super.getDescription();
     }
 
     public void saveRanks(boolean skills) {

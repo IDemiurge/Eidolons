@@ -19,8 +19,9 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
-import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.particles.EmitterPools;
+import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.spell.SpellVfx;
+import eidolons.libgdx.particles.spell.SpellVfxPool;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.ability.effects.Effect;
@@ -55,11 +56,12 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
+    private static AnimationConstructor instance;
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private boolean autoconstruct = false;
     private VALUE[] anim_vals = {
-//     PROPS.ANIM_MODS,
-//
+     //     PROPS.ANIM_MODS,
+     //
      PROPS.ANIM_SPRITE_PRECAST,
      PROPS.ANIM_SPRITE_CAST,
      PROPS.ANIM_SPRITE_RESOLVE,
@@ -69,7 +71,7 @@ public class AnimationConstructor {
      PROPS.ANIM_MISSILE_SPRITE,
      PROPS.ANIM_MODS_SPRITE,
      PROPS.ANIM_MISSILE_VFX,
-//
+     //
      PROPS.ANIM_VFX_PRECAST,
      PROPS.ANIM_VFX_CAST,
      PROPS.ANIM_VFX_RESOLVE,
@@ -77,31 +79,30 @@ public class AnimationConstructor {
      PROPS.ANIM_VFX_IMPACT,
      PROPS.ANIM_VFX_AFTEREFFECT,
      PROPS.ANIM_MODS_VFX,
-//
-//
-//     PROPS.ANIM_SPRITE_COLOR,
-//     PROPS.ANIM_VFX_COLOR,
-//     PROPS.ANIM_LIGHT_COLOR,
-//
-//
-//     PROPS.ANIM_LIGHT_CAST,
-//     PROPS.ANIM_LIGHT_RESOLVE,
-//     PROPS.ANIM_LIGHT_MAIN,
-//     PROPS.ANIM_LIGHT_IMPACT,
-//     PROPS.ANIM_LIGHT_AFTEREFFECT,
-//
-//     PARAMS.ANIM_LIGHT_MISSILE,
-//     PARAMS.ANIM_LIGHT_CASTER,
-//     PARAMS.ANIM_LIGHT_TARGET,
-//
-//     PARAMS.ANIM_MAGNITUDE,
+     //
+     //
+     //     PROPS.ANIM_SPRITE_COLOR,
+     //     PROPS.ANIM_VFX_COLOR,
+     //     PROPS.ANIM_LIGHT_COLOR,
+     //
+     //
+     //     PROPS.ANIM_LIGHT_CAST,
+     //     PROPS.ANIM_LIGHT_RESOLVE,
+     //     PROPS.ANIM_LIGHT_MAIN,
+     //     PROPS.ANIM_LIGHT_IMPACT,
+     //     PROPS.ANIM_LIGHT_AFTEREFFECT,
+     //
+     //     PARAMS.ANIM_LIGHT_MISSILE,
+     //     PARAMS.ANIM_LIGHT_CASTER,
+     //     PARAMS.ANIM_LIGHT_TARGET,
+     //
+     //     PARAMS.ANIM_MAGNITUDE,
      PARAMS.ANIM_SPEED,
      PARAMS.ANIM_FRAME_DURATION,
-//     PARAMS.ANIM_SIZE,
+     //     PARAMS.ANIM_SIZE,
     };
     private boolean reconstruct = false;
     private boolean findClosestResource;
-    private static AnimationConstructor instance;
 
     private AnimationConstructor() {
 
@@ -118,7 +119,7 @@ public class AnimationConstructor {
             try {
                 int i = 0;
                 for (ANIM_PART part : ANIM_PART.values()) {
-                    data =   AnimationConstructor.getInstance().getStandardData(active, part, i);
+                    data = AnimationConstructor.getInstance().getStandardData(active, part, i);
                     for (ANIM_VALUES val : ANIM_VALUES.values()) {
                         String identifier;
 
@@ -130,13 +131,13 @@ public class AnimationConstructor {
                         switch (val) {
                             case PARTICLE_EFFECTS:
                                 identifier = "VFX";
-//                                getInstance().getPath(val)+ value
-//                                String vfxdata =  PathFinder.getVfxPath() +
-//                                String newPath = PathFinder.getVfxPath() + PathUtils.getPathSeparator() + "atlas" + PathUtils.getPathSeparator() + path;
-//                                FileManager.write(data, newPath);
-                                main.system.auxiliary.log.LogMaster.log(1,"PARTICLE_EFFECTS =" +
+                                //                                getInstance().getPath(val)+ value
+                                //                                String vfxdata =  PathFinder.getVfxPath() +
+                                //                                String newPath = PathFinder.getVfxPath() + PathUtils.getPathSeparator() + "atlas" + PathUtils.getPathSeparator() + path;
+                                //                                FileManager.write(data, newPath);
+                                main.system.auxiliary.log.LogMaster.log(1, "PARTICLE_EFFECTS =" +
                                  value +
-                                 " for " +type);
+                                 " for " + type);
                                 break;
                             case SPRITES:
                                 identifier = "SPRITE";
@@ -165,7 +166,7 @@ public class AnimationConstructor {
                                               boolean closest) {
         String path = PathUtils.buildPath(
          pathRoot, partPath);
-//        spell.getTargeting();
+        //        spell.getTargeting();
         String file = null;
         for (PROPERTY p : props) {
             String name = spell.getProperty(p);
@@ -185,16 +186,16 @@ public class AnimationConstructor {
                 break;
             }
         }
-//        if (file != null || closest || isPartIgnored(partPath))
+        //        if (file != null || closest || isPartIgnored(partPath))
 
         if (CoreEngine.isJar())
             System.out.println(pathRoot + " root; file found " + file);
         return file;
-//        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+        //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return   !CoreEngine.isIDE()  ;
+        return !CoreEngine.isIDE();
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
@@ -208,6 +209,13 @@ public class AnimationConstructor {
         return instance;
     }
 
+    public static void preconstruct(Unit unit) {
+        AnimationConstructor constructor = AnimationConstructor.getInstance();
+        unit.getActives().forEach(spell ->
+         constructor.getOrCreate(spell));
+        AnimMaster3d.preloadAtlases(unit);
+
+    }
 
     public void tryPreconstruct(Unit unit) {
         if (isPreconstructOn())
@@ -219,14 +227,22 @@ public class AnimationConstructor {
         return unit.getSpells().size() <= 3;
     }
 
-    public CompositeAnim getOrCreate(ActiveObj active) {
+    public CompositeAnim getCached(ActiveObj active) {
+        CompositeAnim anim = map.get(active);
+            if (anim != null) {
+                anim.reset();
+                return anim;
+            }
+        return anim;
+    }
+        public CompositeAnim getOrCreate(ActiveObj active) {
         if (active == null) {
             return null;
         }
         if (!checkAnimationSupported((DC_ActiveObj) active))
             return null;
         if (active instanceof DC_SpellObj) {
-            main.system.auxiliary.log.LogMaster.log(1,"Construct spell anim for: " +active);
+            main.system.auxiliary.log.LogMaster.log(1, "Construct spell anim for: " + active);
         }
         CompositeAnim anim = map.get(active);
         if (!isReconstruct()) {
@@ -262,14 +278,7 @@ public class AnimationConstructor {
                 }));
     }
 
-    public static void preconstruct(Unit unit) {
-        AnimationConstructor constructor = AnimationConstructor.getInstance();
-        unit.getActives().forEach(spell ->
-         constructor.getOrCreate(spell));
-        AnimMaster3d.preloadAtlases(unit);
-
-    }
-        public void preconstructAll(Unit unit) {
+    public void preconstructAll(Unit unit) {
         if (isPreconstructAllOnGameInit())
             if (GdxMaster.isLwjglThread()) {
                 unit.getActives().forEach(spell -> getOrCreate(spell));
@@ -292,10 +301,10 @@ public class AnimationConstructor {
     }
 
     private CompositeAnim construct(DC_ActiveObj active) {
-
+        active.construct(); // in case it was omitted
         //re-construct sometimes?
         CompositeAnim anim = new CompositeAnim(active);
-//        active.getActionGroup()
+        //        active.getActionGroup()
 
         Arrays.stream(ANIM_PART.values()).forEach(part -> {
             if (!isPartIgnored(part)) {
@@ -311,21 +320,30 @@ public class AnimationConstructor {
     }
 
     public Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
-//        active.getProperty(sfx);
+        //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
              StringMaster.contains(val.getName(), part.toString())) {
-                data.add(val, active.getValue(val));
+                String name = active.getValue(val);
+                if (!name.isEmpty())
+                    data.add(val, getPath(val, active)+ name);
             }
         }
         return getPartAnim(data, active, part, anim);
     }
 
+    private String getPath(VALUE val, DC_ActiveObj active) {
+        if (val.getName().toLowerCase().contains("vfx")) {
+            return getPath(ANIM_VALUES.PARTICLE_EFFECTS);
+        }
+        return "";
+    }
+
     private Anim getPartAnim(AnimData data, DC_ActiveObj active,
                              ANIM_PART part, CompositeAnim composite) {
-//TODO if (!checkAnimValid())
-//    return null ;
+        //TODO if (!checkAnimValid())
+        //    return null ;
         Anim anim = createAnim(active, data, part);
         if (anim == null) {
             return null;
@@ -393,7 +411,7 @@ public class AnimationConstructor {
                     return new HitAnim(active, data);
                 }
             } else if (part == ANIM_PART.MAIN) {
-//                if (active.getTargetingMode().isSingle())
+                //                if (active.getTargetingMode().isSingle())
                 if (active.getChecker().isTopDown())
                     return null;
             }
@@ -425,27 +443,29 @@ public class AnimationConstructor {
             if (path.isEmpty()) {
                 continue;
             }
-//            Chronos.mark("sprite " + path);
+            path = path.toLowerCase();
+            path =PathUtils.addMissingPathSegments(path, PathFinder.getSpritesPath());
+            //            Chronos.mark("sprite " + path);
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
-//            Chronos.logTimeElapsedForMark("sprite " + path);
+            //            Chronos.logTimeElapsedForMark("sprite " + path);
             exists = true;
         }
-        List<EmitterActor> list = new ArrayList<>();
-//     if (!Thread.currentThread().getName().contains("LWJGL")){
-//
-//     }
-//       Eidolons.gdxApplication.postRunnable(()->{
-//        list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
-//        });
+        List<SpellVfx> list = new ArrayList<>();
+        //     if (!Thread.currentThread().getName().contains("LWJGL")){
+        //
+        //     }
+        //       Eidolons.gdxApplication.postRunnable(()->{
+        //        list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+        //        });
 
         try {
-            list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+            list = SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             if (CoreEngine.isJar())
                 System.out.println("getEffect failed" + data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
 
-            list = EmitterPools.getEmitters(
+            list = SpellVfxPool.getEmitters(
              getPath(ANIM_VALUES.PARTICLE_EFFECTS) +
               data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         }
@@ -458,7 +478,7 @@ public class AnimationConstructor {
                 exists = checkForcedAnimation(active, part);
             }
         }
-//        if (!exists) return true;
+        //        if (!exists) return true;
 
         anim.setPart(part);
         anim.setSprites(sprites);
@@ -477,13 +497,13 @@ public class AnimationConstructor {
                     }
                 }
                 break;
-//            case AFTEREFFECT:
-//                if (active.isAttackAny()) {
-//                    if (active.getAttack()!=null )
-//
-//                        return true;
-//                }
-//
+            //            case AFTEREFFECT:
+            //                if (active.isAttackAny()) {
+            //                    if (active.getAttack()!=null )
+            //
+            //                        return true;
+            //                }
+            //
 
             case CAST:
                 if (active instanceof DC_QuickItemAction)
@@ -497,7 +517,7 @@ public class AnimationConstructor {
     }
 
     public Animation getEffectAnim(Effect e) {
-//        map
+        //        map
         if (!isAnimated(e)) {
             return null;
         }
@@ -513,13 +533,13 @@ public class AnimationConstructor {
         if (!isValid(effectAnim)) {
             return null;
         }
-
+        effectAnim.setRef(e.getRef());
         return effectAnim;
-//        CompositeAnim a = new CompositeAnim();
-//        a.add(
-//                effectAnim.getPart()
-//                , effectAnim);
-//        return a;
+        //        CompositeAnim a = new CompositeAnim();
+        //        a.add(
+        //                effectAnim.getPart()
+        //                , effectAnim);
+        //        return a;
     }
 
     private boolean isAnimated(Effect e) {
@@ -644,9 +664,9 @@ public class AnimationConstructor {
                 return !OptionsMaster.getAnimOptions().getBooleanValue(
                  ANIMATION_OPTION.PRECAST_ANIMATIONS);
 
-//            case MAIN:
-//            case IMPACT:
-//                return false;
+            //            case MAIN:
+            //            case IMPACT:
+            //                return false;
         }
         return false;
     }
@@ -655,10 +675,13 @@ public class AnimationConstructor {
         String path = null;
         switch (s) {
             case PARTICLE_EFFECTS:
-                path = PathFinder.getVfxPath()+ "spell/";
+                if (ParticleEffectX.isEmitterAtlasesOn())
+                    path = PathFinder.getVfxPath() + "atlas/spell/";
+                else
+                    path = PathFinder.getVfxPath() + "spell/";
                 break;
             case SPRITES:
-                path = PathFinder.getSpritesPath();
+                path = PathFinder.getSpritesPathFull();
                 break;
         }
         if (CoreEngine.isJar())
@@ -669,8 +692,8 @@ public class AnimationConstructor {
     public boolean isReconstruct() {
         if (CoreEngine.isJar())
             return false;
-        return false;
-//        return reconstruct;
+        return true;
+        //        return reconstruct;
     }
 
     public void setReconstruct(boolean reconstruct) {
@@ -736,7 +759,7 @@ public class AnimationConstructor {
     }
 
     public CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
-        Parry3dAnim parryAnim =new Parry3dAnim(weaponObj, attack) ;
+        Parry3dAnim parryAnim = new Parry3dAnim(weaponObj, attack);
         return new CompositeAnim(parryAnim);
     }
 

@@ -201,7 +201,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     }
 
     protected Color getFontColor() {
-        return GdxColorMaster.GOLDEN_WHITE;
+        return GdxColorMaster.PALE_GOLD;
     }
 
     protected int getFontSize() {

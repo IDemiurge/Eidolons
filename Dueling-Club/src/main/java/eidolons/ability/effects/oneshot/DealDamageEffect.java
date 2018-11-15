@@ -3,8 +3,8 @@ package eidolons.ability.effects.oneshot;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
@@ -58,13 +58,15 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
          damage_type));
         this.damage_mods = damage_mods;
     }
-
+    protected boolean checkEventsFired() {
+        return true;
+    }
     @Override
     public boolean applyThis() {
         if (ref.getTargetObj() == null) {
             return false;
         }
-        if (!(ref.getTargetObj() instanceof Unit)) {
+        if (!(ref.getTargetObj() instanceof BattleFieldObject)) {
             return true; // TODO if cell, apply damage to corpses?
         }
         if (checkDamageMod(DAMAGE_MODIFIER.QUIET)) {
@@ -73,7 +75,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
             getRef().setQuiet(false);
         }
 
-        Unit targetObj = (Unit) ref.getTargetObj();
+        BattleFieldObject targetObj = (BattleFieldObject) ref.getTargetObj();
         int amount = formula.getAppendedByModifier(ref.getValue(KEYS.FORMULA))
          .getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();

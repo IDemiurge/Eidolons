@@ -531,20 +531,24 @@ public class GridPanel extends Group {
             view.animateHpBarChange();
     }
 
-    private void setVisible(BattleFieldObject sub, boolean b) {
+    private void setVisible(BattleFieldObject sub, boolean visible) {
         BaseView view = viewMap.get(sub);
         //TODO refactor this quick fix!
         if (view == null)
             return;
         if (sub.isWall()) {
-            if (!b) {
+            if (!visible) {
                 if (view.isVisible()) {
                     return;
                 }
             }
         }
+        if (view.getParent()instanceof GridCellContainer) {
+            ((GridCellContainer) view.getParent()).setDirty(true);
 
-        setVisible(view, b);
+        }
+
+        setVisible(view, visible);
     }
 
     private void setVisible(BaseView view, boolean visible) {
@@ -867,7 +871,7 @@ public class GridPanel extends Group {
                             setHoverObj((GridUnitView) sub);
                             topCells.add(cell);
                             cell.setHovered(true);
-                        } else if (sub.getUserObject().isPlayerCharacter()) {
+                        } else if (sub.getUserObject().isPlayerCharacter() || sub.isStackView()) {
                             topCells.add(cell);
                         }
                     }

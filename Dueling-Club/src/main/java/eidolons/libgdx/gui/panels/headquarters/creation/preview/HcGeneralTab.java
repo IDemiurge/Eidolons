@@ -59,7 +59,7 @@ public class HcGeneralTab extends eidolons.libgdx.gui.panels.headquarters.HqElem
         add(column1).width(HeroCreationWorkspace.PREVIEW_WIDTH).height(HeroCreationWorkspace.PREVIEW_HEIGHT);
         //        add(column2).width(HqTabs.WIDTH/2);
 
-        mainValues.setDisplayProps(false);
+        mainValues.setDisplayPropNames(false);
         mainValues.setDisplayColumn(false);
     }
 

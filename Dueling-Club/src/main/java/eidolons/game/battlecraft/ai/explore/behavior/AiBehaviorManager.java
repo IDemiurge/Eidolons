@@ -17,6 +17,7 @@ import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
 import main.system.SortMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -25,9 +26,11 @@ import java.util.*;
  */
 public class AiBehaviorManager extends AiHandler {
 
-    public static final AI_BEHAVIOR_MODE TESTED = AI_BEHAVIOR_MODE.PATROL;
-    private static final UNIT_GROUP_TYPE TESTED_GROUP = UNIT_GROUP_TYPE.PATROL;
-    public static final boolean TEST_MODE = TESTED!=null ;
+    public static AI_BEHAVIOR_MODE TESTED = !CoreEngine.isFullFastMode() ? null :
+     AI_BEHAVIOR_MODE.GUARD;
+    public static final boolean TEST_MODE = TESTED != null;
+    private static UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
+     UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
     private Integer maxActiveCount = null;
@@ -63,8 +66,7 @@ public class AiBehaviorManager extends AiHandler {
         //                units.addAll(unit.getAI().getGroup().getMembers());
         //            }
         //        }
-        if (groups == null)
-        {
+        if (groups == null) {
             groups = new ArrayList<>(getGame().getAiManager().getGroups());
         }
         if (testMode) {
@@ -73,7 +75,7 @@ public class AiBehaviorManager extends AiHandler {
               dst(Eidolons.getMainHero().getCoordinates())));
         }
         Integer n = 0;
-        for (GroupAI group :     new ArrayList<>(groups)) {
+        for (GroupAI group : new ArrayList<>(groups)) {
             if (maxActiveCount != null)
                 if (activeGroups.size() >= maxActiveCount) {
                     if (!activeGroups.contains(group)) {
@@ -133,8 +135,8 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     private boolean isUpdated(UnitExploreAI ai, AiBehavior behavior) {
-if (ai.isBehaviorOff())
-    return false;
+        if (ai.isBehaviorOff())
+            return false;
         return true;
     }
 
@@ -154,12 +156,33 @@ if (ai.isBehaviorOff())
         ai.getExploreAI().setBehaviors(createBehaviors(ai));
     }
 
+    private AiBehavior createAi(UnitAI ai, UNIT_GROUP_TYPE groupType) {
+        switch (groupType) {
+            case GUARDS:
+            case BOSS:
+                if (ai.getGroupAI().getArg() == null) {
+                    try {
+                        ai.getGroupAI().setArg(game.getCellByCoordinate(
+                         ai.getGroupAI().getLeader().getCoordinates().getAdjacentCoordinate(
+                          ai.getGroup().getLeader().getFacing().getDirection())));
+                    } catch (Exception e) {
+//                        CoordinatesMaster.getra
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                }
+                return new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg());
+            case PATROL:
+                return new PatrolAi(master, ai);
+        }
+        return new WanderAi(master, ai);
+    }
+
     private List<AiBehavior> createBehaviors(UnitAI ai) {
         List<AiBehavior> behaviors = new ArrayList<>();
 
         if (TEST_MODE) {
             ai.getGroupAI().setType(TESTED_GROUP);
-            behaviors.add(new PatrolAi(master, ai));
+            behaviors.add(createAi(ai, TESTED_GROUP));
             return behaviors;
         }
         if (ai.getGroupAI() == null) {
@@ -168,8 +191,8 @@ if (ai.isBehaviorOff())
         }
         switch (ai.getGroupAI().getType()) {
             case PATROL:
-                    behaviors.add(new PatrolAi(master, ai));
-                    break;
+                behaviors.add(new PatrolAi(master, ai));
+                break;
             case GUARDS:
             case BOSS:
                 behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));
@@ -181,6 +204,7 @@ if (ai.isBehaviorOff())
 
         return behaviors;
     }
+
 
     public List<AI_BEHAVIOR_MODE> getBehaviors() {
         List<AI_BEHAVIOR_MODE> list = new ArrayList<>();

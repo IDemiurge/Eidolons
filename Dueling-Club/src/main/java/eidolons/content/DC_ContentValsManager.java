@@ -184,7 +184,15 @@ public class DC_ContentValsManager extends ContentValsManager {
         list.addAll(Arrays.asList(FEAT_MODIFYING_PARAMS));
 
         FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);
+
     }
+
+    private static VALUE[] displayedHeroProperties= new VALUE[]{
+     G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.BACKGROUND,
+     G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,
+     PARAMS.INTEGRITY,
+
+    };
 
 
     public DC_ContentValsManager() {
@@ -1034,6 +1042,14 @@ public class DC_ContentValsManager extends ContentValsManager {
                 };
         }
         return new BACKGROUND[0];
+    }
+
+    public static VALUE[] getDisplayedHeroProperties() {
+        return displayedHeroProperties;
+    }
+
+    public static void setDisplayedHeroProperties(VALUE[] displayedHeroProperties) {
+        DC_ContentValsManager.displayedHeroProperties = displayedHeroProperties;
     }
 
     public void init() {

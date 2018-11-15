@@ -4,7 +4,9 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.particles.spell.SpellVfxMaster;
 import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
@@ -82,7 +84,7 @@ public class TestMasterContent {
      + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
      + "Ancient Dark Steel Bolts;";
     public static boolean addSpells = true;
-    public static boolean addAllSpells = true;
+    public static boolean addAllSpells = false;
     public static boolean test_on = false;
     static boolean auto_test_list = false;
     static boolean full_test = false;
@@ -99,26 +101,26 @@ public class TestMasterContent {
     private static String POLISH_LIST = "";
     private static String ANIM_TEST_LIST = //Gust of Wind
      "Searing Light;Summon Vampire Bat;"
-//      +"Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
-//      "Fire Bolt;Chaos Bolt;" +
-//      "Light;Haze;" +
-//      "Scare;Freeze;" +
-//      "Scorching Light"
+     //      +"Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
+     //      "Fire Bolt;Chaos Bolt;" +
+     //      "Light;Haze;" +
+     //      "Scare;Freeze;" +
+     //      "Scorching Light"
      ;
 
     private static String GRAPHICS_TEST_LIST = "Raise Skeleton;Fire Bolt;Chaos Bolt;Force Field;" +
      "Summon Vampire Bat;Blink";
     private static String TEST_LIST =
-//     "Raise Skeleton;" +
-//     "Light;Haze;" +
-//      "Leap into Darkness;Blink;Summon Vampire Bat;"+
+     //     "Raise Skeleton;" +
+     //     "Light;Haze;" +
+     //      "Leap into Darkness;Blink;Summon Vampire Bat;"+
      // + "Enchant Weapon;"
      // + "Enchant Armor;"
-//      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
+     //      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
      // + "Sorcerous Flames;"
      "Force Field;"
      // "Arms of Faith;Armor of Faith;Resurrection;"+
-//      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
+     //      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
      // + "Awaken Treant;"
      // + "Sacrifice;"
      // + "Soul Web;Rapid Growth;"
@@ -362,6 +364,22 @@ public class TestMasterContent {
             addAllSpells(type);
             return;
         }
+        if (Eidolons.getGame().getMetaMaster().getPartyManager().getParty() != null) {
+            for (String substring : ContainerUtils.openContainer(Eidolons.getGame().getMetaMaster().
+             getPartyManager().getParty().getType().getProperty(PROPS.MEMBERS))) {
+                ObjType t = DataManager.getType(substring, DC_TYPE.CHARS);
+                if (t.equals(type)) {
+                    continue;
+                }
+                String spells = t.getProperty(PROPS.VERBATIM_SPELLS)+ ";";
+                 spells += t.getProperty(PROPS.MEMORIZED_SPELLS);
+
+                for (String s :  ContainerUtils.openContainer(spells)) {
+                        type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
+                    }
+            }
+            return;
+        }
 
         for (String s : ContainerUtils.open(getFOCUS_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
@@ -387,6 +405,11 @@ public class TestMasterContent {
 
     private static void addAllSpells(ObjType type) {
         StringBuilder builder = new StringBuilder(DataManager.getTypes(DC_TYPE.SPELLS).size() * 10);
+        if (SpellVfxMaster.TEST_MODE){
+            for (String s :  ContainerUtils.openContainer(SpellVfxMaster.VFX_TEST_SPELLS)) {
+                builder.append(s+ ";");
+            }
+        } else
         for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
             builder.append(s.getName() + ";");
         }
@@ -397,10 +420,14 @@ public class TestMasterContent {
         if (addAllSpells)
             TestMasterContent.addSpells = true;
         TestMasterContent.addAllSpells = addAllSpells;
+        if (addAllSpells)
+            test_on = true;
     }
 
     public static void setAddSpells(boolean addSpells) {
         TestMasterContent.addSpells = addSpells;
+        if (addSpells)
+            test_on = true;
     }
 
     public static void addTestActives(ObjType type, boolean last) {

@@ -277,13 +277,14 @@ public class DC_KeyManager
                 case ITEM_MASK:
                     itemHotkey((index - 1));
                     return true;
-                case SPELL_MASK:
-                    spellHotkey((index - 1));
-                    return true;
 
                 case ACTION_MASK:
                     // if > 5 => next group
                     actionHotkey((index - 1), action_group);
+                    return true;
+                case SPELL_MASK:
+                default:
+                    spellHotkey((index - 1));
                     return true;
             }
         }

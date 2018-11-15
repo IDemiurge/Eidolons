@@ -46,7 +46,7 @@ public class GridManager {
             boolean caught = false;
 
             if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
-                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef());
+                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef().getEffect());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE

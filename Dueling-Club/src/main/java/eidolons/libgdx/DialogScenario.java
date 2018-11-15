@@ -6,7 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.menu.selection.DescriptionPanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import main.system.graphics.FontMaster.FONT;
 
 public class DialogScenario extends Group {
@@ -14,6 +18,11 @@ public class DialogScenario extends Group {
     private Image back;
     private boolean done;
     private long currentTime = 0;
+
+    FadeImageContainer portrait;
+    TablePanelX dialogueBox;
+    DescriptionPanel messageBox;
+
 
     public DialogScenario(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
         this.time = time;
@@ -53,7 +62,15 @@ public class DialogScenario extends Group {
             back.setPosition(x, y);
             addActor(back);
         }
+boolean lightweight;
+boolean upsideDown;
 
+
+        LabelX msgLabel = new LabelX();
+        msgLabel.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
+//        SmartButton response = new SmartButton(STD_BUTTON.DIALOGUE, ()-> respond(option), FONT.MAIN, 20, GdxColorMaster.PALE_GOLD)
+//TiledNinePatchGenerator.getOrCreateNinePatch()
+//        dialogueBox.setBackground();
 
         if (portraitTexture != null || message != null) {
             ValueContainer valueContainer = new ValueContainer(portraitTexture, message);

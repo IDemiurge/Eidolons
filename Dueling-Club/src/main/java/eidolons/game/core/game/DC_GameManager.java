@@ -21,7 +21,6 @@ import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.launch.Showcase;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.PassiveAbilityObj;
@@ -506,9 +505,6 @@ public class DC_GameManager extends GameManager {
         if (event.getRef().getSourceObj() != null) {
             if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
                 if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
-                    if (!Showcase.isRunning())
-                        AnimMaster.getInstance().getConstructor().preconstruct(event);
-                    else
                         try {
                             AnimMaster.getInstance().getConstructor().preconstruct(event);
                         } catch (Exception e) {

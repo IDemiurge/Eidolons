@@ -68,7 +68,7 @@ public class TextBuilder {
     }
 
     protected Color getColor() {
-        return GdxColorMaster.GOLDEN_WHITE;
+        return GdxColorMaster.PALE_GOLD;
     }
 
     protected float getAdjustCoef() {

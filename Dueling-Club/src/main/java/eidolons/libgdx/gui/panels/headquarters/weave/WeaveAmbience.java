@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.weave;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.particles.EMITTER_PRESET;
-import eidolons.libgdx.particles.EmitterMap;
+import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;

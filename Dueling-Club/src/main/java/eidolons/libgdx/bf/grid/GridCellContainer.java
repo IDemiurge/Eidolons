@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.Structure;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
@@ -89,7 +90,18 @@ public class GridCellContainer extends GridCell {
     }
 
     private boolean isViewCacheOn() {
+        if (checkIgnored())
+            return false;
+        if (main)
+            return false;
         return true;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        visibleViews=null ;
+        allViews=null ;
     }
 
     public List<GenericGridView> getUnitViews(boolean visibleOnly) {
@@ -362,8 +374,7 @@ public class GridCellContainer extends GridCell {
 
     public void addActor(Actor actor) {
         super.addActor(actor);
-        visibleViews = null;
-        allViews = null;
+        setDirty(true);
         if (actor instanceof GenericGridView) {
             GenericGridView view = (GenericGridView) actor;
             unitViewCount = getUnitViewsVisible().size();
@@ -375,11 +386,17 @@ public class GridCellContainer extends GridCell {
             indexMap.put(getZIndexForView(view), view);
             recalcUnitViewBounds();
 
-            if (actor.getUserObject() == Eidolons.MAIN_HERO)
+            if (actor.getUserObject() == Eidolons.MAIN_HERO
+             || actor.getUserObject() instanceof Entrance)
                 main = true;
         }
     }
 
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+        visibleViews = null;
+        allViews = null;
+    }
     protected float getFadeDuration() {
         return 0.3f;
     }
@@ -393,8 +410,6 @@ public class GridCellContainer extends GridCell {
     }
 
     public boolean removeActor(Actor actor) {
-        visibleViews = null;
-        allViews = null;
         if (actor.getUserObject() == Eidolons.MAIN_HERO)
             main = false;
         return removeActor(actor, true);
@@ -404,10 +419,8 @@ public class GridCellContainer extends GridCell {
         boolean result = super.removeActor(actor, unfocus);
 
         if (result && actor instanceof GenericGridView) {
-            visibleViews = null;
-            allViews = null;
+            setDirty(true);
             unitViewCount = getUnitViewsVisible().size();
-            dirty = true;
             if (isAnimated())
                 ActorMaster.addFadeOutAction(actor, getFadeDuration());
             //            recalcUnitViewBounds();
@@ -482,9 +495,6 @@ public class GridCellContainer extends GridCell {
 
     }
 
-    public void setDirty(boolean dirty) {
-        this.dirty = dirty;
-    }
 
     public boolean isHovered() {
         return hovered;
@@ -508,6 +518,7 @@ public class GridCellContainer extends GridCell {
          //         getUserObject().getIntParam() +
          "space]");
         info.pack();
+        getUnitViews(false).forEach(view-> view.setStackView(stackView));
     }
 
     public SortMaster<GenericGridView> getSorter() {

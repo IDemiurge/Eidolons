@@ -6,12 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.particles.Ambience;
-import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.particles.EmitterPools;
-import eidolons.libgdx.particles.EmitterPresetMaster;
-import eidolons.libgdx.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
+import eidolons.libgdx.particles.spell.SpellVfxPool;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.particles.ambi.Ambience;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.util.EmitterPresetMaster;
+import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;
+import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.controls.Controller;
 import main.data.filesys.PathFinder;
@@ -232,8 +233,8 @@ public class EmitterController implements Controller {
                   EmitterPresetMaster.getInstance().findImagePath(last.path))).getPath();
             case IMAGE_SPRITE:
                 return
-                 PathFinder.getSpritesPath() +
-                  new ImageChooser(PathFinder.getSpritesPath()).launch("", "");
+                 PathFinder.getSpritesPathFull() +
+                  new ImageChooser(PathFinder.getSpritesPathFull()).launch("", "");
 
             case IMAGE:
                 return PathFinder.getVfxPath() + "images/" +
@@ -317,7 +318,7 @@ public class EmitterController implements Controller {
 //        ANIM_PART part = ANIM_PART.IMPACT;
         anim.getMap().keySet().forEach(part -> {
 //            anim.getMap().get(part).getData().setValue();
-            List<EmitterActor> list = EmitterPools.getEmitters(presetPath);
+            List<SpellVfx> list = SpellVfxPool.getEmitters(presetPath);
             anim.getMap().get(part).setEmitterList(list);
         });
         //impact?

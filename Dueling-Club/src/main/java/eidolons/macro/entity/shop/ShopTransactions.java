@@ -17,7 +17,7 @@ public class ShopTransactions {
         if (heroBuys) {
             text = "It seems you don't have enough coin, but I will let you have this " + item.getName() +
              " in credit. You'll owe me " +
-             debt + " gold pieces, and I will collect your debt next time you are in town. I'd let you go as high as " +
+             debt + " gold pieces, and I will collect your debt next time you are in town. Of course, there will be a small interest on the sum, but then, we're not charity. I'd let you go as high as " +
              max + ", but no higher.";
         } else {
             text = "I don't really have enough coin right now to buy this " +

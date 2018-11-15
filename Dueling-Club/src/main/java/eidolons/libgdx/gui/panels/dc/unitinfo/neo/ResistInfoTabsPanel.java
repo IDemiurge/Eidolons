@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResistSource;
 
@@ -23,7 +24,8 @@ public class ResistInfoTabsPanel extends eidolons.libgdx.gui.panels.TabbedPanel<
     }
 
     protected TablePanelX createContentsTable() {
-        return new TablePanelX<>(350, 500);
+        return new TablePanelX<>(
+         GDX.width(100)+150, GDX.height(150)+250);
     }
     @Override
     protected int getDefaultTabAlignment() {

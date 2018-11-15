@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules.combat.damage;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
@@ -201,12 +202,16 @@ public class DamageDealer {
                     }
                 }
             }
-        int durabilityLost = DurabilityRule.damageDealt(blocked,
-         (DC_HeroSlotItem) attacked.getRef().getObj(KEYS.ARMOR), dmg_type, active
-          .getActiveWeapon(), amount, attacked);
-        if (durabilityLost > 0) {
-            main.system.auxiliary.log.LogMaster.log(1, "durabilityLost= " + durabilityLost);
-        }
+            if (attacked instanceof Unit)
+                if (attacker.getRef().getObj(KEYS.WEAPON) instanceof DC_WeaponObj) {
+                    int durabilityLost = DurabilityRule.damageDealt(blocked,
+                     (DC_HeroSlotItem) attacked.getRef().getObj(KEYS.ARMOR), dmg_type,
+                     (DC_WeaponObj) attacker.getRef().getObj(KEYS.WEAPON), amount, attacked);
+                    if (durabilityLost > 0) {
+                        main.system.auxiliary.log.LogMaster.log(1, "durabilityLost= " + durabilityLost);
+                    }
+                }
+
 
         int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref, blocked,
          dmg_type);
@@ -320,7 +325,6 @@ public class DamageDealer {
         // TODO if not started already
 
         if (isLogOn()) {
-            attacked.getGame().getLogManager().newLogEntryNode(true, ENTRY_TYPE.DAMAGE);
             attacked.getGame().getLogManager().logDamageDealt(toughness_dmg, endurance_dmg, attacker, attacked);
         }
         LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage being dealt to "
@@ -441,6 +445,9 @@ public class DamageDealer {
 
     protected static boolean isAttack(Ref ref) {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
+        if (active == null) {
+            return false;
+        }
         return active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
     }
 

@@ -30,7 +30,7 @@ public class HqHeroPreview extends FadeImageContainer {
 //         TextureCache.getOrCreateR(BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_128
 //          .getImagePath())));
 //        border.setPosition((128 - border.getWidth()) / 2, (128 - border.getHeight()) / 2);
-//        setTeamColor(GdxColorMaster.GOLDEN_WHITE);
+//        setTeamColor(GdxColorMaster.PALE_GOLD);
     }
 
     @Override

@@ -61,7 +61,7 @@ public class ToolTipManager extends TablePanel {
             if (DungeonScreen.getInstance().isBlocked())
                 return;
             BaseView object = (BaseView) event.get();
-            hovered(object );
+            hovered(object);
             if (object instanceof LastSeenView)
                 return;
         });
@@ -130,6 +130,9 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            return;
+        }
         if (parentAlpha == ShaderMaster.SUPER_DRAW ||
          ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
@@ -195,20 +198,20 @@ public class ToolTipManager extends TablePanel {
             }
 
 
-        if (tooltip != null)
-            if (tooltip.isBattlefield())
-                if (originalPosition != null)
-                    if (originalPosition.dst(GdxMaster.getCursorPosition(this))
-                     > 300 * GdxMaster.getFontSizeModSquareRoot()) {
+        if (tooltip != null) {
+            if (tooltip.isBattlefield()) {
+                if (guiStage.isBlocked() ||
+                  originalPosition != null && originalPosition.dst(GdxMaster.getCursorPosition(this))
+                   > 300 * GdxMaster.getFontSizeModSquareRoot()) {
+                    if (guiStage.isBlocked())
+                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
+                    else
                         main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
-                        requestedShow(null);
-                        //                        TODO ? ? if (isStackHoverOn())
-                        //                            waitToHideStack = 2;
-                    }
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            setVisible(false);
-        } else {
-            setVisible(true);
+                    requestedShow(null);
+                    //                        TODO ? ? if (isStackHoverOn())
+                    //                            waitToHideStack = 2;
+                }
+            }
         }
         if (tooltip == null) {
             return;
@@ -381,7 +384,7 @@ public class ToolTipManager extends TablePanel {
     }
 
 
-    private void hovered(BaseView object ) {
+    private void hovered(BaseView object) {
         float scaleX = getDefaultScale(object);
         if (object.getScaleX() == getDefaultScale(object))
             scaleX = getZoomScale(object);
@@ -403,7 +406,7 @@ public class ToolTipManager extends TablePanel {
         }
         object.setHovered(true);
 
-            stackMaster.checkShowStack(object);
+        stackMaster.checkShowStack(object);
 
 
         DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);

@@ -39,7 +39,7 @@ public class SmartButton extends TextButton implements EventListener {
 
     public SmartButton(String text, STD_BUTTON button, Runnable runnable) {
         this(text, button, runnable,
-         FONT.MAGIC, 20, GdxColorMaster.GOLDEN_WHITE);
+         FONT.MAGIC, 20, GdxColorMaster.PALE_GOLD);
     }
 
     public SmartButton(String text, STD_BUTTON button, Runnable runnable,

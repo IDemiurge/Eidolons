@@ -20,6 +20,7 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.Set;
@@ -90,6 +91,9 @@ public abstract class GameManager implements GenericGameManager {
 
     public void setSelecting(boolean selecting) {
         this.selecting = selecting;
+        if (!selecting) {
+            GuiEventManager.trigger(GuiEventType.HIDE_ALL_TEXT);
+        }
     }
 
     public Game getGame() {

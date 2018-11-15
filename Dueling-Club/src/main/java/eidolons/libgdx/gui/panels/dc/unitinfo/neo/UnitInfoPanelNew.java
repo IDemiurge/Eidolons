@@ -1,26 +1,22 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Array;
+import eidolons.content.PARAMS;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
+import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
-import eidolons.libgdx.gui.panels.headquarters.hero.HqParamPanel;
-import eidolons.libgdx.gui.panels.headquarters.hero.HqScrolledValuePanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqTraitsPanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqVerticalValueTable;
-import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
-
-import static eidolons.libgdx.stage.BattleGuiStage.isNewUnitInfoPanelWIP;
+import main.content.values.properties.G_PROPS;
 
 /**
  * Created by JustMe on 5/14/2018.
@@ -53,96 +49,94 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     public static final int WIDTH = 1350;
     public static final int HEIGHT = 980;
     private static UnitInfoPanelNew instance;
-    private final Actor outside;
+    public final Group outside;
     //centered?
     private final Array<Actor> children;
+    private final AdjustingVerticalGroup center;
+    private final AdjustingVerticalGroup left;
+    private final AdjustingVerticalGroup right;
+    private final HqVerticalValueTable mainInfoPanel;
     AvatarPanel avatarPanel;
     UnitInfoWeapon weapon;
     UnitInfoWeapon secondWeapon;
     StatusPanel statusPanel;
     PointsPanel pointsPanel;
-    HqAttributeTable attributeTable;
     BuffPanelSimple buffPanelSimple;
-    HqVerticalValueTable mainValuesPanel;
-    HqParamPanel dynamicParamPanel;
-    HqParamPanel paramPanel;
-    UnitDescriptionPanel descriptionPanel;
-    HqScrolledValuePanel scrolledValuePanel;
-    ArmorPanel armorPanel;
     ResistInfoTabsPanel resistPanel;
     HqTraitsPanel traitsPanel;
 
+    public static boolean isNewUnitInfoPanelWIP() {
+        return true;
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+        center.setY(getHeight() - center.getHeight());
+        secondWeapon.setY(weapon.getY());
+        float max = Math.max(left.getHeight(), right.getHeight());
+        left.setY(max - left.getHeight());
+        right.setY(max - right.getHeight());
+    }
+
     private UnitInfoPanelNew() {
         super();
-//        setBackground(new TextureRegionDrawable(new TextureRegion(
-//         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
-//          BACKGROUND_NINE_PATCH.PATTERN,
-//          (int) w,
-//          (int) h))));
-//        pad(NINE_PATCH_PADDING.FRAME);
-
         setBackground(NinePatchFactory.getHqDrawable());
 
-        VerticalGroup center = new AdjustingVerticalGroup(400, 0.75f);
-        VerticalGroup left = new AdjustingVerticalGroup(455, 0.25f);
-        VerticalGroup right = new AdjustingVerticalGroup(455, 0.25f);
+          center = new AdjustingVerticalGroup(400, 0.75f);
+          left = new AdjustingVerticalGroup(455, 0.25f);
+          right = new AdjustingVerticalGroup(455, 0.25f);
 
         float w1 = left.getWidth();
-        setSize(w1*2+center.getWidth(), (int) GdxMaster.adjustHeight(HEIGHT));
+        setSize(w1 * 2 + center.getWidth(),   GdxMaster.getHeight());
         float w = getWidth();
         float h = getHeight();
-        add(left).top();
-        add(center).top();
-        add(right).top();
 
+        weapon = new UnitInfoWeapon(false);
+        add(left).center().padTop(150);//.padTop(weapon.getHeight()/2);
+        add(center).center().padTop(50);
+        add(right).center().padTop(150);//.padTop(weapon.getHeight()/2);
 
-//        TablePanelX buttonPanel = new TablePanelX();
-//        buttonPanel.add(new SmartButton(STD_BUTTON.CANCEL, () -> close()));
-//        buttonPanel.add(new SmartButton(STD_BUTTON.HELP, () -> help()));
-//        upperTable.add(buttonPanel);
+        center.addActor(avatarPanel = new AvatarPanel());
+        center.addActor(mainInfoPanel = new HqVerticalValueTable(false, G_PROPS.NAME,
+         G_PROPS.RACE,  PARAMS.LEVEL ));
+        mainInfoPanel.setDisplayPropNames(false);
+        mainInfoPanel.setDisplayColumn(false);
 
         //column1
-        left.addActor(weapon= new UnitInfoWeapon(false));
-        right.addActor(secondWeapon=new UnitInfoWeapon(true));
-        center.addActor(avatarPanel = new AvatarPanel());
+        addActor(weapon);
+        weapon.setPosition((getWidth() - avatarPanel.getWidth() - weapon.getWidth()) / 2, GDX.top(weapon));
 
-        left.addActor(statusPanel = new StatusPanel());
-        // column1.addActor(modePanel= new ModePanel());
+        addActor(secondWeapon = new UnitInfoWeapon(true));
+        secondWeapon.setPosition(avatarPanel.getWidth() + secondWeapon.getWidth(), GDX.top(secondWeapon));
+
         left.addActor(pointsPanel = new PointsPanel());
 
-        left.addActor(attributeTable = new HqAttributeTable());
-        attributeTable.setSize(w*0.25f, h*0.45f);
-        attributeTable.setEditable(false);
+        left.addActor(new UnitStatTabs(left.getWidth(), getHeight()-weapon.getHeight()-64));
         left.addActor(buffPanelSimple = new BuffPanelSimple());
 
         //column2
-//        column2.addActor(mainValuesPanel = new HqVerticalValueTable(G_PROPS.NAME, PARAMS.LEVEL));
-        center.addActor(dynamicParamPanel = new HqParamPanel(true));
-        center.addActor(paramPanel = new HqParamPanel(false));
-        center.addActor(descriptionPanel = new UnitDescriptionPanel(){
-            @Override
-            protected float getDefaultHeight() {
-                return GdxMaster.adjustHeight(h*0.5f);
-            }
+        //        column2.addActor(mainValuesPanel = new HqVerticalValueTable(G_PROPS.NAME, PARAMS.LEVEL));
+//        center.addActor(armorPanel = new ArmorPanel());
+//        center.addActor(dynamicParamPanel = new HqParamPanel(true));
+//        center.addActor(paramPanel = new HqParamPanel(false));
+        TabbedPanel infoTabs = new UnitInfoTabs(center.getWidth(), getHeight()-avatarPanel.getHeight() );
+        center.addActor(infoTabs);
 
-            @Override
-            protected float getDefaultWidth() {
-                return GdxMaster.adjustWidth(w*0.4f);
-            }
-        });
-        descriptionPanel.setSize(GdxMaster.adjustHeight(h*0.5f),
-         GdxMaster.adjustWidth(h*0.4f));
-
-        center.addActor(scrolledValuePanel = new HqScrolledValuePanel());
+//        right.pack();
+//        right.addActor(scrolledValuePanel = new HqScrolledValuePanel(right.getWidth(),
+//         getHeight()-right.getHeight()));
 
         //column3
-        right.addActor(armorPanel = new ArmorPanel());
+        right.addActor(statusPanel = new StatusPanel());
+        // column3.addActor(modePanel= new ModePanel());
         right.addActor(resistPanel = new ResistInfoTabsPanel());
         right.addActor(traitsPanel = new HqTraitsPanel());
 
+        center.pack();
 
-        outside = new Actor();
-        outside.setBounds(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+        outside = new Group();
+        outside.setBounds(getWidth(), 0, GdxMaster.getWidth()-getWidth(), GdxMaster.getHeight());
         outside.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -150,25 +144,24 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
                 return false;
             }
         });
+        setVisible(false); // careful here with override
 
         children = GdxMaster.getAllChildren(this);
 
 
-        setVisible(false);
-
         addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
-                return true;
-            }
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                            event.stop();
+                            return true;
+                        }
 
-            @Override
-            public boolean mouseMoved(InputEvent event, float x, float y) {
-                event.stop();
-                return true;
-            }
-        }
+                        @Override
+                        public boolean mouseMoved(InputEvent event, float x, float y) {
+                            event.stop();
+                            return true;
+                        }
+                    }
         );
 
     }
@@ -184,7 +177,6 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         return instance;
     }
 
-
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
@@ -195,14 +187,17 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         if (userObject != null) {
             open();
         }
-//        weapon.debugAll();
-//        avatarPanel.debugAll();
-//        secondWeapon.debugAll();
+        //        weapon.debugAll();
+        //        avatarPanel.debugAll();
+        //        secondWeapon.debugAll();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+            super.draw(batch, 1);
+        else
+            ShaderMaster.drawWithCustomShader(this, batch, null);
     }
 
     @Override
@@ -233,4 +228,17 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     public StageWithClosable getStageWithClosable() {
         return (StageWithClosable) getStage();
     }
+
+
+    //        setBackground(new TextureRegionDrawable(new TextureRegion(
+    //         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
+    //          BACKGROUND_NINE_PATCH.PATTERN,
+    //          (int) w,
+    //          (int) h))));
+    //        pad(NINE_PATCH_PADDING.FRAME);
+    //        TablePanelX buttonPanel = new TablePanelX();
+    //        buttonPanel.add(new SmartButton(STD_BUTTON.CANCEL, () -> close()));
+    //        buttonPanel.add(new SmartButton(STD_BUTTON.HELP, () -> help()));
+    //        upperTable.add(buttonPanel);
+
 }

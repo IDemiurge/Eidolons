@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
-import eidolons.libgdx.launch.Showcase;
 import main.system.images.ImageManager;
 
 import java.util.HashMap;
@@ -21,16 +20,6 @@ public class SpriteAnimationFactory {
     getSpriteAnimation(String texturePath) {
         if (!ImageManager.isImage(texturePath)) {
             main.system.auxiliary.log.LogMaster.log(1, "*********NO SPRITE FOUND " + texturePath);
-
-            if (Showcase.isRunning()) {
-                main.system.auxiliary.log.LogMaster.log(1, "trying anyway ");
-                try {
-                    return new SpriteAnimation(texturePath);
-                } catch (Exception e) {
-
-                }
-
-            } else texturePath = ImageManager.getEmptyItemIconPath(false);
         }
         return new SpriteAnimation(texturePath);
     }

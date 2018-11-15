@@ -21,7 +21,8 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.libgdx.particles.ParticleManager;
+import eidolons.libgdx.particles.ambi.EmitterMap;
+import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
@@ -332,6 +333,9 @@ public class OptionsMaster {
 
     private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
+            case AMBIENCE_DENSITY:
+                EmitterMap.setGlobalShowChanceCoef(Integer.valueOf(value));
+                break;
             case ADDITIVE_LIGHT:
                 LightLayer.setAdditive(bool);
                 break;
@@ -602,20 +606,7 @@ public class OptionsMaster {
                 options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolutionString());
                 break;
             case SYSTEM:
-                long memory = Runtime.getRuntime().maxMemory();
-                float level = 0.9f;
-                if (memory > 3 * (1024e3))
-                    level = 3f;
-                else if (memory > 2 * (1024e3))
-                    level = 2f;
-                else if (memory > 1.5f * (1024e3))
-                    level = 1.5f;
-                else if (memory > 1.25f * (1024e3))
-                    level = 1.25f;
-                else if (memory > 1.0f * (1024e3))
-                    level = 1.0f;
 
-                CoreEngine.setMemoryLevel(level);
                 break;
         }
 
@@ -623,7 +614,10 @@ public class OptionsMaster {
     }
 
     private static Map<OPTIONS_GROUP, Options> initDefaults() {
-        return initDefaults(false);
+        SystemAnalyzer.analyze();
+        Map<OPTIONS_GROUP, Options> defaults = initDefaults(false);
+        SystemAnalyzer.adjustForRAM(defaults);
+        return defaults;
     }
 
     private static Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {

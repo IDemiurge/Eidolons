@@ -94,7 +94,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
                 Color aspectColor = ColorManager.getAspectColor(type);
                 Color bgColor = ColorManager.OBSIDIAN;
                 // if (colorsInverted) {
-                // bgColor = ColorManager.GOLDEN_WHITE;
+                // bgColor = ColorManager.PALE_GOLD;
                 // aspectColor = ColorManager.getDarkerColor(aspectColor, 50);
                 // }
                 lbl.setForeground(aspectColor);

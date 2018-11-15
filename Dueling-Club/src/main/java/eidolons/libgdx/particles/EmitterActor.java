@@ -10,7 +10,7 @@ import main.game.bf.Coordinates;
 /**
  * Created by JustMe on 1/10/2017.
  */
-public class EmitterActor extends SuperActor implements ParticleInterface {
+public class EmitterActor extends SuperActor  {
 
     static public boolean spriteEmitterTest = false;
     private final int defaultCapacity = 12;
@@ -112,7 +112,6 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
                 e.getTransparency().scale(alpha));
     }
 
-    @Override
     public EMITTER_PRESET getTemplate() {
         return sfx;
     }
@@ -145,23 +144,10 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
                 effect.draw(batch, delta);
     }
 
-    @Override
     public ParticleEffectX getEffect() {
         return effect;
     }
 
-    @Override
-    public boolean isContinuous() {
-        return false;
-    }
-
-    @Override
-    public boolean isRunning() {
-        return false;
-    }
-
-
-    @Override
     public void start() {
         effect.start();
     }

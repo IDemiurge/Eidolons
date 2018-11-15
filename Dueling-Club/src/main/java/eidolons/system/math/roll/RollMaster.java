@@ -23,8 +23,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.text.LogEntryNode;
 
 public class RollMaster {
     /*
@@ -217,8 +215,6 @@ public class RollMaster {
             args = new Object[]{main.system.text.LogManager.WRITE_TO_TOP, roll_type.getName(),
              ref.getSourceObj().getName(), ref.getTargetObj().getName()};
         }
-        LogEntryNode entry = ref.getGame().getLogManager().newLogEntryNode(
-         result ? ENTRY_TYPE.ROLL_LOST : ENTRY_TYPE.ROLL_WON, args);
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
         if (CoreEngine.isPhaseAnimsOn())

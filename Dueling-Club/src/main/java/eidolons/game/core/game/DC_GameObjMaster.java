@@ -20,6 +20,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -229,16 +230,22 @@ public class DC_GameObjMaster extends GameObjMaster {
         return getUnitsForCoordinates(new HashSet<>(Arrays.asList(coordinates)));
     }
 
-    public Collection<Unit> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Unit> list = new HashSet<>();
-        for (Coordinates c : coordinates) {
-            for (Unit unit : getUnits()) {
-                if (unit.getCoordinates().equals(c)) {
-                    list.add(unit);
-                }
-            }
-        }
-        return list; // TODO z-coordinate?
+    public Collection<BattleFieldObject> getBfObjectsForCoordinates(Set<Coordinates> coordinates) {
+        List<BattleFieldObject> list = getUnits().stream().filter(unit -> coordinates.contains(unit.getCoordinates())).collect(Collectors.toList());
+        list.addAll(getStructures().stream().filter(unit -> coordinates.contains(unit.getCoordinates())).collect(Collectors.toList()));
+        return list;
+    }
+        public Collection<Unit> getUnitsForCoordinates(Set<Coordinates> coordinates) {
+        return getUnits().stream().filter(unit -> coordinates.contains(unit.getCoordinates())).collect(Collectors.toList());
+//        Collection<Unit> list = new HashSet<>();
+//        for (Coordinates c : coordinates) {
+//            for (Unit unit : getUnits()) {
+//                if (unit.getCoordinates().equals(c)) {
+//                    list.add(unit);
+//                }
+//            }
+//        }
+//        return list; // TODO z-coordinate?
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {

@@ -70,11 +70,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     }
 
     public static void filter(Collection<? extends Entity> objects, OBJ_TYPE TYPE) {
-        for (Entity obj : objects) {
-            if (!TYPE.equals(obj.getOBJ_TYPE_ENUM())) {
-                objects.remove(obj);
-            }
-        }
+        objects.removeIf(obj -> !TYPE.equals(obj.getOBJ_TYPE_ENUM()));
     }
 
     @Override

@@ -1,50 +1,87 @@
 package eidolons.libgdx.gui.panels.headquarters.hero;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.content.DC_ContentValsManager;
 import eidolons.libgdx.gui.panels.ScrollPanel;
-import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import main.content.VALUE;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by JustMe on 6/13/2018.
  */
-public class HqScrolledValuePanel extends HqElement{
+public class HqScrolledValuePanel extends HqElement {
 
-    private final ScrollPanel scroll;
-    private   HqVerticalValueTable valueTable2;
-    private final HqVerticalValueTable valueTable;
+    private ScrollPanel scroll;
+    private HqVerticalValueTable valueTable2;
+    private HqVerticalValueTable valueTable;
 
     public HqScrolledValuePanel() {
-        valueTable = new HqVerticalValueTable(getValuesOne());
-//        valueTable2 = new HqVerticalValueTable(getValuesTwo());
-        TablePanel<Actor> table = new TablePanel<>();
+        this(500, 230);
+    }
+
+    public HqScrolledValuePanel(float w, float h) {
+        setSize(w, h);
+        valueTable = new StatsListPanel(getValuesOne());
+        valueTable2 = new StatsListPanel(getValuesTwo());
+        valueTable.setSize(w / 2, h);
+        valueTable2.setSize(w / 2, h);
+        TablePanelX<Actor> table = new TablePanelX<>();
         table.add(valueTable);
-//        table.add(valueTable2);
-        add(scroll = new ScrollPanel () {
+        table.add(valueTable2);
+        add(scroll = new ScrollPanel() {
             @Override
             public int getDefaultOffsetY() {
-                return  -200;
+                return 0;
             }
+
+            @Override
+            public Integer getScrollAmount() {
+                return super.getScrollAmount();
+            }
+
+            @Override
+            protected float getUpperLimit() {
+                return -1;
+            }
+
+            @Override
+            protected float getLowerLimit() {
+                return -1;
+            }
+
         });
         scroll.addElement(table);
-
         scroll.pad(1, 10, 1, 10);
         scroll.fill();
     }
 
     private VALUE[] getValuesOne() {
-         List<Object> list = new ArrayList<>();
-      return   DC_ContentValsManager.getWeaponModifyingParams();
-//        return list.toArray(new VALUE[list.size()]);
+        return UnitDataSource.getStatsValuesSplit(2, 1);
+    }
+
+    private VALUE[] getValuesTwo() {
+        return UnitDataSource.getStatsValuesSplit(2, 2);
     }
 
     @Override
     protected void update(float delta) {
     }
 
+    @Override
+    protected void setUserObjectForChildren(Object userObject) {
+        super.setUserObjectForChildren(userObject);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        scroll.setSize(getWidth(), getHeight());
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
 }

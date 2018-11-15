@@ -161,16 +161,16 @@ public class Shop extends TownPlace implements ShopInterface {
         return itemManager.getPrice(price, unit, buy);
     }
 
-    public void exited() {
-        itemManager.exited();
+    public void exited(Unit hero) {
+        itemManager.exited(hero);
     }
 
     public int getDebt() {
         return itemManager.getPlayerDebt();
     }
 
-    public void handleDebt() {
-        itemManager.handleDebt();
+    public void handleDebt(Unit hero) {
+        itemManager.handleDebt(hero);
     }
 
     public int getReputation() {
@@ -181,8 +181,7 @@ public class Shop extends TownPlace implements ShopInterface {
         return getIntParam(MACRO_PARAMS.REPUTATION);
     }
 
-    public void enter() {
-
-        itemManager.handleDebt();
+    public void enter(Unit unit) {
+        itemManager.handleDebt(unit);
     }
 }

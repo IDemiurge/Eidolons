@@ -12,12 +12,11 @@ import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
 import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.core.state.Loader;
 import eidolons.game.core.state.Saver;
-import eidolons.macro.entity.faction.FactionMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.anims.controls.EmitterController;
-import eidolons.libgdx.particles.ParticleManager;
-import eidolons.libgdx.particles.lighting.LightingManager;
+import eidolons.libgdx.particles.ambi.ParticleManager;
+import eidolons.macro.entity.faction.FactionMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.controls.Controller.CONTROLLER;
 import eidolons.system.test.TestMasterContent;
@@ -187,11 +186,6 @@ public class PresetLauncher {
                 return true;
             case Gui:
                 CoreEngine.setGuiTestMode(true);
-                return true;
-            case Light:
-                LightingManager.setLightOn(true);
-                LightingManager.setTestMode(true);
-                CoreEngine.setActionTargetingFiltersOff(true);
                 return true;
         }
         return false;

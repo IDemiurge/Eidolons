@@ -1,6 +1,6 @@
 package eidolons.libgdx.particles.special;
 
-import eidolons.libgdx.particles.Ambience;
+import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.EMITTER_PRESET;
 
 /**

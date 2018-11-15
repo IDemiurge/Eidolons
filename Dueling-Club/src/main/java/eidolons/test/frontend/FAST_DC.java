@@ -7,7 +7,7 @@ import eidolons.game.core.launch.TestLauncher;
 import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.core.state.Saver;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.libgdx.launch.DemoLauncher;
+import eidolons.libgdx.launch.MainLauncher;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.Chronos;
@@ -148,7 +148,7 @@ public class FAST_DC {
         }
         if (!CoreEngine.isGraphicsOff()) {
             if (!CoreEngine.isSwingOn()) {
-                DemoLauncher.main(null);
+                MainLauncher.main(null);
 //                ScreenData data = new ScreenData(ScreenType.BATTLE, "DC", null );
 //                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
             }

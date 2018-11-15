@@ -36,16 +36,60 @@ import static eidolons.content.UNIT_INFO_PARAMS.*;
 import static eidolons.content.ValuePages.*;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
-public class UnitDataSource  implements
+public class UnitDataSource implements
  AttributesDataSource, ResourceSource,
  AvatarDataSource, CounterAndActionPointsSource,
  EffectsAndAbilitiesSource, MainWeaponDataSource<ValueContainer>, OffWeaponDataSource,
  MainAttributesSource, ResistSource, StatsDataSource,
  ArmorDataSource {
+    private static List<VALUE> values;
     private Unit unit;
 
     public UnitDataSource(Unit unit) {
         this.unit = unit;
+    }
+
+    public static List<VALUE> getStatsValueList(VALUE[][] paramsGeneral) {
+
+        List<VALUE> values = new ArrayList<>();
+        for (int i = 0; i < paramsGeneral.length; i++) {
+            for (VALUE sub : paramsGeneral[i]) {
+                values.add(sub);
+            }
+            values.add(null);
+        }
+        return values;
+    }
+
+    public static VALUE[] getStatsValuesSplit(int n, int i) {
+        List<VALUE> list = getStatsValues();
+        VALUE[] array = new VALUE[list.size() / n];
+        int j = 1;
+        int a = 0;
+        if (i == n)
+            i = 0;
+        for (VALUE value : list) {
+            if (j % n == i)
+                array[a++] = value;
+
+            j++;
+        }
+        return array;
+    }
+
+    public static List<VALUE> getStatsValues() {
+        if (values != null)
+            return values;
+        values = new ArrayList<>();
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_GENERAL));
+        values.add(null);
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_COMBAT));
+        values.add(null);
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_MAGIC));
+        values.add(null);
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_MISC));
+        values.add(null);
+        return values;
     }
 
     @Override
@@ -168,9 +212,11 @@ public class UnitDataSource  implements
     public TextureRegion getAvatar() {
         return TextureCache.getOrCreateR(unit.getImagePath());
     }
+
     public TextureRegion getLargeImage() {
         return TextureCache.getOrCreateR(unit.getLargeImagePath());
     }
+
     public TextureRegion getFullSizeImage() {
         return TextureCache.getOrCreateR(unit.getFullSizeImagePath());
     }
@@ -307,7 +353,7 @@ public class UnitDataSource  implements
 
             WeaponTooltip tooltip = new WeaponTooltip();
 
-            tooltip.setUserObject(new SlotItemToolTipDataSource(null ) {
+            tooltip.setUserObject(new SlotItemToolTipDataSource(null) {
                 @Override
                 public DC_HeroSlotItem getItem() {
                     return armor;
@@ -346,7 +392,7 @@ public class UnitDataSource  implements
             final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
             final String d = armor.getStrParam(PARAMS.DURABILITY);
 
-            values.add(new ValueContainer(StyleHolder.getHqLabelStyle(14),PARAMS.DURABILITY.getName(), cd + "/" + d));
+            values.add(new ValueContainer(StyleHolder.getHqLabelStyle(14), PARAMS.DURABILITY.getName(), cd + "/" + d));
 
             final String cover = armor.getStrParam(PARAMS.COVER_PERCENTAGE);
 
@@ -465,34 +511,31 @@ public class UnitDataSource  implements
         return getStatsValueContainers(UNIT_INFO_PARAMS_COMBAT);
     }
 
-    public List< ValueContainer > getFullStats() {
-         List<ValueContainer> list = new ArrayList<>();
-        for (List<ValueContainer> sub: getCombatStats())
-        {
+    public List<ValueContainer> getFullStats() {
+        List<ValueContainer> list = new ArrayList<>();
+        for (List<ValueContainer> sub : getCombatStats()) {
             list.addAll(sub);
             list.add(null);
         }
         list.add(null);
-        for (List<ValueContainer> sub: getMagicStats())
-        {
+        for (List<ValueContainer> sub : getMagicStats()) {
             list.addAll(sub);
             list.add(null);
         }
         list.add(null);
-        for (List<ValueContainer> sub: getGeneralStats())
-        {
+        for (List<ValueContainer> sub : getGeneralStats()) {
             list.addAll(sub);
             list.add(null);
         }
         list.add(null);
 
-        for (List<ValueContainer> sub: getMiscStats())
-        {
+        for (List<ValueContainer> sub : getMiscStats()) {
             list.addAll(sub);
             list.add(null);
         }
         return list;
     }
+
     @Override
     public List<List<ValueContainer>> getMagicStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_MAGIC);
@@ -502,7 +545,6 @@ public class UnitDataSource  implements
     public List<List<ValueContainer>> getMiscStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_MISC);
     }
-
 
     private ValueContainer getWeaponValueContainer(DC_WeaponObj weapon) {
         TextureRegion image;
@@ -527,33 +569,10 @@ public class UnitDataSource  implements
             }
 
             Tooltip tooltip = new WeaponTooltip();
-            tooltip.setUserObject(new SlotItemToolTipDataSource(weapon)  );
+            tooltip.setUserObject(new SlotItemToolTipDataSource(weapon));
             valueContainer.addListener(tooltip.getController());
         }
         return valueContainer;
-    }
-    public List<VALUE> getStatsValueList(VALUE[][] paramsGeneral) {
-
-        List<VALUE> values = new ArrayList<>();
-        for (int i = 0; i < paramsGeneral.length; i++) {
-            for (VALUE sub : paramsGeneral[i]) {
-                values.add(sub);
-            }
-            values.add(null);
-        }
-        return values;
-    }
-    public List<VALUE> getStatsValues( ) {
-        List<VALUE> values = new ArrayList<>();
-        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_GENERAL));
-        values.add(null);
-        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_COMBAT));
-        values.add(null);
-        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_MAGIC));
-        values.add(null);
-        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_MISC));
-        values.add(null);
-        return values;
     }
 
     private List<List<ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {

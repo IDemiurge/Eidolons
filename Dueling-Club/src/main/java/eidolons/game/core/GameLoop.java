@@ -16,6 +16,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GearActor;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
@@ -29,6 +30,7 @@ import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -368,6 +370,9 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused, boolean logged) {
+        setPaused(paused, logged, false);
+    }
+        public void setPaused(boolean paused, boolean logged, boolean manual) {
         if (!game.isStarted()) {
             return;
         }
@@ -380,8 +385,13 @@ public class GameLoop {
         GearActor.setPaused(paused);
         this.paused = paused;
         SuperActor.setAlphaFluctuationOn(!paused);
-        if (!paused)
+        int vol = manual ? 100 : 50;
+        if (paused) {
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__PAUSE, vol, 0);
+        } else {
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__RESUME, vol, 0);
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
+        }
     }
 
 
@@ -438,7 +448,7 @@ public class GameLoop {
     }
 
     public void togglePaused() {
-        setPaused(!isPaused(), true);
+        setPaused(!isPaused(), true, true);
     }
 
     public Float getTime() {

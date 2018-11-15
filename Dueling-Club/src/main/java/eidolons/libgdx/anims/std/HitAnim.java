@@ -360,7 +360,7 @@ public class HitAnim extends ActionAnim {
         }
         getActionTarget().setX(originalActorX);
         getActionTarget().setY(originalActorY);
-        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget());
+        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget()); if (getParentAnim()!=null )
         getParentAnim().setHpUpdate(false);
     }
 

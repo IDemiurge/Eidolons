@@ -15,7 +15,9 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,7 @@ public class PanelActionsDataSource implements
  ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
  EffectsAndAbilitiesSource, ResourceSource,
  MainWeaponDataSource<ActionValueContainer>, OffWeaponDataSource {
+    private static Map<DC_ActiveObj, ActionValueContainer> cache = new HashMap<>();
     private Unit unit;
 
     private UnitDataSource unitDataSource;
@@ -35,14 +38,18 @@ public class PanelActionsDataSource implements
     }
 
     public static ActionValueContainer getActionValueContainer(DC_ActiveObj el, int size) {
+        ActionValueContainer container = cache.get(el);
         boolean valid = el.canBeManuallyActivated();
-        final ActionValueContainer container = new ActionValueContainer(
-         size,
-         valid,
-         TextureCache.getOrCreateSizedRegion(size, getImage(el))
-         ,
-         el::invokeClicked
-        );
+        if (container != null) {
+            container.setValid(valid);
+            return container;
+        }
+        container = new ActionValueContainer(
+         size, valid, TextureCache.getOrCreateSizedRegion(size, getImage(el))
+         , el::invokeClicked);
+        cache.put(el, container);
+
+
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
 
         tooltip.addTo(container);
@@ -52,7 +59,7 @@ public class PanelActionsDataSource implements
 
     private static String getImage(DC_ActiveObj el) {
         String image = el.getImagePath();
-//        if (el.can)
+        //        if (el.can)
         return image;
     }
 
@@ -98,16 +105,16 @@ public class PanelActionsDataSource implements
          .collect(Collectors.toList());
 
         // Now via special button!
-//        ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
-//        TextureRegion invTexture = TextureCache.getOrCreateR(type.getImagePath());
-//        DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
-//        if (action == null)
-//            return list;
-//        boolean valid = action.canBeManuallyActivated();
-//        ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
-//            action.clicked();
-//        });
-//        list.add(invButton);
+        //        ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
+        //        TextureRegion invTexture = TextureCache.getOrCreateR(type.getImagePath());
+        //        DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
+        //        if (action == null)
+        //            return list;
+        //        boolean valid = action.canBeManuallyActivated();
+        //        ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
+        //            action.clicked();
+        //        });
+        //        list.add(invButton);
 
         for (int i = 0; i < unit.getRemainingQuickSlots() - 1; i++) {
             list.add(null);

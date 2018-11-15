@@ -96,7 +96,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         setRoot(new GroupX() {
             @Override
             public void act(float delta) {
-                if (!town){
+                if (!town) {
                     super.act(delta);
                     return;
                 }
@@ -328,6 +328,8 @@ public class GuiStage extends StageX implements StageWithClosable {
                     return actor;
 
                 List<Group> ancestors = GdxMaster.getAncestors(actor);
+                if (actor instanceof Group)
+                    ancestors.add((Group) actor);
                 if (checkContainsNoOverlaying(ancestors)) {
                     if (!ancestors.contains(OptionsWindow.getInstance())) {
                         if (GdxMaster.getFirstParentOfClass(
@@ -437,7 +439,19 @@ public class GuiStage extends StageX implements StageWithClosable {
             hideTooltip(infoTooltip, 1f);
         });
 
-        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
+        GuiEventManager.bind(GuiEventType.HIDE_ALL_TEXT, p -> {
+            hideTooltip(infoTooltip, 1f);
+            hideTooltip(actionTooltip, 1f);
+            infoTooltip.setVisible(false);
+            actionTooltip.setVisible(false);
+        });
+        GuiEventManager.bind(GuiEventType.HIDE_ACTION_INFO_TEXT, p -> {
+            hideTooltip(actionTooltip, 1f);
+        });
+        GuiEventManager.bind(GuiEventType.HIDE_INFO_TEXT, p -> {
+            hideTooltip(infoTooltip, 1f);
+        });
+            GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
             DC_ActiveObj active = (DC_ActiveObj) p.get();
             if (ExplorationMaster.isExplorationOn()) {
                 return;
@@ -477,6 +491,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void showTooltip(boolean action, String s, LabelX tooltip, float dur) {
+
+        infoTooltip.setVisible(true);
+        actionTooltip.setVisible(true);
 
         tooltip.setText(s);
         tooltip.getColor().a = 0;

@@ -12,11 +12,14 @@ import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
-import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterPools;
+import eidolons.libgdx.particles.spell.SpellMultiplicator;
+import eidolons.libgdx.particles.spell.SpellVfx;
+import eidolons.libgdx.particles.spell.SpellVfxPool;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -43,8 +46,8 @@ public class Anim extends Group implements Animation {
     protected Vector2 origin;
     protected Vector2 destination;
     protected Vector2 defaultPosition;
-    protected List<EmitterActor> emitterList;
-    protected List<EmitterActor> emitterCache = new ArrayList<>(); //TODO not the best practice!
+    protected List<SpellVfx> emitterList;
+    protected List<SpellVfx> emitterCache = new ArrayList<>(); //TODO not the best practice!
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
@@ -131,7 +134,7 @@ public class Anim extends Group implements Animation {
         }
 
 
-        AnimMultiplicator.checkMultiplication(this);
+        SpellMultiplicator.checkMultiplication(this);
 
         addLight();
         startEmitters();
@@ -315,7 +318,7 @@ public class Anim extends Group implements Animation {
     protected void initEmitters() {
         if (emitterList == null) {
             if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS) != null) {
-                setEmitterList(EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
+                setEmitterList(SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
             }
         }
     }
@@ -349,7 +352,7 @@ public class Anim extends Group implements Animation {
 
         setDuration(2);
         if (part != null) {
-            duration = part.getDefaultDuration();
+            setDuration( part.getDefaultDuration());
         }
 //        duration*= AnimMaster.getOptions().getAnimationSpeed()
     }
@@ -366,9 +369,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected void initSpeed() {
-        if (!isSpeedSupported()) {
-            return;
-        }
+
         if (destination == null) {
             return;
         }
@@ -387,14 +388,17 @@ public class Anim extends Group implements Animation {
         float x = destination.x - origin.x;
         float y = destination.y - origin.y;
 
+        speedX = x / duration;
+        speedY = y / duration;
+
         double distance = Math.sqrt(x * x + y * y);
         if (distance == 0) {
             return;
         }
+        if (!isSpeedSupported()) {
+            return;
+        }
         this.duration = ((float) distance / pixelsPerSecond);
-
-        speedX = x / duration;
-        speedY = y / duration;
 
     }
 //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
@@ -656,14 +660,14 @@ public class Anim extends Group implements Animation {
         return destination;
     }
 
-    public List<EmitterActor> getEmitterList() {
+    public List<SpellVfx> getEmitterList() {
         if (emitterList == null) {
             setEmitterList(new ArrayList<>());
         }
         return emitterList;
     }
 
-    public void setEmitterList(List<EmitterActor> emitterList) {
+    public void setEmitterList(List<SpellVfx> emitterList) {
         this.emitterList = emitterList;
         emitterCache = new ArrayList<>(emitterList);
     }
@@ -741,7 +745,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected float getDefaultSpeed() {
-        return 700;
+        return 200;
     }
 
     public AnimData getData() {

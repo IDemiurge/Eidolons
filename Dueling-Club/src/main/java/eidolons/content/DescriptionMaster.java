@@ -6,6 +6,7 @@ import main.content.CONTENT_CONSTS.DEITY;
 import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
@@ -341,7 +342,7 @@ public class DescriptionMaster {
         String text = null;
         text = FileManager.readFile(getDescriptionPath(entity));
         if (fallback&&text.isEmpty()){
-            text = entity.getDescription();
+            text = entity.getProperty(G_PROPS.DESCRIPTION);
         }
         return text;
     }

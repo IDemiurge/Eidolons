@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.menu.selection;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.ScrollPanel;
@@ -119,6 +120,16 @@ public class DescriptionPanel extends ScrollTextWrapper {
     @Override
     protected FONT getFontStyle() {
         return FONT.MAIN;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 
     @Override

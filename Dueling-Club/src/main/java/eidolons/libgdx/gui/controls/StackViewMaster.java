@@ -24,35 +24,33 @@ import java.util.Map;
  * Created by JustMe on 11/11/2018.
  * <p>
  * I could in fact have a class for it
- *
+ * <p>
  * what could be improved?
- *
+ * <p>
  * just proper show/hide!
- *
+ * <p>
  * hide when:
- *  mouse leaves and stays out for X time
- *  user hits ESC
- *  any action is activated
- *
- *
+ * mouse leaves and stays out for X time
+ * user hits ESC
+ * any action is activated
+ * <p>
+ * <p>
  * if showing:
- *  don't let other things get in the way of tooltips/hover
- *
- *
+ * don't let other things get in the way of tooltips/hover
  */
 public class StackViewMaster {
     private static final float WAIT_AFTER_HOVER_OFF = 2;
     private static final float WAIT_AFTER_SHOW = 5;
     private float stackTimer;
-    private int minStackSize = 2;
+    private int minStackSize = OptionsMaster.getControlOptions().
+     getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER);
     private float waitToHideStack;
     private Map<GenericGridView, Vector2> posMap = new HashMap<>();
     private Map<GenericGridView, Float> scaleMap = new HashMap<>();
     private GridCellContainer stackCell;
 
     public StackViewMaster() {
-        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES , p-> stackOff());
-        GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED , p-> {
+        GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p -> {
             if (p.get() instanceof GridUnitView) {
                 if (((GridUnitView) p.get()).isStackView()) {
                     stackOff();
@@ -68,10 +66,10 @@ public class StackViewMaster {
             stackTimer += delta;
             if (stackTimer >= waitToHideStack) {
                 stackOff();
-                stackTimer=0;
-                waitToHideStack=0;
+                stackTimer = 0;
+                waitToHideStack = 0;
             }
-        } else stackTimer=0;
+        } else stackTimer = 0;
     }
 
     private void stackOn(GridCellContainer cell, boolean horizontal) {
@@ -82,7 +80,6 @@ public class StackViewMaster {
         if (views.size() < minStackSize) {
             return;
         }
-        cell.setStackView(true);
         int size = 128;
         //        boolean horizontal = bottom != null;
         int x = horizontal ? -size * views.size() / 2 + size / 2 : 0;
@@ -109,6 +106,7 @@ public class StackViewMaster {
             //highlight by color ally
 
         }
+        cell.setStackView(true);
         stackCell = cell;
         waitToHideStack = WAIT_AFTER_SHOW;
         //ESC to cancel
@@ -117,7 +115,7 @@ public class StackViewMaster {
 
     public void stackOff() {
         if (!posMap.isEmpty() || !scaleMap.isEmpty())
-          main.system.auxiliary.log.LogMaster.log(1, "Stack off!\n " + posMap + "\n" + scaleMap);
+            main.system.auxiliary.log.LogMaster.log(1, "Stack off!\n " + posMap + "\n" + scaleMap);
         else
             return;
         for (GenericGridView view : posMap.keySet()) {
@@ -143,29 +141,36 @@ public class StackViewMaster {
                 stack = true;
             }
         }
-        if (stack)
-            waitToHideStack= WAIT_AFTER_HOVER_OFF;
+        if (stack) {
+            waitToHideStack = WAIT_AFTER_HOVER_OFF;
+        }
     }
 
     public void checkShowStack(BaseView object) {
-        if (!isStackHoverOn()) return;
 
         Coordinates c = object.getUserObject().getCoordinates();
         GridCellContainer cell = DungeonScreen.getInstance().getGridPanel().getCells()[c.x][
          PositionMaster.getLogicalY(c.y)];
+
+
         if (cell.isStackView()) {
-            waitToHideStack = 0;
-        } else
-            stackOn(cell, false);
+            waitToHideStack = 0; //user is browsing the stack, don't hide
+        } else {
+            if (!isStackHoverOn(cell)) return;
+            stackOn(cell, false);  //open another stack
+        }
     }
 
-    private boolean isStackHoverOn() {
-        if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.SPLIT_OBJECT_STACKS_ON_HOVER)) {
-            return true;
-        }
-        if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.SPLIT_OBJECT_STACKS_ON_ALT_HOVER)) {
+    private boolean isStackHoverOn(GridCellContainer cell) {
+        int n = cell.getUnitViewCount();
+        if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.OPEN_OBJECT_STACKS_ON_ALT_HOVER)) {
             if (Gdx.input.isKeyPressed(Keys.ALT_LEFT))
                 return true;
+        }
+        if (n <=
+         OptionsMaster.getControlOptions().
+          getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER)) {
+            return true;
         }
         return false;
     }

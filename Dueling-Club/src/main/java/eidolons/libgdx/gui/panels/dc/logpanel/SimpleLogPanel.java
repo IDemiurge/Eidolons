@@ -29,13 +29,13 @@ public class SimpleLogPanel extends LogPanel {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                float max = GdxMaster.adjustHeight(800);
+                float max = GdxMaster.adjustHeight(1200);
                 float min = GdxMaster.adjustHeight(150);
                 float val = getHeight() + y;
                 if (val>max)
                     return;
-                setHeight(Math.min(Math.max(getHeight() + y, GdxMaster.adjustHeight(150)),
-                 GdxMaster.adjustHeight(800)));
+                setHeight(Math.min(Math.max(getHeight() + y, min),
+                 max));
                 extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2-1,
                  getHeight()  );
                 updatePos = true;

@@ -349,6 +349,8 @@ public class SoundMaster {
         , NEW__BATTLE_START2
         , NEW__CONTAINER,
         NEW__PLUS,
+        NEW__PAUSE,
+        NEW__RESUME,
 
         NEW__OPEN_MENU, NEW__GOLD, NEW__OK, NEW__DEFEAT, NEW__VICTORY
         , NEW__BATTLE_END

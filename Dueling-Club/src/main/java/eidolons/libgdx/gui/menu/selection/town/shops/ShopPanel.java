@@ -123,9 +123,11 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     @Override
     public void setItem(SelectableItemData sub) {
-        Shop shop=(Shop) sub.getEntity();
+        Shop shop = (Shop) sub.getEntity();
+        Unit unit = Eidolons.getMainHero();
         update(shop);
-        shop.enter();
+        Eidolons.onThisOrNonGdxThread(() ->
+         shop.enter(unit));
     }
 
     private void update(Shop shop) {

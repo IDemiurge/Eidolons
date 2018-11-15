@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
+import eidolons.libgdx.particles.util.EmitterMaster;
+import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;

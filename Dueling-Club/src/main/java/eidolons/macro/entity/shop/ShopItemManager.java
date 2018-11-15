@@ -6,7 +6,6 @@ import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
@@ -64,7 +63,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
     }
 
     public boolean canBuy(DC_HeroItemObj item, Unit buyer, boolean canUseDebt) {
-        Integer price = getPrice(item, buyer, false);
+        Integer price = getPrice(item, buyer, true);
         if (canUseDebt) {
             price -= getMaxDebt() - playerDebt;
         }
@@ -204,7 +203,6 @@ public class ShopItemManager extends EntityHandler<Shop> {
 
         int balanceChange = itemBought(t, price, seller);
         price -= balanceChange;
-        seller.modifyParameter(PARAMS.GOLD, price);
         return price;
     }
 
@@ -215,6 +213,11 @@ public class ShopItemManager extends EntityHandler<Shop> {
     }
 
 
+    protected void paysDebt(int paid, Unit hero) {
+        hero.addParam(PARAMS.GOLD, paid);
+        addParam(PARAMS.GOLD, -paid);
+        playerDebt-= -paid;
+    }
     protected int givesGold(int cost, Unit hero) {
         Integer gold = getGold();
         int balanceChange = 0;
@@ -245,10 +248,16 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return balanceChange;
     }
     protected void takesGold(int cost, Unit buyer) {
+
+    }
+        protected void takesGold(int cost, Unit buyer, boolean debt) {
         int paid = Math.min(cost, buyer.getIntParam(PARAMS.GOLD));
         buyer.modifyParameter(PARAMS.GOLD, -paid);
         getEntity().modifyParameter(PARAMS.GOLD, paid);
-        playerDebt +=cost - paid  ;
+        if (debt){
+            playerDebt +=-cost  ;
+        } else
+            playerDebt +=cost - paid  ;
     }
 
     public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean buy) {
@@ -266,15 +275,17 @@ public class ShopItemManager extends EntityHandler<Shop> {
         int i = 1;
         if (buy)
             i = -1;
-        price = MathMaster.addFactor(price, i * getCostMod());
-        price = MathMaster.addFactor(price, -i * unit.getIntParam(PARAMS.GOLD_COST_REDUCTION));
+        price = MathMaster.addFactor(price, i * getCostMod(unit));
         return price;
     }
 
-    private int getCostMod() {
-        Integer reduction = getIntParam(PARAMS.GOLD_COST_REDUCTION);
+    private int getCostMod(Unit unit) {
+        Integer reduction = getIntParam(PARAMS.GOLD_COST_REDUCTION) ;
         reduction+= reduction*(getIntParam(MACRO_PARAMS.REPUTATION)-100) /100  ;
         reduction+= reduction*(getEntity().getTown().getReputation()-100)/100;
+
+        reduction-=reduction*( unit.getIntParam(PARAMS.GOLD_COST_REDUCTION)) /100  ;
+
         return reduction;
     }
 
@@ -339,20 +350,21 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return true;
     }
 
-    public void exited() {
+    public void exited(Unit hero) {
         for (Integer id : priceCache.keySet()) {
             //       TODO save     addProperty(MACRO_PROPS.SHOP_CACHED_PRICES,
             //             VariableManager.getStringWithVariable(id , price));
             Integer price = priceCache.get(id);
             priceCacheMax.put(id, price);
         }
-        addInterest();
+        addInterest(hero);
         getEntity().setParam(MACRO_PARAMS.BALANCE , playerDebt);
     }
 
-    private void addInterest() {
+    private void addInterest(Unit hero) {
         if (playerDebt >0){
             Integer interest = getEntity().getIntParam(MACRO_PARAMS.DEBT_INTEREST);
+            interest= interest*getCostMod(hero)/100;
             playerDebt = playerDebt *interest/100;
         }
 
@@ -391,19 +403,18 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return getEntity().getShopType();
     }
 
-    public void handleDebt() {
+    public void handleDebt(Unit hero) {
         if (playerDebt ==0)
             return;
-        Unit hero = Eidolons.getMainHero();
         int transferred = 0;
         boolean ok = false;
         boolean gives = false;
         if (playerDebt > 0) {
             transferred = Math.min(Math.abs(playerDebt), hero.getGold());
-            takesGold(transferred, hero);
+            takesGold(transferred, hero, true);
         } else {
             transferred = Math.min(Math.abs(playerDebt), getGold());
-            givesGold(transferred, hero);
+            paysDebt(transferred, hero);
             gives = true;
         }
         if (transferred>0){
@@ -417,12 +428,12 @@ public class ShopItemManager extends EntityHandler<Shop> {
 
         if (!ok) {
             if (!gives) {
-                addInterest();
+                addInterest(hero);
                 getEntity().getTown().reputationImpact(-15);
             }
         }
         //reputation impact?!
 
-        EUtils.info(message, true);
+        EUtils.info(message, true, true);
     }
 }

@@ -78,7 +78,7 @@ public class AttackAnim extends ActionAnim {
             return "";
         }
         String path = PathFinder.getImagePath();
-        StrPathBuilder builder = new StrPathBuilder(PathFinder.getSpritesPath(), "weapons");
+        StrPathBuilder builder = new StrPathBuilder(PathFinder.getSpritesPathFull(), "weapons");
 
         builder.append
          (weapon.isNatural() ? "natural"
@@ -137,7 +137,7 @@ public class AttackAnim extends ActionAnim {
 
     public String getTexturePath() {
         if (imgPath == null)
-//            imgPath = FileManager.getRandomFile(PathFinder.getSpritesPath() + "weapons"+StringMaster.getPathSeparator()
+//            imgPath = FileManager.getRandomFile(PathFinder.getSpritesPathFull() + "weapons"+StringMaster.getPathSeparator()
 //             + (weapon.isNatural() ? "natural"+StringMaster.getPathSeparator() : "")
 //             + (weapon.isRanged() ? "ranged"+StringMaster.getPathSeparator() : "")
 //            ).getPath();
@@ -145,7 +145,7 @@ public class AttackAnim extends ActionAnim {
             imgPath = findWeaponSprite(getActive().getActiveWeapon());
         }
         return imgPath;
-//        return PathFinder.getSpritesPath() + "weapons"+StringMaster.getPathSeparator() + "scimitar.png";
+//        return PathFinder.getSpritesPathFull() + "weapons"+StringMaster.getPathSeparator() + "scimitar.png";
     }
 
     @Override

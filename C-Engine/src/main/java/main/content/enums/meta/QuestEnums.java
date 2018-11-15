@@ -48,5 +48,6 @@ public class QuestEnums {
         COMMON_ITEMS,
         SPECIAL_ITEM,
         ESCAPE,
+        TUTORIAL,
     }
 }

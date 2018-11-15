@@ -49,7 +49,7 @@ public class AttackTooltipFactory {
         int min_damage = FutureBuilder.precalculateDamage(el, target, true, true);
         int max_damage = FutureBuilder.precalculateDamage(el, target, true, false);
 
-        LogMaster.log(1, el.getName() + " on " + target.getName()
+        LogMaster.log(1, el.getName() + " on " + target
          + " - damage precalculated: " + min_damage + " - " + max_damage);
         DAMAGE_TYPE dmgType = el.getDamageType();
 //        TODO display all bonus damage!

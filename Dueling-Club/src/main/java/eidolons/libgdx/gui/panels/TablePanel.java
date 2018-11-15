@@ -84,6 +84,7 @@ public class TablePanel<T extends Actor> extends Table {
 
     @Override
     public void setBackground(Drawable background) {
+        if (!(background instanceof NinePatchDrawable))
         if (background instanceof TextureRegionDrawable) {
             final TextureRegionDrawable drawable = ((TextureRegionDrawable) background);
             final TextureRegion region = drawable.getRegion();

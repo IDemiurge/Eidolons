@@ -64,7 +64,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.ANIM_MISSILE_SPRITE,
     };
     public static final String SPRITE_PATH =
-     PathFinder.getSpritesPath();
+     PathFinder.getSpritesPathFull();
 
     public static final VALUE[] VFX_IDS = {
      PROPS.ANIM_VFX_CAST,

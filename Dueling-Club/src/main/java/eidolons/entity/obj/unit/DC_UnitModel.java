@@ -76,10 +76,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
-        this.x = x;
-        this.y = y;
-        setCoordinates(Coordinates.get(x, y));
-        originalCoordinates = getCoordinates();
+        Coordinates c = Coordinates.get(x, y);
+        setCoordinates(c);
+        originalCoordinates = c;
         if (this.game == null) {
             setGame(game);
         }
@@ -137,9 +136,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                 }
             }
         }
-//        if (!VisionManager.checkKnown(this)) {
-//            return "?";
-//        }
+        //        if (!VisionManager.checkKnown(this)) {
+        //            return "?";
+        //        }
         return getNameIfKnown();
     }
 
@@ -303,14 +302,12 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         } else {
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
         }
-        if (mode == null || STD_MODES.NORMAL.equals(mode))
-        {
+        if (mode == null || STD_MODES.NORMAL.equals(mode)) {
             GuiEventManager.trigger(SHOW_MODE_ICON, this, null);
-        }
-        else {
-            GuiEventManager.trigger(SHOW_MODE_ICON, this,mode.getImagePath());
+        } else {
+            GuiEventManager.trigger(SHOW_MODE_ICON, this, mode.getImagePath());
             EUtils.showInfoText(
-             StringMaster.getWellFormattedString(mode.getBuffName())+"...");
+             StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
         }
     }
 

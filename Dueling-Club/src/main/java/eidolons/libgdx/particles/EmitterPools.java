@@ -4,14 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.anims.Assets;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,35 +88,12 @@ public class EmitterPools {
 
     }
 
-    public static List<EmitterActor> getEmitters(String data) {
-        List<EmitterActor> list = new ArrayList<>();
-        for (String path :
-         ContainerUtils.openContainer(data)) {
-
-            Chronos.mark("emitter " + path);
-            EmitterActor emitter = null;
-            EMITTER_PRESET sfx = new EnumMaster<EMITTER_PRESET>().
-             retrieveEnumConst(EMITTER_PRESET.class, path);
-            if (sfx == null) {
-                emitter = EmitterPools.getEmitterActor(path);
-            } else {
-                emitter = EmitterPools.getEmitterActor(sfx);
-            }
-            if (emitter != null) {
-                list.add(emitter
-                );
-            }
-            Chronos.logTimeElapsedForMark("emitter " + path);
-        }
-        return list;
-    }
-
     public static void init(AssetManager manager) {
 //      TODO   manager.load("", );
     }
 
     public static void preloadDefaultEmitters() {
-        if (isPreloaded())
+        if (ParticleEffectX.isEmitterAtlasesOn())
             return ;
         for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
             if (sub.isPreloaded())

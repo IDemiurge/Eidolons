@@ -170,7 +170,7 @@ List<Anim> parallelAnims;
         timeAttachedAnims.get(part).forEach(a -> {
             if (!a.isRunning()) {
                 if (a.getDelay() <= time) {
-                    a.start(getRef());
+                    a.start();
                     AnimMaster.getInstance().addAttached(a);
                 }
             }
@@ -376,6 +376,10 @@ List<Anim> parallelAnims;
         }
         if (anim instanceof Anim) {
             addEvents(partToAddAt, (Anim) anim);
+        }
+        if (anim instanceof Anim)
+        {
+            ((Anim) anim).setParentAnim(this);
         }
 
     }

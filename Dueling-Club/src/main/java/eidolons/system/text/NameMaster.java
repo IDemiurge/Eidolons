@@ -446,7 +446,7 @@ public class NameMaster {
             i++;
 
             for (String t : names) {
-                if (t.equals(newName)) {
+                if (t.equalsIgnoreCase(newName)) {
                     newName = name + StringMaster.VERSION_SEPARATOR + i;
                     continue loop;
                 }

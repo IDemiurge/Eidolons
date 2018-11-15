@@ -39,7 +39,7 @@ public class BattleGuiStage extends GuiStage {
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
-    private Group infoPanel;
+    private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
 
 
@@ -78,16 +78,18 @@ public class BattleGuiStage extends GuiStage {
         if (ancestors.contains(outcomePanel)){
             return false;
         }
+        if (ancestors.contains(infoPanel)){
+            return false;
+        }
+        if (ancestors.contains(infoPanel.outside)){
+            return false;
+        }
             return super.checkContainsNoOverlaying(ancestors);
     }
 
     @Override
     protected boolean checkBlocked() {
-        return super.checkBlocked()  || outcomePanel.isVisible();
-    }
-
-    public static boolean isNewUnitInfoPanelWIP() {
-        return true;
+        return super.checkBlocked()  || outcomePanel.isVisible() || infoPanel.isVisible();
     }
 
     @Override
@@ -113,9 +115,9 @@ public class BattleGuiStage extends GuiStage {
         });
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
             Unit unit = (Unit) obj.get();
-//            if (isNewUnitInfoPanelWIP()) {
-//                addActor(infoPanel = UnitInfoPanelNew.getInstance());
-//            }
+            if (UnitInfoPanelNew.isNewUnitInfoPanelWIP()) {
+                addActor(infoPanel = UnitInfoPanelNew.getInstance());
+            }
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
@@ -149,19 +151,15 @@ public class BattleGuiStage extends GuiStage {
     }
 
 
-    @Override
-    public void act() {
-        super.act();
-        if (outcomePanel != null)
-            outcomePanel.setZIndex(Integer.MAX_VALUE);
-    }
-
     public void update() {
         getBottomPanel().setX(
          (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2);
 
         locationLabel.setPosition(25,
          GdxMaster.getHeight() - locationLabel.getHeight() - initiativePanel.getHeight()-30);
+
+//        if (outcomePanel != null)
+//            outcomePanel.setZIndex(Integer.MAX_VALUE);
     }
 
     @Override

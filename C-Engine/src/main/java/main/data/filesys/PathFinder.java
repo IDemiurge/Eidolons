@@ -250,9 +250,15 @@ public class PathFinder {
     public static String getParticlePresetPath() {
         return getVfxPath();
     }
-    public static String getSpritesPath() {
+    public static String getSpritesPathFull() {
         init();
         return getImagePath() + PathUtils.getPathSeparator() +
+         "mini" + PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
+    }
+
+    public static String getSpritesPath() {
+        init();
+        return
          "mini" + PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
     }
 

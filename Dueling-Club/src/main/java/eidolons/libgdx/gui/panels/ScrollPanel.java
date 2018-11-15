@@ -34,7 +34,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         getTable().setSize(width, height);
         innerScrollContainer.setSize(width, height);
         getTable().setFixedSize(true);
-        offsetY = getDefaultOffsetY();
+//        offsetY = getDefaultOffsetY(); wtfffff
     }
 
     public int getDefaultOffsetY() {
@@ -189,6 +189,11 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         });
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        table.setUserObject(userObject);
+    }
 
     protected boolean isTouchScrolled() {
         return false;
@@ -203,6 +208,8 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     public void act(float delta) {
         super.act(delta);
         if (!isAlwaysScrolled())
+            if (getLowerLimit() >0)
+                if (getUpperLimit()>0)
             if (getHeight() >= innerScrollContainer.getHeight())
                 return;
         if (!widgetPosChanged && innerScrollContainer.getY() != 0) {
@@ -214,11 +221,13 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
          instantOffsetY != 0) {
             float cy = innerScrollContainer.getY();
             if (offsetY < 0) {
+                if (getUpperLimit()>0)
                 if (cy <= -getUpperLimit()) {
                     return;
                 }
             } else {
-                if (cy >= getLowerLimit()) {
+                if (getLowerLimit() >0)
+                    if (cy >= getLowerLimit()) {
                     return;
                 }
             }
@@ -244,11 +253,11 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     }
 
     protected float getLowerLimit() {
-        return getHeight() * 0.82f;
+        return getHeight();// * 0.82f;
     }
 
     protected float getUpperLimit() {
-        return innerScrollContainer.getHeight() * 0.73f;
+        return innerScrollContainer.getHeight();// * 0.73f;
     }
 
 

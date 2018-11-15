@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TabbedPanel<T extends Actor>  extends TablePanelX  {
+public class TabbedPanel<T extends Actor> extends TablePanelX {
     protected HashMap<String, T> tabsToNamesMap;
     protected List<T> tabs = new ArrayList<>();
     protected String selectedTab;
@@ -27,7 +27,7 @@ public class TabbedPanel<T extends Actor>  extends TablePanelX  {
     };
     protected TablePanelX contentTable;
     protected TablePanelX<Button> tabTable;
-    protected    Cell contentCell;
+    protected Cell contentCell;
 
     public TabbedPanel() {
         tabsToNamesMap = new HashMap<>();
@@ -61,8 +61,9 @@ public class TabbedPanel<T extends Actor>  extends TablePanelX  {
     }
 
     protected Cell createContentsCell() {
-       return    addElement(contentTable = createContentsTable()).size(contentTable.getWidth(), contentTable.getHeight());
+        return addElement(contentTable = createContentsTable()).size(contentTable.getWidth(), contentTable.getHeight());
     }
+
     protected TablePanelX createContentsTable() {
         return new TablePanelX<>();
     }
@@ -76,12 +77,31 @@ public class TabbedPanel<T extends Actor>  extends TablePanelX  {
         initContainer();
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+    }
+
+    @Override
+    protected void setUserObjectForChildren(Object userObject) {
+        for (T t : tabsToNamesMap.values()) {
+            t.setUserObject(userObject);
+            if (t instanceof TablePanel) {
+                try {
+                    ((TablePanel) t).updateAct(0);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+        }
+    }
+
     public String getSelectedTab() {
         return selectedTab;
     }
 
     public void addTab(T actor, String tabName) {
-        TextButton b = new SmartButton(tabName, getTabStyle(), ()-> tabSelected(tabName) , STD_BUTTON.TAB_HIGHLIGHT);
+        TextButton b = new SmartButton(tabName, getTabStyle(), () -> tabSelected(tabName), STD_BUTTON.TAB_HIGHLIGHT);
 
         if (tabTable == null) {
             initContainer();
@@ -101,19 +121,26 @@ public class TabbedPanel<T extends Actor>  extends TablePanelX  {
 
     public void tabSelected(String tabName) {
         buttonGroup.setChecked(tabName);
-         setActor(tabsToNamesMap.get(tabName));
+        setDisplayedActor(tabsToNamesMap.get(tabName));
     }
 
-    private void setActor(T t) {
+    protected Cell setDisplayedActor(T t) {
+        if (t instanceof TablePanel) {
+            try {
+                ((TablePanel) t).updateAct(0);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         contentTable.clearChildren();
-        contentTable.add(t).size(contentTable.getWidth(), contentTable.getHeight());
+        return contentTable.add(t).size(contentTable.getWidth(), contentTable.getHeight());
     }
 
     public void resetCheckedTab() {
         if (tabs.size() > 0) {
             buttonGroup.uncheckAll();
             buttonGroup.getButtons().first().setChecked(true);
-             setActor(tabs.get(0));
+            setDisplayedActor(tabs.get(0));
         }
     }
 

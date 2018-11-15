@@ -71,7 +71,8 @@ public abstract class LogManager {
     }
 
     public LogEntryNode newLogEntryNode(ENTRY_TYPE type, Object... args) {
-        return newLogEntryNode(false, type, args);
+//        return newLogEntryNode(false, type, args);
+        return null;
     }
 
     public LogEntryNode getLogEntryNode(Boolean first_last_custom, ENTRY_TYPE type, Object... args) {
@@ -93,7 +94,7 @@ public abstract class LogManager {
         }
         return lastEntry;
     }
-
+@Deprecated
     public LogEntryNode newLogEntryNode(boolean logLater, ENTRY_TYPE type, Object... args) {
         if (LogMaster.isOff())
             return null;
@@ -121,7 +122,7 @@ public abstract class LogManager {
          .size() + 1, logLater, argArray);
         // TODO why +1? could lineIndex be the reason why first/last position
         // isn't filled?
-        entry.addLinkedAnimations(getPendingAnimsToLink().remove(type));
+//        entry.addLinkedAnimations(getPendingAnimsToLink().remove(type));
         // entry.setLayer(layer);
         // node.getLineIndex() > getRowCount() * getCurrentIndex()
         // && node.getLineIndex() < (getCurrentIndex() + 1) * getRowCount()

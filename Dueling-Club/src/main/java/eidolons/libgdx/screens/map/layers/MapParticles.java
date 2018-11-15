@@ -2,7 +2,7 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.particles.EmitterMaster;
+import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.macro.MacroGame;
 import eidolons.libgdx.particles.EmitterActor;

@@ -59,7 +59,7 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         DequeImpl<Obj> objects = new DequeImpl<>();
         objects.addAllCast(
          getGame().getMaster()
-          .getUnitsForCoordinates(coordinates));
+          .getBfObjectsForCoordinates(coordinates));
 
         Filter.filter(objects, targetType);
         if (allyOrEnemyOnly != null) {

@@ -6,14 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import org.apache.commons.lang3.StringUtils;
 
-public class ValueContainer extends TablePanel {
+public class ValueContainer extends TablePanelX  implements AbstractValueContainer{
     protected Cell<ImageContainer> imageContainer;
     protected Cell<Label> nameContainer;
     protected Cell<Label> valueContainer;
@@ -127,7 +126,7 @@ public class ValueContainer extends TablePanel {
         }
         nameContainer.setActor(
          nameLabel
-        ).grow().center().padRight(12);
+        ).padRight(12);
 
         valueContainer = addElement(null);
 
@@ -139,9 +138,8 @@ public class ValueContainer extends TablePanel {
             valueLabel = new Label(value, style);
         }
         valueContainer.setActor(
-         valueLabel).grow().center();
-        setNameAlignment(Align.center);
-        setValueAlignment(Align.center);
+         valueLabel).growX().fillX();
+
 
         initSize();
     }
@@ -230,12 +228,14 @@ public class ValueContainer extends TablePanel {
     public void setNameAlignment(int align) {
         if (nameContainer.getActor() != null) {
             nameContainer.getActor().setAlignment(align);
+            nameContainer.align(align);
         }
     }
 
     public void setValueAlignment(int align) {
         if (valueContainer.getActor() != null) {
             valueContainer.getActor().setAlignment(align);
+            valueContainer.align(align);
         }
     }
 
@@ -310,6 +310,7 @@ public class ValueContainer extends TablePanel {
     public void setImageAlign(int imageAlign) {
         if (imageContainer.getActor() != null) {
             imageContainer.getActor().getContent().setAlign(imageAlign);
+            imageContainer.align(imageAlign);
         }
     }
 
@@ -345,6 +346,11 @@ public class ValueContainer extends TablePanel {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
     }
 }
 

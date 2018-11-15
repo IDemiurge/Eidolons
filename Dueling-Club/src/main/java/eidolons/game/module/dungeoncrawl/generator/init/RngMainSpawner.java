@@ -684,18 +684,22 @@ public class RngMainSpawner {
         Coordinates center = new AbstractCoordinates(levelBlock.getWidth() / 2, levelBlock.getHeight() / 2)
          .getOffset(levelBlock.getCoordinates());
 
+        long max = levelBlock.getTileMap().getMap().
+         values().stream().filter(cell -> TilesMaster.isPassable(cell)).count() / 3;
+        
         List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
          .filter(c -> checkCellForSpawn(c, levelBlock)).
           filter(c -> !levelBlock.getUnitGroups().keySet().stream()
            .anyMatch(list -> list.stream().anyMatch(at -> at.getCoordinates().equals(c)))).
          //no other units there
-
           sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
           -c.dst(center)
-           +RandomWizard.getRandomInt( (levelBlock.getWidth())))
+//           +RandomWizard.getRandomInt( (levelBlock.getWidth()))
 //           +RandomWizard.getRandomInt((int) Math.sqrt(levelBlock.getSquare())))
-         ).limit(Math.max(1, units.size() / maxStack)).
+         )).limit(Math.max(1, max)).
           collect(Collectors.toList());
+
+        Collections.shuffle(emptyCells);
 
         if (checkCellForSpawn(center, levelBlock))
             emptyCells.add(0, center);

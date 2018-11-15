@@ -30,23 +30,13 @@ public class GuiEventManager {
     public static void bind(boolean removePreviousBind, EventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
-        if (!vertx) {
-            if (removePreviousBind)
-                GuiEventManagerOld.removeBind(type);
-            GuiEventManagerOld.bind(type, event);
-        } else {
-//            if (removePreviousBind)
-//                GuiEventManagerVertx.removeBind(type );
-            GuiEventManagerVertx.bind(type, event);
-        }
+        if (removePreviousBind)
+            GuiEventManagerImpl.removeBind(type);
+        GuiEventManagerImpl.bind(type, event);
     }
 
     public static void cleanUp() {
-        if (!vertx) {
-            GuiEventManagerOld.cleanUp();
-        } else {
-            GuiEventManagerVertx.cleanUp();
-        }
+        GuiEventManagerImpl.cleanUp();
 
     }
 
@@ -70,23 +60,15 @@ public class GuiEventManager {
             if (params.length == 1) {
                 obj = params[0];
             } else {
-                obj =new EventCallbackParam( Arrays.asList(params));
+                obj = new EventCallbackParam(Arrays.asList(params));
             }
         }
         checkSoundEvent(type, obj);
-        if (!vertx) {
-            GuiEventManagerOld.trigger(type, obj);
-        } else {
-            GuiEventManagerVertx.trigger(type, obj);
-        }
+        GuiEventManagerImpl.trigger(type, obj);
     }
 
     public static void processEvents() {
-        if (!vertx) {
-            GuiEventManagerOld.processEvents();
-        } else {
-            GuiEventManagerVertx.processEvents();
-        }
+        GuiEventManagerImpl.processEvents();
     }
 
     public static boolean checkEventIsGuiHandled(Event event) {
@@ -121,7 +103,7 @@ public class GuiEventManager {
             case "C Endurance":
             case "Toughness":
             case "C Toughness":
-//            case "Illumination":
+                //            case "Illumination":
                 return true;
         }
         return false;

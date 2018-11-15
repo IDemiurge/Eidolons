@@ -48,7 +48,7 @@ import java.util.Map;
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanelX implements EventListener {
-    public static final boolean TEST_MODE = !CoreEngine.isFullFastMode();
+    public static final boolean TEST_MODE = false;
     public static final boolean TEST_OUTCOME = false;
     private static final String VICTORY_MESSAGE =
      "+++That's It - You are Victorious!+++";
@@ -159,8 +159,8 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         );
 
         float y = GdxMaster.getHeight() -
-         (GdxMaster.getHeight() -  getHeight() / 2);
-        float x = (GdxMaster.getWidth() -  getWidth()) / 2;
+         (GdxMaster.getHeight() - getHeight() / 2);
+        float x = (GdxMaster.getWidth() - getWidth()) / 2;
         ActorMaster.addMoveToAction(this, x, y, 2.5f);
         //        addElement(buttonTable).pad(0, 20, 20, 20);
     }
@@ -197,9 +197,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         Actor actor = event.getTarget();
         if (actor instanceof Label) {
             if (actor.getParent() instanceof TextButton) {
-                if (CoreEngine.isIDE() &&TEST_MODE){
-                    setVisible(false);
-                } else
+                //                if (CoreEngine.isIDE() &&TEST_MODE){
+                //                    setVisible(false);
+                //                } else
                 rollBack();
                 //                ActorMaster.addRemoveAfter(this);
                 final Boolean exit_continue_next = getEventType(actor);
@@ -222,7 +222,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
                 } else {
                     //TODO display stats!
-                    String stats = MissionStatManager.getGameStatsText( );
+                    String stats = MissionStatManager.getGameStatsText();
                     EUtils.onConfirm(stats +
                      "\n Exit to menu?", true, () ->
                      Eidolons.exitFromGame());
@@ -243,6 +243,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     private void rollBack() {
         ActorMaster.addMoveToAction(this, getX(),
          GdxMaster.getHeight() - exitButton.getActorHeight(), 1.5f);
+        ActorMaster.addHideAfter(this);
     }
 
     private String getGameStats(OutcomeDatasource datasource) {
@@ -255,11 +256,11 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         stats += "\n Damage taken:" + datasource.getDAMAGE_TAKEN();
         Map<String, Integer> map = datasource.getHeroStats().getGeneralStats();
         for (String s : map.keySet()) {
-            stats+="\n" + s + ": " + map.get(s);
+            stats += "\n" + s + ": " + map.get(s);
         }
-//        for (String s : datasource.getHeroStats().getStatMap()) {
-//            stats+="\n" + s + ": " + datasource.getMainStats().get(s);
-//        }
+        //        for (String s : datasource.getHeroStats().getStatMap()) {
+        //            stats+="\n" + s + ": " + datasource.getMainStats().get(s);
+        //        }
         //class outcome!
         return stats;
     }

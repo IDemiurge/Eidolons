@@ -137,7 +137,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected Color getFontColor() {
-        return GdxColorMaster.GOLDEN_WHITE;
+        return GdxColorMaster.PALE_GOLD;
     }
 
     protected int getFontSize() {

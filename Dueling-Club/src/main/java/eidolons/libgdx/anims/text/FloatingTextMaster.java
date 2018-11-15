@@ -77,11 +77,11 @@ public class FloatingTextMaster {
                 Cost cost = (Cost) arg;
                 return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
             case BATTLE_COMMENT:
-                return GdxColorMaster.GOLDEN_WHITE;
+                return GdxColorMaster.PALE_GOLD;
             case PARAM_MOD:
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
                 return (pair.getValue() > 0)
-                 ? GdxColorMaster.GOLDEN_WHITE
+                 ? GdxColorMaster.PALE_GOLD
                  : GdxColorMaster.RED;
 
             case GOLD:

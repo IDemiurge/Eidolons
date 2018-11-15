@@ -123,6 +123,26 @@ public class HeroWrapper extends HeroDataModel {
         return true;
     }
 
+
+    @Override
+    public Coordinates getCoordinates() {
+        return getHero().getCoordinates();
+    }
+
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+    }
+
+    @Override
+    public int getY() {
+        return getHero().getY();
+    }
+
+    @Override
+    public void setY(int y) {
+        getHero().setY(y);
+    }
+
     @Override
     public boolean canMove() {
         return getHero().canMove();
@@ -137,27 +157,6 @@ public class HeroWrapper extends HeroDataModel {
     public void setZ(int z) {
         getHero().setZ(z);
     }
-
-    @Override
-    public Coordinates getCoordinates() {
-        return getHero().getCoordinates();
-    }
-
-    @Override
-    public void setCoordinates(Coordinates coordinates) {
-        getHero().setCoordinates(coordinates);
-    }
-
-    @Override
-    public int getY() {
-        return getHero().getY();
-    }
-
-    @Override
-    public void setY(int y) {
-        getHero().setY(y);
-    }
-
     @Override
     public String getNameAndCoordinate() {
         return getHero().getNameAndCoordinate();

@@ -16,7 +16,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.particles.EmitterPools;
-import eidolons.libgdx.particles.EmitterPresetMaster;
+import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.system.auxiliary.log.LOG_CHANNEL;

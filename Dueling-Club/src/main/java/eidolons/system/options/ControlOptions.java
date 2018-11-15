@@ -26,7 +26,7 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
         CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),
         CENTER_CAMERA_ON_ALLIES_ONLY(false),
         ALWAYS_CAMERA_CENTER_ON_ACTIVE(false), SCROLL_SPEED(100, 25, 200),
-        SPLIT_OBJECT_STACKS_ON_HOVER(false);
+        MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER(3, 2, 5), OPEN_OBJECT_STACKS_ON_ALT_HOVER(true);
 //        BINDING_PROFILE, ;
         private Boolean exclusive;
         private Integer min;

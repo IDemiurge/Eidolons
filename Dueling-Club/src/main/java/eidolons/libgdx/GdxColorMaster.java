@@ -41,7 +41,7 @@ public class GdxColorMaster {
     public static final Color ORANGE = getColor(225, 135, 55, 1f);
     public static final Color FIRE = getColor(255, 115, 75, 1f);
     public static final Color WHITE = new Color(1, 1, 1, 1f);
-    public static final Color GOLDEN_WHITE = getColor(252, 238, 210, 1f);
+    public static final Color PALE_GOLD = getColor(252, 238, 210, 1f);
     public static final Color GOLDEN_GRAY = getColor(233, 218, 192, 1f);
 
     public static final Color BRONZE = getColor(175, 115, 25, 1f);
@@ -60,7 +60,7 @@ public class GdxColorMaster {
     public static final Color GREY = getColor(115, 115, 125, 1f);
     public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208);
     public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
-    public static final Color STANDARD_TEXT = GOLDEN_WHITE;
+    public static final Color STANDARD_TEXT = PALE_GOLD;
     private static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
     public static final Color COPPER = LIGHT_YELLOW;
     private static final Color BROWN = getColor(165, 155, 45, 1f);
@@ -100,7 +100,7 @@ public class GdxColorMaster {
             case SHADOW:
                 return LILAC;
             case HOLY:
-                return GOLDEN_WHITE;
+                return PALE_GOLD;
             case DEATH:
                 return GREY;
             case PSIONIC:
@@ -217,7 +217,7 @@ public class GdxColorMaster {
     }
 
     public static Color getDefaultTextColor() {
-        return GOLDEN_WHITE;
+        return PALE_GOLD;
     }
 
     public static Color getColorForSkillGroup(SKILL_GROUP arg) {

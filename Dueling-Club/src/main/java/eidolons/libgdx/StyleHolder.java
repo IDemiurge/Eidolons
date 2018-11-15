@@ -102,11 +102,11 @@ public class StyleHolder {
 
     public static LabelStyle getSizedColoredLabelStyle(float i, FONT fontStyle,
                                                        Integer size) {
-        return getSizedColoredLabelStyle(i, fontStyle, size, GdxColorMaster.GOLDEN_WHITE);
+        return getSizedColoredLabelStyle(i, fontStyle, size, GdxColorMaster.PALE_GOLD);
     }
 
     public static Label.LabelStyle getDebugLabelStyle() {
-        return getSizedColoredLabelStyle(SMART_FONT_SIZE_COEF, FONT.MAIN, 15, GdxColorMaster.GOLDEN_WHITE);
+        return getSizedColoredLabelStyle(SMART_FONT_SIZE_COEF, FONT.MAIN, 15, GdxColorMaster.PALE_GOLD);
     }
 
     public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,

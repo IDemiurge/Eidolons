@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.test.TestMasterContent;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -33,7 +34,10 @@ public class MainLauncher extends GenericLauncher {
         if (CoreEngine.isIDE())
         {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
+            if (CoreEngine.isFastMode())
+                TestMasterContent.setAddSpells(true);
             if (CoreEngine.isFullFastMode()) {
+                TestMasterContent.setAddAllSpells(true);
                 OptionsMaster.setOptionsPath("C:\\Users\\JustMe\\Eidolons\\fast options.xml");
             }
         }

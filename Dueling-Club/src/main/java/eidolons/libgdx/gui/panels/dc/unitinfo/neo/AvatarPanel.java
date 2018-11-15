@@ -2,8 +2,6 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -11,9 +9,6 @@ import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.AvatarDataSource;
 
 public class AvatarPanel extends TablePanelX {
     private final FadeImageContainer portrait;
-    private final Label param2Label;
-    private final Label param1Label;
-    private final Label nameLabel;
 
     public AvatarPanel() {
         //        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/avatar-panel.png");
@@ -24,18 +19,17 @@ public class AvatarPanel extends TablePanelX {
         portrait = new FadeImageContainer();
         addElement(portrait).pad(22, 60, 22, 55).growY();
 
-        row();
-
-        nameLabel = new Label("", StyleHolder.getHqLabelStyle(19));
-        addElement(nameLabel).uniformX().center();
-        row();
-
-        param1Label = new Label("", StyleHolder.getHqLabelStyle(18));
-        addElement(param1Label).uniformX().center();//.expand();
-        row();
-
-        param2Label = new Label("", StyleHolder.getHqLabelStyle(18));
-        addElement(param2Label).uniformX().center() ;
+//        row();
+//        nameLabel = new Label("", StyleHolder.getHqLabelStyle(19));
+//        addElement(nameLabel).uniformX().center();
+//        row();
+//
+//        param1Label = new Label("", StyleHolder.getHqLabelStyle(18));
+//        addElement(param1Label).uniformX().center();//.expand();
+//        row();
+//
+//        param2Label = new Label("", StyleHolder.getHqLabelStyle(18));
+//        addElement(param2Label).uniformX().center() ;
         pack();
     }
 
@@ -55,10 +49,10 @@ public class AvatarPanel extends TablePanelX {
             texture = source.getAvatar();
         }
         portrait.setImage(new Image(texture));
-
-        nameLabel.setText(source.getName());
-        param1Label.setText(source.getParam1());
-        param2Label.setText(source.getParam2());
+        setSize(texture.getRegionWidth(), texture.getRegionHeight());
+//        nameLabel.setText(source.getName());
+//        param1Label.setText(source.getParam1());
+//        param2Label.setText(source.getParam2());
         pack();
     }
 }

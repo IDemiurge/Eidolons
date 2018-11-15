@@ -27,7 +27,7 @@ import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.EmitterPools;
-import eidolons.libgdx.particles.ParticleManager;
+import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.ChainedStage;
@@ -211,9 +211,9 @@ public class DungeonScreen extends GameScreenWithTown {
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH());
+        controller = new DungeonInputController(cam);
         //do not chain - will fail ...
         gridPanel.init(param.getObjects());
-        controller = new DungeonInputController(cam);
 
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager);

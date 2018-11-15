@@ -2,7 +2,6 @@ package main.system.datatypes;
 
 import main.content.enums.entity.OBJ_TYPE_ENUM;
 import main.data.XLinkedMap;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -12,6 +11,7 @@ import java.util.Map;
 public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
     private Class<E> clazz;
+    private String separator;
 
     public WeightMap(String data, Class<E> clazz) {
         super(new RandomWizard<E>().constructWeightMap(data, clazz));
@@ -55,7 +55,7 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         String string = "";
         for (E e : keySet()) {
             string += e + StringMaster.wrapInParenthesis(StringMaster.toStringForm(get(e)))
-             + ContainerUtils.getContainerSeparator();
+             + separator;
         }
         return string;
     }
@@ -78,5 +78,13 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
             }
         }
         return greatest;
+    }
+
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
+
+    public String getSeparator() {
+        return separator;
     }
 }

@@ -11,7 +11,7 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
@@ -99,7 +99,7 @@ public class MoveAnimation extends ActionAnim {
     }
 
     @Override
-    public List<EmitterActor> getEmitterList() {
+    public List<SpellVfx> getEmitterList() {
         return new ArrayList<>();
     }
 

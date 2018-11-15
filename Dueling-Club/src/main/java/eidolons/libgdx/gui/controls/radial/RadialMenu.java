@@ -36,7 +36,7 @@ public class RadialMenu extends Group implements Closable {
     protected boolean ready = true;
 
     public RadialMenu() {
-        final TextureRegion t = TextureCache.getOrCreateR(getEmptyNodePath());
+        final TextureRegion t = TextureCache.getOrCreateR(getCloseNodePath());
         closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Close", "")));
@@ -279,10 +279,8 @@ public class RadialMenu extends Group implements Closable {
         return 0.65f;
     }
 
-    protected String getEmptyNodePath() {
+    protected String getCloseNodePath() {
         return "ui/components/dc/radial/empty.png";
-//        return "ui/components/dc/radial/empty dark.png";
-//        return "ui/components/dc/radial/empty dark.png";
     }
 
     protected boolean isAnimated() {

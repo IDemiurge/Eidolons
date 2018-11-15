@@ -57,8 +57,8 @@ public class BuffAnim extends ActionAnim {
             return data;
         }
         String sfx = PathFinder.getVfxPath() + getStdSfx(name);
-        String sprites = PathFinder.getSpritesPath() + "buffs/razorsharp 20 1.png";
-//        String std = PathFinder.getSpritesPath() + getStdSprites(name);
+        String sprites = PathFinder.getSpritesPathFull() + "buffs/razorsharp 20 1.png";
+//        String std = PathFinder.getSpritesPathFull() + getStdSprites(name);
 //        if (FileManager.isFile(std))
 //        sprites=std+";";
 //        else

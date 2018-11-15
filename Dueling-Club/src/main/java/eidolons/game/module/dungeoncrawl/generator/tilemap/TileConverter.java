@@ -13,7 +13,7 @@ import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
-import main.system.StreamMaster;
+import main.system.StreamUtil;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
@@ -145,7 +145,7 @@ public class TileConverter {
     private boolean checkObj(Coordinates c, LevelBlock block, String pool, String pick) {
         List<ObjAtCoordinate> objects = new ArrayList<>(block.getObjects());
         List<ObjAtCoordinate> adjacent =
-         new StreamMaster<ObjAtCoordinate>().filter(objects,
+         new StreamUtil<ObjAtCoordinate>().filter(objects,
           (object) -> object.getCoordinates().isAdjacent(c));
 
 

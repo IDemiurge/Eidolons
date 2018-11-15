@@ -221,8 +221,7 @@ public class FileManager {
             }
         }
 
-                if (!CoreEngine.isFullFastMode())
-        {
+        if (!CoreEngine.isFullFastMode()) {
             if (!missing.contains(file.getPath())) {
                 main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
                 missing.add(file.getPath());
@@ -232,22 +231,28 @@ public class FileManager {
     }
 
     public static String formatPath(String path) {
+        return formatPath(path, false);
+    }
+
+    public static String formatPath(String path, boolean force) {
         StringBuilder formatted = new StringBuilder();
         int index = path.lastIndexOf(PathFinder.getEnginePath(), PathFinder.getEnginePath().length() - 1);
-        if (index == -1) {
+        if (index == -1 && !force) {
             return path.toLowerCase();
         }
-        if (index == 0) {
+        if (index == 0 && !force) {
             index += PathFinder.getEnginePath().length() - 1;
         }
-        String afterClass = path.substring(
+        String afterClass =force ? path : path.substring(
          index, path.length());
 
         //fix slashes
-        for (String sub : PathUtils.splitPath(afterClass)) {
+        for (String sub : PathUtils.splitPath( afterClass)) {
             formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
         }
-
+        if (force) {
+            return formatted.toString().toLowerCase();
+        }
         //fix case
         return PathFinder.getEnginePath() + formatted.toString().toLowerCase();
     }

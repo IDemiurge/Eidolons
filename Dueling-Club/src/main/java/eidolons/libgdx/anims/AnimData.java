@@ -37,16 +37,16 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
         if (!StringMaster.isEmpty(value)) {
             switch (name) {
                 case SPRITES:
-//                    shot in the leg!
-// main.system.auxiliary.log.LogMaster.log(1,">>>>> SPRITES set" +value +
-//                     "=>  " );
-//                    value =
-//                            StringMaster.addMissingPathSegments(value,
-//                             PathFinder.getSpritesPath());
-//                    main.system.auxiliary.log.LogMaster.log(1,value  );
+                    //                    shot in the leg!
+                    // main.system.auxiliary.log.LogMaster.log(1,">>>>> SPRITES set" +value +
+                    //                     "=>  " );
+                    //                    value =
+                    //                            StringMaster.addMissingPathSegments(value,
+                    //                             PathFinder.getSpritesPathFull());
+                    //                    main.system.auxiliary.log.LogMaster.log(1,value  );
                     break;
                 case PARTICLE_EFFECTS:
-//                    value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
+                    //                    value = StringMaster.addMissingPathSegments(value, PathFinder.getSfxPath());
                     break;
 
             }

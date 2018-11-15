@@ -82,7 +82,7 @@ public class DataUnit<T extends Enum<T>> {
         if (enumClass == null) {
             enumClass = getEnumClazz();
             if (enumClass == null)
-                return null ;
+                return null;
         }
         return (T) new EnumMaster<>().getEnum(string, getEnumClazz().getEnumConstants());
     }
@@ -120,7 +120,8 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public void addValue(T name, String value) {
-        MapMaster.addToStringMap(values, name.name(), value, DataUnitFactory.getPairSeparator(getFormat()));
+        MapMaster.addToStringMap(values, name.name(), value,
+         DataUnitFactory.getSeparator(false));
     }
 
     public void setValue(String name, String value) {
@@ -180,7 +181,7 @@ public class DataUnit<T extends Enum<T>> {
         if (max != 0)
             if (map.get(val) > max)
                 map.put(val, 0);
-
+        map.setSeparator(DataUnitFactory.getSeparator(false));
         setValue(mapVal, map.toString());
 
     }
@@ -283,6 +284,13 @@ public class DataUnit<T extends Enum<T>> {
 
     public WeightMap getWeightMapValue(T val) {
         return new WeightMap(getValue(val), String.class);
+    }
+
+    public void setValue(T name, Object val) {
+        if (val == null) {
+            removeValue(name);
+        } else
+            setValue(name, val.toString());
     }
 
     public enum GAME_VALUES {

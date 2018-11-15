@@ -17,7 +17,6 @@ import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import eidolons.game.core.state.Loader;
 import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.libgdx.launch.Showcase;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.test.TestMasterContent;
@@ -296,8 +295,6 @@ public class TestLauncher //extends MetaGameMaster
                 ENEMY_PARTY = "";
                 break;
         }
-        Showcase.launchData += PLAYER_PARTY + ";";
-        Showcase.launchData += ENEMY_PARTY + ";";
     }
 
     public String randomizeParty() {

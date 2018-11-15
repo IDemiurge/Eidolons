@@ -221,12 +221,13 @@ public class DamageCalculator {
             }
         }
         obj = (DC_Obj) ref.getObj(KEYS.ACTIVE);
+
+        if (obj instanceof DC_ActiveObj) {
         for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
             if (e == CASE) {
                 list.addAll(obj.getBonusDamage().get(e));
             }
         }
-        if (obj instanceof DC_ActiveObj) {
             obj = ((DC_ActiveObj) obj).getActiveWeapon();
             if (obj != null) {
                 for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {

@@ -1,13 +1,13 @@
 package eidolons.system.options;
 
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.graphics.RESOLUTION;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+
 
 public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
     static {
         //set default values
-
-
+        //BRIGHTNESS.set
         //caching
     }
 
@@ -36,7 +36,6 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         AMBIENCE_DENSITY(50, 0, 100),
         VIDEO(true),
         AMBIENCE_MOVE_SUPPORTED(true),
-
         FRAMERATE(60, 20, 80),
         RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
 //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
@@ -59,8 +58,8 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         }
         , ADD_SHARDS_ALWAYS(true), ADD_SHARDS_NEVER(false)
         , ADDITIVE_LIGHT(false)
-        ,  SIDE_LIGHT_OFF(false)
-        ;
+        ,  SIDE_LIGHT_OFF(false),
+        UI_ATLAS(true), FULL_ATLAS(false);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

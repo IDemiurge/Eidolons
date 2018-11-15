@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
@@ -19,6 +20,7 @@ import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.Map;
 
@@ -33,11 +35,11 @@ public class UnitViewFactory {
 
         if (VisionMaster.isLastSeenOn()) {
             if (!bfObj.isPlayerCharacter())
-             if (!bfObj.isWall()) {
-                LastSeenView lsv = new LastSeenView(options, view);
-                view.setLastSeenView(lsv);
-                new LastSeenTooltipFactory().add(lsv, bfObj);
-            }
+                if (!bfObj.isWall()) {
+                    LastSeenView lsv = new LastSeenView(options, view);
+                    view.setLastSeenView(lsv);
+                    new LastSeenTooltipFactory().add(lsv, bfObj);
+                }
         }
         view.setOutlinePathSupplier(() -> {
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
@@ -95,55 +97,60 @@ public class UnitViewFactory {
                 try {
                     if (getTapCount() > 1)
                         if (event.getButton() == 0)
-                            if (bfObj.isPlayerCharacter()) {
+                            if (bfObj.isPlayerCharacter() && !UnitInfoPanelNew.isNewUnitInfoPanelWIP()) {
                                 HqMaster.openHqPanel();
                                 event.stop();
                                 return;
                             } else {
-                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                                event.cancel();
-                                return;
+                                if (UnitInfoPanelNew.isNewUnitInfoPanelWIP())
+                                if (bfObj instanceof Unit) {
+                                    GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+                                     ((Unit) bfObj));
+                                    return;
+                                }  DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                                    event.cancel();
+                                    return;
+
                             }
                     //TODO control options
-                    //                            if (bfObj instanceof Unit) {
-                    //                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                    //                             new UnitDataSource((Unit) bfObj));
-                    //                            return;
-                    if (event.getButton() == Buttons.LEFT) {
-                        if (isAlt() || isShift() || isControl()) {
-                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                            event.cancel();
-                        } else {
-                            if (DefaultActionHandler.leftClickActor(bfObj))
-                                return;
+
+                        if (event.getButton() == Buttons.LEFT) {
+                            if (isAlt() || isShift() || isControl()) {
+                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                                event.cancel();
+                            } else {
+                                if (DefaultActionHandler.leftClickActor(bfObj))
+                                    return;
+                            }
                         }
+                    } catch(Exception e){
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
                 }
-            }
-            //
+                //
 
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
-
-                if (event.getButton() == Input.Buttons.RIGHT)
-
-                {
-                    GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
-                    event.handle();
-                    event.stop();
-                } else {
+                @Override
+                public void touchUp (InputEvent event,float x, float y, int pointer, int button){
 
 
-                    GuiEventManager.trigger(RADIAL_MENU_CLOSE);
+                    if (event.getButton() == Input.Buttons.RIGHT)
+
+                    {
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
+                        event.handle();
+                        event.stop();
+                    } else {
+
+
+                        GuiEventManager.trigger(RADIAL_MENU_CLOSE);
+                    }
+                    super.touchUp(event, x, y, pointer, button);
                 }
-                super.touchUp(event, x, y, pointer, button);
+
             }
 
-        };
-    }
+            ;
+        }
 
     public static OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);

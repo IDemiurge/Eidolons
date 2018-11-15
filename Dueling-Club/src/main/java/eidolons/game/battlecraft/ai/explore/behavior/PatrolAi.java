@@ -79,14 +79,14 @@ public class PatrolAi extends CyclicGroupBehavior {
     @Override
     protected float getTimeBeforeFail() {
         if (isLeader()) {
-            return 1500 / speed;
+            return 225;
         }
-        return 550 / speed;
+        return 85;
     }
 
     @Override
     protected float getDefaultSpeed() {
-        return super.getDefaultSpeed();
+        return isTestMode() ? 12f : 2;
     }
 
 

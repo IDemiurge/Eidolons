@@ -56,6 +56,9 @@ public class Eidolons {
     public static final boolean DEV_MODE = true;
     private static final Integer WIDTH_WINDOWED = 95;
     private static final Integer HEIGHT_WINDOWED = 90;
+    public static final String NAME = "eidolons";
+    public static final String EXTENSION = "nethergate";
+    public static final String SUFFIX = "demo";
     public static DC_Game game;
     public static DC_GameManager gameManager;
     public static DC_GameObjMaster gameMaster;

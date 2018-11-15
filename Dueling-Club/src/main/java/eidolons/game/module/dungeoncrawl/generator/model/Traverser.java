@@ -112,16 +112,21 @@ public class Traverser {
 
     public static boolean checkEntrancesPassable(Room room, FACING_DIRECTION entrance) {
         Coordinates coordinates =
-         room.getEntranceCoordinates() != null ? room.getEntranceCoordinates() :
+//         room.getEntranceCoordinates() !=
+//          null ? room.getEntranceCoordinates() :
           RoomAttacher.adjust(new AbstractCoordinates(0, 0), entrance, room, true);
         if (room.getType() == ROOM_TYPE.ENTRANCE_ROOM)
             return true;
         TileMap tileMap = TileMapper.createTileMap(room);
-        long blocked = TileMapper.createTileMap(room).getMap().keySet().stream()
+        List<Coordinates> blocked = TileMapper.createTileMap(room).getMap().keySet().stream()
          .filter(c -> TilesMaster.isEntranceCell(room.relative(c), room, coordinates, entrance))
-         .filter(c -> !TilesMaster.isPassable(tileMap.getMap().get(c))).count();
-        if (blocked > 0)
+         .filter(c -> !TilesMaster.isPassable(tileMap.getMap().get(c))).collect(Collectors.toList());
+        if (blocked.size()>0)
+        {
+            List<Coordinates> entrances = TileMapper.createTileMap(room).getMap().keySet().stream()
+             .filter(c -> TilesMaster.isEntranceCell(room.relative(c), room, coordinates, entrance)).collect(Collectors.toList());
             return false;
+        }
 
         return true;
     }

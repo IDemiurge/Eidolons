@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface UNIT_INFO_PARAMS {
-    PARAMETER[] RESOURCE_COSTS = {
+     PARAMETER[] RESOURCE_COSTS = {
      PARAMS.AP_COST, PARAMS.STA_COST, PARAMS.ESS_COST,
      PARAMS.FOC_COST, PARAMS.ENDURANCE_COST, PARAMS.CP_COST,
     };

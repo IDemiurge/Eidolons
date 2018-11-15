@@ -2,6 +2,7 @@ package eidolons.macro.entity.town;
 
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.herocreator.logic.party.Party;
@@ -79,11 +80,12 @@ public class Town extends Place {
     }
 
     public void exited() {
+        Unit hero = Eidolons.getMainHero();
         for (Shop shop : shops) {
-            shop.exited();
+            shop.exited(hero);
         }
 
-        Eidolons.getMainHero().setProperty(PROPS.STASH, ContainerUtils.toIdContainer(stash), true);
+        hero.setProperty(PROPS.STASH, ContainerUtils.toIdContainer(stash), true);
     }
     public Tavern getTavern(String tabName) {
         for (Tavern s : getTaverns()) {
@@ -201,8 +203,9 @@ public class Town extends Place {
          getProperty(MACRO_PROPS.TOWN_STASH))) {
             //gonna need to store durability etc...
         }
+        Unit hero = Eidolons.getMainHero();
         for (String substring : ContainerUtils.openContainer(
-         Eidolons.getMainHero().getProperty(PROPS.STASH))) {
+         hero.getProperty(PROPS.STASH))) {
             if (!NumberUtils.isInteger(substring)) {
                 continue;
             }
@@ -212,7 +215,7 @@ public class Town extends Place {
                 stash.add((DC_HeroItemObj) item);
         }
             for (Shop shop1 : shops) {
-            shop1.handleDebt();
+            shop1.handleDebt(hero);
                 if (reenter) {
                 shop1.getIncome( 500);
                 shop1.sellItems(30 );

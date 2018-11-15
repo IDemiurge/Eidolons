@@ -469,11 +469,11 @@ public class AnimMaster extends Group {
         if (ref.isTriggered()) {
             return getTriggerParentAnim(ref.getEvent());
         }
-        return constructor.getOrCreate(ref.getActive());
+        return constructor.getCached(ref.getActive());
     }
 
     private CompositeAnim getTriggerParentAnim(Event event) {
-        CompositeAnim root = constructor.getOrCreate(event.getRef().getActive());
+        CompositeAnim root = constructor.getCached(event.getRef().getActive());
         if (root == null) {
             main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, "getTriggerParentAnim failed for: " + event);
             return null;
