@@ -44,6 +44,7 @@ public class RoomTemplateMaster {
     private static final String MODEL_SPLITTER = "=";
     private static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
     private static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
+    private static final boolean APPLY_FAIL_SAFE_EXITS = true;
     private final LevelData data;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();
     private ROOM_TEMPLATE_GROUP[] groups;
@@ -271,9 +272,30 @@ public class RoomTemplateMaster {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         //        }
-
+        if (APPLY_FAIL_SAFE_EXITS) {
+            cells = applyFailSafe(cells);
+        }
         RoomModel model = new RoomModel(cells, template, exit);
+
         return model;
+    }
+
+    private String[][] applyFailSafe(String[][] cells) {
+        int w = cells.length;
+        int h = cells[0].length;
+        if (cells[0][h / 2].equalsIgnoreCase(ROOM_CELL.INDESTRUCTIBLE.getSymbol())) {
+            cells[0][h / 2] = ROOM_CELL.WALL.getSymbol();
+        }
+        if (cells[w / 2][0].equalsIgnoreCase(ROOM_CELL.INDESTRUCTIBLE.getSymbol())) {
+            cells[w / 2][0] = ROOM_CELL.WALL.getSymbol();
+        }
+        if (cells[w - 1][h / 2].equalsIgnoreCase(ROOM_CELL.INDESTRUCTIBLE.getSymbol())) {
+            cells[w - 1][h / 2] = ROOM_CELL.WALL.getSymbol();
+        }
+        if (cells[w / 2][h - 1].equalsIgnoreCase(ROOM_CELL.INDESTRUCTIBLE.getSymbol())) {
+            cells[w / 2][h - 1] = ROOM_CELL.WALL.getSymbol();
+        }
+        return cells;
     }
 
     private int getWrapWidthForRoomModel(EXIT_TEMPLATE exit, ROOM_TYPE template) {
@@ -319,7 +341,7 @@ public class RoomTemplateMaster {
     }
 
     private void checkRotations(EXIT_TEMPLATE template, FACING_DIRECTION entrance, RoomModel model) {
-        boolean random = data.isRandomRotation() && template != EXIT_TEMPLATE.FORK&& template != EXIT_TEMPLATE.ANGLE;
+        boolean random = data.isRandomRotation() && template != EXIT_TEMPLATE.FORK && template != EXIT_TEMPLATE.ANGLE;
         FACING_DIRECTION requiredEntranceSide = DEFAULT_ENTRANCE_SIDE;
 
         //can specify required entrance side with 'e' symbol

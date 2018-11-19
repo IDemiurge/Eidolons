@@ -6,9 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.AnimMaster3d;
-import eidolons.libgdx.anims.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import main.game.bf.Coordinates;
 

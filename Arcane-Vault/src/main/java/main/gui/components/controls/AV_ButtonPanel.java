@@ -5,7 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.libgdx.anims.AnimationConstructor;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.screens.map.editor.MapEditor;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
@@ -124,7 +124,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 if (alt)
                     DC_SoundMaster.preconstructEffectSounds();
                 else
-                    AnimationConstructor.preconstructAllForAV();
+                    AnimConstructor.preconstructAllForAV();
                 break;
             case "Test1":
 

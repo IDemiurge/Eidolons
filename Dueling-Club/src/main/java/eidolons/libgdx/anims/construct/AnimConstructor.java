@@ -1,4 +1,4 @@
-package eidolons.libgdx.anims;
+package eidolons.libgdx.anims.construct;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.ability.effects.common.ModifyValueEffect;
@@ -13,8 +13,13 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
+import eidolons.libgdx.anims.Animation;
+import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.anim3d.*;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
@@ -45,7 +50,6 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
@@ -55,13 +59,8 @@ import java.util.*;
 /**
  * Created by JustMe on 1/11/2017.
  */
-public class AnimationConstructor {
-    private static AnimationConstructor instance;
-    Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
-    private boolean autoconstruct = false;
-    private VALUE[] anim_vals = {
-     //     PROPS.ANIM_MODS,
-     //
+public class AnimConstructor {
+    public static final VALUE[] anim_vals = {
      PROPS.ANIM_SPRITE_PRECAST,
      PROPS.ANIM_SPRITE_CAST,
      PROPS.ANIM_SPRITE_RESOLVE,
@@ -79,32 +78,14 @@ public class AnimationConstructor {
      PROPS.ANIM_VFX_IMPACT,
      PROPS.ANIM_VFX_AFTEREFFECT,
      PROPS.ANIM_MODS_VFX,
-     //
-     //
-     //     PROPS.ANIM_SPRITE_COLOR,
-     //     PROPS.ANIM_VFX_COLOR,
-     //     PROPS.ANIM_LIGHT_COLOR,
-     //
-     //
-     //     PROPS.ANIM_LIGHT_CAST,
-     //     PROPS.ANIM_LIGHT_RESOLVE,
-     //     PROPS.ANIM_LIGHT_MAIN,
-     //     PROPS.ANIM_LIGHT_IMPACT,
-     //     PROPS.ANIM_LIGHT_AFTEREFFECT,
-     //
-     //     PARAMS.ANIM_LIGHT_MISSILE,
-     //     PARAMS.ANIM_LIGHT_CASTER,
-     //     PARAMS.ANIM_LIGHT_TARGET,
-     //
-     //     PARAMS.ANIM_MAGNITUDE,
      PARAMS.ANIM_SPEED,
      PARAMS.ANIM_FRAME_DURATION,
-     //     PARAMS.ANIM_SIZE,
     };
-    private boolean reconstruct = false;
-    private boolean findClosestResource;
+    static Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
+    private static boolean autoconstruct = false;
+    private static boolean reconstruct = false;
 
-    private AnimationConstructor() {
+    private AnimConstructor() {
 
     }
 
@@ -119,7 +100,7 @@ public class AnimationConstructor {
             try {
                 int i = 0;
                 for (ANIM_PART part : ANIM_PART.values()) {
-                    data = AnimationConstructor.getInstance().getStandardData(active, part, i);
+                    data =  getStandardData(active, part, i);
                     for (ANIM_VALUES val : ANIM_VALUES.values()) {
                         String identifier;
 
@@ -131,10 +112,6 @@ public class AnimationConstructor {
                         switch (val) {
                             case PARTICLE_EFFECTS:
                                 identifier = "VFX";
-                                //                                getInstance().getPath(val)+ value
-                                //                                String vfxdata =  PathFinder.getVfxPath() +
-                                //                                String newPath = PathFinder.getVfxPath() + PathUtils.getPathSeparator() + "atlas" + PathUtils.getPathSeparator() + path;
-                                //                                FileManager.write(data, newPath);
                                 main.system.auxiliary.log.LogMaster.log(1, "PARTICLE_EFFECTS =" +
                                  value +
                                  " for " + type);
@@ -160,40 +137,6 @@ public class AnimationConstructor {
         }
     }
 
-    public static String findResourceForSpell(DC_SpellObj spell,
-                                              String partPath, String size,
-                                              PROPERTY[] props, String pathRoot,
-                                              boolean closest) {
-        String path = PathUtils.buildPath(
-         pathRoot, partPath);
-        //        spell.getTargeting();
-        String file = null;
-        for (PROPERTY p : props) {
-            String name = spell.getProperty(p);
-            if (name.isEmpty()) continue;
-            file = FileManager.findFirstFile(path, name, closest);
-            if (file != null) {
-                break;
-            }
-            name = spell.getProperty(p);
-            file = FileManager.findFirstFile(path, name, closest);
-            if (file != null) {
-                break;
-            }
-            name = spell.getProperty(p) + " " + partPath + size;
-            file = FileManager.findFirstFile(path, name, closest);
-            if (file != null) {
-                break;
-            }
-        }
-        //        if (file != null || closest || isPartIgnored(partPath))
-
-        if (CoreEngine.isJar())
-            System.out.println(pathRoot + " root; file found " + file);
-        return file;
-        //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
-    }
-
     public static boolean isPreconstructAllOnGameInit() {
         return !CoreEngine.isIDE();
     }
@@ -202,40 +145,33 @@ public class AnimationConstructor {
         return isPreconstructOn();
     }
 
-    public static AnimationConstructor getInstance() {
-        if (instance == null) {
-            instance = new AnimationConstructor();
-        }
-        return instance;
-    }
-
     public static void preconstruct(Unit unit) {
-        AnimationConstructor constructor = AnimationConstructor.getInstance();
         unit.getActives().forEach(spell ->
-         constructor.getOrCreate(spell));
+          getOrCreate(spell));
         AnimMaster3d.preloadAtlases(unit);
 
     }
 
-    public void tryPreconstruct(Unit unit) {
+    public static void tryPreconstruct(Unit unit) {
         if (isPreconstructOn())
             if (isPreconstructOn(unit))
                 preconstructSpells(unit);
     }
 
-    private boolean isPreconstructOn(Unit unit) {
+    private static boolean isPreconstructOn(Unit unit) {
         return unit.getSpells().size() <= 3;
     }
 
-    public CompositeAnim getCached(ActiveObj active) {
+    public static CompositeAnim getCached(ActiveObj active) {
         CompositeAnim anim = map.get(active);
-            if (anim != null) {
-                anim.reset();
-                return anim;
-            }
+        if (anim != null) {
+            anim.reset();
+            return anim;
+        }
         return anim;
     }
-        public CompositeAnim getOrCreate(ActiveObj active) {
+
+    public static CompositeAnim getOrCreate(ActiveObj active) {
         if (active == null) {
             return null;
         }
@@ -259,7 +195,7 @@ public class AnimationConstructor {
         return anim;
     }
 
-    private boolean checkAnimationSupported(DC_ActiveObj active) {
+    private static boolean checkAnimationSupported(DC_ActiveObj active) {
         if (active.getActionGroup() == ACTION_TYPE_GROUPS.HIDDEN)
             return false;
         if (active.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
@@ -268,7 +204,7 @@ public class AnimationConstructor {
         return true;
     }
 
-    public void preconstructSpells(Unit unit) {
+    public static void preconstructSpells(Unit unit) {
         if (ListMaster.isNotEmpty(unit.getSpells()))
             if (GdxMaster.isLwjglThread()) {
                 unit.getSpells().forEach(spell -> getOrCreate(spell));
@@ -278,7 +214,7 @@ public class AnimationConstructor {
                 }));
     }
 
-    public void preconstructAll(Unit unit) {
+    public static void preconstructAll(Unit unit) {
         if (isPreconstructAllOnGameInit())
             if (GdxMaster.isLwjglThread()) {
                 unit.getActives().forEach(spell -> getOrCreate(spell));
@@ -290,7 +226,7 @@ public class AnimationConstructor {
                 }));
     }
 
-    public void preconstruct(DC_ActiveObj active) {
+    public static void preconstruct(DC_ActiveObj active) {
 
         if (GdxMaster.isLwjglThread()) {
             getOrCreate(active);
@@ -300,7 +236,7 @@ public class AnimationConstructor {
             }));
     }
 
-    private CompositeAnim construct(DC_ActiveObj active) {
+    private static CompositeAnim construct(DC_ActiveObj active) {
         active.construct(); // in case it was omitted
         //re-construct sometimes?
         CompositeAnim anim = new CompositeAnim(active);
@@ -319,7 +255,7 @@ public class AnimationConstructor {
         return anim;
     }
 
-    public Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
+    public static  Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
         //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
@@ -327,20 +263,20 @@ public class AnimationConstructor {
              StringMaster.contains(val.getName(), part.toString())) {
                 String name = active.getValue(val);
                 if (!name.isEmpty())
-                    data.add(val, getPath(val, active)+ name);
+                    data.add(val, getPath(val, active) + name);
             }
         }
         return getPartAnim(data, active, part, anim);
     }
 
-    private String getPath(VALUE val, DC_ActiveObj active) {
+    private static String getPath(VALUE val, DC_ActiveObj active) {
         if (val.getName().toLowerCase().contains("vfx")) {
             return getPath(ANIM_VALUES.PARTICLE_EFFECTS);
         }
         return "";
     }
 
-    private Anim getPartAnim(AnimData data, DC_ActiveObj active,
+    private static Anim getPartAnim(AnimData data, DC_ActiveObj active,
                              ANIM_PART part, CompositeAnim composite) {
         //TODO if (!checkAnimValid())
         //    return null ;
@@ -364,7 +300,7 @@ public class AnimationConstructor {
         return anim;
     }
 
-    private Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
+    private static Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
         if (active.isMove()) {
             return MoveAnimation.isOn() ? new MoveAnimation(active, data) : null;
         }
@@ -421,7 +357,7 @@ public class AnimationConstructor {
         return new ActionAnim(active, data);
     }
 
-    private SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
+    private static SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
         switch (targetingMode) {
             case NOVA:
             case RAY:
@@ -434,7 +370,7 @@ public class AnimationConstructor {
 
     }
 
-    private boolean initAnim(AnimData data,
+    private static boolean initAnim(AnimData data,
                              DC_ActiveObj active, ANIM_PART part, Anim anim) {
         boolean exists = false;
         List<SpriteAnimation> sprites = new ArrayList<>();
@@ -444,7 +380,7 @@ public class AnimationConstructor {
                 continue;
             }
             path = path.toLowerCase();
-            path =PathUtils.addMissingPathSegments(path, PathFinder.getSpritesPath());
+            path = PathUtils.addMissingPathSegments(path, PathFinder.getSpritesPath());
             //            Chronos.mark("sprite " + path);
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
             //            Chronos.logTimeElapsedForMark("sprite " + path);
@@ -486,7 +422,7 @@ public class AnimationConstructor {
         return exists;
     }
 
-    private boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
+    private static boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
         switch (part) {
             case MAIN:
                 return (active.isMove() || active.isAttackAny() || active.isTurn());
@@ -516,7 +452,7 @@ public class AnimationConstructor {
         return false;
     }
 
-    public Animation getEffectAnim(Effect e) {
+    public static Animation getEffectAnim(Effect e) {
         //        map
         if (!isAnimated(e)) {
             return null;
@@ -542,9 +478,12 @@ public class AnimationConstructor {
         //        return a;
     }
 
-    private boolean isAnimated(Effect e) {
+    private static boolean isAnimated(Effect e) {
         if (e.getActiveObj() == null) {
-            return false;
+            if (e instanceof DealDamageEffect){
+//                TODO
+            } else
+                return false;
         }
         if (!isCellAnimated(e)) {
             if (e.getRef().getTargetObj() instanceof DC_Cell) {
@@ -562,15 +501,15 @@ public class AnimationConstructor {
         return false;
     }
 
-    private boolean isCellAnimated(Effect e) {
+    private static boolean isCellAnimated(Effect e) {
         return false;
     }
 
-    AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, CompositeAnim compositeAnim) {
+   public static AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, CompositeAnim compositeAnim) {
         return getStandardData(spell, part, compositeAnim.getMap().size());
     }
 
-    AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, int partsCount) {
+    public static  AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, int partsCount) {
         AnimData data = new AnimData();
 
         String partPath = part.toString();
@@ -601,27 +540,27 @@ public class AnimationConstructor {
         if either has one, then don't search for other (unless also exact fit)
          */
         String pathRoot = getPath(ANIM_VALUES.SPRITES);
-        String sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
+        String sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
         pathRoot = getPath(ANIM_VALUES.PARTICLE_EFFECTS);
-        String emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
+        String emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
         if (sprite == null)
             if (emitter == null) {
-                emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
-                if (isFindClosestResource(part, ANIM_VALUES.PARTICLE_EFFECTS, partsCount)) {
+                emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                if (AnimResourceFinder.isFindClosestResource(part, ANIM_VALUES.PARTICLE_EFFECTS, partsCount)) {
                     if (emitter == null)
-                        emitter = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                        emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
                     if (emitter == null)
-                        emitter = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                        emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
                 }
-                if (isFindClosestResource(part, ANIM_VALUES.SPRITES, partsCount))
+                if (AnimResourceFinder.isFindClosestResource(part, ANIM_VALUES.SPRITES, partsCount))
                     if (emitter == null) {
                         pathRoot = getPath(ANIM_VALUES.SPRITES);
-                        sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                        sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, false);
                         if (sprite == null)
-                            sprite = findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                            sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
                         if (sprite == null)
-                            sprite = findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                            sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, true);
 
 
                     }
@@ -652,7 +591,7 @@ public class AnimationConstructor {
         return isPartIgnored(new EnumMaster<ANIM_PART>().retrieveEnumConst(ANIM_PART.class, partPath));
     }
 
-    private boolean isPartIgnored(ANIM_PART part) {
+    private static boolean isPartIgnored(ANIM_PART part) {
         switch (part) {
             case AFTEREFFECT:
                 return !OptionsMaster.getAnimOptions().getBooleanValue(
@@ -671,7 +610,7 @@ public class AnimationConstructor {
         return false;
     }
 
-    private String getPath(ANIM_VALUES s) {
+    private static String getPath(ANIM_VALUES s) {
         String path = null;
         switch (s) {
             case PARTICLE_EFFECTS:
@@ -689,18 +628,14 @@ public class AnimationConstructor {
         return path;
     }
 
-    public boolean isReconstruct() {
+    public static  boolean isReconstruct() {
         if (CoreEngine.isJar())
             return false;
         return true;
         //        return reconstruct;
     }
 
-    public void setReconstruct(boolean reconstruct) {
-        this.reconstruct = reconstruct;
-    }
-
-    public BuffAnim getBuffAnim(BuffObj buff) {
+    public static BuffAnim getBuffAnim(BuffObj buff) {
         BuffAnim anim = new BuffAnim(buff);
         DC_ActiveObj active = null;
         if (buff.getActive() instanceof DC_ActiveObj) {
@@ -713,7 +648,7 @@ public class AnimationConstructor {
         return anim;
     }
 
-    private boolean isValid(Anim anim) {
+    private static boolean isValid(Anim anim) {
         if (!anim.getSprites().isEmpty()) {
             return true;
         }
@@ -726,28 +661,7 @@ public class AnimationConstructor {
         return anim instanceof HitAnim;
     }
 
-    public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val,
-                                         int partsCount) {
-
-        if (part != ANIM_PART.PRECAST)
-            if (part != ANIM_PART.AFTEREFFECT)
-                if (partsCount < 2)
-                    return true;
-
-        switch (part) {
-            case MAIN:
-                if (val == ANIM_VALUES.PARTICLE_EFFECTS) {
-                    return true;
-                }
-        }
-        return findClosestResource;
-    }
-
-    public void setFindClosestResource(boolean findClosestResource) {
-        this.findClosestResource = findClosestResource;
-    }
-
-    public void preconstruct(Event event) {
+    public static void preconstruct(Event event) {
         Gdx.app.postRunnable(() -> {
             try {
                 EventAnimCreator.getAnim(event);
@@ -758,7 +672,7 @@ public class AnimationConstructor {
         });
     }
 
-    public CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
+    public static CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
         Parry3dAnim parryAnim = new Parry3dAnim(weaponObj, attack);
         return new CompositeAnim(parryAnim);
     }

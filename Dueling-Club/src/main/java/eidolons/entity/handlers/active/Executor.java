@@ -22,7 +22,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.main.AnimMaster;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -193,8 +194,8 @@ public class Executor extends ActiveHandler {
         //TODO BEFORE RESOLVE???
 
         if (AnimMaster.isOn())
-            if (!AnimMaster.getInstance().getConstructor().isReconstruct())
-                AnimMaster.getInstance().getConstructor().preconstruct(getAction());
+            if (!AnimConstructor.isReconstruct())
+                AnimConstructor.preconstruct(getAction());
 
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
          new ActionInput(getAction(), animContext)

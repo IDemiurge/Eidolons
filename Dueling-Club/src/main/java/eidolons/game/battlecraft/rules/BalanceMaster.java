@@ -11,13 +11,27 @@ import java.util.Map;
  * Created by JustMe on 11/4/2018.
  */
 public class BalanceMaster {
-    
+
+    //of course some things I will have to remember to add by hand to Power
     public enum DERIVED_STAT{
         THREAT,
+        //how much dps can the unit deal?
         HARDINESS,
+        //how much dmg goes thru on average from every 100 dmg dealt?
+
         LONGEVITY,
+        //how long will the unit survive if taking [dmg] each round?
+        //+restorations
+        //+undying
         MOBILITY,
+        //how quickly can the unit move from a to b?
         TRICKS,
+        //all debuff and custom ai spell priority
+        //stealth and sneak mods
+        //
+        SUPPORT,
+
+
         ;
         
         String formula;

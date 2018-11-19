@@ -85,8 +85,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        if (data.getDialogScenarios().size() > 0) {
-            introStage = new ChainedStage(viewPort, getBatch(), data.getDialogScenarios());
+        if (data.getDialogViews().size() > 0) {
+            introStage = new ChainedStage(viewPort, getBatch(), data.getDialogViews());
             introStage.setOnDoneCallback(() -> {
                 if (!loading) {
                     updateInputController();

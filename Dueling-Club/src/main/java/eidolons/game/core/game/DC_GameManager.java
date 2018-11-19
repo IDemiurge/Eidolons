@@ -16,7 +16,8 @@ import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
@@ -506,7 +507,7 @@ public class DC_GameManager extends GameManager {
             if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
                 if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
                         try {
-                            AnimMaster.getInstance().getConstructor().preconstruct(event);
+                            AnimConstructor.preconstruct(event);
                         } catch (Exception e) {
                             main.system.ExceptionMaster.printStackTrace(e);
                         }

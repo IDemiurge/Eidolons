@@ -20,8 +20,8 @@ import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.PositionMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -92,12 +92,12 @@ public class AttackAnim extends ActionAnim {
         if (file == null) {
             if (TestMasterContent.isArtifact(weapon))
                 file = findWeaponSprite
-                 (StringMaster.cropLastPathSegment(path), weapon);
+                 (PathUtils.cropLastPathSegment(path), weapon);
             if (file == null) {
                 file = findWeaponSprite(path, weapon, false);
                 if (file == null)
                     file = findWeaponSprite
-                     (StringMaster.cropLastPathSegment(path), weapon, false);
+                     (PathUtils.cropLastPathSegment(path), weapon, false);
             }
         }
 

@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogView;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.DialogScenario;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -17,17 +17,17 @@ import java.util.Map;
  */
 public class DialogueHandler {
     GameDialogue dialogue;
-    Map<DialogScenario, Speech> map;
+    Map<DialogView, Speech> map;
     DC_Game game;
-    private List<DialogScenario> list;
+    private List<DialogView> list;
 
-    public DialogueHandler(GameDialogue dialogue, DC_Game game, List<DialogScenario> actors) {
+    public DialogueHandler(GameDialogue dialogue, DC_Game game, List<DialogView> actors) {
         this.dialogue = dialogue;
         this.game = game;
         this.list = actors;
         this.map = new XLinkedMap<>();
         Speech line = dialogue.getRoot().getChildren().get(0);
-        for (DialogScenario actor : actors) {
+        for (DialogView actor : actors) {
             map.put(actor, line);
             if (!line.getChildren().isEmpty())
                line = line.getChildren().get(0);
@@ -35,7 +35,7 @@ public class DialogueHandler {
 
     }
 
-    public void lineSpoken(DialogScenario actorObject) {
+    public void lineSpoken(DialogView actorObject) {
         Ref ref = new Ref(game);
         ref.setAmount(map.get(actorObject).getId());
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN, ref));
@@ -47,7 +47,7 @@ public class DialogueHandler {
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.DIALOGUE_FINISHED, ref));
     }
 
-    public List<DialogScenario> getList() {
+    public List<DialogView> getList() {
         return list;
     }
 

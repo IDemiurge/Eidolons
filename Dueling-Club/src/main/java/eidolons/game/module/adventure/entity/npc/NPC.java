@@ -20,9 +20,55 @@ package eidolons.game.module.adventure.entity.npc;
  * Mentor
  * Mercenary
  * Free hero
+ *
+ *
+ General way of creating quest givers
+ :: NPC intro
+ :: Quest-texts + generic responses/comments + flavor from NPC type
+
+ NPC has Profession and Style that determine their flavor texts
+ std line variants too of course
+
+ There will be weight maps for their lines perhaps
+ And some kind of ‘inheritance’
+ in fact, I’d love to have a way to define it with RngStyles too
+
+
+ Quest generation itself…
+ generating quest text
+ using some other bits and pieces?
+
+ quest type
+ quest location
+ quest origin
+ conditions (time,
+ style/flavor (for items and description)
+
  */
 public class NPC {
 
+    public enum NPC_MOOD{
+
+    }
+        public enum NPC_PROFESSION{
+        Scholar,
+        Traveler,
+         Bard,
+        Gambler,
+         Fraud,
+        Merchant,
+         Mercenary,
+        Governor,
+         Elder,
+
+
+        Prostitute,
+         Madam,
+
+        Sailor,
+         Captain,
+
+        }
 
     public void interact() {
 

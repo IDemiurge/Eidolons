@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.macro.MacroGame;
@@ -45,10 +45,10 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         //        };
 
         if (SNOW_ON) {
-            CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
-            CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
-            CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
-            CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
+            CLOUD_HEAVY.setEmitterPaths(VFX.SNOW_TIGHT2.getPath());
+            CLOUD_LARGE.setEmitterPaths(VFX.SNOW.getPath());
+            CLOUD_LIGHT.setEmitterPaths(VFX.SNOW.getPath());
+            CLOUD.setEmitterPaths(VFX.SNOW_TIGHT2.getPath());
         }
 
         LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;

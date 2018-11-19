@@ -11,8 +11,10 @@ import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.particles.EmitterActor;
@@ -29,6 +31,7 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.Pair;
@@ -94,16 +97,14 @@ public class Anim extends Group implements Animation {
         this.active = active;
         if (active == null) {
             ref = new Ref();
-        }
-        this.ref = active.getRef()
-         .getCopy()
-        ;
+        } else
+            this.ref = active.getRef().getCopy();
         textureSupplier = () -> getTexture();
         reset();
         if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0) {
             frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
         }
-//        duration= params.getIntValue(ANIM_VALUES.DURATION);
+        //        duration= params.getIntValue(ANIM_VALUES.DURATION);
         initEmitters();
     }
 
@@ -161,11 +162,11 @@ public class Anim extends Group implements Animation {
 
     @Override
     public boolean draw(Batch batch) {
-//        if (getX() == 0 && getY() == 0) {
-//            getX();
-//        }
-//switch(template){
-//}
+        //        if (getX() == 0 && getY() == 0) {
+        //            getX();
+        //        }
+        //switch(template){
+        //}
         float delta = Gdx.graphics.getDeltaTime();
         time += delta;
         if (time < 0) {
@@ -207,8 +208,8 @@ public class Anim extends Group implements Animation {
             e.act(delta);
         });
         sprites.forEach(s -> {
-//            s.setFlipX(flipX);
-//            s.setFlipX(flipY);
+            //            s.setFlipX(flipX);
+            //            s.setFlipX(flipY);
         });
         applyAnimMods();
         if (isDrawTexture() && getActions().size == 0) {
@@ -218,10 +219,10 @@ public class Anim extends Group implements Animation {
         sprites.forEach(s -> {
             s.draw(batch);
         });
-        batch.getColor().a=1;
-        batch.getColor().r=1;
-        batch.getColor().g=1;
-        batch.getColor().b=1;
+        batch.getColor().a = 1;
+        batch.getColor().r = 1;
+        batch.getColor().g = 1;
+        batch.getColor().b = 1;
         emitterList.forEach(e -> {
             e.draw(batch, 1f);
             main.system.auxiliary.log.LogMaster.log(1,
@@ -232,7 +233,7 @@ public class Anim extends Group implements Animation {
                 main.system.auxiliary.log.LogMaster.log(1,
                  em.getName() +
                   " emitter at at x " + em.getX() + " y " + em.getY()
-                 +" ; activecount == " +em.getActiveCount()
+                  + " ; activecount == " + em.getActiveCount()
 
                 );
             });
@@ -284,10 +285,10 @@ public class Anim extends Group implements Animation {
             return;
         }
         if (isDone() || !isRunning()) {
-            return ;
+            return;
         }
         Color color = batch.getColor();
-        batch.setColor(new Color(1,1,1,1));
+        batch.setColor(new Color(1, 1, 1, 1));
         float w = Math.min(64, this.getWidth());
         float h = Math.min(64, this.getHeight());
         batch.draw((texture), this.getX(), getY(), this.getOriginX(),
@@ -301,7 +302,7 @@ public class Anim extends Group implements Animation {
     @Override
     public void reset() {
         time = 0;
-//        time = -delay; TODO
+        //        time = -delay; TODO
         setOffsetX(0);
         setOffsetY(0);
         alpha = 1f;
@@ -313,6 +314,12 @@ public class Anim extends Group implements Animation {
 
     protected void resetSprites() {
         //TODO
+        sprites.clear();
+        for (String s : ContainerUtils.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
+            SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(s);
+            sprite.setFrameDuration(getDuration() / sprite.getFrameNumber());
+            sprites.add(sprite);
+        }
     }
 
     protected void initEmitters() {
@@ -333,8 +340,8 @@ public class Anim extends Group implements Animation {
          }
         );
         emitterList = new ArrayList<>(emitterCache);
-//        emitterCache.clear();
-//        emitterCache.addAll(emitterList);//= new ArrayList<>(emitterList);
+        //        emitterCache.clear();
+        //        emitterCache.addAll(emitterList);//= new ArrayList<>(emitterList);
         emitterList.forEach(e -> {
             if (!e.isGenerated()) {
                 if (e.isAttached()) {
@@ -352,9 +359,9 @@ public class Anim extends Group implements Animation {
 
         setDuration(2);
         if (part != null) {
-            setDuration( part.getDefaultDuration());
+            setDuration(part.getDefaultDuration());
         }
-//        duration*= AnimMaster.getOptions().getAnimationSpeed()
+        //        duration*= AnimMaster.getOptions().getAnimationSpeed()
     }
 
     protected void initFlip() {
@@ -401,13 +408,15 @@ public class Anim extends Group implements Animation {
         this.duration = ((float) distance / pixelsPerSecond);
 
     }
-//        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
+    //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
         return part == ANIM_PART.MAIN;
     }
 
     public String getTexturePath() {
+        if (active==null)
+            return "";
         return active.getImagePath();
     }
 
@@ -470,7 +479,7 @@ public class Anim extends Group implements Animation {
                         s.setAlpha(lifecycle);
                     }
 
-//                           time%lifecycle/lifecycle
+                    //                           time%lifecycle/lifecycle
                 });
                 break;
         }
@@ -532,23 +541,23 @@ public class Anim extends Group implements Animation {
          .getCenteredPos(getOriginCoordinates());
         if (getOffsetOrigin() != null)
             origin.add(getOffsetOrigin());
-//        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-//         this + " origin: " + origin);
+        //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+        //         this + " origin: " + origin);
 
         destination = GridMaster
          .getCenteredPos(getDestinationCoordinates());
         if (getOffsetDestination() != null)
             destination.add(getOffsetDestination());
 
-//        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-//         this + " destination: " + destination);
+        //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+        //         this + " destination: " + destination);
 
 
         defaultPosition = getDefaultPosition();
         setX(defaultPosition.x);
         setY(defaultPosition.y);
-//        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-//         this + " defaultPosition: " + defaultPosition);
+        //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+        //         this + " defaultPosition: " + defaultPosition);
     }
 
     public Coordinates getOriginCoordinates() {
@@ -764,15 +773,15 @@ public class Anim extends Group implements Animation {
         if (ref == null)
             return active.getRef();
         return ref;
-//        if (active == null) {
-//            return (DC_Game.game.getManager().getActiveObj().getRef());
-//        }
-//        return active.getRef();
+        //        if (active == null) {
+        //            return (DC_Game.game.getManager().getActiveObj().getRef());
+        //        }
+        //        return active.getRef();
     }
 
     public void setRef(Ref ref) {
         this.ref = Ref.getCopy(ref);
-//        main.system.auxiliary.log.LogMaster.log(1, this + " started with ref: " + ref);
+        //        main.system.auxiliary.log.LogMaster.log(1, this + " started with ref: " + ref);
         if (ref.getTargetObj() == null) {
             main.system.auxiliary.log.LogMaster.log(1, this + " HAS NULL TARGET!");
             if (ref.getActive() != null) {
@@ -884,9 +893,9 @@ public class Anim extends Group implements Animation {
     }
 
     public void setOffsetX(float offsetX) {
-//        main.system.auxiliary.log.LogMaster.log(1, this + " setOffsetX " +
-//         " from " + this.offsetX +
-//         " to " + offsetX);
+        //        main.system.auxiliary.log.LogMaster.log(1, this + " setOffsetX " +
+        //         " from " + this.offsetX +
+        //         " to " + offsetX);
         this.offsetX = offsetX;
     }
 

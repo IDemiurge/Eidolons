@@ -15,6 +15,8 @@ import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -60,6 +62,9 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     }
     protected boolean checkEventsFired() {
         return true;
+    }
+    protected void fireAppliedEvent() {
+        game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
     }
     @Override
     public boolean applyThis() {

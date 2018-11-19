@@ -19,7 +19,7 @@ import main.system.graphics.FontMaster.FONT;
 public class ScrollTextWrapper extends TablePanelX {
     protected boolean updatePos = false;
     protected float offsetX = 20;
-    protected ScrollPanel<Message> scrollPanel;
+    protected ScrollPanel  scrollPanel;
     private float defaultHeight;
     private float defaultWidth;
     private int fontSize;

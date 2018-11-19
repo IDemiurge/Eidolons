@@ -2,7 +2,7 @@ package eidolons.libgdx.particles.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
 import main.data.filesys.PathFinder;
@@ -10,8 +10,8 @@ import main.data.xml.XML_Writer;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -73,7 +73,7 @@ public class EmitterPresetMaster {
             suffix = " ";
             for (String substring : ContainerUtils.open(buffer, value_separator)) {
                 suffix += StringMaster.cropFormat(
-                 StringMaster.getLastPathSegment(substring)) + " ";
+                 PathUtils.getLastPathSegment(substring)) + " ";
             }
         }
         String newName = (name != null) ? name :
@@ -84,7 +84,7 @@ public class EmitterPresetMaster {
          PathFinder.getVfxPath(), "").replace(prefix, "");
         String pathAndName = PathFinder.getVfxPath() + prefix +
          "/" +
-         StringMaster.cropLastPathSegment(path) +
+         PathUtils.cropLastPathSegment(path) +
          newName;
         XML_Writer.write(c, pathAndName);
 
@@ -92,7 +92,7 @@ public class EmitterPresetMaster {
     }
 
     public String searchImage(File directory, String imageName) {
-//search recursively
+        //search recursively
         String imagePath = null;
         for (File d : FileManager.getFilesFromDirectory(directory.getPath(), true)) {
             if (d.isDirectory()) {
@@ -113,35 +113,45 @@ public class EmitterPresetMaster {
 
     public String findImagePath(String path) {
         String imagePath = getImagePath(path);
-        if (imagePath.split("\n").length>1) {
-            //TODO how to handle this?
-        return imagePath;
+        if (imagePath.split("\n").length > 1) {
+            //TODO how to handle this? multiple images...
+            return imagePath;
         }
 
         FileHandle file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;
         }
-        String name = StringMaster.getLastPathSegment(imagePath);
+        try {
+            imagePath = FileManager.formatPath(imagePath, true);
+            String afterClassPath = imagePath.split("img/")[1];
+            file = Gdx.files.internal(PathFinder.getImagePath() + afterClassPath);
+            if (file.exists()) {
+                return PathFinder.getImagePath() + afterClassPath;
+            }
+        } catch (Exception e) {
+
+        }
+        String name = PathUtils.getLastPathSegment(imagePath);
         //generic
         imagePath = PathFinder.getParticleImagePath();
         file = Gdx.files.internal(imagePath + "/" + name);
         if (file.exists()) {
-            return imagePath;
+            return imagePath + "/" + name;
         }
 
         //raw
-//        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
-//        suffix = StringMaster.cropLastPathSegment(suffix);
-//        imagePath  = suffix;
-//        file = Gdx.files.internal(imagePath);
-//        if (file.exists())
-//            return imagePath;
+        //        String suffix = StringMaster.replaceFirst(path, PathFinder.getParticlePresetPath(), "");
+        //        suffix = StringMaster.cropLastPathSegment(suffix);
+        //        imagePath  = suffix;
+        //        file = Gdx.files.internal(imagePath);
+        //        if (file.exists())
+        //            return imagePath;
 
         imagePath += "particles/";
         file = Gdx.files.internal(imagePath + "/" + name);
         if (file.exists()) {
-            return imagePath +"/" + name;
+            return imagePath + "/" + name;
         }
 
         imagePath =
@@ -152,7 +162,7 @@ public class EmitterPresetMaster {
             return imagePath;
         }
 
-        imagePath = StringMaster.cropLastPathSegment(imagePath);
+        imagePath = PathUtils.cropLastPathSegment(imagePath);
         file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;
@@ -160,14 +170,14 @@ public class EmitterPresetMaster {
 
 
         if (spriteEmitterTest) {
-//            effect.getEmitters().forEach(e -> {
+            //            effect.getEmitters().forEach(e -> {
             String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPathFull() +
              "impact/").getPath();
             return randomPath;
-//        ((Emitter) e).offset(20, "scale");
-//        e.setImagePath(randomPath);
-//        e.setPremultipliedAlpha(false);
-//            });
+            //        ((Emitter) e).offset(20, "scale");
+            //        e.setImagePath(randomPath);
+            //        e.setPremultipliedAlpha(false);
+            //            });
         }
 
         imagePath = searchImage(FileManager.getFile(PathFinder.getVfxPath()), name);
@@ -183,11 +193,11 @@ public class EmitterPresetMaster {
 
     public String getImagePath(String path) {
         String imgPath = null;
-//        if (imagePathMap != null) {
-//            imgPath = imagePathMap.get(path.toLowerCase());
-//            if (imgPath != null)
-//                return imgPath;
-//        }
+        //        if (imagePathMap != null) {
+        //            imgPath = imagePathMap.get(path.toLowerCase());
+        //            if (imgPath != null)
+        //                return imgPath;
+        //        }
         imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
         if (StringMaster.isEmpty(imgPath)) {
             imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
@@ -195,9 +205,9 @@ public class EmitterPresetMaster {
         if (imgPath.contains(StringMaster.NEW_LINE)) {
             imgPath = imgPath.split(StringMaster.NEW_LINE)[0];
         }
-//        if (imgPath.contains("\n")) {
-//            imgPath = imgPath.split("\n")[0];
-//        }
+        //        if (imgPath.contains("\n")) {
+        //            imgPath = imgPath.split("\n")[0];
+        //        }
         return imgPath;
 
     }
@@ -251,7 +261,7 @@ public class EmitterPresetMaster {
 
         String newPath = save(actor, "modified");
         actor = EmitterPools.getEmitterActor(newPath);
-//        if (!write) delete();
+        //        if (!write) delete();
         mods.put(actor, modvals);
         return actor;
     }
@@ -259,8 +269,8 @@ public class EmitterPresetMaster {
     private String setValue(EMITTER_VALUE_GROUP group, String val, String data) {
         String text = getGroupText(data, group);
         for (String substring : ContainerUtils.open(text, "\n")) {
-//            if (predicate())
-//                data = producer()
+            //            if (predicate())
+            //                data = producer()
             if (substring.split(value_separator)[0].equalsIgnoreCase(group.name)) {
                 String newString = substring.replace(substring.split(value_separator)[1], val);
                 data = data.replace(substring, newString);
@@ -268,9 +278,9 @@ public class EmitterPresetMaster {
         }
         if (group == EMITTER_VALUE_GROUP.Image_Path
          && text.startsWith("\n")) {
-            data = data.replace(text,"\n"+ val);
+            data = data.replace(text, "\n" + val);
         } else
-        data = data.replace(text,  val);
+            data = data.replace(text, val);
         return data;
     }
 
@@ -300,9 +310,9 @@ public class EmitterPresetMaster {
 
     public void clone(String path, String newName) {
         String content = getData(path);
-        path = StringMaster.cropLastPathSegment(path);
+        path = PathUtils.cropLastPathSegment(path);
         XML_Writer.write(content, path, newName);
-//    map.put()
+        //    map.put()
 
     }
 
@@ -342,9 +352,10 @@ public class EmitterPresetMaster {
 
     public String getModifiedData(String path, EMITTER_VALUE_GROUP image_path, String newVal) {
         String data = getData(path);
-        return  setValue(image_path, newVal, data);
+        return setValue(image_path, newVal, data);
 
     }
+
     private String getData(String path) {
         path = path.toLowerCase();
         path = PathUtils.addMissingPathSegments(path, PathFinder.getVfxPath());
@@ -360,7 +371,7 @@ public class EmitterPresetMaster {
 
     public void init() {
         imagePathMap = new HashMap<>();
-        for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
+        for (VFX sub : VFX.values()) {
             String path = null;
             try {
                 path = findImagePath(sub.getPath());

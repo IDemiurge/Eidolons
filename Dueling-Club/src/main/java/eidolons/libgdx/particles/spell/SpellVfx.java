@@ -25,7 +25,7 @@ public class SpellVfx extends EmitterActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+            super.draw(batch, parentAlpha);
     }
 
     @Override

@@ -4,15 +4,54 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
-import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 
-public class OverlayView extends BaseView {
+public class OverlayView extends BaseView implements HpBarView{
     public static final float SCALE = 0.5F;
     private DIRECTION direction;
+    HpBar hpBar;
+    public void resetHpBar( ) {
+        if (getHpBar() == null)
+            setHpBar(createHpBar());
+        getHpBar().reset();
+    }
+
+    protected HpBar createHpBar() {
+        HpBar bar = new HpBar(getUserObject());
+        return bar;
+    }
+
+    public HpBar getHpBar() {
+        return hpBar;
+    }
+
+    @Override
+    public BattleFieldObject getUserObject() {
+        return (BattleFieldObject) super.getUserObject();
+    }
+
+    public void setHpBar(HpBar hpBar) {
+        if (this.hpBar != null) {
+            this.hpBar.remove();
+        }
+        this.hpBar = hpBar;
+        hpBar.setVisible(false);
+        hpBar.setScale(0.66f);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {
+            addActor(hpBar);
+        }
+    }
 
     public OverlayView(UnitViewOptions viewOptions, BattleFieldObject bfObj) {
         super(viewOptions);

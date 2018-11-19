@@ -65,11 +65,11 @@ public class IconGenerator extends GdxUtil {
         this.output = output;
         this.subdirs = subdirs;
 
-        overlays = StringMaster.getLastPathSegment(root).equalsIgnoreCase(IMAGES)
-         ? StrPathBuilder.build(StringMaster.cropLastPathSegment(root), OVERLAYS)
+        overlays = PathUtils.getLastPathSegment(root).equalsIgnoreCase(IMAGES)
+         ? StrPathBuilder.build(PathUtils.cropLastPathSegment(root), OVERLAYS)
          : StrPathBuilder.build(root, OVERLAYS);
-        backgroundOverlays = StringMaster.getLastPathSegment(root).equalsIgnoreCase(IMAGES)
-         ? StrPathBuilder.build(StringMaster.cropLastPathSegment(root), BACKGROUND_OVERLAYS)
+        backgroundOverlays = PathUtils.getLastPathSegment(root).equalsIgnoreCase(IMAGES)
+         ? StrPathBuilder.build(PathUtils.cropLastPathSegment(root), BACKGROUND_OVERLAYS)
          : StrPathBuilder.build(root, BACKGROUND_OVERLAYS);
         start();
     }
@@ -304,7 +304,7 @@ public class IconGenerator extends GdxUtil {
                     for (File sub : FileManager.getFilesFromDirectory(root, false, subdirs)) {
                         if (!FileManager.isImageFile(sub.getName()))
                             continue;
-                        String underlaySuffix = StringMaster.cropFormat(StringMaster.getLastPathSegment(underlay));
+                        String underlaySuffix = StringMaster.cropFormat(PathUtils.getLastPathSegment(underlay));
                         FileHandle handle = null;
                         String path = sub.getPath().replace(PathFinder.getImagePath(), "");
 
@@ -354,7 +354,7 @@ public class IconGenerator extends GdxUtil {
                if (StringMaster.isEmpty(suffix.toString()))
                    continue;
                if (suffix instanceof String){
-                   list.add(StringMaster.cropFormat(StringMaster.getLastPathSegment(((String) suffix))));
+                   list.add(StringMaster.cropFormat(PathUtils.getLastPathSegment(((String) suffix))));
                } else {
                    if (!suffix.toString().equalsIgnoreCase("false")) {
                        list.add(suffix);
@@ -370,7 +370,7 @@ public class IconGenerator extends GdxUtil {
         } else {
             return StringMaster.cropFormat(imageFile.getName()) + (folderPerImage ? PathUtils.getPathSeparator() : "_") + ContainerUtils.join("_",
              Arrays.stream(suffixes).map(suffix ->
-              StringMaster.cropFormat(StringMaster.getLastPathSegment(suffix.toString()))).collect(Collectors.toList()).toArray(
+              StringMaster.cropFormat(PathUtils.getLastPathSegment(suffix.toString()))).collect(Collectors.toList()).toArray(
               new String[suffixes.length]));
         }
 

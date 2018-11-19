@@ -13,7 +13,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
@@ -224,7 +224,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         }
         if (game.isStarted())
             try {
-                AnimMaster.getInstance().cleanUp();
+                AnimMaster.getInstance().getDrawer(). cleanUp();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

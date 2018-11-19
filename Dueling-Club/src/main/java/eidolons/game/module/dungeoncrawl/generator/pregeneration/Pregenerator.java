@@ -52,7 +52,7 @@ public class Pregenerator implements Runnable {
      {SUBLEVEL_TYPE.PRE_BOSS,},
      {SUBLEVEL_TYPE.BOSS,}
     };
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public static final boolean NO_VALIDATION = false;
     public static final GEN_STAT[] averageValues = {
      AVRG_RATE,

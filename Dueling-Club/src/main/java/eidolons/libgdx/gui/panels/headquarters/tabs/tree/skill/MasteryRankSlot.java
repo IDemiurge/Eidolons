@@ -22,8 +22,8 @@ public class MasteryRankSlot extends HtNode {
     private PARAMETER param;
 
     public MasteryRankSlot(
-     int tier) {
-        super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY);
+     int tier,int slot) {
+        super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY,slot );
     }
 
     @Override

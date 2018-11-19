@@ -18,7 +18,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;

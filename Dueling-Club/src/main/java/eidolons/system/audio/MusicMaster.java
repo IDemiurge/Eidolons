@@ -301,7 +301,7 @@ public class MusicMaster {
 
             if (files.isEmpty()) {
                 //change?
-                folder = StringMaster.cropLastPathSegment(folder);
+                folder = PathUtils.cropLastPathSegment(folder);
                 if (folder.isEmpty())
                     break;
                 continue;

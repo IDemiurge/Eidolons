@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = true;
     public String path;
     private static List<String> broken=    new ArrayList<>() ;
 
@@ -53,8 +53,8 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         if (StringMaster.isEmpty(imagePath)) {
             return;
         }
-        if (FileManager.isImageFile(StringMaster.getLastPathSegment(imagePath))) {
-            imagePath = StringMaster.cropLastPathSegment(imagePath);
+        if (FileManager.isImageFile(PathUtils.getLastPathSegment(imagePath))) {
+            imagePath = PathUtils.cropLastPathSegment(imagePath);
         }
         load(Gdx.files.internal(
          PathUtils.addMissingPathSegments(
@@ -109,8 +109,13 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         if (EmitterActor.spriteEmitterTest) {
             return true;
         }
-        return
-         EmitterPresetMaster.getInstance().getImagePath(effectFile.path()).contains("sprites");
+        String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
+        if (imgPath.contains("sprites")){
+            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );
+            return true;
+        }
+        main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
+        return false;
     }
 
     @Override

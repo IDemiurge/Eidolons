@@ -6,8 +6,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.particles.EMITTER_PRESET;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.VALUE;
@@ -33,9 +31,6 @@ public class HeroLevelManager {
         levelUp(hero, null);
         EUtils.showInfoText(hero.getName() + "is now Level " + hero.getLevel());
         EUtils.playSound(STD_SOUNDS.LEVEL_UP);
-        EUtils.showVFX(EMITTER_PRESET.IMPACT_scare,
-         GridMaster.getCenteredPos(hero.getCoordinates())
-        );
     }
 
     public static void levelUp(Unit hero, Boolean dc_hc_macro) {

@@ -82,6 +82,9 @@ public class XML_Formatter {
     }
 
     public static String formatXmlTextContent(String string, VALUE value) {
+        if (string.contains("/s")) {
+            string= string.replace("/s", "\\s");
+        }
         String result = string.replace(replacedTextContent, NumberUtils
          .getCodeFromChar(replacedTextContent));
         result = encodeNonASCII(result);

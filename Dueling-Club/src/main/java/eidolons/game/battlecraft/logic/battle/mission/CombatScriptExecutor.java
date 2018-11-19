@@ -13,13 +13,13 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogView;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.DC_TYPE;
@@ -167,7 +167,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     private boolean doDialogue(Ref ref, String[] args) {
         GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
          args[0]);
-        List<DialogScenario> list = SceneFactory.getScenes(dialogue);
+        List<DialogView> list = SceneFactory.getScenes(dialogue);
 
         GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
         return true;

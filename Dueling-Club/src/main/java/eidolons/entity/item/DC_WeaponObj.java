@@ -9,7 +9,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.anims.AnimMaster3d;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.system.DC_Formulas;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;

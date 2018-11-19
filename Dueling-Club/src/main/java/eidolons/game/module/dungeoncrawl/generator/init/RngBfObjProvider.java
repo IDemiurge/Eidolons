@@ -2,13 +2,16 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.particles.ambi.AttachEmitterManager;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.BfObjEnums.*;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
+import main.system.launch.CoreEngine;
 
 import static main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_LIGHT_EMITTER.*;
+import static main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_ROCKS.*;
 import static main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_WALL.*;
 
 /**
@@ -209,7 +212,7 @@ public class RngBfObjProvider {
         WeightMap<String> map = new WeightMap<>();
         switch (style) {
             case Cold:
-                map.chain(BF_OBJ_SUB_TYPES_ROCKS.ICE_SPIKE, 50).
+                map.chain(ICE_SPIKE, 50).
                  chain(BF_OBJ_SUB_TYPES_RUINS.SNOWCOVERED_RUINS, 40)
                 ;
             case DarkElegance:
@@ -226,8 +229,9 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 10).
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 10).
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_STRUCTURE, 10).
-                 chain(BF_OBJ_SUB_TYPES_ROCKS.ROCKS, 10).
-                 chain(BF_OBJ_SUB_TYPES_ROCKS.RUNESTONE, 10)
+                 chain(ROCKS, 15).
+                 chain(SLEEK_ROCK, 15).
+                 chain(RUNESTONE, 10)
                 ;
                 break;
             case Arcane:
@@ -274,7 +278,10 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_DUNGEON.STALAGMITE, 15).
                  chain(BF_OBJ_SUB_TYPES_DUNGEON.STALACTITE, 15).
                  chain(BF_OBJ_SUB_TYPES_DUNGEON.NATURAL_COLUMN, 20).
-                 chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_MUSHROOM, 5);
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_MUSHROOM, 5).
+                 chain(ROCKS, 15).
+                 chain(SLEEK_ROCK,  5).
+                 chain(RUNESTONE, 5);
 
             case Pagan:
             case Grimy:
@@ -284,8 +291,9 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_COLUMNS.FALLEN_COLUMN, 15).
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 15).
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_STRUCTURE, 5).
-                 chain(BF_OBJ_SUB_TYPES_ROCKS.ROCKS, 15).
-                 chain(BF_OBJ_SUB_TYPES_ROCKS.RUNESTONE, 5)
+                 chain(ROCKS, 25).
+                 chain(SLEEK_ROCK,  15).
+                 chain(RUNESTONE, 12)
                 ;
                 break;
             default:
@@ -318,7 +326,7 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LIMINESCENT_FUNGI, 10)
                  : new WeightMap<String>().
                  chain(BF_OBJ_SUB_TYPES_CRYSTAL.DARK_CRYSTAL, 6).
-                 chain(BF_OBJ_SUB_TYPES_ROCKS.ROCKS, 4).
+                 chain(ROCKS, 4).
                  chain(BF_OBJ_SUB_TYPES_CONJURATE.ELDRITCH_SHRINE, 4).
                  chain(BF_OBJ_SUB_TYPES_CONJURATE.ELDRITCH_SPHERE, 4).
                  chain(BF_OBJ_SUB_TYPES_MAGICAL.ALTAR, 4)
@@ -642,6 +650,14 @@ public class RngBfObjProvider {
     private static WeightMap<String> getWallWeightMap(DUNGEON_STYLE style,
                                                       Boolean indestructible_nullForSecret) {
         //TODO check surface! cemetery etc WallMap.getWallVersion(
+
+        if (CoreEngine.isIDE()) {
+            if (AttachEmitterManager.TEST_MODE){
+                return new WeightMap<String>().
+                 chain(ROCKS, 17).chain(SLEEK_ROCK, 13).chain(RUNESTONE, 6);
+            }
+        }
+
         Boolean b = indestructible_nullForSecret;
         switch (style) {
             case Brimstone:

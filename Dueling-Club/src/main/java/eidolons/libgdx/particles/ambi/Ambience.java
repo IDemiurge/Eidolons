@@ -2,7 +2,7 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.RandomWizard;
@@ -23,7 +23,7 @@ public class Ambience extends EmitterActor {
         super(path);
     }
 
-    public Ambience(EMITTER_PRESET fx) {
+    public Ambience(VFX fx) {
         super(fx);
     }
 
@@ -46,6 +46,9 @@ public class Ambience extends EmitterActor {
 
         super.act(delta);
         if (!isMoveOn()) {
+            return;
+        }
+        if (acceleration == null) {
             return;
         }
         float angle = acceleration.angle();

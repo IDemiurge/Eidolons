@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.8.9";
+    public static final String VERSION = "0.8.9b";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;

@@ -5,7 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import main.game.bf.Coordinates;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 1/10/2017.
@@ -13,24 +17,26 @@ import main.game.bf.Coordinates;
 public class EmitterActor extends SuperActor  {
 
     static public boolean spriteEmitterTest = false;
-    private final int defaultCapacity = 12;
-    private final int defaultMaxCapacity = 24;
+    protected final int defaultCapacity = 12;
+    protected final int defaultMaxCapacity = 24;
     public String path;
     protected ParticleEffectX effect;
     protected ParticleEffectPool pool;
-    protected EMITTER_PRESET sfx;
+    protected VFX sfx;
     boolean flipX;
     boolean flipY;
-    private Sprite sprite;
-    private boolean attached = true;
-    private boolean generated;
-    private Coordinates target;
-    private boolean test;
-    private float speed = 1;
-    private Float lastAlpha;
-    private boolean broken;
+    protected Sprite sprite;
+    protected boolean attached = true;
+    protected boolean generated;
+    protected Coordinates target;
+    protected boolean test;
+    protected float speed = 1;
+    protected Float lastAlpha;
+    protected boolean broken;
+    private String imgPath;
+    private static List<String> brokenPaths=    new ArrayList<>() ;
 
-    public EmitterActor(EMITTER_PRESET fx) {
+    public EmitterActor(VFX fx) {
         this(fx.getPath());
         this.sfx = fx;
     }
@@ -46,6 +52,7 @@ public class EmitterActor extends SuperActor  {
         effect = EmitterPools.getEffect(path);
         //TODO not very safe...
         effect.getEmitters().forEach(emitter -> emitter.setAdditive(true));
+        imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
     }
 
     @Override
@@ -112,7 +119,7 @@ public class EmitterActor extends SuperActor  {
                 e.getTransparency().scale(alpha));
     }
 
-    public EMITTER_PRESET getTemplate() {
+    public VFX getTemplate() {
         return sfx;
     }
 
@@ -134,7 +141,13 @@ public class EmitterActor extends SuperActor  {
         if (ParticleEffectX.TEST_MODE)
             try {
                 effect.draw(batch, delta);
-            } catch (Exception e) {
+            }
+            catch (IllegalStateException e) {
+                  imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
+                brokenPaths.add(imgPath);
+                main.system.auxiliary.log.LogMaster.log(1,"VFX imgPath is broken! " +imgPath);
+            }
+            catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 main.system.auxiliary.log.LogMaster.log(1," EMITTER FAILED: "
                 + path);
@@ -152,11 +165,11 @@ public class EmitterActor extends SuperActor  {
         effect.start();
     }
 
-    public EMITTER_PRESET getSfx() {
+    public VFX getSfx() {
         return sfx;
     }
 
-    public void setSfx(EMITTER_PRESET sfx) {
+    public void setSfx(VFX sfx) {
         this.sfx = sfx;
     }
 

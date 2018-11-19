@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.libgdx.DialogScenario;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogView;
 import eidolons.libgdx.GdxMaster;
 
 import java.util.Iterator;
@@ -19,16 +19,16 @@ import java.util.List;
 
 public class ChainedStage extends Stage {
     private boolean done;
-    private Container<DialogScenario> current;
-    private Iterator<DialogScenario> iterator;
-    private List<DialogScenario> newList = null;
+    private Container<DialogView> current;
+    private Iterator<DialogView> iterator;
+    private List<DialogView> newList = null;
     private Runnable onDoneCallback;
     private DialogueHandler dialogueHandler;
     private Matrix4 idt = new Matrix4();
     private Matrix4 shear = new Matrix4();
     private OrthographicCamera cam;
 
-    public ChainedStage(ScreenViewport viewport, Batch batch, List<DialogScenario> list) {
+    public ChainedStage(ScreenViewport viewport, Batch batch, List<DialogView> list) {
         super(viewport == null ?
           new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
            GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
@@ -51,7 +51,7 @@ public class ChainedStage extends Stage {
         return m;
     }
 
-    public void play(List<DialogScenario> list) {
+    public void play(List<DialogView> list) {
         newList = list;
     }
 
@@ -71,7 +71,7 @@ public class ChainedStage extends Stage {
                 current.setActor(iterator.next());
                 setKeyboardFocus(current.getActor());
             } else if (newList != null) {
-                final List<DialogScenario> list = this.newList;
+                final List<DialogView> list = this.newList;
                 newList = null;
                 iterator = list.iterator();
             } else {

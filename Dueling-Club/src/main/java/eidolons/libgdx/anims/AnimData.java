@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import main.content.VALUE;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
@@ -21,7 +21,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     float spriteDuration;
     float emitterDuration;
     String spriteImagePaths;
-    EMITTER_PRESET[] emitters; //other params?
+    VFX[] emitters; //other params?
     Color[] emitterColors;
     Point[] emitterOffsets;
     int[] emitterScales;

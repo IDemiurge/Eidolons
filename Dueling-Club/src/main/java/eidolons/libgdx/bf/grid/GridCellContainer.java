@@ -167,8 +167,8 @@ public class GridCellContainer extends GridCell {
                     actor.removeAction(a);
             }
             int offset = getUnitViewOffset();
-            float scaleX = getObjScale();
-            float scaleY = getObjScale();
+            float scaleX = getObjScale(actor);
+            float scaleY = getObjScale(actor);
             float y = getViewY(offset, i,
              getUnitViewCountEffective());
             float x = getViewX(offset, i);
@@ -252,12 +252,12 @@ public class GridCellContainer extends GridCell {
         }
     }
 
-    public float getUnitViewSize() {
-        return GridMaster.CELL_W - getUnitViewOffset() * (getUnitViewCount() - 1);
+    public float getUnitViewSize(BaseView actor) {
+        return actor.getPortrait().getWidth() - getUnitViewOffset() * (getUnitViewCount() - 1);
     }
 
-    public float getObjScale() {
-        return (getUnitViewSize()) / GridMaster.CELL_W;
+    public float getObjScale(BaseView actor) {
+        return (getUnitViewSize(actor)) / GridMaster.CELL_W;
     }
 
     @Override

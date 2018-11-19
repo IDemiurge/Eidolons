@@ -200,6 +200,12 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // VULNERABLE(null, true, "units", "chars", "armor"),
 
     SKILLS("Skills", true, "chars", "units"),
+    SKILLS_TIER_1("Skills", true, "chars", "units"),
+    SKILLS_TIER_2("Skills", true, "chars" ),
+    SKILLS_TIER_3("Skills", true, "chars"),
+    SKILLS_TIER_4("Skills", true, "chars"),
+    SKILLS_TIER_5("Skills", true, "chars"),
+
     SPECIAL_ABILITIES("SPECIAL_ABILITIES", true, "chars", "units"),
     SKILL_REQUIREMENTS("Skill REQ", true, "spells", "skills", "classes"),
     SKILL_OR_REQUIREMENTS("Skill OR REQ", true, "spells", "skills", "classes"),
@@ -208,6 +214,12 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     TREE_NODE_PRIORITY(null, false, "spells", "skills", "classes"),
 
     CLASSES("Classes", true, "chars"),
+    CLASSES_TIER_1("Classes", true, "chars"),
+    CLASSES_TIER_2("Classes", true, "chars"),
+    CLASSES_TIER_3("Classes", true, "chars"),
+    CLASSES_TIER_4("Classes", true, "chars"),
+    CLASSES_TIER_5("Classes", true, "chars"),
+
     FIRST_CLASS("chars", "First Class"),
     SECOND_CLASS("chars", "Second Class"),
     REQUIREMENTS("Requirements", true, "spells", "skills", "classes"),

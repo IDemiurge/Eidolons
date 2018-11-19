@@ -12,6 +12,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -278,14 +279,14 @@ public class Player {
                     return;
                 }
                 // spell group level
-                autopath = StringMaster.cropLastPathSegment(autopath);
+                autopath = PathUtils.cropLastPathSegment(autopath);
                 result = playCustomSoundsetSound(autopath + obj.getProperty(G_PROPS.SPELL_GROUP),
                  sound_type);
                 if (result) {
                     return;
                 }
                 // aspect level
-                autopath = StringMaster.cropLastPathSegment(autopath)
+                autopath = PathUtils.cropLastPathSegment(autopath)
                  + obj.getAspect().toString().toLowerCase();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
@@ -316,8 +317,8 @@ public class Player {
         File folder = FileManager.getFile(path);
         String fileName = "";
         if (!folder.isDirectory()) {
-            fileName = StringMaster.cropFormat(StringMaster.getLastPathSegment(prop));
-            folder = FileManager.getFile(StringMaster.cropLastPathSegment(path));
+            fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(prop));
+            folder = FileManager.getFile(PathUtils.cropLastPathSegment(path));
         }
         if (!folder.isDirectory()) {
             return false;

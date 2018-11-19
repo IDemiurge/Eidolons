@@ -15,6 +15,7 @@ import eidolons.libgdx.screens.map.editor.EditorPalette.EDITOR_PALETTE;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.Pair;
@@ -135,7 +136,7 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
                     String s = emitterActor.getX() + "-" + emitterActor.getY();
                     element = new ValueContainer(
                      StringMaster.cropByLength(20,
-                      StringMaster.getLastPathSegment(((EmitterActor) o).getPath()))
+                      PathUtils.getLastPathSegment(((EmitterActor) o).getPath()))
 
                      , s);
                     break;

@@ -202,7 +202,7 @@ public class TextureCache {
         if (region.getRegionHeight() > 2000) {
             return true;
         }
-        String name = StringMaster.getLastPathSegment(path).toLowerCase();
+        String name = PathUtils.getLastPathSegment(path).toLowerCase();
         switch (name) {
             //                imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
             case "logo fullscreen.png":

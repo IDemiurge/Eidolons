@@ -7,7 +7,7 @@ import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.data.XLinkedMap;
@@ -52,8 +52,8 @@ public class ShardVisuals extends GroupX {
         return ALPHA_TEMPLATE.SHARD_OVERLAY;
     }
 
-    public static EMITTER_PRESET[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
-        List<EMITTER_PRESET> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
+    public static VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
+        List<VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
         int n = 2;
         switch (size) {
             case SMALL:
@@ -65,9 +65,9 @@ public class ShardVisuals extends GroupX {
         }
         n = RandomWizard.getRandomInt(n);
         if (n < 0) {
-            return new EMITTER_PRESET[0];
+            return new VFX[0];
         }
-        EMITTER_PRESET[] array = new EMITTER_PRESET[n];
+        VFX[] array = new VFX[n];
         for (int i = 0; i < n; i++) {
             array[i] = list.remove(
              RandomWizard.getRandomIndex(list));
@@ -75,74 +75,74 @@ public class ShardVisuals extends GroupX {
         return array;
     }
 
-    private static EMITTER_PRESET[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
+    private static VFX[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
         if (overlay == null) {
             overlay = new EnumMaster<SHARD_OVERLAY>().
              getRandomEnumConst(SHARD_OVERLAY.class);
         }
         switch (overlay) {
             case MIST:
-                return new EMITTER_PRESET[]{
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.DARK_MIST_LITE,
-                 EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
-                 EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
+                return new VFX[]{
+                 VFX.MIST_ARCANE,
+                 VFX.DARK_MIST_LITE,
+                 VFX.THUNDER_CLOUDS_CRACKS,
+                 VFX.THUNDER_CLOUDS_CRACKS,
                  //                 EMITTER_PRESET.MIST_TRUE2,
-                 EMITTER_PRESET.MIST_WHITE,
-                 EMITTER_PRESET.MIST_WIND,
-                 EMITTER_PRESET.MIST_BLACK,
-                 EMITTER_PRESET.MIST_WIND,
-                 EMITTER_PRESET.STARS,
-                 EMITTER_PRESET.ASH,
-                 EMITTER_PRESET.MOTHS_TIGHT2,
-                 EMITTER_PRESET.WISPS,
-                 EMITTER_PRESET.SNOW_TIGHT2,
-                 EMITTER_PRESET.SNOW,
-                 EMITTER_PRESET.MOTHS_TIGHT2,
-                 EMITTER_PRESET.STARS
+                 VFX.MIST_WHITE,
+                 VFX.MIST_WIND,
+                 VFX.MIST_BLACK,
+                 VFX.MIST_WIND,
+                 VFX.STARS,
+                 VFX.ASH,
+                 VFX.MOTHS_TIGHT2,
+                 VFX.WISPS,
+                 VFX.SNOW_TIGHT2,
+                 VFX.SNOW,
+                 VFX.MOTHS_TIGHT2,
+                 VFX.STARS
                 };
             case DARKNESS:
-                return new EMITTER_PRESET[]{
-                 EMITTER_PRESET.DARK_MIST,
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.DARK_MIST_LITE,
-                 EMITTER_PRESET.MIST_BLACK,
-                 EMITTER_PRESET.CINDERS3,
-                 EMITTER_PRESET.ASH,
-                 EMITTER_PRESET.MIST_WHITE,
-                 EMITTER_PRESET.MIST_BLACK,
-                 EMITTER_PRESET.MIST_WIND,
-                 EMITTER_PRESET.STARS,
-                 EMITTER_PRESET.ASH,
-                 EMITTER_PRESET.MOTHS_TIGHT2,
-                 EMITTER_PRESET.WISPS,
-                 EMITTER_PRESET.SNOW_TIGHT2,
-                 EMITTER_PRESET.SNOW,
-                 EMITTER_PRESET.MOTHS_TIGHT2,
-                 EMITTER_PRESET.STARS
+                return new VFX[]{
+                 VFX.DARK_MIST,
+                 VFX.MIST_ARCANE,
+                 VFX.MIST_ARCANE,
+                 VFX.MIST_ARCANE,
+                 VFX.DARK_MIST_LITE,
+                 VFX.MIST_BLACK,
+                 VFX.CINDERS3,
+                 VFX.ASH,
+                 VFX.MIST_WHITE,
+                 VFX.MIST_BLACK,
+                 VFX.MIST_WIND,
+                 VFX.STARS,
+                 VFX.ASH,
+                 VFX.MOTHS_TIGHT2,
+                 VFX.WISPS,
+                 VFX.SNOW_TIGHT2,
+                 VFX.SNOW,
+                 VFX.MOTHS_TIGHT2,
+                 VFX.STARS
                 };
             case NETHER:
-                return new EMITTER_PRESET[]{
-                 EMITTER_PRESET.DARK_MIST,
-                 EMITTER_PRESET.DARK_MIST_LITE,
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.MIST_ARCANE,
-                 EMITTER_PRESET.MIST_BLACK,
-                 EMITTER_PRESET.CINDERS3,
-                 EMITTER_PRESET.WISPS,
-                 EMITTER_PRESET.STARS,
-                 EMITTER_PRESET.MIST_BLACK,
-                 EMITTER_PRESET.MIST_BLACK,
-                 EMITTER_PRESET.MIST_WHITE3,
-                 EMITTER_PRESET.MIST_WIND,
-                 EMITTER_PRESET.THUNDER_CLOUDS_CRACKS,
-                 EMITTER_PRESET.MIST_WIND
+                return new VFX[]{
+                 VFX.DARK_MIST,
+                 VFX.DARK_MIST_LITE,
+                 VFX.MIST_ARCANE,
+                 VFX.MIST_ARCANE,
+                 VFX.MIST_ARCANE,
+                 VFX.MIST_BLACK,
+                 VFX.CINDERS3,
+                 VFX.WISPS,
+                 VFX.STARS,
+                 VFX.MIST_BLACK,
+                 VFX.MIST_BLACK,
+                 VFX.MIST_WHITE3,
+                 VFX.MIST_WIND,
+                 VFX.THUNDER_CLOUDS_CRACKS,
+                 VFX.MIST_WIND
                 };
         }
-        return new EMITTER_PRESET[0];
+        return new VFX[0];
     }
 
     @Override
@@ -217,8 +217,8 @@ public class ShardVisuals extends GroupX {
                     last.add(shard);
 
 
-                    EMITTER_PRESET[] presets = ShardVisuals.getEmitters(overlay, size);
-                    for (EMITTER_PRESET preset : presets) {
+                    VFX[] presets = ShardVisuals.getEmitters(overlay, size);
+                    for (VFX preset : presets) {
                         EmitterActor actor = new EmitterActor(preset);
                         MapMaster.addToListMap(emittersMap, shard, actor);
                         emitterLayer.addActor(actor);

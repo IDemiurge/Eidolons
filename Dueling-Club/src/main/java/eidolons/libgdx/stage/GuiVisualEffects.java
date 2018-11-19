@@ -12,7 +12,7 @@ import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.layers.LightLayer;
@@ -86,63 +86,63 @@ public class GuiVisualEffects extends GroupX {
         emitterTypesCount=0;
         emitters = new ArrayList<>();
         boolean night = time.isNight();
-        WeightMap<EMITTER_PRESET> map = getEmittersWeightMap(template, night);
+        WeightMap<VFX> map = getEmittersWeightMap(template, night);
         int n = getEmitterCount(template, time);
         for (int i = 0; i < n; i++) {
-            EMITTER_PRESET preset = map.getRandomByWeight();
+            VFX preset = map.getRandomByWeight();
             boolean bottom=RandomWizard.random();
             createEmitters(bottom, preset, 220 - 50 + RandomWizard.getRandomInt(100));
         }
         switch (template) {
             case CAVE:
-                createEmitters(false, EMITTER_PRESET.MIST_WIND, 250);
+                createEmitters(false, VFX.MIST_WIND, 250);
                 break;
             case COLD:
-                createEmitters(false, EMITTER_PRESET.SNOWFALL, 250);
+                createEmitters(false, VFX.SNOWFALL, 250);
                 break;
             case POISON:
-                createEmitters(false, EMITTER_PRESET.MIST_BLACK, 250);
-                createEmitters(false, EMITTER_PRESET.ASH, 250);
+                createEmitters(false, VFX.MIST_BLACK, 250);
+                createEmitters(false, VFX.ASH, 250);
                 break;
             case DUNGEON:
             case CRYPT:
-                createEmitters(false, EMITTER_PRESET.MIST_BLACK, 250);
+                createEmitters(false, VFX.MIST_BLACK, 250);
             case HELL:
-                createEmitters(false, EMITTER_PRESET.ASH, 250);
+                createEmitters(false, VFX.ASH, 250);
                 break;
             case HALL:
                 break;
             case FOREST:
-                createEmitters(false, EMITTER_PRESET.FALLING_LEAVES_WINDY, 250);
-                createEmitters(false, EMITTER_PRESET.FALLING_LEAVES, 250);
+                createEmitters(false, VFX.FALLING_LEAVES_WINDY, 250);
+                createEmitters(false, VFX.FALLING_LEAVES, 250);
                 break;
             case DEEP_MIST:
-                createEmitters(false, EMITTER_PRESET.MIST_ARCANE, 250);
-                createEmitters(false, EMITTER_PRESET.MIST_NEW, 250);
+                createEmitters(false, VFX.MIST_ARCANE, 250);
+                createEmitters(false, VFX.MIST_NEW, 250);
                 break;
         }
         if (night) {
             switch (template) {
                 case COLD:
-                    createEmitters(false, EMITTER_PRESET.SNOW, 250);
+                    createEmitters(false, VFX.SNOW, 250);
                 case CAVE:
                 case FOREST:
-                    createEmitters(false, EMITTER_PRESET.STARS, 250);
+                    createEmitters(false, VFX.STARS, 250);
                     break;
 
                 case POISON:
                     break;
                 case DUNGEON:
-                    createEmitters(false, EMITTER_PRESET.WISPS, 250);
+                    createEmitters(false, VFX.WISPS, 250);
                     break;
                 case CRYPT:
-                    createEmitters(false, EMITTER_PRESET.MOTHS_BLUE3, 250);
+                    createEmitters(false, VFX.MOTHS_BLUE3, 250);
                     break;
                 case HELL:
-                    createEmitters(false, EMITTER_PRESET.CINDERS3, 250);
+                    createEmitters(false, VFX.CINDERS3, 250);
                     break;
                 case HALL:
-                    createEmitters(false, EMITTER_PRESET.MOTHS_TIGHT2, 250);
+                    createEmitters(false, VFX.MOTHS_TIGHT2, 250);
                     break;
                 case DEEP_MIST:
                     break;
@@ -150,10 +150,10 @@ public class GuiVisualEffects extends GroupX {
         } else
             switch (template) {
                 case CAVE:
-                    createEmitters(false, EMITTER_PRESET.MIST_WHITE, 200);
+                    createEmitters(false, VFX.MIST_WHITE, 200);
                     break;
                 case COLD:
-                    createEmitters(false, EMITTER_PRESET.SNOW, 250);
+                    createEmitters(false, VFX.SNOW, 250);
                     break;
                 case POISON:
                     break;
@@ -176,34 +176,34 @@ public class GuiVisualEffects extends GroupX {
         return 3;
     }
 
-    private WeightMap<EMITTER_PRESET> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
-        WeightMap<EMITTER_PRESET> map = new WeightMap<>(EMITTER_PRESET.class);
+    private WeightMap<VFX> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
+        WeightMap<VFX> map = new WeightMap<>(VFX.class);
         int fog = night ? 10 : 5;
         int down = night? 5 : 10;
-        EMITTER_PRESET special = night ? EMITTER_PRESET.STARS : EMITTER_PRESET.MOTHS;
-        EMITTER_PRESET special2 = night ? EMITTER_PRESET.WISPS : EMITTER_PRESET.CINDERS;
+        VFX special = night ? VFX.STARS : VFX.MOTHS;
+        VFX special2 = night ? VFX.WISPS : VFX.CINDERS;
 
         switch (template) {
             case CAVE:
-                map.chain(EMITTER_PRESET.MIST_WIND, fog);
-                map.chain(EMITTER_PRESET.MIST_WIND, fog);
+                map.chain(VFX.MIST_WIND, fog);
+                map.chain(VFX.MIST_WIND, fog);
 
-                map.chain(EMITTER_PRESET.ASH, down);
-                map.chain(EMITTER_PRESET.SNOWFALL, down);
-                map.chain(EMITTER_PRESET.SNOWFALL_THICK, down);
-                map.chain(EMITTER_PRESET.SNOWFALL_THICK, down);
-                map.chain(EMITTER_PRESET.SNOW, down);
-                map.chain(EMITTER_PRESET.SNOW_TIGHT, down);
+                map.chain(VFX.ASH, down);
+                map.chain(VFX.SNOWFALL, down);
+                map.chain(VFX.SNOWFALL_THICK, down);
+                map.chain(VFX.SNOWFALL_THICK, down);
+                map.chain(VFX.SNOW, down);
+                map.chain(VFX.SNOW_TIGHT, down);
 
-                map.chain(EMITTER_PRESET.MIST_WIND, fog);
-                map.chain(EMITTER_PRESET.MIST_ARCANE, fog);
-                map.chain(EMITTER_PRESET.MIST_BLACK, fog);
-                map.chain(EMITTER_PRESET.MIST_CYAN, fog);
-                map.chain(EMITTER_PRESET.MIST_WHITE3, fog);
-                map.chain(EMITTER_PRESET.DARK_MIST_LITE, fog);
-                map.chain(EMITTER_PRESET.DARK_MIST, fog);
-                map.chain(EMITTER_PRESET.POISON_MIST, fog);
-                map.chain(EMITTER_PRESET.POISON_MIST2, fog);
+                map.chain(VFX.MIST_WIND, fog);
+                map.chain(VFX.MIST_ARCANE, fog);
+                map.chain(VFX.MIST_BLACK, fog);
+                map.chain(VFX.MIST_CYAN, fog);
+                map.chain(VFX.MIST_WHITE3, fog);
+                map.chain(VFX.DARK_MIST_LITE, fog);
+                map.chain(VFX.DARK_MIST, fog);
+                map.chain(VFX.POISON_MIST, fog);
+                map.chain(VFX.POISON_MIST2, fog);
 
                 break;
             case COLD:
@@ -250,17 +250,17 @@ public class GuiVisualEffects extends GroupX {
 
         emitters = new ArrayList<>();
         if (!isCustomEmitters()) {
-            createEmitters(true, EMITTER_PRESET.MIST_BLACK, 250);
-            createEmitters(false, EMITTER_PRESET.MIST_WHITE, 200);
+            createEmitters(true, VFX.MIST_BLACK, 250);
+            createEmitters(false, VFX.MIST_WHITE, 200);
         }
 
     }
 
-    private void createEmitters(boolean bottom, EMITTER_PRESET preset, int gap) {
+    private void createEmitters(boolean bottom, VFX preset, int gap) {
         emitterTypesCount++;
         int chance = (int) Math.max(15, 50 - emitterTypesCount * 10 - emitterTypesCount * 5 * GdxMaster.getFontSizeModSquareRoot());
         for (int i = 0; i < GdxMaster.getWidth(); i += gap) {
-            EMITTER_PRESET preset_ = preset;
+            VFX preset_ = preset;
             if (!RandomWizard.chance(chance*2)) {
                 continue;
             }

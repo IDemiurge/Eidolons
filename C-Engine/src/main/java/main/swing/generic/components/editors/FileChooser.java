@@ -98,7 +98,7 @@ public class FileChooser implements EDITOR {
 
     protected String cropPrefix(String selected) {
         selected = StringMaster.replaceFirst(selected,
-         PathFinder.getEnginePathPlusNewResourceProject()
+         PathFinder.getResPath()
          , "");
         selected = StringMaster.replaceFirst(selected,
          PathFinder.getEnginePath()

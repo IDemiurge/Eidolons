@@ -2,16 +2,19 @@ package eidolons.libgdx.utils;
 
 import eidolons.game.core.Eidolons;
 import main.data.filesys.PathFinder;
+import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 11/12/2018.
@@ -45,23 +48,81 @@ public class Packer {
     };
     public static final String[] imageFolders = {
      "main",
-     "desktop.ini",
      "sprites",
      "vfx",
     };
+    public static final String CORE_UPLOAD = "Y:\\[Eidolons demos]\\upload\\";
+    public static final String CORE_TEST = "Y:\\[Eidolons demos]\\packer test\\";
+    private static final String RES_TREE_OUTPUT = "output res tree.txt";
+    private static final String RES_TREE = "res tree.txt";
+    private static final String RES_TREE_FULL = "res tree full.txt";
+    boolean test;
+    int maxTreeDepth = 5;
     private String outputRoot;
+    private boolean readTree=true;
+    private boolean updateTree=false;
+    private StrPathBuilder pathBuilder;
+    private StrPathBuilder lastBuilder;
 
-    public Packer(String outputRoot) {
+    public Packer(String outputRoot, boolean test) {
+        if (test) {
+            outputRoot = CORE_TEST + outputRoot;
+        } else {
+            outputRoot = CORE_UPLOAD + outputRoot;
+        }
         this.outputRoot = outputRoot;
+        this.test = test;
     }
 
     public static void main(String[] args) {
-        new Packer("Y:\\[Eidolons demos]\\upload\\" +
-         ContainerUtils.join("-", Eidolons.NAME + Eidolons.EXTENSION + Eidolons.SUFFIX +
-          CoreEngine.filesVersion)).pack();
+        new Packer(
+         ContainerUtils.join("-", Eidolons.NAME, Eidolons.EXTENSION, Eidolons.SUFFIX,
+          CoreEngine.filesVersion)+"/", true).pack();
+    }
+
+    public String createDirectoryTree() {
+        int treeDepth = 0;
+        StringBuilder data = new StringBuilder();
+        appendToTree(treeDepth, data, (PathFinder.getResPath()));
+
+        return data.toString();
+
+    }
+
+    private void appendToTree(int treeDepth, StringBuilder data, String path) {
+        if (treeDepth > maxTreeDepth)
+            return;
+        List<File> files = FileManager.getFilesFromDirectory(path, true).stream().filter(
+         file -> file.isDirectory()).sorted(new SortMaster<File>().getSorterByExpression_(
+         file -> -(FileManager.getFilesFromDirectory(file.getPath(), true, false).size())))
+         .collect(Collectors.toList());
+
+        for (File dir : files) {
+            //            if (full.contains(dir.getName().toLowerCase()))
+            //                continue;
+            //            if (exceptions.contains(dir.getName().toLowerCase()))
+            //                continue;
+            if (dir.isDirectory()) {
+                if (treeDepth < 1)
+                    data.append("\n" + StringMaster.getStringXTimes(10, "__")+"\n");
+                data.append(StringMaster.getStringXTimes(treeDepth, "--") + ">  " + dir.getName() + "\n");
+                if (treeDepth < 2)
+                    data.append("\n");
+                appendToTree(treeDepth + 1, data, dir.getPath());
+            }
+
+        }
     }
 
     public void pack() {
+        if (updateTree)
+            FileManager.write(createDirectoryTree(), PathFinder.getResPath() + "res tree.txt");
+        if (readTree)
+            copyResourceTree();
+
+        if (test) {
+            return;
+        }
         copyXml();
         copyText();
         copyOther();
@@ -71,6 +132,106 @@ public class Packer {
         copyVfx();
         copyJar();
 
+    }
+
+    private void copyResourceTree() {
+        String resTree = FileManager.readFile(PathFinder.getResPath() + RES_TREE_OUTPUT);
+        resTree = formatResTree(resTree);
+        String[] lines = StringMaster.splitLines(resTree);
+        int result = 0;
+        pathBuilder = new StrPathBuilder(PathFinder.getResPath());
+        while (result >= 0) {
+            result = crawlTreeLines(result, lines);
+        }
+    }
+/*
+__________________
+>  Fonts
+-->  hiero
+
+---->  high
+---->  perpetua
+____________________
+  img
+-->  gen
+
+---->  entity
+------>  abils
+-------->  Actives
+-------->  Passives
+------>  items
+-------->  Keys
+ */
+
+    /*
+    so the idea is to keep a kind of 'pom' of the file system
+    but will it be maintainable?
+    No, but I don't want some 'random new folders and files' to automatically sneak where I didn't specify
+    recursion by hand!
+
+     */
+    private int crawlTreeLines(int index, String[] lines) {
+        //runs until the tree goes up
+
+        List<File> filesToCopy = new ArrayList<>();
+        int depth = 0;
+        for (int i = index; i < lines.length; i++) {
+            String line = lines[i];
+            //                if (isRecursive(line)) {
+            //                    recursive = true; //do not stop until depth is again N
+            //            boolean recursive = parts[1].contains("*");
+            //     }
+            String name = getNameFromLine(line);
+            pathBuilder.append(name);
+            if (lastBuilder == null) {
+                lastBuilder =new StrPathBuilder(pathBuilder.toString());
+            }
+            //what if it's a file itself?!
+            List<File> files = FileManager.getFilesFromDirectory(pathBuilder.toString(), false, false);
+            filesToCopy.addAll(files);
+            int newDepth = getDepth(line);
+            if (newDepth < depth) {
+                //going up again
+                copyFiles(filesToCopy);
+                pathBuilder = new StrPathBuilder(lastBuilder.toString());
+                lastBuilder=null ;
+                return i; //resume crawl from this index
+            }
+            depth = newDepth; //we went down
+        }
+        copyFiles(filesToCopy);
+        return -1; //crawl is finished
+    }
+
+    private void copyFiles(List<File> filesToCopy) {
+        //no dirs
+        String src = PathFinder.getResPath();
+        String dest = "resources/";
+        copyFromRoot(false, src, dest, filesToCopy.toArray(new File[filesToCopy.size()]), null);
+    }
+
+    private int getDepth(String line) {
+        String[] parts = line.split(">");
+        if (parts.length==0)
+            return 0;
+        return parts[0].length() / 2;
+    }
+
+    private String getNameFromLine(String line) {
+        String[] parts = line.split("  ");
+        return parts[1];
+    }
+
+    private void copyLines(String root, List<String> subFolders) {
+        for (String subFolder : subFolders) {
+            //            from = subFolder.replace(root, "");
+            //            to =
+            //            copyFromRoot(false, );
+        }
+    }
+
+    private String formatResTree(String resTree) {
+        return resTree.replace("__", "").trim();
     }
 
     private void copyVfx() {
@@ -94,32 +255,94 @@ public class Packer {
     }
 
     private void copyImages() {
+        String root = PathFinder.getImagePath();
+        String dest = "resources/img/";
+        copyFromRoot(true, root, dest, imageFolders, filteredAll, imageFiltered);
     }
 
     private void copyXml() {
         String root = PathFinder.getXML_PATH();
         String dest = "xml/";
-        copyFromRoot(root, dest, xmlFolders, filteredAll, "");
+        copyFromRoot(false, root, dest, xmlFolders, filteredAll);
     }
 
-    private void copyFromRoot(String root, String dest, String[] imageFolders,
-                                String[] filteredAll, String... customExceptions) {
+    private void copyFromRoot(boolean recursive, String root, String dest, String[] folders,
+                              String[] filteredAll, String... customExceptions) {
+        copyFromRoot(recursive, root, dest,
+         Arrays.stream(folders).map(name -> FileManager.getFile(root + "/" + name))
+          .collect(Collectors.toList()).toArray(new File[folders.length])
+         , filteredAll, customExceptions);
+    }
 
-
-        for (File file : FileManager.getFilesFromDirectory(PathFinder.getXML_PATH(), false)) {
-
-            String suffix = FileManager.formatPath(file.getPath(), true).replace(dest, "");
-            File output = new File(StrPathBuilder.build(outputRoot + dest + suffix));
-            Path src = Paths.get(file.toURI());
-            Path target = Paths.get(output.toURI());
-            try {
-                Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+    private void copyFromRoot(boolean recursive, String root, String dest, File[] folders,
+                              String[] filteredAll, String... customExceptions) {
+        Path rootPath = null;
+        String symbolicLinkRoot="";
+        try {
+            rootPath = Paths.get(new File(root).toURI());
+            if (Files.isSymbolicLink(rootPath)) {
+                rootPath = Files.readSymbolicLink(rootPath);
             }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        if (rootPath != null) {
+            symbolicLinkRoot = FileManager.formatPath(root, true);
+            root = rootPath.toString();
+        }
+        root = FileManager.formatPath(root, true);
+
+        List<String> exceptions = new ArrayList<>();
+
+        if (filteredAll != null)
+        for (String s : filteredAll) {
+            exceptions.add(s);
+        }
+        for (String s : customExceptions) {
+            exceptions.add(s);
+        }
+        for (File folder : folders) {
+            List<File> fileList =     new ArrayList<>();
+            if (folder.isFile()) {
+                fileList.add(folder);
+            }
+            else {
+                FileManager.getFilesFromDirectory(folder, false, recursive);
+            }
+            files:
+            for (File file : fileList) {
+                for (String exception : exceptions) {
+                    if (StringMaster.contains(file.getPath(), exception, true, true)) {
+                        log("Ignoring " + file);
+                        continue files;
+                    }
+                }
+
+                String suffix = FileManager.formatPath(file.getPath(), true)
+                 .replace(symbolicLinkRoot, "")
+                 .replace(root, "");
+                File output = new File(StrPathBuilder.build(outputRoot + dest + suffix));
+                output.mkdirs();
+                try {
+                    Path src = Paths.get(file.toURI());
+                    Path target = Paths.get(output.toURI());
+
+                    Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
+                    log("Copied to " + output);
+                } catch (InvalidPathException e1) {
+                    e1.printStackTrace();
+                    log("Paths failed " + file + "\n" + output);
+                } catch (Exception e) {
+                    log("Copy failed from " + file);
+                }
+            }
+
         }
 
+    }
 
+    private void log(String s) {
+        main.system.auxiliary.log.LogMaster.log(1, s);
     }
 
 

@@ -69,10 +69,10 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
             N[] row = mainNodeRows[tier] = createRow(getMainSlotsPerTier(tier));
             N2[] linkRow = linkNodeRows[tier] = createLinkRow(getLinkSlotsPerTier(tier));
             for (int i = 0; i < getMainSlotsPerTier(tier); i++) {
-                slots.addActor(row[i] = buildEmptyNode(tier));
+                slots.addActor(row[i] = buildEmptyNode(tier, i));
             }
             for (int i = 0; i < getLinkSlotsPerTier(tier); i++) {
-                links.addActor(linkRow[i] = buildEmptyLinkNode(tier));
+                links.addActor(linkRow[i] = buildEmptyLinkNode(tier, i));
             }
             add(rowContainer);
             row();
@@ -127,9 +127,9 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
 
     protected abstract int getLinkSlotsPerTier(int tier);
 
-    protected abstract N2 buildEmptyLinkNode(int tier);
+    protected abstract N2 buildEmptyLinkNode(int tier, int i);
 
-    protected abstract N buildEmptyNode(int tier);
+    protected abstract N buildEmptyNode(int tier, int i);
 
     protected abstract N[] createRow(int n);
 

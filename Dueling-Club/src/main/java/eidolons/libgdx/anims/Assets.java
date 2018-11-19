@@ -15,6 +15,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
@@ -94,14 +95,14 @@ public class Assets {
 
     public static boolean preloadAll(DequeImpl<BattleFieldObject> objects) {
         boolean result = false;
-        if (AnimationConstructor.isPreconstructAllOnGameInit()) {
+        if (AnimConstructor.isPreconstructAllOnGameInit()) {
             for (BattleFieldObject sub : objects) {
                 if (!checkPreloadUnit(sub)) {
                     continue;
                 }
                 if (sub instanceof Unit)
                     try {
-                         AnimationConstructor.preconstruct((Unit) sub);
+                         AnimConstructor.preconstruct((Unit) sub);
                     } catch (Exception e) {
                          main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL,"FAILED TO CONSTRUCT ANIMS FOR " +sub);
                         main.system.ExceptionMaster.printStackTrace(e);

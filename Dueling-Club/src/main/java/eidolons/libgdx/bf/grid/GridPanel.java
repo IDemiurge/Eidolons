@@ -21,7 +21,8 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
@@ -170,7 +171,7 @@ public class GridPanel extends Group {
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
 
-        //        if (AnimationConstructor.isPreconstructAllOnGameInit())
+        //        if (AnimConstructor.isPreconstructAllOnGameInit())
         //            units.forEach(unit ->
         //            {
         //                if (unit instanceof Unit)
@@ -448,7 +449,7 @@ public class GridPanel extends Group {
             if (DungeonScreen.isCameraAutoCenteringOn())
                 DungeonScreen.getInstance().centerCameraOn(hero);
             if (hero instanceof Unit)
-                animMaster.getConstructor().tryPreconstruct((Unit) hero);
+                AnimConstructor.tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
             if (view == null) {
                 System.out.println("viewMap not initiatilized at ACTIVE_UNIT_SELECTED!");
@@ -521,12 +522,12 @@ public class GridPanel extends Group {
     }
 
     private void updateHpBar(Object o) {
-        GridUnitView view = null;
+        HpBarView view = null;
         if (o instanceof BattleFieldObject) {
             if (viewMap.get(o) instanceof GridUnitView)
-                view = (GridUnitView) viewMap.get(o);
-        } else if (o instanceof GridUnitView)
-            view = (GridUnitView) (o);
+                view = (HpBarView) viewMap.get(o);
+        } else if (o instanceof HpBarView)
+            view = (HpBarView) (o);
         if (view != null)
             view.animateHpBarChange();
     }
@@ -745,6 +746,7 @@ public class GridPanel extends Group {
         unitMoved(battleFieldObjectbj);
         if (!isVisibleByDefault(battleFieldObjectbj))
             view.setVisible(false);
+        GuiEventManager.trigger(GuiEventType.UNIT_VIEW_CREATED, view);
         return view;
     }
 

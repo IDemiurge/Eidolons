@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta;
+package eidolons.game.battlecraft.logic.battle.test;
 
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioInitializer;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
@@ -9,7 +9,6 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 /**

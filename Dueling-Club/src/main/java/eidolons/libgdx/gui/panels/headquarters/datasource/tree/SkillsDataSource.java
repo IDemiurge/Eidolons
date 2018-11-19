@@ -6,6 +6,7 @@ import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -45,41 +46,32 @@ public class SkillsDataSource extends HeroTreeDataSource {
 
     public List<Triple<DC_FeatObj, MASTERY, MASTERY>> getSkillSlots(int tier) {
         List<Triple<DC_FeatObj, MASTERY, MASTERY>> list = new ArrayList<>();
+        ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
+
         List<MASTERY> ranks = getMasteryRanks(tier);
-        int i = 0;
+
         List<DC_FeatObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
-        while (true) {
-            if (ranks.size() <= i) break;
 
-            DC_FeatObj skill = null;
-
-            if (skills.size() > i)
-                skill = skills.get(i);
-            MASTERY mastery1 = ranks.get(i++);
-            if (ranks.size() <= i) break;
-            MASTERY mastery2 = ranks.get(i);
-            list.add(new ImmutableTriple<>(skill, mastery1, mastery2));
+        for (int j = 0; j < skills.size(); j++) {
+            if (skills.get(j) == null)
+                continue; //empty slot
+            list.add(new ImmutableTriple<>(skills.get(j), ranks.get(j), ranks.get(j + 1)));
         }
+//        int i = 0;
+//        while (true) {
+//            if (ranks.size() <= i) break;
+//
+//            DC_FeatObj skill = null;
+//
+//            if (skills.size() > i)
+//                skill = skills.get(i);
+//            MASTERY mastery1 = ranks.get(i++);
+//            if (ranks.size() <= i) break;
+//            MASTERY mastery2 = ranks.get(i);
+//            list.add(new ImmutableTriple<>(skill, mastery1, mastery2));
+//        }
         return list;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

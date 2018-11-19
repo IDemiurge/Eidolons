@@ -53,8 +53,8 @@ public class DamageDealer {
         logOn = true;
         if (checkDamageImmune(damage))
             return 0;
-//       damage.getRef().getGame().
-//        damage.getSource().getGame().getBattleMaster().getOptionManager().applyDifficulty(damage);
+        //       damage.getRef().getGame().
+        //        damage.getSource().getGame().getBattleMaster().getOptionManager().applyDifficulty(damage);
         int result = dealDamageOfType(damage.getDmgType(),
          damage.getTarget()
          , damage.getRef(), damage.getAmount(), isBonusDamage);
@@ -194,7 +194,7 @@ public class DamageDealer {
                     if (isAttack(ref)) {
                         blocked = attacked.getGame()
                          .getArmorMaster().getArmorBlockDamage(amount,
-                           attacked, attacker, active);
+                          attacked, attacker, active);
                     } else {
                         blocked = attacked.getGame()
                          .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
@@ -202,22 +202,22 @@ public class DamageDealer {
                     }
                 }
             }
-            if (attacked instanceof Unit)
-                if (attacker.getRef().getObj(KEYS.WEAPON) instanceof DC_WeaponObj) {
-                    int durabilityLost = DurabilityRule.damageDealt(blocked,
-                     (DC_HeroSlotItem) attacked.getRef().getObj(KEYS.ARMOR), dmg_type,
-                     (DC_WeaponObj) attacker.getRef().getObj(KEYS.WEAPON), amount, attacked);
-                    if (durabilityLost > 0) {
-                        main.system.auxiliary.log.LogMaster.log(1, "durabilityLost= " + durabilityLost);
-                    }
+        if (attacked instanceof Unit)
+            if (attacker.getRef().getObj(KEYS.WEAPON) instanceof DC_WeaponObj) {
+                int durabilityLost = DurabilityRule.damageDealt(blocked,
+                 (DC_HeroSlotItem) attacked.getRef().getObj(KEYS.ARMOR), dmg_type,
+                 (DC_WeaponObj) attacker.getRef().getObj(KEYS.WEAPON), amount, attacked);
+                if (durabilityLost > 0) {
+                    main.system.auxiliary.log.LogMaster.log(1, "durabilityLost= " + durabilityLost);
                 }
+            }
 
 
         int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref, blocked,
          dmg_type);
         int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, ref, blocked,
          dmg_type);
-//        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
+        //        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
 
         ref.setAmount(e_damage);
         // TODO separate event types?
@@ -247,6 +247,9 @@ public class DamageDealer {
     // for floatingText anims
     protected static void addDamageDealt(DC_ActiveObj active, DAMAGE_TYPE damage_type,
                                          int amount, boolean main) {
+        if (active == null)
+            return;
+
         if (main) {
             active.setDamageDealt(DamageFactory.getGenericDamage(damage_type, amount, active.getRef()));
             return;
@@ -397,7 +400,7 @@ public class DamageDealer {
         boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
 
         if (!dead) {
-            if (attacked.checkBool(STD_BOOLS.FAUX)){
+            if (attacked.checkBool(STD_BOOLS.FAUX)) {
                 dead = true;
             }
         }
@@ -435,9 +438,9 @@ public class DamageDealer {
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
 
         if (!CoreEngine.isGraphicsOff())
-        if (HpBar.isResetOnLogicThread())
-            DungeonScreen.getInstance().getGridPanel().getGridManager().
-             checkHpBarReset(attacked);
+            if (HpBar.isResetOnLogicThread())
+                DungeonScreen.getInstance().getGridPanel().getGridManager().
+                 checkHpBarReset(attacked);
 
         return damageDealt;
     }

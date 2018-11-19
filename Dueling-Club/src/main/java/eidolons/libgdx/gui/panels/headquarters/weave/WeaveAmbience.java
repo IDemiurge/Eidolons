@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.weave;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
@@ -26,11 +26,11 @@ public class WeaveAmbience extends GroupX {
 
         Color hue=getHueForWeave(weave);
         int showChance = 30;
-        maps.add(new EmitterMap(EMITTER_PRESET.STARS.getPath(), showChance, hue));
-        maps.add(new EmitterMap(EMITTER_PRESET.MIST_WHITE.getPath(), showChance, hue));
-        maps.add(new EmitterMap(EMITTER_PRESET.MIST_WHITE2.getPath(), showChance, hue));
-        maps.add(new EmitterMap(EMITTER_PRESET.MIST_WHITE3.getPath(), showChance, hue));
-        maps.add(new EmitterMap(EMITTER_PRESET.MIST_WIND.getPath(), showChance, hue));
+        maps.add(new EmitterMap(VFX.STARS.getPath(), showChance, hue));
+        maps.add(new EmitterMap(VFX.MIST_WHITE.getPath(), showChance, hue));
+        maps.add(new EmitterMap(VFX.MIST_WHITE2.getPath(), showChance, hue));
+        maps.add(new EmitterMap(VFX.MIST_WHITE3.getPath(), showChance, hue));
+        maps.add(new EmitterMap(VFX.MIST_WIND.getPath(), showChance, hue));
 //         for (String sub: getAdditional)
         for (EmitterMap sub : maps) {
             addActor(sub);

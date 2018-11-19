@@ -7,7 +7,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;

@@ -26,8 +26,8 @@ public class PerkSlot extends HtNode {
     private Triple<Perk, HeroClass, HeroClass> data;
     private List<ObjType> available;
 
-    public PerkSlot(int tier) {
-        super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY);
+    public PerkSlot(int tier,int slot) {
+        super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY, slot);
     }
 
 

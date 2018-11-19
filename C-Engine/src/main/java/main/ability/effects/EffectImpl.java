@@ -285,7 +285,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             result = applyThis();
             applied = true;
             if (checkEventsFired())
-                game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
+              fireAppliedEvent();
 
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -293,6 +293,10 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
         return result;
 
+    }
+
+    protected void fireAppliedEvent() {
+        game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
     }
 
     protected boolean checkEventsFired() {

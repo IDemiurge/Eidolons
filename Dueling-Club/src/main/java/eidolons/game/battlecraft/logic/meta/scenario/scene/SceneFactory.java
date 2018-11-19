@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogView;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 5/22/2017.
  */
-public class SceneFactory implements Supplier<List<DialogScenario>> {
+public class SceneFactory implements Supplier<List<DialogView>> {
     private String data;
     private boolean dialogue;
 
@@ -30,7 +30,7 @@ public class SceneFactory implements Supplier<List<DialogScenario>> {
     }
 
     //TODO Speech?
-    public static List<DialogScenario> getScenes(GameDialogue dialogue) {
+    public static List<DialogView> getScenes(GameDialogue dialogue) {
         Speech speech = dialogue.getRoot();
         List<SpeechData> fullData = new ArrayList<>();
         while (true) {
@@ -42,17 +42,17 @@ public class SceneFactory implements Supplier<List<DialogScenario>> {
         return getScenes(fullData);
     }
 
-    public static List<DialogScenario> getScenes(String data) {
+    public static List<DialogView> getScenes(String data) {
         List<SpeechData> list =
          ContainerUtils.openContainer(data).stream().map(s ->
           new SpeechData(s)).collect(Collectors.toList());
         return getScenes(list);
     }
 
-    public static List<DialogScenario> getScenes(List<SpeechData> fullData) {
+    public static List<DialogView> getScenes(List<SpeechData> fullData) {
         Speech speech;
 //        speech.getFormattedText()
-        List<DialogScenario> list = new ArrayList<>();
+        List<DialogView> list = new ArrayList<>();
 //        for (String substring : StringMaster.open(data)) {
         TextureRegion backTexture = null;
         for (SpeechData data : fullData) {
@@ -72,7 +72,7 @@ public class SceneFactory implements Supplier<List<DialogScenario>> {
             if (!StringMaster.isEmpty(data.getValue(SPEECH_VALUE.BACKGROUND)))
                 backTexture = TextureCache.getOrCreateR(data.getValue(SPEECH_VALUE.BACKGROUND));
 
-            list.add(new DialogScenario(time, skippable, backTexture, message,
+            list.add(new DialogView(time, skippable, backTexture, message,
              portraitTexture));
 
         }
@@ -81,7 +81,7 @@ public class SceneFactory implements Supplier<List<DialogScenario>> {
 
     @Refactor
     @Override
-    public List<DialogScenario> get() {
+    public List<DialogView> get() {
         if (dialogue)
             return getScenes(Eidolons.game.getMetaMaster().getDialogueFactory().getDialogue(data));
         return getScenes(Eidolons.game.getMetaMaster().getIntroFactory().getDialogue(data));

@@ -16,6 +16,7 @@ import main.entity.type.ObjType;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -113,7 +114,7 @@ public class PresetMaster {
     private static void setName() {
         String path = generatePath() + generateName();
         path = DialogMaster.inputText("Enter a name...", path);
-        String newName = StringMaster.getLastPathSegment(path);
+        String newName = PathUtils.getLastPathSegment(path);
         path = path.replace(newName, "");
         getPreset().setName(newName);
         getPreset().setPath(path);
@@ -222,7 +223,7 @@ public class PresetMaster {
         if (levelFilePath == null) {
             return "null dungeon";
         }
-        String name = StringMaster.getLastPathSegment(levelFilePath);
+        String name = PathUtils.getLastPathSegment(levelFilePath);
         name = StringMaster.cropFormat(name);
         name = StringMaster.cropVersion(name);
         return name;

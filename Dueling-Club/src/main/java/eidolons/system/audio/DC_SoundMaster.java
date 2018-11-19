@@ -11,8 +11,8 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.Anim;
-import eidolons.libgdx.anims.AnimationConstructor;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.construct.AnimResourceFinder;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.GridMaster;
@@ -318,11 +318,11 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
     }
 
     private static void preconstructSpell(DC_SpellObj spell, ANIM_PART part) {
-        String file = AnimationConstructor.findResourceForSpell(spell,
+        String file = AnimResourceFinder.findResourceForSpell(spell,
          part.toString(), "", propsExact,
          getSpellSoundPath(), false);
         if (file == null) {
-            file = AnimationConstructor.findResourceForSpell(spell,
+            file = AnimResourceFinder.findResourceForSpell(spell,
              part.toString(), "", props,
              getSpellSoundPath(), true);
         }
@@ -349,8 +349,8 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
         String path;
         if (!file.isEmpty()) {
             file = PathFinder.getSoundPath() + file;
-            identifier = StringMaster.getLastPathSegment(file);
-            path = StringMaster.cropLastPathSegment(file);
+            identifier = PathUtils.getLastPathSegment(file);
+            path = PathUtils.cropLastPathSegment(file);
         } else {
             identifier = spell.getName();
             path = getSpellSoundPath();
@@ -381,9 +381,9 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
                 return file;
             }
             if (i % 2 == 1)
-                identifier = StringMaster.getLastPathSegment(path);
+                identifier = PathUtils.getLastPathSegment(path);
             else
-                path = StringMaster.cropLastPathSegment(path);
+                path = PathUtils.cropLastPathSegment(path);
         }
         return null;
     }

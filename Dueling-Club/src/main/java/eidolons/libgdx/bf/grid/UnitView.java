@@ -13,9 +13,8 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.shaders.GrayscaleShader;
+import eidolons.libgdx.shaders.DarkGrayscaleShader;
 import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -25,7 +24,7 @@ import main.system.images.ImageManager;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-public class UnitView extends BaseView {
+public class UnitView extends BaseView implements HpBarView{
     protected static AtomicInteger lastId = new AtomicInteger(1);
     protected int curId;
     protected String name;
@@ -194,7 +193,10 @@ public class UnitView extends BaseView {
             return;
         }
         ShaderMaster.drawWithCustomShader(this, batch,
-         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
+         greyedOut ?
+          DarkGrayscaleShader.getShader()
+//          GrayscaleShader.getGrayscaleShader()
+          : null, true);
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
@@ -238,11 +240,6 @@ public class UnitView extends BaseView {
         this.initialized = initialized;
     }
 
-    public void resetHpBar( ) {
-        if (getHpBar() == null)
-            hpBar = new HpBar(getUserObject());
-        getHpBar().reset();
-    }
 
     @Override
     public void setBorder(TextureRegion texture) {
@@ -264,6 +261,11 @@ public class UnitView extends BaseView {
         return getClass().getSimpleName() + " for " + name;
     }
 
+    public void resetHpBar( ) {
+        if (getHpBar() == null)
+            hpBar = new HpBar(getUserObject());
+        getHpBar().reset();
+    }
     public HpBar getHpBar() {
         return hpBar;
     }

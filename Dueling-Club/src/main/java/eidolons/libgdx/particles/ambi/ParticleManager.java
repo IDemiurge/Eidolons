@@ -7,7 +7,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleManager extends GroupX {
-    private static final EMITTER_PRESET FOG_VFX = EMITTER_PRESET.SMOKE_TEST;
+    private static final VFX FOG_VFX = VFX.SMOKE_TEST;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
      GRAPHIC_OPTION.AMBIENCE);
     private static boolean ambienceMoveOn;
@@ -41,7 +41,7 @@ public class ParticleManager extends GroupX {
     SmartAmbienceMap ambienceMap;
 
     public ParticleManager() {
-
+        new AttachEmitterManager();
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             DC_Game game = (DC_Game) p.get();
             DungeonLevel level = game.getDungeonMaster().getDungeonLevel();
@@ -76,7 +76,7 @@ public class ParticleManager extends GroupX {
         GuiEventManager.bind(GuiEventType.SHOW_VFX, p -> {
             List<Object> list = (List<Object>) p.get();
             List<Object> newList = new ArrayList<>();
-            EMITTER_PRESET preset = (EMITTER_PRESET) list.get(0);
+            VFX preset = (VFX) list.get(0);
             newList.add(preset.getPath());
             newList.add(list.get(1));
             GuiEventManager.trigger(GuiEventType.SHOW_CUSTOM_VFX,
@@ -154,7 +154,7 @@ public class ParticleManager extends GroupX {
         ParticleManager.ambienceOn = ambienceOn;
     }
 
-    public static Ambience addFogOn(Vector2 at, EMITTER_PRESET preset) {
+    public static Ambience addFogOn(Vector2 at, VFX preset) {
         Ambience fog = new Ambience(preset) {
             @Override
             protected boolean isCullingOn() {

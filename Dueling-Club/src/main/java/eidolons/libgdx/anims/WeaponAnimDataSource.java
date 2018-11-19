@@ -1,7 +1,7 @@
 package eidolons.libgdx.anims;
 
-import eidolons.libgdx.anims.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
 import main.entity.Entity;
 
 /**

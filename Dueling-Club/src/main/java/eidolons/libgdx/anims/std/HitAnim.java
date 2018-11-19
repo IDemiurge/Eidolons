@@ -13,10 +13,12 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.text.FloatingText;
@@ -52,6 +54,7 @@ import static main.system.GuiEventType.HP_BAR_UPDATE;
 public class HitAnim extends ActionAnim {
     private static String spritesPath;
     private static Boolean bloodOff;
+    private static boolean displacementOn = true;
     private SPRITE_TYPE spriteType;
     private HIT hitType;
     private String text;
@@ -61,55 +64,45 @@ public class HitAnim extends ActionAnim {
     private float originalActorX;
     private float originalActorY;
     private boolean blood;
-    private static boolean displacementOn=true;
+    private DAMAGE_TYPE damageType;
 
-    public HitAnim(DC_ActiveObj active, AnimData params, Color c) {
-        this(active, params, true, c, null);
+    public HitAnim(DC_ActiveObj active, AnimData data) {
+        this(active, data, active.getDamageType());
     }
 
-    public HitAnim(DC_ActiveObj active, AnimData params) {
-        this(active, params, null);
-    }
-    //    AttackAnim atkAnim;
-//    private DC_WeaponObj weapon;
-
-
-    public HitAnim(DC_ActiveObj active, AnimData params, boolean blood, Color c, String text) {
-        this(active, params, blood, c, text,
+    public HitAnim(DC_ActiveObj active, AnimData data, DAMAGE_TYPE damageType) {
+        this(active, data, false, null, null,
          ImageManager.getDamageTypeImagePath(
-          active.getDamageType() == null ? "Physical" : active.getDamageType().getName(), true));
+          damageType == null ? "Physical" : damageType.getName(), true));
+        setDamageType(damageType);
     }
 
-
-    public HitAnim(DC_ActiveObj active, AnimData params, boolean blood, Color c,
+    public HitAnim(DC_ActiveObj active, AnimData data, boolean blood, Color c,
                    String text, String imagePath) {
-        super(active, params);
+        super(active, data);
         if (blood) {
-//              spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
-//              hitType = getHitType(getActive(), spriteType);
-//            String spritePath = StrPathBuilder.build(spriteType.name(), hitType.spritePath) + ".png";
-//            params.addValue(ANIM_VALUES.SPRITES, spritePath);
+            //              spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
+            //              hitType = getHitType(getActive(), spriteType);
+            //            String spritePath = StrPathBuilder.build(spriteType.name(), hitType.spritePath) + ".png";
+            //            data.addValue(ANIM_VALUES.SPRITES, spritePath);
         }
         this.text = text;
         this.imagePath = imagePath;
-        if (c == null) {
-            if (active.getDamageType() != null) {
-                c = GdxColorMaster.getDamageTypeColor(active.getDamageType());
-            } else {
-                c = Color.RED;
-            }
-        }
+        initColor();
         this.c = c;
         duration = 0.85f;
         setLoops(1);
 
+        if (active != null) {
+            damageType = active.getDamageType();
+        }
 
         part = ANIM_PART.IMPACT;
     }
 
     public static Boolean getBloodOff() {
         if (bloodOff == null)
-            bloodOff =  OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.BLOOD_ANIMS_OFF);
+            bloodOff = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.BLOOD_ANIMS_OFF);
         return bloodOff;
     }
 
@@ -117,23 +110,39 @@ public class HitAnim extends ActionAnim {
         HitAnim.bloodOff = bloodOff;
     }
 
-    public static void setDisplacementOn(boolean displacementOn) {
-        HitAnim.displacementOn = displacementOn;
-    }
-
     public static boolean isDisplacementOn() {
         return displacementOn;
     }
 
+    public static void setDisplacementOn(boolean displacementOn) {
+        HitAnim.displacementOn = displacementOn;
+    }
+
+    private void initImage() {
+        this.imagePath = ImageManager.getDamageTypeImagePath(
+         getDamageType() == null ? "Physical" : damageType.getName(), true);
+    }
+
+    private void initColor() {
+        if (c == null) {
+            if (getDamageType() != null) {
+                c = GdxColorMaster.getDamageTypeColor(getDamageType());
+            } else {
+                c = Color.RED;
+            }
+        }
+    }
+
     @Override
     protected void resetSprites() {
-        sprites.clear();
+        super.resetSprites(); //from data
+
         spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
-        hitType = getHitType(getActive(), spriteType);
+        hitType = getHitType(  spriteType);
         String spritePath = StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
          + ".txt";
-//         + ".png";
-//        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
+        //         + ".png";
+        //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
         SmartTextureAtlas atlas =
          SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
@@ -163,18 +172,18 @@ public class HitAnim extends ActionAnim {
             if (getRef().getActive().getRef().getTargetObj() != null)
                 return getRef().getActive().getRef().getTargetObj().getCoordinates();
         }
-//
-//        return super.getOriginCoordinates();
+        //
+        //        return super.getOriginCoordinates();
         return getDestinationCoordinates();
     }
 
     @Override
     protected Action getAction() {
-//        if (!OptionsMaster.getAnimOptions().getBooleanValue(
-//         ANIMATION_OPTION.HIT_ANIM_DISPLACEMENT))
-//            return null;
+        //        if (!OptionsMaster.getAnimOptions().getBooleanValue(
+        //         ANIMATION_OPTION.HIT_ANIM_DISPLACEMENT))
+        //            return null;
         if (!isDisplacementOn())
-            return null ;
+            return null;
         if (getRef() == null)
             return null;
         if (getRef().getSourceObj() == null)
@@ -191,7 +200,7 @@ public class HitAnim extends ActionAnim {
         if (Bools.isTrue(d.growY)) {
             dy = -dy;
         }
-//DungeonScreen.getInstance().getGridPanel().detachUnitView()
+        //DungeonScreen.getInstance().getGridPanel().detachUnitView()
         originalActorX = getActor().getX();
         originalActorY = getActor().getY();
         float x = originalActorX;
@@ -222,7 +231,7 @@ public class HitAnim extends ActionAnim {
     }
 
     public void addFadeAnim() {
-//        ActorMaster.addfa
+        //        ActorMaster.addfa
         resetColor();
         AlphaAction fade = new AlphaAction();
         fade.setDuration(getDuration());
@@ -248,21 +257,28 @@ public class HitAnim extends ActionAnim {
         return DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(getRef().getTargetObj());
     }
-
+    public String getTexturePath() {
+        return ImageManager.getDamageTypeImagePath(damageType.getName()) ;
+    }
     @Override
     public void start() {
+        initColor();
+        initImage();
         super.start();
         getActions().clear();
         addFadeAnim();
-//        if (textSupplier != null)
-//            floatingText.setText(textSupplier.get());
+        //        if (textSupplier != null)
+        //            floatingText.setText(textSupplier.get());
 
-
+        Damage damage = null;
+        if (getActive() != null) {
+            damage = getActive().getDamageDealt();
+        } else {
+            damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
+        }
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
          active, TEXT_CASES.HIT, text == null ?
-          getActive().getDamageDealt() == null ?
-           "0"
-           : getActive().getDamageDealt().getAmount()
+          damage.getAmount()
           : text);
         floatingText.setImageSupplier(() -> imagePath);
         floatingText.setColor(c);
@@ -270,21 +286,20 @@ public class HitAnim extends ActionAnim {
         );
 
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
-        if (getActive().getDamageDealt() != null)
-            FloatingTextMaster.getInstance().initFloatTextForDamage(getActive().getDamageDealt(), this);
+        FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
         add();
-//        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
+        //        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
     }
 
     @Override
     protected Actor getActionTarget() {
-//        BattleFieldObject BattleFieldObject = (BattleFieldObject) getRef().getSourceObj();
-//        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
-//         MoveEffect.class)))
-//            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
-//        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
-//         .get(BattleFieldObject);
-//        return actor;
+        //        BattleFieldObject BattleFieldObject = (BattleFieldObject) getRef().getSourceObj();
+        //        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+        //         MoveEffect.class)))
+        //            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
+        //        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
+        //         .get(BattleFieldObject);
+        //        return actor;
         return getActor();
     }
 
@@ -313,7 +328,7 @@ public class HitAnim extends ActionAnim {
     }
 
     private SPRITE_TYPE getSpriteType(BattleFieldObject targetObj) {
-        Obj block = getActive().getRef().getObj(KEYS.BLOCK);
+        Obj block = getRef().getObj(KEYS.BLOCK);
         if (block != null) {
             ITEM_MATERIAL_GROUP group = new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
              block.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
@@ -360,8 +375,9 @@ public class HitAnim extends ActionAnim {
         }
         getActionTarget().setX(originalActorX);
         getActionTarget().setY(originalActorY);
-        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget()); if (getParentAnim()!=null )
-        getParentAnim().setHpUpdate(false);
+        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget());
+        if (getParentAnim() != null)
+            getParentAnim().setHpUpdate(false);
     }
 
     @Override
@@ -370,11 +386,10 @@ public class HitAnim extends ActionAnim {
 
     }
 
-    private HIT getHitType(DC_ActiveObj active, SPRITE_TYPE sprite) {
+    private HIT getHitType(SPRITE_TYPE sprite) {
         if (sprite != SPRITE_TYPE.DUST)
             if (sprite != SPRITE_TYPE.STONE)
                 if (sprite != SPRITE_TYPE.BONE) {
-                    DAMAGE_TYPE damageType = active.getDamageType();
                     if (damageType == DAMAGE_TYPE.SLASHING)
                         return HIT.SLICE;
                     if (damageType == DAMAGE_TYPE.PIERCING)
@@ -382,8 +397,16 @@ public class HitAnim extends ActionAnim {
                     if (damageType == DAMAGE_TYPE.BLUDGEONING)
                         return HIT.SMASH;
                 }
-//        active.get
+        //        active.get
         return HIT.SHOWER;
+    }
+
+    public DAMAGE_TYPE getDamageType() {
+        return damageType;
+    }
+
+    public void setDamageType(DAMAGE_TYPE damageType) {
+        this.damageType = damageType;
     }
 
     //TO ATLASES!
@@ -393,7 +416,7 @@ public class HitAnim extends ActionAnim {
         SMASH("smash 3 3"),
         SQUIRT("squirt"),
         SHOWER("shower"),
-//        TORRENT("smear 3 3")
+        //        TORRENT("smear 3 3")
         ;
 
         String spritePath;

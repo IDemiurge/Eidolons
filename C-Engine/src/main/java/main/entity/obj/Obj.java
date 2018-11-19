@@ -33,10 +33,11 @@ import java.util.List;
  * Placed in a map in GameState upon creation
  */
 public class Obj extends Entity {
-    private DequeImpl<BuffObj> buffs;
-    private List<String> passiveAbils;
-    private Boolean passable;
-    private boolean annihilated;
+    protected DequeImpl<BuffObj> buffs;
+    protected List<String> passiveAbils;
+    protected Boolean passable;
+    protected boolean annihilated;
+    protected boolean customType;
 
     public Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type
@@ -46,7 +47,11 @@ public class Obj extends Entity {
          , owner, game, ref);
         // init();
     }
-
+    protected void cloneType() {
+        type = new ObjType(type);
+        game.initType(type);
+        customType = true;
+    }
     @Override
     protected EntityMaster initMaster() {
         return new ObjMaster(this);

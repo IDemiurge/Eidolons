@@ -11,7 +11,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;

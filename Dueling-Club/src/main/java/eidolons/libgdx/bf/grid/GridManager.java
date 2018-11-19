@@ -3,7 +3,7 @@ package eidolons.libgdx.bf.grid;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
 import eidolons.libgdx.bf.overlays.HpBar;
@@ -114,13 +114,13 @@ public class GridManager {
     }
 
     public void checkHpBarReset(Obj obj) {
-        UnitView view = (UnitView) getViewMap().get(obj);
+        HpBarView view = (HpBarView) getViewMap().get(obj);
         if (view != null)
-            if (view.isVisible())
+            if (view.getActor(). isVisible())
                 if (view.getHpBar() != null)
                     if (
                      !ExplorationMaster.isExplorationOn()
-                      || HpBarManager.canHpBarBeVisible(view.getUserObject()))
+                      || HpBarManager.canHpBarBeVisible((BattleFieldObject) view.getActor().getUserObject()))
                         view.resetHpBar();
     }
 

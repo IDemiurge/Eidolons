@@ -3,8 +3,11 @@ package eidolons.libgdx.particles.util;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;
@@ -12,7 +15,11 @@ import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.utils.GdxUtil;
+import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.data.filesys.PathFinder;
+import main.data.xml.XML_Reader;
+import main.entity.type.ObjType;
 import main.swing.generic.components.editors.ImageChooser;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
@@ -23,10 +30,17 @@ import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static main.system.ExceptionMaster.printStackTrace;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 3/16/2018.
@@ -55,6 +69,7 @@ public class EmitterMaster extends GdxUtil {
     private static boolean sizeImages = false;
     private static boolean test = true;
     private static Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
+    private static boolean manualFix;
 
 
     public static void createVfxAtlas() {
@@ -104,15 +119,19 @@ public class EmitterMaster extends GdxUtil {
                             list.add(texture);
                         }
                     } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                        main.system.auxiliary.log.LogMaster.log(1,
+                        printStackTrace(e);
+                        log(1,
                          path + " vfx broken! ");
                         broken.put(path, imagePath);
-                        imagePath = applyFix(path, imagePath, type);
-                        if (imagePath   == null)
-                            continue;
+                        if (manualFix)
+                            imagePath = applyFix(path, imagePath, type);
+                        else
+                            imagePath = null;
+
                     }
 
+                if (imagePath == null)
+                    continue;
                 Map<String, String> map = maps.get(type);
                 if (map == null) {
                     maps.put(type, map = new HashMap<>());
@@ -123,9 +142,7 @@ public class EmitterMaster extends GdxUtil {
                         s = s.trim();
                         if (s.isEmpty())
                             continue;
-                        String imageName = StringMaster.getLastPathSegment(s);
-                        if (isProcessImageNames())
-                            imageName = processImageName(imageName);
+                        String imageName = processImageName(imagePath);
                         imagesData += imageName + "\n";
 
                         String newPath = map.get(imageName);
@@ -136,10 +153,13 @@ public class EmitterMaster extends GdxUtil {
                         }
                         if (writeImage) {
                             Texture texture = (new Texture(s));
+                            if (texture.getWidth() > 1000) {
+                                continue;
+                            }
                             FileHandle handle = GDX.file(newPath);
                             if (!handle.exists() || overwriteImage) {
                                 GdxImageMaster.writeImage(handle, texture);
-                                main.system.auxiliary.log.LogMaster.log(1,
+                                log(1,
                                  path + " vfx image written: " + newPath);
                             }
                         }
@@ -159,24 +179,23 @@ public class EmitterMaster extends GdxUtil {
                         }
                     }
 
-
                     String data = EmitterPresetMaster.getInstance().getModifiedData(path,
                      EMITTER_VALUE_GROUP.Image_Path, imagesData);
-                    String newPath = PathFinder.getVfxPath() + PathUtils.getPathSeparator() + "atlas" + PathUtils.getPathSeparator() + path;
+                    String newPath = PathFinder.getVfxPath() + "/atlas/" + path;
                     FileManager.write(data, newPath);
 
-                    main.system.auxiliary.log.LogMaster.log(1,
+                    log(1,
                      path + " vfx preset written  ");
                     if (test) {
                         try {
                             new ParticleEffectX(newPath);
                         } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                            main.system.auxiliary.log.LogMaster.log(1, " vfx test failed: " + newPath);
+                            printStackTrace(e);
+                            log(1, " vfx test failed: " + newPath);
                         }
                     }
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    printStackTrace(e);
                     broken.put(path, imagePath);
                     continue;
                 }
@@ -184,17 +203,20 @@ public class EmitterMaster extends GdxUtil {
             if (pack) {
                 String atlasName = getVfxAtlasName(type);
                 String atlasPath = getVfxAtlasPath(atlasName);
-                TexturePackerLaunch.pack(imagesPath, atlasPath, atlasName);
+                Settings settings = TexturePackerLaunch.getDefaultSettings();
+                settings.combineSubdirectories = true;
+                settings.jpegQuality = 0.9f;
+                TexturePackerLaunch.pack(imagesPath, atlasPath, atlasName, settings);
             }
 
         }
-        main.system.auxiliary.log.LogMaster.log(1, broken.size() + " vfx imagepath broken: "
+        log(1, broken.size() + " vfx imagepath broken: "
          + broken);
-        main.system.auxiliary.log.LogMaster.log(1, group1.size() + " vfx w/ premultiplied: "
+        log(1, group1.size() + " vfx w/ premultiplied: "
          + group1);
-        main.system.auxiliary.log.LogMaster.log(1, group2.size() + " vfx w/ additive: "
+        log(1, group2.size() + " vfx w/ additive: "
          + group2);
-        main.system.auxiliary.log.LogMaster.log(1, group3.size() + " vfx w/o additive: "
+        log(1, group3.size() + " vfx w/o additive: "
          + group2);
 
         System.exit(0);
@@ -203,10 +225,14 @@ public class EmitterMaster extends GdxUtil {
     private static String applyFix(String path, String imagePath, VFX_ATLAS type) {
 
         int i =
-         DialogMaster.optionChoice("What do to?", "Set image", "Random image", "Last image",
+         DialogMaster.optionChoice(imagePath + " on " +
+           path + " is broken. What do to?", "Disable manual fix", "Set image", "Random image", "Last image",
           "Delete", "Pass");
         switch (i) {
             case 0:
+                manualFix = false;
+                break;
+            case 1:
                 return new ImageChooser(PathFinder.getVfxPath()).launch("", imagePath);
 
         }
@@ -218,8 +244,20 @@ public class EmitterMaster extends GdxUtil {
     }
 
     private static String processImageName(String imageName) {
+        boolean sprite = imageName.contains("sprites");
         String format = StringMaster.getFormat(imageName);
+        imageName = PathUtils.getLastPathSegment(imageName);
         imageName = StringMaster.cropFormat(imageName);
+        if (isProcessImageNames()) {
+            imageName = processImageNameDeep(imageName);
+        }
+        if (sprite) {
+            return "sprites" + "/" + imageName + format;
+        }
+        return imageName + format;
+    }
+
+    private static String processImageNameDeep(String imageName) {
         String last = StringMaster.getLastPart(imageName, "_");
         while (NumberUtils.isInteger(last)) {
             int n = NumberUtils.getInteger(last);
@@ -227,7 +265,7 @@ public class EmitterMaster extends GdxUtil {
              + n;
             last = StringMaster.getLastPart(imageName, "_");
         }
-        return imageName + format;
+        return imageName;
     }
 
     public static void main(String[] args) {
@@ -325,7 +363,68 @@ public class EmitterMaster extends GdxUtil {
 
     @Override
     protected void execute() {
+        generateVfx();
         createVfxAtlas();
+    }
+
+    private void generateVfx() {
+        DC_Engine.dataInit();
+        XML_Reader.readTypeFile(false, DC_TYPE.SPELLS);
+        String template = PathFinder.getSpellVfxPath() + "/cast/cast template";
+        String spellsPath = "Y:\\Eidolons\\art materials\\psd\\[main]\\spells";
+        List<File> imagePool = FileManager.getFilesFromDirectory(spellsPath, false, true);
+        imagePool.removeIf(image -> !StringMaster.getFormat(image.getName()).equalsIgnoreCase(".png"));
+        ANIM_PART PART = ANIM_PART.CAST;
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            String root = type.getImagePath();
+            File current = FileManager.getFile(PathFinder.getImagePath() + root);
+            File sameImage = imagePool.stream().filter(file ->
+             FileManager.isSameFile(file, current)).findFirst().orElse(null);
+            if (sameImage == null) {
+                continue;
+            }
+
+            List<File> validImages = imagePool.stream().filter(
+             image -> checkImageForSpellVfx(image, sameImage, type)).
+             //             sorted().
+              limit(5).
+              collect(Collectors.toList());
+
+
+            List<String> imageNames = imagePool.stream().map(file -> "gen/" + file.getName()).collect(Collectors.toList());
+
+            String newImages = ContainerUtils.toStringContainer(imageNames, "\n");
+            String data = EmitterPresetMaster.getInstance().getModifiedData(template,
+             EMITTER_VALUE_GROUP.Image_Paths,
+             newImages);
+
+            String newPath = PathFinder.getVfxPath() +
+             "/atlas/gen/" + PART + "/" + type.getName();
+            FileManager.write(data, newPath, true);
+
+
+            //copy valid images...
+            for (File validImage : validImages) {
+                File output = FileManager.getFile(getVfxAtlasImagesPath(VFX_ATLAS.SPELL) +
+                 "/gen/" + validImage.getName());
+                try {
+                    Files.copy(Paths.get(validImage.toURI()), Paths.get(output.toURI()), StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private boolean checkImageForSpellVfx(File image, File root, ObjType type) {
+        String imgName = root.getName();
+
+        String base = processImageNameDeep(imgName);
+        if (image.getName().toLowerCase().contains(base.toLowerCase()))
+            return true;
+        //so we'll get all the images... isn't it much?
+
+        return false;
     }
 
     public enum VFX_ATLAS {

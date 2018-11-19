@@ -759,11 +759,6 @@ public class StringMaster {
         return value.equals("1");
     }
 
-    public static String getLastPathSegment(String path) {
-        LinkedList<String> segments = new LinkedList<>(PathUtils.splitPath(path));
-        return segments.getLast();
-    }
-
     public static String getLastPart(String string, String separator) {
         if (!string.contains(separator)) {
             return string;
@@ -776,21 +771,9 @@ public class StringMaster {
         return segments.getLast();
     }
 
-    public static String cropLastPathSegment(String path, boolean cropPathSeparator) {
-        String cropped = replaceLast(path, getLastPathSegment(path), "");
-        if (!cropPathSeparator) {
-            return cropped;
-        }
-        return replaceLast(cropped, "/", "");
-    }
-
     public static String cropLastSegment(String path, String separator) {
         return replaceLast(path, getLastPart(path, separator), "");
 
-    }
-
-    public static String cropLastPathSegment(String path) {
-        return replaceLast(path, getLastPathSegment(path), "");
     }
 
     public static String cropLast(String name, String string) {
@@ -1070,7 +1053,7 @@ public class StringMaster {
     }
 
     public static boolean isFemalePortrait(String newPortrait) {
-        return getLastPathSegment(newPortrait).startsWith(FEMALE_PREFIX);
+        return PathUtils.getLastPathSegment(newPortrait).startsWith(FEMALE_PREFIX);
     }
 
     public static String getStringFromEntityList(Collection<? extends Obj> engagers) {

@@ -24,8 +24,8 @@ public class SkillSlot extends HtNode {
     private Triple<DC_FeatObj, MASTERY, MASTERY> data;
     private List<ObjType> available;
 
-    public SkillSlot(int tier) {
-        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY);
+    public SkillSlot(int tier,int slot) {
+        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY,slot );
     }
 
     public void update(float delta) {

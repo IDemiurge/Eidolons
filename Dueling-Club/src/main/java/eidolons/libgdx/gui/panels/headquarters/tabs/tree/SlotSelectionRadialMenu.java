@@ -38,6 +38,8 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     private static HtNode activeNode;
     protected Map<List, List> cache = new HashMap<>();
     protected HqHeroDataSource dataSource;
+    private int tier;
+    private int slot;
 
     public SlotSelectionRadialMenu() {
         super();
@@ -64,33 +66,6 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
 
     protected abstract EventType getEvent();
 
-    @Override
-    protected void adjustPosition() {
-
-        //       TODO  if (activeNode == null) {
-        //            return;
-        //        }
-        //        float w = activeNode.getWidth();
-        //        float h = activeNode.getHeight();
-        //
-        //        float x = activeNode.getX() + w / 2;
-        //        float y = activeNode.getY() + h / 2;
-        //
-        //        Vector2 v = activeNode.localToAscendantCoordinates(activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0,0));
-        ////        localToStageCoordinates(new Vector2(x, y));
-        //
-        //        w = getWidth();
-        //        h = getHeight();
-        //
-        //        x = MathMaster.minMax(v.x,
-        //         w / 2, GdxMaster.getWidth() - w);
-        //        y = MathMaster.minMax(v.y,
-        //         h / 2, GdxMaster.getHeight() - h);
-        //
-        //        v = stageToLocalCoordinates(new Vector2(x, y));
-        //        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
-
-    }
 
     @Override
     protected void bindEvents() {
@@ -126,7 +101,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         if (!ExplorationMaster.isExplorationOn())
             return;
         HqDataMaster.operation(dataSource,
-         getOperation(), type);
+         getOperation(), type, tier, slot);
     }
 
     protected abstract HERO_OPERATION getOperation();
@@ -147,7 +122,10 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
 
     @Override
     protected void triggered(EventCallbackParam obj) {
-        List<ObjType> available = (List<ObjType>) obj.get();
+        List params = (List) obj.get();
+        List<ObjType> available = (List<ObjType>) params.get(0);
+          tier = (int) params.get(1);
+          slot = (int) params.get(2);
         List<RadialValueContainer> nodes = getNodes(available);
         init(nodes);
         open();
@@ -223,6 +201,33 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     }
 
     protected abstract String getReqReason(ObjType type);
+    @Override
+    protected void adjustPosition() {
+
+        //       TODO  if (activeNode == null) {
+        //            return;
+        //        }
+        //        float w = activeNode.getWidth();
+        //        float h = activeNode.getHeight();
+        //
+        //        float x = activeNode.getX() + w / 2;
+        //        float y = activeNode.getY() + h / 2;
+        //
+        //        Vector2 v = activeNode.localToAscendantCoordinates(activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0,0));
+        ////        localToStageCoordinates(new Vector2(x, y));
+        //
+        //        w = getWidth();
+        //        h = getHeight();
+        //
+        //        x = MathMaster.minMax(v.x,
+        //         w / 2, GdxMaster.getWidth() - w);
+        //        y = MathMaster.minMax(v.y,
+        //         h / 2, GdxMaster.getHeight() - h);
+        //
+        //        v = stageToLocalCoordinates(new Vector2(x, y));
+        //        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
+
+    }
 
 }
 

@@ -167,7 +167,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         OBJ_TYPE itemsType = ShopMaster.getItemsType(getShopType());
         if (itemsType.equals(DC_TYPE.ITEMS)) {
             ObjType itemType = DataManager.getType(ItemMaster.FOOD, DC_TYPE.ITEMS);
-            int n = Math.round(RandomWizard.getRandomFloat() * timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
+            int n = Math.round(RandomWizard.getRandomFloat() *getIntParam(MACRO_PARAMS.SHOP_INCOME)* timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
             for (int i = 0; i < n; i++) {
                 DC_HeroItemObj item = createItem(itemType);
                 itemBought(item, 0, null );
@@ -248,7 +248,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return balanceChange;
     }
     protected void takesGold(int cost, Unit buyer) {
-
+        takesGold(cost, buyer, false);
     }
         protected void takesGold(int cost, Unit buyer, boolean debt) {
         int paid = Math.min(cost, buyer.getIntParam(PARAMS.GOLD));

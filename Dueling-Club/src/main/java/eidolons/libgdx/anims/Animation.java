@@ -1,7 +1,7 @@
 package eidolons.libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import main.entity.Ref;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;

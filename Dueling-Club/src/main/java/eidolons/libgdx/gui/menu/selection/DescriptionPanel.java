@@ -84,32 +84,10 @@ public class DescriptionPanel extends ScrollTextWrapper {
     //        innerScrollContainer.left().bottom();
     //    }
 
-
-
     @Override
     public void layout() {
         super.layout();
         scrollPanel.initScrollListener();
-    }
-
-    @Override
-    public void setWidth(float width) {
-        super.setWidth(width);
-    }
-
-    @Override
-    public void pack() {
-        super.pack();
-    }
-
-    @Override
-    public void setBounds(float x, float y, float width, float height) {
-        super.setBounds(x, y, width, height);
-    }
-
-    @Override
-    public void setSize(float width, float height) {
-        super.setSize(width, height);
     }
 
     @Override
@@ -125,11 +103,6 @@ public class DescriptionPanel extends ScrollTextWrapper {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
     }
 
     @Override

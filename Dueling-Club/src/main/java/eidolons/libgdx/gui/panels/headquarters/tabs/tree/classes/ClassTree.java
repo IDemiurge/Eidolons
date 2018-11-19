@@ -62,13 +62,13 @@ public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
     }
 
     @Override
-    protected PerkSlot buildEmptyLinkNode(int tier) {
-        return new PerkSlot(tier);
+    protected PerkSlot buildEmptyLinkNode(int tier, int i) {
+        return new PerkSlot(tier, i);
     }
 
     @Override
-    protected ClassSlot buildEmptyNode(int tier) {
-        return new ClassSlot(tier);
+    protected ClassSlot buildEmptyNode(int tier, int i) {
+        return new ClassSlot(tier, i);
     }
 
     @Override

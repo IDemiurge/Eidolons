@@ -1531,7 +1531,7 @@ public class ImageManager {
             if (pathPrefix == null) {
                 return getImage();
             }
-            String name = StringMaster.getLastPathSegment(path);
+            String name = PathUtils.getLastPathSegment(path);
             return ImageManager.getImage(path.replace(name, "") + pathPrefix + ""+separator + name);
         }
 

@@ -3,6 +3,7 @@ package eidolons.game.core.master;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
@@ -39,9 +40,8 @@ public class ObjCreator extends Master {
     public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         if (!CoreEngine.isArcaneVault()) {
             if (!CoreEngine.isLevelEditor()) {
-                if (!type.isGenerated()) {
+                if (!type.isGenerated() && DC_Engine.isUseCustomTypesAlways()) {
                     type = new ObjType(type);
-
                     game.initType(type);
                 }
             }

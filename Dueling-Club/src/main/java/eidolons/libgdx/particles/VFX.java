@@ -5,27 +5,25 @@ import main.system.auxiliary.StrPathBuilder;
 /**
  * Created by JustMe on 6/28/2018.
  */
-public enum EMITTER_PRESET {
-    IMPACT_demonology,
-    IMPACT_scare,
-    IMPACT_psychic,
-
-
-    CAST_darkness,
-    CAST_black_hand,
-    CAST_black_hand2,
-    CAST_black_hand3,
-    CAST_blindness,
-
-    CAST_dark_shapes,
-
-    CAST_drain_focus,
-    CAST_drain_focus2,
-    CAST_drain_focus3,
-
-    CAST_celestial1,
-    CAST_celestial2,
-    CAST_celestial3,
+public enum VFX {
+//    IMPACT_demonology,
+//    IMPACT_scare,
+//    IMPACT_psychic,
+//    CAST_darkness,
+//    CAST_black_hand,
+//    CAST_black_hand2,
+//    CAST_black_hand3,
+//    CAST_blindness,
+//
+//    CAST_dark_shapes,
+//
+//    CAST_drain_focus,
+//    CAST_drain_focus2,
+//    CAST_drain_focus3,
+//
+//    CAST_celestial1,
+//    CAST_celestial2,
+//    CAST_celestial3,
 
     DARK_MIST("mist","dark mist2"),
     DARK_MIST_LITE("mist","dark mist2 light"),
@@ -85,14 +83,14 @@ public enum EMITTER_PRESET {
     ;
     public String path;
 
-    EMITTER_PRESET() {
+    VFX() {
         String[] parts = name().split("_");
         String realName = name().replace(parts[0], "").replace("_", " ").trim();
         this.setPath(StrPathBuilder.build(
          parts[0], realName));
     }
 
-    EMITTER_PRESET(String... pathParts) {
+    VFX(String... pathParts) {
         this.setPath(StrPathBuilder.build(pathParts));
     }
 

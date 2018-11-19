@@ -407,6 +407,9 @@ public class XML_Writer {
     }
 
     private static void appendLeafNode(StringBuilder sub, String valName, String value) {
+        if (value.contains("/s")) {
+            value= value.replace("/s", "\\s");
+        }
         sub.append(openXML(valName) + value + closeXML(valName)
          // + "\n" //costs 10x performance...
         );
@@ -428,8 +431,8 @@ public class XML_Writer {
     }
 
     public static boolean write(String content, String pathAndName) {
-        return write(content, StringMaster.cropLastPathSegment(pathAndName),
-         StringMaster.getLastPathSegment(pathAndName));
+        return write(content, PathUtils.cropLastPathSegment(pathAndName),
+         PathUtils.getLastPathSegment(pathAndName));
     }
 
     public static boolean write(String content, String path, String fileName) {

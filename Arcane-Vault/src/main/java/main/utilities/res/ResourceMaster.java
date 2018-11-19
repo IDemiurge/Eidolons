@@ -159,8 +159,8 @@ public class ResourceMaster {
 
     private static String checkDuplicate(String oldPath, Map<String, ObjType> map) {
         for (String path : map.keySet()) {
-            if (StringMaster.getLastPathSegment(oldPath).equals(
-             StringMaster.getLastPathSegment(path))) {
+            if (PathUtils.getLastPathSegment(oldPath).equals(
+             PathUtils.getLastPathSegment(path))) {
                 File f1 = FileManager.getFile(ImageManager.getImageFolderPath() + oldPath);
                 File f2 = FileManager.getFile(ImageManager.getImageFolderPath() + path);
                 if (f1.length() == f2.length()) {

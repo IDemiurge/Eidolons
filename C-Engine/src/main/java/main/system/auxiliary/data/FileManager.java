@@ -8,10 +8,13 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Node;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -243,11 +246,11 @@ public class FileManager {
         if (index == 0 && !force) {
             index += PathFinder.getEnginePath().length() - 1;
         }
-        String afterClass =force ? path : path.substring(
+        String afterClass = force ? path : path.substring(
          index, path.length());
 
         //fix slashes
-        for (String sub : PathUtils.splitPath( afterClass)) {
+        for (String sub : PathUtils.splitPath(afterClass)) {
             formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
         }
         if (force) {
@@ -515,11 +518,16 @@ public class FileManager {
 
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
                                                    boolean subDirectories) {
-        List<File> list = new ArrayList<>();
         File folder = FileManager.getFile(path);
+        return getFilesFromDirectory(folder, allowDirectories, subDirectories);
+    }
+
+    public static List<File> getFilesFromDirectory(File folder, boolean allowDirectories,
+                                                   boolean subDirectories) {
         if (!folder.isDirectory()) {
-            return list;
+            return new ArrayList<>();
         }
+        List<File> list = new ArrayList<>();
         for (File f : folder.listFiles()) {
             if (subDirectories) {
                 list.addAll(getFilesFromDirectory(f.getPath(), allowDirectories, subDirectories));
@@ -582,4 +590,16 @@ public class FileManager {
         return file.getName();
     }
 
+    public static Path getPath(File file) {
+        return Paths.get(file.toURI());
+    }
+
+    public static boolean isSameFile(File file, File current) {
+        try {
+            return FileUtils.contentEquals((file), (current));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -4,15 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.particles.spell.SpellVfxPool;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.ambi.Ambience;
+import eidolons.libgdx.particles.spell.SpellVfx;
+import eidolons.libgdx.particles.spell.SpellVfxPool;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;
-import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.controls.Controller;
 import main.data.filesys.PathFinder;
@@ -23,8 +23,8 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.LinkedList;
@@ -229,7 +229,7 @@ public class EmitterController implements Controller {
         switch (preset) {
             case IMAGE_SAME_FOLDER:
                 return FileManager.getRandomFile(
-                 StringMaster.cropLastPathSegment(
+                 PathUtils.cropLastPathSegment(
                   EmitterPresetMaster.getInstance().findImagePath(last.path))).getPath();
             case IMAGE_SPRITE:
                 return
@@ -314,7 +314,7 @@ public class EmitterController implements Controller {
 //        String imagePath = ic.
 
         ActiveObj active = DC_Game.game.getManager().getActiveObj().getRef().getActive();
-        CompositeAnim anim = AnimMaster.getInstance().getConstructor().getOrCreate(active);
+        CompositeAnim anim = AnimConstructor.getOrCreate(active);
 //        ANIM_PART part = ANIM_PART.IMPACT;
         anim.getMap().keySet().forEach(part -> {
 //            anim.getMap().get(part).getData().setValue();

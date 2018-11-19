@@ -1,4 +1,4 @@
-package eidolons.libgdx.anims;
+package eidolons.libgdx.anims.anim3d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,7 +14,11 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.anim3d.Ready3dAnim;
+import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.anims.CompositeAnim;
+import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.texture.SmartTextureAtlas;
@@ -582,7 +586,7 @@ public class AnimMaster3d {
     }
 
     private static Anim getReadyAnim(DC_UnitAction entity) {
-        CompositeAnim composite = AnimMaster.getInstance().getConstructor().getOrCreate(entity);
+        CompositeAnim composite = AnimConstructor.getOrCreate(entity);
         Anim anim = composite.getContinuous();
         if (anim == null) {
             anim = new Ready3dAnim(entity);

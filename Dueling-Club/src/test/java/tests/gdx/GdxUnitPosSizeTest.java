@@ -63,7 +63,7 @@ public class GdxUnitPosSizeTest extends LibgdxTest {
 
     private void checkComponent(BaseView component, int n, int i) {
         int offset = container.getUnitViewOffset();
-        int size = (int) container.getUnitViewSize();
+        int size = (int) container.getUnitViewSize(component);
 //        container.getUnitViewsVisible()
         String expected = NumberUtils.getOrdinal(i) + " view of " + n
          + " must have "

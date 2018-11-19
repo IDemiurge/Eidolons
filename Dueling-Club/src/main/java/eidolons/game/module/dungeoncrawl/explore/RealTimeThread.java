@@ -3,7 +3,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 import com.badlogic.gdx.Gdx;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.macro.global.time.MacroTimeMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -43,7 +43,7 @@ public class RealTimeThread extends Thread {
                     Gdx.app.postRunnable(() ->
                      {
                          try {
-                             AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                             AnimConstructor.preconstructAll(unit);
                          } catch (Exception e) {
                              main.system.ExceptionMaster.printStackTrace(e);
                          }

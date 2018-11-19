@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
-import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.audio.DC_SoundMaster;

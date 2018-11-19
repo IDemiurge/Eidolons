@@ -377,7 +377,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             final int index = i;
             editorMap.put(id, new FileChooser(true) {
                 protected String getDefaultFileLocation() {
-                    return PathFinder.getEnginePathPlusNewResourceProject() + RES_FOLDER_KEYS[index];
+                    return PathFinder.getResPath() + RES_FOLDER_KEYS[index];
                 }
 
             });
@@ -390,7 +390,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             final int index = i;
             editorMap.put(id, new FileChooser(false) {
                 protected String getDefaultFileLocation() {
-                    return PathFinder.getEnginePathPlusNewResourceProject() + RES_FILE_KEYS[index];
+                    return PathFinder.getResPath() + RES_FILE_KEYS[index];
                 }
 
             });
@@ -403,7 +403,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             final int index = i;
             editorMap.put(id, new FileChooser(false, true) {
                 protected String getDefaultFileLocation() {
-                    return PathFinder.getEnginePathPlusNewResourceProject() + MULTI_RES_FILE_KEYS[index];
+                    return PathFinder.getResPath() + MULTI_RES_FILE_KEYS[index];
                 }
 
             });
@@ -414,7 +414,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             String id = StringMaster.getWellFormattedString(val.name());
             editorMap.put(id, new FileChooser(false, true) {
                 protected String getDefaultFileLocation() {
-                    return PathFinder.getEnginePathPlusNewResourceProject() + SPRITE_PATH;
+                    return PathFinder.getResPath() + SPRITE_PATH;
                 }
 
             });
@@ -423,7 +423,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             String id = StringMaster.getWellFormattedString(val.name());
             editorMap.put(id, new FileChooser(false, true) {
                 protected String getDefaultFileLocation() {
-                    return PathFinder.getEnginePathPlusNewResourceProject() + VFX_PATH;
+                    return PathFinder.getResPath() + VFX_PATH;
                 }
 
             });

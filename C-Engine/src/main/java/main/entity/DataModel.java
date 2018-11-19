@@ -848,7 +848,7 @@ public abstract class DataModel {
     public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
         setParam(param, "" + i, quietly);
         if (base) {
-            type.setParam(param, "" + i, quietly);
+            getType().setParam(param, "" + i, quietly);
         }
     }
 
@@ -990,8 +990,8 @@ public abstract class DataModel {
 
     public void setProperty(PROPERTY name, String value, boolean base) {
         if (base) {
-            if (type != null) {
-                type.setProperty(name, value);
+            if (getType() != null) {
+                getType().setProperty(name, value);
             }
         }
         setProperty(name, value);

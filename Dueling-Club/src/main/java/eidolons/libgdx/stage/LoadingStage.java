@@ -14,7 +14,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.particles.ambi.Ambience;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -91,7 +91,7 @@ public class LoadingStage extends Stage {
 //                    continue;
 //                }
                 Vector2 v = new Vector2(w, h);
-                Ambience fog = ParticleManager.addFogOn(v, EMITTER_PRESET.MIST_WHITE);
+                Ambience fog = ParticleManager.addFogOn(v, VFX.MIST_WHITE);
                 fogList.add(fog);
                 addActor(fog);
             }

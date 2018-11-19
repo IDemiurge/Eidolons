@@ -13,8 +13,8 @@ import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.DarkGrayscaleShader;
 import eidolons.libgdx.shaders.DarkShader;
-import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.images.ImageManager.BORDER;
 
@@ -204,7 +204,10 @@ public class ActionValueContainer extends ValueContainer {
         }
         if (!valid) {
             shader = batch.getShader();
-            batch.setShader(GrayscaleShader.getGrayscaleShader());
+            batch.setShader(
+             DarkGrayscaleShader.getShader()
+//             GrayscaleShader.getGrayscaleShader()
+            );
         }
         super.draw(batch, parentAlpha);
         batch.setShader(shader);

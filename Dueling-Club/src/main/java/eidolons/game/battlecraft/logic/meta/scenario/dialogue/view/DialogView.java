@@ -1,30 +1,41 @@
-package eidolons.libgdx;
+package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.menu.selection.DescriptionPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
-public class DialogScenario extends Group {
+public class DialogView extends Group {
     private int time;
-    private Image back;
+    private Image back; //what about THAT?
     private boolean done;
     private long currentTime = 0;
 
-    FadeImageContainer portrait;
-    TablePanelX dialogueBox;
-    DescriptionPanel messageBox;
+    FadeImageContainer portraitLeft; //IDEA zoom into the portrait sometimes!
+    FadeImageContainer portraitRight; // or flash it with a shader to signify some emotion ... use dif borders
 
+    DialogueScroll scroll;
+    TablePanelX replyBox; //slots?
 
-    public DialogScenario(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
+    public void update(SpeechDataSource dataSource){
+        boolean left = true;
+        FadeImageContainer portrait = left ? portraitLeft : portraitRight;
+//        prev = portrait.getPrevious();
+        portrait.setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
+         dataSource.getImageSuffix()));
+        scroll.append(dataSource.getMessage(), dataSource.getActorName(), dataSource.getActorImage());
+//TODO info about fx! "Gain 50 xp"
+    }
+
+    public DialogView(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
         this.time = time;
         skippable = time <= 0 || skippable;
         if (skippable) {
@@ -72,18 +83,6 @@ boolean upsideDown;
 //TiledNinePatchGenerator.getOrCreateNinePatch()
 //        dialogueBox.setBackground();
 
-        if (portraitTexture != null || message != null) {
-            ValueContainer valueContainer = new ValueContainer(portraitTexture, message);
-            valueContainer.setPosition(30, 30);
-            valueContainer.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
-            valueContainer.setImageAlign(Align.topLeft);
-            valueContainer.setValueAlignment(Align.bottomLeft);
-            valueContainer.setWidth(GdxMaster.getWidth() - 60);
-            if (portraitTexture != null) {
-                valueContainer.setHeight(portraitTexture.getRegionHeight());
-            }
-            addActor(valueContainer);
-        }
     }
 
     public boolean isDone() {

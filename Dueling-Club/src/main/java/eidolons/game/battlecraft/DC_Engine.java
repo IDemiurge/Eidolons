@@ -88,4 +88,8 @@ public class DC_Engine extends CoreEngine {
     public static boolean isRngSupported() {
         return true;
     }
+
+    public static boolean isUseCustomTypesAlways() {
+        return false;
+    }
 }

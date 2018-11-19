@@ -1,7 +1,7 @@
 package eidolons.libgdx.particles.spell;
 
 import com.badlogic.gdx.utils.Pool;
-import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterPools;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -24,8 +24,13 @@ public class SpellVfxPool extends EmitterPools{
         if (CoreEngine.isJar())
             System.out.println("getEmitterActor " + path);
 
+        if (SpellVfxMaster.isRandomVfx()) {
+            path = SpellVfxMaster.getRandomVfx(path);
+    }
 
         final String finalPath = path.toLowerCase();
+
+
         Pool<SpellVfx> pool = actorPoolMap.get(finalPath);
         if (pool == null) {
             pool = new Pool<SpellVfx>() {
@@ -50,8 +55,8 @@ public class SpellVfxPool extends EmitterPools{
 
             Chronos.mark("emitter " + path);
             SpellVfx emitter = null;
-            EMITTER_PRESET sfx = new EnumMaster<EMITTER_PRESET>().
-             retrieveEnumConst(EMITTER_PRESET.class, path);
+            VFX sfx = new EnumMaster<VFX>().
+             retrieveEnumConst(VFX.class, path);
 
             emitter =  getEmitterActor(path);
             if (emitter != null) {

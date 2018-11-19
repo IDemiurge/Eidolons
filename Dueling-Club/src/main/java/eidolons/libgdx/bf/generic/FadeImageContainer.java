@@ -13,6 +13,8 @@ public class FadeImageContainer extends ImageContainer {
     private float fadePercentage;
     private Image previousImage;
     private float fadeDuration = 2f;
+    private String imagePath;
+    private String previousPath;
 
     public FadeImageContainer(String path, float fadeDuration) {
         super(path);
@@ -31,6 +33,25 @@ public class FadeImageContainer extends ImageContainer {
 
     }
 
+    @Override
+    public void setImage(String path) {
+        previousPath = imagePath;
+        super.setImage(path);
+        imagePath = path;
+    }
+
+    public Image getPreviousImage() {
+        return previousImage;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getPreviousPath() {
+        return previousPath;
+    }
+
     public void resetPreviousImage() {
         if (previousImage == null)
             return;
@@ -40,7 +61,7 @@ public class FadeImageContainer extends ImageContainer {
 
     @Override
     public Image getContent() {
-        if (content==null )
+        if (content == null)
             content = new Image();
         return super.getContent();
     }
@@ -68,9 +89,11 @@ public class FadeImageContainer extends ImageContainer {
     public void setImageImmediately(String image) {
         setContentsImmediately(new Image(TextureCache.getOrCreateR(image)));
     }
+
     public void setContentsImmediately(Actor contents) {
         super.setContents(contents);
     }
+
     @Override
     public void setContents(Actor contents) {
         if (previousImage == contents)

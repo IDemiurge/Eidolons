@@ -22,6 +22,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
 import main.data.filesys.PathFinder;
@@ -31,6 +32,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.Map;
 
@@ -123,6 +125,7 @@ public class OptionsWindow extends VisWindow {
             public void switchedTab(Tab tab) {
                 content.clearChildren();
                 content.add(tab.getContentTable()).expand().top().left();
+                DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
             }
         });
 
@@ -187,6 +190,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void ok() {
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OK);
         Gdx.app.log("Options", "ok");
         apply();
         close();
@@ -199,6 +203,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void apply() {
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK);
         Gdx.app.log("Options", "apply");
         OptionsMaster.cacheOptions();
         for (OptionsTab tab : tabs) {
@@ -212,6 +217,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void cancel() {
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
         Gdx.app.log("Options", "cancel");
         OptionsMaster.resetToCached();
         close();

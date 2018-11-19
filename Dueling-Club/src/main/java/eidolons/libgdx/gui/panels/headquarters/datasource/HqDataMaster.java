@@ -465,13 +465,14 @@ public class HqDataMaster {
                 hero.addParam((PARAMETER) args[0], "1", true);
                 break;
             case NEW_CLASS:
-                SkillMaster.newClass(hero, (ObjType) args[0]);
+                SkillMaster.newClass(hero, (ObjType) args[0],(Integer) args[1],(Integer) args[2]);
                 break;
             case NEW_PERK:
-                SkillMaster.newPerk(hero, (ObjType) args[0]);
+                SkillMaster.newPerk(hero, (ObjType) args[0],(Integer) args[1],(Integer) args[2]);
                 break;
             case NEW_SKILL:
-                SkillMaster.newSkill(hero, (ObjType) args[0]);
+                SkillMaster.newSkill(hero, (ObjType) args[0]
+                 ,(Integer) args[1],(Integer) args[2]);
                 break;
             case SKILL_RANK:
                 break;

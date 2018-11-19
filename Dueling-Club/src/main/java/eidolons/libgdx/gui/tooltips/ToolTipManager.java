@@ -13,7 +13,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.anims.AnimMaster3d;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.LastSeenView;

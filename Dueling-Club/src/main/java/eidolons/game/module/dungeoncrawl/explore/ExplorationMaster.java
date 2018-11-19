@@ -3,8 +3,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.libgdx.anims.AnimMaster;
-import eidolons.libgdx.anims.AnimationConstructor;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
@@ -121,9 +120,9 @@ public class ExplorationMaster {
 
         } else {
             game.getLogManager().logBattleStarts();
-            if (AnimationConstructor.isPreconstructEnemiesOnCombatStart())
+            if (AnimConstructor.isPreconstructEnemiesOnCombatStart())
                 AggroMaster.getLastAggroGroup().forEach(unit -> {
-                    AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                    AnimConstructor.preconstructAll(unit);
                 });
             getResetter().setResetNotRequired(false);
             try {

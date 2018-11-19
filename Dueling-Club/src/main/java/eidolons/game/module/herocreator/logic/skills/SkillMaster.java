@@ -24,6 +24,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -89,8 +90,15 @@ public class SkillMaster {
 
 
     public static List<DC_FeatObj> getSkillsOfTier(Unit hero, int tier) {
-        List<DC_FeatObj> list = new ArrayList<>(hero.getSkills());
-        list.removeIf(skill -> skill.getTier() != tier);
+        List<DC_FeatObj> list = new ArrayList<>();
+        String prop = hero.getProperty(getTierProp(PROPS.SKILLS, tier));
+        ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
+        for (String substring : ContainerUtils.openContainer(prop)) {
+            String[] parts = substring.split("=");
+            DC_FeatObj skill = hero.getFeat(DataManager.getType(parts[1], DC_TYPE.SKILLS));
+            int slot=Integer.valueOf(parts[0]);
+            list.set(slot, skill);
+        }
         return list;
     }
 
@@ -140,6 +148,10 @@ public class SkillMaster {
         return ContentValsManager.getPROP(MASTERY_RANKS + tier);
     }
 
+    private static PROPERTY getTierProp(PROPERTY prop, int tier) {
+        tier++;
+        return ContentValsManager.getPROP(prop.name()+"_TIER_" + tier);
+    }
     public static DC_FeatObj createFeatObj(ObjType featType, Ref ref) {
         switch ((DC_TYPE) featType.getOBJ_TYPE_ENUM()) {
             case PERKS:
@@ -150,21 +162,29 @@ public class SkillMaster {
         return new DC_FeatObj(featType, ref);
     }
 
-    public static void newSkill(Unit hero, ObjType arg) {
-        newFeat(PROPS.SKILLS, hero, arg);
+    public static void newSkill(Unit hero, ObjType arg, int tier, int slot) {
+        newFeat(PROPS.SKILLS, hero, arg, tier, slot);
     }
 
-    public static void newPerk(Unit hero, ObjType arg) {
-        newFeat(PROPS.PERKS, hero, arg);
+    public static void newPerk(Unit hero, ObjType arg, int tier, int slot) {
+        newFeat(PROPS.PERKS, hero, arg, tier, slot);
     }
 
-    public static void newClass(Unit hero, ObjType arg) {
-        newFeat(PROPS.CLASSES, hero, arg);
+    public static void newClass(Unit hero, ObjType arg, int tier, int slot) {
+        newFeat(PROPS.CLASSES, hero, arg, tier, slot);
     }
 
-    public static void newFeat(PROPERTY prop, Unit hero, ObjType arg) {
+    public static void newFeat(PROPERTY prop, Unit hero, ObjType arg, int tier, int slot) {
         DC_FeatObj featObj = createFeatObj(arg, hero.getRef());
+
+        //max rank req? Well, it is kind of determined by slot number ... but then, how does the rank scale?
+        //        featObj.getRank()
+        //        arg.get(PARAMS.CIRCLE);
+        PROPERTY tierProp = getTierProp(prop, tier);
+
+        hero.addProperty(tierProp,getSlotString(slot, arg.getName()), false);
         hero.addProperty(prop, arg.getName(), false);
+
         hero.getType().addProperty(prop, arg.getName(), false);
         hero.modifyParameter(PARAMS.XP,
          -HeroManager.getIntCost(arg, hero));
@@ -177,6 +197,11 @@ public class SkillMaster {
         }
         container.addCast(featObj);
     }
+
+    private static String getSlotString(int slot, String name) {
+        return slot+"=" + name;
+    }
+
 
     public static List<MASTERY> getUnlockedMasteries_(Entity entity) {
         List<PARAMETER> list = getUnlockedMasteries(entity);
@@ -299,7 +324,7 @@ public class SkillMaster {
     }
 
     public static boolean isMasteryAvailable(PARAMETER p, Unit hero) {
-//        ValuePageManager.getGenericValuesForInfoPages()
+        //        ValuePageManager.getGenericValuesForInfoPages()
         return false;
     }
 

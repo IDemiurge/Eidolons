@@ -7,7 +7,7 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -116,7 +116,7 @@ public class TexturePackerLaunch {
     }
 
     private static void packImages(String[] folders) {
-        Settings settings = getSetting();
+        Settings settings = getDefaultSettings();
         for (String sub : folders) {
             //            List<File> files = FileManager.getFilesFromDirectory(PathFinder.getImagePath() + sub, false, true);
             //            for (File folder : files) {
@@ -129,14 +129,14 @@ public class TexturePackerLaunch {
             }
 
             String outputDir = inputDir;
-            String packFileName = StringMaster.getLastPathSegment(sub);
+            String packFileName = PathUtils.getLastPathSegment(sub);
 
             TexturePacker.process(settings, inputDir, outputDir, packFileName);
             //            }
         }
     }
 
-    private static Settings getSetting() {
+    public static Settings getDefaultSettings() {
         Settings settings = new Settings();
         settings.maxHeight = (int) Math.pow(2, 13);
         settings.maxWidth = (int) Math.pow(2, 13);
@@ -183,9 +183,12 @@ public class TexturePackerLaunch {
     }
 
     public static void pack(String inputDir, String outputDir, String packFileName) {
-        Settings settings = getSetting();
+        Settings settings = getDefaultSettings();
         TexturePacker.process(settings, inputDir, outputDir, packFileName);
     }
 
+    public static void pack(String inputDir, String outputDir, String packFileName, Settings settings) {
+        TexturePacker.process(settings, inputDir, outputDir, packFileName);
+    }
 }
 

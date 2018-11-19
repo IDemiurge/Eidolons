@@ -25,7 +25,7 @@ public class FloatTextLayer extends GroupX {
     public FloatTextLayer() {
     }
 
-    protected void bindEvents() {
+    public void bindEvents() {
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
             if (queued.contains(floatingText))

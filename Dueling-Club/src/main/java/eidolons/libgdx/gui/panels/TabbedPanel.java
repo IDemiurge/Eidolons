@@ -127,6 +127,7 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
     protected Cell setDisplayedActor(T t) {
         if (t instanceof TablePanel) {
             try {
+                t.setUserObject(getUserObject());
                 ((TablePanel) t).updateAct(0);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

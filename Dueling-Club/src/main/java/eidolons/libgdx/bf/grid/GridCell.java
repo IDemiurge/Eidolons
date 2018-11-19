@@ -20,6 +20,7 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.DarkGrayscaleShader;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderMaster;
@@ -128,7 +129,10 @@ public class GridCell extends Group implements Borderable {
              getGridX(), getGridY()
             ));
         }*/
-        if (parentAlpha == ShaderMaster.SUPER_DRAW || batch.getShader() == GrayscaleShader.getGrayscaleShader()) {
+        if (parentAlpha == ShaderMaster.SUPER_DRAW
+         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
+         || batch.getShader() == DarkGrayscaleShader.getShader()
+         ) {
             super.draw(batch, 1);
         } else {
 //            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)

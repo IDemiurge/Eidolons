@@ -30,14 +30,13 @@ public abstract class HtNode extends DynamicLayeredActor {
     protected boolean editable;
     protected Unit hero;
     protected int tier;
+    protected int slot;
     SpriteActor sprite = new SpriteActor();
 
-    public HtNode(int tier, String rootPath) {
-        this(tier, rootPath, "", "");
-    }
-    public HtNode(  int tier, String rootPath, String overlay, String underlay) {
+    public HtNode(int tier, String rootPath, String overlay, String underlay, int slot) {
         super(getRootPath(rootPath, tier), overlay, underlay);
         this.tier = tier;
+        this.slot =  slot;
         setSize(getDefaultWidth(), getDefaultHeight() );
 
     }
@@ -149,7 +148,7 @@ public abstract class HtNode extends DynamicLayeredActor {
     protected void click() {
         if (ListMaster.isNotEmpty(getAvailable())) {
             SlotSelectionRadialMenu.setActiveNode(this);
-            GuiEventManager.trigger(getSelectionEvent(), getAvailable());
+            GuiEventManager.trigger(getSelectionEvent(), getAvailable(), tier, slot);
         } else {
         }
     }

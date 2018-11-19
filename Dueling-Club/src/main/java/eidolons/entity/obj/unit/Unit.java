@@ -25,7 +25,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.libgdx.anims.AnimMaster3d;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;

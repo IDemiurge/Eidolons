@@ -2,14 +2,12 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;
-import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.NumberUtils;
 
 import java.util.List;
@@ -21,8 +19,8 @@ public class ClassSlot extends HtNode {
     private List<ObjType> available;
     private HeroClass data;
 
-    public ClassSlot(int tier) {
-        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY);
+    public ClassSlot(int tier,int slot) {
+        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY,slot );
     }
 
 

@@ -15,6 +15,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
@@ -161,7 +162,7 @@ public class WorkspaceManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        path = StringMaster.getLastPathSegment(path);
+        path = PathUtils.getLastPathSegment(path);
         String name = StringMaster.cropFormat(path);
         Workspace workspace = new Workspace(name, typeList);
         initWorkspace(workspace);

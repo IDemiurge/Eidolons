@@ -26,6 +26,7 @@ import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -94,7 +95,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (OutlineMaster.isOutlinesOn()) {
             if (getOutlineTypeForPlayer() != null)
                 return getOutlineTypeForPlayer().getName();
-//         if (!isDetected())
+            //         if (!isDetected())
             if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
                 return "Unknown";
             }
@@ -136,8 +137,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
                 return false;
             }
         }
-        if (killer==null )
-            killer= this;
+        if (killer == null)
+            killer = this;
         ref.setID(KEYS.KILLER, killer.getId());
 
         Ref REF = Ref.getCopy(killer.getRef());
@@ -185,10 +186,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public boolean isAlliedTo(DC_Player player) {
         return !getOwner().isHostileTo(player);
-//if (getOwner().equals(player))
-//    return true;
-//if (player.getGame().getBattleMaster().getPlayerManager().)
-//        return false;
+        //if (getOwner().equals(player))
+        //    return true;
+        //if (player.getGame().getBattleMaster().getPlayerManager().)
+        //        return false;
     }
 
     @Override
@@ -209,12 +210,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (watcher == null) {
             return false;
         }
-//        if (isBfObj()) {
-//            if (isWall()) {
+        //        if (isBfObj()) {
+        //            if (isWall()) {
         // if (WindowRule.checkWindowOpening(this, obj, target))
         // return false;
-//            }
-//        }
+        //            }
+        //        }
         if (!isObstructing()) {
             return false;
         }
@@ -227,27 +228,27 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (this instanceof Door) {
             return true;
         }
-//        double distance = PositionMaster.getExactDistance(this, target);
-//        Integer girth = getIntParam(PARAMS.GIRTH);
-//        if (girth/100 < distance  ){
-//            return false;
-//        }
+        //        double distance = PositionMaster.getExactDistance(this, target);
+        //        Integer girth = getIntParam(PARAMS.GIRTH);
+        //        if (girth/100 < distance  ){
+        //            return false;
+        //        }
         //1000 space per cell
 
         if (watcher instanceof BattleFieldObject) {
             int height = getIntParam(PARAMS.HEIGHT);
             int source_height = watcher.getIntParam(PARAMS.HEIGHT);
             int target_height = target.getIntParam(PARAMS.HEIGHT);
-//            if (height-source_height  > target_height-height)
-//            {
-//                return true;
-//            }
+            //            if (height-source_height  > target_height-height)
+            //            {
+            //                return true;
+            //            }
             if (target_height > height) {
                 return false;
             }
-//TODO        lvl80!     if (source.isAgile() && !isHuge()) {
-//                return false;
-//            }
+            //TODO        lvl80!     if (source.isAgile() && !isHuge()) {
+            //                return false;
+            //            }
 
             if (source_height < height)
             // if (!source.isFlying()) //add height TODO
@@ -308,16 +309,16 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (param == PARAMS.C_N_OF_ACTIONS) {
             Integer prev = getIntParam(param);
             int diff = NumberUtils.getInteger(value) - prev;
-            if (diff==0)
+            if (diff == 0)
                 return;
             int mod = AtbController.ATB_READINESS_PER_AP * diff;
-//            main.system.auxiliary.log.LogMaster.log
-//             (1,this+"'s INITIATIVE modified by " +mod);
+            //            main.system.auxiliary.log.LogMaster.log
+            //             (1,this+"'s INITIATIVE modified by " +mod);
             modifyParameter(PARAMS.C_INITIATIVE, mod);
         } else if (param == PARAMS.INITIATIVE_MODIFIER) {
-//            Integer prev = getIntParam(param);
-//            int diff = StringMaster.getInteger(value) - prev;
-//            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
+            //            Integer prev = getIntParam(param);
+            //            int diff = StringMaster.getInteger(value) - prev;
+            //            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
         } else if (param == PARAMS.C_INITIATIVE_BONUS) {
             Integer prev = getIntParam(param);
             int diff = NumberUtils.getInteger(value) - prev;
@@ -327,7 +328,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         } else if (param == PARAMS.C_INITIATIVE) {
             Integer val = NumberUtils.getInteger(value);
             val = MathMaster.getMinMax(val, 0, 100);
-            super.putParameter(param, val+"");
+            super.putParameter(param, val + "");
         } else
             super.putParameter(param, value);
     }
@@ -338,7 +339,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public void resetCurrentValues() {
         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> {
-            if (p==PARAMS.N_OF_ACTIONS)
+            if (p == PARAMS.N_OF_ACTIONS)
                 if (DC_Engine.isAtbMode())
                     return;
             resetCurrentValue(p);
@@ -515,15 +516,16 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             removeStatus(STATUS.SNEAKING);
         this.sneaking = sneaking;
     }
+
     public boolean isValidMapStored(PARAMETER p) {
-        if (p== PARAMS.ENDURANCE)
+        if (p == PARAMS.ENDURANCE)
             return true;
-        if (p== PARAMS.TOUGHNESS)
+        if (p == PARAMS.TOUGHNESS)
             return true;
         return false;
     }
 
-        public int getMaxVisionDistance() {
+    public int getMaxVisionDistance() {
         if (maxVisionDistance == 0)
             maxVisionDistance = getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1;
         return maxVisionDistance;
@@ -562,17 +564,20 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         this.lastSeenOutline = lastSeenOutline;
     }
 
-    public void setOriginalType(ObjType originalType) {
-        this.originalType = originalType;
-    }
-
     public ObjType getOriginalType() {
         return originalType;
     }
 
+    public void setOriginalType(ObjType originalType) {
+        this.originalType = originalType;
+    }
+
     public boolean isIndestructible() {
+        if (getGame().isDebugMode())
+            return false;
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
     }
+
     public boolean isInvulnerable() {
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
     }
@@ -610,4 +615,22 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isDisabled() {
         return false;
     }
+
+    public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
+        super.setParam(param, i, quietly, base);
+        if (base && !customType) {
+            if (!getType().isGenerated())
+                cloneType();
+        }
+    }
+
+    public void setProperty(PROPERTY name, String value, boolean base) {
+        super.setProperty(name, value, base);
+        if (base && !customType) {
+            if (!getType().isGenerated())
+                cloneType();
+        }
+    }
+
+
 }

@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VAL
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -37,7 +38,7 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
 
                 }
             } //TODO temporary
-            type = new ObjType(StringMaster.getLastPathSegment(StringMaster.cropFormat(name)),
+            type = new ObjType(PathUtils.getLastPathSegment(StringMaster.cropFormat(name)),
              DC_TYPE.MISSIONS);
             type.setProperty(PROPS.MISSION_FILE_PATH, name);
 

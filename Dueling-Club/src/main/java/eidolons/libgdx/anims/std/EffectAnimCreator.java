@@ -6,9 +6,13 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
-import eidolons.libgdx.anims.*;
+import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.Animation;
+import eidolons.libgdx.anims.CompositeAnim;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import main.ability.effects.Effect;
 import main.data.filesys.PathFinder;
@@ -80,7 +84,8 @@ public class EffectAnimCreator {
 
         switch (clazz.getSimpleName().replace("Effect", "")) {
             case "DealDamage":
-                return new HitAnim(active, getDamageAnimData((DealDamageEffect) e));
+                return new HitAnim(active, getDamageAnimData((DealDamageEffect) e),
+                 ((DealDamageEffect) e).getDamageType());
             case "Drain": // missile back?
             case "ModifyValue":
                 ModifyValueEffect modEffect = (ModifyValueEffect) e;
@@ -126,12 +131,12 @@ public class EffectAnimCreator {
     private static AnimData getDamageAnimData(DealDamageEffect e) {
         AnimData data = new AnimData();
         data.setValue(ANIM_VALUES.SPRITES, getSprites(e));
-        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, getSfx(e));
-//        data.setValue(ANIM_VALUES.LIGHT_AMBIENT,        getLight
-//         (e));
+        data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, getVfx(e));
+        //        data.setValue(ANIM_VALUES.LIGHT_AMBIENT,        getLight
+        //         (e));
 
-//        data.setValue(ANIM_VALUES.LIGHT_FOCUS,        getLight
-//         (e));
+        //        data.setValue(ANIM_VALUES.LIGHT_FOCUS,        getLight
+        //         (e));
 
         return data;
     }
@@ -140,11 +145,11 @@ public class EffectAnimCreator {
         return null;
     }
 
-    private static String getSfx(Effect e) {
+    private static String getVfx(Effect e) {
         if (e instanceof DealDamageEffect) {
 
-            return PathFinder.getVfxPath() + "damage/"
-//                    + "fire"
+            return PathFinder.getVfxPath() + "spell/damage/"
+             //                    + "fire"
              + ((DealDamageEffect) e).getDamageType().toString()
              ;
         }
@@ -152,22 +157,26 @@ public class EffectAnimCreator {
     }
 
     private static String getSprites(Effect e) {
-        if (e instanceof DealDamageEffect)
-
-        {
+        if (e instanceof DealDamageEffect) {
+            String name = "";
+            switch (((DealDamageEffect) e).getDamageType()) {
+                case FIRE:
+                default:
+                    name = "fire 5 5";
+                    break;
+            }
             return PathFinder.getSpritesPath() + "damage/"
-             + "fire"
-//             +  ((DealDamageEffect) e).getDamageType().toString()
+             + name
              + ".png";
         }
         return null;
     }
 
     public static ANIM_PART getPartToAttachTo(Effect effect) {
-//        if (e instanceof  DealDamageEffect)
+        //        if (e instanceof  DealDamageEffect)
         return ANIM_PART.IMPACT;
 
-//        return ANIM_PART.AFTEREFFECT;
+        //        return ANIM_PART.AFTEREFFECT;
 
     }
 

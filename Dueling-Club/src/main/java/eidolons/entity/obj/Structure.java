@@ -16,6 +16,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.EnumMaster;
 import main.system.images.ImageManager;
 
 /**
@@ -26,6 +27,7 @@ public class Structure extends BattleFieldObject {
 
     private Boolean wall;
     private Boolean landscape;
+    private BF_OBJECT_GROUP bfObjGroup;
 
     public Structure(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -121,4 +123,12 @@ public class Structure extends BattleFieldObject {
     public boolean isLightEmitter() {
         return checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
     }
+
+    public BF_OBJECT_GROUP getBfObjGroup() {
+        if (bfObjGroup == null) {
+            bfObjGroup = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(BF_OBJECT_GROUP.class, getProperty(G_PROPS.BF_OBJECT_GROUP));
+        }
+        return bfObjGroup;
+    }
+
 }

@@ -4,6 +4,7 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -133,5 +134,22 @@ public class PathUtils {
 
     public static String getUniversalPathSeparator() {
         return PATH_SEPARATOR_UNIVERSAL;
+    }
+
+    public static String getLastPathSegment(String path) {
+        LinkedList<String> segments = new LinkedList<>(splitPath(path));
+        return segments.getLast();
+    }
+
+    public static String cropLastPathSegment(String path, boolean cropPathSeparator) {
+        String cropped = StringMaster.replaceLast(path, getLastPathSegment(path), "");
+        if (!cropPathSeparator) {
+            return cropped;
+        }
+        return StringMaster.replaceLast(cropped, "/", "");
+    }
+
+    public static String cropLastPathSegment(String path) {
+        return StringMaster.replaceLast(path, getLastPathSegment(path), "");
     }
 }

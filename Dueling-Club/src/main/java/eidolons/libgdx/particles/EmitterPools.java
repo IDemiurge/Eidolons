@@ -19,7 +19,7 @@ public class EmitterPools {
     private static boolean effectPoolingOn = true;
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
 
-    public static EmitterActor getEmitterActor(EMITTER_PRESET sfx) {
+    public static EmitterActor getEmitterActor(VFX sfx) {
         return getEmitterActor(sfx.getPath());
     }
 
@@ -95,7 +95,7 @@ public class EmitterPools {
     public static void preloadDefaultEmitters() {
         if (ParticleEffectX.isEmitterAtlasesOn())
             return ;
-        for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
+        for (VFX sub : VFX.values()) {
             if (sub.isPreloaded())
                 Assets.get().getManager().load(sub.getPath(), ParticleEffect.class);
         }
