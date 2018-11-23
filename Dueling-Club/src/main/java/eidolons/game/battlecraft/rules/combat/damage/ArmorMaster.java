@@ -4,7 +4,7 @@ import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -77,7 +77,7 @@ public class ArmorMaster {
             return getNaturalArmorBlock(damage, attacked, attacker, action);
         }
         boolean offhand = action.isOffhand();
-        int blocked = getArmorBlockDamage(false, action instanceof DC_SpellObj, !action.isZone(), action
+        int blocked = getArmorBlockDamage(false, action instanceof Spell, !action.isZone(), action
          .isZone(), damage, attacked, attacker, offhand, getDamageType(action, attacker
          .getActiveWeapon(offhand)), action);
         return Math.min(damage, blocked);
@@ -99,7 +99,7 @@ public class ArmorMaster {
                 canCritOrBlock = false; // TODO astral?
             }
         }
-        return getArmorBlockDamage(false, action instanceof DC_SpellObj, canCritOrBlock, average,
+        return getArmorBlockDamage(false, action instanceof Spell, canCritOrBlock, average,
          amount, targetObj, action.getOwnerObj(), action.isOffhand(),
          action.getEnergyType(), action);
     }

@@ -2,7 +2,7 @@ package eidolons.entity.handlers.active.spell;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.obj.BattleFieldObject;
@@ -34,12 +34,12 @@ public class SpellExecutor extends Executor {
     }
 
     @Override
-    public DC_SpellObj getAction() {
-        return (DC_SpellObj) super.getAction();
+    public Spell getAction() {
+        return (Spell) super.getAction();
     }
 
-    public DC_SpellObj getSpell() {
-        return (DC_SpellObj) super.getAction();
+    public Spell getSpell() {
+        return (Spell) super.getAction();
     }
 
     @Override

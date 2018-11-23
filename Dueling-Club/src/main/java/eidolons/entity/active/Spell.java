@@ -22,7 +22,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-public class DC_SpellObj extends DC_ActiveObj {
+public class Spell extends DC_ActiveObj {
 
     private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SpellEnums.SPELL_TYPE.SORCERY;
     protected Costs channelingActivateCosts;
@@ -32,7 +32,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     private SPELL_GROUP spellGroup;
     private ObjType rawType;
 
-    public DC_SpellObj(ObjType type, Player owner, DC_Game game, Ref ref) {
+    public Spell(ObjType type, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
 
         // DC_CostsFactory.copyCosts();

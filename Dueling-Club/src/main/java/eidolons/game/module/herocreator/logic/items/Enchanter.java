@@ -1,7 +1,7 @@
 package eidolons.game.module.herocreator.logic.items;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public class Enchanter {
     private static final Integer ENERGY_PER_SD = 2;
 
-    public static int calculateSpellEnergyCost(DC_SpellObj spell) {
+    public static int calculateSpellEnergyCost(Spell spell) {
         return spell.getIntParam(PARAMS.SPELL_DIFFICULTY) * ENERGY_PER_SD;
     }
 

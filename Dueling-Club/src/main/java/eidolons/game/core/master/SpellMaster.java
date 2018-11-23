@@ -1,7 +1,7 @@
 package eidolons.game.core.master;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.test.TestMasterContent;
@@ -30,20 +30,20 @@ public class SpellMaster extends Master {
 
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
-    HashMap<MicroObj, Map<ObjType, DC_SpellObj>> spellCache = new HashMap<>();
+    HashMap<MicroObj, Map<ObjType, Spell>> spellCache = new HashMap<>();
 
     public SpellMaster(DC_Game game) {
         super(game);
     }
 
-    public DC_SpellObj createSpell(ObjType type, Player player, Ref ref) {
-        DC_SpellObj spell = new DC_SpellObj(type, player, getGame(), ref);
+    public Spell createSpell(ObjType type, Player player, Ref ref) {
+        Spell spell = new Spell(type, player, getGame(), ref);
         return spell;
     }
 
 
-    public List<DC_SpellObj> initSpellpool(MicroObj obj, PROPERTY PROP) {
-        List<DC_SpellObj> spells = new ArrayList<>();
+    public List<Spell> initSpellpool(MicroObj obj, PROPERTY PROP) {
+        List<Spell> spells = new ArrayList<>();
         String spellList = obj.getProperty(PROP);
         List<String> spellpool;
 
@@ -55,14 +55,14 @@ public class SpellMaster extends Master {
             if (type == null) {
                 continue;
             }
-            Map<ObjType, DC_SpellObj> cache = spellCache.get(obj);
+            Map<ObjType, Spell> cache = spellCache.get(obj);
             if (cache == null) {
                 cache = new HashMap<>();
                 spellCache.put(obj, cache);
             }
-            DC_SpellObj spell = cache.get(type);
+            Spell spell = cache.get(type);
             if (spell == null) {
-                spell = (DC_SpellObj) getGame().createSpell(type, obj, ref);
+                spell = (Spell) getGame().createSpell(type, obj, ref);
                 cache.put(type, spell);
             }
 
@@ -81,11 +81,11 @@ public class SpellMaster extends Master {
         return spells;
     }
 
-    public List<DC_SpellObj> getSpells(Unit obj, boolean reset) {
+    public List<Spell> getSpells(Unit obj, boolean reset) {
         if (obj == null) {
             return new ArrayList<>();
         }
-        List<DC_SpellObj> spells = obj.getSpells();
+        List<Spell> spells = obj.getSpells();
         if (!TestMasterContent.addAllSpells)
             if (spells != null && !reset) {
                 if (!spells.isEmpty()) {
@@ -103,12 +103,12 @@ public class SpellMaster extends Master {
         getMySpells().get(index).invokeClicked();
     }
 
-    public List<DC_SpellObj> getSpells(Unit obj) {
+    public List<Spell> getSpells(Unit obj) {
         return getSpells(obj, false);
     }
 
 
-    private List<DC_SpellObj> getMySpells() {
+    private List<Spell> getMySpells() {
         return ((Unit)
          getGame().getPlayer(true).getHeroObj()).getSpells();
     }

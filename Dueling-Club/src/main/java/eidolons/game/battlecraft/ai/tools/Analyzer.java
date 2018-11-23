@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.tools;
 import eidolons.ability.conditions.WaitingFilterCondition;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
@@ -162,7 +162,7 @@ public class Analyzer extends AiHandler {
         if (!hasSpells(target)) {
             return false;
         }
-        for (DC_SpellObj s : target.getSpells()) {
+        for (Spell s : target.getSpells()) {
             if (s.canBeActivated()) {
                 return true;
             }

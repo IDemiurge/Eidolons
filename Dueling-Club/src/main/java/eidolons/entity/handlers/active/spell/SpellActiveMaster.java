@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import main.entity.handlers.EntityChecker;
@@ -12,7 +12,7 @@ import main.system.launch.CoreEngine;
  * Created by JustMe on 2/23/2017.
  */
 public class SpellActiveMaster extends ActiveMaster {
-    public SpellActiveMaster(DC_SpellObj entity) {
+    public SpellActiveMaster(Spell entity) {
         super(entity);
     }
     /*
@@ -20,8 +20,8 @@ public class SpellActiveMaster extends ActiveMaster {
      */
 
     @Override
-    public DC_SpellObj getEntity() {
-        return (DC_SpellObj) super.getEntity();
+    public Spell getEntity() {
+        return (Spell) super.getEntity();
     }
 
     @Override

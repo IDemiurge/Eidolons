@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.unit.Unit;
 
@@ -54,14 +54,14 @@ public class PowerCalculator {
         return 0;
     }
 
-    private void calcSpellsPower(List<DC_SpellObj> spells, int spFactor) {
+    private void calcSpellsPower(List<Spell> spells, int spFactor) {
         int power = 0;
-        for (DC_SpellObj spell : spells) {
+        for (Spell spell : spells) {
             power += getPower(spell, spFactor);
         }
     }
 
-    private int getPower(DC_SpellObj spell, int spFactor) {
+    private int getPower(Spell spell, int spFactor) {
         return 0;
     }
 

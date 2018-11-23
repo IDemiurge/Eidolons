@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 
+import java.util.List;
+
 /**
  * Created by JustMe on 11/16/2018.
  */
@@ -11,13 +13,24 @@ public class SpeechDataSource {
     String actorImage;
     String imageSuffix;
     String message;
+    List<String> responses;
     Speech speech;
 
     //custom font/style?
 
 
+    public SpeechDataSource(String actorName, String actorImage, String imageSuffix, String message, List<String> responses) {
+        this.actorName = actorName;
+        this.actorImage = actorImage;
+        this.imageSuffix = imageSuffix;
+        this.message = message;
+        this.responses = responses;
+    }
+
     public SpeechDataSource(Speech speech) {
         this.speech = speech;
+
+
     }
 
     public enum SPEECH_EFFECT{

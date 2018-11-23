@@ -1,7 +1,7 @@
 package eidolons.system.text;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -73,7 +73,7 @@ public class ToolTipMaster {
             case BUFF:
                 break;
             case DAMAGE:
-                boolean attack = !(active instanceof DC_SpellObj);
+                boolean attack = !(active instanceof Spell);
                 int damage = FutureBuilder.precalculateDamage(active, target, attack);
                 // ++ damage type
                 tooltip += "avrg. damage: " + damage; // MIN-MAX is really in

@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
@@ -25,7 +25,7 @@ public class SpellRadialManager {
 
     public static List<RadialValueContainer> getSpellNodes(Unit source,
                                                            DC_Obj target) {
-        List<DC_SpellObj> spells = source.getSpells().stream()
+        List<Spell> spells = source.getSpells().stream()
          .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
          .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
@@ -44,12 +44,12 @@ public class SpellRadialManager {
 
     }
 
-    private static List<RadialValueContainer> constructNestedSpellNodes(List<DC_SpellObj> spells, Unit source, DC_Obj target) {
+    private static List<RadialValueContainer> constructNestedSpellNodes(List<Spell> spells, Unit source, DC_Obj target) {
 
         Set<SPELL_GROUP> spell_groups = new HashSet<>();
         List<SPELL_ASPECT> aspects = new ArrayList<>();
 
-        for (DC_SpellObj spell : spells) {
+        for (Spell spell : spells) {
             SPELL_GROUP group = spell.getSpellGroup();
             spell_groups.add(group);
 

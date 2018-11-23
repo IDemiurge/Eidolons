@@ -1,7 +1,7 @@
 package eidolons.system.graphics;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
@@ -77,7 +77,7 @@ public class DC_ImageMaster {
         // return unitEmblem;
     }
 
-    public static ImageIcon getSpellIcon(DC_SpellObj spell, String property, boolean highlighted) {
+    public static ImageIcon getSpellIcon(Spell spell, String property, boolean highlighted) {
         ImageIcon base_image = ImageManager.getIcon(property);
         if (highlighted) {
             return new ImageIcon(ImageManager.applyBorder(base_image.getImage(),

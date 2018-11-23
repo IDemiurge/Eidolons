@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.libgdx.gui.panels.headquarters.HqSlotActor;
 import eidolons.libgdx.texture.Images;
 import main.data.filesys.PathFinder;
@@ -9,14 +9,14 @@ import main.system.auxiliary.StrPathBuilder;
 /**
  * Created by JustMe on 4/17/2018.
  */
-public class SpellActor extends HqSlotActor<DC_SpellObj> {
+public class SpellActor extends HqSlotActor<Spell> {
 
-    public SpellActor(DC_SpellObj spellObj) {
+    public SpellActor(Spell spellObj) {
         super(spellObj);
     }
 
     @Override
-    protected String getOverlay(DC_SpellObj model) {
+    protected String getOverlay(Spell model) {
         return HqSpellMaster.getOverlay(model);
     }
 

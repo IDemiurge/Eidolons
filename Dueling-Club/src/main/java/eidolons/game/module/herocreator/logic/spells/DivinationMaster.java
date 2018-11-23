@@ -4,7 +4,7 @@ import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
@@ -42,8 +42,8 @@ public class DivinationMaster {
     private static Map<SPELL_GROUP, Integer> spellGroups;
 
     public static void removeDivination(Unit hero) {
-        List<DC_SpellObj> spellsToRemove = new ArrayList<>();
-        for (DC_SpellObj spell : hero.getSpells()) {
+        List<Spell> spellsToRemove = new ArrayList<>();
+        for (Spell spell : hero.getSpells()) {
             if (spell.getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
                 spellsToRemove.add(spell);
             }
@@ -56,9 +56,9 @@ public class DivinationMaster {
 
     }
 
-    public static List<DC_SpellObj> divine(Unit diviningHero) {
+    public static List<Spell> divine(Unit diviningHero) {
         hero = diviningHero;
-        List<DC_SpellObj> list = new ArrayList<>();
+        List<Spell> list = new ArrayList<>();
         pool = DC_MathManager.getDivinationPool(hero);
         // divination cap limiting?
 
@@ -66,7 +66,7 @@ public class DivinationMaster {
          DC_Formulas.DIVINATION_MAX_SD_FORMULA.toString(),
          StringMaster.getValueRef(KEYS.MATCH, (PARAMS.SPELL_DIFFICULTY)));
 
-        DC_SpellObj spell;
+        Spell spell;
         spellGroups = initSpellGroups();
 
         if (spellGroups.isEmpty()) {
@@ -92,19 +92,19 @@ public class DivinationMaster {
 
     }
 
-    private static DC_SpellObj tryDivine() {
-        DC_SpellObj spell = null;
+    private static Spell tryDivine() {
+        Spell spell = null;
         for (ObjType spellType : spellPool) {
             if (!checkSpell(spellType)) {
                 continue;
             }
 
-            spell = LibraryManager.getSpellFromHero(hero, spellType.getName());
+            spell = SpellMaster.getSpellFromHero(hero, spellType.getName());
             if (spell == null) {
-                spell = new DC_SpellObj(spellType, hero.getOwner(),
+                spell = new Spell(spellType, hero.getOwner(),
                  hero.getGame(), hero.getRef());
                 hero.getSpells().add(spell);
-                if (LibraryManager.checkHeroHasSpell(hero, spellType)) {
+                if (SpellMaster.checkHeroHasSpell(hero, spellType)) {
                     applyKnownSpellDivinationEffect(spell);
                 }
             } else {
@@ -122,7 +122,7 @@ public class DivinationMaster {
         return spell;
     }
 
-    private static void applyKnownSpellDivinationEffect(DC_SpellObj spell) {
+    private static void applyKnownSpellDivinationEffect(Spell spell) {
         if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.DRUIDIC_VISIONS)) {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
@@ -166,7 +166,7 @@ public class DivinationMaster {
         if (spellType.getIntParam(PARAMS.SPELL_DIFFICULTY) <= 0) {
             return false;
         }
-        if (!LibraryManager.checkStandardSpell(spellType)) {
+        if (!SpellMaster.checkStandardSpell(spellType)) {
             return false;
         }
         if (!WorkspaceMaster.checkTypeIsGenerallyReady(spellType)) {
@@ -285,7 +285,7 @@ public class DivinationMaster {
         return (Math.min(MAX_SPELL_DIVINE_CHANCE, spellPool.size()) / index); // poolsize?
     }
 
-    public static boolean rollRemove(DC_SpellObj spell) {
+    public static boolean rollRemove(Spell spell) {
         int n1 = spell.getIntParam(PARAMS.SPELL_DIFFICULTY); // TODO ETERNAL
         // GRACE!
         int n2 = spell.getOwnerUnit().getIntParam(PARAMS.CHARISMA); // WILLPOWER?

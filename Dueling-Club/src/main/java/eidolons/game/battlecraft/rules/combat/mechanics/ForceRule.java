@@ -6,7 +6,7 @@ import eidolons.ability.effects.oneshot.attack.force.KnockdownEffect;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -152,7 +152,7 @@ public class ForceRule {
         if (!recalc) {
             return attack.getIntParam(PARAMS.FORCE);
         }
-        if (attack instanceof DC_SpellObj) {
+        if (attack instanceof Spell) {
             return getForceFromSpell(attack);
         }
         return getForceFromAttack(attack);
@@ -195,7 +195,7 @@ public class ForceRule {
         if (action.isSpell()) {
             Ref ref = action.getRef();
             //TODO won't be initialized here yet!!!
-            DC_SpellObj spell = (DC_SpellObj) action;
+            Spell spell = (Spell) action;
             if (spell.isDamageSpell()) {
                 if (spell.isMissile()) {
                     if (spell.getResistanceType() == RESISTANCE_TYPE.REDUCE_DAMAGE) {

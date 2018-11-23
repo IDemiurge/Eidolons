@@ -6,7 +6,7 @@ import eidolons.ability.effects.oneshot.unit.CreateObjectEffect;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.ItemFactory;
@@ -23,7 +23,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.state.*;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.game.module.herocreator.logic.spells.LibraryManager;
+import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.libgdx.anims.controls.EmitterController;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.DC_Formulas;
@@ -662,7 +662,7 @@ public class DebugMaster {
                      + selectedType.getName() + ";");
 
                     selectedTarget.getSpells().add(
-                     new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
+                     new Spell(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
                     break;
                 case ADD_SKILL:
                 case ADD_ACTIVE:
@@ -1117,11 +1117,11 @@ public class DebugMaster {
 
                 for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
                     Unit hero = (Unit) game.getManager().getMainHero();
-                    if (LibraryManager.checkHeroHasSpell(hero, type)) {
+                    if (SpellMaster.checkHeroHasSpell(hero, type)) {
                         continue;
                     }
-                    LibraryManager.addVerbatimSpell(hero, type);
-                    DC_SpellObj spell = new DC_SpellObj(type, hero.getOriginalOwner(), hero
+                    SpellMaster.addVerbatimSpell(hero, type);
+                    Spell spell = new Spell(type, hero.getOriginalOwner(), hero
                      .getGame(), hero.getRef());
                     hero.getSpells().add(spell);
                 }

@@ -340,7 +340,7 @@ public class SoundMaster {
         DIS__BLESS(true),
         CLICK1,
         ButtonUp,
-        ButtonDown, VICTORY, NEW__CLICK, NEW__HOVER, NEW__CLICK_DISABLED
+        ButtonDown, VICTORY, NEW__CLICK,  NEW__CLICK_DISABLED
         , NEW__CLICK_UP2
         , NEW__CLICK_UP
         , NEW__ENTER
@@ -355,7 +355,10 @@ public class SoundMaster {
         NEW__OPEN_MENU, NEW__GOLD, NEW__OK, NEW__DEFEAT, NEW__VICTORY
         , NEW__BATTLE_END
         , NEW__BATTLE_END2,
-        NEW__QUEST_TAKEN, NEW__QUEST_CANCELLED, NEW__QUEST_COMPLETED;
+        NEW__QUEST_TAKEN, NEW__QUEST_CANCELLED, NEW__QUEST_COMPLETED,
+        NEW__HOVER,NEW__HOVER_OFF
+
+        ;
         String path;
         private boolean alt;
 

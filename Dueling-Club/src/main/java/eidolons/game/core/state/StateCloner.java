@@ -2,7 +2,7 @@ package eidolons.game.core.state;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -12,7 +12,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
@@ -240,7 +239,7 @@ public class StateCloner {
                 case DC_UnitAction:
                     return new DC_UnitAction(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_SpellObj:
-                    return new DC_SpellObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                    return new Spell(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_FeatObj:
                     return new DC_FeatObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_BuffObj:

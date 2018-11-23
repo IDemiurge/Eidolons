@@ -12,7 +12,9 @@ import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.gui.generic.GearCluster;
+import eidolons.system.audio.DC_SoundMaster;
 import main.system.auxiliary.ClassMaster;
+import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.*;
 
@@ -223,6 +225,11 @@ public class ActorMaster {
         action.setScale(scaleX, scaleY);
         action.setDuration(v);
        addAction(actor, action);
+       if (scaleX<=1){
+           DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER_OFF);
+       } else {
+           DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+       }
         if (centered) {
             float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
             float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;

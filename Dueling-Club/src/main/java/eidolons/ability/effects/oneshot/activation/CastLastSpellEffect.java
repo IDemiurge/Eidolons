@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
@@ -27,7 +27,7 @@ public class CastLastSpellEffect extends MicroEffect implements OneshotEffect {
     public boolean applyThis() {
 
         Obj obj = ref.getTargetObj().getRef().getObj(KEYS.SPELL);
-        DC_SpellObj spell = (DC_SpellObj) obj;
+        Spell spell = (Spell) obj;
         spell.setFree(free);
 
         Ref REF = Ref.getCopy(spell.getRef());

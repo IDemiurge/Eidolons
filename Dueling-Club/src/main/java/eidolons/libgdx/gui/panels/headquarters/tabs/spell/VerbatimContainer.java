@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ public class VerbatimContainer extends HqSpellContainer {
     }
 
     @Override
-    protected void click(int button, DC_SpellObj spell) {
+    protected void click(int button, Spell spell) {
 
     }
     @Override
@@ -26,11 +26,11 @@ public class VerbatimContainer extends HqSpellContainer {
         return false;
     }
     @Override
-    protected void doubleClick(int button, DC_SpellObj spell) {
+    protected void doubleClick(int button, Spell spell) {
 
     }
 
-    protected List<DC_SpellObj> getSpells() {
+    protected List<Spell> getSpells() {
         return
          getUserObject().getEntity().getSpells().stream()
           .filter(s -> s.isVerbatim()).collect(Collectors.toList());

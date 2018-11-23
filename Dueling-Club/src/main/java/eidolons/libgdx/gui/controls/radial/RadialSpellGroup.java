@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.controls.radial;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.system.auxiliary.StringMaster;
@@ -24,7 +24,7 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     @Override
     public List<RADIAL_ITEM> getItems(Unit source) {
         ArrayList<RADIAL_ITEM> nodes = new ArrayList<>();
-        List<DC_SpellObj> spells = source.getSpells()
+        List<Spell> spells = source.getSpells()
          .stream()
          .filter(spell -> spell.getSpellGroup() == (group))
          .collect(Collectors.toList());

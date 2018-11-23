@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 
@@ -17,7 +17,7 @@ public class MemorizedContainer extends HqSpellContainer {
     }
 
     @Override
-    protected void click(int button, DC_SpellObj spell) {
+    protected void click(int button, Spell spell) {
         if (button==1){
             HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_UNMEMORIZED, spell);
         }
@@ -32,7 +32,7 @@ public class MemorizedContainer extends HqSpellContainer {
         return false;
     }
     @Override
-    protected void doubleClick(int button, DC_SpellObj spell) {
+    protected void doubleClick(int button, Spell spell) {
         if (!HqSpellMaster.canLearnEnVerbatim(spell))
         return;
         HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_UNMEMORIZED, spell);
@@ -40,7 +40,7 @@ public class MemorizedContainer extends HqSpellContainer {
 
     }
 
-    protected List<DC_SpellObj> getSpells() {
+    protected List<Spell> getSpells() {
         return
          getUserObject().getEntity().getSpells().stream()
           .filter(s -> s.isMemorized()).collect(Collectors.toList());

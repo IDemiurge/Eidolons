@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
@@ -14,10 +14,10 @@ public class SpellCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        if (!(ref.getMatchObj() instanceof DC_SpellObj)) {
+        if (!(ref.getMatchObj() instanceof Spell)) {
             return false;
         }
-        DC_SpellObj spell = (DC_SpellObj) ref.getMatchObj();
+        Spell spell = (Spell) ref.getMatchObj();
         Unit hero = (Unit) ref.getSourceObj();
         if (!hero.getSpells().contains(spell)) {
             return false;

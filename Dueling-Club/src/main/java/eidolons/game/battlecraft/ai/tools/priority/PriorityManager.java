@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -43,7 +43,7 @@ public interface PriorityManager {
 
     int getSpellPriority(GOAL_TYPE type, Action action);
 
-    int getSpellPriority(DC_SpellObj spell, Context context);
+    int getSpellPriority(Spell spell, Context context);
 
     int getSelfSpellPriority(Action action);
 

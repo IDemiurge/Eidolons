@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.Deity;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
@@ -1385,12 +1385,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public List<DC_SpellObj> getSpells() {
+    public List<Spell> getSpells() {
         return getHero().getSpells();
     }
 
     @Override
-    public void setSpells(List<DC_SpellObj> spells) {
+    public void setSpells(List<Spell> spells) {
         getHero().setSpells(spells);
     }
 
@@ -1551,12 +1551,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public List<DC_SpellObj> getSpellbook() {
+    public List<Spell> getSpellbook() {
         return getHero().getSpellbook();
     }
 
     @Override
-    public void setSpellbook(List<DC_SpellObj> spellbook) {
+    public void setSpellbook(List<Spell> spellbook) {
         getHero().setSpellbook(spellbook);
     }
 
@@ -2261,7 +2261,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_SpellObj getSpell(String actionName) {
+    public Spell getSpell(String actionName) {
         return getHero().getSpell(actionName);
     }
 

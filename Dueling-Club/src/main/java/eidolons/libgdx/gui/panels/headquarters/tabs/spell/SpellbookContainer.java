@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 
@@ -19,7 +19,7 @@ public class SpellbookContainer extends HqSpellContainer {
     public void init() {
         super.init();
         int i = 0;
-        for (DC_SpellObj sub : data) {
+        for (Spell sub : data) {
             SpellActor actor = actors[i++];
             if (sub == null)
                 break;
@@ -38,7 +38,7 @@ public class SpellbookContainer extends HqSpellContainer {
     }
 
     @Override
-    protected void click(int button, DC_SpellObj spell) {
+    protected void click(int button, Spell spell) {
         if (button == 1) {
             if (HqSpellMaster.canMemorize(spell))
                 HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_MEMORIZED, spell);
@@ -46,17 +46,17 @@ public class SpellbookContainer extends HqSpellContainer {
     }
 
     @Override
-    protected void doubleClick(int button, DC_SpellObj spell) {
+    protected void doubleClick(int button, Spell spell) {
         if (HqSpellMaster.canLearnEnVerbatim(spell))
             if (HqSpellMaster.canLearnEnVerbatim(spell))
             HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_EN_VERBATIM, spell);
     }
 
-    protected List<DC_SpellObj> getSpells() {
+    protected List<Spell> getSpells() {
         if (getUserObject().getEntity().getSpellbook() == null) {
             return new ArrayList<>();
         }
-        List<DC_SpellObj> list = new ArrayList<>(getUserObject().getEntity().getSpellbook());
+        List<Spell> list = new ArrayList<>(getUserObject().getEntity().getSpellbook());
         list= list.subList(0, Math.min(list.size(), size));
 
         return list;

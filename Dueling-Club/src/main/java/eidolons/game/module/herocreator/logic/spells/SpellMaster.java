@@ -2,7 +2,7 @@ package eidolons.game.module.herocreator.logic.spells;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
@@ -20,12 +20,12 @@ import main.system.auxiliary.StringMaster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibraryManager {
+public class SpellMaster {
 
     private static final String SD = "{SPELL_SPELL_DIFFICULTY}";
     private static final String STANDARD = "STANDARD";
 
-    public static Condition getSpellRequirements(DC_SpellObj spell) {
+    public static Condition getSpellRequirements(Spell spell) {
         // SD: Mastery or Knowledge
         String spellGroup = spell.getProperty(G_PROPS.SPELL_GROUP);
         return new NumericCondition("max({SOURCE_KNOWLEDGE}/2-5," + "{SOURCE_" + spellGroup
@@ -80,8 +80,8 @@ public class LibraryManager {
         return hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName());
     }
 
-    public static DC_SpellObj getSpellFromHero(Unit hero, String name) {
-        for (DC_SpellObj s : hero.getSpells()) {
+    public static Spell getSpellFromHero(Unit hero, String name) {
+        for (Spell s : hero.getSpells()) {
             if (s.getName().equalsIgnoreCase(name)) {
                 return s;
             }
@@ -177,12 +177,12 @@ public class LibraryManager {
         return hasSpellVersion(hero, type, poolProp, true);
     }
 
-    public static DC_SpellObj getVerbatimSpellVersion(Unit hero, Entity type) {
+    public static Spell getVerbatimSpellVersion(Unit hero, Entity type) {
         hero.initSpells(true);
         boolean upgrade = type.isUpgrade();
         String baseName = (upgrade) ? type.getProperty(G_PROPS.BASE_TYPE) : type.getName();
 
-        for (DC_SpellObj s : hero.getSpells()) {
+        for (Spell s : hero.getSpells()) {
             // TODO refactor into checkUpgrade(spell, type)
             if (StringMaster.compare(s.getSpellPool() + "", PROPS.VERBATIM_SPELLS.getName(), false)) {
                 if (s.isUpgrade()) {
@@ -203,7 +203,7 @@ public class LibraryManager {
         hero.initSpells(true);
         boolean upgrade = type.isUpgrade();
         String baseName = (upgrade) ? type.getProperty(G_PROPS.BASE_TYPE) : type.getName();
-        for (DC_SpellObj spell : hero.getSpells()) {
+        for (Spell spell : hero.getSpells()) {
             if (StringMaster.compare(spell.getSpellPool() + "", poolProp.getName(), false)) {
                 if (spell.isUpgrade()) {
                     if (spell.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(baseName)) {
@@ -224,7 +224,7 @@ public class LibraryManager {
     }
 
     private static boolean replaceSpell(Unit hero, Entity type, PROPERTY poolProp,
-                                        DC_SpellObj spell) {
+                                        Spell spell) {
         if (poolProp == PROPS.VERBATIM_SPELLS) {
             hero.addProperty(PROPS.UPGRADED_SPELLS, spell.getName(), true);
         }

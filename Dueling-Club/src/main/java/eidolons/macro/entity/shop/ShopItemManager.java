@@ -9,6 +9,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import eidolons.libgdx.gui.menu.selection.town.shops.ShopPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
@@ -121,6 +122,11 @@ public class ShopItemManager extends EntityHandler<Shop> {
                 // MacroGame.getGame()!
                 if (acquireItem(t)) {
                     max--; // second loop based on cheapest items?
+                }
+                if (!Shop.isUnlimitedSize()) {
+                    if (items.size() > ShopPanel.COLUMNS_DEFAULT * ShopPanel.ROWS_DEFAULT) {
+                        return;
+                    }
                 }
             }
         }

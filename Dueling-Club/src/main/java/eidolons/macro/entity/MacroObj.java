@@ -6,11 +6,14 @@ import eidolons.macro.map.MacroCoordinates;
 import eidolons.macro.map.Region;
 import eidolons.macro.utils.MacroContentManager;
 import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
+
+import java.util.Set;
 
 public class MacroObj extends Obj {
 
@@ -19,6 +22,7 @@ public class MacroObj extends Obj {
     protected Region region;
     protected MacroCoordinates coordinates;
     private Faction faction;
+    private Set<MacroObj> nested;
 
     public MacroObj(MacroGame game, ObjType type, Ref ref, Player owner) {
         super(type, owner, game, ref);
@@ -136,5 +140,17 @@ public class MacroObj extends Obj {
 
     public void setFaction(Faction faction) {
         this.faction = faction;
+    }
+
+    public String getMapIcon() {
+        return getProperty(MACRO_PROPS.MAP_ICON);
+    }
+
+    public Set<MacroObj> getNested() {
+        return nested;
+    }
+
+    public void setNested(Set<MacroObj> nested) {
+        this.nested = nested;
     }
 }

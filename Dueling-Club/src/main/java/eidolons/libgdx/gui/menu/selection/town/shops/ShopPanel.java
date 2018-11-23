@@ -53,6 +53,8 @@ import java.util.List;
  * Created by JustMe on 3/14/2018.
  */
 public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer {
+    public static final int COLUMNS_DEFAULT = 5;
+    public static final int ROWS_DEFAULT = 8;
     private final TablePanelX header;
     private final StashPanel stashPanel;
     private SmartButton help;
@@ -274,11 +276,11 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     }
 
     protected int getContainerRowCount() {
-        return 8;
+        return ROWS_DEFAULT;
     }
 
     protected int getContainerColumnCount() {
-        return 5;
+        return COLUMNS_DEFAULT;
     }
 
     @Override
@@ -309,7 +311,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
         @Override
         protected boolean isScrolled() {
-            return true;
+            return Shop.isUnlimitedSize();
         }
 
         @Override

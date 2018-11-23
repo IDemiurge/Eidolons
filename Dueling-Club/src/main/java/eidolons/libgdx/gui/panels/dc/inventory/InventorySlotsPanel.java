@@ -1,7 +1,8 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.gui.panels.ScrollPanel;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
@@ -18,7 +19,7 @@ public class InventorySlotsPanel extends TablePanelX {
     public static final int SIZE = ROWS * COLUMNS;
     private final TablePanelX table;
     private List<InvItemActor> slots;
-    private ScrollPanel scroll;
+    private ScrollPane scroll;
     private int rows;
     private int cols;
 
@@ -31,20 +32,19 @@ public class InventorySlotsPanel extends TablePanelX {
         this.setCols(cols);
         setFixedSize(true);
         table = new TablePanelX<>();
-        table.setSize(cols * 64+20, rows * 64);
+        table.setSize(cols * 64 + 20, rows * 64);
         table.defaults().space(0).size(64, 64);
 
         if (isScrolled()) {
-            add(scroll = new ScrollPanel<>());
-            scroll.pad(1, 10, 1, 10);
-            scroll.fill();
-            scroll.addElement(table);
+            add(scroll = new ScrollPaneX(table));
+            scroll.setForceScroll(false, true);
         } else {
             add(table);
         }
     }
+
     protected void updateAct() {
-        scroll.setBounds(5, 5, getWidth()  , getHeight() - 10);
+        scroll.setBounds(5, 5, getWidth(), getHeight() - 10);
     }
 
     protected boolean isScrolled() {
@@ -89,7 +89,8 @@ public class InventorySlotsPanel extends TablePanelX {
             slots.get(i).setZIndex(Integer.MAX_VALUE);
 
         }
-
+        if (scroll != null)
+            scroll.setActor(table);
     }
 
 
@@ -100,9 +101,9 @@ public class InventorySlotsPanel extends TablePanelX {
             return null;
         }
 
-//        if (actor instanceof Image) {
-//            return null;
-//        }
+        //        if (actor instanceof Image) {
+        //            return null;
+        //        }
         return actor;
     }
 

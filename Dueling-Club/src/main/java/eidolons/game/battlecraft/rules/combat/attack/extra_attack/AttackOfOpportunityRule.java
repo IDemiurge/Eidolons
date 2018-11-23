@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 import eidolons.ability.conditions.VisibilityCondition;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
@@ -478,8 +478,8 @@ if (isOff())
         if (!action.getOwnerUnit().checkVisible()) {
             return attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.BLIND_FIGHTER);
         }
-        if (action instanceof DC_SpellObj) {
-            DC_SpellObj spellObj = (DC_SpellObj) action;
+        if (action instanceof Spell) {
+            Spell spellObj = (Spell) action;
             if (spellObj.isChanneling()) {
                 return true;
             }

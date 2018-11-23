@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.DC_TYPE;
@@ -49,7 +49,7 @@ public class CastNewSpellEffect extends MicroEffect implements OneshotEffect {
         Ref REF = new Ref(ref.getGame(), ref.getSource());
 
         Obj obj = game.createSpell(type, ref.getSourceObj().getOwner(), REF);
-        DC_SpellObj spell = (DC_SpellObj) obj;
+        Spell spell = (Spell) obj;
         spell.setFree(free);
         spell.setQuietMode(true);
         if (group) {

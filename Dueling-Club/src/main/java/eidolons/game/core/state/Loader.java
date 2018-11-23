@@ -1,7 +1,7 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_JewelryObj;
@@ -211,7 +211,7 @@ public class Loader {
             case ACTIONS:
                 return new DC_UnitAction(type, owner, game, ref);
             case SPELLS:
-                return new DC_SpellObj(type, owner, game, ref);
+                return new Spell(type, owner, game, ref);
             case SKILLS:
             case CLASSES:
                 return new DC_FeatObj(type, owner, game, ref);

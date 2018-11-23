@@ -3,7 +3,7 @@ package eidolons.system.audio;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -271,7 +271,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
     }
 
     private static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
-        if (activeObj instanceof DC_SpellObj)
+        if (activeObj instanceof Spell)
             switch (part) {
                 case PRECAST:
                 case CAST:
@@ -279,7 +279,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
                 case MAIN:
                 case IMPACT:
                 case AFTEREFFECT:
-                    playNow(getActionEffectSoundPath((DC_SpellObj) activeObj, part));
+                    playNow(getActionEffectSoundPath((Spell) activeObj, part));
                     return;
             }
         switch (part) {
@@ -310,14 +310,14 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
 
     public static void preconstructEffectSounds() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            DC_SpellObj active = new DC_SpellObj(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
+            Spell active = new Spell(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
             for (ANIM_PART part : ANIM_PART.values()) {
                 preconstructSpell(active, part);
             }
         }
     }
 
-    private static void preconstructSpell(DC_SpellObj spell, ANIM_PART part) {
+    private static void preconstructSpell(Spell spell, ANIM_PART part) {
         String file = AnimResourceFinder.findResourceForSpell(spell,
          part.toString(), "", propsExact,
          getSpellSoundPath(), false);
@@ -343,7 +343,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
         return ContentValsManager.findPROP("SOUND_" + part);
     }
 
-    private static String getActionEffectSoundPath(DC_SpellObj spell, ANIM_PART part) {
+    private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
         String file = spell.getProperty(getProp(part));
         String identifier;
         String path;

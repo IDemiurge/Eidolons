@@ -431,7 +431,7 @@ public class RadialManager {
             return configureSelectiveTargetedNode(el, target);
         }
         RadialValueContainer valueContainer = null;
-        if (el instanceof DC_SpellObj) {
+        if (el instanceof Spell) {
             valueContainer = new SpellRadialContainer(
 
              new TextureRegion(getTextureForActive(el, target))
@@ -479,7 +479,7 @@ public class RadialManager {
             }
 
         };
-        if (active instanceof DC_SpellObj) {
+        if (active instanceof Spell) {
             return new SpellRadialContainer(textureRegion, runnable,valid, active, target);
         }
         return new RadialValueContainer(textureRegion, runnable, valid, active, target);

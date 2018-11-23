@@ -1,6 +1,6 @@
 package eidolons.libgdx.anims.construct;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import main.content.values.properties.PROPERTY;
@@ -14,7 +14,7 @@ import main.system.launch.CoreEngine;
 public class AnimResourceFinder {
     private static boolean findClosestResource;
 
-    public static String findResourceForSpell(DC_SpellObj spell,
+    public static String findResourceForSpell(Spell spell,
                                               String partPath, String size,
                                               PROPERTY[] props, String pathRoot,
                                               boolean closest) {

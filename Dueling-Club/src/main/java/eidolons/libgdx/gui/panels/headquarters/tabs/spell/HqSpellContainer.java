@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by JustMe on 4/17/2018.
  */
-public abstract class HqSpellContainer extends ValueTable<DC_SpellObj, SpellActor>
+public abstract class HqSpellContainer extends ValueTable<Spell, SpellActor>
 implements HqActor {
 
     public HqSpellContainer(int wrap, int size) {
@@ -56,7 +56,7 @@ implements HqActor {
     }
 
     @Override
-    protected SpellActor createElement(DC_SpellObj datum) {
+    protected SpellActor createElement(Spell datum) {
         SpellActor actor = new SpellActor(datum){
             @Override
             public boolean isOverlayOn() {
@@ -72,7 +72,7 @@ implements HqActor {
 
     protected abstract boolean isOverlayOn();
 
-    private EventListener createSpellListener(DC_SpellObj spell, SpellActor  actor) {
+    private EventListener createSpellListener(Spell spell, SpellActor  actor) {
        return  new SmartClickListener(actor){
            @Override
            protected void onTouchDown(InputEvent event, float x, float y) {
@@ -96,11 +96,11 @@ implements HqActor {
        };
     }
 
-    protected abstract void click(int button, DC_SpellObj spell);
+    protected abstract void click(int button, Spell spell);
 
-    protected abstract void doubleClick(int button, DC_SpellObj spell);
+    protected abstract void doubleClick(int button, Spell spell);
 
-    protected void enter(DC_SpellObj spell, SpellActor actor) {
+    protected void enter(Spell spell, SpellActor actor) {
     }
 
     @Override
@@ -109,17 +109,17 @@ implements HqActor {
     }
 
     @Override
-    protected DC_SpellObj[] initDataArray() {
-        List<DC_SpellObj> list =    new ArrayList<>( getSpells()) ;
+    protected Spell[] initDataArray() {
+        List<Spell> list =    new ArrayList<>( getSpells()) ;
         Collections.sort(list, getSorter());
         ListMaster.fillWithNullElements(list, size);
-        return list.toArray(new DC_SpellObj[list.size()]);
+        return list.toArray(new Spell[list.size()]);
     }
 
-    protected Comparator<DC_SpellObj> getSorter() {
-        return new Comparator<DC_SpellObj>() {
+    protected Comparator<Spell> getSorter() {
+        return new Comparator<Spell>() {
             @Override
-            public int compare(DC_SpellObj o1, DC_SpellObj o2) {
+            public int compare(Spell o1, Spell o2) {
                 if (o1==null  && o2==null )
                     return 0;
                 if (o1==null)
@@ -133,7 +133,7 @@ implements HqActor {
         };
     }
 
-    protected abstract List<DC_SpellObj> getSpells();
+    protected abstract List<Spell> getSpells();
 
 
     @Override

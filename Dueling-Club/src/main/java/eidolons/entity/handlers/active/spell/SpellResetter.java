@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.ActiveResetter;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import main.content.enums.system.MetaEnums;
@@ -11,7 +11,7 @@ import main.content.values.parameters.PARAMETER;
  * Created by JustMe on 2/26/2017.
  */
 public class SpellResetter extends ActiveResetter {
-    public SpellResetter(DC_SpellObj entity, SpellActiveMaster entityMaster) {
+    public SpellResetter(Spell entity, SpellActiveMaster entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -21,8 +21,8 @@ public class SpellResetter extends ActiveResetter {
     }
 
     @Override
-    public DC_SpellObj getEntity() {
-        return (DC_SpellObj) super.getEntity();
+    public Spell getEntity() {
+        return (Spell) super.getEntity();
     }
 
     @Override

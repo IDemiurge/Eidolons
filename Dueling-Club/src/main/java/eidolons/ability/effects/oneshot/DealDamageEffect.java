@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
@@ -84,7 +84,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         int amount = formula.getAppendedByModifier(ref.getValue(KEYS.FORMULA))
          .getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        boolean spell = active instanceof DC_SpellObj;
+        boolean spell = active instanceof Spell;
 
         initDamageType();
         if (!checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE)) {

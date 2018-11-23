@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.tools.prune;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -103,7 +103,7 @@ public class PruneMaster extends AiHandler {
         if (toPrune <= 0) // this is only the max size, how to ensure pruning of
         // 'valid' targets too?
         {
-            if (action.isRanged() || action instanceof DC_SpellObj) {
+            if (action.isRanged() || action instanceof Spell) {
                 return; // TODO sometimes it's not the size, but the distance!
             }
         }

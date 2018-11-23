@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.controls.radial;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.controls.radial.SpellRadialManager.SPELL_ASPECT;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
@@ -22,7 +22,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
     @Override
     public List<RADIAL_ITEM> getItems(Unit source) {
         ArrayList<RADIAL_ITEM> list = new ArrayList<>();
-        List<DC_SpellObj> spells = new ArrayList<>(source.getSpells());
+        List<Spell> spells = new ArrayList<>(source.getSpells());
         if (spells.size() < maxPlainSize) {
             spells.forEach(spell -> list.add(new EntityNode(spell)));
             return list;
@@ -30,7 +30,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
 
         spells.removeIf(spell -> !spell.getAspect().toString().equalsIgnoreCase(aspect.toString()));
         for (SPELL_GROUP g : aspect.groups) {
-            List<DC_SpellObj> group = new ArrayList<>(spells);
+            List<Spell> group = new ArrayList<>(spells);
             group.removeIf(spell -> !spell.getSpellGroup().equals(g));
             if (group.size() > 0) {
                 list.add(new RadialSpellGroup(g));

@@ -16,7 +16,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
@@ -370,7 +370,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         return capacity;
     }
 
-    public int getSpellPriority(DC_SpellObj spell, Context context) {
+    public int getSpellPriority(Spell spell, Context context) {
         return getSpellPriority(AI_SpellMaster.getGoal(spell),
          AiActionFactory.newAction(spell, context));
     }
@@ -1058,7 +1058,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return -10000;
             }
         }
-        boolean attack = !(active instanceof DC_SpellObj);
+        boolean attack = !(active instanceof Spell);
         int enemy_priority = getUnitPriority(targetObj);
         int priority = enemy_priority;
         int damage_priority = getDamagePriority(active, targetObj, attack);
@@ -1091,7 +1091,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         // TODO ++ counter penalty
 
         // TODO spells!
-        if (active instanceof DC_SpellObj) {
+        if (active instanceof Spell) {
             //check mod effects too
             Action action = AiActionFactory.newAction(active,
              new Context(getUnit(), targetObj));
@@ -1120,7 +1120,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         priority = priority * damage_priority / 100;
 
         priority += getConstInt(
-         (active instanceof DC_SpellObj) ?
+         (active instanceof Spell) ?
           AiConst.DEFAULT_SPELL_ATTACK_PRIORITY :
           AiConst.DEFAULT_ATTACK_PRIORITY);
         // applyCostPenalty(as);

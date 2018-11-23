@@ -2,9 +2,9 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.spells.LibraryManager;
+import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.SpellActor.SPELL_OVERLAY;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.elements.conditions.RequirementsManager;
@@ -13,7 +13,7 @@ import main.elements.conditions.RequirementsManager;
  * Created by JustMe on 4/17/2018.
  */
 public class HqSpellMaster {
-    public static String getOverlay(DC_SpellObj sub
+    public static String getOverlay(Spell sub
     ) {
         if (sub.getSpellPool() != null)
             switch (sub.getSpellPool()) {
@@ -28,19 +28,19 @@ public class HqSpellMaster {
         return null;
     }
 
-    public static void learnSpellEnVerbatim(Unit hero, DC_SpellObj spell) {
+    public static void learnSpellEnVerbatim(Unit hero, Spell spell) {
         //        LibraryManager.addVerbatimSpell(hero, spell.getType());
         hero.addProperty(true, PROPS.VERBATIM_SPELLS, spell.getName());
         spellsChanged(hero);
 
     }
 
-    public static void learnSpell(Unit hero, DC_SpellObj spell) {
+    public static void learnSpell(Unit hero, Spell spell) {
         hero.addProperty(true, PROPS.LEARNED_SPELLS, spell.getName());
         spellsChanged(hero);
     }
 
-    public static void memorizeSpell(Unit hero, DC_SpellObj spell) {
+    public static void memorizeSpell(Unit hero, Spell spell) {
         hero.addProperty(true, PROPS.MEMORIZED_SPELLS, spell.getName());
         spellsChanged(hero);
     }
@@ -49,18 +49,18 @@ public class HqSpellMaster {
         hero.initSpells(true);
     }
 
-    public static void unmemorizeSpell(Unit hero, DC_SpellObj spell) {
+    public static void unmemorizeSpell(Unit hero, Spell spell) {
         hero.removeProperty(true, PROPS.MEMORIZED_SPELLS, spell.getName());
         spellsChanged(hero);
     }
 
-    public static boolean canMemorize(DC_SpellObj spell) {
+    public static boolean canMemorize(Spell spell) {
         if (spell.getSpellPool() != SPELL_POOL.SPELLBOOK)
             return false;
         if (spell.getOwnerUnit().calculateRemainingMemory() < spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
             return false;
         if (spell.isUpgrade()) {
-            if (LibraryManager.hasSpellVersion(spell.getOwnerUnit(), spell, PROPS.MEMORIZED_SPELLS)) {
+            if (SpellMaster.hasSpellVersion(spell.getOwnerUnit(), spell, PROPS.MEMORIZED_SPELLS)) {
                 return false;
             }
         }
@@ -68,11 +68,11 @@ public class HqSpellMaster {
          , RequirementsManager.ALT_MODE) == null;
     }
 
-    public static boolean canLearn(DC_SpellObj spell) {
+    public static boolean canLearn(Spell spell) {
         return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell) == null;
     }
 
-    public static boolean canLearnEnVerbatim(DC_SpellObj spell) {
+    public static boolean canLearnEnVerbatim(Spell spell) {
         return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell,
          RequirementsManager.VERBATIM_MODE) == null;
     }

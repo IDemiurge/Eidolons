@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeBitmapFontData;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
@@ -75,6 +77,8 @@ public class StyleHolder {
 
         }
     }
+
+    private static ScrollPaneStyle scrollStyle;
 
     public static Boolean isHieroOn() {
         if (HIERO_ON == null) {
@@ -409,5 +413,19 @@ public class StyleHolder {
         return getSizedColoredLabelStyle(FONT.METAMORPH, fontSize, DEFAULT_COLOR);
     }
 
+
+    public static ScrollPaneStyle getScrollStyle() {
+        if (scrollStyle == null) {
+            scrollStyle=new ScrollPaneStyle(
+             null,
+//             NinePatchFactory.getLightDecorPanelFilledDrawable(),
+             NinePatchFactory.getScrollH(),
+             NinePatchFactory.getScrollKnobH(),
+             NinePatchFactory.getScrollV(),
+             NinePatchFactory.getScrollKnobV()
+             );
+        }
+        return scrollStyle;
+    }
 
 }

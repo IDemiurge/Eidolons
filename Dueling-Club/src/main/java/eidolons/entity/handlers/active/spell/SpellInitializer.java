@@ -3,7 +3,7 @@ package eidolons.entity.handlers.active.spell;
 import eidolons.ability.DC_CostsFactory;
 import eidolons.ability.conditions.StatusCheckCondition;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.ActiveInitializer;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import main.content.enums.entity.UnitEnums;
@@ -23,8 +23,8 @@ public class SpellInitializer extends ActiveInitializer {
         super(entity, entityMaster);
     }
 
-    public DC_SpellObj getEntity() {
-        return (DC_SpellObj) super.getEntity();
+    public Spell getEntity() {
+        return (Spell) super.getEntity();
     }
 
     public void initChannelingCosts() {

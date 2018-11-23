@@ -7,7 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
@@ -95,7 +95,7 @@ public class AnimConstructor {
 
     public static void preconstructAllForAV() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            DC_SpellObj active = new DC_SpellObj(type, Player.NEUTRAL, DC_Game.game, new Ref());
+            Spell active = new Spell(type, Player.NEUTRAL, DC_Game.game, new Ref());
             AnimData data = null;
             try {
                 int i = 0;
@@ -177,7 +177,7 @@ public class AnimConstructor {
         }
         if (!checkAnimationSupported((DC_ActiveObj) active))
             return null;
-        if (active instanceof DC_SpellObj) {
+        if (active instanceof Spell) {
             main.system.auxiliary.log.LogMaster.log(1, "Construct spell anim for: " + active);
         }
         CompositeAnim anim = map.get(active);
@@ -285,13 +285,13 @@ public class AnimConstructor {
             return null;
         }
         if (!initAnim(data, active, part, anim)) {
-            if (!(active instanceof DC_SpellObj)) {
+            if (!(active instanceof Spell)) {
                 return null;
             }
 
             if (!autoconstruct)
                 return null;
-            data = getStandardData((DC_SpellObj) active, part, composite);
+            data = getStandardData((Spell) active, part, composite);
             if (!initAnim(data, active, part, anim)) {
                 return null;
             }
@@ -505,11 +505,11 @@ public class AnimConstructor {
         return false;
     }
 
-   public static AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, CompositeAnim compositeAnim) {
+   public static AnimData getStandardData(Spell spell, ANIM_PART part, CompositeAnim compositeAnim) {
         return getStandardData(spell, part, compositeAnim.getMap().size());
     }
 
-    public static  AnimData getStandardData(DC_SpellObj spell, ANIM_PART part, int partsCount) {
+    public static  AnimData getStandardData(Spell spell, ANIM_PART part, int partsCount) {
         AnimData data = new AnimData();
 
         String partPath = part.toString();

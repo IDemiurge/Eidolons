@@ -3,7 +3,7 @@ package eidolons.game.module.herocreator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.logic.spells.LibraryManager;
+import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.system.DC_Formulas;
@@ -684,7 +684,7 @@ public class HeroManager {
     public boolean addSpellUpgrade(Unit hero, Entity type, PROPERTY prop) {
         saveHero(hero);
         subtractCost(hero, type, DC_TYPE.SPELLS, prop);
-        boolean result = LibraryManager.replaceSpellVersion(hero, type, PROPS.VERBATIM_SPELLS);
+        boolean result = SpellMaster.replaceSpellVersion(hero, type, PROPS.VERBATIM_SPELLS);
         update(hero);
         return result;
 
@@ -905,7 +905,7 @@ public class HeroManager {
 
         if (hero.calculateRemainingMemory() >= type.getIntParam(PARAMS.SPELL_DIFFICULTY)) {
             if (type.isUpgrade()) {
-                if (LibraryManager.hasSpellVersion(hero, type, PROPS.MEMORIZED_SPELLS)) {
+                if (SpellMaster.hasSpellVersion(hero, type, PROPS.MEMORIZED_SPELLS)) {
                     return false;
                 }
             }
@@ -927,7 +927,7 @@ public class HeroManager {
 
     public void spellUpgradeToggle(SPELL_UPGRADE selected, Entity entity) {
         Unit hero = CharacterCreator.getHero();
-        DC_SpellObj spell = hero.getSpell(entity.getName());
+        Spell spell = hero.getSpell(entity.getName());
         boolean verbatim = spell.getSpellPool() == SpellEnums.SPELL_POOL.VERBATIM;
         if (!SpellUpgradeMaster.checkUpgrade(verbatim, hero, spell, selected)) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);

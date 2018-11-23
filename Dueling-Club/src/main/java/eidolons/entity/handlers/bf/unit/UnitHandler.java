@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.bf.unit;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.ActionInput;
@@ -18,7 +18,7 @@ public class UnitHandler extends EntityHandler<Unit> {
         super(entity, entityMaster);
     }
 
-    public void initChannelingSpellData(DC_SpellObj spell) {
+    public void initChannelingSpellData(Spell spell) {
         Context context = new Context(spell.getOwnerUnit().getRef());
         if (ChannelingRule.isPreTargetingNeeded(spell)) {
             spell.getTargeter().initTarget();

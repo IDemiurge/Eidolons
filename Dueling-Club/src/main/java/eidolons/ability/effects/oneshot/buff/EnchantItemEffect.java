@@ -7,7 +7,7 @@ import eidolons.ability.effects.containers.EnergyCostEffect;
 import eidolons.ability.effects.special.media.SoundEffect;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.module.herocreator.logic.items.Enchanter;
 import main.ability.effects.Effects;
@@ -29,11 +29,11 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
     private boolean weapon;
     private String energy;
     private Boolean selectSpell;
-    private DC_SpellObj spell;
+    private Spell spell;
 
     // SUPPORT CUSTOM TARGETING - E.G. heal on self upon being attacked!
 
-    public EnchantItemEffect(String energy, Boolean weapon, DC_SpellObj spell) {
+    public EnchantItemEffect(String energy, Boolean weapon, Spell spell) {
         this(energy, weapon);
         this.spell = spell;
     }
@@ -70,7 +70,7 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
 
         // game.getManager().infoSelect(ref.getSourceObj());
 
-        spell = (DC_SpellObj) ref.getTargetObj();
+        spell = (Spell) ref.getTargetObj();
 
         Effects effects = EffectFinder.getEffectsFromSpell(spell);
         effects.add(new SoundEffect(SOUNDS.IMPACT, ref.getTargetObj()));

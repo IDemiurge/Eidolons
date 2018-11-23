@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -109,7 +109,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         }
         ref.setTarget(unit.getId());
         ref.setSource(obj.getId());
-        DC_SpellObj spell = new DC_SpellObj(type, DC_Player.NEUTRAL, obj.getGame(), ref);
+        Spell spell = new Spell(type, DC_Player.NEUTRAL, obj.getGame(), ref);
         spell.activateOn(unit);
     }
 

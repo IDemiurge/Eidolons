@@ -22,6 +22,10 @@ public class Loop {
         return counter <= 0;
     }
 
+    public static int getCounter() {
+        return counter;
+    }
+
     public boolean continues() {
         return !ended();
     }

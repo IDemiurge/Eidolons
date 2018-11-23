@@ -6,6 +6,9 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.TabbedPanel;
@@ -81,6 +84,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
     private UnitInfoPanelNew() {
         super();
+
         setBackground(NinePatchFactory.getHqDrawable());
 
           center = new AdjustingVerticalGroup(400, 0.75f);

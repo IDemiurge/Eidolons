@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.tools.priority;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -60,7 +60,7 @@ public class ThreatAnalyzer extends AiHandler {
     public int getRangedThreat(Unit target, Unit unit) {
         if (unit.getAI().getType().isCaster())
             return new FuncMaster().total(unit.getSpells(), s -> {
-                DC_SpellObj spell = (DC_SpellObj) s;
+                Spell spell = (Spell) s;
 //            if (spell.isDamageSpell())
 //            return FutureBuilder.precalculateDamage(spell, source, false);
                 return getPriorityManager().getSpellPriority(spell, new Context(unit, target))

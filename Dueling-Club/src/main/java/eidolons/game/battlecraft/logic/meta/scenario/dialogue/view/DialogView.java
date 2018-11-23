@@ -1,11 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
@@ -13,29 +10,17 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
-public class DialogView extends Group {
-    private int time;
-    private Image back; //what about THAT?
-    private boolean done;
-    private long currentTime = 0;
-
+public class DialogView extends TablePanelX {
     FadeImageContainer portraitLeft; //IDEA zoom into the portrait sometimes!
     FadeImageContainer portraitRight; // or flash it with a shader to signify some emotion ... use dif borders
-
     DialogueScroll scroll;
     TablePanelX replyBox; //slots?
 
-    public void update(SpeechDataSource dataSource){
-        boolean left = true;
-        FadeImageContainer portrait = left ? portraitLeft : portraitRight;
-//        prev = portrait.getPrevious();
-        portrait.setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
-         dataSource.getImageSuffix()));
-        scroll.append(dataSource.getMessage(), dataSource.getActorName(), dataSource.getActorImage());
-//TODO info about fx! "Gain 50 xp"
-    }
+    private int time;
+    private long currentTime = 0;
+    private boolean done;
 
-    public DialogView(int time, boolean skippable, TextureRegion backTexture, String message, TextureRegion portraitTexture) {
+    public DialogView(int time, boolean skippable) {
         this.time = time;
         skippable = time <= 0 || skippable;
         if (skippable) {
@@ -48,41 +33,39 @@ public class DialogView extends Group {
             });
         }
 
-        if (backTexture != null) {
-            this.back = new Image(backTexture);
-            final float width = back.getWidth();
-            final float height = back.getHeight();
-
-            final int screenW = GdxMaster.getWidth();
-            final int screenH = GdxMaster.getHeight();
-
-            float x, y;
-
-            if (width > screenW) {
-                x = (width - screenW) / 2;
-            } else {
-                x = screenW / 2 - width / 2;
-            }
-
-            if (height > screenH) {
-                y = (height - screenH) / 2;
-            } else {
-                y = screenH / 2 - height / 2;
-            }
-
-            back.setPosition(x, y);
-            addActor(back);
-        }
-boolean lightweight;
-boolean upsideDown;
-
+        boolean lightweight;
+        boolean upsideDown;
 
         LabelX msgLabel = new LabelX();
         msgLabel.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
-//        SmartButton response = new SmartButton(STD_BUTTON.DIALOGUE, ()-> respond(option), FONT.MAIN, 20, GdxColorMaster.PALE_GOLD)
-//TiledNinePatchGenerator.getOrCreateNinePatch()
+
+//        TiledNinePatchGenerator.getOrCreateNinePatch()
 //        dialogueBox.setBackground();
 
+//        /decoar
+        TablePanelX<Actor> textArea = new TablePanelX<>();
+
+
+
+        add(portraitLeft);
+        add(textArea);
+        add(portraitRight);
+
+    }
+
+    public void update(SpeechDataSource dataSource) {
+        boolean left = true;
+        FadeImageContainer portrait = left ? portraitLeft : portraitRight;
+        //        prev = portrait.getPrevious();
+        portrait.setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
+         dataSource.getImageSuffix()));
+        scroll.append(dataSource.getMessage(), dataSource.getActorName(), dataSource.getActorImage());
+        //TODO info about fx! "Gain 50 xp"
+
+//        updateResponses(dataSource.getSpeech().getChildren())
+
+//        SmartButton response = new SmartButton(STD_BUTTON.DIALOGUE,
+//         () -> respond(option), FONT.MAIN, 20, GdxColorMaster.PALE_GOLD);
     }
 
     public boolean isDone() {

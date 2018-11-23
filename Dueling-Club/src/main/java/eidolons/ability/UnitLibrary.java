@@ -7,7 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.HeroManager;
-import eidolons.game.module.herocreator.logic.spells.LibraryManager;
+import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
@@ -127,7 +127,7 @@ public class UnitLibrary {
     }
 
     private static void initPool(LEARN_CASE lc) {
-        LibraryManager.initSpellbook(unit);
+        SpellMaster.initSpellbook(unit);
         spellPool = new XLinkedMap<>();
         for (String substring : ContainerUtils.open(unit.getProperty(getSourceProp(lc)))) {
             ObjType type = DataManager.getType(VariableManager.removeVarPart(substring),
@@ -152,18 +152,18 @@ public class UnitLibrary {
         }
 
         if (lc == LEARN_CASE.NEW || lc == LEARN_CASE.UPGRADE) {
-            if (LibraryManager.checkKnown(unit, type)) {
+            if (SpellMaster.checkKnown(unit, type)) {
                 return false; // already in reqs?
             }
         }
         if (lc == LEARN_CASE.EN_VERBATIM || lc == LEARN_CASE.MEMORIZE) {
-            if (!LibraryManager.checkKnown(unit, type)) {
+            if (!SpellMaster.checkKnown(unit, type)) {
                 return false;
             }
         }
 
         if (lc == LEARN_CASE.EN_VERBATIM || lc == LEARN_CASE.MEMORIZE) {
-            if (!LibraryManager.checkKnown(unit, type)) {
+            if (!SpellMaster.checkKnown(unit, type)) {
                 return false;
             }
         }

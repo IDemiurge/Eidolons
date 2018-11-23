@@ -5,7 +5,7 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
@@ -102,9 +102,9 @@ public class Unit extends DC_UnitModel {
     protected DC_Masteries masteries;
     protected DC_Attributes attrs;
 
-    protected List<DC_SpellObj> spells;
+    protected List<Spell> spells;
     protected boolean initialized;
-    protected List<DC_SpellObj> spellbook;
+    protected List<Spell> spellbook;
     protected boolean itemsInitialized;
     protected boolean aiControlled;
     protected MACRO_MODES macroMode;
@@ -466,7 +466,7 @@ public class Unit extends DC_UnitModel {
         }
     }
 
-    public List<DC_SpellObj> getSpells() {
+    public List<Spell> getSpells() {
 
         if (spells == null) {
             spells = new ArrayList<>();
@@ -474,7 +474,7 @@ public class Unit extends DC_UnitModel {
         return spells;
     }
 
-    public void setSpells(List<DC_SpellObj> spells) {
+    public void setSpells(List<Spell> spells) {
         this.spells = spells;
     }
 
@@ -531,11 +531,11 @@ public class Unit extends DC_UnitModel {
 
     }
 
-    public List<DC_SpellObj> getSpellbook() {
+    public List<Spell> getSpellbook() {
         return spellbook;
     }
 
-    public void setSpellbook(List<DC_SpellObj> spellbook) {
+    public void setSpellbook(List<Spell> spellbook) {
         this.spellbook = spellbook;
     }
 
@@ -1036,8 +1036,8 @@ public class Unit extends DC_UnitModel {
     }
 
 
-    public DC_SpellObj getSpell(String actionName) {
-        for (DC_SpellObj s : getSpells()) {
+    public Spell getSpell(String actionName) {
+        for (Spell s : getSpells()) {
             if (s.getName().equalsIgnoreCase(actionName)) {
                 return s;
             }

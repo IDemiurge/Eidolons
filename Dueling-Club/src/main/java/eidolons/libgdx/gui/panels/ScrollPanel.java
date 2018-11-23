@@ -6,14 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.NumberUtils;
 
-public class ScrollPanel<T extends Actor> extends Container<Container> {
+public class ScrollPanel<T extends Actor> extends Container  {
 
 
     protected static Integer scrollAmount;
@@ -22,10 +25,15 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     protected float offsetY;
     protected boolean widgetPosChanged;
     private TablePanelX table;
+    private ScrollPane scroll;
 
     public ScrollPanel() {
         init();
         offsetY = getDefaultOffsetY();
+    }
+
+    private boolean isLibgdxImpl() {
+        return true;
     }
 
     @Override
@@ -43,18 +51,6 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
     public InnerScrollContainer<Table> getInnerScrollContainer() {
         return innerScrollContainer;
-    }
-
-    @Override
-    @Deprecated
-    public Container getActor() {
-        throw new UnsupportedOperationException("Do not use this!");
-    }
-
-    @Override
-    @Deprecated
-    public void setActor(Container actor) {
-        throw new UnsupportedOperationException("Use ScrollPanel#addElement.");
     }
 
     public Cell addElement(T obj) {
@@ -110,8 +106,22 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         innerScrollContainer.setActor(getTable());
         innerScrollContainer.setX(0);
         innerScrollContainer.setY(0);
-        super.setActor(innerScrollContainer);
-        initScrollListener();
+
+        if (isLibgdxImpl()) {
+            ScrollPaneStyle style = StyleHolder.getScrollStyle();
+            super.setActor(scroll = new ScrollPane(innerScrollContainer, style));
+            scroll.setFlingTime(2);
+            scroll.setForceScroll(false, true);
+            scroll.setScrollingDisabled(true, false);
+            scroll.setVariableSizeKnobs(false);
+
+//            scroll.setupFadeScrollBars();
+//            scroll.setFlickScroll(false);
+//            scroll.setFlickScrollTapSquareSize(1);
+        } else {
+            super.setActor(innerScrollContainer);
+            initScrollListener();
+        }
 
     }
 
@@ -280,6 +290,9 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         if (getStage() == null) {
             return null;
         }
+        if (isLibgdxImpl()) {
+            getStage().setScrollFocus(scroll);
+        } else
         getStage().setScrollFocus(this);
         return a;
     }

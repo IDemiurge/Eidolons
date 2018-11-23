@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 5/22/2017.
  */
+@Deprecated
 public class SceneFactory implements Supplier<List<DialogView>> {
     private String data;
     private boolean dialogue;
@@ -72,8 +73,8 @@ public class SceneFactory implements Supplier<List<DialogView>> {
             if (!StringMaster.isEmpty(data.getValue(SPEECH_VALUE.BACKGROUND)))
                 backTexture = TextureCache.getOrCreateR(data.getValue(SPEECH_VALUE.BACKGROUND));
 
-            list.add(new DialogView(time, skippable, backTexture, message,
-             portraitTexture));
+//            list.add(new DialogView(time, skippable, backTexture, message,
+//             portraitTexture));
 
         }
         return list;

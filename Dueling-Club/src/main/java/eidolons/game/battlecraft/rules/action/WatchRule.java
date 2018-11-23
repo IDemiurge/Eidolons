@@ -6,7 +6,7 @@ import eidolons.ability.effects.oneshot.rule.WatchActionEffect;
 import eidolons.ability.effects.oneshot.rule.WatchBuffEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -132,8 +132,8 @@ public class WatchRule implements ActionRule {
         }
         if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.SPELL) {
             // getDestination() -> preCheck relative facing to watch
-            if (action instanceof DC_SpellObj) {
-                DC_SpellObj spellObj = (DC_SpellObj) action;
+            if (action instanceof Spell) {
+                Spell spellObj = (Spell) action;
                 // teleport
                 return spellObj.isChanneling();
             }

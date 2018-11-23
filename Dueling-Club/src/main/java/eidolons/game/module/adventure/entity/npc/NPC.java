@@ -1,5 +1,8 @@
 package eidolons.game.module.adventure.entity.npc;
 
+import eidolons.macro.entity.MacroObj;
+import main.entity.type.ObjType;
+
 /**
  * Created by JustMe on 3/14/2018.
  * List of values
@@ -45,30 +48,11 @@ package eidolons.game.module.adventure.entity.npc;
  style/flavor (for items and description)
 
  */
-public class NPC {
+public class NPC extends MacroObj{
 
-    public enum NPC_MOOD{
-
+    public NPC(ObjType type) {
+        super(type);
     }
-        public enum NPC_PROFESSION{
-        Scholar,
-        Traveler,
-         Bard,
-        Gambler,
-         Fraud,
-        Merchant,
-         Mercenary,
-        Governor,
-         Elder,
-
-
-        Prostitute,
-         Madam,
-
-        Sailor,
-         Captain,
-
-        }
 
     public void interact() {
 

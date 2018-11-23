@@ -33,6 +33,8 @@ public class NinePatchFactory {
     private static final String LIGHT_PANEL_FILLED_SMALL_PATH =
      StrPathBuilder.build(PathFinder.getComponentsPath(),
       "ninepatch", "std", "light ninepatch filled small.png");
+    private static final java.lang.String SCROLL = "ui/components/generic/scroll/scroll.png";
+    private static final java.lang.String SCROLL_KNOB = "ui/components/generic/scroll/scroll_knob.png";
 
     public static NinePatch getTooltip() {
         return getLightPanelFilled();
@@ -105,6 +107,21 @@ public class NinePatchFactory {
     }
     public static NinePatchDrawable getLightPanelDrawable() {
         return new NinePatchDrawable(getLightPanel());
+    }
+
+    public static NinePatchDrawable getScrollH() {
+        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+         SCROLL), 0, 0, 30, 30));
+    }
+    public static NinePatchDrawable getScrollKnobH() {
+        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+         SCROLL_KNOB), 0, 0, 0, 0));
+    }
+    public static NinePatchDrawable getScrollV() {
+        return getScrollH();
+    }
+    public static NinePatchDrawable getScrollKnobV() {
+        return getScrollKnobH();
     }
 
 }

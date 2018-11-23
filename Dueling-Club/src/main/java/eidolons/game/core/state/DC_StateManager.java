@@ -1,7 +1,7 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -496,7 +496,7 @@ public class DC_StateManager extends StateManager {
             ((DC_ActiveObj) obj).tick();
         }
         for (Obj obj : state.getObjMaps().get(DC_TYPE.SPELLS).values()) {
-            ((DC_SpellObj) obj).tick();
+            ((Spell) obj).tick();
         }
     }
 

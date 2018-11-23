@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
@@ -30,9 +30,9 @@ public class EnchantSpellCondition extends MicroCondition {
         // TODO I could of course leave for freedom to the player
         // - just preCheck the *targeting mode* and if it's fitting, let him choose
         // the spell
-        if (ref.getMatchObj() instanceof DC_SpellObj) {
+        if (ref.getMatchObj() instanceof Spell) {
             for (TARGETING_MODE t : modes) {
-                if (t == ((DC_SpellObj) ref.getMatchObj()).getTargetingMode()) {
+                if (t == ((Spell) ref.getMatchObj()).getTargetingMode()) {
                     return true;
                 }
             }

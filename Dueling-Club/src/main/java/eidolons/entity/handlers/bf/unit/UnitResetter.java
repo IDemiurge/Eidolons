@@ -4,7 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -147,7 +147,7 @@ public class UnitResetter extends EntityResetter<Unit> {
                 resetObjects();
                 resetQuickSlotsNumber();
                 String value = "";
-                for (DC_SpellObj s : getEntity().getSpells()) {
+                for (Spell s : getEntity().getSpells()) {
                     if (!s.getProperty(PROPS.SPELL_UPGRADES).isEmpty()) {
                         value += s.getName()
                          + StringMaster.wrapInParenthesis(s
@@ -209,7 +209,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     public void resetSpells() {
         if (getEntity().getSpells() != null) {
-            for (DC_SpellObj spell : getEntity().getSpells()) {
+            for (Spell spell : getEntity().getSpells()) {
                 spell.toBase();
             }
         }

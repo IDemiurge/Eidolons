@@ -4,7 +4,7 @@ import com.graphbuilder.math.ExpressionParseException;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -16,7 +16,7 @@ import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.game.module.herocreator.logic.spells.LibraryManager;
+import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.macro.global.persist.Loader;
@@ -145,8 +145,8 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initSpellbook() {
-        LibraryManager.initSpellbook(getEntity());
-        List<DC_SpellObj> spellbook =
+        SpellMaster.initSpellbook(getEntity());
+        List<Spell> spellbook =
          new ArrayList<>(getEntity().getSpells());
         spellbook.addAll(getGame().getManager().getSpellMaster().
          initSpellpool(getEntity(), PROPS.SPELLBOOK));

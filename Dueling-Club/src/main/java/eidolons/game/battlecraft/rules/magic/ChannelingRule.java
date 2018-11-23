@@ -6,7 +6,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.mode.STD_MODES;
@@ -41,15 +41,15 @@ public class ChannelingRule {
     };
     static boolean testMode;
 
-    public static Costs getChannelingActivateCosts(DC_SpellObj action) {
+    public static Costs getChannelingActivateCosts(Spell action) {
         return getChannelingCosts(action, true);
     }
 
-    public static Costs getChannelingResolveCosts(DC_SpellObj action) {
+    public static Costs getChannelingResolveCosts(Spell action) {
         return getChannelingCosts(action, false);
     }
 
-    public static Costs getChannelingCosts(DC_SpellObj action, boolean activateOrResolve) {
+    public static Costs getChannelingCosts(Spell action, boolean activateOrResolve) {
         List<Cost> list = new ArrayList<>();
         for (PARAMS costParam : activateOrResolve ? costParamsActivate : costParamsResolve) {
             PARAMS payParam = DC_ContentValsManager.getPayParameterForCost(costParam);
@@ -79,7 +79,7 @@ public class ChannelingRule {
         activeUnit.removeBuff(STD_MODES.CHANNELING.getBuffName());
     }
 
-    public static boolean activateChanneing(DC_SpellObj spell) {
+    public static boolean activateChanneing(Spell spell) {
 
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
@@ -156,7 +156,7 @@ public class ChannelingRule {
         ChannelingRule.testMode = testMode;
     }
 
-    public static boolean isPreTargetingNeeded(DC_SpellObj spell) {
+    public static boolean isPreTargetingNeeded(Spell spell) {
         return true;
     }
 

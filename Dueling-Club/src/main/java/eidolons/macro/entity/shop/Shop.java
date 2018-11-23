@@ -184,4 +184,8 @@ public class Shop extends TownPlace implements ShopInterface {
     public void enter(Unit unit) {
         itemManager.handleDebt(unit);
     }
+
+    public static boolean isUnlimitedSize() {
+        return false;
+    }
 }

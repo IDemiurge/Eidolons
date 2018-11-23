@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.datasource;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -496,7 +496,7 @@ public class HqDataMaster {
     }
 
     protected void applySpellOperation(Unit hero, HERO_OPERATION operation, Object... args) {
-        DC_SpellObj spell = (DC_SpellObj) args[0];
+        Spell spell = (Spell) args[0];
         switch (operation) {
             case SPELL_LEARNED:
                 HqSpellMaster.learnSpell(hero, spell);

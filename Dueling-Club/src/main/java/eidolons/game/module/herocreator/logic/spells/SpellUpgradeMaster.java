@@ -3,7 +3,7 @@ package eidolons.game.module.herocreator.logic.spells;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
-import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
@@ -37,7 +37,7 @@ public class SpellUpgradeMaster {
 
     private static final boolean TEST_MODE = true;
 
-    public static ImageIcon generateSpellIcon(DC_SpellObj spell) {
+    public static ImageIcon generateSpellIcon(Spell spell) {
         BufferedImage image = ImageManager.getBufferedImage(spell.getImagePath());
         boolean x_y_direction = false;
         boolean top_corner = true;
@@ -166,7 +166,7 @@ public class SpellUpgradeMaster {
             return;
         }
         loop:
-        for (DC_SpellObj spell : hero.getSpells()) {
+        for (Spell spell : hero.getSpells()) {
             for (String string : list) {
                 if (string.contains(spell.getName() + "(")) {
                     spell.setProperty(PROPS.SPELL_UPGRADES, VariableManager.getVarPart(string)
@@ -179,7 +179,7 @@ public class SpellUpgradeMaster {
     }
 
     public static void removeUpgrades(Unit hero, Entity spell) {
-        DC_SpellObj spellObj = hero.getSpell(spell.getName());
+        Spell spellObj = hero.getSpell(spell.getName());
         if (spellObj != null) {
             spellObj.removeProperty(PROPS.SPELL_UPGRADES);
             spellObj.getType().removeProperty(PROPS.SPELL_UPGRADES);
