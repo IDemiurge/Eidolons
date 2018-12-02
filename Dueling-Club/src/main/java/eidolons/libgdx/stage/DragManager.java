@@ -7,7 +7,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.UiMaster;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -45,10 +45,10 @@ public class DragManager extends FadeImageContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null, false, false);
+            ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
         //        b.draw(draggedRegion, x, y);
     }
 

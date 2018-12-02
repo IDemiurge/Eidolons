@@ -9,8 +9,10 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 public class HeroSpellPanel {
 
     HeroSpellStats spellStats;
-    SpellSlotsPanel slotsPanel;
-    ScrollPane sbScroll;
     TablePanelX heroTable;
+
     SpellBookPanel spellBookPanel;
+    ScrollPane sbScroll;
+
+    SpellSlotsPanel slotsPanel;
 }

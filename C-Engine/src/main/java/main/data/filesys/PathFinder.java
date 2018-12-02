@@ -245,6 +245,10 @@ public class PathFinder {
         init();
         return getImagePath() + "vfx" + PathUtils.getPathSeparator();
     }
+    public static String getVfxAtlasPath() {
+        init();
+        return getImagePath() + "vfx/atlas/"  ;
+    }
 
     public static String getSpellVfxPath() {
         init();
@@ -293,11 +297,11 @@ public class PathFinder {
     }
 
     public static String getEmblemsPath() {
-        return StrPathBuilder.build("ui", "emblems") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build("ui","content", "emblems") + PathUtils.getPathSeparator();
     }
 
     public static String getEmblemAutoFindPath() {
-        return StrPathBuilder.build("ui", "emblems", "auto") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build("ui", "content", "emblems", "auto") + PathUtils.getPathSeparator();
     }
 
     public static String getWeaponAnimPath() {
@@ -353,14 +357,14 @@ public class PathFinder {
 
     }
 
-    public static String getShadeLightPath() {
-        return StrPathBuilder.build(
-         "ui", "Outlines", "shadows") + PathUtils.getPathSeparator();
-    }
 
     public static String getOutlinesPath() {
         return StrPathBuilder.build(
-         "ui", "Outlines") + PathUtils.getPathSeparator();
+         "ui","cells",  "outlines") + PathUtils.getPathSeparator();
+    }
+    public static String getShadeCellsPath() {
+        return StrPathBuilder.build(
+         "ui","cells",  "outlines",  "shadows") + PathUtils.getPathSeparator();
     }
 
     public static String getMacroUiPath() {
@@ -461,5 +465,13 @@ public class PathFinder {
     public static String getCursorPath() {
         return StrPathBuilder.build(getImagePath(), getUiPath(),
          "cursor.png");
+    }
+
+    public static String getBordersPath() {
+        return "ui/components/generic/borders/";
+    }
+
+    public static String getShadersPath() {
+        return getTextPath() + "shaders/";
     }
 }

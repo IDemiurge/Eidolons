@@ -5,9 +5,13 @@ import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
 import eidolons.libgdx.screens.map.town.navigation.data.NavigationMaster;
-import eidolons.macro.entity.MacroObj;
+import eidolons.libgdx.screens.map.town.navigation.data.Nested;
+import eidolons.macro.MacroGame;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by JustMe on 11/21/2018.
@@ -18,32 +22,36 @@ import java.util.*;
  */
 public class PlaceNavigationPanel extends TablePanelX {
 
-    private final NavigationMaster navigationMaster;
-    private final Navigable root;
-    private final NavigatedPlaceView view;
-    private  Navigable tip;
-
     ScrollPaneX horizontalScroll;
     TablePanelX scrolledTable;
     Map<Navigable, NavigationJoint> jointCache = new HashMap<>();
     Set<NavigationJoint> displayed = new LinkedHashSet<>();
+    private NavigationMaster navigationMaster;
+    private Navigable root;
+    private NavigatedPlaceView view;
+    private Navigable tip;
 
-    public PlaceNavigationPanel(MacroObj root, NavigatedPlaceView navigatedPlaceView) {
-          navigationMaster = new NavigationMaster();
-        this.root = navigationMaster.getNavigable(root);
+    public PlaceNavigationPanel(NavigatedPlaceView view) {
+        this.view = view;
+        navigationMaster = new NavigationMaster();
         horizontalScroll = new ScrollPaneX(scrolledTable = new TablePanelX());
-        selected( this.root);
-        view = navigatedPlaceView;
-    }
+        }
 
+    public void show(Nested root) {
+        if (root == null) {
+            root = MacroGame.getGame().getPlayerParty().getCurrentLocation();
+        }
+        this.root = navigationMaster.getNavigable(root);
+        selected(this.root);
+    }
 
     public void back() {
         int level = displayed.size() - 1;
-        NavigationJoint joint=jointCache.get(tip);
+        NavigationJoint joint = jointCache.get(tip);
         animateNewJoint(joint, level, true);
 
         selected(tip.getParent());
-   }
+    }
 
     public void selected(Navigable navigable) {
         if (!navigable.isLeaf()) {
@@ -73,7 +81,7 @@ public class PlaceNavigationPanel extends TablePanelX {
             x = -x;
             displayed.remove(joint);
         }
-        ActorMaster.addMoveByAction(joint,x, 0, x/getRollSpeed());
+        ActorMaster.addMoveByAction(joint, x, 0, x / getRollSpeed());
         if (remove) {
             ActorMaster.addFadeOutAction(joint, x / getRollSpeed());
             ActorMaster.addHideAfter(joint);

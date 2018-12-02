@@ -11,19 +11,6 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.ink;
  * <p>
  */
 public class InkEnums {
-    public  enum INK_STD_STORY_VARS{
-        has_warden_pin,
-
-    }
-    public  enum INK_STD_CONTEXT{
-        STOKEPORT,
-
-        INNS,
-
-        BASTION,
-
-    }
-
     public enum INK_ACTOR_VAR {
         NPC_NAME,
 
@@ -41,12 +28,6 @@ public class InkEnums {
 
     }
 
-    public enum INK_FLAVOR {
-        terrified, //will determine mood?
-        enamored,
-        intrigued,
-
-    }
 
     public enum INK_GLOBAL_VAR {
         TIME_OF_DAY,
@@ -56,7 +37,17 @@ public class InkEnums {
         PC_,
     }
 
-    public enum INK_MOOD {
+    public enum INK_STD_CONTEXT {
+        STOKEPORT,
+
+        INNS,
+
+        BASTION,
+
+    }
+
+    public enum INK_STD_STORY_VARS {
+        has_warden_pin,
 
     }
 
@@ -70,31 +61,7 @@ public class InkEnums {
 
     }
 
-    public enum NPC_MOOD {
 
-    }
-
-// * Each profession should have a small custom chat line
-// * E.g. bard should be able to tell a story or sing a song…
-    public enum NPC_PROFESSION {
-        Scholar,
-        Traveler,
-        Bard,
-        Gambler,
-        Fraud,
-        Merchant,
-        Mercenary,
-        Governor,
-        Elder,
-
-
-        Prostitute,
-        Madam,
-
-        Sailor,
-        Captain,
-
-    }
 
     public enum STD_INFLUENCE_ACTION {
         intimidate,

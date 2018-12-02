@@ -1,5 +1,6 @@
 package eidolons.game.module.adventure.entity.npc;
 
+import eidolons.libgdx.screens.map.town.navigation.data.NestedLeaf;
 import eidolons.macro.entity.MacroObj;
 import main.entity.type.ObjType;
 
@@ -48,7 +49,7 @@ import main.entity.type.ObjType;
  style/flavor (for items and description)
 
  */
-public class NPC extends MacroObj{
+public class NPC extends MacroObj implements NestedLeaf{
 
     public NPC(ObjType type) {
         super(type);

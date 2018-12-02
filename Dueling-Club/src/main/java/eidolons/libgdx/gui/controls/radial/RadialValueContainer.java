@@ -14,7 +14,7 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
@@ -156,12 +156,12 @@ public class RadialValueContainer extends ActionValueContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        if (parentAlpha== ShaderDrawer.SUPER_DRAW)
         {
             super.draw(batch, 1);
             return;
         }
-            ShaderMaster.drawWithCustomShader(this, batch,
+            ShaderDrawer.drawWithCustomShader(this, batch,
          shader, true);
 
         if (underlayOffsetX == 0 || underlayOffsetY == 0)

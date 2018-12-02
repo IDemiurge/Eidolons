@@ -354,7 +354,7 @@ public class FloatingTextMaster {
     private ANIM_PART getPart(TEXT_CASES aCase) {
         switch (aCase) {
             case COSTS:
-                return ANIM_PART.MAIN;
+                return ANIM_PART.MISSILE;
         }
         return ANIM_PART.IMPACT;
     }

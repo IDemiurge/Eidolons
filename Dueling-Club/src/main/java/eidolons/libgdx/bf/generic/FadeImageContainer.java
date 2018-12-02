@@ -10,11 +10,11 @@ import eidolons.libgdx.texture.TextureCache;
  */
 public class FadeImageContainer extends ImageContainer {
 
-    private float fadePercentage;
-    private Image previousImage;
-    private float fadeDuration = 2f;
-    private String imagePath;
-    private String previousPath;
+    protected float fadePercentage;
+    protected Image previousImage;
+    protected float fadeDuration = 2f;
+    protected String imagePath;
+    protected String previousPath;
 
     public FadeImageContainer(String path, float fadeDuration) {
         super(path);

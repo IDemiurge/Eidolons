@@ -204,31 +204,29 @@ public class SoundMaster {
 
     public enum BUTTON_SOUND_MAP {
         //drag? scroll?
-        MENU(null, null , NEW__CLICK_UP, NEW__CLICK_DISABLED),
-        SELECTION_SHARP(NEW__CLICK, null  , NEW__CLICK_UP2, NEW__CLICK_DISABLED),
+        MENU(null, null, NEW__CLICK_UP, NEW__CLICK_DISABLED),
+        SELECTION_SHARP(NEW__CLICK, null, NEW__CLICK_UP2, NEW__CLICK_DISABLED),
 
-        SELECTION_SCROLL(NEW__TAB, null  , NEW__OPEN_MENU , NEW__CLICK_DISABLED),
-        HELP(NEW__TAB, null  , NEW__OPEN_MENU , NEW__CLICK_DISABLED),
+        SELECTION_SCROLL(NEW__TAB, null, NEW__OPEN_MENU, NEW__CLICK_DISABLED),
+        HELP(NEW__TAB, null, NEW__OPEN_MENU, NEW__CLICK_DISABLED),
 
-        SELECTION(NEW__TAB, null  , null , NEW__CLICK_DISABLED),
-        EYE(NEW__TAB, null  , null , NEW__CLICK_DISABLED),
+        SELECTION(NEW__TAB, null, null, NEW__CLICK_DISABLED),
+        EYE(NEW__TAB, null, null, NEW__CLICK_DISABLED),
 
-        TAB(NEW__TAB, null , null, null),
-        STAT(NEW__PLUS,null  ,null  , CLICK_ERROR),
-        ENTER(null , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
-        OK(NEW__OK , NEW__TAB ,null   , NEW__CLICK_DISABLED),
-        CANCEL(NEW__CLICK_DISABLED , NEW__TAB ,NEW__ENTER  , NEW__CLICK_DISABLED),
+        TAB(NEW__TAB, null, null, null),
+        STAT(NEW__PLUS, null, null, CLICK_ERROR),
+        ENTER(null, NEW__TAB, NEW__ENTER, NEW__CLICK_DISABLED),
+        OK(NEW__OK, NEW__TAB, null, NEW__CLICK_DISABLED),
+        CANCEL(NEW__CLICK_DISABLED, NEW__TAB, NEW__ENTER, NEW__CLICK_DISABLED),
 
-//        REPAIR(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
-        CHEST(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
-
-
-        ;
+        //        REPAIR(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
+        CHEST(NEW__OPEN_MENU, NEW__HOVER, NEW__CONTAINER, NEW__CLICK_DISABLED),;
 
         public STD_SOUNDS down;
         public STD_SOUNDS hover;
         public STD_SOUNDS up;
         public STD_SOUNDS disabled;
+
         BUTTON_SOUND_MAP(STD_SOUNDS down, STD_SOUNDS hover, STD_SOUNDS up, STD_SOUNDS disabled) {
             this.down = down;
             this.hover = hover;
@@ -340,23 +338,24 @@ public class SoundMaster {
         DIS__BLESS(true),
         CLICK1,
         ButtonUp,
-        ButtonDown, VICTORY, NEW__CLICK,  NEW__CLICK_DISABLED
-        , NEW__CLICK_UP2
-        , NEW__CLICK_UP
-        , NEW__ENTER
-        , NEW__TAB
-        , NEW__BATTLE_START
-        , NEW__BATTLE_START2
-        , NEW__CONTAINER,
+        ButtonDown, VICTORY,
+
+        NEW__CLICK, NEW__CLICK_DISABLED, NEW__CLICK_UP2,
+        NEW__CLICK_UP, NEW__ENTER, NEW__TAB,
+        NEW__BATTLE_START, NEW__BATTLE_START2,
+
+        NEW__CONTAINER,
         NEW__PLUS,
         NEW__PAUSE,
         NEW__RESUME,
 
-        NEW__OPEN_MENU, NEW__GOLD, NEW__OK, NEW__DEFEAT, NEW__VICTORY
-        , NEW__BATTLE_END
-        , NEW__BATTLE_END2,
+        NEW__OPEN_MENU, NEW__GOLD, NEW__OK,
+        NEW__DEFEAT, NEW__VICTORY, NEW__BATTLE_END, NEW__BATTLE_END2,
         NEW__QUEST_TAKEN, NEW__QUEST_CANCELLED, NEW__QUEST_COMPLETED,
-        NEW__HOVER,NEW__HOVER_OFF
+
+        NEW__HOVER, NEW__HOVER_OFF,
+
+        NEW__BONES, NEW__CHEST, NEW__GATE
 
         ;
         String path;

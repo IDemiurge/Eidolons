@@ -179,6 +179,15 @@ public abstract class SuperActor extends GroupX implements Borderable {
         }
         super.act(delta);
         alphaFluctuation(delta);
+
+        if (actionManger!=null ){
+            actionManger.run();
+        }
+    }
+    protected Runnable actionManger;
+
+    public void setActionManger(Runnable actionManger) {
+        this.actionManger = actionManger;
     }
 
     protected boolean isTransformDisabled() {

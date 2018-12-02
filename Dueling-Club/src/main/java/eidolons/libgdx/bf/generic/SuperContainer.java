@@ -9,8 +9,8 @@ import eidolons.libgdx.bf.SuperActor;
  * Created by JustMe on 8/17/2017.
  */
 public class SuperContainer extends SuperActor {
-    Actor content;
-    private boolean fluctuateAlpha;
+    protected Actor content;
+    protected boolean fluctuateAlpha;
 
 
     public SuperContainer() {

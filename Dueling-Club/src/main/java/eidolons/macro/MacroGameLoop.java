@@ -8,6 +8,7 @@ import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.libgdx.screens.map.town.navigation.data.NavigationMaster;
 import eidolons.macro.entity.town.Town;
 import eidolons.macro.generation.ScenarioGenerator;
 import eidolons.macro.global.persist.Saver;
@@ -185,6 +186,11 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     public void enter(Place entered) {
+        if (NavigationMaster.isTestOn()){
+            GuiEventManager.trigger(GuiEventType.SHOW_NAVIGATION_PANEL, entered);
+            return;
+        }
+
         if (entered instanceof Town) {
             //            entered.getGame().get
             DC_Game.game.getMetaMaster().getTownMaster().enterTown((Town) entered, false);

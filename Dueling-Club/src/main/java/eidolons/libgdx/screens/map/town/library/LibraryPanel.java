@@ -26,6 +26,14 @@ public class LibraryPanel extends TablePanelX {
     AdjustingVerticalGroup right;
 
     public LibraryPanel() {
+
+
+    }
+
+    public void animateSpellLearned(){
+//book decor?
+//        ActorMaster.addMoveToAction(actor, v.x, v.y, dst/speed);
+
     }
 
     @Override

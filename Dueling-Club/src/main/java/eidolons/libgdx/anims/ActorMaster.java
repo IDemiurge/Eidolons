@@ -10,8 +10,8 @@ import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.gui.generic.GearCluster;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.auxiliary.ClassMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -62,6 +62,7 @@ public class ActorMaster {
             }
         });
     }
+
     public static void addHideAfter(Actor actor) {
         addSetVisibleAfter(actor, false);
     }
@@ -95,11 +96,12 @@ public class ActorMaster {
         return addAlphaAction(actor, dur, true);
     }
 
-    public static void addFadeOutAction( Actor actor, float dur, boolean remove) {
+    public static void addFadeOutAction(Actor actor, float dur, boolean remove) {
         addAlphaAction(actor, dur, true);
         if (remove)
             addRemoveAfter(actor);
     }
+
     public static AlphaAction addFadeInAction(Actor actor) {
         return addAlphaAction(actor, 0, false);
     }
@@ -123,7 +125,7 @@ public class ActorMaster {
         out.setInterpolation(Interpolation.fade);
         SequenceAction sequence;
         if (remove) {
-//            Actions.sequence(in, out, remove);
+            //            Actions.sequence(in, out, remove);
             RemoveActorAction r = new RemoveActorAction();
             r.setTarget(actor);
             sequence = Actions.sequence(in, out, r);
@@ -133,25 +135,33 @@ public class ActorMaster {
         actor.addAction(sequence);
         sequence.setTarget(actor);
     }
+
     public static AlphaAction addAlphaAction(Actor actor, float dur, boolean out) {
-        if (dur<=0){
-            dur =out? DEFAULT_FADE_OUT_DURATION : DEFAULT_FADE_IN_DURATION;
+        if (dur <= 0) {
+            dur = out ? DEFAULT_FADE_OUT_DURATION : DEFAULT_FADE_IN_DURATION;
         }
         return addAlphaAction(actor, dur, out ? 0 : 1);
     }
 
-        public static AlphaAction addAlphaAction(Actor actor, float dur, float alpha) {
-            if (alpha==actor.getColor().a) {
-                return null;
-            }
+    public static AlphaAction addAlphaAction(Actor actor, float dur, float alpha) {
+        return getAlphaAction(actor, dur, alpha, true);
+    }
+
+    public static AlphaAction getAlphaAction(Actor actor, float dur, float alpha, boolean add) {
+
         AlphaAction action = (AlphaAction) getAction(
-         alpha<actor.getColor().a ? FadeOutAction.class : FadeInAction.class );
+         alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
 
         action.setAlpha(alpha);
         action.setDuration(dur);
         action.setTarget(actor);
-        actor.addAction(action);
         action.setInterpolation(Interpolation.fade);
+        if (add) {
+            if (alpha == actor.getColor().a) {
+                return null;
+            }
+            actor.addAction(action);
+        }
         return action;
     }
 
@@ -176,9 +186,9 @@ public class ActorMaster {
 
         action.setAmount(to - from);
         if ((action.getAmount()) >= 270)
-            action.setAmount(   to - from-360);
+            action.setAmount(to - from - 360);
         if ((action.getAmount()) <= -270)
-            action.setAmount(   to - from+360);
+            action.setAmount(to - from + 360);
 
         float speed = 180 * AnimMaster.getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
@@ -188,9 +198,10 @@ public class ActorMaster {
     }
 
     public static void addMoveByAction(Actor actor, float x, float y, float v) {
-        addMoveToAction(actor, actor.getX()+x, actor.getY()+y, v);
+        addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
     }
-        public static void addMoveToAction(Actor actor, float x, float y, float v) {
+
+    public static void addMoveToAction(Actor actor, float x, float y, float v) {
         MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);
         action.setDuration(v);
@@ -224,12 +235,12 @@ public class ActorMaster {
         ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);// new ScaleToAction();
         action.setScale(scaleX, scaleY);
         action.setDuration(v);
-       addAction(actor, action);
-       if (scaleX<=1){
-           DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER_OFF);
-       } else {
-           DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
-       }
+        addAction(actor, action);
+        if (scaleX <= 1) {
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER_OFF);
+        } else {
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+        }
         if (centered) {
             float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
             float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;
@@ -238,7 +249,7 @@ public class ActorMaster {
     }
 
     public static AutoFloatAction addFloatAction(GearCluster actor, Float float_, float from, float to, float dur) {
-        AutoFloatAction action =new AutoFloatAction ();//(AutoFloatAction) getAction(AutoFloatAction.class);
+        AutoFloatAction action = new AutoFloatAction();//(AutoFloatAction) getAction(AutoFloatAction.class);
         action.setFloat_(float_);
         action.setDuration(dur);
         action.setStart(from);
@@ -291,7 +302,7 @@ public class ActorMaster {
     }
 
     public static void addDelayedAction(Actor actor, float delay, Action action) {
-        DelayAction delayAction= new DelayAction(delay);
+        DelayAction delayAction = new DelayAction(delay);
         delayAction.setAction(action);
         addAction(actor, delayAction);
     }

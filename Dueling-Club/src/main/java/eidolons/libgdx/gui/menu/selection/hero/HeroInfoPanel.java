@@ -14,6 +14,7 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.text.HelpMaster;
 import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -97,10 +98,8 @@ public class HeroInfoPanel extends ItemInfoPanel {
     private Texture getDefaultEmblem() {
         return
          TextureCache.getOrCreate(
-          StrPathBuilder.build("ui",
-           "emblems",
-           "auto",
-           "unknown.png")
+          StrPathBuilder.build(PathFinder.getEmblemAutoFindPath()
+           ,"unknown.png")
          );
     }
 }

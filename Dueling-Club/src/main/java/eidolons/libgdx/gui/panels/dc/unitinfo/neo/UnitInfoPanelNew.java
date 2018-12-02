@@ -6,9 +6,6 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.TiledNinePatchGenerator;
-import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
-import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.TabbedPanel;
@@ -16,7 +13,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqTraitsPanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqVerticalValueTable;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.content.values.properties.G_PROPS;
@@ -198,10 +195,10 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null);
+            ShaderDrawer.drawWithCustomShader(this, batch, null);
     }
 
     @Override

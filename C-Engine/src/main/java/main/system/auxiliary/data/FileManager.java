@@ -15,6 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class FileManager {
     private static List<String> missing = new ArrayList<>();
 
     public static String readFile(String filePath) {
-        File file = getFile(filePath);
+        File file = getFile(filePath, true, false);
         return readFile(file);
     }
 
@@ -213,23 +214,33 @@ public class FileManager {
     }
 
     public static File getFile(String path, boolean first) {
+        return getFile(path, first, true);
+    }
+        public static File getFile(String path, boolean first, boolean allowInvalid) {
         File file = new File(path);
         if (file.isFile() || file.isDirectory()) {
             return file;
         }
         if (first) {
-            file = getFile(formatPath(path), false);
+            path = formatPath(path);
+            file = getFile((path), false);
             if (file.isFile() || file.isDirectory()) {
                 return file;
             }
-        }
-
-        if (!CoreEngine.isFullFastMode()) {
-            if (!missing.contains(file.getPath())) {
-                main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
-                missing.add(file.getPath());
+//            if (!allowInvalid)
+//            file = getFile(PathFinder.getEnginePath() + path, false);
+//            if (file.isFile() || file.isDirectory()) {
+//                return file;
+//            }
+//            file = new File(path);
+            if (!CoreEngine.isFullFastMode()) {
+                if (!missing.contains(file.getPath())) {
+                    main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
+                    missing.add(file.getPath());
+                }
             }
         }
+
         return file;
     }
 
@@ -255,6 +266,11 @@ public class FileManager {
         }
         if (force) {
             return formatted.toString().toLowerCase();
+        }
+        if (!CoreEngine.isWindows()) {
+
+            return (PathFinder.getEnginePath() + formatted.toString().toLowerCase())
+             .replace("%20", " ");
         }
         //fix case
         return PathFinder.getEnginePath() + formatted.toString().toLowerCase();
@@ -601,5 +617,15 @@ public class FileManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void copy(String from, String to) {
+        Path src = Paths.get(getFile(from).toURI());
+        Path target = Paths.get(getFile(to).toURI());
+        try {
+            Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 }

@@ -9,22 +9,19 @@ import java.util.List;
  */
 public class SpeechDataSource {
 
-    String actorName;
-    String actorImage;
-    String imageSuffix;
     String message;
     List<String> responses;
     Speech speech;
-
+ActorDataSource left;
+ActorDataSource right;
+    private boolean leftActive;
     //custom font/style?
 
 
-    public SpeechDataSource(String actorName, String actorImage, String imageSuffix, String message, List<String> responses) {
-        this.actorName = actorName;
-        this.actorImage = actorImage;
-        this.imageSuffix = imageSuffix;
-        this.message = message;
-        this.responses = responses;
+    public SpeechDataSource(Speech speech, ActorDataSource left, ActorDataSource right) {
+        this.speech = speech;
+        this.left = left;
+        this.right = right;
     }
 
     public SpeechDataSource(Speech speech) {
@@ -33,23 +30,31 @@ public class SpeechDataSource {
 
     }
 
+    public List<String> getResponses() {
+        return responses;
+    }
+
+    public ActorDataSource getLeft() {
+        return left;
+    }
+
+    public ActorDataSource getRight() {
+        return right;
+    }
+
+    public boolean isLeftActive() {
+        return leftActive;
+    }
+
+    public void setLeftActive(boolean leftActive) {
+        this.leftActive = leftActive;
+    }
+
     public enum SPEECH_EFFECT{
         ZOOM_IN,
         DARKEN,
         FLIP,
         FADE,
-    }
-
-    public String getActorName() {
-        return actorName;
-    }
-
-    public String getActorImage() {
-        return actorImage;
-    }
-
-    public String getImageSuffix() {
-        return imageSuffix;
     }
 
     public String getMessage() {

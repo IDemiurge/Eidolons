@@ -12,7 +12,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.system.graphics.FontMaster.FONT;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -72,10 +72,10 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null);
+            ShaderDrawer.drawWithCustomShader(this, batch, null);
     }
 
 

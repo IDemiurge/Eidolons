@@ -8,6 +8,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
@@ -101,6 +102,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         Pair<InventoryDataSource, ContainerDataSource> param =
          new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
+
+        if (getSpecialSound(obj)!=null ){
+            DC_SoundMaster.playStandardSound(getSpecialSound(obj));
+        }
+        else
         if (RandomWizard.random()) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
         } else
@@ -108,6 +114,20 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
         unit.getGame().getManager().reset();
         return result;
+    }
+
+    private static STD_SOUNDS getSpecialSound(DC_Obj obj) {
+        if (obj instanceof Structure) {
+            switch (((Structure) obj).getBfObjGroup()) {
+                case REMAINS:
+                    return STD_SOUNDS.NEW__BONES;
+                case TREASURE:
+                    return STD_SOUNDS.NEW__CHEST;
+            }
+
+        }
+
+        return null;
     }
 
     public static final MATERIAL[] getMaterials(ITEM_RARITY rarity) {

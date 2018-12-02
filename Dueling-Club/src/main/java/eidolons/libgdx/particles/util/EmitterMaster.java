@@ -75,8 +75,13 @@ public class EmitterMaster extends GdxUtil {
     public static void createVfxAtlas() {
         String imagesPath = null;
         List<File> files = FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true);
+        files.removeIf(file ->
+         getAtlasType(file.getPath().toLowerCase().replace(
+          PathFinder.getVfxPath().toLowerCase(), ""), true) == null);
+
         for (VFX_ATLAS type : VFX_ATLAS.values()) {
             switch (type) {
+                //                case UNIT:
                 case SPELL:
                     break;
                 case AMBIENCE:
@@ -93,13 +98,16 @@ public class EmitterMaster extends GdxUtil {
                         continue main;
                 }
 
-                if (type != getAtlasType(path))
+                if (type != getAtlasType(path, true))
                     continue;
 
                 imagesPath = getVfxAtlasImagesPath(type);
 
                 String imagesData = "";// "\n";
 
+                if (path.contains("preset")) {
+                    imagesData = "";
+                }
 
                 String imagePath = EmitterPresetMaster.getInstance().findImagePath(path);
                 List<Texture> list = new ArrayList<>();
@@ -142,7 +150,7 @@ public class EmitterMaster extends GdxUtil {
                         s = s.trim();
                         if (s.isEmpty())
                             continue;
-                        String imageName = processImageName(imagePath);
+                        String imageName = processImageName(s);
                         imagesData += imageName + "\n";
 
                         String newPath = map.get(imageName);
@@ -181,11 +189,11 @@ public class EmitterMaster extends GdxUtil {
 
                     String data = EmitterPresetMaster.getInstance().getModifiedData(path,
                      EMITTER_VALUE_GROUP.Image_Path, imagesData);
-                    String newPath = PathFinder.getVfxPath() + "/atlas/" + path;
+                    String newPath = PathFinder.getVfxAtlasPath()  + path;
                     FileManager.write(data, newPath);
 
                     log(1,
-                     path + " vfx preset written  ");
+                     newPath + " vfx preset written  ");
                     if (test) {
                         try {
                             new ParticleEffectX(newPath);
@@ -280,10 +288,18 @@ public class EmitterMaster extends GdxUtil {
 
     }
 
-    private static VFX_ATLAS getAtlasType(String path) {
-        path = path.toLowerCase().replace(PathFinder.getVfxPath().toLowerCase(), "");
+    public static VFX_ATLAS getAtlasType(String path) {
+        return getAtlasType(path, false);
+    }
+
+    public static VFX_ATLAS getAtlasType(String path, boolean noAtlasFolders) {
+        path = FileManager.formatPath(path, true);
+        path = path.toLowerCase().replace(FileManager.formatPath(PathFinder.getVfxPath(), true), "");
         String folder = PathUtils.getPathSegments(path).get(0).toLowerCase();
         if (folder.equalsIgnoreCase("atlas")) {
+            if (noAtlasFolders) {
+                return null;
+            }
             folder = PathUtils.getPathSegments(path).get(1).toLowerCase();
         }
         switch (folder) {
@@ -313,7 +329,9 @@ public class EmitterMaster extends GdxUtil {
             case "waters":
             case "moons":
                 return VFX_ATLAS.MAP;
-
+            case "unit":
+            case "advanced":
+                return VFX_ATLAS.UNIT;
             case "export":
             case "modified":
             case "custom":
@@ -363,7 +381,7 @@ public class EmitterMaster extends GdxUtil {
 
     @Override
     protected void execute() {
-        generateVfx();
+        //        generateVfx();
         createVfxAtlas();
     }
 
@@ -431,7 +449,8 @@ public class EmitterMaster extends GdxUtil {
         AMBIENCE,
         SPELL,
         MAP,
-        MISC
+        MISC,
+        UNIT
     }
 
     public enum VFX_TEMPLATE {

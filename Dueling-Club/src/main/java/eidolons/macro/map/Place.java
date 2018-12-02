@@ -1,6 +1,8 @@
 package eidolons.macro.map;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.libgdx.screens.map.town.navigation.data.Nested;
+import eidolons.libgdx.screens.map.town.navigation.data.NestedLeaf;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.MapObj;
@@ -15,9 +17,12 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.datatypes.DequeImpl;
 
-public class Place extends MapObj {
+import java.util.Set;
+
+public class Place extends MapObj implements Nested<NestedLeaf> {
     protected DequeImpl<Route> routes = new DequeImpl<>();
     private Dungeon topDungeon;
+    private Set<NestedLeaf> nested;
 
     public Place(MacroGame game, ObjType type, MacroRef ref) {
         super(game, type, ref);
@@ -35,6 +40,10 @@ public class Place extends MapObj {
         }
     }
 
+    @Override
+    public Set<NestedLeaf> getNested() {
+        return nested;
+    }
 
     public Area getArea() {
         if (area == null) {
@@ -132,6 +141,8 @@ public class Place extends MapObj {
     public String getIconPath() {
         return getProperty(MACRO_PROPS.MAP_ICON);
     }
+
+
 
     public enum PLACE_VISIBILITY_STATUS {
         UNKNOWN, DISCOVERED, HIDDEN, AVAILABLE, CURRENT_LOCATION

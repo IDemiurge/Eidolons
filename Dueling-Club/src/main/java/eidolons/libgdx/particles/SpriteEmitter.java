@@ -30,18 +30,23 @@ public class SpriteEmitter extends Emitter {
 
     @Override
     public void start() {
-//        if (animation==null )
+        //        if (animation==null )
         time = 0;
         try {
             animation = SpriteAnimationFactory.getSpriteAnimation(
              getImagePaths().get(0).split("img")[1]
             );
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+        } catch (Exception e1) {
+            try {
+                animation = SpriteAnimationFactory.getSpriteAnimation(
+                 getImagePaths().get(0));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
 
-//        animation.setFrameDuration(
-//         getDuration().getLowMax() / animation.getFrameNumber()/loops);
+        //        animation.setFrameDuration(
+        //         getDuration().getLowMax() / animation.getFrameNumber()/loops);
 
         super.start();
     }
@@ -51,8 +56,8 @@ public class SpriteEmitter extends Emitter {
         time += delta;
         try {
             TextureRegion texture = animation.getKeyFrame(time, true);
-//        getSprite().setRegion( texture);
-//        setSprite(new Sprite(texture));
+            //        getSprite().setRegion( texture);
+            //        setSprite(new Sprite(texture));
             for (Particle p : getParticles()) {
                 if (p == null) {
                     continue;

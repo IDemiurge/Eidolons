@@ -2,6 +2,7 @@ package eidolons.libgdx.utils;
 
 import eidolons.game.core.Eidolons;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
@@ -59,10 +60,13 @@ public class Packer {
     boolean test;
     int maxTreeDepth = 5;
     private String outputRoot;
-    private boolean readTree=true;
-    private boolean updateTree=false;
+    private boolean readTree = true;
+    private boolean updateTree = false;
     private StrPathBuilder pathBuilder;
     private StrPathBuilder lastBuilder;
+    private boolean delayed;
+    private List<File> toCopy;
+    private List<File> failedFiles;
 
     public Packer(String outputRoot, boolean test) {
         if (test) {
@@ -77,7 +81,7 @@ public class Packer {
     public static void main(String[] args) {
         new Packer(
          ContainerUtils.join("-", Eidolons.NAME, Eidolons.EXTENSION, Eidolons.SUFFIX,
-          CoreEngine.filesVersion)+"/", true).pack();
+          CoreEngine.filesVersion) + "/", true).pack();
     }
 
     public String createDirectoryTree() {
@@ -104,7 +108,7 @@ public class Packer {
             //                continue;
             if (dir.isDirectory()) {
                 if (treeDepth < 1)
-                    data.append("\n" + StringMaster.getStringXTimes(10, "__")+"\n");
+                    data.append("\n" + StringMaster.getStringXTimes(10, "__") + "\n");
                 data.append(StringMaster.getStringXTimes(treeDepth, "--") + ">  " + dir.getName() + "\n");
                 if (treeDepth < 2)
                     data.append("\n");
@@ -115,6 +119,9 @@ public class Packer {
     }
 
     public void pack() {
+        toCopy = new ArrayList<>();
+        failedFiles = new ArrayList<>();
+
         if (updateTree)
             FileManager.write(createDirectoryTree(), PathFinder.getResPath() + "res tree.txt");
         if (readTree)
@@ -135,6 +142,7 @@ public class Packer {
     }
 
     private void copyResourceTree() {
+        delayed = true;
         String resTree = FileManager.readFile(PathFinder.getResPath() + RES_TREE_OUTPUT);
         resTree = formatResTree(resTree);
         String[] lines = StringMaster.splitLines(resTree);
@@ -177,33 +185,61 @@ ____________________
         int depth = 0;
         for (int i = index; i < lines.length; i++) {
             String line = lines[i];
-            //                if (isRecursive(line)) {
-            //                    recursive = true; //do not stop until depth is again N
-            //            boolean recursive = parts[1].contains("*");
-            //     }
+            boolean recursive = false;
+            if (isRecursive(line)) {
+                recursive = true; //do not stop until depth is again N
+                line = line.replace("*", "");
+            }
+            boolean subfoldersOnly=false;
+            if (isSubfoldersOnly(line)) {
+                subfoldersOnly = true; //do not copy files, just subfolders
+                line = line.replace("%", "");
+            }
+
             String name = getNameFromLine(line);
             pathBuilder.append(name);
-            if (lastBuilder == null) {
-                lastBuilder =new StrPathBuilder(pathBuilder.toString());
-            }
             //what if it's a file itself?!
-            List<File> files = FileManager.getFilesFromDirectory(pathBuilder.toString(), false, false);
-            filesToCopy.addAll(files);
+            List<File> files = FileManager.getFilesFromDirectory(pathBuilder.toString(), false, recursive);
+            if (!subfoldersOnly)
+                filesToCopy.addAll(files);
             int newDepth = getDepth(line);
-            if (newDepth < depth) {
-                //going up again
-                copyFiles(filesToCopy);
-                pathBuilder = new StrPathBuilder(lastBuilder.toString());
-                lastBuilder=null ;
-                return i; //resume crawl from this index
-            }
+            if (newDepth > 0 || depth > 0)
+                if (newDepth <= depth) {
+                    //going up again
+                    copyFiles(filesToCopy);
+                    int goBack = depth - newDepth + 2;
+                    String path = pathBuilder.toString();
+                    while (goBack-- > 0) {
+                        path = PathUtils.cropLastPathSegment(path);
+                    }
+                    pathBuilder = new StrPathBuilder(path);
+                    return i; //resume crawl from this index
+                }
             depth = newDepth; //we went down
         }
+        delayed = false;
         copyFiles(filesToCopy);
         return -1; //crawl is finished
     }
 
+    private boolean isSubfoldersOnly(String line) {
+        return line.contains("%");
+    }
+
+    private boolean isRecursive(String line) {
+        return line.contains("*");
+    }
+
     private void copyFiles(List<File> filesToCopy) {
+        if (isDelayed()) {
+            toCopy.addAll(filesToCopy);
+            return;
+        }
+        if (!toCopy.isEmpty()) {
+            toCopy.addAll(filesToCopy);
+            filesToCopy = toCopy;
+            toCopy = new ArrayList<>();
+        }
         //no dirs
         String src = PathFinder.getResPath();
         String dest = "resources/";
@@ -212,7 +248,7 @@ ____________________
 
     private int getDepth(String line) {
         String[] parts = line.split(">");
-        if (parts.length==0)
+        if (parts.length == 0)
             return 0;
         return parts[0].length() / 2;
     }
@@ -277,7 +313,7 @@ ____________________
     private void copyFromRoot(boolean recursive, String root, String dest, File[] folders,
                               String[] filteredAll, String... customExceptions) {
         Path rootPath = null;
-        String symbolicLinkRoot="";
+        String symbolicLinkRoot = "";
         try {
             rootPath = Paths.get(new File(root).toURI());
             if (Files.isSymbolicLink(rootPath)) {
@@ -295,18 +331,17 @@ ____________________
         List<String> exceptions = new ArrayList<>();
 
         if (filteredAll != null)
-        for (String s : filteredAll) {
-            exceptions.add(s);
-        }
+            for (String s : filteredAll) {
+                exceptions.add(s);
+            }
         for (String s : customExceptions) {
             exceptions.add(s);
         }
         for (File folder : folders) {
-            List<File> fileList =     new ArrayList<>();
+            List<File> fileList = new ArrayList<>();
             if (folder.isFile()) {
                 fileList.add(folder);
-            }
-            else {
+            } else {
                 FileManager.getFilesFromDirectory(folder, false, recursive);
             }
             files:
@@ -332,8 +367,10 @@ ____________________
                 } catch (InvalidPathException e1) {
                     e1.printStackTrace();
                     log("Paths failed " + file + "\n" + output);
+                    failedFiles.add(file);
                 } catch (Exception e) {
                     log("Copy failed from " + file);
+                    failedFiles.add(file);
                 }
             }
 
@@ -346,4 +383,11 @@ ____________________
     }
 
 
+    public boolean isDelayed() {
+        return delayed;
+    }
+
+    public void setDelayed(boolean delayed) {
+        this.delayed = delayed;
+    }
 }

@@ -17,7 +17,7 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageWithClosable;
@@ -56,11 +56,11 @@ public class HqPanel extends TablePanel implements Blocking {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha==ShaderMaster.SUPER_DRAW ||
+        if (parentAlpha== ShaderDrawer.SUPER_DRAW ||
          ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null );
+            ShaderDrawer.drawWithCustomShader(this, batch, null );
 //        debugAll();
     }
 

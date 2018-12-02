@@ -21,7 +21,7 @@ import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.controls.StackViewMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -133,11 +133,11 @@ public class ToolTipManager extends TablePanel {
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             return;
         }
-        if (parentAlpha == ShaderMaster.SUPER_DRAW ||
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
          ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null, false, false);
+            ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
     }
 
     private boolean isRemoveImmediately(Actor actor) {

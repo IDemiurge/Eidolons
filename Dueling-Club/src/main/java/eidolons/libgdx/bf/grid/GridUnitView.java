@@ -14,7 +14,7 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -34,10 +34,10 @@ public class GridUnitView extends GenericGridView {
              "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
-                    if (parentAlpha == ShaderMaster.SUPER_DRAW) {
+                    if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
                         super.draw(batch, 1);
                     } else {
-                        ShaderMaster.drawWithCustomShader(this,
+                        ShaderDrawer.drawWithCustomShader(this,
                          batch, null);
                     }
                 }

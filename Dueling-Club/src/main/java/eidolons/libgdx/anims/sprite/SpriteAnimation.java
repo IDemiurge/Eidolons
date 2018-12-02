@@ -39,6 +39,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private boolean flipY;
     private Color color;
     private Float scale;
+    private boolean customAct;
 
 
     public SpriteAnimation(String path) {
@@ -105,8 +106,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
     }
 
+    public void act(float delta) {
+        stateTime += delta;
+    }
+
     public boolean draw(Batch batch) {
-        stateTime += Gdx.graphics.getDeltaTime();
+        if (!isCustomAct()) {
+            act(Gdx.graphics.getDeltaTime());
+        }
         if (frameNumber == 0)
             return false;
         if (getLifecycleDuration() != 0) {
@@ -152,7 +159,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha
      , float offsetX, float offsetY
     ) {
-        if (alpha<=0) {
+        if (alpha <= 0) {
             return;
         }
 
@@ -270,6 +277,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public TextureRegion getCurrentFrame() {
         return getKeyFrame(stateTime, looping);
     }
+    public int getCurrentFrameNumber() {
+        return getKeyFrameIndex(stateTime);
+    }
 
     public TextureRegion getOffsetFrame(
      float time, int offset) {
@@ -367,6 +377,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public boolean isAnimationFinished() {
         return isAnimationFinished(getStateTime());
+    }
+
+    public boolean isCustomAct() {
+        return customAct;
+    }
+
+    public void setCustomAct(boolean customAct) {
+        this.customAct = customAct;
     }
 
 

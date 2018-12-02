@@ -24,6 +24,7 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
+import eidolons.libgdx.anims.std.custom.ForceAnim;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
@@ -36,7 +37,6 @@ import main.content.VALUE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -316,17 +316,20 @@ public class AnimConstructor {
         }
 
         if (active.isAttackAny()) {
+            if (isForceAnim(active, part)){
+                return new ForceAnim(active, part);
+            }
             if (AnimMaster3d.is3dAnim(active)) {
                 if (active.isRanged()) {
                     if (part == ANIM_PART.CAST)
                         return new Ranged3dAnim(active);
-                    if (part == ANIM_PART.MAIN)
+                    if (part == ANIM_PART.MISSILE)
                         return new Missile3dAnim(active);
                 }
-                if (part == ANIM_PART.MAIN)
+                if (part == ANIM_PART.MISSILE)
                     return new Weapon3dAnim(active);
 
-            } else if (part == ANIM_PART.MAIN) {
+            } else if (part == ANIM_PART.MISSILE) {
 
                 if (active.isThrow()) {
                     return new ThrowAnim(active);
@@ -346,7 +349,7 @@ public class AnimConstructor {
                 if (part == ANIM_PART.IMPACT) {
                     return new HitAnim(active, data);
                 }
-            } else if (part == ANIM_PART.MAIN) {
+            } else if (part == ANIM_PART.MISSILE) {
                 //                if (active.getTargetingMode().isSingle())
                 if (active.getChecker().isTopDown())
                     return null;
@@ -355,6 +358,15 @@ public class AnimConstructor {
             return new SpellAnim(active, data, template);
         }
         return new ActionAnim(active, data);
+    }
+
+    private static boolean isForceAnim(DC_ActiveObj active, ANIM_PART part) {
+        switch (part) {
+            case MISSILE:
+                if (CoreEngine.isFastMode())
+                    return true;
+        }
+        return false;
     }
 
     private static SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
@@ -424,7 +436,7 @@ public class AnimConstructor {
 
     private static boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
         switch (part) {
-            case MAIN:
+            case MISSILE:
                 return (active.isMove() || active.isAttackAny() || active.isTurn());
             case IMPACT:
                 if (active.isAttackAny()) {
@@ -512,10 +524,8 @@ public class AnimConstructor {
     public static  AnimData getStandardData(Spell spell, ANIM_PART part, int partsCount) {
         AnimData data = new AnimData();
 
-        String partPath = part.toString();
-        if (part == ANIM_PART.MAIN) {
-            partPath = "missile";
-        }
+        String partPath = part.getPartPath();
+
         String size = "";
         if (spell.getCircle() > 4) {
             size = " huge";
@@ -527,40 +537,33 @@ public class AnimConstructor {
             size = " small";
         }
 
-        PROPERTY[] propsExact = {
-         G_PROPS.NAME, G_PROPS.SPELL_SUBGROUP,
-         G_PROPS.SPELL_GROUP, G_PROPS.ASPECT,
-        };
-        PROPERTY[] props = {
-         PROPS.DAMAGE_TYPE,
-         G_PROPS.SPELL_TYPE,
-        };
+       
          /*
         first, check for exact fit...
         if either has one, then don't search for other (unless also exact fit)
          */
         String pathRoot = getPath(ANIM_VALUES.SPRITES);
-        String sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
+        String sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, true, pathRoot, false);
         pathRoot = getPath(ANIM_VALUES.PARTICLE_EFFECTS);
-        String emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, false);
+        String emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, true, pathRoot, false);
         if (sprite == null)
             if (emitter == null) {
-                emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, false, pathRoot, false);
                 if (AnimResourceFinder.isFindClosestResource(part, ANIM_VALUES.PARTICLE_EFFECTS, partsCount)) {
                     if (emitter == null)
-                        emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                        emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, true, pathRoot, true);
                     if (emitter == null)
-                        emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                        emitter = AnimResourceFinder.findResourceForSpell(spell, partPath, size, false, pathRoot, true);
 
                 }
                 if (AnimResourceFinder.isFindClosestResource(part, ANIM_VALUES.SPRITES, partsCount))
                     if (emitter == null) {
                         pathRoot = getPath(ANIM_VALUES.SPRITES);
-                        sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, false);
+                        sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, false, pathRoot, false);
                         if (sprite == null)
-                            sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, propsExact, pathRoot, true);
+                            sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, true, pathRoot, true);
                         if (sprite == null)
-                            sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, props, pathRoot, true);
+                            sprite = AnimResourceFinder.findResourceForSpell(spell, partPath, size, false, pathRoot, true);
 
 
                     }
@@ -681,10 +684,19 @@ public class AnimConstructor {
         PRECAST(2F), //channeling
         CAST(2.5f),
         RESOLVE(2),
-        MAIN(3), //flying missile
+        MISSILE(3){
+            @Override
+            public String getPartPath() {
+                return
+                 "missile";
+            }
+        }, //flying missile
         IMPACT(1),
         AFTEREFFECT(2.5f);
 
+        public String getPartPath() {
+            return super.toString();
+        }
         private float defaultDuration;
 
         ANIM_PART(float defaultDuration) {

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.game.battlecraft.logic.meta.adventure.party.FormationMaster;
-import eidolons.game.battlecraft.logic.meta.adventure.party.LoyaltyMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.ink.logic.TeaMaster;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.logic.meta.adventure.party.LoyaltyMaster;
 public abstract class AfterCombatManager<E extends MetaGame> extends MetaGameHandler<E> {
     LootMaster lootMaster;
     FormationMaster formationMaster;
-    LoyaltyMaster loyaltyMaster;
+    TeaMaster loyaltyMaster;
     public AfterCombatManager(MetaGameMaster master) {
         super(master);
     }

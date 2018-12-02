@@ -36,7 +36,7 @@ import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -207,10 +207,10 @@ public class GridPanel extends Group {
         if (Eidolons.game != null)
             if (Eidolons.game.getLoop() != null)
                 paused = Eidolons.game.getLoop().isPaused();
-        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch,
+            ShaderDrawer.drawWithCustomShader(this, batch,
              paused ? GrayscaleShader.getGrayscaleShader() : null, true);
     }
 

@@ -4,15 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.libgdx.shaders.VignetteShader;
-import eidolons.macro.entity.party.MacroParty;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.RollDecorator;
@@ -21,8 +16,9 @@ import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.screens.map.obj.PartyActor;
 import eidolons.libgdx.screens.map.ui.*;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel;
+import eidolons.libgdx.shaders.VignetteShader;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.entity.party.MacroParty;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.launch.CoreEngine;
@@ -45,6 +41,7 @@ public class MapGuiStage extends GuiStage {
     protected MapDatePanel datePanel;
     protected SuperContainer vignette;
     protected MapKeyHandler keyHandler = new MapKeyHandler();
+
 
     public MapGuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);

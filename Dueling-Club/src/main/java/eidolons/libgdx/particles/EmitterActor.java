@@ -3,6 +3,7 @@ package eidolons.libgdx.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
@@ -14,17 +15,16 @@ import java.util.List;
 /**
  * Created by JustMe on 1/10/2017.
  */
-public class EmitterActor extends SuperActor  {
+public class EmitterActor extends SuperActor {
 
     static public boolean spriteEmitterTest = false;
+    private static List<String> brokenPaths = new ArrayList<>();
     protected final int defaultCapacity = 12;
     protected final int defaultMaxCapacity = 24;
     public String path;
     protected ParticleEffectX effect;
     protected ParticleEffectPool pool;
     protected VFX sfx;
-    boolean flipX;
-    boolean flipY;
     protected Sprite sprite;
     protected boolean attached = true;
     protected boolean generated;
@@ -33,8 +33,9 @@ public class EmitterActor extends SuperActor  {
     protected float speed = 1;
     protected Float lastAlpha;
     protected boolean broken;
+    boolean flipX;
+    boolean flipY;
     private String imgPath;
-    private static List<String> brokenPaths=    new ArrayList<>() ;
 
     public EmitterActor(VFX fx) {
         this(fx.getPath());
@@ -51,7 +52,9 @@ public class EmitterActor extends SuperActor  {
         this.path = path;
         effect = EmitterPools.getEffect(path);
         //TODO not very safe...
-        effect.getEmitters().forEach(emitter -> emitter.setAdditive(true));
+        //        if (EmitterMaster.getAtlasType(path)!= VFX_ATLAS.UNIT) {
+        //            effect.getEmitters().forEach(emitter -> emitter.setAdditive(true));
+        //        }
         imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
     }
 
@@ -100,10 +103,10 @@ public class EmitterActor extends SuperActor  {
 
     public void updatePosition(float x, float y) {
         main.system.auxiliary.log.LogMaster.log(1, this + " from " +
-                getX() +
-                " " +
-                getY() +
-                " pos set to " + x + " " + y);
+         getX() +
+         " " +
+         getY() +
+         " pos set to " + x + " " + y);
         setPosition(x, y);
     }
 
@@ -112,11 +115,11 @@ public class EmitterActor extends SuperActor  {
             hide();
         if (lastAlpha != null)
             effect.getEmitters().forEach(e ->
-                    e.getTransparency().scale(1 / lastAlpha));
+             e.getTransparency().scale(1 / lastAlpha));
 
         lastAlpha = alpha;
         effect.getEmitters().forEach(e -> //e.getTransparency().setScaling()
-                e.getTransparency().scale(alpha));
+         e.getTransparency().scale(alpha));
     }
 
     public VFX getTemplate() {
@@ -141,20 +144,18 @@ public class EmitterActor extends SuperActor  {
         if (ParticleEffectX.TEST_MODE)
             try {
                 effect.draw(batch, delta);
-            }
-            catch (IllegalStateException e) {
-                  imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
+            } catch (IllegalStateException e) {
+                imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
                 brokenPaths.add(imgPath);
-                main.system.auxiliary.log.LogMaster.log(1,"VFX imgPath is broken! " +imgPath);
-            }
-            catch (Exception e) {
+                main.system.auxiliary.log.LogMaster.log(1, "VFX imgPath is broken! " + imgPath);
+            } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
-                main.system.auxiliary.log.LogMaster.log(1," EMITTER FAILED: "
-                + path);
+                main.system.auxiliary.log.LogMaster.log(1, " EMITTER FAILED: "
+                 + path);
                 broken = true;
             }
-            else
-                effect.draw(batch, delta);
+        else
+            effect.draw(batch, delta);
     }
 
     public ParticleEffectX getEffect() {
@@ -212,5 +213,13 @@ public class EmitterActor extends SuperActor  {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public boolean isComplete() {
+        for (ParticleEmitter emitter : getEffect().getEmitters()) {
+            if (!emitter.isComplete())
+                return false;
+        }
+        return true;
     }
 }

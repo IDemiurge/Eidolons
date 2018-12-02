@@ -30,7 +30,8 @@ public class CustomSpriteBatch extends SpriteBatch {
     public void setBlending(BLENDING blending) {
         switch (blending) {
             case SCREEN:
-                setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+//                setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
 //                setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
                 break;
         }

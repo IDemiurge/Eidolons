@@ -1,8 +1,10 @@
 package eidolons.libgdx.anims.construct;
 
+import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
@@ -12,12 +14,22 @@ import main.system.launch.CoreEngine;
  * Created by JustMe on 11/15/2018.
  */
 public class AnimResourceFinder {
+    public static final PROPERTY[] propsExact = {
+     G_PROPS.NAME, G_PROPS.SPELL_SUBGROUP,
+     G_PROPS.SPELL_GROUP, G_PROPS.ASPECT,
+    };
+    public static final PROPERTY[] propsGeneral = {
+     PROPS.DAMAGE_TYPE,
+     G_PROPS.SPELL_TYPE,
+    };
     private static boolean findClosestResource;
 
     public static String findResourceForSpell(Spell spell,
                                               String partPath, String size,
-                                              PROPERTY[] props, String pathRoot,
+                                              boolean exact, String pathRoot,
                                               boolean closest) {
+        PROPERTY[] props = exact ? propsExact : propsGeneral;
+
         String path = PathUtils.buildPath(
          pathRoot, partPath);
         //        spell.getTargeting();
@@ -57,7 +69,7 @@ public class AnimResourceFinder {
                     return true;
 
         switch (part) {
-            case MAIN:
+            case MISSILE:
                 if (val == ANIM_VALUES.PARTICLE_EFFECTS) {
                     return true;
                 }

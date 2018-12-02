@@ -51,8 +51,8 @@ public class LoadingStage extends Stage {
 
         final TextureRegion fullscreenTexture =
          getOrCreateR(
-          (engineInit) ? "ui/logo fullscreen.png"
-           : "ui/moe loading screen.png");
+          (engineInit) ? "ui/main/logo fullscreen.png"
+           : "ui/main/moe loading screen.png");
         fullscreenImage = new Image(fullscreenTexture);
         addActor(fullscreenImage);
 

@@ -23,7 +23,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkGrayscaleShader;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 
@@ -129,14 +129,14 @@ public class GridCell extends Group implements Borderable {
              getGridX(), getGridY()
             ));
         }*/
-        if (parentAlpha == ShaderMaster.SUPER_DRAW
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW
          || batch.getShader() == GrayscaleShader.getGrayscaleShader()
          || batch.getShader() == DarkGrayscaleShader.getShader()
          ) {
             super.draw(batch, 1);
         } else {
 //            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)
-            ShaderMaster.drawWithCustomShader(this,
+            ShaderDrawer.drawWithCustomShader(this,
              batch,
              !getUserObject().isPlayerHasSeen() ?
               DarkShader.getShader()

@@ -3,7 +3,7 @@ package eidolons.macro.entity.shop;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
@@ -321,11 +321,11 @@ public class ShopMaster {
     public static   String[] initItemGroups(SHOP_TYPE type) {
         // Up to 4 item groups!
         String[] item_groups = type.getItemGroups();
-        if (item_groups.length > ShaderMaster.MAX_ITEM_GROUPS) {
+        if (item_groups.length > ShaderDrawer.MAX_ITEM_GROUPS) {
             List<String> list = new ArrayList<>(Arrays.asList(item_groups));
-            item_groups = new String[ShaderMaster.MAX_ITEM_GROUPS];
+            item_groups = new String[ShaderDrawer.MAX_ITEM_GROUPS];
             int j = 0;
-            while (j < ShaderMaster.MAX_ITEM_GROUPS) {
+            while (j < ShaderDrawer.MAX_ITEM_GROUPS) {
                 String e = list.get(RandomWizard.getRandomIndex(list));
                 list.remove(e);
                 item_groups[j] = e;

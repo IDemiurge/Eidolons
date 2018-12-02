@@ -70,7 +70,7 @@ public class EffectAnimCreator {
         if (target != null) {
             anim.setForcedDestination(target.getCoordinates());
         }
-        anim.setPart(ANIM_PART.MAIN); //TODO gotta be some way to generalize this
+        anim.setPart(ANIM_PART.MISSILE); //TODO gotta be some way to generalize this
         anim.setMaster(AnimMaster.getInstance());
         return anim;
     }

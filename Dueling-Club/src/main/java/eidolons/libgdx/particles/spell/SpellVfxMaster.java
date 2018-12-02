@@ -10,7 +10,7 @@ import java.io.File;
  * Created by JustMe on 11/14/2018.
  */
 public class SpellVfxMaster {
-    public static final boolean SAME_FOLDER_RANDOM_VFX= true;
+    public static final boolean SAME_FOLDER_RANDOM_VFX = true;
 
 
     public static final boolean TEST_MODE = true;
@@ -19,11 +19,12 @@ public class SpellVfxMaster {
     public static String getRandomVfx(String path) {
         String folder = PathUtils.cropLastPathSegment(path);
         Loop loop = new Loop(30);
-        while( loop.continues()){File file = FileManager.getRandomFile(folder);
-            if (file!=null) {
+        while (loop.continues()) {
+            File file = FileManager.getRandomFile(folder);
+            if (file != null) {
                 return file.getPath();
             }
-         }
+        }
         return path;
     }
 

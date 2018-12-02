@@ -19,12 +19,20 @@ import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
 public class NavigationPoint extends HorizontalFlowGroup{
     Navigable navigable;
 FadeImageContainer icon;
-SmartButton body;
+    SmartButton body;
+    SmartButton action; //text?
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        //hide action
+    }
 
     public NavigationPoint(Navigable navigable) {
         this.navigable = navigable;
         addActor(icon = new FadeImageContainer(navigable.getIconPath()));
-        addActor(body = new SmartButton(navigable.getName(), STD_BUTTON.TAB_HIGHLIGHT, () -> navigable.interact()));
+        addActor(body = new SmartButton(navigable.getName(),
+         STD_BUTTON.TAB_HIGHLIGHT, () -> navigable.interact()));
         //is disabled
 
     }

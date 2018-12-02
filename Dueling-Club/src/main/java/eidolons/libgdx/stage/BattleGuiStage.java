@@ -16,6 +16,7 @@ import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
@@ -71,6 +72,7 @@ public class BattleGuiStage extends GuiStage {
         outcomePanel = new OutcomePanel();
         addActor(outcomePanel);
         outcomePanel.setVisible(false);
+        addActor( new FullscreenAnims());
     }
 
     @Override

@@ -39,7 +39,8 @@ import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.map.layers.Blackout;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
@@ -89,6 +90,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected boolean town;
     protected Set<Actor> hiddenActors = new HashSet<>();
     protected ValueContainer locationLabel;
+    PlaceNavigationPanel navigationPanel;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -195,10 +197,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
             @Override
             public void draw(Batch batch, float parentAlpha) {
-                if (parentAlpha == ShaderMaster.SUPER_DRAW)
+                if (parentAlpha == ShaderDrawer.SUPER_DRAW)
                     super.draw(batch, 1);
                 else
-                    ShaderMaster.drawWithCustomShader(this, batch, null, false, false);
+                    ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
             }
         });
         infoTooltipContainer.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT_MAP);

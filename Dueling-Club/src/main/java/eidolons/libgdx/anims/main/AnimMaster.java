@@ -11,6 +11,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.system.audio.DC_SoundMaster;
@@ -44,6 +45,7 @@ public class AnimMaster extends Group {
     private final AnimDrawMaster drawer;
     private final ActionAnimMaster actionMaster;
     private final BuffAnimMaster buffMaster;
+    private FullscreenAnims fullscreenAnims;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -73,7 +75,7 @@ public class AnimMaster extends Group {
     public static boolean isSmoothStop(Anim anim) {
         if (anim.getOrigin().equals(anim.getDestination()))
             return true;
-        return false;
+        return true;
 
     }
 

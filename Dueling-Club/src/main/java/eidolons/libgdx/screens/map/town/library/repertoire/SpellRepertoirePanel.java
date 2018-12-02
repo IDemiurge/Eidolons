@@ -1,7 +1,7 @@
 package eidolons.libgdx.screens.map.town.library.repertoire;
 
 import eidolons.libgdx.gui.panels.TabbedPanel;
-import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
+import eidolons.libgdx.screens.map.town.library.hero.SpellSlotsPanel;
 
 /**
  * Created by JustMe on 11/21/2018.
@@ -22,5 +22,6 @@ public class SpellRepertoirePanel extends TabbedPanel{
     }
 
     CurriculumPanel curriculumPanel;
-    InventorySlotsPanel repertoirePanel;
+
+    SpellSlotsPanel repertoirePanel;
 }

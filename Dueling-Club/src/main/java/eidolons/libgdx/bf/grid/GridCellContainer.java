@@ -253,11 +253,15 @@ public class GridCellContainer extends GridCell {
     }
 
     public float getUnitViewSize(BaseView actor) {
+        if (actor instanceof UnitViewSprite)
+        {
+            return 128 - getUnitViewOffset() * (getUnitViewCount() - 1);
+        }
         return actor.getPortrait().getWidth() - getUnitViewOffset() * (getUnitViewCount() - 1);
     }
 
     public float getObjScale(BaseView actor) {
-        return (getUnitViewSize(actor)) / GridMaster.CELL_W;
+        return GridMaster.CELL_W/(getUnitViewSize(actor)) ;
     }
 
     @Override

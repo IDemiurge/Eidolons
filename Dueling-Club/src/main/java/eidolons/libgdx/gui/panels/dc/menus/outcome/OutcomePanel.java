@@ -27,7 +27,7 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
@@ -72,11 +72,11 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderMaster.SUPER_DRAW) {
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             super.draw(batch, 1);
             return;
         }
-        ShaderMaster.drawWithCustomShader(this, batch, null);
+        ShaderDrawer.drawWithCustomShader(this, batch, null);
     }
 
     @Override

@@ -3,6 +3,8 @@ package eidolons.libgdx.particles.ambi;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.particles.VFX;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -17,7 +19,7 @@ import static eidolons.libgdx.particles.ambi.AttachEmitterManager.ATTACHED_EMITT
  * Created by JustMe on 11/16/2018.
  */
 public class AttachEmitterManager {
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
 
     public AttachEmitterManager() {
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p -> updateAttachedEmitters(p.get()));
@@ -38,6 +40,7 @@ public class AttachEmitterManager {
                 Ambience emitter = createAttachedEmitter(type, obj);
                 //            Vector2 v = GridMaster.getCenteredPos(obj.getCoordinates());
                 ((BaseView) o).addActor(emitter);
+                GdxMaster.center(emitter);
                 //shader/blend
                 main.system.auxiliary.log.LogMaster.log(1, emitter + " is attached to " + o);
                 //            MapMaster.addToListMap(map, o, emitter);
@@ -88,6 +91,15 @@ public class AttachEmitterManager {
     }
 
     private ATTACHED_EMITTER_TYPE[] getEmitterTypes(BattleFieldObject obj) {
+        if (obj instanceof Unit) {
+//List<ATTACHED_EMITTER_TYPE>
+            return new ATTACHED_EMITTER_TYPE[]{
+             MIST,
+             FIRE,
+             MIST,
+             FIRE
+            };
+        }
         if (obj instanceof Structure) {
             BF_OBJECT_GROUP group =
              ((Structure) obj).getBfObjGroup();
@@ -111,7 +123,7 @@ public class AttachEmitterManager {
 
         }
 
-        return null;
+        return new ATTACHED_EMITTER_TYPE[0];
     }
 
     public enum ATTACHED_EMITTER_TYPE {

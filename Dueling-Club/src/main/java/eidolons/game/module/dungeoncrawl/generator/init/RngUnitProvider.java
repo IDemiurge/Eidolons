@@ -589,7 +589,7 @@ public class RngUnitProvider {
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().
                      chain(TROGLODYTE, 10).
-                     chain(TROGLODYTE_MUTANT, 1).
+                     chain(TROGLODYTE_MUTANT, 5).
                      chain(HARPY, 5).
                      chain(BASILISK, 3).
                      chain(SLAAG, 3).

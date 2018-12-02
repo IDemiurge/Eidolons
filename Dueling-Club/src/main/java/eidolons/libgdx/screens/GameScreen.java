@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
@@ -153,7 +153,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =
              (DialogueHandler) obj.get();
-            List<DialogView> list = handler.getList();
+            List<DialogueView> list = handler.getList();
             if (dialogsStage == null) {
                 dialogsStage = new ChainedStage(viewPort, getBatch(), list);
                 updateInputController();

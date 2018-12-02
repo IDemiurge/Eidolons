@@ -58,12 +58,12 @@ public class TextureCache {
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
         if (atlasesOn) {
-            uiAtlas = new SmartTextureAtlas(imagePath + "/ui//ui.txt");
+            uiAtlas = new SmartTextureAtlas(imagePath + "/ui/atlases/ui.txt");
             mainAtlas = new SmartTextureAtlas(imagePath + "/main//main.txt");
             genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
         } else {
             if (uiAtlasesOn) {
-                uiAtlas = new SmartTextureAtlas(imagePath + "/ui//ui.txt");
+                uiAtlas = new SmartTextureAtlas(imagePath + "/ui/atlases/ui.txt");
             }
         }
 

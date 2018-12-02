@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 
 /**
@@ -26,7 +27,7 @@ public class MapActor extends SuperActor {
 
     public void init() {
         highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
-         StrPathBuilder.build("ui", "outlines", "shadows", "a new light.png"))), true);
+         StrPathBuilder.build(PathFinder.getShadeCellsPath(), "a new light.png"))), true);
         highlight.setTouchable(Touchable.disabled);
         highlight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
         highlight.setColor(getTeamColor());

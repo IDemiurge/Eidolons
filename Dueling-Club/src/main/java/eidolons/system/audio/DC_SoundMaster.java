@@ -276,7 +276,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
                 case PRECAST:
                 case CAST:
                 case RESOLVE:
-                case MAIN:
+                case MISSILE:
                 case IMPACT:
                 case AFTEREFFECT:
                     playNow(getActionEffectSoundPath((Spell) activeObj, part));
@@ -293,7 +293,7 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
             case RESOLVE:
                 getPlayer().playEffectSound(SOUNDS.RESOLVE, activeObj);
                 break;
-            case MAIN:
+            case MISSILE:
                 getPlayer().playEffectSound(SOUNDS.EFFECT, activeObj);
                 break;
             case IMPACT:
@@ -319,11 +319,11 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
 
     private static void preconstructSpell(Spell spell, ANIM_PART part) {
         String file = AnimResourceFinder.findResourceForSpell(spell,
-         part.toString(), "", propsExact,
+         part.toString(), "", true,
          getSpellSoundPath(), false);
         if (file == null) {
             file = AnimResourceFinder.findResourceForSpell(spell,
-             part.toString(), "", props,
+             part.toString(), "", false,
              getSpellSoundPath(), true);
         }
         if (file == null) {

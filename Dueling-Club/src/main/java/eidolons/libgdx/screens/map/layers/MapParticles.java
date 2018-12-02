@@ -1,9 +1,11 @@
 package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.macro.MacroGame;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
@@ -44,6 +46,14 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
             emitterActor.remove();
 //      TODO       emitterActor.getEffect().dispose();
         });
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
     }
 
     @Override

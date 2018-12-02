@@ -4,6 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.libgdx.screens.map.town.navigation.data.NavigationMaster;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.Faction;
@@ -161,6 +162,10 @@ public class WorldGenerator {
             game.setPlayerParty(playerParty);
             playerParty.setFaction(game.getPlayerFaction());
             playerParty.setCoordinates(coordinates);
+
+            if (NavigationMaster.isTestOn())
+                playerParty.setCurrentPlace(game.getPlaces().get(0));
+
             return playerParty;
         } else
             faction = game.getFaction(string);

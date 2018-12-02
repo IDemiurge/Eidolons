@@ -31,7 +31,9 @@ import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        GridUnitView view = new GridUnitView(options);
+        GridUnitView view =
+         bfObj.isMainHero() ? new UnitViewSprite(options) :
+          new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
             if (!bfObj.isPlayerCharacter())
@@ -103,54 +105,55 @@ public class UnitViewFactory {
                                 return;
                             } else {
                                 if (UnitInfoPanelNew.isNewUnitInfoPanelWIP())
-                                if (bfObj instanceof Unit) {
-                                    GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                                     ((Unit) bfObj));
-                                    return;
-                                }  DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                                    event.cancel();
-                                    return;
+                                    if (bfObj instanceof Unit) {
+                                        GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+                                         ((Unit) bfObj));
+                                        return;
+                                    }
+                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                                event.cancel();
+                                return;
 
                             }
                     //TODO control options
 
-                        if (event.getButton() == Buttons.LEFT) {
-                            if (isAlt() || isShift() || isControl()) {
-                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                                event.cancel();
-                            } else {
-                                if (DefaultActionHandler.leftClickActor(bfObj))
-                                    return;
-                            }
+                    if (event.getButton() == Buttons.LEFT) {
+                        if (isAlt() || isShift() || isControl()) {
+                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                            event.cancel();
+                        } else {
+                            if (DefaultActionHandler.leftClickActor(bfObj))
+                                return;
                         }
-                    } catch(Exception e){
-                        main.system.ExceptionMaster.printStackTrace(e);
                     }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
-                //
+            }
+            //
 
-                @Override
-                public void touchUp (InputEvent event,float x, float y, int pointer, int button){
-
-
-                    if (event.getButton() == Input.Buttons.RIGHT)
-
-                    {
-                        GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
-                        event.handle();
-                        event.stop();
-                    } else {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
 
-                        GuiEventManager.trigger(RADIAL_MENU_CLOSE);
-                    }
-                    super.touchUp(event, x, y, pointer, button);
+                if (event.getButton() == Input.Buttons.RIGHT)
+
+                {
+                    GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
+                    event.handle();
+                    event.stop();
+                } else {
+
+
+                    GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
-
+                super.touchUp(event, x, y, pointer, button);
             }
 
-            ;
         }
+
+         ;
+    }
 
     public static OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);

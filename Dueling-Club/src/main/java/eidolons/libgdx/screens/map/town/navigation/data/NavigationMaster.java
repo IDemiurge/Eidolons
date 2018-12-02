@@ -1,12 +1,13 @@
 package eidolons.libgdx.screens.map.town.navigation.data;
 
 import eidolons.game.module.adventure.entity.npc.NPC;
-import eidolons.macro.entity.MacroObj;
 import eidolons.macro.entity.town.TownPlace;
 import eidolons.macro.map.Place;
-import main.data.XLinkedMap;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by JustMe on 11/21/2018.
@@ -18,12 +19,12 @@ public class NavigationMaster {
     public NavigationDataSource getDataSource(Navigable navigable) {
         return map.get(navigable);
     }
-        public Navigable getNavigable(MacroObj obj) {
+        public Navigable getNavigable(Nested obj) {
         Navigable root = createNavigable(obj);
         return root;
     }
 
-    private Navigable createNavigable(MacroObj obj) {
+    private Navigable createNavigable(Nested obj) {
         Navigable navigable =null ;
         if (obj instanceof TownPlace){
             navigable = new NavigableTownPlace(
@@ -41,7 +42,7 @@ public class NavigationMaster {
         return navigable;
     }
 
-    private void addChildren(MacroObj obj, Navigable root, Map<Navigable, NavigationDataSource> map) {
+    private void addChildren(Nested obj, Navigable root, Map<Navigable, NavigationDataSource> map) {
         NavigationDataSource data = createDataSource(obj,
          root);
         map.put(root, data);
@@ -50,15 +51,19 @@ public class NavigationMaster {
         }
     }
 
-    private NavigationDataSource createDataSource(MacroObj obj, Navigable root) {
+    private NavigationDataSource createDataSource(Nested obj, Navigable root) {
         Set<Navigable> children = new LinkedHashSet<>();
         Set<Navigable> path = null;
-        Set<MacroObj> places = obj.getNested();
-        for (MacroObj place : places) {
+        Set<Nested> places = obj.getNested();
+        for (Nested place : places) {
             children.add(createNavigable(place));
         }
         root.setChildren(children);
         NavigationDataSource data = new NavigationDataSource(root, children, path);
         return data;
+    }
+
+    public static boolean isTestOn() {
+        return true;
     }
 }

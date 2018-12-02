@@ -16,6 +16,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.bf.SuperActor.BLENDING;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.shaders.GrayscaleShader;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
@@ -68,7 +69,9 @@ public enum MIXER_LAUNCH{
         String rootPath;
 
         new GdxMixer(() -> GrayscaleShader.getGrayscaleShader(), BLENDING.MULTIPLY,
-         PathFinder.getGeneratorRootPath() + "mixed.png", 64
+         Images.EMPTY_ARMOR,
+//         PathFinder.getGeneratorRootPath() + "mixed.png",
+         64
         );
     }
 
@@ -164,9 +167,9 @@ public enum MIXER_LAUNCH{
         if (fbo != null) {
             fbo.end();
 
-            spriteBatch.begin();
-            spriteBatch.draw(region, 0, 0, width, height);
-            spriteBatch.end();
+//            spriteBatch.begin();
+//            spriteBatch.draw(region, 0, 0, width, height);
+//            spriteBatch.end();
         }
     }
 

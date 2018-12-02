@@ -63,6 +63,8 @@ public class StyleHolder {
     private static Map<FONT, Map<Integer, Label.LabelStyle>> sizeLabelStyleMap = new HashMap<>();
     private static Map<FONT, Map<Pair<Integer, Color>, Label.LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
     private static TextButtonStyle defaultTabStyle;
+    private static ScrollPaneStyle scrollStyle;
+    private static TextButtonStyle dialogueReplyStyle;
 
     static {
         for (FONT font : FONT.values()) {
@@ -77,8 +79,6 @@ public class StyleHolder {
 
         }
     }
-
-    private static ScrollPaneStyle scrollStyle;
 
     public static Boolean isHieroOn() {
         if (HIERO_ON == null) {
@@ -416,16 +416,42 @@ public class StyleHolder {
 
     public static ScrollPaneStyle getScrollStyle() {
         if (scrollStyle == null) {
-            scrollStyle=new ScrollPaneStyle(
+            scrollStyle = new ScrollPaneStyle(
              null,
-//             NinePatchFactory.getLightDecorPanelFilledDrawable(),
+             //             NinePatchFactory.getLightDecorPanelFilledDrawable(),
              NinePatchFactory.getScrollH(),
              NinePatchFactory.getScrollKnobH(),
              NinePatchFactory.getScrollV(),
              NinePatchFactory.getScrollKnobV()
-             );
+            );
         }
         return scrollStyle;
+    }
+
+    public static TextButtonStyle getDialogueReplyStyle() {
+        if (dialogueReplyStyle == null) {
+            dialogueReplyStyle = new TextButtonStyle();
+            TextButtonStyle style = dialogueReplyStyle;
+            BitmapFont font = getFont(FONT.MAIN, GdxColorMaster.PALE_GOLD, 20);
+
+            Color color = GdxColorMaster.PALE_GOLD;
+            style.font = font;
+
+            color = GdxColorMaster.lighter(color);
+            style.overFontColor = color;
+            color = GdxColorMaster.lighter(color);
+            style.downFontColor = color;
+
+            color = GdxColorMaster.PALE_GOLD;
+            color = GdxColorMaster.darker(color);
+            style.checkedOverFontColor = color;
+            color = GdxColorMaster.darker(color);
+            style.checkedFontColor = color;
+            color = GdxColorMaster.darker(color);
+            style.disabledFontColor = color;
+        }
+
+        return dialogueReplyStyle;
     }
 
 }

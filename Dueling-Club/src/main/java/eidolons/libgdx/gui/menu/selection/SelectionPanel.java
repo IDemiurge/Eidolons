@@ -15,7 +15,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.launch.MainLauncher;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -127,12 +127,12 @@ public abstract class SelectionPanel extends TablePanelX {
             return;
         }
         if (getStage() != null) {
-            if (parentAlpha == ShaderMaster.SUPER_DRAW) {
+            if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
                 super.draw(batch, 1);
                 return;
             }
 
-            ShaderMaster.drawWithCustomShader(this, batch, null);
+            ShaderDrawer.drawWithCustomShader(this, batch, null);
         }
     }
 

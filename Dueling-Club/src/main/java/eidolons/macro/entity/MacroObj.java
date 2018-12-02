@@ -22,7 +22,6 @@ public class MacroObj extends Obj {
     protected Region region;
     protected MacroCoordinates coordinates;
     private Faction faction;
-    private Set<MacroObj> nested;
 
     public MacroObj(MacroGame game, ObjType type, Ref ref, Player owner) {
         super(type, owner, game, ref);
@@ -146,11 +145,4 @@ public class MacroObj extends Obj {
         return getProperty(MACRO_PROPS.MAP_ICON);
     }
 
-    public Set<MacroObj> getNested() {
-        return nested;
-    }
-
-    public void setNested(Set<MacroObj> nested) {
-        this.nested = nested;
-    }
 }

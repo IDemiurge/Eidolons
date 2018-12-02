@@ -176,7 +176,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
          new Event(STANDARD_EVENT_TYPE.DOOR_OPENS,
           ref));
         door.setState(DOOR_STATE.OPEN);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
+        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GATE);
     }
 
 

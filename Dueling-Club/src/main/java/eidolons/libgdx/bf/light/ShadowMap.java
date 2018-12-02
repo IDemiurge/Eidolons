@@ -12,6 +12,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
+import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -244,13 +245,13 @@ public class ShadowMap extends GroupX {
     }
 
     public enum SHADE_CELL {
-        GAMMA_SHADOW(0.75f, StrPathBuilder.build("ui", "outlines", "shadows", "shadow neu.png")),
-        GAMMA_LIGHT(0, StrPathBuilder.build("ui", "outlines", "shadows", "light.png")),
-        LIGHT_EMITTER(0, StrPathBuilder.build("ui", "outlines", "shadows", "light emitter.png")),
-        CONCEALMENT(0.5f, StrPathBuilder.build("ui", "outlines", "shadows", "concealment.png")),
-        BLACKOUT(0, StrPathBuilder.build("ui", "outlines", "shadows", "blackout.png")),
-        HIGLIGHT(0, StrPathBuilder.build("ui", "outlines", "shadows", "highlight.png")),
-        VOID(0, StrPathBuilder.build("ui", "outlines", "shadows", "void.png")),
+        GAMMA_SHADOW(0.75f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "shadow neu.png")),
+        GAMMA_LIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light.png")),
+        LIGHT_EMITTER(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light emitter.png")),
+        CONCEALMENT(0.5f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "concealment.png")),
+        BLACKOUT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "blackout.png")),
+        HIGLIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "highlight.png")),
+        VOID(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "void.png")),
         ;
 
         public float defaultAlpha;

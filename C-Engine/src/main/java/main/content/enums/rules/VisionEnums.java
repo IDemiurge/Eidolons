@@ -1,5 +1,6 @@
 package main.content.enums.rules;
 
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
@@ -60,7 +61,7 @@ public class VisionEnums {
         BRILLIANT_OUTLINE, CLEAR_OUTLINE, MASS_OUTLINE, BLOCKED_OUTLINE, FLAT_OUTLINE,
         UNKNOWN;
 
-        String outlinePath = "ui/outlines/" + toString()+".jpg";
+        String outlinePath = PathFinder.getOutlinesPath() + toString()+".jpg";
         String path;
         private Image image;
 

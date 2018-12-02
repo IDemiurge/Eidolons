@@ -5,6 +5,12 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.ink.InkEnums.INK_D
 
 /**
  * Created by JustMe on 11/20/2018.
+ *
+ * location + time => npc type+npc mood =>quest type+quest details => quest text
+
+ main factor is location, time will be just kind of sorting/filtering
+ same with npc type/mood => quest type
+
  */
 public class InkGenerator {
     public void generateRootTemplate(){

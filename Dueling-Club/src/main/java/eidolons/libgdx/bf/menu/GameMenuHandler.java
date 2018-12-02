@@ -7,6 +7,7 @@ import eidolons.macro.global.persist.Saver;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 11/24/2017.
@@ -80,6 +81,10 @@ public class GameMenuHandler {
                 GameMenu.menuOpen = false;
                 break;
             case BACK_TO_TOWN:
+                if (CoreEngine.isMacro()) {
+                    GuiEventManager.trigger(GuiEventType.SHOW_NAVIGATION_PANEL, null);
+                    break;
+                }
                 GameMenu.menuOpen = false;
                 Eidolons.onNonGdxThread(()->
                  Eidolons.getGame().getMetaMaster().getTownMaster().tryReenterTown());

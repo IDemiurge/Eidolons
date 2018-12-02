@@ -32,14 +32,15 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
+
+import static main.system.auxiliary.log.LogMaster.ANIM_DEBUG;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 1/9/2017.
@@ -91,6 +92,7 @@ public class Anim extends Group implements Animation {
     private Vector2 offsetOrigin;
     private Vector2 offsetDestination;
     private CompositeAnim parentAnim;
+    private Set<EmitterActor> completingVfx = new HashSet();
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -123,13 +125,16 @@ public class Anim extends Group implements Animation {
         resetEmitters();
         resetSprites();
 
-        getSprites().forEach(s -> s.setX(getX()));
-        sprites.forEach(s -> s.setY(getY()));
-        sprites.forEach(s -> s.setOffsetX(0));
-        sprites.forEach(s -> s.setOffsetY(0));
-        sprites.forEach(s -> s.setLoops(loops));
-        sprites.forEach(s -> s.reset());
-        sprites.forEach(s -> s.start());
+        getSprites().forEach(s -> {
+            s.setX(getX());
+            s.setY(getY());
+            s.setOffsetX(0);
+            s.setOffsetY(0);
+            s.setLoops(loops);
+            s.reset();
+            s.start();
+        });
+
         if (frameDuration != null) {
             sprites.forEach(s -> s.setFrameDuration(frameDuration));
         }
@@ -162,11 +167,6 @@ public class Anim extends Group implements Animation {
 
     @Override
     public boolean draw(Batch batch) {
-        //        if (getX() == 0 && getY() == 0) {
-        //            getX();
-        //        }
-        //switch(template){
-        //}
         float delta = Gdx.graphics.getDeltaTime();
         time += delta;
         if (time < 0) {
@@ -182,16 +182,10 @@ public class Anim extends Group implements Animation {
         {
             if (checkFinished()) {
                 if (AnimMaster.isSmoothStop(this)) {
-                    if (!isEmittersWaitingDone()) {
-                        emittersWaitingDone = true;
-                        duration += getTimeToFinish();
-
-                        emitterList.forEach(e -> e.getEffect().allowCompletion());
-
-                        return true;
-                    }
+                    waitForVfx();
+                    return true;
                 }
-                LogMaster.log(LogMaster.ANIM_DEBUG, this + " finished; duration = " + duration);
+                log(ANIM_DEBUG, this + " finished; duration = " + duration);
                 finished();
                 dispose();
                 return false;
@@ -219,29 +213,44 @@ public class Anim extends Group implements Animation {
         sprites.forEach(s -> {
             s.draw(batch);
         });
-        batch.getColor().a = 1;
-        batch.getColor().r = 1;
-        batch.getColor().g = 1;
-        batch.getColor().b = 1;
+        batch.setColor(new Color(1, 1, 1, 1));
+
         emitterList.forEach(e -> {
             e.draw(batch, 1f);
-            main.system.auxiliary.log.LogMaster.log(1,
-             e.getName() +
-              " drawn at x " + e.getX() + " y " + e.getY());
-            e.getEffect().getEmitters().forEach(em -> {
-
-                main.system.auxiliary.log.LogMaster.log(1,
-                 em.getName() +
-                  " emitter at at x " + em.getX() + " y " + em.getY()
-                  + " ; activecount == " + em.getActiveCount()
-
-                );
-            });
+            //            main.system.auxiliary.log.LogMaster.log(1,
+            //             e.getName() +
+            //              " drawn at x " + e.getX() + " y " + e.getY());
+            //            e.getEffect().getEmitters().forEach(em -> {
+            //                main.system.auxiliary.log.LogMaster.log(1,
+            //                 em.getName() +
+            //                  " emitter at at x " + em.getX() + " y " + em.getY()
+            //                  + " ; activecount == " + em.getActiveCount()
+            //                );
+            //            });
         });
         return true;
     }
 
+    private void waitForVfx() {
+
+        emitterList.forEach(e -> {
+            if (!e.isComplete()) {
+                e.getEffect().allowCompletion();
+                completingVfx.add(e);
+            }
+        });
+    }
+
     protected boolean checkFinished() {
+        if (!completingVfx.isEmpty()) {
+            for (EmitterActor e : completingVfx) {
+                if (!e.isComplete()) {
+                    log(1, this + " vfx has not finished: " + e);
+                    return false;
+                }
+            }
+            completingVfx.clear();
+        }
         if (isContinuous())
             return isDone();
         return time >= getDuration();
@@ -264,7 +273,7 @@ public class Anim extends Group implements Animation {
         }
         float gracePeriod = 0.25f;
         time = time + time * gracePeriod;
-        LogMaster.log(LogMaster.ANIM_DEBUG, this + " adding TimeToFinish: " + time);
+        log(ANIM_DEBUG, this + " adding TimeToFinish: " + time);
         return time;
     }
 
@@ -339,7 +348,12 @@ public class Anim extends Group implements Animation {
              }
          }
         );
-        emitterList = new ArrayList<>(emitterCache);
+        if (ListMaster.isNotEmpty(emitterCache))
+            emitterList = new ArrayList<>(emitterCache);
+        else {
+            if (!ListMaster.isNotEmpty(emitterList))
+                emitterList = new ArrayList<>();
+        }
         //        emitterCache.clear();
         //        emitterCache.addAll(emitterList);//= new ArrayList<>(emitterList);
         emitterList.forEach(e -> {
@@ -392,30 +406,38 @@ public class Anim extends Group implements Animation {
             return;
         }
 
-        float x = destination.x - origin.x;
-        float y = destination.y - origin.y;
-
-        speedX = x / duration;
-        speedY = y / duration;
-
-        double distance = Math.sqrt(x * x + y * y);
+        double distance = calcDistance();
         if (distance == 0) {
             return;
         }
         if (!isSpeedSupported()) {
             return;
         }
-        this.duration = ((float) distance / pixelsPerSecond);
+        setDuration(((float) distance / pixelsPerSecond));
+        initSpeedForDuration(duration);
 
+    }
+
+    private double calcDistance() {
+        float x = destination.x - origin.x;
+        float y = destination.y - origin.y;
+        return Math.sqrt(x * x + y * y);
+    }
+
+    protected void initSpeedForDuration(float duration) {
+        float x = destination.x - origin.x;
+        float y = destination.y - origin.y;
+        speedX = x / duration;
+        speedY = y / duration;
     }
     //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
-        return part == ANIM_PART.MAIN;
+        return part == ANIM_PART.MISSILE;
     }
 
     public String getTexturePath() {
-        if (active==null)
+        if (active == null)
             return "";
         return active.getImagePath();
     }
@@ -600,7 +622,7 @@ public class Anim extends Group implements Animation {
     public void updatePosition(float delta) {
         if (part != null) {
             switch (part) {
-                case MAIN:
+                case MISSILE:
                     if (speedX != null) {
                         setOffsetX(getOffsetX() + speedX * delta);
                     } else {
@@ -783,11 +805,11 @@ public class Anim extends Group implements Animation {
         this.ref = Ref.getCopy(ref);
         //        main.system.auxiliary.log.LogMaster.log(1, this + " started with ref: " + ref);
         if (ref.getTargetObj() == null) {
-            main.system.auxiliary.log.LogMaster.log(1, this + " HAS NULL TARGET!");
+            log(1, this + " HAS NULL TARGET!");
             if (ref.getActive() != null) {
                 ref.setTarget(ref.getActive().getRef().getTarget());
                 if (ref.getTargetObj() != null) {
-                    main.system.auxiliary.log.LogMaster.log(1, ref.getActive() + " HAD TARGET! " +
+                    log(1, ref.getActive() + " HAD TARGET! " +
                      ref.getTargetObj());
                 }
             }

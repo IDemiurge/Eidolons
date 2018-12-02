@@ -80,13 +80,15 @@ public enum MACRO_PARAMS implements PARAMETER {
 
     // // SETTLEMENTS
 
-    , REPUTATION(null, "", false,  0, "town", "shop")
-
+    , REPUTATION(null, "", false,  0, "town", "shop"),
 
 
     // POWER,
 
 
+    TREPIDATION("npc", null),
+    ESTEEM("npc", null),
+    AFFECTION("npc", null),
     ;
     // NUMBER_OF_HEROES,
     // NUMBER_0F_unitsS,

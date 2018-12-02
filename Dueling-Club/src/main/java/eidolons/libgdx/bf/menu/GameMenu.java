@@ -103,12 +103,13 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
               ) {
                 return true;
             }
-
         }
         if (item==GAME_MENU_ITEM.RETREAT)
             return !CoreEngine.isMacro();
-        if (item==GAME_MENU_ITEM.BACK_TO_TOWN)
-            return  CoreEngine.isMacro();
+//        if (item==GAME_MENU_ITEM.BACK_TO_TOWN)
+//            if (!CoreEngine.isFastMode())
+//             return  CoreEngine.isMacro();
+
         return item.hidden;
     }
 

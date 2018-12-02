@@ -45,8 +45,8 @@ public class Images {
 
 
 
-    public static final String LOGO32 = "ui/arcane tower/logo32.png";
-    public static final String LOGO64 = "ui/arcane tower/logo64.png";
+    public static final String LOGO32 = "ui/main/logo32.png";
+    public static final String LOGO64 = "ui/main/logo64.png";
 
     public static final String TIER = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
@@ -79,9 +79,9 @@ public class Images {
      PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND UNDERLAY.png");
 
     public static final String COLORLESS_BORDER = StrPathBuilder.build(
-     PathFinder.getUiPath(), "Borders", "neo", "colorless.png");
+     PathFinder.getUiPath(), "components","generic",  "Borders", "neo", "colorless.png");
     public static final String TARGET_BORDER = StrPathBuilder.build(
-     PathFinder.getUiPath(), "Borders", "neo", "TARGET.png");
+     PathFinder.getUiPath(), "components","generic", "Borders", "neo", "TARGET.png");
     public static final String WEAVE_LINK = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "weave", "link.png");
     public static final String WEAVE_OVERLAY = StrPathBuilder.build(

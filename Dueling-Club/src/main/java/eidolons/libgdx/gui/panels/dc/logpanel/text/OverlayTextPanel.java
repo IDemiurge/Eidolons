@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
-import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.system.graphics.FontMaster.FONT;
@@ -47,12 +47,12 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         getStage().setScrollFocus(scrollPanel);
-        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        if (parentAlpha== ShaderDrawer.SUPER_DRAW)
         {
             super.draw(batch, 1);
             return;
         }
-        ShaderMaster.drawWithCustomShader(this, batch, null);
+        ShaderDrawer.drawWithCustomShader(this, batch, null);
     }
 
     @Override

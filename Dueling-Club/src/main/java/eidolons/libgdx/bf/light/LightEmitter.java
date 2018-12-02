@@ -65,7 +65,7 @@ public class LightEmitter extends SuperActor {
         this.direction = obj.getDirection();
         this.type = LIGHT_RAY.WHITE;
         this.effect = effect;
-        String imagePath = StrPathBuilder.build(PathFinder.getShadeLightPath(),
+        String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                 "rays", type.name(), "center" + (overlaying ? " overlaying.png"
                         : ".png"));
         center = new LightRay(imagePath);
@@ -248,7 +248,7 @@ public class LightEmitter extends SuperActor {
 
     public FadeImageContainer createRay(DIRECTION direction, boolean overlaying
             , LIGHT_RAY rayType) {
-        String imagePath = StrPathBuilder.build(PathFinder.getShadeLightPath(),
+        String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                 "rays", rayType.name(), direction + (overlaying ? " overlaying.png"
                         : ".png"));
         Texture texture = TextureCache.getOrCreate(imagePath);
@@ -260,7 +260,7 @@ public class LightEmitter extends SuperActor {
             if (!direction.isVertical()) {
                 d = DIRECTION.RIGHT;
             }
-            String existing = StrPathBuilder.build(PathFinder.getShadeLightPath(),
+            String existing = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                     "rays", rayType.name(), d + (overlaying ? " overlaying.png"
                             : ".png"));
 
