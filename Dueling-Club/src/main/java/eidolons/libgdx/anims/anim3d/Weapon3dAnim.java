@@ -227,6 +227,9 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+//        if (batch instanceof CustomSpriteBatch) {
+//           post=  ((CustomSpriteBatch) batch);
+//        }
         super.draw(batch, parentAlpha);
     }
 

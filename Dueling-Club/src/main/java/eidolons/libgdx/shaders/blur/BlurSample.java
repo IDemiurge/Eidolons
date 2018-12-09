@@ -12,21 +12,24 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
+
+import java.io.File;
 
 public class BlurSample extends Game {
     private static final float WORLD_TO_SCREEN = 1.0f / 100.0f;
 
-    private static final float SCENE_WIDTH = 12.80f;
-    private static final float SCENE_HEIGHT = 7.20f;
+    private static final float SCENE_WIDTH = 19.20f;
+    private static final float SCENE_HEIGHT = 10.80f;
 
-    private static final int VIRTUAL_WIDTH = 1280;
-    private static final int VIRTUAL_HEIGHT = 720;
-    private static final java.lang.String FULL_BLUR = "";//"blur/rock.png";
+    private static final int VIRTUAL_WIDTH = 1920;
+    private static final int VIRTUAL_HEIGHT = 1080;
+    private static final java.lang.String FULL_BLUR = "demo/blur/dc/";//"blur/rock.png";
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -43,9 +46,10 @@ public class BlurSample extends Game {
     private FadeImageContainer fluctuate;
 
     public static void main(String[] args) {
-        new LwjglApplication(new BlurSample());
+        new LwjglApplication(new BlurSample(), "Blurry", 1920, 1080);
     }
     public void create() {
+        CoreEngine.systemInit();
         camera = new OrthographicCamera();
         viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, camera);
 
@@ -54,14 +58,14 @@ public class BlurSample extends Game {
         background = (TextureCache.getOrCreate("blur/background.png"));
         foreground = (TextureCache.getOrCreate("blur/foreground.png"));
         mountains = (TextureCache.getOrCreate("blur/mountains.png"));
-
-        rock = (TextureCache.getOrCreate(FULL_BLUR));
+        File file = FileManager.getRandomFile(PathFinder.getImagePath() + FULL_BLUR);
+        rock = (TextureCache.getOrCreate(FULL_BLUR+file.getName()));
 
         caveman = (TextureCache.getOrCreate("blur/caveman.png"));
         dinosaur = (TextureCache.getOrCreate("blur/dinosaur.png"));
         ShaderProgram.pedantic = false;
         shader = new ShaderProgram(FileManager.readFile(PathFinder.getResPath()+
-         "img/blur/blur.vert"), FileManager.readFile(PathFinder.getResPath()+"img/blur/blur.frag"));
+         "img/demo/blur/blur.vert"), FileManager.readFile(PathFinder.getResPath()+"img/demo/blur/blur.frag"));
         fboA =  FrameBuffer.createFrameBuffer(Format.RGBA8888, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, false);
         fboB =   FrameBuffer.createFrameBuffer(Format.RGBA8888, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, false);
 
@@ -77,7 +81,7 @@ public class BlurSample extends Game {
         shader.end();
 
         fluctuate = new FadeImageContainer();
-        fluctuate.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
+        fluctuate.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
     }
 
     public void dispose() {
@@ -137,7 +141,7 @@ public class BlurSample extends Game {
 
         fluctuate.act(Gdx.graphics.getDeltaTime());
 
-        applyBlur(fluctuate.getColor().a*10);
+        applyBlur(fluctuate.getColor().a*1.5f);
 
         batch.end();
     }

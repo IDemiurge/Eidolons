@@ -41,7 +41,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
         SHADOW_MAP_OFF(false),
-        UI_EMITTERS(false),
+        UI_VFX(false),
         FONT_SIZE(100, 50, 200),
         UI_SCALE(100, 50, 200),
         SPRITE_CACHE_ON(false){

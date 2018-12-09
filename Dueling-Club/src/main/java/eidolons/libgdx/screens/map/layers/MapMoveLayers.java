@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
@@ -55,9 +56,9 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         LIGHT_SPREAD_GOLDEN.areaGroup = MAP_AREA_GROUP.PEAK;
         LIGHT_SPREAD.areaGroup = MAP_AREA_GROUP.PEAK;
         //
-        LIGHT_SPREAD_SILVER.alphaTemplate = ALPHA_TEMPLATE.LIGHT;
-        LIGHT_SPREAD.alphaTemplate = ALPHA_TEMPLATE.LIGHT;
-        LIGHT_SPREAD_GOLDEN.alphaTemplate = ALPHA_TEMPLATE.LIGHT;
+        LIGHT_SPREAD_SILVER.alphaTemplate = Fluctuating.ALPHA_TEMPLATE.LIGHT;
+        LIGHT_SPREAD.alphaTemplate = Fluctuating.ALPHA_TEMPLATE.LIGHT;
+        LIGHT_SPREAD_GOLDEN.alphaTemplate = Fluctuating.ALPHA_TEMPLATE.LIGHT;
 
         LIGHT_SPREAD_SILVER.spawnAreas = new MAP_AREA[]{
          MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
@@ -506,15 +507,15 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         LIGHT_SPREAD(MOVE_DIRECTION.SUN, 0, 10f, 0, 0, 0.2f, 0,
          0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.MIDDAY),
 
-        CLOUD(MOVE_DIRECTION.WIND, ALPHA_TEMPLATE.CLOUD,
+        CLOUD(MOVE_DIRECTION.WIND, Fluctuating.ALPHA_TEMPLATE.CLOUD,
          5, 30, 4f, 0.0f, 0.5f, 0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.SOUTH_WEST),
-        CLOUD_HEAVY(MOVE_DIRECTION.WIND, ALPHA_TEMPLATE.CLOUD,
+        CLOUD_HEAVY(MOVE_DIRECTION.WIND, Fluctuating.ALPHA_TEMPLATE.CLOUD,
          5, 40, 2f, 0.00f, 0.5f, 0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
          MAP_AREA.NEUGARD_NORTH),
-        CLOUD_LARGE(MOVE_DIRECTION.WIND, ALPHA_TEMPLATE.CLOUD,
+        CLOUD_LARGE(MOVE_DIRECTION.WIND, Fluctuating.ALPHA_TEMPLATE.CLOUD,
          5, 20, 1f, 0.0f, 0.5f, 0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.WRAITH_MARSH, MAP_AREA.NEUGARD_SOUTH,
          MAP_AREA.NEUGARD_NORTH),
-        CLOUD_LIGHT(MOVE_DIRECTION.WIND, ALPHA_TEMPLATE.CLOUD,
+        CLOUD_LIGHT(MOVE_DIRECTION.WIND, Fluctuating.ALPHA_TEMPLATE.CLOUD,
          5, 30, 3f, 0.0f, 0.5f, 0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.SOUTH_WEST),;
 
         static {

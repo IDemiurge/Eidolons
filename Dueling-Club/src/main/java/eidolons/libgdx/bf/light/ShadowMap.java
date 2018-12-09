@@ -8,8 +8,9 @@ import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.data.filesys.PathFinder;
@@ -70,19 +71,19 @@ public class ShadowMap extends GroupX {
             case VOID:
                 return null;
             case GAMMA_SHADOW:
-                return ALPHA_TEMPLATE.SHADE_CELL_GAMMA_SHADOW;
+                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_SHADOW;
             case GAMMA_LIGHT:
-                return ALPHA_TEMPLATE.SHADE_CELL_GAMMA_LIGHT;
+                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_LIGHT;
             case LIGHT_EMITTER:
-                return ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
+                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
             case CONCEALMENT:
                 break;
             case BLACKOUT:
                 break;
             case HIGLIGHT:
-                return ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
+                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
         }
-        return ALPHA_TEMPLATE.HIGHLIGHT_MAP;
+        return Fluctuating.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
     }
 
     @Override

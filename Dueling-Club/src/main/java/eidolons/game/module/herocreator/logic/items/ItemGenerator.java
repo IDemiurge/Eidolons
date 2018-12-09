@@ -192,7 +192,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     private static ObjType generateJewelryItem(boolean ring, ObjType type,
-                                               JEWELRY_PASSIVE_ENCHANTMENT ench, MAGICAL_ITEM_LEVEL level) {
+                                               JEWELRY_PASSIVE_ENCHANTMENT ench, ITEM_LEVEL level) {
         String value = ench.getValue(level);
         type.addProperty(ench.getProp(), value);
         String string = StringMaster.cropFormat(type.getImagePath());
@@ -222,7 +222,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     private static ObjType generateJewelryItem(ObjType type, JEWELRY_ITEM_TRAIT trait,
-                                               MAGICAL_ITEM_LEVEL level) {
+                                               ITEM_LEVEL level) {
         boolean ring = ItemMaster.isRing(type);
         if (trait == null)
             return null;
@@ -291,7 +291,7 @@ public class ItemGenerator implements GenericItemGenerator {
         return newType;
     }
 
-    public static String generateName(JEWELRY_ITEM_TRAIT trait, MAGICAL_ITEM_LEVEL level,
+    public static String generateName(JEWELRY_ITEM_TRAIT trait, ITEM_LEVEL level,
                                       ObjType type) {
         PARAMETER p = trait.getParams()[0];
         String name = type.getName();
@@ -304,7 +304,7 @@ public class ItemGenerator implements GenericItemGenerator {
         return name;
     }
 
-    public static String generateName(JEWELRY_PASSIVE_ENCHANTMENT ench, MAGICAL_ITEM_LEVEL level,
+    public static String generateName(JEWELRY_PASSIVE_ENCHANTMENT ench, ITEM_LEVEL level,
                                       ObjType type) {
         String prefix = (level == null) ? "" : level.toString() + " ";
         String name = prefix + type.getName() + " of " + ench.toString();
@@ -649,7 +649,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public ObjType getOrCreateJewelry(ObjType baseType, JEWELRY_ITEM_TRAIT trait,
-                                      MAGICAL_ITEM_LEVEL level) {
+                                      ITEM_LEVEL level) {
         String name = generateName(trait, level, baseType);
         ObjType type = DataManager.getType(name, DC_TYPE.JEWELRY);
         if (type != null) {
@@ -660,9 +660,9 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public ObjType generateJewelry(String typeName) {
         String string = StringMaster.getFirstItem(typeName, " ");
-        MAGICAL_ITEM_LEVEL itemLevel =
-         new EnumMaster<MAGICAL_ITEM_LEVEL>().
-          retrieveEnumConst(MAGICAL_ITEM_LEVEL.class, string);
+        ITEM_LEVEL itemLevel =
+         new EnumMaster<ITEM_LEVEL>().
+          retrieveEnumConst(ITEM_LEVEL.class, string);
 
         typeName = typeName.replaceFirst(string + " ", "");
 
@@ -955,7 +955,7 @@ public class ItemGenerator implements GenericItemGenerator {
                     newType.setProperty(G_PROPS.JEWELRY_GROUP, JEWELRY_GROUP.PASSIVE.name());
                     continue;
                 }
-                for (MAGICAL_ITEM_LEVEL level : MAGICAL_ITEM_LEVEL.values()) {
+                for (ITEM_LEVEL level : ITEM_LEVEL.values()) {
                     ObjType newType = generateEmptyJewelryItem(ring, type, null);
                     newType = generateJewelryItem(ring, newType, ench, level);
                     newType.setProperty(G_PROPS.JEWELRY_GROUP, DataManager.ENCH);
@@ -971,7 +971,7 @@ public class ItemGenerator implements GenericItemGenerator {
                 if (type.isGenerated()) {
                     continue;
                 }
-                for (MAGICAL_ITEM_LEVEL level : MAGICAL_ITEM_LEVEL.values()) {
+                for (ITEM_LEVEL level : ITEM_LEVEL.values()) {
                     boolean ring = ItemMaster.isRing(type);
                     generateJewelryItem(type, trait, level);
 

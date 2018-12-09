@@ -17,7 +17,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.UiMaster;
@@ -117,7 +117,7 @@ public class InvItemActor extends ItemActor {
          RandomWizard.random() ?
           Images.ITEM_BACKGROUND_OVERLAY_LIGHT2 :
           Images.ITEM_BACKGROUND_OVERLAY_LIGHT);
-        overlay.setAlphaTemplate(ALPHA_TEMPLATE.ITEM_BACKGROUND_OVERLAY);
+        overlay.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.ITEM_BACKGROUND_OVERLAY);
         return overlay;
     }
 

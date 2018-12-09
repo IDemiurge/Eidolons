@@ -23,6 +23,7 @@ import main.system.auxiliary.data.FileManager;
  */
 public class UnitViewSprite extends GridUnitView {
     public static final boolean randomEmitter = true;
+    public static final boolean TEST_MODE = false;
     private FadeImageContainer glow;
     private EmitterActor emitter;
 
@@ -92,7 +93,7 @@ public class UnitViewSprite extends GridUnitView {
         if (getOutline() == null || parentAlpha == ShaderDrawer.SUPER_DRAW)
             super.draw(batch, parentAlpha);
         else
-            ShaderDrawer.drawWithCustomShader(this, batch, DarkShader.getShader());
+            ShaderDrawer.drawWithCustomShader(this, batch, DarkShader.getDarkShader());
     }
 
     @Override

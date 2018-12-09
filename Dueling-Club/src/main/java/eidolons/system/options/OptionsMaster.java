@@ -12,9 +12,9 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.FloatTextLayer;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -26,6 +26,7 @@ import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
+import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
@@ -37,6 +38,7 @@ import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.Options.OPTION;
+import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 import main.data.XLinkedMap;
@@ -428,11 +430,15 @@ public class OptionsMaster {
     }
 
     public static void applyOptions() {
+
         applyGraphicsOptions(getGraphicsOptions());
         applySoundOptions(getSoundOptions());
         applyGameplayOptions(getGameplayOptions());
         applyControlOptions(getControlOptions());
 
+        if (GdxMaster.isLwjglThread()) {
+            PostProcessController.getInstance().update(getPostProcessingOptions());
+        }
         if (!GdxMaster.isGuiReady())
             return;
         if (AnimMaster.getInstance() == null)
@@ -441,7 +447,9 @@ public class OptionsMaster {
             applyAnimOptions(getAnimOptions());
         } else
             Gdx.app.postRunnable(() ->
-             applyAnimOptions(getAnimOptions()));
+            {
+                applyAnimOptions(getAnimOptions());
+            });
     }
 
     public static void saveOptions() {
@@ -647,6 +655,8 @@ public class OptionsMaster {
                 return GAMEPLAY_OPTION.class;
             case SYSTEM:
                 return SYSTEM_OPTION.class;
+            case POST_PROCESSING:
+                return POST_PROCESSING_OPTIONS.class;
         }
         return null;
     }
@@ -716,6 +726,8 @@ public class OptionsMaster {
 
             case SYSTEM:
                 return new SystemOptions();
+            case POST_PROCESSING:
+                return new PostProcessingOptions();
         }
         return null;
     }
@@ -763,9 +775,14 @@ public class OptionsMaster {
         return optionsPath;
     }
 
+    public static PostProcessingOptions getPostProcessingOptions() {
+        return (PostProcessingOptions) optionsMap.get(OPTIONS_GROUP.POST_PROCESSING);
+    }
+
+
 
     public enum OPTIONS_GROUP {
-        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION, SYSTEM,
+        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION, SYSTEM, POST_PROCESSING,
         //TUTORIAL, ENGINE,
     }
 

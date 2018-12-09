@@ -15,7 +15,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
@@ -104,6 +104,9 @@ public class GuiStage extends StageX implements StageWithClosable {
                 }
                 Actor[] actors = getChildren().begin();
                 for (int i = 0, n = actors.length; i < n; i++) {
+                    if (actors[i] == null) {
+                        continue;
+                    }
                     if (actors[i].isVisible()) {
                         actors[i].act(delta);
                     }
@@ -164,7 +167,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         gameMenu.setZIndex(Integer.MAX_VALUE);
 
         addActor(actionTooltipContainer = new SuperContainer(actionTooltip));
-        actionTooltipContainer.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
+        actionTooltipContainer.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.ATB_POS);
         actionTooltipContainer.setAlphaFluctuationOn(true);
 
         addActor(hqPanel = new HqPanel());
@@ -203,7 +206,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                     ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
             }
         });
-        infoTooltipContainer.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT_MAP);
+        infoTooltipContainer.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
         infoTooltipContainer.setAlphaFluctuationOn(true);
 
         addActor(confirmationPanel = ConfirmationPanel.getInstance());

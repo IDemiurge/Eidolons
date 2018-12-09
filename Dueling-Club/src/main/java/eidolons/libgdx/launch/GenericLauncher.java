@@ -250,11 +250,14 @@ public class GenericLauncher extends Game {
         GdxMaster.setLoadingCursor();
         main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
         Eidolons.screenSet(meta.getType());
+        final Screen oldScreen = getScreen();
+
+//        oldScreen.getPostProcessing().end();
         final ScreenWithVideoLoader newScreen = factory.get();
+        newScreen.getPostProcessing().setup();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
         newScreen.setData(meta);
-        final Screen oldScreen = getScreen();
         setScreen(newScreen);
         {
             if (oldScreen != null)

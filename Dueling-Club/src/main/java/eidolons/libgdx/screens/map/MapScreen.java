@@ -200,16 +200,16 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     protected void checkShaderReset() {
-        if (batch.getShader() == DarkShader.getShader())
+        if (batch.getShader() == DarkShader.getDarkShader())
             batch.setShader(bufferedShader);
     }
 
     protected void checkShader() {
 
-        if (batch.getShader() != DarkShader.getShader()) {
+        if (batch.getShader() != DarkShader.getDarkShader()) {
             bufferedShader = batch.getShader();
             if (isBlocked() || ExplorationMaster.isWaiting()) {
-                batch.setShader(DarkShader.getShader());
+                batch.setFluctuatingShader(DarkShader.getInstance());
             } else {
             }
         }

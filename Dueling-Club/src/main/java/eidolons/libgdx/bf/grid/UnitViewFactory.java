@@ -32,7 +32,7 @@ public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
-         bfObj.isMainHero() ? new UnitViewSprite(options) :
+         bfObj.isMainHero()&&UnitViewSprite.TEST_MODE  ? new UnitViewSprite(options) :
           new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {

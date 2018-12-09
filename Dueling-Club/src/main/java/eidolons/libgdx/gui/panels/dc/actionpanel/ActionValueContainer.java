@@ -200,12 +200,12 @@ public class ActionValueContainer extends ValueContainer {
         ShaderProgram shader = batch.getShader();
         if (isDarkened()) {
             shader = batch.getShader();
-            batch.setShader(DarkShader.getShader());
+            batch.setShader(DarkShader.getDarkShader());
         }
         if (!valid) {
             shader = batch.getShader();
             batch.setShader(
-             DarkGrayscaleShader.getShader()
+             DarkGrayscaleShader.getShader_()
 //             GrayscaleShader.getGrayscaleShader()
             );
         }

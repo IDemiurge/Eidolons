@@ -525,11 +525,14 @@ public class AnimMaster3d {
         if (atlas == null) {
             if (Assets.isOn()) {
                 Assets.get().getManager().load(path, TextureAtlas.class);
-                try {
-                    Assets.get().getManager().finishLoadingAsset(path);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                while (!Assets.get().getManager().isLoaded(path)) {
+                    Assets.get().getManager().update();
                 }
+//                try {
+//                    Assets.get().getManager().finishLoadingAsset(path);
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                }
                 atlas = Assets.get().getManager().get(path, TextureAtlas.class);
             } else {
                 atlas = new SmartTextureAtlas(path);

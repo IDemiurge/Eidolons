@@ -21,8 +21,6 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkGrayscaleShader;
-import eidolons.libgdx.shaders.DarkShader;
-import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -130,8 +128,7 @@ public class GridCell extends Group implements Borderable {
             ));
         }*/
         if (parentAlpha == ShaderDrawer.SUPER_DRAW
-         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
-         || batch.getShader() == DarkGrayscaleShader.getShader()
+//         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
          ) {
             super.draw(batch, 1);
         } else {
@@ -139,7 +136,7 @@ public class GridCell extends Group implements Borderable {
             ShaderDrawer.drawWithCustomShader(this,
              batch,
              !getUserObject().isPlayerHasSeen() ?
-              DarkShader.getShader()
+             DarkGrayscaleShader.getShader_()
 //             FishEyeShader.getShader()
               : null, true);
         }

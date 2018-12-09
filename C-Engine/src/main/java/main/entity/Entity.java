@@ -361,7 +361,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public Game getGame() {
         if (game == null) {
-            LogMaster.log(1, "Null game on " + toString());
+//            LogMaster.log(1, "Null game on " + toString());
             if (Game.game != null)
                 if (Game.game.isSimulation()) {
                     game = Game.game;
@@ -606,5 +606,9 @@ public abstract class Entity extends DataModel implements OBJ {
             cache.put(getName(), customIcon);
         }
         this.customIcon = customIcon;
+    }
+
+    public void setDisplayedName(String displayedName) {
+        setProperty(G_PROPS.DISPLAYED_NAME, displayedName);
     }
 }

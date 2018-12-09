@@ -1,8 +1,8 @@
 package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.texture.TextureCache;
@@ -127,7 +127,7 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
 
         MAP_LAYER_TYPE(float alphaStep, float randomness, float pauseAtZero, float pauseAtFull
          , DAY_TIME... times) {
-            this(alphaStep, randomness, SuperActor.DEFAULT_ALPHA_MIN, SuperActor.DEFAULT_ALPHA_MAX,
+            this(alphaStep, randomness, Fluctuating.DEFAULT_ALPHA_MIN, Fluctuating.DEFAULT_ALPHA_MAX,
              pauseAtZero, pauseAtFull, times);
         }
 

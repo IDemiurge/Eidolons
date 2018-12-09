@@ -27,6 +27,13 @@ import java.util.function.Supplier;
 
 /**
  * Created by JustMe on 5/21/2018.
+ *
+ * VFX to sprite-sheet?
+ * how many frames?
+ * so suppose a vfx lasts 3 sec and goes with normal fps... 180?!
+ *
+ *
+ *
  */
 public class GdxMixer extends GdxUtil {
 

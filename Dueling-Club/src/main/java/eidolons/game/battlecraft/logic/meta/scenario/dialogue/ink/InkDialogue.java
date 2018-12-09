@@ -19,6 +19,7 @@ public class InkDialogue {
     List<DialogueActor> actors;
 
     public List<String> getGlobalTags() throws Exception {
+//story.choosePathString();
         return story.getGlobalTags();
     }
 

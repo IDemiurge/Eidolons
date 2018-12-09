@@ -194,7 +194,7 @@ public class UnitView extends BaseView implements HpBarView{
         }
         ShaderDrawer.drawWithCustomShader(this, batch,
          greyedOut ?
-          DarkGrayscaleShader.getShader()
+          DarkGrayscaleShader.getShader_()
 //          GrayscaleShader.getGrayscaleShader()
           : null, true);
     }

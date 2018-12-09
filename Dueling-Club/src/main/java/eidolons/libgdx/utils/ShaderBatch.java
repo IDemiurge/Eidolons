@@ -44,14 +44,18 @@ public class ShaderBatch extends SpriteBatch {
     public final boolean isCompiled;
     public final String log;
 
-    protected int brightnessLoc=-1, contrastLoc=-1;
+    private int brightnessLoc=-1;
+    private int contrastLoc=-1;
 
     //ideally use getters/setters here...
-    public float brightness=0f;
-    public float contrast=1f;
+    private float brightness=0f;
+    private float contrast=1f;
 
-    public ShaderBatch(int size) {
-        super(size);
+    private static float globalBrightness=0f;
+    private static float globalContrast=1f;
+
+    public ShaderBatch( ) {
+        super( );
             ShaderProgram.pedantic = false;
             shader = new ShaderProgram(vertexShader, fragmentShader);
             isCompiled = shader.isCompiled();
@@ -59,8 +63,8 @@ public class ShaderBatch extends SpriteBatch {
             if (isCompiled) {
                 setShader(shader);
                 shader.begin();
-                brightnessLoc = shader.getUniformLocation("brightness");
-                contrastLoc = shader.getUniformLocation("contrast");
+                setBrightnessLoc(shader.getUniformLocation("brightness"));
+                setContrastLoc(shader.getUniformLocation("contrast"));
                 shader.end();
             }
 
@@ -68,9 +72,49 @@ public class ShaderBatch extends SpriteBatch {
 
     public void begin() {
         super.begin();
-        if (brightnessLoc!=-1 && shader!=null)
-            shader.setUniformf(brightnessLoc, brightness);
-        if (contrastLoc!=-1 && shader!=null)
-            shader.setUniformf(contrastLoc, contrast);
+        if (getBrightnessLoc() !=-1 && shader!=null)
+            shader.setUniformf(getBrightnessLoc(), getBrightness()*globalBrightness);
+        if (getContrastLoc() !=-1 && shader!=null)
+            shader.setUniformf(getContrastLoc(), getContrast()*globalContrast);
+    }
+
+    public static void setGlobalBrightness(float globalBrightness) {
+        ShaderBatch.globalBrightness = globalBrightness;
+    }
+
+    public static void setGlobalContrast(float globalContrast) {
+        ShaderBatch.globalContrast = globalContrast;
+    }
+
+    public int getBrightnessLoc() {
+        return brightnessLoc;
+    }
+
+    public void setBrightnessLoc(int brightnessLoc) {
+        this.brightnessLoc = brightnessLoc;
+    }
+
+    public int getContrastLoc() {
+        return contrastLoc;
+    }
+
+    public void setContrastLoc(int contrastLoc) {
+        this.contrastLoc = contrastLoc;
+    }
+
+    public float getBrightness() {
+        return brightness;
+    }
+
+    public void setBrightness(float brightness) {
+        this.brightness = brightness;
+    }
+
+    public float getContrast() {
+        return contrast;
+    }
+
+    public void setContrast(float contrast) {
+        this.contrast = contrast;
     }
 }

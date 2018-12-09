@@ -544,7 +544,7 @@ public class GridPanel extends Group {
                 }
             }
         }
-        if (view.getParent()instanceof GridCellContainer) {
+        if (view.getParent() instanceof GridCellContainer) {
             ((GridCellContainer) view.getParent()).setDirty(true);
 
         }
@@ -714,17 +714,20 @@ public class GridPanel extends Group {
         if (uv == null) {
             return;
         }
+        if (uv.getUserObject().isPlayerCharacter()) {
+            uv.getUserObject();
+        }
         Coordinates c = object.getCoordinates();
-//        if (!(object instanceof Entrance))
-//            if (c.equals(Eidolons.getMainHero().getCoordinates())) {
-//                if (object != Eidolons.getMainHero()) {
-//                    uv = uv;// it's a trap!!
-//                }
-//            }
+        //        if (!(object instanceof Entrance))
+        //            if (c.equals(Eidolons.getMainHero().getCoordinates())) {
+        //                if (object != Eidolons.getMainHero()) {
+        //                    uv = uv;// it's a trap!!
+        //                }
+        //            }
         //        uv.setVisible(true);
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
-            GuiEventManager.trigger(GuiEventType. UNIT_VIEW_MOVED, uv);
+            GuiEventManager.trigger(GuiEventType.UNIT_VIEW_MOVED, uv);
             if (uv.getLastSeenView() != null) {
                 if (LastSeenMaster.isUpdateRequired(object))
                     cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());

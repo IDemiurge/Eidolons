@@ -14,6 +14,7 @@ import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
+import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.libgdx.stage.UiStage;
@@ -42,6 +43,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected UiStage overlayStage;
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
+    protected PostProcessController postProcessing;
     private boolean waitingForInput;
     private float tooltipTimer = getTooltipPeriod();
     private boolean loadingAtlases;
@@ -57,6 +59,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
 
         overlayStage = new UiStage();
+
+        postProcessing =
+         new PostProcessController();
+        //         PostProcessController.getInstance();
+        postProcessing.reset();
+
     }
 
     public UiStage getOverlayStage() {
@@ -73,12 +81,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public CustomSpriteBatch getBatch() {
         if (batch == null) {
-            batch = CustomSpriteBatch.getInstance();
+            batch = CustomSpriteBatch.getMainInstance();
         }
         return batch;
     }
 
     protected void preLoad() {
+
         try {
             MusicMaster.getInstance().startLoop();
         } catch (Exception e) {
@@ -166,6 +175,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
+
     protected void hideLoader() {
         this.loading = false;
         setLoaded(true);
@@ -183,7 +193,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         overlayStage.getRoot().setSize(width, height);
         overlayStage.getViewport().update(width, height);
         loadingStage.getRoot().setSize(width, height);
-    loadingStage.getViewport().update(width, height);
+        loadingStage.getViewport().update(width, height);
 
 
     }
@@ -195,7 +205,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         checkShader();
 
+        postProcessing.act(delta);
+        if (isPostProcessingOn())
+            if (isPostProcessingDefault())
+                postProcessing.begin();
         renderLoader(delta);
+        if (isPostProcessingDefault())
+            postProcessing.end();
         waited(delta);
         checkShaderReset();
         if (isLoadingAtlases()) {
@@ -224,9 +240,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void waited(float delta) {
         timeWaited += delta;
 
-//
+        //
 
-//    TODO     tooltipLabel.draw(batch, 1f);
+        //    TODO     tooltipLabel.draw(batch, 1f);
 
         if (isWaitingForInput()) {
 
@@ -253,7 +269,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             } else tooltipLabel.setVisible(false);
         }
 
-//        batch.end();
+        //        batch.end();
     }
 
     protected float getTooltipPeriod() {
@@ -271,7 +287,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void renderLoader(float delta) {
-
         if (introStage != null && !introStage.isDone()) {
             introStage.act(delta);
             introStage.draw();
@@ -280,6 +295,15 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         } else
             renderMain(delta);
+
+    }
+
+    protected boolean isPostProcessingDefault() {
+        return true;
+    }
+
+    protected boolean isPostProcessingOn() {
+        return true;
     }
 
     protected void renderLoaderAndOverlays(float delta) {
@@ -343,12 +367,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void updateInputController() {
         GdxMaster.setInputProcessor(
-          createInputController()) ;
+         createInputController());
     }
 
     public void initLoadingStage(ScreenData meta) {
         this.loadingStage = new LoadingStage(meta);
-        loadingStage.setViewport(new ScreenViewport(new OrthographicCamera( )));
+        loadingStage.setViewport(new ScreenViewport(new OrthographicCamera()));
 
     }
 
@@ -367,5 +391,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     private int getAssetLoadTimeLimit() {
         return 20;
+    }
+
+    public PostProcessController getPostProcessing() {
+        return postProcessing;
     }
 }

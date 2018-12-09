@@ -25,6 +25,96 @@ public class ParamPriorityAnalyzer extends AiHandler {
         super(master);
     }
 
+    public static float getParamNumericPriority(PARAMS param) {
+        switch (param) {
+            case FORTITUDE:
+                return 100;
+            case SPIRIT:
+                return 100;
+            case C_N_OF_ACTIONS:
+                return 50;
+            case C_N_OF_COUNTERS:
+                return 120;
+            case N_OF_ACTIONS:
+                return 150;
+            case N_OF_COUNTERS:
+                return 150;
+
+            case DETECTION:
+                return 1.5f;
+            case C_ENDURANCE:
+                return 2;
+            case ENDURANCE:
+                return 3;
+            case C_TOUGHNESS:
+                return 3;
+            case TOUGHNESS:
+                return 5;
+            case C_STAMINA:
+                return 8;
+            case C_FOCUS:
+                return 6;
+            case C_MORALE:
+                return 3;
+            case C_ESSENCE:
+                return 4;
+            case CONCEALMENT:
+                return 3;
+            case C_INITIATIVE:
+                return 2;
+            case C_INITIATIVE_BONUS:
+                return 2;
+            case ARMOR:
+                return 5;
+            case RESISTANCE:
+                return 4;
+            case BASE_DAMAGE:
+                return 2.5f;
+            case DAMAGE_BONUS:
+                return 2.5f;
+            case DEFENSE:
+                return 3;
+            case ATTACK:
+                return 3;
+            case DEFENSE_MOD:
+                return 2;
+            case ATTACK_MOD:
+                return 2;
+            case DAMAGE_MOD:
+                return 2.5f;
+            case STAMINA:
+                return 12;
+            case FOCUS:
+                return 9;
+            case MORALE:
+                return 5;
+            case ESSENCE:
+                return 6;
+
+            case STRENGTH:
+            case VITALITY:
+            case AGILITY:
+            case DEXTERITY:
+            case WILLPOWER:
+            case INTELLIGENCE:
+            case SPELLPOWER:
+            case KNOWLEDGE:
+            case WISDOM:
+            case CHARISMA:
+            case BASE_STRENGTH:
+            case BASE_VITALITY:
+            case BASE_AGILITY:
+            case BASE_DEXTERITY:
+            case BASE_WILLPOWER:
+            case BASE_INTELLIGENCE:
+            case BASE_SPELLPOWER:
+            case BASE_KNOWLEDGE:
+            case BASE_WISDOM:
+            case BASE_CHARISMA:
+                return 10;
+        }
+        return 0;
+    }
 
     private static int getParamPercentPriority(PARAMS param) {
         if (param.isAttribute()) {
@@ -137,39 +227,39 @@ public class ParamPriorityAnalyzer extends AiHandler {
                 case TOUGHNESS:
                     if (target.checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE))
                         return true;
-//                case C_INITIATIVE_BONUS:
-//                    if (!((Unit) target).canActNow()) {
-//                        return 0;
-//                    }
-//                    if (target.getGame().getTurnManager().getUnitQueue().size() <= 2) {
-//                        return 0;
-//                    }
-//                    if (target.getOwner().equals(
-//                            target.getGame().getTurnManager().getActiveUnit()
-//                                    .getOwner())) {
-//                        if (target.getGame().getTurnManager().getUnitQueue()
-//                                .indexOf((Unit) target) > 1) {
-//                            return 1;
-//                        }
-//                        return 0;
-//                    } else if (target.getIntParam(PARAMS.C_INITIATIVE) > target
-//                            .getGame().getRules().getTimeRule()
-//                            .getTimeRemaining())
-//                    // target.getGame().getTurnManager().getUnitQueue().
-//                    // }
-//                    {
-//                        return 2;
-//                    }
+                    //                case C_INITIATIVE_BONUS:
+                    //                    if (!((Unit) target).canActNow()) {
+                    //                        return 0;
+                    //                    }
+                    //                    if (target.getGame().getTurnManager().getUnitQueue().size() <= 2) {
+                    //                        return 0;
+                    //                    }
+                    //                    if (target.getOwner().equals(
+                    //                            target.getGame().getTurnManager().getActiveUnit()
+                    //                                    .getOwner())) {
+                    //                        if (target.getGame().getTurnManager().getUnitQueue()
+                    //                                .indexOf((Unit) target) > 1) {
+                    //                            return 1;
+                    //                        }
+                    //                        return 0;
+                    //                    } else if (target.getIntParam(PARAMS.C_INITIATIVE) > target
+                    //                            .getGame().getRules().getTimeRule()
+                    //                            .getTimeRemaining())
+                    //                    // target.getGame().getTurnManager().getUnitQueue().
+                    //                    // }
+                    //                    {
+                    //                        return 2;
+                    //                    }
 
 
-//                case ATTACK_MOD:
-//                    return new Float(Math.sqrt(target
-//                            .getIntParam(PARAMS.ATTACK))
-//                            * target.getIntParam(PARAMS.DAMAGE)
-//                            / 100
-//                            + Math.sqrt(target
-//                            .getIntParam(PARAMS.OFF_HAND_ATTACK))
-//                            * target.getIntParam(PARAMS.OFF_HAND_DAMAGE) / 100)
+                    //                case ATTACK_MOD:
+                    //                    return new Float(Math.sqrt(target
+                    //                            .getIntParam(PARAMS.ATTACK))
+                    //                            * target.getIntParam(PARAMS.DAMAGE)
+                    //                            / 100
+                    //                            + Math.sqrt(target
+                    //                            .getIntParam(PARAMS.OFF_HAND_ATTACK))
+                    //                            * target.getIntParam(PARAMS.OFF_HAND_DAMAGE) / 100)
 
 
             }

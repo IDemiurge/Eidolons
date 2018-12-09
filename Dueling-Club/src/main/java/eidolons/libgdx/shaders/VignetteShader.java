@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
-import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.texture.TextureCache;
 import org.lwjgl.opengl.Display;
@@ -112,7 +112,7 @@ public class VignetteShader {
 
         vignette.getContent().setWidth(GdxMaster.getWidth());
         vignette.getContent().setHeight(GdxMaster.getHeight());
-        vignette.setAlphaTemplate(SuperActor.ALPHA_TEMPLATE.VIGNETTE);
+        vignette.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.VIGNETTE);
 
         vignette.setTouchable(Touchable.disabled);
         return vignette;

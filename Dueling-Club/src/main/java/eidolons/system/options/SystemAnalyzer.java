@@ -62,7 +62,7 @@ public class SystemAnalyzer {
             graphics.setValue(GRAPHIC_OPTION.AMBIENCE, false);
             graphics.setValue(GRAPHIC_OPTION.SHADOW_MAP_OFF, true);
             graphics.setValue(GRAPHIC_OPTION.ADD_SHARDS_NEVER, true);
-            graphics.setValue(GRAPHIC_OPTION.UI_EMITTERS, false);
+            graphics.setValue(GRAPHIC_OPTION.UI_VFX, false);
             graphics.setValue(GRAPHIC_OPTION.UI_ATLAS, false);
             graphics.setValue(GRAPHIC_OPTION.FRAMERATE, 45);
         } else if (pcLevel <= 1.5) {

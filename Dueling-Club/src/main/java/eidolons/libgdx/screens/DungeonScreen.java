@@ -29,6 +29,7 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.StageX;
@@ -103,7 +104,7 @@ public class DungeonScreen extends GameScreenWithTown {
         super.preLoad();
         gridStage = new StageX(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage(null, getBatch());
+        guiStage = new BattleGuiStage(null, null ); //separate batch for PP
 
         initGl();
 
@@ -290,6 +291,7 @@ public class DungeonScreen extends GameScreenWithTown {
             updateInputController();
         }
     }
+
     protected void selectionPanelClosed() {
         if (TownPanel.getActiveInstance() != null) //TODO fix late events in auto-load
             return;
@@ -321,6 +323,7 @@ public class DungeonScreen extends GameScreenWithTown {
                         ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
                 }
 
+            postProcessing.begin();
             if (backTexture != null) {
                 guiStage.getBatch().begin();
                 float colorBits = GdxColorMaster.WHITE.toFloatBits();
@@ -330,9 +333,24 @@ public class DungeonScreen extends GameScreenWithTown {
                 guiStage.getBatch().end();
             }
             gridStage.draw();
-
+            postProcessing.end();
 
             guiStage.draw();
+
+            //            postProcessing.disable(); //a failed boat!
+            //            gridStage.draw();
+            //            batch.flush();
+            //            postProcessing.end();
+            //            batch.flush();
+            //            postProcessing.begin();
+            //            postProcessing.disable();
+            //            batch.setShader(null);
+            //            batch.resetBlending();
+            //            batch.getColor().a=1;
+            //            guiStage.draw();
+            //            batch.flush();
+            //            postProcessing.enable();
+
 
             if (dialogsStage != null) {
                 dialogsStage.act(delta);
@@ -355,26 +373,24 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     @Override
+    protected boolean isPostProcessingDefault() {
+        return false;
+    }
+
+    @Override
     protected Stage getMainStage() {
         return guiStage;
     }
 
     @Override
     public void render(float delta) {
+        batch.shaderFluctuation(delta);
 
-
-        //        if (delta < FRAMERATE_DELTA_CONTROL) {
-        //            try {
-        //                Thread.sleep((long) (FRAMERATE_DELTA_CONTROL-delta  ));
-        //            } catch (InterruptedException e) {
-        //                main.system.ExceptionMaster.printStackTrace(e);
-        //            }
-        //            delta = FRAMERATE_DELTA_CONTROL;
-        //        }
         if (speed != null) {
             delta = delta * speed;
         }
-        if (!CoreEngine.isJar() )
+        if (!CoreEngine.isJar())
+            //            checkDebugToggle();
             if (DC_Game.game != null) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
                  Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
@@ -397,18 +413,31 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void checkShaderReset() {
-        if (batch.getShader() == DarkShader.getShader())
-            batch.setShader(bufferedShader);
+        if (batch.getShader() == DarkShader.getDarkShader())
+        {
+            batch.shaderReset();
+        }
+        if (guiStage.getBatch().getShader() == DarkShader.getDarkShader()
+         || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+         || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+         )
+        {
+            guiStage.getCustomSpriteBatch().shaderReset();
+        }
     }
 
     protected void checkShader() {
 
-        if (batch.getShader() != DarkShader.getShader())
+        batch.setShader(null);
+//        guiStage .getCustomSpriteBatch().setShader(null);
+
+        if (batch.getShader() != DarkShader.getDarkShader())
             if (isBlocked() || ExplorationMaster.isWaiting()) {
                 bufferedShader = batch.getShader();
-                batch.setShader(DarkShader.getShader());
+                batch.setFluctuatingShader(DarkShader.getInstance());
+                guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
+//                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
             }
-
     }
 
     public boolean isBlocked() {
@@ -428,7 +457,7 @@ public class DungeonScreen extends GameScreenWithTown {
             if (manualPanel.isVisible())
                 return true;
         if (selectionPanel != null)
-            if (selectionPanel.isVisible() && selectionPanel.getStage()!=null )
+            if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
                 return true;
         return guiStage.isBlocked();
     }
@@ -510,11 +539,11 @@ public class DungeonScreen extends GameScreenWithTown {
         return true;
     }
 
-    public void setStackView(GridCellContainer stackView) {
-        this.stackView = stackView;
-    }
-
     public GridCellContainer getStackView() {
         return stackView;
+    }
+
+    public void setStackView(GridCellContainer stackView) {
+        this.stackView = stackView;
     }
 }

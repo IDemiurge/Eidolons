@@ -243,7 +243,7 @@ public class DC_CONSTS {
             return leveled;
         }
 
-        public String getValue(MAGICAL_ITEM_LEVEL level) {
+        public String getValue(ITEM_LEVEL level) {
             if (!leveled) {
                 return value;
             }
@@ -261,7 +261,7 @@ public class DC_CONSTS {
         }
     }
 
-    public enum MAGICAL_ITEM_LEVEL {
+    public enum ITEM_LEVEL {
         MINOR(100, 0, 10, ""),
         LESSER(150,1, 25, ""),
         COMMON(225,2, 50, ""),
@@ -273,7 +273,7 @@ public class DC_CONSTS {
         private int costFactor;
         private String iconSuffix;
 
-        MAGICAL_ITEM_LEVEL(int power, int n, int costFactor, String iconSuffix) {
+        ITEM_LEVEL(int power, int n, int costFactor, String iconSuffix) {
             this.costFactor = costFactor;
             this.iconSuffix = iconSuffix;
             this.level = n;

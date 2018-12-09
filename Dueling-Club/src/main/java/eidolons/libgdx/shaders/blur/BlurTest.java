@@ -32,7 +32,7 @@ public class BlurTest extends Game {
     float radius = 3f;
 
     public static void main(String[] args) {
-        new LwjglApplication(new BlurTest());
+        new LwjglApplication(new BlurTest(), "Blurry", 1920, 1080);
     }
 
     @Override

@@ -67,6 +67,9 @@ public class GuiVisualEffects extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX)) {
+            return;
+        }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {
             ((CustomSpriteBatch) batch).resetBlending();
@@ -235,7 +238,7 @@ public class GuiVisualEffects extends GroupX {
     @Override
     public void act(float delta) {
         if (emitters == null)
-            if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_EMITTERS))
+            if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
                 initEmitters();
         super.act(delta);
     }
@@ -245,7 +248,7 @@ public class GuiVisualEffects extends GroupX {
     }
 
     private void initEmitters() {
-        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_EMITTERS))
+        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
             return;
 
         emitters = new ArrayList<>();

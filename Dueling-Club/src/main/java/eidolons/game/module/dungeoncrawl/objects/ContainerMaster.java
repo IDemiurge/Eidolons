@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
-import eidolons.content.DC_CONSTS.MAGICAL_ITEM_LEVEL;
+import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -341,38 +341,38 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     private List<ObjType> generateJewelry(ITEM_RARITY rarity, List<ObjType> group) {
         ItemGenerator generator = ItemGenerator.getDefaultGenerator();
         JEWELRY_ITEM_TRAIT[] traits = getJewelryTraits(rarity);
-        MAGICAL_ITEM_LEVEL[] levels = getJewelryLevels(rarity);
+        ITEM_LEVEL[] levels = getJewelryLevels(rarity);
         for (ObjType sub : new ArrayList<>(group))
-            for (MAGICAL_ITEM_LEVEL level : levels)
+            for (ITEM_LEVEL level : levels)
                 for (JEWELRY_ITEM_TRAIT trait : traits)
                     group.add(generator.getOrCreateJewelry(sub, trait, level));
 
         return group;
     }
 
-    private MAGICAL_ITEM_LEVEL[] getJewelryLevels(ITEM_RARITY rarity) {
+    private ITEM_LEVEL[] getJewelryLevels(ITEM_RARITY rarity) {
         switch (rarity) {
             case EXCEPTIONAL:
-                return new MAGICAL_ITEM_LEVEL[]{
-                 MAGICAL_ITEM_LEVEL.LEGENDARY
+                return new ITEM_LEVEL[]{
+                 ITEM_LEVEL.LEGENDARY
                 };
             case RARE:
-                return new MAGICAL_ITEM_LEVEL[]{
-                 MAGICAL_ITEM_LEVEL.LEGENDARY,
-                 MAGICAL_ITEM_LEVEL.GREATER,
+                return new ITEM_LEVEL[]{
+                 ITEM_LEVEL.LEGENDARY,
+                 ITEM_LEVEL.GREATER,
                 };
             case UNCOMMON:
-                return new MAGICAL_ITEM_LEVEL[]{
-                 MAGICAL_ITEM_LEVEL.COMMON,
-                 MAGICAL_ITEM_LEVEL.GREATER,
+                return new ITEM_LEVEL[]{
+                 ITEM_LEVEL.COMMON,
+                 ITEM_LEVEL.GREATER,
                 };
             case COMMON:
-                return new MAGICAL_ITEM_LEVEL[]{
-                 MAGICAL_ITEM_LEVEL.COMMON,
-                 MAGICAL_ITEM_LEVEL.LESSER,
+                return new ITEM_LEVEL[]{
+                 ITEM_LEVEL.COMMON,
+                 ITEM_LEVEL.LESSER,
                 };
         }
-        return new MAGICAL_ITEM_LEVEL[0];
+        return new ITEM_LEVEL[0];
     }
 
     private JEWELRY_ITEM_TRAIT[] getJewelryTraits(ITEM_RARITY rarity) {

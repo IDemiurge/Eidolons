@@ -136,6 +136,9 @@ public class GenericGridView extends UnitView {
             parentAlpha = alpha;
         }
         super.draw(batch, parentAlpha);
+        if (getUserObject().isPlayerCharacter()) {
+            return;
+        }
     }
 
     @Override

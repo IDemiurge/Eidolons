@@ -181,7 +181,8 @@ public class Anim extends Group implements Animation {
         if (duration >= 0 || isContinuous()) //|| finished //  lifecycle duration for continuous?
         {
             if (checkFinished()) {
-                if (AnimMaster.isSmoothStop(this)) {
+                if (!emitterList.isEmpty())
+                if (completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
                     waitForVfx();
                     return true;
                 }

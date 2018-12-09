@@ -56,7 +56,7 @@ public class DynamicLayeredActor extends LayeredActor {
 
     public void disable() {
         setStatus(ACTOR_STATUS.DISABLED);
-        setShader(DarkShader.getShader());
+        setShader(DarkShader.getDarkShader());
     }
     public void block() {
         setStatus(ACTOR_STATUS.DISABLED);

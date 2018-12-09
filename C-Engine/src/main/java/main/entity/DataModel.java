@@ -813,7 +813,7 @@ public abstract class DataModel {
     }
 
     private boolean isValueEventsOn(String param) {
-        if (isBeingReset())
+        if (isBeingReset() || getGame()==null )
             return false;
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;

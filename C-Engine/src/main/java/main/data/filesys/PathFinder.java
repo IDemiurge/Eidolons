@@ -474,4 +474,8 @@ public class PathFinder {
     public static String getShadersPath() {
         return getTextPath() + "shaders/";
     }
+
+    public static String getCampaignSavePath() {
+        return getSavesPath()+"campaign/";
+    }
 }

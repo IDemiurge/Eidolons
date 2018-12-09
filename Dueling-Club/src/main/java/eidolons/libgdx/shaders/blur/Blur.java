@@ -1,9 +1,14 @@
 package eidolons.libgdx.shaders.blur;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
+import eidolons.libgdx.shaders.post.Processor;
 
 /**
  * Created by JustMe on 12/2/2018.
@@ -15,15 +20,48 @@ import eidolons.libgdx.shaders.ShaderMaster.SHADER;
  * downsampling and other tricks?
  *
  */
-public class Blur {
-    public void blur(SpriteBatch batch) {
-        ShaderProgram blurShader = ShaderMaster.getShader(SHADER.BLUR);
-        //always a good idea to set up default uniforms...
-//        blurShader.setUniformf("dir", 0f, 0f); //direction of blur; nil for now
-//        blurShader.setUniformf("resolution", FBO_SIZE); //size of FBO texture
-//        blurShader.setUniformf("radius", radius); //radius of blur
-//
-//        fboA(batch);
+public class Blur implements Processor{
+    private final FadeImageContainer fluctuate;
+    float blur=2;
+ShaderProgram shader;
+
+    public void setBlur(float blur) {
+        this.blur = blur;
     }
 
+    public Blur() {
+        shader = ShaderMaster.getShader(SHADER.BLUR);
+
+        if (!shader.isCompiled()) {
+            Gdx.app.error("Shader", shader.getLog());
+            Gdx.app.exit();
+        }
+
+        shader.begin();
+        shader.setUniformf("resolution", GdxMaster.getWidth());
+        shader.end();
+
+        fluctuate = new FadeImageContainer();
+        fluctuate.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
+    }
+
+    @Override
+    public void prepareForFBO(SpriteBatch batch, float delta) {
+        fluctuate.act(delta);
+        batch.setShader(shader);
+        shader.setUniformf("dir", 1.0f, 0.0f);
+        shader.setUniformf("radius",5* blur*getFluctuation());
+    }
+
+    private float getFluctuation() {
+        return fluctuate.getColor().a;
+    }
+
+    @Override
+    public void prepareForBatch(SpriteBatch batch) {
+        // Vertical blur from FBO B to the screen
+        batch.setShader(shader);
+        shader.setUniformf("dir", 0.0f, 1.0f);
+        shader.setUniformf("radius", blur*getFluctuation());
+    }
 }

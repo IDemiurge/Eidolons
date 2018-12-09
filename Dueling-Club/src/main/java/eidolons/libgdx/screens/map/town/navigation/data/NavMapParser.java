@@ -16,6 +16,12 @@ import static eidolons.macro.MacroGame.game;
 
 /**
  * Created by JustMe on 11/23/2018.
+ *
+ * |  ValueContainer
+ |  |  ImageContainer
+ |  |  |  Image
+
+
  */
 public class NavMapParser {
     public static final String testData =

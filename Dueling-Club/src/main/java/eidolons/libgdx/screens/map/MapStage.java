@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.macro.MacroGame;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.layers.*;
 import eidolons.libgdx.texture.TextureCache;
@@ -73,7 +73,7 @@ public class MapStage extends Stage {
         TextureRegion tex = TextureCache.getOrCreateR(
          PathFinder.getMapLayersPath() + "top layer.png");
         ImageContainer layer = new ImageContainer(new Image(tex));
-        layer.setAlphaTemplate(ALPHA_TEMPLATE.TOP_LAYER);
+        layer.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.TOP_LAYER);
         topLayer.addActor(layer);
         addActor(topLayer);
     }

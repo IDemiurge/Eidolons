@@ -261,7 +261,7 @@ public class GridCellContainer extends GridCell {
     }
 
     public float getObjScale(BaseView actor) {
-        return GridMaster.CELL_W/(getUnitViewSize(actor)) ;
+        return getUnitViewSize(actor)/GridMaster.CELL_W ;
     }
 
     @Override

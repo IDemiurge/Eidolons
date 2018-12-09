@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
@@ -155,7 +156,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         container.setFlipX(flipX);
         container.setPosition(x, y);
 
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_EMITTERS))
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
         if (container.lightLayer.emitterPaths != null) {
             for (String sub : container.lightLayer.emitterPaths) {
                 EmitterActor emitter = new EmitterActor(sub);
@@ -199,20 +200,20 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
 
     public enum LIGHT_LAYER {
-        HEAVENLY_LIGHT_LARGE(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
-        HEAVENLY_LIGHT_LARGE_GOLDEN(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
+        HEAVENLY_LIGHT_LARGE(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
+        HEAVENLY_LIGHT_LARGE_GOLDEN(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
 
-        HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
-        HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
+        HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
+        HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
 
-        LIGHT_SPREAD_SILVER(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
-        LIGHT_SPREAD_GOLDEN(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
-        LIGHT_SPREAD(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
+        LIGHT_SPREAD_SILVER(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
+        LIGHT_SPREAD_GOLDEN(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
+        LIGHT_SPREAD(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
 
-        VERTICAL_MOONLIGHT(0.4f, -0.15f, 6, ALPHA_TEMPLATE.MOONLIGHT, true,
+        VERTICAL_MOONLIGHT(0.4f, -0.15f, 6, Fluctuating.ALPHA_TEMPLATE.MOONLIGHT, true,
          DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT),
 
-        VERTICAL_LIGHT(1f, -0.25f, 5, ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.MIDDAY, DAY_TIME.MORNING),
+        VERTICAL_LIGHT(1f, -0.25f, 5, Fluctuating.ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.MIDDAY, DAY_TIME.MORNING),
 //        VERTICAL_LIGHT_LARGE_GOLDEN(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK),
 //        VERTICAL_LIGHT_LARGE_GOLDEN_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
 //        VERTICAL_LIGHT_LARGE_SILVER_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.MORNING),

@@ -56,9 +56,9 @@ public class FullscreenAnims extends GroupX {
                          e.getRef().getTargetObj().getCoordinates());
 
                     FULLSCREEN_ANIM type = FULLSCREEN_ANIM.BLOOD;
-                    if (RandomWizard.random()) {
-                        type = FULLSCREEN_ANIM.POISON;
-                    }
+//                    if (RandomWizard.random()) {
+//                        type = FULLSCREEN_ANIM.POISON;
+//                    }
                     float intensity = RandomWizard.getRandomFloatBetween(0.15f, 0.35f);
                     intensity+=
                      e.getRef().getAmount() / e.getRef().getTargetObj().getIntParam(PARAMS.ENDURANCE);

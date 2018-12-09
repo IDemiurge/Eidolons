@@ -16,6 +16,20 @@ import java.util.Map;
 public class ShaderMaster {
 
     private static Map<SHADER, ShaderProgram> shaderMap = new HashMap<>();
+    private static String defaultVertex;
+
+    public static String getDefaultVertex() {
+        if (defaultVertex == null) {
+            String path = getShadersPath() ;
+            defaultVertex = FileManager.readFile(path + "std.vert");
+        }
+        return defaultVertex;
+    }
+
+    public static void setDefaultVertex(String defaultVertex) {
+        ShaderMaster.defaultVertex = defaultVertex;
+    }
+
     @Test
     public  void syncShaderData(){
         CoreEngine.systemInit();
@@ -30,24 +44,40 @@ public class ShaderMaster {
             FileManager.copy(file.getPath(), targetPath+file.getName());
         }
     }
+
     public static ShaderProgram getShader(SHADER shader) {
+        ShaderProgram.pedantic = false;
         ShaderProgram program = shaderMap.get(shader);
         if (program == null) {
-           String path = PathFinder.getShadersPath()+ shader.getPath();
+            String path = getShadersPath() + "/" + shader.getPath();
             String vert = FileManager.readFile(path + ".vert");
+            if (vert.isEmpty()) {
+                vert = getDefaultVertex();
+            }
             String frag = FileManager.readFile(path + ".frag");
             program = new ShaderProgram(vert, frag);
             shaderMap.put(shader, program);
         }
         return program;
     }
+   static String path;
+    private static String getShadersPath() {
+        if (path == null) {
+            path = (PathFinder.getEnginePath() +ShaderMaster.class.getPackage().toString())
+             .replace(".", "/")
+             .replace("target", "src\\main\\java")
+             .replace("package ", "") + "/data/"
+            ;
+        }
+        return path;
+    }
 
     public enum SHADER{
         DARKEN,
         GRAYSCALE,
         FISH_EYE,
-        BLUR("shadertut/lesson5"),
-;
+        BLUR(),
+        GREY_DARKEN;
         String path;
 
         SHADER() {

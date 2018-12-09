@@ -84,6 +84,9 @@ public class AnimMaster extends Group {
         //            return false;
         if (!ExplorationMaster.isExplorationOn())
             return false;
+        if (sourceObj.isMine()) {
+            return false;
+        }
         if (baseView != null)
             if (!baseView.isVisible())
                 return true;

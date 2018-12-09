@@ -2,7 +2,6 @@ package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -25,6 +24,7 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -52,7 +52,7 @@ public class BattleGuiStage extends GuiStage {
            GdxMaster.getHeight(), new OrthographicCamera())
           //        new ScreenViewport( new OrthographicCamera())
           : viewport,
-         batch == null ? new SpriteBatch() :
+         batch == null ? new CustomSpriteBatch() :
           batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
         initiativePanel = new InitiativePanel();

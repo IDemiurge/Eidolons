@@ -4,10 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.macro.MacroGame;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
 import main.data.filesys.PathFinder;
@@ -45,9 +45,9 @@ public class MoonActor extends Group {
         overlay = new ImageContainer(getPath() + "over" + PathUtils.getPathSeparator() +
          moon.name() + ".png");
 
-        circle.setAlphaTemplate(ALPHA_TEMPLATE.MOON);
-        overlay.setAlphaTemplate(ALPHA_TEMPLATE.MOON);
-        underlay.setAlphaTemplate(ALPHA_TEMPLATE.MOON);
+        circle.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.MOON);
+        overlay.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.MOON);
+        underlay.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.MOON);
 
         float moonSize = fullSize * 1f;
         main.setSize(moonSize, moonSize);

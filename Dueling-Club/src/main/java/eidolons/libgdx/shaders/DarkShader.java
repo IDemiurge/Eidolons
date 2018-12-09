@@ -1,45 +1,41 @@
 package eidolons.libgdx.shaders;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
+import eidolons.libgdx.shaders.ShaderMaster.SHADER;
 
 /**
  * Created by JustMe on 11/17/2017.
  */
-public class DarkShader {
-    public static final String vertexShader = "attribute vec4 a_position;\n" +
-     "attribute vec4 a_color;\n" +
-     "attribute vec2 a_texCoord0;\n" +
-     "\n" +
-     "uniform mat4 u_projTrans;\n" +
-     "\n" +
-     "varying vec4 v_color;\n" +
-     "varying vec2 v_texCoords;\n" +
-     "\n" +
-     "void main() {\n" +
-     "    v_color = a_color;\n" +
-     "    v_texCoords = a_texCoord0;\n" +
-     "    gl_Position = u_projTrans * a_position;\n" +
-     "}";
+public class DarkShader extends FluctuatingShader{
 
-    public static final String fragmentShader = "#ifdef GL_ES\n" +
-     "    precision mediump float;\n" +
-     "#endif\n" +
-     "\n" +
-     "varying vec4 v_color;\n" +
-     "varying vec2 v_texCoords;\n" +
-     "uniform sampler2D u_texture;\n" +
-     "\n" +
-     "void main() {\n" +
-     "  vec4 c = v_color * texture2D(u_texture, v_texCoords);\n" +
-//         "  float grey = (c.r + c.g + c.b) / 3.0;\n" +
-     "  gl_FragColor = vec4(c.r/2.0, c.g/2.0, c.b/2.0, c.a);\n" +
-     "}";
+    private static final ShaderProgram shader = getInstance().getShader();
+    private static DarkShader instance;
 
-    private static final ShaderProgram shader = new ShaderProgram(vertexShader,
-     fragmentShader);
-
-    public static ShaderProgram getShader() {
+    public static ShaderProgram getDarkShader() {
         return shader;
+    }
+
+    public static DarkShader getInstance() {
+        if (instance == null) {
+            instance = new DarkShader();
+        }
+        return instance;
+    }
+
+    @Override
+    protected ALPHA_TEMPLATE getAlphaTemplate() {
+        return ALPHA_TEMPLATE.BLOOM;
+    }
+
+    @Override
+    protected SHADER getShaderType() {
+        return SHADER.DARKEN;
+    }
+
+    @Override
+    protected float getDefaultBaseFluctuatingValue() {
+        return 1;
     }
 
 }

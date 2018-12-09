@@ -2,8 +2,9 @@ package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -49,7 +50,7 @@ public class ShardVisuals extends GroupX {
     }
 
     public static ALPHA_TEMPLATE getTemplateForOverlay(SHARD_OVERLAY overlay) {
-        return ALPHA_TEMPLATE.SHARD_OVERLAY;
+        return Fluctuating.ALPHA_TEMPLATE.SHARD_OVERLAY;
     }
 
     public static VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {

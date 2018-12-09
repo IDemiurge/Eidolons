@@ -37,23 +37,38 @@ public class ParamAnalyzer extends AiHandler {
         super(master);
     }
 
-    public static boolean checkStatus(boolean low_critical, Unit unit, DC_BuffRule rule) {
+    public static boolean checkStatus(Boolean low_critical, Unit unit,
+                                      BUFF_RULE rule) {
+        return checkStatus(low_critical, unit, unit.getGame().getRules().getBuffRule(rule));
+    }
+
+    public static boolean checkStatus(Boolean critical_low_high, Unit unit, DC_BuffRule rule) {
         Integer buffLevel = rule.getBuffLevel(unit);
-        if (buffLevel == null) {
+        if (buffLevel == null)
             return false;
-        }
-        if (buffLevel < 0) {
+        if (buffLevel < 0)
             return false;
-        }
-        if (buffLevel == rule
-         .getMaxLevel()) {
-            return false;
+        return getStatus(unit, rule).bool == critical_low_high;
+    }
+
+    public static BUFF_RULE_STATUS getStatus(Unit unit, BUFF_RULE rule) {
+        return getStatus(unit, unit.getGame().getRules().getBuffRule(rule));
+    }
+    public static BUFF_RULE_STATUS getStatus(Unit unit, DC_BuffRule rule) {
+        Integer buffLevel = rule.getBuffLevel(unit);
+        if (buffLevel == null)
+            return BUFF_RULE_STATUS.NONE;
+        if (buffLevel < 0)
+            return BUFF_RULE_STATUS.NONE;
+
+        if (buffLevel == rule.getMaxLevel()) {
+            return BUFF_RULE_STATUS.HIGH;
         }
         if (buffLevel == rule
          .getMinLevel()) {
-            return low_critical;
+            return BUFF_RULE_STATUS.CRITICAL;
         }
-        return !low_critical;
+        return BUFF_RULE_STATUS.LOW;
     }
 
     public static boolean isFatigued(Unit unit) {
@@ -273,6 +288,26 @@ public class ParamAnalyzer extends AiHandler {
             }
         }
         return list;
+    }
+
+    public enum BUFF_RULE {
+        MORALE,
+        FOCUS,
+        STAMINA,
+        WOUNDS,
+
+    }
+
+    public enum BUFF_RULE_STATUS {
+        CRITICAL(true),
+        LOW(false),
+        NONE(null),
+        HIGH(null),;
+        Boolean bool;
+
+        BUFF_RULE_STATUS(Boolean bool) {
+            this.bool = bool;
+        }
     }
 
 }

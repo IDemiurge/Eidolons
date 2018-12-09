@@ -63,7 +63,7 @@ public class HqHeroPreview extends FadeImageContainer {
         }
         else
         {
-            shader = DarkShader.getShader();
+            shader = DarkShader.getDarkShader();
 //            border.setVisible(false);
         }
     }

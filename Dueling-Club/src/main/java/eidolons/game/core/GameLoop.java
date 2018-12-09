@@ -14,7 +14,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -384,7 +384,7 @@ public class GameLoop {
         else GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Game Resumed");
         GearActor.setPaused(paused);
         this.paused = paused;
-        SuperActor.setAlphaFluctuationOn(!paused);
+        Fluctuating.setAlphaFluctuationOn(!paused);
         int vol = manual ? 100 : 50;
         if (paused) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__PAUSE, vol, 0);

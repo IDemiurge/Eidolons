@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
 import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.battlecraft.rules.action.EngagedRule;
@@ -391,5 +392,19 @@ public class DC_Rules implements GameRules {
 
     public Map<DamageCounterRule, TimedRule> getTimedRules() {
         return timedRules;
+    }
+
+    public DC_BuffRule getBuffRule(BUFF_RULE rule) {
+        switch (rule) {
+            case MORALE:
+                return moraleBuffRule;
+            case FOCUS:
+                return focusBuffRule;
+            case STAMINA:
+                return staminaRule;
+            case WOUNDS:
+                return woundsRule;
+        }
+        return null ;
     }
 }

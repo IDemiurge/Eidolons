@@ -20,7 +20,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -31,6 +31,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import main.data.XLinkedMap;
@@ -565,7 +566,9 @@ public class InitiativePanel extends GroupX {
         public void draw(Batch batch, float parentAlpha) {
             ShaderProgram shader = batch.getShader();
             if (immobilized) {
-                batch.setShader(DarkShader.getShader());
+                if (batch instanceof CustomSpriteBatch) {
+                    ((CustomSpriteBatch) batch).setFluctuatingShader(DarkShader.getInstance());
+                }
             }
             super.draw(batch, parentAlpha);
             batch.setShader(shader);
