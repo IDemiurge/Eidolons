@@ -62,7 +62,7 @@ public class PathFinder {
 
         }
 
-        RES_PATH = "resource" + File.separator;
+        RES_PATH = "resources" + File.separator;
         IMG_PATH = ENGINE_PATH + RES_PATH + "img\\";
 
         SND_PATH = ENGINE_PATH + RES_PATH + "sound\\";

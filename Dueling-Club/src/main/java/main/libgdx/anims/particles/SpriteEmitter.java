@@ -32,7 +32,7 @@ public class SpriteEmitter extends Emitter {
     public void start() {
 //        if (animation==null )
         time = 0;
-        animation = SpriteAnimationFactory.getSpriteAnimation(getImagePath());
+//        animation = SpriteAnimationFactory.getSpriteAnimation(getImagePath());
 
 //        animation.setFrameDuration(
 //         getDuration().getLowMax() / animation.getFrameNumber()/loops);

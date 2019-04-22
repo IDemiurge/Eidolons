@@ -1,6 +1,5 @@
 package main.system.hotkey;
 
-import com.melloware.jintellitype.JIntellitype;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -32,8 +31,8 @@ public class DC_KeyManager
 // extends KeyboardFocusManager
         implements KeyListener {
 
-    public static final int DEFAULT_MODE = JIntellitype.MOD_CONTROL;
-    public static final int ALT_MODE = JIntellitype.MOD_ALT;
+    public static final int DEFAULT_MODE = 1;
+    public static final int ALT_MODE = 0;
     public static final String numberChars = "1234567890";
     private static final int SPELL_MASK = KeyEvent.CTRL_DOWN_MASK;
     private static final int ACTION_MASK = KeyEvent.ALT_DOWN_MASK;

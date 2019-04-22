@@ -1,6 +1,5 @@
 package main.system.sound;
 
-import javazoom.jl.player.jlp;
 import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.ContentManager;
@@ -216,10 +215,10 @@ public class Player {
         // }
 
         try {
-            jlp player = jlp.createInstance(new String[]{sound});
-            if (player != null) {
-                player.play();
-            }
+//            jlp player = jlp.createInstance(new String[]{sound});
+//            if (player != null) {
+//                player.play();
+//            }
 
         } catch (Exception ex) {
             System.err.println(ex);

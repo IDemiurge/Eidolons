@@ -1,13 +1,11 @@
 package main.system.hotkey;
 
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.JIntellitype;
 import main.client.dc.Launcher;
 import main.game.core.game.DC_Game;
 
 import java.awt.event.KeyEvent;
 
-public class GlobalKeys implements HotkeyListener {
+public class GlobalKeys     {
 
     private static boolean globalKeysOn;
 
@@ -34,7 +32,7 @@ public class GlobalKeys implements HotkeyListener {
     }
 
     public void disable() {
-        JIntellitype.getInstance().removeHotKeyListener(this);
+//        JIntellitype.getInstance().removeHotKeyListener(this);
     }
 
     public void initKeys(boolean launcher, boolean dc, boolean av) {
@@ -43,22 +41,22 @@ public class GlobalKeys implements HotkeyListener {
         try {
             globalKeysOn = true;
 
-            JIntellitype.getInstance();
-            JIntellitype.getInstance().addHotKeyListener(this);
-            if (launcher) {
-                JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_ALT,
-                        KeyEvent.VK_ESCAPE);
-                JIntellitype.getInstance().registerHotKey(2, JIntellitype.MOD_CONTROL,
-                        KeyEvent.VK_ENTER);
-                JIntellitype.getInstance().registerHotKey(3, JIntellitype.MOD_ALT,
-                        KeyEvent.VK_SPACE);
-            }
-
-            if (dc) {
-                JIntellitype.getInstance().registerHotKey(4, JIntellitype.MOD_ALT, KeyEvent.VK_F);
-                JIntellitype.getInstance().registerHotKey(5, JIntellitype.MOD_ALT, KeyEvent.VK_V);
-                JIntellitype.getInstance().registerHotKey(6, JIntellitype.MOD_ALT, KeyEvent.VK_D);
-            }
+//            JIntellitype.getInstance();
+//            JIntellitype.getInstance().addHotKeyListener(this);
+//            if (launcher) {
+//                JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_ALT,
+//                        KeyEvent.VK_ESCAPE);
+//                JIntellitype.getInstance().registerHotKey(2, JIntellitype.MOD_CONTROL,
+//                        KeyEvent.VK_ENTER);
+//                JIntellitype.getInstance().registerHotKey(3, JIntellitype.MOD_ALT,
+//                        KeyEvent.VK_SPACE);
+//            }
+//
+//            if (dc) {
+//                JIntellitype.getInstance().registerHotKey(4, JIntellitype.MOD_ALT, KeyEvent.VK_F);
+//                JIntellitype.getInstance().registerHotKey(5, JIntellitype.MOD_ALT, KeyEvent.VK_V);
+//                JIntellitype.getInstance().registerHotKey(6, JIntellitype.MOD_ALT, KeyEvent.VK_D);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

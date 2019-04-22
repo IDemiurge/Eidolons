@@ -102,7 +102,7 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
 
     public void setImagePath(String imagePath) {
         for (int i = 0, n = getEmitters().size; i < n; i++) {
-            getEmitters().get(i).setImagePath(imagePath);
+//            getEmitters().get(i).setImagePath(imagePath);
         }
     }
 

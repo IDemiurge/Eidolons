@@ -109,6 +109,22 @@ public class ImageManager {
     }
 
     public static CustomImageIcon getIcon(String imgName) {
+        CustomImageIcon icon = null;
+        icon = getIcon_(imgName);
+
+
+        if (!isValidIcon(icon)) {
+            main.system.auxiliary.log.LogMaster.log(1, "IMG PATH to adjust: " +  imgName);
+            imgName = imgName.toLowerCase().replaceFirst("ui", "ui/level_editor");
+            icon = getIcon_(imgName);
+        }
+        if (!isValidIcon(icon)) {
+            main.system.auxiliary.log.LogMaster.log(1, "IMG PATH FAILED: " + imgName);
+        }
+        return icon;
+    }
+
+    public static CustomImageIcon getIcon_(String imgName) {
         // Toolkit.getDefaultToolkit().createImage(filename)
         if (imgName == null) {
             return null;
@@ -670,7 +686,6 @@ public class ImageManager {
     }
 
 
-
     public static String getValueIconPath(VALUE value) {
         if (value == null) {
             return "";
@@ -1000,7 +1015,7 @@ public class ImageManager {
         for (String path : paths) {
             folder = new File(getImageFolderPath() + path);
             path += "\\";
-            for (String file :FileManager.listFiles(folder)) {
+            for (String file : FileManager.listFiles(folder)) {
                 if (new File(getImageFolderPath() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
                         list.add(path + file);
@@ -1044,7 +1059,7 @@ public class ImageManager {
             File folder = new File(PATH + path);
 
             path += "\\";
-            for (String file : FileManager.listFiles(folder )) {
+            for (String file : FileManager.listFiles(folder)) {
                 list.add(path + file);
             }
         }
@@ -1317,7 +1332,8 @@ public class ImageManager {
         WALL_CORNER_ALMOND_H("ui\\BF\\CORNER ALMOND h.png"),
         WALL_CORNER_ALMOND_V("ui\\BF\\CORNER ALMOND v.png"),
         WALL_CORNER_MESH("ui\\BF\\CORNER MESH.png"),
-        WALL_CORNER_DIAMOND("ui\\BF\\CORNER diamond.png"),;
+        WALL_CORNER_DIAMOND("ui\\BF\\CORNER diamond.png"),
+        ;
 
         private String path;
         private Image image;
@@ -1395,7 +1411,8 @@ public class ImageManager {
 
         DESTINATION_AVAILABLE(BORDER.CIRCLE_HIGHLIGHT_GREEN),
         INFO(BORDER.CIRCLE_HIGHLIGHT),
-        DEFAULT(BORDER.HIGHLIGHTED),;
+        DEFAULT(BORDER.HIGHLIGHTED),
+        ;
         private BORDER border;
 
         HIGHLIGHT() {
