@@ -198,7 +198,10 @@ public class Eidolons {
         setResolution(resolution);
     }
 
-    public static Dimension getResolutionDimensions(RESOLUTION resolution, boolean fullscreen) {
+    public static Dimension getResolutionDimensions() {
+        return getResolutionDimensions(getResolution(), isFullscreen());
+    }
+        public static Dimension getResolutionDimensions(RESOLUTION resolution, boolean fullscreen) {
         String[] parts = resolution.toString().substring(1).
          split("x");
         Integer w =

@@ -94,7 +94,7 @@ public class ActionPanel extends GroupX {
         offhand.setPosition(leftOrbPanel.getX() + 272,
          leftOrbPanel.getY() + 12);
 
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 7,
          leftOrbPanel.getY() + 32);
 
         addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));

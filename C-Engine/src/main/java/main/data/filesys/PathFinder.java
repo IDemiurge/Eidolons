@@ -478,4 +478,8 @@ public class PathFinder {
     public static String getCampaignSavePath() {
         return getSavesPath()+"campaign/";
     }
+
+    public static String getCellImagesPath() {
+        return "ui/cells/advanced/";
+    }
 }

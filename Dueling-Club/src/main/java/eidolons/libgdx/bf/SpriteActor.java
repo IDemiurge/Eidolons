@@ -15,17 +15,25 @@ public class SpriteActor extends GroupX {
     protected float timeToWait;
     protected float timeToPlay;
     protected boolean paused;
-    protected SpriteAnimation curAnim;
+    protected SpriteAnimation anim;
     protected Map<SPRITE_ACTOR_ANIMATION, SpriteAnimation> animsMap;
     private float period;
 
-    public void play(SPRITE_ACTOR_ANIMATION animation) {
-        curAnim = animsMap.get(animation);
-        if (curAnim == null) {
-            curAnim = createAnim(animation);
-            animsMap.put(animation, curAnim);
-        }
+    public SpriteActor(   ) {
+
+    }
+    public SpriteActor(SpriteAnimation curAnim) {
+        this.anim = curAnim;
         newAnim(curAnim);
+    }
+
+    public void play(SPRITE_ACTOR_ANIMATION animation) {
+        anim = animsMap.get(animation);
+        if (anim == null) {
+            anim = createAnim(animation);
+            animsMap.put(animation, anim);
+        }
+        newAnim(anim);
     }
 
     private SpriteAnimation createAnim(SPRITE_ACTOR_ANIMATION animation) {
@@ -35,17 +43,26 @@ public class SpriteActor extends GroupX {
 
     private void newAnim(SpriteAnimation anim) {
         anim.reset();
-        curAnim.setX(getX());
-        curAnim.setY(getY());
+        this.anim.setX(getX());
+        this.anim.setY(getY());
         paused = false;
         timeToPlay = (anim.getAnimationDuration());
-        curAnim.setPlayMode(PlayMode.NORMAL);
-//        curAnim.getLifecycleDuration()
+        this.anim.setPlayMode(PlayMode.NORMAL);
+        this.anim.setCustomAct(true);
+//        anim.getLifecycleDuration()
+    }
+
+    public SpriteAnimation getAnim() {
+        return anim;
     }
 
     @Override
     public void act(float delta) {
-        super.act(delta);
+        anim.setX(getX());
+        anim.setY(getY());
+        anim.act(delta);
+        anim.setScale(getScaleX());
+        anim.setRotation(getRotation());
 //        if (paused) {
 //            timeToWait -= delta;
 //            if (timeToWait <= 0) {
@@ -56,7 +73,7 @@ public class SpriteActor extends GroupX {
 //            }
 //        } else {
 //            timeToWait -= delta;
-//            if (curAnim.isAnimationFinished()) {
+//            if (anim.isAnimationFinished()) {
 //                reset();
 //            }
 //        }
@@ -75,7 +92,7 @@ public class SpriteActor extends GroupX {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         if (!paused)
-            curAnim.draw(batch);
+            anim.draw(batch);
     }
 
     public float getPeriod() {

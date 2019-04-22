@@ -553,8 +553,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         List<CONTAINER_CONTENT_VALUE> itemValueList
          = new ArrayList<>();
         Integer maxCost = obj.getIntParam(PARAMS.GOLD_TOTAL);
-        maxCost =  (int)(RandomWizard.getRandomFloatBetween(0.2f, 1) *maxCost * obj.getGame().getDungeonMaster().getDungeonLevel().getPowerLevel() /
-         (DEFAULT_POWER_MEASURE_FOR_TREASURE_AMOUNT));
+        maxCost =  (int)(RandomWizard.getRandomFloatBetween(0.2f, 1) *maxCost/10)
+//                * obj.getGame().getDungeonMaster().getDungeonLevel().getPowerLevel() /
+//         (DEFAULT_POWER_MEASURE_FOR_TREASURE_AMOUNT))
+        ;
 
         int totalCost = 0;
         int maxGroups = 2; //size prop!

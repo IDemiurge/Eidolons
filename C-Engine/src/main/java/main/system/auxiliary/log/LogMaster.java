@@ -172,7 +172,9 @@ public class LogMaster {
     }
 
     private static boolean isFullLogging() {
-        return true;
+        if (!CoreEngine.isIDE())
+            return true;
+        return false;
     }
 
     public static void logInNewThread(final String s) {

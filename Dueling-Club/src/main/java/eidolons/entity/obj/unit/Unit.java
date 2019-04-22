@@ -304,11 +304,11 @@ public class Unit extends DC_UnitModel {
                 }
             }
             if (param.isDynamic()) {
-                if (integer < 0) {
+                if (Debugger.isImmortalityOn())
                     if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
-                        if (Debugger.isImmortalityOn())
+                        if (integer <= 0) {
                             return;
-                }
+                        }
             }
         }
         if (isValidMapStored(param))

@@ -51,6 +51,7 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
@@ -140,18 +141,18 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(hideQuests);
 
         questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
-         GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
+                GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
 
         hideQuests.setPosition(questProgressPanel.getX()
-          + GdxMaster.adjustSizeBySquareRoot(100),
-         questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
+                        + GdxMaster.adjustSizeBySquareRoot(100),
+                questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
 
 
         SimpleLogPanel log = new SimpleLogPanel();
         RollableGroup decorated = RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(decorated);
         decorated.
-         setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);
+                setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);
         addActor(logPanel = new FullLogPanel(100, 200));
 
         radial = new RadialMenu();
@@ -160,7 +161,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         containerPanel = new ContainerPanel();
         addActor(containerPanel);
         containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
-         GdxMaster.centerHeight(containerPanel));
+                GdxMaster.centerHeight(containerPanel));
         containerPanel.setVisible(false);
         bindEvents();
 
@@ -172,13 +173,13 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         addActor(hqPanel = new HqPanel());
         hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
-         GdxMaster.centerHeight(hqPanel));
+                GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
 
 
         addActor(journal = new QuestJournal());
         journal.setPosition(GdxMaster.centerWidth(journal),
-         GdxMaster.centerHeight(journal));
+                GdxMaster.centerHeight(journal));
         journal.setVisible(false);
 
         initTooltipsAndMisc();
@@ -193,7 +194,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         textPanel = new OverlayTextPanel();
         addActor(textPanel);
         textPanel.setPosition(GdxMaster.centerWidth(textPanel),
-         GdxMaster.centerHeight(textPanel));
+                GdxMaster.centerHeight(textPanel));
 
         addActor(blackout = new Blackout());
         addActor(tooltips = new ToolTipManager(this));
@@ -220,23 +221,23 @@ public class GuiStage extends StageX implements StageWithClosable {
         GroupX group = new GroupX();
 
         Image btnBg = new Image(TextureCache.getOrCreateR(
-         StrPathBuilder.build(PathFinder.getUiPath(),
-          "components", "generic",
-          "buttons", "special", "menu bg.png")
+                StrPathBuilder.build(PathFinder.getUiPath(),
+                        "components", "generic",
+                        "buttons", "special", "menu bg.png")
         ));
         group.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
         group.addActor(btnBg);
         menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
-         gameMenu.toggle());
+                gameMenu.toggle());
 
-        menuButton.setPosition(-8, 13);
+        menuButton.setPosition(0, 13);
         group.addActor(menuButton);
 
         addActor(group);
         group.setSize(btnBg.getWidth(),
-         btnBg.getHeight());
+                btnBg.getHeight());
         group.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
-         GdxMaster.getHeight() - btnBg.getHeight());
+                GdxMaster.getHeight() - btnBg.getHeight());
 
 
         addActor(locationLabel = new ValueContainer("", "") {
@@ -251,7 +252,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         locationLabel.padTop(12);
         locationLabel.padBottom(12);
         locationLabel.setPosition(0,
-         GdxMaster.getHeight() - locationLabel.getHeight());
+                GdxMaster.getHeight() - locationLabel.getHeight());
     }
 
     protected GameMenu createGameMenu() {
@@ -264,6 +265,22 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     @Override
     public void draw() {
+        //can we just pass if in 'cinematic mode'?
+        if (CoreEngine.isCinematicMode()) {
+            getBatch().begin();
+            blackout.draw(getBatch(), 1);
+            if (gameMenu.isVisible())
+            gameMenu.draw(getBatch(), 1);
+            if (confirmationPanel.isVisible())
+                confirmationPanel.draw(getBatch(), 1);
+
+            if (radial.isVisible())
+                radial.draw(getBatch(), 1);
+
+            dragManager.draw(getBatch(), 1);
+            getBatch().end();
+            return;
+        }
         super.draw();
     }
 
@@ -295,32 +312,34 @@ public class GuiStage extends StageX implements StageWithClosable {
                 }
             }
         }
-        locationLabel.setPosition(0,
-         GdxMaster.getHeight() - locationLabel.getHeight());
+        if (locationLabel != null) {
+            locationLabel.setPosition(0,
+                    GdxMaster.getHeight() - locationLabel.getHeight());
+        }
         super.act(delta);
         resetZIndices();
     }
 
     public List<Actor> getActorsForTown() {
         return new ArrayList<>(Arrays.asList(new Actor[]{
-         dragManager,
-         confirmationPanel,
-         hqPanel,
-         textPanel,
-         getMenuButton().getParent(),
-         getGameMenu(),
-         getTooltips(),
-         blackout,
-         actionTooltipContainer,
-         infoTooltipContainer,
-         OptionsWindow.getInstance()
+                dragManager,
+                confirmationPanel,
+                hqPanel,
+                textPanel,
+                getMenuButton().getParent(),
+                getGameMenu(),
+                getTooltips(),
+                blackout,
+                actionTooltipContainer,
+                infoTooltipContainer,
+                OptionsWindow.getInstance()
         }));
     }
 
     protected boolean checkBlocked() {
         return confirmationPanel.isVisible() || textPanel.isVisible() ||
-         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
-         || GameMenu.menuOpen;
+                HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
+                || GameMenu.menuOpen;
     }
 
     @Override
@@ -338,7 +357,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 if (checkContainsNoOverlaying(ancestors)) {
                     if (!ancestors.contains(OptionsWindow.getInstance())) {
                         if (GdxMaster.getFirstParentOfClass(
-                         actor, RadialValueContainer.class) == null) {
+                                actor, RadialValueContainer.class) == null) {
                             if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
                                 return null;
                         } else if (confirmationPanel.isVisible())
@@ -434,12 +453,12 @@ public class GuiStage extends StageX implements StageWithClosable {
             }
             actionTooltipContainer.setContents(actionTooltip);
             if (active.getTargeting() instanceof SelectiveTargeting
-             && active.getTargetObj() == null && active.getRef().getTargetObj() == null)
+                    && active.getTargetObj() == null && active.getRef().getTargetObj() == null)
                 showTooltip(true, "Select a target for " + active.getName()
-                 , actionTooltip, 0);
+                        , actionTooltip, 0);
             else {
                 showTooltip(true, active.getName() + "..."
-                 , actionTooltip, 2f);
+                        , actionTooltip, 2f);
             }
             hideTooltip(infoTooltip, 1f);
         });
@@ -456,14 +475,14 @@ public class GuiStage extends StageX implements StageWithClosable {
         GuiEventManager.bind(GuiEventType.HIDE_INFO_TEXT, p -> {
             hideTooltip(infoTooltip, 1f);
         });
-            GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
+        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
             DC_ActiveObj active = (DC_ActiveObj) p.get();
             if (ExplorationMaster.isExplorationOn()) {
                 return;
             }
 
             showTooltip(true, active.getOwnerUnit().getNameIfKnown()
-             + " activates " + active.getName(), actionTooltip, 3f);
+                    + " activates " + active.getName(), actionTooltip, 3f);
             hideTooltip(infoTooltip, 1f);
 
         });
@@ -484,7 +503,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                         Runnable onCancel) {
         confirmationPanel.setText(text);
         confirmationPanel.setCanCancel(
-         canCancel);
+                canCancel);
         confirmationPanel.setOnConfirm(onConfirm);
         confirmationPanel.setOnCancel(onCancel);
         confirmationPanel.open();
@@ -516,8 +535,8 @@ public class GuiStage extends StageX implements StageWithClosable {
         else
             return;
         tooltip.getParent().setPosition(
-         ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2,
-         action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
+                ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2,
+                action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
     }
 
     protected void hideTooltip(LabelX tooltip, float dur) {

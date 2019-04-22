@@ -3,7 +3,9 @@ package eidolons.libgdx.bf.generic;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.rules.VisionEnums;
 
 /**
  * Created by JustMe on 3/30/2018.
@@ -114,6 +116,15 @@ public class FadeImageContainer extends ImageContainer {
 
     @Override
     public void act(float delta) {
+
+//        if (getContent().getDrawable().equals(
+//                TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath()))) {
+//            return;
+//        }
+//        if (getContent().getDrawable().equals(
+//                TextureCache.getOrCreate(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath()))) {
+//            return;
+//        }
         if (fadePercentage > 0) {
             fadePercentage = Math.max(0, fadePercentage - delta / getFadeDuration());
             previousImage.getColor().a = fadePercentage;

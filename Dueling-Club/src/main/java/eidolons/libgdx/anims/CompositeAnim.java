@@ -20,6 +20,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -48,11 +49,12 @@ public class CompositeAnim implements Animation {
     private Anim continuous;
     private boolean hpUpdate = true;
     private boolean waitingForNext;
+//    List<Anim> parallelAnims; what was the idea exactly?
 
 
     public CompositeAnim(Anim... anims) {
         this(new MapMaster<ANIM_PART, Anim>().constructMap(new ArrayList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
-         new ArrayList<>(Arrays.asList(anims))));
+                new ArrayList<>(Arrays.asList(anims))));
 
     }
 
@@ -76,13 +78,15 @@ public class CompositeAnim implements Animation {
         }
         return false;
     }
-List<Anim> parallelAnims;
+
+
     public boolean draw(Batch batch) {
+
         time += Gdx.graphics.getDeltaTime();
         boolean result = false;
         if (currentAnim != null) {
             try {
-                result = currentAnim.draw(batch);
+                result = currentAnim.tryDraw(batch);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -253,9 +257,9 @@ List<Anim> parallelAnims;
 
     private void addEvents(ANIM_PART part, Anim anim) {
         MapMaster.addToListMap(onStartEventMap,
-         part, anim.getEventsOnStart());
+                part, anim.getEventsOnStart());
         MapMaster.addToListMap(onFinishEventMap,
-         part, anim.getEventsOnFinish());
+                part, anim.getEventsOnFinish());
     }
 
     public void reset() {
@@ -320,7 +324,7 @@ List<Anim> parallelAnims;
     public String toString() {
 
         return getClass().getSimpleName() + " for " + getActive() + ": " + map
-         + "; attached: " + attached;
+                + "; attached: " + attached;
     }
 
     private void queueGraphicEvents() {
@@ -378,8 +382,7 @@ List<Anim> parallelAnims;
         if (anim instanceof Anim) {
             addEvents(partToAddAt, (Anim) anim);
         }
-        if (anim instanceof Anim)
-        {
+        if (anim instanceof Anim) {
             ((Anim) anim).setParentAnim(this);
         }
 
@@ -496,7 +499,7 @@ List<Anim> parallelAnims;
 
     public void queueTextEvents() {
         getTextEvents().forEach(event ->
-         FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
+                FloatingTextMaster.getInstance().addFloatingTextForEventAnim(event, this));
 //        AnimMaster;
     }
 

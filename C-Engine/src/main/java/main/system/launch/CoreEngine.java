@@ -5,6 +5,7 @@ import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Reader;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -67,6 +68,9 @@ public class CoreEngine {
     private static long TOTAL_MEMORY;
     private static int CPU_NUMBER;
     private static boolean me;
+    private static boolean cinematicMode;
+    private static boolean mapPreview;
+    private static boolean safeMode;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -311,7 +315,7 @@ public class CoreEngine {
              classFolders);
             Chronos.logTimeElapsedForMark("MAPPER INIT");
         } catch (ClassNotFoundException | SecurityException | IOException e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -474,5 +478,29 @@ public class CoreEngine {
 
     public static void setMe(boolean me) {
         CoreEngine.me = me;
+    }
+
+    public static boolean isCinematicMode() {
+        return cinematicMode;
+    }
+
+    public static void setCinematicMode(boolean cinematicMode) {
+        CoreEngine.cinematicMode = cinematicMode;
+    }
+
+    public static void setMapPreview(boolean mapPreview) {
+        CoreEngine.mapPreview = mapPreview;
+    }
+
+    public static boolean isMapPreview() {
+        return mapPreview;
+    }
+
+    public static boolean isSafeMode() {
+        return safeMode;
+    }
+
+    public static void setSafeMode(boolean safeMode) {
+        CoreEngine.safeMode = safeMode;
     }
 }

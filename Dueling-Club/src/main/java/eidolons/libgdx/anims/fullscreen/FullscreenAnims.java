@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
@@ -46,7 +47,8 @@ public class FullscreenAnims extends GroupX {
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
             Event e = (Event) p.get();
             if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
-                //                if (e.getRef().getTargetObj() == Eidolons.getMainHero())
+                                if (
+                                        e.getRef().getTargetObj() == Eidolons.getMainHero())
                 {
                     FACING_DIRECTION facing = null;
                     if (randomFacingMode) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,8 +19,11 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.boss.BossTestGroup;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
@@ -62,13 +66,13 @@ import static main.system.GuiEventType.*;
  */
 public class DungeonScreen extends GameScreenWithTown {
     protected static float FRAMERATE_DELTA_CONTROL =
-     new Float(1) / GenericLauncher.FRAMERATE; //*3 ?
+            new Float(1) / GenericLauncher.FRAMERATE; //*3 ?
     protected static DungeonScreen instance;
     protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
-     getBooleanValue(CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
+            getBooleanValue(CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
 
     private static boolean centerCameraOnAlliesOnly = OptionsMaster.getControlOptions().
-     getBooleanValue(CONTROL_OPTION.CENTER_CAMERA_ON_ALLIES_ONLY);
+            getBooleanValue(CONTROL_OPTION.CENTER_CAMERA_ON_ALLIES_ONLY);
 
     protected ParticleManager particleManager;
     protected StageX gridStage;
@@ -76,6 +80,7 @@ public class DungeonScreen extends GameScreenWithTown {
     private boolean blocked;
     private ActTimer cameraTimer;
     private GridCellContainer stackView;
+    private BossTestGroup testStage;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -104,11 +109,15 @@ public class DungeonScreen extends GameScreenWithTown {
         super.preLoad();
         gridStage = new StageX(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage(null, null ); //separate batch for PP
+        guiStage = new BattleGuiStage(null, null); //separate batch for PP
 
         initGl();
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
+            if (isSpriteBgTest()) {
+                setBackground("atlas.txt");
+                return;
+            }
             final String path = (String) param.get();
             setBackground(path);
 
@@ -135,6 +144,10 @@ public class DungeonScreen extends GameScreenWithTown {
         });
     }
 
+    private boolean isSpriteBgTest() {
+        return false;
+    }
+
     @Override
     protected boolean isTooltipsOn() {
         if (TownPanel.getActiveInstance() != null) {
@@ -157,7 +170,7 @@ public class DungeonScreen extends GameScreenWithTown {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.getGame() != null) {
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                 new ScreenData(SCREEN_TYPE.MAP, null));
+                        new ScreenData(SCREEN_TYPE.MAP, null));
 
                 MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
@@ -191,6 +204,12 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     private void setBackground(String path) {
+
+        if (!TextureCache.isImage(path)) {
+            backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(path);
+            return;
+        }
+
         TextureRegion texture = getOrCreateR(path);
         if (texture.getTexture() != TextureCache.getEmptyTexture())
             backTexture = texture;
@@ -202,7 +221,6 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected void afterLoad() {
-
         cam = (OrthographicCamera) viewPort.getCamera();
         particleManager = new ParticleManager();
 
@@ -226,7 +244,7 @@ public class DungeonScreen extends GameScreenWithTown {
         bindEvents();
 
         cameraTimer = new ActTimer(OptionsMaster.getControlOptions().
-         getIntValue(CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
+                getIntValue(CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
             if (isCameraAutoCenteringOn())
                 if (Eidolons.getGame().getManager().checkAutoCameraCenter()) {
                     centerCameraOn(Eidolons.getMainHero());
@@ -237,12 +255,12 @@ public class DungeonScreen extends GameScreenWithTown {
             Unit unit = null;
             if (Eidolons.game.getMetaMaster() == null) {
                 unit = Eidolons.game.getMetaMaster().
-                 getPartyManager().getParty().getLeader();
+                        getPartyManager().getParty().getLeader();
             } else
                 unit = (Unit) Eidolons.game.getPlayer(true).getHeroObj();
             Vector2 unitPosition =
-             GridMaster.getCenteredPos(
-              unit.getCoordinates());
+                    GridMaster.getCenteredPos(
+                            unit.getCoordinates());
 
             cameraPan(unitPosition);
         } catch (Exception e) {
@@ -311,6 +329,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     public void renderMain(float delta) {
         checkInputController();
+//        stages.for
         guiStage.act(delta);
         gridStage.act(delta);
         setBlocked(checkBlocked());
@@ -324,6 +343,7 @@ public class DungeonScreen extends GameScreenWithTown {
                 }
 
             postProcessing.begin();
+            updateBackground(delta);
             if (backTexture != null) {
                 guiStage.getBatch().begin();
                 float colorBits = GdxColorMaster.WHITE.toFloatBits();
@@ -372,6 +392,23 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
+
+    private void updateBackground(float delta) {
+        if (backgroundSprite != null) {
+            backgroundSprite.act(delta);
+            backTexture = backgroundSprite.getCurrentFrame();
+            if (backgroundSprite.getCurrentFrameNumber() == backgroundSprite.getFrameNumber() - 1) {
+                if (backgroundSprite.getPlayMode() == Animation.PlayMode.LOOP_REVERSED)
+                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP);
+                else {
+                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
+                }
+                backTexture = backgroundSprite.getCurrentFrame();
+            }
+
+        }
+    }
+
     @Override
     protected boolean isPostProcessingDefault() {
         return false;
@@ -389,16 +426,20 @@ public class DungeonScreen extends GameScreenWithTown {
         if (speed != null) {
             delta = delta * speed;
         }
-        if (!CoreEngine.isJar())
+        if (CoreEngine.isIDE())
             //            checkDebugToggle();
             if (DC_Game.game != null) {
-                if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
-                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-                    DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-                } else {
-                    if (Gdx.input.isKeyJustPressed(Keys.CONTROL_RIGHT)) {
-                        DC_Game.game.getVisionMaster().refresh();
-                        GuiEventManager.trigger(UPDATE_GUI);
+                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
+                    if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+                        DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+                    } else {
+                        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+                            CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
+                        }
+                        if (Gdx.input.isKeyPressed(Keys.TAB)) {
+                            DC_Game.game.getVisionMaster().refresh();
+                            GuiEventManager.trigger(UPDATE_GUI);
+                        }
                     }
                 }
 
@@ -413,15 +454,13 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void checkShaderReset() {
-        if (batch.getShader() == DarkShader.getDarkShader())
-        {
+        if (batch.getShader() == DarkShader.getDarkShader()) {
             batch.shaderReset();
         }
         if (guiStage.getBatch().getShader() == DarkShader.getDarkShader()
-         || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
-         || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
-         )
-        {
+                || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+                || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+        ) {
             guiStage.getCustomSpriteBatch().shaderReset();
         }
     }
@@ -516,7 +555,7 @@ public class DungeonScreen extends GameScreenWithTown {
                         return;
 
         Coordinates coordinatesActiveObj =
-         hero.getCoordinates();
+                hero.getCoordinates();
         Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
         cameraPan(unitPosition, force);
 

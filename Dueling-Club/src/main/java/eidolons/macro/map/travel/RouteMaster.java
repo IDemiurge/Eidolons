@@ -24,7 +24,11 @@ import java.util.List;
 public class RouteMaster {
 
     public RouteMaster() {
-        init();
+        try {
+            init();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public static int getDistance(Place location, Place sub) {
@@ -39,7 +43,7 @@ public class RouteMaster {
 
     public void init() {
         List<File> routes = FileManager.getFilesFromDirectory(
-         StrPathBuilder.build(PathFinder.getRouteImagePath(), "map"), false, false);
+                StrPathBuilder.build(PathFinder.getRouteImagePath(), "map"), false, false);
 
         for (File sub : routes) {
             String[] parts = sub.getName().split("_");
@@ -57,6 +61,7 @@ public class RouteMaster {
         GuiEventManager.bind(MapEvent.MAP_READY, p -> added());
         afterInit();
     }
+
     public void afterInit() {
         for (Route sub : MacroGame.getGame().getRoutes()) {
             String point = sub.getDestinationPoint();

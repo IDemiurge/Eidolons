@@ -30,12 +30,12 @@ import static eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL.*;
 public class ShadowMap extends GroupX {
 
     public static final SHADE_CELL[] SHADE_CELL_VALUES = {
-     VOID,
-     GAMMA_SHADOW,
-     GAMMA_LIGHT,
-     LIGHT_EMITTER,
-     BLACKOUT,
-     HIGLIGHT
+            VOID,
+            GAMMA_SHADOW,
+            GAMMA_LIGHT,
+            LIGHT_EMITTER,
+            BLACKOUT,
+            HIGLIGHT
     };
     private static boolean on = true;
     private GridPanel grid;
@@ -45,7 +45,11 @@ public class ShadowMap extends GroupX {
     public ShadowMap(GridPanel grid) {
         this.grid = grid;
         setSize(grid.getWidth(), grid.getHeight());
-        init();
+        try {
+            init();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         setTransform(false);
     }
 
@@ -110,7 +114,7 @@ public class ShadowMap extends GroupX {
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
                     if (grid.getCells()[x][y] == null) {
-                         if (type != VOID)
+                        if (type != VOID)
                             continue;
                     } else if (type == VOID)
                         continue;
@@ -136,7 +140,7 @@ public class ShadowMap extends GroupX {
                             if (obj instanceof Unit)
                                 continue;
                             LightEmittingEffect effect = DC_Game.game.getRules().getIlluminationRule().
-                             getLightEmissionEffect(obj);
+                                    getLightEmissionEffect(obj);
                             if (effect == null) {
                                 continue;
                             }
@@ -192,7 +196,7 @@ public class ShadowMap extends GroupX {
                             }
                         }
                         float alpha = DC_Game.game.getVisionMaster().
-                         getGammaMaster().getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), type);
+                                getGammaMaster().getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), type);
                         if (Math.abs(cell.getBaseAlpha() - alpha) > 0.1f) {
                             cell.setBaseAlpha(alpha);
 
@@ -207,7 +211,7 @@ public class ShadowMap extends GroupX {
                             continue; //for void
                         for (LightEmitter lightEmitter : list) {
                             float alpha = DC_Game.game.getVisionMaster().
-                             getGammaMaster().getLightEmitterAlpha(x, PositionMaster.getLogicalY(y));
+                                    getGammaMaster().getLightEmitterAlpha(x, PositionMaster.getLogicalY(y));
                             if (Math.abs(lightEmitter.getBaseAlpha() - alpha) > 0.1f)
                                 lightEmitter.setBaseAlpha(alpha);
 

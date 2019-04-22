@@ -41,7 +41,8 @@ public class ParticleManager extends GroupX {
     SmartAmbienceMap ambienceMap;
 
     public ParticleManager() {
-        new AttachEmitterManager();
+//        if (OptionsMaster) TODO
+//        new AttachEmitterManager();
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             DC_Game game = (DC_Game) p.get();
             DungeonLevel level = game.getDungeonMaster().getDungeonLevel();

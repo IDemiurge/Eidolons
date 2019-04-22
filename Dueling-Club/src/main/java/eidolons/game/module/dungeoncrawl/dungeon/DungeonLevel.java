@@ -14,6 +14,7 @@ import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
@@ -21,6 +22,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 
@@ -352,6 +354,65 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public boolean isSurface() {
         return surface;
+    }
+
+    public String getCellImgPath(int i, int j) {
+        LevelBlock block = getBlockForCoordinate(new Coordinates(i, j));
+        DUNGEON_STYLE style = block.getZone().getStyle();
+        CELL_IMAGE img = getCellImageType(style);
+//        CELL_IMAGE_SUFFIX suffix =
+        return StrPathBuilder.build(PathFinder.getCellImagesPath(), img+".png");
+    }
+
+    private CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
+        switch (style) {
+            case Knightly:
+            case Holy:
+                return CELL_IMAGE.cross;
+            case Stony:
+            case Pagan:
+              return CELL_IMAGE.natural;
+            case DarkElegance:
+            case Somber:
+                return CELL_IMAGE.diamond;
+            case PureEvil:
+                return CELL_IMAGE.octagonal;
+            case Brimstone:
+                return CELL_IMAGE.circle;
+            case Grimy:
+                return CELL_IMAGE.tiles;
+            case Arcane:
+                return CELL_IMAGE.star;
+            case Cold:
+                break;
+        }
+        return CELL_IMAGE.tiles;
+    }
+
+        public enum CELL_IMAGE{
+            tiles,
+            diamond,
+        circle("cr"),
+        star,
+        cross,
+        natural,
+        octagonal("oct"),
+        ;
+        String name;
+
+        CELL_IMAGE() {
+            name=name();
+        }
+            CELL_IMAGE(String name) {
+            this.name = name;
+        }
+    }
+    public enum CELL_IMAGE_SUFFIX{
+        dark,
+        lite,
+        hl,
+        rough,
+
     }
 
 }

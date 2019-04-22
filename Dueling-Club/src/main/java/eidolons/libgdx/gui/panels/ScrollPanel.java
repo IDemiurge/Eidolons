@@ -110,6 +110,9 @@ public class ScrollPanel<T extends Actor> extends Container  {
         if (isLibgdxImpl()) {
             ScrollPaneStyle style = StyleHolder.getScrollStyle();
             super.setActor(scroll = new ScrollPane(innerScrollContainer, style));
+            scroll.setFillParent(true);
+            scroll.setClamp(true);
+//            scroll.setCullingArea(true);
             scroll.setFlingTime(2);
             scroll.setForceScroll(false, true);
             scroll.setScrollingDisabled(true, false);

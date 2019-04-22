@@ -29,8 +29,6 @@ public class RngUnitProvider {
      .chain(FRENZIED_MAN, 10)
      .chain(RABID_MAN, 10)
      .chain(DEADLY_SPIDER, 10)
-     .chain(STAG_BEETLE, 10)
-     .chain(RHINO_BEETLE, 10)
      .chain(NIGHT_BAT, 10)
      .chain(ESCAPED_PRISONER, 10);
     private static final WeightMap<String> DEFAULT_MAP_ELITE = new WeightMap<String>()
@@ -167,7 +165,7 @@ public class RngUnitProvider {
                 return elite_boss_regular ? new WeightMap<String>().
                  chain(WOLF_MASKED_CULTIST, 22).
                  chain(ONYX_MASKED_CULTIST, 22).
-                 chain(NIGHTMARE, 15).
+//                 chain(NIGHTMARE, 15).
                  chain(WEREWOLF, 18).
                  chain(POSSESSED_GARGOYLE, 18).
                  chain(DARK_ADEPT, 31).
@@ -195,10 +193,10 @@ public class RngUnitProvider {
                      chain(MURKBORN, 10).
                      chain(MURK_SPIDER, 10);
                 return elite_boss_regular ? new WeightMap<String>().
-                 chain(NIGHTMARE, 25).
+//                 chain(NIGHTMARE, 25).
                  chain(WEREWOLF, 18).
-                 chain(POSSESSED_GARGOYLE, 18).
-                 chain(VAMPIRE_MISTRESS, 12).
+//                 chain(POSSESSED_GARGOYLE, 18).
+//                 chain(VAMPIRE_MISTRESS, 12).
                  chain(DARK_ADEPT, 11).
                  chain(SHADOW_DISCIPLE, 12).
                  chain(VAMPIRE_BEAST, 15).
@@ -553,8 +551,6 @@ public class RngUnitProvider {
                      chain(VAMPIRE_BAT, 12).
                      chain(NIGHT_BAT, 8).
                      chain(DEADLY_SPIDER, 7).
-                     chain(RHINO_BEETLE, 7).
-                     chain(STAG_BEETLE, 7).
                      chain(HARPY, 5).
                      chain(DRAKELING, 6);
 
@@ -564,9 +560,10 @@ public class RngUnitProvider {
                  chain(PALE_WEAVER, 7).
                  chain(BLACK_WIDOW, 5)
                  : new WeightMap<String>().
-                 chain(MYCOSA, 6).
-                 chain(HYDRA, 4).
-                 chain(NIGHTMARE, 4);
+//                 chain(MYCOSA, 6).
+                 chain(HYDRA, 4)
+//                 chain(NIGHTMARE, 4)
+                        ;
             case CRITTERS_SPIDERS:
                 if (elite_boss_regular == null)
                     return new WeightMap<String>().

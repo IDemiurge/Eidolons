@@ -3,13 +3,11 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.texture.TextureManager;
+import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
 
@@ -51,8 +49,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this(defaultFrameDuration, false, 1, path, null, singleSprite);
     }
 
+    public SpriteAnimation(float frameDuration, boolean backAndForth, TextureAtlas atlas) {
+        this(frameDuration, backAndForth, SpriteAnimationFactory.getSpriteRegions(backAndForth, atlas ));
+    }
+    public SpriteAnimation(float frameDuration, boolean looping, TextureAtlas atlas, String name) {
+        this(frameDuration, looping, atlas.findRegions(name));
+    }
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path,
-                           Texture texture
+                Texture texture
      , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite, texture));
         if (path != null) {
@@ -111,6 +115,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean draw(Batch batch) {
+        if (CoreEngine.isCinematicMode())
+            return false;
+
         if (!isCustomAct()) {
             act(Gdx.graphics.getDeltaTime());
         }

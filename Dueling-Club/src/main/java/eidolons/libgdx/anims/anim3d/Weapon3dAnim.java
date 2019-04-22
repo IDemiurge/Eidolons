@@ -22,6 +22,7 @@ import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -230,6 +231,8 @@ public class Weapon3dAnim extends ActionAnim {
 //        if (batch instanceof CustomSpriteBatch) {
 //           post=  ((CustomSpriteBatch) batch);
 //        }
+        if (CoreEngine.isCinematicMode())
+            return;
         super.draw(batch, parentAlpha);
     }
 

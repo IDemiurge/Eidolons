@@ -45,6 +45,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 import static main.system.GuiEventType.HP_BAR_UPDATE;
 
@@ -285,7 +286,7 @@ public class HitAnim extends ActionAnim {
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
 
-        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
+//        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
         add();
         //        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
@@ -382,6 +383,8 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (CoreEngine.isCinematicMode())
+            return;
         super.draw(batch, parentAlpha);
 
     }

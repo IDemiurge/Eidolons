@@ -75,7 +75,7 @@ public class LoadingStage extends Stage {
 //         TipMaster.getTip()
 //         + "(click to show next tip)";
         return "Eidolons v" + CoreEngine.VERSION + " [beta] by Alexander @EiDemiurge     " +
-         "     ***        Got feedback? Contact me: justmeakk@gmail.com";
+         "     ***        Got feedback? Contact me: EidolonsGame@gmail.com";
     }
 
     public Label getUnderText() {

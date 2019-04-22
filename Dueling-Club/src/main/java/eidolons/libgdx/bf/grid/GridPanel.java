@@ -51,6 +51,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -124,6 +125,7 @@ public class GridPanel extends Group {
                     hasVoid = true;
                     continue;
                 }
+                emptyImage= TextureCache.getOrCreateR(cell.getImagePath());
                 cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
@@ -224,6 +226,11 @@ public class GridPanel extends Group {
             resetZIndices();
             update();
         }
+//     moving units will be hidden!
+//     if (animMaster != null) {
+//            animMaster.setVisible(!CoreEngine.isCinematicMode());
+//        }
+
         if (isAutoResetVisibleOn())
             if (DC_Game.game != null)
                 if (DC_Game.game.getVisionMaster().getVisible() != null) {

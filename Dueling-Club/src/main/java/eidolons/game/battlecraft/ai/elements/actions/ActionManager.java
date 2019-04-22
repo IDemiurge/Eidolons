@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.DC_ContentValsManager;
+import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
@@ -159,11 +160,11 @@ public class ActionManager extends AiHandler {
         if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_NONE) {
             if (AI_Manager.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
-                 + " chooses task: " + chosenSequence.getTask().toShortString());
+                        + " chooses task: " + chosenSequence.getTask().toShortString());
 
             String message = unit + " has chosen: "
-             + chosenSequence + " with priority of "
-             + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + "");
+                    + chosenSequence + " with priority of "
+                    + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + "");
             LogMaster.log(LOG_CHANNEL.AI_DEBUG, message);
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, message);
         }
@@ -203,7 +204,7 @@ public class ActionManager extends AiHandler {
         }
 
         List<ActionSequence> actions = getActionSequenceConstructor()
-         .createActionSequencesForGoal(new Goal(goal, ai, true), ai);
+                .createActionSequencesForGoal(new Goal(goal, ai, true), ai);
         if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
             goal = AiEnums.GOAL_TYPE.ATTACK;
             actions.addAll(getActionSequenceConstructor().createActionSequencesForGoal(new Goal(goal, ai, true), ai));
@@ -212,25 +213,27 @@ public class ActionManager extends AiHandler {
         if (behaviorMode == null) {
             if (ParamAnalyzer.isFatigued(getUnit())) {
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
-                 STD_MODE_ACTIONS.Rest.name())));
+                        STD_MODE_ACTIONS.Rest.name())));
             }
             if (ParamAnalyzer.isHazed(getUnit())) { // when is that used?
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
-                 STD_MODE_ACTIONS.Concentrate.name())));
+                        STD_MODE_ACTIONS.Concentrate.name())));
             }
         }
         if (actions.isEmpty()) {
-            return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
+            LogMaster.log(1, getUnit() + " has been Forced to wait!");
+            return getAction(getUnit(), DC_ActionManager.STD_SPEC_ACTIONS.Wait.name(), null);
         }
         ActionSequence sequence = getPriorityManager().chooseByPriority(actions);
 
         LogMaster.log(1, getUnit() + " has been Forced to choose " + "" + sequence
-         + " with priorioty of " + sequence.getPriority());
+                + " with priority of " + sequence.getPriority());
 
         getMaster().getMessageBuilder().append("Forced Task: " + sequence.getTask().toShortString());
 
         action = sequence.popNextAction();
         if (action == null) {
+            LogMaster.log(1, getUnit() + " has been Forced to Defend!");
             return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
         }
         return action;
@@ -239,7 +242,7 @@ public class ActionManager extends AiHandler {
     private Integer checkWaitForBlockingAlly() {
 
         Coordinates c = getUnit().getCoordinates()
-         .getAdjacentCoordinate(getUnit().getFacing().getDirection());
+                .getAdjacentCoordinate(getUnit().getFacing().getDirection());
         Obj obj = getUnit().getGame().getObjectVisibleByCoordinate(c);
         if (obj instanceof Unit) {
             if (((Unit) obj).canActNow())

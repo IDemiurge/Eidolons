@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public String path;
     private static List<String> broken=    new ArrayList<>() ;
 
@@ -114,7 +114,8 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
             main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );
             return true;
         }
-        main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
+        if (TEST_MODE)
+            main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
         return false;
     }
 

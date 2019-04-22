@@ -34,6 +34,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -162,6 +163,8 @@ public class Anim extends Group implements Animation {
     }
 
     public boolean tryDraw(Batch batch) {
+        if (CoreEngine.isCinematicMode())
+            return false;
         return draw(batch);
     }
 

@@ -8,6 +8,9 @@ import main.system.math.MathMaster;
  * Created by JustMe on 2/10/2018.
  */
 public class TravelMaster {
+    public static final float leaguesPerPixel = 0.33f;
+
+
     public static void travel(MacroParty party, float delta) {
         Route route = party.getCurrentRoute();
         int distance = route.getLength();

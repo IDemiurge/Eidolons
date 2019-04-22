@@ -13,7 +13,7 @@ public class PostProcessingOptions extends Options<POST_PROCESSING_OPTIONS,POST_
     }
 
     public   enum POST_PROCESSING_OPTIONS implements Options.OPTION {
-        BLOOM_ON(true),
+        BLOOM_ON(false),
         VIGNETTE_ON(false),
         BLUR_ON(false),
         ANTIALIASING_ON(false),
@@ -21,8 +21,8 @@ public class PostProcessingOptions extends Options<POST_PROCESSING_OPTIONS,POST_
         TEST_ON(false),
         LENS_ON(false),
         STANDARD_ON(false),
-
-//        vignetteIntensity,
+        ALL_OFF(false),
+        //        vignetteIntensity,
 //        vignetteSaturationMul,
 //        vignetteSaturation,
 //        bloomBlurAmount(2),

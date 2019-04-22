@@ -26,22 +26,24 @@ public class AmbientMaster {
         Unit hero = Eidolons.getMainHero();
         if (hero == null)
             return DEFAULT_AMBIENCE;
+        if (hero.getGame().getDungeonMaster().getDungeonLevel() == null)
+            return DEFAULT_AMBIENCE;
 
-        if (TownPanel.getActiveInstance()!=null && Eidolons.getGame().getMetaMaster().getTownMaster().isInTown()){
-           return Eidolons.getGame().getMetaMaster().getTownMaster().getTown().getAmbience();
+        if (TownPanel.getActiveInstance() != null && Eidolons.getGame().getMetaMaster().getTownMaster().isInTown()) {
+            return Eidolons.getGame().getMetaMaster().getTownMaster().getTown().getAmbience();
         }
         DUNGEON_STYLE style;
         LOCATION_TYPE locationType;
-        try {
-            locationType = hero.getGame().getDungeonMaster().getDungeonLevel()
-                    .getLocationType();
-            style = hero.getGame().getDungeonMaster().getDungeonLevel().
-                    getBlockForCoordinate(hero.getCoordinates()).getStyle();
-        } catch (Exception e) {
-            style = hero.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
+            try {
+                locationType = hero.getGame().getDungeonMaster().getDungeonLevel()
+                        .getLocationType();
+                style = hero.getGame().getDungeonMaster().getDungeonLevel().
+                        getBlockForCoordinate(hero.getCoordinates()).getStyle();
+            } catch (Exception e) {
+                style = hero.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
 //            style = hero.getGame().getDungeon().getStyle();
-            locationType = hero.getGame().getDungeon().getDungeonSubtype();
-        }
+                locationType = hero.getGame().getDungeon().getDungeonSubtype();
+            }
         if (locationType == null) {
             return null;
         }

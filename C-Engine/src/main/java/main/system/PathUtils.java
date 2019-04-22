@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import static main.system.auxiliary.data.FileManager.formatPath;
+
 /**
  * Created by JustMe on 7/24/2018.
  */
@@ -26,10 +28,10 @@ public class PathUtils {
         }
         List<String> segments = null;
         if (path.contains("/")) {
-            path =   path.replace("/", PATH_SEPARATOR);
+            path = path.replace("/", PATH_SEPARATOR);
         }
         if (segments == null)
-            segments =      Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
+            segments = Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
 
         segments = new ArrayList<>(segments);
         segments.removeIf(s -> s.isEmpty());
@@ -108,7 +110,7 @@ public class PathUtils {
         final String p = string.toLowerCase();
         path = path.toLowerCase();
         String prefix = buildPartsIf(getPathSegments(path),
-         PATH_SEPARATOR, true, (String sub) -> p.startsWith(sub));
+                PATH_SEPARATOR, true, (String sub) -> p.startsWith(sub));
 
         return prefix + p;
     }
@@ -152,4 +154,20 @@ public class PathUtils {
     public static String cropLastPathSegment(String path) {
         return StringMaster.replaceLast(path, getLastPathSegment(path), "");
     }
+
+    public static String cropAllBefore(String delimiter, String path) {
+        return cropAllBefore(delimiter, path, false);
+    }
+
+    public static String cropAllBefore(String delimiter, String path, boolean recursion) {
+        String[] parts = path.split(delimiter);
+        if (!recursion && parts.length < 2) {
+            delimiter = formatPath(delimiter);
+            return cropAllBefore(delimiter, path, true);
+        }
+        if (parts.length < 2)
+            return parts[1];
+        return path;
+    }
+
 }

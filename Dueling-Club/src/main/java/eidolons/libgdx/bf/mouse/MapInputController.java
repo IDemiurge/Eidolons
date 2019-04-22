@@ -1,7 +1,9 @@
 package eidolons.libgdx.bf.mouse;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.map.MapScreen;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 2/7/2018.
@@ -15,6 +17,21 @@ public class MapInputController extends InputController {
     protected float getWidth() {
         return MapScreen.defaultSize;
 //         MapScreen.getInstance().getMapStage().getMap().getWidth();
+    }
+
+    @Override
+    protected void initZoom() {
+        super.initZoom();
+        if (CoreEngine.isMapPreview()) {
+            defaultZoom = 1;
+            camera.zoom = defaultZoom;
+            zoomStep = zoomStep_ * defaultZoom;
+
+            width = GdxMaster.getWidth() * camera.zoom;
+            height = GdxMaster.getHeight() * camera.zoom;
+            halfWidth = width / 2;
+            halfHeight = height / 2;
+        }
     }
 
     @Override

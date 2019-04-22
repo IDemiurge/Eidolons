@@ -286,8 +286,13 @@ public class GdxImageMaster extends LwjglApplication {
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 
-    public static String cropImagePath(String s) {
-        return s.replace('/', '/').toLowerCase().replace(PathFinder.getImagePath().toLowerCase(), "");
+    public static String appendImagePath(String s) {
+        s = cropImagePath(s);
+        return PathFinder.getImagePath().toLowerCase()+"/"+s;
+    }
+        public static String cropImagePath(String s) {
+        return s.toLowerCase()
+                .replace(PathFinder.getImagePath().toLowerCase(), "");
     }
 
     public static String getAttackActionPath(DC_ActiveObj obj) {

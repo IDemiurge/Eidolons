@@ -61,7 +61,7 @@ public class EmitterMaster extends GdxUtil {
     static List<String> group2 = new ArrayList<>();
     static List<String> group3 = new ArrayList<>();
     static String[] exceptions = {
-     "custom", "atlas", "atlases", "broken", "templates", "workspace", "export", "target"
+            "custom", "atlas", "atlases", "broken", "templates", "workspace", "export", "target"
     };
     private static boolean writeImage = true;
     private static boolean pack = true;
@@ -72,12 +72,18 @@ public class EmitterMaster extends GdxUtil {
     private static boolean manualFix;
 
 
+    public static List<File> getVfxPresets(boolean removeNonAtlas) {
+        List<File> files = FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true);
+        if (removeNonAtlas)
+            files.removeIf(file ->
+                    getAtlasType(file.getPath().toLowerCase().replace(
+                            PathFinder.getVfxPath().toLowerCase(), ""), true) == null);
+        return files;
+    }
+
     public static void createVfxAtlas() {
         String imagesPath = null;
-        List<File> files = FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true);
-        files.removeIf(file ->
-         getAtlasType(file.getPath().toLowerCase().replace(
-          PathFinder.getVfxPath().toLowerCase(), ""), true) == null);
+        List<File> files = getVfxPresets(true);
 
         for (VFX_ATLAS type : VFX_ATLAS.values()) {
             switch (type) {
@@ -122,14 +128,14 @@ public class EmitterMaster extends GdxUtil {
                                     int max = Math.max(texture.getHeight(), texture.getWidth());
                                     int coef = max / MAX_IMAGE_SIZE;
                                     texture = GdxImageMaster.size(s, texture.getWidth() * coef,
-                                     texture.getHeight() * coef, false);
+                                            texture.getHeight() * coef, false);
                                 }
                             list.add(texture);
                         }
                     } catch (Exception e) {
                         printStackTrace(e);
                         log(1,
-                         path + " vfx broken! ");
+                                path + " vfx broken! ");
                         broken.put(path, imagePath);
                         if (manualFix)
                             imagePath = applyFix(path, imagePath, type);
@@ -156,7 +162,7 @@ public class EmitterMaster extends GdxUtil {
                         String newPath = map.get(imageName);
                         if (newPath == null) {
                             newPath = imagesPath + PathUtils.getPathSeparator() +
-                             (imageName);
+                                    (imageName);
                             map.put(imageName, newPath);
                         }
                         if (writeImage) {
@@ -168,14 +174,14 @@ public class EmitterMaster extends GdxUtil {
                             if (!handle.exists() || overwriteImage) {
                                 GdxImageMaster.writeImage(handle, texture);
                                 log(1,
-                                 path + " vfx image written: " + newPath);
+                                        path + " vfx image written: " + newPath);
                             }
                         }
                     }
                     Boolean p = new Boolean(EmitterPresetMaster.getInstance().getValueFromGroup(path, EMITTER_VALUE_GROUP.Options,
-                     EMITTER_VALUE_GROUP.PremultipliedAlpha.name()));
+                            EMITTER_VALUE_GROUP.PremultipliedAlpha.name()));
                     Boolean additive = new Boolean(EmitterPresetMaster.getInstance().getValueFromGroup(path, EMITTER_VALUE_GROUP.Options,
-                     "Additive"));
+                            "Additive"));
 
                     if (p) {
                         group1.add(path);
@@ -187,13 +193,13 @@ public class EmitterMaster extends GdxUtil {
                         }
                     }
 
-                    String data = EmitterPresetMaster.getInstance().getModifiedData(path,
-                     EMITTER_VALUE_GROUP.Image_Path, imagesData);
-                    String newPath = PathFinder.getVfxAtlasPath()  + path;
+                    String data = EmitterPresetMaster.getInstance().readAndModifyData(path,
+                            EMITTER_VALUE_GROUP.Image_Path, imagesData);
+                    String newPath = PathFinder.getVfxAtlasPath() + path;
                     FileManager.write(data, newPath);
 
                     log(1,
-                     newPath + " vfx preset written  ");
+                            newPath + " vfx preset written  ");
                     if (test) {
                         try {
                             new ParticleEffectX(newPath);
@@ -219,23 +225,24 @@ public class EmitterMaster extends GdxUtil {
 
         }
         log(1, broken.size() + " vfx imagepath broken: "
-         + broken);
+                + broken);
         log(1, group1.size() + " vfx w/ premultiplied: "
-         + group1);
+                + group1);
         log(1, group2.size() + " vfx w/ additive: "
-         + group2);
+                + group2);
         log(1, group3.size() + " vfx w/o additive: "
-         + group2);
+                + group2);
 
         System.exit(0);
     }
 
+
     private static String applyFix(String path, String imagePath, VFX_ATLAS type) {
 
         int i =
-         DialogMaster.optionChoice(imagePath + " on " +
-           path + " is broken. What do to?", "Disable manual fix", "Set image", "Random image", "Last image",
-          "Delete", "Pass");
+                DialogMaster.optionChoice(imagePath + " on " +
+                                path + " is broken. What do to?", "Disable manual fix", "Set image", "Random image", "Last image",
+                        "Delete", "Pass");
         switch (i) {
             case 0:
                 manualFix = false;
@@ -270,7 +277,7 @@ public class EmitterMaster extends GdxUtil {
         while (NumberUtils.isInteger(last)) {
             int n = NumberUtils.getInteger(last);
             imageName = StringMaster.cropLast(imageName, "_")
-             + n;
+                    + n;
             last = StringMaster.getLastPart(imageName, "_");
         }
         return imageName;
@@ -284,7 +291,7 @@ public class EmitterMaster extends GdxUtil {
     private static String getVfxAtlasImagesPath(VFX_ATLAS atlas) {
         String name = atlas.name().toLowerCase();
         return
-         StrPathBuilder.build(PathFinder.getVfxPath() + "atlas images", name);
+                StrPathBuilder.build(PathFinder.getVfxPath() + "atlas images", name);
 
     }
 
@@ -397,34 +404,34 @@ public class EmitterMaster extends GdxUtil {
             String root = type.getImagePath();
             File current = FileManager.getFile(PathFinder.getImagePath() + root);
             File sameImage = imagePool.stream().filter(file ->
-             FileManager.isSameFile(file, current)).findFirst().orElse(null);
+                    FileManager.isSameFile(file, current)).findFirst().orElse(null);
             if (sameImage == null) {
                 continue;
             }
 
             List<File> validImages = imagePool.stream().filter(
-             image -> checkImageForSpellVfx(image, sameImage, type)).
-             //             sorted().
-              limit(5).
-              collect(Collectors.toList());
+                    image -> checkImageForSpellVfx(image, sameImage, type)).
+                    //             sorted().
+                            limit(5).
+                            collect(Collectors.toList());
 
 
             List<String> imageNames = imagePool.stream().map(file -> "gen/" + file.getName()).collect(Collectors.toList());
 
             String newImages = ContainerUtils.toStringContainer(imageNames, "\n");
-            String data = EmitterPresetMaster.getInstance().getModifiedData(template,
-             EMITTER_VALUE_GROUP.Image_Paths,
-             newImages);
+            String data = EmitterPresetMaster.getInstance().readAndModifyData(template,
+                    EMITTER_VALUE_GROUP.Image_Paths,
+                    newImages);
 
             String newPath = PathFinder.getVfxPath() +
-             "/atlas/gen/" + PART + "/" + type.getName();
+                    "/atlas/gen/" + PART + "/" + type.getName();
             FileManager.write(data, newPath, true);
 
 
             //copy valid images...
             for (File validImage : validImages) {
                 File output = FileManager.getFile(getVfxAtlasImagesPath(VFX_ATLAS.SPELL) +
-                 "/gen/" + validImage.getName());
+                        "/gen/" + validImage.getName());
                 try {
                     Files.copy(Paths.get(validImage.toURI()), Paths.get(output.toURI()), StandardCopyOption.REPLACE_EXISTING);
                 } catch (Exception e) {

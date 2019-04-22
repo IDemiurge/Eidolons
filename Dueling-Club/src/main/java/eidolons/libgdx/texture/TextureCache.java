@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
+    private static final boolean tryCompressedFormat = true;
     private static Boolean uiAtlasesOn;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
@@ -327,6 +328,17 @@ public class TextureCache {
         } catch (Exception e) {
         }
         return t != emptyTexture;
+    }
+
+    public static boolean isEmptyTexture(Texture texture) {
+        if (texture == null) {
+            return true;
+        }
+        return emptyTexture==texture;
+    }
+
+    public static boolean isEmptyTexture(TextureRegion region) {
+        return isEmptyTexture(region.getTexture());
     }
 
     public void dispose() {

@@ -24,6 +24,8 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.*;
 import main.system.data.DataUnitFactory;
+import main.system.graphics.GuiManager;
+import main.system.images.ImageManager;
 import main.system.launch.TypeBuilder;
 
 import java.util.List;
@@ -66,7 +68,7 @@ public class Dungeon extends LightweightEntity {
         //        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
 //        xml += XML_Converter.wrap(PARAMS.BF_HEIGHT.getName(), getCellsY() + "");
         xml +=
-         TypeBuilder.getAlteredValuesXml(this, getType());
+                TypeBuilder.getAlteredValuesXml(this, getType());
 
         if (levelFilePath != null)
             xml += XML_Converter.wrap("LevelFilePath", levelFilePath);
@@ -84,7 +86,7 @@ public class Dungeon extends LightweightEntity {
     public COLOR_THEME getColorTheme() {
         if (colorTheme == null) {
             setColorTheme(new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
-             getProperty(PROPS.COLOR_THEME)));
+                    getProperty(PROPS.COLOR_THEME)));
         }
         return colorTheme;
     }
@@ -96,7 +98,7 @@ public class Dungeon extends LightweightEntity {
     public DUNGEON_TYPE getDungeonType() {
         if (dungeonType == null) {
             dungeonType = new EnumMaster<DUNGEON_TYPE>().retrieveEnumConst(DUNGEON_TYPE.class,
-             getProperty(G_PROPS.DUNGEON_TYPE));
+                    getProperty(G_PROPS.DUNGEON_TYPE));
         }
         return dungeonType;
     }
@@ -104,10 +106,11 @@ public class Dungeon extends LightweightEntity {
     public LOCATION_TYPE getDungeonSubtype() {
         if (dungeonSubtype == null) {
             dungeonSubtype = new EnumMaster<LOCATION_TYPE>().retrieveEnumConst(LOCATION_TYPE.class,
-             getProperty(PROPS.SUBDUNGEON_TYPE));
+                    getProperty(PROPS.SUBDUNGEON_TYPE));
         }
         return dungeonSubtype;
     }
+
     public boolean isBoss() {
         return getDungeonType() == DungeonEnums.DUNGEON_TYPE.BOSS;
     }
@@ -130,7 +133,7 @@ public class Dungeon extends LightweightEntity {
     public Integer getHeight() {
         if (getIntParam(PARAMS.BF_HEIGHT) == 0)
             setParam(PARAMS.BF_HEIGHT, getGame().getDungeonMaster().getBuilder().
-             getDefaultHeight());
+                    getDefaultHeight());
 
         return getIntParam(PARAMS.BF_HEIGHT);
     }
@@ -163,7 +166,7 @@ public class Dungeon extends LightweightEntity {
 
     private void initTemplate() {
         template = new RandomWizard<DUNGEON_TEMPLATES>().getObjectByWeight(
-         getProperty(PROPS.DUNGEON_TEMPLATES), DUNGEON_TEMPLATES.class);
+                getProperty(PROPS.DUNGEON_TEMPLATES), DUNGEON_TEMPLATES.class);
         if (template == null)
         // if (getProperty(PROPS.DUNGEON_TEMPLATES).isEmpty())
         {
@@ -213,14 +216,14 @@ public class Dungeon extends LightweightEntity {
             else {
                 if (isPermanentDusk())
                     return (IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_DAY
-                     + IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT) / 2;
+                            + IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT) / 2;
                 if (isDaytime())
                     return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_DAY;
                 return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_NIGHT;
             }
         }
 
-        return 0;
+        return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_UNDERGROUND;
 
     }
 
@@ -234,11 +237,11 @@ public class Dungeon extends LightweightEntity {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
             Integer i = NumberUtils.getInteger(arg) - 1;
             List<String> spawnPoints = ContainerUtils.openContainer(
-             getProperty(PROPS.COORDINATE_POINTS));
+                    getProperty(PROPS.COORDINATE_POINTS));
             c = Coordinates.get(spawnPoints.get(i));
         } else {
             Map<String, String> map = new DataUnitFactory(true).
-             deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
+                    deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
             String string = map.get(arg);
             if (string == null) {
                 //find
@@ -271,6 +274,18 @@ public class Dungeon extends LightweightEntity {
 
     public DUNGEON_STYLE getStyle() {
         return ZoneCreator.getStyle(ZONE_TYPE.OUTSKIRTS, getDungeonSubtype());
+    }
+
+    public String getCellImagePath(int i, int j) {
+        if (getGame().getDungeonMaster().getDungeonLevel() == null) {
+            if (isSurface()) {
+
+            }
+        } else {
+            return getGame().getDungeonMaster().getDungeonLevel().getCellImgPath(i, j);
+
+        }
+        return ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion());
     }
 
     public enum POINTS {

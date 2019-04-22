@@ -73,6 +73,10 @@ public class TexturePackerLaunch {
     private static float cullPercentage=0.33f;
 
     public static void main(String[] args) {
+        if (DialogMaster.confirm("Custom pack?")) {
+            customPack();
+            return;
+        }
         if (DialogMaster.confirm("Pack ui?")) {
             packImages(mainFolders);
             return;
@@ -181,6 +185,16 @@ public class TexturePackerLaunch {
         }
 
     }
+    private static void customPack() {
+        String inputDir = DialogMaster.inputText("Folder path to pack?", PathFinder.getSpritesPathNew());
+        String outputDir = DialogMaster.inputText("Output to? (cancel if same path)", inputDir);
+        if (outputDir == null) {
+        outputDir= inputDir;
+        }
+        String packFileName = FileManager.getUniqueFileVersion("atlas", outputDir);
+        pack(inputDir, outputDir, packFileName); //+"/"+suffix
+    }
+
 
     public static void pack(String inputDir, String outputDir, String packFileName) {
         Settings settings = getDefaultSettings();

@@ -1,5 +1,6 @@
 package eidolons.libgdx.texture;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.Deity;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
@@ -113,6 +114,11 @@ public class Images {
     public static final String ITEM_BACKGROUND = "ui/components/hq/inv/ITEM BACKGROUND.png";
     public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "ui/components/hq/inv/slots/overlay light.png";
     public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "ui/components/hq/inv/slots/overlay light2.png";
+    public static final String PLACEHOLDER = "ui/empty1.jpg";
+    public static final String PLACEHOLDER_UNIT = "ui/empty.jpg";
+    public static final String PLACEHOLDER_WALL = "main/bf/walls/ancient wall.png";
+    public static final String PLACEHOLDER_DECOR = "main/bf/prop/magical/sphere_altar_dark_active.png";
+    public static final String DEFAULT_SPRITE = "sprites/spells/default 10 10.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

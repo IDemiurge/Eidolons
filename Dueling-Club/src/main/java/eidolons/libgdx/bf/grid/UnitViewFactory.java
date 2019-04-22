@@ -21,6 +21,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.Map;
 
@@ -44,6 +45,12 @@ public class UnitViewFactory {
                 }
         }
         view.setOutlinePathSupplier(() -> {
+            if (CoreEngine.isCinematicMode()){
+                return null;
+            }
+            if (CoreEngine.isSafeMode()){
+                return null;
+            }
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
             if (type == null)
                 return null;

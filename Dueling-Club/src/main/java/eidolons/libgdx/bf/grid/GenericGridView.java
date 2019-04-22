@@ -54,7 +54,10 @@ public class GenericGridView extends UnitView {
                 emblemLighting.setColor(getTeamColor());
         }
         if (arrow != null)
+        {
             arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
+//            arrow.setRotation(arrowRotation);
+        }
 
     }
 
@@ -246,7 +249,8 @@ public class GenericGridView extends UnitView {
         if (arrow != null) {
             arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-            arrow.setRotation(arrowRotation);
+//       TODO was it ever necessary?
+//        arrow.setRotation(arrowRotation);
         }
 
         if (getScaledWidth() == 0)

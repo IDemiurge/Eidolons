@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
@@ -19,6 +20,8 @@ import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.libgdx.stage.UiStage;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.Chronos;
@@ -50,21 +53,33 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     private int assetLoadTimer = getAssetLoadTimeLimit();
     private boolean loaded;
 
+
+    protected SpriteAnimation backgroundSprite;
+
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
-         StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));
+                StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));
         waitingLabel.pack();
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-         getWaitY());
+                getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
 
         overlayStage = new UiStage();
 
-        postProcessing =
-         new PostProcessController();
+        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
+            return;
+
+        postProcessing = getPostProcessController();
+
+
+    }
+
+    private PostProcessController getPostProcessController() {
+        PostProcessController postProcessing = new PostProcessController();
         //         PostProcessController.getInstance();
         postProcessing.reset();
-
+        return postProcessing;
     }
 
     public UiStage getOverlayStage() {
@@ -248,7 +263,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
             float alpha = (timeWaited / 3) % 1;
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
-             : alpha * 2 + 0.15f;
+                    : alpha * 2 + 0.15f;
             getBatch().begin();
             waitingLabel.draw(batch, alpha % 1);
             batch.end();
@@ -261,7 +276,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                     tooltipLabel.setText(getTooltipText());
                     tooltipLabel.pack();
                     tooltipLabel.setPosition(GdxMaster.centerWidth(tooltipLabel),
-                     getTipY());
+                            getTipY());
                     tooltipTimer = 0;
                 }
                 tooltipLabel.draw(batch, 1);
@@ -327,8 +342,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void setWaitingForInput(boolean waitingForInput) {
         main.system.auxiliary.log.LogMaster.log(1, "waitingForInput from " +
-         this.waitingForInput +
-         " to " + waitingForInput);
+                this.waitingForInput +
+                " to " + waitingForInput);
         this.waitingForInput = waitingForInput;
 
     }
@@ -361,13 +376,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (isWaitingForInput())
             return getWaitForInputController(param);
         return introStage != null ?
-         new InputMultiplexer(loadingStage, introStage) :
-         new InputMultiplexer(loadingStage);
+                new InputMultiplexer(loadingStage, introStage) :
+                new InputMultiplexer(loadingStage);
     }
 
     public void updateInputController() {
         GdxMaster.setInputProcessor(
-         createInputController());
+                createInputController());
     }
 
     public void initLoadingStage(ScreenData meta) {

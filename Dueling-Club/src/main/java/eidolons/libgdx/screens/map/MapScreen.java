@@ -180,10 +180,11 @@ public class MapScreen extends GameScreenWithTown {
             guiStage.act(delta);
 
             mapStage.draw();
-            if (!Gdx.input.isKeyPressed(Keys.O)) {
+            if (Gdx.input.isKeyPressed(Keys.O) || CoreEngine.isMapEditor()) {
                 objectStage.draw();
             }
-            if (!Gdx.input.isKeyPressed(Keys.G)) {
+            if (!CoreEngine.isCinematicMode())
+            if (Gdx.input.isKeyPressed(Keys.G)|| CoreEngine.isMapEditor() ) {
                 guiStage.draw();
             } else {
 //                getBatch().begin();

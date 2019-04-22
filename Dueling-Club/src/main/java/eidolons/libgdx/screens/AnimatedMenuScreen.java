@@ -1,15 +1,19 @@
 package eidolons.libgdx.screens;
 
 
+import eidolons.game.core.Eidolons;
+import eidolons.game.module.nethergate.apholon.eidola.Eidolon;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
+import eidolons.system.graphics.RESOLUTION;
 import main.content.DC_TYPE;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -30,8 +34,13 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         mainMenu.setVisible(true);
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(
-         GdxMaster.centerWidth(mainMenu)
-         , GdxMaster.centerHeight(mainMenu));
+                GdxMaster.centerWidth(mainMenu)
+                , GdxMaster.centerHeight(mainMenu));
+        if (CoreEngine.isIDE()) {
+            if (Eidolons.getResolution() != RESOLUTION._1920x1080) {
+                mainMenu.setPosition(0, (float) (Eidolons.getResolutionDimensions().getHeight() - mainMenu.getHeight() - 100));
+            }
+        }
     }
 
     @Override

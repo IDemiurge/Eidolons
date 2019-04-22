@@ -528,7 +528,10 @@ public class OverlaysManager extends SuperActor {
     public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object, GenericGridView actor) {
         switch (overlay) {
             case STEALTH:
-                return object.isSneaking();
+                if (object instanceof Unit)
+                    return object.isSneaking();
+                else
+                    return false;
             case SPOTTED:
                 return object.isSpotted();
             case BAG:

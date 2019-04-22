@@ -350,13 +350,16 @@ public class EmitterPresetMaster {
         return text;
     }
 
-    public String getModifiedData(String path, EMITTER_VALUE_GROUP image_path, String newVal) {
+    public String getModifiedData(String data, EMITTER_VALUE_GROUP image_path, String newVal) {
+        return setValue(image_path, newVal, data);
+    }
+    public String readAndModifyData(String path, EMITTER_VALUE_GROUP image_path, String newVal) {
         String data = getData(path);
         return setValue(image_path, newVal, data);
 
     }
 
-    private String getData(String path) {
+    public String getData(String path) {
         path = path.toLowerCase();
         path = PathUtils.addMissingPathSegments(path, PathFinder.getVfxPath());
         String data = map.get(path);

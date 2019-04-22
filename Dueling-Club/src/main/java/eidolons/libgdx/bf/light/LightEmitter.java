@@ -11,6 +11,7 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
+import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -68,7 +69,13 @@ public class LightEmitter extends SuperActor {
         String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                 "rays", type.name(), "center" + (overlaying ? " overlaying.png"
                         : ".png"));
-        center = new LightRay(imagePath);
+        if (isSpriteCenterLight()) {
+            imagePath= StrPathBuilder.build(PathFinder.getShadeCellsPath(),
+                    "light",  "atlas.txt");
+            center = new FadeSprite(imagePath);
+        } else {
+            center = new FadeImageContainer(imagePath);
+        }
         setSize(128, 128);
         if (isAddCenterLight()) {
             addActor(center);
@@ -93,6 +100,10 @@ public class LightEmitter extends SuperActor {
         }
         setTransform(false);
         setUserObject(obj);
+    }
+
+    private boolean isSpriteCenterLight() {
+        return false;
     }
 
     private boolean isAddOverlayObj() {
@@ -243,6 +254,8 @@ public class LightEmitter extends SuperActor {
     }
 
     private void rotate(float delta) {
+        if (isSpriteCenterLight())
+            return;
         center.setRotation(center.getRotation() + delta * 2.5f);
     }
 

@@ -33,6 +33,7 @@ import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
+import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -577,6 +578,9 @@ public class OptionsMaster {
 
         autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
 
+        if (CoreEngine.isMapPreview()){
+            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
+        }
         OptionsMaster.cacheOptions();
         try {
             applyOptions();

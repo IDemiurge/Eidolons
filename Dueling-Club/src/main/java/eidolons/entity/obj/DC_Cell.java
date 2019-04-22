@@ -38,7 +38,7 @@ public class DC_Cell extends DC_Obj implements Cell {
             setZ(dungeon.getZ());
         }
         addDynamicValues();
-        setImage(ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion()));
+        setImage(dungeon.getCellImagePath(i, j));
     }
 
     public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {

@@ -17,6 +17,10 @@ public class DC_RuleMaster {
         this.rules = rules;
     }
 
+    public static boolean isFocusReqsOff() {
+        return true;
+    }
+
     public void timePassed(Float time) {
         for (BattleFieldObject object : game.getBfObjects())
         for (DamageCounterRule rule : rules.getTimedRules().keySet()) {

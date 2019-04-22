@@ -63,6 +63,8 @@ public class QuickWeaponPanel extends TablePanelX {
         weapon.setPosition(WEAPON_POS_X, 0);
         weapon.setFadeDuration(0.2f);
         addActor(toggleUnarmed = new SmartButton(STD_BUTTON.UNARMED));
+        toggleUnarmed.setVisible(false);
+        //TODO useless for now?
         pack();
         if (offhand)
             toggleUnarmed.setPosition(0, background.getHeight() - toggleUnarmed.getHeight() / 2);

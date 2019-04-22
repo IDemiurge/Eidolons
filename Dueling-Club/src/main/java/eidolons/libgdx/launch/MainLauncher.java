@@ -26,19 +26,20 @@ public class MainLauncher extends GenericLauncher {
 
     public static void main(String[] args) {
         CoreEngine.setSwingOn(false);
+//        if (!CoreEngine.isIDE())
+        CoreEngine.setSafeMode(true);
         if (args.length > 0) {
-            args = args[0].split(",");
+            args = args[0].split(";");
         }
         CoreEngine.setFastMode(args.length > 1);
         CoreEngine.setFullFastMode(args.length > 3);
-        if (CoreEngine.isIDE())
-        {
+        if (CoreEngine.isIDE()) {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
             if (CoreEngine.isFastMode())
                 TestMasterContent.setAddSpells(true);
             if (CoreEngine.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);
-                OptionsMaster.setOptionsPath("C:\\Users\\JustMe\\Eidolons\\fast options.xml");
+                OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
             }
         }
 
@@ -49,6 +50,13 @@ public class MainLauncher extends GenericLauncher {
             else
                 CoreEngine.setJarlike(true);
         }
+
+        for (String command : commands) {
+            if (command.contains(MAIN_MENU_ITEM.MAP_PREVIEW.toString())) {
+                CoreEngine.setMapPreview(true);
+            }
+        }
+
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         //        if (CoreEngine.isFastMode()) {
@@ -59,10 +67,10 @@ public class MainLauncher extends GenericLauncher {
             for (String command : commands) {
                 command = command.trim();
                 MAIN_MENU_ITEM item =
-                 new EnumMaster<MAIN_MENU_ITEM>().retrieveEnumConst(MAIN_MENU_ITEM.class, command);
-                if (item != null)
+                        new EnumMaster<MAIN_MENU_ITEM>().retrieveEnumConst(MAIN_MENU_ITEM.class, command);
+                if (item != null) {
                     MainMenu.getInstance().getHandler().handle(item);
-                else {
+                } else {
                     if (NumberUtils.isInteger(command)) {
                         int i = NumberUtils.getInteger(command);
                         if (i < 0) {
@@ -80,7 +88,7 @@ public class MainLauncher extends GenericLauncher {
         if (lastChoiceStack == null) {
             lastChoiceStack = new Stack<>();
             lastChoiceStack.addAll(ContainerUtils.openContainer(
-             FileManager.readFile(LAST_CHOICE_FILE)));
+                    FileManager.readFile(LAST_CHOICE_FILE)));
         }
         return NumberUtils.getInteger(lastChoiceStack.remove(0));
     }

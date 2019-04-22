@@ -15,6 +15,8 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.DarkGrayscaleShader;
+import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -194,7 +196,7 @@ public class UnitView extends BaseView implements HpBarView{
         }
         ShaderDrawer.drawWithCustomShader(this, batch,
          greyedOut ?
-          DarkGrayscaleShader.getShader_()
+          GrayscaleShader.getGrayscaleShader()
 //          GrayscaleShader.getGrayscaleShader()
           : null, true);
     }
