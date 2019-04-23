@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.8.9b";
+    public static final String VERSION = "0.9.0";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
@@ -86,7 +86,7 @@ public class CoreEngine {
 //         (TOTAL_MEMORY =
 //          Runtime.getRuntime().totalMemory()));
 
-        if ( System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustMe")){
+        if ( System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustM")){
             me = true;
         }
 
@@ -502,5 +502,9 @@ public class CoreEngine {
 
     public static void setSafeMode(boolean safeMode) {
         CoreEngine.safeMode = safeMode;
+    }
+
+    public static boolean isOutlinesFixed() {
+        return false;
     }
 }

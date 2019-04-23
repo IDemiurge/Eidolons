@@ -128,7 +128,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (CoreEngine.isMacro()) {
             return false;
         }
-        if (!game.getMetaMaster().isRngDungeon())
+        if (!game.getMetaMaster().isRngDungeon() && CoreEngine.isSafeMode())
             return false;
         return true;
     }

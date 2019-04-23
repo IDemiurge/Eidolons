@@ -184,7 +184,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initInventory() {
         if (!getEntity().isPlayerCharacter())
             if (ContainerMaster.isGenerateItemsForUnits())
-                if (ContainerMaster.isPregenerateItems())
+                if (ContainerMaster.isPregenerateItems(getEntity()))
                     if (!ListMaster.isNotEmpty(getEntity().getInventory())){
                         ContainerMaster master =(ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
                     master.initContents(getEntity());

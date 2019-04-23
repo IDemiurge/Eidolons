@@ -38,6 +38,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -722,6 +723,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 return commonQualities;
         }
         return QUALITY_LEVEL.values();
+    }
+
+    public static boolean isPregenerateItems(DC_Obj containerObj) {
+        return containerObj.getGame().getMetaMaster().isRngDungeon();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

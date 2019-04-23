@@ -57,6 +57,10 @@ public class ScrollPanel<T extends Actor> extends Container  {
         Cell cell = getTable().addNormalSize(obj).fill();
         getTable().row();
         getTable().pack();
+        if (isLibgdxImpl()) {
+            scroll.setScrollPercentY(105);
+        }
+//        else
         if (offsetY == 0)
             offsetY = 200;
         checkClear();
@@ -257,8 +261,14 @@ public class ScrollPanel<T extends Actor> extends Container  {
             step += instantOffsetY;
 
             cy = Math.min(cy + step * delta, innerScrollContainer.getHeight() / 2);
-            if (Math.abs(innerScrollContainer.getY() - cy) > 6f)
-                innerScrollContainer.setY(cy);
+//            if (isLibgdxImpl()) {
+//                scroll.setScrollY(cy);
+//            } else
+                {
+                if (Math.abs(innerScrollContainer.getY() - cy) > 6f)
+                    innerScrollContainer.setY(cy);
+            }
+
             if (offsetY != 0) {
                 offsetY -= step;
             }

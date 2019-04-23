@@ -48,7 +48,7 @@ public class UnitViewFactory {
             if (CoreEngine.isCinematicMode()){
                 return null;
             }
-            if (CoreEngine.isSafeMode()){
+            if (!CoreEngine.isOutlinesFixed()){
                 return null;
             }
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();

@@ -41,7 +41,7 @@ public class ContainerObj extends DungeonObj {
     @Override
     public void resetObjects() {
         if (items == null) {
-            if (getDM().isPregenerateItems()) {
+            if (getDM().isPregenerateItems(this)) {
                 initInventory();
             }
         }

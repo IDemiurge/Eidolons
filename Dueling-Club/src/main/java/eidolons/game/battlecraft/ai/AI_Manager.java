@@ -368,7 +368,7 @@ public class AI_Manager extends AiMaster {
     }
 
     private boolean isAutoGroups() {
-        return game.getDungeonMaster().getDungeonLevel() != null;
+        return game.getMetaMaster().isRngDungeon();
     }
 
     public Action getDefaultAction(Unit activeUnit) {

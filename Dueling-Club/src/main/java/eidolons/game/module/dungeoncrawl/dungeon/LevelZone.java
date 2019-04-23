@@ -35,6 +35,9 @@ public class LevelZone extends LevelLayer<LevelBlock> {
         this.id = id;
     }
 
+    public void addBlock(LevelBlock block) {
+        getSubParts().add(block);
+    }
     public LevelZone(ZONE_TYPE type, ROOM_TEMPLATE_GROUP templateGroup, DUNGEON_STYLE style, int id) {
         this.type = type;
         this.templateGroup = templateGroup;

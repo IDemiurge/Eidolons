@@ -180,6 +180,7 @@ public class UnitAI {
     }
 
     public GroupAI getGroupAI() {
+        if (getUnit().getGame().getMetaMaster().isRngDungeon())
         if (groupAI == null) {
             groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
             if (groupAI != null) {

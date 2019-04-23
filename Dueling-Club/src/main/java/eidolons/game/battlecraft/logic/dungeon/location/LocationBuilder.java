@@ -9,7 +9,11 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
+import main.content.enums.DungeonEnums;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.entity.obj.Obj;
@@ -48,6 +52,53 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         super(master);
     }
 
+    @Override
+    public Location buildDungeon(String path) {
+        location= super.buildDungeon(path);
+        FauxDungeonLevel level = createFauxDungeonLevel(path, location);
+        master.setDungeonLevel(level);
+        return location;
+    }
+
+    private FauxDungeonLevel createFauxDungeonLevel(String path, Location location) {
+        FauxDungeonLevel level = new FauxDungeonLevel();
+
+        List<LevelZone> zones=    createFauxZones(location) ;
+        level.setZones(zones);
+        DungeonEnums.DUNGEON_STYLE mainStyle= DungeonEnums.DUNGEON_STYLE.Somber ;
+//        if (mainStyle != null) {
+//            for (LevelZone zone : level.getZones()) {
+//                if (zone.getStyle() == level.getMainStyle())
+//                    zone.setStyle(mainStyle);
+//            }
+//            level.setMainStyle(mainStyle);
+//        }
+
+        return level;
+    }
+
+    private List<LevelZone> createFauxZones(Location location) {
+        List<LevelZone> zones = new ArrayList<>();
+//        location.getPlan().getZones()
+        Integer w = location.getWidth();
+        Integer h = location.getHeight();
+        for (int i = 0; i < 2; i++) {
+        LevelZone zone = new LevelZone(i);
+            LevelBlock block=null;
+            zone.addBlock(block = new LevelBlock(zone));
+
+            List<Coordinates> coords =i>0?
+                    CoordinatesMaster.getCoordinatesWithin(w/2-1, w  ,
+                            -1, h)
+                    : CoordinatesMaster.getCoordinatesWithin( -1,  w/2 ,
+                    -1, h);
+            block.setCoordinatesList(coords);
+            block.setCoordinates(coords.get(coords.size()-1));
+            zones.add(zone);
+            zone.setStyle(DungeonEnums.DUNGEON_STYLE.Somber);
+        }
+        return zones;
+    }
 
     @Refactor
     //TODO the way it's done, we can't have Structures in non-Location dungeons!!!
