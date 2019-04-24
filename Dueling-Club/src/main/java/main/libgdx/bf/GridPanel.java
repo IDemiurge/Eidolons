@@ -10,14 +10,12 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.libgdx.anims.AnimMaster;
-import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.phased.PhaseAnimator;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
@@ -59,7 +57,6 @@ public class GridPanel extends Group {
     private Map<BattleFieldObject, BaseView> unitMap;
     private int cols;
     private int rows;
-    private LightingManager lightingManager;
     private AnimMaster animMaster;
 
     public GridPanel(int cols, int rows) {
@@ -238,12 +235,6 @@ public class GridPanel extends Group {
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 switch (event.getType().getArg()) {
                     case "Illumination":
-                        if (lightingManager != null) {
-                            Obj o = event.getRef().getTargetObj();
-                            if (o instanceof Unit) {
-                                lightingManager.updateObject((BattleFieldObject) event.getRef().getTargetObj());
-                            }
-                        }
                         caught = true;
                         break;
                 }
@@ -304,8 +295,6 @@ public class GridPanel extends Group {
     }
 
     private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
-        lightingManager = new LightingManager(units, rows, cols);
-
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         for (BattleFieldObject object : units) {
             Coordinates c = object.getCoordinates();
@@ -362,11 +351,6 @@ public class GridPanel extends Group {
 
         uv.setVisible(true);
         cells[c.x][rows1 - c.y].addActor(uv);
-
-        if (lightingManager != null) {
-            lightingManager.updatePos(heroObj);
-            lightingManager.updateAll();
-        }
     }
 
     private void addUnitView(BattleFieldObject heroObj) {
@@ -395,9 +379,6 @@ public class GridPanel extends Group {
 
         cellBorderManager.draw(batch, parentAlpha);
 
-        if (lightingManager != null) {
-            lightingManager.updateLight();
-        }
     }
 
     public Map<BattleFieldObject, BaseView> getUnitMap() {

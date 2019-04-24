@@ -155,7 +155,7 @@ public class LevelEditor {
         window.setIconImage(ImageManager.getImage(ICON_PATH));
         window.setLayout(new MigLayout());
         window.setUndecorated(true);
-        window.setSize(GuiManager.DEF_DIMENSION);
+        window.setSize(GuiManager.DEF_DIMENSION_HD);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.add(mainPanel, "pos 0 0");
 

@@ -15,6 +15,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,7 +85,13 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         keyMaster = new LE_KeyMaster(this);
         setKeyManager(keyMaster);
         add(cp, "id cp, pos 0 0");
-        add(ip.getPanel(), "id ip, pos tabs.x2 cp.y2");
+        if (isInfoPanelOn())
+            add(ip.getPanel(), "id ip, pos tabs.x2 cp.y2");
+        else {
+            add(ip.getPanel(), "id ip, pos 0 cp.y2");
+            ip.getPanel().setVisible(true);
+
+        }
         add(missionTabs, "id tabs, pos plan.x2 cp.y2");
         add(palette, "id palette, pos plan.x2 tabs.y2");
         add(planPanel, "id plan, pos 0 cp.y2");
@@ -107,6 +114,10 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
         missionTabs.setOpaque(false);
         setOpaque(false);
+    }
+
+    public static final boolean isInfoPanelOn() {
+        return false;
     }
 
     public void newMission(Mission mission) {
@@ -191,7 +202,8 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
     public void refreshGui() {
         palette.refresh();
-        ip.refresh();
+        if (ip.getPanel().isVisible())
+            ip.refresh();
         cp.refresh();
         planPanel.refresh();
     }
@@ -215,7 +227,8 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         if (!ImageManager.isImage(newValue)) {
             return;
         }
-        ImageIcon icon = ImageManager.getSizedIcon(newValue, GuiManager.DEF_DIMENSION);
+
+        ImageIcon icon = ImageManager.getSizedIcon(newValue, new Dimension(background.getWidth(), background.getHeight()));
         if (icon != null) {
             background.setIcon(icon);
         }
@@ -280,4 +293,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         LevelEditor.getSimulation().getDungeonMaster().setDungeon(currentLevel.getDungeon());
     }
 
+    public void toggleInfoPanel() {
+        ip.getPanel().setVisible(!ip.getPanel().isVisible());
+    }
 }

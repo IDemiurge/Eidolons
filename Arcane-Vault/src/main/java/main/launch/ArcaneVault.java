@@ -49,8 +49,8 @@ public class ArcaneVault {
     public final static boolean PRESENTATION_MODE = false;
     public static final int AE_WIDTH = 500;
     public static final int AE_HEIGHT = 800;
-    public static final int WIDTH = 1680;
-    public static final int HEIGHT = 999;
+    public static final int WIDTH = 1920;
+    public static final int HEIGHT = 1050;
     public static final int TREE_WIDTH = 415;
     public static final int TREE_HEIGHT = HEIGHT * 11 / 12;
     public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;

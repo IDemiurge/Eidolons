@@ -3,14 +3,6 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import main.game.core.game.DC_Game;
-import main.libgdx.anims.particles.lighting.FireLightProt;
-import main.libgdx.anims.particles.lighting.LightMap;
-import main.libgdx.anims.particles.lighting.LightingManager;
-import main.libgdx.bf.GridMaster;
-import main.libgdx.screens.DungeonScreen;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,13 +40,6 @@ public class InputController implements InputProcessor {
         }
         if (i == CONTROL_LEFT) {
             ctrl = true;
-        }
-
-        if (i == 54) {
-            LightMap.resizeFBOa();
-        }
-        if (i == 52) {
-            LightMap.resizeFBOb();
         }
 
         return false;
@@ -141,20 +126,6 @@ public class InputController implements InputProcessor {
     @Override
     public boolean mouseMoved(int i, int i1) {
 
-        if (LightingManager.isMouse_light()) {
-            LightMap.mouseMouseMove((camera.position.x - (camera.viewportWidth / 2) * camera.zoom + (i) * camera.zoom), (camera.position.y + (camera.viewportHeight / 2) * camera.zoom - i1 * camera.zoom), camera.zoom);
-            float x_light = (camera.position.x - (camera.viewportWidth / 2) * camera.zoom + (i) * camera.zoom);
-            float y_light = (camera.position.y + (camera.viewportHeight / 2) * camera.zoom - i1 * camera.zoom);
-            boolean by_X;
-            boolean by_Y;
-            by_X = !(x_light < camera.position.x - (camera.viewportWidth / 2) * camera.zoom + LightingManager.mouse_light_distance_to_turn_off || x_light > camera.position.x + (camera.viewportWidth / 2) * camera.zoom - LightingManager.mouse_light_distance_to_turn_off);
-            by_Y = !(y_light < camera.position.y - (camera.viewportHeight / 2) * camera.zoom + LightingManager.mouse_light_distance_to_turn_off || y_light > camera.position.y + (camera.viewportHeight / 2) * camera.zoom - LightingManager.mouse_light_distance_to_turn_off);
-            if (by_X & by_Y) {
-                LightMap.mouseLightDistance(LightingManager.mouse_light_distance);
-            } else {
-                LightMap.mouseLightDistance(0);
-            }
-        }
         return false;
 
     }
@@ -162,39 +133,6 @@ public class InputController implements InputProcessor {
     @Override
     public boolean scrolled(int i) {
 
-//        if (DialogDisplay.isDisplaying() )
-//            return false;
-//
-        if (alt && !ctrl) {
-            if (i == 1) {
-                FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() + 0.05f);
-            }
-            if (i == -1) {
-                FireLightProt.setSmallerAlpha(FireLightProt.getAlphaSmaller() - 0.05f);
-            }
-
-        }
-        if (!alt && ctrl) {
-            if (i == 1) {
-                FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() + 0.05f);
-            }
-            if (i == -1) {
-                FireLightProt.setBiggerAlpha(FireLightProt.getAlphaBigger() - 0.05f);
-            }
-
-        }
-        if (alt && ctrl) {
-            if (i == 1) {
-                LightMap.setAmbient(LightMap.getAmbint() + 0.02f);
-            }
-            if (i == -1) {
-                LightMap.setAmbient(LightMap.getAmbint() - 0.02f);
-            }
-
-        }
-        zoom(i);
-
-//        System.out.println(camera.zoom);
         return false;
     }
 

@@ -44,7 +44,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.test.frontend.FAST_DC</mainClass>
+                            <mainClass>main.game.logic.dungeon.editor.LevelEditor</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -64,29 +64,7 @@
             <plugin>
                 <artifactId>exec-maven-plugin</artifactId>
                 <groupId>org.codehaus.mojo</groupId>
-                <executions>
-                    <execution>
-                        <id>symlink for res</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/ln.cmd</executable>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>clean symlink for res</id>
-                        <phase>pre-clean</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/rm_symlinks.cmd</executable>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+               </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

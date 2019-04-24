@@ -13,6 +13,7 @@ import main.swing.generic.components.G_Panel;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.datatypes.DequeImpl;
+import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 
 import java.awt.*;
@@ -20,8 +21,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static main.game.logic.dungeon.editor.gui.LE_MainPanel.isInfoPanelOn;
+
 public class LE_MapViewComp extends G_Panel implements TabChangeListener {
-    public static final Dimension SIZE = new Dimension(1050, 750);
+    public static final Dimension SIZE = new Dimension((int) (isInfoPanelOn() ?
+                GuiManager.DEF_DIMENSION_HD.getWidth() - 500 :
+        GuiManager.DEF_DIMENSION_HD.getWidth() - 320), 750);
     private static boolean minimapMode = false;
     Level currentLevel;
     Minimap map;

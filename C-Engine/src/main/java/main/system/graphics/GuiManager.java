@@ -13,6 +13,7 @@ public class GuiManager {
     public static final int HERO_Y2 = 0;
     public static final int HERO_X2 = 4;
     public static final Dimension DEF_DIMENSION = new Dimension(1680, 1050);
+    public static final Dimension DEF_DIMENSION_HD = new Dimension(1920, 1080);
     public static final int PANEL_FRAME_WIDTH = 22;
     public static final int PANEL_FRAME_HEIGHT = 12;
     private static final double DEFAULT_WIDTH = 1680;

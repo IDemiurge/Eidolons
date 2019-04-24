@@ -14,9 +14,11 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import java.awt.*;
 
 public class LE_ControlPanel extends G_Panel {
+    private final LE_CONTROLS[] controls = LE_CONTROLS.values() ;
+
     public LE_ControlPanel() {
         super("fill");
-        for (LE_CONTROLS c : LE_CONTROLS.values()) {
+        for (LE_CONTROLS c : controls) {
             add(getControlButton(c));
         }
     }
@@ -63,12 +65,16 @@ public class LE_ControlPanel extends G_Panel {
             case NEW_MISSION:
                 LevelEditor.newMission();
                 break;
+            case TOGGLE_INFO:
+                LevelEditor.getMainPanel().toggleInfoPanel();
+                break;
             case SAVE_LEVEL:
                 LE_DataMaster.levelSaved(LevelEditor.getCurrentLevel());
                 break;
             case SAVE_MISSION:
                 LE_DataMaster.missionSaved(LevelEditor.getCurrentMission());
                 break;
+
             default:
                 break;
 
@@ -97,11 +103,11 @@ public class LE_ControlPanel extends G_Panel {
     }
 
     public enum LE_CONTROLS {
-        UNDO,
 
-        SAVE_LEVEL, LOAD_LEVEL, SAVE_MISSION, LOAD_MISSION, NEW_LEVEL, NEW_MISSION,
+TOGGLE_INFO,
+        SAVE_LEVEL, LOAD_LEVEL,  NEW_LEVEL, NEW_MISSION,
 
-        GENERATE, REMOVE, TRANSFORM,
+        GENERATE, REMOVE, SAVE_MISSION, LOAD_MISSION, UNDO,TRANSFORM,
         // WORKSPACE
     }
 

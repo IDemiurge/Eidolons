@@ -13,7 +13,6 @@ import main.game.battlecraft.logic.battle.arena.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.DungeonMaster;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
-import main.libgdx.anims.particles.lighting.LightingManager;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -156,8 +155,6 @@ public class PresetLauncher {
                 CoreEngine.setGuiTestMode(true);
                 return true;
             case Light:
-                LightingManager.setLightOn(true);
-                LightingManager.setTestMode(true);
                 CoreEngine.setActionTargetingFiltersOff(true);
                 return true;
         }
