@@ -1,5 +1,6 @@
 package eidolons.libgdx.screens.menu;
 
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -89,6 +90,9 @@ public class MainMenuHandler {
 
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
+            case DEMO:
+                IGG_Launcher.start();
+                break;
             case NEXT_SCENARIO:
                 return startMicro(getScenarioTypes(),
                  false);

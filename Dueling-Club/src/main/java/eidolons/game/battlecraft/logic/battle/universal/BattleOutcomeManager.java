@@ -70,6 +70,9 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void defeat(boolean surrender, boolean end) {
+        if (!game.getMetaMaster().getDefeatHandler().isEnded(surrender, end)){
+            return;
+        }
         // TODO last level doesn't support saving! Disconnects perhaps, for the
         // dishonorable ones :)
         outcome = false;

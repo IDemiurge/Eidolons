@@ -31,27 +31,28 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 11/28/2017.
  */
-public abstract class ScreenWithLoader extends ScreenAdapter {
+public abstract class ScreenWithLoader extends ScreenAdapterX {
     public static final String ASSET_LOADING = "ASSET LOADING";
-    protected CustomSpriteBatch batch;
     protected LoadingStage loadingStage;
     protected boolean loading = true;
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
-    protected Label waitingLabel;
     protected EventCallbackParam param;
-    protected float timeWaited;
-    protected Label tooltipLabel;
     protected UiStage overlayStage;
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
     protected PostProcessController postProcessing;
-    private boolean waitingForInput;
     private float tooltipTimer = getTooltipPeriod();
     private boolean loadingAtlases;
     private int assetLoadTimer = getAssetLoadTimeLimit();
-    private boolean loaded;
+
+    protected CustomSpriteBatch batch;
+    protected boolean loaded;
+    protected boolean waitingForInput;
+    protected float timeWaited;
+    protected Label tooltipLabel;
+    protected Label waitingLabel;
 
 
     protected SpriteAnimation backgroundSprite;
@@ -119,7 +120,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         }
 
     }
-
     public void loadDone(EventCallbackParam param) {
         this.param = param;
         if (param.get() instanceof BFDataCreatedEvent)

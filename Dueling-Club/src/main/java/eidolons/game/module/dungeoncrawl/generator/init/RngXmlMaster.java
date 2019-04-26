@@ -28,4 +28,5 @@ public class RngXmlMaster {
     public static final String ENTRANCE_NODE = "ENTRANCES";
     public static final String COLOR_THEME = "COLOR_THEME";
     public static final String COLOR_THEME_ALT = "COLOR_THEME_ALT";
+    public static final String AI_GROUP_SEPARATOR = "_with_";
 }

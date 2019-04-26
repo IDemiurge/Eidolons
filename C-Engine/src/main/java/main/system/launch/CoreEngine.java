@@ -71,6 +71,7 @@ public class CoreEngine {
     private static boolean cinematicMode;
     private static boolean mapPreview;
     private static boolean safeMode;
+    private static boolean iggDemo;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -506,5 +507,13 @@ public class CoreEngine {
 
     public static boolean isOutlinesFixed() {
         return false;
+    }
+
+    public static boolean isIggDemo() {
+        return iggDemo;
+    }
+
+    public static void setIggDemo(boolean iggDemo) {
+        CoreEngine.iggDemo = iggDemo;
     }
 }

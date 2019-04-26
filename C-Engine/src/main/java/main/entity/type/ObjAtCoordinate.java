@@ -14,6 +14,14 @@ public class ObjAtCoordinate {
         this.coordinates = coordinates;
     }
 
+    public ObjAtCoordinate(String s, OBJ_TYPE TYPE) {
+        String typeName = s.split("=")[0];
+        String coord = s.split("=")[1];
+        type = DataManager.getType(typeName, TYPE);
+        coordinates = Coordinates.get(true, coord);
+    }
+
+
     public ObjAtCoordinate(String typeName, String s, OBJ_TYPE TYPE) {
         type = DataManager.getType(typeName, TYPE);
         coordinates = Coordinates.get(true, s);
@@ -29,12 +37,12 @@ public class ObjAtCoordinate {
         if (obj instanceof ObjAtCoordinate) {
             ObjAtCoordinate obj2 = (ObjAtCoordinate) obj;
             return getCoordinates().equals(obj2.getCoordinates())
-             && getType().equals(obj2.getType());
+                    && getType().equals(obj2.getType());
         }
         if (obj instanceof Obj) {
             Obj obj2 = (Obj) obj;
             return getCoordinates().equals(obj2.getCoordinates())
-             && getType().equals(obj2.getType());
+                    && getType().equals(obj2.getType());
         }
         return super.equals(obj);
     }
@@ -53,5 +61,9 @@ public class ObjAtCoordinate {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public boolean isValid() {
+        return type != null;
     }
 }

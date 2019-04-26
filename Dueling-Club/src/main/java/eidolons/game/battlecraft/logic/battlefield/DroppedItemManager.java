@@ -12,6 +12,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
@@ -47,7 +48,11 @@ public class DroppedItemManager {
         // drop natural weapons?
 
         for (DC_HeroItemObj item : unit.getInventory()) {
-            drop(item, unit.getCoordinates());
+            if (checkLootDrops(item, unit))
+                drop(item, unit.getCoordinates());
+            else{
+                destroyItem(item);
+            }
         }
         for (DC_HeroItemObj item : unit.getQuickItems()) {
             drop(item, unit.getCoordinates());
@@ -56,6 +61,17 @@ public class DroppedItemManager {
             drop(item, unit.getCoordinates());
         }
 
+    }
+
+    private boolean checkLootDrops(DC_HeroItemObj item, Unit unit) {
+        return
+                RandomWizard.chance(unit.getGame().getMetaMaster().getLootMaster().
+                        getChanceForOwnedItemToDrop(unit, item));
+    }
+
+    private void destroyItem(DC_HeroItemObj item) {
+        item.kill();
+        item.getGame().getState().removeObject(item.getId());
     }
 
     public boolean checkHasItems(Obj obj) {

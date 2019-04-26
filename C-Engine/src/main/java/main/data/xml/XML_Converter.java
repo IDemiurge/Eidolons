@@ -73,7 +73,13 @@ public class XML_Converter {
 
     }*/
 
-    public static List<Node> getNodeList(Node node, boolean ignoreTextNodes) {
+//    public static List<Node> getNodeList(Node node, boolean ignoreTextNodes, boolean recursive) {
+//         List<Object> list = new ArrayList<>();
+//        if (recursive) {
+//            getNodeList(node).stream().
+//        }
+//    }
+        public static List<Node> getNodeList(Node node, boolean ignoreTextNodes) {
         List<Node> list = new ArrayList<>();
         if (node == null) {
             return list;

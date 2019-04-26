@@ -49,6 +49,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DialogueManager dialogueManager;
     protected DialogueActorMaster dialogueActorMaster;
     protected TownMaster townMaster;
+    protected DefeatHandler defeatHandler;
+    protected LootMaster<E> lootMaster;
 
 
     public MetaGameMaster(String data) {
@@ -77,7 +79,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaInitializer<E> createMetaInitializer();
 
     public void initHandlers() {
+        defeatHandler = createDefeatHandler();
         partyManager = createPartyManager();
+        lootMaster = createLootMaster();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
 
@@ -87,6 +91,14 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         dialogueActorMaster = new DialogueActorMaster(this);
 
         townMaster = new TownMaster(this);// createTownMaster();
+    }
+
+    protected LootMaster<E> createLootMaster() {
+        return new LootMaster<>(this);
+    }
+
+    protected DefeatHandler createDefeatHandler() {
+        return new DefeatHandler(this);
     }
 
     public void init() {
@@ -159,6 +171,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         //   TODO remove lazy init hack?
         //        getDialogueFactory().init(this);
         //        getIntroFactory().init(this);
+    }
+
+    public LootMaster<E> getLootMaster() {
+        return lootMaster;
     }
 
     public DungeonMaster getDungeonMaster() {
@@ -268,6 +284,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         }
 
 
+    }
+
+    public DefeatHandler getDefeatHandler() {
+        return defeatHandler;
     }
 
     protected String getScenarioInfo() {

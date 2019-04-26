@@ -63,6 +63,14 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     }
 
+    public void heroSelected(String newHero) {
+        /**
+         * set as main
+         * spawn
+         * update chain
+         *
+         */
+    }
     protected void mainHeroSelected(Party party, Unit hero) {
         party.getMembers().forEach(member -> {
             try {
@@ -115,4 +123,5 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
     public void setPartyLevel(int partyLevel) {
         this.partyLevel = partyLevel;
     }
+
 }

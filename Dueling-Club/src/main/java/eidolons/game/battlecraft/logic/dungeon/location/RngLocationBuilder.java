@@ -20,6 +20,8 @@ import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
@@ -44,11 +46,9 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster.UNITS_NODE;
 
@@ -66,20 +66,21 @@ public class RngLocationBuilder extends LocationBuilder {
     public Location buildDungeon(String path) {
         if (game.getMetaMaster().getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
             String prop = ((ScenarioMeta) game.getMetaMaster().getMetaDataManager().getMetaGame()).getScenario().getProperty(
-             PROPS.DUNGEON_STYLE);
+                    PROPS.DUNGEON_STYLE);
             mainStyle = new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class, prop);
         }
         String data = FileManager.readFile(path);
 
         if (data.isEmpty()) {
             data = FileManager.readFile(
-             path.contains(PathFinder.getDungeonLevelFolder()) ? path
-              : PathFinder.getDungeonLevelFolder() + path);
+                    path.contains(PathFinder.getDungeonLevelFolder()) ? path
+                            : PathFinder.getDungeonLevelFolder() + path);
         }
         if (data.isEmpty()) {
             data = path;
         }
         DungeonLevel level = loadLevel(path);
+        initPower(level);
         master.setDungeonLevel(level);
 
         if (mainStyle != null) {
@@ -92,18 +93,29 @@ public class RngLocationBuilder extends LocationBuilder {
         new RngLevelInitializer().init(level);
         Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
         initWidthAndHeight(location);
-        location.setEntranceData(entranceData);
+        location.setEntranceData(level.getEntranceData());
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
         level.getObjects().removeIf(c ->
-         !EntityCheckMaster.isEntrance(c.getType()) && (
-          c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
-           || c.getCoordinates().equals(location.getMainExit().getCoordinates()))
+                !EntityCheckMaster.isEntrance(c.getType()) && (
+                        c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
+                                || c.getCoordinates().equals(location.getMainExit().getCoordinates()))
         );
         //        initDynamicObjData();
 
 
         return location;
+    }
+
+    private void initPower(DungeonLevel level) {
+        Party party = getGame().getMetaMaster().getPartyManager().
+                getParty();
+        try {
+            level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
+                    getParty().getParamSum(PARAMS.POWER) * (1 + party.getMembers().size()) / party.getMembers().size());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     @Override
@@ -127,7 +139,7 @@ public class RngLocationBuilder extends LocationBuilder {
         }
         for (ObjAtCoordinate at : level.getUnits()) {
             Unit unit = (Unit) game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
-             game.getPlayer(false));
+                    game.getPlayer(false));
             UnitTrainingMaster.train(unit);
             main.system.auxiliary.log.LogMaster.log(1, at + " unit spawed");
         }
@@ -150,20 +162,12 @@ public class RngLocationBuilder extends LocationBuilder {
     }
 
 
-    public DungeonLevel loadLevel(String path) {
+    public static DungeonLevel loadLevel(String path) {
         String xml = FileManager.readFile(path);
         //        TODO
         DungeonLevel level = new RestoredDungeonLevel();
-        Party party = getGame().getMetaMaster().getPartyManager().
-         getParty();
-        try {
-            level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
-             getParty().getParamSum(PARAMS.POWER) * (1 + party.getMembers().size()) / party.getMembers().size());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        int n = 0;
 
+        int n = 0;
         for (Node node : XML_Converter.getNodeListFromFirstChild(XML_Converter.getDoc(xml), true)) {
             //TODO
             if (node.getNodeName().equalsIgnoreCase(RngXmlMaster.ZONES_NODE)) {
@@ -185,7 +189,10 @@ public class RngLocationBuilder extends LocationBuilder {
                 }
                 level.getSubParts().add(zone);
             } else {
-                processNode(node, level);
+                String output = processNode(node, level);
+                if (output != null) {
+                    level.setEntranceData(output);
+                }
             }
         }
 
@@ -194,11 +201,11 @@ public class RngLocationBuilder extends LocationBuilder {
         return level;
     }
 
-    private String getBaseDungeonTypeName(DungeonLevel level) {
+    private static String getBaseDungeonTypeName(DungeonLevel level) {
         String s = StringMaster.getWellFormattedString(
-         level.getLocationType().toString());
+                level.getLocationType().toString());
         if (DataManager.isTypeName(s
-         , DC_TYPE.DUNGEONS))
+                , DC_TYPE.DUNGEONS))
             return s;
         switch (level.getLocationType()) {
             case CAVE:
@@ -209,9 +216,14 @@ public class RngLocationBuilder extends LocationBuilder {
         return s;
     }
 
-    protected void processNode(Node n, DungeonLevel level) {
+    protected static String processNode(Node n, DungeonLevel level) {
 
-        if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.LEVEL_DATA_NODE)) {
+        if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.OBJECTS_NODE)) {
+            initObjData(n, level);
+        } else
+        if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.AI_GROUPS_NODE)) {
+            initAiData(n, level);
+        } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.LEVEL_DATA_NODE)) {
             initData(n, level);
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.BOUND_NODE)) {
             try {
@@ -220,7 +232,7 @@ public class RngLocationBuilder extends LocationBuilder {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.ENTRANCES_NODE)) {
-            initEntrances(n, level);
+            return n.getTextContent();
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.TILEMAP_NODE)) {
             initTileMap(n, level);
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.VALUES_NODE)) {
@@ -228,10 +240,10 @@ public class RngLocationBuilder extends LocationBuilder {
             initValuesNode(n, level);
         } else if (StringMaster.compareByChar(n.getNodeName(), (FLIP_MAP_NODE))) {
             level.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
-             .getTextContent(), FLIP.class));
+                    .getTextContent(), FLIP.class));
         } else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
             level.setDirectionMap(new RandomWizard<DIRECTION>()
-             .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
+                    .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
 
         }
         //        else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PARAMS_NODE))) {
@@ -239,9 +251,45 @@ public class RngLocationBuilder extends LocationBuilder {
         //        } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PROPS_NODE))) {
         //            TypeBuilder.setProps(type, n);
         //        }
+        return null;
     }
 
-    private void initBound(Node n, DungeonLevel level) {
+    private static void initObjData(Node n, DungeonLevel level) {
+        //units will be init at AigroupsInit()
+
+        for (String s : n.getTextContent().split(";")) {
+            ObjAtCoordinate obj = new ObjAtCoordinate(s, DC_TYPE.BF_OBJ);
+            if (!obj.isValid())
+                continue;
+            level.getObjects().add(obj);
+            level.getBlockForCoordinate(obj.getCoordinates()).getObjects().add(obj);
+
+        }
+    }
+
+    private static void initAiData(Node n, DungeonLevel level) {
+
+        for (String line : StringMaster.splitLines(n.getTextContent())) {
+            String[] parts = line.split(RngXmlMaster.AI_GROUP_SEPARATOR);
+            UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.valueOf(
+                    parts[0].toUpperCase());
+            List<ObjAtCoordinate> group =
+                    Arrays.stream(parts[1].split(";")).map(s -> new ObjAtCoordinate(s.split("=")[0],
+                            s.split("=")[1],
+                            DC_TYPE.UNITS)).collect(Collectors.toList());
+
+            for (ObjAtCoordinate obj : group) {
+                LevelBlock block = level.getBlockForCoordinate(obj.getCoordinates());
+                if (block == null)
+                    continue;
+                block.getUnitGroups().put(group, type);
+                break;
+            }
+
+        }
+    }
+
+    private static void initBound(Node n, DungeonLevel level) {
         for (String s : ContainerUtils.openContainer(n.getTextContent())) {
             AbstractCoordinates c = new AbstractCoordinates(s.split("=")[0]);
             AbstractCoordinates c2 = new AbstractCoordinates(s.split("=")[1]);
@@ -250,36 +298,33 @@ public class RngLocationBuilder extends LocationBuilder {
         }
     }
 
-    private void initData(Node n, DungeonLevel level) {
+    private static void initData(Node n, DungeonLevel level) {
         level.setData(new LevelData(n.getTextContent()));
     }
 
-    private void initEntrances(Node n, DungeonLevel level) {
-        this.entranceData = n.getTextContent();
-    }
 
-    private void processZoneValues(LevelZone zone, Node subNode) {
+    private static void processZoneValues(LevelZone zone, Node subNode) {
         for (Node node : XML_Converter.getNodeList(subNode)) {
             String name = node.getNodeName().toUpperCase();
             switch (name) {
                 case RngXmlMaster.ZONE_STYLE_NODE:
                     DUNGEON_STYLE style = new EnumMaster<DUNGEON_STYLE>()
-                     .retrieveEnumConst(DUNGEON_STYLE.class, node.getTextContent());
+                            .retrieveEnumConst(DUNGEON_STYLE.class, node.getTextContent());
                     zone.setStyle(style);
                     break;
                 case RngXmlMaster.ZONE_TYPE_NODE:
                     zone.setType(new EnumMaster<ZONE_TYPE>()
-                     .retrieveEnumConst(ZONE_TYPE.class, node.getTextContent()));
+                            .retrieveEnumConst(ZONE_TYPE.class, node.getTextContent()));
                     break;
                 case RngXmlMaster.ZONE_TEMPLATE_GROUP_NODE:
                     zone.setTemplateGroup(new EnumMaster<ROOM_TEMPLATE_GROUP>()
-                     .retrieveEnumConst(ROOM_TEMPLATE_GROUP.class, node.getTextContent()));
+                            .retrieveEnumConst(ROOM_TEMPLATE_GROUP.class, node.getTextContent()));
                     break;
             }
         }
     }
 
-    private void initTileMap(Node n, DungeonLevel level) {
+    private static void initTileMap(Node n, DungeonLevel level) {
         String data = n.getTextContent();
         int lineN = 0;
         int w = 0;
@@ -312,27 +357,27 @@ public class RngLocationBuilder extends LocationBuilder {
         level.setTileMap(tileMap);
     }
 
-    private void initValuesNode(Node n, DungeonLevel level) {
+    private static void initValuesNode(Node n, DungeonLevel level) {
         Node node = XML_Converter.find(n, RngXmlMaster.LOCATION_TYPE_NODE);
         if (node != null) {
             LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
-             retrieveEnumConst(LOCATION_TYPE.class, node.getTextContent());
+                    retrieveEnumConst(LOCATION_TYPE.class, node.getTextContent());
             level.setLocationType(locationType);
         }
         node = XML_Converter.find(n, RngXmlMaster.SUBLEVEL_TYPE_NODE);
         if (node != null) {
             SUBLEVEL_TYPE locationType = new EnumMaster<SUBLEVEL_TYPE>().
-             retrieveEnumConst(SUBLEVEL_TYPE.class, node.getTextContent());
+                    retrieveEnumConst(SUBLEVEL_TYPE.class, node.getTextContent());
             level.setSublevelType(locationType);
         }
         ObjType type = DataManager.getType(getBaseDungeonTypeName(level),
-         DC_TYPE.DUNGEONS);
+                DC_TYPE.DUNGEONS);
         if (type == null) {
             type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
         }
         if (!type.checkProperty(PROPS.MAP_BACKGROUND)
-         || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND))
-         || isPresetBackground()) {
+                || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND))
+                || isPresetBackground()) {
             type.setProperty(PROPS.MAP_BACKGROUND, getBackground(level.getLocationType()).getBackgroundFilePath());
         }
         node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
@@ -347,11 +392,11 @@ public class RngLocationBuilder extends LocationBuilder {
 
     }
 
-    private boolean isPresetBackground() {
+    private static boolean isPresetBackground() {
         return true;
     }
 
-    private MAP_BACKGROUND getBackground(LOCATION_TYPE locationType) {
+    private static MAP_BACKGROUND getBackground(LOCATION_TYPE locationType) {
         switch (locationType) {
             case CEMETERY:
                 if (RandomWizard.chance(35)) {
@@ -413,7 +458,7 @@ public class RngLocationBuilder extends LocationBuilder {
         return MAP_BACKGROUND.CAVE;
     }
 
-    protected LevelBlock createBlock(Node node, LevelZone zone) {
+    protected static LevelBlock createBlock(Node node, LevelZone zone) {
         LevelBlock b = new LevelBlock(zone);
 
         for (Node subNode : XML_Converter.getNodeList(node)) {
@@ -422,11 +467,11 @@ public class RngLocationBuilder extends LocationBuilder {
                 //              TODO     b.initDefaultCoordinatesList();
                 //                } else
                 b.setCoordinatesList(CoordinatesMaster.
-                 getCoordinatesFromString(subNode.getTextContent()));
+                        getCoordinatesFromString(subNode.getTextContent()));
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
                 for (String s : ContainerUtils.open(subNode.getTextContent())) {
                     b.getObjects().add(
-                     new ObjAtCoordinate(s.split("=")[1], s.split("=")[0], DC_TYPE.BF_OBJ));
+                            new ObjAtCoordinate(s.split("=")[1], s.split("=")[0], DC_TYPE.BF_OBJ));
                 }
                 //                 DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
             } else {
@@ -434,26 +479,26 @@ public class RngLocationBuilder extends LocationBuilder {
                     if (isPrespawned()) {
                         for (String s : ContainerUtils.open(subNode.getTextContent())) {
                             b.getObjects().add(
-                             new ObjAtCoordinate(s.split("=")[0], s.split("=")[1], DC_TYPE.UNITS));
+                                    new ObjAtCoordinate(s.split("=")[0], s.split("=")[1], DC_TYPE.UNITS));
                         }
                     }
 
                 } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.BLOCK_ROOM_TYPE_NODE)) {
                     b.setRoomType(new EnumMaster<ROOM_TYPE>().
-                     retrieveEnumConst(ROOM_TYPE.class, subNode.getTextContent()));
+                            retrieveEnumConst(ROOM_TYPE.class, subNode.getTextContent()));
                 } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME)) {
                     b.setColorTheme(new EnumMaster<COLOR_THEME>().
-                     retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
+                            retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
                 } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME_ALT)) {
                     b.setAltColorTheme(new EnumMaster<COLOR_THEME>().
-                     retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
+                            retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
                 }
             }
         }
         return b;
     }
 
-    private boolean isPrespawned() {
+    private static boolean isPrespawned() {
         return false;
     }
 }

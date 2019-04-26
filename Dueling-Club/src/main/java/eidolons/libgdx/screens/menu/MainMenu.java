@@ -3,6 +3,7 @@ package eidolons.libgdx.screens.menu;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import main.system.graphics.FontMaster.FONT;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,11 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
         super();
         instance = this;
         this.handler = new MainMenuHandler(this);
+    }
+
+    @Override
+    protected String getBgPath() {
+        return null;
     }
 
     public static MainMenu getInstance() {
@@ -46,6 +52,19 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
     @Override
     protected boolean isHidden(MAIN_MENU_ITEM item) {
+        if (CoreEngine.isIggDemo()){
+            switch (item) {
+
+                case DEMO:
+                case CONTINUE:
+                case EXIT:
+                case MANUAL:
+                case CREDITS:
+                case OPTIONS:
+                   return false;
+            }
+            return true;
+        }
         return item.secondary;
     }
 
@@ -77,15 +96,18 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
+        DEMO(true),
+        CONTINUE(true),
         NEXT_SCENARIO(true),
         RANDOM_SCENARIO(false),
         SELECT_SCENARIO(false),
         STANDOFF(true),
         SKIRMISH(true),
-        PLAY(SELECT_SCENARIO, RANDOM_SCENARIO),//NEXT_SCENARIO, ),
+        PLAY( SELECT_SCENARIO, RANDOM_SCENARIO),//NEXT_SCENARIO, ),
         MAP_PREVIEW(),
         LOAD(true),
-        OPTIONS,//(GAMEPLAY, AUDIO, ),
+        OPTIONS,
+        CREDITS(true),
         MANUAL(false),
         ABOUT(true),
         EXIT;

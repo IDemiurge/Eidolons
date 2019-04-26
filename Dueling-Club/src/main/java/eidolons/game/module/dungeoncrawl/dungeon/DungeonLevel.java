@@ -52,6 +52,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private LevelStats stats;
     private DUNGEON_STYLE mainStyle;
     private boolean surface;
+    private String entranceData;
 
     public DungeonLevel(LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         //        this.tileMap = TileMapper.createTileMap(model);
@@ -79,6 +80,15 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return toXml();
     }
 
+    public String getObjDataXml() {
+        String xml = "";
+        for (ObjAtCoordinate obj : objects) {
+            xml += obj.getCoordinates() + "=" + obj.getType().getName()+";";
+        }
+//objects.stream().map(d-> d.getCoordinates() + "=" +d.getType().getName()).
+        xml+= XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE,xml);
+        return xml;
+    }
     @Override
     public String toXml() {
         //TODO save original model map!
@@ -104,17 +114,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         xml += "\n" + XML_Converter.wrap(RngXmlMaster.ENTRANCE_NODE,
          ContainerUtils.constructStringContainer(entrances));
 
-        String aiData = "";
-        for (LevelBlock block : getBlocks()) {
-            for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
-                aiData += block.getUnitGroups().get(list) + "=" +
-                 ContainerUtils.toStringContainer(list, ";") +
-                 "\n";
-            }
-
-        }
-        xml += "\n" + XML_Converter.wrap(RngXmlMaster.AI_GROUPS_NODE,
-         aiData);
+       xml+=getAiData( );
 
         //        List<Coordinates> exits =
         //         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
@@ -144,6 +144,19 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
         xml = XML_Converter.wrap("Level", xml);
         return xml;
+    }
+
+    private String getAiData() {
+        String aiData = "";
+        for (LevelBlock block : getBlocks()) {
+            for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
+                aiData += block.getUnitGroups().get(list) + RngXmlMaster.AI_GROUP_SEPARATOR +
+                        ContainerUtils.toStringContainer(list, ";") +
+                        "\n";
+            }
+        }
+        return  "\n" + XML_Converter.wrap(RngXmlMaster.AI_GROUPS_NODE,
+                aiData);
     }
 
     @Override
@@ -389,7 +402,15 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return CELL_IMAGE.tiles;
     }
 
-        public enum CELL_IMAGE{
+    public String getEntranceData() {
+        return entranceData;
+    }
+
+    public void setEntranceData(String entranceData) {
+        this.entranceData = entranceData;
+    }
+
+    public enum CELL_IMAGE{
             tiles,
             diamond,
         circle("cr"),

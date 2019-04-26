@@ -30,13 +30,13 @@ import java.util.Map;
 
 public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String BLOCK_TYPE_NODE = "Block Type";
-    public static final String BLOCKS_NODE = "Blocks";
+    public static final String BLOCKS_NODE = StringMaster.getWellFormattedString(RngXmlMaster.BLOCKS_NODE);
     public static final String ROOM_TYPE_NODE = "Room Type";
-    public static final String COORDINATES_NODE = RngXmlMaster.COORDINATES_NODE;
-    public static final String OBJ_NODE = "Objects";
-    public static final String ENTRANCE_NODE = RngXmlMaster.ENTRANCE_NODE;
+    public static final String COORDINATES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.COORDINATES_NODE);
+    public static final String OBJ_NODE = StringMaster.getWellFormattedString(RngXmlMaster.OBJECTS_NODE);
+    public static final String ENTRANCE_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ENTRANCE_NODE);
     public static final String EXIT_NODE = "Exits";
-    public static final String ZONES_NODE = RngXmlMaster.ZONES_NODE;
+    public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
     public static final String AI_GROUPS_NODE = StringMaster
      .getWellFormattedString("ai groups node");
     @Refactor
