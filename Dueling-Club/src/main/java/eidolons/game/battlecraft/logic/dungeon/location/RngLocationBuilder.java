@@ -20,7 +20,6 @@ import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
@@ -220,9 +219,8 @@ public class RngLocationBuilder extends LocationBuilder {
 
         if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.OBJECTS_NODE)) {
             initObjData(n, level);
-        } else
-        if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.AI_GROUPS_NODE)) {
-            initAiData(n, level);
+        } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.AI_GROUPS_NODE)) {
+            initAiData(n.getTextContent(), level);
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.LEVEL_DATA_NODE)) {
             initData(n, level);
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.BOUND_NODE)) {
@@ -267,26 +265,36 @@ public class RngLocationBuilder extends LocationBuilder {
         }
     }
 
-    private static void initAiData(Node n, DungeonLevel level) {
-
-        for (String line : StringMaster.splitLines(n.getTextContent())) {
+    public static Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> initAiData(String data, DungeonLevel level) {
+        Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> map = null;
+        for (String line : StringMaster.splitLines(data)) {
             String[] parts = line.split(RngXmlMaster.AI_GROUP_SEPARATOR);
             UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.valueOf(
                     parts[0].toUpperCase());
-            List<ObjAtCoordinate> group =
-                    Arrays.stream(parts[1].split(";")).map(s -> new ObjAtCoordinate(s.split("=")[0],
-                            s.split("=")[1],
-                            DC_TYPE.UNITS)).collect(Collectors.toList());
+            List<ObjAtCoordinate> group = createObjGroup(parts[1]);
 
-            for (ObjAtCoordinate obj : group) {
-                LevelBlock block = level.getBlockForCoordinate(obj.getCoordinates());
-                if (block == null)
-                    continue;
-                block.getUnitGroups().put(group, type);
-                break;
-            }
+            if (level == null) {
+                if (map == null) {
+                    map = new HashMap<>();
+                }
+            } else
+                for (ObjAtCoordinate obj : group) {
+                    LevelBlock block = level.getBlockForCoordinate(obj.getCoordinates());
+                    if (block == null)
+                        continue;
+                    map = block.getUnitGroups();
+                    break;
+                }
+            map.put(group, type);
 
         }
+        return map;
+    }
+
+    public static List<ObjAtCoordinate> createObjGroup(String data) {
+        return Arrays.stream(data.split(";")).map(s -> new ObjAtCoordinate(s.split("=")[0],
+                s.split("=")[1],
+                DC_TYPE.UNITS)).collect(Collectors.toList());
     }
 
     private static void initBound(Node n, DungeonLevel level) {

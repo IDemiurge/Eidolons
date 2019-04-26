@@ -282,7 +282,7 @@ public class XML_Converter {
         return xml;
     }
 
-    private static String layerDown(String xml) {
+    public static String layerDown(String xml) {
         int endIndex = xml.indexOf('>');
         int beginIndex = xml.indexOf('<');
         String substring = xml.substring(beginIndex + 1, endIndex);
