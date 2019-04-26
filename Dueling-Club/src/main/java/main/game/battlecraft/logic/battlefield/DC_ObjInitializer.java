@@ -205,6 +205,10 @@ public class DC_ObjInitializer {
 
                 }
                 ObjType type = DataManager.getType(typeName, getTYPE());
+                if (type == null) {
+                    main.system.auxiliary.log.LogMaster.log(1,">>>>> NO TYPE FOR " +typeName);
+                    continue;
+                }
                 if (level != 0) {
                     type = new UnitLevelManager().getLeveledType(type, level);
                 }
