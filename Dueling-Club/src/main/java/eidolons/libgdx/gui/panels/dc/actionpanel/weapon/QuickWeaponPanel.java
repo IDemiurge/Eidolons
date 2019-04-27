@@ -44,15 +44,15 @@ public class QuickWeaponPanel extends TablePanelX {
     public QuickWeaponPanel(boolean offhand) {
         this.offhand = offhand;
         addActor(
-         background = new ImageContainer(
-          StrPathBuilder.build(PathFinder.getComponentsPath(),
-           "dc", "quick weapon", "weapon background.png")));
+                background = new ImageContainer(
+                        StrPathBuilder.build(PathFinder.getComponentsPath(),
+                                "dc", "quick weapon", "weapon background.png")));
         addActor(weapon = new FadeImageContainer());
         String suffix = offhand ? " offhand" : "";
         addActor(border = new ImageContainer(
-         StrPathBuilder.build(PathFinder.getComponentsPath(),
-          "dc", "quick weapon", "border" +
-           suffix + ".png")));
+                StrPathBuilder.build(PathFinder.getComponentsPath(),
+                        "dc", "quick weapon", "border" +
+                                suffix + ".png")));
         addActor(radial = createRadial(offhand));
         //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
         addListener(getListener());
@@ -70,8 +70,8 @@ public class QuickWeaponPanel extends TablePanelX {
             toggleUnarmed.setPosition(0, background.getHeight() - toggleUnarmed.getHeight() / 2);
         else
             toggleUnarmed.setPosition(
-             background.getWidth() - toggleUnarmed.getWidth() / 2,
-             background.getHeight() - toggleUnarmed.getHeight() / 2);
+                    background.getWidth() - toggleUnarmed.getWidth() / 2,
+                    background.getHeight() - toggleUnarmed.getHeight() / 2);
 
     }
 
@@ -107,7 +107,7 @@ public class QuickWeaponPanel extends TablePanelX {
     public void updateAct(float delta) {
 
         Pair<WeaponDataSource, WeaponDataSource> pair =
-         (Pair<WeaponDataSource, WeaponDataSource>) getUserObject();
+                (Pair<WeaponDataSource, WeaponDataSource>) getUserObject();
 
         setDataSource(pair.getKey(), false);
         setDataSource(pair.getValue(), true);
@@ -116,9 +116,9 @@ public class QuickWeaponPanel extends TablePanelX {
         if (dataSourceAlt != null) {
             toggleUnarmed.addListener(new Clicker(() -> toggleUnarmed()));
             toggleUnarmed.addListener(
-             new ScaleAndTextTooltip(toggleUnarmed, () -> (unarmed
-              ? dataSource.getName() : dataSourceAlt.getName()))
-              .getController());
+                    new ScaleAndTextTooltip(toggleUnarmed, () -> (unarmed
+                            ? dataSource.getName() : dataSourceAlt.getName()))
+                            .getController());
             toggleUnarmed.setDisabled(false);
         } else {
             toggleUnarmed.setDisabled(true);
@@ -145,7 +145,7 @@ public class QuickWeaponPanel extends TablePanelX {
 
     protected void initWeapon(WeaponDataSource dataSource) {
         weapon.setImage(
-         dataSource.getNormalImage());
+                dataSource.getNormalImage());
     }
 
 
@@ -170,8 +170,8 @@ public class QuickWeaponPanel extends TablePanelX {
                 if (button == 1) {
                     GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
                     GuiEventManager.trigger(
-                     GuiEventType.CREATE_RADIAL_MENU,
-                     dataSource.getWeapon());
+                            GuiEventType.CREATE_RADIAL_MENU,
+                            dataSource.getWeapon());
 
                 } else {
                     if (radial.isVisible())
@@ -181,23 +181,27 @@ public class QuickWeaponPanel extends TablePanelX {
                                 return false;
                     //                    }
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
+                    if (attack != null && attack.isAttackGeneric()) {
+                        main.system.auxiliary.log.LogMaster.log(1, "GENERIC ATK WAS CHOSEN!");
+                        attack = null;
+                    }
                     if (attack == null) {
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                         "Cannot attack with this!",
-                         attack.getOwnerUnit());
+                                "Cannot attack with this!",
+                                getDataSource().getOwnerObj());
                         return false;
                     }
                     if (attack.getValidSubactions().isEmpty()) {
 
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                         "Cannot make any attack with this!",
-                         attack.getOwnerUnit());
+                                "Cannot make any attack with this!",
+                                attack.getOwnerUnit());
                         return false;
                     }
                     attack.setAutoSelectionOn(true);
                     getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(
-                     new ActionInput(attack
-                      , new Context(getDataSource().getOwnerObj(), null))
+                            new ActionInput(attack
+                                    , new Context(getDataSource().getOwnerObj(), null))
                     );
                 }
                 return false;

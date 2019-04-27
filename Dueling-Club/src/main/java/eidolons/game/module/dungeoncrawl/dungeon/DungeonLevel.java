@@ -81,13 +81,18 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public String getObjDataXml() {
+        for (LevelBlock block : getBlocks()) {
+            units.addAll(block.getUnits());
+        }
         String xml = "";
+        for (ObjAtCoordinate obj : units) {
+            xml += obj.getCoordinates() + "=" + obj.getType().getName()+";";
+        }
         for (ObjAtCoordinate obj : objects) {
             xml += obj.getCoordinates() + "=" + obj.getType().getName()+";";
         }
 //objects.stream().map(d-> d.getCoordinates() + "=" +d.getType().getName()).
-        xml+= XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE,xml);
-        return xml;
+       return XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE,xml);
     }
     @Override
     public String toXml() {
@@ -146,7 +151,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return xml;
     }
 
-    private String getAiData() {
+    public String getAiData() {
         String aiData = "";
         for (LevelBlock block : getBlocks()) {
             for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {

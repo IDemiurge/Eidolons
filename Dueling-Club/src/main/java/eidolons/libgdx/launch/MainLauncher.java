@@ -28,6 +28,7 @@ public class MainLauncher extends GenericLauncher {
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
         CoreEngine.setSafeMode(true);
+        CoreEngine.setIggDemo(true);
         if (args.length > 0) {
             args = args[0].split(";");
         }

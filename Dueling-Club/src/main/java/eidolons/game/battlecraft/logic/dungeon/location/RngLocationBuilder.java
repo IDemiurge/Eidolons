@@ -271,6 +271,9 @@ public class RngLocationBuilder extends LocationBuilder {
             String[] parts = line.split(RngXmlMaster.AI_GROUP_SEPARATOR);
             UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.valueOf(
                     parts[0].toUpperCase());
+            if (parts.length<2){
+                continue;
+            }
             List<ObjAtCoordinate> group = createObjGroup(parts[1]);
 
             if (level == null) {
@@ -292,8 +295,7 @@ public class RngLocationBuilder extends LocationBuilder {
     }
 
     public static List<ObjAtCoordinate> createObjGroup(String data) {
-        return Arrays.stream(data.split(";")).map(s -> new ObjAtCoordinate(s.split("=")[0],
-                s.split("=")[1],
+        return Arrays.stream(data.split(";")).map(s -> new ObjAtCoordinate(s,
                 DC_TYPE.UNITS)).collect(Collectors.toList());
     }
 

@@ -72,6 +72,7 @@ public class CoreEngine {
     private static boolean mapPreview;
     private static boolean safeMode;
     private static boolean iggDemo;
+    private static boolean iggDemoRunning;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -350,7 +351,7 @@ public class CoreEngine {
     }
 
     public static boolean isCombatGame() {
-        return !isArcaneTower() && !isArcaneVault() && !isLevelEditor();
+        return !isArcaneTower() && !isArcaneVault() && !isLevelEditor() &&!isjUnit();
     }
 
     public static boolean isIDE() {
@@ -515,5 +516,13 @@ public class CoreEngine {
 
     public static void setIggDemo(boolean iggDemo) {
         CoreEngine.iggDemo = iggDemo;
+    }
+
+    public static void setIggDemoRunning(boolean iggDemoRunning) {
+        CoreEngine.iggDemoRunning = iggDemoRunning;
+    }
+
+    public static boolean getIggDemoRunning() {
+        return iggDemoRunning;
     }
 }

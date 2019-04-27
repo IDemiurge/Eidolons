@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.menu.selection.scenario;
 
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
@@ -52,7 +52,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
     }
 
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new ScenarioInfoPanel(null);
     }
 

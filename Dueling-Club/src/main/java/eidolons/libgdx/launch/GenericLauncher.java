@@ -8,6 +8,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.story.IggIntroScreen;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreen;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
@@ -246,14 +248,14 @@ public class GenericLauncher extends Game {
             this.gameScreen = (GameScreen) screen;
     }
 
-    protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
+    protected void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
         GdxMaster.setLoadingCursor();
         main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
         Eidolons.screenSet(meta.getType());
         final Screen oldScreen = getScreen();
 
 //        oldScreen.getPostProcessing().end();
-        final ScreenWithVideoLoader newScreen = factory.get();
+        final ScreenWithLoader newScreen = factory.get();
         newScreen.getPostProcessing().setup();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
@@ -301,11 +303,11 @@ public class GenericLauncher extends Game {
             case MAIN_MENU:
                 initRunning=false;
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(SCREEN_TYPE.MAIN_MENU, null));
+                 new ScreenData(SCREEN_TYPE.MAIN_MENU ));
                 break;
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(data.getType(), null));
+                 new ScreenData(data.getType( ) ));
         }
     }
 
@@ -339,6 +341,12 @@ public class GenericLauncher extends Game {
                     switchScreen(DungeonScreen::new, newMeta);
                     Eidolons.setScope(SCOPE.BATTLE);
                     break;
+                case BRIEFING:
+                    switchScreen(() -> new IggBriefScreen(), newMeta);
+                    break;
+                case CINEMATIC:
+                    switchScreen(() -> new IggIntroScreen(), newMeta);
+                    break;
                 case MAP:
                     Eidolons.setScope(SCOPE.MAP);
                     switchScreen(() -> MapScreen.getInstance(), newMeta);
@@ -366,7 +374,7 @@ public class GenericLauncher extends Game {
         if (getScreen() == null)
             return;
         else {
-            ((ScreenWithVideoLoader) getScreen()).loadDone(param);
+            ((ScreenWithLoader) getScreen()).loadDone(param);
         }
     }
 }

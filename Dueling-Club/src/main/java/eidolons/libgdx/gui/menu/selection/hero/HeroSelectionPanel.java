@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.menu.selection.hero;
 
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import main.entity.Entity;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -44,7 +44,7 @@ public class HeroSelectionPanel extends SelectionPanel {
     }
 
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new HeroInfoPanel(null);
     }
 

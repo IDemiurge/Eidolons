@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.igg.story;
+package eidolons.game.battlecraft.logic.meta.igg.story.brief;
 
 public class IGG_BriefMaster {
     /**

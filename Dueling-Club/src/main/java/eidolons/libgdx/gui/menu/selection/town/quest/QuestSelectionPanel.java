@@ -1,9 +1,9 @@
 package eidolons.libgdx.gui.menu.selection.town.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.town.PlaceSelectionPanel;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -67,7 +67,7 @@ public class QuestSelectionPanel extends PlaceSelectionPanel {
     }
 
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new QuestInfoPanel(null);
     }
 

@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.menu.selection.difficulty;
 
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -35,7 +35,7 @@ public class DifficultySelectionPanel extends SelectionPanel {
         return false;
     }
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new DifficultyInfoPanel(getItemFromDiff(getDefaultDifficulty()));
     }
     protected String getTitle() {

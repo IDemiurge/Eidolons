@@ -3,6 +3,7 @@ package eidolons.libgdx.screens;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import main.system.EventCallbackParam;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -20,6 +21,16 @@ public class ScreenData {
         this.dialogViews = new ArrayList<>();
     }
 
+    public ScreenData(SCREEN_TYPE type, EventCallbackParam param) {
+        this.type = type;
+        this.param = param;
+    }
+
+    public ScreenData(SCREEN_TYPE type, Object data) {
+        this.type = type;
+        this.param = new EventCallbackParam(data);
+    }
+
     public ScreenData(SCREEN_TYPE type, String name, Supplier<List<DialogueView>> factory) {
         this.type = type;
         this.name = name;
@@ -28,6 +39,10 @@ public class ScreenData {
 
     public ScreenData(ScreenData screenData, Supplier<List<DialogueView>> factory) {
         this(screenData.type, screenData.name, factory);
+    }
+
+    public ScreenData(SCREEN_TYPE type) {
+        this.type = type;
     }
 
     public List<DialogueView> getDialogViews() {

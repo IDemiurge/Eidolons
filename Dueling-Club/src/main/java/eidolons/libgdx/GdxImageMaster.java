@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
@@ -108,6 +109,24 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
 
+    public  static Pixmap getPixMapFromRegion(TextureRegion region){
+        Texture texture = region.getTexture();
+        TextureData data = texture.getTextureData();
+        if (!data.isPrepared()) {
+            data.prepare();
+        }
+        Pixmap pixmap = data.consumePixmap();
+        int width = region.getRegionWidth();
+        int height = region.getRegionHeight();
+        Pixmap px = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int colorInt = pixmap.getPixel(region.getRegionX() + x, region.getRegionY() + y);
+                px.drawPixel(x, y, colorInt);
+            }
+        }
+        return px;
+    }
     public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
         final int width = src.getWidth();
         final int height = src.getHeight();
@@ -179,6 +198,9 @@ public class GdxImageMaster extends LwjglApplication {
         PixmapIO.writePNG(handle, getPixmap(texture));
     }
 
+    public static void writeImage(FileHandle handle, TextureRegion region) {
+        PixmapIO.writePNG(handle, getPixMapFromRegion(region));
+    }
     public static TextureRegion round(String path, boolean write) {
         if (!GdxMaster.isLwjglThread())
             return null;

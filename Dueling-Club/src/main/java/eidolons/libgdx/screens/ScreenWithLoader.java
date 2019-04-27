@@ -13,8 +13,6 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
-import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
@@ -25,29 +23,23 @@ import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.Chronos;
-import main.system.graphics.FontMaster.FONT;
+import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 
-/**
- * Created by JustMe on 11/28/2017.
- */
-public abstract class ScreenWithLoader extends ScreenAdapterX {
+public abstract class ScreenWithLoader extends ScreenAdapter {
     public static final String ASSET_LOADING = "ASSET LOADING";
-    protected LoadingStage loadingStage;
-    protected boolean loading = true;
+    protected CustomSpriteBatch batch;
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
     protected EventCallbackParam param;
-    protected UiStage overlayStage;
-    protected SelectionPanel selectionPanel;
-    protected ManualPanel manualPanel;
     protected PostProcessController postProcessing;
     private float tooltipTimer = getTooltipPeriod();
     private boolean loadingAtlases;
     private int assetLoadTimer = getAssetLoadTimeLimit();
 
-    protected CustomSpriteBatch batch;
+    protected LoadingStage loadingStage;
+    protected boolean loading = true;
     protected boolean loaded;
     protected boolean waitingForInput;
     protected float timeWaited;
@@ -59,13 +51,12 @@ public abstract class ScreenWithLoader extends ScreenAdapterX {
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
-                StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));
+                StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22));
         waitingLabel.pack();
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
                 getWaitY());
-        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
+        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
-        overlayStage = new UiStage();
 
         if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
                 PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
@@ -83,9 +74,6 @@ public abstract class ScreenWithLoader extends ScreenAdapterX {
         return postProcessing;
     }
 
-    public UiStage getOverlayStage() {
-        return overlayStage;
-    }
 
     private float getWaitY() {
         return GdxMaster.getHeight() / 20 + 35;
@@ -205,12 +193,8 @@ public abstract class ScreenWithLoader extends ScreenAdapterX {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        overlayStage.getRoot().setSize(width, height);
-        overlayStage.getViewport().update(width, height);
         loadingStage.getRoot().setSize(width, height);
         loadingStage.getViewport().update(width, height);
-
-
     }
 
     @Override
@@ -324,8 +308,6 @@ public abstract class ScreenWithLoader extends ScreenAdapterX {
     protected void renderLoaderAndOverlays(float delta) {
         loadingStage.act(delta);
         loadingStage.draw();
-        overlayStage.act(delta);
-        overlayStage.draw();
     }
 
     protected void renderMain(float delta) {
@@ -411,4 +393,5 @@ public abstract class ScreenWithLoader extends ScreenAdapterX {
     public PostProcessController getPostProcessing() {
         return postProcessing;
     }
+
 }

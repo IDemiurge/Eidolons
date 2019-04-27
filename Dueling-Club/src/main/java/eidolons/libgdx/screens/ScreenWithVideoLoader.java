@@ -33,7 +33,7 @@ import java.util.List;
 
 import static main.system.GuiEventType.*;
 
-public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
+public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
     private static final Object QUEST_PANEL_ARG = 2;
     private static Boolean videoEnabled;
