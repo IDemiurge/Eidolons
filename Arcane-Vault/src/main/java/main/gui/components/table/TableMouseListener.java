@@ -163,6 +163,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     public static final String[] MULTI_TYPE_LIST_IDS = {
 
+            PROPS.PERKS.getName(),
      MACRO_PROPS.FACTIONS.getName(),
      PROPS.HERO_BACKGROUNDS.getName(),
      PROPS.HEADQUARTER_DUNGEON.getName(), PROPS.FACTION_DUNGEONS.getName(),
@@ -184,6 +185,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     };
     public static final OBJ_TYPE[] MULTI_TYPE_LIST = {
+            DC_TYPE.PERKS,
      MACRO_OBJ_TYPES.FACTIONS,
      DC_TYPE.CHARS, DC_TYPE.DUNGEONS,
      DC_TYPE.DUNGEONS, MACRO_OBJ_TYPES.FACTIONS, DC_TYPE.UNITS,

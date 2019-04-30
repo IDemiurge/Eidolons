@@ -17,7 +17,9 @@ import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.config.ConfigMaster;
+import eidolons.system.text.DC_LogManager;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -445,7 +447,12 @@ public class DC_StateManager extends StateManager {
     public void newRound() {
         //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
-        game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<"
+
+        getGame().getLogManager().addImageToLog(Images.SEPARATOR_ALT);
+
+                game.getLogManager().log(
+                        DC_LogManager.ALIGN_CENTER +
+                        "                           [Round #" + (state.getRound() + 1) + "]"
         );
         newTurnTick();
         Ref ref = new Ref(getGame());

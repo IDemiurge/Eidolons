@@ -30,6 +30,11 @@ public class PerkSlot extends HtNode {
         super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY, slot);
     }
 
+    @Override
+    protected void init() {
+        super.init();
+//        setSize(getDefaultWidth(), getDefaultHeight());
+    }
 
     @Override
     public void setUserObject(Object userObject) {

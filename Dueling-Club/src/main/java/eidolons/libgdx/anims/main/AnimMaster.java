@@ -141,10 +141,10 @@ public class AnimMaster extends Group {
             }
             drawer.interrupt();
         });
-        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
+//        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
             //            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) portrait.get());
 
-        });
+//        });
 
         GuiEventManager.bind(GuiEventType.PARRY, p -> {
             List args = (List) p.get();

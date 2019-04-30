@@ -163,11 +163,17 @@ public class ShadeLightCell extends SuperContainer {
     public void draw(Batch batch, float parentAlpha) {
         if (isIgnored())
             return;
+        if (getBaseAlpha() < getMinAlpha())
+            return;
         //        if (isBlendingOn())
         //        storeBlendingFuncData(batch);
         //        initBlending(batch);
         super.draw(batch, parentAlpha);
         //        restoreBlendingFuncData(batch);
+    }
+
+    private float getMinAlpha() {
+        return 0.05f;
     }
 
     @Override

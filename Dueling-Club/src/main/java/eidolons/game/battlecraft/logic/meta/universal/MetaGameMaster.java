@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.universal;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.GameEventHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -52,6 +53,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DefeatHandler defeatHandler;
     protected LootMaster<E> lootMaster;
 
+    protected GameEventHandler  eventHandler;
 
     public MetaGameMaster(String data) {
         this.data = data;
@@ -79,6 +81,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaInitializer<E> createMetaInitializer();
 
     public void initHandlers() {
+        eventHandler = new GameEventHandler(this);
         defeatHandler = createDefeatHandler();
         partyManager = createPartyManager();
         lootMaster = createLootMaster();
@@ -133,7 +136,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     }
 
-    private boolean isTownEnabled() {
+    protected boolean isTownEnabled() {
         if (CoreEngine.isFullFastMode()) {
             return false;
         }
@@ -145,7 +148,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return true;
     }
 
-    private boolean isQuestsEnabled() {
+    public boolean isQuestsEnabled() {
         if (CoreEngine.isFullFastMode()) {
             return false;
         }
@@ -254,7 +257,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         ObjType type = DataManager.getType(getData(), DC_TYPE.SCENARIOS);
         if (type != null) {
             return
-             type.getGroup().equalsIgnoreCase("Random");
+             type.getGroup().equalsIgnoreCase("Random") ||
+             type.getGroup().equalsIgnoreCase("Demo") //TODO only for certain index?
+                    ;
         }
         //        getMetaGame().isRestarted()
         return false;
@@ -304,5 +309,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public TownMaster getTownMaster() {
         return townMaster;
+    }
+
+    public GameEventHandler getEventHandler() {
+        return eventHandler;
     }
 }

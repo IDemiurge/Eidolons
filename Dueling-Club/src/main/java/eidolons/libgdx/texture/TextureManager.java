@@ -159,7 +159,7 @@ public class TextureManager {
          getXY(origPath).getValue();
     }
 
-    public static float getFrameNumber(String path) {
+    public static int getFrameNumber(String path) {
         return getRows(path) * getColumns(path);
     }
 

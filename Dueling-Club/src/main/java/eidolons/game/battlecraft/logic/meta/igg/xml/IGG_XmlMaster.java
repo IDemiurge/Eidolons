@@ -5,19 +5,29 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.RngLocationBuilder;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
+import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
+import main.content.enums.entity.UnitEnums;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
+import main.system.SortMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -31,32 +41,81 @@ import java.util.Map;
  */
 public class IGG_XmlMaster {
 
+    public static final String FOLDER = "to gen";
+    private final UnitEnums.UNIT_GROUP presetUnitGroup=null ;
+    private final UnitEnums.UNIT_GROUP[] groups={
+            UnitEnums.UNIT_GROUP.DWARVES,
+            UnitEnums.UNIT_GROUP.HUMANS_BANDITS,
+            UnitEnums.UNIT_GROUP.CRITTERS_SPIDERS
+    };
+    public static final  DungeonEnums.DUNGEON_STYLE presetStyle= DungeonEnums.DUNGEON_STYLE.Grimy;
+    private String folder;
+    private String name;
+    private int powerLevel = 500;
+    private DungeonEnums.LOCATION_TYPE dungeonType;
+
+    public IGG_XmlMaster(String folder, String name) {
+        this.folder = folder;
+        this.name = name;
+        if (!folder.isEmpty()) {
+        setDungeonType(DungeonEnums.LOCATION_TYPE.valueOf(folder.toUpperCase()));
+        }
+        RngMainSpawner.setPresetUnitGroup(presetUnitGroup);
+        RngMainSpawner.setGroupFilter(Arrays.asList(groups));
+    }
+
+    public static final boolean MERGE = true;
+
+    public static void main(String[] args) {
+        CoreEngine.setToolIsRunning(true);
+        CoreEngine.systemInit();
+        DC_Engine.dataInit();
+        if (MERGE) {
+            new IGG_XmlMaster("", "Underworld.xml").mergeData();
+        } else
+        for (File subfolder : FileManager.getFilesFromDirectory(
+                PathFinder.getDungeonLevelFolder() +
+                        FOLDER, true)) {
+            for (File file : FileManager.getFilesFromDirectory(subfolder.getPath(), false)) {
+                IGG_XmlMaster master = new IGG_XmlMaster(subfolder.getName(), file.getName());
+                master.testLevelFill();
+//                master.mergeData();
+            }
+        }
+    }
+
     private String getMetaPath() {
-        return PathFinder.getDungeonLevelFolder() + "/meta/" + getLevelName() + ".xml";
+        if (MERGE)
+            return PathFinder.getDungeonLevelFolder()   +
+                    "/meta/dungeon boss - 7.xml"  ;
+        return PathFinder.getDungeonLevelFolder() + "/meta/" + getLevelName();
     }
 
     private String getRawPath() {
-        return PathFinder.getDungeonLevelFolder() + "/" + getLevelName() + ".xml";
+        return PathFinder.getDungeonLevelFolder() + "/" + getLevelName();
     }
+
     private String getLE_Path() {
-        return PathFinder.getDungeonLevelFolder() + "/crawl/" +
-                getLevelName() + ".xml";
+        return PathFinder.getDungeonLevelFolder() + "/crawl/Shadow Keep.xml";
     }
 
     private String getLevelName() {
-        return "Underdark";
+        return name;
     }
 
     private String getRngPath() {
-        return PathFinder.getRandomLevelPath() + "/castle/CASTLE BOSS - 1.xml";
+        if (MERGE)
+            return PathFinder.getRandomLevelPath()   +
+                   "/dungeon/dungeon boss - 7.xml"  ;
+        return PathFinder.getDungeonLevelFolder() + "/" + FOLDER + "/" +
+                folder + "/" + name;
     }
 
     private String getMergedPath() {
-        return PathFinder.getRandomLevelPath() + "/merged/" + getLevelName();
+        return PathFinder.getDungeonLevelFolder()+ getLevelName();
     }
 
 
-    @Before
     public void testLevelFill() {
         CoreEngine.systemInit();
         DC_Engine.dataInit();
@@ -67,7 +126,6 @@ public class IGG_XmlMaster {
 
     }
 
-    @Test
     public void mergeData() {
         String le_data = FileManager.readFile(getRawPath());
         String rng = FileManager.readFile(getRngPath());
@@ -81,14 +139,14 @@ public class IGG_XmlMaster {
          */
 
         String objNode = XML_Converter.findNode(le_data, RngXmlMaster.OBJECTS_NODE).getTextContent();
-        List<ObjAtCoordinate> objects =validateObjects(objNode);
-        if (objects==null) {
+        List<ObjAtCoordinate> objects = validateObjects(objNode);
+        if (objects == null) {
             return;
         }
         String aiNode = XML_Converter.findNode(metaData, RngXmlMaster.AI_GROUPS_NODE).getTextContent();
 
         Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> groups = RngLocationBuilder.initAiData(aiNode, null);
-    //TODO remove if missing!
+        //TODO remove if missing!
         for (ObjAtCoordinate object : objects) {
             if (object.getType().getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                 //void? we could indeed use those void objects in a custom way!
@@ -107,18 +165,27 @@ public class IGG_XmlMaster {
             }
 
         }
-//        rng = updateVoid(objects)
+//        rng = updateVoid(objects);
 
-        objNode=XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, objNode, false);
-        aiNode=XML_Converter.wrap(RngXmlMaster.AI_GROUPS_NODE, aiNode, false);
+        objNode = XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, objNode, false);
+        aiNode = XML_Converter.wrap(RngXmlMaster.AI_GROUPS_NODE, aiNode, false);
 
+        rng = rng.replaceFirst("<AI_GROUPS></AI_GROUPS>", "");
         rng = XML_Converter.unwrap(rng);
         rng += objNode;
         rng += aiNode;
         rng = XML_Converter.wrap("Level", rng, false);
-
         FileManager.write(rng, getMergedPath());
 
+    }
+
+    private String updateVoid(DungeonLevel level, String xml, List<ObjAtCoordinate> objects) {
+//        level.getBlocks().stream().sorted(new SortMaster< LevelBlock>()
+//                .getSorterByExpression_(b-> b.getCenterCoordinate()))
+
+//obj
+
+        return xml;
     }
 
 
@@ -127,9 +194,19 @@ public class IGG_XmlMaster {
      *              TODO anti-void
      */
     public void initAndWriteLevel(DungeonLevel level) {
+        for (LevelZone zone : level.getZones()) {
+            GeneratorEnums.ZONE_TYPE type = GeneratorEnums.ZONE_TYPE.MAIN_AREA;
+            zone.setStyle(
+                    presetStyle!=null ? presetStyle :
+//                    ZoneCreator.getStyle(type, getDungeonType())
+                    TileConverter.getStyle(getDungeonType(), false)
+            );
+        }
         new RngLevelInitializer().init(level);
         level.setPowerLevel(getPowerLevel());
         new RngMainSpawner().spawn(level);
+
+
         String xml = level.getObjDataXml();
         xml = xml.replace(";", ",");
 
@@ -160,14 +237,14 @@ public class IGG_XmlMaster {
         String zoneNode = copy_xml.substring(from, to) + XML_Converter.closeXml(LocationBuilder.ZONES_NODE);
         copy_xml = copy_xml.replaceFirst(zoneNode, xml);
         FileManager.write(copy_xml, getRawPath());
-        String meta= level.getAiData();
+        String meta = level.getAiData();
         FileManager.write(meta, getMetaPath());
 
 
     }
 
     private int getPowerLevel() {
-        return 900;
+        return powerLevel;
     }
 
     private List<ObjAtCoordinate> validateObjects(String objNode) {
@@ -184,4 +261,11 @@ public class IGG_XmlMaster {
     }
 
 
+    public DungeonEnums.LOCATION_TYPE getDungeonType() {
+        return dungeonType;
+    }
+
+    public void setDungeonType(DungeonEnums.LOCATION_TYPE dungeonType) {
+        this.dungeonType = dungeonType;
+    }
 }

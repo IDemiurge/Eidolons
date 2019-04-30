@@ -168,6 +168,7 @@ public class ContentGenerator {
     }
 
     public static final void afterRead() {
+        clearGenType();
         if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
             generateIndestructibleWalls();
         if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
@@ -184,6 +185,24 @@ public class ContentGenerator {
             updateImagePaths();
 
 //            writeDataToText();
+    }
+
+    private static void clearGenType() {
+        for (ObjType type :     new ArrayList<>(DataManager.getTypes(DC_TYPE.BF_OBJ))) {
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE)||
+                    type.checkBool(STD_BOOLS.FAUX)){
+                if (type.getName().contains("Indestructible Indestructible")) {
+                    DataManager.removeType( type);
+                }
+                if (type.getName().contains("Marked Indestructible")) {
+                    DataManager.removeType( type);
+                }
+                if (type.getName().contains("Marked Marked")) {
+                    DataManager.removeType( type);
+                }
+            }
+
+        }
     }
 
     private static void updateImagePaths() {
@@ -220,7 +239,8 @@ public class ContentGenerator {
     public static void generateFalseWalls() {
         for (ObjType type : DataManager.getTypesGroup(
          DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
-            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE))
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE)||
+                    type.checkBool(STD_BOOLS.FAUX))
                 continue;
             ObjType newType = new ObjType(type.getName() + WallMap.v(null), type);
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.FAUX.name());
@@ -232,6 +252,9 @@ public class ContentGenerator {
     public static void generateIndestructibleWalls() {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
 
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
+            type.checkBool(STD_BOOLS.FAUX))
+                continue;
             ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());

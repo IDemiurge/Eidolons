@@ -296,8 +296,8 @@ public class XML_Converter {
             xml = xml.replaceFirst(openXmlFormatted(substring), "");
             xml = xml.replaceFirst(closeXmlFormatted(substring), "");
         } else {
-            xml = xml.replaceFirst((substring), "");
-            xml = xml.replaceFirst((substring), "");
+            xml = xml.replaceFirst(openXml(substring), "");
+            xml = xml.replaceFirst(closeXml(substring), "");
         }
         return xml;
     }

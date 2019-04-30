@@ -105,6 +105,9 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         if (currentItem != null) {
             MenuItem[] items = currentItem.getItems();
             List<MenuItem<T>> list = new ArrayList<>();
+            if (items==null) {
+                return getDefaultItems();
+            }
             for (MenuItem sub : items)
                 list.add(sub);
             list.add(new MenuItem<T>() {

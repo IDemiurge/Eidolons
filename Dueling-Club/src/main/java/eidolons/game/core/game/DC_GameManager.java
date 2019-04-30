@@ -500,6 +500,7 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean handleEvent(Event event) {
+        getGame().getMetaMaster().getEventHandler().handle(event);
         if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }

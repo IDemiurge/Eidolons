@@ -140,7 +140,13 @@ public class TexturePackerLaunch {
         }
     }
 
-    public static Settings getDefaultSettings() {
+    public static Settings getBestSettings() {
+        Settings settings = getDefaultSettings();
+        settings.format = Format.RGBA8888;
+        settings.jpegQuality = 0.88f;
+        return settings;
+    }
+        public static Settings getDefaultSettings() {
         Settings settings = new Settings();
         settings.maxHeight = (int) Math.pow(2, 13);
         settings.maxWidth = (int) Math.pow(2, 13);
@@ -197,7 +203,7 @@ public class TexturePackerLaunch {
 
 
     public static void pack(String inputDir, String outputDir, String packFileName) {
-        Settings settings = getDefaultSettings();
+        Settings settings =DialogMaster.confirm("Best settings?")? getBestSettings(): getDefaultSettings();
         TexturePacker.process(settings, inputDir, outputDir, packFileName);
     }
 

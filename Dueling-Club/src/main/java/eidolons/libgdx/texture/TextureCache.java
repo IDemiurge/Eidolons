@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class TextureCache {
     private static final boolean atlasesOn = false;
     private static final boolean tryCompressedFormat = true;
-    private static Boolean uiAtlasesOn;
+    private static Boolean uiAtlasesOn=false;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -53,7 +53,7 @@ public class TextureCache {
 
     private TextureCache() {
         if (uiAtlasesOn == null) {
-            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE();
+//            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE() ;
         }
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();

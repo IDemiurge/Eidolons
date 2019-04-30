@@ -53,6 +53,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private DUNGEON_STYLE mainStyle;
     private boolean surface;
     private String entranceData;
+    private boolean pregen;
 
     public DungeonLevel(LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         //        this.tileMap = TileMapper.createTileMap(model);
@@ -413,6 +414,14 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public void setEntranceData(String entranceData) {
         this.entranceData = entranceData;
+    }
+
+    public boolean isPregen() {
+        return pregen;
+    }
+
+    public void setPregen(boolean pregen) {
+        this.pregen = pregen;
     }
 
     public enum CELL_IMAGE{

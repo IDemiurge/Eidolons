@@ -30,6 +30,7 @@ import java.util.Map;
 public class DC_LogManager extends LogManager {
 
 
+    public static final String ALIGN_CENTER = "<center>";
     private int logLevel=1;
 
     public DC_LogManager(Game game) {
@@ -134,6 +135,15 @@ public class DC_LogManager extends LogManager {
     protected void addTextToDisplayed(String entry) {
         super.addTextToDisplayed(entry);
         GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, entry);
+        if (isSeparatorTest())
+            GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, null );
+    }
+
+    public void addImageToLog(String path) {
+        GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, path );
+    }
+    private boolean isSeparatorTest() {
+        return true;
     }
 
     @Override

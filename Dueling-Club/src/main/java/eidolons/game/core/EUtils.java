@@ -112,6 +112,6 @@ public class EUtils {
 
     public static void switchBackScreen() {
         SCREEN_TYPE type = Eidolons.getPreviousScreenType();
-        switchScreen(new ScreenData(type, null));
+        switchScreen(new ScreenData(type));
     }
 }

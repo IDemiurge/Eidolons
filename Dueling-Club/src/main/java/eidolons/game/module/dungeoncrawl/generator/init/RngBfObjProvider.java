@@ -124,10 +124,13 @@ public class RngBfObjProvider {
                 return overlaying
                  ? new WeightMap<String>().
                  chain(TORCH, 10).
-                 chain(HANGING_BRAZIER, 10)
+                        chain(HANGING_BRAZIER, 10).
+                        chain(GLOWING_RUNES, 10).
+                        chain(GLOWING_SILVER_RUNE, 10).
+                        chain(GLOWING_ARCANE_RUNE, 10)
                  : new WeightMap<String>().
                  chain(BRAZIER, 10).
-                 chain(OFFERING_FIRE, 5).
+                        chain(OFFERING_FIRE, 5).
                  chain(FIREPIT, 1)
                  ;
 
@@ -305,6 +308,18 @@ public class RngBfObjProvider {
     private static WeightMap<String> getSpecDecorWeightMap(DUNGEON_STYLE style, boolean overlaying) {
         //usable? supposedly rare...
         switch (style) {
+            case Grimy:
+                return overlaying
+                        ? new WeightMap<String>().
+                        chain(BF_OBJ_SUB_TYPES_HANGING.GLOWING_GLYPH, 10).
+                        chain(BF_OBJ_SUB_TYPES_HANGING.RUNE_INSCRIPTION, 10)
+                        : new WeightMap<String>().
+                        chain(BF_OBJ_SUB_TYPES_STATUES.DWARF_STATUE, 10).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 6).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.RACK, 4).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.DECOMPOSING_CORPSE, 12).
+                        chain(BF_OBJ_SUB_TYPES_MAGICAL.MYSTIC_POOL, 1)
+                        ;
             case Somber:
                 return overlaying
                  ? new WeightMap<String>().
@@ -339,6 +354,24 @@ public class RngBfObjProvider {
     private static WeightMap<String> getDecorWeightMap(DUNGEON_STYLE style, boolean overlaying) {
         WeightMap<String> map = new WeightMap<>();
         switch (style) {
+
+            case Grimy:
+                return overlaying
+                        ? new WeightMap<String>().
+                        chain(BF_OBJ_SUB_TYPES_HANGING.GLOWING_GLYPH, 10).
+                        chain(BF_OBJ_SUB_TYPES_HANGING.RUNE_INSCRIPTION, 10).
+                        chain(BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE, 10).
+                        chain(BF_OBJ_SUB_TYPES_HANGING.RUNE_INSCRIPTION, 10)
+                        : new WeightMap<String>().
+                        chain(BF_OBJ_SUB_TYPES_STATUES.DWARF_STATUE, 10).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 6).
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.STALACTITE, 4).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ARMOR_STAND, 4).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 4).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.COBWEBBED_STATUE, 4).
+                        chain(MOSSY_ROCKS, 4).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.DECOMPOSING_CORPSE, 4)
+                        ;
             case Brimstone:
                 if (overlaying) {
 

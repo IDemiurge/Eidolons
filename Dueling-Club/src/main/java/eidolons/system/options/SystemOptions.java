@@ -18,6 +18,7 @@ public class SystemOptions
         LOGGING(true) ,
         LOG_TO_FILE(true),
         RESET_COSTS(false),
+        MESSAGES_OFF(false),
         CACHE,
         PRECONSTRUCT,
 

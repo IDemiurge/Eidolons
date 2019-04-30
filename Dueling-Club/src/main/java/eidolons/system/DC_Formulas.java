@@ -73,9 +73,9 @@ public class DC_Formulas {
     private static final float TOUGHNESS_STR_SQUARE_MODIFIER = 0.05f;
     private static final float TOUGHNESS_STR_SQUARE_BARRIER = 200;
     private static final int CARRYING_CAPACITY_STR_MODIFIER = 2;
-    private static final int TOUGHNESS_VIT_MODIFIER = 5;
+    private static final int TOUGHNESS_VIT_MODIFIER = 0;
     private static final float FORTITUDE_VIT_MODIFIER = 0.25f;
-    private static final float ENDURANCE_VIT_MODIFIER = 15;
+    private static final float ENDURANCE_VIT_MODIFIER = 25;
     private static final float ENDURANCE_VIT_SQUARE_MODIFIER = 0.15f;
     private static final float ENDURANCE_VIT_SQUARE_BARRIER = 400;
     private static final float STAMINA_VIT_MODIFIER = 2;
@@ -87,6 +87,7 @@ public class DC_Formulas {
     private static final float INIT_MOD_AGI_MODIFIER = 0.5f;
     private static final float ACTS_DEX_MODIFIER = 0.2f;
     private static final float DEF_DEX_MODIFIER = 2;
+//    private static final int TOUGHNESS_WIL_MODIFIER = 5;
     private static final int RES_WIL_MODIFIER = 1;
     private static final int RES_FOC_MODIFIER = 1;
     private static final float SPIRIT_WIL_MODIFIER = 0.25f;

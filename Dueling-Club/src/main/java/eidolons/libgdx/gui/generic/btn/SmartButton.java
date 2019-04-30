@@ -13,6 +13,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.controls.GlobalController;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
@@ -96,7 +97,8 @@ public class SmartButton extends TextButton implements EventListener {
         InputEvent event = (InputEvent) e;
         STD_SOUNDS sound = null;
         if (event.getType() == Type.touchUp) {
-            if (GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
+            if ( event.getPointer()==-1 //programmatic
+                    || GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
                 if (!isDisabled()) {
                     if (getSoundMap() != null)
                         sound = getSoundMap().up;
@@ -174,5 +176,10 @@ public class SmartButton extends TextButton implements EventListener {
 
     public void setDisabledRunnable(Runnable disabledRunnable) {
         this.disabledRunnable = disabledRunnable;
+    }
+
+    public SmartButton makeActive( ) {
+        GlobalController.setActiveButton(this);
+        return this;
     }
 }

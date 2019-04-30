@@ -196,6 +196,7 @@ public enum PARAMS implements PARAMETER {
     ESSENCE_REGEN("Ess. Regen", "ESSENCE_REGEN", false, 0, "units", "chars", "perks"),
     FOCUS_REGEN(null, "FOCUS_REGEN", false, 0, "units", "chars", "perks"),
     STARTING_FOCUS("Start foc", "FOCUS", false, 0, "units", "chars", "perks"),
+    FOCUS_FATIGUE("FOCUS_FATIGUE", "FOCUS_FATIGUE", true, 0, "units", "chars" ),
     BASE_DAMAGE("Base Damage", "", false, 0, "units", "chars", "perks"),
     DAMAGE("Damage", "", false, 0, "units", "chars", "perks"),
     MIN_DAMAGE("Min Damage", "", false, 0, "units", "chars", "perks"),

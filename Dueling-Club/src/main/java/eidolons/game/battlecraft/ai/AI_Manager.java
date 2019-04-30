@@ -14,6 +14,8 @@ import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -263,6 +265,7 @@ public class AI_Manager extends AiMaster {
             for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
                 GroupAI group = new GroupAI();
                 group.setType(block.getUnitGroups().get(list));
+                group.setBlock(block);
                 for (ObjAtCoordinate at : list) {
                     game.getUnitsForCoordinates(at.getCoordinates()).stream().filter(
                      u -> u.getName().equals(at.getType().getName())
@@ -280,6 +283,20 @@ public class AI_Manager extends AiMaster {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 groups.add(group);
+            }
+        }
+        if (game.getDungeonMaster().getDungeonLevel().isPregen()) {
+            for (GroupAI group : groups) {
+                Coordinates c=group.getBlock().getCenterCoordinate();
+                for (Unit member : group.getMembers()) {
+                    if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(member, c)) {
+                        // TODO tactics?
+                        c = Positioner.adjustCoordinate(member, c, FacingMaster.getRandomFacing()); // direction
+                        // preference?
+                    }
+                    member.setCoordinates(c);
+                }
+
             }
         }
         return;

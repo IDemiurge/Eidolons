@@ -45,6 +45,11 @@ public class MasteryRankSlot extends HtNode {
     }
 
     @Override
+    protected void init() {
+       setSize(getDefaultWidth(), getDefaultHeight());
+    }
+
+    @Override
     protected float getDefaultWidth() {
         return 50;
     }

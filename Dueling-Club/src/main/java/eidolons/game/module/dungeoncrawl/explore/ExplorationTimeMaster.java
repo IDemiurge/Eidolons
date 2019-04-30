@@ -44,6 +44,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private static  float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
       getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
     private static float speed=defaultSpeed;
+    private float visibilityResetPeriod=0.2f;
+    private float visibilityResetTimer= visibilityResetPeriod;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -81,10 +83,19 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //        return ai.getExplorationTimePassed();
     }
 
+    public void killVisibilityResetTimer(   ) {
+            visibilityResetTimer = 0;
+    }
+    public void resetVisibilityResetTimer(   ) {
+        if (visibilityResetTimer<0)
+            visibilityResetTimer = 1;
+    }
     public void act(float delta) {
         delta *= speed;
         time += delta;
         master.act(delta);
+        visibilityResetTimer -= delta;
+
     }
 
     public Boolean playerRests(float timeInSeconds) {
@@ -379,5 +390,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             defaultWaitTime*=100;
         }
         wait(defaultWaitTime, false);
+    }
+
+    public boolean isPeriodResetRunning() {
+        return visibilityResetTimer>=0; //visibilityResetPeriod/2;
     }
 }

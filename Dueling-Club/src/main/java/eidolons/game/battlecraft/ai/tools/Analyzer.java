@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Eidolons;
@@ -270,7 +271,10 @@ public class Analyzer extends AiHandler {
 //            }
         if (enemy_or_ally_only != null) {
             if (enemy_or_ally_only)
+            {
                 list.removeIf(e -> e.getOwner().equals(unit.getOwner()));
+                list.removeIf(e -> e.getOwner().equals(DC_Player.NEUTRAL));
+            }
             if (!enemy_or_ally_only)
                 list.removeIf(e -> !e.getOwner().equals(unit.getOwner()));
         }

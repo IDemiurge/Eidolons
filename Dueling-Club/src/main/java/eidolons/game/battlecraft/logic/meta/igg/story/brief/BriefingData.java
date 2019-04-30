@@ -12,6 +12,15 @@ public class BriefingData {
     public String[] images;
     public String[] msgs;
     public  boolean autoPlay;
+    public String backgroundSprite;
+
+    public BriefingData(String backgroundSprite,String background,   String[] images, String[] msgs, boolean autoPlay ) {
+        this.background = background;
+        this.images = images;
+        this.msgs = msgs;
+        this.autoPlay = autoPlay;
+        this.backgroundSprite = backgroundSprite;
+    }
 
     public BriefingData(String background, String[] images, String[] msgs, boolean autoPlay) {
         this.background = background;

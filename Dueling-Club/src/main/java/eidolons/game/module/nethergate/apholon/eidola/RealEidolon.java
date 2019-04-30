@@ -5,12 +5,12 @@ import main.entity.type.ObjType;
 /**
  * Created by JustMe on 12/7/2018.
  */
-public class Eidolon {
+public class RealEidolon {
 
     ObjType unitType;
 //    EIDOLON_STATE state;
 
-    public Eidolon(ObjType unitType) {
+    public RealEidolon(ObjType unitType) {
         this.unitType = unitType;
     }
 

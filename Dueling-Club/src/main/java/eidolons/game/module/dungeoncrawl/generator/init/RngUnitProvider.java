@@ -762,7 +762,7 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.DUNGEON, 10)
                   .chain(UNIT_GROUP.MUTANTS, 6)
 //                  .chain(UNIT_GROUP.PALE_ORCS, 6)
-                  .chain(UNIT_GROUP.CRITTERS, 6)
+                  .chain(UNIT_GROUP.HUMANS_BANDITS, 6)
                   .chain(UNIT_GROUP.CRITTERS_SPIDERS, 6)
                  ;
             case Pagan:
@@ -777,7 +777,7 @@ public class RngUnitProvider {
                  :
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.DWARVES, 15)
-                  .chain(UNIT_GROUP.DUNGEON, 10)
+                  .chain(UNIT_GROUP.DUNGEON, 5)
                   .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
                  //                  .chain(UNIT_GROUP.ELEMENTALS, 6)
                  //                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)

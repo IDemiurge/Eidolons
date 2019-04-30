@@ -32,7 +32,9 @@ public class MainMenuHandler {
     }
 
     public static Boolean startMicro(List<ObjType> scenarioTypes, Boolean random_preset_select) {
-        if (random_preset_select != null) {
+        if (random_preset_select == null) {
+
+        } else {
             if (random_preset_select) {
                 scenarioTypes.removeIf(type ->
                 {
@@ -78,9 +80,11 @@ public class MainMenuHandler {
         return getScenarioTypes(getScenarioGroup(false));
     }
 
-    private static String getScenarioGroup(boolean rng) {
+    private static String getScenarioGroup(Boolean rng_beta_demo) {
+        if (rng_beta_demo==null )
+            return "Demo";
         //        return "Crawl";
-        return rng ? "Random" : "Beta";
+        return rng_beta_demo ? "Random" : "Beta";
     }
 
     public static List<ObjType> getScenarioTypes(String scenarioGroup) {
@@ -88,10 +92,13 @@ public class MainMenuHandler {
          StringMaster.getWellFormattedString(scenarioGroup));
     }
 
+    private void startDemo() {
+        startMicro(getScenarioTypes(getScenarioGroup(null )), null );
+    }
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
             case DEMO:
-                IGG_Launcher.start();
+                IGG_Launcher.start(()-> startDemo());
                 break;
             case NEXT_SCENARIO:
                 return startMicro(getScenarioTypes(),
@@ -135,5 +142,6 @@ public class MainMenuHandler {
 
         return true;
     }
+
 
 }

@@ -42,7 +42,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
 
     public void startMissionIntroDialogues() {
-//        Mission mission = getMetaGame().getScenario().getMission();
+//        Mission mission = getMetaGame().getScenario().getMissionIndex();
 //        String data = mission.getProperty(PROPS.MISSION_INTRO_DIALOGUES);
 //        startDialogues(data);
 

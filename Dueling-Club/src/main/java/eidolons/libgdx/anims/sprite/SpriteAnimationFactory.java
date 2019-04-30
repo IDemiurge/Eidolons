@@ -27,7 +27,7 @@ public class SpriteAnimationFactory {
             if (texturePath.toLowerCase().endsWith(".atlas")
             || texturePath.toLowerCase().endsWith(".txt")){
                 texturePath = GdxImageMaster.appendImagePath(texturePath);
-                return new SpriteAnimation(fps30, true, new SmartTextureAtlas(texturePath));
+                return new SpriteAnimation(fps30, false, new SmartTextureAtlas(texturePath));
             }
             main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
                     + texturePath + ", replacing with default: " + defaultSpritePath);

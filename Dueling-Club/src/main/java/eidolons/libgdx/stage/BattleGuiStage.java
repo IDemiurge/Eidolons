@@ -45,6 +45,7 @@ public class BattleGuiStage extends GuiStage {
     protected OutcomePanel outcomePanel;
 
 
+
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
           //         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),

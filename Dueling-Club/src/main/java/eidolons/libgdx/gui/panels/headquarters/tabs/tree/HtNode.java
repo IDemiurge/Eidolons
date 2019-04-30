@@ -1,3 +1,4 @@
+
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +16,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.EventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -37,8 +39,7 @@ public abstract class HtNode extends DynamicLayeredActor {
         super(getRootPath(rootPath, tier), overlay, underlay);
         this.tier = tier;
         this.slot =  slot;
-        setSize(getDefaultWidth(), getDefaultHeight() );
-
+        init();
     }
 
 
@@ -150,6 +151,8 @@ public abstract class HtNode extends DynamicLayeredActor {
             SlotSelectionRadialMenu.setActiveNode(this);
             GuiEventManager.trigger(getSelectionEvent(), getAvailable(), tier, slot);
         } else {
+
+            GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, "Nothing available yet!");
         }
     }
 

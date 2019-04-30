@@ -23,6 +23,10 @@ public class ClassSlot extends HtNode {
         super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY,slot );
     }
 
+    @Override
+    protected void init() {
+        setSize(getDefaultWidth(), getDefaultHeight() );
+    }
 
     @Override
     public void setUserObject(Object userObject) {

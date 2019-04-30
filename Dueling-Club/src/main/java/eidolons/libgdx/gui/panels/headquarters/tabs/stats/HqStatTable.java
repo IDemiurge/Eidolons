@@ -27,11 +27,13 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
         pointsLeft = new LabelX("", 14);
 
         TablePanel pointTable = new TablePanel();
-        pointTable.setBackground(
-         TextureCache.getOrCreateTextureRegionDrawable(Images.CIRCLE_OVERLAY));
         pointTable.add(pointsLeft);
         pointTable.setFixedSize(true);
         pointTable.setSize(40, 40);
+        pointTable.setBackground(
+                NinePatchFactory.getLightPanelFilledSmallDrawable()
+//                TextureCache.getOrCreateTextureRegionDrawable(Images.CIRCLE_OVERLAY)
+        );
 
         TablePanel points = new TablePanel();
         points.add(new LabelX(getPointsText(), 14)).left();

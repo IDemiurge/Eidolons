@@ -35,7 +35,9 @@ public class SkillSlot extends HtNode {
         } else {
             enable();
             available = new ArrayList<>();
-            if (data.getLeft() != null) {
+            if (data.getLeft() != null  )
+            if (!data.getLeft().getName().equalsIgnoreCase(SkillMaster.DUMMY_SKILL)  )
+            {
                 GdxImageMaster.round(data.getLeft().getImagePath(), true);
                 setRootPath(SkillMaster.getSkillImgPath(data.getLeft()));
             } else {

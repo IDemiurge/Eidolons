@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -21,6 +22,7 @@ import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +135,15 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
 
     @Override
     protected PARAMETER[] initDataArray() {
+        if (CoreEngine.isIggDemoRunning()) {
+            switch (getUserObject().getEntity().getName()) {
+                case IGG_Demo.HERO_GORR:
+                    return IGG_Demo.HERO_NEW_MASTERY_GORR;
+                case IGG_Demo.HERO_DARK_ELF:
+                    return IGG_Demo.HERO_NEW_MASTERY_DARK_ELF;
 
+            }
+        }
         List<PARAMETER> availableMasteries = new ArrayList<>(
          DC_ContentValsManager.getMasteries());
 
@@ -142,7 +152,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
          unlocked.contains(p));
 
         availableMasteries.removeIf(p ->
-         SkillMaster.isMasteryAvailable(p, getUserObject().getEntity() ));
+         !SkillMaster.isMasteryAvailable(p, getUserObject().getEntity() ));
         return availableMasteries.toArray(new PARAMETER[availableMasteries.size()]);
     }
 

@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -92,6 +94,8 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected Set<Actor> hiddenActors = new HashSet<>();
     protected ValueContainer locationLabel;
     PlaceNavigationPanel navigationPanel;
+    private TipMessageWindow tipMessageWindow;
+
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -135,7 +139,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         //        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
         //         GdxMaster.getHeight() - helpButton.getHeight());
         //        addActor(helpButton);
-
+        tipMessageWindow = new TipMessageWindow(null);
         addActor(questProgressPanel = new QuestProgressPanel());
         HideButton hideQuests = new HideButton(questProgressPanel);
         addActor(hideQuests);
@@ -288,6 +292,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     @Override
     public void act(float delta) {
         blocked = checkBlocked();
+        tipMessageWindow.setVisible(false);
         if (!Blackout.isOnNewScreen())
             if (isBlackoutIn()) {
                 blackout.fadeOutAndBack(2f);
@@ -337,7 +342,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected boolean checkBlocked() {
-        return confirmationPanel.isVisible() || textPanel.isVisible() ||
+        return
+
+                tipMessageWindow.isVisible() ||confirmationPanel.isVisible() || textPanel.isVisible() ||
                 HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                 || GameMenu.menuOpen;
     }
@@ -360,7 +367,8 @@ public class GuiStage extends StageX implements StageWithClosable {
                                 actor, RadialValueContainer.class) == null) {
                             if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
                                 return null;
-                        } else if (confirmationPanel.isVisible())
+                        } else if (
+                                tipMessageWindow.isVisible() || confirmationPanel.isVisible())
                             return null;
                     } else {
                         return actor;
@@ -373,6 +381,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
         if (!ancestors.contains(textPanel))
             if (!ancestors.contains(confirmationPanel))
+            if (!ancestors.contains(tipMessageWindow))
                 if (!ancestors.contains(gameMenu))
                     return true;
 
@@ -391,6 +400,18 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void bindEvents() {
+
+        GuiEventManager.bind(GuiEventType.TIP_MESSAGE , p-> {
+            if (tipMessageWindow != null) {
+                ActorMaster.addRemoveAfter(tipMessageWindow);
+            }
+              tipMessageWindow= new TipMessageWindow((TipMessageSource) p.get());
+            addActor(tipMessageWindow);
+            tipMessageWindow.fadeIn();
+            tipMessageWindow.setPosition(GdxMaster.centerWidth(tipMessageWindow),
+                    GdxMaster.centerHeight(tipMessageWindow));
+
+        });
         GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p -> {
             if (p.get() == this || p.get() == getClass()) {
                 openOptionsMenu();

@@ -1,37 +1,32 @@
 package eidolons.game.battlecraft.logic.meta.igg.story.brief;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.video.VideoMaster;
 
 /**
  * video!
  */
-public class BriefBackground extends TablePanelX {
-    private final FadeImageContainer plain;
-    SpriteAnimation sprite;
+public class BriefBackground extends FullscreenAnimation {
+
     public BriefBackground() {
-        addActor(plain = new FadeImageContainer());
+        super(true);
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        if (sprite!=null )
-            if (sprite.getRegions().size>0)
-                sprite.draw(batch);
-    }
-
-    @Override
-    public void updateAct(float delta) {
-        super.updateAct(delta);
-        sprite= SpriteAnimationFactory.getSpriteAnimation(getUserObject().toString());
-        if (sprite.getRegions().size==0)
-         plain.setImage(getUserObject().toString());
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        if (userObject instanceof String) {
+            initSprite(userObject.toString());
+        }
     }
 }

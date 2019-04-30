@@ -226,10 +226,10 @@ public class GameLoop {
         if (channeling)
             ChannelingRule.channelingResolves(activeUnit);
 
-        waitForAnimations(action);
-
         result =
          activateAction(action);
+
+        waitForAnimations(action);
         if (exited)
             return true;
         waitForPause();

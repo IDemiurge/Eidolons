@@ -4,6 +4,8 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
+import main.entity.Ref;
+import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -17,6 +19,8 @@ import java.util.List;
  * Created by JustMe on 5/6/2018.
  */
 public class SkillsDataSource extends HeroTreeDataSource {
+
+    private static DC_FeatObj dummy;
 
     public SkillsDataSource(Unit hero) {
         super(hero);
@@ -36,9 +40,9 @@ public class SkillsDataSource extends HeroTreeDataSource {
         List<MASTERY> list = new ArrayList<>();
 
         for (String sub : ContainerUtils.openContainer(
-         hero.getProperty(SkillMaster.getMasteryRankProp(tier)))) {
+                hero.getProperty(SkillMaster.getMasteryRankProp(tier)))) {
             list.add(new EnumMaster<MASTERY>().retrieveEnumConst(MASTERY.class,
-             sub));
+                    sub));
 
         }
         return list;
@@ -46,31 +50,39 @@ public class SkillsDataSource extends HeroTreeDataSource {
 
     public List<Triple<DC_FeatObj, MASTERY, MASTERY>> getSkillSlots(int tier) {
         List<Triple<DC_FeatObj, MASTERY, MASTERY>> list = new ArrayList<>();
-        ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
 
         List<MASTERY> ranks = getMasteryRanks(tier);
 
         List<DC_FeatObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
 
-        for (int j = 0; j < skills.size(); j++) {
-            if (skills.get(j) == null)
-                continue; //empty slot
-            list.add(new ImmutableTriple<>(skills.get(j), ranks.get(j), ranks.get(j + 1)));
-        }
-//        int i = 0;
-//        while (true) {
-//            if (ranks.size() <= i) break;
-//
-//            DC_FeatObj skill = null;
-//
-//            if (skills.size() > i)
-//                skill = skills.get(i);
-//            MASTERY mastery1 = ranks.get(i++);
-//            if (ranks.size() <= i) break;
-//            MASTERY mastery2 = ranks.get(i);
-//            list.add(new ImmutableTriple<>(skill, mastery1, mastery2));
+//        for (int j = 0; j < skills.size(); j++) {
+//            if (skills.get(j) == null)
+//                list.add(getEmptySkill()); //empty slot
+//            list.add(new ImmutableTriple<>(skills.get(j), ranks.get(j), ranks.get(j + 1)));
+//            list.add(new ImmutableTriple<>(skills.get(j), ranks.get(j), ranks.get(j + 1)));
 //        }
+        int i = 0;
+        while (true) {
+            if (ranks.size() <= i+1) break;
+
+            DC_FeatObj skill = getEmptySkill();
+
+            if (skills.get(i) !=null )
+                skill = skills.get(i);
+            MASTERY mastery1 = ranks.get(i++);
+            if (ranks.size() <= i) break;
+            MASTERY mastery2 = ranks.get(i);
+            list.add(new ImmutableTriple<>(skill, mastery1, mastery2));
+        }
+        ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
         return list;
+    }
+
+    private DC_FeatObj getEmptySkill() {
+        if (dummy == null) {
+            dummy = new DC_FeatObj(new ObjType(SkillMaster.DUMMY_SKILL), new Ref(hero));
+        }
+        return dummy;
     }
 
 

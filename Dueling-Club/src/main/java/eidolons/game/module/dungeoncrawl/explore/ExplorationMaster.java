@@ -7,6 +7,8 @@ import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
+import main.entity.Ref;
+import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -110,6 +112,7 @@ public class ExplorationMaster {
             //TODO quick-fix
             cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
+            game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_ENDS, new Ref(game)));
             getResetter().setResetNotRequired(false);
 
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);

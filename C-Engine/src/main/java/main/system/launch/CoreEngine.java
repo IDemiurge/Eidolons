@@ -73,6 +73,7 @@ public class CoreEngine {
     private static boolean safeMode;
     private static boolean iggDemo;
     private static boolean iggDemoRunning;
+    private static boolean toolIsRunning;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -351,7 +352,7 @@ public class CoreEngine {
     }
 
     public static boolean isCombatGame() {
-        return !isArcaneTower() && !isArcaneVault() && !isLevelEditor() &&!isjUnit();
+        return !toolIsRunning  &&!isArcaneTower() && !isArcaneVault() && !isLevelEditor() &&!isjUnit();
     }
 
     public static boolean isIDE() {
@@ -507,7 +508,7 @@ public class CoreEngine {
     }
 
     public static boolean isOutlinesFixed() {
-        return false;
+        return true;
     }
 
     public static boolean isIggDemo() {
@@ -522,7 +523,15 @@ public class CoreEngine {
         CoreEngine.iggDemoRunning = iggDemoRunning;
     }
 
-    public static boolean getIggDemoRunning() {
+    public static boolean isIggDemoRunning() {
         return iggDemoRunning;
+    }
+
+    public static void setToolIsRunning(boolean toolIsRunning) {
+        CoreEngine.toolIsRunning = toolIsRunning;
+    }
+
+    public static boolean getToolIsRunning() {
+        return toolIsRunning;
     }
 }

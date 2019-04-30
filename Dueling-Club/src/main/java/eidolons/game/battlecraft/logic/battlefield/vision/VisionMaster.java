@@ -80,10 +80,17 @@ public class VisionMaster implements GenericVisionManager {
         }
 //        resetForActiveUnit();
 
+        if (ExplorationMaster.isExplorationOn() &&
+                getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
+
+        } else {
         getGame().getRules().getIlluminationRule().resetIllumination();
         getGame().getRules().getIlluminationRule().applyLightEmission();
+        }
 
         visionRule.fullReset(getGame().getMaster().getUnitsArray());
+        getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().resetVisibilityResetTimer();
+
 
         getActiveUnit().setUnitVisionStatus(UNIT_VISION.IN_PLAIN_SIGHT);
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
@@ -271,4 +278,6 @@ public class VisionMaster implements GenericVisionManager {
     public BattleFieldObject[] getInvisible() {
         return invisible;
     }
+
+
 }

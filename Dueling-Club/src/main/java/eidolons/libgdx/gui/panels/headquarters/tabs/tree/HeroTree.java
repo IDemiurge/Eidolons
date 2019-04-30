@@ -37,7 +37,7 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
         } else
         setBackgroundAndSize(GdxImageMaster.
          getPanelBackground(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
-          520, 735));
+          580, 785));
         mainNodeRows = createNodeRows(getMaxTier());
         linkNodeRows = createLinkNodeRows(getMaxTier());
         int tier = isTopToBottom() ? 0 : getMaxTier() - 1;
@@ -83,7 +83,7 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
 
     @Override
     public float getRowHeight(int rowIndex) {
-        return 120;
+        return 125;
     }
     // build an empty tree always? probably!
     public void setBackgroundAndSize(Texture texture) {
@@ -102,7 +102,7 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
     }
 
     protected int getInnerWidth() {
-        return 520;
+        return 590;
     }
 
     protected abstract int getLinkWidth();

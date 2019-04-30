@@ -94,8 +94,15 @@ public class Images {
 
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
+
+    public static final String PARTY_BACKGROUND_COLS = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/columns.png");;
+    public static final String SEPARATOR_ALT = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
     public static final String SEPARATOR = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+            PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+    public static final String SEPARATOR_LARGE = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic","decor" ,"horizontal slice white.png");
     public static final  String TINY_CHEST = "ui/components/tiny/chest.png";
     public static final  String TINY_GOLD = "ui/components/tiny/gold.png";
     public static final java.lang.String GOLD_INV_ITEM_OVERLAY = "ui/components/hq/inv/gold overlay.png";

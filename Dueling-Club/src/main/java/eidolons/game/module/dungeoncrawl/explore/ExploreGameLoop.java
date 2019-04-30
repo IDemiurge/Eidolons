@@ -155,6 +155,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master.getResetter().setResetNeeded(true);
         //recheck?!
         ActionInput playerAction = playerActionQueue.removeLast();
+
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
             activateAction(playerAction);
@@ -163,8 +164,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             master.getTimeMaster().setGuiDirtyFlag(true);
             master.getPartyMaster().leaderActionDone(playerAction);
 
-
             waitForAnimations(playerAction);
+            getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer();
 
         }
         waitForPause();
@@ -174,7 +175,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected boolean handleAi() {
         if (master.getAiMaster().isAiActs()) {
             DequeImpl<ActionInput> queue = getAiActionQueue();
-            while (!queue.isEmpty()) {
+            while (!queue.isEmpty() ) {
+//            while (queue.size()>3) {
                 //sort? change display?
                 // active unit?
                 try {

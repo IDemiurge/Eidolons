@@ -23,8 +23,17 @@ public class BriefWindow extends TablePanelX {
         GuiEventManager.bind(GuiEventType.BRIEFING_NEXT, p -> next());
     }
     public void next(){
+        if (i >= images.length) {
+            return;
+        }
         setUserObject(images[i++]);
 }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
+
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);

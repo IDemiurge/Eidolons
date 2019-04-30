@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -11,6 +12,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 
 /**
@@ -58,8 +60,36 @@ public class HqParamPanel extends HqElement{
     protected void update(float delta) {
         int i =0;
         for (PARAMETER sub : params) {
-            containers.get(i).setValueText(dataSource.getParamRounded(sub));
+            CharSequence text=getText(sub);
+            containers.get(i).setValueText(text);
+            int size = 18 + Math.round(18 * new Float(2.0f) / (1 + text.length()) / 10);
+            containers.get(i).setStyle(StyleHolder.getHqLabelStyle(size));
             i++;
         }
+    }
+
+    private String getText(PARAMETER sub) {
+        if (checkShowFraction(sub)) {
+            String c = getUserObject().getParamRounded(sub);
+            String m = getUserObject().getParamRounded(ContentValsManager.getBaseParameterFromCurrent(sub));
+           if (!c.equalsIgnoreCase(m))
+            return c + "/" + m;
+        }
+        return dataSource.getParamRounded(sub);
+    }
+
+    private boolean checkShowFraction(PARAMETER sub) {
+        if (sub instanceof PARAMS) {
+            switch (((PARAMS) sub)) {
+//                case C_ENDURANCE:
+                case C_TOUGHNESS:
+//                case C_MORALE:
+                case C_ESSENCE:
+                case C_STAMINA:
+//                case C_FOCUS:
+                    return true;
+            }
+        }
+        return false;
     }
 }

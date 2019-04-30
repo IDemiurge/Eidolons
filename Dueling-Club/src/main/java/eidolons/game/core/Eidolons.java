@@ -10,6 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.DC_GameObjMaster;
@@ -83,7 +84,7 @@ public class Eidolons {
     private static boolean logicThreadBusy;
     private static int customThreadsUsed = 0;
 
-    public static boolean initScenario(ScenarioMetaMaster master) {
+    public static boolean initScenario(MetaGameMaster master) {
         mainGame = new EidolonsGame();
         mainGame.setMetaMaster(master);
         mainGame.init();
@@ -295,7 +296,7 @@ public class Eidolons {
         GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
     }
     public static void exitToMenu() {
-
+        CoreEngine.setIggDemoRunning(false);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         try {
             DC_Game.game.getMetaMaster().gameExited();

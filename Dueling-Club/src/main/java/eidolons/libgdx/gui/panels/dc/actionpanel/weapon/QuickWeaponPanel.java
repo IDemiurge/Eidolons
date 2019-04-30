@@ -181,10 +181,10 @@ public class QuickWeaponPanel extends TablePanelX {
                                 return false;
                     //                    }
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
-                    if (attack != null && attack.isAttackGeneric()) {
-                        main.system.auxiliary.log.LogMaster.log(1, "GENERIC ATK WAS CHOSEN!");
-                        attack = null;
-                    }
+//                    if (attack != null && attack.isAttackGeneric()) {
+//                        main.system.auxiliary.log.LogMaster.log(1, "GENERIC ATK WAS CHOSEN!");
+//                        attack = null; TODO wrong place
+//                    }
                     if (attack == null) {
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
                                 "Cannot attack with this!",

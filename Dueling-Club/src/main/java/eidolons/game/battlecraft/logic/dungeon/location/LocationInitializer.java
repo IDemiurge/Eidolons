@@ -26,7 +26,7 @@ public class LocationInitializer extends DungeonInitializer<Location> {
              .getContainerValue(DUNGEON_VALUE.PATH, 0));
         //or take mission directly?
 
-        return (Location) getBuilder().buildDungeon(getDungeonPath());
+         return (Location) getBuilder().buildDungeon(getDungeonPath());
     }
 
     @Override

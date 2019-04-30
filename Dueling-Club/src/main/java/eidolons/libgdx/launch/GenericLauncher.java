@@ -8,9 +8,12 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.story.IggIntroScreen;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreen;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreenOld;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
@@ -286,16 +289,8 @@ public class GenericLauncher extends Game {
                 }
                 initRunning=true;
                 Eidolons.onThisOrNonGdxThread(() -> {
-                    main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + data.getName());
-                    DC_Engine.gameStartInit();
-                    //how to prevent this from being called twice?
-                    if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
-                    {
-                        initRunning=false;
-                        return; // INIT FAILED or EXITED
-                    }
-                    MusicMaster.preload(MUSIC_SCOPE.ATMO);
-                    Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
+                    initScenarioBattle(data, data.getName());
+
                     firstInitDone = true;
                     initRunning=false;
                 });
@@ -309,6 +304,27 @@ public class GenericLauncher extends Game {
                 GuiEventManager.trigger(SCREEN_LOADED,
                  new ScreenData(data.getType( ) ));
         }
+    }
+
+
+    private void initScenarioBattle(ScreenData data, String name) {
+        main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + name);
+        DC_Engine.gameStartInit();
+        //how to prevent this from being called twice?
+        if (!Eidolons.initScenario(createMetaForScenario(data)))
+        {
+            initRunning=false;
+            return; // INIT FAILED or EXITED
+        }
+        MusicMaster.preload(MUSIC_SCOPE.ATMO);
+        Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
+    }
+
+    private MetaGameMaster createMetaForScenario(ScreenData data) {
+        if (data == null) {
+            return new ScenarioMetaMaster(data.getName());
+        }
+        return new IGG_MetaMaster(data.getName());
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {
@@ -342,10 +358,10 @@ public class GenericLauncher extends Game {
                     Eidolons.setScope(SCOPE.BATTLE);
                     break;
                 case BRIEFING:
-                    switchScreen(() -> new IggBriefScreen(), newMeta);
+                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
                     break;
                 case CINEMATIC:
-                    switchScreen(() -> new IggIntroScreen(), newMeta);
+                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
                     break;
                 case MAP:
                     Eidolons.setScope(SCOPE.MAP);

@@ -1,11 +1,16 @@
 package eidolons.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.DC_LogManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.ColorManager;
@@ -22,8 +27,9 @@ public class LogPanel extends ScrollTextWrapper {
         if (getCallbackEvent() != null)
             bind();
     }
+
     protected ScrollPanel<Message> createScrollPanel() {
-        return   new TextScroll() {
+        return new TextScroll() {
 
             public int getMaxTableElements() {
                 if (!OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.LIMIT_LOG_LENGTH)) {
@@ -31,6 +37,7 @@ public class LogPanel extends ScrollTextWrapper {
                 }
                 return OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.LOG_LENGTH_LIMIT);
             }
+
             @Override
             protected void initAlignment() {
                 left().bottom();
@@ -52,13 +59,11 @@ public class LogPanel extends ScrollTextWrapper {
             }
         };
     }
+
     protected boolean isScrolledAlways() {
         return true;
     }
 
-    protected GuiEventType getCallbackEvent() {
-        return LOG_ENTRY_ADDED;
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -82,19 +87,44 @@ public class LogPanel extends ScrollTextWrapper {
 
     public void bind() {
         GuiEventManager.bind(getCallbackEvent(), p -> {
-            LogMessageBuilder builder = LogMessageBuilder.createNew();
+            Actor toAdd = null;
+            if (p.get() == Images.SEPARATOR_ALT) {
+                toAdd = new ImageContainer(Images.SEPARATOR_ALT);
+                scrollPanel.addElement(toAdd).center();
+                return;
+            } else if (p.get() == null) {
+                toAdd = new ImageContainer(Images.SEPARATOR);
+                scrollPanel.addElement(toAdd).center();
+                return;
+            }
 
+            LogMessageBuilder builder = LogMessageBuilder.createNew();
+            String text = p.get().toString();
+
+            int align = Align.left;
+            if (text.contains(DC_LogManager.ALIGN_CENTER)) {
+                text = text.replace(DC_LogManager.ALIGN_CENTER, "");
+                align = Align.center;
+            }
             builder.addString(
-             p.get().toString(),
-             ColorManager.toStringForLog(ColorManager.GOLDEN_WHITE));
+                    text,
+                    ColorManager.toStringForLog(ColorManager.GOLDEN_WHITE));
 
             LogMessage message = builder.build(getWidth() - offsetX);
             message.setFillParent(true);
-            scrollPanel.addElement(message);
+            toAdd = message;
+            if (align == Align.center) {
+            scrollPanel.addElement(toAdd).center();
+            } else {
+            scrollPanel.addElement(toAdd).align(align);
+            }
 
         });
     }
 
+    protected GuiEventType getCallbackEvent() {
+        return LOG_ENTRY_ADDED;
+    }
 
 
     public void initBg() {

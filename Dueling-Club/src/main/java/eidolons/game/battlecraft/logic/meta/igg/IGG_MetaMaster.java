@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.igg;
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.game.ScenarioGame;
 
 /*
 custom party rules
@@ -22,14 +23,14 @@ defeatHandler...
 
 
  */
-public class IGG_MetaGameMaster extends  MetaGameMaster<IGG_Meta> {
-    public IGG_MetaGameMaster(String data) {
+public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
+    public IGG_MetaMaster(String data) {
         super(data);
     }
 
     @Override
     protected DC_Game createGame() {
-        return null ; //TODO
+        return new IGG_Game(this); //TODO
     }
 
     @Override
@@ -52,12 +53,53 @@ public class IGG_MetaGameMaster extends  MetaGameMaster<IGG_Meta> {
         return new IGG_MetaInitializer(this);
     }
 
-    @Override
+
     public void next(Boolean outcome) {
         super.next(outcome);
+
+//        IGG_Demo.nextMission();
+//        checkNewAct(getMetaGame().getActIndex());
+//        if (actIndex!=newAct){
+//
+//        }
+
 
         //epilogue
         //
 
+    }
+
+    @Override
+    protected boolean isTownEnabled() {
+        if (getMetaGame().getMission().isTown())
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean isQuestsEnabled() {
+        return false;
+    }
+
+    @Override
+    public void preStart() {
+        partyManager.preStart();
+        partyManager.initPlayerParty();
+        getMetaDataManager().initData();
+    }
+
+    @Override
+    public IGG_PartyManager getPartyManager() {
+        return (IGG_PartyManager) super.getPartyManager();
+    }
+
+    @Override
+    public void gameStarted() {
+        super.gameStarted();
+    }
+
+    @Override
+    public void gameExited() {
+        super.gameExited();
     }
 }

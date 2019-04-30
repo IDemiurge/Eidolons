@@ -38,7 +38,7 @@ public class EidolonImbuer {
         return set;
     }
 
-    public void imbue(DC_HeroSlotItem item, Eidolon eidolon) {
+    public void imbue(DC_HeroSlotItem item, RealEidolon eidolon) {
         //basically create a new item?
 
         //copy durability, previous...
@@ -52,7 +52,7 @@ public class EidolonImbuer {
         String name = item.getName() + " imbued: " + ItemTraitNamer.getDescriptor(item, traits);
     }
 //DC_HeroSlotItem
-    public Set<ItemTrait> getTraits(Eidolon eidolon, Entity item) {
+    public Set<ItemTrait> getTraits(RealEidolon eidolon, Entity item) {
         WeightMap<EIDOLON_ASPECT> map = createMap(eidolon);
 
         List<ITEM_TRAIT> pool = Arrays.stream(ITEM_TRAIT.all).filter(trait ->
@@ -87,11 +87,11 @@ public class EidolonImbuer {
         return new LinkedHashSet<>(traits);
     }
 
-    private int getMaxValue(Eidolon eidolon, Entity item) {
+    private int getMaxValue(RealEidolon eidolon, Entity item) {
         return eidolon.getUnitType().getIntParam(PARAMS.POWER);
     }
 
-    private ITEM_LEVEL[] getLevels(Eidolon eidolon) {
+    private ITEM_LEVEL[] getLevels(RealEidolon eidolon) {
         return ITEM_LEVEL.values();
     }
 
@@ -108,7 +108,7 @@ public class EidolonImbuer {
     }
 
 
-    private WeightMap<EIDOLON_ASPECT> createMap(Eidolon eidolon) {
+    private WeightMap<EIDOLON_ASPECT> createMap(RealEidolon eidolon) {
         ObjType type = eidolon.getUnitType();
         WeightMap<EIDOLON_ASPECT> map = new WeightMap<>();
         UNIT_GROUP group;

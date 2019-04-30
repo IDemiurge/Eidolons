@@ -2,7 +2,6 @@ package eidolons.libgdx.screens;
 
 
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.nethergate.apholon.eidola.Eidolon;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;

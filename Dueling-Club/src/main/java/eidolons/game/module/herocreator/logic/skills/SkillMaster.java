@@ -7,6 +7,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.TextureCache;
@@ -27,6 +28,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ import static main.content.enums.entity.SkillEnums.MASTERY.*;
  */
 public class SkillMaster {
     public static final String MASTERY_RANKS = "MASTERY_RANKS_";
+    public static final String DUMMY_SKILL = "Skill Slot";
 
     public static void masteryIncreased(Unit hero, PARAMETER mastery) {
         //do we assume that it is increased by 1 only? we can perhaps
@@ -92,12 +95,16 @@ public class SkillMaster {
     public static List<DC_FeatObj> getSkillsOfTier(Unit hero, int tier) {
         List<DC_FeatObj> list = new ArrayList<>();
         String prop = hero.getProperty(getTierProp(PROPS.SKILLS, tier));
+//        if (isSkillSlotsMixed()){
+            prop = hero.getProperty( PROPS.SKILLS );
+//        }
         ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
         for (String substring : ContainerUtils.openContainer(prop)) {
             String[] parts = substring.split("=");
-            DC_FeatObj skill = hero.getFeat(DataManager.getType(parts[1], DC_TYPE.SKILLS));
-            int slot=Integer.valueOf(parts[0]);
-            list.set(slot, skill);
+            String name = parts.length > 1 ? parts[1] : substring;
+            DC_FeatObj skill = hero.getFeat(DataManager.getType(name, DC_TYPE.SKILLS));
+            int slot= parts.length>1?  Integer.valueOf(parts[0]) : 0;
+            list.add(slot, skill);
         }
         return list;
     }
@@ -325,7 +332,10 @@ public class SkillMaster {
 
     public static boolean isMasteryAvailable(PARAMETER p, Unit hero) {
         //        ValuePageManager.getGenericValuesForInfoPages()
-        return false;
+
+
+
+        return true;
     }
 
     public static String getSkillImgPath(Entity left) {

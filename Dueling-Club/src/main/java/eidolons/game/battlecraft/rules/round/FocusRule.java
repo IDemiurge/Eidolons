@@ -25,4 +25,22 @@ public class FocusRule extends RetainRestoreRule {
     public PARAMETER getMaxParam() {
         return PARAMS.STARTING_FOCUS;
     }
+
+    @Override
+    protected PARAMETER getFatigueParam() {
+        return PARAMS.FOCUS_FATIGUE;
+    }
+
+    @Override
+    protected void paramLost(int amount, Unit unit) {
+        super.paramLost(amount, unit);
+        unit.addParam(    PARAMS. FOCUS_FATIGUE, amount);
+//        unit.addOrProlongBuff("Focus Fatigue", )
+        // do it via new parameter! FOCUS_FATIGUE => used perhaps in the same rule here?
+    }
+
+    @Override
+    protected void paramGained(int amount, Unit unit) {
+        super.paramGained(amount, unit);
+    }
 }

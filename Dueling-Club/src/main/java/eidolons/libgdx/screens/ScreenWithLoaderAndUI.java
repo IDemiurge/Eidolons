@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreen;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
@@ -32,12 +33,13 @@ import main.system.launch.CoreEngine;
  */
 public abstract class ScreenWithLoaderAndUI extends ScreenWithLoader {
     protected UiStage overlayStage;
+
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
 
     public ScreenWithLoaderAndUI() {
         super();
-        overlayStage = new UiStage();
+        overlayStage = new IggBriefScreen();
     }
 
     public UiStage getOverlayStage() {

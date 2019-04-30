@@ -40,8 +40,8 @@ public class DC_ContentValsManager extends ContentValsManager {
      PARAMS.C_ENDURANCE,
      PARAMS.C_STAMINA,
      PARAMS.C_MORALE,
+            PARAMS.C_ESSENCE,
      PARAMS.C_FOCUS,
-     PARAMS.C_ESSENCE,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
      PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,

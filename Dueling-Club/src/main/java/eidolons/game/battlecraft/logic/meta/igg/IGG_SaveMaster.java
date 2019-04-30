@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
+import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.SaveHandler;
 
 /**
@@ -15,9 +17,15 @@ import eidolons.game.battlecraft.logic.meta.universal.SaveHandler;
  * little chance there!
  *
  */
-public class IGG_SaveMaster extends SaveHandler {
+public class IGG_SaveMaster extends SaveHandler<IGG_Meta> {
+
+    public IGG_SaveMaster(MetaGameMaster master) {
+        super(master);
+    }
 
     public IGG_Meta restore(){
+        getMaster().getPartyManager().getParty().setProperty(PROPS.PARTY_MISSION,
+                getMetaGame().getMission().getName());
 
         return null;
     }

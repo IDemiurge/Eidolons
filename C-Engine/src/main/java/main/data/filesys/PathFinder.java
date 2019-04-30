@@ -118,7 +118,7 @@ public class PathFinder {
 
     public static String getDungeonLevelFolder() {
         init();
-        return XML_PATH + "dungeons/levels" + PathUtils.getPathSeparator();
+        return XML_PATH + "dungeons/levels/"  ;
     }
 
     public static String getTextPath() {
@@ -481,5 +481,9 @@ public class PathFinder {
 
     public static String getCellImagesPath() {
         return "ui/cells/advanced/";
+    }
+
+    public static String getArtFolder() {
+        return "main/art/";
     }
 }

@@ -25,7 +25,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private float stateTime;
     private float offsetY;
     private float offsetX;
-    private float frameNumber;
+    private int frameNumber;
     private float alpha = 1f;
     private int cycles;
     private float lifecycle;
@@ -39,6 +39,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Float scale;
     private boolean customAct;
 
+    public void setBackAndForth(boolean backAndForth) {
+        this.backAndForth = backAndForth;
+    }
 
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path, null, false);
@@ -83,6 +86,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public void start() {
     }
+
 
     public void reset() {
         stateTime = 0;
@@ -130,6 +134,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
+
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
         if (currentFrame == null) {
             dispose();
@@ -160,7 +165,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     private int getTrailingFramesNumber() {
+        if (!isDrawTrailing()){
+            return 0;
+        }
         return (int) (getFrameNumber() - 1);
+    }
+
+    private boolean isDrawTrailing() {
+        return false;
     }
 
     private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha
@@ -350,7 +362,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this.offsetX = offsetX;
     }
 
-    public float getFrameNumber() {
+    public int getFrameNumber() {
         return frameNumber;
     }
 

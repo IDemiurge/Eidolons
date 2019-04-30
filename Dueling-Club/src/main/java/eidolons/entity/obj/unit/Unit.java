@@ -28,6 +28,7 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
@@ -69,6 +70,8 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -120,12 +123,10 @@ public class Unit extends DC_UnitModel {
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        if (isHero()) {
+        if (isHero() && !(this instanceof HeroDataModel)) {
             String message = this + " hero created " + getId();
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-
-
-
+            setName(getName().replace(" IGG", ""));
 
         }
     }
@@ -221,6 +222,11 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
+        for (DC_FeatObj feat : getSkills()) {
+            if (feat.getName().equalsIgnoreCase(type.getName())) {
+                return feat;
+            }
+        }
         return null;// TODO
     }
 
@@ -785,7 +791,11 @@ public class Unit extends DC_UnitModel {
     public boolean dropItemFromInventory(DC_HeroItemObj item, Coordinates c) {
         removeFromInventory(item);
         if (!isSimulation()) //sim just remembers for real hero to drop via operation
+        {
+            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+                    type.getName() + " is dropped down!");
             getGame().getDroppedItemManager().drop(item, c);
+        }
 
         return true;
     }

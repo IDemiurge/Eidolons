@@ -64,10 +64,15 @@ public class RngMainSpawner {
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
-
+    static  UNIT_GROUP presetUnitGroup;
+    static   List<UNIT_GROUP> groupFilter;
     public static UNIT_GROUP getUnitGroup(
             LOCATION_TYPE locationType, LevelZone zone,
             UNIT_GROUP_TYPE groupType) {
+        if (presetUnitGroup!=null )
+            return presetUnitGroup;
+
+        if (groupFilter==null )
         if (zone.getUnitGroupWeightMap() != null) {
             return zone.getUnitGroupWeightMap().getRandomByWeight();
         }
@@ -91,6 +96,13 @@ public class RngMainSpawner {
             UNIT_GROUP group = RngUnitProvider.getUnitGroup(surface, style).getRandomByWeight();
             map.put(group, i + 1);
         }
+
+        if (groupFilter!=null ){
+            map.keySet().removeIf(s-> !groupFilter.contains(s));
+        if (map.keySet().isEmpty()){
+            map.put(groupFilter.get(0), 1);
+        }
+        }
         return map.getRandomByWeight();
     }
 
@@ -109,11 +121,18 @@ public class RngMainSpawner {
 
         log(1, "Spawning for quests ");
         if (!CoreEngine.isFullFastMode())
+            if ( CoreEngine.isCombatGame())
+            if ( Eidolons.getGame().getMetaMaster().isQuestsEnabled())
             try {
                 spawnForQuests();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+        if (level.isPregen())
+        {
+            main.system.auxiliary.log.LogMaster.log(1,level.getDungeonType()+" level is pregen, no spawning required" );
+            return;
+        }
         log(1, "Spawning for symbols ");
         spawnForSymbols();
         log(1, "Spawning  Mandatory ");
@@ -688,12 +707,12 @@ public class RngMainSpawner {
                 values().stream().filter(cell -> TilesMaster.isPassable(cell)).count() * getCellLimitCoef();
 
         List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
-                .filter(c -> checkCellForSpawn(c, levelBlock)).
+                .filter(c -> isCellValidForSpawn(c, levelBlock)).
                         filter(c -> !levelBlock.getUnitGroups().keySet().stream()
                                 .anyMatch(list -> list.stream().anyMatch(at -> at.getCoordinates().equals(c)))).
                 //no other units there
                         sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-                                -c.dst(center)
+                                -c.dst(center) + (isCellGoodForSpawn(c, levelBlock)? 0: -5)
 //           +RandomWizard.getRandomInt( (levelBlock.getWidth()))
 //           +RandomWizard.getRandomInt((int) Math.sqrt(levelBlock.getSquare())))
                 )).limit(Math.max(1, Math.round(max))).
@@ -701,13 +720,13 @@ public class RngMainSpawner {
         if (isShuffleSpawnCells(emptyCells))
             Collections.shuffle(emptyCells);
 
-        if (checkCellForSpawn(center, levelBlock))
+        if (isCellValidForSpawn(center, levelBlock))
             emptyCells.add(0, center);
 
         List<ObjAtCoordinate> list = new ArrayList<>();
         if (emptyCells.isEmpty())
             return list;
-        Collections.shuffle(emptyCells);
+//        Collections.shuffle(emptyCells);
         Iterator<Coordinates> iterator = emptyCells.listIterator();
         Coordinates c = iterator.next();
         for (ObjType unit : units) {
@@ -740,7 +759,13 @@ public class RngMainSpawner {
         return 1;
     }
 
-    private boolean checkCellForSpawn(Coordinates c, LevelBlock levelBlock) {
+    private boolean isCellGoodForSpawn(Coordinates c, LevelBlock levelBlock) {
+        if (!isEnclosedSpawnAllowed())
+            if (TilesMaster.isEnclosedCell(c, levelBlock.getTileMap()))
+                return false;
+        return  levelBlock.getTileMap().getMap().get(c)  == ROOM_CELL.FLOOR ;
+    }
+        private boolean isCellValidForSpawn(Coordinates c, LevelBlock levelBlock) {
         if (!TilesMaster.isPassable(levelBlock.getTileMap().getMap().get(c)))
             return false;
         if (!isEnclosedSpawnAllowed())
@@ -796,5 +821,12 @@ public class RngMainSpawner {
         }
     }
 
+    public static void setPresetUnitGroup(UNIT_GROUP presetUnitGroup) {
+        RngMainSpawner.presetUnitGroup = presetUnitGroup;
+    }
 
+    public static void setGroupFilter(List<UNIT_GROUP> groupFilter) {
+        RngMainSpawner.groupFilter = groupFilter;
+    }
 }
+

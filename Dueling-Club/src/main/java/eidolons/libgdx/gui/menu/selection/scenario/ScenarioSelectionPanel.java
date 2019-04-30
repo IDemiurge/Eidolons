@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.menu.selection.scenario;
 
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
@@ -10,6 +11,7 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -46,9 +48,11 @@ public class ScenarioSelectionPanel extends SelectionPanel {
     }
 
     protected void scenarioChosen(ObjType type) {
+        ScreenData screenData= new ScreenData(SCREEN_TYPE.BATTLE, type.getName());
+        if (IGG_Launcher.isDemo(type))
+        screenData.setParam(new EventCallbackParam(type));
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(SCREEN_TYPE.BATTLE, type.getName()
-         ));
+       screenData);
     }
 
     @Override
