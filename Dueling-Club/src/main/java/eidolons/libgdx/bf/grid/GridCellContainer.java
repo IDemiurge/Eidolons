@@ -153,6 +153,7 @@ public class GridCellContainer extends GridCell {
 
 
     public void recalcUnitViewBounds() {
+        unitViewCount = getUnitViewsVisible().size();
         if (getUnitViewCount() == 0) {
             return;
         }
@@ -309,6 +310,7 @@ public class GridCellContainer extends GridCell {
         if (getTopUnitView() != null)
             getTopUnitView().setZIndex(Integer.MAX_VALUE);
         graveyard.setZIndex(Integer.MAX_VALUE);
+        backImage.setZIndex(0);
     }
 
     private GenericGridView resetZIndices(List<GenericGridView> filtered, boolean units) {
@@ -367,7 +369,7 @@ public class GridCellContainer extends GridCell {
         }
         if (dirty) {
             unitViewCount = n;
-            recalcUnitViewBounds();
+            recalcUnitViewBounds();            dirty = false;
         }
         info.setPosition(GDX.centerWidth(info), maxY + 10);
     }

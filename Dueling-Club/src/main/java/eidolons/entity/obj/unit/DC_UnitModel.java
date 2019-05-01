@@ -269,9 +269,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean turnStarted() {
-        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref))) {
-            return false;
-        }
+//        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref))) {
+//            return false;
+//        }
         return canActNow();
 
     }

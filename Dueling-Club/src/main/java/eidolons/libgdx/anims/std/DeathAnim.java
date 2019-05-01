@@ -12,6 +12,7 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
@@ -38,6 +39,8 @@ public class DeathAnim extends ActionAnim {
     BattleFieldObject unit;
     DEATH_ANIM template;
     private Image skull;
+
+    SpriteAnimation sprite;
 
     public DeathAnim(Event e) {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));

@@ -340,7 +340,7 @@ public class GdxImageMaster extends LwjglApplication {
         String path = StrPathBuilder.build("main", "actions", "standard attack",
          weaponGroup,
          baseType,
-         action.getName().replace(DC_ActionManager.OFFHAND, "") + ".png");
+         action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
         return path;
     }
 
@@ -348,8 +348,12 @@ public class GdxImageMaster extends LwjglApplication {
         String baseType = weapon.getProperty(G_PROPS.BASE_TYPE);
         String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
         String path = getStandardAttackIcon(baseType, weaponGroup, action);
+
+
         if (!ImageManager.isImage(path)) {
-            path = findClosestIcon(action, weapon);
+            path = path.replace("_", "");
+            if (!ImageManager.isImage(path))
+                path = findClosestIcon(action, weapon).replace("_", "");
         }
         return path;
     }

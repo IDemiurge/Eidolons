@@ -49,16 +49,17 @@ public class FullscreenAnimation extends SuperActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
-        }
+//        if (batch instanceof CustomSpriteBatch) {
+//            ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
+//        }
         if (sprite != null) {
+            sprite.setAlpha(alpha);
             sprite.draw(batch);
         }
 
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).resetBlending();
-        }
+//        if (batch instanceof CustomSpriteBatch) {
+//            ((CustomSpriteBatch) batch).resetBlending();
+//        }
     }
 
     public void initSprite(String path) {

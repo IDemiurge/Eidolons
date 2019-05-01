@@ -24,21 +24,23 @@ public class BriefText extends TablePanelX {
 
     public BriefText(float width, float height, String... messages) {
         super(width, height);
-        mainText = new LabelX();
-        mainText.setStyle(StyleHolder.getSizedLabelStyle(RandomWizard.random() ? FontMaster.FONT.MANORLY_ : FontMaster.FONT.FERTIGO, 20));
-        addActor(mainText);
-
-        mainText.setPosition(GdxMaster.centerWidth(mainText), GdxMaster.centerHeight(mainText));
         this.messages = messages;
+        addActor(mainText = new LabelX());
+        mainText.setStyle(StyleHolder.getSizedLabelStyle(
+                 FontMaster.FONT.SUPER_KNIGHT, 21));
+        mainText.setWidth(width);
+
         addActor(continueBtn = new SmartButton("Continue", StyleHolder.getTextButtonStyle(ButtonStyled.STD_BUTTON.MENU,
                 FontMaster.FONT.DARK, GdxColorMaster.getDefaultTextColor(), 20)));
-
-        continueBtn.setPosition(GdxMaster.centerWidth(continueBtn), 0);
+        continueBtn.pack();
+        continueBtn.setPosition(GdxMaster.centerWidth(continueBtn), -continueBtn.getHeight());
         continueBtn.setRunnable(() -> {
             nextMsg();
             GuiEventManager.trigger(GuiEventType.BRIEFING_NEXT);
         });
-        setUserObject(messages[0]);
+
+        nextMsg();
+
     }
 
 
@@ -49,6 +51,7 @@ public class BriefText extends TablePanelX {
             return;
         }
         setUserObject(messages[i++]);
+        continueBtn.makeActive();
     }
 
     @Override
@@ -70,6 +73,9 @@ public class BriefText extends TablePanelX {
         }
         mainText.pack();
         pack();
+        setHeight(mainText.getHeight()*2);
+        mainText.setX(GdxMaster.centerWidth(mainText));
+        mainText.setY(0);
         setX(GdxMaster.centerWidth(this));
     }
 

@@ -452,7 +452,7 @@ public class DC_StateManager extends StateManager {
 
                 game.getLogManager().log(
                         DC_LogManager.ALIGN_CENTER +
-                        "                           [Round #" + (state.getRound() + 1) + "]"
+                        "                                        [Round #" + (state.getRound() + 1) + "]"
         );
         newTurnTick();
         Ref ref = new Ref(getGame());

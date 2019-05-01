@@ -129,7 +129,7 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return  CoreEngine.isFastMode();
+        return CoreEngine.isIggDemo() || CoreEngine.isFastMode();
     }
 
     public LwjglApplicationConfiguration getConf() {

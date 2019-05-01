@@ -426,7 +426,9 @@ public class AtomicAi extends AiHandler {
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
             return false;
         VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Eidolons.getMainHero());
-        float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 5;
+        float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 1.5f : 3  +
+                ai.getUnit().getSightRangeTowards(Eidolons.getMainHero());
+
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
             if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst) {
 

@@ -35,18 +35,19 @@ public class UnitStatTabs extends TabbedPanel {
 
         addTab(attributeTable, "Attributes");
         addTab(masteryTable, "Mastery Scores");
-        addTab(scrolledValuePanel, "Stats");
+//        addTab(scrolledValuePanel, "Stats");
         //        main.setSize(width,height);
+        contentTable.setSize(GdxMaster.adjustWidth(width), GdxMaster.adjustHeight(height));
         tabSelected("Attributes");
         setSize(GdxMaster.adjustWidth(width), GdxMaster.adjustHeight(height));
     }
 
     private float getWidthCoef() {
-        return 1.15f;
+        return 0.85f;
     }
 
     private float getHeightCoef() {
-        return 1f;
+        return 0.95f;
     }
     protected TablePanelX createContentsTable() {
         return new TablePanelX<>(

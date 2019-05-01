@@ -125,9 +125,6 @@ public class EmitterMap extends Group {
         if (!isAmbienceOn()) {
             return;
         }
-        if (DC_Game.game.getPlayer(true).getHeroObj() == null) {
-            return;
-        }
         if (hidden)
             return;
         if (map.isEmpty())
@@ -232,6 +229,10 @@ public class EmitterMap extends Group {
             ambience.setColor(color);
         ambience.setTarget(c);
         map.put(c, ambience);
+       int maxOffset = getMaxOffset(ambience);
+        int offsetX = RandomWizard.getRandomIntBetween(-maxOffset, maxOffset);
+        int offsetY = RandomWizard.getRandomIntBetween(-maxOffset, maxOffset);
+        v.add(offsetX, offsetY);
         ambience.setPosition(v.x, v.y);
         ambience.added();
 
@@ -247,6 +248,10 @@ public class EmitterMap extends Group {
         if (!getChildren().contains(ambience, true))
             addActor(ambience);
         ambience.setVisible(false);
+    }
+
+    private int getMaxOffset(Ambience ambience) {
+        return 42;
     }
 
     public int getActiveCount() {

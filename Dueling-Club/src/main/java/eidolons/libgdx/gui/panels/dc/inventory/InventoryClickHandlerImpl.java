@@ -210,9 +210,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     protected void execute(OPERATIONS operation, Entity type, Object arg) {
 
-        if (operation == OPERATIONS.DROP)
-            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-             type.getName() + " is dropped down!");
 
         HqDataMaster.operation(hero, getHqOperation(operation), type, arg);
         if (manager != null)

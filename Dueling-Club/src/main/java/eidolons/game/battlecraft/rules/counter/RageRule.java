@@ -28,7 +28,9 @@ public class RageRule extends DC_CounterRule {
     private static final String DAMAGE_PER_COUNTER = "5";
     private static final String INITIATIVE_PER_COUNTER = "5";
     private static final String SPELLPOWER_PER_COUNTER = "5";
-    private static final String DEFENSE_PER_COUNTER = "-5";
+    private static final String DEFENSE_PER_COUNTER = "-5"; //focus  fatigue?
+    private static final String WOUNDS_THRESHOLD = "12";    // tooltip
+    private static final String STAMINA_THRESHOLD = "20";    // tooltip
     private static final String BERSERK_THRESHOLD = "5+{Willpower}";    // tooltip
     private static final Integer MAX_BERSERK = 40;
     private static final Integer MAX = 20;
@@ -45,26 +47,35 @@ public class RageRule extends DC_CounterRule {
     @Override
     protected Effect getEffect() {
         return new Effects(
+                new Effect[]{
+                        new ModifyValueEffect(true, PARAMS.DAMAGE_MOD,
+                                MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+                                + DAMAGE_PER_COUNTER), new ModifyValueEffect(true,
+                        PARAMS.INITIATIVE_MODIFIER, MOD.MODIFY_BY_PERCENT,
+                        getCounterRef() + "*" + INITIATIVE_PER_COUNTER),
+                        new ModifyValueEffect(true, PARAMS.SPELLPOWER,
+                                MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+                                + SPELLPOWER_PER_COUNTER),
+                        new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
+                                MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+                                + DEFENSE_PER_COUNTER),
 
-         new ModifyValueEffect(true, PARAMS.DAMAGE_MOD,
-          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-          + DAMAGE_PER_COUNTER), new ModifyValueEffect(true,
-         PARAMS.INITIATIVE_MODIFIER, MOD.MODIFY_BY_PERCENT,
-         getCounterRef() + "*" + INITIATIVE_PER_COUNTER),
-         new ModifyValueEffect(true, PARAMS.SPELLPOWER,
-          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-          + SPELLPOWER_PER_COUNTER),
-         new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
-          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-          + DEFENSE_PER_COUNTER), new ConditionalEffect(
+                        new ConditionalEffect(
+                                new NumericCondition(getCounterRef(), WOUNDS_THRESHOLD),
+                                new ModifyPropertyEffect(
+                                        G_PROPS.STANDARD_PASSIVES, MOD_PROP_TYPE.ADD,
+                                        UnitEnums.STANDARD_PASSIVES.BERSERKER + "")),
 
-         new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
-         new Effects(new ModifyPropertyEffect(
-          G_PROPS.STANDARD_PASSIVES, MOD_PROP_TYPE.ADD,
-          UnitEnums.STANDARD_PASSIVES.BERSERKER + ""),
-          new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK)))
+                        new ConditionalEffect(new NumericCondition(getCounterRef(), STAMINA_THRESHOLD),
+                                new ModifyPropertyEffect(G_PROPS.STANDARD_PASSIVES, MOD_PROP_TYPE.ADD,
+                                        UnitEnums.STANDARD_PASSIVES.RELENTLESS + "")),
 
-        );
+
+                        new ConditionalEffect(
+                                new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
+
+                                new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK))
+                });
     }
 
 
@@ -81,7 +92,7 @@ public class RageRule extends DC_CounterRule {
     @Override
     public int getMaxNumberOfCounters(BattleFieldObject unit) {
         return (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.BERSERKER)) ? MAX_BERSERK
-         : MAX;
+                : MAX;
     }
 
     @Override

@@ -162,10 +162,8 @@ public class GridCell extends Group implements Borderable {
             return;
         }
         super.act(delta);
+        cordsText.setVisible(DC_Game.game.isDebugMode());
         if (DC_Game.game.isDebugMode()) {
-            if (!cordsText.isVisible()) {
-                cordsText.setVisible(true);
-            }
             if (GammaMaster.DEBUG_MODE) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
                 cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="

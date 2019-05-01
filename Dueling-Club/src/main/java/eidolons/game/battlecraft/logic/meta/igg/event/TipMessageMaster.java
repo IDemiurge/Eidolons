@@ -1,11 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.Arrays;
@@ -29,7 +27,7 @@ public class TipMessageMaster {
           TipMessageSource  source = getSource(tips[0]);
         source.setRunnable(chain);
         if (source.isOptional()){
-            if (OptionsMaster.getEngineOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF))
+            if (OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF))
                 return;
         }
         GuiEventManager.trigger(GuiEventType. TIP_MESSAGE, source);

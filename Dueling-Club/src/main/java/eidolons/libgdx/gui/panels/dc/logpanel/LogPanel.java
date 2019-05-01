@@ -2,18 +2,23 @@ package eidolons.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.ScrollPanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
 import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DC_LogManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.ColorManager;
+
+import java.util.regex.Pattern;
 
 import static main.system.GuiEventType.LOG_ENTRY_ADDED;
 
@@ -98,6 +103,7 @@ public class LogPanel extends ScrollTextWrapper {
                 return;
             }
 
+
             LogMessageBuilder builder = LogMessageBuilder.createNew();
             String text = p.get().toString();
 
@@ -106,19 +112,46 @@ public class LogPanel extends ScrollTextWrapper {
                 text = text.replace(DC_LogManager.ALIGN_CENTER, "");
                 align = Align.center;
             }
+            String image = null;
+            if (text.contains(DC_LogManager.IMAGE_SEPARATOR)) {
+                String[] parts = text.split(Pattern.quote(DC_LogManager.IMAGE_SEPARATOR));
+                image = parts[0];
+                text = parts[1];
+            }
+
             builder.addString(
                     text,
                     ColorManager.toStringForLog(ColorManager.GOLDEN_WHITE));
 
-            LogMessage message = builder.build(getWidth() - offsetX);
+            float imageOffset = 0;
+            Image img = null;
+            if (image != null) {
+                img = new Image(TextureCache.getOrCreate(image));
+                imageOffset = img.getWidth();
+                img.setSize(Math.min(img.getWidth(), 32),
+                        Math.min(img.getHeight(), 32));
+            }
+            LogMessage message = builder.build(getWidth() - offsetX - imageOffset);
             message.setFillParent(true);
             toAdd = message;
-            if (align == Align.center) {
-            scrollPanel.addElement(toAdd).center();
-            } else {
-            scrollPanel.addElement(toAdd).align(align);
+            if (image != null) {
+                TablePanelX<Actor> table = new TablePanelX<>(
+//                        getWidth() - offsetX, Math.max(message.getHeight(), img.getHeight())
+                );
+                table.defaults().space(7).pad(5).padLeft(7);
+                table.add(img);
+                table.add(message);
+                table.pack();
+                toAdd = table;
             }
 
+            if (image != null) {
+                scrollPanel.addElement(toAdd).padLeft(16).center();
+            } else if (align == Align.center) {
+                scrollPanel.addElement(toAdd).center().padLeft(28);
+            } else {
+                scrollPanel.addElement(toAdd).align(align).padLeft(28);
+            }
         });
     }
 

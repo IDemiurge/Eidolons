@@ -87,12 +87,12 @@ public class IGG_XmlMaster {
     private String getMetaPath() {
         if (MERGE)
             return PathFinder.getDungeonLevelFolder()   +
-                    "/meta/dungeon boss - 7.xml"  ;
+                    "/meta/dungeon boss - 13.xml"  ;
         return PathFinder.getDungeonLevelFolder() + "/meta/" + getLevelName();
     }
 
     private String getRawPath() {
-        return PathFinder.getDungeonLevelFolder() + "/" + getLevelName();
+        return PathFinder.getDungeonLevelFolder() + "levels/" + getLevelName();
     }
 
     private String getLE_Path() {
@@ -106,7 +106,7 @@ public class IGG_XmlMaster {
     private String getRngPath() {
         if (MERGE)
             return PathFinder.getRandomLevelPath()   +
-                   "/dungeon/dungeon boss - 7.xml"  ;
+                   "/dungeon/dungeon boss - 13.xml"  ;
         return PathFinder.getDungeonLevelFolder() + "/" + FOLDER + "/" +
                 folder + "/" + name;
     }

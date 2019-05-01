@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 
 public class IGG_Images {
     public static final String SHADOW = PathFinder.getArtFolder()+"Shadow.jpg";
@@ -16,7 +17,7 @@ public class IGG_Images {
         }
 
         PROMO_ART() {
-            path= (name())+".png";
+            path=  StringMaster.getWellFormattedString(name())+".png";
         }
 
         PROMO_ART(String path) {
@@ -24,8 +25,8 @@ public class IGG_Images {
         }
     }
     public enum BRIEF_ART{
-        LEVI_FIGHT, EIDOLONS_CENTER, APHOLON
-;
+        LEVI_FIGHT, EIDOLONS_CENTER, APHOLON,
+        ENTER_GATE, RITUAL;
         String path;
 
         public String getPath() {
@@ -33,7 +34,7 @@ public class IGG_Images {
         }
 
         BRIEF_ART() {
-            path= (name())+".png";
+            path= StringMaster.getWellFormattedString(name())+".png";
         }
 
         BRIEF_ART(String path) {

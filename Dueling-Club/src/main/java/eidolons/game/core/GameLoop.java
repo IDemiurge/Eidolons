@@ -21,6 +21,7 @@ import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
@@ -198,6 +199,10 @@ public class GameLoop {
     protected Boolean makeAction() {
         if (exited)
             return true;
+//TODO refactor - extract
+        if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, getActiveUnit().getRef()))) {
+            return false;
+        }
         Boolean result = null;
         ActionInput action = null;
         boolean channeling = false;

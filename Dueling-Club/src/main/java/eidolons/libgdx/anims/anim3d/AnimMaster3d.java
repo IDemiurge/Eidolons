@@ -253,7 +253,7 @@ public class AnimMaster3d {
                     actionName = getActionAtlasKey(activeObj);
             }
         Boolean offhand = null;
-        if (projection != null)
+//       TODO !!! if (projection != null)
             if (isAssymetric(weapon.getBaseTypeName()))
                 offhand = (activeObj.isOffhand());
 
@@ -312,6 +312,8 @@ public class AnimMaster3d {
     private static boolean isAssymetric(String activeWeapon) {
         switch (activeWeapon) {
             case "Fist":
+                return true;
+            case "Armored Fist":
                 return true;
 
         }

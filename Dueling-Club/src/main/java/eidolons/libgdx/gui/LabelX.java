@@ -44,6 +44,12 @@ public class LabelX extends VisLabel {
     }
 
     @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
+        setMaxWidth(width);
+    }
+
+    @Override
     public void draw(Batch batch, float parentAlpha) {
         float a = getStyle().fontColor.a;
         getStyle().fontColor.a = getColor().a * parentAlpha;

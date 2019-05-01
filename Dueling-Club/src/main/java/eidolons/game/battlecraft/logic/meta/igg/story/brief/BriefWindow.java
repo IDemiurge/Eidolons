@@ -21,6 +21,7 @@ public class BriefWindow extends TablePanelX {
         this.images = images;
         addActor(img = new FadeImageContainer());
         GuiEventManager.bind(GuiEventType.BRIEFING_NEXT, p -> next());
+        next();
     }
     public void next(){
         if (i >= images.length) {
@@ -38,5 +39,7 @@ public class BriefWindow extends TablePanelX {
     public void updateAct(float delta) {
         super.updateAct(delta);
         img.setImage(getUserObject().toString());
+        setWidth(img.getWidth());
+        setHeight(img.getHeight());
     }
 }

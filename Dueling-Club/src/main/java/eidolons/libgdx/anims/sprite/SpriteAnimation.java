@@ -200,7 +200,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         if (color != null)
             sprite.setColor(color);
+        if (!batch.isDrawing()) {
+            batch.begin();
+        }
         sprite.draw(batch);
+
     }
 
 

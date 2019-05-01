@@ -52,8 +52,8 @@ public class ShaderBatch extends SpriteBatch {
     private float brightness = 0f;
     private float contrast = 1f;
 
-    private static float globalBrightness = 0f;
-    private static float globalContrast = 1f;
+    private static float globalBrightness = 0.4f;
+    private static float globalContrast = 1.5f;
 
     public ShaderBatch() {
         super();
@@ -61,40 +61,54 @@ public class ShaderBatch extends SpriteBatch {
         shader = new ShaderProgram(vertexShader, fragmentShader);
         isCompiled = shader.isCompiled();
         log = shader.getLog();
-        if (isCompiled) {
-            setShader(shader);
-            shader.begin();
-            setBrightnessLoc(shader.getUniformLocation("brightness"));
-            setContrastLoc(shader.getUniformLocation("contrast"));
-            shader.end();
-        }
+//        if (isCompiled) {
+////            setShader(shader);
+////            shader.begin();
+////            setBrightnessLoc(shader.getUniformLocation("brightness"));
+////            setContrastLoc(shader.getUniformLocation("contrast"));
+////            shader.end();
+////        }
 
     }
 
     @Override
     public void end() {
-        try {
+
+        if (isCinematicMode()) {
+            if (!isDrawing())
+                return;
             super.end();
-        } catch (IllegalStateException e) {
-            super.begin();
-            super.end();
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        } else
+            try {
+                super.end();
+            } catch (IllegalStateException e) {
+                super.begin();
+                super.end();
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+    }
+
+    private boolean isCinematicMode() {
+        return false;
     }
 
     public void begin() {
+        if (isCinematicMode()) {
+        if (isDrawing())
+            super.end();
+        } else
         try {
-            super.begin();
+        super.begin();
         } catch (IllegalStateException e) {
             super.end();
             super.begin();
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        if (getBrightnessLoc() != -1 && shader != null)
-            shader.setUniformf(getBrightnessLoc(), getBrightness() * globalBrightness);
-        if (getContrastLoc() != -1 && shader != null)
-            shader.setUniformf(getContrastLoc(), getContrast() * globalContrast);
+//        if (getBrightnessLoc() != -1 && shader != null)
+//            shader.setUniformf(getBrightnessLoc(), getBrightness() * globalBrightness);
+//        if (getContrastLoc() != -1 && shader != null)
+//            shader.setUniformf(getContrastLoc(), getContrast() * globalContrast);
     }
 
     public static void setGlobalBrightness(float globalBrightness) {

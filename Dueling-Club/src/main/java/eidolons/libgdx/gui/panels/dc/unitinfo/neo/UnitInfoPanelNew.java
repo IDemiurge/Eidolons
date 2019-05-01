@@ -28,7 +28,7 @@ import main.content.values.properties.G_PROPS;
  * > Readable and non-scary
  * > Use ninepatches properly and generated tiled panels
  * <p>
- * Layout changes
+* Layout changes
  * <p>
  * The core is the FullParamTable
  * <p>
@@ -56,6 +56,8 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     private final AdjustingVerticalGroup left;
     private final AdjustingVerticalGroup right;
     private final HqVerticalValueTable mainInfoPanel;
+    private final UnitStatTabs tabs;
+
     AvatarPanel avatarPanel;
     UnitInfoWeapon weapon;
     UnitInfoWeapon secondWeapon;
@@ -77,6 +79,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         float max = Math.max(left.getHeight(), right.getHeight());
         left.setY(max - left.getHeight());
         right.setY(max - right.getHeight());
+//        ta1bs.setPosition(90, -40);
     }
 
     private UnitInfoPanelNew() {
@@ -101,20 +104,23 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         center.addActor(avatarPanel = new AvatarPanel());
         center.addActor(mainInfoPanel = new HqVerticalValueTable(false, G_PROPS.NAME,
          G_PROPS.RACE,  PARAMS.LEVEL ));
+        mainInfoPanel.setX(30);
         mainInfoPanel.setDisplayPropNames(false);
         mainInfoPanel.setDisplayColumn(false);
 
         //column1
         addActor(weapon);
-        weapon.setPosition((getWidth() - avatarPanel.getWidth() - weapon.getWidth()) / 2, GDX.top(weapon));
+        weapon.setPosition((getWidth() - avatarPanel.getWidth() - weapon.getWidth()*2) / 2+186, GDX.top(weapon)+76);
 
         addActor(secondWeapon = new UnitInfoWeapon(true));
-        secondWeapon.setPosition(avatarPanel.getWidth() + secondWeapon.getWidth(), GDX.top(secondWeapon));
+        secondWeapon.setPosition(weapon.getX()+ secondWeapon.getWidth()+avatarPanel.getWidth()+86
+//                avatarPanel.getWidth() + secondWeapon.getWidth()+86
+                , GDX.top(secondWeapon)+76);
 
         left.addActor(pointsPanel = new PointsPanel());
-
-        left.addActor(new UnitStatTabs(left.getWidth(), getHeight()-weapon.getHeight()-64));
-        left.addActor(buffPanelSimple = new BuffPanelSimple());
+        pointsPanel.setY(-42);
+        left.addActor(tabs =  new UnitStatTabs(left.getWidth(), getHeight()-weapon.getHeight()-64));
+//        left.addActor(buffPanelSimple = new BuffPanelSimple());
 
         //column2
         //        column2.addActor(mainValuesPanel = new HqVerticalValueTable(G_PROPS.NAME, PARAMS.LEVEL));
@@ -132,6 +138,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         right.addActor(statusPanel = new StatusPanel());
         // column3.addActor(modePanel= new ModePanel());
         right.addActor(resistPanel = new ResistInfoTabsPanel());
+        resistPanel.setY(-42);
         right.addActor(traitsPanel = new HqTraitsPanel());
 
         center.pack();

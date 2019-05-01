@@ -303,6 +303,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         //        }
     }
 
+    @Override
+    public CustomSpriteBatch getBatch() {
+        return super.getBatch();
+    }
+
     protected boolean isLoadingWithVideo() {
         return true;
     }

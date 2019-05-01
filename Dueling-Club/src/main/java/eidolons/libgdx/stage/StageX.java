@@ -15,9 +15,7 @@ public class StageX extends Stage {
     public StageX() {
     }
 
-    public StageX(Viewport viewport) {
-        super(viewport);
-    }
+
 
     public StageX(Viewport viewport, Batch batch) {
         super(viewport, batch);

@@ -29,6 +29,8 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+import java.util.ArrayList;
+
 /**
  * Created by JustMe on 9/9/2017.
  */
@@ -41,11 +43,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float ai_delta = 0;
     private float delta;
     private boolean guiDirtyFlag;
-    private static  float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
-      getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
-    private static float speed=defaultSpeed;
-    private float visibilityResetPeriod=0.2f;
-    private float visibilityResetTimer= visibilityResetPeriod;
+    private static float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
+            getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+    private static float speed = defaultSpeed;
+    private float visibilityResetPeriod = 0.2f;
+    private float visibilityResetTimer = visibilityResetPeriod;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -68,8 +70,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public String getDisplayedTime() {
         return NumberUtils.getFormattedTimeString(((int) time / 3600), 2)
-         + ":" + NumberUtils.getFormattedTimeString(((int) time / 60), 2)
-         + ":" + NumberUtils.getFormattedTimeString(((int) time % 60), 2);
+                + ":" + NumberUtils.getFormattedTimeString(((int) time / 60), 2)
+                + ":" + NumberUtils.getFormattedTimeString(((int) time % 60), 2);
         //        return TimeMaster.getFormattedTime((long) time, true, false);
     }
 
@@ -83,13 +85,15 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //        return ai.getExplorationTimePassed();
     }
 
-    public void killVisibilityResetTimer(   ) {
-            visibilityResetTimer = 0;
+    public void killVisibilityResetTimer() {
+        visibilityResetTimer = 0;
     }
-    public void resetVisibilityResetTimer(   ) {
-        if (visibilityResetTimer<0)
+
+    public void resetVisibilityResetTimer() {
+        if (visibilityResetTimer < 0)
             visibilityResetTimer = 1;
     }
+
     public void act(float delta) {
         delta *= speed;
         time += delta;
@@ -156,9 +160,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             DungeonScreen.getInstance().setSpeed(null);
             ExplorationMaster.setWaiting(false);
             WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
-    });
+        });
         return true;
-}
+    }
 
     public void checkTimedEvents() {
         delta = time - lastTimeChecked;
@@ -233,8 +237,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processCustomRules() {
         // List<RoundRule> list = new ArrayList<>();
-
-        master.getGame().getUnits().forEach(unit -> {
+        for (Unit unit : new ArrayList<>(master.getGame().getUnits())) {
             float delta = getRoundEffectPeriod() / AtbController.SECONDS_IN_ROUND;
             unit.getResetter().regenerateToughness(delta);
             for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
@@ -246,7 +249,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                             master.getGame().getStateManager().reset(unit);
                 }
             }
-        });
+        }
+
     }
 
     private void processCounterRules() {
@@ -287,11 +291,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         float delta = time - last;
         for (PARAMETER param : DC_ContentValsManager.REGENERATED_PARAMS) {
             int value = getParamRestoration(delta, param,
-             unit.getParamFloat(ContentValsManager.getRegenParam(param))
+                    unit.getParamFloat(ContentValsManager.getRegenParam(param))
             );
             if (value > 0) {
                 unit.modifyParameter(ContentValsManager.getCurrentParam(param), value,
-                 unit.getIntParam(param), true);
+                        unit.getIntParam(param), true);
                 unit.getAI().setExplorationTimeOfRegenEffects(time);
             }
         }
@@ -308,14 +312,14 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         PARAMETER param = (ContentValsManager.getPARAM(mode.getParameter()));
         PARAMETER base = ContentValsManager.getBaseParameterFromCurrent(param);
         int value = getParamRestoration(delta,
-         base, 1);
+                base, 1);
         int max =
-         base == PARAMS.FOCUS ? unit.getIntParam(PARAMS.STARTING_FOCUS) * 3 / 2 :
-          unit.getIntParam(base);
+                base == PARAMS.FOCUS ? unit.getIntParam(PARAMS.STARTING_FOCUS) * 3 / 2 :
+                        unit.getIntParam(base);
 
         if (base == PARAMS.FOCUS)
             max += unit.getIntParam(PARAMS.FOCUS_RETAINMENT)
-             * max / 100;
+                    * max / 100;
 
         int min = 0;
         if (unit.getGame().isDebugMode())
@@ -385,14 +389,14 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (master.getGame().isPaused())
             return;
         int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
-         GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
-        if (CoreEngine.isFastMode()){
-            defaultWaitTime*=100;
+                GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
+        if (CoreEngine.isFastMode()) {
+            defaultWaitTime *= 100;
         }
         wait(defaultWaitTime, false);
     }
 
     public boolean isPeriodResetRunning() {
-        return visibilityResetTimer>=0; //visibilityResetPeriod/2;
+        return visibilityResetTimer >= 0; //visibilityResetPeriod/2;
     }
 }

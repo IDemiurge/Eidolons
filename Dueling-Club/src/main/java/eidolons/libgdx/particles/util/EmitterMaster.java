@@ -217,7 +217,7 @@ public class EmitterMaster extends GdxUtil {
             if (pack) {
                 String atlasName = getVfxAtlasName(type);
                 String atlasPath = getVfxAtlasPath(atlasName);
-                Settings settings = TexturePackerLaunch.getDefaultSettings();
+                Settings settings = TexturePackerLaunch.getSettings();
                 settings.combineSubdirectories = true;
                 settings.jpegQuality = 0.9f;
                 TexturePackerLaunch.pack(imagesPath, atlasPath, atlasName, settings);

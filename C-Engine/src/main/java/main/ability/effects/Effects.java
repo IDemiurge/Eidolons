@@ -40,6 +40,10 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
         this(effect, effect2, effect3, effect4);
         add(effect5);
     }
+    public Effects(Effect effect, Effect effect2, Effect effect3, Effect effect4, Effect effect5, Effect effect6) {
+        this(effect, effect2, effect3, effect4, effect5);
+        add(effect6);
+    }
 
     public Effects(Effect[] effs) {
         this();

@@ -55,7 +55,14 @@ public class LastSeenView extends GenericGridView {
 
     @Override
     protected void updateVisible() {
-        super.updateVisible();
+        if (emblemImage != null)
+            emblemImage.setVisible(false);
+        if (modeImage != null)
+            modeImage.setVisible(false);
+        if (arrow != null)
+            arrow.setVisible(false);
+        if (getHpBar() != null)
+            getHpBar().setVisible(false);
     }
 
     @Override
@@ -75,7 +82,7 @@ public class LastSeenView extends GenericGridView {
     @Override
     public String toString() {
         return isVisible() + " LSV for " + getParentView() + getColor().a +
-         getActionsOfClass(AlphaAction.class);
+                getActionsOfClass(AlphaAction.class);
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Set;
 public class AggroMaster extends ExplorationHandler {
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
-    private static final int DEFAULT_ENGAGEMENT_DURATION = 3;
+    private static final int DEFAULT_ENGAGEMENT_DURATION = 2;
     private static boolean aiTestOn = true;
     private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
@@ -83,6 +83,9 @@ public class AggroMaster extends ExplorationHandler {
             if (unit.isUnconscious())
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
+                continue;
+            if (PositionMaster.getExactDistance(hero, unit)>=
+                    4+ unit.getSightRangeTowards(hero))
                 continue;
             if (unit.getAI().getEngagementDuration() > 0) {
                 set.add(unit);

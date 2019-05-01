@@ -286,7 +286,7 @@ public class HitAnim extends ActionAnim {
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
 
-//        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
+        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
         add();
         //        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());

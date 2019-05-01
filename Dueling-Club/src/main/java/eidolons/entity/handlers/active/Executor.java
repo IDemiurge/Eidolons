@@ -24,6 +24,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.system.options.GameplayOptions;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -387,11 +388,10 @@ public class Executor extends ActiveHandler {
          -AtbMaster.reduceReadiness(getAction()));
 
 
-
-        log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
+getGame().getLogManager().log(GameplayOptions.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
          -initiativeCost +
          "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
-         "%", true);
+         "%" );
 
     }
 

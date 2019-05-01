@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.system.text.DC_LogManager;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -20,8 +21,11 @@ public class GameEventHandler extends MetaGameHandler {
 
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
-
-                case DOOR_CLOSES:
+                case UNIT_TURN_STARTED:
+                    getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
+                            + event.getRef().getSourceObj().getNameIfKnown());
+                    break;
+                    case DOOR_CLOSES:
                     TipMessageMaster.testChained();
                     break;
                 case DOOR_OPENS:

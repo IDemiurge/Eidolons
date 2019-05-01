@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqParamPanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqScrollPropPanel;
+import eidolons.libgdx.gui.panels.headquarters.hero.HqScrolledValuePanel;
 
 /**
  * Created by JustMe on 11/14/2018.
@@ -34,23 +35,31 @@ public class UnitInfoTabs extends TabbedPanel {
 
             @Override
             protected float getDefaultWidth() {
-                return(width);
+                return (width);
             }
         };
         descriptionPanel.setSize(
-        (width), (height));
+                (width), (height));
 
         propPanel = new HqScrollPropPanel(
-         (width), (height));
+                (width), (height));
 
         addTab(main, "Main");
         addTab(descriptionPanel, "Lore");
-        addTab(propPanel, "Other");
+//        addTab(propPanel, "Other");
+
+        scrolledValuePanel = new HqScrolledValuePanel(
+                GdxMaster.adjustWidth(width), GdxMaster.adjustHeight(height));
+
+        addTab(scrolledValuePanel, "Stats");
 //        main.setSize(width,height);
-        descriptionPanel.setSize(width,height);
+        descriptionPanel.setSize(width, height);
         tabSelected("Main");
         setSize(GdxMaster.adjustWidth(width), (height));
     }
+
+    private final HqScrolledValuePanel scrolledValuePanel;
+
 
     private float getWidthCoef() {
         return 1.15f;
@@ -59,10 +68,12 @@ public class UnitInfoTabs extends TabbedPanel {
     private float getHeightCoef() {
         return 1f;
     }
+
     protected TablePanelX createContentsTable() {
         return new TablePanelX<>(
-         getWidth()*getWidthCoef(),getHeight()* getHeightCoef());
+                getWidth() * getWidthCoef(), getHeight() * getHeightCoef());
     }
+
     @Override
     protected Cell setDisplayedActor(Actor actor) {
         Cell cell = super.setDisplayedActor(actor);
@@ -71,6 +82,10 @@ public class UnitInfoTabs extends TabbedPanel {
             cell.setActorX(0);
             cell.padTop(100);
             return cell;
+        }
+        if (actor == scrolledValuePanel) {
+            scrolledValuePanel.setUserObject(getUserObject());
+            scrolledValuePanel.updateAct(0);
         }
         return cell;
     }

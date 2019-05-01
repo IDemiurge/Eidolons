@@ -24,7 +24,6 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
 //          : TextureCache.getOrCreateR("ui/components/dc/infopanel/weapon background.png")
 //        ));
         setSize(455, 340);
-        setBackground(NinePatchFactory.getLightDecorPanelDrawable());
 
         float xDif =48;
         float yDif=104;

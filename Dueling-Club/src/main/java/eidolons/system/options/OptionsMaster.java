@@ -466,8 +466,12 @@ public class OptionsMaster {
             content.append(XML_Converter.closeXml(sub.toString()) + StringMaster.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
+        if (isLocalOptionsPreferred()) {
+            FileManager.write(content.toString(), getLocalOptionsPath());
+        } else {
         FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
         FileManager.write(content.toString(), getGlobalOptionsPath());
+        }
     }
 
     private static String getGlobalOptionsPath() {
@@ -756,7 +760,7 @@ public class OptionsMaster {
         applyOptions();
     }
 
-    public static SystemOptions getEngineOptions() {
+    public static SystemOptions getSystemOptions() {
         return (SystemOptions) getOptions(OPTIONS_GROUP.SYSTEM);
     }
 

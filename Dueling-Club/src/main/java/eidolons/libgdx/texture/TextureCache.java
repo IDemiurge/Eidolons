@@ -52,9 +52,8 @@ public class TextureCache {
     private boolean silent;
 
     private TextureCache() {
-        if (uiAtlasesOn == null) {
 //            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE() ;
-        }
+
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
