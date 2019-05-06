@@ -19,7 +19,10 @@ import java.util.Map;
 public enum DC_TYPE implements OBJ_TYPE {
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
     SPELLS("spells", G_PROPS.ASPECT, 1, G_PROPS.SPELL_GROUP),
-    CHARS("chars", G_PROPS.RACE, 2, G_PROPS.GROUP),
+    CHARS("chars",
+//            G_PROPS.GROUP,
+            G_PROPS.RACE,
+            2, G_PROPS.GROUP ),
 
     ABILS("abils", G_PROPS.ABILITY_TYPE, 3, G_PROPS.ABILITY_GROUP) {
         public boolean isTreeEditType() {

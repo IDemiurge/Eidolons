@@ -17,6 +17,8 @@ public class BaseSlotPanel extends TablePanel {
     protected Map<PagesMod, TablePanel> modTableMap = new HashMap<>();
 
     protected PagesMod activePage = PagesMod.NONE;
+    private float beforeReset;
+    private float resetPeriod=4f;
 
     public BaseSlotPanel(int imageSize) {
         this.imageSize = imageSize;
@@ -32,9 +34,11 @@ public class BaseSlotPanel extends TablePanel {
     @Override
     public void act(float delta) {
         super.act(delta);
-
+        beforeReset -= delta;
         PagesMod mod = PagesMod.NONE;
-
+        if (beforeReset <= 0) {
+            beforeReset = resetPeriod;
+        } else {
         PagesMod[] pagesMods = PagesMod.getValues();
         for (int i = 0, pagesModsLength = pagesMods.length; i < pagesModsLength; i++) {
             PagesMod pagesMod = pagesMods[i];
@@ -42,6 +46,7 @@ public class BaseSlotPanel extends TablePanel {
                 mod = pagesMod;
                 break;
             }
+        }
         }
         if (mod != activePage) {
             if (modTableMap.containsKey(mod)) {
@@ -98,7 +103,7 @@ public class BaseSlotPanel extends TablePanel {
         TablePanel view = modTableMap.get(activePage);
         if (view == null) {
             if (modTableMap.isEmpty())
-            return;
+                return;
             else
                 view = modTableMap.values().iterator().next();
         }

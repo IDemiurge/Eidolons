@@ -45,7 +45,7 @@ public class AtbHelper {
 
     public void startCombat(boolean all_or_closest_group) {
 
-        if (game.getPlayer(false).getControlledUnits().isEmpty()) {
+        if (game.getPlayer(false).collectControlledUnits().isEmpty()) {
             game.getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
             return;
         }

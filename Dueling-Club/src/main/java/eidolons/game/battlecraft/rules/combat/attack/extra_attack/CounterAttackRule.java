@@ -6,8 +6,13 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.UnitEnums;
+import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.game.logic.event.Event;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -55,14 +60,14 @@ public class CounterAttackRule {
                //           attack.getAttackedUnit().
                canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
              ) {
-                counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit());
+                counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit(), attack.getAttacker());
             }
 
         return counter;
 
     }
 
-    private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
+    private ActiveObj counter(DC_ActiveObj action, Unit attacked, Unit attacker) {
         //        game.getLog().combatLog();
 //        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
 //         + action.getOwnerUnit());
@@ -71,10 +76,20 @@ public class CounterAttackRule {
         if (activeObj == null) {
             game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " fails to counter-attack against " +
              action.getOwnerUnit());
+            return null;
         }
         game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " makes a counter-attack against " +
          action.getOwnerUnit() +
          " " + StringMaster.wrapInParenthesis(activeObj.getName()));
+
+
+        Ref ref =  (attacked.getRef()).getCopy();
+        ref.setTarget(attacker.getId());
+        game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_COUNTER, ref));
+
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
+                "Counter Attack!", attacked);
+
         return activeObj;
     }
 }

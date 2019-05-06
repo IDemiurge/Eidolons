@@ -8,6 +8,7 @@ import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.texture.Images;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
@@ -17,6 +18,7 @@ import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.enums.GenericEnums.STD_BOOLS;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -169,13 +171,17 @@ public class ContentGenerator {
 
     public static final void afterRead() {
         clearGenType();
-        if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
+
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+        if (DataManager.isTypesRead(DC_TYPE.ITEMS))
+            generateConsumableItemsFromOverlaying();
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
             generateIndestructibleWalls();
-        if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
             generateFalseWalls();
-        if (!DataManager.getTypes(DC_TYPE.SCENARIOS).isEmpty())
+        if (DataManager.isTypesRead(DC_TYPE.SCENARIOS))
             generateRngScenarios();
-        if (!DataManager.getTypes(DC_TYPE.PARTY).isEmpty())
+        if (DataManager.isTypesRead(DC_TYPE.PARTY))
             try {
                 markPartyUsedContent();
             } catch (Exception e) {
@@ -236,7 +242,21 @@ public class ContentGenerator {
         }
     }
 
-    public static void generateFalseWalls() {
+    public static void generateConsumableItemsFromOverlaying() {
+        ObjType baseType= DataManager.getType("Consumable", DC_TYPE.ITEMS);
+        for (ObjType type : DataManager.getTypes(
+                DC_TYPE.BF_OBJ)) {
+            if (!type.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.CONSUMABLE.toString()) )
+                continue;
+            ObjType newType = new ObjType(
+                    InteractiveObjMaster.getConsumableItemName(type.getName()),
+                    baseType);
+            newType.setImage(type.getImagePath());
+            DataManager.addType(newType);
+            newType.setGenerated(false); //to save it!
+        }
+    }
+        public static void generateFalseWalls() {
         for (ObjType type : DataManager.getTypesGroup(
          DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
             if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE)||

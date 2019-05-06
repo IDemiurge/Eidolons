@@ -6,7 +6,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
-public class DialogueView extends TablePanelX {
+public class DialogueView extends TablePanelX  implements Scene{
     DialoguePortraitContainer portraitLeft;
     DialoguePortraitContainer portraitRight;  //IDEA zoom into the portrait sometimes!
     // or flash it with a shader to signify some emotion ... use dif borders

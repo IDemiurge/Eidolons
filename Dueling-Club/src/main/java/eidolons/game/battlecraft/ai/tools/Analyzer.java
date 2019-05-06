@@ -118,7 +118,7 @@ public class Analyzer extends AiHandler {
 
     public static boolean hasSpecialActions(Unit unit) {
         DequeImpl<DC_UnitAction> actions = ((unit.getActionMap().get(
-         ACTION_TYPE.SPECIAL_ACTION)));
+                ACTION_TYPE.SPECIAL_ACTION)));
         if (!ListMaster.isNotEmpty(actions))
             return false;
         for (DC_UnitAction sub : actions) {
@@ -194,7 +194,7 @@ public class Analyzer extends AiHandler {
             return false;
         }
         Coordinates c = unit.getCoordinates().getAdjacentCoordinate(
-         unit.getFacing().getDirection());
+                unit.getFacing().getDirection());
         if (c == null) {
             return false;
         }
@@ -207,9 +207,9 @@ public class Analyzer extends AiHandler {
         for (DC_Obj obj : ai.getUnit().getOwner().getLastSeenCache().keySet()) {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
-                 .getLastSeenCache().get(obj);
+                        .getLastSeenCache().get(obj);
                 list.add(obj.getGame().getCellByCoordinate(
-                 coordinates));
+                        coordinates));
             }
         }
 
@@ -245,7 +245,7 @@ public class Analyzer extends AiHandler {
 
     public static List<? extends DC_Obj> getEnemies(Unit unit,
                                                     boolean checkAct, boolean
-                                                     checkAttack, boolean adjacentOnly) {
+                                                            checkAttack, boolean adjacentOnly) {
         return getUnits(unit, true, checkAct, checkAttack, adjacentOnly);
     }
 
@@ -270,8 +270,7 @@ public class Analyzer extends AiHandler {
 //                list.add(obj);
 //            }
         if (enemy_or_ally_only != null) {
-            if (enemy_or_ally_only)
-            {
+            if (enemy_or_ally_only) {
                 list.removeIf(e -> e.getOwner().equals(unit.getOwner()));
                 list.removeIf(e -> e.getOwner().equals(DC_Player.NEUTRAL));
             }
@@ -313,11 +312,12 @@ public class Analyzer extends AiHandler {
                     continue;
                 }
             }
-            if (vision_no_vision) {
-                if (!VisionManager.checkVisible(unit, true)) {
-                    continue;
+            if (!unit.isScion())
+                if (vision_no_vision) {
+                    if (!VisionManager.checkVisible(unit, true)) {
+                        continue;
+                    }
                 }
-            }
             if (!dead) {
                 if (unit.isDead()) {
                     continue;
@@ -338,7 +338,7 @@ public class Analyzer extends AiHandler {
                                       Boolean enemy_or_ally_only, boolean checkAct,
                                       boolean checkAttack, boolean adjacent) {
         Collection<Coordinates> coordinatesToCheck = adjacent ? unit.getCoordinates()
-         .getAdjacentCoordinates() : null; //unit.getGame().getCoordinates();
+                .getAdjacentCoordinates() : null; //unit.getGame().getCoordinates();
         return getUnits(unit, enemy_or_ally_only, checkAct, checkAttack, coordinatesToCheck);
     }
 
@@ -352,9 +352,9 @@ public class Analyzer extends AiHandler {
         // turning sequence if necessary
         // when stuck, "Cower" mode would be nice to have :)
 
-		/*
+        /*
          * let's say, all *detected* cells that are not adjacent to enemies!
-		 */
+         */
         // TODO performance dicatates adjacent only...
         return getCells(ai, true, false, true);
 
@@ -426,7 +426,7 @@ public class Analyzer extends AiHandler {
 
             if (adjacent) {
                 if (!obj.getCoordinates().isAdjacent(
-                 targetUnit.getCoordinates())) {
+                        targetUnit.getCoordinates())) {
                     continue;
                 }
             }
@@ -506,10 +506,10 @@ public class Analyzer extends AiHandler {
         cells.removeIf(cell -> {
             boolean result = true;
             if (ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof
-             BattleFieldObject) {
+                    BattleFieldObject) {
                 if (
-                 ((BattleFieldObject)
-                  ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
+                        ((BattleFieldObject)
+                                ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
                     result = false;
             }
             return result;
@@ -519,7 +519,7 @@ public class Analyzer extends AiHandler {
 
     private static Set<DC_Cell> getCorpseCells(Unit unit) {
         return unit.getGame().getCellsForCoordinates(
-         unit.getGame().getGraveyardManager().getCorpseCells());
+                unit.getGame().getGraveyardManager().getCorpseCells());
     }
 
     public static List<? extends DC_Obj> getZoneDamageCells(Unit unit) {
@@ -546,16 +546,16 @@ public class Analyzer extends AiHandler {
         List<DC_Cell> cells = getLastSeenEnemyCells(ai);
         if (!cells.isEmpty()) {
             return new ListMaster<DC_Cell>()
-             .getList(new RandomWizard<DC_Cell>()
-              .getRandomListItem(cells));
+                    .getList(new RandomWizard<DC_Cell>()
+                            .getRandomListItem(cells));
         }
         return new ListMaster<DC_Cell>().getList(ai
-         .getUnit()
-         .getGame()
-         .getCellByCoordinate(
-          new RandomWizard<Coordinates>().getRandomSetItem(ai
-           .getUnit().getCoordinates()
-           .getAdjacentCoordinates())));
+                .getUnit()
+                .getGame()
+                .getCellByCoordinate(
+                        new RandomWizard<Coordinates>().getRandomSetItem(ai
+                                .getUnit().getCoordinates()
+                                .getAdjacentCoordinates())));
         // List<DC_Cell> list = new ArrayList<>();
         //
         // DC_HeroObj unit = ai.getUnit();
@@ -586,8 +586,8 @@ public class Analyzer extends AiHandler {
             return null;
         }
         list.sort(
-         SortMaster.getObjSorterByExpression(
-          (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
+                SortMaster.getObjSorterByExpression(
+                        (t) -> PositionMaster.getDistance(t.getCoordinates(), unit.getCoordinates())));
         return (Unit) list.get(0);
     }
 

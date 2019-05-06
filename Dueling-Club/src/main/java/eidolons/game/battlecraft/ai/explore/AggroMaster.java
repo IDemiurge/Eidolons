@@ -31,7 +31,7 @@ public class AggroMaster extends ExplorationHandler {
     public static List<Unit> getAggroGroup() {
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
-        for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
+        for (Unit ally : DC_Game.game.getPlayer(true).collectControlledUnits_()) {
             //            if (sightRequiredForAggro) {
             //                if (!VisionManager.checkDetected(ally, true)) {
             //                    continue;

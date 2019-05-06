@@ -1,14 +1,13 @@
 package eidolons.system.text;
 
 import com.badlogic.gdx.utils.StringBuilder;
+import com.bitfire.utils.ItemsManager;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.texture.Images;
-import eidolons.system.options.GameplayOptions.LOGGING_DETAIL_LEVEL;
-import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -26,6 +25,7 @@ import main.system.images.ImageManager;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogManager;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +39,7 @@ public class DC_LogManager extends LogManager {
     public static final String IMAGE_SEPARATOR = "[img==]";
     public static final String UNIT_TURN_PREFIX = "Active: ";
     private int logLevel = 1;
+    private List<String> fullEntryList=    new ArrayList<>() ;
 
     public DC_LogManager(Game game) {
         super(game);
@@ -205,9 +206,10 @@ public class DC_LogManager extends LogManager {
     }
 
     public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
+//    TODO     fullEntryList.add(entry);
         int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
          if (logLevel < i)
-            return false;
+             return false;
 
         return super.log(LOG.GAME_INFO, entry);
     }

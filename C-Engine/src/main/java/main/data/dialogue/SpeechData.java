@@ -30,6 +30,7 @@ public class SpeechData extends DataUnit<SPEECH_VALUE> {
         for (DataString string : strings) {
             addValue(string.getType(), string.getData());
         }
+        addValue(SPEECH_VALUE.SPRITE, "atlas.txt");
     }
 
     public DataString[] getStrings() {

@@ -42,7 +42,7 @@ public class WorkspaceManager {
     private static final String DEFAULT_WORKSPACE_NAME = "default_workspace.xml";
     private static final boolean LAYER_DOWN = false;
     private static final String METADATA = "METADATA: ";
-    public static boolean ADD_WORKSPACE_TAB_ON_INIT = true;
+    public static boolean ADD_WORKSPACE_TAB_ON_INIT = false;
     private static List<Workspace> workspaces = new ArrayList<>();
     private Workspace activeWorkspace;
 

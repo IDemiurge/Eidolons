@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -633,4 +634,17 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
 
+    public boolean isBoss() {
+        return false;
+    }
+
+    public String getInfo() {
+        return getNameAndCoordinate() + " " ;
+    }
+
+    public void removeFromGame() {
+        getVisionController().reset();
+        getGame().remove(this);
+
+    }
 }

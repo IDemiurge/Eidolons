@@ -48,7 +48,11 @@ public class TableDataManager {
     }
 
     public static List<String> getTreeTabSubGroups(String key) {
-        return new ArrayList<>(XML_Reader.getSubGroups(key));
+        Set<String> set = XML_Reader.getSubGroups(key);
+        if (set == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(set);
     }
 
     public static Vector<Vector<String>> getTypeData(Entity entity) {

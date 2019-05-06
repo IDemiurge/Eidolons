@@ -36,20 +36,23 @@ public class BriefText extends TablePanelX {
         continueBtn.setPosition(GdxMaster.centerWidth(continueBtn), -continueBtn.getHeight());
         continueBtn.setRunnable(() -> {
             nextMsg();
-            GuiEventManager.trigger(GuiEventType.BRIEFING_NEXT);
         });
 
         nextMsg();
 
     }
 
+    public void setMessages(String[] messages) {
+        this.messages = messages;
+    }
 
     private void nextMsg() {
-        if (i >= messages.length) {
+        if (isDone()) {
             GuiEventManager.trigger(GuiEventType.BRIEFING_FINISHED);
             WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.BRIEFING_COMPLETE, true);
             return;
         }
+        GuiEventManager.trigger(GuiEventType.BRIEFING_NEXT);
         setUserObject(messages[i++]);
         continueBtn.makeActive();
     }
@@ -87,4 +90,7 @@ public class BriefText extends TablePanelX {
         return 3f;
     }
 
+    public boolean isDone() {
+        return i >= messages.length;
+    }
 }

@@ -6,14 +6,17 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngUnitProvider;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.content.enums.meta.QuestEnums.QUEST_TIME_LIMIT;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -44,6 +47,9 @@ public class QuestCreator extends QuestHandler {
     public static Integer getNumberRequired(DungeonQuest quest) {
         if (QuestMaster.TEST_MODE)
             return 1;
+        if (quest.getObjType().getIntParam(MACRO_PARAMS.QUEST_AMOUNT)>0){
+            return quest.getObjType().getIntParam(MACRO_PARAMS.QUEST_AMOUNT);
+        }
         switch (quest.getType()) {
             case BOSS:
                 return 1;
@@ -95,7 +101,7 @@ public class QuestCreator extends QuestHandler {
             try {
                 UNIT_GROUP unitGroup = RngUnitProvider.getUnitGroup(surface, style).getRandomByWeight();
                 pool = DataManager.getFilteredTypes(DC_TYPE.UNITS,
-                 unitGroup.toString(), G_PROPS.UNIT_GROUP);
+                        unitGroup.toString(), G_PROPS.UNIT_GROUP);
                 filter(pool, powerRange, powerLevel);
                 if (!pool.isEmpty()) {
                     break;
@@ -108,18 +114,18 @@ public class QuestCreator extends QuestHandler {
             }
         }
         new SortMaster<ObjType>().sortByExpression_(pool,
-         type -> RandomWizard.getRandomInt(20) + (int) (RandomWizard.getRandomFloatBetween(0.5f, 2) * type.getIntParam(PARAMS.POWER)));
+                type -> RandomWizard.getRandomInt(20) + (int) (RandomWizard.getRandomFloatBetween(0.5f, 2) * type.getIntParam(PARAMS.POWER)));
         return pool.get(0);
     }
 
     private static void filter(List<ObjType> pool, float powerRange, int powerLevel) {
         if (powerRange < 0) {
             pool.removeIf(type ->
-             (1 - type.getIntParam(PARAMS.POWER)) / powerLevel < powerRange
-            || type.getName().contains("Placeholder"));
+                    (1 - type.getIntParam(PARAMS.POWER)) / powerLevel < powerRange
+                            || type.getName().contains("Placeholder"));
         } else {
             pool.removeIf(type -> Math.abs(1 -
-             type.getIntParam(PARAMS.POWER) / powerLevel) > powerRange);
+                    type.getIntParam(PARAMS.POWER) / powerLevel) > powerRange);
         }
     }
 
@@ -132,11 +138,11 @@ public class QuestCreator extends QuestHandler {
                                       DUNGEON_STYLE style) {
         boolean elite = RandomWizard.random();
         ObjType type = tryGetQuestUnitType(elite ? RngUnitProvider.ELITE : RngUnitProvider.REGULAR,
-         powerLevel, -0.25f, quest, style);
+                powerLevel, -0.25f, quest, style);
         if (type == null) {
             elite = !elite;
             type = tryGetQuestUnitType(elite ? RngUnitProvider.ELITE : RngUnitProvider.REGULAR,
-             powerLevel, -0.33f, quest, style);
+                    powerLevel, -0.33f, quest, style);
         }
         return type;
     }
@@ -166,8 +172,8 @@ public class QuestCreator extends QuestHandler {
             base = base.getType();
         }
         for (MATERIAL material : new HashSet<>(Arrays.asList(ContainerMaster.getMaterials(
-         RandomWizard.random() ?
-          ITEM_RARITY.RARE : ITEM_RARITY.EXCEPTIONAL)))) {
+                RandomWizard.random() ?
+                        ITEM_RARITY.RARE : ITEM_RARITY.EXCEPTIONAL)))) {
             if (ItemMaster.checkMaterial(base, material)) {
                 m = material;
                 break;
@@ -182,7 +188,22 @@ public class QuestCreator extends QuestHandler {
     public static ObjType getItemTypeCommon(int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
         //        quest.getArg().toString()
         //        DataManager.getTypesGroup()
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+                C_OBJ_TYPE.ITEMS);
+        if (custom != null) {
+            return custom;
+        }
         return DataManager.getType("Food", DC_TYPE.ITEMS);
+    }
+
+    public static ObjType getOverlayObjType(DungeonQuest quest) {
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+                DC_TYPE.BF_OBJ);
+        if (custom != null) {
+            return custom;
+        }
+        return
+                DataManager.getType(BfObjEnums.BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE.getName(), DC_TYPE.BF_OBJ);
     }
 
 

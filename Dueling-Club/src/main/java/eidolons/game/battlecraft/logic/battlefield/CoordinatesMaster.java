@@ -294,6 +294,13 @@ public class CoordinatesMaster {
     }
 
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1) {
+        return getCoordinatesWithin(x, x1, y, y1, false);
+    }
+    public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1, boolean inclusive) {
+        if (inclusive) {
+            x--;
+            y--;
+        }
         List<Coordinates> list = new ArrayList<>();
         for (; x1 > x; x1--) {
             for (int y_ = y1; y_ > y; y_--) {

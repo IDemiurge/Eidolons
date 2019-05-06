@@ -16,6 +16,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -34,6 +35,7 @@ public class RadialValueContainer extends ActionValueContainer {
     Supplier<String> infoTextSupplier;
     private ShaderProgram shader;
     private boolean altUnderlay;
+    private boolean textOverlayOn;
 
 
     public RadialValueContainer(TextureRegion texture, Runnable action) {
@@ -98,7 +100,7 @@ public class RadialValueContainer extends ActionValueContainer {
         try {
             infoTextSupplier = RadialManager.getInfoTextSupplier(valid, activeObj, target);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -203,7 +205,12 @@ public class RadialValueContainer extends ActionValueContainer {
         setUnderlayOffsetY(0);
         if (visible) {
 
-
+        if (!isTextOverlayOn())
+        {
+            if (infoLabel != null) {
+                infoLabel.setVisible(false);
+            }
+        } else
             if (infoTextSupplier != null) {
                 if (infoLabel == null) {
                     infoLabel = new Label(infoTextSupplier.get(), StyleHolder.getSizedLabelStyle(FONT.RU, 18));
@@ -222,7 +229,7 @@ public class RadialValueContainer extends ActionValueContainer {
                     try {
                         tooltip = tooltipSupplier.get();
                     } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        ExceptionMaster.printStackTrace(e);
                     }
                     if (tooltip != null)
                         addListener(tooltip.getController());
@@ -281,6 +288,14 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public void setAltUnderlay(boolean altUnderlay) {
         this.altUnderlay = altUnderlay;
+    }
+
+    public boolean isTextOverlayOn() {
+        return textOverlayOn;
+    }
+
+    public void setTextOverlayOn(boolean textOverlayOn) {
+        this.textOverlayOn = textOverlayOn;
     }
 
     public enum RADIAL_UNDERLAYS {

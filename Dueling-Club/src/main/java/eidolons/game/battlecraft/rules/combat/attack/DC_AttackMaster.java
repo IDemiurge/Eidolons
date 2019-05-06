@@ -137,9 +137,9 @@ public class DC_AttackMaster {
                 if (action != null) {
                     AttackEffect effect = EffectMaster.getAttackEffect(action);
                     waitForAttackAnimation(effect.getAttack());
-                }
                 attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                 countered = true;
+                }
                 result = true;
 
             }
@@ -198,6 +198,10 @@ public class DC_AttackMaster {
                 log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
                  + " makes a Sneak Attack against " + attacked.getName());
             }
+        }
+        if (attack.isSneak()){
+            if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE))
+                canCounter=false;
         }
         if (canCounter) {
             if (!attacked.canCounter(action, attack.isSneak())) {

@@ -101,6 +101,7 @@ public class InfoAttackRadial extends QuickAttackRadial {
         node.addListener(tooltip.getController());
         TextureRegion underlay= TextureCache.getOrCreateR(STD_BUTTON.CIRCLE.getPath() );
         node.setUnderlay_(underlay);
+        node.setTextOverlayOn(false);
     }
 
     protected double getRadiusBase() {

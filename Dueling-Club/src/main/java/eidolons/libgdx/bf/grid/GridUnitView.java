@@ -141,9 +141,11 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
+        super.setOutlinePathSupplier(pathSupplier);
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
 
-        initiativeQueueUnitView.
+
+                initiativeQueueUnitView.
          setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
           TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
     }

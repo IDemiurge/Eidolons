@@ -18,6 +18,8 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 import main.system.ExceptionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -81,7 +83,30 @@ public class PostProcessController {
             bloom.setBloomIntesity(0.2f);
             vignette.setIntensity(1);
         }
+
+        bindEvents();
         //what else determines defaults? Type of level? Cinematic mode
+    }
+
+    private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.POST_PROCESSING_RESET, p -> {
+//            bloom.rebind( );
+//            vignette.rebind( );
+//            blur.rebind( );
+            bloom.applyCoef(1.0f);
+            vignette.applyCoef(1.0f);
+            blur.applyCoef(1.0f);
+        });
+        GuiEventManager.bind(GuiEventType.POST_PROCESSING , p-> {
+//            PostProcessingOptions options = (PostProcessingOptions) p.get();
+//            update(options);
+            bloom.setEnabled(true);
+            vignette.setEnabled(true);
+            blur.setEnabled(true);
+            bloom.applyCoef(1.5f);
+            vignette.applyCoef(1.5f);
+            blur.applyCoef(1.5f);
+        });
     }
 
     public static boolean isTestMode() {

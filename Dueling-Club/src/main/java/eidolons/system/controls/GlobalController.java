@@ -1,13 +1,10 @@
 package eidolons.system.controls;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
@@ -16,7 +13,6 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -27,6 +23,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -36,6 +33,7 @@ import java.util.List;
  * Created by JustMe on 3/2/2017.
  */
 public class GlobalController implements Controller {
+    private static final boolean TEST_MODE = true;
     private boolean active;
 
     /*
@@ -45,23 +43,23 @@ public class GlobalController implements Controller {
 
     @Override
     public void keyDown(int keyCode) {
-        switch (keyCode) {
-            case Keys.F2:
+        if (TEST_MODE)
+            if (CoreEngine.isIDE()) {
                 try {
-                    DC_Game.game.getMetaMaster().getDialogueManager().test();
+                    if (doTest(keyCode))
+                        return;
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
-                break;
+            }
+
+        switch (keyCode) {
             case Keys.F1:
                 HqMaster.toggleHqPanel();
                 break;
-            case Keys.F3:
-                WeaveMaster.openWeave();
-                break;
-            //            case Keys.F4: already implemented?
-            //                Eidolons.exitToMenu();
-            //                break;
+            case Keys.F4:
+                if (Eidolons.getScope() != SCOPE.MENU)
+                    Eidolons.exitToMenu();
             case Keys.ESCAPE:
                 escape();
                 break;
@@ -80,6 +78,29 @@ public class GlobalController implements Controller {
                 enter();
                 break;
         }
+    }
+
+    private boolean doTest(int keyCode) {
+        switch (keyCode) {
+            case Keys.F2:
+                DC_Game.game.getMetaMaster().getDialogueManager().test();
+
+                return true;
+            case Keys.F3:
+                new Thread(() -> {
+                    DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
+                }, " thread").start();
+
+                return true;
+            case Keys.F4:
+                Eidolons.getMainHero().kill();
+//                WeaveMaster.openWeave();
+                return true;
+            //            case Keys.F4: already implemented?
+            //                Eidolons.exitToMenu();
+            //                break;
+        }
+        return false;
     }
 
     private void space() {

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
@@ -137,9 +138,10 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     protected boolean checkDefeat() {
-        if (!OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
-            if (!game.isDebugMode())
-                return (game.getPlayer(true).getHeroObj().isDead());
+        if (!getMaster().getMetaMaster().isAlliesSupported())
+//            if (!game.isDebugMode())
+                return Eidolons.getMainHero().isDead();
+                        //(game.getPlayer(true).getHeroObj().isDead());
 
         return checkNoPlayerUnitsLeft();
     }
@@ -161,7 +163,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     private boolean checkPlayerHasNoUnits(Player player) {
-        for (Obj d : player.getControlledUnits()) {
+        for (Obj d : player.collectControlledUnits()) {
             if (d instanceof Unit) {
 //                ((Unit) d).isAiControlled()
 

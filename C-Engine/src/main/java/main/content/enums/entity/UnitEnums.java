@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public final class UnitEnums {
     public enum CLASSIFICATIONS {
+        BOSS(true),
         MECHANICAL(true),
         UNDEAD(true),
         SKELETAL,
@@ -447,6 +448,8 @@ public final class UnitEnums {
         HUMANS_PIRATES,
         HUMANS_BARBARIANS,
 
+        DWARVEN_SCUM(),
+        DWARVEN_LORDS(),
         DWARVES("forsworn,clansmen,"),
         NORTH("norse,woads,brutes,north"),
 
@@ -483,9 +486,8 @@ public final class UnitEnums {
 
         FOREST("greenies,creatures"),
         ANIMALS("Animals,Wolves,Wargs,wild,"),
-        REPTILES,
+        REPTILES, BANDIT_SCUM(), SPIDERS,;
 
-        ;
         private String subgroups;
 
         UNIT_GROUP(String groups) {
@@ -805,6 +807,8 @@ public final class UnitEnums {
         STORM_GIANT,
         GIANTESS,
         DWARF_BRAWLER,
+        DWARF_SHIELDMAN,
+        DWARF_RUNEPRIEST,
         VALKYRIE,
         DWARF_SHARPEYE,
         TROLL,

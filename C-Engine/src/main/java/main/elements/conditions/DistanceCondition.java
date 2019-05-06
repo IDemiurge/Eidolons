@@ -17,6 +17,11 @@ public class DistanceCondition extends NumericCondition {
         this.setDistance(greater);
     }
 
+    @AE_ConstrArgs(argNames = {"distance", "objRef", "coordinates"})
+    public DistanceCondition(Integer distance, String objRef, String coordinatesString) {
+        super(distance+"", "[DIST(" + objRef + "," + coordinatesString + ")]");
+        this.setDistance(greater);
+    }
     public DistanceCondition(String distance, Boolean equal_less) {
         this(distance, KEYS.SOURCE.toString(), KEYS.MATCH.toString());
         if (equal_less)

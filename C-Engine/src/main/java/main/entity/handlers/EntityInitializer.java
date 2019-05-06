@@ -30,7 +30,8 @@ public class EntityInitializer<E extends Entity> extends EntityHandler<E> {
     public void construct() {
         if (!getEntity().isConstructed() || game.isSimulation() || getEntity().isConstructAlways()) {
             getEntity().resetRef(); // potential threat
-            if (!CoreEngine.isIDE()) {
+            if (!CoreEngine.isIDE())
+            {
                 AbilityConstructor.constructObj(getEntity());
                 if (!game.isSimulation())
                     getEntity().setConstructed(true);

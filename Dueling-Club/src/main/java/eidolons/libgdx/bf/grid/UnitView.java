@@ -43,6 +43,7 @@ public class UnitView extends BaseView implements HpBarView{
     protected Tooltip tooltip;
     protected float timeTillTurn = 10;
     protected float resetTimer;
+    protected Supplier<String> outlinePathSupplier;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -211,6 +212,16 @@ public class UnitView extends BaseView implements HpBarView{
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
         this.outlineSupplier = outlineSupplier;
+    }
+
+
+    public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
+        this.outlinePathSupplier =pathSupplier;
+        if (pathSupplier.get()!=null )
+            if (!ImageManager.isImage(pathSupplier.get())) {
+                return;
+            }
+        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
     }
 
     public void setFlickering(boolean flickering) {

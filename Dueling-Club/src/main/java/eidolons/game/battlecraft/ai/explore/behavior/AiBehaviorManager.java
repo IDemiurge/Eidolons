@@ -16,6 +16,8 @@ import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
 import main.system.SortMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
@@ -121,6 +123,13 @@ public class AiBehaviorManager extends AiHandler {
                 if (behavior.canAct()) {
                     Action action = behavior.nextAction();
                     // check action has been executed?
+                    if (action==null )
+                    {
+                            main.system.auxiliary.log.LogMaster.log(  LOG_CHANNEL.AI_DEBUG,
+                                    "No action for " +ai);
+                        return false;
+                    }
+
                     aiActionQueue.add(new ActionInput(action.getActive(),
                      new Context(action.getRef())));
                     return true;
@@ -157,6 +166,9 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     private AiBehavior createAi(UnitAI ai, UNIT_GROUP_TYPE groupType) {
+        if (CoreEngine.isSafeMode()) {
+            return new WanderAi(master, ai);
+        }
         switch (groupType) {
             case GUARDS:
             case BOSS:
@@ -185,10 +197,11 @@ public class AiBehaviorManager extends AiHandler {
             behaviors.add(createAi(ai, TESTED_GROUP));
             return behaviors;
         }
-        if (ai.getGroupAI() == null) {
+        if (CoreEngine.isSafeMode() ||  ai.getGroupAI() == null) {
             behaviors.add(new WanderAi(master, ai));
             return behaviors;
         }
+        //TODO use createAi () ?!
         switch (ai.getGroupAI().getType()) {
             case PATROL:
                 behaviors.add(new PatrolAi(master, ai));

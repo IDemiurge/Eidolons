@@ -118,6 +118,10 @@ public class Event implements Referred {
         ref.setTriggered(triggered);
     }
 
+    public Event getClone() {
+        return new Event(getType(), getRef().getCopy());
+    }
+
     public enum MAP_EVENT_TYPE implements EVENT_TYPE {
 
         CAMPING_STARTED;
@@ -262,7 +266,7 @@ public class Event implements Referred {
         UNIT_HAS_ENTERED_COMBAT, ENEMIES_CLEARED, UNIT_FALLS_UNCONSCIOUS,
         UNIT_HAS_USED_QUICK_ITEM, TIME_ELAPSED,
 
-        INTERACTIVE_OBJ_USED, SECRET_FOUND, COMBAT_ENDS;
+        INTERACTIVE_OBJ_USED, SECRET_FOUND, COMBAT_ENDS, INTERACTIVE_OBJ_MAGIC_USED, INTERACTIVE_OBJ_PICKED_UP;
         private String arg = "";
 
         STANDARD_EVENT_TYPE() {

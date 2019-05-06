@@ -26,6 +26,7 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -101,6 +102,8 @@ public class BattleGuiStage extends GuiStage {
     public void outsideClick() {
         setDraggedEntity(null);
         super.outsideClick();
+        setScrollFocus(DungeonScreen.getInstance().getGridPanel());
+
         if (combatInventory.isVisible()) {
             //            combatInventory.close(ExplorationMaster.isExplorationOn());
             InventoryDataSource dataSource = (InventoryDataSource) combatInventory.getUserObject();

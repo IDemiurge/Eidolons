@@ -81,6 +81,7 @@ public class DungeonScreen extends GameScreenWithTown {
     private ActTimer cameraTimer;
     private GridCellContainer stackView;
     private BossTestGroup testStage;
+    boolean firstCenteringDone;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -165,6 +166,9 @@ public class DungeonScreen extends GameScreenWithTown {
 
     protected void bindEvents() {
 
+        GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
+            DungeonScreen.getInstance().centerCameraOn((BattleFieldObject) param.get());
+        });
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
             DC_Game.game.getLoop().stop(); //cleanup on real exit
             DC_Game.game.getMetaMaster().gameExited();
@@ -242,34 +246,46 @@ public class DungeonScreen extends GameScreenWithTown {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         bindEvents();
-
+//TODO use simple float pair to make it dynamic
         cameraTimer = new ActTimer(OptionsMaster.getControlOptions().
                 getIntValue(CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
+            if (!firstCenteringDone)
+            {
+                centerCameraOn(Eidolons.getMainHero());
+                firstCenteringDone=true;
+            }
             if (isCameraAutoCenteringOn())
                 if (Eidolons.getGame().getManager().checkAutoCameraCenter()) {
+                    if (!Eidolons.getMainHero().isDead()) //for Shade
                     centerCameraOn(Eidolons.getMainHero());
                 }
         });
-        try {
+//        try {
+//            Unit unit = null;
+//            centerCameraOnMainHero();
+//            if (Eidolons.game.getMetaMaster() == null) {
+//                unit = Eidolons.game.getMetaMaster().
+//                        getPartyManager().getParty().getLeader();
+//            } else
+//                unit = (Unit) Eidolons.game.getPlayer(true).getHeroObj();
+//            Vector2 unitPosition =
+//                    GridMaster.getCenteredPos(
+//                            unit.getCoordinates());
+//
+//            cameraPan(unitPosition);
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//        }
 
-            Unit unit = null;
-            if (Eidolons.game.getMetaMaster() == null) {
-                unit = Eidolons.game.getMetaMaster().
-                        getPartyManager().getParty().getLeader();
-            } else
-                unit = (Unit) Eidolons.game.getPlayer(true).getHeroObj();
-            Vector2 unitPosition =
-                    GridMaster.getCenteredPos(
-                            unit.getCoordinates());
-
-            cameraPan(unitPosition);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        centerCameraOnMainHero();
         selectionPanelClosed();
         checkInputController();
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
+    }
+
+    private void centerCameraOnMainHero() {
+        centerCameraOn(Eidolons.getMainHero(), true);
     }
 
 

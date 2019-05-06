@@ -133,9 +133,9 @@ public enum MACRO_PROPS implements PROPERTY {
     QUEST_TYPE(null, false, "quest"),
     QUEST_TIME_LIMIT(null, false, "quest"),
     QUEST_LEVEL(null, false, "quest"),
-    QUEST_REWARD_TYPE(null, false, "quest"), QUEST_ARG(null, false, "quest")
+    QUEST_REWARD_TYPE(null, false, "quest"), QUEST_ARG(null, false, "quest"),
 
-    ;
+    QUEST_REWARD_ITEMS(null, false, "quest");
 
     private Metainfo metainfo;
     private String shortName;

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
@@ -113,6 +115,8 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 float y = velocity.y > 0
                  ? Math.min(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime())
                  : Math.max(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime());
+
+//                main.system.auxiliary.log.LogMaster.log(1,"cameraShift to "+ y+ ":" +x + " = "+cam);
                 cam.position.set(x, y, 0f);
                 float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
                 Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
@@ -153,14 +157,15 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =
              (DialogueHandler) obj.get();
-            List<DialogueView> list = handler.getList();
+            List<Scene> list = handler.getList();
             if (dialogsStage == null) {
                 dialogsStage = new ChainedStage(viewPort, getBatch(), list);
-                updateInputController();
+
             } else {
                 dialogsStage.play(list);
             }
             dialogsStage.setDialogueHandler(handler);
+            updateInputController();
         });
     }
 

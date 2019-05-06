@@ -32,20 +32,24 @@ import java.util.ArrayList;
  */
 public class TownMaster extends MetaGameHandler {
 
-    private static final java.lang.String DEFAULT_TOWN = "Strangeville"; //"Headquarters"
+    protected static final java.lang.String DEFAULT_TOWN = "Strangeville"; //"Headquarters"
     ShopManager shopManager;
     QuestMaster questMaster;
-    private boolean inTown;
-    private Town town;
+    protected boolean inTown;
+    protected Town town;
 
     public TownMaster(MetaGameMaster master) {
         super(master);
         shopManager = createShopManager();
-        questMaster = new QuestMaster(master);
+        questMaster = createQuestMaster();
         shopManager.init();
     }
 
-    private ShopManager createShopManager() {
+    protected QuestMaster createQuestMaster() {
+        return new QuestMaster(master);
+    }
+
+    protected ShopManager createShopManager() {
         return new ShopManager(master);
     }
     //    LibraryManager
@@ -78,18 +82,18 @@ public class TownMaster extends MetaGameHandler {
         getMaster().getGame().getLoop().setPaused(false);
     }
 
-    private void updateQuests(Town town) {
+    protected void updateQuests(Town town) {
         Unit hero = Eidolons.getMainHero();
         for (DungeonQuest quest : new ArrayList<>(questMaster.getRunningQuests())) {
             if (quest.isComplete()) {
                 EUtils.onConfirm(true, "You have succeeded in our quest " +
-                  quest.getTitle() +
-                  "? Strange, well, here is your reward of " +
-                  quest.getReward().getGoldFormula() +
-                  " gold pieces...",
-                 false, () -> {
-                     hero.getGame().getMetaMaster().getQuestMaster().questComplete(quest);
-                 }, true);
+                                quest.getTitle() +
+                                "? Strange, well, here is your reward of " +
+                                quest.getReward().getGoldFormula() +
+                                " gold pieces...",
+                        false, () -> {
+                            hero.getGame().getMetaMaster().getQuestMaster().questComplete(quest);
+                        }, true);
 
                 town.reputationImpact(quest.getReward().getReputationImpactComplete());
             }
@@ -102,7 +106,7 @@ public class TownMaster extends MetaGameHandler {
         if (this.town == null) {
             try {
                 SkillMaster.initMasteryRanks(
-                 Eidolons.getMainHero());
+                        Eidolons.getMainHero());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -132,7 +136,7 @@ public class TownMaster extends MetaGameHandler {
             MusicMaster.getInstance().stopAmbience();
         }
         boolean result =
-         (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
+                (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
         Waiter t = WaitMaster.getWaiters().remove(TownPanel.DONE_OPERATION);
         if (t != null) {
             main.system.auxiliary.log.LogMaster.log(1, "WAITERS ARE SCREWED ");
@@ -150,15 +154,15 @@ public class TownMaster extends MetaGameHandler {
         return town;
     }
 
-    private Town getOrCreateTown() {
+    protected Town getOrCreateTown() {
         Town town = getGame().town; //TODO [refactor] !!!
         if (town != null) {
             return town;
         }
         ObjType type = DataManager.getType(DEFAULT_TOWN, MACRO_OBJ_TYPES.TOWN);
         town = new Town(new FauxMacroGame()
-         //         FauxMacroGame.getInstance() not safe?
-         , type, MacroRef.getMainRef());
+                //         FauxMacroGame.getInstance() not safe?
+                , type, MacroRef.getMainRef());
         getGame().town = town;
         return town;
     }
@@ -179,9 +183,9 @@ public class TownMaster extends MetaGameHandler {
         }
 
         Entrance entrance = ((Location) master.getGame().getDungeonMaster().
-         getDungeonWrapper()).getMainEntrance();
+                getDungeonWrapper()).getMainEntrance();
         int dst = Eidolons.getMainHero().getCoordinates().dst(
-         entrance.getOriginalCoordinates());
+                entrance.getOriginalCoordinates());
         int n = 2 + dst / 8;
         if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
             n += 2 * ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getMissionIndex();
@@ -189,16 +193,16 @@ public class TownMaster extends MetaGameHandler {
         if (!CoreEngine.isFastMode())
             if (!Eidolons.getMainHero().hasItems("Food", n)) {
                 EUtils.info("You need at least " +
-                 n + " Food to travel back to " +
-                 town.getName() +
-                 " (Get closer to where you entered here to reduce the cost)");
+                        n + " Food to travel back to " +
+                        town.getName() +
+                        " (Get closer to where you entered here to reduce the cost)");
                 return;
             }
         int finalN = n;
         EUtils.onConfirm("Traveling back to " +
-         town.getName() +
-         " will require " + finalN +
-         "Food. Shall we get underway?", true, () -> {
+                town.getName() +
+                " will require " + finalN +
+                "Food. Shall we get underway?", true, () -> {
             if (!CoreEngine.isFastMode())
                 Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
             Eidolons.getMainHero().setCoordinates(entrance.getCoordinates());

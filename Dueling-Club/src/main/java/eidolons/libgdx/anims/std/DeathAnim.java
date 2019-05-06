@@ -91,13 +91,16 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     protected void add() {
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim adds with \n" +getRef());
         if (getActor() == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"Death Anim no actor for \n" +getRef());
             return;
         }
 //        AnimMaster.getInstance().addActor(getActor());
 //        getActor().setPosition(getOrigin().x, getOrigin().y);
         AlphaAction action = ActorMaster.addFadeOutAction(getActor());
         if (action == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"Death Anim fade failed for \n" +getRef());
             getActor().setVisible(false);
             return;
         }
@@ -138,12 +141,16 @@ public class DeathAnim extends ActionAnim {
     public void start() {
 //        addSfx();
         //skull / grave?
+
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim started with \n" +getRef());
+        unit = (BattleFieldObject) getRef().getTargetObj();
         super.start();
         add();
     }
 
     @Override
     public void finished() {
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim finished with \n" +getRef());
         super.finished();
         getActor().setVisible(false);
         dispose();

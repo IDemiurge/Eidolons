@@ -127,7 +127,7 @@ public class Weapon3dAnim extends ActionAnim {
           a.getActiveWeapon() != getActive().getActiveWeapon());
         Array<AtlasRegion> newRegions = AnimMaster3d.getRegions(
          WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
-         , getProjection().bool);
+         , getProjection(ref,getActive()).bool);
 
         newRegions.removeRange(0, newRegions.size / 2);
 
@@ -151,16 +151,16 @@ public class Weapon3dAnim extends ActionAnim {
     protected boolean checkFlipHorizontally() {
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
-        if (getProjection() == PROJECTION.HOR) {
+        if (getProjection(ref,getActive()) == PROJECTION.HOR) {
             flipHor = getActive().getOwnerUnit().getFacing() == main.game.bf.directions.FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
-            flipHor = (getProjection() == PROJECTION.TO) != offhand;
+            flipHor = (getProjection(ref,getActive()) == PROJECTION.TO) != offhand;
         }
         return flipHor;
     }
 
     protected SpriteAnimation get3dSprite() {
-        PROJECTION projection = getProjection();
+        PROJECTION projection = getProjection(ref,getActive());
 
         sprite = projectionsMap.get(projection);
         if (sprite != null) {
@@ -178,7 +178,7 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     public Vector2 getOffsetOrigin() {
-        switch (getProjection()) {
+        switch (getProjection(ref,getActive())) {
             case FROM:
                 return new Vector2(0, 32);
             case TO:
@@ -200,25 +200,12 @@ public class Weapon3dAnim extends ActionAnim {
         return WEAPON_ANIM_CASE.NORMAL;
     }
 
-    private PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
-        if (!facing.isVertical())
-            return PROJECTION.HOR;
-        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
+    public   PROJECTION getProjection( ) {
+        return getProjection(getRef(), getActive());
     }
-
-    protected PROJECTION getProjection() {
-        if (getRef().getTargetObj() == null)
-            return getProjectionByFacing(getActive().getOwnerUnit().getFacing());
-        Boolean b =
-         PositionMaster.isAboveOr(getRef().getSourceObj(), ref.getTargetObj());
-        if (getActive().getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
-            b = getActive().getOwnerUnit().isMine();
-        PROJECTION projection = PROJECTION.HOR;
-        if (b != null)
-            projection = b ? PROJECTION.FROM : PROJECTION.TO;
-        return projection;
+    public   PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+        return AnimMaster3d.getProjection(ref, active);
     }
-
 
     @Override
     public void start(Ref ref) {

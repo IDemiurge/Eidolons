@@ -26,9 +26,11 @@ public class HeroLevelManager {
     }
 
     public static void levelUpByXp(Unit hero) {
-        FloatingTextMaster.getInstance().createFloatingText(
-         TEXT_CASES.LEVEL_UP, "Level Up!", hero);
         levelUp(hero, null);
+        if (hero.isDead())
+            return; //for ChainParty
+        FloatingTextMaster.getInstance().createFloatingText(
+                TEXT_CASES.LEVEL_UP, "Level Up!", hero);
         EUtils.showInfoText(hero.getName() + "is now Level " + hero.getLevel());
         EUtils.playSound(STD_SOUNDS.LEVEL_UP);
     }
@@ -141,7 +143,7 @@ public class HeroLevelManager {
         // }
     }
 
-    private static void checkLevelUp(Unit hero) {
+    public static void checkLevelUp(Unit hero) {
 
         int level = hero.getLevel();
         if (level < DC_Formulas.getLevelForXp(hero.getIntParam(PARAMS.TOTAL_XP))) {
@@ -157,9 +159,7 @@ public class HeroLevelManager {
     }
 
     public static void addXp(Unit hero, int xp) {
-        hero.modifyParameter(PARAMS.XP, xp);
-        hero.modifyParameter(PARAMS.TOTAL_XP, xp, true);
-        checkLevelUp(hero);
+        hero.xpGained(xp);
         FloatingTextMaster.getInstance().createFloatingText(
          TEXT_CASES.XP, xp + " xp", hero);
 

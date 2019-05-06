@@ -49,7 +49,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 if (game.getMetaMaster().isRngDungeon())
                 if (game.getMetaMaster().getDungeonMaster().getDungeonLevel() != null) {
                     if (game.getMetaMaster().getDungeonMaster().getDungeonLevel().isVoid(i, j))
-                        continue;
+                        continue; //TODO add a void cell?
                 }
                 cellsSet.add(cells[i][j] = new DC_Cell(i, j, game));
                 coordinates.add(Coordinates.get(i, j));

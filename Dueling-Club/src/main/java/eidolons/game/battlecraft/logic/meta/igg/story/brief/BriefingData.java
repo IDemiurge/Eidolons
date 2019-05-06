@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.igg.story.brief;
 
-public class BriefingData {
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+
+public class BriefingData implements Scene {
 
 //    String video;
 //    float videoDur;
@@ -29,10 +31,24 @@ public class BriefingData {
         this.autoPlay = autoPlay;
     }
 
+    public BriefingData(String background, String  images, String  msgs, boolean autoPlay) {
+        this.background = background;
+        this.images = new String[]{
+                images
+        };
+        this.msgs = new String[]{
+                msgs
+        };
+        this.autoPlay = autoPlay;
+    }
     public BriefingData(String[] images, String[] msgs, boolean autoPlay) {
         this.images = images;
         this.msgs = msgs;
         this.autoPlay = autoPlay;
     }
 
+    @Override
+    public boolean isDone() {
+        return false;
+    }
 }

@@ -472,7 +472,7 @@ public class PathFinder {
     }
 
     public static String getShadersPath() {
-        return getTextPath() + "shaders/";
+        return   "xml/shaders/";
     }
 
     public static String getCampaignSavePath() {

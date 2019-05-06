@@ -122,7 +122,7 @@ public class RngMainSpawner {
         log(1, "Spawning for quests ");
         if (!CoreEngine.isFullFastMode())
             if ( CoreEngine.isCombatGame())
-            if ( Eidolons.getGame().getMetaMaster().isQuestsEnabled())
+            if ( Eidolons.getGame().getMetaMaster().isRngQuestsEnabled())
             try {
                 spawnForQuests();
             } catch (Exception e) {
@@ -194,7 +194,7 @@ public class RngMainSpawner {
                 units.add(type);
             }
             List<ObjAtCoordinate> list = spawnUnits(block, units);
-            block.getUnitGroups().put(list, UNIT_GROUP_TYPE.IDLERS);
+            level.addUnitGroup(block, list, UNIT_GROUP_TYPE.IDLERS);
             groups--;
             if (groups == 0)
                 perGroup = n % perGroup;
@@ -239,7 +239,7 @@ public class RngMainSpawner {
                         : blocks.get(n);
 
         List<ObjAtCoordinate> list = spawnUnits(block, units);
-        block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
+        level.addUnitGroup(block, list, UNIT_GROUP_TYPE.BOSS);
         ObjAtCoordinate objAt = list.get(0);
 
         quest.setArg(objAt);
@@ -337,8 +337,10 @@ public class RngMainSpawner {
                                 map.get(c).name());
                 List<ObjType> units = getUnitsForGroup(getPowerCoef(block, type), type,
                         getUnitGroup(level.getLocationType(), block.getZone(), type), 3, 1);
-                //will space them out in-game already
-                units.forEach(unit -> addUnit(new ObjAtCoordinate(unit, c), block));
+                spawnUnits(block, units);
+
+                //will space them out in-game already  - ha, wrong!
+//                units.forEach(unit -> addUnit(new ObjAtCoordinate(unit, c), block));
 
             });
 
@@ -687,8 +689,7 @@ public class RngMainSpawner {
                 max, minPreferred);
 
         List<ObjAtCoordinate> unitsAtCoordinates = spawnUnits(levelBlock, units);
-
-        levelBlock.getUnitGroups().put(unitsAtCoordinates, groupType);
+level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
         //            level.getAiMap().put(c, aiType)
         //            filter weight map?
 

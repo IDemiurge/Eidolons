@@ -84,6 +84,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.util.Refactor;
 
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -334,10 +335,12 @@ public class DC_Game extends GenericGame {
     private void startCombat() {
         loop = combatLoop;
         exploreLoop.stop();
-        if (combatLoop.isStarted())
-            combatLoop.resume();
-        else
+        if (!combatLoop.isStarted() || !combatLoop.checkThreadIsRunning()
+//                CoreEngine.isIggDemoRunning()
+        )
             loop.startInNewThread();
+        else
+            combatLoop.resume();
 
         musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
         DC_SoundMaster.playStandardSound(
@@ -441,6 +444,14 @@ public class DC_Game extends GenericGame {
 
     public Collection<Unit> getUnitsForCoordinates(Coordinates... coordinates) {
         return getMaster().getUnitsOnCoordinates(coordinates);
+    }
+
+    @Override
+    public void remove(Obj obj) {
+        super.remove(obj);
+        if (obj instanceof Unit) {
+            removeUnit((Unit) obj);
+        }
     }
 
     public void removeUnit(Unit unit) {

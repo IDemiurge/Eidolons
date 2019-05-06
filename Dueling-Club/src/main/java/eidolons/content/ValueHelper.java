@@ -143,6 +143,8 @@ public class ValueHelper {
     }
 
     public Entity getEntity() {
+        if (CoreEngine.isArcaneVault())
+            return entity;
         return game.getLoop().getActiveUnit();
     }
 

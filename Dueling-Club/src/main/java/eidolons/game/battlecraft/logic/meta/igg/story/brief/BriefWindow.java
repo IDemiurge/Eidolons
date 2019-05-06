@@ -16,7 +16,7 @@ public class BriefWindow extends TablePanelX {
     String[] images;
     private int i=0;
 
-    public BriefWindow(int w, int h, String[] images) {
+    public BriefWindow(int w, int h, String... images) {
         super(w,h);
         this.images = images;
         addActor(img = new FadeImageContainer());
@@ -29,6 +29,10 @@ public class BriefWindow extends TablePanelX {
         }
         setUserObject(images[i++]);
 }
+
+    public void setImages(String[] images) {
+        this.images = images;
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

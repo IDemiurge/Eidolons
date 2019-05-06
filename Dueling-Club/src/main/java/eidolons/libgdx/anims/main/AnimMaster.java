@@ -134,6 +134,11 @@ public class AnimMaster extends Group {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         });
+        GuiEventManager.bind(GuiEventType.SHOW_SPRITE, p -> {
+//            AnimConstructor.createSpriteAnim(path);
+
+
+        });
 
         GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p -> {
             if (!isOn()) {
@@ -194,6 +199,12 @@ public class AnimMaster extends Group {
         );
 
 
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        eventMaster.checkPendingEventAnimations();
     }
 
     public boolean isDrawing() {

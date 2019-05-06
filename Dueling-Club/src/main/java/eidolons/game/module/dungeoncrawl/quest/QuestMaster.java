@@ -34,12 +34,12 @@ public class QuestMaster extends MetaGameHandler {
     //        if (TEST_MODE)
     //            CoreEngine.setFastMode(true);
     //    }
-    QuestResolver resolver;
-    QuestCreator creator;
-    QuestSelector selector;
-    List<DungeonQuest> quests = new ArrayList<>();
-    private boolean started;
-    private Set<DungeonQuest> questsPool;
+    protected QuestResolver resolver;
+    protected QuestCreator creator;
+    protected QuestSelector selector;
+    protected List<DungeonQuest> quests = new ArrayList<>();
+    protected boolean started;
+    protected Set<DungeonQuest> questsPool;
     public QuestMaster(MetaGameMaster master) {
         super(master);
         resolver = new QuestResolver(this);
@@ -146,17 +146,20 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public Set<ObjType> getQuestTypePool() {
-        String filter = QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
+        String filter = getQuestGroupFilter();
         Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
          filter, MACRO_PROPS.QUEST_GROUP));
 
         pool.removeIf(q -> !checkQuestForLocation(q));
 
         return pool;
-
     }
 
-    private boolean checkQuestForLocation(ObjType q) {
+    protected String getQuestGroupFilter() {
+        return QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
+    }
+
+    protected boolean checkQuestForLocation(ObjType q) {
 //        if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
 //            ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getScenario()
 //        }

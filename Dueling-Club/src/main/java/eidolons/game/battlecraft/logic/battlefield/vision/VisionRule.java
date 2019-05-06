@@ -386,6 +386,9 @@ public class VisionRule {
 
 
     public boolean isAggro(Unit hero, Unit unit) {
+        if (hero.isDead()){
+            return false;
+        }
         VISIBILITY_LEVEL visibility = controller.getVisibilityLevelMapper().get(unit, hero);
         switch (visibility) {
             case CLEAR_SIGHT:

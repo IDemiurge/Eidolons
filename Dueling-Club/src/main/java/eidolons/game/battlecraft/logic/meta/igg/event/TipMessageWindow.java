@@ -1,6 +1,13 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisCheckBox;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -10,6 +17,8 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.SystemOptions;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster;
 import main.system.threading.WaitMaster;
@@ -38,16 +47,39 @@ public class TipMessageWindow extends TablePanelX {
         int i = 0;
         for (String button : source.getButtons()) {
             Runnable runnable = source.btnRun[i++];
-            btnsTable.add(new SmartButton(button, ButtonStyled.STD_BUTTON.MENU,
-                    ()->{
-                       runnable.run();
-                       fadeOut();
+            Cell cell = btnsTable.add(new SmartButton(button, ButtonStyled.STD_BUTTON.MENU,
+                    () -> {
+                        runnable.run();
+                        fadeOut();
                         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE, button);
 
-                    }).makeActive( ));
+                    }).makeActive());
+
+            if (source.getButtons().length == 1) {
+                if (isAddToggle()){
+                    cell.colspan(5);
+                }
+            }
+        }
+        if (isAddToggle()){
+            VisCheckBox box;
+            GDX.loadVisUI();
+            btnsTable.add(box= new VisCheckBox("Disable", OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF)));
+            box.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                   OptionsMaster.getSystemOptions().setValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF, box.isChecked());
+                }
+            });
         }
         add(btnsTable);
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
+        main.system.auxiliary.log.LogMaster.log(1,"Tip msg created with text: " +source.getMessage());
+    }
+
+    private boolean isAddToggle() {
+        return true;
     }
 
 

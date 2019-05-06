@@ -10,6 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
@@ -49,7 +50,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     public static final Integer DEFAULT_FOCUS_REQ = 15;
     public static final Integer DEFAULT_FOCUS_REQ_UNIT = 25;
     // ++ only regen part of toughness ...
-    public static final int DEFAULT_DEATH_BARRIER = 33;
+    public static final int DEFAULT_DEATH_BARRIER = DC_RuleMaster.isToughnessReduced()?66 : 33;
     public static final int DEFAULT_ANNIHILATION_BARRIER = 100;
     public static final String BUFF_NAME = null;
     public static final int MIN_FOCUS_REQ = 5;

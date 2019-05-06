@@ -70,6 +70,10 @@ public class PropMap implements ValueMap {
     }
 
     public String put(PROPERTY key, String value) {
+        if (key == null || value == null)
+        {
+            return null;
+        }
         return map.put(key, value);
     }
 

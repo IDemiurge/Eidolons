@@ -70,7 +70,7 @@ public class OptionsWindow extends VisWindow {
 
     public static OptionsWindow getInstance() {
         if (instance == null) {
-            VisUI.load(GDX.file(PathFinder.getSkinPath()));
+            GDX.loadVisUI();
             instance = new OptionsWindow();
         }
         return instance;

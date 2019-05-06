@@ -337,7 +337,8 @@ public class AI_Manager extends AiMaster {
         if (isAutoGroups()) {
             if (groups == null)
                 initGroups();
-            return;
+//            if (isOnlyLargeGroups())
+//                return;
         }
         //by proximity... not all mobs will be part of a group
 
@@ -350,7 +351,7 @@ public class AI_Manager extends AiMaster {
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
-            for (Unit unit : player.getControlledUnits_()) {
+            for (Unit unit : player.collectControlledUnits_()) {
                 //if (unit.getAI().getGroupAI()!=null )
                 //    continue;
 
@@ -358,7 +359,7 @@ public class AI_Manager extends AiMaster {
                 GroupAI group = unit.getAI().getGroup();
                 if (group == null)
                     group = new GroupAI(unit);
-                for (Unit unit1 : player.getControlledUnits_()) {
+                for (Unit unit1 : player.collectControlledUnits_()) {
                     if (unit1.getAI().getGroup() != null)
                         continue;
                     if (unit1.equals(unit))
@@ -378,6 +379,17 @@ public class AI_Manager extends AiMaster {
 
 
         }
+
+        String report = ">>>>>>>>> " +
+                groups.size() +
+                " AI groups created: \n";
+        report+= "" + groups.stream().filter(g->g.getMembers().size()>1).count() +
+                " (non-singletons)\n";
+        for (GroupAI group : groups) {
+            report += group+  "\n";
+        }
+
+        main.system.auxiliary.log.LogMaster.log(1," "  + report);
         if (!groups.isEmpty())
             return;
         else
@@ -390,5 +402,9 @@ public class AI_Manager extends AiMaster {
 
     public Action getDefaultAction(Unit activeUnit) {
         return getAtomicAi().getAtomicWait(activeUnit);
+    }
+
+    public boolean isDefaultAiGroupForUnitOn() {
+        return false; //isRngDungeon() ?
     }
 }

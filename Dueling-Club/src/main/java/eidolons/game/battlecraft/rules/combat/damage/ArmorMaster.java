@@ -12,10 +12,14 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
+import eidolons.game.battlecraft.rules.combat.attack.ShieldMaster;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
@@ -268,6 +272,13 @@ public class ArmorMaster {
 //                animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
 //                 durabilityLost, damage, damage_type, shield));
             }
+
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
+                    "Shield block!", attacked);
+
+            GuiEventManager.trigger(GuiEventType. SHOW_SPRITE,
+                    ShieldMaster.getSprite(shield, action, blockValue));
+
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
              + blockValue + " out of " + damage + " " + damage_type + " damage from " +
              // StringMaster.wrapInParenthesis

@@ -56,5 +56,10 @@ public class Journal extends LogManager {
         return false;
     }
 
+    @Override
+    public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
+        return false;
+    }
+
 
 }

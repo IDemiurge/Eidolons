@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg.death;
 
 import eidolons.game.module.herocreator.logic.party.Party;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 
 import java.util.List;
@@ -15,12 +16,15 @@ public class HeroChain {
     List<ChainHero> heroes;
     Party party;
 
-    public HeroChain(Party party) {
+    public HeroChain(Party party, int lives) {
         this.party = party;
-        types = party.getMembers().stream().map(member -> member.getType()).collect(Collectors.toList());
-        heroes = party.getMembers().stream().map(member -> new ChainHero(member)).collect(Collectors.toList());
+        types = party.getMemberTypes();
+        heroes = party.getMemberTypes().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
     }
 
+    public void death() {
+findHero(party.getLeader().getName()).death();
+    }
     public List<ObjType> getTypes() {
         return types;
     }
@@ -52,4 +56,5 @@ public class HeroChain {
         }
         return null;
     }
+
 }

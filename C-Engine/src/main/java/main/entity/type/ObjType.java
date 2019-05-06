@@ -63,6 +63,14 @@ public class ObjType extends Entity {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ObjType) {
+            return ((ObjType) obj).getName().equals(getName());
+        }
+        return super.equals(obj);
+    }
+
+    @Override
     protected EntityMaster initMaster() {
         return null;
     }

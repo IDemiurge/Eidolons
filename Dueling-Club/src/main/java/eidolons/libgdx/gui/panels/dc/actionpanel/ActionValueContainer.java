@@ -37,6 +37,7 @@ public class ActionValueContainer extends ValueContainer {
     protected float underlayOffsetY;
     private float size = UiMaster.getIconSize();
     private RadialMenu customRadialMenu;
+    private boolean scaledOnHover=true;
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -79,6 +80,9 @@ public class ActionValueContainer extends ValueContainer {
 
     protected void initSize() {
         overrideImageSize(getSize(), getSize());
+        if (imageContainer.getActor().getContent().getDrawable().getMinWidth()>100) {
+           scaledOnHover=false;
+        }
         imageContainer.top().right();
     }
 
@@ -182,7 +186,8 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected boolean isScaledOnHover() {
-        return true;
+
+        return scaledOnHover;
     }
 
     @Override
@@ -277,6 +282,9 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public float getSize() {
+        if (size==0) {
+            return UiMaster.getIconSize(false);
+        }
         return size;
     }
 

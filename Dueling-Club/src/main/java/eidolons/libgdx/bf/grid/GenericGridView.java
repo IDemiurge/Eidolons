@@ -183,14 +183,6 @@ public class GenericGridView extends UnitView {
     }
 
 
-    public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
-        if (pathSupplier.get()!=null )
-        if (!ImageManager.isImage(pathSupplier.get())) {
-            return;
-        }
-        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
-    }
-
     public void setMainHero(boolean mainHero) {
         super.setMainHero(mainHero);
     }

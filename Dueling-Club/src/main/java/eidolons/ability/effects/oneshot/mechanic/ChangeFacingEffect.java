@@ -1,5 +1,6 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.MicroEffect;
@@ -15,6 +16,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
 
     private Boolean clockwise;
+    private Boolean self;
 
     /*
      * for forcing the unit to face the target
@@ -24,15 +26,22 @@ public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
     }
 
     public ChangeFacingEffect(Boolean clockwise) {
+        this(clockwise, true);
+    }
+
+    public ChangeFacingEffect(Boolean clockwise, Boolean self) {
         this.setClockwise(clockwise);
+        this.self = self;
     }
 
     @Override
     public boolean applyThis() {
-        if (!(ref.getTargetObj() instanceof Unit)) {
+        if (!self)
+        if (!(ref.getTargetObj() instanceof BattleFieldObject)) {
             return false;
         }
-        Unit obj = (Unit) ref.getTargetObj();
+
+        BattleFieldObject obj =self? (BattleFieldObject) ref.getSourceObj() : (BattleFieldObject) ref.getTargetObj();
 
         FACING_DIRECTION oldDirection = obj.getFacing();
 

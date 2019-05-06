@@ -350,7 +350,7 @@ public class HqDataMaster {
             case UNSTASH:
                 item = (DC_HeroItemObj) args[0];
                 if (Eidolons.getTown().removeFromStash(item))
-                    hero.addItemToInventory(item);
+                    hero.addItemToInventory(item, true);
                 break;
             case SELL:
             case BUY:
@@ -392,14 +392,14 @@ public class HqDataMaster {
                 break;
             case UNEQUIP_JEWELRY:
                 hero.removeJewelryItem(item);
-                hero.addItemToInventory(item);
+                hero.addItemToInventory(item, true);
                 break;
             case UNEQUIP:
                 hero.unequip(item, false);
                 break;
             case UNEQUIP_QUICK_SLOT:
                 hero.removeQuickItem((DC_QuickItemObj) item);
-                hero.addItemToInventory(item);
+                hero.addItemToInventory(item, true);
                 break;
             case EQUIP:
                 hero.removeFromInventory(item);

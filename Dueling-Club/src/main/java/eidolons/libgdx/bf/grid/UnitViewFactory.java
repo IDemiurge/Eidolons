@@ -33,11 +33,12 @@ public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
-         bfObj.isMainHero()&&UnitViewSprite.TEST_MODE  ? new UnitViewSprite(options) :
+         bfObj.isBoss()&&UnitViewSprite.TEST_MODE  ? new UnitViewSprite(options) :
           new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
             if (!bfObj.isPlayerCharacter())
+            if (!bfObj.isBoss())
                 if (!bfObj.isWall()) {
                     LastSeenView lsv = new LastSeenView(options, view);
                     view.setLastSeenView(lsv);
@@ -49,6 +50,9 @@ public class UnitViewFactory {
                 return null;
             }
             if (!CoreEngine.isOutlinesFixed()){
+                return null;
+            }
+            if ( bfObj.isBoss()) {
                 return null;
             }
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();

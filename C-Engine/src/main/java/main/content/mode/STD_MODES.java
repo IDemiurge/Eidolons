@@ -38,6 +38,8 @@ public enum STD_MODES implements MODE {
     private static final String DEFAULT_ATB_PERIOD="0.25";
 
     static {
+        DEFENDING.duration=2;
+
         COWER.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD * 3 / 2);
 
         DEFENDING.setDefenseMod(Formulas.DEFENDING_MODE_DEF_MOD);
@@ -120,6 +122,7 @@ public enum STD_MODES implements MODE {
     private String buffName;
     private String periodicValues;
     private String period;
+    private Integer duration=Formulas.DEFAULT_MODE_DURATION;
 
     STD_MODES(boolean dispelOnHit, boolean disableCounter, boolean disableActions,
               boolean endTurnEffect) {
@@ -175,7 +178,7 @@ public enum STD_MODES implements MODE {
 
     @Override
     public Integer getDuration() {
-        return Formulas.DEFAULT_MODE_DURATION;
+        return duration;
     }
 
     @Override

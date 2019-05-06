@@ -16,8 +16,8 @@ import java.util.Map;
  * Created by JustMe on 3/6/2017.
  */
 public class SpriteAnimationFactory {
-    final static float defaultFrameDuration = 0.025f;
-    final static float fps30 = 0.033f;
+    public final static float defaultFrameDuration = 0.025f;
+    public final static float fps30 = 0.033f;
     static Map<String, SpriteAnimation> cache = new HashMap<>();
     private static String defaultSpritePath= Images.DEFAULT_SPRITE;
 

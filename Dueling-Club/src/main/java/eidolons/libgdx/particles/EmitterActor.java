@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class EmitterActor extends SuperActor {
     }
 
     public void updatePosition(float x, float y) {
-        main.system.auxiliary.log.LogMaster.log(1, this + " from " +
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VERBOSE_CHECK, this + " from " +
          getX() +
          " " +
          getY() +

@@ -203,4 +203,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return centerCoordinate;
     }
 
+    public void setZone(LevelZone zone) {
+        this.zone = zone;
+    }
 }

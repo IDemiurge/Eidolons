@@ -3,6 +3,7 @@ package eidolons.entity.item;
 import eidolons.content.PARAMS;
 import eidolons.entity.ChangeableType;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
@@ -28,6 +29,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     private PARAMETER[] params;
     private PROPERTY[] props = {G_PROPS.STD_BOOLS};
     private CONTAINER container=CONTAINER.UNASSIGNED;
+    private Unit originalUnit;
 
     public DC_HeroItemObj(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
                           // , PROPERTY[] props
@@ -71,9 +73,18 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     @Override
     protected void initHero() {
         super.initHero();
+        if (originalUnit==null)
+            originalUnit=hero;
         if (!equipped) {
             equipped(ref);
         }
+    }
+
+    @Override
+    public void setOwnerObj(Unit hero) {
+        super.setOwnerObj(hero);
+        if (originalUnit==null )
+            originalUnit = hero;
     }
 
     @Override
@@ -189,4 +200,9 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     public void setContainer(CONTAINER container) {
         this.container = container;
     }
+
+    public Unit getOriginalUnit() {
+        return originalUnit;
+    }
+
 }

@@ -48,6 +48,7 @@ public class QuestResolver  extends QuestHandler{
                 return new ObjComparison(()->((Obj) quest.getArg()).getId(), KEYS.TARGET.name());
             case HUNT:
             case COMMON_ITEMS:
+            case OBJECTS:
                 return new DynamicCondition<ObjType>(obj ->
              (obj.getType()).equalsAsBaseType(quest.getArg()));
             case SPECIAL_ITEM:

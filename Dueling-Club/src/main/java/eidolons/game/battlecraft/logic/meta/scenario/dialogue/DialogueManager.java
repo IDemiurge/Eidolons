@@ -3,6 +3,8 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -31,7 +33,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public   void test() {
         GameDialogue dialogue = null;//new LinearDialogue();
         dialogue =  getMaster().getDialogueFactory().getDialogue("Interrogation");
-        List<DialogueView> list = SceneFactory.getScenes(dialogue);
+        List<Scene> list = SceneFactory.getScenes(dialogue);
         GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,
          new DialogueHandler(dialogue, getGame(), list));
     }

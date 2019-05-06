@@ -24,18 +24,6 @@ public class GlobalInputController implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-
-        switch (keycode) {
-            case Keys.F3:
-                WeaveMaster.openWeave();
-                return true;
-            case Keys.F4:
-                if (Eidolons.getScope() == SCOPE.MENU)
-                    return false;
-
-                Eidolons.exitToMenu();
-                return true;
-        }
         return false;
     }
 

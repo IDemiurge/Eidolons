@@ -21,6 +21,10 @@ public class DC_RuleMaster {
         return true;
     }
 
+    public static boolean isToughnessReduced() {
+        return true;
+    }
+
     public void timePassed(Float time) {
         for (BattleFieldObject object : game.getBfObjects())
         for (DamageCounterRule rule : rules.getTimedRules().keySet()) {

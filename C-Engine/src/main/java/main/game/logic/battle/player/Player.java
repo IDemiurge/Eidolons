@@ -76,8 +76,8 @@ public class Player {
 
     public MicroObj getHeroObj() {
         if (heroObj == null) {
-            if (getControlledUnits().size() > 0) {
-                heroObj = (MicroObj) getControlledUnits().toArray()[0];
+            if (collectControlledUnits().size() > 0) {
+                heroObj = (MicroObj) collectControlledUnits().toArray()[0];
             }
         }
         return heroObj;
@@ -91,7 +91,7 @@ public class Player {
     }
 
 
-    public Set<Obj> getControlledUnits() {
+    public Set<Obj> collectControlledUnits() {
         if (units == null) {
             resetUnits();
         }

@@ -51,6 +51,7 @@ public class GridManager {
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
+                if ((ref.getObj(KEYS.TARGET ) instanceof BattleFieldObject)) {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
 //                if (hero.isMainHero()) TODO this is an experiment (insane) feature...
 //                    if (hero.isMine()) {
@@ -63,6 +64,7 @@ public class GridManager {
 //                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
                     if (hero instanceof Unit)
                         DC_SoundMaster.playTurnSound((Unit) hero);
+                }
                 }
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS

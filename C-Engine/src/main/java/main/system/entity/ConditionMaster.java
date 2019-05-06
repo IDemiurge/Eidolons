@@ -13,6 +13,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
+import main.elements.conditions.standard.CustomCondition;
 import main.elements.conditions.standard.DynamicCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
@@ -602,9 +603,12 @@ public class ConditionMaster {
             case STRING_STRICT:
                 c = new StringComparison(str1, str2, true);
                 break;
-
+            case DISTANCE:
+                return new DistanceCondition(3, str1, str2);
             case CAN_ACTIVATE:
                 c = new DynamicCondition("CostCondition;" + str1 + "");
+            case ITEM:
+                break;
         }
         return c;
     }
@@ -633,6 +637,7 @@ public class ConditionMaster {
 
 
     public enum CONDITION_TEMPLATES {
+        DISTANCE("dst", "dist", "DISTANCE"),
         STRING("string", "fullString", "has"),
         STRING_STRICT("strStrict", "strEqual", "strict"),
         CONTAINER("contains"),
@@ -643,6 +648,7 @@ public class ConditionMaster {
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
+        MAINHERO("dst", "dist", "DISTANCE"),
         CAN_ACTIVATE("cost", "can activate", "can pay");
 
         private String[] names;
@@ -662,6 +668,7 @@ public class ConditionMaster {
             // TODO
             return false;
         }
+
     }
 
 }

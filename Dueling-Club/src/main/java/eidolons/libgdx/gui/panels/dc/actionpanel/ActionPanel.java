@@ -165,6 +165,9 @@ public class ActionPanel extends GroupX {
         });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
+            if (hero == null) {
+                nullifyUi();
+            }
             mainHand.setUserObject(new ImmutablePair<>(
              new WeaponDataSource(hero.getActiveWeapon(false)),
              new WeaponDataSource(hero.getNaturalWeapon())
@@ -177,6 +180,10 @@ public class ActionPanel extends GroupX {
              new PanelActionsDataSource(hero));
 
         });
+    }
+
+    private void nullifyUi() {
+
     }
 
     protected void initListeners() {

@@ -151,8 +151,10 @@ public class AtomicAi extends AiHandler {
 
         return AiActionFactory.newAction(
                 RandomWizard.random() ? RandomWizard.random() ?
+                        STD_SPEC_ACTIONS.Wait.toString() : RandomWizard.random() ?
                         STD_SPEC_ACTIONS.Wait.toString() :
-                        STD_MODE_ACTIONS.Defend.toString() :
+                        STD_MODE_ACTIONS.Defend.toString() : RandomWizard.random() ?
+                        STD_SPEC_ACTIONS.Wait.toString() :
                         STD_MODE_ACTIONS.On_Alert.toString(), ai);
     }
 
@@ -426,12 +428,18 @@ public class AtomicAi extends AiHandler {
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
             return false;
         VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Eidolons.getMainHero());
-        float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 1.5f : 3  +
+        float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6  +
                 ai.getUnit().getSightRangeTowards(Eidolons.getMainHero());
-
+        if (ai.getType().isCaster())
+            dst*=1.5f;
+        if (ai.getType().isRanged())
+            dst*=1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
             if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst) {
-
+//           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().get(ai.getUnit().getOwner(),
+//                        Eidolons.getMainHero());
+//                game.getVisionMaster().getVisionController().getDetectionMapper().get(ai.getUnit().getOwner(),
+//                        Eidolons.getMainHero());
                 return true;
             }
         }

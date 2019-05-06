@@ -120,10 +120,42 @@ public class DungeonEnums {
         Cult,
     }
 
+    public enum DEMO_FILL_STYLE {
+        ROGUE,
+        DWARF,
+        SPIDER,
+
+        CAVE,
+        TELRAZI,
+        VAULT,
+
+        CRYPTS,
+        PRISON,
+        TOWER,
+
+        NIGHTMARE
+    }
     /**
      * Encapsulates Ambience, decor, illumination
      */
     public enum DUNGEON_STYLE {
+       //DEMO_FILL_STYLE
+        ROGUE,
+        DWARF,
+        SPIDER,
+
+        CAVE,
+        TELRAZI,
+        VAULT,
+
+        CRYPTS,
+        PRISON,
+        TOWER,
+
+        NIGHTMARE,
+
+
+
         Knightly,
         Holy,
         Stony,

@@ -17,6 +17,8 @@ public class FadeImageContainer extends ImageContainer {
     protected float fadeDuration = 2f;
     protected String imagePath;
     protected String previousPath;
+    private Actor pendingContents;
+    private float speedFactor=1f;
 
     public FadeImageContainer(String path, float fadeDuration) {
         super(path);
@@ -98,9 +100,14 @@ public class FadeImageContainer extends ImageContainer {
 
     @Override
     public void setContents(Actor contents) {
-        if (previousImage == contents)
-            return;
-
+//        if (previousImage == contents)
+//            return;
+        if (fadePercentage > 0) {
+            if (isNoInterruptions()) {
+                pendingContents = contents;
+                return;
+            }
+        }
         if (previousImage != null)
             previousImage.remove();
         previousImage = getContent();
@@ -112,6 +119,11 @@ public class FadeImageContainer extends ImageContainer {
             getContent().getColor().a = 0;
             fadePercentage = 1f;
         }
+        speedFactor=1;
+    }
+
+    private boolean isNoInterruptions() {
+        return true;
     }
 
     @Override
@@ -125,16 +137,24 @@ public class FadeImageContainer extends ImageContainer {
 //                TextureCache.getOrCreate(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath()))) {
 //            return;
 //        }
+
         if (fadePercentage > 0) {
             fadePercentage = Math.max(0, fadePercentage - delta / getFadeDuration());
             previousImage.getColor().a = fadePercentage;
             getContent().getColor().a = 1 - fadePercentage;
+        } else {
+            if (pendingContents != null) {
+                setContents(pendingContents);
+                main.system.auxiliary.log.LogMaster.log(1,this+ " had pendingContents applied: " +pendingContents.toString());
+                pendingContents = null;
+                speedFactor=1.35f;
+            }
         }
         super.act(delta);
     }
 
     public float getFadeDuration() {
-        return fadeDuration;
+        return fadeDuration/speedFactor;
     }
 
     public void setFadeDuration(float fadeDuration) {

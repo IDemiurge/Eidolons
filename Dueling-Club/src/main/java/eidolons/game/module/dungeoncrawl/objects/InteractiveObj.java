@@ -12,7 +12,7 @@ public class InteractiveObj extends DungeonObj {
 
     public InteractiveObj(ObjType type, int x, int y) {
         super(type, x, y);
-        TYPE=INTERACTIVE_OBJ_TYPE.RUNE; //TODO
+        TYPE=InteractiveObjMaster.chooseTypeForInteractiveObj(type); //TODO
     }
 
     @Override

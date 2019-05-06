@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
+import main.system.text.LogManager;
 
 public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
@@ -44,7 +45,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
-        LOG_DETAIL_LEVEL(LOGGING_DETAIL_LEVEL.values()),
+        LOG_DETAIL_LEVEL(LogManager.LOGGING_DETAIL_LEVEL.values()),
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
         DEFAULT_WAIT_TIME(60, 10, 300),
@@ -134,10 +135,4 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
     }
 
-    public enum LOGGING_DETAIL_LEVEL {
-        CONCISE,
-        ESSENTIAL,
-        FULL,
-        DEV,;
-    }
 }

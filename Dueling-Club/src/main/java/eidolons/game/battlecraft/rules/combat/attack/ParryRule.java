@@ -7,8 +7,11 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.DC_Formulas;
 import main.content.enums.entity.ItemEnums;
+import main.entity.Ref;
+import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -70,6 +73,15 @@ public class ParryRule {
         int damage =
          attack.getPrecalculatedDamageAmount(); //raw damage
 //         attack.getDamage();
+
+        Ref ref =  (attacked.getRef()).getCopy();
+        ref.setAmount(damage);
+
+        game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_PARRIED, ref));
+
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_PARRIED,
+                "Counter Attack!", attacked);
+
         game.getLogManager().log(attack.getAttackedUnit().getName() + " parries " + attack.getAction().getName() + " from "
          + attack.getAttacker().getNameIfKnown()
          + StringMaster.wrapInParenthesis(chanceRounded + "%") + ", deflecting " + damage

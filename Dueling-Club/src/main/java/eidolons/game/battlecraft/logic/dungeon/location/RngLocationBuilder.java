@@ -137,7 +137,7 @@ public class RngLocationBuilder extends LocationBuilder {
             game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y, DC_Player.NEUTRAL);
             main.system.auxiliary.log.LogMaster.log(1, at + " spawed");
         }
-        for (ObjAtCoordinate at : level.getUnits()) {
+        for (ObjAtCoordinate at : level.collectUnits()) {
             Unit unit = (Unit) game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
                     game.getPlayer(false));
             UnitTrainingMaster.train(unit);
@@ -220,7 +220,10 @@ public class RngLocationBuilder extends LocationBuilder {
 
     protected static String processNode(Node n, DungeonLevel level) {
 
-        if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.OBJECTS_NODE)) {
+
+        if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.NON_VOID_NODE)) {
+            initNonVoidData(n, level);
+        } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.OBJECTS_NODE)) {
             initObjData(n, level);
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.AI_GROUPS_NODE)) {
             initAiData(n.getTextContent(), level);
@@ -243,6 +246,7 @@ public class RngLocationBuilder extends LocationBuilder {
             level.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
                     .getTextContent(), FLIP.class));
         } else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
+            level.setDirectionMapData(n.getTextContent());
             level.setDirectionMap(new RandomWizard<DIRECTION>()
                     .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
 
@@ -255,6 +259,11 @@ public class RngLocationBuilder extends LocationBuilder {
         return null;
     }
 
+    private static void initNonVoidData(Node n, DungeonLevel level) {
+        Set<Coordinates> coords = new LinkedHashSet<>(CoordinatesMaster.getCoordinatesFromString(n.getTextContent()));
+        level.setNonVoidCoordinates(coords);
+    }
+
     private static void initObjData(Node n, DungeonLevel level) {
         //units will be init at AigroupsInit()
         String separator = SEPARATOR;
@@ -265,14 +274,9 @@ public class RngLocationBuilder extends LocationBuilder {
             ObjAtCoordinate obj = new ObjAtCoordinate(s, DC_TYPE.BF_OBJ);
             if (!obj.isValid()) {
                 obj = new ObjAtCoordinate(s, DC_TYPE.UNITS);
-                if (!obj.isValid())
-                    continue;
-                level.getUnits().add(obj);
-                level.getBlockForCoordinate(obj.getCoordinates()).getUnits().add(obj);
-                continue;
             }
-            level.getObjects().add(obj);
-            level.getBlockForCoordinate(obj.getCoordinates()).getObjects().add(obj);
+
+            level.addObj(obj);
 
         }
         level.setPregen(true);

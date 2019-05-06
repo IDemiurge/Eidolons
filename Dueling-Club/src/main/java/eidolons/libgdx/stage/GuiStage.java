@@ -274,7 +274,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             getBatch().begin();
             blackout.draw(getBatch(), 1);
             if (gameMenu.isVisible())
-            gameMenu.draw(getBatch(), 1);
+                gameMenu.draw(getBatch(), 1);
             if (confirmationPanel.isVisible())
                 confirmationPanel.draw(getBatch(), 1);
 
@@ -292,7 +292,6 @@ public class GuiStage extends StageX implements StageWithClosable {
     @Override
     public void act(float delta) {
         blocked = checkBlocked();
-        tipMessageWindow.setVisible(false);
         if (!Blackout.isOnNewScreen())
             if (isBlackoutIn()) {
                 blackout.fadeOutAndBack(2f);
@@ -344,9 +343,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected boolean checkBlocked() {
         return
 
-                tipMessageWindow.isVisible() ||confirmationPanel.isVisible() || textPanel.isVisible() ||
-                HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
-                || GameMenu.menuOpen;
+                tipMessageWindow.isVisible() || confirmationPanel.isVisible() || textPanel.isVisible() ||
+                        HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
+                        || GameMenu.menuOpen;
     }
 
     @Override
@@ -381,9 +380,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
         if (!ancestors.contains(textPanel))
             if (!ancestors.contains(confirmationPanel))
-            if (!ancestors.contains(tipMessageWindow))
-                if (!ancestors.contains(gameMenu))
-                    return true;
+                if (!ancestors.contains(tipMessageWindow))
+                    if (!ancestors.contains(gameMenu))
+                        return true;
 
         return false;
     }
@@ -401,11 +400,18 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     protected void bindEvents() {
 
-        GuiEventManager.bind(GuiEventType.TIP_MESSAGE , p-> {
+        GuiEventManager.bind(GuiEventType.TIP_MESSAGE, p -> {
             if (tipMessageWindow != null) {
                 ActorMaster.addRemoveAfter(tipMessageWindow);
             }
-              tipMessageWindow= new TipMessageWindow((TipMessageSource) p.get());
+            if (p.get() == null) {
+                return;
+            }
+            try {
+                tipMessageWindow = new TipMessageWindow((TipMessageSource) p.get());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             addActor(tipMessageWindow);
             tipMessageWindow.fadeIn();
             tipMessageWindow.setPosition(GdxMaster.centerWidth(tipMessageWindow),
@@ -688,6 +694,8 @@ public class GuiStage extends StageX implements StageWithClosable {
             tooltips.setZIndex(Integer.MAX_VALUE);
         if (dragManager != null)
             dragManager.setZIndex(Integer.MAX_VALUE);
+        if (tipMessageWindow != null)
+            tipMessageWindow.setZIndex(Integer.MAX_VALUE);
         if (blackout != null)
             blackout.setZIndex(Integer.MAX_VALUE);
     }

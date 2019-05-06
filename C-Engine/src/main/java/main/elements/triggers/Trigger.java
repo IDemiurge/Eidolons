@@ -40,6 +40,7 @@ public class Trigger {
         this.game = game;
 
         if (abilities != null) {
+        if (abilities.getEffects() != null)
             abilities.getEffects().setTrigger(this);
         }
     }

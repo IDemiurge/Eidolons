@@ -9,7 +9,7 @@ import main.system.threading.WaitMaster;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.MESSAGE_TIPS.*;
+import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE.*;
 
 public class TipMessageMaster {
     public static void welcome() {
@@ -22,7 +22,7 @@ public class TipMessageMaster {
         tip(DEATH);
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE);
     }
-    private static void tip(MESSAGE_TIPS... tips) {
+    private static void tip(TIP_MESSAGE... tips) {
         Runnable chain = createChain(tips);
           TipMessageSource  source = getSource(tips[0]);
         source.setRunnable(chain);
@@ -33,15 +33,15 @@ public class TipMessageMaster {
         GuiEventManager.trigger(GuiEventType. TIP_MESSAGE, source);
     }
 
-    private static Runnable createChain(MESSAGE_TIPS[] tips) {
+    private static Runnable createChain(TIP_MESSAGE[] tips) {
         if (tips.length<=1)
             return ()->{};
-        MESSAGE_TIPS[] tipsChopped =
-                Arrays.stream(tips).skip(1).collect(Collectors.toList()).toArray(new MESSAGE_TIPS[tips.length - 1]);
+        TIP_MESSAGE[] tipsChopped =
+                Arrays.stream(tips).skip(1).collect(Collectors.toList()).toArray(new TIP_MESSAGE[tips.length - 1]);
         return ()-> tip(tipsChopped);
     }
 
-    private static TipMessageSource getSource(MESSAGE_TIPS tip) {
+    private static TipMessageSource getSource(TIP_MESSAGE tip) {
      return    new TipMessageSource(tip.message,tip.img, "Continue", tip.optional ,null);
     }
 
@@ -52,7 +52,7 @@ public class TipMessageMaster {
         welcome();
     }
 
-    enum MESSAGE_TIPS{
+    public enum TIP_MESSAGE {
 
         //ui
 TEST("This shell is waning. Time to put off the mask. The pain will be legendary..."),
@@ -60,7 +60,7 @@ TEST("This shell is waning. Time to put off the mask. The pain will be legendary
         DEATH("Dead!"),
         UNCONSCIOUS(
 //                "I am waning. Yet it is not over, there is life still in this shell of mine. All I need is time... Come, come to me, my Shadow!"),
-                "This shell is waning. Time to put off the mask. The pain will be legendary..."),
+                "This shell is waning. Time to put off the mask. The pain will be legendary... I will have to be quick, kill every foe before my consciousness fades. \n [2] rounds to finish the fight"),
         //TODO multiple random ones?!
 
 //        COMBAT_WONT_END,
@@ -86,10 +86,10 @@ TEST("This shell is waning. Time to put off the mask. The pain will be legendary
 
 ;
         public boolean optional=true;
-        String img;
-        String message;
+        public String img;
+        public String message;
 //to txt of course
-        MESSAGE_TIPS(String message) {
+        TIP_MESSAGE(String message) {
             this.message = message;
         }
     }

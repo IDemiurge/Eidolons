@@ -31,10 +31,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Party extends Obj {
     // TODO ++ EMBLEM!
@@ -172,7 +170,7 @@ public class Party extends Obj {
     public void setLeader(Unit leader) {
         this.leader = leader;
         setProperty(G_PROPS.IMAGE, leader.getImagePath(), true);
-        setProperty(PROPS.MEMBERS, leader.getProperty(G_PROPS.NAME), true);
+//      WTF??? TODO   setProperty(PROPS.MEMBERS, leader.getProperty(G_PROPS.NAME), true);
         setProperty(PROPS.LEADER, leader.getProperty(G_PROPS.NAME), true);
         this.type.setParam(PARAMS.LEVEL, leader.getParam(PARAMS.LEVEL), true);
         setParam(PARAMS.LEVEL, leader.getIntParam(PARAMS.LEVEL), true);
@@ -528,5 +526,10 @@ public class Party extends Obj {
 
     public String getMission() {
         return getProperty(PROPS.PARTY_MISSION);
+    }
+
+    public List<ObjType> getMemberTypes() {
+        return ContainerUtils.openContainer(getProperty(PROPS.MEMBERS)).
+                stream().map(member -> DataManager.getType(member, DC_TYPE.CHARS)).collect(Collectors.toList());
     }
 }

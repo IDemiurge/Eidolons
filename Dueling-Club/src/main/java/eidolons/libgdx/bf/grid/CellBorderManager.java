@@ -20,8 +20,8 @@ public class CellBorderManager extends Group {
     public static final String teamcolorPath = Images.COLORLESS_BORDER;
     public static final String targetPath = Images.TARGET_BORDER;
 
-    private final TextureRegion teamcolorTexture;
-    private final TextureRegion targetTexture;
+    private static TextureRegion teamcolorTexture;
+    private static   TextureRegion targetTexture;
     public TextureRegion singleBorderImageBackup = null;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> teamColorBorderOwners = new HashMap<>();
@@ -49,6 +49,14 @@ public class CellBorderManager extends Group {
                 singleBorderImageBackup = null;
             }
         }
+    }
+
+    public static TextureRegion getTeamcolorTexture() {
+        return teamcolorTexture;
+    }
+
+    public static TextureRegion getTargetTexture() {
+        return targetTexture;
     }
 
     private void bindEvents() {

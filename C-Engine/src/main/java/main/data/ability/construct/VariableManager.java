@@ -13,6 +13,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -543,7 +544,12 @@ public class VariableManager {
                  ref.getSourceObj().getCoordinates()).getRef();
                 return new Property("SOURCE", s).getStr(REF);
             }
-        },;
+        }, COORDINATE{
+            @Override
+            public Object evaluate(Entity entity, String f) {
+                return new Coordinates(f);
+            }
+        };
 
         AUTOVAR() {
 

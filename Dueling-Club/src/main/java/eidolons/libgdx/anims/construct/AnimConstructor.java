@@ -363,8 +363,8 @@ public class AnimConstructor {
     private static boolean isForceAnim(DC_ActiveObj active, ANIM_PART part) {
         switch (part) {
             case MISSILE:
-                if (CoreEngine.isFastMode())
-                    return true;
+//           TODO wanna test it? do it right...     if (CoreEngine.isFastMode())
+//                    return true;
         }
         return false;
     }

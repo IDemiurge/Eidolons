@@ -7,11 +7,13 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.libgdx.bf.boss.BossUnit;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.type.ObjAtCoordinate;
@@ -58,6 +60,9 @@ public class ObjCreator extends Master {
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
         } else {
+            if (EntityCheckMaster.isBoss(type)) {
+                obj = new BossUnit(type, x, y, owner, getGame(), ref);
+            } else
             obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         if (CoreEngine.isLevelEditor()) {
@@ -75,7 +80,7 @@ public class ObjCreator extends Master {
             obj.afterEffects();
         }
         obj.setOriginalType(type.getType());
-        if (getGame().getMetaMaster().isRngDungeon())
+        if (getGame().getMetaMaster().isRngQuestsEnabled())
             for (DungeonQuest quest : game.getMetaMaster().getQuestMaster().getQuestsPool()) {
                 if (quest.getArg() instanceof ObjAtCoordinate) {
                     if (((ObjAtCoordinate) quest.getArg()).getType().equalsAsBaseType(obj.getType())) {
@@ -121,6 +126,9 @@ public class ObjCreator extends Master {
                 type.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (group != null) {
             switch (group) {
+                case DUNGEON:
+                   break;
+
                 case HANGING:
                     return new InteractiveObj(type, x, y);
                 case DOOR:

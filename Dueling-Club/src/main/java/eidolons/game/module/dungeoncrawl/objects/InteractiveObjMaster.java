@@ -3,10 +3,13 @@ package eidolons.game.module.dungeoncrawl.objects;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
+import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import main.content.DC_TYPE;
@@ -19,6 +22,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
@@ -29,6 +33,14 @@ import java.util.List;
 public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     public InteractiveObjMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
+    }
+
+    public static INTERACTIVE_OBJ_TYPE chooseTypeForInteractiveObj(ObjType type) {
+        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS)!=null ) {
+            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
+        }
+
+        return INTERACTIVE_OBJ_TYPE.RUNE;
     }
 
     @Override
@@ -56,6 +68,12 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         //sound
         INTERACTIVE_OBJ_TYPE type = obj.getTYPE();
 
+
+        Ref ref = obj.getRef();
+        ref.setTarget(obj.getId());
+        ref.setID(KEYS.ITEM, obj.getId());
+        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
+
         boolean off = obj.isOff();
         if (off) {
             return;
@@ -74,6 +92,9 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 break;
             case LEVER:
                 break;
+            case CONSUMABLE:
+                pickup(obj, unit);
+                break;
         }
         obj.setOff(!obj.isOff());
         if (!off) {
@@ -83,11 +104,38 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         }
     }
 
+    private void pickup(InteractiveObj obj, Unit unit) {
+        DC_HeroItemObj item = createItemFromObj(obj);
+        if (!unit.addItemToInventory(item)){
+            return;
+        }
+        obj.kill(unit, false, false);
+
+        Ref ref = obj.getRef();
+        ref.setTarget(obj.getId());
+        ref.setID(KEYS.ITEM, obj.getId());
+        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_PICKED_UP, ref));
+
+        ref.setObj(KEYS.ITEM, item);
+        ref.setObj(KEYS.TARGET, item);
+        unit .getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
+    }
+
+    private static DC_HeroItemObj createItemFromObj(InteractiveObj obj) {
+        String name =getConsumableItemName(obj.getName());
+
+        return ItemFactory.createItemObj(name, DC_TYPE.ITEMS,  true);
+    }
+
+    public static String getConsumableItemName(String name) {
+        return  name +" " + StringMaster.wrapInParenthesis("Consumable");
+    }
+
     private void doMagic(InteractiveObj obj, Unit unit) {
         Ref ref = obj.getRef();
         ref.setTarget(obj.getId());
         ref.setID(KEYS.ITEM, obj.getId());
-        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
+        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_MAGIC_USED, ref));
         if (RandomWizard.chance(80)) {
         EUtils.showInfoText("Ancient lore has lessons to teach you...");
         HeroLevelManager.addXp(unit, RandomWizard.getRandomIntBetween(5, 5*unit.getLevel()));
@@ -124,7 +172,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         MECHANISM,
 
         BUTTON,
-        LEVER,
+        LEVER, CONSUMABLE,
 
 
     }

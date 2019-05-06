@@ -37,6 +37,10 @@ public class ExploreCleaner extends ExplorationHandler {
     public void cleanUpAfterBattle() {
         Eidolons.getGame().getUnits().forEach(
          unit -> {
+             if (unit.isScion()) {
+                 unit.kill();
+                 return;
+             }
              unit.setParam(PARAMS.FOCUS_FATIGUE, 0);
 
              unit.resetDynamicParam(PARAMS.C_N_OF_ACTIONS);

@@ -21,13 +21,18 @@ public class RngDestructibleFiller extends RngFiller {
     }
 
     @Override
+    public float getFillCoef() {
+        return 0.7f;
+    }
+
+    @Override
     public boolean isNoAdjacencyLimits() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isNeverBlock() {
-        return true;
+        return false;
     }
 
     @Override

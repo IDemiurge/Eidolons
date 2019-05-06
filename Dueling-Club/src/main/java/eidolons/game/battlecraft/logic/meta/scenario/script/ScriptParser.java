@@ -8,6 +8,7 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
+import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
@@ -31,8 +32,8 @@ public class ScriptParser {
 
     public static STANDARD_EVENT_TYPE getEventByShortcut(String text) {
         SCRIPT_EVENT_SHORTCUT shortcut =
-         new EnumMaster<SCRIPT_EVENT_SHORTCUT>().
-          retrieveEnumConst(SCRIPT_EVENT_SHORTCUT.class, text);
+                new EnumMaster<SCRIPT_EVENT_SHORTCUT>().
+                        retrieveEnumConst(SCRIPT_EVENT_SHORTCUT.class, text);
         return shortcut.event_type;
     }
 
@@ -47,6 +48,9 @@ public class ScriptParser {
 
     public static CONDITION_TEMPLATES getDefaultConditionForEvent(STANDARD_EVENT_TYPE event_type) {
         switch (event_type) {
+            case UNIT_FINISHED_MOVING:
+                return CONDITION_TEMPLATES.DISTANCE;
+
             case DIALOGUE_FINISHED:
                 return CONDITION_TEMPLATES.STRING_STRICT;
             case DIALOGUE_LINE_SPOKEN:
@@ -61,28 +65,35 @@ public class ScriptParser {
         String var1 = getVarOne(event_type, vars);
         String var2 = getVarTwo(event_type, vars);
         return DC_ConditionMaster.getInstance().getConditionFromTemplate(
-         getDefaultConditionForEvent(event_type), var1, var2);
+                getDefaultConditionForEvent(event_type), var1, var2);
     }
 
     private static String getVarTwo(STANDARD_EVENT_TYPE event_type, String vars) {
-        try {
-            return vars.split(",")[1];
-        } catch (Exception ignored) {
-        }
         switch (event_type) {
+
+            case UNIT_FINISHED_MOVING:
+                return
+                        //VariableManager.AUTOVAR.COORDINATE+StringMaster.wrapInBraces
+                        (vars);
             case DIALOGUE_FINISHED:
                 return "{event_string}";
             case DIALOGUE_LINE_SPOKEN:
             case NEW_ROUND:
                 return "{event_amount}";
         }
+        if (vars.contains(",")) {
+            return vars.split(",")[1];
+        }
         return vars;
     }
 
     private static String getVarOne(STANDARD_EVENT_TYPE event_type, String vars) {
-        try {
+        switch (event_type) {
+            case UNIT_FINISHED_MOVING:
+                return "{event_source}";
+        }
+        if (vars.contains(",")) {
             return vars.split(",")[0];
-        } catch (Exception ignored) {
         }
         return vars;
     }
@@ -97,19 +108,24 @@ public class ScriptParser {
         String processedPart = StringMaster.getFirstItem(script, ScriptSyntax.PART_SEPARATOR);
         STANDARD_EVENT_TYPE event_type = parseEvent(processedPart);
         script = StringMaster.cropFirstSegment(script, ScriptSyntax.PART_SEPARATOR);
-        Condition condition = null;
-        condition = getDefaultCondition(event_type, VariableManager.getVars(processedPart));
-        if (condition != null) {
-            condition.setXml(XML_Converter.wrap("ScriptedCondition",
-             XML_Converter.wrap("STANDARD_EVENT_TYPE", event_type.toString())
-              + XML_Converter.wrap("STRING", VariableManager.getVars(processedPart))
+        Conditions conditions = new Conditions();
+        Condition defaultCondition = null;
+        defaultCondition = getDefaultCondition(event_type, VariableManager.getVars(processedPart));
+        if (defaultCondition != null) {
+            defaultCondition.setXml(XML_Converter.wrap("ScriptedCondition",
+                    XML_Converter.wrap("STANDARD_EVENT_TYPE", event_type.toString())
+                            + XML_Converter.wrap("STRING", VariableManager.getVars(processedPart))
             ));
-        } else {
-            String conditionPart = StringMaster.getFirstItem(script,
-             ScriptSyntax.PART_SEPARATOR);
-            condition = parseConditions(conditionPart);
-            condition.setXml(conditionPart);
+            conditions.add(defaultCondition);
         }
+        String conditionPart = StringMaster.getFirstItem(script,
+                ScriptSyntax.PART_SEPARATOR);
+        Condition customCondition = parseConditions(conditionPart);
+        if (customCondition != null) {
+            customCondition.setXml(conditionPart);
+            conditions.add(customCondition);
+        }
+
 
         boolean isRemove = true;
 //        if (contains("cyclic"))remove = false;
@@ -119,15 +135,15 @@ public class ScriptParser {
         String funcPart = VariableManager.removeVarPart(script);
         @Refactor
         //TODO this won't work in generic way!!!!
-         T func =
-         new EnumMaster<T>().retrieveEnumConst
-          (funcClass, funcPart);
+                T func =
+                new EnumMaster<T>().retrieveEnumConst
+                        (funcClass, funcPart);
         if (func != null) {
             //TODO for multiple scripts, need another SEPARATOR!
             String separator = executor.getSeparator(func);
             List<String> strings =
-             ContainerUtils.openContainer(VariableManager.getVars(script),
-              separator);
+                    ContainerUtils.openContainer(VariableManager.getVars(script),
+                            separator);
             String[] args = strings.toArray(new String[strings.size()]);
             abilities = new AbilityImpl() {
                 @Override
@@ -145,18 +161,20 @@ public class ScriptParser {
             }
         }
         abilities.setRef(ref);
-        ScriptTrigger trigger = new ScriptTrigger(originalText, event_type, condition, abilities);
+        ScriptTrigger trigger = new ScriptTrigger(originalText, event_type, conditions, abilities);
         trigger.setRemoveAfterTriggers(isRemove);
         return trigger;
     }
 
 
     public enum SCRIPT_EVENT_SHORTCUT {
+        POS(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING),
         LINE(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN),
         DIALOGUE(STANDARD_EVENT_TYPE.DIALOGUE_FINISHED),
         CLEARED(STANDARD_EVENT_TYPE.ENEMIES_CLEARED),
         ROUND(STANDARD_EVENT_TYPE.NEW_ROUND), DIES(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
-        ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT), ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),;
+        ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT), ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),
+        ;
         STANDARD_EVENT_TYPE event_type;
 
         SCRIPT_EVENT_SHORTCUT(STANDARD_EVENT_TYPE event_type) {

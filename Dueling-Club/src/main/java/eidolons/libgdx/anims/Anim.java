@@ -185,10 +185,10 @@ public class Anim extends Group implements Animation {
         {
             if (checkFinished()) {
                 if (!emitterList.isEmpty())
-                if (completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
-                    waitForVfx();
-                    return true;
-                }
+                    if (completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
+                        waitForVfx();
+                        return true;
+                    }
                 log(ANIM_DEBUG, this + " finished; duration = " + duration);
                 finished();
                 dispose();
@@ -269,7 +269,7 @@ public class Anim extends Group implements Animation {
         for (EmitterActor e : emitterList) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 float timeLeft = emitter.getDuration().getLowMax() / 1000 *
-                 Math.max(0, emitter.getPercentComplete());
+                        Math.max(0, emitter.getPercentComplete());
                 if (timeLeft > time) {
                     time = timeLeft;
                 }
@@ -305,9 +305,9 @@ public class Anim extends Group implements Animation {
         float w = Math.min(64, this.getWidth());
         float h = Math.min(64, this.getHeight());
         batch.draw((texture), this.getX(), getY(), this.getOriginX(),
-         this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
-         this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
+                this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
         batch.setColor(color);
     }
@@ -327,7 +327,11 @@ public class Anim extends Group implements Animation {
 
     protected void resetSprites() {
         //TODO
-        sprites.clear();
+        if (sprites == null) {
+            sprites = new ArrayList<>();
+        } else {
+            sprites.clear();
+        }
         for (String s : ContainerUtils.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(s);
             sprite.setFrameDuration(getDuration() / sprite.getFrameNumber());
@@ -346,11 +350,11 @@ public class Anim extends Group implements Animation {
     protected void resetEmitters() {
 
         getEmitterList().forEach(e ->
-         {
-             if (e.isGenerated()) {
-                 e.getEffect().dispose();
-             }
-         }
+                {
+                    if (e.isGenerated()) {
+                        e.getEffect().dispose();
+                    }
+                }
         );
         if (ListMaster.isNotEmpty(emitterCache))
             emitterList = new ArrayList<>(emitterCache);
@@ -460,7 +464,7 @@ public class Anim extends Group implements Animation {
 
     protected String getDefaultTexturePath() {
         return
-         VISUALS.QUESTION.getImgPath();
+                VISUALS.QUESTION.getImgPath();
     }
 
     @Override
@@ -564,14 +568,14 @@ public class Anim extends Group implements Animation {
 
     public void initPosition() {
         origin = GridMaster
-         .getCenteredPos(getOriginCoordinates());
+                .getCenteredPos(getOriginCoordinates());
         if (getOffsetOrigin() != null)
             origin.add(getOffsetOrigin());
         //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
         //         this + " origin: " + origin);
 
         destination = GridMaster
-         .getCenteredPos(getDestinationCoordinates());
+                .getCenteredPos(getDestinationCoordinates());
         if (getOffsetDestination() != null)
             destination.add(getOffsetDestination());
 
@@ -814,7 +818,7 @@ public class Anim extends Group implements Animation {
                 ref.setTarget(ref.getActive().getRef().getTarget());
                 if (ref.getTargetObj() != null) {
                     log(1, ref.getActive() + " HAD TARGET! " +
-                     ref.getTargetObj());
+                            ref.getTargetObj());
                 }
             }
         }
@@ -851,7 +855,7 @@ public class Anim extends Group implements Animation {
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
                 Vector2 floatTextPos = //localToSctageCoordinates
-                 (defaultPosition);
+                        (defaultPosition);
                 floatingText1.setX(floatTextPos.x);
                 floatingText1.setY(floatTextPos.y);
                 GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);

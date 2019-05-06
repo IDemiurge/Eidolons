@@ -13,6 +13,7 @@ import eidolons.ability.conditions.shortcut.StdPassiveCondition;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.DC_TYPE;
@@ -28,10 +29,7 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
-import main.elements.conditions.standard.ClassificationCondition;
-import main.elements.conditions.standard.OwnershipCondition;
-import main.elements.conditions.standard.PositionCondition;
-import main.elements.conditions.standard.ZLevelCondition;
+import main.elements.conditions.standard.*;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Entity;
@@ -147,7 +145,8 @@ public class DC_ConditionMaster extends ConditionMaster {
         switch (CONST) {
             case PARAM:
             case COUNTER:
-                condition = new NumericCondition("{SOURCE" + variables[0] + "}", variables[1]
+                condition = new NumericCondition(
+                        StringMaster.getValueRef(KEYS.SOURCE.toString(), variables[0].toString()), variables[1]
                  .toString());
                 break;
             case CUSTOM:
@@ -526,6 +525,13 @@ public class DC_ConditionMaster extends ConditionMaster {
                     return new ItemCondition(KEYS.SOURCE.toString(), slot, prop, val);
                 }
 
+                case MAINHERO:
+                    return new CustomCondition(){
+                        @Override
+                        public boolean check(Ref ref) {
+                            return ref.getSourceObj()== Eidolons.getMainHero();
+                        }
+                    };
             }
         }
         if (result == null) {

@@ -11,6 +11,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
@@ -57,6 +58,8 @@ public class Ref implements Cloneable, Serializable {
     protected boolean debug; // some things may work differently when ref debug is on
     protected boolean triggered; // signifies that this branch/stack comes from a trigger
     protected boolean animationDisabled; // outdated phase anim flag...
+    private boolean clone;
+    private boolean original;
 
     public Ref() {
         this.game = Game.game;
@@ -88,6 +91,7 @@ public class Ref implements Cloneable, Serializable {
          entity.getId());
         setTarget(target.getId());
     }
+
 
     public static Ref getCopy(Ref ref) {
         if (ref == null) {
@@ -233,6 +237,7 @@ public class Ref implements Cloneable, Serializable {
 
     public Object clone() {
         Ref ref = new Ref();
+        ref.setClone(true);
         ref.cloneMaps(this);
         ref.setPlayer(player);
         ref.setEvent(event);
@@ -360,7 +365,9 @@ public class Ref implements Cloneable, Serializable {
 
     public void setTarget(Integer this_target) {
         setID(KEYS.TARGET, this_target);
-
+        if (original && !isClone() && getSource()!=null ) {
+            main.system.auxiliary.log.LogMaster.log(1,">>>> target set for original ref? => \n " +this);
+        }
     }
 
     public Ref getCopy() {
@@ -446,7 +453,7 @@ public class Ref implements Cloneable, Serializable {
             return game.getObjectById(NumberUtils.getInteger(getRemovedValues()
              .get(key)));
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             return null;
         }
     }
@@ -590,6 +597,14 @@ public class Ref implements Cloneable, Serializable {
 
     public String getInfoString() {
         return "Ref: target =" + getTargetObj() + "\n ; group =" + getGroup();
+    }
+
+    public void setClone(boolean clone) {
+        this.clone = clone;
+    }
+
+    public boolean isClone() {
+        return clone;
     }
 
     public enum KEYS {

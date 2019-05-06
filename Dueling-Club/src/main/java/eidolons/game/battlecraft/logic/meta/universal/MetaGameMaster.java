@@ -93,7 +93,11 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         dialogueManager = new DialogueManager(this);
         dialogueActorMaster = new DialogueActorMaster(this);
 
-        townMaster = new TownMaster(this);// createTownMaster();
+        townMaster = createTownMaster();
+    }
+
+    protected TownMaster createTownMaster() {
+        return new TownMaster(this);
     }
 
     protected LootMaster<E> createLootMaster() {
@@ -125,7 +129,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                     Eidolons.getMainGame().setAborted(true);
                     return;
                 }
-            } else if (isQuestsEnabled())
+            } else if (isRngQuestsEnabled() || isCustomQuestsEnabled())
                 if (!getQuestMaster().initQuests()) {
                     Eidolons.getMainGame().setAborted(true);
                     return;
@@ -136,6 +140,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     }
 
+    public boolean isCustomQuestsEnabled() {
+        return  false;
+    }
     protected boolean isTownEnabled() {
         if (CoreEngine.isFullFastMode()) {
             return false;
@@ -148,7 +155,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return true;
     }
 
-    public boolean isQuestsEnabled() {
+    public boolean isRngQuestsEnabled() {
         if (CoreEngine.isFullFastMode()) {
             return false;
         }
@@ -313,5 +320,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public GameEventHandler getEventHandler() {
         return eventHandler;
+    }
+
+    public boolean isAlliesSupported() {
+        return true;
+                //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
     }
 }

@@ -316,7 +316,7 @@ public class ArcaneVault {
     private static void setArcaneVaultIcon() {
         ImageIcon img = ImageManager.getIcon(ICON_PATH);
         if (macroMode) {
-            img = ImageManager.getIcon("UI\\" + "PentagramX3" + ".png");
+            img = ImageManager.getIcon("UI\\" + "spellbook" + ".png");
         }
 
         window.setIconImage(img.getImage());

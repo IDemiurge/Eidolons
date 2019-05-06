@@ -63,10 +63,11 @@ public class ShaderMaster {
    static String path;
     private static String getShadersPath() {
         if (path == null) {
-            path = (PathFinder.getEnginePath() +ShaderMaster.class.getPackage().toString())
-             .replace(".", "/")
-             .replace("target", "src\\main\\java")
-             .replace("package ", "") + "/data/"
+            path = PathFinder. getShadersPath();
+//            path = (PathFinder.getEnginePath() +ShaderMaster.class.getPackage().toString())
+//             .replace(".", "/")
+//             .replace("target", "src\\main\\java")
+//             .replace("package ", "") + "/data/"
             ;
         }
         return path;

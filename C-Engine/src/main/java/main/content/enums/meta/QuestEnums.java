@@ -7,6 +7,7 @@ public class QuestEnums {
     public enum QUEST_GROUP {
         TUTORIAL,
         SCENARIO,
+        DEMO,
         RNG,
         ADVENTURE,
     }

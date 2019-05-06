@@ -187,7 +187,11 @@ public class DC_GameManager extends GameManager {
         //set dirty flag?
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         //        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
-        GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, getMainHero());
+        if (!getMainHero().isDead())
+            GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, getMainHero());
+        else {
+            GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, null );
+        }
     }
 
     public void resetWallMap() {

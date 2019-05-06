@@ -14,6 +14,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
@@ -25,6 +26,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.data.filesys.PathFinder;
 import main.elements.triggers.Trigger;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -86,15 +88,20 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public String readScriptsFile() {
         String text = FileManager.readFile(
-         PathUtils.buildPath(
-          getMaster().getMissionResourceFolderPath()
-          , ScriptGenerator.SCRIPTS_FILE_NAME));
+                getScriptsPath());
 //        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
         String[] parts = text.split(ScriptSyntax.COMMENT_CLOSE);
         if (parts.length == 1)
             return "";
         return parts[1];
     }
+
+    private String getScriptsPath() {
+        return PathUtils.buildPath(
+                PathFinder.getTextPath(), "scripts", "demo"
+                , getBattle().getMission().getName() + " " + ScriptGenerator.SCRIPTS_FILE_NAME);
+    }
+    //getMaster().getMetaMaster().getMetaGame().getScenario()
 
     @Override
     public MissionBattleMaster getMaster() {
@@ -167,7 +174,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     private boolean doDialogue(Ref ref, String[] args) {
         GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
          args[0]);
-        List<DialogueView> list = SceneFactory.getScenes(dialogue);
+        List<Scene> list = SceneFactory.getScenes(dialogue);
 
         GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
         return true;

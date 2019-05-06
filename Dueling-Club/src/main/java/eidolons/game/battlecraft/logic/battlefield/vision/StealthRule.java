@@ -94,7 +94,7 @@ public class StealthRule implements ActionRule {
               result = true;
             int stealth = unit.getIntParam(PARAMS.STEALTH);
 
-            for (Unit obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).getControlledUnits_()) {
+            for (Unit obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).collectControlledUnits_()) {
 
                 // if (checkInSight((DC_UnitObj) obj, unit))
                 // continue; TODO Used to be like this? If within sight range,

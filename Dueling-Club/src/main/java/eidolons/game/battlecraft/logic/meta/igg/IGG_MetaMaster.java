@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.story.IGG_TownMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
@@ -19,13 +21,17 @@ Stats and victory screen
 override death rules
 - create a special class for this!
 defeatHandler...
-
-
-
  */
 public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
+
+    ShadowMaster shadowMaster= new ShadowMaster(this);
+
     public IGG_MetaMaster(String data) {
         super(data);
+    }
+
+    public ShadowMaster getShadowMaster() {
+        return shadowMaster;
     }
 
     @Override
@@ -70,14 +76,21 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
     }
 
     @Override
+    protected TownMaster createTownMaster() {
+        return new IGG_TownMaster(this);
+    }
+
+    @Override
     protected boolean isTownEnabled() {
         if (getMetaGame().getMission().isTown())
             return true;
         return false;
     }
-
+    public boolean isCustomQuestsEnabled() {
+        return  true;
+    }
     @Override
-    public boolean isQuestsEnabled() {
+    public boolean isRngQuestsEnabled() {
         return false;
     }
 
@@ -86,6 +99,11 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
         partyManager.preStart();
         partyManager.initPlayerParty();
         getMetaDataManager().initData();
+//        initQuests();
+    }
+
+    private void initQuests() {
+        getQuestMaster().initQuests();
     }
 
     @Override

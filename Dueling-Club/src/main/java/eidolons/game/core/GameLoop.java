@@ -81,8 +81,8 @@ public class GameLoop {
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_STARTED, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
 
-        while (true) {
-            //for JUnit
+        while (true) {//for JUnit
+
             if (exited)
                 break;
             if (game.getUnits().isEmpty()) {
@@ -528,4 +528,12 @@ public class GameLoop {
         return started;
     }
 
+    public boolean checkThreadIsRunning() {
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getName().equalsIgnoreCase(getThreadName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

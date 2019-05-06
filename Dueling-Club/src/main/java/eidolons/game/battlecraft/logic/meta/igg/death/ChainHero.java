@@ -33,4 +33,8 @@ public class ChainHero {
     public boolean hasLives() {
         return getLives()>0;
     }
+
+    public void death() {
+        lives--;
+    }
 }

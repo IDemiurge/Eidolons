@@ -32,7 +32,7 @@ public class Ready3dAnim extends Weapon3dAnim {
 
     @Override
     protected SpriteAnimation get3dSprite() {
-        PROJECTION projection = getProjection();
+        PROJECTION projection = getProjection(getRef(), getActive());
         main.system.auxiliary.log.LogMaster.log(1, this + " projection : " + projection);
         sprite = projectionsMap.get(projection);
         if (sprite == null)

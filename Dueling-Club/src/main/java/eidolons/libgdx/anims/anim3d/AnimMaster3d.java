@@ -32,14 +32,21 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
+import main.entity.Ref;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.math.PositionMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static eidolons.libgdx.anims.sprite.SpriteAnimationFactory.fps30;
 
 /**
  * Created by JustMe on 9/6/2017.
@@ -93,6 +100,7 @@ public class AnimMaster3d {
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
     private static Boolean off;
+    private static float fps= fps30;
 
     static {
         init();
@@ -176,8 +184,8 @@ public class AnimMaster3d {
                     try {
                         path = getPotionAtlasPath(sub.getActive());
                     } catch (Exception e) {
-                        main.system.auxiliary.log.LogMaster.log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        LogMaster.log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
+                        ExceptionMaster.printStackTrace(e);
                         return;
                     }
                     preloadAtlas(path);
@@ -276,7 +284,7 @@ public class AnimMaster3d {
         return name;
     }
 
-    private static String getWeaponAtlasKey(DC_WeaponObj weapon) {
+    public static String getWeaponAtlasKey(DC_WeaponObj weapon) {
         String name = weapon.getBaseTypeName();
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
@@ -296,7 +304,7 @@ public class AnimMaster3d {
 
     public static String getAtlasPath(DC_WeaponObj weapon, String name) {
         if (weapon.getWeaponGroup() == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
+            LogMaster.log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
             return "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP);
         }
         String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
@@ -403,7 +411,7 @@ public class AnimMaster3d {
                     regions = findAtlasRegions(atlas, projection, activeObj, false);
         }
         if (regions.size == 0)
-            main.system.auxiliary.log.LogMaster.log(
+            LogMaster.log(
              1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
         return regions;
     }
@@ -443,7 +451,7 @@ public class AnimMaster3d {
             name = sub.getName() + name.substring(name.indexOf(SEPARATOR));
             regions = atlas.findRegions(name.toLowerCase());
 
-            main.system.auxiliary.log.LogMaster.log(
+            LogMaster.log(
              1, activeObj + " searching " + name);
             if (regions.size > 0)
                 break;
@@ -485,8 +493,8 @@ public class AnimMaster3d {
         try {
             path = getFullAtlasPath(weapon);
         } catch (Exception e) {
-            main.system.auxiliary.log.LogMaster.log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
-            main.system.ExceptionMaster.printStackTrace(e);
+            LogMaster.log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
+            ExceptionMaster.printStackTrace(e);
             return;
         }
         preloadAtlas(path);
@@ -497,10 +505,10 @@ public class AnimMaster3d {
             return;
         if (!FileManager.isFile(path)) {
             //            brokenPaths.add(path)
-            main.system.auxiliary.log.LogMaster.log(1, path + " needs to preload, but it is not a file!..");
+            LogMaster.log(1, path + " needs to preload, but it is not a file!..");
             return;
         }
-        main.system.auxiliary.log.LogMaster.log(1, path + " loading...");
+        LogMaster.log(1, path + " loading...");
         Assets.get().getManager().load(path, TextureAtlas.class);
         atlasMap.put(path, null);
     }
@@ -513,7 +521,7 @@ public class AnimMaster3d {
         try {
             return getOrCreateAtlas(path);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             broken.add(weapon);
             return null;
         }
@@ -546,12 +554,12 @@ public class AnimMaster3d {
 
     }
 
-    private static String getFullAtlasPath(DC_WeaponObj weapon) {
+    public static String getFullAtlasPath(DC_WeaponObj weapon) {
         try {
             return TextureCache.formatTexturePath(PathFinder.getImagePath()
              + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return null;
     }
@@ -614,6 +622,34 @@ public class AnimMaster3d {
     public static void setOff(Boolean off) {
         AnimMaster3d.off = off;
     }
+
+    public static float getFps() {
+        return fps;
+    }
+
+    public static void setFps(float fps) {
+        AnimMaster3d.fps = fps;
+    }
+
+    public static   PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
+        if (!facing.isVertical())
+            return PROJECTION.HOR;
+        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
+    }
+
+    public static PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+        if (ref .getTargetObj() == null)
+            return getProjectionByFacing(active.getOwnerUnit().getFacing());
+        Boolean b =
+                PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
+        if (active.getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
+            b = active.getOwnerUnit().isMine();
+        PROJECTION projection = PROJECTION.HOR;
+        if (b != null)
+            projection = b ? PROJECTION.FROM : PROJECTION.TO;
+        return projection;
+    }
+
 
     public enum PROJECTION {
         FROM(true), TO(false), HOR(null),;

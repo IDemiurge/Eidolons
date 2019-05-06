@@ -22,9 +22,5 @@ public class Reload3dAnim extends Weapon3dAnim {
         super.resetSprites();
     }
 
-    @Override
-    protected PROJECTION getProjection() {
-        return super.getProjection();
-//        return PROJECTION.HOR;
-    }
+     
 }

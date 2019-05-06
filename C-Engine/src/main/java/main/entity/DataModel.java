@@ -1339,6 +1339,8 @@ public abstract class DataModel {
     protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
         Map<PARAMETER, String> innerMap = new HashMap<>();
+        map.keySet().removeIf(key -> map.get(key)==null );
+        map.keySet().removeIf(key ->  (key)==null );
         innerMap.putAll(map);
 
         clone.setMap(innerMap);
@@ -1361,6 +1363,8 @@ public abstract class DataModel {
     protected PropMap clonePropMap(Map<PROPERTY, String> map) {
         PropMap clone = new PropMap();
         Map<PROPERTY, String> innerMap = new ConcurrentHashMap<>();
+        map.keySet().removeIf(key -> map.get(key)==null );
+        map.keySet().removeIf(key ->  (key)==null );
         innerMap.putAll(map);
 
         clone.setMap(innerMap);

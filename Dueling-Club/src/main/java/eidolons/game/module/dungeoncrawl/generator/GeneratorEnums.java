@@ -166,10 +166,22 @@ OOO##
         //GENERAL
         DUNGEON_TYPE,
 
-        //GRAPH
+        //GRAPH1
         WIDTH,
         HEIGHT,
-        Z_LEVEL;
+        Z_LEVEL, CLEAN_DISABLED(), FILL_GLOBAL_COEF(),
+        ADDITIONAL_FILL_RUNS(0,0,10);
+        public static final LEVEL_VALUES[] FILL_VALS = {
+                FILL_LIGHT_EMITTER_COEF,
+                FILL_WALL_WITH_LIGHT_OVERLAY_COEF,
+                FILL_WALL_WITH_DECOR_OVERLAY_COEF,
+                FILL_DESTRUCTIBLE_COEF ,
+                FILL_CONTAINER_COEF,
+                FILL_SPECIAL_CONTAINER_COEF,
+                FILL_ART_OBJ_COEF,
+                FILL_SPECIAL_ART_OBJ_COEF,
+                FILL_OVERLAY_COEF,
+        };
         private Boolean exclusive;
         private Integer min;
         private Integer max;

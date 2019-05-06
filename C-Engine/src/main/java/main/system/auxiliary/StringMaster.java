@@ -1045,7 +1045,10 @@ public class StringMaster {
         return string.toUpperCase();
     }
 
-    public static String formatDisplayedName(String name) {
+    public static String formatMapKey(String name) {
+        return name.trim().toLowerCase();
+    }
+        public static String formatDisplayedName(String name) {
         if (name.contains(VERSION_SEPARATOR)) {
             return name.split(VERSION_SEPARATOR)[0];
         }

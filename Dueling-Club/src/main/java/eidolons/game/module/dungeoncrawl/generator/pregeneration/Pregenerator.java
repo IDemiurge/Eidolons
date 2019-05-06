@@ -1,10 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.pregeneration;
 
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
-import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker;
-import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
-import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
+import eidolons.game.module.dungeoncrawl.generator.*;
 import eidolons.game.module.dungeoncrawl.generator.LevelValidator.RNG_FAIL;
 import eidolons.game.module.dungeoncrawl.generator.pregeneration.PregeneratorData.PREGENERATOR_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats;
@@ -33,6 +30,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MODIFICATION.HALF_ZONES;
+import static eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES.*;
+import static eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS.*;
 import static eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.GEN_STAT.AVRG_FILL_RATIO;
 import static eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.GEN_STAT.AVRG_RATE;
 
@@ -41,10 +40,11 @@ import static eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.G
  */
 public class Pregenerator implements Runnable {
 
+    public static final String customPrefix = "overfill ";
 
     public static final SUBLEVEL_TYPE[] GENERATED_SUBLEVELS_ALL = {
-     SUBLEVEL_TYPE.COMMON,
-     SUBLEVEL_TYPE.PRE_BOSS,
+//     SUBLEVEL_TYPE.COMMON,
+//     SUBLEVEL_TYPE.PRE_BOSS,
      SUBLEVEL_TYPE.BOSS,
     };
     public static final SUBLEVEL_TYPE[][] GENERATED_SUBLEVELS = {
@@ -61,31 +61,29 @@ public class Pregenerator implements Runnable {
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
      {
-      LOCATION_TYPE.CRYPT,
+             LOCATION_TYPE.DUNGEON,
+//      LOCATION_TYPE.CRYPT,
       LOCATION_TYPE.CAVE,
-      LOCATION_TYPE.CEMETERY,
-      LOCATION_TYPE.TOWER,
+//      LOCATION_TYPE.CEMETERY,
+//      LOCATION_TYPE.TOWER,
      },
      {
-      LOCATION_TYPE.CASTLE,
+//      LOCATION_TYPE.CASTLE,
+             LOCATION_TYPE.TOWER,
       LOCATION_TYPE.DUNGEON,
-      LOCATION_TYPE.TEMPLE,
-      LOCATION_TYPE.CEMETERY,
+//      LOCATION_TYPE.TEMPLE,
+//      LOCATION_TYPE.CEMETERY,
      },
     };
-    private static final int THREADS = 2;
-    private static final int LEVELS_TO_GENERATE_PER_TYPE = 30;
+    private static final int THREADS = 1;
+    private static final int LEVELS_TO_GENERATE_PER_TYPE = 10;
     private static final Boolean RANDOM = null;
     private static final boolean DATA_RANDOMIZATION_ON = false;
     private static final boolean KEEP_STATS = true;
     private static final boolean RANDOM_ORDER = true;
-    public static LOCATION_TYPE[] LOCATION_TYPES = {
-     LOCATION_TYPE.CAVE,
-     LOCATION_TYPE.DUNGEON,
-     LOCATION_TYPE.CEMETERY,
-     LOCATION_TYPE.TOWER,
-     LOCATION_TYPE.CRYPT,
-    };
+    private static final boolean CUSTOM_REQS = true;
+    public static final String CUSTOM_REQS_maxRooms = "3";
+
     private static List<Pregenerator> running = new ArrayList<>();
     private static Map<PregeneratorData, List<GenerationStats>> analysisStats = new XLinkedMap<>();
     private PregeneratorData data;
@@ -279,7 +277,19 @@ public class Pregenerator implements Runnable {
         int tries = this.data.getIntValue(PREGENERATOR_VALUES.MAX_ATTEMPTS_PER_LEVEL);
         generator = new LevelGenerator(tries);
         LevelData data = LevelDataMaker.generateData(type, locationType);
-        if (DATA_RANDOMIZATION_ON) {
+        if (CUSTOM_REQS) {
+            data.getReqs().setValue(maxRooms, CUSTOM_REQS_maxRooms);
+            data.setValue(CLEAN_DISABLED, true);
+            data.setValue(FILL_GLOBAL_COEF, 250);
+            data.setValue(ADDITIONAL_FILL_RUNS, 2);
+
+        }
+        for (GeneratorEnums.LEVEL_VALUES fillVal : FILL_VALS) {
+            int product = data.getIntValue(fillVal) * data.getIntValue(FILL_GLOBAL_COEF) / 100;
+            data.setValue(fillVal, product);
+        }
+
+            if (DATA_RANDOMIZATION_ON) {
             //change data?
             LevelDataMaker.randomize(randomizationMod, RANDOM, data, stats);
             LevelDataMaker.applyMod(randomizationMod, data, HALF_ZONES, null);
@@ -336,11 +346,14 @@ public class Pregenerator implements Runnable {
 
         String stringData = level.toXml();
         String name = ScenarioGenerator.getLevelName(level.getLocationType(), level.getSublevelType()) + ".xml";
-
+        if (customPrefix!=null ){
+            name = customPrefix+name;
+        }
         name = NameMaster.getUniqueVersionedFileName(name, getPath(level.getLocationType()));
         name = name.toLowerCase();
-        String path = StrPathBuilder.build(getPath(level.getLocationType()), name);
 
+        String path = StrPathBuilder.build(getPath(level.getLocationType()), name);
+        main.system.auxiliary.log.LogMaster.log(1,"Level saved as: " +path);
         FileManager.write(stringData, path, true);
 
     }
@@ -350,7 +363,7 @@ public class Pregenerator implements Runnable {
     }
 
     private static String getPath(LOCATION_TYPE locationType) {
-        return StrPathBuilder.build(PathFinder.getRandomLevelPath(),
+        return StrPathBuilder.build( PathFinder.getRandomLevelPath(),
          "pregenerated", locationType.name());
     }
 

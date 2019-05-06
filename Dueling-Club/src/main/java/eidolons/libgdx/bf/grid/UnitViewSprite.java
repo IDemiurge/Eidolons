@@ -3,9 +3,14 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.boss.BossUnit;
+import eidolons.libgdx.bf.boss.SpriteModel;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.particles.EmitterActor;
@@ -23,19 +28,54 @@ import main.system.auxiliary.data.FileManager;
  */
 public class UnitViewSprite extends GridUnitView {
     public static final boolean randomEmitter = true;
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = true;
+    private   float height;
+    private   float width;
     private FadeImageContainer glow;
     private EmitterActor emitter;
 
+    SpriteModel spriteModel;
+
+
     public UnitViewSprite(UnitViewOptions o) {
         super(o);
+//        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED , p-> );
+//        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES , p-> );
+
+        addActor(spriteModel = new SpriteModel(SpriteAnimationFactory.getSpriteAnimation(o.getSpritePath())));
+
+        //queue view
+        // on hover?
+    }
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        height= getUserObject().getHeight()* GridMaster.CELL_H;
+        width= getUserObject().getWidth()* GridMaster.CELL_W;
     }
 
     @Override
+    public BossUnit getUserObject() {
+        return (BossUnit) super.getUserObject();
+    }
+
+    /**
+     * Just some demarkation in case sprite fails?
+     *
+     * For targeting borders?
+     *
+     * @param portraitTexture
+     * @param path
+     * @return
+     */
+    @Override
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
-        SpriteAnimation anim = SpriteAnimationFactory.getSpriteAnimation("sprites/unit/eldritch 5 6.png");
-        FadeSprite sprite = new FadeSprite(anim);
-        return sprite;
+//        SpriteAnimation anim = SpriteAnimationFactory.getSpriteAnimation("sprites/unit/eldritch 5 6.png");
+//        FadeSprite sprite = new FadeSprite(anim);
+//        return sprite;
+        //special background with alpha template?
+        return new FadeImageContainer();
+//        return super.initPortrait(portraitTexture, path);
     }
 
     protected EmitterActor createEmitter(String path) {
@@ -98,6 +138,9 @@ public class UnitViewSprite extends GridUnitView {
 
     @Override
     public void act(float delta) {
+        spriteModel.setPos(GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
+
+
         glow.setRotation(glow.getRotation() + 5 * delta);
         super.act(delta);
         emblemImage.setVisible(false);
@@ -129,21 +172,33 @@ public class UnitViewSprite extends GridUnitView {
 
     @Override
     public float getHeight() {
-        return super.getHeight();
+        return height;
     }
 
     @Override
     public float getWidth() {
-        return super.getWidth();
+        return width ;
     }
 
     @Override
     public void setBorder(TextureRegion texture) {
         //what if our sprite is not really square?
         //custom shape could be used...
+
+        if (texture == CellBorderManager.getTargetTexture()) {
+//targeted
+        }
+        if (texture == CellBorderManager.getTeamcolorTexture()) {
+//active
+        }
         super.setBorder(texture);
     }
 
+    @Override
+    public void setTeamColorBorder(boolean teamColorBorder) {
+        super.setTeamColorBorder(teamColorBorder);
+
+    }
     @Override
     protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
         //sheet!

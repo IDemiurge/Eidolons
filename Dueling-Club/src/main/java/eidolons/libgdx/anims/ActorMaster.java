@@ -164,7 +164,12 @@ public class ActorMaster {
         action.setInterpolation(Interpolation.fade);
         if (add) {
             if (alpha == actor.getColor().a) {
-                return null;
+//                if (isAlphaAdjustmentAllowed())
+//                return null;
+                if (alpha >= 1f)
+                    actor.getColor().a = 0;
+                else actor.getColor().a = 1;
+
             }
             actor.addAction(action);
         }

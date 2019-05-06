@@ -15,6 +15,7 @@ import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -473,8 +474,11 @@ public abstract class LogManager {
         this.entryMap = entryMap;
     }
 
+
+    public abstract boolean log(LOGGING_DETAIL_LEVEL log, String entry) ;
+
     public void log(String string) {
-        log(LOG.GAME_INFO, string);
+        log(LOGGING_DETAIL_LEVEL.ESSENTIAL, string);
     }
 
     public void logStdRoll(Ref ref, int greater, int randomInt, int than, int randomInt2,
@@ -517,12 +521,12 @@ public abstract class LogManager {
 
     public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
-        modValue = Math.abs(modValue);
         name = StringMaster.getWellFormattedString(name);
         if (modValue > 0) {
             logInfo(modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "
              + name + "s: " + value);
         } else {
+            modValue = Math.abs(modValue);
             logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown() + ", total "
              + name + "s: " + value);
         }
@@ -554,7 +558,7 @@ public abstract class LogManager {
     }
 
     public void logInfo(String string) {
-        log(StringMaster.MESSAGE_PREFIX_INFO + string);
+        log(LOGGING_DETAIL_LEVEL.FULL, StringMaster.MESSAGE_PREFIX_INFO + string);
     }
 
     public void logProceeds(String string) {
@@ -624,6 +628,13 @@ public abstract class LogManager {
 
         ALLY_MOVEMENT, ALLY_ROLL_STANDARD, FAST_ACTION, COATING, COUNTER, DEATH,
 
+    }
+
+    public enum LOGGING_DETAIL_LEVEL {
+        CONCISE,
+        ESSENTIAL,
+        FULL,
+        DEV,;
     }
 
     // int pageIndex = 0;

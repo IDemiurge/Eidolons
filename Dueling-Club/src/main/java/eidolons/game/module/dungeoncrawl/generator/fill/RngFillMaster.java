@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.level.BlockCreator;
@@ -29,7 +30,7 @@ public class RngFillMaster {
     public static final boolean BOUND_SUPPORTED = false;
 
     public static void fill(LevelModel model, LevelData data) {
-        new BlockCreator().createBlocks(model);
+
 
         if (isFillVoid())
             if (data.isSurface()) {
@@ -56,6 +57,7 @@ public class RngFillMaster {
         weightMap = getMap(FILLER_TYPE.OVERLAYING_DECOR, data);
         new RngWallDecorFiller(weightMap).fill(model);
 
+        if (!data.getBooleanValue(GeneratorEnums.LEVEL_VALUES.CLEAN_DISABLED))
         try {
             cleanUp(model);
         } catch (Exception e) {

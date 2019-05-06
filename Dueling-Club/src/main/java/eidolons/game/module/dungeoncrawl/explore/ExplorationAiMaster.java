@@ -41,7 +41,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
     public void reset() {
 
-        allies = master.getGame().getPlayer(true).getControlledUnits_();
+        allies = master.getGame().getPlayer(true).collectControlledUnits_();
         activeUnitAIs.clear();
         master.getGame().getUnits().forEach(unit ->
          {

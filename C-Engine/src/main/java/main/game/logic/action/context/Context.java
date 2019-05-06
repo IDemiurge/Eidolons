@@ -16,14 +16,15 @@ public class Context extends Ref {
 
     public Context(Obj source, Obj target) {
         super(source);
-        this.source = source;
         this.target = target;
         if (target != null) {
             setTarget(target.getId());
         }
+        this.source = source;
     }
 
     public Context(Ref ref) {
+        setClone(true);
         cloneMaps(ref);
         setPlayer(ref.getPlayer());
         setEvent(ref.event);

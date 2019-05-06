@@ -23,6 +23,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
@@ -219,6 +220,7 @@ public class GridPanel extends Group {
     @Override
     public void act(float delta) {
         if (resetVisibleRequired) {
+            if (!DeathAnim.isOn())
             resetVisible();
         }
         super.act(delta);
@@ -798,7 +800,8 @@ public class GridPanel extends Group {
             return uv;
         } else
             LogMaster.log(1, obj + " unit view REMOVED!");
-        gridCellContainer.removeActor(uv);
+//        gridCellContainer.removeActor(uv);
+        uv.remove(); //if it was detached...
         uv.setVisible(false);
 
 
@@ -883,7 +886,9 @@ public class GridPanel extends Group {
                             setHoverObj((GridUnitView) sub);
                             topCells.add(cell);
                             cell.setHovered(true);
-                        } else if (sub.getUserObject().isPlayerCharacter() || sub.isStackView()) {
+                        } else if (
+                                sub.getUserObject().isBoss() ||
+                                sub.getUserObject().isPlayerCharacter() || sub.isStackView()) {
                             topCells.add(cell);
                         }
                     }

@@ -320,7 +320,7 @@ public class PresetMaster {
 //            PLAYER_PARTY = DC_Game.game.getParty().getName();
 //        }
 
-        for (Obj obj : DC_Game.game.getPlayer(true).getControlledUnits()) {
+        for (Obj obj : DC_Game.game.getPlayer(true).collectControlledUnits()) {
             if (!partyType) {
                 PLAYER_PARTY += obj.getName() + ";";
             }
@@ -330,7 +330,7 @@ public class PresetMaster {
             PLAYER_UNITS += DC_ObjInitializer.getObjStringAlt(obj) + ";";
             // custom hacks - spells, skills, items..
         }
-        for (Obj obj : DC_Game.game.getPlayer(false).getControlledUnits()) {
+        for (Obj obj : DC_Game.game.getPlayer(false).collectControlledUnits()) {
             if (encounterType == null) {
                 ENEMY_PARTY += obj.getName() + ";";
             }

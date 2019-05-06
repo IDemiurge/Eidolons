@@ -49,7 +49,7 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c, boolean mine) {
-        Collection<Obj> units = getGame().getPlayer(!mine).getControlledUnits();
+        Collection<Obj> units = getGame().getPlayer(!mine).collectControlledUnits();
         return FacingMaster.getOptimalFacingTowardsUnits(c, units);
 
 

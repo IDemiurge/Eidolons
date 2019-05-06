@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -42,6 +43,7 @@ import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
@@ -139,6 +141,9 @@ public class HitAnim extends ActionAnim {
         super.resetSprites(); //from data
 
         spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
+        if (getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
+            spriteType = SPRITE_TYPE.SPARKS; //shield!
+        }
         hitType = getHitType(  spriteType);
         String spritePath = StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
          + ".txt";
@@ -152,6 +157,21 @@ public class HitAnim extends ActionAnim {
         Array<AtlasRegion> regions = atlas.getRegions();
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
          getDuration() / regions.size, 1);
+        float x = RandomWizard.getRandomFloatBetween(-10, 10);
+        float y = RandomWizard.getRandomFloatBetween(-10, 10);
+        if (spriteType==SPRITE_TYPE.SPARKS)
+        {
+            x+=-64;
+            y+=-64;
+        }
+        sprite.setOffsetX(x);
+        sprite.setOffsetY(y);
+
+
+        sprite.setFlipX(RandomWizard.random());
+        sprite.setFlipY(RandomWizard.random());
+
+
         if (getRef().getTargetObj() instanceof Unit)
             sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
         blood = spriteType == SPRITE_TYPE.BLOOD;
@@ -396,7 +416,7 @@ public class HitAnim extends ActionAnim {
                     if (damageType == DAMAGE_TYPE.SLASHING)
                         return HIT.SLICE;
                     if (damageType == DAMAGE_TYPE.PIERCING)
-                        return HIT.SQUIRT;
+                        return RandomWizard.random()?  HIT.SQUIRT : HIT.SPLASH;
                     if (damageType == DAMAGE_TYPE.BLUDGEONING)
                         return HIT.SMASH;
                 }
