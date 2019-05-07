@@ -161,17 +161,17 @@ public class Executor extends ActiveHandler {
         if (getAction().getLogger().isTargetLogged())
             if (target != null) {
                 if (game.isDebugMode())
-                    targets = getAction().getTargetObj().getNameAndCoordinate();
+                    targets = " on " + getAction().getTargetObj().getNameAndCoordinate();
                 else
-                    targets = getAction().getTargetObj().getNameIfKnown();
+                    targets = " on " + getAction().getTargetObj().getNameIfKnown();
             } else if (getAction().getTargetGroup() != null) {
-                targets = getAction().getTargetGroup().toString();
+                targets = " on " + getAction().getTargetGroup().toString();
             }
         log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
-         + getAction().getName() + " on " + targets, false);
+         + getAction().getName() + targets, false);
         if (gameLog)
             log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-             + getAction().getNameIfKnown() + " " + targets, true);
+             + getAction().getNameIfKnown() +   targets, true);
 
         beingActivated();
         if (isInterrupted()) {

@@ -263,6 +263,13 @@ public class GammaMaster {
                 mainExitCoordingates = exit.getCoordinates();
             }
         }
+
+        BattleFieldObject obj = master.getGame().getManager().getHighlightedObj();
+        if (obj!=null ){
+            if (obj.getCoordinates().x==x)
+                if (obj.getCoordinates().y==y)
+                    return 1;
+        }
         if (mainExitCoordingates != null) {
             if (mainExitCoordingates.getX() == x)
                 if (mainExitCoordingates.getY() == y)

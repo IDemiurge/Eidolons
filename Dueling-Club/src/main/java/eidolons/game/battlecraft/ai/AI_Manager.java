@@ -388,6 +388,13 @@ public class AI_Manager extends AiMaster {
         for (GroupAI group : groups) {
             report += group+  "\n";
         }
+        int checkNumber =   groups.stream().mapToInt(group -> group.getMembers().size()).sum();
+        if (checkNumber!= game.getPlayer(false).collectControlledUnits_().size()){
+            main.system.auxiliary.log.LogMaster.log(1,">>>> AI GROUP UNIT COUNT MISMATCH!!! " );
+            main.system.auxiliary.log.LogMaster.log(1,game.getPlayer(false).collectControlledUnits_().size()+
+                    " VS " +checkNumber);
+            // find unit who is in 2+ groups!
+        }
 
         main.system.auxiliary.log.LogMaster.log(1," "  + report);
         if (!groups.isEmpty())

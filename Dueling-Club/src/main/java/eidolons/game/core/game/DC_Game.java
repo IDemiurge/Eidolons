@@ -84,7 +84,6 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.util.Refactor;
 
 import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -451,6 +450,16 @@ public class DC_Game extends GenericGame {
         super.remove(obj);
         if (obj instanceof Unit) {
             removeUnit((Unit) obj);
+        }
+    }
+
+
+    public void softRemove(BattleFieldObject obj) {
+        //leave obj in gamestate for refs
+        if (obj instanceof Unit) {
+            removeUnit((Unit) obj);
+        } else {
+            getMaster().removeStructure((Structure) obj);
         }
     }
 
@@ -854,7 +863,6 @@ public class DC_Game extends GenericGame {
             combatLoop.setExited(true);
 
     }
-
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
     }

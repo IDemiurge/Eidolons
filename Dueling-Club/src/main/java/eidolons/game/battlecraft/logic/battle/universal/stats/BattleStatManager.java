@@ -59,6 +59,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
         Unit target = null;
         if ((event.getRef().getTargetObj() instanceof Unit))
             target = (Unit) event.getRef().getTargetObj();
+
         if (event.getType() instanceof STANDARD_EVENT_TYPE) {
             STANDARD_EVENT_TYPE eventType = (STANDARD_EVENT_TYPE) event.getType();
             switch (eventType) {
@@ -66,11 +67,13 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
                     modifyUnitStat(COMBAT_STATS.DIED, source, 1);
                     break;
                 case UNIT_HAS_BEEN_DEALT_PURE_DAMAGE: {
-                    unitDealtDamage(source, target, event.getRef().getAmount());
+                    if (target != null)
+                        unitDealtDamage(source, target, event.getRef().getAmount());
                     break;
                 }
                 case UNIT_HAS_BEEN_KILLED: {
-                    unitKilled(target, source);
+                    if (target != null)
+                        unitKilled(target, source);
                 }
                 //                case ACTION_ACTIVATED:
                 case UNIT_ACTION_COMPLETE:

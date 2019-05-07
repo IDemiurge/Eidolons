@@ -102,7 +102,7 @@ public enum G_PROPS implements PROPERTY {
     STD_BOOLS(null, true, "all"),
     DYNAMIC_BOOLS(null, true, "all"),
 
-    STANDARD_PASSIVES("Standard Passives", true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
+    STANDARD_PASSIVES("Passives", true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
     IMMUNITIES(null, true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
     CLASS_TYPE("classes"),
     CLASS_GROUP("classes"),

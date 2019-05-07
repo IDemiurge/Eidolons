@@ -1,6 +1,9 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
+import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
@@ -56,5 +59,19 @@ public class ActionFilter {
             }
         }
         return list;
+    }
+
+    public static void filterAttacks(List<DC_ActiveObj> actions, Unit unit) {
+        actions.remove(AiActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
+        DC_UnitAction
+                action = unit.getAction(
+                "Throw", false);
+        actions.remove(action);
+        action = unit.getAction(
+                "Throw", false);
+        actions.remove(action);
+if (!UnitChecker.isUnarmedFighter(unit))
+        if (unit.getWeapon(false)!=null  || unit.getWeapon(true)!=null )
+            actions.removeIf(a -> a.getChecker().isUnarmed());
     }
 }

@@ -214,6 +214,9 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void validateArrowRotation() {
+        if (getUserObject().getFacing().getDirection().getDegrees()  != arrowRotation) {
+            arrowRotation = getUserObject().getFacing().getDirection().getDegrees()  ;
+        }
         if (arrow.getRotation() != arrowRotation) {
             updateRotation(arrowRotation - ARROW_ROTATION_OFFSET);
         }

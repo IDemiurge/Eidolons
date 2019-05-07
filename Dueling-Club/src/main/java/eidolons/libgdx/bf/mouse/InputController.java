@@ -329,6 +329,7 @@ public abstract class InputController implements InputProcessor {
         for (SuperActor sub : cachedPosActors) {
             sub.cameraMoved();
         }
+
 //        cachedPosActors.clear(); not needed?
     }
 

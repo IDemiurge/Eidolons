@@ -24,7 +24,7 @@ public class BlazeRule extends DamageCounterRule implements TimedRule{
     private static final Integer THRESHOLD = 10;
     private static final int REDUCTION = -2;
     private static final int INCREASE = 2;
-    private static final String DAMAGE_PER_COUNTER = "3";
+    private static final String DAMAGE_PER_COUNTER = "1";
     private static final String DURABILITY_PER_COUNTER = "(-0.25)";
 
     public BlazeRule(DC_Game game) {

@@ -84,16 +84,16 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (PositionMaster.getExactDistance(hero, unit)>=
-                    4+ unit.getSightRangeTowards(hero))
-                continue;
-            if (unit.getAI().getEngagementDuration() > 0) {
-                set.add(unit);
-            }
             if (unit.getAI().isEngaged()) {
                 set.add(unit);
                 newAggro = true;
                 unit.getAI().setEngaged(false);
+            }
+            if (PositionMaster.getExactDistance(hero, unit)>=
+                    3+unit.getAI().getEngagementDuration()+ unit.getSightRangeTowards(hero))
+                continue;
+            if (unit.getAI().getEngagementDuration() > 0) {
+                set.add(unit);
             }
             if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
                 continue;
@@ -105,12 +105,23 @@ public class AggroMaster extends ExplorationHandler {
         }
         //TODO add whole group of each unit
 
+        //recheck, 'cause there is a bug there somewhere
+        int i = set.size();
+        set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
+                ||unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()  ));
+        if (i!=set.size()){
+            main.system.auxiliary.log.LogMaster.log(1,"Gotcha aggro! " + i + " " + set );
+        }
+
         for (Unit unit : set) {
             if (unit.getAI().getGroup() != null) {
                 for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
                     if (newAggro) {
                         int duration = getEngagementDuration(sub.getAI());
+                        if (set.size()>2){
+                            sub.getAI().setEngagementDuration(duration); //debug
+                        }
                         sub.getAI().setEngagementDuration(duration);
                     }
                 }

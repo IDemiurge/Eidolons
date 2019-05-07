@@ -10,6 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
@@ -63,6 +64,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     public static boolean checkUnitRecovers(Unit unit) {
         // toughness barrier... ++ focus? ++status?
+        if (ShadowMaster.isOn()){
+            if (unit.isPlayerCharacter()) {
+                return false;
+            }
+        }
+
         int req = unit.isPlayerCharacter() ? 20 : 40;
         req *= MathMaster.MULTIPLIER;//TODO
         if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= req) {
@@ -77,7 +84,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return false;
     }
 
-    private static void unitRecovers(Unit unit) {
+    public static void unitRecovers(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
 
         unit.getGame().
@@ -90,7 +97,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     }
 
-    private static Effect getWakeUpEffect(Unit unit) {
+    public static Effect getWakeUpEffect(Unit unit) {
         Effects e = new Effects();
         e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-" + AP_PENALTY));
         e.add(new ModifyValueEffect(
@@ -226,13 +233,14 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             if (unit.isAnnihilated())
                 if (checkUnitAnnihilated(unit)) {
                     unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
-
+                    return false;
                 }
             return false;
         } else if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
             unit.getGame().getManager().unitDies(activeObj, unit, activeObj.getOwnerUnit(), true, false);
             return false;
         }
+        if (!unit.isDead()) //really...
         if (unit.isUnconscious()) {
             return checkUnitRecovers(unit);
         }

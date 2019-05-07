@@ -83,7 +83,6 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     private void removeOldHero() {
         Eidolons.getMainHero().removeFromGame();
-        GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, Eidolons.getMainHero());
     }
 
     @Override

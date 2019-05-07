@@ -217,4 +217,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             return false;
         return getActionGroup() != ACTION_TYPE_GROUPS.TURN;
     }
+
+    public boolean isUnarmed() {
+        return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.UNARMED.toString());
+    }
 }

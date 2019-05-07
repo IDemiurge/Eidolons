@@ -9,6 +9,7 @@ import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
@@ -45,6 +46,17 @@ public class Structure extends BattleFieldObject {
             } catch (Exception e) {
             }
         }
+    }
+
+    @Override
+    public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
+        boolean results = super.kill(killer, leaveCorpse, quietly);
+    if (!overlaying)
+        for (BattleFieldObject overlayingObject : getGame().getOverlayingObjects(getCoordinates())) {
+            overlayingObject.kill(killer, leaveCorpse, quietly);
+        }
+
+        return results;
     }
 
     @Override

@@ -28,6 +28,11 @@ public class UnitChecker extends EntityChecker<Unit> {
         super(entity, entityMaster);
     }
 
+    public static boolean isUnarmedFighter(Unit unit) {
+        //check mastery or monster
+        return false;
+    }
+
     @Override
     public UnitCalculator getCalculator() {
         return (UnitCalculator) super.getCalculator();

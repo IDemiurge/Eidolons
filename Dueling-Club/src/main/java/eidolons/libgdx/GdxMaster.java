@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.StageX;
 import eidolons.system.options.GraphicsOptions;
@@ -455,6 +456,20 @@ public class GdxMaster {
     public static void setTargetingCursor() {
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+    }
+
+    public static   boolean isVisibleEffectively(Group a) {
+        if (!a.isVisible())
+            return false;
+        for (Group group : GdxMaster.getAncestors(a )) {
+            if (group == null) {
+                continue;
+            }
+            if (!group.isVisible()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public enum CURSOR {

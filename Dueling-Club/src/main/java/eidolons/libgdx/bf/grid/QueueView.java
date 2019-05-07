@@ -2,6 +2,8 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -11,9 +13,12 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
@@ -48,7 +53,25 @@ public class QueueView extends UnitView {
             addActor(clockImage);
             addActor(initiativeLabel);
         }
+        addListener(new SmartClickListener(this){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (getUserObject().isDetectedByPlayer()) {
+                    getUserObject().getGame().getManager().setHighlightedObj(getUserObject());
+//                    parentView.setHovered(true);
+//                    parentView.setBorder(true);
+                } else
+                    GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
+                            UnitViewTooltipFactory.create((UnitView) event.getListenerActor(), getUserObject()));
+                super.enter(event, x, y, pointer, fromActor);
+            }
 
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                getUserObject().getGame().getManager().setHighlightedObj(null );
+                super.exit(event, x, y, pointer, toActor);
+            }
+        });
         setInitialized(true);
     }
 
@@ -70,7 +93,7 @@ public class QueueView extends UnitView {
             if (InitiativePanel.isLeftToRight())
                 clockImage.setPosition(GdxMaster.right(clockImage), 0);
             initiativeLabel.setPosition(
-             clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
+           -5+  clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
         if (!GridMaster.isHpBarsOnTop())

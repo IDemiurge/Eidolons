@@ -34,14 +34,22 @@ public abstract class TooltipFactory<T, A extends Actor> {
 
     protected void addPropStringToValues(BattleFieldObject hero,
                                          List<ValueContainer> values,
-                                         PROPERTY v) {
+                                         PROPERTY v ) {
+        addPropStringToValues(hero, values, v, true);
+    }
+        protected void addPropStringToValues(BattleFieldObject hero,
+                List<ValueContainer> values,
+                PROPERTY v, boolean showName) {
         String value = hero.getValue(v);
+        if (value.trim(). isEmpty()){
+            return;
+        }
         value = StringMaster.getWellFormattedString(value);
         value = value.replace(";", ", ");
         final ValueContainer valueContainer =
-         new ValueContainer(v.getDisplayedName(), value);
+         new ValueContainer(showName? v.getDisplayedName() : "", value);
         valueContainer.setNameAlignment(Align.left);
-        valueContainer.setValueAlignment(Align.right);
+        valueContainer.setValueAlignment(showName? Align.right : Align.center);
         values.add(valueContainer);
     }
 

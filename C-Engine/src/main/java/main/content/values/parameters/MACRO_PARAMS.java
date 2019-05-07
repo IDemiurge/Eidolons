@@ -89,7 +89,7 @@ public enum MACRO_PARAMS implements PARAMETER {
     TREPIDATION("npc", null),
     ESTEEM("npc", null),
     AFFECTION("npc", null),
-    QUEST_AMOUNT("quests", null );
+    QUEST_AMOUNT("quest", null );
     // NUMBER_OF_HEROES,
     // NUMBER_0F_unitsS,
     //

@@ -131,11 +131,21 @@ public class QuestCreator extends QuestHandler {
 
     public static ObjType getBossType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+                DC_TYPE.UNITS);
+        if (custom != null) {
+            return custom;
+        }
         return tryGetQuestUnitType(RngUnitProvider.BOSS, powerLevel, 0.33f, quest, style);
     }
 
     public static ObjType getPreyType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+                DC_TYPE.UNITS);
+        if (custom != null) {
+            return custom;
+        }
         boolean elite = RandomWizard.random();
         ObjType type = tryGetQuestUnitType(elite ? RngUnitProvider.ELITE : RngUnitProvider.REGULAR,
                 powerLevel, -0.25f, quest, style);

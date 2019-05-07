@@ -104,18 +104,9 @@ public class TablePanel<T extends Actor> extends Table {
         }
     }
 
-    private boolean isVisibleEffectively() {
-        if (!isVisible())
-            return false;
-        for (Group group : GdxMaster.getAncestors(this)) {
-            if (group == null) {
-                continue;
-            }
-            if (!group.isVisible()) {
-                return false;
-            }
-        }
-        return true;
+    protected boolean isVisibleEffectively() {
+        return GdxMaster.isVisibleEffectively(this);
+
     }
 
     public void afterUpdateAct(float delta) {

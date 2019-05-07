@@ -45,6 +45,7 @@ import main.game.core.game.GameManager;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Manager;
@@ -73,6 +74,7 @@ public class DC_GameManager extends GameManager {
     private SpellMaster spellMaster;
     private DeathMaster deathMaster;
     private ObjCreator objCreator;
+    private BattleFieldObject highlightedObj;
 
     public DC_GameManager(DC_GameState state, DC_Game game) {
         super(state, game);
@@ -125,7 +127,7 @@ public class DC_GameManager extends GameManager {
             try {
                 result &= ar.unitBecomesActive((Unit) obj);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
                 result = true;
             }
         }
@@ -185,12 +187,13 @@ public class DC_GameManager extends GameManager {
 
     private void updateGraphics() {
         //set dirty flag?
-        GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
+        GuiEventManager.trigger(UPDATE_GUI, null);
         //        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         if (!getMainHero().isDead())
-            GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, getMainHero());
+            GuiEventManager.trigger(UPDATE_MAIN_HERO, getMainHero());
         else {
-            GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, null );
+            if (getActiveObj().isMine())
+                GuiEventManager.trigger(UPDATE_MAIN_HERO, getActiveObj() );
         }
     }
 
@@ -212,13 +215,13 @@ public class DC_GameManager extends GameManager {
                 try {
                     getGame().getVisionMaster().refresh();
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
 
 
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
 
         // checkForChanges();
@@ -249,7 +252,7 @@ public class DC_GameManager extends GameManager {
         try {
             selectingStopped(false);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         } finally {
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, obj.getId());
         }
@@ -371,7 +374,7 @@ public class DC_GameManager extends GameManager {
                 WaitMaster.interrupt(WAIT_OPERATIONS.SELECT_BF_OBJ);
                 LogMaster.log(1, "SELECTING CANCELLED!");
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
                 return;
             }
         }
@@ -402,7 +405,7 @@ public class DC_GameManager extends GameManager {
         if (ExplorationMaster.isExplorationOn())
             return;
         DC_UnitAction action = getActiveObj().getActionMap().get(group).get(index);
-        GuiEventManager.trigger(GuiEventType.ACTION_HOVERED, action);
+        GuiEventManager.trigger(ACTION_HOVERED, action);
     }
 
     public void activateMyAction(int index, ACTION_TYPE group) {
@@ -495,7 +498,7 @@ public class DC_GameManager extends GameManager {
                 if (a.isAppliedOnExploreAction(action)) try {
                     a.actionComplete(action);
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -514,7 +517,7 @@ public class DC_GameManager extends GameManager {
                         try {
                             AnimConstructor.preconstruct(event);
                         } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
+                            ExceptionMaster.printStackTrace(e);
                         }
                 }
         } else {
@@ -526,7 +529,7 @@ public class DC_GameManager extends GameManager {
         try {
             getGame().getBattleMaster().getStatManager().eventBeingHandled(event);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return result;
     }
@@ -543,7 +546,7 @@ public class DC_GameManager extends GameManager {
                      checkHpBarReset(event.getRef().getSourceObj());
                 } catch (NullPointerException e) {
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
     }
@@ -619,5 +622,13 @@ public class DC_GameManager extends GameManager {
             return false;
         }
         return true;
+    }
+
+    public void setHighlightedObj(BattleFieldObject highlightedObj) {
+        this.highlightedObj = highlightedObj;
+    }
+
+    public BattleFieldObject getHighlightedObj() {
+        return highlightedObj;
     }
 }

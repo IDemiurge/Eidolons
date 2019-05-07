@@ -83,6 +83,7 @@ public class UnitTrainingMaster {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+            UnitShop.ensureMinimumItems(unit);
         }
 
         unit.modifyParameter(PARAMS.XP, spellXp);

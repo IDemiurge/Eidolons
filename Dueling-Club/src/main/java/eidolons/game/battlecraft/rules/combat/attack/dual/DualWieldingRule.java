@@ -26,6 +26,7 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
@@ -38,8 +39,8 @@ public class DualWieldingRule {
     private static final G_PROPS PROP = G_PROPS.ACTION_TAGS;
     // private static final String DEFAULT_STA_REDUCTION = "-25";
     // private static final String DEFAULT_AP_REDUCTION = "-33";
-    public static final String buffTypeNameOffHand = MetaEnums.STD_BUFF_NAMES.Off_Hand_Cadence.name();
-    public static final String buffTypeNameMainHand = MetaEnums.STD_BUFF_NAMES.Main_Hand_Cadence.name();
+    public static final String buffTypeNameOffHand = StringMaster.getWellFormattedString(MetaEnums.STD_BUFF_NAMES.Off_Hand_Cadence.name());
+    public static final String buffTypeNameMainHand = StringMaster.getWellFormattedString(MetaEnums.STD_BUFF_NAMES.Main_Hand_Cadence.name());
     private static final Formula DURATION = new Formula("1");
 
     private static boolean checkSingleWeaponCadence(Unit unit, DC_UnitAction action) {

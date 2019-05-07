@@ -43,6 +43,8 @@ import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
@@ -643,8 +645,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public void removeFromGame() {
+        if (!isDead())
+            kill(this, false, true);
+        getGame().softRemove(this);
         getVisionController().reset();
-        getGame().remove(this);
-
+        GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, this);
     }
 }

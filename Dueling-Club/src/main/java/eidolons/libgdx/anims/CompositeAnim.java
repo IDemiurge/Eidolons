@@ -151,12 +151,12 @@ public class CompositeAnim implements Animation {
             if (attached.get(ANIM_PART.AFTEREFFECT).isEmpty()) {
                 return false;
             }
-            if (map.containsKey(ANIM_PART.AFTEREFFECT)) {
-                index--;
-            }
             for (Animation sub : new ArrayList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
                 map.put(ANIM_PART.AFTEREFFECT, (Anim) sub);
 
+            }
+            if (map.containsKey(ANIM_PART.AFTEREFFECT)) {
+                index--;
             }
             attached.remove(ANIM_PART.AFTEREFFECT);
 //            part = ANIM_PART.AFTEREFFECT; //TODO rework this!
@@ -199,7 +199,7 @@ public class CompositeAnim implements Animation {
     }
 
     private void playAttached() {
-        List<Animation> list = attached.get(part);
+        List<Animation> list = attached.get(part==null ? ANIM_PART.AFTEREFFECT : part);
         if (list != null) {
             list.forEach(anim -> {
                 anim.start(getRef());

@@ -111,7 +111,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         }
         obj.kill(unit, false, false);
 
-        Ref ref = obj.getRef();
+        Ref ref = unit.getRef().getCopy();
         ref.setTarget(obj.getId());
         ref.setID(KEYS.ITEM, obj.getId());
         obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_PICKED_UP, ref));

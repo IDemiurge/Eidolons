@@ -293,6 +293,9 @@ public class SightMaster {
 
 
     protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, BattleFieldObject activeUnit) {
+if (unit.isMine())
+    if (activeUnit.isMine())
+        return UNIT_VISION.IN_PLAIN_SIGHT;
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {

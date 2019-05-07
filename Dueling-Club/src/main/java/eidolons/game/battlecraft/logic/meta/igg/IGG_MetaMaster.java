@@ -35,6 +35,11 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
     }
 
     @Override
+    public IGG_DefeatHandler getDefeatHandler() {
+        return (IGG_DefeatHandler) super.getDefeatHandler();
+    }
+
+    @Override
     protected DC_Game createGame() {
         return new IGG_Game(this); //TODO
     }

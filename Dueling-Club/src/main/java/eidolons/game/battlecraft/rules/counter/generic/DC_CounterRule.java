@@ -19,6 +19,7 @@ import main.data.filesys.PathFinder;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.system.auxiliary.log.LogMaster.LOG;
+import main.system.text.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +98,7 @@ public abstract class DC_CounterRule {
     }
 
     protected void log(String string) {
-        game.getLogManager().log(LOG.GAME_INFO, string);
+        game.getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, string);
     }
 
     // only first time
@@ -145,7 +146,7 @@ public abstract class DC_CounterRule {
         // log TODO spread
         int counterMod = getCounterNumberReductionPerTurn(unit);
         if (counterMod != 0) {
-            log(getCounterModifiedLogString(counterMod));
+            log(getCounterModifiedLogString(-counterMod));
             unit.modifyCounter(getCounterName(), -counterMod);
         }
         Effect oneshotEffects = getSpecialRoundEffects();

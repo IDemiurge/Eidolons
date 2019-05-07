@@ -272,6 +272,9 @@ public class DC_GameObjMaster extends GameObjMaster {
     public void removeUnit(Unit unit) {
         getUnits().remove(unit);
     }
+    public void removeStructure(Structure structure ) {
+        getStructures().remove(structure);
+    }
 
     public void clearCaches() {
         if (!isCacheForStructures()) {

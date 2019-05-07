@@ -12,6 +12,8 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.GenericGridView;
+import eidolons.libgdx.bf.grid.UnitView;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
@@ -38,7 +40,13 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
     }
 
-    public static Supplier<List<ValueContainer>> create(BattleFieldObject hero) {
+    public static UnitViewTooltip create(UnitView view, BattleFieldObject object) {
+        final UnitViewTooltip tooltip = new UnitViewTooltip(view);
+        tooltip.setUserObject( getSupplier(object));
+        view.setToolTip(tooltip);
+        return tooltip;
+    }
+        public static Supplier<List<ValueContainer>> getSupplier(BattleFieldObject hero) {
         try {
             return new UnitViewTooltipFactory().supplier(hero);
         } catch (Exception e) {
@@ -126,6 +134,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
              new EnumMaster<INFO_LEVEL>().
               retrieveEnumConst(INFO_LEVEL.class,
                OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.INFO_DETAIL_LEVEL));
+
+            addPropStringToValues(unit, values, G_PROPS.STANDARD_PASSIVES);
+            addPropStringToValues(unit, values, G_PROPS.CLASSIFICATIONS);
 
             values.add(getValueContainer(unit, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
             values.add(getValueContainer(unit, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));

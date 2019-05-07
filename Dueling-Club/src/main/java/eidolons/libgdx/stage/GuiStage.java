@@ -11,6 +11,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
@@ -300,7 +301,8 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (actionTooltipContainer != null)
             if (actionTooltipContainer.getActions().size == 0) {
                 actionTooltipContainer.setFluctuateAlpha(true);
-
+                if (!Eidolons.getGame().getManager().isSelecting())
+                    hideTooltip(actionTooltip, 1);
             }
         if (infoTooltipContainer != null)
             if (infoTooltipContainer.getActions().size == 0)
@@ -568,7 +570,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     protected void hideTooltip(LabelX tooltip, float dur) {
         SuperContainer container = (SuperContainer) tooltip.getParent();
-        ActorMaster.addFadeOutAction(tooltip, dur, false);
+        ActorMaster.addFadeOutAction(tooltip, dur, true);
         if (container == null)
             return;
         //        tooltip.clearActions();

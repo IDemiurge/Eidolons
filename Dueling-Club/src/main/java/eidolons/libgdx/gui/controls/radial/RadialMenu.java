@@ -20,7 +20,9 @@ import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
+import main.system.EventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -59,12 +61,14 @@ public class RadialMenu extends Group implements Closable {
         GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
             close();
         });
-        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+        GuiEventManager.bind(getOpenEvent(), obj -> {
             triggered(obj);
 
         });
     }
-
+    protected EventType getOpenEvent() {
+        return  GuiEventType. CREATE_RADIAL_MENU ;
+    }
     protected void triggered(EventCallbackParam obj) {
         if (!(obj.get() instanceof DC_Obj))
             return;
@@ -82,6 +86,8 @@ public class RadialMenu extends Group implements Closable {
         if (currentNode == null)
             return;
         ready = false;
+        if (!isVisible())
+            return;
         if (isAnimated()) {
             currentNode.getChildNodes().forEach(child -> {
                 ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), getAnimationDuration());

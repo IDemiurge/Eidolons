@@ -75,8 +75,8 @@ public class HitAnim extends ActionAnim {
 
     public HitAnim(DC_ActiveObj active, AnimData data, DAMAGE_TYPE damageType) {
         this(active, data, false, null, null,
-         ImageManager.getDamageTypeImagePath(
-          damageType == null ? "Physical" : damageType.getName(), true));
+                ImageManager.getDamageTypeImagePath(
+                        damageType == null ? "Physical" : damageType.getName(), true));
         setDamageType(damageType);
     }
 
@@ -123,7 +123,7 @@ public class HitAnim extends ActionAnim {
 
     private void initImage() {
         this.imagePath = ImageManager.getDamageTypeImagePath(
-         getDamageType() == null ? "Physical" : damageType.getName(), true);
+                getDamageType() == null ? "Physical" : damageType.getName(), true);
     }
 
     private void initColor() {
@@ -140,29 +140,32 @@ public class HitAnim extends ActionAnim {
     protected void resetSprites() {
         super.resetSprites(); //from data
 
-        spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
-        if (getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
+        try {
+            spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        if (spriteType == null || getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
             spriteType = SPRITE_TYPE.SPARKS; //shield!
         }
-        hitType = getHitType(  spriteType);
+        hitType = getHitType(spriteType);
         String spritePath = StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
-         + ".txt";
+                + ".txt";
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
         SmartTextureAtlas atlas =
-         SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
+                SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
         if (atlas == null)
             return;
         Array<AtlasRegion> regions = atlas.getRegions();
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
-         getDuration() / regions.size, 1);
+                getDuration() / regions.size, 1);
         float x = RandomWizard.getRandomFloatBetween(-10, 10);
         float y = RandomWizard.getRandomFloatBetween(-10, 10);
-        if (spriteType==SPRITE_TYPE.SPARKS)
-        {
-            x+=-64;
-            y+=-64;
+        if (spriteType == SPRITE_TYPE.SPARKS) {
+            x += -64;
+            y += -64;
         }
         sprite.setOffsetX(x);
         sprite.setOffsetY(y);
@@ -276,11 +279,13 @@ public class HitAnim extends ActionAnim {
     @Override
     public Actor getActor() {
         return DungeonScreen.getInstance().getGridPanel().getViewMap()
-         .get(getRef().getTargetObj());
+                .get(getRef().getTargetObj());
     }
+
     public String getTexturePath() {
-        return ImageManager.getDamageTypeImagePath(damageType.getName()) ;
+        return ImageManager.getDamageTypeImagePath(damageType.getName());
     }
+
     @Override
     public void start() {
         initColor();
@@ -298,9 +303,9 @@ public class HitAnim extends ActionAnim {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
-         active, TEXT_CASES.HIT, text == null ?
-          damage.getAmount()
-          : text);
+                active, TEXT_CASES.HIT, text == null ?
+                        damage.getAmount()
+                        : text);
         floatingText.setImageSupplier(() -> imagePath);
         floatingText.setColor(c);
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
@@ -352,15 +357,15 @@ public class HitAnim extends ActionAnim {
         Obj block = getRef().getObj(KEYS.BLOCK);
         if (block != null) {
             ITEM_MATERIAL_GROUP group = new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
-             block.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
+                    block.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
             if (group == ITEM_MATERIAL_GROUP.METAL || group == ITEM_MATERIAL_GROUP.CRYSTAL)
                 return SPRITE_TYPE.SPARKS;
             if (group == ITEM_MATERIAL_GROUP.STONE)
                 return SPRITE_TYPE.STONE;
         }
         OBJECT_ARMOR_TYPE type =
-         new EnumMaster<OBJECT_ARMOR_TYPE>().retrieveEnumConst(OBJECT_ARMOR_TYPE.class,
-          targetObj.getProperty(PROPS.OBJECT_ARMOR_TYPE));
+                new EnumMaster<OBJECT_ARMOR_TYPE>().retrieveEnumConst(OBJECT_ARMOR_TYPE.class,
+                        targetObj.getProperty(PROPS.OBJECT_ARMOR_TYPE));
         if (type == OBJECT_ARMOR_TYPE.METAL) {
             return SPRITE_TYPE.SPARKS;
         }
@@ -416,7 +421,7 @@ public class HitAnim extends ActionAnim {
                     if (damageType == DAMAGE_TYPE.SLASHING)
                         return HIT.SLICE;
                     if (damageType == DAMAGE_TYPE.PIERCING)
-                        return RandomWizard.random()?  HIT.SQUIRT : HIT.SPLASH;
+                        return RandomWizard.random() ? HIT.SQUIRT : HIT.SPLASH;
                     if (damageType == DAMAGE_TYPE.BLUDGEONING)
                         return HIT.SMASH;
                 }
@@ -435,9 +440,11 @@ public class HitAnim extends ActionAnim {
     //TO ATLASES!
     public enum HIT {
         SLICE("slice"),
-        SPLASH("blood splatter 3 3"),
+        SPLASH("shower"),
+        //                "blood splatter 3 3"),
         SMASH("smash 3 3"),
-        SQUIRT("squirt"),
+        SQUIRT("shower"),
+        //                "squirt"),
         SHOWER("shower"),
         //        TORRENT("smear 3 3")
         ;

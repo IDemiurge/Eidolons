@@ -1,16 +1,12 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
-import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.system.text.DC_LogManager;
 import main.game.logic.event.Event;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 public class GameEventHandler extends MetaGameHandler {
 
@@ -27,6 +23,11 @@ public class GameEventHandler extends MetaGameHandler {
 
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
+                case UNIT_HAS_BEEN_KILLED:
+                    if (event.getRef().getTargetObj() == Eidolons.getMainHero())
+                        getMaster().getShadowMaster().annihilated(event);
+
+                    break;
                 case TIME_ELAPSED:
                     getMaster().getShadowMaster().timeElapsed(event);
                     break;
@@ -34,7 +35,7 @@ public class GameEventHandler extends MetaGameHandler {
                     getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
                             + event.getRef().getSourceObj().getNameIfKnown());
                     break;
-                    case DOOR_CLOSES:
+                case DOOR_CLOSES:
                     TipMessageMaster.testChained();
                     break;
                 case DOOR_OPENS:
@@ -44,6 +45,7 @@ public class GameEventHandler extends MetaGameHandler {
                     handleUnconscious(event);
                     break;
                 case COMBAT_ENDS:
+                    getMaster().getShadowMaster().victory(event);
 //                    getMaster().getDefeatHandler()
                     break;
                 case GAME_STARTED:

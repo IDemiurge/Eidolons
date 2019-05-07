@@ -50,6 +50,15 @@ public class UnitShop {
     // MATERIAL[] DEFAULT_MATERIALS_1 = {
     // };
 
+    public static void ensureMinimumItems(Unit unit) {
+        if (unit.getWeapon(false) == null) {
+            if (!unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE).isEmpty())
+                return;
+        }
+        if (unit.getArmor()==null ){
+
+        }
+    }
     // TODO quick items - ammunition, poisons, even potions!
     public static void awardGold(Unit unit) {
         int gold = DC_Formulas.getGoldForLevel(unit.getIntParam(PARAMS.LEVEL));
@@ -565,4 +574,5 @@ public class UnitShop {
 
         return !(index < min || index > max);
     }
+
 }

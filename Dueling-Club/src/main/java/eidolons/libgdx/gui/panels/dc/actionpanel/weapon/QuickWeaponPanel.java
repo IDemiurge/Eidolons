@@ -18,6 +18,7 @@ import eidolons.libgdx.gui.tooltips.ScaleAndTextTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.data.filesys.PathFinder;
 import main.game.logic.action.context.Context;
+import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -170,7 +171,7 @@ public class QuickWeaponPanel extends TablePanelX {
                 if (button == 1) {
                     GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
                     GuiEventManager.trigger(
-                            GuiEventType.CREATE_RADIAL_MENU,
+                            getOpenEvent(),
                             dataSource.getWeapon());
 
                 } else {
@@ -229,6 +230,10 @@ public class QuickWeaponPanel extends TablePanelX {
                 ActorMaster.addMoveToAction(weapon, WEAPON_POS_X, 0, 0.75f);
             }
         };
+    }
+
+    protected EventType getOpenEvent() {
+        return  GuiEventType. QUICK_RADIAL ;
     }
 
     public WeaponDataSource getDataSource() {

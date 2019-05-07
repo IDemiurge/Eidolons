@@ -268,7 +268,7 @@ public class VisionRule {
                 return PLAYER_VISION.KNOWN;
             case BLOCKED:
                 if (object.isWall()) {
-                    if (object.isDetected(source.getOwner())) {
+                    if (object.isDetected(source.getOwner()) || PositionMaster.getExactDistance(object, source)<=3) {
 //                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
 //                         object + " DETECTED at" +
 //                         object.getCoordinates() );
@@ -389,6 +389,8 @@ public class VisionRule {
         if (hero.isDead()){
             return false;
         }
+        if (hero.isScion())
+            return false; //TODO
         VISIBILITY_LEVEL visibility = controller.getVisibilityLevelMapper().get(unit, hero);
         switch (visibility) {
             case CLEAR_SIGHT:

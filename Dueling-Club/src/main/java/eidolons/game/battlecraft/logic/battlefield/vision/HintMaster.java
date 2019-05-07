@@ -9,10 +9,7 @@ import main.content.enums.rules.VisionEnums.OUTLINE_HINT;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.system.auxiliary.StringMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -26,22 +23,47 @@ public class HintMaster {
         master = visionMaster;
     }
 
-    private List<OUTLINE_HINT> getHints(BattleFieldObject unit, OUTLINE_IMAGE image) {
+    private Set<OUTLINE_HINT> getHints(BattleFieldObject unit, OUTLINE_IMAGE image) {
 
 
-        List<OUTLINE_HINT> list = new ArrayList<>();
+        Set<OUTLINE_HINT> set = new LinkedHashSet<>();
         if (unit.isSmall()) {
-            list.add(OUTLINE_HINT.SMALL);
+            set.add(OUTLINE_HINT.SMALL);
         }
         if (unit.isTall()) {
-            list.add(OUTLINE_HINT.TALL);
+            set.add(OUTLINE_HINT.TALL);
         }
         if (unit.isHuge()) {
-            list.add(OUTLINE_HINT.HUGE);
+            set.add(OUTLINE_HINT.HUGE);
         }
         if (unit.isShort()) {
-            list.add(OUTLINE_HINT.SHORT);
+            set.add(OUTLINE_HINT.SHORT);
         }
+        addImgHints(image , set);
+        if (set.size() < 3) {
+        OUTLINE_IMAGE additional = master.getOutlineMaster().getImageDark(unit);
+        addImgHints(additional , set);
+        }
+        // String hintText = StringMaster.constructStringContainer(set, " ");
+        // unit.setProperty(PROPS.HINTS, hintText);
+        // String text = "";
+        // if (unit.getIntParam(PARAMS.ILLUMINATION) != 0)
+        // text += StringMaster.getWellFormattedString("ILLUMINATION - ")
+        // + unit.getParams(PARAMS.ILLUMINATION);
+        // if (unit.getIntParam(PARAMS.CONCEALMENT) != 0)
+        // text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
+        // + unit.getParams(PARAMS.CONCEALMENT);
+        // hintText += " \nRelative visibility for "
+        // + unit.getGame().getManager().getActiveObj().getName() + " :" +
+        // unit.getGamma()
+        // + StringMaster.wrapInParenthesis(text);
+
+        return set;
+
+    }
+
+    private void addImgHints(OUTLINE_IMAGE image, Set<OUTLINE_HINT> list) {
+
         if (image != null) {
             switch (image) {
                 case BEAST:
@@ -79,22 +101,6 @@ public class HintMaster {
 
             }
         }
-        // String hintText = StringMaster.constructStringContainer(list, " ");
-        // unit.setProperty(PROPS.HINTS, hintText);
-        // String text = "";
-        // if (unit.getIntParam(PARAMS.ILLUMINATION) != 0)
-        // text += StringMaster.getWellFormattedString("ILLUMINATION - ")
-        // + unit.getParams(PARAMS.ILLUMINATION);
-        // if (unit.getIntParam(PARAMS.CONCEALMENT) != 0)
-        // text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
-        // + unit.getParams(PARAMS.CONCEALMENT);
-        // hintText += " \nRelative visibility for "
-        // + unit.getGame().getManager().getActiveObj().getName() + " :" +
-        // unit.getGamma()
-        // + StringMaster.wrapInParenthesis(text);
-
-        return list;
-
     }
 
     public String getTooltip(DC_Obj target) {
@@ -138,7 +144,7 @@ public class HintMaster {
         if (hintString != null)
             return hintString;
         hintString = "";
-        List<OUTLINE_HINT> hints =
+        Set<OUTLINE_HINT> hints =
          getHints(unit, img);
         for (OUTLINE_HINT hint : hints) {
             hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";

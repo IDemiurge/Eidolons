@@ -26,6 +26,7 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.audio.DC_SoundMaster;
@@ -309,6 +310,7 @@ public class Eidolons {
 
             getScreen().reset();
             gameExited();
+            MainMenu.getInstance().setCurrentItem(null);
             GameMenu.menuOpen = false;
             TownPanel.setActiveInstance(null);
             GdxMaster.setInputProcessor(new InputAdapter());

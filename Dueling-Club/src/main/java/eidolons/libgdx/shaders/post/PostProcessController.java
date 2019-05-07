@@ -96,6 +96,8 @@ public class PostProcessController {
             bloom.applyCoef(1.0f);
             vignette.applyCoef(1.0f);
             blur.applyCoef(1.0f);
+            update(OptionsMaster.getPostProcessingOptions());
+
         });
         GuiEventManager.bind(GuiEventType.POST_PROCESSING , p-> {
 //            PostProcessingOptions options = (PostProcessingOptions) p.get();

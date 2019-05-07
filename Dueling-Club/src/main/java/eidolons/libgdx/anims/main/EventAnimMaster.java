@@ -4,6 +4,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.data.XLinkedMap;
@@ -72,12 +73,19 @@ public class EventAnimMaster {
                     " event anim created for: " + parentAnim);
             parentAnim.setRef(event.getRef());
 //            if (parentAnim != master.getDrawer().getLeadAnimation())
-                if (!parentAnim.isFinished())
-                    if (!parentAnim.isRunning()) {// preCheck new TODO
+            if (!parentAnim.isFinished())
+                if (!parentAnim.isRunning()) {// preCheck new TODO
+
+                    if ((anim instanceof DeathAnim) || //
+                            (master.getDrawer().getLeadAnimation() != null && parentAnim != master.getDrawer().getLeadAnimation())) {
                         parentAnim.addEventAnim(anim, event);
                         master.add(parentAnim);
                         return true;
+                    } else {
+                        LogMaster.log(1, anim +
+                                " event anim will be already shown on: " + parentAnim);
                     }
+                }
 
             if (parentAnim.getMap().isEmpty())
                 parentAnim.add(ANIM_PART.AFTEREFFECT, anim);

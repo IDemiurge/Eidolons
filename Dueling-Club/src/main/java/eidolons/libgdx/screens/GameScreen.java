@@ -76,7 +76,13 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         cameraPan(unitPosition, null);
     }
 
+    protected boolean isCameraPanningOff() {
+        return false; //TODO
+    }
     protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
+        if (isCameraPanningOff()){
+            return;
+        }
         this.cameraDestination = unitPosition;
         float dst = cam.position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
 
@@ -97,6 +103,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
         }
     }
+
 
     protected float getCameraMinCameraPanDist() {
         return (GDX.size(1600, 0.1f)) / 3 * getCameraPanMod(); //TODO if too close to the edge also

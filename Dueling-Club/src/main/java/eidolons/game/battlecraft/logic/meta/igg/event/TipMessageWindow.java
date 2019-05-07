@@ -36,8 +36,13 @@ public class TipMessageWindow extends TablePanelX {
             setVisible(false);
             return; //TODO ....
         }
+        setSize(source.getWidth(),source.getHeight());
+        if (!StringMaster.isEmpty(source.title)) {
+
+        }
         if (!StringMaster.isEmpty(source.image)) {
             add(imageContainer = new FadeImageContainer(source.image));
+            row();
         }
         add(label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.SUPER_KNIGHT, 18)));
         label.setMaxWidth(getWidth());
@@ -51,7 +56,7 @@ public class TipMessageWindow extends TablePanelX {
                     () -> {
                         runnable.run();
                         fadeOut();
-                        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE, button);
+                        WaitMaster.receiveInput(source.msgChannel, button);
 
                     }).makeActive());
 
@@ -61,6 +66,7 @@ public class TipMessageWindow extends TablePanelX {
                 }
             }
         }
+        if (source.isOptional())
         if (isAddToggle()){
             VisCheckBox box;
             GDX.loadVisUI();

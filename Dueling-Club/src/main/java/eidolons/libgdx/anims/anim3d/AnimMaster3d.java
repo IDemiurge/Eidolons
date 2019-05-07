@@ -638,7 +638,7 @@ public class AnimMaster3d {
     }
 
     public static PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
-        if (ref .getTargetObj() == null)
+        if (ref .getTargetObj() == null || ref==null )
             return getProjectionByFacing(active.getOwnerUnit().getFacing());
         Boolean b =
                 PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());

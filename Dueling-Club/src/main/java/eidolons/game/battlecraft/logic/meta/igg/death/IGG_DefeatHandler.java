@@ -31,7 +31,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         }
         getMetaGame().getMaster().getPartyManager().getHeroChain().death();
 
-        if (getMetaGame().getMaster().getPartyManager().getHeroChain().isFinished())
+        if (isNoLivesLeft())
             return true;
 //deal with the corpse loot
         getGame().getLoop().setPaused(true);
@@ -43,10 +43,11 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         }
 
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
+        WaitMaster.WAIT(1500);
         TipMessageMaster.death();
         //play sound
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
-
+        WaitMaster.WAIT(1100);
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
                 getMetaGame().getMaster().getPartyManager().getChain().getTypes());
         //use the normal selection events?
@@ -55,6 +56,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
             return true;
         }
         getPartyManager().getParty().death();
+        getMaster().getShadowMaster().death();
         getPartyManager().respawn(newHero);
         getGame().getVisionMaster().refresh();
         GdxMaster.setDefaultCursor();
@@ -63,6 +65,10 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
 
         getGame().getLoop().setPaused(false);
         return false;
+    }
+
+    public boolean isNoLivesLeft() {
+        return getMetaGame().getMaster().getPartyManager().getHeroChain().isFinished();
     }
 
     public static final boolean isOn() {
@@ -79,7 +85,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
     }
 
     @Override
-    public IGG_MetaMaster  getMaster() {
+    public IGG_MetaMaster getMaster() {
         return (IGG_MetaMaster) super.getMaster();
     }
 

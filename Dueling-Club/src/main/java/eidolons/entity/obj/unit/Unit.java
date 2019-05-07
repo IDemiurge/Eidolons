@@ -737,7 +737,12 @@ public class Unit extends DC_UnitModel {
     public boolean addItemToInventory(DC_HeroItemObj item, boolean quiet) {
         if (isInventoryFull())
             return false;
-        inventory.add(item);
+        try {
+            inventory.add(item);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            return false;
+        }
         item.setRef(ref);
         item.setContainer(CONTAINER.INVENTORY);
         if (isPlayerCharacter())
@@ -1521,7 +1526,7 @@ public class Unit extends DC_UnitModel {
         if (isDead()) {
             prefix += "(Dead) ";
         }
-        return prefix + getName() + (game.isDebugMode() ? " at " + getCoordinates()
+        return prefix + getName() + (game.isDebugMode() || AI_Manager.isRunning() ? " at " + getCoordinates()
                 : "");
     }
 

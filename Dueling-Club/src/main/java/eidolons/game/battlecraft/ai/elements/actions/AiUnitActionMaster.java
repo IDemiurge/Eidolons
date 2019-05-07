@@ -70,15 +70,8 @@ public class AiUnitActionMaster {
                 if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
                     actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
                 }
+                ActionFilter.filterAttacks(actions, unit);
 
-                actions.remove(AiActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
-                DC_UnitAction
-                 action = unit.getAction(
-                 "Throw", false);
-                actions.remove(action);
-                action = unit.getAction(
-                 "Throw", false);
-                actions.remove(action);
                 break;
 
             case DEFEND:

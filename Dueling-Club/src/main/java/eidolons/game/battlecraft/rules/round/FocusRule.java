@@ -34,7 +34,12 @@ public class FocusRule extends RetainRestoreRule {
     @Override
     protected void paramLost(int amount, Unit unit) {
         super.paramLost(amount, unit);
-        unit.addParam(    PARAMS. FOCUS_FATIGUE, amount);
+        unit.addParam(PARAMS.FOCUS_FATIGUE, amount);
+        if (amount > 0)
+            if (unit.isPlayerCharacter()) {
+                game.getLogManager().log(unit + "'s focus fatigue is now " +
+                        unit.getIntParam(PARAMS.FOCUS_FATIGUE));
+            }
 //        unit.addOrProlongBuff("Focus Fatigue", )
         // do it via new parameter! FOCUS_FATIGUE => used perhaps in the same rule here?
     }

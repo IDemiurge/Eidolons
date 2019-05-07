@@ -268,6 +268,7 @@ public class ModelManager {
     private static void updateSpells() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             ContentGenerator.generateSpellParams(type);
+
         }
     }
 

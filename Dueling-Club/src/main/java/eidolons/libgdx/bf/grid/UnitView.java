@@ -75,8 +75,12 @@ public class UnitView extends BaseView implements HpBarView{
 
     protected void updateModeImage(String pathToImage) {
         if (StringMaster.isEmpty(pathToImage)) {
+
+            modeImage.setImage("ui/really empty 32.png");
             if (modeImage.getContent() != null)
-                ActorMaster.addFadeOutAction(modeImage, 0.5f);
+            {
+//                ActorMaster.addFadeOutAction(modeImage, 0.5f);
+            }
             return;
         }
         if (!ImageManager.isImage(pathToImage)) {

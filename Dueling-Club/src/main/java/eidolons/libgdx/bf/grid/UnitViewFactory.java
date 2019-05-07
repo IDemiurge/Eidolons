@@ -72,19 +72,18 @@ public class UnitViewFactory {
         view.getHpBar().setTeamColor(options.getTeamColor());
 
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         view.setToolTip(tooltip);
         ClickListener listener = createListener(bfObj);
         view.addListener(listener);
         view.getInitiativeQueueUnitView().addListener(listener);
-
         return view;
     }
 
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
         BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()), bfObj.getImagePath());
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         view.addListener(tooltip.getController());
         view.addListener(createListener(bfObj));
         view.setUserObject(bfObj);

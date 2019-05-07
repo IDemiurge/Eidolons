@@ -29,6 +29,7 @@ public class AtbController implements Comparator<Unit> {
     private float totalTime = 0f;
     private int step;   //during this round
     private boolean nextTurn;
+    private float unloggedTimePassed=0;
 
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
@@ -128,11 +129,18 @@ public class AtbController implements Comparator<Unit> {
     private void processTimeElapsed(Float time) {
         addTime(time);
 
-        getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
-                new Ref(Math.round(time * TIME_LOGIC_MODIFIER))));
+        if (!isPrecalc()) {
+        int toLog = Math.round(time * TIME_LOGIC_MODIFIER + unloggedTimePassed);
+        if (toLog>0){
+            unloggedTimePassed-=toLog;
+            getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
+                    new Ref(toLog)));
+        } else {
+            unloggedTimePassed+=time * TIME_LOGIC_MODIFIER;
+        }
         GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
-
+        }
         if (!isPrecalc()) {
             if (time > 0)
                 manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +

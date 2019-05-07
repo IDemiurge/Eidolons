@@ -13,7 +13,13 @@ import main.system.auxiliary.RandomWizard;
 
 public class ShieldMaster {
     public static SpriteAnimation getSprite(DC_WeaponObj shield, DC_ActiveObj atk, Integer blockValue) {
-        Array<TextureAtlas.AtlasRegion> regions = getShieldRegions(shield, atk, blockValue);
+        Array<TextureAtlas.AtlasRegion> regions = null;
+        try {
+            regions = getShieldRegions(shield, atk, blockValue);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            return null ;
+        }
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions, AnimMaster3d.getFps(), 0);
         sprite.setPlayMode(Animation.PlayMode.REVERSED);
         return sprite;

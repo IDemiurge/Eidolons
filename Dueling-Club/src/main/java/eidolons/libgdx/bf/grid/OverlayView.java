@@ -65,7 +65,7 @@ public class OverlayView extends BaseView implements HpBarView{
 //         addListener(tooltip.getController());
 
         final UnitViewTooltip tooltip = new UnitViewTooltip(this);
-        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         addListener(tooltip.getController());
         addListener(UnitViewFactory.createListener(bfObj));
     }
