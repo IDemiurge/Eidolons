@@ -86,9 +86,17 @@ public class DC_Masteries {
                      MOD.MODIFY_BY_CONST);
                 }
                 break;
+            case DETECTION_MASTERY:
+                boostParameter(amount, PARAMS.DETECTION,
+                        MOD.MODIFY_BY_CONST);
+                boostParameter( amount/2, PARAMS.PERCEPTION,
+                        MOD.MODIFY_BY_CONST);
+                break;
             case STEALTH_MASTERY:
                 boostParameter(amount, PARAMS.STEALTH,
-                 MOD.MODIFY_BY_CONST);
+                        MOD.MODIFY_BY_CONST);
+                boostParameter(-amount/2, PARAMS.NOISE,
+                        MOD.MODIFY_BY_CONST);
                 break;
 
             case ATHLETICS_MASTERY:

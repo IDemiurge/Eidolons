@@ -8,7 +8,9 @@ public interface ActionRule {
 
     void actionComplete(ActiveObj activeObj);
 
-    boolean unitBecomesActive(Unit unit);
+    default boolean unitBecomesActive(Unit unit){
+        return true;
+    }
 
     default boolean isAppliedOnExploreAction(DC_ActiveObj action) {
         return false;

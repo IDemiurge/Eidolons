@@ -310,7 +310,7 @@ public class DungeonScreen extends GameScreenWithTown {
                 current.addProcessor(dialogsStage);
             }
         } else {
-            if (TownPanel.getActiveInstance() != null) {
+            if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning()) {
                 return new InputMultiplexer(guiStage, super.createInputController());
             } else {
                 return super.createInputController();
@@ -344,6 +344,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     public void renderMain(float delta) {
+
         checkInputController();
 //        stages.for
         guiStage.act(delta);

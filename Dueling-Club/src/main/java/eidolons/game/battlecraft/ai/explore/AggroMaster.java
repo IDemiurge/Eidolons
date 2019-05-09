@@ -19,6 +19,7 @@ public class AggroMaster extends ExplorationHandler {
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static final int DEFAULT_ENGAGEMENT_DURATION = 2;
+    private static final double MAX_AGGRO_DST = 5;
     private static boolean aiTestOn = true;
     private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
@@ -84,6 +85,8 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
+            if (isCriticalBreak(unit, hero))
+                continue;
             if (unit.getAI().isEngaged()) {
                 set.add(unit);
                 newAggro = true;
@@ -104,7 +107,8 @@ public class AggroMaster extends ExplorationHandler {
             //            }
         }
         //TODO add whole group of each unit
-
+//        for (Unit unit : set) {
+//        }
         //recheck, 'cause there is a bug there somewhere
         int i = set.size();
         set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
@@ -134,6 +138,17 @@ public class AggroMaster extends ExplorationHandler {
                 return set;
         }
         return set;
+    }
+
+    private static boolean isCriticalBreak(Unit unit, Unit hero) {
+        double max = MAX_AGGRO_DST + unit.getAI().getEngagementDuration();
+        if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
+            max = 1.35f * max;
+        }
+        if (unit.getCoordinates().dst_(hero.getCoordinates())>=max) {
+            return true;
+        }
+        return false;
     }
 
     private static int getEngagementDuration(UnitAI ai) {

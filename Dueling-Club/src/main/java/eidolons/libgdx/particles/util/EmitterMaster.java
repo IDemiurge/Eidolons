@@ -86,8 +86,10 @@ public class EmitterMaster extends GdxUtil {
         List<File> files = getVfxPresets(true);
 
         for (VFX_ATLAS type : VFX_ATLAS.values()) {
+
             switch (type) {
                 //                case UNIT:
+//                case UNIT:
                 case SPELL:
                     break;
                 case AMBIENCE:
@@ -116,6 +118,17 @@ public class EmitterMaster extends GdxUtil {
                 }
 
                 String imagePath = EmitterPresetMaster.getInstance().findImagePath(path);
+                if (imagePath.isEmpty()) {
+                    try {
+                        imagePath = FileManager.readFile(PathFinder.getVfxPath()+ path).split("- image paths -")[2];
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        main.system.auxiliary.log.LogMaster.log(1,"BROKEN SHIT== " +path);
+                        continue ;
+                    }
+
+                    main.system.auxiliary.log.LogMaster.log(1,"voila " +path);
+                }
                 List<Texture> list = new ArrayList<>();
 
                 if (writeImage)
@@ -150,7 +163,7 @@ public class EmitterMaster extends GdxUtil {
                 if (map == null) {
                     maps.put(type, map = new HashMap<>());
                 }
-                imagePath = imagePath.trim();
+                imagePath = imagePath.trim().toLowerCase();
                 try {
                     for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                         s = s.trim();
@@ -318,6 +331,7 @@ public class EmitterMaster extends GdxUtil {
             case "woods":
                 return VFX_ATLAS.AMBIENCE;
 
+//            case "advanced":
             case "buffs":
             case "cast":
             case "center":

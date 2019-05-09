@@ -108,7 +108,10 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         if (owner == null) {
             owner = ref.getSourceObj().getOwner();
         }
-        setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
+        Ref REF45 = ref.getCopy();
+        REF45.removeValue(KEYS.TARGET);
+        setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, REF45));
+        unit.setSummoned(true);
         if (unit instanceof Unit) {
             if (!((Unit) unit).isHero()) {
                 UnitTrainingMaster.train((Unit) unit);
@@ -122,6 +125,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         game.fireEvent(new Event(getEventTypeDone(), REF));
 
         unit.getRef().setID(KEYS.ACTIVE, ref.getId(KEYS.ACTIVE));
+        unit.getRef().setID(KEYS.SPELL, ref.getId(KEYS.SPELL));
 
         UpkeepRule.addUpkeep(unit);
         if (unit instanceof Unit) {

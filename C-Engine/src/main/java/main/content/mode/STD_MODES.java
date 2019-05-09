@@ -1,5 +1,6 @@
 package main.content.mode;
 
+import main.content.enums.system.AiEnums;
 import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StrPathBuilder;
@@ -83,11 +84,12 @@ public enum STD_MODES implements MODE {
          "," +
          FormulaMaster.getMaxParamFormula(MEDITATION.getParameter() +
           ")");
-        CONCENTRATION.periodicValues = CONCENTRATION.getParameter() + "(" +
-         Formulas.CONCENTRATION_PERIODIC_GAIN +
-         "," +
-         FormulaMaster.getMaxParamFormula(CONCENTRATION.getParameter() +
-          ")");
+        String vals = CONCENTRATION.getParameter() + "(" +
+                Formulas.CONCENTRATION_PERIODIC_GAIN +
+                "," + FormulaMaster.getMaxParamFormula(CONCENTRATION.getParameter() +
+                ")");
+        vals += ";FOCUS_FATIGUE" + "(" + Formulas.CONCENTRATION_FOCUS_FATIGUE_GAIN + "),100";
+        CONCENTRATION.periodicValues = vals;
         RESTING.periodicValues = RESTING.getParameter() + "(" +
          Formulas.RESTING_PERIODIC_GAIN +
          "," +
@@ -188,6 +190,11 @@ public enum STD_MODES implements MODE {
          PathFinder.getUiContentPath(),"modes",
            toString() +
            ".png");
+    }
+
+    @Override
+    public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+        return null;
     }
 
     @Override

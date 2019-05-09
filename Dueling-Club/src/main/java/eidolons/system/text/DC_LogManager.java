@@ -165,7 +165,7 @@ public class DC_LogManager extends LogManager {
     }
 
     private String tryAddImage(String entry) {
-        if (entry.contains(" damage")){
+        if (entry.contains("is dealing")){
             for (DAMAGE_TYPE damage_type:DAMAGE_TYPE.values()){
                 if (entry.contains(damage_type.getName())) {
                     return ImageManager.getDamageTypeImagePath(
@@ -216,11 +216,19 @@ public class DC_LogManager extends LogManager {
 
 
     public void logHide(Unit source, BattleFieldObject object) {
-        log(LOG.GAME_INFO, source + " loses sight of " + object.getName());
+        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
+        if (source.isPlayerCharacter()){
+            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
+        }
+        log(level, source + " loses sight of " + object.getName());
     }
 
     public void logReveal(Unit source, BattleFieldObject object) {
-        log(LOG.GAME_INFO, source + " spots " + object.getName());
+        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
+        if (source.isPlayerCharacter()){
+            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
+        }
+        log(level, source + " spots " + object.getName());
     }
 
 

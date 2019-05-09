@@ -28,6 +28,8 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
+import java.util.function.Supplier;
+
 public class ArmorMaster {
     // is the damage already reduced by defense/... ?
     // natural resistances/armor should not reduce it in advance! so it's early
@@ -276,14 +278,9 @@ public class ArmorMaster {
 
             FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
                     "Shield block!", attacked);
-            SpriteAnimation s;
-            try {
-                s = ShieldMaster.getSprite(shield, action, blockValue);
-                GuiEventManager.trigger(GuiEventType. SHOW_SPRITE,
-                        s);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            Integer finalBlockValue = blockValue;
+            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
+                    (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(shield, action, finalBlockValue));
 
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
              + blockValue + " out of " + damage + " " + damage_type + " damage from " +

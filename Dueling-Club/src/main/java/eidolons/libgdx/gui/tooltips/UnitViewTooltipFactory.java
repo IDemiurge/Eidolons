@@ -135,8 +135,8 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
               retrieveEnumConst(INFO_LEVEL.class,
                OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.INFO_DETAIL_LEVEL));
 
-            addPropStringToValues(unit, values, G_PROPS.STANDARD_PASSIVES);
-            addPropStringToValues(unit, values, G_PROPS.CLASSIFICATIONS);
+            addPropStringToValues(unit, values, G_PROPS.STANDARD_PASSIVES  , false);
+            addPropStringToValues(unit, values, G_PROPS.CLASSIFICATIONS, false);
 
             values.add(getValueContainer(unit, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
             values.add(getValueContainer(unit, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));

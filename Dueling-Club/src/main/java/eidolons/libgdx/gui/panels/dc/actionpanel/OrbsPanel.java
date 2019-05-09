@@ -1,10 +1,16 @@
+
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import main.content.ContentValsManager;
+import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
 
@@ -28,8 +34,36 @@ public class OrbsPanel extends TablePanel {
     public static void addTooltip(OrbElement el, String name, String val) {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(el.getIconRegion(), name, val)));
-       el.clearListeners();
-       el.addListener(tooltip.getController());
+        el.clearListeners();
+        el.addListener(tooltip.getController());
+        el.addListener(new SmartClickListener(el) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (CoreEngine.isIDE()) {
+                    int perc = 25;
+                    if (event.getButton() == 1 || getTapCount()>1) {
+                        perc = -25;
+                    }
+                    int finalPerc = perc;
+                    new Thread(() -> {
+                        Eidolons.getMainHero().modifyParamByPercent(ContentValsManager.getCurrentParam(el.getParameter()), finalPerc);
+                        Eidolons.getGame().getManager().reset();
+                    }, " thread").start();
+
+                }
+                super.clicked(event, x, y);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
+            @Override
+            protected void onDoubleClick(InputEvent event, float x, float y) {
+                super.onDoubleClick(event, x, y);
+            }
+        });
     }
 
     //TODO smooth update?
@@ -45,7 +79,7 @@ public class OrbsPanel extends TablePanel {
         for (OrbElement orb : orbs) {
             if (orb == null) {
                 orb = (new OrbElement(params[i]
-                 , source.getParam(params[i]))
+                        , source.getParam(params[i]))
                 );
                 orbs[i] = orb;
                 orb.setPosition(i * 100, 0);

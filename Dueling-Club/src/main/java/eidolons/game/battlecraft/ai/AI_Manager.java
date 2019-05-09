@@ -351,6 +351,9 @@ public class AI_Manager extends AiMaster {
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
+            if (player.isMe()) {
+                continue;
+            }
             for (Unit unit : player.collectControlledUnits_()) {
                 //if (unit.getAI().getGroupAI()!=null )
                 //    continue;

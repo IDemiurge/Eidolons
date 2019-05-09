@@ -231,4 +231,22 @@ public class DirectionMaster {
         //save over TODO
         relative_directions = new DIRECTION[cellsX][cellsY];
     }
+
+    public static String getNSWE(DIRECTION direction) {
+        String nswe = "";
+        String first = "";
+        if (direction.isGrowY() != null) {
+            first = direction.isGrowY() ? "South" : "North";
+        }
+        String second = "";
+        if (direction.isGrowX() != null) {
+            second = direction.isGrowX() ? "East" : "West";
+        }
+        if (first.isEmpty())
+            return second;
+        if (second.isEmpty())
+            return first;
+
+        return first + "-" + second;
+    }
 }

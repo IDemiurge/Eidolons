@@ -21,9 +21,9 @@ import main.entity.Ref.KEYS;
 
 public class BlazeRule extends DamageCounterRule implements TimedRule{
 
-    private static final Integer THRESHOLD = 10;
-    private static final int REDUCTION = -2;
-    private static final int INCREASE = 2;
+    private static final Integer THRESHOLD = 25;
+    private static final int REDUCTION = -3;
+    private static final int INCREASE = -1;
     private static final String DAMAGE_PER_COUNTER = "1";
     private static final String DURABILITY_PER_COUNTER = "(-0.25)";
 
@@ -73,6 +73,8 @@ public class BlazeRule extends DamageCounterRule implements TimedRule{
 
     @Override
     public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
+        if (unit.isIndestructible())
+            return getNumberOfCounters(unit);
         if (checkAblaze(unit)) {
             return INCREASE;
         }

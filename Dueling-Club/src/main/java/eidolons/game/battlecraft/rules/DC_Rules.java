@@ -1,7 +1,10 @@
 package eidolons.game.battlecraft.rules;
 
+import eidolons.entity.obj.attach.DC_HeroAttachedObj;
+import eidolons.entity.obj.attach.DynamicBuffRules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
+import eidolons.game.battlecraft.logic.battlefield.vision.HearingRule;
 import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.battlecraft.rules.action.EngagedRule;
@@ -69,6 +72,7 @@ public class DC_Rules implements GameRules {
     private BlazeRule blazeRule;
     private StackingRule stackingRule;
     private EngagedRule engagedRule;
+    private HearingRule hearingRule;
     private WaterRule waterRule;
     private UnconsciousRule unconsciousRule;
     private GreaseRule greaseRule;
@@ -80,6 +84,7 @@ public class DC_Rules implements GameRules {
     private IlluminationRule illuminationRule;
     private DC_RuleMaster master;
     private Map<DamageCounterRule, TimedRule> timedRules;
+    private DynamicBuffRules dynamicBuffRules;
 
 
     public DC_Rules(DC_Game game) {
@@ -95,6 +100,7 @@ public class DC_Rules implements GameRules {
     private void init() {
         RuleKeeper.init();
         WaitRule.reset();
+        dynamicBuffRules = new DynamicBuffRules(game);
         illuminationRule = new IlluminationRule();
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();
@@ -103,12 +109,14 @@ public class DC_Rules implements GameRules {
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
         stackingRule = new StackingRule(getGame());
+        hearingRule = new HearingRule(getGame());
         actionRules.add(unconsciousRule);
         actionRules.add(watchRule);
         actionRules.add(stealthRule);
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
         actionRules.add(engagedRule);
+        actionRules.add(hearingRule);
 //        actionRules.add(waterRule= new WaterRule(getGame()));
 
         cleaveRule = new CleaveRule(getGame());
@@ -407,4 +415,9 @@ public class DC_Rules implements GameRules {
         }
         return null ;
     }
+
+    public DynamicBuffRules getDynamicBuffRules() {
+        return dynamicBuffRules;
+    }
+
 }

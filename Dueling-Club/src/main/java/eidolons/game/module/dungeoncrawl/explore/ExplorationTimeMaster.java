@@ -195,6 +195,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             //            round_delta -= getRoundEffectPeriod();
             round_delta = 0;
             processEndOfRoundEffects();
+            checkParamBuffs();
         }
         if (ai_delta >= getAiCheckPeriod()) {
             //            ai_delta -= getAiCheckPeriod();
@@ -204,6 +205,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (guiDirtyFlag) {
             GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
             guiDirtyFlag = false;
+        }
+    }
+
+    private void checkParamBuffs() {
+        for (Unit unit : master.getGame().getUnits()) {
+            unit.applyBuffRules();
         }
     }
 

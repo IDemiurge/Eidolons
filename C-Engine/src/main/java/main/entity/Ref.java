@@ -302,7 +302,11 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Integer getAmount() {
-        return getInteger(KEYS.AMOUNT.name());
+        Integer amount = getInteger(KEYS.AMOUNT.name());
+        if (amount == null) {
+            return 0;
+        }
+        return  amount;
     }
 
     public void setAmount(Integer amount) {

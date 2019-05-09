@@ -24,6 +24,7 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
@@ -32,6 +33,7 @@ import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
@@ -129,6 +131,12 @@ public class Unit extends DC_UnitModel {
         super(type, x, y, owner, game, ref);
         if (isHero() && !(this instanceof HeroDataModel)) {
             String message = this + " hero created " + getId();
+                if (GenericLauncher.instance.initRunning) {
+                    if (Eidolons.getMainHero() != null) {
+                        message += " SECOND TIME!...";
+                        removeFromGame();
+                    }
+            }
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
             setName(getName().replace(" IGG", ""));
 
@@ -606,11 +614,10 @@ public class Unit extends DC_UnitModel {
     }
 
     public DequeImpl<DC_QuickItemObj> getQuickItems() {
-        if (!isItemsInitialized()) {
+//        if (!isItemsInitialized()) {
             if (quickItems == null) {
                 quickItems = new DequeImpl<>();
             }
-        }
         return quickItems;
     }
 
@@ -640,15 +647,17 @@ public class Unit extends DC_UnitModel {
     }
 
     public DequeImpl<DC_HeroItemObj> getInventory() {
-        if (!isItemsInitialized()) {
+//        if (!isItemsInitialized()) {
             if (inventory == null) {
                 inventory = new DequeImpl<>();
             }
-        }
         return inventory;
     }
 
     public void setInventory(DequeImpl<DC_HeroItemObj> inventory) {
+        if (inventory == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"Inventory nullified  " +this);
+        }
         this.inventory = inventory;
     }
 
@@ -737,13 +746,16 @@ public class Unit extends DC_UnitModel {
     public boolean addItemToInventory(DC_HeroItemObj item, boolean quiet) {
         if (isInventoryFull())
             return false;
+        if (inventory==null) {
+            inventory = new DequeImpl<>();
+        }
         try {
             inventory.add(item);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
-        item.setRef(ref);
+        item.setRef(getRef());
         item.setContainer(CONTAINER.INVENTORY);
         if (isPlayerCharacter())
             if (!quiet) {
@@ -1622,5 +1634,9 @@ public class Unit extends DC_UnitModel {
         modifyParameter(PARAMS.XP, xp);
         modifyParameter(PARAMS.TOTAL_XP, xp, true);
         HeroLevelManager.checkLevelUp(this);
+    }
+
+    public void applyBuffRules() {
+        getResetter().applyBuffRules();
     }
 }

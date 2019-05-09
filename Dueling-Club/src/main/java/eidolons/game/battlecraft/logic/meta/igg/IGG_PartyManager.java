@@ -115,10 +115,12 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 //        hero.setCoordinates(getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates()
 //        , true);
 
-//        hero.getVisionController().log(hero);
+        hero.getVisionController().reset();
+        hero.getGame().getVisionMaster().refresh();
+
 //        hero.getVisionController().logFor(hero);
 
-        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
+//        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, hero);
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
 

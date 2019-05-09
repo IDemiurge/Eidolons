@@ -442,7 +442,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             blackout.fadeIn((Float) p.get());
         });
         GuiEventManager.bind(GuiEventType.FADE_OUT_AND_BACK, p -> {
-            blackout.fadeOutAndBack((Float) p.get());
+            blackout.fadeOutAndBack((Number) p.get());
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_HQ_SCREEN, p -> {

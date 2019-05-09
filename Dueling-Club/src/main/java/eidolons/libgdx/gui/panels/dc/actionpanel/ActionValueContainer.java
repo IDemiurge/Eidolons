@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -23,12 +24,13 @@ import static eidolons.libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
 public class ActionValueContainer extends ValueContainer {
 
     protected static TextureRegion lightUnderlay = TextureCache.getOrCreateR(
-     SHADE_CELL.LIGHT_EMITTER.getTexturePath());
+            SHADE_CELL.LIGHT_EMITTER.getTexturePath());
     static TextureRegion overlay = TextureCache.getOrCreateR
-     (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
+            (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
     private static ActionValueContainer lastPressed;
     private static boolean darkened;
     private final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
+    private   String path;
     protected Runnable clickAction;
     protected boolean valid = true;
     protected boolean hover;
@@ -37,7 +39,7 @@ public class ActionValueContainer extends ValueContainer {
     protected float underlayOffsetY;
     private float size = UiMaster.getIconSize();
     private RadialMenu customRadialMenu;
-    private boolean scaledOnHover=true;
+    private boolean scaledOnHover = true;
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -56,10 +58,12 @@ public class ActionValueContainer extends ValueContainer {
 
     }
 
-    public ActionValueContainer(int size, boolean valid, TextureRegion region,
+    public ActionValueContainer(int size, boolean valid, String path,
                                 Runnable runnable) {
-        this(valid, region, runnable);
+        this(valid, TextureCache.getOrCreateR(path), runnable);
         this.size = size;
+        this.path = path;
+        initSize();
     }
 
     public static boolean isDarkened() {
@@ -79,10 +83,15 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected void initSize() {
-        overrideImageSize(getSize(), getSize());
-        if (imageContainer.getActor().getContent().getDrawable().getMinWidth()>100) {
-           scaledOnHover=false;
-        }
+        float size = getSize();
+        if (imageContainer.getActor().getContent().getDrawable().getMinWidth() > 100) {
+            scaledOnHover = false;
+            if (path != null)
+                if (path.contains("bf")) //TODO IGG_HACK
+                 imageContainer.getActor().setImage(GdxImageMaster.getSizedImagePath(path, (int) size));
+        } else
+            overrideImageSize(size, size);
+
         imageContainer.top().right();
     }
 
@@ -98,7 +107,7 @@ public class ActionValueContainer extends ValueContainer {
                     return true;
                 if (isScaledOnHover())
                     ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
-                     UiMaster.getDuration(SCALE_ACTION_ICON));
+                            UiMaster.getDuration(SCALE_ACTION_ICON));
                 setLastPressed(ActionValueContainer.this);
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -109,7 +118,7 @@ public class ActionValueContainer extends ValueContainer {
                     return;
                 if (isScaledOnHover())
                     ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(), getImageScaleY(),
-                     UiMaster.getDuration(SCALE_ACTION_ICON));
+                            UiMaster.getDuration(SCALE_ACTION_ICON));
                 super.touchUp(event, x, y, pointer, button);
             }
 
@@ -167,22 +176,22 @@ public class ActionValueContainer extends ValueContainer {
     public void scaleUp() {
         imageContainer.getActor().clearActions();
         ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
-         UiMaster.getDuration(SCALE_ACTION_ICON));
+                UiMaster.getDuration(SCALE_ACTION_ICON));
 
         ActorMaster.addMoveToAction(imageContainer.getActor(),
-         imageContainer.getActor().getX(),
-           6, 0.25f);
+                imageContainer.getActor().getX(),
+                6, 0.25f);
     }
 
     public void scaleDown() {
         imageContainer.getActor().clearActions();
         ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
-         getImageScaleY(),
-         UiMaster.getDuration(SCALE_ACTION_ICON));
+                getImageScaleY(),
+                UiMaster.getDuration(SCALE_ACTION_ICON));
 
         ActorMaster.addMoveToAction(imageContainer.getActor(),
-         imageContainer.getActor().getX(),
-           0, 0.25f);
+                imageContainer.getActor().getX(),
+                0, 0.25f);
     }
 
     protected boolean isScaledOnHover() {
@@ -210,7 +219,7 @@ public class ActionValueContainer extends ValueContainer {
         if (!valid) {
             shader = batch.getShader();
             batch.setShader(
-             DarkShader.getDarkShader()
+                    DarkShader.getDarkShader()
 //             GrayscaleShader.getGrayscaleShader()
             );
         }
@@ -232,30 +241,30 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public RadialMenu getRadial() {
-        if (customRadialMenu!=null )
+        if (customRadialMenu != null)
             return customRadialMenu;
         if (DungeonScreen.getInstance().
-         getGuiStage() == null)
+                getGuiStage() == null)
             return null;
         return DungeonScreen.getInstance().
-         getGuiStage().getRadial();
+                getGuiStage().getRadial();
     }
 
     protected void drawLightUnderlay(Batch batch) {
         if (getParent() == null)
             return;
         float regionHeight = lightUnderlay.getRegionHeight() * getUnderlayScale() * getImageContainer().getActor().getScaleY()
-         * getImageContainer().getActor().getScaleY();
+                * getImageContainer().getActor().getScaleY();
         float regionWidth = lightUnderlay.getRegionWidth() * getUnderlayScale() *
-         getImageContainer().getActor().getScaleX()
-         * getImageContainer().getActor().getScaleX();
+                getImageContainer().getActor().getScaleX()
+                * getImageContainer().getActor().getScaleX();
         batch.draw(lightUnderlay,
-         (getParent().getX() + getX() + (imageContainer.getActorWidth() -
-          regionWidth) / 2),
-         (getY() + (imageContainer.getActorHeight() - regionHeight) / 2)
+                (getParent().getX() + getX() + (imageContainer.getActorWidth() -
+                        regionWidth) / 2),
+                (getY() + (imageContainer.getActorHeight() - regionHeight) / 2)
 
-         , regionWidth,
-         regionHeight
+                , regionWidth,
+                regionHeight
         );
 
     }
@@ -282,7 +291,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public float getSize() {
-        if (size==0) {
+        if (size == 0) {
             return UiMaster.getIconSize(false);
         }
         return size;

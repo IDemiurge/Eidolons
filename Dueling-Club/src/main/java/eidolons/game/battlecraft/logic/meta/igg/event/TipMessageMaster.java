@@ -95,6 +95,14 @@ public class TipMessageMaster {
         WELCOME_3("Ha!"),
 
         TUTORIAL_COMBAT(""),
+        /*
+        There are two values relevant to this for each unit - Noise and Perception.
+Some actions may create more Noise
+
+perception simply multiplies the remaining value, and the result is the hearing quality.
+On the range of 0 t o100,
+from “didn’t hear” to “heard where and what” with some things in between.
+         */
 /*
 TODO DISPLAY TOOLTIP TITLE?
 EXPLORATION

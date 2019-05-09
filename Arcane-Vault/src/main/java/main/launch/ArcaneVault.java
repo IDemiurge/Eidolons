@@ -143,7 +143,7 @@ public class ArcaneVault {
                         List<DC_TYPE> enumList = new EnumMaster<DC_TYPE>()
                          .getEnumList(DC_TYPE.class);
                         for (DC_TYPE sub : DC_TYPE.values()) {
-                            if (sub.isNonBattlecraft()) {
+                            if (sub.isNonBattlecraft() || sub.isOmitted()) {
                                 enumList.remove(sub);
                             }
                         }

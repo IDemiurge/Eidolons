@@ -31,7 +31,7 @@ public class RageRule extends DC_CounterRule {
     private static final String DEFENSE_PER_COUNTER = "-5"; //focus  fatigue?
     private static final String WOUNDS_THRESHOLD = "12";    // tooltip
     private static final String STAMINA_THRESHOLD = "20";    // tooltip
-    private static final String BERSERK_THRESHOLD = "5+{Willpower}";    // tooltip
+    private static final String BERSERK_THRESHOLD = "1+{Willpower}";    // tooltip
     private static final Integer MAX_BERSERK = 40;
     private static final Integer MAX = 20;
 

@@ -459,10 +459,15 @@ public class DC_GameManager extends GameManager {
     }
 
     public Unit getActiveObj() {
+        Unit active = null;;
         if (game.isStarted()) {
-            return getGame().getLoop().getActiveUnit();
+            active =   getGame().getLoop().getActiveUnit();
         }
-        return null;
+        if (ExplorationMaster.isExplorationOn())
+        if (active.isAiControlled() || active==null){
+            return Eidolons.getMainHero();
+        }
+        return active;
     }
 
     @Override

@@ -103,6 +103,11 @@ public class HitAnim extends ActionAnim {
         part = ANIM_PART.IMPACT;
     }
 
+    @Override
+    public String toString() {
+        return "floating: " + text;
+    }
+
     public static Boolean getBloodOff() {
         if (bloodOff == null)
             bloodOff = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.BLOOD_ANIMS_OFF);
@@ -299,7 +304,8 @@ public class HitAnim extends ActionAnim {
         Damage damage = null;
         if (getActive() != null) {
             damage = getActive().getDamageDealt();
-        } else {
+
+        } if (damage==null) {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
@@ -310,7 +316,7 @@ public class HitAnim extends ActionAnim {
         floatingText.setColor(c);
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
-
+main.system.auxiliary.log.LogMaster.log(1,"dmg ADD_FLOATING_TEXT " +floatingText );
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
         add();
@@ -447,9 +453,9 @@ public class HitAnim extends ActionAnim {
         //                "squirt"),
         SHOWER("shower"),
         //        TORRENT("smear 3 3")
-        ;
+        BONE_CRACK("bone");
 
-        String spritePath;
+       public String spritePath;
 
         HIT(String fileNameNoFormat) {
             spritePath = fileNameNoFormat;

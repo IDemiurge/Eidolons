@@ -5,8 +5,10 @@ import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.system.text.DC_LogManager;
 import main.game.logic.event.Event;
+import main.system.threading.WaitMaster;
 
 public class GameEventHandler extends MetaGameHandler {
 
@@ -24,22 +26,16 @@ public class GameEventHandler extends MetaGameHandler {
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
                 case UNIT_HAS_BEEN_KILLED:
-                    if (event.getRef().getTargetObj() == Eidolons.getMainHero())
+                    if (event.getRef().getTargetObj() == Eidolons.getMainHero()) {
+                        waitForAnims();
                         getMaster().getShadowMaster().annihilated(event);
+                    }
 
                     break;
                 case TIME_ELAPSED:
                     getMaster().getShadowMaster().timeElapsed(event);
                     break;
                 case UNIT_TURN_STARTED:
-                    getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
-                            + event.getRef().getSourceObj().getNameIfKnown());
-                    break;
-                case DOOR_CLOSES:
-                    TipMessageMaster.testChained();
-                    break;
-                case DOOR_OPENS:
-                    TipMessageMaster.test();
                     break;
                 case UNIT_FALLS_UNCONSCIOUS:
                     handleUnconscious(event);
@@ -54,6 +50,10 @@ public class GameEventHandler extends MetaGameHandler {
                     break;
             }
         }
+    }
+
+    private void waitForAnims() {
+        AnimMaster.waitForAnimations(null);
     }
 
     private void handleUnconscious(Event event) {

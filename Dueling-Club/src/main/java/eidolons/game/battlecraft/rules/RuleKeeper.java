@@ -101,8 +101,8 @@ public class RuleKeeper implements Controller {
                 return RULE_SCOPE.TEST;
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
-                return RULE_SCOPE.FULL;
             case FORCE:
+                return RULE_SCOPE.FULL;
             case TRAMPLE:
                 return RULE_SCOPE.ADVANCED;
 
@@ -172,6 +172,7 @@ public class RuleKeeper implements Controller {
                     case ORDERS:
                     case WATCH:
                     case GUARD_MODE:
+                    case TOSS_ITEM:
 //                    case USE_INVENTORY:
 //                    case DUAL_ATTACKS:
 //                    case VISIBILITY:
@@ -369,30 +370,31 @@ public class RuleKeeper implements Controller {
     }
 
     public enum RULE {
-        FORCE(RULE_SCOPE.FULL),
+        FORCE(RULE_SCOPE.BASIC),
         CHANNELING(RULE_SCOPE.TEST),
-        ATTACK_OF_OPPORTUNITY(RULE_SCOPE.FULL),
-        INSTANT_ATTACK(RULE_SCOPE.FULL),
+        ATTACK_OF_OPPORTUNITY(RULE_SCOPE.BASIC),
+        INSTANT_ATTACK(RULE_SCOPE.BASIC),
         COUNTER_ATTACK(RULE_SCOPE.BASIC),
         TIME(RULE_SCOPE.BASIC),
-        VISIBILITY(RULE_SCOPE.FULL),
+        VISIBILITY(RULE_SCOPE.BASIC),
         CLEAR_SHOT(RULE_SCOPE.BASIC),
-        PARRYING(RULE_SCOPE.FULL),
+        PARRYING(RULE_SCOPE.BASIC),
         STEALTH(RULE_SCOPE.BASIC),
         // C
-        DURABILITY,
-        UNCONSCIOUS,
-        FOCUS,
-        MORALE,
-        MORALE_KILL,
-        STAMINA,
-        WOUNDS,
-        BLEEDING,
-        WEIGHT,
+        DURABILITY(RULE_SCOPE.BASIC),
+        UNCONSCIOUS(RULE_SCOPE.BASIC),
+        FOCUS(RULE_SCOPE.BASIC),
+        MORALE(RULE_SCOPE.BASIC),
+        MORALE_KILL(RULE_SCOPE.BASIC),
+        STAMINA(RULE_SCOPE.BASIC),
+        WOUNDS(RULE_SCOPE.BASIC),
+        BLEEDING(RULE_SCOPE.BASIC),
+        WEIGHT(RULE_SCOPE.BASIC),
         INJURY(RULE_SCOPE.FULL),
-        CRITICAL_ATTACK(),
-        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.ADVANCED), TRAMPLE(), WATCH(RULE_SCOPE.ADVANCED),
-        CLEAVE(RULE_SCOPE.ADVANCED);
+        CRITICAL_ATTACK(RULE_SCOPE.BASIC),
+        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.BASIC),
+        TRAMPLE((RULE_SCOPE.ADVANCED)), WATCH(RULE_SCOPE.ADVANCED),
+        CLEAVE(RULE_SCOPE.BASIC);
 
         String tooltip;
         RULE_SCOPE scope;

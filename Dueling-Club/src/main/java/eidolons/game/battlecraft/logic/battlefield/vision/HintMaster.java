@@ -62,7 +62,32 @@ public class HintMaster {
 
     }
 
-    private void addImgHints(OUTLINE_IMAGE image, Set<OUTLINE_HINT> list) {
+    public String getSoundHints(Unit  unit) {
+        String
+        hintString = "";
+        Set<OUTLINE_HINT> set = new LinkedHashSet<>();
+        OUTLINE_IMAGE image = master.getOutlineMaster().getImageDark(unit);
+
+        if (unit.isShort()) {
+            set.add(OUTLINE_HINT.SHORT);
+        }else
+        if (unit.isTall()) {
+            set.add(OUTLINE_HINT.TALL);
+        }if (unit.isSmall()) {
+            set.add(OUTLINE_HINT.SMALL);
+        } else
+        if (unit.isHuge()) {
+            set.add(OUTLINE_HINT.HUGE);
+        }
+        switch (image) {
+
+        }
+        for (OUTLINE_HINT hint : set) {
+            hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";
+        }
+        return hintString;
+    }
+        private void addImgHints(OUTLINE_IMAGE image, Set<OUTLINE_HINT> list) {
 
         if (image != null) {
             switch (image) {

@@ -7,6 +7,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.game.core.game.Game;
+import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
 
@@ -135,6 +136,14 @@ public class ObjType extends Entity {
 
     public void setGenerated(boolean generated) {
         this.generated = generated;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+        setProperty(G_PROPS.NAME, name, false); //don't touch base type!
+        name = StringMaster.formatDisplayedName(name);
+        setProperty(G_PROPS.DISPLAYED_NAME, name, false);
     }
 
     public boolean isModel() {

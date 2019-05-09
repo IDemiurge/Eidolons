@@ -135,6 +135,7 @@ public class Eidolons {
 
     public static void setMainHero(Unit mainHero) {
         Eidolons.mainHero = mainHero;
+        MAIN_HERO = mainHero;
     }
 
     public static Unit getMainHero() {

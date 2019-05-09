@@ -185,7 +185,7 @@ public class Anim extends Group implements Animation {
         {
             if (checkFinished()) {
                 if (!emitterList.isEmpty())
-                    if (completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
+                    if (!completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
                         waitForVfx();
                         return true;
                     }
@@ -784,7 +784,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected float getDefaultSpeed() {
-        return 200;
+        return 100;
     }
 
     public AnimData getData() {

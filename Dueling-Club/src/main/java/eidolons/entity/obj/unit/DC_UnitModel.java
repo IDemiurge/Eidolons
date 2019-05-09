@@ -280,11 +280,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public BEHAVIOR_MODE getBehaviorMode() {
         MODE mode = getMode();
-        if (!(mode instanceof ModeImpl) || mode == null) {
+        if (  mode == null) {
             return null;
         }
-        ModeImpl modeImpl = (ModeImpl) mode;
-        return modeImpl.getBehaviorMode();
+        return mode.getBehaviorMode();
     }
 
 

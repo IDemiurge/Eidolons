@@ -127,6 +127,8 @@ public class FloatingTextMaster {
 
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case ANNIHILATED:
+                return "Annihilated!";
             case PARAM_MOD: {
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
                 if (pair.getValue() > 0)
@@ -167,6 +169,8 @@ public class FloatingTextMaster {
 //        }
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
+                case UNIT_HAS_BEEN_ANNIHILATED:
+                    return TEXT_CASES.ANNIHILATED;
                 case DURABILITY_LOST:
                     return TEXT_CASES.DURABILITY_LOSS;
                 case UNIT_ACQUIRES_STATUS:
@@ -473,7 +477,7 @@ public class FloatingTextMaster {
                 };
             }
         }, DURABILITY_LOSS
-        ,
+        , ANNIHILATED,
         XP,
         GOLD,
         LEVEL_UP

@@ -48,13 +48,14 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private double period;
     private List<PeriodicEffect> timeEffects;
     private boolean immobilizing;
+    private boolean dynamic;
 
     public BuffObj(ObjType type, Player owner, GenericGame game, Ref ref, Effect effect,
                    double duration, Condition retainCondition) {
         super(
-         type==null ?          DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS)
-          : type
-         , owner, game, ref);
+                type == null ? new ObjType(DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS))
+                        : type
+                , owner, game, ref);
         this.retainConditions = retainCondition;
         this.effect = effect;
         initTimeEffect();
@@ -253,9 +254,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
             applyTimeEffect(time);
             return;
         }
-        main.system.auxiliary.log.LogMaster.log(1, this + " Buff duration reduced by " + time);
+        LogMaster.log(1, this + " Buff duration reduced by " + time);
         duration -= time;
-        main.system.auxiliary.log.LogMaster.log(1, this + " Buff duration = " + duration);
+        LogMaster.log(1, this + " Buff duration = " + duration);
         if (duration < 0) {
             time += duration;
         }
@@ -289,9 +290,11 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public boolean checkDuration() {
+//        if (permanent)
+//            return true; //TODO sure?
         if (duration <= 0) {
-            if (!permanent)
-                main.system.auxiliary.log.LogMaster.log(1, this + " duration elapsed " + duration);
+            if (!isTransient && !permanent)
+                LogMaster.log(1, this + " duration elapsed " + duration);
             kill();
             return false;
         }
@@ -414,7 +417,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     public boolean isDisplayed() {
         if (getType().getType() != null)
-            if (getType().getType().getName().equals("Dummy Buff"))
+            if (getType().getType().getName().equals(DUMMY_BUFF_TYPE))
                 return false;
         return true;
     }
@@ -425,5 +428,13 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     public boolean isImmobilizing() {
         return immobilizing;
+    }
+
+    public void setDynamic(boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
+    public boolean isDynamic() {
+        return dynamic;
     }
 }

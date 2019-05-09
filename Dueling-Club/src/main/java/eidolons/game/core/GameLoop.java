@@ -19,6 +19,7 @@ import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.DC_LogManager;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -213,18 +214,18 @@ public class GameLoop {
             channeling = true;
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
-            try {
+//            try {
                 action = (waitForAI());
                 AI_Manager.setOff(false);
-            } catch (Exception e) {
-                AI_Manager.setOff(true);
-                if (!aiFailNotified) {
-                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
-                    aiFailNotified = true;
-                    return false;
-                }
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+//            } catch (Exception e) {
+//                AI_Manager.setOff(true);
+//                if (!aiFailNotified) {
+//                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
+//                    aiFailNotified = true;
+//                    return false;
+//                }
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
         } else {
             action = (waitForPlayerInput());
         }
@@ -250,48 +251,9 @@ public class GameLoop {
     }
 
     protected void waitForAnimations(ActionInput action) {
-        if (isMustWaitForAnim(action)) {
-            int maxTime = getMaxAnimWaitTime(action);
-            int minTime = getMinAnimWaitTime(action);
-            //*speed ?
-            int period = getAnimWaitPeriod();
-            int waitTime = 0;
-            while (waitTime < minTime || (isMustWaitForAnim(action) &&  waitTime< maxTime)){
-                WaitMaster.WAIT(period);
-                waitTime += period;
-                main.system.auxiliary.log.LogMaster.log(1, toString() + " waited for anim to draw: " + waitTime);
-
-            }
-        }
+                    AnimMaster.waitForAnimations(action);
     }
 
-    protected int getMinAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME_COMBAT);
-    }
-
-    protected int getMaxAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME_COMBAT);
-    }
-
-    protected int getAnimWaitPeriod() {
-        return 50;
-    }
-
-    protected boolean isMustWaitForAnim(ActionInput action) {
-        return AnimMaster.getInstance().isDrawing();
-    }
-
-    protected void waitForAnimationsOld() {
-        Integer MAX_ANIM_TIME =
-         OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
-        if (MAX_ANIM_TIME != null) {
-            if (MAX_ANIM_TIME > 0) {
-                if (AnimMaster.getInstance().isDrawing()) {
-                    WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
-                }
-            }
-        }
-    }
 
     protected Boolean activateAction(ActionInput input) {
         if (input == null) {
@@ -422,9 +384,15 @@ public class GameLoop {
     }
 
     public void setActiveUnit(Unit activeUnit) {
+        if (activeUnit ==  this.activeUnit)
+            return;
         this.activeUnit = activeUnit;
         if (activeUnit != null)
+        {
+            getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
+                    + activeUnit.getNameIfKnown());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+        }
 
     }
 

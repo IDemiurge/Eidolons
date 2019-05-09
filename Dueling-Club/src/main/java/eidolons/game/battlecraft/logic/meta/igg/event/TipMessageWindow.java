@@ -44,7 +44,7 @@ public class TipMessageWindow extends TablePanelX {
             add(imageContainer = new FadeImageContainer(source.image));
             row();
         }
-        add(label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.SUPER_KNIGHT, 18)));
+        add(label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAGIC, 18)));
         label.setMaxWidth(getWidth());
         label.setWrap(true);
         row();

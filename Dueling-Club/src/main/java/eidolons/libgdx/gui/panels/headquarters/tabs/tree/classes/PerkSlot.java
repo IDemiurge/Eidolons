@@ -46,7 +46,7 @@ public class PerkSlot extends HtNode {
     protected void click() {
         if (ListMaster.isNotEmpty(available)) {
             SlotSelectionRadialMenu.setActiveNode(this);
-            GuiEventManager.trigger(GuiEventType.SHOW_PERK_CHOICE, available);
+            GuiEventManager.trigger(GuiEventType.SHOW_PERK_CHOICE, available, tier, slot);
         } else {
         }
     }

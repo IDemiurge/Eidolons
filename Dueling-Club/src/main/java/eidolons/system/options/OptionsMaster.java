@@ -12,7 +12,7 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.FloatTextLayer;
+import eidolons.libgdx.anims.FloatingTextLayer;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
@@ -80,6 +80,9 @@ public class OptionsMaster {
              retrieveEnumConst(ANIMATION_OPTION.class,
               animOptions.getValues().get(sub).toString());
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
+            if (key == null) {
+                continue;
+            }
             String value = animOptions.getValue(key);
             boolean booleanValue = animOptions.getBooleanValue(key);
             Integer intValue = animOptions.getIntValue(key);
@@ -91,7 +94,7 @@ public class OptionsMaster {
                      floatValue);
                     break;
                 case FLOAT_TEXT_DURATION_MOD:
-                    FloatTextLayer.setDurationMod(floatValue);
+                    FloatingTextLayer.setDurationMod(floatValue);
                     break;
 
                 case WEAPON_3D_ANIMS_OFF:
@@ -100,11 +103,9 @@ public class OptionsMaster {
                 case BLOOD_ANIMS_OFF:
                     HitAnim.setBloodOff(booleanValue);
                     break;
-                case WAIT_FOR_ANIM:
-                    break;
                 case MAX_ANIM_WAIT_TIME:
                     break;
-                case PARALLEL_DRAWING:
+                case PARALLEL_ANIMATIONS:
                     AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
                     break;
 

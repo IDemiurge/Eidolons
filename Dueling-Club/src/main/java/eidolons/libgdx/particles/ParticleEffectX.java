@@ -37,7 +37,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         if (broken.contains(path))
             return;
         if (isEmitterAtlasesOn()) {
-            FileHandle presetFile = Gdx.files.internal(path);
+            FileHandle presetFile = new FileHandle(path);
             if (!presetFile.exists())
                 presetFile=Gdx.files.internal(PathFinder.getVfxPath()+path);
 

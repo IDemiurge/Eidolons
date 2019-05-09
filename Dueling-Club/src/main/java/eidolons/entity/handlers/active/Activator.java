@@ -5,17 +5,21 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 2/25/2017.
@@ -37,6 +41,9 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
+        if (CoreEngine.isActiveTestMode()){
+            return true;
+        }
         if (getGame().getCombatMaster().isActionBlocked(getAction()))
             return false;
         if (getGame().getTestMaster().isActionFree(getEntity().getName())) {
@@ -48,6 +55,14 @@ public class Activator extends ActiveHandler {
                 return canActivate;
             }
         }
+//     TODO req string   if (ExplorationMaster.isExplorationOn()) {
+//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
+//                return false;
+//            }
+//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
+//                return false;
+//            }
+//        }
         if (getChecker().checkStatus(UnitEnums.STATUS.BLOCKED)) {
             return false;
         }

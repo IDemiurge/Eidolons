@@ -237,9 +237,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
     }
 
-    protected int getMinAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME);
-    }
 
     protected boolean isMustWaitForAnim(ActionInput action) {
         return DungeonScreen.getInstance().getGridPanel()

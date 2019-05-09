@@ -54,7 +54,7 @@ public class SystemAnalyzer {
             animation.setValue(ANIMATION_OPTION.CAST_ANIMATIONS, false);
             animation.setValue(ANIMATION_OPTION.AFTER_EFFECTS_ANIMATIONS, false);
             animation.setValue(ANIMATION_OPTION.PRECAST_ANIMATIONS, false);
-            animation.setValue(ANIMATION_OPTION.PARALLEL_DRAWING, false);
+            animation.setValue(ANIMATION_OPTION.PARALLEL_ANIMATIONS, false);
             
             sound.setValue(SOUND_OPTION.MUSIC_OFF, true);
             gameplay.setValue(GAMEPLAY_OPTION.LIMIT_LOG_LENGTH, true);

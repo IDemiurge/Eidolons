@@ -21,8 +21,10 @@ import java.util.List;
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     private static final DC_Player DEFAULT_PLAYER = new DC_Player("Default Player", Color.red, true) ;
-    public final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
-     FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
+    public final FLAG_COLOR[] playerColors = {
+//            FLAG_COLOR.BLUE, FLAG_COLOR.RED,
+//     FLAG_COLOR.CYAN,
+            FLAG_COLOR.PURPLE};
     public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED, FLAG_COLOR.ORANGE, FLAG_COLOR.CRIMSON,};
     public final FLAG_COLOR[] allyColors = {FLAG_COLOR.BLUE,
      FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};

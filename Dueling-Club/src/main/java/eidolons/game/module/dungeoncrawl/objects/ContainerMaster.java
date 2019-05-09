@@ -80,6 +80,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     Map<ObjType, Map<CONTAINER_CONTENTS,
             Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
     private boolean noDuplicates = true;
+    private BattleFieldObject container;
 
 
     public ContainerMaster(DungeonMaster dungeonMaster) {
@@ -478,12 +479,29 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String getItemGroup(CONTAINER_CONTENTS c, boolean sub, DC_TYPE TYPE) {
+        String custom = container.getProperty(PROPS.CONTAINER_GROUP_SINGLE);
+        if (!custom.isEmpty()) {
+            return custom;
+        }
         if (isGroupsOrSubgroups(c, TYPE) == sub)
             return null;
-        String list = getItemGroups(c, TYPE);
-        if (list == null)
+        String groups = getItemGroups(c, TYPE);
+        List<String> list = groups == null?   new ArrayList<>()
+                : ContainerUtils.openContainer(groups);
+        String filter = container.getProperty(PROPS.CONTAINER_GROUP_FILTER);
+        if (!filter .isEmpty()) {
+            list.removeIf(group-> !filter.toLowerCase().contains(group.toLowerCase()));
+        }
+        if (list.isEmpty()) {
             return null;
-        return new RandomWizard<String>().getRandomListItem(ContainerUtils.openContainer(list));
+        }
+        return new RandomWizard<String>().getRandomListItem(list);
+    }
+
+    private String checkCustomGroupForContents(CONTAINER_CONTENTS c, boolean sub, DC_TYPE type, BattleFieldObject container) {
+; //use as filter?
+
+        return null;
     }
 
     private String getItemGroups(CONTAINER_CONTENTS c, DC_TYPE TYPE) {
@@ -544,7 +562,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public void initContents(BattleFieldObject obj) {
-
+        this.container = obj;
         String contents = obj.getProperty(PROPS.INVENTORY);
 
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
@@ -734,7 +752,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isPregenerateItems(DC_Obj containerObj) {
-        return containerObj.getGame().getMetaMaster().isRngDungeon();
+        return containerObj.getGame().getMetaMaster().isRngDungeon()
+                || CoreEngine.isSafeMode();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

@@ -486,21 +486,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
         if (!game.isSimulation()) { // TODO perhaps I should apply and display
             // them!
-            if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
-            }
-            if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
-            }
-            if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
-            }
-            if (!getGame().getRules().getWeightRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
-            }
-            if (RuleKeeper.isRuleOn(RULE.WATCH))
-                getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
-            getGame().getRules().getWoundsRule().apply(getEntity());
+          applyBuffRules();
 
 
 //            recalculateInitiative();
@@ -523,6 +509,24 @@ public class UnitResetter extends EntityResetter<Unit> {
         getEntity().setBeingReset(false);
     }
 
+    public void applyBuffRules() {
+        if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
+        }
+        if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
+        }
+        if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
+        }
+        if (!getGame().getRules().getWeightRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
+        }
+        if (RuleKeeper.isRuleOn(RULE.WATCH))
+            getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
+        getGame().getRules().getWoundsRule().apply(getEntity());
+    }
+
     public void afterBuffRuleEffects() {
         if (getEntity().getOffhandWeapon() != null) {
             setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
@@ -540,6 +544,12 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
         getCalculator().calculateAndSetDamage(false);
         applyMods();
+
+        finalizeReset();
+    }
+
+    private void finalizeReset() {
+        getGame().getRules().getDynamicBuffRules().checkBuffs(getEntity());
     }
 
 }

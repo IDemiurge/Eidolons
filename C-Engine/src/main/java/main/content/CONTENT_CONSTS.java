@@ -123,6 +123,7 @@ public class CONTENT_CONSTS {
 
     public enum SPECIAL_REQUIREMENTS implements VarHolder {
         // boolean
+        COMBAT_ONLY(";", "Cannot use outside combat!", String.class),
         CUSTOM("condition string", "[AV(condition)]", String.class),
         PARAM("param;amount", VariableManager.getVarIndex(0) + " required: "
          + VariableManager.getVarIndex(1), PARAMETER.class, String.class),

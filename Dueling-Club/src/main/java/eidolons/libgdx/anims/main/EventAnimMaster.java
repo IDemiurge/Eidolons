@@ -79,7 +79,8 @@ public class EventAnimMaster {
                     if ((anim instanceof DeathAnim) || //
                             (master.getDrawer().getLeadAnimation() != null && parentAnim != master.getDrawer().getLeadAnimation())) {
                         parentAnim.addEventAnim(anim, event);
-                        master.add(parentAnim);
+                        if (parentAnim != master.getDrawer().getLeadAnimation())
+                             master.add(parentAnim);
                         return true;
                     } else {
                         LogMaster.log(1, anim +
@@ -115,7 +116,7 @@ public class EventAnimMaster {
         //        if (leadAnimation!=null )
         //            if (leadAnimation.getActive()!=active)
         //        return leadAnimation;
-
+main.system.auxiliary.log.LogMaster.log(1,">> New event attach anim for " + active);
         return new CompositeAnim();
     }
 

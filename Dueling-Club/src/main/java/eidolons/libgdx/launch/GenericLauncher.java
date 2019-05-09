@@ -58,7 +58,8 @@ public class GenericLauncher extends Game {
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
-    private boolean initRunning;
+    public boolean initRunning;
+    public static GenericLauncher instance;
 
     public static void setFirstInitDone(boolean firstInitDone) {
         GenericLauncher.firstInitDone = firstInitDone;
@@ -66,6 +67,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void create() {
+        instance= this;
         GdxMaster.setLoadingCursor();
         MusicMaster.preload(MUSIC_SCOPE.MENU);
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
@@ -289,6 +291,10 @@ public class GenericLauncher extends Game {
                 }
                 initRunning=true;
                 Eidolons.onThisOrNonGdxThread(() -> {
+                        if (Eidolons.getMainHero() != null) {
+                            main.system.auxiliary.log.LogMaster.log(1,"*************** Second init attempted, fuck it!" );
+                           return;
+                        }
                     initScenarioBattle(data, data.getName());
 
                     firstInitDone = true;

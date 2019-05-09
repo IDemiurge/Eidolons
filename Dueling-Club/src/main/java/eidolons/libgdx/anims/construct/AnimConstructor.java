@@ -260,7 +260,7 @@ public class AnimConstructor {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
-             StringMaster.contains(val.getName(), part.toString())) {
+             StringMaster.contains(val.name(), part.toString())) {
                 String name = active.getValue(val);
                 if (!name.isEmpty())
                     data.add(val, getPath(val, active) + name);
@@ -618,9 +618,9 @@ public class AnimConstructor {
         switch (s) {
             case PARTICLE_EFFECTS:
                 if (ParticleEffectX.isEmitterAtlasesOn())
-                    path = PathFinder.getVfxPath() + "atlas/spell/";
+                    path = PathFinder.getVfxPath() + "atlas/" ; // +"spell/";
                 else
-                    path = PathFinder.getVfxPath() + "spell/";
+                    path = PathFinder.getVfxPath(); //  + "spell/";
                 break;
             case SPRITES:
                 path = PathFinder.getSpritesPathFull();

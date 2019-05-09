@@ -17,12 +17,12 @@ import static eidolons.libgdx.anims.text.FloatingTextMaster.displacementInvertFl
 /**
  * Created by JustMe on 5/27/2018.
  */
-public class FloatTextLayer extends GroupX {
+public class FloatingTextLayer extends GroupX {
     DequeImpl<FloatingText> queued = new DequeImpl<>();
     DequeImpl<FloatingText> displaying = new DequeImpl<>();
     private static Float durationMod;
 
-    public FloatTextLayer() {
+    public FloatingTextLayer() {
     }
 
     public void bindEvents() {

@@ -11,6 +11,7 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.log.LogMaster;
+import main.system.entity.ConditionMaster;
 
 import java.util.Set;
 

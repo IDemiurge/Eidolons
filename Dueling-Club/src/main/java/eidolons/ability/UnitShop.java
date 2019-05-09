@@ -46,6 +46,7 @@ public class UnitShop {
     private static int goldOriginalAmount;
     private static Unit unit;
     private static HeroManager heroManager;
+    private static boolean canExceed=true; //buyCheapest
 
     // MATERIAL[] DEFAULT_MATERIALS_1 = {
     // };
@@ -56,7 +57,8 @@ public class UnitShop {
                 return;
         }
         if (unit.getArmor()==null ){
-
+            if (!unit.getProperty(PROPS.ARMOR_REPERTOIRE).isEmpty())
+                return;
         }
     }
     // TODO quick items - ammunition, poisons, even potions!
@@ -223,7 +225,6 @@ public class UnitShop {
     public static boolean buyNew(String repertoire, Unit unit, ITEM_SLOT slot,
                                  OBJ_TYPE OBJ_TYPE_ENUM) {
         int costLimit = unit.getIntParam(PARAMS.GOLD) * goldPercentageToSpend / 100;
-        boolean canExceed = false;
         return buyNew(repertoire, unit, slot, costLimit, canExceed, OBJ_TYPE_ENUM);
     }
 
@@ -335,7 +336,8 @@ public class UnitShop {
         return null;
     }
 
-    private static ObjType chooseQualityForItem(MATERIAL materialType, int costLimit, Unit unit, ObjType baseType, boolean canExceed) {
+    private static ObjType chooseQualityForItem(MATERIAL materialType, int costLimit,
+                                                Unit unit, ObjType baseType, boolean canExceed) {
         String allowed = unit.getProperty(PROPS.QUALITY_LEVEL_RANGE);
         int minIndex = 0;
         int maxIndex = 999;

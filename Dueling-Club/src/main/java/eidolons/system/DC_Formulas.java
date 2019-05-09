@@ -69,7 +69,7 @@ public class DC_Formulas {
     public static final Integer INTELLIGENCE_ORGANIZATION_CAP_MOD = 10;
     public static final String DRUIDIC_VISIONS_ESSENCE = "5+{wisdom}*{spell_spell_difficulty}/10";
     public static final String HOLY_PRAYER_MORALE = "5+{Willpower}*{spell_spell_difficulty}/10";
-    private static final int TOUGHNESS_STR_MODIFIER = 5;
+    private static final int TOUGHNESS_STR_MODIFIER = 10;
     private static final float TOUGHNESS_STR_SQUARE_MODIFIER = 0.05f;
     private static final float TOUGHNESS_STR_SQUARE_BARRIER = 200;
     private static final int CARRYING_CAPACITY_STR_MODIFIER = 2;

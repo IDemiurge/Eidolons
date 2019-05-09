@@ -99,8 +99,8 @@ public class QuestResolver  extends QuestHandler{
              reward.getXpFormula() +
              " Experience and the " +
              reward.getGoldFormula() +
-             " gold pieces promised to you await you in " +
-             quest.getTown().getName() +
+             " gold pieces promised to you await you in town" +
+//      TODO        quest.getTown().getName() +
              ". Probably...", false, ()->{
                 GuiEventManager.trigger(GuiEventType.QUEST_ENDED, quest);
                 GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest);

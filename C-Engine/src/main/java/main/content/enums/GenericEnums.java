@@ -233,7 +233,7 @@ public class GenericEnums {
         DISPEL("Dispel"),
         UNLOCK("Unlock"),
         DISARM_TRAP("Disarm Trap"),
-        FORCE("Force"),;
+        FORCE("Force"), HEARING("Hearing");
         boolean logToTop;
         private String name;
 

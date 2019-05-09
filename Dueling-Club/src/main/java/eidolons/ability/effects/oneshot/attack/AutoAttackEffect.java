@@ -4,7 +4,9 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
+import eidolons.game.core.EUtils;
 import main.ability.effects.OneshotEffect;
+import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,8 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         // getUnit().getAction(action)
         DC_ActiveObj attack = pickAttack();
         if (attack == null) {
+            ref.getActive().setCancelled(true);
+            EUtils.showInfoText("Could not find an attack!");
             return false;
         }
         boolean result = attack.activatedOn(ref);
@@ -108,10 +112,11 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
 
     private DC_ActiveObj pickAutomatically(List<DC_ActiveObj> subActions) {
         DC_ActiveObj pick = null;
-        int max = 0;
+        int max = Integer.MIN_VALUE;
 
         for (DC_ActiveObj attack : subActions) {
             int priority = calculatePriority(attack, getTarget());
+            priority += RandomWizard.getRandomIntBetween(-2, 2);
             if (priority > max) {
                 pick = attack;
                 max = priority;

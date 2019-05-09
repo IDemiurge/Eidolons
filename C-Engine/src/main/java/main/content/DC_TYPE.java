@@ -89,7 +89,13 @@ public enum DC_TYPE implements OBJ_TYPE {
     private static Map<String, DC_TYPE> searchMap;
 
     static {
-
+TERRAIN.omitted=true;
+ACTORS.omitted=true;
+JEWELRY.omitted=true;
+DUNGEONS.omitted=true;
+DIALOGUE.omitted=true;
+PLACES.omitted=true;
+SCENARIOS.omitted=true;
 
         GARMENT.hidden = true;
         GARMENT.battlecraft = false;
@@ -115,6 +121,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     private String image;
     private boolean hidden;
     private PARAMETER param;
+    public boolean omitted;
 
     DC_TYPE(String name, PROPERTY groupingKey, int code, boolean hidden) {
         this(name, groupingKey, code);
@@ -326,4 +333,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     }
 
 
+    public boolean isOmitted() {
+        return omitted;
+    }
 }

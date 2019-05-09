@@ -44,6 +44,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -383,12 +384,18 @@ public class HqDataMaster {
                 }
                 break;
             case DROP:
-                GuiEventManager.trigger(GuiEventType.CONFIRM, "Drop " + item.getName() + "?");
-                boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
-                if (result)
-                {
-                    hero.dropItemFromInventory(item);
-                }
+                DC_HeroItemObj finalItem = item;
+                GuiEventManager.trigger(GuiEventType.CONFIRM,
+                new ImmutableTriple<String, Runnable, Runnable>("Drop " + item.getName() + "?"
+                        , ()->{}, ()->
+                        hero.dropItemFromInventory(finalItem))
+
+                );
+//                boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
+//                if (result)
+//                {
+//                    hero.dropItemFromInventory(item);
+//                }
                 break;
             case UNEQUIP_JEWELRY:
                 hero.removeJewelryItem(item);

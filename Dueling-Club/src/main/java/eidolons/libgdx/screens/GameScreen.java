@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
@@ -33,6 +34,7 @@ import static main.system.GuiEventType.DIALOG_SHOW;
  */
 public abstract class GameScreen extends ScreenWithVideoLoader {
 
+    private static final float MAX_CAM_DST = 500;
     private static Float cameraPanMod;
     public InputController controller;
     protected ChainedStage dialogsStage = null;
@@ -46,6 +48,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected GuiStage guiStage;
     private RealTimeGameLoop realTimeGameLoop;
     private Boolean centerCameraAlways;
+    private Vector3 lastPos;
 
     public GameScreen() {
         GuiEventManager.bind(GuiEventType.GAME_PAUSED, d -> {
@@ -114,6 +117,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     protected void cameraShift() {
+        checkCameraFix();
         if (cameraDestination != null)
             if (cam != null && velocity != null && !velocity.isZero()) {
                 float x = velocity.x > 0
@@ -134,6 +138,14 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 cam.update();
                 controller.cameraChanged();
             }
+    }
+
+    private void checkCameraFix() {
+        if (lastPos != null)
+        if (cam.position.dst(lastPos)> MAX_CAM_DST) {
+            cam.position.set(lastPos);
+        }
+        lastPos = new Vector3(cam.position);
     }
 
     public void cameraStop() {

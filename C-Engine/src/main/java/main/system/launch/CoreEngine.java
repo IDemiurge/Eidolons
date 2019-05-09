@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.0c";
+    public static final String VERSION = "0.9.1";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
@@ -74,6 +74,7 @@ public class CoreEngine {
     private static boolean iggDemo;
     private static boolean iggDemoRunning;
     private static boolean toolIsRunning;
+    private static boolean activeTestMode;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -533,5 +534,13 @@ public class CoreEngine {
 
     public static boolean getToolIsRunning() {
         return toolIsRunning;
+    }
+
+    public static boolean isActiveTestMode() {
+        return activeTestMode;
+    }
+
+    public static void setActiveTestMode(boolean activeTestMode) {
+        CoreEngine.activeTestMode = activeTestMode;
     }
 }

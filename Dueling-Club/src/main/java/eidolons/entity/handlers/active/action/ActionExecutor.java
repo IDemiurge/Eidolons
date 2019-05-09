@@ -9,6 +9,7 @@ import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.handlers.active.Targeter;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualWieldingRule;
+import eidolons.system.DC_ConditionMaster;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Conditions;
@@ -149,6 +150,8 @@ public class ActionExecutor extends Executor {
                         }
                     }
                     conditions.setFastFailOnCheck(true);
+//                    conditions.addAll( (Conditions)
+//                            DC_ConditionMaster.getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.ATTACK));
                     conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);
                     conditions.add(new DistanceCondition("" + maxRange));
                     SelectiveTargeting selectiveTargeting = new SelectiveTargeting(

@@ -132,6 +132,17 @@ public class AmbienceDataSource {
             case Cold:
                 map.chain(COLD, 20);
                 break;
+            case DWARF:
+
+                map.chain(COLD, 20)
+                        . chain(DEEP_MIST, 20)
+                        . chain(HALL, 20)
+                        . chain(POISON, 20)
+                        . chain(HELL, 20)
+                        . chain(CRYPT, 20)
+                        . chain(CAVE, 20)
+                ;
+                break;
         }
         return map;
     }
@@ -197,20 +208,23 @@ public class AmbienceDataSource {
              MIST_ARCANE,
              MIST_WIND,
              SNOWFALL,
+//             MIST_CYAN,
+//             DARK_MIST_LITE,
              MIST_CYAN,
-             DARK_MIST_LITE,
-             MIST_CYAN,
+                    STARS,
              SNOWFALL_THICK
             );
             COLD.setNightly(
-             MIST_CYAN,
+//             MIST_CYAN,
              MIST_WIND,
+                    STARS,
              MIST_ARCANE,
              SNOW,
              SNOWFALL,
-             DARK_MIST_LITE,
-             STARS,
-             DARK_MIST
+                    MIST_WHITE2,
+                    MIST_ARCANE,
+//             DARK_MIST_LITE,
+                    DARK_MIST_LITE
             );
 
             POISON.setDaily(

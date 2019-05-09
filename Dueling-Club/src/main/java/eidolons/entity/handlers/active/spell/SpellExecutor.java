@@ -8,6 +8,7 @@ import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.HeroAnalyzer;
 import eidolons.game.module.herocreator.logic.spells.DivinationMaster;
 import eidolons.system.audio.DC_SoundMaster;
@@ -123,9 +124,11 @@ public class SpellExecutor extends Executor {
     public boolean activate() {
         getAction().getOwnerObj().getRef().setID(Ref.KEYS.SPELL, getId());
         DC_SoundMaster.playEffectSound(SOUNDS.PRECAST, getSpell());
-        if (!channeling) if (getAction().isChanneling()) {
-            return activateChanneling();
-        }
+        if (!ExplorationMaster.isExplorationOn())
+            if (!channeling)
+                if (getAction().isChanneling()) {
+                    return activateChanneling();
+                }
         channeling = false;
         return super.activate();
 
@@ -197,7 +200,7 @@ public class SpellExecutor extends Executor {
         Integer perc = getIntParam(PARAMS.SPELLPOWER_MOD);
         if (perc != 100) {
             getAction().getOwnerObj().multiplyParamByPercent(PARAMS.SPELLPOWER, MathMaster.getFullPercent(perc),
-             false);
+                    false);
         }
 
     }

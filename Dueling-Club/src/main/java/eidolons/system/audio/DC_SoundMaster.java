@@ -246,15 +246,15 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
     }
 
     public static void bindEvents() {
-        GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
-            Anim anim = (Anim) p.get();
-            DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
-            try { //TODO ON SEPARATE THREAD!!!!
-                playAnimStartSound(activeObj, anim.getPart());
-            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        });
+//       TODO  GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
+//            Anim anim = (Anim) p.get();
+//            DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
+//            try { //TODO ON SEPARATE THREAD!!!!
+//                playAnimStartSound(activeObj, anim.getPart());
+//            } catch (Exception e) {
+////                main.system.ExceptionMaster.printStackTrace(e);
+//            }
+//        });
         GuiEventManager.bind(GuiEventType.COMPOSITE_ANIMATION_STARTED, p -> {
             CompositeAnim anim = (CompositeAnim) p.get();
             DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();

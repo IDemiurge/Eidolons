@@ -1,25 +1,47 @@
 package eidolons.libgdx.shaders.post.fx;
 
 import com.bitfire.postprocessing.effects.Bloom;
+import com.bitfire.postprocessing.filters.Threshold;
 
 /**
  * Created by JustMe on 12/6/2018.
  */
 public class BloomFx extends Bloom {
     private float base;
-    private float fluctuation=1;
+    private float fluctuation = 1;
+    boolean noDarken;
+    boolean noDesat;
+    boolean noBlur;
 
     public BloomFx(int fboWidth, int fboHeight) {
         super(fboWidth, fboHeight);
     }
 
+    public BloomFx(int fboWidth, int fboHeight, boolean noDarken, boolean noBlur) {
+        super(fboWidth, fboHeight);
+        this.noDarken = noDarken;
+        this.noBlur = noBlur;
+    }
+
     @Override
     public void applyCoef(float a) {
-        this.fluctuation=a;
-        setBloomIntesity(2*base*settings.bloomIntensity * a);
+        this.fluctuation = a;
+        setBloomIntesity(2 * base * settings.bloomIntensity * a);
+
         setBloomSaturation(1);
-        setBlurAmount(base*settings.blurAmount * a);
-        setThreshold(base*settings.bloomThreshold * a);
+
+        if (noBlur) {
+            blur.setAmount(0);
+        } else {
+            setBlurAmount(base * settings.blurAmount * a);
+        }
+
+        if (noDarken) {
+            threshold.setTreshold(1.00f);
+//            threshold.setParams(Threshold.Param.Threshold, gamma);
+        } else {
+            setThreshold(base * settings.bloomThreshold * a);
+        }
     }
 
     public void setBase(float base) {

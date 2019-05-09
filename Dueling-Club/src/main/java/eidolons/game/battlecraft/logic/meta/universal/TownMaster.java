@@ -66,6 +66,9 @@ public class TownMaster extends MetaGameHandler {
     }
 
     public void reenterTown() {
+        if (town==null ){
+            town = getOrCreateTown();
+        }
         getMaster().getGame().getLoop().setPaused(true);
         boolean result = enterTown(town, true);
         getMaster().getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerWaits();
@@ -103,7 +106,7 @@ public class TownMaster extends MetaGameHandler {
     }
 
     public boolean enterTown(Town town, boolean reenter) {
-        if (this.town == null) {
+        if (this.town == null) { // wtf TODO
             try {
                 SkillMaster.initMasteryRanks(
                         Eidolons.getMainHero());
@@ -190,7 +193,7 @@ public class TownMaster extends MetaGameHandler {
         if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
             n += 2 * ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getMissionIndex();
         }
-        if (!CoreEngine.isFastMode())
+        if (isFoodRequired())
             if (!Eidolons.getMainHero().hasItems("Food", n)) {
                 EUtils.info("You need at least " +
                         n + " Food to travel back to " +
@@ -199,15 +202,25 @@ public class TownMaster extends MetaGameHandler {
                 return;
             }
         int finalN = n;
+        if (isFoodRequired())
         EUtils.onConfirm("Traveling back to " +
                 town.getName() +
                 " will require " + finalN +
                 "Food. Shall we get underway?", true, () -> {
-            if (!CoreEngine.isFastMode())
-                Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
-            Eidolons.getMainHero().setCoordinates(entrance.getCoordinates());
-            GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Eidolons.getMainHero());
-            reenterTown();
+            reenter(finalN, entrance);
         }, true);
+        else   reenter(finalN, entrance);
+    }
+
+    private void reenter(int finalN, Entrance entrance) {
+        if (isFoodRequired())
+            Eidolons.getMainHero().removeItemsFromAnywhere("Food", finalN);
+        Eidolons.getMainHero().setCoordinates(entrance.getCoordinates());
+        GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Eidolons.getMainHero());
+        reenterTown();
+    }
+
+    private boolean isFoodRequired() {
+        return !CoreEngine.isFastMode() && !CoreEngine.isIggDemoRunning();
     }
 }

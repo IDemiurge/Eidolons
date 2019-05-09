@@ -27,7 +27,7 @@ public class BriefText extends TablePanelX {
         this.messages = messages;
         addActor(mainText = new LabelX());
         mainText.setStyle(StyleHolder.getSizedLabelStyle(
-                 FontMaster.FONT.SUPER_KNIGHT, 21));
+                 FontMaster.FONT.MAGIC, 21));
         mainText.setWidth(width);
 
         addActor(continueBtn = new SmartButton("Continue", StyleHolder.getTextButtonStyle(ButtonStyled.STD_BUTTON.MENU,

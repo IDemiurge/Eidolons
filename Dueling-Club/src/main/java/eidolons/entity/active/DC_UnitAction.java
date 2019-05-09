@@ -39,8 +39,12 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public boolean canBeActivated() {
-        main.system.auxiliary.log.LogMaster.log(1,"cannot activate, it's a dummy!!! - " +this);
-        return false;
+        if (dummy)
+        {
+            main.system.auxiliary.log.LogMaster.log(1,"cannot activate, it's a dummy!!! - " +this);
+            return false;
+        }
+        return true;
     }
 
     public boolean isDummy() {

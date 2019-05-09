@@ -7,13 +7,14 @@ import main.system.auxiliary.StringMaster;
  */
 public class ActionEnums {
     public enum ACTION_TAGS {
-        FIXED_COST,
+        FIXED_COST, COMBAT_ONLY,
         FLYING,
         DUAL,
         UNARMED,
         OFF_HAND,
         MAIN_HAND,
         TWO_HANDED,
+        TWO_HANDS,
         RANGED_TOUCH,
         ATTACK_OF_OPPORTUNITY,
         ATTACK_OF_OPPORTUNITY_ACTION,

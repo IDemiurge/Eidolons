@@ -2,6 +2,7 @@ package eidolons.ability.conditions.special;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.system.math.DC_PositionMaster;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
@@ -36,7 +37,7 @@ public class ClearShotCondition extends MicroCondition {
     public ClearShotCondition(String str1, String str2) {
         this.str1 = str1;
         this.str2 = str2;
-
+        setGame(Eidolons.getGame());
     }
 
     public static void clearCache() {

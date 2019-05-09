@@ -36,24 +36,27 @@ public class PostFxUpdater {
     }
 
     public void update() {
-        Unit hero = Eidolons.MAIN_HERO;
+        Unit hero = Eidolons.getMainHero();
         if (hero == null) {
             return;
         }
         fxMap.clear();
+        if (hero.isUnconscious()){
+            // use what?
+            POST_FX_TEMPLATE template = POST_FX_TEMPLATE.UNCONSCIOUS;
+            applyTemplate(template);
+             return;
+        }
+
 
         if (isTestMode()) {
             applyTest(OptionsMaster.getPostProcessingOptions().getValue(
              POST_PROCESSING_OPTIONS.TEST_MODE));
-            //            apply(POST_FX_FACTOR.FADE_COLOR, OptionsMaster.getPostProcessingOptions().getFloatValue(
-            //             POST_PROCESSING_OPTIONS.TEST_SATURATE_COEF) / 100);
-            //            apply(POST_FX_FACTOR.BLOOM, OptionsMaster.getPostProcessingOptions().getFloatValue(
-            //             POST_PROCESSING_OPTIONS.TEST_BLOOM_COEF) / 100);
-            //            apply(POST_FX_FACTOR.BLUR, OptionsMaster.getPostProcessingOptions().getFloatValue(
-            //             POST_PROCESSING_OPTIONS.TEST_BLUR_COEF) / 100);
             applyFactors();
             return;
         }
+
+
         BUFF_RULE_STATUS
          status = ParamAnalyzer.getStatus(hero, BUFF_RULE.STAMINA);
         apply(status, BUFF_RULE.STAMINA);
@@ -70,6 +73,17 @@ public class PostFxUpdater {
         applyFactors();
     }
 
+    private void applyTemplate(POST_FX_TEMPLATE template) {
+        switch (template) {
+            case UNCONSCIOUS:
+                apply(POST_FX_FACTOR.FADE_COLOR, 0.5f);
+                apply(POST_FX_FACTOR.DISCOLOR, 0.5f);
+                apply(POST_FX_FACTOR.DARKEN, 0.5f);
+                apply(POST_FX_FACTOR.DISTORT, 0.5f);
+                break;
+        }
+    }
+
     private void apply(BUFF_RULE_STATUS... status) {
         apply(status[0], BUFF_RULE.STAMINA);
         apply(status[1], BUFF_RULE.MORALE);
@@ -81,36 +95,51 @@ public class PostFxUpdater {
             case STAMINA:
                 if (status == CRITICAL) {
                     apply(POST_FX_FACTOR.FADE_COLOR, 1);
+//                    apply(POST_FX_FACTOR.DARKEN, 0.7f);
                 } else if (status == LOW) {
                     apply(POST_FX_FACTOR.FADE_COLOR, 0.6f);
+//                    apply(POST_FX_FACTOR.DARKEN, 0.9f);
+                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.LIGHTEN, 0.4f);
+                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
                 }
                 break;
             case MORALE:
                 if (status == CRITICAL) {
                     apply(POST_FX_FACTOR.BLUR, 1);
+                    apply(POST_FX_FACTOR.DISCOLOR, 1);
                 } else if (status == LOW) {
                     apply(POST_FX_FACTOR.BLUR, 0.6f);
+                    apply(POST_FX_FACTOR.FADE_COLOR, 0.6f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.BLOOM, 0.4f);
+                    apply(POST_FX_FACTOR.BLOOM, 1.3f);
+//                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
+                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
+                    apply(POST_FX_FACTOR.LENS2, 1.2f);
                 }
 
                 break;
             case FOCUS:
                 if (status == CRITICAL) {
-                    apply(POST_FX_FACTOR.BLUR, 1);
-                } else if (status == LOW) {
+                    apply(POST_FX_FACTOR.DISTORT, 1);
                     apply(POST_FX_FACTOR.BLUR, 0.6f);
+                    apply(POST_FX_FACTOR.MOTION_BLUR, 0.6f);
+                } else if (status == LOW) {
+                    apply(POST_FX_FACTOR.BLUR, 0.4f);
+                    apply(POST_FX_FACTOR.MOTION_BLUR, 0.4f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.BLOOM, 0.4f);
+                    apply(POST_FX_FACTOR.LENS, 1.2f);
+                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
                 }
                 break;
-                case WOUNDS:
+
+            case WOUNDS:
                 if (status == CRITICAL) {
                     apply(POST_FX_FACTOR.BLOODY, 1);
+                    apply(POST_FX_FACTOR.DISCOLOR, 1);
                 } else if (status == LOW) {
                     apply(POST_FX_FACTOR.BLOODY, 0.6f);
+                    apply(POST_FX_FACTOR.DISCOLOR, 0.6f);
                 }
                 break;
         }
@@ -162,7 +191,7 @@ public class PostFxUpdater {
     }
 
     private boolean isTestMode() {
-        return true;
+        return false;
     }
 
     private void applyFactors() {
@@ -185,20 +214,28 @@ public class PostFxUpdater {
     private PostProcessorEffect getEffect(POST_FX_FACTOR fxFactor) {
         switch (fxFactor) {
 
+            case DISTORT:
+                return controller.getCurvature();
             case DISCOLOR:
-                break;
+                return controller.getDiscolor();
             case FADE_COLOR:
                 return controller.getSaturate();
+            case  MOTION_BLUR:
+                return controller.getMotionBlur();
             case BLUR:
                 return controller.getBlur();
-            case CONTRAST:
-                break;
+            case LENS:
+                return controller.getLens();
+            case SMOOTH:
+                return controller.getNfaa();
+            case LENS2:
+                return controller.getLens2();
             case BLOOM:
                 return controller.getBloom();
             case DARKEN:
                 return controller.getDarken();
             case LIGHTEN:
-                break;
+                return controller.getBloomBright();
             case BLOODY:
                 break;
         }
@@ -229,15 +266,15 @@ public class PostFxUpdater {
         DISCOLOR,
         FADE_COLOR,
         BLUR,
-        CONTRAST,
+        LENS,
         BLOOM,
         DARKEN,
         LIGHTEN,
         BLOODY, //red vignette
-
+        MOTION_BLUR,
         //burn, disease,
         // night sight ,
-        ;
+        DISTORT, SMOOTH, LENS2;
     }
 
     public enum POST_FX_TEMPLATE {
@@ -245,7 +282,7 @@ public class PostFxUpdater {
         FATIGUE,
         ENERGIZED,
         FEAR,
-        INSPIRED,;
+        INSPIRED, UNCONSCIOUS();
 
         public final POST_FX_FACTOR[] factors;
 

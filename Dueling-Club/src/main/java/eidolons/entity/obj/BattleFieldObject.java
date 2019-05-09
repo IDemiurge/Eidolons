@@ -67,6 +67,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private Coordinates lastCoordinates;
     private OUTLINE_TYPE lastSeenOutline;
     private ObjType originalType;
+    private boolean summoned;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -306,7 +307,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (param == PARAMS.C_TOUGHNESS) {
             if (NumberUtils.getInteger(value) >
              getIntParam(PARAMS.TOUGHNESS)) {
-                main.system.auxiliary.log.LogMaster.log(1, "gotcha dwarf " + this + value);
+                LogMaster.log(1, "gotcha dwarf " + this + value);
             }
         }
         if (param == PARAMS.C_N_OF_ACTIONS) {
@@ -535,7 +536,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public boolean isSpotted() {
-        return checkStatus(UnitEnums.STATUS.SPOTTED);
+        return checkStatus(STATUS.SPOTTED);
     }
 
     public Float getLastSeenTime() {
@@ -650,5 +651,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         getGame().softRemove(this);
         getVisionController().reset();
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, this);
+    }
+
+    public boolean isSummoned() {
+        return summoned;
+    }
+
+    public void setSummoned(boolean summoned) {
+        this.summoned = summoned;
     }
 }

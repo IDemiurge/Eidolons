@@ -102,7 +102,18 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
+    public Ref getRef() {
+        return getHero().getRef();
+    }
+
+    @Override
+    public void setRef(Ref ref) {
+        getHero().setRef(ref);
+        this.ref=ref;
+    }
+    @Override
     public void setGame(DC_Game game) {
+        // ?
     }
 
     public boolean isSimulation() {
@@ -1675,15 +1686,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().setLastSeenOutline(lastSeenOutline);
     }
 
-    @Override
-    public Ref getRef() {
-        return getHero().getRef();
-    }
-
-    @Override
-    public void setRef(Ref ref) {
-        getHero().setRef(ref);
-    }
 
     @Override
     public boolean isQuickSlotsFull() {

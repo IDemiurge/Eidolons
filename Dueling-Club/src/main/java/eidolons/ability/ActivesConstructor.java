@@ -335,8 +335,11 @@ public class ActivesConstructor {
                 }
             }
         }
-        if (targeting instanceof TemplateSelectiveTargeting) {
-            TemplateSelectiveTargeting tst = (TemplateSelectiveTargeting) targeting;
+        if (targeting instanceof  SelectiveTargeting) {
+            SelectiveTargeting tst = ( SelectiveTargeting) targeting;
+            if (tst.getTemplate() !=null ){
+                c.add(DC_ConditionMaster.getSelectiveTargetingTemplateConditions(tst.getTemplate()));
+            }
             if (tst.getTemplate() == SELECTIVE_TARGETING_TEMPLATES.GRAVE_CELL) {// TODO
                 if (tst.getConditions() != null) {
                     try {

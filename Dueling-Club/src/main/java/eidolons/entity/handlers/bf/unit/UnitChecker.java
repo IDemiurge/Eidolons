@@ -6,6 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -55,7 +56,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean canUseArmor() {
         return checkContainerProp(G_PROPS.CLASSIFICATIONS,
-         UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
+                UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
     }
 
 
@@ -116,7 +117,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         }
         if (getGame().getTestMaster().isImmortal() != null) {
             return
-             getGame().getTestMaster().isImmortal();
+                    getGame().getTestMaster().isImmortal();
         }
         return getGame().isDummyPlus();
     }
@@ -236,7 +237,14 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isUnconscious() {
-        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
+        if (checkStatus(UnitEnums.STATUS.UNCONSCIOUS))
+            return true;
+        if (getEntity().isPlayerCharacter()) {
+            if (ShadowMaster.isShadowAlive())
+                return true; //TODO fuck....
+        }
+        return getEntity().getBuff("Unconscious") != null;
+//        return false;
     }
 
     public boolean canAttack() {
@@ -405,7 +413,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean hasDoubleStrike() {
         return
-         checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+                checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
     }
 
     public boolean checkImmunity(IMMUNITIES type) {

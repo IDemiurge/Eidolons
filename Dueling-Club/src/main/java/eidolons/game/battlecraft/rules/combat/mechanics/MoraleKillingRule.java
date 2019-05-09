@@ -16,6 +16,7 @@ import main.entity.obj.ActiveObj;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.logic.event.MultiEventType;
 import main.system.math.PositionMaster;
 
 public class MoraleKillingRule extends DC_RuleImpl {
@@ -111,7 +112,8 @@ public class MoraleKillingRule extends DC_RuleImpl {
     // STANDARD_PASSIVES.DISPASSIONATE))), )
     @Override
     public void initEventType() {
-        event_type = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED;
+        event_type = new MultiEventType(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
+                STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED);
 
     }
 

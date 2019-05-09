@@ -282,8 +282,8 @@ public enum PARAMS implements PARAMETER {
     GLOBAL_ILLUMINATION(null, null, false, 0, "dungeons"),
     LIGHT_EMISSION_MODIFIER(null, null, false, 0, "dungeons"),
 
-    PERCEPTION(null, null, false, 0, "bf obj", "units", "chars", "perks", "armor"),
-    NOISE(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "perks", "armor"),
+    PERCEPTION(null, null, false, 20, "bf obj", "units", "chars", "perks", "armor"),
+    NOISE(null, null, false, 50, "action", "spell", "bf obj", "units", "chars", "perks", "armor"),
     REVEALMENT(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "perks", "armor"),
 
     SIGHT_RANGE(null, "Sight Range", false, 0, "bf obj", "units", "chars", "perks", "armor"),

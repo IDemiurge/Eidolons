@@ -32,7 +32,7 @@ public class CombatLoop extends GameLoop {
         getGame().getTurnManager().setActiveUnit(null );
         for (Unit unit : AggroMaster.getLastAggroGroup()) {
             unit.getAI().combatEnded();
-
         }
+        getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(true);
     }
 }

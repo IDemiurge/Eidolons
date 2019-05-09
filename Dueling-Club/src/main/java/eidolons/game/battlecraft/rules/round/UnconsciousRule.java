@@ -124,6 +124,11 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static void fallUnconscious(Unit unit) {
+        if (unit.isPlayerCharacter()) {
+            if (ShadowMaster.isShadowAlive()) {
+                return;
+            }
+        }
         getUnconsciousEffect(unit).apply();
         unit.getAI().getCombatAI().setEngagementDuration(0);
         unit.getAI().getCombatAI().setEngaged(false);

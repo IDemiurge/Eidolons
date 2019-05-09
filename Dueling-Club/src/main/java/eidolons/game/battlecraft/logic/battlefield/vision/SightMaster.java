@@ -293,9 +293,18 @@ public class SightMaster {
 
 
     protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, BattleFieldObject activeUnit) {
-if (unit.isMine())
-    if (activeUnit.isMine())
-        return UNIT_VISION.IN_PLAIN_SIGHT;
+        if (unit.isMine())
+            if (activeUnit.isMine())
+                return UNIT_VISION.IN_PLAIN_SIGHT;
+        if (unit instanceof Unit) {
+            if (!((Unit) unit).getAI().isOutsideCombat()) {
+                if (activeUnit instanceof Unit) {
+                    if (((Unit) activeUnit).isScion()) {
+                        return UNIT_VISION.IN_PLAIN_SIGHT;
+                    }
+                }
+            }
+        }
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
@@ -379,10 +388,10 @@ if (unit.isMine())
             status = getUnitVisionStatusPrivate(unit, observer);
         else if (ExplorationMaster.isExplorationOn() &&
                 master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-                status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
-            } else {
-                status = getUnitVisionStatusPrivate(unit, observer);
-            }
+            status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+        } else {
+            status = getUnitVisionStatusPrivate(unit, observer);
+        }
         unit.setUnitVisionStatus(status, observer);
     }
 }

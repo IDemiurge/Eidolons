@@ -25,13 +25,14 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by JustMe on 1/9/2017.
-  Animation does not support ZOOM!
+ * Animation does not support ZOOM!
  */
 public class AnimMaster extends Group {
 
@@ -39,7 +40,7 @@ public class AnimMaster extends Group {
     private static AnimMaster instance;
     private static Float animationSpeedFactor;
 
-    private final FloatTextLayer floatTextLayer;
+    private final FloatingTextLayer floatTextLayer;
     private final EffectAnimMaster effectMaster;
     private final EventAnimMaster eventMaster;
     private final AnimDrawMaster drawer;
@@ -51,12 +52,12 @@ public class AnimMaster extends Group {
     private AnimMaster() {
         instance = this;
         effectMaster = new EffectAnimMaster(this);
-        eventMaster = new EventAnimMaster(this );
-        buffMaster = new BuffAnimMaster( );
-        actionMaster = new ActionAnimMaster(this );
+        eventMaster = new EventAnimMaster(this);
+        buffMaster = new BuffAnimMaster();
+        actionMaster = new ActionAnimMaster(this);
 
         addActor(drawer = new AnimDrawMaster(this));
-        addActor(floatTextLayer = new FloatTextLayer());
+        addActor(floatTextLayer = new FloatingTextLayer());
 
     }
 
@@ -113,6 +114,53 @@ public class AnimMaster extends Group {
         animationSpeedFactor = speedFactor;
     }
 
+    protected static boolean isMustWaitForAnim(ActionInput action) {
+        if (action != null) {
+            if (instance.getDrawer().findAnimation(action.getAction())!= null) {
+//                if (instance.getDrawer().leadAnimation.getActive() == action.getAction())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return instance.isDrawing();
+    }
+
+    public static void waitForAnimations(ActionInput action) {
+        int maxTime = getMaxAnimWaitTime(action);
+        //*speed ?
+        int period = getAnimWaitPeriod();
+        int waitTime = 0;
+
+        while (isMustWaitForAnim(action) && waitTime < maxTime) {
+            WaitMaster.WAIT(period);
+            waitTime += period;
+            main.system.auxiliary.log.LogMaster.log(1, "Waited for anim to draw: " + waitTime);
+
+        }
+    }
+
+    protected static int getMaxAnimWaitTime(ActionInput action) {
+        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME_COMBAT);
+    }
+
+    protected static int getAnimWaitPeriod() {
+        return 50;
+    }
+
+    protected static void waitForAnimationsOld() {
+        Integer MAX_ANIM_TIME =
+                OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
+        if (MAX_ANIM_TIME != null) {
+            if (MAX_ANIM_TIME > 0) {
+                if (AnimMaster.getInstance().isDrawing()) {
+                    WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
+                }
+            }
+        }
+    }
+
     public void setOff(boolean off) {
         AnimMaster.off = off;
     }
@@ -129,7 +177,7 @@ public class AnimMaster extends Group {
                 return;
             }
             try {
-              buffMaster.mouseHover((Unit) p.get());
+                buffMaster.mouseHover((Unit) p.get());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -147,7 +195,7 @@ public class AnimMaster extends Group {
             drawer.interrupt();
         });
 //        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-            //            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) portrait.get());
+        //            CompositeAnim animation = constructor.getOrCreate((DC_ActiveObj) portrait.get());
 
 //        });
 
@@ -155,8 +203,8 @@ public class AnimMaster extends Group {
             List args = (List) p.get();
             Ref context = (Ref) args.get(0);
             CompositeAnim animation = AnimConstructor.getParryAnim((DC_WeaponObj) args.get(1)
-             , (DC_ActiveObj) args.get(2));
-           drawer.add(animation);
+                    , (DC_ActiveObj) args.get(2));
+            drawer.add(animation);
 //            if (getParallelDrawing()) {
 //                animation.start(context);
 //            }
@@ -186,16 +234,16 @@ public class AnimMaster extends Group {
 
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
-             if (!isOn()) {
-                 return;
-             }
-             try {
-                 effectMaster.initEffectAnimation((Effect) p.get());
-             } catch (Exception e) {
-                 main.system.ExceptionMaster.printStackTrace(e);
-             }
+                    if (!isOn()) {
+                        return;
+                    }
+                    try {
+                        effectMaster.initEffectAnimation((Effect) p.get());
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
 
-         }
+                }
         );
 
 
@@ -215,7 +263,7 @@ public class AnimMaster extends Group {
         return drawer.isDrawingPlayer();
     }
 
-    public FloatTextLayer getFloatTextLayer() {
+    public FloatingTextLayer getFloatTextLayer() {
         return floatTextLayer;
     }
 
@@ -270,8 +318,8 @@ public class AnimMaster extends Group {
             }
             CompositeAnim a = new CompositeAnim();
             a.add(
-             part
-             , (Anim) e);
+                    part
+                    , (Anim) e);
             if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
             } else {
@@ -293,6 +341,7 @@ public class AnimMaster extends Group {
     public void setParallelDrawing(Boolean aBoolean) {
         getDrawer().setParallelDrawing(aBoolean);
     }
+
     public void addAttached(Animation a) {
         drawer.addAttached(a);
     }

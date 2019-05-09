@@ -45,7 +45,8 @@ public class PanelActionsDataSource implements
             return container;
         }
         container = new ActionValueContainer(
-         size, valid, TextureCache.getOrCreateSizedRegion(size, getImage(el))
+         size, valid, getImage(el)
+                //TextureCache.getOrCreateSizedRegion(size, getImage(el))
          , el::invokeClicked);
         cache.put(el, container);
 
@@ -95,7 +96,7 @@ public class PanelActionsDataSource implements
              final ActionValueContainer valueContainer = new ActionValueContainer(
               UiMaster.getBottomQuickItemIconSize(),
               valid,
-              getOrCreateR(key.getImagePath()),
+             (key.getImagePath()),
               key::invokeClicked
              );
              ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());

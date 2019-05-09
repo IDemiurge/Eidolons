@@ -55,7 +55,9 @@ public class Structure extends BattleFieldObject {
         for (BattleFieldObject overlayingObject : getGame().getOverlayingObjects(getCoordinates())) {
             overlayingObject.kill(killer, leaveCorpse, quietly);
         }
-
+if (isWall()){
+    getVisionController().getWallObstructionMapper().wallDestroyed(this);
+}
         return results;
     }
 

@@ -59,6 +59,8 @@ public class DC_InventoryManager {
 
 
     public boolean isFreeMode() {
+        if (ExplorationMaster.isExplorationOn())
+            return true;
         return freeMode;
     }
 

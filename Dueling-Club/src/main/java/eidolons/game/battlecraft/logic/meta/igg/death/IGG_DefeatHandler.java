@@ -39,7 +39,6 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         //isBossFight()
         if (getGame().getLoop() instanceof CombatLoop) {
             ((CombatLoop) getGame().getLoop()).endCombat();
-            getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(true);
         }
 
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);

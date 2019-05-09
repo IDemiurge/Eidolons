@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
@@ -16,12 +17,14 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
@@ -31,6 +34,7 @@ public class OrbElement extends SuperActor {
      PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
     private static final String OVERLAY_PATH = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
+    private final PARAMS parameter;
     private Label label;
     private Image background;
     private Image gem;
@@ -49,6 +53,7 @@ public class OrbElement extends SuperActor {
         icon = new Image(iconRegion);
         orbRegion = texture;
         this.iconRegion = iconRegion;
+        this.parameter = param;
         label = new Label(value, StyleHolder.
          getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
@@ -64,6 +69,7 @@ public class OrbElement extends SuperActor {
         //        gemLight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
 
         //TODO ORB GOES TO THE FORE ON HOVER
+
     }
 
     public OrbElement(PARAMS param, String value) {
@@ -82,6 +88,7 @@ public class OrbElement extends SuperActor {
         lighting = new Image(texture);
         addActor(lighting);
         lighting.setPosition(-15, -15);
+
     }
 
     private static String getOrbPath(String value) {
@@ -192,5 +199,9 @@ public class OrbElement extends SuperActor {
 
         //TODO if hover
         //        batch.draw(iconRegion, 30, 30);
+    }
+
+    public PARAMS getParameter() {
+        return parameter;
     }
 }

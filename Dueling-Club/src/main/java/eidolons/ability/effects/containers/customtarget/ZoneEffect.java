@@ -1,5 +1,7 @@
 package eidolons.ability.effects.containers.customtarget;
 
+import eidolons.ability.ActivesConstructor;
+import eidolons.entity.active.DC_ActiveObj;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.C_OBJ_TYPE;
@@ -68,7 +70,6 @@ public class ZoneEffect extends SpecialTargetingEffect
             conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
              .getEnemyCondition());
         }
-
         // legacy?
         // if (allyOrEnemyOnly==null)
         // conditions.add(ConditionMaster.getEnemyCondition());
@@ -83,6 +84,10 @@ public class ZoneEffect extends SpecialTargetingEffect
         if (targeting == null) {
             this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF_OBJ);
         }
+        if (ref.getActive() instanceof DC_ActiveObj) {
+            ActivesConstructor.addTargetingMods(targeting, (DC_ActiveObj) ref.getActive());
+        }
+        conditions = targeting.getFilter().getConditions();
         setFilteringConditions(conditions);
     }
 

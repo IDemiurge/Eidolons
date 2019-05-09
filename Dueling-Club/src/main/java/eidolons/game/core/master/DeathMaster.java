@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
@@ -48,16 +49,22 @@ public class DeathMaster extends Master {
 
         String message = null;
         if (_killed == _killer) {
-            message = _killed + " annihilates ";// + _killed.getInfoString();
+            message = _killed + " annihilates";// + _killed.getInfoString();
         } else
-            message = _killed + " annihilated by " + _killer;
+            message = _killed + " is annihilated by " + _killer;
         SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        getGame().getLogManager().log(message);
         getGame().getGraveyardManager().removeCorpse(_killed);
         _killed.setAnnihilated(true);
+
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
          new Context(_killer, _killed)));
 
-        getGameMaster().remove(_killed);
+        GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
+                _killed.getCoordinates(),
+                HitAnim.HIT.BONE_CRACK.spritePath);
+
+        getGameMaster().remove(_killed, true);
 //	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);
 
     }

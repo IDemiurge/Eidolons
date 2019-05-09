@@ -193,6 +193,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     BF_OBJ_QUALITY(null, true, "bf obj"),
     CONTAINER_CONTENTS(null, true, "bf obj"),
     CONTAINER_CONTENT_VALUE(null, true, "bf obj"),
+
+    CONTAINER_GROUP_FILTER(null, false, "bf obj" ),
+    CONTAINER_GROUP_SINGLE(null, false, "bf obj" ),
     DIMENSION(null, false, "bf obj", "units", "chars"),
     PALETTE(null, false, "bf obj", "units", "chars"),
     // IMMUNE(null, true, "units", "chars", "armor"),
@@ -463,7 +466,8 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MASTERY_RANKS_4(null,true ,"chars" ),
     MASTERY_RANKS_5(null,true ,"chars" ),
 
-    CLASS_PERK_GROUP(null,false ,"classes" ), PERK_PARAM(null,false ,"perks");
+    CLASS_PERK_GROUP(null,false ,"classes" ), PERK_PARAM(null,false ,"perks"),
+    ;
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

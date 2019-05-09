@@ -166,9 +166,9 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     private AiBehavior createAi(UnitAI ai, UNIT_GROUP_TYPE groupType) {
-        if (CoreEngine.isSafeMode()) {
-            return new WanderAi(master, ai);
-        }
+//        if (CoreEngine.isSafeMode()) {
+//            return new WanderAi(master, ai);
+//        }
         switch (groupType) {
             case GUARDS:
             case BOSS:
@@ -197,18 +197,32 @@ public class AiBehaviorManager extends AiHandler {
             behaviors.add(createAi(ai, TESTED_GROUP));
             return behaviors;
         }
-        if (CoreEngine.isSafeMode() ||  ai.getGroupAI() == null) {
-            behaviors.add(new WanderAi(master, ai));
-            return behaviors;
+//        if (CoreEngine.isSafeMode() ||  ai.getGroupAI() == null) {
+//            behaviors.add(new WanderAi(master, ai));
+//            return behaviors;
+//        }
+        UNIT_GROUP_TYPE t = null;;
+        if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size()==1) {
+            t = UNIT_GROUP_TYPE.IDLERS;
+        } else {
+            t=ai.getGroupAI().getType();
         }
         //TODO use createAi () ?!
-        switch (ai.getGroupAI().getType()) {
+        switch (t) {
+            case IDLERS:
+                behaviors.add(new IdleAi(master, ai));
+                break;
+
             case PATROL:
                 behaviors.add(new PatrolAi(master, ai));
                 break;
             case GUARDS:
             case BOSS:
-                behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));
+                if (ai.getGroupAI().getArg() == null) {
+                    behaviors.add(new IdleAi(master, ai));
+                } else {
+                    behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));
+                }
                 break;
             default:
                 behaviors.add(new WanderAi(master, ai));

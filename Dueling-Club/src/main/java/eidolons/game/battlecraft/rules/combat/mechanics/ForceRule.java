@@ -109,30 +109,31 @@ public class ForceRule {
     public static void applyForceEffects(int force, DC_ActiveObj action) {
         if (!(action.getRef().getTargetObj() instanceof Unit))
             return;
-        Unit target = (Unit) action.getRef().getTargetObj();
+        BattleFieldObject target = (Unit) action.getRef().getTargetObj();
         BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
         Boolean result = null;
-        //TODO DEXTERITY ROLL TO AVOID ALL?
-        if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
-            result = RollMaster.rollForceKnockdown(target, action, force);
-            if (Bools.isFalse(result)) {
-                result = null; //ALWAYS INTERRUPT AT LEAST
+        //TODO DEXTERITY ROLL TO AVOID ALL? ROLL MASS
+        if (target instanceof Unit) {
+            if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
+                result = RollMaster.rollForceKnockdown((Unit) target, action, force);
+                if (Bools.isFalse(result)) {
+                    result = null; //ALWAYS INTERRUPT AT LEAST
+                }
+            } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
+                result = false;
+            } else {
+                result = RollMaster.rollForceKnockdown((Unit) target, action, force);
             }
-        } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
-            result = false;
-        } else {
-            result = RollMaster.rollForceKnockdown(target, action, force);
-        }
-        if (isTestMode()) {
-            result = true;
-        }
+            if (isTestMode()) {
+                result = true;
+            }
 
-        if (result == null) {
-            InterruptRule.interrupt(target);
-        } else if (result) {
-            KnockdownRule.knockdown(target);
+            if (result == null) {
+                InterruptRule.interrupt((Unit) target);
+            } else if (result) {
+                KnockdownRule.knockdown((Unit) target);
+            }
         }
-
         applyPush(force, action, source, target);
 //        if (action.isSpell()) {
 //            applyDamage(force, action, source, target);

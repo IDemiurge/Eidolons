@@ -31,14 +31,14 @@ public class GridUnitView extends GenericGridView {
         initQueueView(o);
         if (AiBehaviorManager.TEST_MODE)
             addActor(debugInfo = new LabelX(
-             "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
+                    "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
                     if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
                         super.draw(batch, 1);
                     } else {
                         ShaderDrawer.drawWithCustomShader(this,
-                         batch, null);
+                                batch, null);
                     }
                 }
             });
@@ -59,7 +59,7 @@ public class GridUnitView extends GenericGridView {
                 //color for enabled
                 AiBehavior behavior = ((Unit) getUserObject()).getAI().getExploreAI().getActiveBehavior();
                 debugInfo.setText(behavior.getType()
-                 + ":\n " + behavior.getDebugInfo());
+                        + ":\n " + behavior.getDebugInfo());
             }
             debugInfo.setVisible(true);
             debugInfo.pack();
@@ -145,9 +145,9 @@ public class GridUnitView extends GenericGridView {
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
 
 
-                initiativeQueueUnitView.
-         setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-          TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
+        initiativeQueueUnitView.
+                setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
+                        TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
     }
 
 
@@ -214,11 +214,19 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void validateArrowRotation() {
-        if (getUserObject().getFacing().getDirection().getDegrees()  != arrowRotation) {
-            arrowRotation = getUserObject().getFacing().getDirection().getDegrees()  ;
-        }
-        if (arrow.getRotation() != arrowRotation) {
-            updateRotation(arrowRotation - ARROW_ROTATION_OFFSET);
+        int real = getUserObject().getFacing().getDirection().getDegrees()%360;
+        if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
+            main.system.auxiliary.log.LogMaster.log(1, arrow.getRotation()
+                    + " raw val, to  " + real);
+            updateRotation(real);
+
+            if (real % 360 != arrowRotation) {
+                main.system.auxiliary.log.LogMaster.log(1,
+                        getUserObject() + "'s " +
+                                arrowRotation
+                                + " rotation updated to  " + arrowRotation);
+                arrowRotation = real;
+            }
         }
     }
 }

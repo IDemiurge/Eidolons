@@ -29,16 +29,17 @@ public class MainLauncher extends GenericLauncher {
 //        if (!CoreEngine.isIDE())
         CoreEngine.setSafeMode(true);
         CoreEngine.setIggDemo(true);
+        CoreEngine.setActiveTestMode(args.length > 0);
         if (args.length > 0) {
             args = args[0].split(";");
         }
         if (!CoreEngine.isIggDemo()) {
-        CoreEngine.setFastMode(args.length > 1);
+            CoreEngine.setFastMode(args.length > 1);
         CoreEngine.setFullFastMode(args.length > 3);
         }
         if (CoreEngine.isIDE()) {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
-            if (CoreEngine.isFastMode())
+            if (CoreEngine.isFastMode() || CoreEngine.isActiveTestMode())
                 TestMasterContent.setAddSpells(true);
             if (CoreEngine.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);

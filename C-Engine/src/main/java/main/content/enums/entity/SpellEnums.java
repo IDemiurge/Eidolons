@@ -78,7 +78,7 @@ public class SpellEnums {
 
     public enum SPELL_TAGS {
         MIND_AFFECTING,
-
+        COMBAT_ONLY,
         FIRE,
         LAVA,
         CLAY,

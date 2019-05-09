@@ -86,6 +86,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
                 break;
             case ANIM_VFX_CAST:
             case ANIM_VFX_MAIN:
+            case ANIM_MISSILE_VFX:
             case ANIM_VFX_IMPACT:
             case ANIM_VFX_RESOLVE:
             case ANIM_VFX_AFTEREFFECT:

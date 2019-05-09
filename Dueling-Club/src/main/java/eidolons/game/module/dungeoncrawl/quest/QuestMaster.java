@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class QuestMaster extends MetaGameHandler {
 
-    public static final boolean TEST_MODE = CoreEngine.isFastMode() && !CoreEngine.isFullFastMode();
+    public static final boolean TEST_MODE =CoreEngine.isIDE();// CoreEngine.isFastMode() && !CoreEngine.isFullFastMode();
     public static final boolean ON = true;
 
     //    static {

@@ -750,6 +750,10 @@ public class GridPanel extends Group {
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
+        if (viewMap.get(battleFieldObjectbj)!=null ) {
+            main.system.auxiliary.log.LogMaster.log(1,">>>>>> UnitView already created!!! " +battleFieldObjectbj);
+            return viewMap.get(battleFieldObjectbj);
+        }
         GridUnitView view = UnitViewFactory.create(battleFieldObjectbj);
         viewMap.put(battleFieldObjectbj, view);
         if (battleFieldObjectbj.isPlayerCharacter()) {
@@ -794,19 +798,13 @@ public class GridPanel extends Group {
             LogMaster.log(1, obj + " IS NOT ON UNIT MAP!");
             return null;
         }
-        GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
-        if (gridCellContainer == null) {
-            LogMaster.log(1, obj + " IS ALREADY REMOVED!");
-            return uv;
-        } else
-            LogMaster.log(1, obj + " unit view REMOVED!");
 //        gridCellContainer.removeActor(uv);
         uv.remove(); //if it was detached...
         uv.setVisible(false);
 
-
         if (overlayManager != null)
             overlayManager.clearTooltip(obj);
+        LogMaster.log(1, obj + " unit view REMOVED!");
         return uv;
     }
 

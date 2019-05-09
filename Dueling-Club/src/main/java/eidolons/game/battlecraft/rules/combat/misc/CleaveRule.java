@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.rules.combat.misc;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -37,17 +38,17 @@ public class CleaveRule {
 
     public static void addCriticalCleave(Unit attacker) {
         attacker.modifyParameter(PARAMS.CLEAVE_MAX_TARGETS,
-         DEFAULT_CRITICAL_JUMPS);
+                DEFAULT_CRITICAL_JUMPS);
         attacker.modifyParameter(PARAMS.CLEAVE_DAMAGE_PERCENTAGE_TRANSFER,
-         DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER);
+                DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER);
         attacker.setParam(PARAMS.CLEAVE_DAMAGE_LOSS_PER_JUMP,
-         DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP);
+                DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP);
 
     }
 
     public void apply(Ref ref, Attack attack) {
-        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)){
-            return ;
+        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)) {
+            return;
         }
         this.attack = attack;
 
@@ -99,22 +100,22 @@ public class CleaveRule {
         // it fails, then short one
 
         DIRECTION direction = DirectionMaster.getRelativeDirection(source,
-         currentTarget);
+                currentTarget);
         Obj objectByCoordinate = game.getObjectByCoordinate(
-         source.getCoordinates().getAdjacentCoordinate(
-          DirectionMaster.rotate45(direction, clockwise)), true);
+                source.getCoordinates().getAdjacentCoordinate(
+                        DirectionMaster.rotate45(direction, clockwise)), true);
         if (objectByCoordinate instanceof Unit) {
             currentTarget = (Unit) objectByCoordinate;
 
         } else if (first) {
             clockwise = false;
             objectByCoordinate = game.getObjectByCoordinate(
-             source.getCoordinates().getAdjacentCoordinate(
-              DirectionMaster.rotate45(direction, clockwise)),
-             true);
+                    source.getCoordinates().getAdjacentCoordinate(
+                            DirectionMaster.rotate45(direction, clockwise)),
+                    true);
 
             if (objectByCoordinate != null) {
-                currentTarget = (Unit) objectByCoordinate;
+                currentTarget = (BattleFieldObject) objectByCoordinate;
             }
 
         }
@@ -126,11 +127,15 @@ public class CleaveRule {
         // // ??
         initNextTarget();
         if (currentTarget == null) {
+            action.getGame().getLogManager().log(action +
+                    " finds no targets to cleave for its remaining damage (" + attack.getRemainingDamage() + ")");
             return true;
         }
         attack.getRef().setTarget(currentTarget.getId());
         attack.setDamage(attack.getRemainingDamage());
         // TODO override atk logging!
+
+        action.getGame().getLogManager().log(action + " cleaves, remaining damage: " + attack.getRemainingDamage());
         boolean result = source.getGame().getAttackMaster().attack(attack);
         // "dodged" or alive...
         if (result) {
@@ -150,7 +155,7 @@ public class CleaveRule {
             }
         }
         if (attack.getDamageType() == GenericEnums.DAMAGE_TYPE.SLASHING
-         || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
+                || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return true;
         }
         if (attack.isCritical()) {
