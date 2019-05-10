@@ -12,6 +12,7 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
@@ -59,8 +60,11 @@ public class FullscreenAnims extends GroupX {
 
                     FULLSCREEN_ANIM type = FULLSCREEN_ANIM.BLOOD;
 //                    if (RandomWizard.random()) {
-//                        type = FULLSCREEN_ANIM.POISON;
+//
 //                    }
+                    if (e.getRef().getDamageType()== GenericEnums.DAMAGE_TYPE.POISON) {
+                        type = FULLSCREEN_ANIM.POISON;
+                    }
                     float intensity = RandomWizard.getRandomFloatBetween(0.15f, 0.35f);
                     intensity+=
                      e.getRef().getAmount() / e.getRef().getTargetObj().getIntParam(PARAMS.ENDURANCE);

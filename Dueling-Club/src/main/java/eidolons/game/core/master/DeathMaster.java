@@ -126,6 +126,29 @@ public class DeathMaster extends Master {
                 }
             }
         }
+
+        if (!quietly) {
+            Ref REF = Ref.getCopy(killer.getRef());
+            REF.setTarget(killed.getId());
+            REF.setSource(killer.getId());
+            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF))){
+                return;
+            }
+            if (activeObj != null)
+                REF.setObj(KEYS.ACTIVE, activeObj);
+            if (killed instanceof Unit) {
+                getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
+                 killer.getRef().getAnimationActive());
+            }
+
+            DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
+
+            game.getLogManager().logDeath(killed, killer);
+            getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
+            game.getLogManager().doneLogEntryNode();
+        } else {
+            GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, killed);
+        }
         if (!leaveCorpse) {
             // leave a *ghost*?
             // destroy items?
@@ -143,25 +166,6 @@ public class DeathMaster extends Master {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        }
-        if (!quietly) {
-            Ref REF = Ref.getCopy(killer.getRef());
-            REF.setTarget(killed.getId());
-            REF.setSource(killer.getId());
-            if (activeObj != null)
-                REF.setObj(KEYS.ACTIVE, activeObj);
-            if (killed instanceof Unit) {
-                getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
-                 killer.getRef().getAnimationActive());
-            }
-
-            DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
-
-            game.getLogManager().logDeath(killed, killer);
-            getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
-            game.getLogManager().doneLogEntryNode();
-        } else {
-            GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, killed);
         }
     }
 

@@ -91,12 +91,20 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
         Boolean unconscious = isTargetingUnconscious(ai);
-        List<Unit> enemies = getUnits(ai, false, true, true, false, false, unconscious);
+        Boolean visionRequired = true;
+        List<Unit> enemies = getUnits(ai, false, true, visionRequired, false, false, unconscious);
         if (enemies.isEmpty())
             if (unconscious != null) {
                 if (!unconscious)
                     enemies = getUnits(ai, false, true, true, false, false, true);
             }
+        if (enemies.isEmpty())
+        if (ai.getUnit().isMine()) {
+            if (!ai.getUnit().isPlayerCharacter()) { //TODO IGG HACK
+                enemies = getVisibleEnemies(Eidolons.getMainHero().getAI());
+            }
+        }
+
         return enemies;
     }
 

@@ -31,6 +31,8 @@ import java.util.*;
 public abstract class LogManager {
 
     public static final String WRITE_TO_TOP = "to top";
+    public static final String DAMAGE_IS_BEING_DEALT_TO = " damage is being dealt to ";
+    public static final String IS_DEALING = " is dealing ";
     static boolean dirty;
     protected List<String> topDisplayedEntries;
     protected List<String> fullDisplayedEntries;
@@ -362,10 +364,10 @@ public abstract class LogManager {
     }
 
     public void logDamageBeingDealt(int amount, Obj attacker, Obj attacked, DAMAGE_TYPE dmg_type) {
-        String entry = attacker.getNameIfKnown() + " is dealing " + amount + " damage to "
+        String entry = attacker.getNameIfKnown() + IS_DEALING + amount + " damage to "
          + attacked.getNameIfKnown() + " (" + dmg_type.getName() + ")";
         if (attacker == attacked) {
-            entry = amount + " " + dmg_type.getName() + " damage is being dealt to "
+            entry = amount + " " + dmg_type.getName() + DAMAGE_IS_BEING_DEALT_TO
              + attacked.getNameIfKnown();
         }
 

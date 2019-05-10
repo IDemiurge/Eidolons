@@ -69,11 +69,12 @@ public class DC_Formulas {
     public static final Integer INTELLIGENCE_ORGANIZATION_CAP_MOD = 10;
     public static final String DRUIDIC_VISIONS_ESSENCE = "5+{wisdom}*{spell_spell_difficulty}/10";
     public static final String HOLY_PRAYER_MORALE = "5+{Willpower}*{spell_spell_difficulty}/10";
-    private static final int TOUGHNESS_STR_MODIFIER = 10;
+    private static final int TOUGHNESS_STR_MODIFIER = 14;
+    private static final int TOUGHNESS_STR_MODIFIER_HERO = 10;
     private static final float TOUGHNESS_STR_SQUARE_MODIFIER = 0.05f;
     private static final float TOUGHNESS_STR_SQUARE_BARRIER = 200;
     private static final int CARRYING_CAPACITY_STR_MODIFIER = 2;
-    private static final int TOUGHNESS_VIT_MODIFIER = 0;
+    private static final int TOUGHNESS_VIT_MODIFIER = 2;
     private static final float FORTITUDE_VIT_MODIFIER = 0.25f;
     private static final float ENDURANCE_VIT_MODIFIER = 25;
     private static final float ENDURANCE_VIT_SQUARE_MODIFIER = 0.15f;
@@ -137,6 +138,9 @@ public class DC_Formulas {
      .getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE,
       PARAMS.DIVINATION_MAX_SD_MOD));
 
+    public static int getToughnessFromStrengthHero(int amount) {
+        return Math.round(amount * TOUGHNESS_STR_MODIFIER_HERO);
+    }
     public static int getToughnessFromStrength(int amount) {
         return Math.round(amount * TOUGHNESS_STR_MODIFIER);
     }
@@ -159,7 +163,7 @@ public class DC_Formulas {
         // return Math.round(amount * ESS_WIS_MODIFIER);
     }
 
-    public static int getDamageFromStrength(int amount) {
+    public static int getDamageFromStrength(int amount) { // igg demo TODO
         return calculateFormula(TOUGHNESS_FROM_STRENGTH_FORMULA, amount) / 5 * 5;
     }
 

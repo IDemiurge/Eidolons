@@ -497,7 +497,7 @@ public class AtomicAi extends AiHandler {
         for (Unit sub : Analyzer.getVisibleEnemies(ai)) {
             if (game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), sub)) {
                 double distance = PositionMaster.getExactDistance(getUnit(), sub);
-                if (distance < minDistance)
+                if (distance < maxDistance)
                     minDistance = distance;
             }
         }
@@ -505,8 +505,8 @@ public class AtomicAi extends AiHandler {
             return false;
         }
 
-        minDistance -= Analyzer.getVisibleEnemies(ai).size();
-        minDistance += ai.getGroup().getMembers().size();
+        minDistance -=new Float( Analyzer.getVisibleEnemies(ai).size())/2;
+        minDistance += new Float( ai.getGroup().getMembers().size())/2;
 
         Double average = ai.getGroup().getMembers().stream().collect(
                 Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));

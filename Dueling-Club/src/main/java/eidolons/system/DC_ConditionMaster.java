@@ -350,7 +350,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                         new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.DOOR.toString(), true)));
             case ATTACK:
                 c.add(new VisibilityCondition(UNIT_VISION.IN_SIGHT));
-
+                c.add(new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.SNEAKING)));
+//TODO igg demo hack
                 List<FACING_SINGLE> list = new ArrayList<>();
                 list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
 

@@ -126,7 +126,7 @@ public class DC_Game extends GenericGame {
     protected boolean AI_ON = true;
 
     protected GameLoop loop;
-    protected GameLoop combatLoop;
+    protected CombatLoop combatLoop;
     protected ExploreGameLoop exploreLoop;
     protected LaunchDataKeeper dataKeeper;
     @Refactor
@@ -318,8 +318,14 @@ public class DC_Game extends GenericGame {
     private void startExploration() {
 
         loop = exploreLoop;
-        if (combatLoop.isStarted())
+        if (combatLoop.isStarted()) {
             combatLoop.stop();
+            try {
+                combatLoop.endCombat();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         if (exploreLoop.isStarted())
             exploreLoop.resume();
         else
@@ -343,8 +349,8 @@ public class DC_Game extends GenericGame {
 
         musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
         DC_SoundMaster.playStandardSound(
-         RandomWizard.random()? STD_SOUNDS.NEW__BATTLE_START2
-          :STD_SOUNDS.NEW__BATTLE_START);
+                RandomWizard.random() ? STD_SOUNDS.NEW__BATTLE_START2
+                        : STD_SOUNDS.NEW__BATTLE_START);
     }
 
 
@@ -400,9 +406,9 @@ public class DC_Game extends GenericGame {
         }
         if (!CoreEngine.isLevelEditor())
             if ((!CoreEngine.isArcaneVault()
-             || !XML_Reader.isMacro())
-             && !CoreEngine.isItemGenerationOff()
-             ) {
+                    || !XML_Reader.isMacro())
+                    && !CoreEngine.isItemGenerationOff()
+            ) {
                 itemGenerator = new ItemGenerator(CoreEngine.isFastMode());
                 itemGenerator.init();
             }
@@ -706,7 +712,7 @@ public class DC_Game extends GenericGame {
     }
 
     public Obj getObjectByCoordinate(Coordinates
-                                      c) {
+                                             c) {
         return getObjectByCoordinate(c, false);
     }
 
@@ -801,6 +807,15 @@ public class DC_Game extends GenericGame {
     }
 
     public GameLoop getGameLoop() {
+        if (loop.getThread() != null)
+        if (!loop.getThread().isAlive()){
+            main.system.auxiliary.log.LogMaster.log(1,"********* getGameLoop() --> THREAD WAS DEAD! restarting.... " ); // igg demo hack
+            if (loop == combatLoop) {
+                combatLoop.endCombat();
+            } else {
+                //TODO what now?
+            }
+        }
         return loop;
     }
 
@@ -834,7 +849,7 @@ public class DC_Game extends GenericGame {
         }
         getState().addObject(Eidolons.getMainHero());
         dungeonMaster.getExplorationMaster().
-         getResetter().setResetNotRequired(false);
+                getResetter().setResetNotRequired(false);
         visionMaster.reinit();
 
     }
@@ -863,6 +878,7 @@ public class DC_Game extends GenericGame {
             combatLoop.setExited(true);
 
     }
+
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
     }

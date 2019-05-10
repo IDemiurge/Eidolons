@@ -534,6 +534,10 @@ public class RollMaster {
         return luck;
     }
 
+    public static Roll getLastRoll() {
+        return roll;
+    }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub

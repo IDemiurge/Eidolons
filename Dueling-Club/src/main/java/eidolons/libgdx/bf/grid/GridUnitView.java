@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
@@ -25,6 +26,8 @@ public class GridUnitView extends GenericGridView {
 
     protected QueueView initiativeQueueUnitView;
     private LabelX debugInfo;
+    private float scaleResetPeriod = 4;
+    private float scaleResetTimer = scaleResetPeriod;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
@@ -49,6 +52,12 @@ public class GridUnitView extends GenericGridView {
         super.act(delta);
         if (debugInfo == null) {
             return;
+        }
+        scaleResetTimer -= delta;
+        if (scaleResetTimer <= 0) {
+            if (getScaleX() > 1)
+                ActorMaster.addScaleAction(this, 1, 3);
+            scaleResetTimer = scaleResetPeriod;
         }
         if (DC_Game.game.isDebugMode()) {
             if (getUserObject() instanceof Unit) {
@@ -214,7 +223,7 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void validateArrowRotation() {
-        int real = getUserObject().getFacing().getDirection().getDegrees()%360;
+        int real = getUserObject().getFacing().getDirection().getDegrees() % 360;
         if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
             main.system.auxiliary.log.LogMaster.log(1, arrow.getRotation()
                     + " raw val, to  " + real);

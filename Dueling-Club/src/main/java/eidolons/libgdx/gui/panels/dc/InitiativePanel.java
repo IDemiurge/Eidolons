@@ -66,6 +66,8 @@ public class InitiativePanel extends GroupX {
     private   GearCluster gears;
     private ClockActor clock;
     private FadeImageContainer light;
+
+    SpeedControlPanel speedControlPanel;
     public InitiativePanel() {
         init();
         bindEvents();
@@ -77,6 +79,35 @@ public class InitiativePanel extends GroupX {
 
     public static boolean isLeftToRight() {
         return true;
+    }
+
+    private void init() {
+
+        addActor(gears = new GearCluster(3, 0.8f));
+        queue = new QueueViewContainer[maxSize];
+        queueGroup = new WidgetGroup();
+        addActor(speedControlPanel = new SpeedControlPanel());
+        addActor( container = new Container<>(queueGroup));
+
+        speedControlPanel.setPosition(0, -300);
+
+        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
+         "components", "dc", "atb",
+         "atb background.png"));
+        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
+        addActor(panelImage = new ValueContainer(textureRegion));
+        panelImage.addListener(tooltip.getController());
+
+        addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
+
+        addActor(clock =  new ClockActor());
+        clock.addListener(getClockListener());
+
+        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
+        addActor(timeLabel);
+
+        resetPositions();
+
     }
 
 
@@ -147,32 +178,6 @@ public class InitiativePanel extends GroupX {
             });
         }
     }
-    private void init() {
-
-        addActor(gears = new GearCluster(3, 0.8f));
-        queue = new QueueViewContainer[maxSize];
-        queueGroup = new WidgetGroup();
-        addActor( container = new Container<>(queueGroup));
-
-        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
-         "components", "dc", "atb",
-         "atb background.png"));
-        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
-        addActor(panelImage = new ValueContainer(textureRegion));
-        panelImage.addListener(tooltip.getController());
-
-        addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
-
-        addActor(clock =  new ClockActor());
-        clock.addListener(getClockListener());
-
-        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
-        addActor(timeLabel);
-
-        resetPositions();
-
-    }
-
     private EventListener getClockListener() {
 
         return new ClickListener() {
@@ -372,6 +377,7 @@ public class InitiativePanel extends GroupX {
 
     @Override
     public void act(float delta) {
+        speedControlPanel.setPosition(0, -300);
         super.act(delta);
         if (isRealTime()) {
             updateTime();
@@ -401,14 +407,18 @@ public class InitiativePanel extends GroupX {
     }
 
     private void toggleQueue(boolean visible) {
-
         cleanUp();
+        rollComponent(container, visible);
+        rollComponent(speedControlPanel, visible);
+    }
+
+    private void rollComponent(Actor container, boolean visible) {
         float x = container.getX();
         float y = !visible ? container.getHeight() : queueOffsetY;
         ActorMaster.addMoveToAction(container, x, y, 1);
         gears.activeWork(0.5f, 1);
         if (visible)
-            container.setVisible(visible);
+            container.setVisible(true);
         else
             ActorMaster.addHideAfter(container);
     }

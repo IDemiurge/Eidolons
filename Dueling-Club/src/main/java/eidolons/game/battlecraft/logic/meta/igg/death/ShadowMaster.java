@@ -33,7 +33,7 @@ import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TI
 
 public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
-    float timesThisHeroFell = 0;
+    static float  timesThisHeroFell = 0;
     private int timeLeft;
     private Unit shade;
     private static   boolean shadowAlive;
@@ -50,9 +50,21 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         return shadowAlive;
     }
 
+    public static boolean checkCheatDeath() {
+        if (timesThisHeroFell==0){
+            timesThisHeroFell++;
+            return true;
+        }
+        return false;
+    }
 
-    public void death() {
+
+    public boolean death() {
+//        if (timesThisHeroFell==0){
+//            return false;
+//        }
         timesThisHeroFell = 0;
+        return true;
     }
 
     public void fall(Event event) {

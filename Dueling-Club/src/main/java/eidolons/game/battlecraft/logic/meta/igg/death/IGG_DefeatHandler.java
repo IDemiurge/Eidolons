@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import main.entity.Ref;
 import main.game.logic.event.Event;
@@ -28,6 +29,11 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
     public boolean isEnded(boolean surrender, boolean end) {
         if (!isOn()) {
             return true;
+        }
+        if (!getMaster().getShadowMaster().death()) { //igg demo TODO
+            Eidolons.getMainHero().preventDeath();
+
+            return false;
         }
         getMetaGame().getMaster().getPartyManager().getHeroChain().death();
 
@@ -55,9 +61,8 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
             return true;
         }
         getPartyManager().getParty().death();
-        getMaster().getShadowMaster().death();
         getPartyManager().respawn(newHero);
-        getGame().getVisionMaster().refresh();
+//        getGame().getVisionMaster().refresh();
         GdxMaster.setDefaultCursor();
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
 //        getGame().getDungeonMaster().getSpawner().spawn();

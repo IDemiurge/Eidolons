@@ -38,6 +38,8 @@ public class AggroMaster extends ExplorationHandler {
             //                    continue;
             //                }
             //            }
+//            if (ally.isSneaking())
+//                continue; // TODO igg demo hack
             for (Unit unit : getAggroGroup(ally)) {
                 if (!list.contains(unit))
                     list.add(unit);
@@ -142,9 +144,9 @@ public class AggroMaster extends ExplorationHandler {
 
     private static boolean isCriticalBreak(Unit unit, Unit hero) {
         double max = MAX_AGGRO_DST + unit.getAI().getEngagementDuration();
-        if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
-            max = 1.35f * max;
-        }
+//     TODO igg demo hack   if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
+//            max = 1.35f * max;
+//        }
         if (unit.getCoordinates().dst_(hero.getCoordinates())>=max) {
             return true;
         }

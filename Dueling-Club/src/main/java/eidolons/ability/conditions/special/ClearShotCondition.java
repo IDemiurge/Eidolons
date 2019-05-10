@@ -11,6 +11,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
@@ -139,7 +140,7 @@ public class ClearShotCondition extends MicroCondition {
 
         if (target.isOverlaying()) {
             if (target instanceof DC_Obj) {
-                if (isOverlayingWithinSightAngle((DC_Obj) target, source))
+                if (!isOverlayingWithinSightAngle((DC_Obj) target, source))
                     return false;
 
             }
@@ -221,10 +222,22 @@ public class ClearShotCondition extends MicroCondition {
             }
         }
 
-        Boolean[][] array = new Boolean[x - 1][y + 1];
-        for (Boolean[] booleans : array) {
-            Arrays.fill(booleans, false);
-        }
+//        boolean cached =  ArrayMaster.isClearshotCached(source, target);
+        boolean[][] array =
+//                ArrayMaster.getBooleanFalseArray(x-1,y+1 );
+new boolean[x-1 ][y+1];
+//        if ( cached){
+//            for (int i = 0; i + 1 < x; i++)            // don't preCheck source
+//            {
+//                for (int j = 0; j <= y; j++) {
+//                if (array[i][j])
+//                    if (!checkClearShot(x, y, array)) {
+//                        return false;
+//                    }
+//                }
+//
+//        } else
+//        {
         boolean toCheck = false;
         for (int i = 0; i + 1 < x; i++)            // don't preCheck source
         {
@@ -382,7 +395,7 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     //
-    public boolean checkClearShot(int dX, int dY, Boolean obstructionArray[][]) {
+    public boolean checkClearShot(int dX, int dY, boolean obstructionArray[][]) {
 
         double slope = (double) dY / dX;
         double k = 0.5 - slope / 2;

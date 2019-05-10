@@ -406,7 +406,7 @@ public class GdxMaster {
         GdxMaster.brightness = brightness;
     }
 
-    public static boolean hasController(InputProcessor inputProcessor, StageX gridStage) {
+    public static boolean hasController(InputProcessor inputProcessor, Stage  gridStage) {
         if (inputProcessor instanceof InputMultiplexer) {
             for (InputProcessor processor : ((InputMultiplexer) inputProcessor).getProcessors()) {
                 if (hasController(processor, gridStage)) {

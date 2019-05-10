@@ -165,7 +165,7 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public float getPixelsPerSecond() {
-        return 1000;
+        return 1600;
 //        return CoreEngine.isIDE() ? CoreEngine.isFastMode() ? 2350 : 1950 : 1750;
     }
 

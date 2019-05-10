@@ -165,7 +165,7 @@ public class DC_LogManager extends LogManager {
     }
 
     private String tryAddImage(String entry) {
-        if (entry.contains("is dealing")){
+        if (entry.contains(IS_DEALING) || entry.contains(DAMAGE_IS_BEING_DEALT_TO)){
             for (DAMAGE_TYPE damage_type:DAMAGE_TYPE.values()){
                 if (entry.contains(damage_type.getName())) {
                     return ImageManager.getDamageTypeImagePath(

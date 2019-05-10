@@ -172,9 +172,9 @@ public class ContentGenerator {
     public static final void afterRead() {
         clearGenType();
 
-        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
-        if (DataManager.isTypesRead(DC_TYPE.ITEMS))
-            generateConsumableItemsFromOverlaying();
+//        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+//        if (DataManager.isTypesRead(DC_TYPE.ITEMS))
+//            generateConsumableItemsFromOverlaying();
         if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
             generateIndestructibleWalls();
         if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))

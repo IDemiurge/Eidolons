@@ -93,7 +93,7 @@ public class GlobalController implements Controller {
 
                 return true;
             case Keys.F4:
-                Eidolons.getMainHero().kill();
+                Eidolons.getMainHero().kill(Eidolons.getMainHero(), true, true);
 //                WeaveMaster.openWeave();
                 return true;
             //            case Keys.F4: already implemented?

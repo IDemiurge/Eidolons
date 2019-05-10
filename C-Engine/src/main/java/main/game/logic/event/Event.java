@@ -178,6 +178,7 @@ public class Event implements Referred {
         UNIT_HAS_FALLEN_UNCONSCIOUS,
         UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS,
         UNIT_HAS_BEEN_KILLED,
+        UNIT_IS_BEING_KILLED,
         UNIT_HAS_BEEN_ANNIHILATED,
         UNIT_HAS_CHANGED_FACING,
         UNIT_HAS_TURNED_CLOCKWISE,
@@ -210,7 +211,6 @@ public class Event implements Referred {
         UNIT_NEW_ROUND_STARTED,
         UNIT_NEW_ROUND_BEING_STARTED,
 
-        UNIT_IS_BEING_KILLED,
         UNIT_BEING_MOVED,
         UNIT_MOVED,
         UNIT_FINISHED_MOVING,

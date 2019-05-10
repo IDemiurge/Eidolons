@@ -230,7 +230,7 @@ public class DamageDealer {
          : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
             return 0;
         }
-
+        ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());
         int result = dealPureDamage(attacked, attacker, t_damage, e_damage, ref);
         ref.setAmount(result);
         new Event(magical ?

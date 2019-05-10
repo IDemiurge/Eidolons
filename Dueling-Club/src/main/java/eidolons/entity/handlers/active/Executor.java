@@ -18,6 +18,7 @@ import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -114,7 +115,7 @@ public class Executor extends ActiveHandler {
 
 
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), new Context(ref)));
+                new ActionInput(getAction(), new Context(ref)));
     }
 
     public void activateOn(DC_Obj t) {
@@ -125,13 +126,13 @@ public class Executor extends ActiveHandler {
             return;
         }
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), t));
+                new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
 
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+                new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -168,10 +169,10 @@ public class Executor extends ActiveHandler {
                 targets = " on " + getAction().getTargetGroup().toString();
             }
         log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
-         + getAction().getName() + targets, false);
+                + getAction().getName() + targets, false);
         if (gameLog)
             log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-             + getAction().getNameIfKnown() +   targets, true);
+                    + getAction().getNameIfKnown() + targets, true);
 
         beingActivated();
         if (isInterrupted()) {
@@ -187,6 +188,10 @@ public class Executor extends ActiveHandler {
                 setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
             }
             payCosts();
+        } else {
+            cancelled();
+            EUtils.showInfoText(getEntity().getName() + " cancelled");
+            return false;
         }
 //        else {???
 //            if (BooleanMaster.isFalse(cancelled))
@@ -194,12 +199,13 @@ public class Executor extends ActiveHandler {
 //        }
         //TODO BEFORE RESOLVE???
 
+
         if (AnimMaster.isOn())
             if (!AnimConstructor.isReconstruct())
                 AnimConstructor.preconstruct(getAction());
 
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-         new ActionInput(getAction(), animContext)
+                new ActionInput(getAction(), animContext)
         );
 
         actionComplete();
@@ -208,12 +214,12 @@ public class Executor extends ActiveHandler {
 
     @Override
     protected void log(String string, boolean gameLog) {
-        if (!ExplorationMaster.isExplorationOn()){
+        if (!ExplorationMaster.isExplorationOn()) {
             super.log(string, gameLog);
             if (!gameLog)
                 SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
         }
-         }
+    }
 
     protected void syncActionRefWithSource() {
         if (getAction() instanceof DC_QuickItemAction) {
@@ -229,7 +235,11 @@ public class Executor extends ActiveHandler {
             }
         }
 
-        getAction().setRef(getAction().getOwnerObj().getRef());
+        try {
+            getAction().setRef(getAction().getOwnerObj().getRef());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
     }
 
@@ -262,7 +272,6 @@ public class Executor extends ActiveHandler {
         }
 
 
-
         if (getChecker().isRangedTouch()) {
             boolean missed = ConcealmentRule.checkMissed(getAction());
             if (!missed) {
@@ -281,7 +290,7 @@ public class Executor extends ActiveHandler {
             }
         }
 //        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(getAction())) {
-            // return false; TODO
+        // return false; TODO
 //        }
     }
 
@@ -309,7 +318,7 @@ public class Executor extends ActiveHandler {
             try {
                 setResult(getAction().getAbilities().activatedOn(
 //                 getTargeter(). TODO would this be ok?
-                 getRef()));
+                        getRef()));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -319,7 +328,7 @@ public class Executor extends ActiveHandler {
             for (Active active : getAction().getActives()) {
                 try {
                     setResult(isResult() & active.activatedOn(getRef()));
-                 } catch (Exception e) {
+                } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 if (!isResult()) {
@@ -357,7 +366,7 @@ public class Executor extends ActiveHandler {
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
             getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES,
-             getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
+                    getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
 
@@ -368,7 +377,7 @@ public class Executor extends ActiveHandler {
         if (ExplorationMaster.isExplorationOn()) {
             getGame().getDungeonMaster().getExplorationMaster().getActionHandler().payCosts(getEntity());
             getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
-             getEntity(), getOwnerObj());
+                    getEntity(), getOwnerObj());
         } else {
             if (DC_Engine.isAtbMode())
                 reduceAtbReadiness();
@@ -385,13 +394,13 @@ public class Executor extends ActiveHandler {
     private void reduceAtbReadiness() {
 
         long initiativeCost = Math.round(
-         -AtbMaster.reduceReadiness(getAction()));
+                -AtbMaster.reduceReadiness(getAction()));
 
 
-getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
-         -initiativeCost +
-         "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
-         "%" );
+        getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
+                -initiativeCost +
+                "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
+                "%");
 
     }
 
@@ -431,17 +440,17 @@ getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster
         }
         getGame().getManager().applyActionRules(getAction());
         if (isResult())
-        try {
-            checkPendingAttacksOfOpportunity();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                checkPendingAttacksOfOpportunity();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
         if (result) {
             if (getAction().getTargetObj() instanceof Unit)
                 if (getAction().getChecker().isPotentiallyHostile())
                     if (getAction().getTargetObj().getOwner() !=
-                     getAction().getOwner()) {
+                            getAction().getOwner()) {
                         AggroMaster.unitAttacked(getAction(), getAction().getTargetObj());
 
                     }

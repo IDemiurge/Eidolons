@@ -39,10 +39,11 @@ public class MainLauncher extends GenericLauncher {
         }
         if (CoreEngine.isIDE()) {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
-            if (CoreEngine.isFastMode() || CoreEngine.isActiveTestMode())
+            if (CoreEngine.isFastMode()  )//|| CoreEngine.isActiveTestMode())
                 TestMasterContent.setAddSpells(true);
             if (CoreEngine.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);
+                if (CoreEngine.isMe())
                 OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
             }
         }

@@ -3,6 +3,7 @@ package main.content.mode;
 import main.content.enums.system.AiEnums;
 import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.math.FormulaMaster;
@@ -31,9 +32,24 @@ public enum STD_MODES implements MODE {
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
      + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
     COWER(true, true, true),
-    PANIC(false, true, false),
-    CONFUSED(false, true, false),
-    BERSERK(false, false, false),
+    PANIC(false, true, false){
+        @Override
+        public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+            return AiEnums.BEHAVIOR_MODE.PANIC;
+        }
+    },
+    CONFUSED(false, true, false){
+        @Override
+        public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+            return AiEnums.BEHAVIOR_MODE.CONFUSED;
+        }
+    },
+    BERSERK(false, false, false){
+        @Override
+        public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+            return AiEnums.BEHAVIOR_MODE.BERSERK;
+        }
+    },
     NORMAL(false, false, false);
 
     private static final String DEFAULT_ATB_PERIOD="0.25";

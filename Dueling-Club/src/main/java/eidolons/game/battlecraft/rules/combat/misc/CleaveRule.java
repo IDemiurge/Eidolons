@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
@@ -16,6 +17,8 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class CleaveRule {
     private static final int DEFAULT_CRITICAL_JUMPS = 2;
@@ -137,7 +140,9 @@ public class CleaveRule {
 
         action.getGame().getLogManager().log(action + " cleaves, remaining damage: " + attack.getRemainingDamage());
         boolean result = source.getGame().getAttackMaster().attack(attack);
+//       GuiEventManager.trigger(GuiEventType. ADD_FLOATING_TEXT)
         // "dodged" or alive...
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_CRITICAL, "Cleave!", currentTarget);
         if (result) {
             result = !currentTarget.isDead();
         }

@@ -1,11 +1,14 @@
 package eidolons.ability.effects.oneshot.attack;
 
+import com.sun.org.apache.regexp.internal.RE;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.core.EUtils;
 import main.ability.effects.OneshotEffect;
+import main.elements.conditions.Condition;
+import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;
@@ -48,9 +51,26 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         return DC_PriorityManager.getAttackPriority(attack, target);
     }
 
-        private DC_ActiveObj pickAttack() {
-        List<DC_ActiveObj> subActions =getActiveObj().getValidSubactions(ref, target);
+    private DC_ActiveObj pickAttack() {
+        List<DC_ActiveObj> subActions = getActiveObj().getValidSubactions(ref, target);
+        if (subActions.isEmpty()) {
+            main.system.auxiliary.log.LogMaster.log(1,"Failing on our autoattack ... " );
 
+            for (DC_ActiveObj subAction : getActiveObj().getSubActions()) {
+                main.system.auxiliary.log.LogMaster.log(1,"Failing atk: "  +subAction );
+                if (!subAction.canBeTargeted(target)) {
+                    Ref REF = ref.getCopy();
+                    REF.setMatch(target);
+                    for (Condition condition : subAction.getTargeting().getFilter().getConditions()) {
+                        if (!condition.check(REF)) {
+                            main.system.auxiliary.log.LogMaster.log(1, "Breaking our autoattack: " + condition);
+                        }
+                    }
+                } else {
+                    main.system.auxiliary.log.LogMaster.log(1, "It worked?: " + subAction);
+                }
+            }
+        }
         if (subActions.size() == 1) {
             return subActions.get(0);
         }

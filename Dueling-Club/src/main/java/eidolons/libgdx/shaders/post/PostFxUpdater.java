@@ -95,13 +95,16 @@ public class PostFxUpdater {
             case STAMINA:
                 if (status == CRITICAL) {
                     apply(POST_FX_FACTOR.FADE_COLOR, 1);
+                    apply(POST_FX_FACTOR.BLUR, 0.5f);
 //                    apply(POST_FX_FACTOR.DARKEN, 0.7f);
                 } else if (status == LOW) {
                     apply(POST_FX_FACTOR.FADE_COLOR, 0.6f);
 //                    apply(POST_FX_FACTOR.DARKEN, 0.9f);
                     apply(POST_FX_FACTOR.SMOOTH, 1.2f);
+                    apply(POST_FX_FACTOR.BLUR, 0.3f);
                 } else if (status == HIGH) {
                     apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
+                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
                 }
                 break;
             case MORALE:
@@ -115,7 +118,7 @@ public class PostFxUpdater {
                     apply(POST_FX_FACTOR.BLOOM, 1.3f);
 //                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
                     apply(POST_FX_FACTOR.SMOOTH, 1.2f);
-                    apply(POST_FX_FACTOR.LENS2, 1.2f);
+//                    apply(POST_FX_FACTOR.LENS2, 1.2f);
                 }
 
                 break;
@@ -128,18 +131,19 @@ public class PostFxUpdater {
                     apply(POST_FX_FACTOR.BLUR, 0.4f);
                     apply(POST_FX_FACTOR.MOTION_BLUR, 0.4f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.LENS, 1.2f);
-                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
+//                    apply(POST_FX_FACTOR.LENS, 1.2f);
+//                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
+                    apply(POST_FX_FACTOR.DISTORT, -0.31f);
                 }
                 break;
 
             case WOUNDS:
                 if (status == CRITICAL) {
                     apply(POST_FX_FACTOR.BLOODY, 1);
-                    apply(POST_FX_FACTOR.DISCOLOR, 1);
+//                    apply(POST_FX_FACTOR.DISCOLOR, 1);
                 } else if (status == LOW) {
                     apply(POST_FX_FACTOR.BLOODY, 0.6f);
-                    apply(POST_FX_FACTOR.DISCOLOR, 0.6f);
+//                    apply(POST_FX_FACTOR.DISCOLOR, 0.6f);
                 }
                 break;
         }

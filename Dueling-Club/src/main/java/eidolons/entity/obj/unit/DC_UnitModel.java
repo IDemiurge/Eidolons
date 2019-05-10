@@ -283,6 +283,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (  mode == null) {
             return null;
         }
+        if (isPlayerCharacter())
+        if (ExplorationMaster.isExplorationOn()){
+            return null;
+        }
         return mode.getBehaviorMode();
     }
 

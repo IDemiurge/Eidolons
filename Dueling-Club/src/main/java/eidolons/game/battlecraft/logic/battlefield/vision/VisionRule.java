@@ -205,7 +205,7 @@ public class VisionRule {
         }
         if (observer.isUnconscious())
             return false;
-        else if (getPlayerUnseenMode()) {
+        if (getPlayerUnseenMode()) {
             return false;
         }
         if (PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance() * dstCoef) {
@@ -403,6 +403,19 @@ public class VisionRule {
         }
         if (hero.isScion())
             return false; //TODO  no new aggro there
+
+//        if (hero.isSneaking()) {
+//            return false;
+//        }
+        if (hero.isSneaking()) {
+            //add chance? not right...
+            if (isResetRequired(unit, hero, 0.25f))
+            {
+//                apply spotted?
+                return true;
+            }
+            return false; //TODO IGG HACK
+        }
         UNIT_VISION vision = unit.getGame().getVisionMaster().getSightMaster().getUnitVisibilityStatus(hero, unit);
         switch (vision) {
             case IN_PLAIN_SIGHT:
@@ -436,7 +449,6 @@ public class VisionRule {
 //         || !ExplorationMaster.isExplorationOn()
 //         &&  controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.BLOCKED
 //         ) {
-
 
         if (isResetRequired(unit, hero, 0.5f))
             return true;

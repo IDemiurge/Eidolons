@@ -33,7 +33,10 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
     protected Class<? extends GAMEPLAY_OPTION> getOptionClass() {
         return GAMEPLAY_OPTION.class;
     }
-
+static {
+    GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.defaultValue = INFO_LEVEL.VERBOSE;
+//    GAMEPLAY_OPTION.LOG_DETAIL_LEVEL.defaultValue= LOG_DETAIL_LEVEL.verbose
+}
     public enum GAMEPLAY_OPTION implements Options.OPTION {
         RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
@@ -50,6 +53,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
         DEFAULT_WAIT_TIME(60, 10, 300),
         HP_BARS_ALWAYS_VISIBLE(false), GAME_SPEED(100, 10, 300),
+        TURN_CONTROL(true),
         ATB_WAIT_TIME(5, 0, 10),
         SHUFFLE_LEVELS(false),
         REVERSE_LEVELS(false),

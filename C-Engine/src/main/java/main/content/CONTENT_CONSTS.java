@@ -168,6 +168,9 @@ public class CONTENT_CONSTS {
         }
 
         public String getText(Object... variables) {
+            if (variables==null )
+                return text;
+
             if (variables.length < 1) {
                 return text;
             }

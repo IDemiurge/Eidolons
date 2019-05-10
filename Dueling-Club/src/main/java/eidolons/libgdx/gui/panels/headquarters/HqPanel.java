@@ -78,7 +78,7 @@ public class HqPanel extends TablePanel implements Blocking {
         controlPanel = new HqControlPanel();
         buttonPanel = new HqButtonPanel();
         infoTable = createInfoTable();
-        setSize(GDX.size(1600), GDX.size(900) );
+        setSize(GDX.size(1920), GDX.size(1080) );
         addElements();
         addListener(new SmartClickListener(this){
             @Override

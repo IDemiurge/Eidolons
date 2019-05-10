@@ -1,6 +1,8 @@
 package main.system.auxiliary.data;
 
 
+import main.entity.obj.Obj;
+
 import java.util.*;
 
 public class ArrayMaster<T> {
@@ -134,10 +136,10 @@ public class ArrayMaster<T> {
     public static Integer[][] rotate(boolean clockwise, Integer[][] matrix) {
         if (matrix.length == matrix[0].length)
             return clockwise ? new ArrayMaster<Integer>().rotateMatrixInPlaceClockwise_(matrix) :
-             new ArrayMaster<Integer>().rotateMatrixInPlaceAnticlockwise_(matrix);
+                    new ArrayMaster<Integer>().rotateMatrixInPlaceAnticlockwise_(matrix);
 
         return clockwise ? rotateIntegerMatrixClockwise(matrix) :
-         rotateIntegerMatrixAnticlockwise(matrix);
+                rotateIntegerMatrixAnticlockwise(matrix);
     }
 
     public static String[][] cloneString2d(String[][] cells) {
@@ -148,6 +150,29 @@ public class ArrayMaster<T> {
             }
         }
         return clone;
+    }
+
+    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
+
+    public static void resetBufferArray() {
+        booleanFalseArrays = new boolean[100][100][1][1];
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                booleanFalseArrays[i][j] = new boolean[i][j];
+            }
+        }
+    }
+
+//    public static boolean  isClearshotCached(  Obj source,
+//                                                   Obj target) {
+//       result= cacheMap.get(getKey(source, target))!=null ;
+//        cacheMap.put(getKey(source, target), true);
+//        return result;
+//    }
+
+    public static boolean[][] getBooleanFalseArray(int i, int i1) {
+//        main.system.auxiliary.log.LogMaster.log(1, i + ":" + i1);
+        return booleanFalseArrays[i][i1];
     }
 
     /**
@@ -201,9 +226,10 @@ public class ArrayMaster<T> {
     }
 
     public static boolean contains_(Object[] array, Object t) {
-       return new ArrayMaster<>().contains(array, t);
+        return new ArrayMaster<>().contains(array, t);
     }
-        public boolean contains(T[] array, T t) {
+
+    public boolean contains(T[] array, T t) {
         for (T d : array) {
             if (t == null) {
                 if (d == null) {
@@ -244,7 +270,7 @@ public class ArrayMaster<T> {
 //            return clockwise ? rotateMatrixInPlaceClockwise(matrix) :
 //             rotateMatrixInPlaceAnticlockwise(matrix);
         return clockwise ? rotateStringMatrixClockwise(matrix) :
-         rotateStringMatrixAnticlockwise(matrix);
+                rotateStringMatrixAnticlockwise(matrix);
     }
 
     public Object[][] rotateMatrix(Object[][] matrix, boolean clockwise) {

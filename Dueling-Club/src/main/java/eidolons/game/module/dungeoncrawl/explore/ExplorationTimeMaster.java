@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
+import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -30,6 +31,8 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.ArrayList;
+
+import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -206,6 +209,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
             guiDirtyFlag = false;
         }
+
+        GuiEventManager.trigger(ACTION_PANEL_UPDATE, //igg demo hack
+                new PanelActionsDataSource(Eidolons.getMainHero()));
     }
 
     private void checkParamBuffs() {

@@ -12,6 +12,7 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.BuffObj;
+import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
@@ -38,9 +39,9 @@ public class DC_BuffObj extends BuffObj {
     public DC_BuffObj(String name, BattleFieldObject basis,
                       float duration) {
         this(
-         DataManager.getType(name, DC_TYPE.BUFFS)==null ?
-          DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS)
-        : DataManager.getType(name, DC_TYPE.BUFFS), basis, duration);
+                DataManager.getType(name, DC_TYPE.BUFFS) == null ?
+                        new BuffType(DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS))
+                        : DataManager.getType(name, DC_TYPE.BUFFS), basis, duration);
 
     }
     public DC_BuffObj(ObjType type, BattleFieldObject basis, float duration) {

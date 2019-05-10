@@ -275,7 +275,7 @@ public class FloatingTextMaster {
 //                  (DC_ActiveObj) arg))
             case BONUS_DAMAGE:
                 int size = 18;
-                size = Math.min(23, size + ((Damage) arg).getAmount() / 21);
+                size =Math.max(14, Math.min(23, size + ((Damage) arg).getAmount() / 21));
                 return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, size);
             case ATTACK_CRITICAL:
                 break;

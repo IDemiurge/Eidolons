@@ -211,6 +211,9 @@ public class QuickWeaponPanel extends TablePanelX {
 
             @Override
             public void entered() {
+                if (getActiveWeaponDataSource() == null) {
+                    return; //TODO igg hack
+                }
                 super.entered();
                 weapon.setZIndex(getChildren().size - 2);
                 radial.setZIndex(Integer.MAX_VALUE);
@@ -222,6 +225,9 @@ public class QuickWeaponPanel extends TablePanelX {
 
             @Override
             protected void exited() {
+                if (getActiveWeaponDataSource() == null) {
+                    return; //TODO igg hack
+                }
                 super.exited();
                 weapon.setZIndex(1);
                 radial.setZIndex(Integer.MAX_VALUE);

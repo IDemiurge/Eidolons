@@ -22,8 +22,8 @@ import main.entity.Ref.KEYS;
 public class BlazeRule extends DamageCounterRule implements TimedRule{
 
     private static final Integer THRESHOLD = 25;
-    private static final int REDUCTION = -3;
-    private static final int INCREASE = -1;
+    private static final int REDUCTION =  3;
+    private static final int INCREASE =  1;
     private static final String DAMAGE_PER_COUNTER = "1";
     private static final String DURABILITY_PER_COUNTER = "(-0.25)";
 

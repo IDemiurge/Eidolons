@@ -11,6 +11,8 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -48,6 +50,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -135,6 +138,21 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             quietly = false;
 
         }
+        if (!quietly)
+        if (CoreEngine.isIggDemoRunning())
+            if (isPlayerCharacter()) {
+                if (!ShadowMaster.isShadowAlive()) {
+                    preventDeath();
+                    return false;
+                }
+                if (ShadowMaster.checkCheatDeath()) {
+                    preventDeath();
+                    Eidolons.getGame().getLogManager().log(getName()+
+                            " cheats Death! The trick can only work once... ");
+                    return false;
+                }
+            }
+
         if ((game.isDebugMode() && isMine()) || (!ignoreInterrupt && !quietly)) {
             if ((game.isDebugMode() && isMine()) || checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                 preventDeath();
@@ -156,10 +174,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
                 }
             }
             ((BattleFieldObject) killer)
-             .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
+                    .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
 
             applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH,
-             ((BattleFieldObject) killer), REF);
+                    ((BattleFieldObject) killer), REF);
             if (!ignoreInterrupt) {
                 if (ref.checkInterrupted()) {
                     return false;
@@ -177,7 +195,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return false;
     }
 
-    private void preventDeath() {
+    public void preventDeath() {
         LogMaster.log(1, "****preventDeath for " + this);
         setParam(PARAMS.C_ENDURANCE, Math.max(1, getIntParam(PARAMS.C_ENDURANCE)));
         setParam(PARAMS.C_TOUGHNESS, Math.max(1, getIntParam(PARAMS.C_TOUGHNESS)));
@@ -306,7 +324,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.C_TOUGHNESS) {
             if (NumberUtils.getInteger(value) >
-             getIntParam(PARAMS.TOUGHNESS)) {
+                    getIntParam(PARAMS.TOUGHNESS)) {
                 LogMaster.log(1, "gotcha dwarf " + this + value);
             }
         }
@@ -433,7 +451,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public DIRECTION getDirection() {
         if (direction == null) {
             direction = new EnumMaster<DIRECTION>().retrieveEnumConst(DIRECTION.class,
-             getProperty(PROPS.DIRECTION));
+                    getProperty(PROPS.DIRECTION));
         }
         return direction;
     }
@@ -642,7 +660,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public String getInfo() {
-        return getNameAndCoordinate() + " " ;
+        return getNameAndCoordinate() + " ";
     }
 
     public void removeFromGame() {

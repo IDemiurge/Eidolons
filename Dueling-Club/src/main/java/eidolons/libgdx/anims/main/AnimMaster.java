@@ -1,12 +1,15 @@
 package eidolons.libgdx.anims.main;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -16,8 +19,10 @@ import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.OptionsMaster;
 import main.ability.effects.Effect;
+import main.content.enums.entity.ActionEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event;
@@ -46,7 +51,6 @@ public class AnimMaster extends Group {
     private final AnimDrawMaster drawer;
     private final ActionAnimMaster actionMaster;
     private final BuffAnimMaster buffMaster;
-    private FullscreenAnims fullscreenAnims;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -116,7 +120,7 @@ public class AnimMaster extends Group {
 
     protected static boolean isMustWaitForAnim(ActionInput action) {
         if (action != null) {
-            if (instance.getDrawer().findAnimation(action.getAction())!= null) {
+            if (instance.getDrawer().findAnimation(action.getAction()) != null) {
 //                if (instance.getDrawer().leadAnimation.getActive() == action.getAction())
                 {
                     return true;
@@ -131,10 +135,59 @@ public class AnimMaster extends Group {
         int maxTime = getMaxAnimWaitTime(action);
         //*speed ?
         int period = getAnimWaitPeriod();
-        int waitTime = 0;
+        if (!ExplorationMaster.isExplorationOn()) {
+            waitCombatMode(maxTime, period, action);
+        } else {
+            waitExploreMode(maxTime, period, action);
+        }
 
-        while (isMustWaitForAnim(action) && waitTime < maxTime) {
+    }
+
+    private static void waitCombatMode(int maxTime, int period, ActionInput action) {
+        int waitTime = 0;
+        int speed = 1+OptionsMaster.getGameplayOptions().getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED);
+        boolean control = OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL);
+        //TODO not here
+        if (control) {
+            if (!action.getAction().getOwnerUnit().isMine())
+            {
+                Eidolons.getGame().getLoop().setPaused(true);
+//                return;
+            }
+        }
+        if (action.getAction().getOwnerUnit().isMine()) {
+            maxTime=maxTime/2;
+        }
+        maxTime = maxTime * 100 / speed;
+//        minTime
+        int minTime = maxTime / 2;
+        String show = "Wait " +
+                action.getAction().getOwnerUnit().getNameIfKnown() +
+                "..";
+        main.system.auxiliary.log.LogMaster.log(1, "Wait for anim to draw; max =" + maxTime);
+        main.system.auxiliary.log.LogMaster.log(1, "Min =" + minTime);
+        while ((isMustWaitForAnim(action) && waitTime < maxTime) ||
+                waitTime < minTime) {
             WaitMaster.WAIT(period);
+            //update something? add "." to something?
+            waitTime += period;
+            System.out.print('.');
+            if (!control) {
+            EUtils.showInfoText(show);
+            show += ".";
+            }
+        }
+        EUtils.showInfoText("... And Go");
+    }
+
+
+    private static void waitExploreMode(int maxTime, int period, ActionInput action) {
+        int waitTime = 0;
+        int minTime = maxTime / 2;
+        while ((isMustWaitForAnim(action) && waitTime < maxTime) ||
+                waitTime < minTime) {
+            WaitMaster.WAIT(period);
+            //update something? add "." to something?
             waitTime += period;
             main.system.auxiliary.log.LogMaster.log(1, "Waited for anim to draw: " + waitTime);
 
@@ -142,6 +195,18 @@ public class AnimMaster extends Group {
     }
 
     protected static int getMaxAnimWaitTime(ActionInput action) {
+        switch (action.getAction().getName()){
+//            case DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString():
+            case "Wait":
+                return 0;
+        }
+
+        if (action.getAction().getActionGroup()== ActionEnums.ACTION_TYPE_GROUPS.MODE) {
+            return 0;
+        }
+        if (ExplorationMaster.isExplorationOn()) {
+            return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
+        }
         return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME_COMBAT);
     }
 

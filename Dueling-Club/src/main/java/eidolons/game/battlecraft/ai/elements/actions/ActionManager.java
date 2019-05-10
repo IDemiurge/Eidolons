@@ -1,3 +1,4 @@
+
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.DC_ContentValsManager;
@@ -78,7 +79,6 @@ public class ActionManager extends AiHandler {
         getAtomicAi().initialize();
         getBehaviorMaster().initialize();
     }
-
     public Action chooseAction() {
         UnitAI ai = getMaster().getUnitAI();
         if (ai.checkStandingOrders()) {
@@ -181,13 +181,13 @@ public class ActionManager extends AiHandler {
         Action action = null;
         if (behaviorMode != null) {
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
-                action = new Action(ai.getUnit().getAction("Cower"));
+                action = new Action(ai.getUnit().getAction("Cower in Terror"));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
-                action = new Action(ai.getUnit().getAction("Stumble"));
+                action = new Action(ai.getUnit().getAction("Stumble About"));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
-                action = new Action(ai.getUnit().getAction("Rage"));
+                action = new Action(ai.getUnit().getAction("Helpless Rage"));
             }
             action.setTaskDescription("Forced Behavior");
         }
@@ -221,6 +221,9 @@ public class ActionManager extends AiHandler {
             }
         }
         if (actions.isEmpty()) {
+            if (getUnit().getBehaviorMode() != null) {
+                return getForcedForBehavior(getUnit(), getUnit().getBehaviorMode());
+            }
             LogMaster.log(1, getUnit() + " has been Forced to wait!");
             return getAction(getUnit(), DC_ActionManager.STD_SPEC_ACTIONS.Wait.name(), null);
         }
@@ -237,6 +240,18 @@ public class ActionManager extends AiHandler {
             return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
         }
         return action;
+    }
+
+    private Action getForcedForBehavior(Unit unit, BEHAVIOR_MODE behaviorMode) {
+        switch (behaviorMode) {
+            case PANIC:
+                return new Action(unit.getAction("Cower in Terror"));
+            case BERSERK:
+                return new Action(unit.getAction("Helpless Rage"));
+            case CONFUSED:
+                return new Action(unit.getAction("Stumble About"));
+        }
+        return getAction(getUnit(), DC_ActionManager.STD_SPEC_ACTIONS.Wait.name(), null);
     }
 
     private Integer checkWaitForBlockingAlly() {

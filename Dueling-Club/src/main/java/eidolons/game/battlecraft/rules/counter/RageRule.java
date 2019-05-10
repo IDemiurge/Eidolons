@@ -5,6 +5,7 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
@@ -31,7 +32,7 @@ public class RageRule extends DC_CounterRule {
     private static final String DEFENSE_PER_COUNTER = "-5"; //focus  fatigue?
     private static final String WOUNDS_THRESHOLD = "12";    // tooltip
     private static final String STAMINA_THRESHOLD = "20";    // tooltip
-    private static final String BERSERK_THRESHOLD = "1+{Willpower}";    // tooltip
+    private static final String BERSERK_THRESHOLD = "10+2*{Willpower}";    // tooltip
     private static final Integer MAX_BERSERK = 40;
     private static final Integer MAX = 20;
 
@@ -44,6 +45,16 @@ public class RageRule extends DC_CounterRule {
         return COUNTER.Rage;
     }
 
+    @Override
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
+        if (unit instanceof Unit) {
+            if (((Unit) unit).getBehaviorMode()== AiEnums.BEHAVIOR_MODE.BERSERK) {
+            return unit.getIntParam(PARAMS.WILLPOWER)/2+ 1 + getNumberOfCounters(unit) / 5;
+            }
+                return 1+getNumberOfCounters(unit) / 10;
+        }
+        return 0;
+    }
     @Override
     protected Effect getEffect() {
         return new Effects(
@@ -95,9 +106,5 @@ public class RageRule extends DC_CounterRule {
                 : MAX;
     }
 
-    @Override
-    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
-        return 1;
-    }
 
 }

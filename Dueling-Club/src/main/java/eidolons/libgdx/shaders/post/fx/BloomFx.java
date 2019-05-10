@@ -27,7 +27,7 @@ public class BloomFx extends Bloom {
     public void applyCoef(float a) {
         this.fluctuation = a;
         setBloomIntesity(2 * base * settings.bloomIntensity * a);
-
+        setBaseIntesity(1.5f);
         setBloomSaturation(1);
 
         if (noBlur) {

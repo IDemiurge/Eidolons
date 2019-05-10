@@ -14,7 +14,9 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
+import main.system.text.LogManager;
 
 /**
  * Created by JustMe on 3/12/2017.
@@ -22,7 +24,7 @@ import main.system.math.MathMaster;
 public class DefenseVsAttackRule {
     public static int getAttackValue(Attack attack) {
         return getAttackValue(attack.isOffhand(), attack.getAttacker(), attack.getAttacked(),
-         attack.getAction());
+                attack.getAction());
     }
 
     public static int getDefenseValue(Attack attack) {
@@ -32,7 +34,7 @@ public class DefenseVsAttackRule {
     //
     public static int getDefenseValue(BattleFieldObject attacker, BattleFieldObject attacked, DC_ActiveObj action) {
         int defense = attacked.getIntParam(PARAMS.DEFENSE)
-         - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
+                - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
         defense += action.getIntParam(PARAMS.DEFENSE_BONUS);
         if (attacked instanceof Unit)
@@ -40,7 +42,7 @@ public class DefenseVsAttackRule {
                 //increase defense if attacked watches attacker
                 //TODO add reverse mods - 'defense when watched on attack' for trickster
                 int bonus = MathMaster.applyMod(WatchRule.DEFENSE_MOD, attacked
-                 .getIntParam(PARAMS.WATCH_DEFENSE_MOD));
+                        .getIntParam(PARAMS.WATCH_DEFENSE_MOD));
                 defense += bonus;
             }
         return defense;
@@ -63,7 +65,7 @@ public class DefenseVsAttackRule {
             }
         }
         attack = MathMaster.applyMod(attack,
-         action.getIntParam(PARAMS.ATTACK_MOD));
+                action.getIntParam(PARAMS.ATTACK_MOD));
         attack += action.getIntParam(PARAMS.ATTACK_BONUS);
 
         if (flying_mod != null) {
@@ -71,12 +73,12 @@ public class DefenseVsAttackRule {
             attack += bonus;
         }
         if (attacker instanceof Unit)
-        if (WatchRule.checkWatched((Unit) attacker, attacked)) {
-            //increase attack if attacker watches attacked
-            int bonus = MathMaster.applyMod(WatchRule.ATTACK_MOD, attacker
-             .getIntParam(PARAMS.WATCH_ATTACK_MOD));
-            attack += bonus;
-        }
+            if (WatchRule.checkWatched((Unit) attacker, attacked)) {
+                //increase attack if attacker watches attacked
+                int bonus = MathMaster.applyMod(WatchRule.ATTACK_MOD, attacker
+                        .getIntParam(PARAMS.WATCH_ATTACK_MOD));
+                attack += bonus;
+            }
 
         return attack;
     }
@@ -92,7 +94,7 @@ public class DefenseVsAttackRule {
     // returns true if dodged, false if critical, otherwise null
     public static Boolean checkDodgedOrCrit(Attack attack) {
         return checkDodgedOrCrit(attack.getAttacker(), attack.getAttacked(), attack.getAction(),
-         attack.getRef(), attack.isOffhand() );
+                attack.getRef(), attack.isOffhand());
     }
 
     public static Boolean checkDodgedOrCrit(BattleFieldObject attacker, BattleFieldObject attacked,
@@ -102,14 +104,14 @@ public class DefenseVsAttackRule {
 
     ) {
         return checkDodgedOrCrit(attacker, attacked, action, ref,
-         offhand,   true);
+                offhand, true);
     }
 
     public static Boolean checkDodgedOrCrit(BattleFieldObject attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
 
-     , boolean logged
+            , boolean logged
     ) {
         if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             if (!attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
@@ -128,9 +130,14 @@ public class DefenseVsAttackRule {
         }
         int chance = getChance(action, attacker, attacked, attack, defense, crit);
         if (logged) {
-            main.system.auxiliary.log.LogMaster.log(1, ""
-             + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
-             + "'s chance to dodge: ") + String.valueOf(chance) + "%");
+            String msg = (crit ? "...chance for critical strike: " : "..." + attacked.getName()
+                    + "'s chance to dodge: ") + (chance) + "%";
+
+            main.system.auxiliary.log.LogMaster.log(1, msg);
+            action.getGame().getLogManager().log(
+//                    attacker.isPlayerCharacter() ? LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL :
+                    LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL
+                    , msg);
         }
         boolean result = RandomWizard.chance(chance);
         if (isCRIT_TEST()) {
@@ -151,6 +158,14 @@ public class DefenseVsAttackRule {
             if (!RandomWizard.chance(chance)) {
                 return null;
             }
+            String msg = (crit ? attacker.getNameIfKnown() + " makes a Critical Strike against "
+                    + attacked.getNameIfKnown()
+                    : attacked.getNameIfKnown() + " has dodged an attack from " + attacker.getNameIfKnown()
+                    + StringMaster.wrapInParenthesis(chance + "%"));
+
+            main.system.auxiliary.log.LogMaster.log(1, msg);
+            action.getGame().getLogManager().
+                    log(msg);
             return false;
         }
         return null;
@@ -161,8 +176,8 @@ public class DefenseVsAttackRule {
         int diff = defense - attack;
         // first preCheck ARITHMETIC difference...
         diff = Math.abs(diff)
-         - ((critOrDodge) ? DC_Formulas.ATTACK_DMG_INCREASE_LIMIT
-         : DC_Formulas.DEFENSE_DMG_DECREASE_LIMIT);
+                - ((critOrDodge) ? DC_Formulas.ATTACK_DMG_INCREASE_LIMIT
+                : DC_Formulas.DEFENSE_DMG_DECREASE_LIMIT);
         if (diff <= 0) {
             diff = 0;
         }
@@ -170,7 +185,7 @@ public class DefenseVsAttackRule {
         diff += getProportionBasedChance(attack, defense, critOrDodge);
 
         float mod = (critOrDodge) ? DC_Formulas.ATTACK_CRIT_CHANCE :
-         DC_Formulas.DEFENSE_DODGE_CHANCE;
+                DC_Formulas.DEFENSE_DODGE_CHANCE;
         int chance = Math.round(diff * mod);
 
         if (critOrDodge) {
@@ -218,11 +233,11 @@ public class DefenseVsAttackRule {
         Float chance;
         if (crit) {
             chance = new Float(Math.min(DC_Formulas.ATTACK_PROPORTION_CRIT_MAX, Math
-             .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
+                    .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
         } else {
             chance = new Float(Math.min(DC_Formulas.DEFENSE_PROPORTION_CRIT_MAX, Math
-             .sqrt(DC_Formulas.DEFENSE_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER
-              * advantage)));
+                    .sqrt(DC_Formulas.DEFENSE_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER
+                            * advantage)));
         }
         return chance;
     }

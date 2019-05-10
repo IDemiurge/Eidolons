@@ -29,8 +29,13 @@ public class DC_Attributes {
         String modifierKey = StringMaster.getWellFormattedString(attr.toString());
         switch (attr) {
             case STRENGTH:
-                hero.modifyParameter(PARAMS.TOUGHNESS,
-                 DC_Formulas.getToughnessFromStrength(amount), "Strength");
+                if (hero.isHero()) {
+                    hero.modifyParameter(PARAMS.TOUGHNESS,
+                            DC_Formulas.getToughnessFromStrengthHero(amount), "Strength");
+                } else {
+                    hero.modifyParameter(PARAMS.TOUGHNESS,
+                            DC_Formulas.getToughnessFromStrength(amount), "Strength");
+                }
                 // damage modifier
                 // reduces heavy item penalties
                 //
@@ -42,8 +47,11 @@ public class DC_Attributes {
             case VITALITY:
                 hero.modifyParameter(PARAMS.FORTITUDE,
                  DC_Formulas.getFortitudeFromVitality(amount), modifierKey);
+
+                if (!hero.isHero()) {
                 hero.modifyParameter(PARAMS.TOUGHNESS,
                  DC_Formulas.getToughnessFromVitality(amount), modifierKey);
+                }
 
                 hero.modifyParameter(PARAMS.ENDURANCE,
                  DC_Formulas.getEnduranceFromVitality(amount), modifierKey);
@@ -147,7 +155,8 @@ public class DC_Attributes {
             case SPELLPOWER:
                 break;
             case WISDOM:
-                hero.modifyParameter(PARAMS.ESSENCE, DC_Formulas.getEssenceFromWisdom(amount),
+                hero.modifyParameter(PARAMS.ESSENCE,amount*5);
+                        hero.modifyParameter(PARAMS.ESSENCE, DC_Formulas.getEssenceFromWisdom(amount),
                  modifierKey);
                 hero.modifyParameter(PARAMS.DETECTION, amount / 2, modifierKey);
                 hero.modifyParameter(PARAMS.PERCEPTION, amount / 2, modifierKey);

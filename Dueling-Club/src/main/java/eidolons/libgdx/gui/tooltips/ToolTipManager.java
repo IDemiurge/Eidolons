@@ -131,7 +131,8 @@ public class ToolTipManager extends TablePanel {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            return;
+            if (tooltip instanceof UnitViewTooltip)
+                return;
         }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
          ConfirmationPanel.getInstance().isVisible())

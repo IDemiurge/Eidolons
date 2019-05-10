@@ -83,9 +83,7 @@ public class GridManager {
                     panel.removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(),
-                 getViewMap().get(ref.getSourceObj())))
-                    panel.unitMoved((BattleFieldObject) ref.getSourceObj());
+               unitMoved(event.getRef().getSourceObj());
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
                 caught = true;
@@ -113,6 +111,12 @@ public class GridManager {
            */
             }
         };
+    }
+
+    public void unitMoved(Obj sourceObj) {
+        if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(sourceObj,
+                getViewMap().get(sourceObj)))
+            panel.unitMoved((BattleFieldObject) sourceObj);
     }
 
     public void checkHpBarReset(Obj obj) {

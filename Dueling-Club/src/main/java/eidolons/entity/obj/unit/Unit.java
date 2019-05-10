@@ -131,11 +131,11 @@ public class Unit extends DC_UnitModel {
         super(type, x, y, owner, game, ref);
         if (isHero() && !(this instanceof HeroDataModel)) {
             String message = this + " hero created " + getId();
-                if (GenericLauncher.instance.initRunning) {
-                    if (Eidolons.getMainHero() != null) {
-                        message += " SECOND TIME!...";
-                        removeFromGame();
-                    }
+            if (GenericLauncher.instance.initRunning) {
+                if (Eidolons.getMainHero() != null) {
+                    message += " SECOND TIME!...";
+                    Eidolons.getMainHero().removeFromGame();
+                }
             }
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
             setName(getName().replace(" IGG", ""));
@@ -615,9 +615,9 @@ public class Unit extends DC_UnitModel {
 
     public DequeImpl<DC_QuickItemObj> getQuickItems() {
 //        if (!isItemsInitialized()) {
-            if (quickItems == null) {
-                quickItems = new DequeImpl<>();
-            }
+        if (quickItems == null) {
+            quickItems = new DequeImpl<>();
+        }
         return quickItems;
     }
 
@@ -648,15 +648,15 @@ public class Unit extends DC_UnitModel {
 
     public DequeImpl<DC_HeroItemObj> getInventory() {
 //        if (!isItemsInitialized()) {
-            if (inventory == null) {
-                inventory = new DequeImpl<>();
-            }
+        if (inventory == null) {
+            inventory = new DequeImpl<>();
+        }
         return inventory;
     }
 
     public void setInventory(DequeImpl<DC_HeroItemObj> inventory) {
         if (inventory == null) {
-            main.system.auxiliary.log.LogMaster.log(1,"Inventory nullified  " +this);
+            main.system.auxiliary.log.LogMaster.log(1, "Inventory nullified  " + this);
         }
         this.inventory = inventory;
     }
@@ -746,11 +746,14 @@ public class Unit extends DC_UnitModel {
     public boolean addItemToInventory(DC_HeroItemObj item, boolean quiet) {
         if (isInventoryFull())
             return false;
-        if (inventory==null) {
-            inventory = new DequeImpl<>();
+        if (getInventory() == null) { //TODO  igg demo hack
+            setProperty(PROPS.INVENTORY, getType().getProperty(getProperty(PROPS.INVENTORY)));
+            itemsInitialized = false;
+            inventory = (DequeImpl<DC_HeroItemObj>) getInitializer().initContainedItems(PROPS.INVENTORY, null, false);
+//        inventory = new DequeImpl<>();
         }
         try {
-            inventory.add(item);
+            getInventory().add(item);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
@@ -1308,6 +1311,13 @@ public class Unit extends DC_UnitModel {
                     if (getGame().getLoop().getActiveUnit() != this) {
                         return;
                     }
+                }
+                if (getCoordinates().dst_(coordinates)>=2) {
+                    if (game.isStarted())
+                        if (originalCoordinates.equals(coordinates)){
+                            main.system.auxiliary.log.LogMaster.log(1,"Teleport bug? " );
+                            return;
+                        }
                 }
             }
         super.setCoordinates(coordinates);

@@ -406,7 +406,7 @@ public class GridCellContainer extends GridCell {
             unitViewCount = getUnitViewsVisible().size();
 
             if (isAnimated()) {
-                ActorMaster.addFadeInAction(actor, getFadeDuration());
+                ActorMaster.addFadeInAction(actor, getFadeDuration()/1.5f); //igg demo hack
             }
             //recalc all
             indexMap.put(getZIndexForView(view), view);
@@ -424,7 +424,7 @@ public class GridCellContainer extends GridCell {
         allViews = null;
     }
     protected float getFadeDuration() {
-        return 0.3f;
+        return 0.21f;
     }
 
     @Override

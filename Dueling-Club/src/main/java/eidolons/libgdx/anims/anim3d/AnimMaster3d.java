@@ -68,6 +68,7 @@ public class AnimMaster3d {
 
      {"golem fist", "armored fist"},
      {"tail", "insect claws"},
+     {"paws", "claws"},
      {"tentacle", "insect claws"},
      //     {"lance", "spear"},
      //     {"pike", "spear"},

@@ -203,6 +203,24 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatusDisablesCounters()) {
             return false;
         }
+        if (checkStatus(STATUS.DISCOMBOBULATED)) {
+            return false;
+        }
+        if (checkStatus(STATUS.ENSNARED)) {
+            return false;
+        }
+        if (checkStatus(STATUS.CHARMED)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
+            return false;
+        }
         // TODO getMinimumAttackCost
         // if ( checkAlertCounter())
         // return false;
@@ -342,7 +360,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(UnitEnums.STATUS.FROZEN)) {
             return true;
         }
-        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
+        return isUnconscious();
     }
 
     public boolean isIncapacitated() {

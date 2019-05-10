@@ -131,8 +131,7 @@ public class DC_AttackMaster {
             result = attackNow(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
             boolean countered = false;
             if (result == null) { // first strike
-                main.system.auxiliary.log.LogMaster.log(1,
-                 "Counter attack with first strike against " + attack.getAction());
+               game.getLogManager().log(attack.getAttacker()+ ": First Strike Counter-Attack!");
                 ActiveObj action = counterRule.tryCounter(attack, false);
                 if (action != null) {
                     AttackEffect effect = EffectMaster.getAttackEffect(action);
@@ -146,6 +145,9 @@ public class DC_AttackMaster {
             if ((!countered) || attack.getAttacker().hasDoubleCounter()) {
                 if (canCounter) {
                     if (!counter) {
+                        if (attack.getAttacker().hasDoubleCounter()) {
+                        game.getLogManager().log(attack.getAttacker()+ ": Double Counter-Attack!");
+                        }
                         counterRule.tryCounter(attack);
                     }
                 }
@@ -285,7 +287,6 @@ public class DC_AttackMaster {
             } else {
                 if (dodged) {
                     attack.setDodged(true);
-                    log(attacked.getName() + " has dodged an attack from " + attacker.getNameIfKnown());
                     DC_SoundMaster.playMissedSound(attacker, getAttackWeapon(ref, offhand));
                     StackingRule.actionMissed(action);
                     // ++ animation? *MISS* //TODO ++ true strike

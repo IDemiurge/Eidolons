@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.hero;
 
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.texture.Images;
@@ -18,6 +19,11 @@ public class HqTraitsPanel extends HqElement {
     protected boolean expanded;
 
     @Override
+    public float getHeight() {
+        return 100;
+    }
+
+    @Override
     protected void update(float delta) {
         //slot based? to use fade 
         clear();
@@ -33,7 +39,7 @@ public class HqTraitsPanel extends HqElement {
                     break;
             }
             DynamicLayeredActor actor = createActor(sub);
-            add(actor);
+            add(actor).left();
         }
 
     }
@@ -54,7 +60,20 @@ public class HqTraitsPanel extends HqElement {
 
     protected DynamicLayeredActor createActor(Entity sub) {
         DynamicLayeredActor actor = new DynamicLayeredActor( sub.getImagePath(), 
-         getOverlay(sub), getUnderlay(sub));
+         getOverlay(sub), getUnderlay(sub)){
+            protected void init() {
+                setSize(getDefaultWidth(), getDefaultHeight() );
+                GdxMaster.center(underlay);
+                GdxMaster.center(image);
+                GdxMaster.center(overlay);
+            }
+            protected float getDefaultWidth() {
+                return 50;
+            }
+            protected float getDefaultHeight() {
+                return 50;
+            }
+        };
 //        container.setSize(getSize(), getSize());
         
         return actor;

@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.content.ValueMap;
 import main.content.enums.GenericEnums;
@@ -18,9 +19,11 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
+import main.system.sound.SoundMaster;
 import main.system.text.LogManager;
 
 import java.util.HashMap;
@@ -69,7 +72,7 @@ public class HearingRule implements ActionRule {
         Ref ref = listener.getRef().getCopy();
         ref.setTarget(unit.getId());
         boolean result = RollMaster.roll(GenericEnums.ROLL_TYPES.HEARING, suc, fail, ref,
-        "", "", false
+                "", "", false
         );//, "Hear me?", "source?");
 
         if (result) {
@@ -80,7 +83,7 @@ public class HearingRule implements ActionRule {
             String quality = true ? "quietly" : "noisily"; //audibly
 
             String logged = listener +
-                    " hears something " + descriptor +
+                    " hears something " + StringMaster.wrapInBraces(StringMaster.getWellFormattedString(descriptor)) +
                     " " +
                     type +
                     " " +
@@ -101,13 +104,20 @@ public class HearingRule implements ActionRule {
             }
 //                    "Same sound again!"
 //clear on combat end
-            if (repeat) {
+
+            if (repeat || RandomWizard.chance(89)) {
                 level = LogManager.LOGGING_DETAIL_LEVEL.FULL;
             } else {
-                if (unit.isMine())
+                if (unit.isMine()) {
                     EUtils.showInfoText(logged);
-                else
-                    EUtils.showInfoText("Hearing event logged!");
+                    if (RandomWizard.chance(89)) {
+                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.WHAT, unit, 100, 0);
+                    } else
+                        DC_SoundMaster.playMoveSound(unit);
+                    //TODO
+                } else {
+                    EUtils.showInfoText("A hearing event logged!");
+                }
             }
             game.getLogManager().log(level, logged);
 
