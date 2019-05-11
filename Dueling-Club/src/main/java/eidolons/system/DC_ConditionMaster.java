@@ -1,9 +1,6 @@
 package eidolons.system;
 
-import eidolons.ability.conditions.FacingCondition;
-import eidolons.ability.conditions.MoveCondition;
-import eidolons.ability.conditions.StatusCheckCondition;
-import eidolons.ability.conditions.VisibilityCondition;
+import eidolons.ability.conditions.*;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.req.CostCondition;
 import eidolons.ability.conditions.req.ItemCondition;
@@ -74,6 +71,8 @@ public class DC_ConditionMaster extends ConditionMaster {
     public static Condition getTargetingModConditions(TARGETING_MODIFIERS MOD) {
         String obj_ref = KEYS.MATCH.toString();
         switch (MOD) {
+            case NO_STEALTH:
+                return new NotCondition(new SneakingCondition());
             case SPACE:
                 return new SpaceCondition();
             case RANGE:
@@ -350,7 +349,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                         new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.DOOR.toString(), true)));
             case ATTACK:
                 c.add(new VisibilityCondition(UNIT_VISION.IN_SIGHT));
-                c.add(new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.SNEAKING)));
+
+//                new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.SNEAKING)
 //TODO igg demo hack
                 List<FACING_SINGLE> list = new ArrayList<>();
                 list.add(UnitEnums.FACING_SINGLE.IN_FRONT);

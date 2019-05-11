@@ -132,6 +132,12 @@ public class AnimMaster extends Group {
     }
 
     public static void waitForAnimations(ActionInput action) {
+        if (action == null) {
+            action = Eidolons.getGame().getLoop().getLastActionInput();
+        }
+        if (action == null) {
+            return;
+        }
         int maxTime = getMaxAnimWaitTime(action);
         //*speed ?
         int period = getAnimWaitPeriod();

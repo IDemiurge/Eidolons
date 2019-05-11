@@ -154,6 +154,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                         values.add(getValueContainer(unit, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
                     case BASIC:
                         addParamStringToValues(unit, values, PARAMS.N_OF_ACTIONS);
+//                        .center()
                         addParamStringToValues(unit, values, PARAMS.DAMAGE);
                         addParamStringToValues(unit, values, PARAMS.ATTACK);
                         addParamStringToValues(unit, values, PARAMS.DEFENSE);

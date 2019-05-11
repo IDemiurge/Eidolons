@@ -126,8 +126,10 @@ public class AbilityImpl extends ReferredElement implements Ability {
 //         ref.getCopy() // TODO could be useful, but why does it overwrite REF?
 //        );
 //        if (game.fireEvent(event)) {
-            GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES, this);
-
+//            GuiEventManager.trigger(GuiEventType.ABILITY_RESOLVES, this);
+        if (effects.size()==0) {
+            return false;
+        }
             return effects.apply(ref);
     }
 

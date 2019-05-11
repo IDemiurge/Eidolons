@@ -200,9 +200,6 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkModeDisablesCounters()) {
             return false;
         }
-        if (checkStatusDisablesCounters()) {
-            return false;
-        }
         if (checkStatus(STATUS.DISCOMBOBULATED)) {
             return false;
         }
@@ -259,10 +256,12 @@ public class UnitChecker extends EntityChecker<Unit> {
             return true;
         if (getEntity().isPlayerCharacter()) {
             if (ShadowMaster.isShadowAlive())
-                return true; //TODO fuck....
+                return true; //TODO igg demo hack
+            if (getEntity().getBuff("Unconscious") != null)
+                return true;
         }
-        return getEntity().getBuff("Unconscious") != null;
-//        return false;
+
+        return false;
     }
 
     public boolean canAttack() {

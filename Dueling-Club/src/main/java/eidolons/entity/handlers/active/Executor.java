@@ -25,6 +25,8 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
+import main.ability.Ability;
+import main.ability.ActiveAbility;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -322,10 +324,16 @@ public class Executor extends ActiveHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        } else
-        // for Multi-targeting when single-wrapped Abilities cannot be used
-        {
+        }
+//        else
+         // for Multi-targeting when single-wrapped Abilities cannot be used
+if (getAction().isStandardAttack()
+//if (getAction().isRanged()
+        || getAction().getAbilities() == null) //TODO broke on aimed shot eh?
+        if (!isResult() && getAction().getActives() != null) {
+            result = true;
             for (Active active : getAction().getActives()) {
+                ((Ability) active).setForcePresetTargeting(true); //TODO igg demo hack
                 try {
                     setResult(isResult() & active.activatedOn(getRef()));
                 } catch (Exception e) {

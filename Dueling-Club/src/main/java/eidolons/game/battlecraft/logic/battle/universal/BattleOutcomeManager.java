@@ -47,7 +47,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         // battle.setOutcome(outcome);
         game.stop();
         if (Bools.isFalse(outcome)) {
-            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK );
+            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__DEFEAT);
         }
         if (Bools.isTrue(outcome)) {
@@ -71,7 +71,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void defeat(boolean surrender, boolean end) {
-        if (!game.getMetaMaster().getDefeatHandler().isEnded(surrender, end)){
+        if (!game.getMetaMaster().getDefeatHandler().isEnded(surrender, end)) {
             return;
         }
         // TODO last level doesn't support saving! Disconnects perhaps, for the
@@ -129,7 +129,10 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
             return true;
         } else {
             if (checkDefeat()) {
-                defeat();
+                //TODO final hack
+                new Thread(() -> {
+                    defeat();
+                }, "defeat thread").start();
                 return true;
             }
         }
@@ -140,8 +143,8 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     protected boolean checkDefeat() {
         if (!getMaster().getMetaMaster().isAlliesSupported())
 //            if (!game.isDebugMode())
-                return Eidolons.getMainHero().isDead();
-                        //(game.getPlayer(true).getHeroObj().isDead());
+            return Eidolons.getMainHero().isDead();
+        //(game.getPlayer(true).getHeroObj().isDead());
 
         return checkNoPlayerUnitsLeft();
     }

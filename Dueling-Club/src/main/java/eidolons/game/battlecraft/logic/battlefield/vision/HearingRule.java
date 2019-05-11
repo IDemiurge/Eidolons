@@ -105,7 +105,7 @@ public class HearingRule implements ActionRule {
 //                    "Same sound again!"
 //clear on combat end
 
-            if (repeat || RandomWizard.chance(89)) {
+            if (repeat || RandomWizard.chance(110 - listener.getIntParam("perception"))) {
                 level = LogManager.LOGGING_DETAIL_LEVEL.FULL;
             } else {
                 if (unit.isMine()) {

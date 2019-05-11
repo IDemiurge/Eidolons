@@ -107,9 +107,13 @@ public class DC_StateManager extends StateManager {
                     objectsToReset = new LinkedHashSet<>();
                     unitsToReset = new LinkedHashSet<>();
                     for (BattleFieldObject obj : getGame().getBfObjects()) {
+
                         if ((ExplorationMaster.isExplorationOn() && obj.isOutsideCombat()) ||
                          getGame().getVisionMaster().getVisionRule().
-                          isResetRequiredSafe(Eidolons.getMainHero(), obj)) {
+                          isResetRequiredSafe(Eidolons.getMainHero(), obj)
+                        || isAlwaysReset(obj)
+
+                        ) {
                             objectsToReset.add(obj);
                             if (obj instanceof Unit) {
                                 unitsToReset.add((Unit) obj);
@@ -141,6 +145,13 @@ public class DC_StateManager extends StateManager {
             }
             resetLock.unlock();
         }
+    }
+
+    private boolean isAlwaysReset(BattleFieldObject obj) {
+        if (obj.isPlayerCharacter()) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isSelectiveResetOn() {

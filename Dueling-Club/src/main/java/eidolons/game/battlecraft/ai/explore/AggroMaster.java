@@ -87,13 +87,13 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (isCriticalBreak(unit, hero))
-                continue;
             if (unit.getAI().isEngaged()) {
                 set.add(unit);
                 newAggro = true;
                 unit.getAI().setEngaged(false);
             }
+            if (isCriticalBreak(unit, hero))
+                continue;
             if (PositionMaster.getExactDistance(hero, unit)>=
                     3+unit.getAI().getEngagementDuration()+ unit.getSightRangeTowards(hero))
                 continue;
@@ -135,10 +135,10 @@ public class AggroMaster extends ExplorationHandler {
         }
 
 
-        for (Unit unit : set) {
-            if (unit.getAI().getEngagementDuration() <= 1)
-                return set;
-        }
+//      igg clean  for (Unit unit : set) {
+//            if (unit.getAI().getEngagementDuration() <= 1)
+//                return set;
+//        }
         return set;
     }
 

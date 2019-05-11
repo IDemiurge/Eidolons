@@ -83,7 +83,8 @@ public class VisionMaster implements GenericVisionManager {
 
         if (ExplorationMaster.isExplorationOn() &&
                 getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-
+            main.system.auxiliary.log.LogMaster.log(1, "Vision reset skipped by period; time left: " +
+                    getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
         } else {
             getGame().getRules().getIlluminationRule().resetIllumination();
             getGame().getRules().getIlluminationRule().applyLightEmission();
@@ -122,7 +123,7 @@ public class VisionMaster implements GenericVisionManager {
                 for (Structure object : game.getStructures()) {
                     PLAYER_VISION newVision = visionRule.playerVision(unit, object);
                     PLAYER_VISION oldVision = getVisionController().getPlayerVisionMapper().get(player, object);
-                    if (newVision.isGreater(oldVision) || oldVision==null )
+                    if (newVision.isGreater(oldVision) || oldVision == null)
                         getVisionController().getPlayerVisionMapper().set(player, object, newVision);
 
                 }

@@ -12,7 +12,7 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import org.apache.commons.lang3.StringUtils;
 
-public class ValueContainer extends TablePanelX  implements AbstractValueContainer{
+public class ValueContainer extends TablePanelX implements AbstractValueContainer {
     protected Cell<ImageContainer> imageContainer;
     protected Cell<Label> nameContainer;
     protected Cell<Label> valueContainer;
@@ -103,9 +103,9 @@ public class ValueContainer extends TablePanelX  implements AbstractValueContain
         setName(name);
         if (texture != null) {
             imageContainer.setActor(new ImageContainer(new Image(texture)))
-             .height(texture.getRegionHeight())
-             .width(texture.getRegionWidth())
-             .center()
+                    .height(texture.getRegionHeight())
+                    .width(texture.getRegionWidth())
+                    .center()
             ;
         } else {
             imageContainer.fill(false).expand(0, 0);
@@ -125,7 +125,7 @@ public class ValueContainer extends TablePanelX  implements AbstractValueContain
             nameLabel = new Label(name, style);
         }
         nameContainer.setActor(
-         nameLabel
+                nameLabel
         ).padRight(12);
 
         valueContainer = addElement(null);
@@ -138,7 +138,7 @@ public class ValueContainer extends TablePanelX  implements AbstractValueContain
             valueLabel = new Label(value, style);
         }
         valueContainer.setActor(
-         valueLabel).growX().fillX();
+                valueLabel).growX().fillX();
 
 
         initSize();
@@ -270,13 +270,14 @@ public class ValueContainer extends TablePanelX  implements AbstractValueContain
         if (imageContainer.getActor() != null) {
             if (isScaledOnHover()) {
                 imageContainer.setActorX(
-                 imageContainer.getActor().getWidth() / 2 - w / 2);
+                        imageContainer.getActor().getWidth() / 2 - w / 2);
                 imageContainer.setActorY(
-                 imageContainer.getActor().getHeight() / 2 - h / 2);
+                        imageContainer.getActor().getHeight() / 2 - h / 2);
                 imageScaleX = w / imageContainer.getActor().getWidth();
                 imageScaleY = h / imageContainer.getActor().getHeight();
+
                 imageContainer.getActor().setScale(getImageScaleX(),
-                 getImageScaleY());
+                        getImageScaleY());
                 setFixedSize(true);
                 setSize(w, h);
             } else {
@@ -286,9 +287,9 @@ public class ValueContainer extends TablePanelX  implements AbstractValueContain
                 setSize(w, h);
                 //                imageContainer.getActor().    setSize(w, h);
                 imageContainer.setActorX(
-                 imageContainer.getActor().getWidth() / 2 - w / 2);
+                        imageContainer.getActor().getWidth() / 2 - w / 2);
                 imageContainer.setActorY(
-                 imageContainer.getActor().getHeight() / 2 - h / 2);
+                        imageContainer.getActor().getHeight() / 2 - h / 2);
             }
         }
     }

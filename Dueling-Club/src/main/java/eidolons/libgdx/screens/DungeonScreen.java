@@ -354,9 +354,9 @@ public class DungeonScreen extends GameScreenWithTown {
         cameraShift();
         if (canShowScreen()) {
             if (DC_Game.game != null)
-                if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
+                if (DC_Game.game.getLoop() instanceof RealTimeGameLoop) {
                     if (!isBlocked())
-                        ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
+                        ((RealTimeGameLoop) Eidolons.game.getLoop()).act(delta);
                 }
 
             postProcessing.begin();

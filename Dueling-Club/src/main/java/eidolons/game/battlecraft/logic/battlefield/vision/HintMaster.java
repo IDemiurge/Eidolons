@@ -29,13 +29,13 @@ public class HintMaster {
         Set<OUTLINE_HINT> set = new LinkedHashSet<>();
         if (unit.isSmall()) {
             set.add(OUTLINE_HINT.SMALL);
-        }
+        } else
         if (unit.isTall()) {
             set.add(OUTLINE_HINT.TALL);
         }
         if (unit.isHuge()) {
             set.add(OUTLINE_HINT.HUGE);
-        }
+        } else
         if (unit.isShort()) {
             set.add(OUTLINE_HINT.SHORT);
         }

@@ -26,6 +26,8 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.QueueView;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
+import eidolons.libgdx.gui.HideButton;
+import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -36,6 +38,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
@@ -68,6 +71,8 @@ public class InitiativePanel extends GroupX {
     private FadeImageContainer light;
 
     SpeedControlPanel speedControlPanel;
+    private HideButton hideButton;
+
     public InitiativePanel() {
         init();
         bindEvents();
@@ -86,10 +91,13 @@ public class InitiativePanel extends GroupX {
         addActor(gears = new GearCluster(3, 0.8f));
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
-        addActor(speedControlPanel = new SpeedControlPanel());
+        addActor(
+                RollDecorator.decorate(
+                        speedControlPanel = new SpeedControlPanel(), FACING_DIRECTION.SOUTH));
         addActor( container = new Container<>(queueGroup));
-
+        addActor(hideButton= new HideButton(speedControlPanel));
         speedControlPanel.setPosition(0, -300);
+        hideButton.setPosition(160, -100);
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
          "components", "dc", "atb",
@@ -377,6 +385,8 @@ public class InitiativePanel extends GroupX {
 
     @Override
     public void act(float delta) {
+
+        hideButton.setPosition(160, -100);
         speedControlPanel.setPosition(0, -300);
         super.act(delta);
         if (isRealTime()) {

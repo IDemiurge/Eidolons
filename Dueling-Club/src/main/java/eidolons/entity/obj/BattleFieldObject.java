@@ -326,6 +326,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             if (NumberUtils.getInteger(value) >
                     getIntParam(PARAMS.TOUGHNESS)) {
                 LogMaster.log(1, "gotcha dwarf " + this + value);
+            //igg demo hack!
+                value = getParam(PARAMS.TOUGHNESS);
             }
         }
         if (param == PARAMS.C_N_OF_ACTIONS) {
@@ -404,6 +406,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         Integer regen = getIntParam(ContentValsManager.getRegenParam(p));
         if (regen != 0) {
+            //TODO igg demo hack
+            if (p == PARAMS.STAMINA) {
+                regen = MathMaster.getMinMax(regen, 5, getIntParam("stamina")/2);
+            }
             modifyParameter(ContentValsManager.getCurrentParam(p), regen, getIntParam(p));
         }
 
@@ -597,6 +603,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isIndestructible() {
         if (getGame().isDebugMode())
             return false;
+        if (checkStatus( STATUS.UNDYING ))
+            return true;
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
     }
 

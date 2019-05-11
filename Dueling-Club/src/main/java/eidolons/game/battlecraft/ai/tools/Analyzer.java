@@ -450,12 +450,12 @@ public class Analyzer extends AiHandler {
 //                    }
 //                }
             }
-            if (detected) // TODO in sight etc
-            {
-                if (cell.getActivePlayerVisionStatus() != PLAYER_VISION.DETECTED) {
-                    continue;
-                }
-            }
+//            if (detected) // TODO igg demo bug
+//            {
+//                if (cell.getActivePlayerVisionStatus() != PLAYER_VISION.DETECTED) {
+//                    continue;
+//                }
+//            }
             list.add(cell);
 
         }

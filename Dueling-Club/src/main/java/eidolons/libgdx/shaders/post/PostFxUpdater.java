@@ -36,7 +36,7 @@ public class PostFxUpdater {
     }
 
     public void update() {
-        Unit hero = Eidolons.getMainHero();
+        Unit hero = Eidolons.MAIN_HERO;
         if (hero == null) {
             return;
         }
@@ -76,10 +76,11 @@ public class PostFxUpdater {
     private void applyTemplate(POST_FX_TEMPLATE template) {
         switch (template) {
             case UNCONSCIOUS:
-                apply(POST_FX_FACTOR.FADE_COLOR, 0.5f);
-                apply(POST_FX_FACTOR.DISCOLOR, 0.5f);
-                apply(POST_FX_FACTOR.DARKEN, 0.5f);
-                apply(POST_FX_FACTOR.DISTORT, 0.5f);
+                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
+//                apply(POST_FX_FACTOR.DISCOLOR, 0.5f);
+                apply(POST_FX_FACTOR.BLOOM, 1.05f);
+                apply(POST_FX_FACTOR.LENS, 0.3f);
+                apply(POST_FX_FACTOR.BLUR, 0.5f);
                 break;
         }
     }
@@ -98,12 +99,12 @@ public class PostFxUpdater {
                     apply(POST_FX_FACTOR.BLUR, 0.5f);
 //                    apply(POST_FX_FACTOR.DARKEN, 0.7f);
                 } else if (status == LOW) {
-                    apply(POST_FX_FACTOR.FADE_COLOR, 0.6f);
+                    apply(POST_FX_FACTOR.FADE_COLOR, 0.7f);
 //                    apply(POST_FX_FACTOR.DARKEN, 0.9f);
                     apply(POST_FX_FACTOR.SMOOTH, 1.2f);
-                    apply(POST_FX_FACTOR.BLUR, 0.3f);
+                    apply(POST_FX_FACTOR.BLUR, 0.2f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
+//                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
                     apply(POST_FX_FACTOR.SMOOTH, 1.2f);
                 }
                 break;
@@ -115,7 +116,7 @@ public class PostFxUpdater {
                     apply(POST_FX_FACTOR.BLUR, 0.6f);
                     apply(POST_FX_FACTOR.FADE_COLOR, 0.6f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.BLOOM, 1.3f);
+//                    apply(POST_FX_FACTOR.BLOOM, 1.21f);
 //                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
                     apply(POST_FX_FACTOR.SMOOTH, 1.2f);
 //                    apply(POST_FX_FACTOR.LENS2, 1.2f);
@@ -124,16 +125,16 @@ public class PostFxUpdater {
                 break;
             case FOCUS:
                 if (status == CRITICAL) {
-                    apply(POST_FX_FACTOR.DISTORT, 1);
+//                    apply(POST_FX_FACTOR.DISTORT, 1);
                     apply(POST_FX_FACTOR.BLUR, 0.6f);
                     apply(POST_FX_FACTOR.MOTION_BLUR, 0.6f);
                 } else if (status == LOW) {
                     apply(POST_FX_FACTOR.BLUR, 0.4f);
                     apply(POST_FX_FACTOR.MOTION_BLUR, 0.4f);
                 } else if (status == HIGH) {
-//                    apply(POST_FX_FACTOR.LENS, 1.2f);
+                    apply(POST_FX_FACTOR.LENS2, 1.2f);
 //                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
-                    apply(POST_FX_FACTOR.DISTORT, -0.31f);
+//                    apply(POST_FX_FACTOR.DISTORT, -0.31f);
                 }
                 break;
 
@@ -199,12 +200,18 @@ public class PostFxUpdater {
     }
 
     private void applyFactors() {
+
         for (POST_FX_FACTOR fxFactor : vals) {
             PostProcessorEffect effect = getEffect(fxFactor);
             if (effect == null) {
                 continue;
             }
             Float coef = fxMap.get(fxFactor);
+//            if (fxFactor== POST_FX_FACTOR.BLOOM) { TODO igg demo
+//                fxMap.remove(POST_FX_FACTOR.LENS2);
+//                fxMap.remove(POST_FX_FACTOR.FADE_COLOR);
+//                fxMap.remove(POST_FX_FACTOR.SMOOTH);
+//            }
             if (coef == null) {
                 effect.setEnabled(false);
             } else {

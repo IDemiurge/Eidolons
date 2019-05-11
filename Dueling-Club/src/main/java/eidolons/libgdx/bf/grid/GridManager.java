@@ -115,7 +115,11 @@ public class GridManager {
 
     public void unitMoved(Obj sourceObj) {
         if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(sourceObj,
-                getViewMap().get(sourceObj)))
+                getViewMap().get(sourceObj))
+        || sourceObj.getGame().getManager().getActiveObj()!= sourceObj
+                //what about COUNTER ATTACK?!
+                //TODO igg demo hack for force and teleport now...
+        )
             panel.unitMoved((BattleFieldObject) sourceObj);
     }
 

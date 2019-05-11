@@ -1005,10 +1005,10 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum HIDDEN_ACTIONS {
-        Cower,
-        Rage,
+        Cower_In_Terror,
+        Helpless_Rage,
         Idle,
-        Stumble;
+        Stumble_About;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());

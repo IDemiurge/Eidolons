@@ -40,10 +40,10 @@ public class PanelActionsDataSource implements
     public static ActionValueContainer getActionValueContainer(DC_ActiveObj el, int size) {
         ActionValueContainer container = cache.get(el);
         boolean valid = el.canBeManuallyActivated();
-        if (container != null) {
-            container.setValid(valid);
-            return container;
-        }
+//        if (container != null) {
+//            container.setValid(valid);
+//            return container;
+//        }
         container = new ActionValueContainer(
          size, valid, getImage(el)
                 //TextureCache.getOrCreateSizedRegion(size, getImage(el))

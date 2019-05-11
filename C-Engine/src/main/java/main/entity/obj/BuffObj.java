@@ -418,6 +418,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     public boolean isDisplayed() {
         if (getType().getType() != null)
             if (getType().getType().getName().equals(DUMMY_BUFF_TYPE))
+                if (!isTransient())
                 return false;
         return true;
     }

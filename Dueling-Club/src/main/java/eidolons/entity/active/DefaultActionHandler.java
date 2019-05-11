@@ -216,7 +216,8 @@ public class DefaultActionHandler {
              msg + " " + target);
             return false;
         }
-        Context context = new Context(source, target);
+        Context context = new Context(action.getRef());
+        context.setTarget(target);
         return activate(context, action);
 
     }
@@ -245,6 +246,11 @@ public class DefaultActionHandler {
         DC_ActiveObj pick = null;
         int max = 0;
         for (DC_ActiveObj attack : subActions) {
+            if (attack.isRanged()) {
+                if (target.getCoordinates().dst_(attack.getOwnerUnit(). getCoordinates())<1.4f) {
+                    continue;
+                }
+            }
             if (attack.getActiveWeapon().isNatural())
                 if (attack.getOwnerUnit().getWeapon(attack.isOffhand()) != null)
                     continue;
@@ -258,7 +264,7 @@ public class DefaultActionHandler {
                     return attack.getOwnerUnit();
                 }
             });
-            int priority = 0;
+            int priority = Integer.MIN_VALUE;
             try {
                 priority = DC_PriorityManager.getAttackPriority(
                  attack, target);

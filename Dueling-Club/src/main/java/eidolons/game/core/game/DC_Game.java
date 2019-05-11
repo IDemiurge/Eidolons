@@ -632,7 +632,7 @@ public class DC_Game extends GenericGame {
     }
 
     public boolean isPaused() {
-        return getGameLoop().isPaused();
+        return getLoop().isPaused();
     }
 
 
@@ -814,6 +814,7 @@ public class DC_Game extends GenericGame {
                 combatLoop.endCombat();
             } else {
                 //TODO what now?
+                startCombat();
             }
         }
         return loop;

@@ -1314,7 +1314,7 @@ public class Unit extends DC_UnitModel {
                 }
                 if (getCoordinates().dst_(coordinates)>=2) {
                     if (game.isStarted())
-                        if (originalCoordinates.equals(coordinates)){
+                        if (!originalCoordinates.equals(coordinates)){
                             main.system.auxiliary.log.LogMaster.log(1,"Teleport bug? " );
                             return;
                         }

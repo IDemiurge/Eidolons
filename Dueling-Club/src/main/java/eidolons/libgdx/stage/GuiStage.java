@@ -604,6 +604,12 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     @Override
     public boolean keyDown(int keyCode) {
+        if (DC_Game.game == null) {
+            return false;
+        }
+        if (DC_Game.game.getKeyManager() == null) {
+            return false;
+        }
         DC_Game.game.getKeyManager().handleKeyDown(keyCode);
         return super.keyDown(keyCode);
     }

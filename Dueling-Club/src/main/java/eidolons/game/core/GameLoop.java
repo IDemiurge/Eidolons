@@ -63,7 +63,8 @@ public class GameLoop {
     protected DequeImpl<ActionInput> playerActionQueue = new DequeImpl<>();
     protected Thread thread;
     protected boolean started;
-    private boolean stopped;
+    protected boolean stopped;
+    protected ActionInput lastActionInput;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -373,8 +374,9 @@ public class GameLoop {
             EUtils.showInfoText(RandomWizard.random() ? "The game is Paused!" : "Game is paused now...");
             return;
         }
-
         WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput, false);
+        if (actionInput != null)
+        lastActionInput = actionInput;
     }
 
     public Unit getActiveUnit() {
@@ -497,11 +499,20 @@ public class GameLoop {
     }
 
     public boolean checkThreadIsRunning() {
+        if (thread != null) {
+            if (thread.isAlive()) {
+                return true;
+            }
+        }
         for (Thread t : Thread.getAllStackTraces().keySet()) {
             if (t.getName().equalsIgnoreCase(getThreadName())) {
                 return true;
             }
         }
         return false;
+    }
+
+    public ActionInput getLastActionInput() {
+        return lastActionInput;
     }
 }

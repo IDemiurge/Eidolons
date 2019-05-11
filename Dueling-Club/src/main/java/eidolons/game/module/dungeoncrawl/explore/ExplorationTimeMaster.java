@@ -97,6 +97,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             visibilityResetTimer = 1;
     }
 
+    public float getVisibilityResetTimer() {
+        return visibilityResetTimer;
+    }
+
     public void act(float delta) {
         delta *= speed;
         time += delta;

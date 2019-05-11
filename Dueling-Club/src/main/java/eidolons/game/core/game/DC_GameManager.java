@@ -466,7 +466,7 @@ public class DC_GameManager extends GameManager {
             active =   getGame().getLoop().getActiveUnit();
         }
         if (ExplorationMaster.isExplorationOn())
-        if (active.isAiControlled() || active==null){
+        if ( active==null || active.isAiControlled() ){
             return Eidolons.getMainHero();
         }
         return active;

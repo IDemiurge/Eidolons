@@ -111,7 +111,7 @@ public class Player {
         if (equals(player)) {
             return false;
         }
-        return !isNeutral();
+        return !isNeutral() && !player.isNeutral();
     }
 
     public boolean isNeutral() {

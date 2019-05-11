@@ -434,8 +434,7 @@ public class DC_AttackMaster {
         // spikes
         // map=
 
-        if (attackedUnit != null)
-            attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_ATTACK, attackedUnit, ref, offhand); // e.g.
+            attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_ATTACK, attacked, ref, offhand); // e.g.
         // TODO
 
         try {

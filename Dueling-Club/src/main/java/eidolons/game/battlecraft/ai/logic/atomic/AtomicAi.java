@@ -192,7 +192,10 @@ public class AtomicAi extends AiHandler {
     public Action getAtomicActionTurn(UnitAI ai) {
         Coordinates pick =
                 getApproachCoordinate(ai);
-        if (pick == null) return null;
+        if (pick == null) { //TODO igg demo fix
+            return AiActionFactory.newAction(RandomWizard.random() ?
+                    "Turn Clockwise" : "Turn Anticlockwise", ai);
+        }
         List<Action> sequence = getTurnSequenceConstructor()
                 .getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
         if (ListMaster.isNotEmpty(sequence))
@@ -428,12 +431,12 @@ public class AtomicAi extends AiHandler {
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
             return false;
         VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Eidolons.getMainHero());
-        float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6  +
+        float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6 +
                 ai.getUnit().getSightRangeTowards(Eidolons.getMainHero());
         if (ai.getType().isCaster())
-            dst*=1.5f;
+            dst *= 1.5f;
         if (ai.getType().isRanged())
-            dst*=1.25f;
+            dst *= 1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
             if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst) {
 //           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().get(ai.getUnit().getOwner(),
@@ -505,8 +508,8 @@ public class AtomicAi extends AiHandler {
             return false;
         }
 
-        minDistance -=new Float( Analyzer.getVisibleEnemies(ai).size())/2;
-        minDistance += new Float( ai.getGroup().getMembers().size())/2;
+        minDistance -= new Float(Analyzer.getVisibleEnemies(ai).size()) / 2;
+        minDistance += new Float(ai.getGroup().getMembers().size()) / 2;
 
         Double average = ai.getGroup().getMembers().stream().collect(
                 Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));

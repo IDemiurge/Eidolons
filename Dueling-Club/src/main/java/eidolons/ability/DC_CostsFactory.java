@@ -156,7 +156,13 @@ public class DC_CostsFactory {
                 }
                 return super.pay(payee, ref);
             }
-        }, cost_param);
+        }, cost_param){
+            @Override
+            public boolean canBePaid(Ref REF, boolean noAlt) {
+                return true;
+            }
+
+        };
         cost.setVariable(var);
         return cost;
     }

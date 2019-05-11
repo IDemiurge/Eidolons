@@ -12,6 +12,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.Effects;
+import main.ability.effects.common.AddStatusEffect;
 import main.ability.effects.container.ConditionalEffect;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -84,8 +85,8 @@ public class RageRule extends DC_CounterRule {
 
                         new ConditionalEffect(
                                 new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
-
-                                new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK))
+                                new Effects(new AddStatusEffect(STATUS.UNDYING),
+                                        new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK)))
                 });
     }
 

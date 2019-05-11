@@ -119,7 +119,7 @@ public abstract class DataModel {
             return "";
         }
         LogMaster.log(LogMaster.CORE_DEBUG, value_ref + " - custom prop: "
-         + getCustomParamMap().get(value_ref));
+                + getCustomParamMap().get(value_ref));
         return getCustomPropMap().get(value_ref);
 
     }
@@ -128,12 +128,14 @@ public abstract class DataModel {
         if (getCustomParamMap() == null) {
             return 0;
         }
-
         String string = getCustomParamMap().get(value_ref.toUpperCase());
+        if (string == null) {
+            value_ref = CounterMaster.findCounter(value_ref);
+            string = getCustomParamMap().get(value_ref.toUpperCase());
+        }
         if (string == null) {
             return 0;
         }
-
         return new Formula(string).getInt(ref);
     }
 
@@ -147,7 +149,7 @@ public abstract class DataModel {
 
     public boolean setCounter(String name, int newValue, boolean strict) {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
-         getCustomParamMap().get(name));
+                getCustomParamMap().get(name));
         if (realName == null) {
             if (!name.contains(StringMaster.COUNTER)) {
                 return setCounter(name + StringMaster.COUNTER, newValue);
@@ -190,7 +192,7 @@ public abstract class DataModel {
         if (modValue == 0)
             return false;
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
-         getCustomParamMap().get(name));
+                getCustomParamMap().get(name));
         if (realName == null) {
             realName = CounterMaster.findCounter(name, strict);
         }
@@ -239,7 +241,7 @@ public abstract class DataModel {
         if (doubleParam.isEmpty()) {
             return 0.0;
         }
-        if (NumberUtils.isIntegerOrNumber(doubleParam)==null )
+        if (NumberUtils.isIntegerOrNumber(doubleParam) == null)
             return (Double) new Formula(doubleParam).evaluate(getRef());
         return NumberUtils.getDouble(getDoubleParam(param, false));
     }
@@ -594,7 +596,7 @@ public abstract class DataModel {
         }
         if (value == null) {
             LogMaster.log(LogMaster.VALUE_DEBUG, "Value not found: "
-             + val.getName());
+                    + val.getName());
         }
         return value;
     }
@@ -638,10 +640,10 @@ public abstract class DataModel {
 
         if (LogMaster.VALUE_DEBUG_ON)
             LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
-             + param.getName() + " by " + amount);
+                    + param.getName() + " by " + amount);
         if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
             if (!fireParamEvent(param, String.valueOf(amount),
-             CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+                    CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
                 return true; // false?
             }
 
@@ -813,7 +815,7 @@ public abstract class DataModel {
     }
 
     private boolean isValueEventsOn(String param) {
-        if (isBeingReset() || getGame()==null )
+        if (isBeingReset() || getGame() == null)
             return false;
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
@@ -954,8 +956,8 @@ public abstract class DataModel {
         int c_value = MathMaster.getFractionValue(base_value, percentage);
         setParam(c_p, c_value, true);
         LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s "
-         + base_p.getName() + " current value reset: " + percentage + "% out of "
-         + base_value + " = " + c_value);
+                + base_p.getName() + " current value reset: " + percentage + "% out of "
+                + base_value + " = " + c_value);
 
     }
 
@@ -971,7 +973,7 @@ public abstract class DataModel {
         int percentage = MathMaster.getPercentage(c_value, base_value);
         setParam(c_perc, percentage, true);
         LogMaster.log(LogMaster.VALUE_DEBUG, getName() + "'s " + p.getName()
-         + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
+                + " percentage reset: " + c_value + " out of " + base_value + " = " + percentage);
     }
 
     public Game getGame() {
@@ -1069,7 +1071,7 @@ public abstract class DataModel {
     public boolean addProperty(PROPERTY prop, String value, boolean noDuplicates, boolean addInFront) {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "adding  " + value + " to "
-         + getName() + "'s " + prop.getName());
+                + getName() + "'s " + prop.getName());
 
         if (value.contains(StringMaster.AND_PROPERTY_SEPARATOR)) {
             for (String s : ContainerUtils.open(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
@@ -1175,7 +1177,7 @@ public abstract class DataModel {
     public boolean removeProperty(PROPERTY prop, String value, boolean all) {
 
         LogMaster.log(LogMaster.VALUE_DEBUG, "Removing  " + value + " from "
-         + getName() + "'s " + prop.getName());
+                + getName() + "'s " + prop.getName());
         // if (!firePropEvent(CONSTRUCTED_EVENT_TYPE.PROP_BEING_REMOVED,
         // prop.getName()))
         // return false;
@@ -1294,6 +1296,7 @@ public abstract class DataModel {
     public void addParam(PARAMETER parameter, int value) {
         modifyParameter(parameter, value);
     }
+
     public void addParam(PARAMETER parameter, String param, boolean base) {
         modifyParameter(parameter, NumberUtils.getInteger(param), base);
     }
@@ -1339,8 +1342,8 @@ public abstract class DataModel {
     protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
         Map<PARAMETER, String> innerMap = new HashMap<>();
-        map.keySet().removeIf(key -> map.get(key)==null );
-        map.keySet().removeIf(key ->  (key)==null );
+        map.keySet().removeIf(key -> map.get(key) == null);
+        map.keySet().removeIf(key -> (key) == null);
         innerMap.putAll(map);
 
         clone.setMap(innerMap);
@@ -1363,8 +1366,8 @@ public abstract class DataModel {
     protected PropMap clonePropMap(Map<PROPERTY, String> map) {
         PropMap clone = new PropMap();
         Map<PROPERTY, String> innerMap = new ConcurrentHashMap<>();
-        map.keySet().removeIf(key -> map.get(key)==null );
-        map.keySet().removeIf(key ->  (key)==null );
+        map.keySet().removeIf(key -> map.get(key) == null);
+        map.keySet().removeIf(key -> (key) == null);
         innerMap.putAll(map);
 
         clone.setMap(innerMap);
@@ -1593,7 +1596,7 @@ public abstract class DataModel {
 
     public WORKSPACE_GROUP getWorkspaceGroup() {
         return new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(WORKSPACE_GROUP.class,
-         getProperty(G_PROPS.WORKSPACE_GROUP));
+                getProperty(G_PROPS.WORKSPACE_GROUP));
     }
 
     public void setWorkspaceGroup(WORKSPACE_GROUP value) {
@@ -1611,7 +1614,7 @@ public abstract class DataModel {
     public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
         if (ListMaster.isNotEmpty(list)) {
             setProperty(prop, ContainerUtils.constructContainer(ListMaster.toNameList(list)),
-             isTypeLinked());
+                    isTypeLinked());
         } else {
             removeProperty(prop);
             getType().removeProperty(prop);

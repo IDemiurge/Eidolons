@@ -98,6 +98,8 @@ public class AiUnitActionMaster {
             case SEARCH: // can it be MOVE?
                 if (unit.getBuff("Search Mode") == null) {
                     actions.add(AiActionFactory.getUnitAction(unit, "Search Mode"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Turn Clockwise"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Turn Anticlockwise"));
                 } else {
                     actions.add(AiActionFactory.getUnitAction(unit, "Move"));
                 }

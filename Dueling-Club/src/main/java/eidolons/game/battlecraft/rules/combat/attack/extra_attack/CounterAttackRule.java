@@ -10,6 +10,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -28,9 +29,6 @@ public class CounterAttackRule {
     }
 
     public static boolean canCounter(Unit attacked, DC_ActiveObj active) {
-        if (!attacked.canActNow()) {
-            return false;
-        }
         if (!attacked.canCounter()) {
             return false;
         }

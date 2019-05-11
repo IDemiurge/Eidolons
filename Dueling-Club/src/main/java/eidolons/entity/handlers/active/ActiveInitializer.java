@@ -48,7 +48,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
         }
         getMaster().getHandler().getTargeter().initTargetingMode();
-
+if (!getEntity().getActives().isEmpty()){
+    return;
+}
             if (EffectFinder.getEffectsFromAbilities(getEntity().getAbilities()).size()==0){
                 if (getEntity() instanceof DC_UnitAction) {
                     if (((DC_UnitAction) getEntity()).isDummy()) {

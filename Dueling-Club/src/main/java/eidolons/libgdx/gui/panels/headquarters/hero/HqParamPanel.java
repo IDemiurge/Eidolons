@@ -30,7 +30,7 @@ public class HqParamPanel extends HqElement{
     }
     public HqParamPanel(PARAMETER...params) {
         setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
-        setSize(GDX.size(350), GDX.size(75));
+        setSize(GDX.size(580), GDX.size(75));
         add(group = new HorizontalGroup()).center();
         group.setSize(getWidth()-60, getHeight());
         group.space(GDX.size(10));

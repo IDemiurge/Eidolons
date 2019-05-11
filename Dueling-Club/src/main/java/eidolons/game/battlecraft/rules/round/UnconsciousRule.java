@@ -167,7 +167,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         if (unit.isDead() == unconscious) {
             return false;
         }
-        if (0 >= endurance) {
+        if (endurance <= 0) {
             return true;
         }
         if (toughness > 0) {

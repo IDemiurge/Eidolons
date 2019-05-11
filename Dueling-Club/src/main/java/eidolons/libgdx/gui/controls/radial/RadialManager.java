@@ -472,7 +472,7 @@ public class RadialManager {
                     if (!target.equals(active.getOwnerUnit())) {
                         context.setTarget(target.getId());
                     }
-                Eidolons.getGame().getGameLoop().actionInput(
+                Eidolons.getGame().getLoop().actionInput(
                  new ActionInput(active, context));
             } else {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.CANNOT_ACTIVATE, "", active);

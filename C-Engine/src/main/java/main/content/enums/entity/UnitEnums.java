@@ -389,6 +389,7 @@ public final class UnitEnums {
         UNLOCKED,
         LOCKED,
         UNCONSCIOUS,
+        UNDYING,
         ENGAGED,
         VIRULENT, // cannot
         // act/counter,
@@ -410,6 +411,7 @@ public final class UnitEnums {
         // stuff...
 
         ;
+
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());

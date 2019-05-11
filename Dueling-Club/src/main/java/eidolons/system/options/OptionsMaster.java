@@ -77,8 +77,8 @@ public class OptionsMaster {
 
         for (Object sub : animOptions.getValues().keySet()) {
             new EnumMaster<ANIMATION_OPTION>().
-             retrieveEnumConst(ANIMATION_OPTION.class,
-              animOptions.getValues().get(sub).toString());
+                    retrieveEnumConst(ANIMATION_OPTION.class,
+                            animOptions.getValues().get(sub).toString());
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
             if (key == null) {
                 continue;
@@ -91,7 +91,7 @@ public class OptionsMaster {
             switch (key) {
                 case SPEED:
                     AnimMaster.getInstance().setAnimationSpeedFactor(
-                     floatValue);
+                            floatValue);
                     break;
                 case FLOAT_TEXT_DURATION_MOD:
                     FloatingTextLayer.setDurationMod(floatValue);
@@ -125,11 +125,15 @@ public class OptionsMaster {
 
     }
 
+    public static void applyControlOptions() {
+        applyControlOptions(getControlOptions());
+    }
+
     private static void applyControlOptions(ControlOptions options) {
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<CONTROL_OPTION>().
-             retrieveEnumConst(CONTROL_OPTION.class,
-              options.getValues().get(sub).toString());
+                    retrieveEnumConst(CONTROL_OPTION.class,
+                            options.getValues().get(sub).toString());
             CONTROL_OPTION key = options.getKey((sub.toString()));
             if (key == null)
                 continue;
@@ -172,40 +176,47 @@ public class OptionsMaster {
         }
     }
 
+    public static void applyAnimOptions() {
+        applyAnimOptions(getAnimOptions());
+    }
+    public static void applyGameplayOptions() {
+        applyGameplayOptions(getGameplayOptions());
+    }
+
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
             new EnumMaster<GAMEPLAY_OPTION>().
-             retrieveEnumConst(GAMEPLAY_OPTION.class,
-              gameplayOptions.getValues().get(sub).toString());
+                    retrieveEnumConst(GAMEPLAY_OPTION.class,
+                            gameplayOptions.getValues().get(sub).toString());
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
             String value = gameplayOptions.getValue(key);
-                switch (key) {
-                    case GAME_SPEED:
-                        try {
-                            float speed = gameplayOptions.getFloatValue(key) / 100;
-                            ExplorationTimeMaster.setDefaultSpeed(speed);
-                            MacroTimeMaster.getInstance().setSpeed(speed);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
-                        break;
-                    case GHOST_MODE:
-                        if (!CoreEngine.isFastMode())
-                            VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
-                        break;
-                    case RULES_SCOPE:
-                        RuleKeeper.setScope(
-                         new EnumMaster<RULE_SCOPE>().
-                          retrieveEnumConst(RULE_SCOPE.class,
-                           gameplayOptions.getValues().get(sub).toString()
-                          ));
-                        break;
-                    case GAME_DIFFICULTY:
-                        if (Eidolons.game != null)
-                            if (Eidolons.game.getBattleMaster() != null)
-                                Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
-                        break;
-                }
+            switch (key) {
+                case GAME_SPEED:
+                    try {
+                        float speed = gameplayOptions.getFloatValue(key) / 100;
+                        ExplorationTimeMaster.setDefaultSpeed(speed);
+                        MacroTimeMaster.getInstance().setSpeed(speed);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                    break;
+                case GHOST_MODE:
+                    if (!CoreEngine.isFastMode())
+                        VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
+                    break;
+                case RULES_SCOPE:
+                    RuleKeeper.setScope(
+                            new EnumMaster<RULE_SCOPE>().
+                                    retrieveEnumConst(RULE_SCOPE.class,
+                                            gameplayOptions.getValues().get(sub).toString()
+                                    ));
+                    break;
+                case GAME_DIFFICULTY:
+                    if (Eidolons.game != null)
+                        if (Eidolons.game.getBattleMaster() != null)
+                            Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
+                    break;
+            }
         }
     }
 
@@ -214,7 +225,7 @@ public class OptionsMaster {
             return;
         if (!GdxMaster.isLwjglThread()) {
             Gdx.app.postRunnable(() ->
-             applySoundOptions_(soundOptions));
+                    applySoundOptions_(soundOptions));
         } else
             applySoundOptions_(soundOptions);
     }
@@ -226,8 +237,8 @@ public class OptionsMaster {
         }
         for (Object sub : soundOptions.getValues().keySet()) {
             new EnumMaster<SOUND_OPTION>().
-             retrieveEnumConst(SOUND_OPTION.class,
-              soundOptions.getValues().get(sub).toString());
+                    retrieveEnumConst(SOUND_OPTION.class,
+                            soundOptions.getValues().get(sub).toString());
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
             String value = soundOptions.getValue(key);
 
@@ -235,7 +246,7 @@ public class OptionsMaster {
                 switch (key) {
                     case SOUNDS_OFF:
                         SoundMaster.setOn(!OptionsMaster.getSoundOptions().
-                         getBooleanValue(SOUND_OPTION.SOUNDS_OFF));
+                                getBooleanValue(SOUND_OPTION.SOUNDS_OFF));
                         //                        MusicMaster.resetSwitcher();
                         break;
                     case MUSIC_OFF:
@@ -243,8 +254,8 @@ public class OptionsMaster {
                         break;
                     case MUSIC_VARIANT:
                         master.setVariant(
-                         new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
-                          soundOptions.getValue(key)));
+                                new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
+                                        soundOptions.getValue(key)));
                         break;
                 }
             } else {
@@ -272,7 +283,7 @@ public class OptionsMaster {
         }
         if (!GdxMaster.isLwjglThread()) {
             Gdx.app.postRunnable(() ->
-             applyGraphicsOptions_(graphicsOptions));
+                    applyGraphicsOptions_(graphicsOptions));
         } else
             applyGraphicsOptions_(graphicsOptions);
     }
@@ -359,7 +370,7 @@ public class OptionsMaster {
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
                 ParticleManager.setAmbienceMoveOn(
-                 bool);
+                        bool);
                 break;
             case RESOLUTION:
                 Eidolons.setResolution(value);
@@ -413,7 +424,7 @@ public class OptionsMaster {
             return null;
         }
         OPTIONS_GROUP group = new EnumMaster<OPTIONS_GROUP>().retrieveEnumConst(
-         OPTIONS_GROUP.class, name);
+                OPTIONS_GROUP.class, name);
         Options options = getOptions(group);
 
         if (options == null) {
@@ -421,7 +432,7 @@ public class OptionsMaster {
         }
 
         String optionName = ListChooser.chooseString(ListMaster.toStringList(options.getValues()
-         .keySet().toArray()));
+                .keySet().toArray()));
         String value = DialogMaster.inputText("", options.getValue(optionName));
         if (value == null) {
             options.removeValue(optionName);
@@ -462,7 +473,7 @@ public class OptionsMaster {
             //OR PUT UNID-DATA-STRING there
             for (Object option : optionsMap.get(sub).getValues().keySet()) {
                 content.append(XML_Converter.wrap(option.toString(),
-                 optionsMap.get(sub).getValues().get(option).toString()) + StringMaster.NEW_LINE);
+                        optionsMap.get(sub).getValues().get(option).toString()) + StringMaster.NEW_LINE);
             }
             content.append(XML_Converter.closeXml(sub.toString()) + StringMaster.NEW_LINE);
         }
@@ -470,15 +481,15 @@ public class OptionsMaster {
         if (isLocalOptionsPreferred()) {
             FileManager.write(content.toString(), getLocalOptionsPath());
         } else {
-        FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
-        FileManager.write(content.toString(), getGlobalOptionsPath());
+//    TODO igg demo fix    FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
+            FileManager.write(content.toString(), getGlobalOptionsPath());
         }
     }
 
     private static String getGlobalOptionsPath() {
-        if (optionsPath!=null )
+        if (optionsPath != null)
             return optionsPath;
-        return PathFinder.OPTIONS_PATH+ "options.xml";
+        return PathFinder.OPTIONS_PATH + "options.xml";
     }
 
     private static String getLocalOptionsPath() {
@@ -525,7 +536,7 @@ public class OptionsMaster {
         //        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
         //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
-         "Options", new Dimension(800, 600));
+                "Options", new Dimension(800, 600));
         modalOptionsPanelFrame.setAlwaysOnTop(true);
     }
 
@@ -565,11 +576,12 @@ public class OptionsMaster {
         return //CoreEngine.isMe() &&
                 CoreEngine.isJar();
     }
+
     public static void init() {
         if (initialized)
             return;
         String data = FileManager.readFile(getGlobalOptionsPath());
-        if (data.isEmpty()  || isLocalOptionsPreferred()) {
+        if (data.isEmpty() || isLocalOptionsPreferred()) {
             data = FileManager.readFile(getLocalOptionsPath());
         }
         if (data.isEmpty()) {
@@ -584,7 +596,7 @@ public class OptionsMaster {
 
         autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
 
-        if (CoreEngine.isMapPreview()){
+        if (CoreEngine.isMapPreview()) {
             getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
         }
         OptionsMaster.cacheOptions();
@@ -788,7 +800,6 @@ public class OptionsMaster {
     public static PostProcessingOptions getPostProcessingOptions() {
         return (PostProcessingOptions) optionsMap.get(OPTIONS_GROUP.POST_PROCESSING);
     }
-
 
 
     public enum OPTIONS_GROUP {

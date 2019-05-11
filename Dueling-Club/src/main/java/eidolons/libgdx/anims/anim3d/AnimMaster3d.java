@@ -70,7 +70,7 @@ public class AnimMaster3d {
      {"tail", "insect claws"},
      {"paws", "claws"},
      {"tentacle", "insect claws"},
-     //     {"lance", "spear"},
+          {"lance", "spear"},
      //     {"pike", "spear"},
      //     {"staff", "spear"},
      //     {"battle staff", "spear"},

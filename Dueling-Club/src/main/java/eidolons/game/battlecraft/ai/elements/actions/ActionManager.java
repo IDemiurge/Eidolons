@@ -17,6 +17,7 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
+import eidolons.game.core.Eidolons;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
@@ -29,6 +30,7 @@ import main.elements.costs.Costs;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -79,6 +81,7 @@ public class ActionManager extends AiHandler {
         getAtomicAi().initialize();
         getBehaviorMaster().initialize();
     }
+
     public Action chooseAction() {
         UnitAI ai = getMaster().getUnitAI();
         if (ai.checkStandingOrders()) {
@@ -187,9 +190,24 @@ public class ActionManager extends AiHandler {
                 action = new Action(ai.getUnit().getAction("Stumble About"));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
-                action = new Action(ai.getUnit().getAction("Helpless Rage"));
+                if (RandomWizard.chance(100)) { //igg demo hack
+                    if (RandomWizard.chance(66)) { //igg demo hack
+                        action = new Action(ai.getUnit().getAction(
+                                RandomWizard.random() ? "Turn Clockwise" :
+                                        "Turn Anticlockwise"));
+                    } else
+                        action = new Action(ai.getUnit().getAction("Move"));
+
+                    getGame().getLogManager().log(getUnit().getName() + "'s Fury forces him to "
+                            + action.getActive().getName());
+                } else {
+                    action = new Action(ai.getUnit().getAction("Helpless Rage"));
+                    getGame().getLogManager().log(getUnit().getName() + " is beyond himself - with "
+                            + action.getActive().getName());
+                }
             }
             action.setTaskDescription("Forced Behavior");
+            return action;
         }
         action = getAtomicAi().getAtomicActionForced(ai);
         if (action != null)

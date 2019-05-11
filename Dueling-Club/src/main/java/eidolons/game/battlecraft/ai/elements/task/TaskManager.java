@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.ai.elements.task;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TaskManager extends AiHandler {
 
@@ -37,12 +40,12 @@ public class TaskManager extends AiHandler {
         TARGETING_MODE mode = action.getTargetingMode();
         if (mode == null) {
             mode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, action
-             .getProperty(G_PROPS.TARGETING_MODE));
+                    .getProperty(G_PROPS.TARGETING_MODE));
         }
         if (mode != null) {
             if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
                 Unit target = (Unit) action.getGame().getObjectById(
-                 (Integer) task.getArg());
+                        (Integer) task.getArg());
                 switch (mode) {
 
                     case ANY_ITEM:
@@ -112,11 +115,12 @@ public class TaskManager extends AiHandler {
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getArg() != null)
                 return new ArrayList<>(
-                 Arrays.asList(new Task(ai, goal, ai.getCurrentOrder().getArg())));
+                        Arrays.asList(new Task(ai, goal, ai.getCurrentOrder().getArg())));
 
         List<Integer> ids = new ArrayList<>();
         List<? extends DC_Obj> targets = new ArrayList<>();
         List<? extends DC_Obj> targets2 = new ArrayList<>();
+        List<BattleFieldObject> targets3 = new ArrayList<>();
 
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
         // ai.getGroup().getBehaviorPref();
@@ -149,6 +153,7 @@ public class TaskManager extends AiHandler {
 
             case SEARCH:
                 // or maybe the last-seen enemies?
+                targets3.add(ai.getUnit());
                 if (!forced) {
                     if (ai.getUnit().getBuff("Search Mode") == null) {
                         list.add(new Task(forced, ai, goal, ai.getUnit().getId()));
@@ -189,6 +194,14 @@ public class TaskManager extends AiHandler {
             case ATTACK:
                 if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK || behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
                     targets = (Analyzer.getUnits(ai, true, true, true, false));
+//                    List<Set<BattleFieldObject>> objs = Analyzer.getCells(ai, true, true, false).stream().map(
+//                            c -> game.getObjectsOnCoordinate(c.getCoordinates())).collect(Collectors.toList());
+                    for (DC_Cell cell : Analyzer.getCells(ai, true, false, false)) {
+                        for (BattleFieldObject a :
+                                game.getObjectsOnCoordinate(cell.getCoordinates())) {
+                            targets3.add(a);
+                        }
+                    }
                 } else {
                     // if (forced)
                     // targets = (Analyzer.getUnits(ai, false, true, true,
@@ -211,7 +224,7 @@ public class TaskManager extends AiHandler {
                 break;
             case WAIT:
                 if (!DC_Engine.isAtbMode())
-                targets = Analyzer.getWaitUnits(ai);
+                    targets = Analyzer.getWaitUnits(ai);
                 break;
             case PROTECT:
                 if (RuleKeeper.isRuleOn(RULE.GUARD))
@@ -232,9 +245,11 @@ public class TaskManager extends AiHandler {
                 list.add(new Task(forced, ai, goal, null));
                 break;
         }
-        if (targets.isEmpty()) {
-            return new ArrayList<>();
-        }
+        if (targets.isEmpty())
+//        if (targets2.isEmpty()) igg demo hack
+            if (targets3.isEmpty()) {
+                return new ArrayList<>();
+            }
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
             DC_Obj target = targets.get(new RandomWizard<>().getRandomIndex(targets));
             List<Task> tasks = new ArrayList<>();
@@ -246,6 +261,9 @@ public class TaskManager extends AiHandler {
                 list.add(new Task(forced, ai, goal, obj.getId()));
             }
             for (DC_Obj obj : targets2) {
+                list.add(new Task(forced, ai, goal, obj.getId()));
+            }
+            for (DC_Obj obj : targets3) {
                 list.add(new Task(forced, ai, goal, obj.getId()));
             }
             for (Integer id : ids) {

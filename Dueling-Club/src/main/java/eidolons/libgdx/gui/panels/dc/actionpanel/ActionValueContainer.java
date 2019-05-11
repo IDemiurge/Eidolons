@@ -84,17 +84,27 @@ public class ActionValueContainer extends ValueContainer {
 
     protected void initSize() {
         float size = getSize();
-        if (imageContainer.getActor().getContent().getDrawable().getMinWidth() > 100) {
-           if (path != null)
-                if (path.contains("bf")) //TODO IGG_HACK
-                {
-                    imageContainer.getActor().setImage(GdxImageMaster.getSizedImagePath(path, (int) size));
-                    scaledOnHover = false;
+//        if (imageContainer.getActor().getContent().getDrawable().getMinWidth() > 100) {
+//           if (path != null)
+//                if (path.contains("bf")) //TODO IGG_HACK
+//                if (path.contains("main"))
+//                {
+//                    imageContainer.getActor().setImage(GdxImageMaster.getSizedImagePath(path, (int) size));
+//                    scaledOnHover = false;
+//
+//                }
+//        }
+//        if (scaledOnHover)
+//            overrideImageSize(size, size);
 
-                }
-        }
-        if (scaledOnHover)
+        if (imageContainer.getActor().getContent().getDrawable().getMinWidth() > 100) {
+            scaledOnHover = false;
+            if (path != null)
+                imageContainer.getActor().setImage(GdxImageMaster.getSizedImagePath(path, (int) size));
+        } else
             overrideImageSize(size, size);
+
+
         imageContainer.top().right();
     }
 

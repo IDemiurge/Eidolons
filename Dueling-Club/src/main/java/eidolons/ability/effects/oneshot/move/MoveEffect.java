@@ -10,6 +10,7 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
 
 public class MoveEffect extends DC_Effect implements OneshotEffect {
@@ -104,8 +105,15 @@ public class MoveEffect extends DC_Effect implements OneshotEffect {
             Integer x = x_displacement.getInt(ref);
             Integer y = y_displacement.getInt(ref);
             // TODO direction?!
-            c = Coordinates.get(ref.getObj(obj_to_move).getCoordinates().getX() + x, ref.getObj(obj_to_move)
+            while(true){
+            c = Coordinates.get(true, ref.getObj(obj_to_move).getCoordinates().getX() + x, ref.getObj(obj_to_move)
              .getCoordinates().getY() + y);
+            if (!c.isInvalid() || (x==0 && y==0))
+                return c;
+            if (RandomWizard.random() && x>0) x--;
+            else if (y>0)
+                y--;
+            }
         }
         return c;
     }

@@ -386,11 +386,17 @@ public class SightMaster {
 
         if (observer.isMine())
             status = getUnitVisionStatusPrivate(unit, observer);
-        else if (ExplorationMaster.isExplorationOn() &&
+        else {
+        if (ExplorationMaster.isExplorationOn() &&
                 master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
             status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
         } else {
-            status = getUnitVisionStatusPrivate(unit, observer);
+//            status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+            if (status == null) {
+                    //final hack
+                status = getUnitVisionStatusPrivate(unit, observer);
+            }
+        }
         }
         unit.setUnitVisionStatus(status, observer);
     }

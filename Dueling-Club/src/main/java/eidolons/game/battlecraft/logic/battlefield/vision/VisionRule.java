@@ -160,9 +160,10 @@ public class VisionRule {
     }
 
     private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
-        if (sub instanceof Unit)
+//        if (sub instanceof Unit) TODO I really think enemies don't need to know anything else....
             if (!observer.isPlayerCharacter())
                 return observer.isHostileTo(sub.getOwner());
+
         if (sub.isDead())
             return false;
         if (sub.isVisibilityOverride())
@@ -171,7 +172,7 @@ public class VisionRule {
     }
 
     public boolean isResetRequiredSafe(Unit observer, DC_Obj cell) {
-        return isResetRequired(observer, cell, 2f);
+        return isResetRequired(observer, cell, 1.2f);
     }
 
     public boolean isResetRequired(Unit observer, DC_Obj cell) {
@@ -407,18 +408,12 @@ public class VisionRule {
 //        if (hero.isSneaking()) {
 //            return false;
 //        }
-        if (hero.isSneaking()) {
-            //add chance? not right...
-            if (isResetRequired(unit, hero, 0.25f))
-            {
-//                apply spotted?
-                return true;
-            }
-            return false; //TODO IGG HACK
-        }
+
         UNIT_VISION vision = unit.getGame().getVisionMaster().getSightMaster().getUnitVisibilityStatus(hero, unit);
         switch (vision) {
+
             case IN_PLAIN_SIGHT:
+                if (!hero.isSneaking())//TODO IGG HACK
                 return true;
             case IN_SIGHT:
                 break;
@@ -450,6 +445,15 @@ public class VisionRule {
 //         &&  controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.BLOCKED
 //         ) {
 
+        if (hero.isSneaking()) {
+            //add chance? not right...
+            if (isResetRequired(unit, hero, 0.25f))
+            {
+//                apply spotted?
+                return true;
+            }
+            return false; //TODO IGG HACK
+        }
         if (isResetRequired(unit, hero, 0.5f))
             return true;
 

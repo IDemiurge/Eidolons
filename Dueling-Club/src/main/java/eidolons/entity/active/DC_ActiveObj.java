@@ -321,6 +321,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (getOwnerUnit() == null) {
             return getName();
         }
+        if (CoreEngine.isIDE()) {
+        return StringMaster.getPossessive(getOwnerUnit().getName()) + " " + getName();
+        }
         return StringMaster.getPossessive(getOwnerUnit().getNameIfKnown()) + " " + getName();
     }
 

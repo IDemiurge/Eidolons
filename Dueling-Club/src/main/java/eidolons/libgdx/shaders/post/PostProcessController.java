@@ -101,7 +101,9 @@ public class PostProcessController {
             bloom.setBloomIntesity(0.2f);
             vignette.setIntensity(1);
         }
-
+        for (PostProcessorEffect effect : effectMap.keySet()) {
+            effect.setEnabled(false);
+        }
         bindEvents();
         //what else determines defaults? Type of level? Cinematic mode
     }

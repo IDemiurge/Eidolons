@@ -73,7 +73,13 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (parentAlpha == ShaderDrawer.SUPER_DRAW)
+        {
+//            if (!batch.isDrawing())
+//                batch.begin(); TODO igg demo fix
             super.draw(batch, 1);
+//            if (batch.isDrawing())
+//                batch.end();
+        }
         else
             ShaderDrawer.drawWithCustomShader(this, batch, null);
     }

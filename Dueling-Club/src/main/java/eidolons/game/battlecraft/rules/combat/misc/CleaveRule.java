@@ -131,7 +131,8 @@ public class CleaveRule {
         initNextTarget();
         if (currentTarget == null) {
             action.getGame().getLogManager().log(action +
-                    " finds no targets to cleave for its remaining damage (" + attack.getRemainingDamage() + ")");
+                    " finds no targets to cleave for its remaining damage (" +
+                    Math.abs(attack.getRemainingDamage()) + ")");
             return true;
         }
         attack.getRef().setTarget(currentTarget.getId());
