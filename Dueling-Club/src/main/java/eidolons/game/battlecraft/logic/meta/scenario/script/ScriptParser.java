@@ -15,6 +15,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
+import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.List;
  * Created by JustMe on 5/19/2017.
  */
 public class ScriptParser {
+    private static final boolean TEST_MODE = true;
+
     public static Condition parseConditions(String conditionPart) {
         Condition c = DC_ConditionMaster.toConditions(conditionPart);
         if (c != null)
@@ -162,6 +165,8 @@ public class ScriptParser {
         }
         abilities.setRef(ref);
         ScriptTrigger trigger = new ScriptTrigger(originalText, event_type, conditions, abilities);
+      if (TEST_MODE)
+          isRemove = false;
         trigger.setRemoveAfterTriggers(isRemove);
         return trigger;
     }

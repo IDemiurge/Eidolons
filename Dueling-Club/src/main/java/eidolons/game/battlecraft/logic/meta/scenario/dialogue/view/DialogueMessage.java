@@ -10,22 +10,25 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.graphics.FontMaster.FONT;
 
 /**
  * Created by JustMe on 11/16/2018.
  */
-public class MessageActor extends TablePanelX {
-    LabelX message;
+public class DialogueMessage extends TablePanelX {
+    Actor message;
     LabelX actorName;
     Image actorImage;
 
-    public MessageActor(String message, String actorName, String actorImage, FONT font) {
-        this.message = new LabelX(message, getMessageStyle(font));
-        this.actorName = new LabelX(actorName, getNameStyle(font));
-        this.actorImage = new Image(TextureCache.getOrCreateR(actorImage));
-
+    public DialogueMessage(String message, String actorName, String actorImage, FONT font, float w) {
+        add(this.actorImage = new Image(TextureCache.getOrCreateR(actorImage)));
+        TablePanelX<Actor> textTable = new TablePanelX<>();
+        textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).row();
+        textTable.add(this.message = new TextBuilder(getMessageStyle(font)).addString(message).build(w));
+//        textTable.add(this.message = new LabelX(message, getMessageStyle(font)));
+        add(textTable);
         //on hover remove shader
         //could be different!
         align(Align.topLeft);

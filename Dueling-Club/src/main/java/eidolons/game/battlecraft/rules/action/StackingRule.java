@@ -10,6 +10,8 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
@@ -142,14 +144,20 @@ public class StackingRule implements ActionRule {
             // instead, just empty type with 0 girth!
             unit = new ObjType();
         }
-        Obj cell;
+        DC_Cell cell;
         if (!game.isSimulation()) {
             cell = game.getCellByCoordinate(c);
         } else {
             cell = new DC_Cell(c, game);
         }
         if (cell == null) {
+            //TODO cell is utter void!
             return false;
+        }
+        if (cell.isVOID()) {
+            if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
+                return false;
+            }
         }
 
         if (z == null) {

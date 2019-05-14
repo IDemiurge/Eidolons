@@ -486,4 +486,12 @@ public class PathFinder {
     public static String getArtFolder() {
         return "main/art/";
     }
+
+//    public static String getDialoguesPath(String locale) {
+//        return getDialoguesPath(texmaster)
+//    }
+    public static String getDialoguesPath(String locale) {
+        return getEnginePath() + PathFinder.getTextPath()
+                + locale + "/dialogue/";
+    }
 }

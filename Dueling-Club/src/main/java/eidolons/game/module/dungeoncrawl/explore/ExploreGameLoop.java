@@ -158,13 +158,16 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
-            activateAction(playerAction);
+            //TODO igg demo fix
+            Eidolons.onNonGdxThread(() ->
+                    activateAction(playerAction)
+            );
+            waitForAnimations(playerAction);
             boolean result = playerAction.getAction().getHandler().isResult();
             master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
             master.getTimeMaster().setGuiDirtyFlag(true);
             master.getPartyMaster().leaderActionDone(playerAction);
 
-            waitForAnimations(playerAction);
             getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer();
 
         }

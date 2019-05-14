@@ -146,11 +146,11 @@ public class DungeonEnums {
 
         CAVE,
         TELRAZI,
-        VAULT,
+        MONASTERY,
 
         CRYPTS,
         PRISON,
-        TOWER,
+        BASTION,
 
         NIGHTMARE,
 

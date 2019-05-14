@@ -139,7 +139,6 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable.add(heroXp).right(). row();
         infoTable.add(dynamicParams).center().colspan(2) . row();
         infoTable.add(staticParams).center().colspan(2).row();
-        infoTable.add(traits).center().colspan(2).row();
 
           masteryTable = new HqMasteryTable();
           attributeTable = new HqAttributeTable();
@@ -147,13 +146,14 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable.add(attributeTable).left().top().padLeft(30);
         //separator
         infoTable.add(masteryTable).right().top();
-        masteryTable.setEditable(isEditable());
+        infoTable.add(traits).center().colspan(2).row();
         attributeTable.setEditable(isEditable());
 
         HqNewMasteryPanel newMastery = new HqNewMasteryPanel();
 //        newMastery.setPosition();
         infoTable.addActor(newMastery);
 
+        masteryTable.setEditable(isEditable());
         if (isScrollValuesOn()) {
             infoTable.row();
             infoTable.addActor(scrolledValuePanel=new HqScrolledValuePanel());

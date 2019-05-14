@@ -40,7 +40,7 @@ public class RngTypeChooser {
         Loop loop = new Loop(100);
 
         WeightMap<ObjType> map = RandomWizard.constructWeightMap(mapString, T);
-
+        map.setObjType(T);
 //        if (){
 //            map.getGreatest();
 //        }

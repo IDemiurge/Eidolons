@@ -12,6 +12,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
 
@@ -53,10 +54,13 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        constructDialogues(StrPathBuilder.build( PathFinder.getEnginePath()+getFileRootPath(), getFileName()));
+        constructDialogues(StrPathBuilder.build(  getFileRootPath(), getFileName()));
     }
 
     protected String getFileRootPath() {
+        if (CoreEngine.isIggDemoRunning()){
+            return PathFinder.getDialoguesPath(TextMaster.getLocale());
+        }
         if (master.isRngDungeon()){
             return getCommonDialoguePath();
         }
@@ -77,7 +81,7 @@ public class DialogueFactory {
 
     @Refactor
     public GameDialogue getDialogue(String name) {
-        if (map.isEmpty())
+//       TODO igg demo hack if (map.isEmpty())
             init(Eidolons.game.getMetaMaster());
         return map.get(StringMaster.formatMapKey(name));
     }
@@ -91,9 +95,9 @@ public class DialogueFactory {
             Speech speech = getSpeech(NumberUtils.getInteger(ID));
 
             String pathRoot = getFileRootPath();
-//                PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
+//             PathFinder.getEnginePath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();
-            String path = PathFinder.getEnginePath() + DialogueLineFormatter.getLinesFilePath(pathRoot);
+            String path =  DialogueLineFormatter.getLinesFilePath(pathRoot);
 
             speech.getSpeechBuilder(path).buildSpeech(speech);
 

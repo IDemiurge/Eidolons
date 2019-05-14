@@ -6,8 +6,7 @@ import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
 
-import static main.content.enums.DungeonEnums.DUNGEON_STYLE.PureEvil;
-import static main.content.enums.DungeonEnums.DUNGEON_STYLE.Somber;
+import static main.content.enums.DungeonEnums.DUNGEON_STYLE.*;
 import static main.content.enums.entity.UnitEnums.UNITS_TYPES.*;
 
 /**
@@ -763,6 +762,29 @@ public class RngUnitProvider {
             case SPIDER:
                 return map
                         .chain(UNIT_GROUP. SPIDERS, 12) ;
+            case CRYPTS:
+                return map
+                        .chain(UNIT_GROUP.CULT_CERBERUS, 14)
+                        .chain(UNIT_GROUP.UNDEAD, 35)
+                        .chain(UNIT_GROUP.UNDEAD_WRAITH, 12)
+                        ;
+            case PRISON:
+                return map
+                        .chain(UNIT_GROUP.PRISONERS, 34) ;
+            case BASTION:
+                return map
+                        .chain(UNIT_GROUP.Ravenguard, 40) ;
+            case MONASTERY:
+
+                return map
+                        .chain(UNIT_GROUP.CONSTRUCTS, 12)
+                        .chain(UNIT_GROUP.CULT_CERBERUS, 14)
+                        .chain(UNIT_GROUP.MUTANTS, 8)
+                        .chain(UNIT_GROUP.Ravenguard, 21)
+                        .chain(UNIT_GROUP.UNDEAD, 15)
+                        .chain(UNIT_GROUP.UNDEAD_WRAITH, 12)
+                        ;
+
             case DWARF:
                 return map
                         .chain(UNIT_GROUP.DWARVEN_SCUM, 12)

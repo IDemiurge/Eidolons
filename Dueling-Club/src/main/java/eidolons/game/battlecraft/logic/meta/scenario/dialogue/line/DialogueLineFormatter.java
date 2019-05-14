@@ -23,11 +23,11 @@ public class DialogueLineFormatter {
     public static final String DIALOGUE_SEPARATOR = "***";
     public static final String LINE_SEPARATOR = ">>";
     private static final String dialogueTextPath = "/raw/";
-    private static final String linearDialoguePath = "/linear dialogues.xml";
-    private static final String introsPath = "/intros.xml";
+    private static final String linearDialoguePath = "/linear dialogues.txt";
+    private static final String introsPath = "/intros.txt";
     private static final String linesFilePath = "/lines.xml";
     //    private static final String linesFilePathIntros = "/lines - intros.xml";
-    private static final String ACTOR_NODE = SPEECH_VALUE.ACTOR.name();
+    private static final String ACTOR_NODE = SPEECH_VALUE.SPEAKER_ACTOR.name();
     private static final String TEXT_NODE = SPEECH_VALUE.MESSAGE.name();
     private static final String INTRO_IDENTIFIER = "Intro:";
     private static String newLinesFileContents = "";
@@ -59,9 +59,7 @@ public class DialogueLineFormatter {
 
             }
         }
-        String path = PathFinder.getEnginePath()
-         + "tutorial" + PathUtils.getPathSeparator()
-         + TextMaster.getLocale()
+        String path =PathFinder.getDialoguesPath(TextMaster.getLocale())
          + dialogueTextPath;
         parseDocs(path);
     }
@@ -78,10 +76,15 @@ public class DialogueLineFormatter {
         for (File file : FileManager.getFilesFromDirectory(path, false, true)) {
             parseDialogueFile(FileManager.readFile(file));
         }
-        XML_Writer.write(XML_Converter.wrap("Lines", newLinesFileContents), getLinesFilePath(path));
+        XML_Writer.write(XML_Converter.wrap("Lines", newLinesFileContents), getLinesFilePath(
+                getDialoguesPath()));
         XML_Writer.write(linearDialogueFileContents, getLinearDialoguesFilePath());
         XML_Writer.write(introsFileContents, getIntrosFilePath());
 //        new DialogueFactory().constructScenarioLinearDialogues(getLinearDialoguesFilePath(), new ScenarioMetaMaster(""));
+    }
+
+    private static String getDialoguesPath() {
+        return PathFinder.getDialoguesPath(TextMaster.getLocale());
     }
 
     public static String formatDialogueText(String result) {
@@ -152,8 +155,7 @@ public class DialogueLineFormatter {
 
 
     public static String getLinearDialoguesFilePath() {
-        return PathFinder.getEnginePath() + PathFinder.getTextPath()
-         + TextMaster.getLocale() + linearDialoguePath;
+        return PathFinder.getDialoguesPath(TextMaster.getLocale()) + linearDialoguePath;
     }
 
     public static String getIntrosFilePath() {

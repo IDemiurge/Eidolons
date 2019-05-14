@@ -31,8 +31,8 @@ public class SpeedControlPanel extends GroupX {
         addActor(slider = new VisSlider(50, 400, 50, true));
         setSize(background.getWidth(), background.getHeight());
         GdxMaster.center(slider);
-        slider.setValue(OptionsMaster.getGameplayOptions().
-                getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED));
+//        slider.setValue(OptionsMaster.getGameplayOptions().
+//                getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED));
 
         slider.addListener(new ChangeListener() {
             @Override
@@ -48,10 +48,7 @@ public class SpeedControlPanel extends GroupX {
 //                Gdx.app.log("Options", option + " -> " + value);
             }
         });
-        slider.setValue(OptionsMaster.getGameplayOptions().
-                getFloatValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL));
         addActor(checkBox = new VisCheckBox(StringMaster.getWellFormattedString(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL.getName())));
-//        slider.setStyle(new Slider.SliderStyle());
         checkBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -75,6 +72,8 @@ public class SpeedControlPanel extends GroupX {
             slider.setValue(OptionsMaster.getAnimOptions().getFloatValue(
                     AnimationOptions.ANIMATION_OPTION.SPEED));
         } else {
+            checkBox.setChecked(OptionsMaster.getGameplayOptions().
+                    getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL));
             slider.setValue(OptionsMaster.getGameplayOptions().
                     getFloatValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED));
         }

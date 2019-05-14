@@ -108,6 +108,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         }
 
     }
+
     public void loadDone(EventCallbackParam param) {
         this.param = param;
         if (param.get() instanceof BFDataCreatedEvent)
@@ -204,13 +205,16 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         checkShader();
 
-        postProcessing.act(delta);
-        if (isPostProcessingOn())
-            if (isPostProcessingDefault())
-                postProcessing.begin();
+        if (postProcessing != null)
+            postProcessing.act(delta);
+        if (postProcessing != null)
+            if (isPostProcessingOn())
+                if (isPostProcessingDefault())
+                    postProcessing.begin();
         renderLoader(delta);
-        if (isPostProcessingDefault())
-            postProcessing.end();
+        if (postProcessing != null)
+            if (isPostProcessingDefault())
+                postProcessing.end();
         waited(delta);
         checkShaderReset();
         if (isLoadingAtlases()) {
@@ -394,4 +398,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         return postProcessing;
     }
 
+    public void setupPostProcessing() {
+        if (getPostProcessing() != null) {
+            getPostProcessing().setup();
+        }
+    }
 }

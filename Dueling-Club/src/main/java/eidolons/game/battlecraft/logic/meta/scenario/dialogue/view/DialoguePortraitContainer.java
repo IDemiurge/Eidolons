@@ -22,31 +22,30 @@ import main.system.images.ImageManager;
  * Created by JustMe on 11/30/2018.
  */
 public class DialoguePortraitContainer extends TablePanelX {
-    private final ValueContainer trepidation;
-    private final ValueContainer esteem;
-    private final ValueContainer affection;
+//    private final ValueContainer trepidation;
+//    private final ValueContainer esteem;
+//    private final ValueContainer affection;
     FadeImageContainer portrait;
     LabelX nameLabel;
 
     public DialoguePortraitContainer() {
-        TablePanelX teaInfo = new TablePanelX();
-        TextureRegion region = TextureCache.getOrCreateR(
-         ImageManager.getValueIconPath(MACRO_PARAMS.TREPIDATION));
-        LabelStyle style = StyleHolder.getHqLabelStyle(18);
-        teaInfo.add(trepidation = new ValueContainer(style, region, "", ""));
-        region = TextureCache.getOrCreateR(
-         ImageManager.getValueIconPath(MACRO_PARAMS.ESTEEM));
-        teaInfo.add(esteem = new ValueContainer(style, region, "", ""));
-        region = TextureCache.getOrCreateR(
-         ImageManager.getValueIconPath(MACRO_PARAMS.AFFECTION));
-        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
-
+//        TablePanelX teaInfo = new TablePanelX();
+//        TextureRegion region = TextureCache.getOrCreateR(
+//         ImageManager.getValueIconPath(MACRO_PARAMS.TREPIDATION));
+//        LabelStyle style = StyleHolder.getHqLabelStyle(18);
+//        teaInfo.add(trepidation = new ValueContainer(style, region, "", ""));
+//        region = TextureCache.getOrCreateR(
+//         ImageManager.getValueIconPath(MACRO_PARAMS.ESTEEM));
+//        teaInfo.add(esteem = new ValueContainer(style, region, "", ""));
+//        region = TextureCache.getOrCreateR(
+//         ImageManager.getValueIconPath(MACRO_PARAMS.AFFECTION));
+//        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
         add(nameLabel = new LabelX()).row();
-        add(teaInfo ).row();
+//        add(teaInfo ).row();
         add(portrait = new FadeImageContainer()).row();
 
         Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN,
-         250, 400);
+        ImageManager.LARGE_ICON_WIDTH,  ImageManager.LARGE_ICON_HEIGHT);
         setBackground(new TextureRegionDrawable(new TextureRegion(background)));
     }
 
@@ -55,14 +54,20 @@ public class DialoguePortraitContainer extends TablePanelX {
     public void updateAct(float delta) {
         super.updateAct(delta);
         ActorDataSource dataSource= (ActorDataSource) getUserObject();
+        if (dataSource == null) {
+            fadeOut();
+            return;
+        }
         DialogueActor actor = dataSource.getActor();
 
         setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
          dataSource.getImageSuffix()));
+        nameLabel.setText(dataSource.actorName);
 //        esteem.setValueText(actor.getEsteem());
     }
 
     public void setImage(String appendedImageFile) {
         portrait.setImage(appendedImageFile);
+        pack();
     }
 }

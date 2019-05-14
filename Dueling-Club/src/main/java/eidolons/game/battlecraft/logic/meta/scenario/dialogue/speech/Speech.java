@@ -84,7 +84,7 @@ public class Speech implements SpeechInterface {
     public void init(MetaGameMaster master, Speech parent) {
         this.parent = parent;
         if (actorName == null)
-            actorName = data.getValue(SPEECH_VALUE.ACTOR);
+            actorName = data.getValue(SPEECH_VALUE.SPEAKER_ACTOR);
         if (!StringMaster.isEmpty(actorName))
             try {
                 actor = DialogueActorMaster.getActor(actorName);

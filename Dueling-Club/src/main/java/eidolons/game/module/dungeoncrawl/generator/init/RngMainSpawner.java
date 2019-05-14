@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -47,7 +48,7 @@ public class RngMainSpawner {
     private static final float SINGLE_UNIT_BONUS_COEF = 1.5f;
     private static final int TEST_POWER = 250;
     private static final UNIT_GROUP_TYPE[] MANDATORY_SPAWN_GROUPS = {
-            UNIT_GROUP_TYPE.BOSS,
+//            UNIT_GROUP_TYPE.BOSS,
             UNIT_GROUP_TYPE.GUARDS,
             UNIT_GROUP_TYPE.PATROL,
             UNIT_GROUP_TYPE.STALKER,
@@ -526,6 +527,10 @@ public class RngMainSpawner {
 //                return true;
 //            }
 //        }
+
+        if (block.getRoomType() == ROOM_TYPE.THRONE_ROOM) {
+            return true;
+        }
         switch (group) {
             case GUARDS:
                 return block.getRoomType() == ROOM_TYPE.TREASURE_ROOM
@@ -536,13 +541,18 @@ public class RngMainSpawner {
             case AMBUSH:
                 return block.getRoomType() == ROOM_TYPE.CORRIDOR
                         || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
-            case CROWD:
             case IDLERS:
+                if (block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM) {
+                    return true;
+                }
+            case CROWD:
                 return block.getRoomType() == ROOM_TYPE.COMMON_ROOM
-                        || block.getRoomType() == ROOM_TYPE.EXIT_ROOM;
+                        || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
+                        ;
             case STALKER:
                 return block.getRoomType() == ROOM_TYPE.CORRIDOR
-                        || block.getRoomType() == ROOM_TYPE.SECRET_ROOM;
+                        || block.getRoomType() == ROOM_TYPE.SECRET_ROOM
+                        ;
             case BOSS:
                 return block.getRoomType() == ROOM_TYPE.THRONE_ROOM;
         }

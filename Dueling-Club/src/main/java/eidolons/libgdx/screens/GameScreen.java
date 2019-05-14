@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
@@ -172,6 +174,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     protected void initDialogue() {
+
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =

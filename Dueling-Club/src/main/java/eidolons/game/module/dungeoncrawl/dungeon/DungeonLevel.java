@@ -61,7 +61,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private boolean pregen;
     private Set<Coordinates> nonVoidCoordinates;
     private Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> unitGroups = new XLinkedMap<>();
-    private Collection<ObjAtCoordinate> unassignedUnits;
+    private Collection<ObjAtCoordinate> unassignedUnits=     new ArrayList<>() ;
 
     public DungeonLevel(LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         //        this.tileMap = TileMapper.createTileMap(model);
@@ -90,9 +90,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public String getObjDataXml() {
-        for (LevelBlock block : getBlocks()) {
-            units.addAll(block.getUnits());
-        }
+        collectUnits();
+//        for (LevelBlock block : getBlocks()) { already done?
+//            units.addAll(block.getUnits());
+//        }
         String xml = "";
         for (ObjAtCoordinate obj : units) {
             xml += obj.getCoordinates() + "=" + obj.getType().getName() + ";";

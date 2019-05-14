@@ -1,6 +1,7 @@
 <Level><Custom_Props><Displayed_Name>Vampire Abode</Displayed_Name>
 <Dungeon_Subfolder>crawl</Dungeon_Subfolder>
 <Workspace_Group>IMPLEMENT</Workspace_Group>
+<Map_Background>main/background/bastion_1.1.png</Map_Background>
 <Dungeon_Main_Entrances>Upward Stairs(12-0);Dark Winding Upward Stairs(12-19)</Dungeon_Main_Entrances>
 <Name>Vampire Abode</Name>
 </Custom_Props><Custom_Params><Bf_Width>25</Bf_Width>

@@ -45,9 +45,9 @@ public class PostFxUpdater {
             // use what?
             POST_FX_TEMPLATE template = POST_FX_TEMPLATE.UNCONSCIOUS;
             applyTemplate(template);
+            applyFactors();
              return;
         }
-
 
         if (isTestMode()) {
             applyTest(OptionsMaster.getPostProcessingOptions().getValue(
@@ -55,7 +55,6 @@ public class PostFxUpdater {
             applyFactors();
             return;
         }
-
 
         BUFF_RULE_STATUS
          status = ParamAnalyzer.getStatus(hero, BUFF_RULE.STAMINA);
@@ -118,7 +117,7 @@ public class PostFxUpdater {
                 } else if (status == HIGH) {
 //                    apply(POST_FX_FACTOR.BLOOM, 1.21f);
 //                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
-                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
+//                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
 //                    apply(POST_FX_FACTOR.LENS2, 1.2f);
                 }
 

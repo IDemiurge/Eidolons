@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
@@ -9,12 +10,14 @@ import java.util.List;
  */
 public class SpeechDataSource {
 
+    public static final String DEFAULT_RESPONSE = "ok";
+
     String message;
     List<String> responses;
     Speech speech;
-ActorDataSource left;
-ActorDataSource right;
-    private boolean leftActive;
+    ActorDataSource left;
+    ActorDataSource right;
+    private boolean leftActive=true;
     //custom font/style?
 
 
@@ -22,6 +25,7 @@ ActorDataSource right;
         this.speech = speech;
         this.left = left;
         this.right = right;
+        this.message = speech.getFormattedText();
     }
 
     public SpeechDataSource(Speech speech) {
@@ -31,6 +35,9 @@ ActorDataSource right;
     }
 
     public List<String> getResponses() {
+        if (!ListMaster.isNotEmpty(responses)) {
+            return ListMaster.toStringList(DEFAULT_RESPONSE);
+        }
         return responses;
     }
 
@@ -50,7 +57,7 @@ ActorDataSource right;
         this.leftActive = leftActive;
     }
 
-    public enum SPEECH_EFFECT{
+    public enum SPEECH_EFFECT {
         ZOOM_IN,
         DARKEN,
         FLIP,

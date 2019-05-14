@@ -13,7 +13,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
@@ -172,11 +171,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     }
 
     private boolean doDialogue(Ref ref, String[] args) {
-        GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
-         args[0]);
-        List<Scene> list = SceneFactory.getScenes(dialogue);
-
-        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
+        GuiEventManager.trigger(GuiEventType.INIT_DIALOG, args[0]);
         return true;
     }
 

@@ -23,6 +23,7 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
     private boolean playerHasSeen;
+    private boolean VOID;
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
@@ -203,5 +204,13 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void setPlayerHasSeen(boolean playerHasSeen) {
         this.playerHasSeen = playerHasSeen;
+    }
+
+    public boolean isVOID() {
+        return VOID;
+    }
+
+    public void setVOID(boolean VOID) {
+        this.VOID = VOID;
     }
 }

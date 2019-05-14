@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -54,9 +55,17 @@ public class TipMessageWindow extends TablePanelX {
             Runnable runnable = source.btnRun[i++];
             Cell cell = btnsTable.add(new SmartButton(button, ButtonStyled.STD_BUTTON.MENU,
                     () -> {
-                        runnable.run();
-                        fadeOut();
-                        WaitMaster.receiveInput(source.msgChannel, button);
+                        if (source.isNonGdxThread()) {
+                            Eidolons.onThisOrNonGdxThread(()->{
+                                runnable.run();
+                                fadeOut();
+                                WaitMaster.receiveInput(source.msgChannel, button);
+                            });
+                        } else {
+                            runnable.run();
+                            fadeOut();
+                            WaitMaster.receiveInput(source.msgChannel, button);
+                        }
 
                     }).makeActive());
 

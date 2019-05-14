@@ -1,11 +1,13 @@
 package eidolons.libgdx.shaders.post;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
@@ -25,6 +27,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +62,7 @@ public class PostProcessController {
 
     LocalFxProcessor localFxProcessor;
     private boolean off;
+    private Map<FloatAction, PostFxUpdater.POST_FX_FACTOR> actionMap;
 
     public PostProcessController() {
         main = new PostProcessing();
@@ -109,7 +113,14 @@ public class PostProcessController {
     }
 
     private void bindEvents() {
-        GuiEventManager.bind(GuiEventType.POST_PROCESSING_RESET, p -> {
+        GuiEventManager.bind(GuiEventType.POST_PROCESS_FX_ANIM, p -> {
+            List args = (List) p.get();
+            PostFxUpdater.POST_FX_FACTOR fx = (PostFxUpdater.POST_FX_FACTOR) args.get(0);
+            FloatAction action= (FloatAction) args.get(1);
+            actionMap.put(action, fx);
+
+        });
+            GuiEventManager.bind(GuiEventType.POST_PROCESSING_RESET, p -> {
 //            bloom.rebind( );
 //            vignette.rebind( );
 //            blur.rebind( );

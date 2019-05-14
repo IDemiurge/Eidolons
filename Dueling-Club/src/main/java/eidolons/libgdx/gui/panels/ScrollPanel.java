@@ -33,7 +33,7 @@ public class ScrollPanel<T extends Actor> extends Container  {
         offsetY = getDefaultOffsetY();
     }
 
-    private boolean isLibgdxImpl() {
+    protected boolean isLibgdxImpl() {
         return true;
     }
 

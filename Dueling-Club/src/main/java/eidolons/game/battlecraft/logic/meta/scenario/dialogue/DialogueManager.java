@@ -2,8 +2,6 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
@@ -15,6 +13,9 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
+
+import static main.system.GuiEventType.DIALOG_SHOW;
+import static main.system.GuiEventType.INIT_DIALOG;
 
 /**
  * Created by JustMe on 5/14/2017.
@@ -28,12 +29,20 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 //            List<DialogScenario> list = SceneFactory.getScenes(dialogue);
 //            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
 //        });
+        GuiEventManager.bind(INIT_DIALOG, obj -> {
+            Object key = obj.get();
+            GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
+                    key.toString());
+            List<Scene> list = SceneFactory.getScenesLinear(dialogue);
+
+            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
+        });
     }
 
     public   void test() {
         GameDialogue dialogue = null;//new LinearDialogue();
         dialogue =  getMaster().getDialogueFactory().getDialogue("Interrogation");
-        List<Scene> list = SceneFactory.getScenes(dialogue);
+        List<Scene> list = SceneFactory.getScenesLinear(dialogue);
         GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,
          new DialogueHandler(dialogue, getGame(), list));
     }

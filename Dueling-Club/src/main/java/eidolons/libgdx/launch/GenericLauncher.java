@@ -261,7 +261,8 @@ public class GenericLauncher extends Game {
 
 //        oldScreen.getPostProcessing().end();
         final ScreenWithLoader newScreen = factory.get();
-        newScreen.getPostProcessing().setup();
+
+        newScreen.setupPostProcessing();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
         newScreen.setData(meta);

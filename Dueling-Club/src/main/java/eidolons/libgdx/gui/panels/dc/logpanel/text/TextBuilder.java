@@ -16,9 +16,16 @@ public class TextBuilder {
 
     protected StringBuilder sb;
     private LabelStyle defaultHiero;
-
+    LabelStyle style;
     public TextBuilder() {
+       this(null );
+    }
+    public TextBuilder(LabelStyle style) {
         sb = new StringBuilder();
+        if (style==null ){
+            style = getDefaultLabelStyle();
+        }
+        this.style = style;
     }
 
     public static TextBuilder createNew() {
@@ -26,7 +33,7 @@ public class TextBuilder {
     }
 
     public Message build(float w) {
-        Label l = new Label(sb.toString(), getDefaultLabelStyle());
+        Label l = new Label(sb.toString(),style);
         l.setWrap(true);
         l.setAlignment(Align.left);
         message = newMessage();

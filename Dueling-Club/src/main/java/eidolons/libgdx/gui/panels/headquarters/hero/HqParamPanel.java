@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
@@ -30,10 +31,11 @@ public class HqParamPanel extends HqElement{
     }
     public HqParamPanel(PARAMETER...params) {
         setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
-        setSize(GDX.size(580), GDX.size(75));
-        add(group = new HorizontalGroup()).center();
-        group.setSize(getWidth()-60, getHeight());
-        group.space(GDX.size(10));
+        setSize(params.length*100, GDX.size(75));
+//        add(group = new HorizontalGroup()).center();
+//        group.setSize(getWidth()-60, getHeight());
+//        group.space(GDX.size(10));
+       defaults().space(GDX.size(50));
         this.params = params;
         containers = new Array<>(6);
 
@@ -45,14 +47,18 @@ public class HqParamPanel extends HqElement{
                 protected boolean isVertical() {
                     return true;
                 }
+
+
             };
+            container.getValueContainer().align(Align.center);
             container.overrideImageSize(32,32);
-            container.setSize(GDX.size(50), GDX.size(64));
+//            container.setSize(GDX.size(100), GDX.size(64));
             container.setStyle(StyleHolder.getHqLabelStyle(18));
             container.addListener(new ValueTooltip(sub.getName()).getController());
 
             containers.add(container);
-            group.addActor(container);
+            add(container).uniform();
+//            group.addActor(container);
         }
     }
 

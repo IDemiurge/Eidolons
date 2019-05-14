@@ -283,10 +283,11 @@ public final class UnitEnums {
         SMALL("Will not block vision and missiles for non-Small units"),
         CLUMSY("This unit has difficulty with diagonal leaps"),
         DRUIDIC_VISIONS("Instead of adding Favor buff, will restore Essence when receiving already known spells thru Divination"),
-        HOLY_PRAYER("Will restore Morale when receiving already known spells thru Divination")
+        HOLY_PRAYER("Will restore Morale when receiving already known spells thru Divination"),
         // CORVIDAE("Immune to sneak attacks"),
-
+        VOIDWALKER("Can traverse Void cells"),
         ;
+
 
         static {
             DARKVISION.setToolTip("Unit is unaffected by Concealment penalties");

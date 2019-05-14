@@ -37,7 +37,7 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
         } else
         setBackgroundAndSize(GdxImageMaster.
          getPanelBackground(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
-          580, 785));
+          630, 825));
         mainNodeRows = createNodeRows(getMaxTier());
         linkNodeRows = createLinkNodeRows(getMaxTier());
         int tier = isTopToBottom() ? 0 : getMaxTier() - 1;

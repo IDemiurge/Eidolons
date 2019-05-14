@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.boss;
+package eidolons.libgdx.bf.boss.sprite;
 
 import java.util.List;
 

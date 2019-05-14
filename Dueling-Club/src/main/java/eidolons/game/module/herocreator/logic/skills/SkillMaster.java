@@ -98,12 +98,13 @@ public class SkillMaster {
 //        if (isSkillSlotsMixed()){
             prop = hero.getProperty( PROPS.SKILLS );
 //        }
+        int i =0;
         ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
         for (String substring : ContainerUtils.openContainer(prop)) {
             String[] parts = substring.split("=");
             String name = parts.length > 1 ? parts[1] : substring;
             DC_FeatObj skill = hero.getFeat(DataManager.getType(name, DC_TYPE.SKILLS));
-            int slot= parts.length>1?  Integer.valueOf(parts[0]) : 0;
+            int slot= parts.length>1?  Integer.valueOf(parts[0]) : i++;
             list.add(slot, skill);
         }
         return list;

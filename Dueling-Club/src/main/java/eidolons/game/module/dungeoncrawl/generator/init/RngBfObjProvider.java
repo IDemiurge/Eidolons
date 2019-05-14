@@ -42,23 +42,23 @@ public class RngBfObjProvider {
     public static WeightMap<String> getWeightMap(ROOM_CELL cell, DUNGEON_STYLE style) {
         switch (style) {
             case ROGUE:
-                return getWeightMapForRogues(  cell);
+                return getWeightMapForRogues(cell);
             case SPIDER:
-                return getWeightMapForSpiders( cell);
+                return getWeightMapForSpiders(cell);
             case DWARF:
-                return getWeightMapForDwarves(null, cell);
+                return getWeightMapForDwarves( cell);
             case CAVE:
                 break;
             case TELRAZI:
                 break;
-            case VAULT:
-                break;
+            case BASTION:
+                return getWeightMapForBastion(cell);
+            case MONASTERY:
+                return getWeightMapForMonastery(cell);
             case CRYPTS:
-                break;
+                return getWeightMapForCrypts(cell);
             case PRISON:
-                break;
-            case TOWER:
-                break;
+                return getWeightMapForPrison(cell);
             case NIGHTMARE:
                 break;
         }
@@ -236,83 +236,495 @@ public class RngBfObjProvider {
     }
 
 
-private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
-    WeightMap<String> map = new WeightMap<>();
-    int random = RandomWizard.getRandomInt(100);
-    switch (type) {
-        case ENTRANCE:
-        case EXIT:
-            return getWeightMap(type, DUNGEON_STYLE.Somber);
-        case INDESTRUCTIBLE:
-            return getWallWeightMap(DUNGEON_STYLE.Somber, true);
-        case WALL:
-            return getWallWeightMap(DUNGEON_STYLE.Grimy, false);
-        case DESTRUCTIBLE:
-            map.
-                    chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 15).
-                    chain(BF_OBJ_SUB_TYPES_COLUMNS.FALLEN_COLUMN, 10).
-                    chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 5);
-            break;
-        case CONTAINER:
-            map.chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 5).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 4).
-                    chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
-                    chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10) ;
-            break;
-        case SPECIAL_CONTAINER:
-            map.
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 16).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.CRATE, 30).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 15).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.BARREL, 30) ;
-            break;
-        case SPECIAL_ART_OBJ:
-            map.
-                    chain(BF_OBJ_SUB_TYPES_INTERIOR.ARMOR_STAND, 10).
-                    chain(BF_OBJ_SUB_TYPES_INTERIOR.GAMBLING_TABLE,  5).
-                    chain(BF_OBJ_SUB_TYPES_STATUES.DWARF_STATUE, 30).
-                    chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 15).
-                    chain(BF_OBJ_SUB_TYPES_MECHANICAL.GEAR_MECHANISM, 10).
-                    chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 20);
+    private static WeightMap<String> getWeightMapForRogues(ROOM_CELL type) {
+        WeightMap<String> map = new WeightMap<>();
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.Somber);
+            case INDESTRUCTIBLE:
+                return getWallWeightMap(DUNGEON_STYLE.Somber, true);
+            case WALL:
+                return getWallWeightMap(DUNGEON_STYLE.Grimy, false);
+            case DESTRUCTIBLE:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 15).
+                        chain(BF_OBJ_SUB_TYPES_COLUMNS.FALLEN_COLUMN, 10).
+                        chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 5);
+                break;
+            case CONTAINER:
+                map.chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 5).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 4).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10);
+                break;
+            case SPECIAL_CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 16).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.CRATE, 30).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 15).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.BARREL, 30);
+                break;
+            case SPECIAL_ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ARMOR_STAND, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.GAMBLING_TABLE, 5).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.DWARF_STATUE, 30).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 15).
+                        chain(BF_OBJ_SUB_TYPES_MECHANICAL.GEAR_MECHANISM, 10).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 20);
 
-            break;
-        case ART_OBJ:
-            map.
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 11).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.SWORD_RACK, 4).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 3).
-                    chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 2);
-            break;
-        case LIGHT_EMITTER:
-            map
-                    .chain(BRAZIER, 1)
-                    .chain(FIREPIT, 3)
-            ;
+                break;
+            case ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 11).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SWORD_RACK, 4).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 3).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 2);
+                break;
+            case LIGHT_EMITTER:
+                map
+                        .chain(BRAZIER, 1)
+                        .chain(FIREPIT, 3)
+                ;
 
 
-            break;
-        case WALL_WITH_DECOR_OVERLAY:
-        case WALL_WITH_LIGHT_OVERLAY:
-            map.
-                    chain(TORCH, 30)
-                    .chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LUMINESCENT_FUNGI, 5)
-                    .chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LUMINESCENT_FUNGI, 5)
-                    .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
-                    .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
-                    .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 5)
-            ;
-            break;
-        case DOOR:
-            return getDoorWeightMap(DUNGEON_STYLE.ROGUE, false);
-        case SPECIAL_DOOR:
-            return getDoorWeightMap(DUNGEON_STYLE.ROGUE, true);
+                break;
+            case WALL_WITH_DECOR_OVERLAY:
+            case WALL_WITH_LIGHT_OVERLAY:
+                map.
+                        chain(TORCH, 30)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 5)
+                ;
+                break;
+            case DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.ROGUE, false);
+            case SPECIAL_DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.ROGUE, true);
+        }
+
+        return map;
     }
 
-    return map;
-}
-    private static WeightMap<String> getWeightMapForSpiders( ROOM_CELL type) {
+    private static WeightMap<String> getWeightMapForPrison(ROOM_CELL type) {
+
+//        if (RandomWizard.chance(30)) {
+//            return getWeightMap(type, DUNGEON_STYLE.DarkElegance);
+//        }
+//        if (RandomWizard.chance(15)) {
+//            return getWeightMap(type, DUNGEON_STYLE.Somber);
+//        }
         WeightMap<String> map = new WeightMap<>();
-        int random = RandomWizard.getRandomInt(100);
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.Somber);
+            case INDESTRUCTIBLE:
+                if (RandomWizard.chance(6))
+                    return map.chain(BF_OBJ_SUB_TYPES_DOOR.IRON_BARS, 1);
+                return getWallWeightMap(DUNGEON_STYLE.Somber, true);
+            case WALL:
+//                if (RandomWizard.chance(25))
+//                    return getWallWeightMap(DUNGEON_STYLE.Stony, true);
+                return getWallWeightMap(DUNGEON_STYLE.Grimy, false);
+
+                //TODO experimental no-break chaos
+            case DESTRUCTIBLE:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.TORTURE_CHAIR, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.TORTURE_DEVICE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.WIZARD_TABLE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.WOODEN_BENCH, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.RACK, 10).
+//                        chain(BF_OBJ_SUB_TYPES_MECHANICAL.WALL_GEARS, 10).
+        chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 5);
+            case CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.TORTURE_CHAIR, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.TORTURE_DEVICE, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 6).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10);
+            case SPECIAL_CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.AXE_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HAMMER_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 31).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.BARREL, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.BARRELS, 20);
+            case SPECIAL_ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.GAMBLING_TABLE, 5).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.IRON_KNIGHT, 30).
+                        chain(BF_OBJ_SUB_TYPES_MECHANICAL.GEAR_MECHANISM, 10).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 20);
+
+            case ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.IRON_KNIGHT, 3).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.SILVER_KNIGHT, 3).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.GOLDEN_KNIGHT, 3).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.AXE_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HALBERT_RACK, 14).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HAMMER_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 11).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SWORD_RACK, 4).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 3).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 2);
+                break;
+            case LIGHT_EMITTER:
+                map
+                .chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.CHARRED_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.DECOMPOSING_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.DESECRATED_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.OLD_BONES, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_SKULL, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.PUTRID_REMAINS, 10)
+                ;
+
+
+                break;
+            case WALL_WITH_LIGHT_OVERLAY:
+                map.
+                        chain(LANTERN, 15).
+                        chain(TORCH, 25)
+                ;
+                break;
+            case WALL_WITH_DECOR_OVERLAY:
+                map.
+//                        chain(LANTERN, 15).
+//                        chain(ANCIENT_RUNE, 5).
+                        chain(RUNE_INSCRIPTION, 3)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 5);
+
+                break;
+            case DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.PRISON, false);
+            case SPECIAL_DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.PRISON, true);
+        }
+        return map;
+    }
+    private static WeightMap<String> getWeightMapForBastion(ROOM_CELL type) {
+//        if (RandomWizard.chance(6))
+//            return getWeightMapForMonastery(type);
+//        if (RandomWizard.chance(8))
+//            return getWeightMapForRogues(type);
+//        if (RandomWizard.chance(6))
+//            return getWeightMapForDwarves(type);
+        WeightMap<String> map = new WeightMap<>();
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.Somber);
+            case INDESTRUCTIBLE:
+                return getWallWeightMap(DUNGEON_STYLE.Somber, true);
+            case WALL:
+                return getWallWeightMap(DUNGEON_STYLE.Knightly, false);
+            case DESTRUCTIBLE:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 25).
+                        chain(BF_OBJ_SUB_TYPES_COLUMNS.ORNAMENTED_COLUMN, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.LIBRARY_WALL, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.WIZARD_TABLE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.WOODEN_BENCH, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.RACK, 3).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ARMOR_STAND, 11).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.WOODEN_TABLE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.FORGE, 3).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ANVIL, 5).
+//                        chain(BF_OBJ_SUB_TYPES_MECHANICAL.WALL_GEARS, 10).
+        chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 5);
+                break;
+            case CONTAINER:
+                map.chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 11).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HALBERT_RACK, 11).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 6).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10);
+                break;
+            case SPECIAL_CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.AXE_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HALBERT_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HAMMER_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SWORD_RACK, 14).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 16).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.CRATE, 30).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 11).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.BARREL, 20).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.BARRELS, 20);
+                break;
+            case SPECIAL_ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ARMOR_STAND, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.GAMBLING_TABLE, 5).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.IRON_KNIGHT, 30).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.SILVER_KNIGHT, 30).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.GOLDEN_KNIGHT, 30).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 15).
+                        chain(BF_OBJ_SUB_TYPES_MECHANICAL.GEAR_MECHANISM, 10).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 20);
+
+                break;
+            case ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.IRON_KNIGHT, 3).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.SILVER_KNIGHT, 3).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.GOLDEN_KNIGHT, 3).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.AXE_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HALBERT_RACK, 14).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.HAMMER_RACK, 10).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 11).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.SWORD_RACK, 4).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 3).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 2);
+                break;
+            case LIGHT_EMITTER:
+                map
+                        .chain(BRAZIER, 12)
+                        .
+                                chain(COLDFIRE_BRAZIER, 8)
+                        .chain(HOLY_FLAME_BRAZIER, 7)
+                ;
+
+
+                break;
+            case WALL_WITH_LIGHT_OVERLAY:
+                map.
+                        chain(LANTERN, 15).
+                        chain(TORCH, 20).
+                        chain(HANGING_HOLY_FIRE_BRAZIER, 13)
+                ;
+                break;
+            case WALL_WITH_DECOR_OVERLAY:
+                map.
+                        chain(LANTERN, 15).
+                        chain(DIAMOND_LANTERN, 5).
+                        chain(ANCIENT_RUNE, 5).
+                        chain(RUNE_INSCRIPTION, 3);
+
+                break;
+            case DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.Knightly, false);
+            case SPECIAL_DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.DarkElegance, true);
+        }
+        return map;
+    }
+
+    private static WeightMap<String> getWeightMapForCrypts(ROOM_CELL type) {
+//        if (RandomWizard.chance(10)) {
+//            return getWeightMap(type, DUNGEON_STYLE.MONASTERY);
+//        }
+//        if (RandomWizard.chance(5)) {
+//            return getWeightMap(type, DUNGEON_STYLE.Somber);
+//        }
+
+        WeightMap<String> map = new WeightMap<>();
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.DarkElegance);
+            case INDESTRUCTIBLE:
+                return getWallWeightMap(DUNGEON_STYLE.DarkElegance, true);
+            case WALL:
+                return getWallWeightMap(DUNGEON_STYLE.PureEvil, false);
+            case DESTRUCTIBLE:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_COLUMNS.COBWEBBED_COLUMN, 15).
+        chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 10).
+        chain(BF_OBJ_SUB_TYPES_COLUMNS.FALLEN_COLUMN, 10).
+        chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 15);
+                break;
+            case CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.ASH_URN, 20).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.ENCHANTED_ASH_URN, 10);
+                break;
+            case SPECIAL_CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.COFFIN, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SEALED_SARCOPHAGUS, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.TOMB_NICHE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.GRAVESTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.TOMBSTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.LORDUNICODE39CODEENDS_TOMB, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.NOBLE_GRAVESTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SARCOPHAGUS, 10)
+                ;
+                break;
+            case SPECIAL_ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 25).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 11).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELVEN_STATUE, 11).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 10)
+                ;
+
+                break;
+            case ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 15).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 11).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SARCOPHAGUS, 14).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.TOMB_NICHE, 14).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SEALED_SARCOPHAGUS, 14).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.LORDUNICODE39CODEENDS_TOMB, 11);
+                break;
+            case WALL_WITH_LIGHT_OVERLAY:
+
+                map
+                        .chain(HANGING_NETHERFLAME_BRAZIER, 8).
+                        chain(HANGING_WITCHFIRE_BRAZIER, 11).
+                        chain(HANGING_COLDFIRE_BRAZIER, 6).
+                        chain(AMETHYST_LANTERN, 5).
+                        chain(DIAMOND_LANTERN, 5).
+                        chain(LANTERN, 11)
+                ;
+
+                break;
+            case LIGHT_EMITTER:
+                map.
+                        chain(NETHERFLAME_BRAZIER, 30).
+                        chain(WITCHFIRE_BRAZIER, 25).
+                        chain(COLDFIRE_BRAZIER, 33)
+                ;
+                break;
+            case WALL_WITH_DECOR_OVERLAY:
+                map.
+                        chain(MAGIC_CIRCLES, 15).
+                        chain(ANCIENT_RUNE, 5).
+                        chain(ANCIENT_RUNE, 5).
+                        chain(RUNE_INSCRIPTION, 10)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 11);
+
+                break;
+            case DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.Somber, false);
+            case SPECIAL_DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.DarkElegance, true);
+        }
+        return map;
+    }
+    private static WeightMap<String> getWeightMapForMonastery(ROOM_CELL type) {
+//        if (RandomWizard.chance(30)) {
+//            return getWeightMap(type, DUNGEON_STYLE.DarkElegance);
+//        }
+//        if (RandomWizard.chance(15)) {
+//            return getWeightMap(type, DUNGEON_STYLE.Somber);
+//        }
+        WeightMap<String> map = new WeightMap<>();
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.DarkElegance);
+            case INDESTRUCTIBLE:
+                return getWallWeightMap(DUNGEON_STYLE.DarkElegance, true);
+            case WALL:
+                return getWallWeightMap(DUNGEON_STYLE.Somber, false);
+            case DESTRUCTIBLE:
+                map.
+//                        chain(BF_OBJ_SUB_TYPES_COLUMNS.COBWEBBED_COLUMN, 15).
+        chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 20).
+                        chain(BF_OBJ_SUB_TYPES_TREES.DARK_TREE, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREES.DEAD_TREE, 10).
+//                        chain(BF_OBJ_SUB_TYPES_TREES.MISSHAPEN_TREE, 10).
+        chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 15);
+                break;
+            case CONTAINER:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.ASH_URN, 20).
+                        chain(BF_OBJ_SUB_TYPES_CONTAINER.ENCHANTED_ASH_URN, 15).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10);
+                break;
+            case SPECIAL_CONTAINER:
+
+                map.
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.COFFIN, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SEALED_SARCOPHAGUS, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.TOMB_NICHE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.GRAVESTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.TOMBSTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.LORDUNICODE39CODEENDS_TOMB, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.NOBLE_GRAVESTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.OVERGROWN_GRAVE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.OVERGROWN_TOMBSTONE, 10).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SARCOPHAGUS, 10)
+                ;
+                break;
+            case SPECIAL_ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 15).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 11).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELVEN_STATUE, 11).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.STONE_KNIGHT, 10)
+                ;
+
+                break;
+            case ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 15).
+                        chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 11).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SARCOPHAGUS, 14).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.TOMB_NICHE, 14).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.SEALED_SARCOPHAGUS, 14).
+                        chain(BF_OBJ_SUB_TYPES_GRAVES.LORDUNICODE39CODEENDS_TOMB, 11);
+                break;
+            case WALL_WITH_LIGHT_OVERLAY:
+
+                map
+                        .chain(HANGING_NETHERFLAME_BRAZIER, 8).
+                        chain(ELVEN_LANTERN, 8).
+                        chain(HANGING_WITCHFIRE_BRAZIER, 11).
+                        chain(HANGING_COLDFIRE_BRAZIER, 6).
+                        chain(AMETHYST_LANTERN, 5).
+                        chain(DIAMOND_LANTERN, 5).
+                        chain(SAPPHIRE_LANTERN, 4)
+                ;
+
+                break;
+            case LIGHT_EMITTER:
+                map.
+                        chain(NETHERFLAME_BRAZIER, 40).
+                        chain(WITCHFIRE_BRAZIER, 5).
+                        chain(ELVEN_BRAZIER, 3).
+                        chain(COLDFIRE_BRAZIER, 3)
+                ;
+                break;
+            case WALL_WITH_DECOR_OVERLAY:
+                map.
+                        chain(MAGIC_CIRCLES, 5).
+                        chain(ANCIENT_RUNE, 5).
+                        chain(ANCIENT_RUNE, 5).
+                        chain(RUNE_INSCRIPTION, 10)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 15);
+
+                break;
+            case DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.Somber, false);
+            case SPECIAL_DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.DarkElegance, true);
+        }
+        return map;
+    }
+
+    private static WeightMap<String> getWeightMapForSpiders(ROOM_CELL type) {
+        WeightMap<String> map = new WeightMap<>();
         switch (type) {
             case ENTRANCE:
             case EXIT:
@@ -328,13 +740,13 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                         chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 5);
                 break;
             case CONTAINER:
-                       map. chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                map.chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
                         chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10).
                         chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 5);
                 break;
             case SPECIAL_CONTAINER:
 
-                map. chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 10).
+                map.chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 10).
                         chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_REMAINS, 10).
                         chain(BF_OBJ_SUB_TYPES_REMAINS.PUTRID_REMAINS, 10).
                         chain(BF_OBJ_SUB_TYPES_REMAINS.COBWEBBED_SKULL, 10).
@@ -395,9 +807,9 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
         }
         return map;
     }
-    private static WeightMap<String> getWeightMapForDwarves(Boolean start_mid_end, ROOM_CELL type) {
+
+    private static WeightMap<String> getWeightMapForDwarves( ROOM_CELL type) {
         WeightMap<String> map = new WeightMap<>();
-        int random = RandomWizard.getRandomInt(100);
         switch (type) {
             case ENTRANCE:
             case EXIT:
@@ -408,6 +820,8 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                 return getWallWeightMap(DUNGEON_STYLE.Grimy, false);
             case DESTRUCTIBLE:
                 map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.FORGE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ANVIL, 10).
                         chain(BF_OBJ_SUB_TYPES_COLUMNS.COLUMN, 15).
                         chain(BF_OBJ_SUB_TYPES_COLUMNS.FALLEN_COLUMN, 10).
                         chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 5);
@@ -433,8 +847,10 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                 break;
             case SPECIAL_ART_OBJ:
                 map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.FORGE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ANVIL, 10).
                         chain(BF_OBJ_SUB_TYPES_INTERIOR.ARMOR_STAND, 10).
-                        chain(BF_OBJ_SUB_TYPES_INTERIOR.GAMBLING_TABLE,  5).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.GAMBLING_TABLE, 5).
                         chain(BF_OBJ_SUB_TYPES_STATUES.DWARF_STATUE, 30).
                         chain(BF_OBJ_SUB_TYPES_STATUES.ELDER_STATUE, 15).
                         chain(BF_OBJ_SUB_TYPES_MECHANICAL.GEAR_MECHANISM, 10).
@@ -443,6 +859,8 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                 break;
             case ART_OBJ:
                 map.
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.FORGE, 10).
+                        chain(BF_OBJ_SUB_TYPES_INTERIOR.ANVIL, 10).
                         chain(BF_OBJ_SUB_TYPES_CONTAINER.AXE_RACK, 10).
                         chain(BF_OBJ_SUB_TYPES_CONTAINER.HALBERT_RACK, 14).
                         chain(BF_OBJ_SUB_TYPES_CONTAINER.HAMMER_RACK, 10).
@@ -469,11 +887,11 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                         chain(GLOWING_ARCANE_RUNE, 5)
                         .chain(HANGING_HOLY_FIRE_BRAZIER, 3)
 
-                .chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LUMINESCENT_FUNGI, 5)
-                .chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LUMINESCENT_FUNGI, 5)
-                .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
-                .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
-                .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 5)
                 ;
                 break;
             case WALL_WITH_DECOR_OVERLAY:
@@ -935,6 +1353,41 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                         chain(BF_OBJ_SUB_TYPES_DOOR.VAULT_DOOR, 10).
                         chain(BF_OBJ_SUB_TYPES_DOOR.SKULL_DOOR, 10)
                         ;
+            case PRISON:
+                return   special
+                        ? map.
+                        chain(BF_OBJ_SUB_TYPES_DOOR.VAULT_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.IRON_DOOR, 15)
+                        : map.
+                        chain(BF_OBJ_SUB_TYPES_DOOR.HEAVY_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.DARK_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.STONE_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.IRON_BARS, 30).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.IRON_DOOR, 20);
+            case Knightly:
+                return   special
+                        ? map.
+                        chain(BF_OBJ_SUB_TYPES_DOOR.VAULT_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.IRON_DOOR, 10)
+                        : map.
+                        chain(BF_OBJ_SUB_TYPES_DOOR.ANCIENT_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.HEAVY_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.WOODEN_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.DARK_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.STONE_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.IRON_BARS, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.IRON_DOOR, 10);
+            case DarkElegance:
+              return   special
+                        ? map.
+                        chain(BF_OBJ_SUB_TYPES_DOOR.BONE_DOOR_ENCHANTED, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.CRIMSON_DOOR, 10)
+                        : map.
+                        chain(BF_OBJ_SUB_TYPES_DOOR.ANCIENT_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.DARK_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.BONE_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.VAULT_DOOR, 10).
+                        chain(BF_OBJ_SUB_TYPES_DOOR.SKULL_DOOR, 10);
             case ROGUE:
                 return special
                         ? map.
@@ -956,7 +1409,7 @@ private static WeightMap<String> getWeightMapForRogues(  ROOM_CELL type) {
                         chain(BF_OBJ_SUB_TYPES_DOOR.HEAVY_DOOR, 10).
                         chain(BF_OBJ_SUB_TYPES_DOOR.STONE_DOOR, 10);
             case Pagan:
-               return special
+                return special
                         ? map.
                         chain(BF_OBJ_SUB_TYPES_DOOR.DWARVEN_DOOR, 10).
                         chain(BF_OBJ_SUB_TYPES_DOOR.DWARVEN_RUNE_DOOR, 10)

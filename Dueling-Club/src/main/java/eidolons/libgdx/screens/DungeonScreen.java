@@ -358,8 +358,8 @@ public class DungeonScreen extends GameScreenWithTown {
                     if (!isBlocked())
                         ((RealTimeGameLoop) Eidolons.game.getLoop()).act(delta);
                 }
-
-            postProcessing.begin();
+            if (postProcessing != null)
+                postProcessing.begin();
             updateBackground(delta);
             if (backTexture != null) {
                 guiStage.getBatch().begin();
@@ -370,7 +370,8 @@ public class DungeonScreen extends GameScreenWithTown {
                 guiStage.getBatch().end();
             }
             gridStage.draw();
-            postProcessing.end();
+            if (postProcessing != null)
+                postProcessing.end();
 
             guiStage.draw();
 

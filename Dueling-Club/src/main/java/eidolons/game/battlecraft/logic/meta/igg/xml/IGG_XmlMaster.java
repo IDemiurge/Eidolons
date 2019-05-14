@@ -29,6 +29,10 @@ import main.system.datatypes.WeightMap;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,20 +52,30 @@ public class IGG_XmlMaster {
     private static final boolean PREGEN = true;
     private final UnitEnums.UNIT_GROUP presetUnitGroup = null;
     private final UnitEnums.UNIT_GROUP[] groups = null;
-    //    {
-//            UnitEnums.UNIT_GROUP.DWARVES,
-//            UnitEnums.UNIT_GROUP.HUMANS_BANDITS,
-//            UnitEnums.UNIT_GROUP.CRITTERS_SPIDERS
-//    };
-    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.DWARF;
-    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.ROGUE;
-    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.SPIDER;
-    //start and finish !
 
+    //DWARF
+//    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.DWARF;
+//    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.ROGUE;
+//    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.SPIDER;
+//    WeightMap<DUNGEON_STYLE> styleMap = new WeightMap<>(DUNGEON_STYLE.class)
+//            .chain(DUNGEON_STYLE.DWARF, 10)
+//            .chain(DUNGEON_STYLE.ROGUE, 4)
+//            .chain(DUNGEON_STYLE.SPIDER, 6);
+
+
+    //BASTION2
+//    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.PRISON;
+//    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.BASTION;
+//    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.CRYPTS;
+    //BASTION
+    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.BASTION;
+    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.CRYPTS;
+    public static final DUNGEON_STYLE exitStyle = DUNGEON_STYLE.PRISON;
+    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.PRISON;
     WeightMap<DUNGEON_STYLE> styleMap = new WeightMap<>(DUNGEON_STYLE.class)
-            .chain(DUNGEON_STYLE.DWARF, 10)
-            .chain(DUNGEON_STYLE.ROGUE, 4)
-            .chain(DUNGEON_STYLE.SPIDER, 6);
+            .chain(DUNGEON_STYLE.PRISON, 10)
+            .chain(DUNGEON_STYLE.BASTION, 24)
+            .chain(DUNGEON_STYLE.CRYPTS, 6);
     //how about we make synthetic zones? just for style?
     public static final String LEVEL_NAME = "Underworld.xml";
     private String folder;
@@ -69,7 +83,16 @@ public class IGG_XmlMaster {
     private int powerLevel = 300;
     private DungeonEnums.LOCATION_TYPE dungeonType;
     private boolean syntheticZones = true;
-    private String rngFilePath = "dungeon/dungeon boss - 13.xml"; //into custom property!
+    private String rngFilePath = "dungeon/overfill dungeon boss - 2.xml"; //into custom property!
+    private String TEMPLATE = "/crawl/Underworld.xml";
+    private int timeToSpawn = 0;
+    private boolean initRequired=false;
+//    private String TEMPLATE="/crawl/Vampire Abode.xml";
+
+    private String getLE_Path() {
+//        return PathFinder.getDungeonLevelFolder() + "/crawl/Underworld.xml";
+        return PathFinder.getDungeonLevelFolder() + TEMPLATE;
+    }
 
     public IGG_XmlMaster(String folder, String name) {
         this.folder = folder;
@@ -119,9 +142,6 @@ public class IGG_XmlMaster {
     }
 
     //just the background and some useless data
-    private String getLE_Path() {
-        return PathFinder.getDungeonLevelFolder() + "/crawl/Underworld.xml";
-    }
 
     private String getLevelName() {
         return name;
@@ -150,8 +170,27 @@ public class IGG_XmlMaster {
         CoreEngine.setjUnit(true);
         String path = getRngPath();
 
+        clean();
         initAndWriteLevel(path, 10);
 
+    }
+
+    private void clean() {
+//        Path target;
+//        Path src= Paths.get(path, newFolder);
+//        Path target= Paths.get(path, newFolder);
+//        Files.move(src, target);
+        List<File> files = FileManager.getFilesFromDirectory(getOutputPath(), false);
+        for (File file : files) {
+            if (!file.getName().contains("overfill"))
+                continue;
+            try {
+                Files.delete(Paths.get(file.getPath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//        newFolder = NameMaster.getUniqueVersionedFileName()
     }
 
     private void initAndWriteLevel(String path, int times) {
@@ -214,10 +253,9 @@ public class IGG_XmlMaster {
                 for (List<ObjAtCoordinate> list : groups.keySet()) {
                     for (ObjAtCoordinate obj : list) {
                         if (obj.getCoordinates().equals(object.getCoordinates())) {
-                            if (!obj.getType().equals(object.getType()))
-                            {
+                            if (!obj.getType().equals(object.getType())) {
 //                                obj.setType(object.getType());
-                                aiNode=   StringMaster.replaceFirst(aiNode, obj.toString(), object.toString());
+                                aiNode = StringMaster.replaceFirst(aiNode, obj.toString(), object.toString());
 
                             }
                         }
@@ -274,10 +312,12 @@ public class IGG_XmlMaster {
                 block.setZone(zone);
             }
         }
-        new RngLevelInitializer().init(level);
+        if (initRequired)
+            new RngLevelInitializer().init(level);
         level.setPowerLevel(getPowerLevel());
-        new RngMainSpawner().spawn(level);
-        new RngMainSpawner().spawn(level);
+        for (int i = 0; i < timeToSpawn; i++) {
+            new RngMainSpawner().spawn(level);
+        }
 
         String xml = level.getObjDataXml();
         xml = xml.replace(";", ",");
@@ -349,17 +389,18 @@ public class IGG_XmlMaster {
                 return mainStyle;
             case GUARD_ROOM:
             case TREASURE_ROOM:
-                return RandomWizard.random() ? mainStyle : altStyle;
+                return altStyle;
             case ENTRANCE_ROOM:
                 return enterStyle;
             case EXIT_ROOM:
-                return mainStyle;
+                return exitStyle;
             case SECRET_ROOM:
                 return altStyle;
             case DEATH_ROOM:
-                return RandomWizard.random() ? enterStyle : altStyle;
+                return RandomWizard.random() ? mainStyle : altStyle;
         }
-        return styleMap.getRandomByWeight();
+        return mainStyle;
+//        return styleMap.getRandomByWeight();
     }
 
     private int getPowerLevel() {
