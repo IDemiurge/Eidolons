@@ -148,7 +148,7 @@ public class EffectAnimCreator {
     private static String getVfx(Effect e) {
         if (e instanceof DealDamageEffect) {
 
-            return PathFinder.getVfxPath() + "spell/damage/"
+            return PathFinder.getVfxAtlasPath() + "spell/damage/"
              //                    + "fire"
              + ((DealDamageEffect) e).getDamageType().toString()
              ;

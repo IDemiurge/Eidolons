@@ -73,10 +73,12 @@ import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
@@ -135,6 +137,7 @@ public class DC_Game extends GenericGame {
     protected DC_BattleFieldGrid grid;
     @Refactor
     public Town town; //TODO
+    private boolean bossFight;
 
     public DC_Game() {
         this(false);
@@ -195,6 +198,9 @@ public class DC_Game extends GenericGame {
 
         if (!CoreEngine.isCombatGame())
             return;
+        if (isSimulation()){
+            return;
+        }
         dungeonMaster = createDungeonMaster();
         battleMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
@@ -323,7 +329,7 @@ public class DC_Game extends GenericGame {
             try {
                 combatLoop.endCombat();
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         }
         if (exploreLoop.isStarted())
@@ -527,7 +533,7 @@ public class DC_Game extends GenericGame {
                 try {
                     getDebugMaster().debugModeToggled(debugMode);
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
 
@@ -640,7 +646,7 @@ public class DC_Game extends GenericGame {
         try {
             return getDungeonMaster().getDungeonWrapper().getDungeon();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return null;
     }
@@ -809,7 +815,7 @@ public class DC_Game extends GenericGame {
     public GameLoop getGameLoop() {
         if (loop.getThread() != null)
         if (!loop.getThread().isAlive()){
-            main.system.auxiliary.log.LogMaster.log(1,"********* getGameLoop() --> THREAD WAS DEAD! restarting.... " ); // igg demo hack
+            LogMaster.log(1,"********* getGameLoop() --> THREAD WAS DEAD! restarting.... " ); // igg demo hack
             if (loop == combatLoop) {
                 combatLoop.endCombat();
             } else {
@@ -878,6 +884,14 @@ public class DC_Game extends GenericGame {
         if (combatLoop != null)
             combatLoop.setExited(true);
 
+    }
+
+    public boolean isBossFight() {
+        return bossFight;
+    }
+
+    public void setBossFight(boolean bossFight) {
+        this.bossFight = bossFight;
     }
 
     public enum GAME_MODES {

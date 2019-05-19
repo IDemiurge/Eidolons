@@ -21,6 +21,7 @@ import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
@@ -49,8 +50,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private static float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
             getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
     private static float speed = defaultSpeed;
-    private float visibilityResetPeriod = 0.2f;
+    private float visibilityResetPeriod = 1.25f;
     private float visibilityResetTimer = visibilityResetPeriod;
+    private float ignore_reset_delta;
+    private float ignore_reset_period = 12.5f;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -94,7 +97,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public void resetVisibilityResetTimer() {
         if (visibilityResetTimer < 0)
-            visibilityResetTimer = 1;
+            visibilityResetTimer = visibilityResetPeriod;
     }
 
     public float getVisibilityResetTimer() {
@@ -102,10 +105,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void act(float delta) {
+        visibilityResetTimer -= delta;
+        resetVisibilityResetTimer();
         delta *= speed;
         time += delta;
         master.act(delta);
-        visibilityResetTimer -= delta;
 
     }
 
@@ -176,7 +180,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (delta == 0) return;
         lastTimeChecked = time;
         round_delta += delta;
-        ai_delta = +delta;
+        ai_delta += delta;
+        ignore_reset_delta += delta;
+
+
         if (AiBehaviorManager.isNewAiOn()) {
             boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);
@@ -190,6 +197,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processTimedEffects() {
         guiDirtyFlag = false;
+
+        if (ignore_reset_delta> ignore_reset_period) {
+            master.getGame().getVisionMaster().getVisionRule().resetIgnore();
+            ignore_reset_delta=0;
+        }
+
         master.getAiMaster().getAlliesAndActiveUnitAIs(false).forEach(ai -> {
             if (ai.getUnit().getModeFinal() != null) {
                 processModeEffect(ai.getUnit(), ai.getUnit().getModeFinal());
@@ -219,9 +232,13 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void checkParamBuffs() {
-        for (Unit unit : master.getGame().getUnits()) {
-            unit.applyBuffRules();
-        }
+        if (time % 10 <= 1)
+            for (Unit unit : master.getGame().getUnits()) {
+                unit.applyBuffRules();
+            }
+        else
+            //TODO img demo hack performance
+            Eidolons.getMainHero().applyBuffRules();
     }
 
     private void processAiChecks() {
@@ -234,7 +251,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private float getRoundEffectPeriod() {
         if (DC_Engine.isAtbMode()) {
-            return 1;
+            return 5; //TODO igg demo hack
         }
         return 10;
     }

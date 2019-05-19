@@ -1,12 +1,21 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.EmptyDrawable;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -17,12 +26,17 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.StageWithClosable;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -42,6 +56,7 @@ public class HqPanel extends TablePanel implements Blocking {
     HqScrolledValuePanel scrolledValuePanel;
     HqTraitsPanel traits;
     HqControlPanel controlPanel;
+    HqTooltipPanel tooltipPanel;
     private TablePanel infoTable;
     private boolean editable;
     HqButtonPanel buttonPanel;
@@ -51,21 +66,52 @@ public class HqPanel extends TablePanel implements Blocking {
     HqParamPanel dynamicParams;
     HqParamPanel staticParams;
     private List<HqHeroDataSource> heroes;
+    private boolean initialized;
+    Fluctuating fluctuating = new Fluctuating(Fluctuating.ALPHA_TEMPLATE.HQ_SPRITE);
 
-//    PartyDataSource partyDataSource;
+    SpriteAnimation bgSprite;
+    Image bg = new Image(TextureCache.getOrCreateR(
+            IGG_Images.MAIN_ART.HALL3.getPath()
+    )); //variants!
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha== ShaderDrawer.SUPER_DRAW ||
-         ConfirmationPanel.getInstance().isVisible())
+        bg.setPosition(-30, 0);
+        bg.draw(batch, 1);
+//        bg.setPosition(200, 0);
+//        bg.draw(batch, 1);
+        if (bgSprite != null) {
+            bgSprite.draw(batch);
+        }
+        removeBackground();
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
+                ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
         else
-            ShaderDrawer.drawWithCustomShader(this, batch, null );
+            ShaderDrawer.drawWithCustomShader(this, batch, null);
 //        debugAll();
     }
 
     public HqPanel() {
-        setBackground( NinePatchFactory.getHqDrawable() );
+        setSize(GDX.size(1880), GDX.size(1080));
+    }
+
+    public void init() {
+
+        if (!CoreEngine.isActiveTestMode())
+            if (initialized || Eidolons.getGame().isBossFight()) {
+                return; //really?
+            }
+        bgSprite = SpriteAnimationFactory.getSpriteAnimation("atlas.txt");
+
+        bgSprite.setAlpha(0.4f);
+        bgSprite.setFrameDuration(0.1f);
+        bgSprite.setOffsetX(GdxMaster.getWidth() / 2);
+        bgSprite.setOffsetY(GdxMaster.getHeight() / 2);
+
+        initialized = true;
+//        setBackground(NinePatchFactory.getHqDrawable());
+        tooltipPanel = new HqTooltipPanel();
         partyMembers = createPartyMembers();
         hqTabs = createTabs();
         heroViewPanel = new HqHeroViewPanel();
@@ -78,14 +124,12 @@ public class HqPanel extends TablePanel implements Blocking {
         controlPanel = new HqControlPanel();
         buttonPanel = new HqButtonPanel();
         infoTable = createInfoTable();
-        setSize(GDX.size(1880), GDX.size(1080) );
         addElements();
-        addListener(new SmartClickListener(this){
+        addListener(new SmartClickListener(this) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actor actor = hit(x, y, true);
-                if (actor==HqPanel.this)
-                {
+                if (actor == HqPanel.this) {
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                     super.clicked(event, x, y);
                 }
@@ -97,10 +141,10 @@ public class HqPanel extends TablePanel implements Blocking {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
 
-        Actor actor=super.hit(x, y, touchable);
-            if (actor==null )
-                if (isVisible())
-                    return this;
+        Actor actor = super.hit(x, y, touchable);
+        if (actor == null)
+            if (isVisible())
+                return this;
         return actor;
     }
 
@@ -112,14 +156,24 @@ public class HqPanel extends TablePanel implements Blocking {
         return activeInstance;
     }
 
+
     @Override
     public void act(float delta) {
+        if (bgSprite != null) {
+            fluctuating.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.HQ_SPRITE);
+            fluctuating.fluctuate(delta);
+            bgSprite.setAlpha(fluctuating.getColor().a);
+        }
+        if (Eidolons.getGame().isBossFight()) {
+            return;
+        }
         super.act(delta);
     }
 
     private void addElements() {
         left();
-        add(partyMembers).left().colspan(3);
+        addActor(partyMembers);//.left().colspan(3);
+        partyMembers.setPosition(20, getHeight() - partyMembers.getHeight());
         row();
 
         add(heroViewPanel).left().padRight(20).width(565);
@@ -136,17 +190,18 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable = new TablePanel<>();
         infoTable.top();
         infoTable.add(heroValues).left();
-        infoTable.add(heroXp).right(). row();
-        infoTable.add(dynamicParams).center().colspan(2) . row();
+        infoTable.add(heroXp).right().row();
+        infoTable.add(dynamicParams).center().colspan(2).row();
         infoTable.add(staticParams).center().colspan(2).row();
 
-          masteryTable = new HqMasteryTable();
-          attributeTable = new HqAttributeTable();
+        masteryTable = new HqMasteryTable();
+        attributeTable = new HqAttributeTable();
 
         infoTable.add(attributeTable).left().top().padLeft(30);
         //separator
-        infoTable.add(masteryTable).right().top();
-        infoTable.add(traits).center().colspan(2).row();
+        infoTable.add(masteryTable).right().top().row();
+//        infoTable.add(traits).center().colspan(2).row(); //TODO OVER THE PORTRAIT BOTTOM
+        infoTable.add(tooltipPanel).center().colspan(2).row();
         attributeTable.setEditable(isEditable());
 
         HqNewMasteryPanel newMastery = new HqNewMasteryPanel();
@@ -156,11 +211,11 @@ public class HqPanel extends TablePanel implements Blocking {
         masteryTable.setEditable(isEditable());
         if (isScrollValuesOn()) {
             infoTable.row();
-            infoTable.addActor(scrolledValuePanel=new HqScrolledValuePanel());
+            infoTable.addActor(scrolledValuePanel = new HqScrolledValuePanel());
         }
 
         infoTable.row();
-        infoTable.add(controlPanel).padTop(100).bottom().center().colspan(2).row();
+//        infoTable.add(controlPanel).padTop(100).bottom().center().colspan(2).row();
 
         infoTable.setFixedSize(true);
         infoTable.setSize(400, 800);
@@ -186,6 +241,7 @@ public class HqPanel extends TablePanel implements Blocking {
     public void memberSelected(HqHeroDataSource source) {
         setUserObject(source);
     }
+
     public void memberSelected(Unit hero) {
         memberSelected(HqDataMaster.getHeroDataSource(hero));
     }
@@ -204,17 +260,19 @@ public class HqPanel extends TablePanel implements Blocking {
     }
 
     public void closed() {
-        HqPanel.setActiveInstance(null  );
+        HqPanel.setActiveInstance(null);
         getStageWithClosable().closeClosable(this);
 
         for (HqHeroDataSource sub : heroes) {
             sub.getEntity().getModificationList().clear();
         }
     }
+
     @Override
     public void open() {
         HqPanel.setActiveInstance(this);
         getStageWithClosable().openClosable(this);
+        ToolTipManager.setTooltipPanel(tooltipPanel);
     }
 
     @Override
@@ -231,10 +289,10 @@ public class HqPanel extends TablePanel implements Blocking {
         clear();
         addElements();
 
-            if (userObject instanceof List) {
-                    heroes = (List<HqHeroDataSource>) userObject;
-                    userObject=((List) userObject).get(0);
-            }
+        if (userObject instanceof List) {
+            heroes = (List<HqHeroDataSource>) userObject;
+            userObject = ((List) userObject).get(0);
+        }
         if (userObject instanceof HqHeroDataSource) {
             HqHeroDataSource source = (HqHeroDataSource) userObject;
             source.setEditable(editable);

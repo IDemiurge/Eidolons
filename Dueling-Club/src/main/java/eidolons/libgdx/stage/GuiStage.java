@@ -33,7 +33,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
-import eidolons.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.ExtendableLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -153,7 +153,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
 
 
-        SimpleLogPanel log = new SimpleLogPanel();
+        ExtendableLogPanel log = new ExtendableLogPanel();
         RollableGroup decorated = RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(decorated);
         decorated.
@@ -203,6 +203,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         addActor(blackout = new Blackout());
         addActor(tooltips = new ToolTipManager(this));
+
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
             @Override
             public void draw(Batch batch, float parentAlpha) {
@@ -302,7 +303,8 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (actionTooltipContainer.getActions().size == 0) {
                 actionTooltipContainer.setFluctuateAlpha(true);
                 if (!Eidolons.getGame().getManager().isSelecting())
-                    hideTooltip(actionTooltip, 1);
+                    if (!CoreEngine.isIggDemoRunning()) //TODO igg demo fix
+                     hideTooltip(actionTooltip, 1);
             }
         if (infoTooltipContainer != null)
             if (infoTooltipContainer.getActions().size == 0)
@@ -457,7 +459,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                     hqPanel.closed();
                 return;
             }
-
+            hqPanel.init();
             hqPanel.setEditable(ExplorationMaster.isExplorationOn());
             hqPanel.open();
             hqPanel.setUserObject(p.get());
@@ -610,7 +612,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (DC_Game.game.getKeyManager() == null) {
             return false;
         }
-        DC_Game.game.getKeyManager().handleKeyDown(keyCode);
+        if (DC_Game.game.getKeyManager().handleKeyDown(keyCode)){
+            return true;
+        }
         return super.keyDown(keyCode);
     }
 

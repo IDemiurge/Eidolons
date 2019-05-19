@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -57,6 +58,8 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         location= super.buildDungeon(path);
         FauxDungeonLevel level = createFauxDungeonLevel(path, location);
         master.setDungeonLevel(level);
+        level.getVoidCoordinates().addAll(location.getDungeon(). getVoidCoordinates());
+//        location.setEntranceData();
         return location;
     }
 
@@ -115,7 +118,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
 
                 objectMap = // TODO BETTER IN TYPES?
-                 DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
+                  DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
                 // TODO encounters?
             } else {
                 // BLOCK TYPE

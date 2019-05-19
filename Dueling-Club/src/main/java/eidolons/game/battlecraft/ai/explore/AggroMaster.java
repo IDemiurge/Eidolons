@@ -87,7 +87,7 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (unit.getAI().isEngaged()) {
+            if (unit.isBoss() || unit.getAI().isEngaged()) {
                 set.add(unit);
                 newAggro = true;
                 unit.getAI().setEngaged(false);

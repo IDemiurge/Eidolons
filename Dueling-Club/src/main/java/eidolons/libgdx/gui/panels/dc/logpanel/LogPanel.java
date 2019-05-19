@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -72,6 +73,9 @@ public class LogPanel extends ScrollTextWrapper {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
+            return;
+        }
         super.draw(batch, parentAlpha);
     }
 

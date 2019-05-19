@@ -28,6 +28,8 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.TypeBuilder;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,7 @@ public class Dungeon extends LightweightEntity {
     private DUNGEON_TEMPLATES template;
     private String levelFilePath;
     private LOCATION_TYPE dungeonSubtype;
+    private Collection<Coordinates> voidCoordinates;
 
     /*
      * Encounters Levels Rewards Loot
@@ -112,7 +115,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public boolean isBoss() {
-        return getDungeonType() == DungeonEnums.DUNGEON_TYPE.BOSS;
+        return getDungeonType() == DUNGEON_TYPE.BOSS;
     }
 
     public Integer getCellsX() {
@@ -170,7 +173,7 @@ public class Dungeon extends LightweightEntity {
         if (template == null)
         // if (getProperty(PROPS.DUNGEON_TEMPLATES).isEmpty())
         {
-            if (getDungeonType() == DungeonEnums.DUNGEON_TYPE.BOSS) {
+            if (getDungeonType() == DUNGEON_TYPE.BOSS) {
                 // to be set upon sublevel generation?
                 template = DUNGEON_TEMPLATES.GREAT_ROOM;
             }
@@ -184,7 +187,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public boolean isSurface() {
-        return checkProperty(PROPS.DUNGEON_TAGS, DungeonEnums.DUNGEON_TAGS.SURFACE + "");
+        return checkProperty(PROPS.DUNGEON_TAGS, DUNGEON_TAGS.SURFACE + "");
     }
 
     public boolean isNight() {
@@ -286,6 +289,13 @@ public class Dungeon extends LightweightEntity {
 
         }
         return ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion());
+    }
+
+    public Collection<Coordinates> getVoidCoordinates() {
+        if (voidCoordinates == null) {
+            voidCoordinates = new ArrayList<>();
+        }
+        return voidCoordinates;
     }
 
     public enum POINTS {

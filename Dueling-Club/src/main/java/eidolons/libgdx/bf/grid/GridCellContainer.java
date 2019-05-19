@@ -93,6 +93,10 @@ public class GridCellContainer extends GridCell {
     }
 
     private boolean isViewCacheOn() {
+        if (Eidolons.BOSS_FIGHT)  //hasBackground
+            return true;
+        //TODO igg demo hack
+
         if (checkIgnored())
             return false;
         if (main)
@@ -109,7 +113,7 @@ public class GridCellContainer extends GridCell {
 
     public List<GenericGridView> getUnitViews(boolean visibleOnly) {
 
-        if (isViewCacheOn())
+        if ( isViewCacheOn())
             if (visibleOnly) {
                 if (visibleViews != null && !main)
                     return visibleViews;

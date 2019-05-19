@@ -7,10 +7,10 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 
-public class SimpleLogPanel extends LogPanel {
+public class ExtendableLogPanel extends LogPanel { //TODO igg demo insight INTO DECORATOR
     private Actor extendButton;
 
-    public SimpleLogPanel() {
+    public ExtendableLogPanel() {
         super();
 
         extendButton = new SmartButton(STD_BUTTON.PULL);

@@ -70,6 +70,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             if (Eidolons.getGame().getStateManager().isResetting()) {
                 return null;
             }
+            if (unit.isBeingReset()) {
+                return null;
+            }
             List<ValueContainer> values = new ArrayList<>();
             if (unit.isDead()) {
 //                addKeyAndValue();
@@ -148,10 +151,12 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                     case VERBOSE:
                         //if not full?
                     case NORMAL:
+                        if (!unit.isBfObj()) {
                         values.add(getValueContainer(unit, PARAMS.C_STAMINA, PARAMS.STAMINA));
                         values.add(getValueContainer(unit, PARAMS.C_FOCUS, PARAMS.FOCUS));
                         values.add(getValueContainer(unit, PARAMS.C_MORALE, PARAMS.MORALE));
                         values.add(getValueContainer(unit, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
+                        }
                     case BASIC:
                         addParamStringToValues(unit, values, PARAMS.N_OF_ACTIONS);
 //                        .center()

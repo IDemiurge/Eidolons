@@ -71,7 +71,7 @@ public class PerkSlot extends HtNode {
 
     @Override
     protected String getTextPrefix() {
-        return "Tier " + NumberUtils.getRoman(tier) + " Perk";
+        return "Tier " + NumberUtils.getRoman(tier+1) + " Perk";
     }
 
     @Override
@@ -93,7 +93,7 @@ public class PerkSlot extends HtNode {
             if (data.getRight() != null) {
             HeroClass c1 = data.getMiddle();
             HeroClass c2 = data.getRight();
-            available = PerkMaster.getAvailablePerks(hero,
+            available = PerkMaster.getAvailablePerks(getHero(),
              tier, c1, c2);
             if (available.isEmpty())
                 disable();

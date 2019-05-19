@@ -81,7 +81,7 @@ public class ActionPanel extends GroupX {
 
         rigthOrbPanel = new OrbsPanel(PARAMS.MORALE, PARAMS.ESSENCE, PARAMS.FOCUS);
         rigthOrbPanel.setPosition(spellOffset - 11
-         , IMAGE_SIZE);
+                , IMAGE_SIZE);
         addActor(rigthOrbPanel);
 
         addActor(facingPanel = new FacingPanel());
@@ -90,12 +90,12 @@ public class ActionPanel extends GroupX {
 
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
         offhand.setPosition(leftOrbPanel.getX() + 272,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
 
         facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 7,
-         leftOrbPanel.getY() + 32);
+                leftOrbPanel.getY() + 32);
 
         addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
         orbOverlay.setPosition(EMPTY_OFFSET + 136, 56);
@@ -110,9 +110,9 @@ public class ActionPanel extends GroupX {
         addActor(spellbookBtn);
         addActor(invBtn);
         spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
-         2);
+                2);
         invBtn.setPosition(modeActionsPanel.getX() - 58,
-         2);
+                2);
 
         setY(-IMAGE_SIZE);
         bindEvents();
@@ -165,17 +165,18 @@ public class ActionPanel extends GroupX {
         });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
+            // dirty flag?
 
             mainHand.setUserObject(new ImmutablePair<>(
-             new WeaponDataSource(hero.getActiveWeapon(false)),
-             new WeaponDataSource(hero.getNaturalWeapon())
+                    new WeaponDataSource(hero.getActiveWeapon(false)),
+                    new WeaponDataSource(hero.getNaturalWeapon())
             ));
             offhand.setUserObject(new ImmutablePair<>(
-             new WeaponDataSource(hero.getActiveWeapon(true)),
-             new WeaponDataSource(hero.getOffhandNaturalWeapon())
+                    new WeaponDataSource(hero.getActiveWeapon(true)),
+                    new WeaponDataSource(hero.getOffhandNaturalWeapon())
             ));
             GuiEventManager.trigger(ACTION_PANEL_UPDATE,
-             new PanelActionsDataSource(hero));
+                    new PanelActionsDataSource(hero));
 
         });
     }
@@ -195,6 +196,8 @@ public class ActionPanel extends GroupX {
                     //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                     //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
                 }
+
+
                 quickSlotPanel.setUserObject(source);
                 modeActionsPanel.setUserObject(source);
                 spellPanel.setUserObject(source);
@@ -220,20 +223,29 @@ public class ActionPanel extends GroupX {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (quickSlotPanel.isHovered() ||
+                spellPanel.isHovered() ||
+                modeActionsPanel.isHovered()
+        ) {
+            //TODO while hovering, don't update!!!
+            BaseSlotPanel.hoveredAny = true;
+        } else {
+            BaseSlotPanel.hoveredAny = false;
+        }
 
         spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
-         2);
+                2);
         invBtn.setPosition(modeActionsPanel.getX() - 55,
-         2);
+                2);
 
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
         offhand.setPosition(leftOrbPanel.getX() + 272,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
 
         facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
-         leftOrbPanel.getY() + 32);
+                leftOrbPanel.getY() + 32);
     }
 
     @Override

@@ -29,6 +29,11 @@ public class HeroChain {
 
         }
     }
+
+    public Party getParty() {
+        return party;
+    }
+
     public void death() {
         findHero(party.getLeader().getName()).death();
     }

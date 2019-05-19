@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.boss;
+package eidolons.libgdx.bf.boss.entity;
 
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.unit.Unit;
@@ -10,17 +10,17 @@ public class BossChecker extends UnitChecker {
 
     @Override
     public boolean checkInSight() {
-        return super.checkInSight();
+        return true;
     }
 
     @Override
     public boolean checkInSightForUnit(Unit unit) {
-        return super.checkInSightForUnit(unit);
+        return true;
     }
 
     @Override
     public boolean checkVisible() {
-        return super.checkVisible();
+        return true;
     }
 
     @Override
@@ -35,11 +35,11 @@ public class BossChecker extends UnitChecker {
 
     @Override
     public boolean isTurnable() {
-        return super.isTurnable();
+        return false;
     }
 
     @Override
     public boolean canMove() {
-        return super.canMove();
+        return false;
     }
 }

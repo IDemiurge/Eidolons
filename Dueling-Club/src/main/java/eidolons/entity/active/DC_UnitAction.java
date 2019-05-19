@@ -5,6 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.handlers.active.action.ActionActiveMaster;
 import eidolons.entity.handlers.active.action.ActionExecutor;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.system.audio.DC_SoundMaster;
@@ -26,22 +27,25 @@ import java.util.List;
 
 public class DC_UnitAction extends DC_ActiveObj {
 
-    private   boolean dummy;
+    private boolean dummy;
     private ACTION_TYPE actionType;
     private ModeEffect modeEffect;
 
     public DC_UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
-        if (type.getType()== DC_ActionManager.DUMMY_ACTION_TYPE) {
-            dummy=true;
+        if (type.getType() == DC_ActionManager.DUMMY_ACTION_TYPE) {
+            dummy = true;
         }
+    }
+
+    public DC_UnitAction(ObjType type, Unit unit) {
+        super(type, unit.getOwner(), unit.getGame(), unit.getRef().getCopy());
     }
 
     @Override
     public boolean canBeActivated() {
-        if (dummy)
-        {
-            main.system.auxiliary.log.LogMaster.log(1,"cannot activate, it's a dummy!!! - " +this);
+        if (dummy) {
+            main.system.auxiliary.log.LogMaster.log(1, "cannot activate, it's a dummy!!! - " + this);
             return false;
         }
         return true;
@@ -64,7 +68,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     @Override
     public void toBase() {
         super.toBase();
-        if (DC_RuleMaster.isFocusReqsOff()){
+        if (DC_RuleMaster.isFocusReqsOff()) {
             setParam(PARAMS.FOC_REQ, 0);
 //            setParam(PARAMS.FOC_COST, 0);
         }
@@ -119,7 +123,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     private void initActionType() {
         actionType = new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-         getProperty(G_PROPS.ACTION_TYPE));
+                getProperty(G_PROPS.ACTION_TYPE));
 
     }
 
@@ -137,7 +141,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     public boolean isUnarmed() {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.UNARMED.toString())
-         || checkGroup("Creature") || checkGroup("Unarmed");
+                || checkGroup("Creature") || checkGroup("Unarmed");
     }
 
     public boolean isRangedTouch() {
@@ -181,8 +185,6 @@ public class DC_UnitAction extends DC_ActiveObj {
         getHandler().deactivate();
     }
     // TODO DEPRECATED METHODS!
-
-
 
 
 }

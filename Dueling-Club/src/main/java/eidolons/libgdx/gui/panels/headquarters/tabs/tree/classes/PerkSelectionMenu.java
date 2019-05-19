@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
+import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
 import main.entity.type.ObjType;
@@ -11,6 +12,13 @@ import main.system.GuiEventType;
  */
 public class PerkSelectionMenu extends SlotSelectionRadialMenu {
 
+    protected Vector2 getBackgroundPosition() {
+        return super.getBackgroundPosition();
+    }
+    @Override
+    protected int getIconSize() {
+        return 50;
+    }
     protected EventType getEvent() {
         return   GuiEventType.SHOW_PERK_CHOICE;
     }

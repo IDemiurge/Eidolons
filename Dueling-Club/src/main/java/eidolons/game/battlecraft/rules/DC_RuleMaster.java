@@ -26,11 +26,15 @@ public class DC_RuleMaster {
     }
 
     public void timePassed(Float time) {
-        for (BattleFieldObject object : game.getBfObjects())
-        for (DamageCounterRule rule : rules.getTimedRules().keySet()) {
-            if (rule.checkApplies(object)){
-                TimedRule timedRule = rules.getTimedRules().get(rule);
-                timedRule.timePassed(time, object);
+        for (BattleFieldObject object : game.getBfObjects()) {
+            if (object.isResetIgnored()) {
+                continue;
+            }
+            for (DamageCounterRule rule : rules.getTimedRules().keySet()) {
+                if (rule.checkApplies(object)) {
+                    TimedRule timedRule = rules.getTimedRules().get(rule);
+                    timedRule.timePassed(time, object);
+                }
 
             }
         }

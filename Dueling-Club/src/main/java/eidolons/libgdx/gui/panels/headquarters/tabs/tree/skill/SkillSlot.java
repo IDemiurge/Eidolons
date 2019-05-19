@@ -45,7 +45,7 @@ public class SkillSlot extends HtNode {
                 resetToOriginal();
                 if (data.getMiddle() != null)
                     if (data.getRight() != null)
-                        available = SkillMaster.getAllSkills(hero, tier, data.getMiddle(), data.getRight());
+                        available = SkillMaster.getAllSkills(getHero(), tier, data.getMiddle(), data.getRight());
                 //set image to N or X
             }
         }
@@ -65,7 +65,7 @@ public class SkillSlot extends HtNode {
 
     @Override
     protected String getTextPrefix() {
-        return "Tier " + NumberUtils.getRoman(tier) + " Skill";
+        return "Tier " + NumberUtils.getRoman(tier+1) + " Skill";
     }
 
     @Override

@@ -5,6 +5,7 @@ import eidolons.entity.Deity;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 4/17/2018.
@@ -94,9 +95,11 @@ public class Images {
 
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
-
     public static final String PARTY_BACKGROUND_COLS = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "generic/decor/columns.png");;
+            PathFinder.getComponentsPath(), "generic/decor/columns.png");
+
+    public static final String COLUMNS = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/columns.png");
     public static final String SEPARATOR_ALT = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
     public static final String SEPARATOR = StrPathBuilder.build(
@@ -208,5 +211,10 @@ public class Images {
 
     public static String getSketch(Deity deity) {
         return null;
+    }
+
+    public static String getDefaultSkillImage(String mastery) {
+        return "gen/skill/mastery/"+mastery+".png";
+
     }
 }

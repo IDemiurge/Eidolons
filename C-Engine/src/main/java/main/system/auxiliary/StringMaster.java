@@ -367,7 +367,7 @@ public class StringMaster {
     public static String getCamelCase(String name) {
         String formatted = StringMaster.getWellFormattedString(name);
         return formatted.substring(0, 1).toLowerCase()
-         + formatted.substring(1).replace(" ", "");
+                + formatted.substring(1).replace(" ", "");
     }
 
     public static String getWellFormattedString(String s, boolean insertSpaceAfterCapitals) {
@@ -612,7 +612,7 @@ public class StringMaster {
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
         return ContainerUtils.build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))
-         .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
     }
 
     public static String getValueRef(KEYS objRef, VALUE valRef) {
@@ -621,7 +621,7 @@ public class StringMaster {
 
     public static String getValueRef(String objRef, String valRef) {
         return FORMULA_REF_OPEN_CHAR + objRef + FORMULA_REF_SEPARATOR + valRef
-         + FORMULA_REF_CLOSE_CHAR;
+                + FORMULA_REF_CLOSE_CHAR;
     }
 
     public static String getSubString(String string, String open, String close) {
@@ -772,7 +772,15 @@ public class StringMaster {
     }
 
     public static String cropLastSegment(String path, String separator) {
-        return replaceLast(path, getLastPart(path, separator), "");
+        return cropLastSegment(path, separator, false);
+    }
+
+    public static String cropLastSegment(String path, String separator, boolean cropSeparator) {
+        String s = replaceLast(path, getLastPart(path, separator), "");
+        if (cropSeparator) {
+            return s.substring(0, s.length() - 1);
+        }
+        return s;
 
     }
 
@@ -805,7 +813,7 @@ public class StringMaster {
         }
         if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string
-             .indexOf(getWellFormattedString(regex));
+                    .indexOf(getWellFormattedString(regex));
         }
         if (index == -1) {
             return string;
@@ -819,8 +827,8 @@ public class StringMaster {
         if (all) {
             try {
                 return string.replace(regex, replacement).replace(getWellFormattedString(regex),
-                 replacement).replace(regex.toLowerCase(), replacement).replace(
-                 regex.toUpperCase(), replacement);
+                        replacement).replace(regex.toLowerCase(), replacement).replace(
+                        regex.toUpperCase(), replacement);
             } catch (Exception e) {
                 return string.replace(Pattern.quote(regex), replacement);
             }
@@ -1048,7 +1056,8 @@ public class StringMaster {
     public static String formatMapKey(String name) {
         return name.trim().toLowerCase();
     }
-        public static String formatDisplayedName(String name) {
+
+    public static String formatDisplayedName(String name) {
         if (name.contains(VERSION_SEPARATOR)) {
             return name.split(VERSION_SEPARATOR)[0];
         }
@@ -1133,7 +1142,7 @@ public class StringMaster {
 
     public static String[] splitLines(String data, boolean allowEmptyLines) {
         String[] lines = splitLines(data, allowEmptyLines, "\r?\n");
-        if (lines.length>1)
+        if (lines.length > 1)
             return lines;
         return splitLines(data, allowEmptyLines, "\n");
     }
@@ -1144,7 +1153,7 @@ public class StringMaster {
         //        data.contains(NEW_LINE)? StringMaster.NEW_LINE
         //       : "\n");
         List<String> list = Arrays.stream(data.trim().split(separator)).
-         filter(line -> !line.isEmpty()).collect(Collectors.toList());
+                filter(line -> !line.isEmpty()).collect(Collectors.toList());
         return list.toArray(new String[list.size()]);
     }
 

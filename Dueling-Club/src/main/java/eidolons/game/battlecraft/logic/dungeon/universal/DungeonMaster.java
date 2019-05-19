@@ -76,12 +76,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         }
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
-        if (!ImageManager.isImage(dungeonWrapper.getMapBackground())) {
-            LogMaster.log(1,
-             dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
-            return;
-        }
-
 
     }
 

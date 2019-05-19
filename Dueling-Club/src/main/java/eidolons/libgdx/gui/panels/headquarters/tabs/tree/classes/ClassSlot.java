@@ -45,7 +45,7 @@ public class ClassSlot extends HtNode {
     }
     @Override
     protected String getTextPrefix() {
-        return "Tier " + NumberUtils.getRoman(tier) + " Class";
+        return "Tier " + NumberUtils.getRoman(tier+1) + " Class";
     }
 
     @Override
@@ -57,12 +57,14 @@ public class ClassSlot extends HtNode {
     public void update(float delta) {
         if (data != null) {
             enable();
-            setRootPath(HeroClassMaster.getImgPath(data));
+            setRootPath(
+                    HeroClassMaster.getImgPath(data)
+            );
 //            GdxImageMaster.round(data.getImagePath(), true);
 //            setRootPath(GdxImageMaster.getRoundedPath(data.getImagePath()));
         } else {
             resetToOriginal();
-            available = HeroClassMaster.getAllClasses(hero,
+            available = HeroClassMaster.getClassesToChooseFrom(getHero(),
              tier);
             if (available.isEmpty())
                 disable();

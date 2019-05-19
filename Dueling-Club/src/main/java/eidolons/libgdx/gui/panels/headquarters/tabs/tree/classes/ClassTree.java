@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.ClassesDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
@@ -14,6 +15,15 @@ public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
         super(altBackground);
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
     @Override
     protected int getLinkWidth() {
         return 64;

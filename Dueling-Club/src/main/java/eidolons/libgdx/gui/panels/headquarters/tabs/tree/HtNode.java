@@ -4,9 +4,12 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SpriteActor.SPRITE_ACTOR_ANIMATION;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -14,6 +17,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -30,7 +34,7 @@ import java.util.Collection;
 public abstract class HtNode extends DynamicLayeredActor {
 
     protected boolean editable;
-    protected Unit hero;
+    private Unit hero;
     protected int tier;
     protected int slot;
     SpriteActor sprite = new SpriteActor();
@@ -38,25 +42,26 @@ public abstract class HtNode extends DynamicLayeredActor {
     public HtNode(int tier, String rootPath, String overlay, String underlay, int slot) {
         super(getRootPath(rootPath, tier), overlay, underlay);
         this.tier = tier;
-        this.slot =  slot;
+        this.slot = slot;
         init();
     }
 
 
     private static String getRootPath(String rootPath, int tier) {
-        return StringMaster.getAppendedImageFile(rootPath, " "+ (tier+1));
+        return StringMaster.getAppendedImageFile(rootPath, " " + (tier + 1));
     }
 
     protected float getDefaultWidth() {
         return 64;
     }
+
     protected float getDefaultHeight() {
         return 64;
     }
 
     protected void playStateAnim() {
         boolean alt = RandomWizard.chance(getAltChance(status));
-       sprite. play(getAnimForStatus(status, alt));
+        sprite.play(getAnimForStatus(status, alt));
 
     }
 
@@ -84,10 +89,11 @@ public abstract class HtNode extends DynamicLayeredActor {
         }
         return null;
     }
+
     public void update(float delta) {
         clearListeners();
         Tooltip tooltip = getTooltip();
-        if (tooltip!=null )
+        if (tooltip != null)
             addListener(tooltip.getController());
         addListener(new SmartClickListener(this) {
             @Override
@@ -115,6 +121,7 @@ public abstract class HtNode extends DynamicLayeredActor {
             }
         });
     }
+
     public float getPeriod() { // alt
         switch (status) {
             case HOVER:
@@ -126,16 +133,16 @@ public abstract class HtNode extends DynamicLayeredActor {
         return 2.5f;
     }
 
-    protected   Tooltip getTooltip(){
+    protected Tooltip getTooltip() {
         Entity entity = getEntity();
-        String text=getTextPrefix();
-        if (entity!=null ){
+        String text = getTextPrefix();
+        if (entity != null) {
             Ref ref = Eidolons.getMainHero().getRef().getCopy();
-            ref.setID(KEYS.SKILL,  entity.getId());
-            text +="\n"+ entity.getName();
-            text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
-            text +="\n"+ TextParser.parse( entity.getDescription(),
-           ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+            ref.setID(KEYS.SKILL, entity.getId());
+            text += "\n" + entity.getName();
+            text += "\n" + entity.getProperty(G_PROPS.TOOLTIP);
+            text += "\n" + TextParser.parse(entity.getDescription(),
+                    ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
         }
         return new ValueTooltip(text);
     }
@@ -147,18 +154,22 @@ public abstract class HtNode extends DynamicLayeredActor {
     }
 
     protected void click() {
+//      TODO   HqMaster.filterContent(getAvailable());
         if (ListMaster.isNotEmpty(getAvailable())) {
+
             SlotSelectionRadialMenu.setActiveNode(this);
             GuiEventManager.trigger(getSelectionEvent(), getAvailable(), tier, slot);
         } else {
-
-            GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, "Nothing available yet!");
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                    "Nothing available for this slot yet!",   Eidolons.getMainHero());
+//            GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT,
+//                    "Nothing available for this slot yet!");
         }
     }
 
     protected abstract EventType getSelectionEvent();
 
-    protected abstract Collection getAvailable();
+    protected abstract Collection<ObjType> getAvailable();
 
     protected void doubleClick() {
         click();
@@ -176,5 +187,12 @@ public abstract class HtNode extends DynamicLayeredActor {
 
     public void setHero(Unit hero) {
         this.hero = hero;
+    }
+
+    public Unit getHero() {
+        if (hero == null) {
+            return HqPanel.getActiveInstance().getSelectedHero().getEntity();
+        }
+        return hero;
     }
 }

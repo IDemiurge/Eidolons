@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
-import eidolons.libgdx.bf.boss.BossUnit;
+import eidolons.libgdx.bf.boss.entity.BossUnit;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;

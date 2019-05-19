@@ -22,6 +22,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -271,6 +272,9 @@ public class GdxImageMaster extends LwjglApplication {
         return round;
     }
 
+    public static String getRoundedPathNew(String path) {
+        return "gen/radial icons/" + PathUtils.getLastPathSegment(path);
+    }
     public static String getRoundedPath(String path) {
         path= FileManager.formatPath( path);
         return StringMaster.cropFormat(path) + " rounded.png";

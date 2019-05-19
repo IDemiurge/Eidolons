@@ -31,6 +31,9 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         init(texture, name, value);
     }
 
+    public void invokeClicked() {
+
+    }
 
     public ValueContainer(TextureRegion texture, String name, String value) {
         init(texture, name, value);
@@ -145,6 +148,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     }
 
     protected void initSize() {
+        setFixedMinSize(true);
     }
 
     public void setBorder(TextureRegion region) {
@@ -253,6 +257,11 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     public void act(float delta) {
         super.act(delta);
 
+    }
+
+    @Override
+    protected boolean isVisibleEffectively() {
+        return true; //TODO igg demo hack performance
     }
 
     public float getImageScaleX() {

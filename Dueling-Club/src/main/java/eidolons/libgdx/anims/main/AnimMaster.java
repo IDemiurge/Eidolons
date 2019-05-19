@@ -1,7 +1,6 @@
 package eidolons.libgdx.anims.main;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
@@ -14,10 +13,13 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.std.EventAnimCreator;
+import eidolons.libgdx.bf.boss.anim.BossAnimator;
+import eidolons.libgdx.bf.boss.entity.BossUnit;
+import eidolons.libgdx.bf.boss.sprite.BossView;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.controls.GlobalController;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.OptionsMaster;
@@ -51,6 +53,7 @@ public class AnimMaster extends Group {
     private final AnimDrawMaster drawer;
     private final ActionAnimMaster actionMaster;
     private final BuffAnimMaster buffMaster;
+    private BossAnimator bossAnimator;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -59,7 +62,6 @@ public class AnimMaster extends Group {
         eventMaster = new EventAnimMaster(this);
         buffMaster = new BuffAnimMaster();
         actionMaster = new ActionAnimMaster(this);
-
         addActor(drawer = new AnimDrawMaster(this));
         addActor(floatTextLayer = new FloatingTextLayer());
 
@@ -150,23 +152,22 @@ public class AnimMaster extends Group {
     }
 
     private static void waitCombatMode(int maxTime, int period, ActionInput action) {
+
         int waitTime = 0;
-        int speed = 1+OptionsMaster.getGameplayOptions().getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED);
-        boolean control = OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL);
-        //TODO not here
-        if (control) {
-            if (!action.getAction().getOwnerUnit().isMine())
-            {
-                Eidolons.getGame().getLoop().setPaused(true);
-//                return;
-            }
-        }
+        int speed = 1 + OptionsMaster.getGameplayOptions().getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED);
+
         if (action.getAction().getOwnerUnit().isMine()) {
-            maxTime=maxTime/2;
+            maxTime = maxTime / 2;
         }
         maxTime = maxTime * 100 / speed;
 //        minTime
         int minTime = maxTime / 2;
+
+        if (action.getContext().getSourceObj() instanceof BossUnit) {
+            maxTime= 2000;
+            minTime = maxTime;
+        }
+
         String show = "Wait " +
                 action.getAction().getOwnerUnit().getNameIfKnown() +
                 "..";
@@ -178,12 +179,39 @@ public class AnimMaster extends Group {
             //update something? add "." to something?
             waitTime += period;
             System.out.print('.');
-            if (!control) {
-            EUtils.showInfoText(show);
-            show += ".";
+                EUtils.showInfoText(show);
+                show += ".";
+        }
+        boolean control = OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL);
+
+        if (!control)
+            EUtils.showInfoText("... And Go");
+
+        if (control) {
+            if (!action.getAction().getOwnerUnit().isMine()) {
+                if (checkActionControlled(action)) {
+                    Eidolons.getGame().getLoop().setPaused(true);
+                    GlobalController.setControlPause(true);
+                    EUtils.showInfoText("Any key or click to continue...");
+                    //max wait time here? add dots?
+                    return;
+                }
+//                return;
             }
         }
-        EUtils.showInfoText("... And Go");
+    }
+
+    private static boolean checkActionControlled(ActionInput action) {
+        if (action.getAction().isTurn()) {
+            return false;
+        }
+        if (action.getAction().getName().contains("Reload")) {
+            return false;
+        }
+        if (action.getAction().getName().equalsIgnoreCase("Wait")) {
+            return false;
+        }
+        return true;
     }
 
 
@@ -201,13 +229,13 @@ public class AnimMaster extends Group {
     }
 
     protected static int getMaxAnimWaitTime(ActionInput action) {
-        switch (action.getAction().getName()){
+        switch (action.getAction().getName()) {
 //            case DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString():
             case "Wait":
                 return 0;
         }
 
-        if (action.getAction().getActionGroup()== ActionEnums.ACTION_TYPE_GROUPS.MODE) {
+        if (action.getAction().getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
             return 0;
         }
         if (ExplorationMaster.isExplorationOn()) {
@@ -240,7 +268,11 @@ public class AnimMaster extends Group {
     public void bindEvents() {
         DC_SoundMaster.bindEvents();
         floatTextLayer.bindEvents();
-        GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
+        GuiEventManager.bind(GuiEventType.BOSS_VIEW_CREATED, p -> {
+            bossAnimator = new BossAnimator((BossView) p.get(), this);
+
+        });
+            GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {
                 return;
             }

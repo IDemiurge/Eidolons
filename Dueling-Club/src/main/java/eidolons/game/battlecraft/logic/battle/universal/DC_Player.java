@@ -84,7 +84,7 @@ public class DC_Player extends Player {
         return (DC_Game) super.getGame();
     }
 
-    public Set<Unit> collectControlledUnits_() {
+    public Set<Unit>  collectControlledUnits_() {
         return getGame().getUnits().stream().filter(unit -> unit.isOwnedBy(this))
          .collect(Collectors.toSet());
     }

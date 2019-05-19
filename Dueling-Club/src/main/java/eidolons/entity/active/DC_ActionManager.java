@@ -19,6 +19,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.game.module.dungeoncrawl.objects.TrapMaster;
+import eidolons.libgdx.bf.boss.entity.BossActionMaster;
 import main.content.CONTENT_CONSTS2.STD_ACTION_MODES;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -550,9 +551,27 @@ public class DC_ActionManager implements ActionManager {
         if (!unit.isBfObj()) {
             actives.addAll(getStandardActions(unit));
         }
-        addSpecialActions(unit, actives);
+        if (unit.isBoss()) {
 
-        String activesProp = entity.getProperty(ACTIVES);
+        } else {
+        addSpecialActions(unit, actives);
+        addCustomActions(unit, actives);
+        try {
+            constructActionMaps(unit);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        }
+        // entity.setProperty(ACTIVES, StringMaster
+        // .constructContainer(StringMaster.convertToIdList(actives)));
+        entity.setActivesReady(true);
+
+        unit.setActives(new ArrayList<>(actives));
+    }
+
+    private void addCustomActions(Unit unit, DequeImpl<ActiveObj> actives) {
+
+        String activesProp = unit.getProperty(ACTIVES);
         for (String typeName : ContainerUtils.open(activesProp)) {
             ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
             DC_UnitAction action;
@@ -563,7 +582,7 @@ public class DC_ActionManager implements ActionManager {
                     continue;
                 }
             } else {
-                action = getOrCreateAction(typeName, entity);
+                action = getOrCreateAction(typeName, unit);
             }
             // idList.add(action.getId() + "");
             actives.add(action);
@@ -587,24 +606,16 @@ public class DC_ActionManager implements ActionManager {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-        unit.setActives(new ArrayList<>(actives));
         if (!unit.isBfObj()) {
-            addHiddenActions(unit, unit.getActives());
+            addHiddenActions(unit, actives);
         }
-        try {
-            constructActionMaps(unit);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        // entity.setProperty(ACTIVES, StringMaster
-        // .constructContainer(StringMaster.convertToIdList(actives)));
-        entity.setActivesReady(true);
+
         for (ActiveObj a : actives) {
             if (activesProp.contains(a.getName())) {
                 activesProp += a.getName() + ";";
             }
         }
-        entity.setProperty(ACTIVES, activesProp);
+        unit.setProperty(ACTIVES, activesProp);
     }
 
 
@@ -861,16 +872,19 @@ public class DC_ActionManager implements ActionManager {
     private Collection<ActiveObj> getStandardActions(Unit unit) {
         Collection<ActiveObj> actives = new ArrayList<>();
         // TODO also add to Actives container!
-        for (ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
-            // I could actually centralize all action-adding to HERE! Dual, INV
-            // and all the future ones
-            if (type != ActionEnums.ACTION_TYPE.HIDDEN) {
-                if (type != ActionEnums.ACTION_TYPE.STANDARD_ATTACK) {
-                    actives.addAll(getStandardActionsForGroup(type, unit));
+
+        if (unit.isBoss()) {
+            actives.addAll(BossActionMaster.getStandardActions(unit));
+        } else
+            for (ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
+                // I could actually centralize all action-adding to HERE! Dual, INV
+                // and all the future ones
+                if (type != ActionEnums.ACTION_TYPE.HIDDEN) {
+                    if (type != ActionEnums.ACTION_TYPE.STANDARD_ATTACK) {
+                        actives.addAll(getStandardActionsForGroup(type, unit));
+                    }
                 }
             }
-        }
-
         if (RuleKeeper.checkFeature(FEATURE.ORDERS))
             actives.addAll(getOrderActions(unit));
         // checkDual(unit);

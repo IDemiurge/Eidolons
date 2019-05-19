@@ -43,7 +43,7 @@ public class Fluctuating extends GroupX {
         this.fluctuatingAlphaPauseDuration = alphaTemplate.fluctuatingAlphaPauseDuration;
         this.fluctuatingFullAlphaDuration = alphaTemplate.fluctuatingFullAlphaDuration;
         this.fluctuatingAlphaRandomness = alphaTemplate.fluctuatingAlphaRandomness;
-
+        alphaFluctuationOn= true;
     }
 
     public void fluctuate(float delta) {
@@ -200,6 +200,8 @@ public class Fluctuating extends GroupX {
     }
 
     public enum ALPHA_TEMPLATE {
+
+        HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),
 
         MOON(0.1f, 0, 1, 0.5f),
         SUN(0.1f, 0, 5, 0.5f, 0.7f, 1f),

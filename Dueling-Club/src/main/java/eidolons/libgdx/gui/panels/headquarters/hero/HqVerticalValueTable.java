@@ -64,7 +64,7 @@ public   class HqVerticalValueTable extends HqElement {
 
     @Override
     protected Drawable getDefaultBackground() {
-        return NinePatchFactory.getLightPanelDrawable();
+        return NinePatchFactory.getLightDecorPanelFilledDrawable();
     }
 
     protected   int getDefaultWidth(){

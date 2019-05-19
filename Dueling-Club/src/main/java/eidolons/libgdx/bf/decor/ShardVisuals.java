@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
@@ -56,6 +57,7 @@ public class ShardVisuals extends GroupX {
     public static VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
         List<VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
         int n = 2;
+        if (size != null)
         switch (size) {
             case SMALL:
                 n = 1;
@@ -177,6 +179,9 @@ public class ShardVisuals extends GroupX {
                 }
                 AbstractCoordinates c = new AbstractCoordinates(x, y);
                 SHARD_SIZE size = chooseSize(x, y, direction);
+                if (size == null) {
+//                just empty    continue;
+                }
                 SHARD_TYPE type = SHARD_TYPE.ROCKS;
                 SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
                  getRandomEnumConst(SHARD_OVERLAY.class);
@@ -257,6 +262,9 @@ public class ShardVisuals extends GroupX {
         }
         if (checkNormal(x, y, (DIRECTION) direction)) {
             return SHARD_SIZE.NORMAL;
+        }
+        if (Eidolons.getGame().isBossFight()){
+            return null;
         }
         return SHARD_SIZE.SMALL;
     }

@@ -23,7 +23,7 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
 
     @Override
     public void init() {
-        setBackground(NinePatchFactory.getLightPanelDrawable());
+        setBackground(getDefaultBackground());
         pointsLeft = new LabelX("", 14);
 
         TablePanel pointTable = new TablePanel();

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import eidolons.libgdx.texture.Images;
@@ -22,15 +23,15 @@ public class QuickSlotPanel extends BaseSlotPanel {
     public void updateAct(float delta) {
         clear();
         final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) getUserObject();
-        final List<ActionValueContainer> sources = source.getQuickSlotActions();
+        final List<ValueContainer> sources = source.getQuickSlotActions();
         initContainer(sources, Images.EMPTY_QUICK_ITEM);
     }
 
     @Override
-    protected TablePanel initPage(List<ActionValueContainer> sources, String emptyImagePath) {
+    protected TablePanel initPage(List<ValueContainer> sources, String emptyImagePath) {
         TablePanel page = new TablePanel();
         for (int i = 0; i < getPageSize(); i++) {
-            ActionValueContainer valueContainer = null;
+            ValueContainer valueContainer = null;
             if (sources.size() > i) {
                 valueContainer = sources.get(i);
 //                if (page == null)

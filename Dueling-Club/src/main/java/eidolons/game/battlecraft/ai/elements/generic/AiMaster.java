@@ -26,6 +26,7 @@ import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.bf.boss.logic.BossAi;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class AiMaster {
     private PriorityProfileManager priorityProfileManager;
     private PriorityModifier priorityModifier;
     private PathBuilderAtomic pathBuilderAtomic;
+    private BossAi bossAi;
     public AiMaster(DC_Game game) {
         this.game = game;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
@@ -89,7 +91,6 @@ public class AiMaster {
         this.pathBuilderAtomic = new PathBuilderAtomic(this);
 
         executor = new AiExecutor(game);
-
 
     }
 
@@ -118,7 +119,12 @@ public class AiMaster {
         this.pathBuilderAtomic.initialize();
 
     }
-
+    protected BossAi getBossAi(Unit unit) {
+        if (bossAi == null) {
+            bossAi = new BossAi(unit.getAI());
+        }
+        return bossAi;
+    }
     public PathBuilderAtomic getPathBuilderAtomic() {
         return pathBuilderAtomic;
     }

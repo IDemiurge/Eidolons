@@ -62,8 +62,8 @@ public class MasteryRankSlot extends HtNode {
     @Override
     protected String getTextPrefix() {
         if (data == null)
-            return "Mastery Slot, Rank " + NumberUtils.getRoman(tier);
-        return StringMaster.getWellFormattedString(data.name()) + " Rank " + NumberUtils.getRoman(tier);
+            return "Mastery Slot, Rank " + NumberUtils.getRoman(tier+1);
+        return StringMaster.getWellFormattedString(data.name()) + " Rank " + NumberUtils.getRoman(tier+1);
     }
     @Override
     protected EventType getSelectionEvent() {

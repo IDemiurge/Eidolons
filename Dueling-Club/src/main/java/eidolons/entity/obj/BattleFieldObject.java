@@ -686,4 +686,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void setSummoned(boolean summoned) {
         this.summoned = summoned;
     }
+
+
 }

@@ -37,10 +37,12 @@ public class SpeedControlPanel extends GroupX {
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                int value = (int) slider.getValue();
+                float value =   slider.getValue();
                 if (ExplorationMaster.isExplorationOn()) {
-                    OptionsMaster.getAnimOptions().setValue(AnimationOptions.ANIMATION_OPTION.SPEED, value);
+                    OptionsMaster.getAnimOptions().setValue(AnimationOptions.ANIMATION_OPTION.SPEED, value*10);
+                    OptionsMaster.getGameplayOptions().setValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED, value);
                     OptionsMaster.applyAnimOptions();
+                    OptionsMaster.applyGameplayOptions();
                 } else {
                     OptionsMaster.getGameplayOptions().setValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED, value);
                     OptionsMaster.applyGameplayOptions();
@@ -70,7 +72,7 @@ public class SpeedControlPanel extends GroupX {
     public void draw(Batch batch, float parentAlpha) {
         if (ExplorationMaster.isExplorationOn()) {
             slider.setValue(OptionsMaster.getAnimOptions().getFloatValue(
-                    AnimationOptions.ANIMATION_OPTION.SPEED));
+                    AnimationOptions.ANIMATION_OPTION.SPEED)/10);
         } else {
             checkBox.setChecked(OptionsMaster.getGameplayOptions().
                     getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL));

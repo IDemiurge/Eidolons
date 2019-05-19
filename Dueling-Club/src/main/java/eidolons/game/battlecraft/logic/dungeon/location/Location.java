@@ -108,6 +108,9 @@ public class Location extends DungeonWrapper {
     }
 
     public void initEntrances() {
+        if (getGame().isBossFight()) { //TODO boss fix
+            entranceData = "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
+        }
         if (StringMaster.isEmpty(entranceData)) {
             entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
         }

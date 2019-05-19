@@ -62,6 +62,8 @@ public class TipMessageMaster {
 
         //ui
         // combat
+        IMMORTAL("Soulforce is effectively infinite, but the negative value you end up with will show you how much better you should do next time to win fairly. "),
+
         UNCONSCIOUS(// "I am waning. Yet it is not over, there is life still in this shell of mine. All I need is time... Come, come to me, my Shadow!"),
                 "This shell is waning. Time to put off the mask. The pain will be legendary... I will have to be quick, kill every foe before my consciousness fades. \n [2] rounds to finish the fight"),
         SHADE_RESTORE("Their pain will be enough to bring my pale avatar back. These ashes shall arise..."),

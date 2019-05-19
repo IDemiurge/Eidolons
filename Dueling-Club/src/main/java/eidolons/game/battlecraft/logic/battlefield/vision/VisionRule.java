@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.bf.boss.entity.BossUnit;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.test.debug.DebugMaster;
@@ -17,6 +18,7 @@ import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
@@ -160,9 +162,13 @@ public class VisionRule {
     }
 
     private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
+        if (sub instanceof BossUnit) {
+            return true;
+        }
+
 //        if (sub instanceof Unit) TODO I really think enemies don't need to know anything else....
-            if (!observer.isPlayerCharacter())
-                return observer.isHostileTo(sub.getOwner());
+        if (!observer.isPlayerCharacter())
+            return observer.isHostileTo(sub.getOwner());
 
         if (sub.isDead())
             return false;
@@ -180,9 +186,18 @@ public class VisionRule {
     }
 
     public boolean isResetRequired(Unit observer, DC_Obj cell, float dstCoef) {
+
         //changed position
         //is close enough
         //is hostile
+
+        if (ExplorationMaster.isExplorationOn())
+            if (cell.isResetIgnored()) {
+                return false;
+            }
+        if (cell instanceof BossUnit) {
+            return true;
+        }
         if (observer.isDead() || observer.isUnconscious())
             return false;
         if (observer.isMine()) {
@@ -194,8 +209,7 @@ public class VisionRule {
                 if (master.getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof Structure) {
                     Structure o = ((Structure) master.getGame().getObjectByCoordinate(cell.getCoordinates()));
                     if (o.isWall()) {
-                        if (o.isPlayerDetected())
-                        {
+                        if (o.isPlayerDetected()) {
                             return true;
                         }
                     }
@@ -222,6 +236,9 @@ public class VisionRule {
         //            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
         //        }
 
+        if (object instanceof BossUnit) {
+            return VISIBILITY_LEVEL.CLEAR_SIGHT;
+        }
         if (master.getGame().getRules().getStealthRule().
                 checkInvisible(source.getOwner(), object))
             return VISIBILITY_LEVEL.UNSEEN;
@@ -414,7 +431,7 @@ public class VisionRule {
 
             case IN_PLAIN_SIGHT:
                 if (!hero.isSneaking())//TODO IGG HACK
-                return true;
+                    return true;
             case IN_SIGHT:
                 break;
             case BEYOND_SIGHT:
@@ -447,8 +464,7 @@ public class VisionRule {
 
         if (hero.isSneaking()) {
             //add chance? not right...
-            if (isResetRequired(unit, hero, 0.25f))
-            {
+            if (isResetRequired(unit, hero, 0.25f)) {
 //                apply spotted?
                 return true;
             }
@@ -464,5 +480,22 @@ public class VisionRule {
 
     public void togglePlayerUnseenMode() {
         playerUnseenMode = !getPlayerUnseenMode();
+    }
+
+    public void resetIgnore() {
+        float dstCoef = 1;
+        for (Obj c : master.getGame().getCells()) {
+            DC_Obj cell = (DC_Obj) c;
+            cell.setResetIgnored(true);
+            Unit observer = Eidolons.MAIN_HERO;
+//            for (Unit observer : master.getGame().getPlayer(true).collectControlledUnits_()) {
+                if (PositionMaster.getExactDistance(observer, cell) < observer.getMaxVisionDistance() * dstCoef) {
+                    cell.setResetIgnored(false);
+                }
+//            }
+            for (Unit unit : master.getGame().getUnitsForCoordinates(c.getCoordinates())) {
+                unit.setResetIgnored(cell.isResetIgnored());
+            }
+        }
     }
 }

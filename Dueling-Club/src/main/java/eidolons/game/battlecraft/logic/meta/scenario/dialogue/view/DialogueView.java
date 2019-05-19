@@ -34,7 +34,7 @@ public class DialogueView extends TablePanelX implements Scene {
         middle.add(scroll = new DialogueScroll()).row();
         middle.add(replyBox = new TablePanelX());
         add(portraitRight = new DialoguePortraitContainer());
-        middle. setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        middle.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
     }
 
@@ -45,12 +45,12 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public float getHeight() {
-        return  500;
+        return 500;
     }
 
     @Override
     public float getWidth() {
-        return  1000;
+        return 1000;
     }
 
     @Override
@@ -114,8 +114,8 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public void act(float delta) {
-        setVisible(false  );
-        setPosition(0,0);
+        setVisible(false);
+        setPosition(0, 0);
         super.act(delta);
         if (done) return;
         if (time > 0) {

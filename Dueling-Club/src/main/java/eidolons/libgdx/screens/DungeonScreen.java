@@ -367,6 +367,16 @@ public class DungeonScreen extends GameScreenWithTown {
                 if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
                     guiStage.getBatch().setColor(colorBits); //gotta reset the alpha...
                 guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+                if (backgroundSprite != null) {
+
+                    backgroundSprite.setOffsetY(-
+                            Gdx.graphics.getHeight()/2);
+                    backgroundSprite.setOffsetX(-Gdx.graphics.getWidth()/2);
+                    backgroundSprite.setSpeed(0.5f);
+                    backgroundSprite.setOffsetY( cam.position.y);
+                    backgroundSprite.setOffsetX(cam.position.x);
+                    backgroundSprite.draw(guiStage.getBatch());
+                }
                 guiStage.getBatch().end();
             }
             gridStage.draw();
@@ -423,7 +433,6 @@ public class DungeonScreen extends GameScreenWithTown {
                 }
                 backTexture = backgroundSprite.getCurrentFrame();
             }
-
         }
     }
 

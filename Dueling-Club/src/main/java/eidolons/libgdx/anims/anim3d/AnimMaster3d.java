@@ -392,6 +392,8 @@ public class AnimMaster3d {
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
 
+        main.system.auxiliary.log.LogMaster.log(1, activeObj + " has invalid atlas: " + name);
+
         Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
         if (regions.size == 0) {
             regions = atlas instanceof SmartTextureAtlas

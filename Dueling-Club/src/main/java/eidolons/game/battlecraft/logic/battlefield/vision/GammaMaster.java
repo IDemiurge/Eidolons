@@ -243,6 +243,9 @@ public class GammaMaster {
                 }
             }
         }
+        if (cell == null) {
+            return 1;
+        }
         float dst = (float) c.dst_(cell.getCoordinates());
         //         (float) master.getGame().getCells().stream().sorted(new SortMaster<Obj>().getSorterByExpression_(
         //          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.get(x, y))

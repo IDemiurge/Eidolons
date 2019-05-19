@@ -104,6 +104,8 @@ public class SkillMaster {
             String[] parts = substring.split("=");
             String name = parts.length > 1 ? parts[1] : substring;
             DC_FeatObj skill = hero.getFeat(DataManager.getType(name, DC_TYPE.SKILLS));
+            if (skill.getIntParam("circle")!=tier)
+                continue;
             int slot= parts.length>1?  Integer.valueOf(parts[0]) : i++;
             list.add(slot, skill);
         }
@@ -340,10 +342,10 @@ public class SkillMaster {
     }
 
     public static String getSkillImgPath(Entity left) {
-        String path = "main/skills/gen/" + left.getName() + ".png";
+        String path = "main/skills/gen/64/" + left.getName() + ".png";
         if (TextureCache.isImage(path))
             return path;
-
-        return GdxImageMaster.getRoundedPath(left.getImagePath());
+        GdxImageMaster.size(left.getImagePath(), 64, true);
+        return GdxImageMaster.getSizedImagePath(left.getImagePath(), 64);
     }
 }

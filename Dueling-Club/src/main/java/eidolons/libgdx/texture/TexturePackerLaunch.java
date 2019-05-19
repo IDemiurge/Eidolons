@@ -8,6 +8,8 @@ import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -57,10 +59,10 @@ public class TexturePackerLaunch {
     };
 
     static String mainFolders[] = {
+//            "", //root
             //     "gen",
-//     "Y:/[Eidolons demos]/Eidolons Halloween Demo Lite/resources/img/ui",
             "ui",
-            //     "main",
+//                 "main",
     };
 
     static String mainFoldersExceptions[] = {
@@ -78,7 +80,7 @@ public class TexturePackerLaunch {
             customPack();
             return;
         }
-        if (DialogMaster.confirm("Pack ui?")) {
+        if (DialogMaster.confirm("Pack all?")) {
             packImages(mainFolders);
             return;
         }
@@ -144,7 +146,10 @@ public class TexturePackerLaunch {
     public static Settings getBestSettings() {
         Settings settings = getSettings();
         settings.format = Format.RGBA8888;
-        settings.jpegQuality = 0.88f;
+        settings.jpegQuality = 0.8f;
+
+        settings.maxHeight = (int) Math.pow(2, 13);
+        settings.maxWidth = (int) Math.pow(2, 14);
         return settings;
     }
 
@@ -154,8 +159,10 @@ public class TexturePackerLaunch {
         settings = new Settings();
         settings.combineSubdirectories = DialogMaster.confirm("Is combine Subdirectories ?");
 
-        settings.maxHeight = (int) Math.pow(2, 13);
-        settings.maxWidth = (int) Math.pow(2, 13);
+        settings.maxHeight = (int) Math.pow(2, 14);
+        settings.maxWidth = (int) Math.pow(2, 15);
+//        settings.maxHeight = (int) Math.pow(2, 13);
+//        settings.maxWidth = (int) Math.pow(2, 13);
         settings.atlasExtension = ATLAS_EXTENSION;
         boolean TRIM = DialogMaster.confirm("Trip empty space?");
         settings.stripWhitespaceY = TRIM;
@@ -164,7 +171,6 @@ public class TexturePackerLaunch {
         settings.format = Format.RGBA4444;
         settings.limitMemory = false;
         settings.jpegQuality = 0.7f;
-        settings.combineSubdirectories = false;
         return settings;
     }
 
@@ -207,7 +213,13 @@ public class TexturePackerLaunch {
         }
         String name = DialogMaster.inputText(
                 "atlas name?",
-                "atlas");
+                "");
+        if (StringMaster.isEmpty(name)) {
+            name = StringMaster.cropFormat(FileManager.getFilesFromDirectory(inputDir, false).get(0).getName());
+       if (name.endsWith("0")){
+           name = StringMaster.cropLastSegment(name, "_", true);
+       }
+        }
         String packFileName = FileManager.getUniqueFileVersion(name, outputDir);
         pack(inputDir, outputDir, packFileName); //+"/"+suffix
     }

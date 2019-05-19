@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
+import eidolons.content.PROPS;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -263,10 +264,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public boolean isRngDungeon() {
         ObjType type = DataManager.getType(getData(), DC_TYPE.SCENARIOS);
         if (type != null) {
+            if (type.getGroup().equalsIgnoreCase("Demo")) {
+            if (type.checkProperty(PROPS.SCENARIO_TYPE, "Boss")) {
+                return false;
+            }
+                return true;
+            }
+
             return
-             type.getGroup().equalsIgnoreCase("Random") ||
-             type.getGroup().equalsIgnoreCase("Demo") //TODO only for certain index?
-                    ;
+             type.getGroup().equalsIgnoreCase("Random");
         }
         //        getMetaGame().isRestarted()
         return false;

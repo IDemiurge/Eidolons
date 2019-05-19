@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
@@ -20,6 +21,15 @@ public class SkillTree extends HeroTree<MasteryRankSlot, SkillSlot> {
         return new SkillsDataSource(dataSource.getEntity());
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
 
     @Override
     protected int getLinkWidth() {

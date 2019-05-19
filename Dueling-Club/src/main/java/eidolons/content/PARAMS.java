@@ -473,7 +473,7 @@ public enum PARAMS implements PARAMETER {
     // SPELL
     AI_PRIORITY(null, "", false, 0, "spells", "actions"),
     CIRCLE("Circle", "", false, 1, "spells", "skills", "classes"),
-    FORMULA("Formula", "", false, 0, "actions", "spells", "skills", "classes", "items"),
+    FORMULA("Formula", "", false, 0, "actions", "spells", "skills", "classes", "items", "perks" ),
     // CHANNELING("spells", "CHANNELING", "", false, 0),
     // CHANNELING_ESS_COST("spells", "CHANNELING", "", false, 0),
     // CHANNELING_FOC_COST("spells", "CHANNELING", "", false, 0),
@@ -802,7 +802,7 @@ public enum PARAMS implements PARAMETER {
     HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
     HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
     ANIM_FRAME_DURATION("", "", false, 0, "spells", "actions"),
-    ANIM_SPEED("", "", false, 0, "spells", "actions"),;
+    ANIM_SPEED("", "", false, 0, "spells", "actions"), SOULFORCE(null, "", false, 0, "party");
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);

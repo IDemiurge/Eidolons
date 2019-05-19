@@ -47,6 +47,7 @@ import static main.system.auxiliary.log.LogMaster.log;
  * Created by JustMe on 1/9/2017.
  */
 public class Anim extends Group implements Animation {
+    public static final float DEFAULT_ANIM_DURATION = 2;
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -85,15 +86,16 @@ public class Anim extends Group implements Animation {
     protected Ref ref;
     EventCallback onDone;
     EventCallbackParam callbackParam;
-    private boolean emittersWaitingDone;
-    private List<FloatingText> floatingText = new ArrayList<>();
-    private AnimMaster master;
-    private CompositeAnim composite;
-    private boolean done;
-    private Vector2 offsetOrigin;
-    private Vector2 offsetDestination;
-    private CompositeAnim parentAnim;
-    private Set<EmitterActor> completingVfx = new HashSet();
+    protected boolean emittersWaitingDone;
+    protected List<FloatingText> floatingText = new ArrayList<>();
+    protected AnimMaster master;
+    protected CompositeAnim composite;
+    protected boolean done;
+    protected Vector2 offsetOrigin;
+    protected Vector2 offsetDestination;
+    protected CompositeAnim parentAnim;
+    protected Set<EmitterActor> completingVfx = new HashSet();
+    protected float speedMod = 1;
 
     public Anim(Entity active, AnimData params) {
         data = params;
@@ -235,7 +237,7 @@ public class Anim extends Group implements Animation {
         return true;
     }
 
-    private void waitForVfx() {
+    protected void waitForVfx() {
 
         emitterList.forEach(e -> {
             if (!e.isComplete()) {
@@ -264,7 +266,7 @@ public class Anim extends Group implements Animation {
         return false;
     }
 
-    private float getTimeToFinish() {
+    protected float getTimeToFinish() {
         float time = 0;
         for (EmitterActor e : emitterList) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
@@ -335,6 +337,7 @@ public class Anim extends Group implements Animation {
         for (String s : ContainerUtils.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(s);
             sprite.setFrameDuration(getDuration() / sprite.getFrameNumber());
+            sprite.setSpeed(speedMod);
             sprites.add(sprite);
         }
     }
@@ -374,12 +377,13 @@ public class Anim extends Group implements Animation {
 
         getEmitterList().forEach(e -> {
             e.reset();
+
         });
     }
 
     protected void initDuration() {
 
-        setDuration(2);
+        setDuration(DEFAULT_ANIM_DURATION);
         if (part != null) {
             setDuration(part.getDefaultDuration());
         }
@@ -426,7 +430,7 @@ public class Anim extends Group implements Animation {
 
     }
 
-    private double calcDistance() {
+    protected double calcDistance() {
         float x = destination.x - origin.x;
         float y = destination.y - origin.y;
         return Math.sqrt(x * x + y * y);
@@ -644,11 +648,11 @@ public class Anim extends Group implements Animation {
                     break;
             }
         }
-
-        if (getActions().size == 0) {
-            setX(defaultPosition.x + getOffsetX());
-            setY(defaultPosition.y + getOffsetY());
-        }
+        if (defaultPosition != null)
+            if (getActions().size == 0) {
+                setX(defaultPosition.x + getOffsetX());
+                setY(defaultPosition.y + getOffsetY());
+            }
         sprites.forEach(s -> {
             if (s.isAttached()) {
                 if (getActions().size == 0) {
@@ -943,5 +947,13 @@ public class Anim extends Group implements Animation {
 
     public void setParentAnim(CompositeAnim parentAnim) {
         this.parentAnim = parentAnim;
+    }
+
+    public void setSpeedMod(float speedMod) {
+        this.speedMod = speedMod;
+    }
+
+    public float getSpeedMod() {
+        return speedMod;
     }
 }

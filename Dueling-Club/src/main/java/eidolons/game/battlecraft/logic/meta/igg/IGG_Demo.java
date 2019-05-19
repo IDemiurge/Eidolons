@@ -31,6 +31,11 @@ public class IGG_Demo {
     };
 
     public static IGG_MISSION getMissionByName(String missionName) {
+        for (IGG_MISSION value : IGG_MISSION.values()) {
+            if (StringMaster.getWellFormattedString(value.name()).toLowerCase().contains(missionName.toLowerCase())) {
+                return value;
+            }
+        }
         return IGG_MISSION.valueOf(StringMaster.getEnumFormat(missionName));
         //better store in this form, what if real name changes in updates!
     }
@@ -39,6 +44,13 @@ public class IGG_Demo {
         ACT_I_MISSION_I("Gates of Nyrn", 1,1),
         ACT_I_MISSION_II("Fel Tunnels", 1,2),
         ACT_I_MISSION_III("Blackfathom", 1,3),
+
+        FINALE("Nightmare", 4,1){
+            @Override
+            public boolean isBossFight() {
+                return true;
+            }
+        },
         ;
         String missionName;
         int act;
@@ -60,6 +72,11 @@ public class IGG_Demo {
 
         public String getMissionName() {
             return missionName;
+        }
+
+        public boolean isBossFight() {
+            return false;
+
         }
     }
 }

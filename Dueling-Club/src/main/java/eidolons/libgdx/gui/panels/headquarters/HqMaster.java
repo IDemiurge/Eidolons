@@ -5,10 +5,13 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import main.content.enums.system.MetaEnums;
+import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,6 +21,8 @@ public class HqMaster {
 
     public static final float TAB_WIDTH = 440;
     public static final float TAB_HEIGHT = 732;
+    private static final MetaEnums.WORKSPACE_GROUP FILTER_GROUP = MetaEnums.WORKSPACE_GROUP.COMPLETE;
+    private static final MetaEnums.WORKSPACE_GROUP FILTER_GROUP_DEV = MetaEnums.WORKSPACE_GROUP.IGG_TODO;
     private static SimCache simCache = new SimCache();
     private static Unit activeHero;
 
@@ -83,5 +88,9 @@ public class HqMaster {
                 return true;
         }
         return false;
+    }
+
+    public static void filterContent(Collection<ObjType> list) {
+        list.removeIf(t-> t.getWorkspaceGroup()!= FILTER_GROUP);
     }
 }

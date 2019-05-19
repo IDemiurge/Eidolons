@@ -418,8 +418,10 @@ public class DC_KeyManager
         actionHotkey(n, action_group);
     }
 
-    public void handleKeyDown(int keyCode) {
+    public boolean handleKeyDown(int keyCode) {
         controller.keyDown(keyCode);
-        globalController.keyDown(keyCode);
+       if (globalController.keyDown(keyCode))
+        return true;
+        return false;
     }
 }

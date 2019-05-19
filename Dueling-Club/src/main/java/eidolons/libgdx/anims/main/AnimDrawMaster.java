@@ -3,6 +3,7 @@ package eidolons.libgdx.anims.main;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.Animation;
@@ -43,6 +44,9 @@ public class AnimDrawMaster extends Group {
         //        if (parallelDrawing == null)
         //            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
         //        return parallelDrawing;
+        if (Eidolons.BOSS_FIGHT) {
+            return false;
+        }
         return true;
     }
 
@@ -170,6 +174,11 @@ public class AnimDrawMaster extends Group {
                         drawingPlayer = true;
 
         try {
+//         TODO    if (!anim.isRunning()) {
+//                if (!anim.isFinished()) {
+//                    anim.start();
+//                }
+//            }
             result = anim.tryDraw(batch);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

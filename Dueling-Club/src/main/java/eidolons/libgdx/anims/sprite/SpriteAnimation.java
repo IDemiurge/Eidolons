@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.texture.TextureManager;
+import main.system.ExceptionMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
@@ -16,6 +18,7 @@ import java.util.Arrays;
  */
 public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
+    private float originalFps;
     public float x;
     public float y;
     boolean backAndForth;
@@ -38,6 +41,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Color color;
     private Float scale;
     private boolean customAct;
+    private float speed;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -48,19 +52,21 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public SpriteAnimation(String path
-     , boolean singleSprite) {
+            , boolean singleSprite) {
         this(defaultFrameDuration, false, 1, path, null, singleSprite);
     }
 
     public SpriteAnimation(float frameDuration, boolean backAndForth, TextureAtlas atlas) {
-        this(frameDuration, backAndForth, SpriteAnimationFactory.getSpriteRegions(backAndForth, atlas ));
+        this(frameDuration, backAndForth, SpriteAnimationFactory.getSpriteRegions(backAndForth, atlas));
     }
+
     public SpriteAnimation(float frameDuration, boolean looping, TextureAtlas atlas, String name) {
         this(frameDuration, looping, atlas.findRegions(name));
     }
+
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path,
-                Texture texture
-     , boolean singleSprite) {
+                           Texture texture
+            , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite, texture));
         if (path != null) {
             frameNumber = TextureManager.getFrameNumber(path);
@@ -68,6 +74,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
+        originalFps =  frameDuration;
     }
 
     public SpriteAnimation(Texture texture) {
@@ -81,6 +88,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         regions = re;
         this.looping = looping;
         this.frameNumber = re.size;
+        originalFps =  frameDuration;
     }
 
 
@@ -148,7 +156,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
                 TextureRegion frame = getOffsetFrame(stateTime, -i);
                 if (frame == null) {
-                    main.system.auxiliary.log.LogMaster.log(1, stateTime + " null");
+                    LogMaster.log(1, stateTime + " null");
                     return true;
                 }
                 i++;
@@ -159,13 +167,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                     return true;
             }
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return true;
     }
 
     private int getTrailingFramesNumber() {
-        if (!isDrawTrailing()){
+        if (!isDrawTrailing()) {
             return 0;
         }
         return (int) (getFrameNumber() - 1);
@@ -176,7 +184,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha
-     , float offsetX, float offsetY
+            , float offsetX, float offsetY
     ) {
         if (alpha <= 0) {
             return;
@@ -195,8 +203,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             sprite.setScale(getScale());
         sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
-         + offsetY
-         - currentFrame.getRegionHeight() / 2);
+                + offsetY
+                - currentFrame.getRegionHeight() / 2);
 
         if (color != null)
             sprite.setColor(color);
@@ -300,12 +308,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public TextureRegion getCurrentFrame() {
         return getKeyFrame(stateTime, looping);
     }
+
     public int getCurrentFrameNumber() {
         return getKeyFrameIndex(stateTime);
     }
 
     public TextureRegion getOffsetFrame(
-     float time, int offset) {
+            float time, int offset) {
         int index = getKeyFrameIndex(time);
         index += offset;
 
@@ -328,7 +337,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public TextureRegion getOffset(TextureRegion texture, int offset, boolean exceptLastFrame) {
         int index =
-         Arrays.asList(getKeyFrames()).indexOf(texture);
+                Arrays.asList(getKeyFrames()).indexOf(texture);
         index += offset;
 
         while (index < 0) {
@@ -399,6 +408,16 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean isAnimationFinished() {
+        if (looping)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP_PINGPONG)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP_REVERSED)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP_RANDOM)
+            return false;
         return isAnimationFinished(getStateTime());
     }
 
@@ -408,6 +427,16 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public void setCustomAct(boolean customAct) {
         this.customAct = customAct;
+    }
+
+    public void setSpeed(float speed) {
+        setFrameDuration(originalFps / speed);
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+
+        return speed;
     }
 
 

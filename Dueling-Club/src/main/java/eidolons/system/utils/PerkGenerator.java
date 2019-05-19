@@ -8,6 +8,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.file.ResourceMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -20,11 +21,18 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
+
+import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 Double perks - combine two !
@@ -39,15 +47,52 @@ public class PerkGenerator {
 
     }
 
+    private static void applyIconFolders() {
+        String root = "C:\\eidolons\\Eidolons\\resources\\res\\img\\gen\\perk\\full";
+        for (File folder : FileManager.getFilesFromDirectory(root, true)) {
+            if (folder.isDirectory()){
+                List<File> icons = FileManager.getFilesFromDirectory(folder.getPath(), false);
+                List<ObjType> types = DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
+                        t -> t.getName().contains(folder.getName())).collect(Collectors.toList());
+                for (ObjType type : types) {
+                    File icon =
+                            icons.size() > 1 ?
+                            icons.remove(RandomWizard.getRandomIndex(icons)) :
+                            icons.get(RandomWizard.getRandomIndex(icons)) ;
+                    String path = "gen/perk/" +type.getProperty(G_PROPS.PERK_GROUP) + "/" +type.getName();
+                    ResourceMaster.writeImage(icon.getPath(), path);
+                    type.setImage(GdxImageMaster.cropImagePath(path));
+
+                }
+            }
+        }
+        for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
+            if (type.getIntParam("circle")>0)
+                continue;
+            new File(root + "/"+type.getName()).mkdirs();
+        }
+    }
+        private static void createIconFolders() {
+        String root = "C:\\eidolons\\Eidolons\\resources\\res\\img\\gen\\perk\\full";
+        for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
+            if (type.getIntParam("circle")>0)
+                continue;
+            new File(root + "/"+type.getName()).mkdirs();
+        }
+    }
     public static void generatePerks() {
         DC_Engine.mainMenuInit();
-        generateParameterPerks();
-        adjustTypes();
-        XML_Writer.writeXML_ForTypeGroup(DC_TYPE.PERKS);
+
+        createIconFolders();
+
+//        generateParameterPerks();
+//        adjustTypes();
+//        XML_Writer.writeXML_ForTypeGroup(DC_TYPE.PERKS);
         //        generateAbilityPerks();
         //        generatePassivePerks();
 
     }
+
 
     private static void adjustTypes() {
         for (ObjType sub : DataManager.getTypes(DC_TYPE.CLASSES)) {

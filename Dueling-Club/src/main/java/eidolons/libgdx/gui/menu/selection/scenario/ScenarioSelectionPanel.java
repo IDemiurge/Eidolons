@@ -30,12 +30,15 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         this.dataSupplier = dataSupplier;
         init();
     }
+
     protected String getDoneText() {
         return "Next";
     }
+
     protected String getTitle() {
         return "Select a Scenario";
     }
+
     @Override
     public void closed(Object selection) {
         fadeOut();
@@ -43,16 +46,17 @@ public class ScenarioSelectionPanel extends SelectionPanel {
             return;
         }
 
-        scenarioChosen(  DataManager.getType(selection.toString(), DC_TYPE.SCENARIOS));
+        scenarioChosen(DataManager.getType(selection.toString(), DC_TYPE.SCENARIOS));
 
     }
 
     protected void scenarioChosen(ObjType type) {
-        ScreenData screenData= new ScreenData(SCREEN_TYPE.BATTLE, type.getName());
+        main.system.auxiliary.log.LogMaster.log(1,"*** Scenario chosen: " +type);
+        ScreenData screenData = new ScreenData(SCREEN_TYPE.BATTLE, type.getName());
         if (IGG_Launcher.isDemo(type))
-        screenData.setParam(new EventCallbackParam(type));
+            screenData.setParam(new EventCallbackParam(type));
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-       screenData);
+                screenData);
     }
 
     @Override

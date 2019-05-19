@@ -37,7 +37,9 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
+import eidolons.system.content.ContentGenerator;
 import eidolons.system.test.Debugger;
+import eidolons.system.test.TestMasterContent;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
@@ -1595,6 +1597,21 @@ public class Unit extends DC_UnitModel {
     public void toBase() {
         if (getAI().isOutsideCombat()) {
             return;
+        }
+        if ( isMine()) {
+            if (CoreEngine.isActiveTestMode()) {
+                TestMasterContent.addVFX_TEST_Spells(getType(), ContentGenerator.getTestSpellFilter(getName()));
+
+            }
+            if (CoreEngine.isAnimationTestMode()) {
+                TestMasterContent.addANIM_TEST_Spells(getType());
+            }
+            if (CoreEngine.isLogicTest())
+                TestMasterContent.addTestGroupSpells(getType());
+
+            if (CoreEngine.isGuiTestMode()) {
+                TestMasterContent.addGRAPHICS_TEST_Spells(getType());
+            }
         }
         super.toBase();
     }

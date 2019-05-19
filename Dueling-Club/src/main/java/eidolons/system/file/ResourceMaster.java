@@ -1,4 +1,4 @@
-package main.utilities.res;
+package eidolons.system.file;
 
 import eidolons.content.PROPS;
 import main.content.DC_TYPE;
@@ -172,14 +172,17 @@ public class ResourceMaster {
         return oldPath;
     }
 
-    private static void writeImage(String oldPath, String path) {
+    public static void writeImage(String oldPath, String path) {
+        writeImage(oldPath, path, false);
+    }
+    public static void writeImage(String oldPath, String path  , boolean overwrite) {
         File outputfile = FileManager.getFile(ImageManager.getImageFolderPath() + path);
         BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
         if (!ImageManager.isValidImage(bufferedImage)) {
             throw new RuntimeException();
         }
         try {
-            if (!outputfile.isFile())
+            if (!outputfile.isFile() || overwrite)
             // {}
             // if (!outputfile.exists())
             {

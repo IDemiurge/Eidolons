@@ -1,6 +1,9 @@
 package eidolons.system.controls;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
@@ -19,6 +22,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
@@ -34,50 +38,79 @@ import java.util.List;
  */
 public class GlobalController implements Controller {
     private static final boolean TEST_MODE = true;
+    private static boolean controlPause;
     private boolean active;
 
+    public static void setControlPause(boolean controlPause) {
+        GlobalController.controlPause = controlPause;
+    }
+
+    public static boolean getControlPause() {
+        return controlPause;
+    }
+
+    public static void cellClicked(InputEvent event, float x, float y) {
+        if (controlPause) {
+//            if (Gdx.input.isCatchMenuKey()) TODO how to disable on drag?
+            Eidolons.getGame().getLoop().setPaused(false);
+            setControlPause(false);
+        }
+    }
     /*
         toggle dummy?
 
          */
 
     @Override
-    public void keyDown(int keyCode) {
+    public boolean keyDown(int keyCode) {
+
+        if (controlPause) {
+            Eidolons.getGame().getLoop().setPaused(false);
+            setControlPause(false);
+            return true;
+        }
         if (TEST_MODE)
             if (CoreEngine.isIDE()) {
                 try {
                     if (doTest(keyCode))
-                        return;
+                        return false;
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
 
         switch (keyCode) {
             case Keys.F1:
+                if (Eidolons.getGame().isBossFight()) {
+                    EUtils.showInfoText("There is no escape...");
+                    return false;
+                }
                 HqMaster.toggleHqPanel();
-                break;
+                return true;
             case Keys.F4:
-                if (Eidolons.getScope() != SCOPE.MENU)
+                if (Eidolons.getScope() != SCOPE.MENU) {
                     Eidolons.exitToMenu();
+                    return true;
+                }
+                return false;
             case Keys.ESCAPE:
-                escape();
-                break;
+                return escape();
 
             case Keys.SPACE:
-                space();
-                break;
+                return space();
+
             case Keys.TAB:
                 try {
-                    tab();
+                    return tab();
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
-                break;
+                return false;
             case Keys.ENTER:
-                enter();
-                break;
+                return enter();
+
         }
+        return false;
     }
 
     private boolean doTest(int keyCode) {
@@ -103,21 +136,22 @@ public class GlobalController implements Controller {
         return false;
     }
 
-    private void space() {
+    private boolean space() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
                 ActorMaster.click(activeButton);
             activeButton = null;
-            return;
+            return true;
         }
+        return false;
     }
 
-    private void enter() {
+    private boolean enter() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
                 ActorMaster.click(activeButton);
             activeButton = null;
-            return;
+            return true;
         }
 
         if (TownPanel.getActiveInstance() != null) {
@@ -125,7 +159,9 @@ public class GlobalController implements Controller {
         }
         if (Eidolons.getScope() == SCOPE.MENU) {
             MainMenu.getInstance().getHandler().handle(MAIN_MENU_ITEM.PLAY);
+            return true;
         }
+        return false;
     }
 
     static SmartButton activeButton;
@@ -134,13 +170,13 @@ public class GlobalController implements Controller {
         GlobalController.activeButton = activeButton;
     }
 
-    private void tab() {
+    private boolean tab() {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
         GridCellContainer cell = (GridCellContainer) hovered.getParent();
 
         List<GenericGridView> list = new ArrayList<>(cell.getUnitViewsVisible());
         if (list.size() == 1)
-            return; // or do something else
+            return false;
         SortMaster.sortByExpression(list, view -> view.hashCode());
         int index = list.indexOf(hovered);
         index++;
@@ -159,32 +195,34 @@ public class GlobalController implements Controller {
         });
 
 
+        return true;
     }
 
-    private void escape() {
+    private boolean escape() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
                 ActorMaster.click(activeButton);
             activeButton = null;
-            return;
+            return true;
         }
         if (DC_Game.game.getManager().isSelecting()
             //         DungeonScreen.getInstance().getGridPanel().isSelecting()
         ) {
             DungeonScreen.getInstance().getGridPanel().clearSelection();
-            return;
+            return true;
         }
         GuiStage guiStage = Eidolons.getScreen().getGuiStage();
         if (guiStage.getDraggedEntity() != null) {
             guiStage.setDraggedEntity(null);
-            return;
+            return true;
         }
         if (guiStage.closeDisplayed())
-            return;
+            return true;
 
         guiStage.getTooltips().getStackMaster().stackOff();
 
         guiStage.getGameMenu().open();
+        return true;
     }
 
     @Override

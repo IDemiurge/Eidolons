@@ -36,7 +36,8 @@ import java.util.*;
  * Created by JustMe on 7/20/2018.
  */
 public class DungeonLevel extends LevelLayer<LevelZone> {
-    private static final String NON_VOID_CELL = "Nonvoid Cell";
+    public static final String NON_VOID_CELL = "Nonvoid Cell";
+    public static final String VOID_CELL = "Void Cell";
     TileMap tileMap;
     LevelModel model;
     SUBLEVEL_TYPE sublevelType;
@@ -60,8 +61,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private String entranceData;
     private boolean pregen;
     private Set<Coordinates> nonVoidCoordinates;
+    private Set<Coordinates> voidCoordinates;
     private Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> unitGroups = new XLinkedMap<>();
-    private Collection<ObjAtCoordinate> unassignedUnits=     new ArrayList<>() ;
+    private Collection<ObjAtCoordinate> unassignedUnits = new ArrayList<>();
 
     public DungeonLevel(LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         //        this.tileMap = TileMapper.createTileMap(model);
@@ -315,7 +317,18 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             if (nonVoidCoordinates.contains(c))
                 return false;
         }
+        if (isVoidExplicit(i, j)) {
+            return true;
+        }
         return getBlockForCoordinate(c) == null;
+    }
+
+    public boolean isVoidExplicit(int i, int j) {
+        if (voidCoordinates != null) {
+            if (voidCoordinates.contains(Coordinates.get(i, j)))
+                return true;
+        }
+        return false;
     }
 
     public String getExitType() {
@@ -344,14 +357,14 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public Coordinates getEntranceCoordinates() {
         if (entranceCoordinates == null) {
-            entranceCoordinates= new Coordinates(getEntranceData().split(";")[0]);
+            entranceCoordinates = new Coordinates(getEntranceData().split(";")[0]);
         }
         return entranceCoordinates;
     }
 
     public Coordinates getExitCoordinates() {
         if (exitCoordinates == null) {
-            exitCoordinates= new Coordinates(getEntranceData().split(";")[1]);
+            exitCoordinates = new Coordinates(getEntranceData().split(";")[1]);
         }
         return exitCoordinates;
     }
@@ -456,6 +469,13 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return nonVoidCoordinates;
     }
 
+    public Set<Coordinates> getVoidCoordinates() {
+        if (voidCoordinates == null) {
+            voidCoordinates = new LinkedHashSet<>();
+        }
+        return voidCoordinates;
+    }
+
     public void addUnitGroup(LevelBlock levelBlock,
                              List<ObjAtCoordinate> unitsAtCoordinates, RngMainSpawner.UNIT_GROUP_TYPE groupType) {
 
@@ -464,8 +484,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public void addObj(ObjAtCoordinate obj) {
+        if (obj.getType().getName().equalsIgnoreCase(VOID_CELL)) {
+            getVoidCoordinates().add(obj.getCoordinates());
+            return;
+        }
         if (obj.getType().getName().equalsIgnoreCase(NON_VOID_CELL)) {
-// should have done it already
             getNonVoidCoordinates().add(obj.getCoordinates());
             return;
         }
@@ -489,13 +512,13 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             b.getUnits().add(obj);
         else {
             getUnassignedUnits().add(obj);
-            LogMaster.log(1,"Added into Void  " + obj);
+            LogMaster.log(1, "Added into Void  " + obj);
         }
     }
 
     public Collection<ObjAtCoordinate> getUnassignedUnits() {
         if (unassignedUnits == null) {
-        this.unassignedUnits = new LinkedHashSet<>();
+            this.unassignedUnits = new LinkedHashSet<>();
         }
         return unassignedUnits;
     }

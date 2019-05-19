@@ -307,6 +307,7 @@ public class GameLoop {
         if (aiAction == null)
             failed = true;
         else if (!aiAction.getActive().isChanneling())
+            if(!aiAction.getSource().isBoss()) //TODO boss fix
             if (!aiAction.canBeTargeted()) {
                 { main.system.auxiliary.log.LogMaster.log(1,"**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
                     AI_Manager.getBrokenActions().add(aiAction.getActive());

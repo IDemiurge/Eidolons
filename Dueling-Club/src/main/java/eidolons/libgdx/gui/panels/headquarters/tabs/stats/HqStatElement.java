@@ -68,7 +68,8 @@ public class HqStatElement extends HqElement {
         button.setFixedSize(true);
         TextureRegion r = TextureCache.getOrCreateR(StrPathBuilder.build(PathFinder.getUiPath(),
                 "components", "hq", "stats", "cross.png"));
-        button.setSize(r.getRegionWidth(), r.getRegionHeight());
+        button.setSize(22, 22);
+//                r.getRegionWidth(), r.getRegionHeight());
 //         STD_BUTTON.STAT.getTexture().getMinWidth(), TODO atlas..
 //         STD_BUTTON.STAT.getTexture().getMinHeight());
 

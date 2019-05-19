@@ -75,6 +75,7 @@ public abstract class DC_Obj extends MicroObj {
     Coordinates blockingCoordinate;
     private VisionController visionController;
     private boolean visibilityOverride;
+    private boolean resetIgnored;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -754,5 +755,12 @@ public abstract class DC_Obj extends MicroObj {
 
     public DIRECTION getDirection() {
         return null;
+    }
+    public boolean isResetIgnored() {
+        return resetIgnored;
+    }
+
+    public void setResetIgnored(boolean resetIgnored) {
+        this.resetIgnored = resetIgnored;
     }
 }

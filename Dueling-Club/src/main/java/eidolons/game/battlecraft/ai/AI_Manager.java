@@ -22,6 +22,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.boss.logic.BossAi;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.type.ObjAtCoordinate;
@@ -130,6 +131,9 @@ public class AI_Manager extends AiMaster {
     }
 
     public Action getAction(Unit unit) {
+        if (unit.isBoss()) {
+            return getBossAi(unit).getAction();
+        }
         if (unit.isMine()) {
             unit.getQuickItemActives();
         }
@@ -179,6 +183,7 @@ public class AI_Manager extends AiMaster {
 
         return action;
     }
+
 
 
     public UnitAI getAI(Unit unit) {

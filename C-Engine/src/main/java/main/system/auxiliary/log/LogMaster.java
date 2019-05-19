@@ -158,7 +158,7 @@ public class LogMaster {
         if (off) {
             return;
         }
-        if (CoreEngine.isExe()) {
+        if (CoreEngine.isExe() || CoreEngine.isFullFastMode()) {
             return;
         }
 

@@ -37,6 +37,7 @@ public class Ref implements Cloneable, Serializable {
     };
     protected static final long serialVersionUID = 1L; //why was it necessary? => deep clone...
     protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
+    private static final KEYS[] KEYS_VALUES = KEYS.values();
     public Game game; //reference to the game object
     public Event event; //reference to the event associated with this ref branch/stack
     public boolean base; // affects calculations - all entity params will be taken from base type
@@ -101,7 +102,14 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public static boolean isKey(String key) {
-        return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
+        for (KEYS keys : KEYS_VALUES) {
+            if (keys.name().equalsIgnoreCase(key)) {
+                return true;
+            }
+        }
+//     way too heavy
+//     return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
+        return false;
     }
 
     public static Ref getSelfTargetingRefCopy(Obj obj) {
@@ -257,7 +265,7 @@ public class Ref implements Cloneable, Serializable {
 
     protected void cloneMaps(Ref ref) {
         // no deep copy required here
-        values = new HashMap<>(ref.getValues());
+        values = new HashMap<>(ref.values);
     }
 
     protected String formatKeyString(String key) {

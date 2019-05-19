@@ -10,7 +10,7 @@ public enum FACING_DIRECTION {
     WEST(DIRECTION.LEFT, false, true),
     EAST(DIRECTION.RIGHT, false, false),
     SOUTH(DIRECTION.DOWN, true, false),
-    NONE(null, false, false);
+    NONE(DIRECTION.DOWN, false, false);
 
     public static final FACING_DIRECTION[] values = values();
     public static final FACING_DIRECTION[] normalFacing = {

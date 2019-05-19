@@ -89,10 +89,10 @@ public class EmitterMaster extends GdxUtil {
 
             switch (type) {
                 //                case UNIT:
-//                case UNIT:
+                case UNIT:
+                case AMBIENCE:
                 case SPELL:
                     break;
-                case AMBIENCE:
                 case MAP:
                 case MISC:
                     continue;

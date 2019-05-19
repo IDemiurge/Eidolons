@@ -131,6 +131,10 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (Eidolons.BOSS_FIGHT) {
+            super.draw(batch, 1);
+            return;
+        }
         if (!DungeonScreen.getInstance().controller.isWithinCamera
          (this)) {
             return;
@@ -140,6 +144,7 @@ public class GridCell extends Group implements Borderable {
              getGridX(), getGridY()
             ));
         }*/
+
         if (parentAlpha == ShaderDrawer.SUPER_DRAW
 //         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
          ) {

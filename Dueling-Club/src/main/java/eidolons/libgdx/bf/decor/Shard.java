@@ -73,6 +73,9 @@ public class Shard extends SuperActor {
             path = StrPathBuilder.build("ui", "cells", "shards",
              type.toString(), arg.toString());
         } else {
+            if (size == null) {
+                return null ;
+            }
             path = size == SHARD_SIZE.SMALL
              ?
              StrPathBuilder.build("ui", "cells", "shards",
@@ -125,8 +128,11 @@ public class Shard extends SuperActor {
         //            GdxImageMaster.flip(getBackgroundTexturePath(direction.flip()),
         //             !direction.isVertical(), direction.isVertical(), true, getBackgroundTexturePath());
         //        }
+        if (size != null) {
         addActor(background = new ImageContainer(getBackgroundTexturePath()));
+        background.setFluctuateAlpha(false);
         setSize(background.getWidth(), background.getHeight());
+        }
 
         if (overlay == null)
             return;

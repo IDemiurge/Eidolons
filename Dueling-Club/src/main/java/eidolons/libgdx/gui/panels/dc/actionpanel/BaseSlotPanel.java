@@ -2,6 +2,9 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 
@@ -18,7 +21,9 @@ public class BaseSlotPanel extends TablePanel {
 
     protected PagesMod activePage = PagesMod.NONE;
     private float beforeReset;
-    private float resetPeriod=4f;
+    private float resetPeriod = 4f;
+    private boolean hovered;
+    public static boolean hoveredAny;
 
     public BaseSlotPanel(int imageSize) {
         this.imageSize = imageSize;
@@ -27,26 +32,38 @@ public class BaseSlotPanel extends TablePanel {
 
     @Override
     public void clear() {
+        for (Actor child : GdxMaster.getAllChildren(this)) {
+            child.clear();
+        }
         super.clear();
         modTableMap.clear();
     }
 
     @Override
+    public void updateAct(float delta) {
+
+        super.updateAct(delta);
+    }
+
+    @Override
     public void act(float delta) {
+        if (hoveredAny) {
+            updateRequired=false;
+        }
         super.act(delta);
         beforeReset -= delta;
         PagesMod mod = PagesMod.NONE;
         if (beforeReset <= 0) {
             beforeReset = resetPeriod;
         } else {
-        PagesMod[] pagesMods = PagesMod.getValues();
-        for (int i = 0, pagesModsLength = pagesMods.length; i < pagesModsLength; i++) {
-            PagesMod pagesMod = pagesMods[i];
-            if (Gdx.input.isKeyPressed(pagesMod.getKeyCode())) {
-                mod = pagesMod;
-                break;
+            PagesMod[] pagesMods = PagesMod.getValues();
+            for (int i = 0, pagesModsLength = pagesMods.length; i < pagesModsLength; i++) {
+                PagesMod pagesMod = pagesMods[i];
+                if (Gdx.input.isKeyPressed(pagesMod.getKeyCode())) {
+                    mod = pagesMod;
+                    break;
+                }
             }
-        }
         }
         if (mod != activePage) {
             if (modTableMap.containsKey(mod)) {
@@ -55,7 +72,7 @@ public class BaseSlotPanel extends TablePanel {
         }
     }
 
-    protected void initContainer(List<ActionValueContainer> sources, String emptyImagePath) {
+    protected void initContainer(List<ValueContainer> sources, String emptyImagePath) {
         int pagesCount = sources.size() / getPageSize();
 
         if (sources.size() % getPageSize() > 0) {
@@ -91,12 +108,13 @@ public class BaseSlotPanel extends TablePanel {
 
     }
 
-    protected void addPage(List<ActionValueContainer> list, String emptyImagePath) {
+    protected void addPage(List<ValueContainer> list, String emptyImagePath) {
         final TablePanel page = initPage(list, emptyImagePath);
         modTableMap.put(PagesMod.values()[modTableMap.size()], page);
         addElement(page).left().bottom();
 
         page.setVisible(false);
+        page.setTouchable(Touchable.disabled);
     }
 
     protected void setActivePage(PagesMod page) {
@@ -107,15 +125,17 @@ public class BaseSlotPanel extends TablePanel {
             else
                 view = modTableMap.values().iterator().next();
         }
+        view.setTouchable(Touchable.disabled);
         view.setVisible(false);
         activePage = page;
         modTableMap.get(activePage).setVisible(true);
+        modTableMap.get(activePage).setTouchable(Touchable.enabled);
     }
 
-    protected TablePanel initPage(List<ActionValueContainer> sources, String emptyImagePath) {
+    protected TablePanel initPage(List<ValueContainer> sources, String emptyImagePath) {
         TablePanel page = new TablePanel();
         for (int i = 0; i < getPageSize(); i++) {
-            ActionValueContainer valueContainer = null;
+            ValueContainer valueContainer = null;
             if (sources.size() > i)
                 valueContainer = sources.get(i);
             addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
@@ -126,5 +146,22 @@ public class BaseSlotPanel extends TablePanel {
 
     protected int getPageSize() {
         return 6;
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+//        Actor actor = modTableMap.get(activePage).hit(x, y, touchable);
+//        if (actor!=null )
+//            return actor;
+        return super.hit(x, y, touchable);
+    }
+
+
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
+    }
+
+    public boolean isHovered() {
+        return hovered;
     }
 }

@@ -8,6 +8,7 @@ import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
+import eidolons.system.file.ResourceMaster;
 import main.AV_DataManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -34,7 +35,6 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.utilities.hotkeys.AV_KeyListener;
-import main.utilities.res.ResourceMaster;
 import main.utilities.workspace.WorkspaceManager;
 import net.miginfocom.swing.MigLayout;
 

@@ -21,13 +21,17 @@ public class HqPartyMembers extends HqPartyElement {
         this.panel = panel;
         this.vertical = vertical;
         bg = new Image(TextureCache.getOrCreate(Images.PARTY_BACKGROUND_COLS));
+        setFixedMinSize(true);
     }
 
     @Override
     protected void update(float delta) {
         clear();
         if (!vertical)
+        {
             addActor(bg);
+            setSize(bg.getImageWidth(), bg.getImageHeight());
+        }
         if (dataSource.size() <= 1)
             return;
 //        Group group = (vertical) ? new VerticalGroup() : new HorizontalGroup();

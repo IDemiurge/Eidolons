@@ -288,8 +288,8 @@ public class CompositeAnim implements Animation {
     }
 
     public void start() {
-        if (isRunning())
-            return;
+//        if (isFinished()) TODO igg demo fix -  wtf?
+////            return;
         hpUpdate = true;
         time = 0;
         index = 0;

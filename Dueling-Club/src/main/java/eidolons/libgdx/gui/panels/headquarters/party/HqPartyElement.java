@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.party;
 
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by JustMe on 4/16/2018.
  */
-public abstract class HqPartyElement extends TablePanel{
+public abstract class HqPartyElement extends TablePanelX {
     protected List<HqHeroDataSource> dataSource;
 
     @Override

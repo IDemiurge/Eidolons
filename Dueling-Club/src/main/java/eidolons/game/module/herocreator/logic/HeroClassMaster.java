@@ -5,6 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
@@ -16,6 +17,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +72,40 @@ public class HeroClassMaster {
         return list;
     }
 
-    public static List<ObjType> getAllClasses(Unit hero, int tier) {
+    public static List<ObjType> getPotentiallyAvailableClasses(Unit hero, int tier) {
+        List<ObjType> list = new ArrayList<>(DataManager.getTypes(DC_TYPE.CLASSES));
+
+        list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier
+                || (tier>0 && !hasRootTreeClass(hero, type)) //TODO hasEmptyClassSlot(hero) ||
+        );
+//        ContentFilter
+        HqMaster.filterContent(list);
+        //just check same root tree!
+
+        return list;
+    }
+
+    private static boolean hasRootTreeClass(Unit hero, ObjType type) {
+        String property = type.getProperty(G_PROPS.CLASS_GROUP);
+        if (hero.getProperty(PROPS.FIRST_CLASS).equalsIgnoreCase(property)) {
+            return true;
+        }
+        if (hero.getProperty(PROPS.SECOND_CLASS).equalsIgnoreCase(property)) {
+            return true;
+        }
+        if (hero.getProperty(PROPS.THIRD_CLASS).equalsIgnoreCase(property)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static List<ObjType> getClassesToChooseFrom(Unit hero, int tier) {
+        if (CoreEngine.isIggDemoRunning()){
+            return getPotentiallyAvailableClasses(hero, tier);
+        }
+        return getAllClasses(hero, tier);
+    }
+        public static List<ObjType> getAllClasses(Unit hero, int tier) {
         List<ObjType> list = new ArrayList<>(DataManager.getTypes(DC_TYPE.CLASSES));
         //check if branching is OK
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier);
@@ -91,10 +126,23 @@ public class HeroClassMaster {
         return list;
     }
     public static String getImgPath(Entity data) {
-        String path = "main/skills/gen/" + data.getName() + ".png";
+        String  path = "gen/class/64/" + data.getName() + ".png";
         if (TextureCache.isImage(path))
             return path;
-
-        return GdxImageMaster.getRoundedPath(data.getImagePath());
+        return (data.getImagePath());
+    }
+    public static String getImgPathRadial(Entity data) {
+        String  path = "gen/class/96/" + data.getName() + ".png";
+        if (TextureCache.isImage(path))
+            return path;
+        return (data.getImagePath());
+//        String path =GdxImageMaster.getRoundedPathNew(data.getName() + ".png");
+//        if (TextureCache.isImage(path))
+//            return path;
+//
+//        path = "main/skills/gen/" + data.getName() + ".png";
+//        if (TextureCache.isImage(path))
+//            return path;
+//        return GdxImageMaster.getRoundedPath(data.getImagePath());
     }
 }

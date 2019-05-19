@@ -316,10 +316,10 @@ public class HitAnim extends ActionAnim {
         floatingText.setColor(c);
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
-main.system.auxiliary.log.LogMaster.log(1,"dmg ADD_FLOATING_TEXT " +floatingText );
+        main.system.auxiliary.log.LogMaster.log(1,"dmg ADD_FLOATING_TEXT " +floatingText );
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
-        add();
+         add();
         //        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
     }
 

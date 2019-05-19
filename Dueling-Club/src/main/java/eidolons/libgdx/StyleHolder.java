@@ -390,11 +390,16 @@ public class StyleHolder {
     }
 
     public static TextButtonStyle getHqTabStyle() {
-        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT,
+        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
          FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
         return style;
     }
 
+    public static TextButtonStyle getHqTabStyleEmpty() {
+        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
+                FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
+        return style;
+    }
     public static TextButtonStyle getDefaultTabStyle() {
         if (defaultTabStyle == null)
             defaultTabStyle = getTabStyle(getDefaultTextButtonStyle());

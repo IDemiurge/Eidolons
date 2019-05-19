@@ -5,9 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.FontMaster;
 import main.system.text.TextWrapper;
 
 import java.util.ArrayList;
@@ -57,7 +59,6 @@ public class ValueTooltip extends Tooltip {
         clearChildren();
         List<ValueContainer> values = (List<ValueContainer>) getUserObject();
 
-
         values.forEach(el -> {
             if (el.getValueText() != null)
                 el.setValueText(TextWrapper.processText((int) (getMaxWidth()*0.86f), el.getValueText(), el.getValueLabel().getStyle()));
@@ -68,6 +69,14 @@ public class ValueTooltip extends Tooltip {
 
             el.setValueAlignment(getValueAlign());
             el.setNameAlignment(getNameAlign());
+            if (el.getNameLabel()!=null )
+            if (el.getNameLabel().getStyle() == StyleHolder.getDefaultLabelStyle()) {
+                el.setNameStyle(StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
+            }
+            if (el.getValueLabel()!=null )
+            if (el.getValueLabel().getStyle() == StyleHolder.getDefaultLabelStyle()) {
+                el.setValueStyle(StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
+            }
             addElement(el);
             row();
         });

@@ -24,10 +24,12 @@ defeatHandler...
  */
 public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
+    private final boolean boss;
     ShadowMaster shadowMaster= new ShadowMaster(this);
 
     public IGG_MetaMaster(String data) {
         super(data);
+        boss = data.equalsIgnoreCase(IGG_Demo.IGG_MISSION.FINALE.toString());
     }
 
     public ShadowMaster getShadowMaster() {
@@ -41,7 +43,13 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
     @Override
     protected DC_Game createGame() {
-        return new IGG_Game(this); //TODO
+        game= new IGG_Game(this){
+            @Override
+            public boolean isBossFight() {
+                return boss;
+            }
+        }; //TODO
+        return game;
     }
 
     @Override

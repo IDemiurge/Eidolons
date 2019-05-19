@@ -1,9 +1,12 @@
 package eidolons.libgdx.anims.std;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.particles.spell.SpellVfx;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
@@ -26,6 +29,27 @@ public class SpellAnim extends ActionAnim {
     public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template) {
         super(active, params);
         this.template = template;
+    }
+
+    @Override
+    protected void initDuration() {
+        super.initDuration();
+        float max=DEFAULT_ANIM_DURATION;
+        for (SpellVfx e : getEmitterList()) {
+        for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
+            if (max<emitter.duration)
+                max = emitter.duration;
+
+            e.setSpeed(AnimMaster.getAnimationSpeedFactor());
+        }
+        }
+        setDuration(max);
+    }
+
+    @Override
+    public void setDuration(float duration) {
+
+        super.setDuration(duration);
     }
 
     public SPELL_ANIMS getTemplate() {

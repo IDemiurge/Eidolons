@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -14,8 +14,8 @@ import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.shaders.DarkGrayscaleShader;
 import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.images.ImageManager.BORDER;
 
@@ -30,16 +30,14 @@ public class ActionValueContainer extends ValueContainer {
     private static ActionValueContainer lastPressed;
     private static boolean darkened;
     private final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
-    private   String path;
     protected Runnable clickAction;
     protected boolean valid = true;
     protected boolean hover;
     protected TextureRegion underlay;
     protected float underlayOffsetX;
     protected float underlayOffsetY;
-    private float size = UiMaster.getIconSize();
+    protected float size = UiMaster.getIconSize();
     private RadialMenu customRadialMenu;
-    private boolean scaledOnHover = true;
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -58,13 +56,16 @@ public class ActionValueContainer extends ValueContainer {
 
     }
 
-    public ActionValueContainer(int size, boolean valid, String path,
-                                Runnable runnable) {
-        this(valid, TextureCache.getOrCreateR(path), runnable);
-        this.size = size;
-        this.path = path;
-        initSize();
+    public ActionValueContainer(int size, boolean valid, String image, Runnable invokeClicked) {
+        this(size, valid, TextureCache.getSizedRegion(size, image), invokeClicked);
     }
+
+    public ActionValueContainer(int size, boolean valid, TextureRegion region,
+                                Runnable runnable) {
+        this(valid, region, runnable);
+        this.size = size;
+    }
+
 
     public static boolean isDarkened() {
         return darkened;
@@ -83,28 +84,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected void initSize() {
-        float size = getSize();
-//        if (imageContainer.getActor().getContent().getDrawable().getMinWidth() > 100) {
-//           if (path != null)
-//                if (path.contains("bf")) //TODO IGG_HACK
-//                if (path.contains("main"))
-//                {
-//                    imageContainer.getActor().setImage(GdxImageMaster.getSizedImagePath(path, (int) size));
-//                    scaledOnHover = false;
-//
-//                }
-//        }
-//        if (scaledOnHover)
-//            overrideImageSize(size, size);
-
-        if (imageContainer.getActor().getContent().getDrawable().getMinWidth() > 100) {
-            scaledOnHover = false;
-            if (path != null)
-                imageContainer.getActor().setImage(GdxImageMaster.getSizedImagePath(path, (int) size));
-        } else
-            overrideImageSize(size, size);
-
-
+        overrideImageSize(getSize(), getSize());
         imageContainer.top().right();
     }
 
@@ -146,12 +126,19 @@ public class ActionValueContainer extends ValueContainer {
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 if (!valid)
                     return super.mouseMoved(event, x, y);
-                if (hover)
+                if (isHover())
                     return false;
                 if (getLastPressed() == ActionValueContainer.this)
                     return true;
+//                if (GdxMaster.getFirstParentOfClass(event.getTarget(),
+//                        ActionValueContainer.class)!=null) {
+//                    if (GdxMaster.getAncestors(event.getTarget()).size()>
+//                            GdxMaster.getAncestors(event.getRelatedActor()).size()) {
+//                        return false;
+//                    }
+//                }
                 setLastPressed(null);
-                hover = true;
+                setHover(true);
                 setZIndex(Integer.MAX_VALUE);
                 if (isScaledOnHover())
                     scaleUp();
@@ -162,8 +149,16 @@ public class ActionValueContainer extends ValueContainer {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (!valid) return;
-                if (!hover) {
-                    hover = true;
+//           TODO igg demo fix
+//                if (GdxMaster.getFirstParentOfClass(event.getTarget(),
+//                        ActionValueContainer.class)!=null) {
+//                    if (GdxMaster.getAncestors(event.getTarget()).size()>
+//                            GdxMaster.getAncestors(event.getRelatedActor()).size()) {
+//                        return;
+//                    }
+//                }
+                if (!isHover()) {
+                    setHover(true);
                     if (isScaledOnHover())
                         scaleUp();
                     if (getLastPressed() != ActionValueContainer.this)
@@ -174,7 +169,17 @@ public class ActionValueContainer extends ValueContainer {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                hover = false;
+//                if (GdxMaster.getFirstParentOfClass(event.getTarget(),
+//                        ActionValueContainer.class)!=null) {
+//                    if (GdxMaster.getAncestors(event.getTarget()).size()!=
+//                            GdxMaster.getAncestors(event.getRelatedActor()).size()) {
+//                        return;
+//                    }
+//                }
+//                if (!event.getTarget().isTouchable()){
+//                    return;
+//                }
+                setHover(false);
                 super.exit(event, x, y, pointer, toActor);
 
                 if (isScaledOnHover()) {
@@ -208,15 +213,13 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected boolean isScaledOnHover() {
-
-        return scaledOnHover;
+        return true;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (hover) {
+        if (isHover()) {
             drawLightUnderlay(batch);
-
         }
         if (underlay != null)
             if (underlayOffsetX != 0 || underlayOffsetY != 0) {
@@ -231,10 +234,7 @@ public class ActionValueContainer extends ValueContainer {
         }
         if (!valid) {
             shader = batch.getShader();
-            batch.setShader(
-                    DarkShader.getDarkShader()
-//             GrayscaleShader.getGrayscaleShader()
-            );
+            batch.setShader(GrayscaleShader.getGrayscaleShader());
         }
         super.draw(batch, parentAlpha);
         batch.setShader(shader);
@@ -304,9 +304,6 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public float getSize() {
-        if (size == 0) {
-            return UiMaster.getIconSize(false);
-        }
         return size;
     }
 
@@ -314,7 +311,16 @@ public class ActionValueContainer extends ValueContainer {
         this.size = size;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public boolean isHover() {
+        return hover;
+    }
+
+    public void setHover(boolean hover) {
+        this.hover = hover;
+
+        BaseSlotPanel panel = (BaseSlotPanel) GdxMaster.getFirstParentOfClass(this, BaseSlotPanel.class);
+        if (panel != null) {
+            panel.setHovered(hover);
+        }
     }
 }

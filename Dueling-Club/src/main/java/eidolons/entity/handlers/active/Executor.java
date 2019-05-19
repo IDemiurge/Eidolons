@@ -205,10 +205,16 @@ public class Executor extends ActiveHandler {
         if (AnimMaster.isOn())
             if (!AnimConstructor.isReconstruct())
                 AnimConstructor.preconstruct(getAction());
+        ActionInput input = new ActionInput(getAction(), animContext);
 
-        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-                new ActionInput(getAction(), animContext)
-        );
+
+        if (getEntity().getOwnerUnit().isBoss()) { //TODO boss fix - what about spells?
+            GuiEventManager.trigger(GuiEventType.BOSS_ACTION, input);
+        } else {
+            GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
+                    input
+            );
+        }
 
         actionComplete();
         return isResult();

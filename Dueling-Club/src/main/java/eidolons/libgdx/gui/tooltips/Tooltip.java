@@ -3,8 +3,10 @@ package eidolons.libgdx.gui.tooltips;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
@@ -15,7 +17,7 @@ import main.system.GuiEventType;
 
 import java.util.List;
 
-public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
+public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
 
     protected boolean showing;
     protected ToolTipManager manager;
@@ -33,6 +35,10 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     @Override
     public boolean isTouchable() {
         return false;
+    }
+
+    public Actor getActor() {
+        return actor;
     }
 
     //refactor - why not implement?
@@ -225,4 +231,5 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     public Vector2 getDefaultOffset() {
         return null;
     }
+
 }

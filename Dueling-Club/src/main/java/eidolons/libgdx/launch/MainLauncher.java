@@ -1,6 +1,8 @@
 package eidolons.libgdx.launch;
 
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.system.options.OptionsMaster;
@@ -23,6 +25,7 @@ public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
     private static Stack<String> lastChoiceStack;
+    public static boolean presetNumbersOn;
 
     public static void main(String[] args) {
         CoreEngine.setSwingOn(false);
@@ -35,16 +38,18 @@ public class MainLauncher extends GenericLauncher {
         }
         if (!CoreEngine.isIggDemo()) {
             CoreEngine.setFastMode(args.length > 1);
-        CoreEngine.setFullFastMode(args.length > 3);
+            CoreEngine.setFullFastMode(args.length > 3);
         }
+        BossAnimator.setFastMode(args.length > 5);
+        Eidolons.BOSS_FIGHT = args[0].contains("BOSS");
         if (CoreEngine.isIDE()) {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
-            if (CoreEngine.isFastMode()  )//|| CoreEngine.isActiveTestMode())
+            if (CoreEngine.isFastMode())//|| CoreEngine.isActiveTestMode())
                 TestMasterContent.setAddSpells(true);
             if (CoreEngine.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);
                 if (CoreEngine.isMe())
-                OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
+                    OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
             }
         }
 
@@ -71,8 +76,11 @@ public class MainLauncher extends GenericLauncher {
 
             for (String command : commands) {
                 command = command.trim();
-                MAIN_MENU_ITEM item =
-                        new EnumMaster<MAIN_MENU_ITEM>().retrieveEnumConst(MAIN_MENU_ITEM.class, command);
+                MAIN_MENU_ITEM item = null;
+                try {
+                    item = MAIN_MENU_ITEM.valueOf(command.toUpperCase());
+                } catch (Exception e) {
+                }
                 if (item != null) {
                     MainMenu.getInstance().getHandler().handle(item);
                 } else {
@@ -81,6 +89,7 @@ public class MainLauncher extends GenericLauncher {
                         if (i < 0) {
                             i = getLast();
                         }
+                        presetNumbersOn = true;
                         presetNumbers.add(0, i);
                     }
 

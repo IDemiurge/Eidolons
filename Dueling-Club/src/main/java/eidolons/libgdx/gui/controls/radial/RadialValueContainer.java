@@ -16,6 +16,8 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.DC_TYPE;
+import main.entity.type.ObjType;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
@@ -38,8 +40,12 @@ public class RadialValueContainer extends ActionValueContainer {
     private boolean textOverlayOn;
 
 
-    public RadialValueContainer(TextureRegion texture, Runnable action) {
+    public RadialValueContainer( TextureRegion texture, Runnable action) {
+        this(UiMaster.getIconSize(), texture, action);
+    }
+    public RadialValueContainer(int size, TextureRegion texture, Runnable action) {
         super(texture, action);
+        this.size = size;
         setUnderlay(
          valid ?
           getUnderlayDefault().getTextureRegion() :
@@ -60,9 +66,9 @@ public class RadialValueContainer extends ActionValueContainer {
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 if (!valid)
                     return super.mouseMoved(event, x, y);
-                if (hover)
+                if (isHover())
                     return false;
-                hover = true;
+                setHover(true);
                 setZIndex(Integer.MAX_VALUE);
                 setUnderlay(RADIAL_UNDERLAYS.BLACK_BEVEL_GLOW.getTextureRegion());
 //                ActorMaster.addScaleAction(RadialValueContainer.this, 1.2f, 1.2f, 0.7f);
@@ -72,8 +78,8 @@ public class RadialValueContainer extends ActionValueContainer {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (!valid) return;
-                if (!hover) {
-                    hover = true;
+                if (!isHover()) {
+                    setHover(true);
                     setZIndex(Integer.MAX_VALUE);
                     setUnderlay(getUnderlayGlow().getTextureRegion());
                 }
@@ -82,7 +88,7 @@ public class RadialValueContainer extends ActionValueContainer {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                hover = false;
+                setHover(false);
                 setUnderlay(getUnderlayDefault().getTextureRegion());
                 super.exit(event, x, y, pointer, toActor);
             }
@@ -111,7 +117,8 @@ public class RadialValueContainer extends ActionValueContainer {
     }
 
     protected void initSize() {
-        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
+        if (getActor().getWidth()!=size)
+        overrideImageSize(size, size);
     }
 
     private void setUnderlay(TextureRegion underlay) {
@@ -124,14 +131,35 @@ public class RadialValueContainer extends ActionValueContainer {
         if (underlay == null)
             return;
         setUnderlayOffsetX(
-         (getWidth() - underlay.getRegionWidth())  / 3 * 2 + 3);
-        setUnderlayOffsetY( (getHeight() - underlay.getRegionHeight())  / 3 * 2 + 7);
+                (getImageContainer().getActor().getWidth()/2
+                 - underlay.getRegionWidth()) /2+getUnderlayOffsetX() );
+//                        / 3 * 2 + 3);
+        setUnderlayOffsetY( (getImageContainer().getActor().getHeight()/2
+                - underlay.getRegionHeight()) /2+getUnderlayOffsetY());
+//                / 3 * 2 + 7);
         if (getRadial() != null)
             if (getRadial().getActions().size > 0)
                 return;
 
 //        main.system.auxiliary.log.LogMaster.log(1," underlay set " + underlay.getTexture().getTextureData());
         this.underlay = underlay;
+    }
+
+    private float getUnderlayOffsetY() {
+        if (getUserObject() instanceof ObjType){
+            if (((ObjType) getUserObject()).getOBJ_TYPE_ENUM()== DC_TYPE.CLASSES) {
+                return -21;
+            }
+        }
+        return -25;
+    }
+    private float getUnderlayOffsetX() {
+        if (getUserObject() instanceof ObjType){
+            if (((ObjType) getUserObject()).getOBJ_TYPE_ENUM()== DC_TYPE.CLASSES) {
+                return 2;
+            }
+        }
+        return 5;
     }
 
     @Override

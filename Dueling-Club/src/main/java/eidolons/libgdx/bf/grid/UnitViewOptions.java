@@ -9,8 +9,8 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.bf.boss.BossMaster;
-import eidolons.libgdx.texture.TextureCache;
+import eidolons.libgdx.bf.boss.anim.BossAnimator;
+import eidolons.libgdx.bf.boss.entity.BossMaster;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -92,7 +92,7 @@ public class UnitViewOptions {
         this.name = obj.getName();
 
         if (obj.isBoss()) {
-           spritePath= BossMaster.getSpritePath(obj);
+           spritePath= BossAnimator.getSpritePath(obj);
         }
 
         this.mainHero =obj.isMine() && obj.isMainHero();

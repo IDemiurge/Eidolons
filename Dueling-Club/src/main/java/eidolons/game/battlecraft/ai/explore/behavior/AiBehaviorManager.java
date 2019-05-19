@@ -190,6 +190,9 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     private List<AiBehavior> createBehaviors(UnitAI ai) {
+        if (ai.getUnit().isBoss()) {
+            return new ArrayList<>();
+        }
         List<AiBehavior> behaviors = new ArrayList<>();
 
         if (TEST_MODE) {

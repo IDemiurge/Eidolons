@@ -1,6 +1,7 @@
 package eidolons.libgdx.screens;
 
 
+import eidolons.game.battlecraft.logic.meta.igg.story.IggActChoicePanel;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingData;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
@@ -82,7 +83,19 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
                 }
             };
         }
-        if (isRngScenario(list)){
+        if (isDemoScenario(list)){
+            return new IggActChoicePanel(() -> (List<? extends Entity>) p.get()) {
+                @Override
+                public void closed(Object selection) {
+                    if (selection == null) {
+                        if (mainMenu != null)
+                            mainMenu.setVisible(true);
+                    }
+                    super.closed(selection);
+                }
+            };
+        }
+            if (isRngScenario(list)){
             return new RngSelectionPanel(() -> (List<? extends Entity>) p.get()) {
                 @Override
                 public void closed(Object selection) {
@@ -104,6 +117,10 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
                 super.closed(selection);
             }
         };
+    }
+
+    private boolean isDemoScenario(List<? extends Entity> list) {
+        return list.get(0).getGroupingKey().equalsIgnoreCase("Demo");
     }
 
     private boolean isLoadGame(List<? extends Entity> p) {

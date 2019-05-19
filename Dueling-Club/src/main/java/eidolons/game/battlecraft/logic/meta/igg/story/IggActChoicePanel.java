@@ -8,7 +8,9 @@ import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioInfoPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioListPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
+import eidolons.libgdx.launch.MainLauncher;
 import main.entity.Entity;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 
 import java.util.List;
@@ -27,6 +29,21 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
     @Override
     protected String getTitle() {
         return "The Journey begins";
+    }
+
+    public void tryDone() {
+//        if (CoreEngine.isIDE()) //TODO for A/B testing?
+        if (isAutoDoneEnabled())
+                if (!MainLauncher.presetNumbers.isEmpty()) {
+                    listPanel.select(MainLauncher.presetNumbers.pop());
+                } else if (isRandom()) {
+                    listPanel.selectRandomItem();
+                } else
+                    return;
+        if (listPanel.getCurrentItem() == null || listPanel.isBlocked(listPanel.getCurrentItem())) {
+            return;
+        }
+        done();
     }
 
     @Override
@@ -66,6 +83,11 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
         return new ScenarioListPanel(){
             @Override
             public boolean isBlocked(SelectableItemData item) {
+                if (CoreEngine.isIDE()){
+                    if (MainLauncher.presetNumbersOn) {
+                       return false;
+                    }
+                }
                 return !item.getName().equalsIgnoreCase("act i");
             }
         };

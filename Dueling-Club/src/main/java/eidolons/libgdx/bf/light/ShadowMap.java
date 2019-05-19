@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
@@ -109,6 +110,10 @@ public class ShadowMap extends GroupX {
         setSize(grid.getWidth(), grid.getHeight());
         emitters = new List[grid.getCols()][grid.getRows()];
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
+            if (type== VOID){
+                if (Eidolons.BOSS_FIGHT)
+                    continue;
+            }
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
 
             for (int x = 0; x < grid.getCols(); x++) {
@@ -188,6 +193,10 @@ public class ShadowMap extends GroupX {
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
+                    if (type== VOID){
+                        if (Eidolons.BOSS_FIGHT)
+                            continue;
+                    }
                     ShadeLightCell cell = getCells(type)[x][y];
                     if (cell != null) {
                         if (type == VOID) {

@@ -186,6 +186,9 @@ public class GridPanel extends Group {
     }
 
     private boolean isShardsOn() {
+        if (Eidolons.BOSS_FIGHT) {
+            return false;
+        }
         boolean v = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADD_SHARDS_ALWAYS);
         if (v)
             return true;

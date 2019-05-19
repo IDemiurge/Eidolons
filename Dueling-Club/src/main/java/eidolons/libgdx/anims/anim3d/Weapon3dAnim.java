@@ -91,6 +91,7 @@ public class Weapon3dAnim extends ActionAnim {
         sprite = get3dSprite();
         if (sprite == null)
             return;
+        sprite.setSpeed(speedMod);
         sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
 
@@ -167,13 +168,17 @@ public class Weapon3dAnim extends ActionAnim {
             return sprite;
         }
 
-        sprite = AnimMaster3d.getSpriteForAction(getDuration(),
-         getActive(), getCase(), projection);
+        sprite = createSprite(projection); ;
         if (sprite.getRegions().size == 0) {
             return null;
         }
         projectionsMap.put(projection, sprite);
         return sprite;
+    }
+
+    protected SpriteAnimation createSprite(PROJECTION projection) {
+        return AnimMaster3d.getSpriteForAction(getDuration(),
+                getActive(), getCase(), projection);
     }
 
     @Override

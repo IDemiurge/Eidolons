@@ -102,7 +102,7 @@ public class DC_Attributes {
                  modifierKey);
 
                 Float apBoost = new Float(amount + new Float(agi / 2));
-                hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas.getActsFromDex(MathMaster
+                hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas.getActsFromDexAndHalfAgility(MathMaster
                  .round(apBoost)), modifierKey);
                 // NEW
 

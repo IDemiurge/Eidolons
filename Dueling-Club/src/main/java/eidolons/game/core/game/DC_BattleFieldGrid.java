@@ -46,12 +46,13 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 if (game.getMetaMaster()!= null )
-                if (game.getMetaMaster().isRngDungeon())
                 if (game.getMetaMaster().getDungeonMaster().getDungeonLevel() != null) {
                     if (game.getMetaMaster().getDungeonMaster().getDungeonLevel().isVoid(i, j))
                         continue; //TODO add a void cell?
                 }
                 cellsSet.add(cells[i][j] = new DC_Cell(i, j, game));
+
+//                cells[i][j].setVOID(game.getMetaMaster().getDungeonMaster().getDungeonLevel().isVoid());
                 coordinates.add(Coordinates.get(i, j));
             }
         }

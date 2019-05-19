@@ -32,8 +32,8 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static final boolean tryCompressedFormat = true;
     private static Boolean uiAtlasesOn=false;
+    private static final boolean tryCompressedFormat = true;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -58,12 +58,12 @@ public class TextureCache {
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
         if (atlasesOn) {
-            uiAtlas = new SmartTextureAtlas(imagePath + "/ui/atlases/ui.txt");
+            uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
             mainAtlas = new SmartTextureAtlas(imagePath + "/main//main.txt");
-            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
+//            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
         } else {
             if (uiAtlasesOn) {
-                uiAtlas = new SmartTextureAtlas(imagePath + "/ui/atlases/ui.txt");
+                uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
             }
         }
 
@@ -133,7 +133,11 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateRoundedRegion(String path, boolean write) {
-        TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPath(path));
+        TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPathNew(path));
+        if (!region.getTexture().equals(emptyTexture)) {
+            return region;
+        }
+        region = getOrCreateR(GdxImageMaster.getRoundedPath(path));
         if (!region.getTexture().equals(emptyTexture)) {
             return region;
         }
@@ -170,9 +174,6 @@ public class TextureCache {
                 region = getInstance().uiAtlas.findRegion(name);
                 if (region == null) {
                     region = getInstance().mainAtlas.findRegion(name);
-                }
-                if (region == null) {
-                    region = getInstance().genAtlas.findRegion(name);
                 }
             } else {
                 if (uiAtlasesOn) {

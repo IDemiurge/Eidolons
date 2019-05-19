@@ -132,6 +132,7 @@ public class DC_Formulas {
     private static final Integer ATTR_POINTS_PER_LEVEL_DEFAULT = 5;
     private static final Integer SELLING_PRICE_REDUCTION = 50;
     private static final int MAX_UNIT_LEVEL = 100;
+    private static final String ACTS_DEX_MODIFIER_FORMULA = "{AMOUNT}*max(0.1, (0.2-{AMOUNT}*0.02))";
     public static Formula DIVINATION_MAX_SD_FORMULA = new Formula("2+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /5+" // WISDOM?
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /2")
@@ -199,9 +200,9 @@ public class DC_Formulas {
         return Math.round(amount * INIT_MOD_AGI_MODIFIER);
     }
 
-    public static int getActsFromDex(int amount) {
-
-        return Math.round(amount * ACTS_DEX_MODIFIER);
+    public static int getActsFromDexAndHalfAgility(int amount) {
+        return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, amount) / 5 * 5;
+//        return Math.round(amount * ACTS_DEX_MODIFIER);
     }
 
     public static int getDefFromDex(int amount) {

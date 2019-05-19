@@ -45,9 +45,9 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
-//        if (CoreEngine.isActiveTestMode()){
-//            return true;
-//        }
+        if (CoreEngine.isActiveTestMode()){
+            return true;
+        }
         if (getGame().getCombatMaster().isActionBlocked(getAction()))
             return false;
         if (getGame().getTestMaster().isActionFree(getEntity().getName())) {

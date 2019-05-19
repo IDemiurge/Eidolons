@@ -11,6 +11,7 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
@@ -25,6 +26,7 @@ import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import eidolons.libgdx.anims.std.custom.ForceAnim;
+import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
@@ -138,7 +140,7 @@ public class AnimConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return !CoreEngine.isIDE();
+        return !CoreEngine.isIDE() || (!BossAnimator.getFastMode()&& Eidolons.BOSS_FIGHT);
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
@@ -146,6 +148,12 @@ public class AnimConstructor {
     }
 
     public static void preconstruct(Unit unit) {
+        if (Eidolons.BOSS_FIGHT)
+        if (unit.isBoss()) {
+            BossAnimator.preloadBoss();
+        } else {
+                return;
+            }
         unit.getActives().forEach(spell ->
           getOrCreate(spell));
         AnimMaster3d.preloadAtlases(unit);
