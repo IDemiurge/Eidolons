@@ -1,5 +1,7 @@
 package main.system.auxiliary.data;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.Entity;
@@ -33,6 +35,7 @@ public class ListMaster<E> {
         }
         return list;
     }
+
 
     public   List<E> asList(E... values) {
         List<E> list = new ArrayList<>();
@@ -92,6 +95,15 @@ public class ListMaster<E> {
         return list;
     }
 
+    public static boolean isNotEmpty(Array a) {
+        if (a == null) {
+            return false;
+        }
+        if (a.size==0) {
+            return false;
+        }
+        return true;
+    }
     public static boolean isNotEmpty(Collection list) {
         if (list == null) {
             return false;

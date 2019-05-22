@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.2";
+    public static final String VERSION = "0.9.2b";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
@@ -75,6 +75,11 @@ public class CoreEngine {
     private static boolean iggDemoRunning;
     private static boolean toolIsRunning;
     private static boolean activeTestMode;
+    private static boolean liteLaunch;
+    private static boolean dialogueTest;
+    private static boolean skillTestMode;
+    private static boolean contentTestMode;
+    private static boolean ruleTestMode;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -542,5 +547,45 @@ public class CoreEngine {
 
     public static void setActiveTestMode(boolean activeTestMode) {
         CoreEngine.activeTestMode = activeTestMode;
+    }
+
+    public static boolean isLiteLaunch() {
+        return liteLaunch;
+    }
+
+    public static void setLiteLaunch(boolean liteLaunch) {
+        CoreEngine.liteLaunch = liteLaunch;
+    }
+
+    public static boolean isDialogueTest() {
+        return dialogueTest;
+    }
+
+    public static void setDialogueTest(boolean dialogueTest) {
+        CoreEngine.dialogueTest = dialogueTest;
+    }
+
+    public static boolean isSkillTestMode() {
+        return skillTestMode;
+    }
+
+    public static void setSkillTestMode(boolean skillTestMode) {
+        CoreEngine.skillTestMode = skillTestMode;
+    }
+
+    public static boolean isContentTestMode() {
+        return contentTestMode;
+    }
+
+    public static void setContentTestMode(boolean contentTestMode) {
+        CoreEngine.contentTestMode = contentTestMode;
+    }
+
+    public static boolean isRuleTestMode() {
+        return ruleTestMode;
+    }
+
+    public static void setRuleTestMode(boolean ruleTestMode) {
+        CoreEngine.ruleTestMode = ruleTestMode;
     }
 }

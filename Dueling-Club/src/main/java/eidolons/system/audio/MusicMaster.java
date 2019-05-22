@@ -4,6 +4,8 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefMusic;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -39,18 +41,17 @@ public class MusicMaster {
     public static final int PERIOD = 100; //millis
     public static final String MASTER_PATH = PathFinder.getMusicPath() + "/main/";
     public static final boolean MASTER_MODE = true;
+
     public static final String AMBIENT_FOLDER = "atmo";
     private static final int ALT_AMBIENCE_TOGGLE_CHANCE_BASE = 5;
-    static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
-    static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
     private static int ALT_AMBIENCE_TOGGLE_CHANCE = ALT_AMBIENCE_TOGGLE_CHANCE_BASE;
     private static boolean ALT_AMBIENCE = RandomWizard.random();
+
     private static MusicMaster instance;
     private static Boolean on;
     Stack<String> playList;
     Stack<String> cachedPlayList;
     MUSIC_SCOPE scope = MUSIC_SCOPE.MENU;
-    MUSIC_VARIANT variant;
     MUSIC_THEME theme;
     AMBIENCE ambience = AMBIENCE.MIST;
     private boolean shuffle = true;
@@ -66,15 +67,20 @@ public class MusicMaster {
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
 
 
-    private Map<MUSIC_SCOPE, Playlist> playlists = new XLinkedMap<>();
+//    static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
+//    static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
+//    private Map<MUSIC_SCOPE, Playlist> playlists = new XLinkedMap<>();
+//    private boolean interruptOnSet;
+//    private boolean mainThemePlayed;
 
     private Thread thread;
-    private boolean interruptOnSet;
-    private boolean mainThemePlayed;
-
     private Float musicVolume;
     private Float ambientVolume;
     private float PAUSE;
+    private boolean shouldLoop;
+    private boolean interruptOnSet;
+
+
     // IDEA: map music per scope to resume()
     // TODO AMBIENT SOUNDS -
 
@@ -108,10 +114,7 @@ public class MusicMaster {
                 theme = (MUSIC_THEME) data;
                 musicReset();
             }
-            if (data instanceof MUSIC_VARIANT) {
-                variant = (MUSIC_VARIANT) data;
-                musicReset();
-            }
+
         });
 
     }
@@ -130,7 +133,7 @@ public class MusicMaster {
 
     public static void resetSwitcher() {
         on = !(OptionsMaster.getSoundOptions().
-         getBooleanValue(SOUND_OPTION.MUSIC_OFF));
+                getBooleanValue(SOUND_OPTION.MUSIC_OFF));
 
         if (!isOn()) {
             getInstance().pause();
@@ -148,7 +151,7 @@ public class MusicMaster {
                     path = StrPathBuilder.build(path, scope.name());
 
                 for (File sub : FileManager.getFilesFromDirectory(
-                 path, false, true)) {
+                        path, false, true)) {
                     if (isMusic(sub.getName())) {
                         getInstance().getMusic(sub.getPath());
 
@@ -172,7 +175,7 @@ public class MusicMaster {
         if (CoreEngine.isjUnit()) return false;
         if (on == null)
             on = !(OptionsMaster.getSoundOptions().
-             getBooleanValue(SOUND_OPTION.MUSIC_OFF));
+                    getBooleanValue(SOUND_OPTION.MUSIC_OFF));
         return on;
     }
 
@@ -241,12 +244,6 @@ public class MusicMaster {
     }
 
     public void init() {
-        variant =
-         new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
-          OptionsMaster.getSoundOptions().getValue(SOUND_OPTION.MUSIC_VARIANT));
-        if (variant == null) {
-            variant = MUSIC_VARIANT.EIDOLONS_SCORE;
-        }
         if (RandomWizard.random()) {
             theme = RandomWizard.random() ? MUSIC_THEME.GOODLY : MUSIC_THEME.DARK;
         }
@@ -278,6 +275,69 @@ public class MusicMaster {
 
     }
 
+    private boolean isTrackLooping(String path) {
+        if (path.contains("loop")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkLoop() {
+//        if (loopingTrack) {
+//            if (loopPlayed >= maxLoopCount) {
+//                loopingTrack=false;
+//                shouldLoop=false;
+//                return false;
+//            }
+//            loopPlayed++;
+//            playedMusic.play();
+//            //TODO versions?
+//            return true;
+//        }
+        return false;
+    }
+    MUSIC_TRACK  lastPlayed;
+    int tracksPlayedInScope;
+    private boolean checkTrackFits(String sub) {
+        MUSIC_TRACK track = getTrackFromPath(sub);
+        if (scope==MUSIC_SCOPE.BATTLE){
+            //intro vs alt intro vs no intro...
+            Boolean intro = null ;
+            if (lastPlayed== MUSIC_TRACK.BATTLE_LOOP)  {
+                intro = false;
+            } else
+                intro = true;
+
+            int coef = AggroMaster.getBattleDifficulty();
+            if (coef>50){
+
+            }
+        }
+        if (scope== MUSIC_SCOPE.MENU){
+
+        }
+        if (scope== MUSIC_SCOPE.MAP){
+
+        }
+        if (scope== MUSIC_SCOPE.ATMO){
+            if (tracksPlayedInScope>1) {
+
+            }
+        }
+        if (shouldLoop!=isTrackLooping(sub))
+                return false;
+            return true;
+    }
+
+    private MUSIC_TRACK getTrackFromPath(String sub) {
+        for (MUSIC_TRACK track : MUSIC_TRACK.values()) {
+            if (sub.contains(track.getPath())) {
+                return track;
+            }
+        }
+        return null;
+    }
+
     private void checkNewMusicToPlay() {
 
         if (!isOn())
@@ -286,11 +346,14 @@ public class MusicMaster {
             if (playedMusic != null)
                 if (playedMusic.isPlaying())
                     return;
+        if (checkLoop()) {
+            return;
+        }
         if (ListMaster.isNotEmpty(playList)) {
             if (playedMusic != null)
                 if (checkMakePause())
                     return;
-                playMusic(playList.pop());
+            playMusic(playList.pop());
             return;
         }
         if (!autoplay)
@@ -310,7 +373,8 @@ public class MusicMaster {
             playList = new Stack<>();
             for (String sub : FileManager.getFilePaths(files)) {
                 if (isMusic(sub)) {
-                    playList.add(sub);
+                    if (checkTrackFits(sub))
+                     playList.add(sub);
                 }
             } //bind to scope?
             if (shuffle) {
@@ -322,6 +386,7 @@ public class MusicMaster {
         }
         //       TODO what was the idea? checkUpdateTypes();
     }
+
 
     private boolean checkMakePause() {
         int chance = 0;
@@ -348,8 +413,7 @@ public class MusicMaster {
 
     public void stopAmbience() {
         if (playedAmbient != null)
-            if (playedAmbient.isPlaying())
-            {
+            if (playedAmbient.isPlaying()) {
                 playedAmbient.stop();
                 playedAmbient = null;
             }
@@ -408,12 +472,14 @@ public class MusicMaster {
     }
 
     private boolean isAmbientOn() {
+        if (CoreEngine.isActiveTestMode()) {
+            return false;
+        }
         if (scope == MUSIC_SCOPE.MENU) {
             return false;
         }
-        if (scope == MUSIC_SCOPE.BATTLE)
-        {
-            if (PAUSE>0)
+        if (scope == MUSIC_SCOPE.BATTLE) {
+            if (PAUSE > 0)
                 return true;
             return ALT_AMBIENCE;
         }
@@ -428,7 +494,7 @@ public class MusicMaster {
                 if (scope == MUSIC_SCOPE.BATTLE)
                     return MASTER_PATH + "battle";
             if (scope == MUSIC_SCOPE.MENU) {
-                mainThemePlayed = true;
+//                mainThemePlayed = true;
                 return MASTER_PATH + "menu";
             }
             return MASTER_PATH;
@@ -436,20 +502,10 @@ public class MusicMaster {
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getMusicPath());
         if (scope != null)
             builder.append(StringMaster.getWellFormattedString(
-             scope.toString()));
-        if (variant != null) {
-            if (variant == MUSIC_VARIANT.RANDOM) {
-                builder.append(
-                 StringMaster.getWellFormattedString(
-                  RandomWizard.getRandomListObject(
-                   Arrays.asList(MUSIC_VARIANT.values())
-                  ).toString()));
-            } else
-                builder.append(StringMaster.getWellFormattedString(variant.toString()));
-        }
+                    scope.toString()));
         if (theme != null)
             builder.append(StringMaster.getWellFormattedString(
-             theme.toString()));
+                    theme.toString()));
         return builder.toString();
     }
 
@@ -518,7 +574,7 @@ public class MusicMaster {
 
         playedMusic = getMusic(path);
         Float volume =
-         getVolume();
+                getVolume();
         playedMusic.setVolume(volume);
         playedMusic.play();
         trackCache.put(this.scope, playedMusic);
@@ -544,37 +600,24 @@ public class MusicMaster {
 
     public Float getAmbientVolume() {
         ambientVolume = OptionsMaster.getSoundOptions().
-         getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
+                getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
         return ambientVolume * SoundMaster.getMasterVolume() / 100;
     }
 
     private Float getVolume() {
         musicVolume = OptionsMaster.getSoundOptions().
-         getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
+                getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
         return musicVolume * SoundMaster.getMasterVolume() / 100;
     }
 
     public void setScope(MUSIC_SCOPE scope) {
         if (scope != this.scope) {
             this.scope = scope;
-            if (interruptOnSet)
-                musicReset();
+//            if (interruptOnSet)
+//                musicReset();
         }
     }
 
-    public void setVariant(MUSIC_VARIANT variant) {
-        if (variant != this.variant) {
-            this.variant = variant;
-            if (interruptOnSet)
-                musicReset();
-        }
-    }
-
-    public void setTheme(MUSIC_THEME theme) {
-        this.theme = theme;
-        if (interruptOnSet)
-            musicReset();
-    }
 
     public void setShuffle(boolean shuffle) {
         this.shuffle = shuffle;
@@ -613,16 +656,6 @@ public class MusicMaster {
         this.running = running;
     }
 
-    public void autoScope() {
-        if (DC_Game.game == null)
-            scopeChanged(MUSIC_SCOPE.MENU);
-        else {
-            //            if (MacroGame)
-            scopeChanged(ExplorationMaster.isExplorationOn() ? MUSIC_SCOPE.ATMO : MUSIC_SCOPE.BATTLE);
-        }
-    }
-
-
     // SOUNDS VS THEME-FILES?!
     public enum AMBIENCE {
         MINE,
@@ -643,7 +676,7 @@ public class MusicMaster {
         //        NORTH,
         TOWN();
 
-        AMBIENCE(ATMO_SOUND_TYPE... TYPES) {
+        AMBIENCE(AmbientMaster.ATMO_SOUND_TYPE... TYPES) {
 
         }
 
@@ -652,29 +685,12 @@ public class MusicMaster {
         }
     }
 
-    public enum ATMO_SCOPE {
-        MENU, HC, BATTLE
-    }
-
-    public enum ATMO_SOUND_TYPE {
-        CREEK,
-        WHISPER,
-        WAVES,
-        WIND_HOWL,
-        WIND_BLOW,
-        ROCK_FALL,
-        BIRD_CHIRP,
-        RIVER,
-        WOLF_HOWL,
-        DOG_BARK,
-        HUMAN_CHATTER,
-        HUMAN_WHISPER,
-        PICK_AXE,
-
-    }
 
     public enum MUSIC_MOMENT {
-        DEFEAT, VICTORY, AFTER_DEFEAT, AFTER_VICTORY, WAVE_CLEARED, WAVE_SPAWN, // regular/elite/boss?
+        SAD,
+        DANGER,
+        DISCOVERY,
+        DEFEAT, VICTORY,
         WELCOME; // VARIANTS?
 
         public String getCorePath() {
@@ -692,24 +708,34 @@ public class MusicMaster {
         GOODLY,
     }
 
-    public enum MUSIC_TYPE {
-        ATMO, MUSIC, BONUS
-    }
+    public enum MUSIC_TRACK {
+        FAR_BEYOND_FALLEN,
+        FRACTURES,
+        THERE_WILL_BE_PAIN_LOOP,
+        THE_END_OR_THE_BEGINNING,
+        OBSCURE_PATHS_LOOP,
+        FALLEN_REALMS,
 
-    public enum MUSIC_VARIANT {
-        EIDOLONS_SCORE,
-        OLD_SCHOOL,
-        DARK,
-        FANTASY,
-        EPIC,
-        RPG,
-        RANDOM,
-    }
 
-    // stopScope()
+        FROM_DUSK_TILL_DAWN,
+        DARK_SECRETS,
+        DUNGEONS_OF_DOOM,
+        LOOMING_SHADES,
 
-    public class MusicData {
+        ENTHRALLING_WOODS,
 
+        NIGHT_OF_DEMON,
+        TOWARDS_THE_UNKNOWN_LOOP,
+        PREPARE_FOR_WAR,
+        SUFFOCATION_LOOP,
+        BATTLE_INTRO_LOOP,
+        BATTLE_ALT,
+        BATTLE_LOOP,
+        ;
+
+        public String getPath() {
+            return StringMaster.getWellFormattedString(name());
+        }
     }
 
 }

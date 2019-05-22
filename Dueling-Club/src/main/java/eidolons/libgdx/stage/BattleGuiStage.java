@@ -16,7 +16,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.libgdx.bf.boss.BossTestGroup;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
@@ -29,6 +28,7 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -66,7 +66,8 @@ public class BattleGuiStage extends GuiStage {
 
         init();
 
-        addActor( infoPanel = UnitInfoPanelNew.getInstance());
+        if (!CoreEngine.isActiveTestMode())
+            addActor( infoPanel = UnitInfoPanelNew.getInstance());
 
         combatInventory = new CombatInventory();
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
@@ -95,6 +96,9 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     protected boolean checkBlocked() {
+        if (CoreEngine.isActiveTestMode()) {
+            return super.checkBlocked()  || outcomePanel.isVisible();
+        }
         return super.checkBlocked()  || outcomePanel.isVisible() || infoPanel.isVisible();
     }
 

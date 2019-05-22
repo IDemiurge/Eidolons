@@ -35,7 +35,7 @@ public class HqMasteryTable extends HqStatTable {
     }
     @Override
     protected String getPointsText() {
-        return "Mastery pts             ";
+        return "    Mastery          pts.";
     }
     @Override
     protected boolean isMastery() {

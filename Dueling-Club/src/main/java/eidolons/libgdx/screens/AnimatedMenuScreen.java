@@ -35,7 +35,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
         GuiEventManager.bind(GuiEventType.BRIEFING_START, p -> mainMenu.setVisible(false));
         GuiEventManager.bind(GuiEventType.BRIEFING_FINISHED, p -> mainMenu.setVisible(true));
-        getOverlayStage().clear();
+//        getOverlayStage().clear(); TODO igg demo fix why needed??
         mainMenu = MainMenu.getInstance();
         mainMenu.setVisible(true);
         getOverlayStage().addActor(mainMenu);

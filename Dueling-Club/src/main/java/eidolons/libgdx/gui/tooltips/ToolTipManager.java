@@ -137,7 +137,11 @@ public class ToolTipManager extends TablePanel {
     }
 
     private void show() {
+
         if (tooltipPanel!=null ){
+            if (tooltip.isBattlefield()) {
+                return;
+            }
             if (HqPanel.getActiveInstance()!=null)
                 if (GdxMaster.isVisibleEffectively(tooltipPanel)) {
             tooltipPanel.init(tooltip);

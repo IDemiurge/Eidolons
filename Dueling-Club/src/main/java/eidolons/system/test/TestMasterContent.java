@@ -137,7 +137,7 @@ public class TestMasterContent {
 
     // WORKSPACE_GROUP[] ws_groups_included = {WORKSPACE_GROUP.TEST,
     // WORKSPACE_GROUP.FIX, WORKSPACE_GROUP.POLISH};
-    private static boolean addSkills;
+    private static boolean addSkills= CoreEngine.isSkillTestMode();
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
@@ -641,4 +641,15 @@ public class TestMasterContent {
 
     }
 
+    public static void setAddSkills(boolean addSkills) {
+        TestMasterContent.addSkills = addSkills;
+    }
+
+    public static void setAddItems(boolean addItems) {
+        TestMasterContent.addItems = addItems;
+    }
+
+    public static void setAddActives(boolean addActives) {
+        TestMasterContent.addActives = addActives;
+    }
 }

@@ -107,6 +107,8 @@ public class DialogueFactory {
                 parent.addChild(speech);
                 speech.init(master, parent);
             }
+
+
             parent = speech;
         }
 

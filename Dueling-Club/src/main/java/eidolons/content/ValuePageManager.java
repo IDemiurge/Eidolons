@@ -38,7 +38,8 @@ public class ValuePageManager {
      , ValuePages.ALT_BF_OBJ_PAGES, null, ValuePages.ACTION_PAGES_DC,
      HC_ValuePages.ARMOR_PAGES, HC_ValuePages.WEAPONS_PAGES, ValuePages.SKILL_PAGES,
      ValuePages.ALT_QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES, new VALUE[0][0],
-     ValuePages.CLASS_PAGES
+     ValuePages.CLASS_PAGES,
+     ValuePages.PERK_PAGES,
 
     };
     public static final VALUE[][][] pageArray = {ValuePages.UNIT_PAGES, ValuePages.SPELL_PAGES,
@@ -46,7 +47,8 @@ public class ValuePageManager {
 
      , null, null, ValuePages.ACTION_PAGES, ValuePages.ARMOR_PAGES, ValuePages.WEAPON_PAGES,
      ValuePages.SKILL_PAGES, ValuePages.QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES,
-     new VALUE[0][0], ValuePages.CLASS_PAGES
+     new VALUE[0][0], ValuePages.CLASS_PAGES,
+            ValuePages.PERK_PAGES,
 
     };
 

@@ -11,6 +11,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.test.debug.DebugMaster;
@@ -23,6 +24,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
+import main.system.sound.SoundMaster;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -346,6 +348,21 @@ public class VisionRule {
         controller.getDetectionMapper().set(source.getOwner(), object, true);
         if (isDetectionLogged(source, object))
             master.getGame().getLogManager().logReveal(source, object);
+        if (isDetectionSoundOn(source, object)){
+            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
+        }
+    }
+
+    private boolean isDetectionSoundOn(Unit source, BattleFieldObject object) {
+        if (source.isPlayerCharacter()) {
+            if (!object.isSneaking())
+                if (!object.isDisabled())
+                    if (!object.isAlliedTo(source.getOwner()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isDetectionLogged(Unit source, BattleFieldObject object) {

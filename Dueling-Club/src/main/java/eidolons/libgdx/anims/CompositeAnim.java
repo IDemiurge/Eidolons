@@ -199,7 +199,7 @@ public class CompositeAnim implements Animation {
     }
 
     private void playAttached() {
-        List<Animation> list = attached.get(part==null ? ANIM_PART.AFTEREFFECT : part);
+        List<Animation> list = attached.get(part == null ? ANIM_PART.AFTEREFFECT : part);
         if (list != null) {
             list.forEach(anim -> {
                 anim.start(getRef());
@@ -299,7 +299,13 @@ public class CompositeAnim implements Animation {
         }
 
         try {
-            currentAnim.start(getRef());
+            if (getRef() != null) {
+                currentAnim.start(getRef());
+            } else
+            {
+                currentAnim.start();
+                setRef(currentAnim.getRef());
+            }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return;

@@ -6,6 +6,7 @@ import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
+import eidolons.libgdx.anims.std.sprite.LockKeyAnimation;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.data.XLinkedMap;
 import main.game.logic.event.Event;
@@ -67,6 +68,13 @@ public class EventAnimMaster {
         if (anim == null) {
             return false;
         }
+
+        if (isImmediateAnim(anim)){
+            anim.startAsSingleAnim(event.getRef());
+            return true;
+
+        }
+
         parentAnim = getEventAttachAnim(event, anim);
         if (parentAnim != null) {
             LogMaster.log(LogMaster.ANIM_DEBUG, anim +
@@ -97,6 +105,13 @@ public class EventAnimMaster {
         if (!check)
             pendingEventAnims.put(event.getClone(), anim);
         return false;
+    }
+
+    private boolean isImmediateAnim(Anim anim) {
+        if (anim instanceof LockKeyAnimation) {
+            return true;
+        }
+            return false;
     }
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {

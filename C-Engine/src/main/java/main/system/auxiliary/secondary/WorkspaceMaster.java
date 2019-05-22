@@ -11,6 +11,7 @@ import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.BORDER;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -127,6 +128,13 @@ public class WorkspaceMaster {
          WORKSPACE_GROUP.class, type);
         if (ws != null) {
             switch (ws) {
+                case IGG_TODO:
+                    if (CoreEngine.isIggDemo()) {
+                     if (CoreEngine.isSkillTestMode())
+                        return true;
+
+                    }
+
                 case DESIGN:
                     return false;
                 case COMPLETE:

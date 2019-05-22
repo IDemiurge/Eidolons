@@ -33,6 +33,10 @@ public class MainLauncher extends GenericLauncher {
         CoreEngine.setSafeMode(true);
         CoreEngine.setIggDemo(true);
         CoreEngine.setActiveTestMode(args.length > 0);
+        CoreEngine.setSkillTestMode(args.length > 0);
+        CoreEngine.setLiteLaunch(args.length > 0);
+        CoreEngine.setContentTestMode(args.length > 0);
+
         if (args.length > 0) {
             args = args[0].split(";");
         }

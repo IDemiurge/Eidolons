@@ -36,14 +36,7 @@ public class ParryRule {
                 return false;
             }
         }
-
-        int attackValue = DefenseVsAttackRule.getAttackValue(attack);
-        int defenseValue = DefenseVsAttackRule.getDefenseValue(attack);
-
-        float chance = DefenseVsAttackRule.getProportionBasedChance(attackValue, defenseValue, false);
-        chance += attack.getAttackedUnit().getIntParam(PARAMS.PARRY_CHANCE);
-        chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
-        Integer chanceRounded = Math.round(chance);
+        int chanceRounded = getChance(attack );
 
 //        if (!simulation)
         if (attack.getAction().getGame().getCombatMaster().isChancesOff()) {
@@ -54,7 +47,7 @@ public class ParryRule {
 
         game.getLogManager().newLogEntryNode(ENTRY_TYPE.PARRY, attack.getAttackedUnit().getName(),
          attack.getAction().getName(), attack.getAttacker().getName(),
-         chanceRounded.toString());
+         chanceRounded);
         if (!RandomWizard.chance(chanceRounded)) {
             game.getLogManager().log(attack.getAttackedUnit().getName() + " fails to parry " + attack.getAction().getName()
              + " from " + attack.getAttacker().getNameIfKnown()
@@ -112,9 +105,23 @@ public class ParryRule {
 
     }
 
+    private int getChance(Attack attack) {
+        int attackValue = DefenseVsAttackRule.getAttackValue(attack);
+        int defenseValue = DefenseVsAttackRule.getDefenseValue(attack);
+
+        float chance = DefenseVsAttackRule.getProportionBasedChance(attackValue, defenseValue, false);
+        chance += attack.getAttackedUnit().getIntParam(PARAMS.PARRY_CHANCE);
+        chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
+        Integer chanceRounded = Math.round(chance);
+        return chanceRounded;
+    }
+
     // precalculateRawDamageForDisplay
     private boolean canParry(Attack attack) {
-        // if (!RuleMaster.isParryOn())return false;
+
+        if (CoreEngine.isRuleTestMode())
+            return true;
+
         Unit attackedUnit = (Unit) attack.getAttackedUnit();
         if (attackedUnit == null)
             return false;
@@ -133,7 +140,7 @@ public class ParryRule {
         if (attack.getWeapon().getWeaponType() == ItemEnums.WEAPON_TYPE.NATURAL) {
             return false;
         }
-        if (attack.getWeapon().getWeaponType() == ItemEnums.WEAPON_TYPE.BLUNT) {
+        if (attack.getWeapon().getWeaponType() == ItemEnums.WEAPON_TYPE.MAGICAL) {
             return false;
         }
         // if (attack.getWeapon().getWeaponSize() == WEAPON_SIZE.TINY)

@@ -1,17 +1,16 @@
 package eidolons.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -19,15 +18,14 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.boss.BossTestGroup;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.EmitterPools;
@@ -37,6 +35,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.StageX;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.libgdx.utils.ActTimer;
@@ -80,7 +79,6 @@ public class DungeonScreen extends GameScreenWithTown {
     private boolean blocked;
     private ActTimer cameraTimer;
     private GridCellContainer stackView;
-    private BossTestGroup testStage;
     boolean firstCenteringDone;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
@@ -116,7 +114,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             if (isSpriteBgTest()) {
-                setBackground("atlas.txt");
+                setBackground(Sprites.BG_DUNGEON);
                 return;
             }
             final String path = (String) param.get();
@@ -174,7 +172,7 @@ public class DungeonScreen extends GameScreenWithTown {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.getGame() != null) {
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                        new ScreenData(SCREEN_TYPE.MAP ));
+                        new ScreenData(SCREEN_TYPE.MAP));
 
                 MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
@@ -249,15 +247,14 @@ public class DungeonScreen extends GameScreenWithTown {
 //TODO use simple float pair to make it dynamic
         cameraTimer = new ActTimer(OptionsMaster.getControlOptions().
                 getIntValue(CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
-            if (!firstCenteringDone)
-            {
+            if (!firstCenteringDone) {
                 centerCameraOn(Eidolons.getMainHero());
-                firstCenteringDone=true;
+                firstCenteringDone = true;
             }
             if (isCameraAutoCenteringOn())
                 if (Eidolons.getGame().getManager().checkAutoCameraCenter()) {
                     if (!Eidolons.getMainHero().isDead()) //for Shade
-                    centerCameraOn(Eidolons.getMainHero());
+                        centerCameraOn(Eidolons.getMainHero());
                 }
         });
 //        try {
@@ -303,12 +300,11 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected InputProcessor createInputController() {
-        InputMultiplexer current = null;
-        if (canShowScreen()) {
-            current = new InputMultiplexer(guiStage, controller, gridStage);
-            if (dialogsStage != null) {
-                current.addProcessor(dialogsStage);
-            }
+        if (guiStage.isDialogueMode()) {
+            return new InputMultiplexer(guiStage, controller);
+        }
+        if (canShowScreen()) {  //town is considered 'loading phase' still
+            return new InputMultiplexer(guiStage, controller, gridStage);
         } else {
             if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning()) {
                 return new InputMultiplexer(guiStage, super.createInputController());
@@ -316,8 +312,6 @@ public class DungeonScreen extends GameScreenWithTown {
                 return super.createInputController();
             }
         }
-
-        return current;
     }
 
     protected void checkInputController() {
@@ -348,7 +342,8 @@ public class DungeonScreen extends GameScreenWithTown {
         checkInputController();
 //        stages.for
         guiStage.act(delta);
-        gridStage.act(delta);
+        if (isShowingGrid())
+            gridStage.act(delta);
         setBlocked(checkBlocked());
         cameraTimer.act(delta);
         cameraShift();
@@ -362,22 +357,29 @@ public class DungeonScreen extends GameScreenWithTown {
                 postProcessing.begin();
             updateBackground(delta);
             if (backTexture != null) {
-                guiStage.getBatch().begin();
+                Batch batch = guiStage.getCustomSpriteBatch();
+                batch.begin();
                 float colorBits = GdxColorMaster.WHITE.toFloatBits();
-                if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
-                    guiStage.getBatch().setColor(colorBits); //gotta reset the alpha...
-                guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-                if (backgroundSprite != null) {
+                if (batch.getColor().toFloatBits() != colorBits)
+                    batch.setColor(colorBits); //gotta reset the alpha...
 
-                    backgroundSprite.setOffsetY(-
-                            Gdx.graphics.getHeight()/2);
-                    backgroundSprite.setOffsetX(-Gdx.graphics.getWidth()/2);
-                    backgroundSprite.setSpeed(0.5f);
-                    backgroundSprite.setOffsetY( cam.position.y);
-                    backgroundSprite.setOffsetX(cam.position.x);
-                    backgroundSprite.draw(guiStage.getBatch());
-                }
-                guiStage.getBatch().end();
+                int w = backTexture.getRegionWidth();
+                int h = backTexture.getRegionHeight();
+                int x = (GdxMaster.getWidth() - w) / 2;
+                int y = (GdxMaster.getHeight() - h) / 2;
+                batch.draw(backTexture, x, y, w, h);
+                if (backTexture == null)
+                    if (backgroundSprite != null) {
+
+                        backgroundSprite.setOffsetY(-
+                                Gdx.graphics.getHeight() / 2);
+                        backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
+                        backgroundSprite.setSpeed(0.5f);
+                        backgroundSprite.setOffsetY(cam.position.y);
+                        backgroundSprite.setOffsetX(cam.position.x);
+                        backgroundSprite.draw(batch);
+                    }
+                batch.end();
             }
             gridStage.draw();
             if (postProcessing != null)
@@ -385,32 +387,6 @@ public class DungeonScreen extends GameScreenWithTown {
 
             guiStage.draw();
 
-            //            postProcessing.disable(); //a failed boat!
-            //            gridStage.draw();
-            //            batch.flush();
-            //            postProcessing.end();
-            //            batch.flush();
-            //            postProcessing.begin();
-            //            postProcessing.disable();
-            //            batch.setShader(null);
-            //            batch.resetBlending();
-            //            batch.getColor().a=1;
-            //            guiStage.draw();
-            //            batch.flush();
-            //            postProcessing.enable();
-
-
-            if (dialogsStage != null) {
-                dialogsStage.act(delta);
-                if (dialogsStage.isDone()) {
-                    final ChainedStage dialogsStage = this.dialogsStage;
-                    this.dialogsStage = null;
-                    dialogsStage.dispose();
-                    updateInputController();
-                } else {
-                    dialogsStage.draw();
-                }
-            }
 
             try {
                 soundMaster.doPlayback(delta);
@@ -420,196 +396,205 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
-
-    private void updateBackground(float delta) {
-        if (backgroundSprite != null) {
-            backgroundSprite.act(delta);
-            backTexture = backgroundSprite.getCurrentFrame();
-            if (backgroundSprite.getCurrentFrameNumber() == backgroundSprite.getFrameNumber() - 1) {
-                if (backgroundSprite.getPlayMode() == Animation.PlayMode.LOOP_REVERSED)
-                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP);
-                else {
-                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
-                }
-                backTexture = backgroundSprite.getCurrentFrame();
+    private boolean isShowingGrid() {
+        if (HqPanel.getActiveInstance() != null) {
+            if (HqPanel.getActiveInstance().getColor().a == 1) {
+                return false;
             }
         }
-    }
-
-    @Override
-    protected boolean isPostProcessingDefault() {
-        return false;
-    }
-
-    @Override
-    protected Stage getMainStage() {
-        return guiStage;
-    }
-
-    @Override
-    public void render(float delta) {
-        batch.shaderFluctuation(delta);
-
-        if (speed != null) {
-            delta = delta * speed;
-        }
-        if (CoreEngine.isIDE())
-            //            checkDebugToggle();
-            if (DC_Game.game != null) {
-                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
-                    if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-                        DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-                    } else {
-                        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-                            CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
-                        }
-                        if (Gdx.input.isKeyPressed(Keys.TAB)) {
-                            DC_Game.game.getVisionMaster().refresh();
-                            GuiEventManager.trigger(UPDATE_GUI);
-                        }
-                    }
-                }
-
-            }
-        super.render(delta);
-    }
-
-    @Override
-    protected void renderLoaderAndOverlays(float delta) {
-        setBlocked(checkBlocked());
-        super.renderLoaderAndOverlays(delta);
-    }
-
-    protected void checkShaderReset() {
-        if (batch.getShader() == DarkShader.getDarkShader()) {
-            batch.shaderReset();
-        }
-        if (guiStage.getBatch().getShader() == DarkShader.getDarkShader()
-                || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
-                || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
-        ) {
-            guiStage.getCustomSpriteBatch().shaderReset();
-        }
-    }
-
-    protected void checkShader() {
-
-        batch.setShader(null);
-//        guiStage .getCustomSpriteBatch().setShader(null);
-
-        if (batch.getShader() != DarkShader.getDarkShader())
-            if (isBlocked() || ExplorationMaster.isWaiting()) {
-                bufferedShader = batch.getShader();
-                batch.setFluctuatingShader(DarkShader.getInstance());
-                guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
-//                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
-            }
-    }
-
-    public boolean isBlocked() {
-        return blocked;
-    }
-
-    private void setBlocked(boolean blocked) {
-        if (this.blocked == blocked)
-            return;
-        this.blocked = blocked;
-        if (blocked)
-            EUtils.hideTooltip();
-    }
-
-    public boolean checkBlocked() {
-        if (manualPanel != null)
-            if (manualPanel.isVisible())
-                return true;
-        if (selectionPanel != null)
-            if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
-                return true;
-        return guiStage.isBlocked();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        //     animationEffectStage.getViewport().update(width, height);
-
-        //        float aspectRatio = (float) width / (float) height;
-        //        cam = new OrthographicCamera(width * aspectRatio, height) ;
-
-        gridStage.getRoot().setSize(width, height);
-        //        guiStage.getRoot().setSize(width, height);
-        gridStage.getViewport().update(width, height);
-        //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
-        guiStage.getViewport().update(width, height);
-        //        getGuiStage().getGuiVisuals().resized();
-
-        //        BattleGuiStage.camera.viewportWidth=width;
-        //        BattleGuiStage.camera.viewportHeight=height;
-    }
-
-    public GridPanel getGridPanel() {
-        return gridPanel;
-    }
-
-    public BattleGuiStage getGuiStage() {
-        return (BattleGuiStage) guiStage;
-    }
-
-    public InputController getController() {
-        return controller;
-    }
-
-    public Stage getGridStage() {
-        return gridStage;
-    }
-
-    public Float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(Float speed) {
-        this.speed = speed;
-    }
-
-    public void centerCameraOn(BattleFieldObject hero) {
-        centerCameraOn(hero, null);
-    }
-
-    public void centerCameraOn(BattleFieldObject hero, Boolean force) {
-        if (!isCenterAlways())
-            if (!Bools.isTrue(force))
-                if (centerCameraOnAlliesOnly)
-                    if (!hero.isMine())
-                        return;
-
-        Coordinates coordinatesActiveObj =
-                hero.getCoordinates();
-        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
-        cameraPan(unitPosition, force);
-
-
-    }
-
-    public void setCameraTimer(int intValue) {
-        if (cameraTimer == null) {
-            return;
-        }
-        cameraTimer.setPeriod(intValue);
-    }
-
-    public ParticleManager getParticleManager() {
-        return particleManager;
-    }
-
-    @Override
-    protected boolean isTownInLoaderOnly() {
         return true;
     }
 
-    public GridCellContainer getStackView() {
-        return stackView;
-    }
+        private void updateBackground ( float delta){
+            if (backgroundSprite != null) {
+                backgroundSprite.act(delta);
+                backTexture = backgroundSprite.getCurrentFrame();
+                if (backgroundSprite.getCurrentFrameNumber() == backgroundSprite.getFrameNumber() - 1) {
+                    if (backgroundSprite.getPlayMode() == Animation.PlayMode.LOOP_REVERSED)
+                        backgroundSprite.setPlayMode(Animation.PlayMode.LOOP);
+                    else {
+                        backgroundSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
+                    }
+                }
+                backTexture = backgroundSprite.getCurrentFrame();
 
-    public void setStackView(GridCellContainer stackView) {
-        this.stackView = stackView;
+            }
+        }
+
+        @Override
+        protected boolean isPostProcessingDefault () {
+            return false;
+        }
+
+        @Override
+        protected Stage getMainStage () {
+            return guiStage;
+        }
+
+        @Override
+        public void render ( float delta){
+            batch.shaderFluctuation(delta);
+
+            if (speed != null) {
+                delta = delta * speed;
+            }
+            if (CoreEngine.isIDE())
+                //            checkDebugToggle();
+                if (DC_Game.game != null) {
+                    if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
+                        if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+                            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+                        } else {
+                            if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+                                CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
+                            }
+                            if (Gdx.input.isKeyPressed(Keys.TAB)) {
+                                DC_Game.game.getVisionMaster().refresh();
+                                GuiEventManager.trigger(UPDATE_GUI);
+                            }
+                        }
+                    }
+
+                }
+            super.render(delta);
+        }
+
+        @Override
+        protected void renderLoaderAndOverlays ( float delta){
+            setBlocked(checkBlocked());
+            super.renderLoaderAndOverlays(delta);
+        }
+
+        protected void checkShaderReset () {
+            if (batch.getShader() == DarkShader.getDarkShader()) {
+                batch.shaderReset();
+            }
+            if (guiStage.getBatch().getShader() == DarkShader.getDarkShader()
+                    || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+                    || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+            ) {
+                guiStage.getCustomSpriteBatch().shaderReset();
+            }
+        }
+
+        protected void checkShader () {
+
+            batch.setShader(null);
+//        guiStage .getCustomSpriteBatch().setShader(null);
+
+            if (batch.getShader() != DarkShader.getDarkShader())
+                if (isBlocked() || ExplorationMaster.isWaiting()) {
+                    bufferedShader = batch.getShader();
+                    batch.setFluctuatingShader(DarkShader.getInstance());
+                    guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
+//                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
+                }
+        }
+
+        public boolean isBlocked () {
+            return blocked;
+        }
+
+        private void setBlocked ( boolean blocked){
+            if (this.blocked == blocked)
+                return;
+            this.blocked = blocked;
+            if (blocked)
+                EUtils.hideTooltip();
+        }
+
+        public boolean checkBlocked () {
+            if (manualPanel != null)
+                if (manualPanel.isVisible())
+                    return true;
+            if (selectionPanel != null)
+                if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
+                    return true;
+            return guiStage.isBlocked();
+        }
+
+        @Override
+        public void resize ( int width, int height){
+            //     animationEffectStage.getViewport().update(width, height);
+
+            //        float aspectRatio = (float) width / (float) height;
+            //        cam = new OrthographicCamera(width * aspectRatio, height) ;
+
+            gridStage.getRoot().setSize(width, height);
+            //        guiStage.getRoot().setSize(width, height);
+            gridStage.getViewport().update(width, height);
+            //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
+            guiStage.getViewport().update(width, height);
+            //        getGuiStage().getGuiVisuals().resized();
+
+            //        BattleGuiStage.camera.viewportWidth=width;
+            //        BattleGuiStage.camera.viewportHeight=height;
+        }
+
+        public GridPanel getGridPanel () {
+            return gridPanel;
+        }
+
+        public BattleGuiStage getGuiStage () {
+            return (BattleGuiStage) guiStage;
+        }
+
+        public InputController getController () {
+            return controller;
+        }
+
+        public Stage getGridStage () {
+            return gridStage;
+        }
+
+        public Float getSpeed () {
+            return speed;
+        }
+
+        public void setSpeed (Float speed){
+            this.speed = speed;
+        }
+
+        public void centerCameraOn (BattleFieldObject hero){
+            centerCameraOn(hero, null);
+        }
+
+        public void centerCameraOn (BattleFieldObject hero, Boolean force){
+            if (!isCenterAlways())
+                if (!Bools.isTrue(force))
+                    if (centerCameraOnAlliesOnly)
+                        if (!hero.isMine())
+                            return;
+
+            Coordinates coordinatesActiveObj =
+                    hero.getCoordinates();
+            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
+            cameraPan(unitPosition, force);
+
+
+        }
+
+        public void setCameraTimer ( int intValue){
+            if (cameraTimer == null) {
+                return;
+            }
+            cameraTimer.setPeriod(intValue);
+        }
+
+        public ParticleManager getParticleManager () {
+            return particleManager;
+        }
+
+        @Override
+        protected boolean isTownInLoaderOnly () {
+            return true;
+        }
+
+        public GridCellContainer getStackView () {
+            return stackView;
+        }
+
+        public void setStackView (GridCellContainer stackView){
+            this.stackView = stackView;
+        }
     }
-}

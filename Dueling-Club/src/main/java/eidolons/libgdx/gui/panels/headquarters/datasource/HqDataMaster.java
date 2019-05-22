@@ -9,6 +9,7 @@ import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
@@ -124,9 +125,9 @@ public class HqDataMaster {
             if (newVal.isEmpty())
                 continue;
             main.system.auxiliary.log.LogMaster.log(1, model + " updates type with " +
-             sub + "==" + newVal);
+                    sub + "==" + newVal);
             model.getType().setProperty(sub, newVal.substring(0,
-             newVal.length() - 1));
+                    newVal.length() - 1));
         }
 
     }
@@ -144,7 +145,7 @@ public class HqDataMaster {
         Eidolons.onThisOrNonGdxThread(() -> {
             HqDataMaster master = getInstance(model.getHero());
             master.applyOperation(model,
-             operation, args);
+                    operation, args);
             model.modified(operation, args);
             master.reset();
         });
@@ -247,7 +248,7 @@ public class HqDataMaster {
     public static HqDataMaster getOrCreateInstance(Unit unit) {
         HqDataMaster dataMaster;
         if (HqPanel.getActiveInstance() == null
-         && TownPanel.getActiveInstance() == null)
+                && TownPanel.getActiveInstance() == null)
             dataMaster = HqDataMaster.createAndSaveInstance(unit);
         else
             dataMaster = HqDataMaster.getInstance(unit);
@@ -257,7 +258,7 @@ public class HqDataMaster {
     public void operation(HERO_OPERATION operation,
                           Object... args) {
         applyOperation(heroModel,
-         operation, args);
+                operation, args);
         heroModel.modified(operation, args);
         heroModel.reset();
     }
@@ -362,7 +363,7 @@ public class HqDataMaster {
                         if (!Eidolons.getTown().removeFromStash(item))
                             return;
                     }
-                     shop.sellItemTo(item, hero);
+                    shop.sellItemTo(item, hero);
 //                    hero.modifyParameter(PARAMS.GOLD, price); all gold is handled by ShopItemManager!
                     DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
                 } else {
@@ -384,11 +385,16 @@ public class HqDataMaster {
                 }
                 break;
             case DROP:
+                if (!DroppedItemManager.canDropItem(item)) {
+                    EUtils.showInfoText("Cannot drop this");
+                    return;
+                }
                 DC_HeroItemObj finalItem = item;
                 GuiEventManager.trigger(GuiEventType.CONFIRM,
-                new ImmutableTriple<String, Runnable, Runnable>("Drop " + item.getName() + "?"
-                        , ()->{}, ()->
-                        hero.dropItemFromInventory(finalItem))
+                        new ImmutableTriple<String, Runnable, Runnable>("Drop " + item.getName() + "?"
+                                , () -> {
+                        }, () ->
+                                hero.dropItemFromInventory(finalItem))
 
                 );
 //                boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
@@ -409,6 +415,7 @@ public class HqDataMaster {
                 hero.addItemToInventory(item, true);
                 break;
             case EQUIP:
+            case EQUIP_RESERVE:
                 hero.removeFromInventory(item);
                 if (item instanceof DC_JewelryObj) {
                     hero.addJewelryItem((DC_JewelryObj) item);
@@ -432,7 +439,7 @@ public class HqDataMaster {
         switch (operation) {
             case ADD_PARAMETER:
                 hero.modifyParameter((PARAMETER) args[0],
-                 Integer.valueOf(args[1].toString()));
+                        Integer.valueOf(args[1].toString()));
                 break;
 
             case SET_PARAMETER:
@@ -446,7 +453,7 @@ public class HqDataMaster {
                 }
                 for (PARAMETER item : DC_ContentValsManager.DYNAMIC_PARAMETERS) {
                     hero.setParameter(DC_ContentValsManager.getPercentageParam(item),
-                     DC_MathManager.PERCENTAGE);
+                            DC_MathManager.PERCENTAGE);
                 }
                 hero.setImage(imagePath);
                 hero.setGroup("Custom", true);
@@ -463,6 +470,7 @@ public class HqDataMaster {
             case UNEQUIP:
             case UNEQUIP_QUICK_SLOT:
             case EQUIP:
+            case EQUIP_RESERVE:
             case EQUIP_QUICK_SLOT:
             case STASH:
             case UNSTASH:
@@ -476,18 +484,18 @@ public class HqDataMaster {
                 break;
             case NEW_MASTERY:
                 hero.getType().addProperty(PROPS.UNLOCKED_MASTERIES,
-                 ((PARAMETER) args[0]).getName(), true);
+                        ((PARAMETER) args[0]).getName(), true);
                 hero.addParam((PARAMETER) args[0], "1", true);
                 break;
             case NEW_CLASS:
-                SkillMaster.newClass(hero, (ObjType) args[0],(Integer) args[1],(Integer) args[2]);
+                SkillMaster.newClass(hero, (ObjType) args[0], (Integer) args[1], (Integer) args[2]);
                 break;
             case NEW_PERK:
-                SkillMaster.newPerk(hero, (ObjType) args[0],(Integer) args[1],(Integer) args[2]);
+                SkillMaster.newPerk(hero, (ObjType) args[0], (Integer) args[1], (Integer) args[2]);
                 break;
             case NEW_SKILL:
                 SkillMaster.newSkill(hero, (ObjType) args[0]
-                 ,(Integer) args[1],(Integer) args[2]);
+                        , (Integer) args[1], (Integer) args[2]);
                 break;
             case SKILL_RANK:
                 break;

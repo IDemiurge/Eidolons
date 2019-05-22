@@ -16,6 +16,7 @@ import eidolons.libgdx.anims.FloatingTextLayer;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
@@ -30,7 +31,6 @@ import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.graphics.RESOLUTION;
@@ -252,11 +252,6 @@ public class OptionsMaster {
                     case MUSIC_OFF:
                         MusicMaster.resetSwitcher();
                         break;
-                    case MUSIC_VARIANT:
-                        master.setVariant(
-                                new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
-                                        soundOptions.getValue(key)));
-                        break;
                 }
             } else {
                 Integer integer = Integer.valueOf(value.toLowerCase());
@@ -353,6 +348,9 @@ public class OptionsMaster {
                 break;
             case ADDITIVE_LIGHT:
                 LightLayer.setAdditive(bool);
+                break;
+            case PERFORMANCE_BOOST:
+                Fluctuating.fluctuatingAlphaPeriodGlobal=(Integer.valueOf(value))/10;
                 break;
             case BRIGHTNESS:
                 GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));

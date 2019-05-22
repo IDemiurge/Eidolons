@@ -21,11 +21,11 @@ import java.util.List;
 
 public class ChainedStage<T extends Scene> extends Stage {
     private boolean done;
+    private Runnable onDoneCallback;
+    private DialogueHandler dialogueHandler;
     private Container  current;
     private Iterator<T> iterator;
     private List<T> newList = null;
-    private Runnable onDoneCallback;
-    private DialogueHandler dialogueHandler;
     private Matrix4 idt = new Matrix4();
     private Matrix4 shear = new Matrix4();
     private OrthographicCamera cam;
@@ -94,20 +94,21 @@ public class ChainedStage<T extends Scene> extends Stage {
 
     @Override
     public void draw() {
-        final Matrix4 combined = getCamera().combined.cpy();
-        getCamera().update();
-
-        final Group root = getRoot();
-
-        if (!root.isVisible()) return;
-
-        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-
-        Batch batch = this.getBatch();
-        batch.setProjectionMatrix(combined);
-        batch.begin();
-        root.draw(batch, 1);
-        batch.end();
+        super.draw();
+//        final Matrix4 combined = getCamera().combined.cpy();
+//        getCamera().update();
+//
+//        final Group root = getRoot();
+//
+//        if (!root.isVisible()) return;
+//
+//        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+//
+//        Batch batch = this.getBatch();
+//        batch.setProjectionMatrix(combined);
+//        batch.begin();
+//        root.draw(batch, 1);
+//        batch.end();
     }
 
     //    @Override

@@ -14,10 +14,12 @@ import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.std.EventAnimCreator;
+import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
 import eidolons.libgdx.bf.boss.sprite.BossView;
 import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.controls.GlobalController;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -335,6 +337,10 @@ public class AnimMaster extends Group {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
+        });
+        GuiEventManager.bind(GuiEventType.CUSTOM_ANIMATION, p -> {
+            CustomSpriteAnim anim = (CustomSpriteAnim) p.get();
+            anim.startAsSingleAnim();
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
                     if (!isOn()) {

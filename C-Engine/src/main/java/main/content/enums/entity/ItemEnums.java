@@ -64,9 +64,20 @@ public class ItemEnums {
     }
 
     public enum ITEM_SLOT {
-        MAIN_HAND(G_PROPS.MAIN_HAND_ITEM),
+        MAIN_HAND(G_PROPS.MAIN_HAND_ITEM){
+            public ITEM_SLOT getReserve() {
+                return RESERVE_MAIN_HAND;
+            }
+        },
         ARMOR(G_PROPS.ARMOR_ITEM),
-        OFF_HAND(G_PROPS.OFF_HAND_ITEM)
+        OFF_HAND(G_PROPS.OFF_HAND_ITEM){
+            public ITEM_SLOT getReserve() {
+                return RESERVE_OFF_HAND;
+            }
+        },
+
+        RESERVE_MAIN_HAND(G_PROPS.RESERVE_MAIN_HAND_ITEM),
+        RESERVE_OFF_HAND(G_PROPS.RESERVE_OFF_HAND_ITEM),
 
         // NECKLACE(G_PROPS.MAIN_HAND_ITEM),
         // RING_1(G_PROPS.ARMOR_ITEM),
@@ -81,6 +92,10 @@ public class ItemEnums {
 
         public PROPERTY getProp() {
             return prop;
+        }
+
+        public ITEM_SLOT getReserve() {
+            return null;
         }
     }
 

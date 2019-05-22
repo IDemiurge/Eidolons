@@ -148,7 +148,6 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     }
 
     protected void initSize() {
-        setFixedMinSize(true);
     }
 
     public void setBorder(TextureRegion region) {

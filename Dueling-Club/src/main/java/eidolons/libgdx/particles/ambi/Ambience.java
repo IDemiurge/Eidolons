@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.utils.GdxTimeMaster;
 import main.system.auxiliary.RandomWizard;
 
 /**
@@ -51,6 +52,11 @@ public class Ambience extends EmitterActor {
         if (acceleration == null) {
             return;
         }
+        setPosition(getX() + velocity.x * delta, getY() + velocity.y * delta);
+
+        if (!GdxTimeMaster.isPeriodNow(5)) {
+            return;
+        }
         float angle = acceleration.angle();
         float dst = originPos.dst(new Vector2(getX(), getY()));
         if (dst > moveRadius) {
@@ -60,7 +66,6 @@ public class Ambience extends EmitterActor {
         velocity.add(acceleration);
         velocity = velocity.limit(3);
 
-        setPosition(getX() + velocity.x * delta, getY() + velocity.y * delta);
     }
 
     protected boolean isMoveOn() {

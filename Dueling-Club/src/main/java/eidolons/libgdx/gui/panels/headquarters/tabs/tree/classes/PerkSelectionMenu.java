@@ -13,7 +13,12 @@ import main.system.GuiEventType;
 public class PerkSelectionMenu extends SlotSelectionRadialMenu {
 
     protected Vector2 getBackgroundPosition() {
-        return super.getBackgroundPosition();
+        if (closeButton != null)
+            return  //parentToLocalCoordinates
+                    (  localToStageCoordinates(
+                            new Vector2(closeButton.getX()+20, closeButton.getY() )));
+        return parentToLocalCoordinates(  localToStageCoordinates(
+                new Vector2(getX()+20, getY())));
     }
     @Override
     protected int getIconSize() {

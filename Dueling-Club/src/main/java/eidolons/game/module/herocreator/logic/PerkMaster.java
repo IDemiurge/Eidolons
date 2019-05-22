@@ -17,6 +17,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/1/2018.
@@ -27,6 +28,12 @@ public class PerkMaster {
     public static List<ObjType> getAvailablePerks(Unit hero, int tier,
                                                   HeroClass c1, HeroClass c2) {
         List<ObjType> list = new ArrayList<>();
+
+        if (HeroClassMaster.isDataAnOpenSlot(c1))
+            return list;
+        if (HeroClassMaster.isDataAnOpenSlot(c2))
+            return list;
+
         CLASS_PERK_GROUP group1 =
          new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
           c1.getProperty(PROPS.CLASS_PERK_GROUP));
@@ -57,12 +64,28 @@ public class PerkMaster {
         }
         if (c1.getType() == c2.getType()) {
             //addSpecial
+            List<ObjType> custom = getCustomPerks(c1);
+            list.addAll(custom);
         }
 
         return list;
     }
 
+    private static List<ObjType> getCustomPerks(HeroClass c1) {
+        List<ObjType> list = DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
+                t -> t.getProperty(PROPS.PERK_FOR_CLASSES)
+                        .toLowerCase(). contains(c1.toString().toLowerCase())
+        ).collect(Collectors.toList());
+        return list;
+    }
+
     private static boolean isPerkProhibited(ObjType type, Unit hero) {
+        for (Perk perk : hero.getPerks()) {
+            if (perk.getType().equals(type)) {
+                return true;
+            }
+
+        }
         return false;
     }
 

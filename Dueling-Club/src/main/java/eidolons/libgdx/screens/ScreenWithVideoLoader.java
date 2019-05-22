@@ -55,6 +55,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         getOverlayStage().addActor(underText);
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
+        GuiEventManager.bind(BRIEFING_START, p -> underText.setVisible(false));
+        GuiEventManager.bind(BRIEFING_FINISHED, p -> underText.setVisible(true));
     }
 
     public static void setVideoEnabled(Boolean videoEnabled) {
@@ -62,6 +64,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     public static Boolean isVideoEnabled() {
+        if (CoreEngine.isIggDemo()){
+            return false;
+        }
         if (videoEnabled == null)
             videoEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
         return videoEnabled;
@@ -268,7 +273,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     protected void renderLoader(float delta) {
-
         super.renderLoader(delta);
 
         if (video != null) {

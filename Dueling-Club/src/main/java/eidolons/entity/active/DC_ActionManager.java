@@ -72,6 +72,7 @@ public class DC_ActionManager implements ActionManager {
     public static final String MOVE_BACK = "Move Back";
     public static final String FLEE = "Flee";
     public static final String SEARCH_MODE = "Search Mode";
+    public static final String TOGGLE_WEAPON_SET = "Toggle Weapon Set";
     public static final String THROW_MAIN = "Throw Main Hand Weapon";
     public static final String THROW_OFFHAND = "Throw Off Hand Weapon";
     public static final String TOSS_ITEM = "Toss Item";
@@ -698,6 +699,12 @@ public class DC_ActionManager implements ActionManager {
             }
         }
 
+        if (RuleKeeper.checkFeature(FEATURE.TOGGLE_WEAPON_SET)) {
+            if (unit.getReserveOffhandWeapon()!=null ||
+                    unit.getReserveMainWeapon()!=null) {
+                actives.add(getOrCreateAction(TOGGLE_WEAPON_SET, unit));
+            }
+        }
         if (RuleKeeper.checkFeature(FEATURE.WATCH)) {
             actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Watch.name(), unit));
         }

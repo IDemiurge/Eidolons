@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.swing.renderers.SlotItem;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -68,7 +69,19 @@ public class DroppedItemManager {
         }
     }
 
+    public static boolean canDropItem(DC_HeroItemObj item) {
+        if (item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys")) {
+            return false;
+        }
+        return true;
+    }
+
     private boolean checkLootDrops(DC_HeroItemObj item, Unit unit) {
+
+        if (item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys")) {
+            return true;
+        }
+
         if (unit.isMine()) {
             //check if not original!
             if (item instanceof DC_HeroSlotItem)

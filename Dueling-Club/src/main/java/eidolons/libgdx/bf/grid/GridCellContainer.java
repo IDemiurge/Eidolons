@@ -302,13 +302,14 @@ public class GridCellContainer extends GridCell {
 
     public void resetZIndices() {
         List<GenericGridView> views = getUnitViewsVisible();
-
-        List<GenericGridView> filtered = views.stream().filter(v -> v.getUserObject() instanceof Structure).collect(Collectors.toList());
-
         n = 0;
-        GenericGridView    hovered =    resetZIndices(filtered, false);
-        filtered = views.stream().filter(v -> v.getUserObject() instanceof Unit).collect(Collectors.toList());
-        hovered =   resetZIndices(filtered, true);
+        GenericGridView    hovered =    resetZIndices(views, false);
+        if (hovered != null) {
+            GenericGridView unitHovered = resetZIndices(views, true);
+            if (unitHovered != null)
+                hovered= unitHovered;
+        } else
+            hovered =   resetZIndices(views, true);
         if (hovered != null)
             hovered.setZIndex(Integer.MAX_VALUE);
         if (getTopUnitView() != null)
@@ -321,6 +322,9 @@ public class GridCellContainer extends GridCell {
         GenericGridView hovered = null;
 
         for (GenericGridView actor : filtered) {
+            if (units != actor.getUserObject() instanceof Unit) {
+                continue;
+            }
             if (!actor.isCellBackground())
                 n++;
             if (!actor.isVisible())

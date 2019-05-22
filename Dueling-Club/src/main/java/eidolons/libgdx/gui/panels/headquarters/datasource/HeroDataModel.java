@@ -151,7 +151,7 @@ public class HeroDataModel extends Unit {
 
         APPLY_TYPE,
 
-        BUY, SELL, UNSTASH, STASH,
+        BUY, SELL, UNSTASH, STASH, EQUIP_RESERVE,
 
 
 

@@ -17,7 +17,12 @@ public class ClassSelectionMenu extends SlotSelectionRadialMenu {
     }
 
     protected Vector2 getBackgroundPosition() {
-        return super.getBackgroundPosition();
+        if (closeButton != null)
+            return
+                    (  localToStageCoordinates(
+                            new Vector2(closeButton.getX()+20 , closeButton.getY()  )));
+        return parentToLocalCoordinates(  localToStageCoordinates(
+                new Vector2(getX()+20, getY())));
     }
 
     @Override

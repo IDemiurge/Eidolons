@@ -17,7 +17,7 @@ import java.util.List;
 public class WeaponTooltip extends ValueTooltip {
 
     public WeaponTooltip() {
-        setWidth(400);
+//        setWidth(400);
     }
 
     public WeaponTooltip(DC_WeaponObj weapon) {

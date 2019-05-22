@@ -168,7 +168,7 @@ public class RuleKeeper implements Controller {
             case BASIC:
                 switch (feature) {
 
-                    case THROW_WEAPON:
+//                    case THROW_WEAPON:
                     case ORDERS:
                     case WATCH:
                     case GUARD_MODE:
@@ -361,7 +361,7 @@ public class RuleKeeper implements Controller {
     public enum FEATURE {
         USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP,
         ENTER, DUAL_ATTACKS,
-        VISIBILITY, ORDERS, GUARD_MODE, THROW_WEAPON;
+        VISIBILITY, ORDERS, GUARD_MODE, THROW_WEAPON, TOGGLE_WEAPON_SET;
         int featureLevel;
     }
 

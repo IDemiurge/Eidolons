@@ -60,6 +60,7 @@ public class ValueTooltip extends Tooltip {
         List<ValueContainer> values = (List<ValueContainer>) getUserObject();
 
         values.forEach(el -> {
+//            el.setFixedMinSize(true);
             if (el.getValueText() != null)
                 el.setValueText(TextWrapper.processText((int) (getMaxWidth()*0.86f), el.getValueText(), el.getValueLabel().getStyle()));
             if (el.getNameLabel() != null)

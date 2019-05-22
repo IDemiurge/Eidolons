@@ -494,4 +494,8 @@ public class PathFinder {
         return getEnginePath() + PathFinder.getTextPath()
                 + locale + "/dialogue/";
     }
+
+    public static String getHqPath() {
+        return "ui/components/hq/";
+    }
 }

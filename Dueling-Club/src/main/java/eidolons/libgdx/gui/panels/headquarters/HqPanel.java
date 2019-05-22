@@ -168,12 +168,13 @@ public class HqPanel extends TablePanel implements Blocking {
             return;
         }
         super.act(delta);
+
     }
 
     private void addElements() {
         left();
-        addActor(partyMembers);//.left().colspan(3);
-        partyMembers.setPosition(20, getHeight() - partyMembers.getHeight());
+//        addActor(partyMembers);//TODO .left().colspan(3);
+//        partyMembers.setPosition(20, getHeight() - partyMembers.getHeight());
         row();
 
         add(heroViewPanel).left().padRight(20).width(565);

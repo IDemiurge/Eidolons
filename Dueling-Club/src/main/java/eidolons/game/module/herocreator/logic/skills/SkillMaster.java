@@ -8,6 +8,7 @@ import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.TextureCache;
@@ -29,6 +30,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,14 @@ import static main.content.enums.entity.SkillEnums.MASTERY.*;
 public class SkillMaster {
     public static final String MASTERY_RANKS = "MASTERY_RANKS_";
     public static final String DUMMY_SKILL = "Skill Slot";
+    private static DC_FeatObj dummy;
+
+    public static final DC_FeatObj getEmptySkill() {
+        if (dummy == null) {
+            dummy = new DC_FeatObj(new ObjType(SkillMaster.DUMMY_SKILL), new Ref(Eidolons.getMainHero()));
+        }
+        return dummy;
+    }
 
     public static void masteryIncreased(Unit hero, PARAMETER mastery) {
         //do we assume that it is increased by 1 only? we can perhaps
@@ -79,7 +89,7 @@ public class SkillMaster {
         Map<PARAMS, Integer> sortedMap = map;
         while (true) {
             sortedMap = new MapMaster<PARAMS, Integer>().getSortedMap(sortedMap,
-             param -> map.get(param));
+                    param -> map.get(param));
             PARAMS top = sortedMap.keySet().iterator().next();
             if (map.get(top) < 5)
                 break;
@@ -96,17 +106,19 @@ public class SkillMaster {
         List<DC_FeatObj> list = new ArrayList<>();
         String prop = hero.getProperty(getTierProp(PROPS.SKILLS, tier));
 //        if (isSkillSlotsMixed()){
-            prop = hero.getProperty( PROPS.SKILLS );
+        prop = hero.getProperty(PROPS.SKILLS);
 //        }
-        int i =0;
+        int i = 0;
         ListMaster.fillWithNullElements(list, SkillMaster.getSlotsForTier(tier));
         for (String substring : ContainerUtils.openContainer(prop)) {
             String[] parts = substring.split("=");
             String name = parts.length > 1 ? parts[1] : substring;
             DC_FeatObj skill = hero.getFeat(DataManager.getType(name, DC_TYPE.SKILLS));
-            if (skill.getIntParam("circle")!=tier)
+            if (skill == null)
                 continue;
-            int slot= parts.length>1?  Integer.valueOf(parts[0]) : i++;
+            if (skill.getIntParam("circle") != tier)
+                continue;
+            int slot = parts.length > 1 ? Integer.valueOf(parts[0]) : i++;
             list.add(slot, skill);
         }
         return list;
@@ -121,7 +133,7 @@ public class SkillMaster {
         List<ObjType> list = new ArrayList<>(DataManager.getTypes(DC_TYPE.SKILLS));
         //check if branching is OK
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier
-         || hero.getGame().getRequirementsManager().check(hero, type) != null
+                || hero.getGame().getRequirementsManager().check(hero, type) != null
         );
 
         return list;
@@ -131,9 +143,9 @@ public class SkillMaster {
                                              MASTERY mastery1, MASTERY mastery2) {
         List<ObjType> list = new ArrayList<>();
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
-         StringMaster.getWellFormattedString(mastery1.toString())));
+                StringMaster.getWellFormattedString(mastery1.toString())));
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
-         StringMaster.getWellFormattedString(mastery2.toString())));
+                StringMaster.getWellFormattedString(mastery2.toString())));
 
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier);
 
@@ -160,8 +172,9 @@ public class SkillMaster {
 
     private static PROPERTY getTierProp(PROPERTY prop, int tier) {
         tier++;
-        return ContentValsManager.getPROP(prop.name()+"_TIER_" + tier);
+        return ContentValsManager.getPROP(prop.name() + "_TIER_" + tier);
     }
+
     public static DC_FeatObj createFeatObj(ObjType featType, Ref ref) {
         switch ((DC_TYPE) featType.getOBJ_TYPE_ENUM()) {
             case PERKS:
@@ -192,12 +205,12 @@ public class SkillMaster {
         //        arg.get(PARAMS.CIRCLE);
         PROPERTY tierProp = getTierProp(prop, tier);
 
-        hero.addProperty(tierProp,getSlotString(slot, arg.getName()), false);
+        hero.addProperty(tierProp, getSlotString(slot, arg.getName()), false);
         hero.addProperty(prop, arg.getName(), false);
 
         hero.getType().addProperty(prop, arg.getName(), false);
         hero.modifyParameter(PARAMS.XP,
-         -HeroManager.getIntCost(arg, hero));
+                -HeroManager.getIntCost(arg, hero));
         DequeImpl<? extends DC_FeatObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
@@ -209,14 +222,14 @@ public class SkillMaster {
     }
 
     private static String getSlotString(int slot, String name) {
-        return slot+"=" + name;
+        return slot + "=" + name;
     }
 
 
     public static List<MASTERY> getUnlockedMasteries_(Entity entity) {
         List<PARAMETER> list = getUnlockedMasteries(entity);
         return list.stream().map(parameter -> new EnumMaster<MASTERY>()
-         .retrieveEnumConst(MASTERY.class, parameter.getName())).collect(Collectors.toList());
+                .retrieveEnumConst(MASTERY.class, parameter.getName())).collect(Collectors.toList());
     }
 
     public static List<PARAMETER> getUnlockedMasteries(Entity entity) {
@@ -237,97 +250,97 @@ public class SkillMaster {
         switch (group) {
             case BODY_MIND:
                 return new MASTERY[]{
-                 ATHLETICS_MASTERY,
-                 MOBILITY_MASTERY,
-                 MEDITATION_MASTERY,
-                 DISCIPLINE_MASTERY,
+                        ATHLETICS_MASTERY,
+                        MOBILITY_MASTERY,
+                        MEDITATION_MASTERY,
+                        DISCIPLINE_MASTERY,
 
                 };
             case SPELLCASTING:
                 return new MASTERY[]{
-                 SPELLCRAFT_MASTERY,
-                 WIZARDRY_MASTERY,
-                 DIVINATION_MASTERY,
+                        SPELLCRAFT_MASTERY,
+                        WIZARDRY_MASTERY,
+                        DIVINATION_MASTERY,
 
                 };
             case WEAPONS:
                 return new MASTERY[]{
-                 BLADE_MASTERY,
-                 AXE_MASTERY,
-                 BLUNT_MASTERY,
-                 POLEARM_MASTERY,
+                        BLADE_MASTERY,
+                        AXE_MASTERY,
+                        BLUNT_MASTERY,
+                        POLEARM_MASTERY,
                 };
             case OFFENSE:
                 return new MASTERY[]{
-                 TWO_HANDED_MASTERY,
-                 DUAL_WIELDING_MASTERY,
-                 MARKSMANSHIP_MASTERY,
-                 UNARMED_MASTERY,
+                        TWO_HANDED_MASTERY,
+                        DUAL_WIELDING_MASTERY,
+                        MARKSMANSHIP_MASTERY,
+                        UNARMED_MASTERY,
                 };
             case DEFENSE:
                 return new MASTERY[]{
-                 DEFENSE_MASTERY,
-                 SHIELD_MASTERY,
-                 STEALTH_MASTERY,
-                 DETECTION_MASTERY,
+                        DEFENSE_MASTERY,
+                        SHIELD_MASTERY,
+                        STEALTH_MASTERY,
+                        DETECTION_MASTERY,
 
                 };
             case COMMAND:
                 return new MASTERY[]{
-                 LEADERSHIP_MASTERY,
-                 TACTICS_MASTERY,
-                 WARCRY_MASTERY
+                        LEADERSHIP_MASTERY,
+                        TACTICS_MASTERY,
+                        WARCRY_MASTERY
                 };
             case CRAFT:
                 return new MASTERY[]{
-                 ARMORER_MASTERY,
-                 ITEM_MASTERY,
+                        ARMORER_MASTERY,
+                        ITEM_MASTERY,
 
                 };
             case PRIME_ARTS:
                 return new MASTERY[]{
-                 FIRE_MASTERY,
-                 AIR_MASTERY,
-                 WATER_MASTERY,
+                        FIRE_MASTERY,
+                        AIR_MASTERY,
+                        WATER_MASTERY,
                 };
             case ARCANE_ARTS:
                 return new MASTERY[]{
-                 CONJURATION_MASTERY,
-                 SORCERY_MASTERY,
-                 ENCHANTMENT_MASTERY,
+                        CONJURATION_MASTERY,
+                        SORCERY_MASTERY,
+                        ENCHANTMENT_MASTERY,
 
                 };
             case LIFE_ARTS:
                 return new MASTERY[]{
-                 EARTH_MASTERY,
-                 SAVAGE_MASTERY,
-                 SYLVAN_MASTERY,
+                        EARTH_MASTERY,
+                        SAVAGE_MASTERY,
+                        SYLVAN_MASTERY,
                 };
             case DARK_ARTS:
                 return new MASTERY[]{
-                 PSYCHIC_MASTERY,
-                 SHADOW_MASTERY,
-                 WITCHERY_MASTERY,
+                        PSYCHIC_MASTERY,
+                        SHADOW_MASTERY,
+                        WITCHERY_MASTERY,
 
                 };
             case CHAOS_ARTS:
                 return new MASTERY[]{
-                 WARP_MASTERY,
-                 DESTRUCTION_MASTERY,
-                 DEMONOLOGY_MASTERY,
+                        WARP_MASTERY,
+                        DESTRUCTION_MASTERY,
+                        DEMONOLOGY_MASTERY,
 
                 };
             case HOLY_ARTS:
                 return new MASTERY[]{
-                 REDEMPTION_MASTERY,
-                 BENEDICTION_MASTERY,
-                 CELESTIAL_MASTERY,
+                        REDEMPTION_MASTERY,
+                        BENEDICTION_MASTERY,
+                        CELESTIAL_MASTERY,
                 };
             case DEATH_ARTS:
                 return new MASTERY[]{
-                 AFFLICTION_MASTERY,
-                 BLOOD_MAGIC_MASTERY,
-                 NECROMANCY_MASTERY,
+                        AFFLICTION_MASTERY,
+                        BLOOD_MAGIC_MASTERY,
+                        NECROMANCY_MASTERY,
                 };
         }
         return null;
@@ -335,7 +348,6 @@ public class SkillMaster {
 
     public static boolean isMasteryAvailable(PARAMETER p, Unit hero) {
         //        ValuePageManager.getGenericValuesForInfoPages()
-
 
 
         return true;
@@ -347,5 +359,12 @@ public class SkillMaster {
             return path;
         GdxImageMaster.size(left.getImagePath(), 64, true);
         return GdxImageMaster.getSizedImagePath(left.getImagePath(), 64);
+    }
+
+    public static boolean isDataAnOpenSlot(Triple<DC_FeatObj, MASTERY, MASTERY> data) {
+        if (data == null) {
+            return false;
+        }
+        return data.getLeft().getName().equalsIgnoreCase(SkillMaster.DUMMY_SKILL);
     }
 }

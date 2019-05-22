@@ -2,11 +2,15 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.Spell;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.particles.spell.SpellVfx;
+import eidolons.libgdx.particles.spell.SpellVfxPool;
+import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
@@ -20,6 +24,7 @@ import java.util.Set;
  */
 public class SpellAnim extends ActionAnim {
 
+
     static {
         SPELL_ANIMS.BLAST.setRemoveBaseEmitters(false);
     }
@@ -30,6 +35,61 @@ public class SpellAnim extends ActionAnim {
         super(active, params);
         this.template = template;
     }
+
+    @Override
+    protected void initEmitters() {
+        if (emitterList == null) {
+            String vfx=data.getValue(AnimData.ANIM_VALUES.PARTICLE_EFFECTS);
+            if (vfx.isEmpty() || isVfxOverridden(getActive(), getPart())) {
+                vfx = //SpellAnimMaster.
+                        getOverriddenVfx(getActive(), getPart());
+            }
+                setEmitterList(SpellVfxPool.getEmitters(vfx));
+        }
+    }
+
+    public static final  String getOverriddenVfx(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+        SpellEnums.SPELL_GROUP group =null ;
+        if (active instanceof Spell) {
+            group = ((Spell) active).getSpellGroup();
+
+        }
+        //could be a bit randomized too!
+        // enum for vfx after all?
+        switch (active.getName()) {
+            case "Burst of Rage":
+            case "Shadow Fury":
+                switch (part) {
+                    case PRECAST:
+//                        return getCircleVfx(group);
+                    case MISSILE:
+                        return "";
+                }
+
+        }
+if (active.getName().contains("Shadow Fury")){
+    return "advanced/missile cone 3";
+}
+
+        /**
+         * advanced/missile cone
+         * advanced/missile cone 2
+         * advanced/missile cone 3
+         * unit/
+         *
+         *
+         createEmitter("unit/black soul bleed 3", 64, 64);
+         createEmitter("unit/chaotic dark", 32, 32);
+         createEmitter("unit/black soul bleed 3", -64, 64);
+         createEmitter("unit/chaotic dark", -32, 32);
+         */
+        return null ;
+    }
+
+    private boolean isVfxOverridden(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+        return getOverriddenVfx(active,  part) != null;
+    }
+
 
     @Override
     protected void initDuration() {
@@ -43,7 +103,8 @@ public class SpellAnim extends ActionAnim {
             e.setSpeed(AnimMaster.getAnimationSpeedFactor());
         }
         }
-        setDuration(max);
+        setDuration(
+                Math.min(DEFAULT_MAX_ANIM_DURATION, max));
     }
 
     @Override

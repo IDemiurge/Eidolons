@@ -50,14 +50,14 @@ public class HqParamPanel extends HqElement{
 
 
             };
-            container.getValueContainer().align(Align.center);
+            container.getValueContainer().align(Align.left);
             container.overrideImageSize(32,32);
 //            container.setSize(GDX.size(100), GDX.size(64));
             container.setStyle(StyleHolder.getHqLabelStyle(18));
             container.addListener(new ValueTooltip(sub.getName()).getController());
 
             containers.add(container);
-            add(container).uniform();
+            add(container).uniform().center();
 //            group.addActor(container);
         }
     }

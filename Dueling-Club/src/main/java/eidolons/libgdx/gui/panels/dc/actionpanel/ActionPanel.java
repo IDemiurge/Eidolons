@@ -166,7 +166,9 @@ public class ActionPanel extends GroupX {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
             // dirty flag?
-
+            if (hero.isDead()) {
+                return;
+            }
             mainHand.setUserObject(new ImmutablePair<>(
                     new WeaponDataSource(hero.getActiveWeapon(false)),
                     new WeaponDataSource(hero.getNaturalWeapon())

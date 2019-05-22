@@ -113,7 +113,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.ITEM_RARITY.name(),
      PROPS.WEAPON_ATTACKS.name(),
      G_PROPS.UNIT_GROUP.name(), G_PROPS.CUSTOM_HERO_GROUP.name(),
-     PROPS.BF_OBJ_MATERIAL.name(), PROPS.BF_OBJECT_SIZE.name(), PROPS.LINK_VARIANT.name(),
+     PROPS.BF_OBJ_MATERIAL.name(), PROPS.BF_OBJECT_SIZE.name(),
      G_PROPS.GAME_VERSION.name(), PROPS.SUBDUNGEON_TYPE.name(),
      G_PROPS.DUNGEON_SUBFOLDER.name(), G_PROPS.ENCOUNTER_SUBGROUP.name(),
      MACRO_PROPS.SHOP_TYPE.name(), MACRO_PROPS.SHOP_LEVEL.name(),

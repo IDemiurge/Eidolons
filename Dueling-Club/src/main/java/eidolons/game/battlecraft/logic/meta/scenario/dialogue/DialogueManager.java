@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -30,12 +31,18 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 //            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
 //        });
         GuiEventManager.bind(INIT_DIALOG, obj -> {
+            if (CoreEngine.isActiveTestMode()){
+                if (!CoreEngine.isDialogueTest()){
+                    return;
+                }
+            }
             Object key = obj.get();
             GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
                     key.toString());
             List<Scene> list = SceneFactory.getScenesLinear(dialogue);
 
-            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
+            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,
+                    new DialogueHandler(dialogue, getGame(), list));
         });
     }
 

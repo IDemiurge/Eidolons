@@ -3,97 +3,93 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.panels.ScrollPanel;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.InnerScrollContainer;
+import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
-import eidolons.system.options.GameplayOptions;
-import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.graphics.FontMaster.FONT;
 
 /**
  * Created by JustMe on 11/16/2018.
  */
-public class DialogueScroll extends ScrollTextWrapper{
+public class DialogueScroll extends TablePanelX {
+
+    ScrollPane scrollPane;
+    private TablePanelX<Actor> inner;
     LabelStyle currentStyle;
 
     public DialogueScroll() {
-        super(1000, 500);
+        init();
     }
 
+    public void init() {
+        setSize(1200, 500);
+
+        inner= (new TablePanelX());
+        inner.setFillParent(true);
+        inner.setLayoutEnabled(true);
+        inner.pack();
+//        inner.setFixedMinSize(true);
+        inner.setFixedSize(true);
+        inner.setWidth(1200);
+        inner. setBackground(NinePatchFactory.getHqDrawable());
+//        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
+
+        InnerScrollContainer<Actor> innerScrollContainer = new InnerScrollContainer<>();
+        innerScrollContainer.setActor(inner);
+        innerScrollContainer.setX(0);
+        innerScrollContainer.setY(0);
+
+        add(scrollPane = new ScrollPane(innerScrollContainer));
+        scrollPane.setStyle(StyleHolder.getScrollStyle());
+        scrollPane.setClamp(true);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(true);
+        setFixedMinSize(true);
+        scrollPane.setFillParent(true);
+        scrollPane.setFlingTime(2);
+        scrollPane.setVariableSizeKnobs(false);
+        scrollPane.setScrollY(-500);
+//        this.setTouchable(Touchable.enabled);
+//        setClip(true);
+
+    }
 
     @Override
-    protected float getDefaultHeight() {
-        return  (500);
+    protected Drawable getDefaultBackground() {
+        return new NinePatchDrawable(NinePatchFactory.getLightDecorPanelDrawable());
     }
 
-    @Override
-    protected float getDefaultWidth() {
-        return  (1000);
-    }
-    @Override
-    protected Drawable getNinePatch() {
-        return super.getNinePatch();
-    }
-
-    @Override
-    protected TextBuilder getTextBuilder() {
-        return super.getTextBuilder();
-    }
 
     public void append(String message, String actorName, String actorImage) {
-    //actually, we'll need to append imgs too, eh?
+        //actually, we'll need to append imgs too, eh?
 
-        DialogueMessage dialogueMessage =new DialogueMessage(message, actorName, actorImage,
-         FONT.MAGIC, getDefaultWidth());
+        DialogueMessage dialogueMessage = new DialogueMessage(message, actorName, actorImage,
+                FONT.MAGIC, getWidth()*0.85f);
 
-        scrollPanel.addElement(dialogueMessage);
+        inner.add(dialogueMessage).center();
+        inner.row();
+//        inner.getRows()
+        scrollPane.setScrollY(inner.getPrefHeight());
+//        getStage().setScrollFocus(scrollPane);
     }
 
 
-    protected ScrollPanel<DialogueMessage> createScrollPanel() {
-        return new TextScroll() {
-
-            @Override
-            protected void initAlignment() {
-                left().bottom();
-            }
-
-            @Override
-            protected void pad(ScrollPanel scrollPanel) {
-                padScroll(scrollPanel);
-            }
-
-            @Override
-            protected boolean isAlwaysScrolled() {
-                return isScrolledAlways();
-            }
-
-            @Override
-            public int getDefaultOffsetY() {
-                return 0;
-            }
-        };
-    }
-
-    @Override
-    protected boolean isScrolledAlways() {
-        return !super.isScrolledAlways();
-    }
-
-    @Override
     protected int getFontSize() {
         return 19;
     }
 
-    @Override
     protected FONT getFontStyle() {
         return FONT.MAIN;
     }
@@ -101,16 +97,6 @@ public class DialogueScroll extends ScrollTextWrapper{
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if (Gdx.input.isKeyPressed(Input.Keys.TAB)) {
-            append(Images.WEAVE_LINK+"\n\n\n", "Hero", Images.SEPARATOR);
-        }
-        ScrollPane pane = (ScrollPane) scrollPanel.getActor();
-        pane.setScrollPercentY(RandomWizard.getRandomFloat());
-        getStage().setScrollFocus( scrollPanel.getActor());
-    }
-
-    @Override
-    protected float getTextLineWidth() {
-        return getWidth() * 0.75f;
+        getStage().setScrollFocus(scrollPane );
     }
 }

@@ -30,14 +30,15 @@ public abstract class HqTreeTab extends HqElement{
          GDX.size(HqMaster.TAB_HEIGHT) );
         tabsBg.setPosition(
                 GdxMaster.centerWidth(tabsBg), GdxMaster.top(tabsBg));
+
     }
 
     @Override
     public void act(float delta) {
-        tree.setPosition( 0 ,  0);
+        tree.setPosition(  0 ,  0);
         super.act(delta);
         tabsBg.setPosition(
-                GdxMaster.centerWidth(tabsBg), GdxMaster.top(tabsBg));
+                GdxMaster.centerWidth(tabsBg)+14, GdxMaster.top(tabsBg));
     }
 
     @Override

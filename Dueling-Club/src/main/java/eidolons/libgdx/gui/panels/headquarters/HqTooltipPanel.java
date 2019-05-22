@@ -35,14 +35,22 @@ public class HqTooltipPanel extends TablePanelX {
 
     public void init() {
         setSize(700, 200);
-        add(scrollPane = new ScrollPane(inner= new Container<>()){
+        add(scrollPane = new ScrollPane(inner= new Container<Actor>(){
+            @Override
+            public float getPrefHeight() {
+                return getHeight();
+            }
+        }){
             @Override
             public float getPrefHeight() {
                 return getActor().getHeight();
             }
         });
+        inner.setSize(700, 200);
         inner.
                 setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        inner.
+                setBackground(NinePatchFactory.getHqDrawable());
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         scrollPane.setStyle(StyleHolder.getScrollStyle());
         scrollPane.setClamp(true);
@@ -68,7 +76,6 @@ public class HqTooltipPanel extends TablePanelX {
     public void init(Tooltip tooltip) {
         inner
                 .setActor(tooltip);
-
         Actor actor = null;
 
         if (tooltip.getUserObject() instanceof Collection) {
@@ -81,23 +88,27 @@ public class HqTooltipPanel extends TablePanelX {
         if (actor instanceof ValueContainer) {
             Label label = ((ValueContainer) actor).getNameLabel();
             tooltip.setHeight(((ValueContainer) actor).getPrefHeight());
+            tooltip.setWidth(getWidth());
+            inner.setHeight(tooltip.getHeight()*1.5f);
             scrollPane.setScrollY(tooltip.getHeight());
             if (label == null) {
                 label =((ValueContainer) actor).getValueLabel();
             }
-            label.setWidth(getWidth()*2);
+//            label.setWidth(getWidth()*2);
 //            label.setWrap(true);
             label.setAlignment(Align.left);
+            tooltip.pad(20);
 //            label.setText(label.getText());
             label =((ValueContainer) actor).getValueLabel();
             if (label != null) {
-            label.setWidth(getWidth());
+//            label.setWidth(getWidth());
             }
         }
         tooltip.pack();
         tooltip.removeBackground();
 
-//        scrollPane.setScrollY(tooltip.getHeight() / 4 + RandomWizard.getRandomInt(25 + (int) (tooltip.getHeight() / 3)));
+        scrollPane.setScrollY(inner.getHeight() / 4 + RandomWizard.getRandomInt(25 + (int)
+                (tooltip.getHeight() / 3)));
         scrollPane.updateVisualScroll();
         getStage().setScrollFocus(scrollPane);
     }

@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.utils.GdxTimeMaster;
+import eidolons.system.options.GraphicsOptions;
+import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 
@@ -26,6 +29,9 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaMin;
     protected float fluctuatingAlphaMax;
     ALPHA_TEMPLATE alphaTemplate;
+    private int fluctuatingAlphaPeriod;
+    public  static int fluctuatingAlphaPeriodGlobal = OptionsMaster.getGraphicsOptions().
+            getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 +1;
 
     public Fluctuating() {
     }
@@ -76,6 +82,12 @@ public class Fluctuating extends GroupX {
             delta = delta - (-alphaPause);
             if (delta <= 0)
                 return;
+        }
+        int period = getFluctuatingAlphaPeriod();
+        if (period!=0) {
+            if (!GdxTimeMaster.isPeriodNow(period)) {
+                return;
+            }
         }
         Color color = getDefaultColor(image);
 
@@ -199,8 +211,17 @@ public class Fluctuating extends GroupX {
 
     }
 
+    public int getFluctuatingAlphaPeriod() {
+        return fluctuatingAlphaPeriodGlobal;
+    }
+
+    public void setFluctuatingAlphaPeriod(int fluctuatingAlphaPeriod) {
+        this.fluctuatingAlphaPeriod = fluctuatingAlphaPeriod;
+    }
+
     public enum ALPHA_TEMPLATE {
 
+        HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
         HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),
 
         MOON(0.1f, 0, 1, 0.5f),

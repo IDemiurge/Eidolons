@@ -17,7 +17,7 @@ public class SpeechDataSource {
     Speech speech;
     ActorDataSource left;
     ActorDataSource right;
-    private boolean leftActive=true;
+    private boolean leftActive = true;
     //custom font/style?
 
 
@@ -29,8 +29,7 @@ public class SpeechDataSource {
     }
 
     public SpeechDataSource(Speech speech) {
-        this.speech = speech;
-
+        this(speech, new ActorDataSource(speech.getActor()), null);
 
     }
 

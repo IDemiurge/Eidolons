@@ -22,6 +22,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.test.TestDialogMaster;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -231,7 +232,10 @@ public class GlobalController implements Controller {
             active = true;
             return true;
         }
-
+        if (CoreEngine.isContentTestMode() || CoreEngine.isIDE()) {
+            if (TestDialogMaster.key(c))
+                return false;
+        }
         if (DungeonScreen.getInstance().isBlocked())
             return true;
         switch (c) {

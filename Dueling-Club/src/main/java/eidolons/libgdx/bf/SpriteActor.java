@@ -2,9 +2,12 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.gui.generic.GroupX;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,16 +19,15 @@ public class SpriteActor extends GroupX {
     protected float timeToPlay;
     protected boolean paused;
     protected SpriteAnimation anim;
-    protected Map<SPRITE_ACTOR_ANIMATION, SpriteAnimation> animsMap;
+    protected Map<SPRITE_ACTOR_ANIMATION, SpriteAnimation> animsMap = new HashMap<>();
     private float period;
 
-    public SpriteActor(   ) {
+    String animPathRoot;
 
+    public SpriteActor(String animPathRoot) {
+        this.animPathRoot = animPathRoot;
     }
-    public SpriteActor(SpriteAnimation curAnim) {
-        this.anim = curAnim;
-        newAnim(curAnim);
-    }
+
 
     public void play(SPRITE_ACTOR_ANIMATION animation) {
         anim = animsMap.get(animation);
@@ -33,23 +35,24 @@ public class SpriteActor extends GroupX {
             anim = createAnim(animation);
             animsMap.put(animation, anim);
         }
-        newAnim(anim);
+        if (anim!=null ){
+            newAnim(anim);
+        }
     }
 
     private SpriteAnimation createAnim(SPRITE_ACTOR_ANIMATION animation) {
-//        SpriteAnimationFactory.getSpriteAnimation() getDuration
-        return null;
+       return SpriteAnimationFactory.getSpriteAnimation(animPathRoot +"/" + animation.getAnimAtlasName() + ".txt");
     }
 
     private void newAnim(SpriteAnimation anim) {
         anim.reset();
-        this.anim.setX(getX());
-        this.anim.setY(getY());
+        anim.centerOnParent(this);
+
         paused = false;
         timeToPlay = (anim.getAnimationDuration());
         this.anim.setPlayMode(PlayMode.NORMAL);
         this.anim.setCustomAct(true);
-//        anim.getLifecycleDuration()
+        anim.setFrameDuration(0.02f);
     }
 
     public SpriteAnimation getAnim() {
@@ -58,8 +61,15 @@ public class SpriteActor extends GroupX {
 
     @Override
     public void act(float delta) {
-        anim.setX(getX());
-        anim.setY(getY());
+        if (anim==null ){
+            return;
+        }
+        if (anim.isAnimationFinished()) {
+            anim = null;
+            return;
+        }
+        anim.setX(getX() - anim.getWidth()/2);
+        anim.setY(getY()- anim.getHeight()/2);
         anim.act(delta);
         anim.setScale(getScaleX());
         anim.setRotation(getRotation());
@@ -91,6 +101,9 @@ public class SpriteActor extends GroupX {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        if (anim==null ){
+            return;
+        }
         if (!paused)
             anim.draw(batch);
     }
@@ -105,5 +118,10 @@ public class SpriteActor extends GroupX {
 
     public enum SPRITE_ACTOR_ANIMATION {
         FLASH, FADE_IN_OUT, SCUD_OVER,
+        ;
+
+        public String getAnimAtlasName() {
+            return "slot 64";
+        }
     }
 }

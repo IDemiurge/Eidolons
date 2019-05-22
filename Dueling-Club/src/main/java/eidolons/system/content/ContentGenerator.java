@@ -276,9 +276,9 @@ public class ContentGenerator {
 //            setRandomizeDefaultSkillIcons();
 //            randomizeSkillIcons();
         }
-//        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
-//        if (DataManager.isTypesRead(DC_TYPE.ITEMS))
-//            generateConsumableItemsFromOverlaying();
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+        if (DataManager.isTypesRead(DC_TYPE.ITEMS))
+            generateKeyObjects();
         if (DataManager.isTypesRead(DC_TYPE.SPELLS))
             generateSpellVfxVariants();
         if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
@@ -295,8 +295,11 @@ public class ContentGenerator {
             }
 
 //        updateImagePaths(DC_TYPE.SKILLS);
-        writeImages(DC_TYPE.SKILLS);
+//        writeImages(DC_TYPE.SKILLS);
 //            writeDataToText();
+    }
+
+    private static void generateKeyObjects() {
     }
 
     private static void clearGenType() {

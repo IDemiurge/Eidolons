@@ -338,18 +338,19 @@ public class GdxMaster {
 
 
     public static Group getFirstParentOfClass(Actor child, Class clazz) {
-        Group actor = child.getParent();
-        while (true) {
-            if (actor == null) {
-                break;
-            }
-            if (ClassMaster.isInstanceOf(actor, clazz)) {
-                return actor;
-            }
-            actor = actor.getParent();
-
-        }
-        return null;
+        return (Group) child.firstAscendant(clazz);
+//        Group actor = child.getParent();
+//        while (true) {
+//            if (actor == null) {
+//                break;
+//            }
+//            if (ClassMaster.isInstanceOf(actor, clazz)) {
+//                return actor;
+//            }
+//            actor = actor.getParent();
+//
+//        }
+//        return null;
     }
 
 

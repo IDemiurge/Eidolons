@@ -241,6 +241,8 @@ public class SoundMaster {
 
     public enum SOUNDS {
         ATTACK, HIT, WHAT, MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, DEATH, READY, SPEC_ACTION,
+SPOT, IDLE, ALERT,
+
         // spell
         IMPACT,
         CAST,
@@ -355,9 +357,9 @@ public class SoundMaster {
 
         NEW__HOVER, NEW__HOVER_OFF,
 
-        NEW__BONES, NEW__CHEST, NEW__GATE
+        NEW__BONES, NEW__CHEST, NEW__GATE,
 
-        ;
+        NEW__UNLOCK, NEW__TOWN_PORTAL_DONE, NEW__TOWN_PORTAL_START;
         String path;
         private boolean alt;
 

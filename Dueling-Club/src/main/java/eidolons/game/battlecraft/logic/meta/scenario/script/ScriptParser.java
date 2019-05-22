@@ -24,7 +24,7 @@ import java.util.List;
  * Created by JustMe on 5/19/2017.
  */
 public class ScriptParser {
-    private static final boolean TEST_MODE = true;
+    private static final boolean TEST_MODE = false;
 
     public static Condition parseConditions(String conditionPart) {
         Condition c = DC_ConditionMaster.toConditions(conditionPart);

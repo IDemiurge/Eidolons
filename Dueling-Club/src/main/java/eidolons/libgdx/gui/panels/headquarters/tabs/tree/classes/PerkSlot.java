@@ -32,8 +32,7 @@ public class PerkSlot extends HtNode {
 
     @Override
     protected void init() {
-        super.init();
-//        setSize(getDefaultWidth(), getDefaultHeight());
+        setSize(getDefaultWidth(), getDefaultHeight() );
     }
 
     @Override
@@ -101,5 +100,10 @@ public class PerkSlot extends HtNode {
         }
         super.update(delta);
 
+    }
+
+    @Override
+    protected List<ObjType> createAvailable() {
+        return null;
     }
 }

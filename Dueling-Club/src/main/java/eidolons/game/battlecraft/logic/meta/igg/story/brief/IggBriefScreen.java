@@ -16,7 +16,7 @@ public class IggBriefScreen extends UiStage {
 
     public IggBriefScreen() {
         super();
-        briefingView = new BriefingView();
+        addActor(briefingView = new BriefingView());
         GuiEventManager.bind(GuiEventType.BRIEFING_START, p -> setBriefingData((BriefingData) p.get()));
 
         GuiEventManager.bind(GuiEventType.BRIEFING_FINISHED, p -> hide());

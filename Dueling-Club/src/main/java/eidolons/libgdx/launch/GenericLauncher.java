@@ -2,6 +2,7 @@ package eidolons.libgdx.launch;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -24,6 +25,7 @@ import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
@@ -131,7 +133,7 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return CoreEngine.isIggDemo() || CoreEngine.isFastMode();
+        return !CoreEngine.isActiveTestMode() || CoreEngine.isFastMode();
     }
 
     public LwjglApplicationConfiguration getConf() {
@@ -229,6 +231,8 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
+        GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
+
         if (CoreEngine.isIDE()) {
             try {
                 render_();

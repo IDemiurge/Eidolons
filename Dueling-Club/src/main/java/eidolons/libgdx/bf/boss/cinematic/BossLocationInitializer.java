@@ -19,7 +19,8 @@ public class BossLocationInitializer extends LocationInitializer {
         return new Location((LocationMaster) getMaster(), new Dungeon(type, false)){
             @Override
             public String getMapBackground() {
-                return "atlas.txt";
+//                return "atlas.txt";
+                return "sprites\\ui\\backgrounds\\valley.txt";
             }
         };
     }

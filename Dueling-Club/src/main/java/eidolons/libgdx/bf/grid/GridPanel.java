@@ -35,6 +35,7 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -186,6 +187,9 @@ public class GridPanel extends Group {
     }
 
     private boolean isShardsOn() {
+        if (CoreEngine.isLiteLaunch()) {
+            return false;
+        }
         if (Eidolons.BOSS_FIGHT) {
             return false;
         }
@@ -210,6 +214,10 @@ public class GridPanel extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         boolean paused = false;
+        if (HqPanel.getActiveInstance()!=null ){
+            if (HqPanel.getActiveInstance().getColor().a==1)
+                return;
+        }
         if (Eidolons.game != null)
             if (Eidolons.game.getLoop() != null)
                 paused = Eidolons.game.getLoop().isPaused();
@@ -222,6 +230,10 @@ public class GridPanel extends Group {
 
     @Override
     public void act(float delta) {
+        if (HqPanel.getActiveInstance()!=null ){
+            if (HqPanel.getActiveInstance().getColor().a==1)
+                return;
+        }
         if (resetVisibleRequired) {
             if (!DeathAnim.isOn())
             resetVisible();

@@ -6,14 +6,18 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.audio.DC_SoundMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
+import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static eidolons.game.battlecraft.logic.battlefield.vision.VisionRule.getPlayerUnseenMode;
 
 public class AggroMaster extends ExplorationHandler {
     public static final float AGGRO_RANGE = 2.5f;
@@ -30,6 +34,9 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getAggroGroup() {
+        if (getPlayerUnseenMode()) {
+            return     new ArrayList<>() ;
+        }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
         for (Unit ally : DC_Game.game.getPlayer(true).collectControlledUnits_()) {
@@ -104,6 +111,7 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             //TODO these units will instead 'surprise attack' you or stalk
 
+            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.THREAT, unit);
             newAggro = true;
             set.add(unit);
             //            }
@@ -211,6 +219,10 @@ public class AggroMaster extends ExplorationHandler {
 
 
         //        }
+    }
+
+    public static int getBattleDifficulty() {
+        return getLastAggroGroup().stream().mapToInt(u -> u.getPower()).sum();
     }
 
     private boolean checkEngaged() {

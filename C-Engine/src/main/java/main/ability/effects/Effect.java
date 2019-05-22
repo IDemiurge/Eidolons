@@ -158,21 +158,32 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         ON_HIT, //melee only
         ON_KILL,
         ON_DEATH,
+
         ON_CRIT,
+        ON_CRIT_HIT,
         ON_DODGE,
         ON_SHIELD_BLOCK,
+        ON_PARRY,
+
         ON_CRIT_SELF,
+        ON_CRIT_HIT_SELF,
         ON_DODGE_SELF,
         ON_SHIELD_BLOCK_SELF,
+        ON_PARRY_SELF,
+
         ON_SNEAK_ATTACK,
         ON_SNEAK_ATTACK_SELF,
         ON_SNEAK_HIT,
-        ON_PARRY_SELF,
-        ON_PARRY,
+        ON_SNEAK_HIT_SELF,
+
+        ON_SNEAK_CRIT_SELF,
+        ON_SNEAK_CRIT,
+
         SPELL_IMPACT,
         SPELL_HIT,
         SPELL_RESISTED,
         SPELL_RESIST,
+
         MOVE,
         NEW_TURN,
         END_TURN,

@@ -97,6 +97,7 @@ public class HearingRule implements ActionRule {
             if (unit.isMine()) {
                 repeat = playerWasHeard;
                 logged = "You have been heard!";
+                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, listener);
                 playerWasHeard = true;
             } else {
                 repeat = map.get(unit) == direction; //TODO encapsulate all data
@@ -112,6 +113,7 @@ public class HearingRule implements ActionRule {
                     EUtils.showInfoText(logged);
                     if (RandomWizard.chance(89)) {
                         DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.WHAT, unit, 100, 0);
+                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.IDLE, listener);
                     } else
                         DC_SoundMaster.playMoveSound(unit);
                     //TODO
@@ -123,6 +125,26 @@ public class HearingRule implements ActionRule {
 
         }
 
+    }
+
+    @Override
+    public void actionComplete(ActiveObj activeObj) {
+        if (!isOn()) {
+            return;
+        }
+        for (Unit listener : game.getPlayer(!activeObj.isMine()).collectControlledUnits_()) {
+            checkLogged((DC_ActiveObj) activeObj, listener);
+        }
+//        Unit listener = Eidolons.getMainHero();
+    }
+
+    private boolean isOn() {
+        return false;
+    }
+
+    @Override
+    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
+        return true;
     }
 
     public void reset() {
@@ -140,17 +162,5 @@ public class HearingRule implements ActionRule {
         return v == UNSEEN || v == BLOCKED || v == OUTLINE;
     }
 
-    @Override
-    public void actionComplete(ActiveObj activeObj) {
-        for (Unit listener : game.getPlayer(!activeObj.isMine()).collectControlledUnits_()) {
-            checkLogged((DC_ActiveObj) activeObj, listener);
-        }
-//        Unit listener = Eidolons.getMainHero();
-    }
-
-    @Override
-    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
-        return true;
-    }
 
 }

@@ -96,6 +96,8 @@ public enum G_PROPS implements PROPERTY {
     MAIN_HAND_ITEM(null, false, "units", "chars"),
     OFF_HAND_ITEM(null, false, "units", "chars"),
     ARMOR_ITEM(null, false, "units", "chars"),
+    RESERVE_MAIN_HAND_ITEM(null, false, "units", "chars"),
+    RESERVE_OFF_HAND_ITEM(null, false, "units", "chars"),
 
     SKILL_GROUP("skills", "Skill Type"),
     EMBLEM("EMBLEM", false, "chars", "deities", "factions"),
@@ -135,7 +137,7 @@ public enum G_PROPS implements PROPERTY {
     TOOLTIP("all"),
     FACTION_GROUP("factions"),
     UNIQUE_ID("all"), FULLSIZE_IMAGE("scenarios"),
-    PERK_PARAMS("Perk Params",true,"perks"), PERK_GROUP("perks"),
+    PERK_PARAMS("Perk Params", true, "perks"), PERK_GROUP("perks"),
     PERK_CLASS_REQUIREMENTS("perks");
 
     static {

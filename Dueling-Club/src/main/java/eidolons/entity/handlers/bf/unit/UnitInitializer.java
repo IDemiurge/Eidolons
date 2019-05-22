@@ -247,6 +247,13 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
          getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
             initNaturalWeapon(true);
         }
+
+        getEntity().setReserveMainWeapon((DC_WeaponObj) initItem(getEntity().getReserveMainWeapon(),
+                G_PROPS.RESERVE_MAIN_HAND_ITEM, DC_TYPE.WEAPONS));
+        getEntity().setReserveOffhandWeapon((DC_WeaponObj) initItem(getEntity().getReserveOffhandWeapon(),
+                G_PROPS.RESERVE_OFF_HAND_ITEM, DC_TYPE.WEAPONS));
+
+
         getEntity().setArmor((DC_ArmorObj) initItem(getEntity().getArmor(), G_PROPS.ARMOR_ITEM, DC_TYPE.ARMOR));
 
         getEntity().setItemsInitialized(true);

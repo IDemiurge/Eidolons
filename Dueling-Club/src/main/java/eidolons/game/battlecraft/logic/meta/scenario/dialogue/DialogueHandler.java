@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.*;
 import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.launch.CoreEngine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +22,8 @@ public class DialogueHandler {
     Map<Scene, Speech> map;
     DC_Game game;
     private List<Scene> list;
+    private ActorDataSource listenerLast;
+    private ActorDataSource myActor;
 
     public DialogueHandler(GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
         this.dialogue = dialogue;
@@ -32,12 +34,50 @@ public class DialogueHandler {
         for (Scene actor : scenes) {
             map.put(actor, line);
             if (!line.getChildren().isEmpty())
-               line = line.getChildren().get(0);
+                line = line.getChildren().get(0);
         }
+        setListenerLast(
+                new ActorDataSource(DialogueActorMaster.getActor(dialogue.getRoot().getData().getActorLeft())));
 
     }
 
-    public void lineSpoken(Scene actorObject) {
+    public SpeechDataSource lineSpoken(Speech speech, int index) {
+        ArrayList<String> displayedOptions = new ArrayList<>();
+        if (speech.getChildren().size() <= index) {
+            if (isLoopDialogueTest()){
+                return new SpeechDataSource(dialogue.getRoot());
+            }
+            return null;
+        }
+        Speech displayedSpeech = speech.getChildren().get(index);
+
+        if (dialogue instanceof LinearDialogue) {
+            displayedOptions.add("Continue");
+        } else {
+//            dialogue.getRoot()
+            displayedSpeech
+                    .getChildren().forEach(s -> {
+                if (s.getConditions() == null) {
+                    displayedOptions.add(s.getFormattedText());
+                } else {
+                    Ref ref = new Ref(displayedSpeech.getActor().getLinkedUnit());
+                    if (s.getConditions().check(ref))
+                        displayedOptions.add(s.getFormattedText());
+                }
+            });
+        }
+//        Speech newSpeech= dialogue.getRoot();
+        SpeechDataSource data = new SpeechDataSource(displayedSpeech);
+        data.getResponses().addAll(displayedOptions);
+        return data;
+    }
+
+    private boolean isLoopDialogueTest() {
+        return CoreEngine.isActiveTestMode();
+    }
+
+    public void lineSpoken(Scene actorObject, String line) {
+//        dialogue.getRoot().getChildren()
         Ref ref = new Ref(game);
         ref.setAmount(map.get(actorObject).getId());
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN, ref));
@@ -53,4 +93,32 @@ public class DialogueHandler {
         return list;
     }
 
+    public boolean isMe(ActorDataSource listener) {
+        if (listener.equals(myActor)) {
+            return true;
+        }
+        if (listener.getActorName().equalsIgnoreCase("you")) {
+            return true;
+        }
+        return false;
+    }
+
+    public ActorDataSource getListenerLast() {
+        return listenerLast;
+    }
+
+    public void setListenerLast(ActorDataSource listenerLast) {
+        if (isMe(listenerLast)) {
+            setMyActor(listenerLast);
+        }
+        this.listenerLast = listenerLast;
+    }
+
+    public ActorDataSource getMyActor() {
+        return myActor;
+    }
+
+    public void setMyActor(ActorDataSource myActor) {
+        this.myActor = myActor;
+    }
 }

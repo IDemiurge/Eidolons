@@ -59,7 +59,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         , ADD_SHARDS_ALWAYS(true), ADD_SHARDS_NEVER(false)
         , ADDITIVE_LIGHT(false)
         ,  SIDE_LIGHT_OFF(false),
-        UI_ATLAS(true), FULL_ATLAS(false);
+        UI_ATLAS(true), FULL_ATLAS(false), PERFORMANCE_BOOST(20, 0, 100);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

@@ -3,7 +3,9 @@ package eidolons.game.module.herocreator.logic;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
@@ -14,6 +16,7 @@ import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -30,6 +33,8 @@ import java.util.List;
  */
 public class HeroClassMaster {
     public static final String CLASSES_TIER_ = "CLASSES_TIER_";
+    private static ObjType openSlotType;
+    private static HeroClass openSlot;
 
     public static boolean isMulticlass(Entity type) {
         return false; //TODO
@@ -50,6 +55,9 @@ public class HeroClassMaster {
     public static List<DC_FeatObj> getClasses(Unit hero, int tier) {
         ArrayList<DC_FeatObj> list = new ArrayList<>(hero.getClasses());
         list.removeIf(c -> c.getTier() != tier);
+        if (list.size()< getMaxClassSlots(tier)){
+            list.add(getOpenSlot());
+        }
         return list;
     }
 
@@ -79,7 +87,9 @@ public class HeroClassMaster {
                 || (tier>0 && !hasRootTreeClass(hero, type)) //TODO hasEmptyClassSlot(hero) ||
         );
 //        ContentFilter
+        if (tier>0) {
         HqMaster.filterContent(list);
+        }
         //just check same root tree!
 
         return list;
@@ -145,4 +155,22 @@ public class HeroClassMaster {
 //            return path;
 //        return GdxImageMaster.getRoundedPath(data.getImagePath());
     }
+
+    public static boolean isDataAnOpenSlot(Object lastData) {
+        return lastData== getOpenSlot ();
+    }
+
+    public static HeroClass getOpenSlot() {
+        if (openSlot == null) {
+            openSlot = new HeroClass(getOpenSlotType(), (Eidolons.getMainHero()));
+        }
+        return openSlot;
+    }
+        public static ObjType getOpenSlotType() {
+        if (openSlotType == null) {
+            openSlotType = new ObjType("Dummy Class", DC_TYPE.CLASSES);
+        }
+        return openSlotType;
+    }
+
 }

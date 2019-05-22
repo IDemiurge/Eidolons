@@ -1341,6 +1341,16 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
+    public DC_WeaponObj getReserveMainWeapon() {
+        return getHero().getReserveMainWeapon();
+    }
+
+    @Override
+    public DC_WeaponObj getReserveOffhandWeapon() {
+        return getHero().getReserveOffhandWeapon();
+    }
+
+    @Override
     public void setArmor(DC_ArmorObj armor) {
         getHero().setArmor(armor);
     }
@@ -2138,13 +2148,15 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void unequip(ITEM_SLOT slot) {
+    public DC_HeroItemObj unequip(ITEM_SLOT slot) {
         getHero().unequip(slot);
+        return null;
     }
 
     @Override
-    public void unequip(ITEM_SLOT slot, Boolean drop) {
+    public DC_HeroItemObj unequip(ITEM_SLOT slot, Boolean drop) {
         getHero().unequip(slot, drop);
+        return null;
     }
 
     @Override

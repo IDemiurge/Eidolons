@@ -3,6 +3,7 @@ package eidolons.libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -143,6 +144,17 @@ public class TexturePackerLaunch {
         }
     }
 
+    public static Settings getWorstSettings() {
+        Settings settings = getSettings();
+        settings.format = Format.RGBA8888;
+        settings.jpegQuality = 0.55f;
+        if (DialogMaster.confirm("Jpg?"))
+            settings.outputFormat = "jpg";
+
+        settings.maxHeight = (int) Math.pow(2, 14);
+        settings.maxWidth = (int) Math.pow(2, 14);
+        return settings;
+    }
     public static Settings getBestSettings() {
         Settings settings = getSettings();
         settings.format = Format.RGBA8888;
@@ -226,7 +238,9 @@ public class TexturePackerLaunch {
 
 
     public static void pack(String inputDir, String outputDir, String packFileName) {
-        Settings settings = DialogMaster.confirm("Best settings?") ? getBestSettings() : getSettings();
+        Settings settings = DialogMaster.confirm("Best settings?") ? getBestSettings() :
+                DialogMaster.confirm("Worst settings?") ? getWorstSettings() :
+                        getSettings();
         TexturePacker.process(settings, inputDir, outputDir, packFileName);
     }
 

@@ -39,7 +39,9 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS)!=null ) {
             return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
-
+        if (type.getName().contains("Key")) {
+            return INTERACTIVE_OBJ_TYPE.KEY;
+        }
         return INTERACTIVE_OBJ_TYPE.RUNE;
     }
 
@@ -80,6 +82,10 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         }
         //check scripts, throw event
         switch (type) {
+            case KEY:
+                pickup(obj, unit);
+                break;
+
             case RUNE:
             case MAGE_CIRCLE:
                 //random spell?
@@ -97,11 +103,11 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 break;
         }
         obj.setOff(!obj.isOff());
-        if (!off) {
-            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_ON, obj);
-        } else {
-            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_OFF, obj);
-        }
+//        if (!off) {
+//            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_ON, obj);
+//        } else {
+//            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_OFF, obj);
+//        }
     }
 
     private void pickup(InteractiveObj obj, Unit unit) {
@@ -126,8 +132,11 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
 
         return ItemFactory.createItemObj(name, DC_TYPE.ITEMS,  true);
     }
-
     public static String getConsumableItemName(String name) {
+        if (name.contains("Key")){
+            //TODO one time vs permanent?
+            return  name  ;
+        }
         return  name +" " + StringMaster.wrapInParenthesis("Consumable");
     }
 
@@ -172,7 +181,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         MECHANISM,
 
         BUTTON,
-        LEVER, CONSUMABLE,
+        LEVER, CONSUMABLE, KEY,
 
 
     }

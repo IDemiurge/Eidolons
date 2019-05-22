@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.ClassesDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
@@ -89,6 +90,28 @@ public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
     @Override
     protected PerkSlot[] createLinkRow(int n) {
         return new PerkSlot[n];
+    }
+
+    @Override
+    protected Object getEmptySlotData(int tier, int slot) {
+        return HeroClassMaster.getOpenSlot();
+    }
+
+    @Override
+    protected boolean isDataAnOpenSlot(Object lastData) {
+        if (lastData == null) {
+            return false;
+        }
+        return HeroClassMaster.isDataAnOpenSlot( lastData);
+    }
+    @Override
+    protected boolean isSequentialLinks() {
+        return true;
+    }
+
+    @Override
+    protected boolean isSequentialSlots() {
+        return true;
     }
 
     @Override

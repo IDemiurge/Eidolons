@@ -41,9 +41,10 @@ public class AutoTest {
             argMap.put(argType, a);
         }
 
-        Map<AUTO_TEST_ASSERTION, String> map = new RandomWizard<AUTO_TEST_ASSERTION>()
-         .constructStringWeightMap(testType.getProperty(PROPS.AUTO_TEST_ASSERTIONS),
-          AUTO_TEST_ASSERTION.class);
+        Map<AUTO_TEST_ASSERTION, String> map = null ;
+//        new RandomWizard<AUTO_TEST_ASSERTION>()
+//         .constructStringWeightMap(testType.getProperty(PROPS.AUTO_TEST_ASSERTIONS),
+//          AUTO_TEST_ASSERTION.class);
         for (AUTO_TEST_ASSERTION t : map.keySet()) {
             new Assertion(t, map.get(type));
         }
@@ -79,10 +80,10 @@ public class AutoTest {
     }
 
     public void generateConstraints() {
-        for (String s : ContainerUtils.open(getEntity().getProperty(
-         PROPS.AUTO_TEST_CONSTRAINTS))) {
+//        for (String s : ContainerUtils.open(getEntity().getProperty(
+//         PROPS.AUTO_TEST_CONSTRAINTS))) {
 //			constraints.add(new Constraint(s, getEntity()));
-        }
+//        }
     }
 
     public void initSource() {

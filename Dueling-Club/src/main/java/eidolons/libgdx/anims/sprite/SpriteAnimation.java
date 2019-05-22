@@ -5,9 +5,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.texture.TextureManager;
 import main.system.ExceptionMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
@@ -437,6 +442,35 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public float getSpeed() {
 
         return speed;
+    }
+
+    public float getHeight() {
+        if (!ListMaster.isNotEmpty(getRegions())) {
+            return 0;
+        }
+        return getRegions().get(0).packedHeight;
+    }
+
+    public float getWidth() {
+        if (!ListMaster.isNotEmpty(getRegions())) {
+            return 0;
+        }
+        return getRegions().get(0).packedWidth;
+    }
+
+    public void centerOnParent(Actor actor) {
+        Vector2 pos = new Vector2(actor.getX(), actor.getY());
+         actor.localToStageCoordinates(pos);
+//        pos2= actor.getStage().stageToScreenCoordinates(pos2);
+        setX(pos .x);
+         setY(pos .y);
+        setOffsetX(Math.abs( actor.getWidth() -  getWidth()) / 2 +  getWidth()/2);
+        setOffsetY(Math.abs ( actor.getHeight() -  getHeight()) / 2 +  getHeight()/2);
+
+    }
+
+    public void setFps(int i) {
+        setFrameDuration(1f/i);
     }
 
 

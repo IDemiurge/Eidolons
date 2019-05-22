@@ -179,16 +179,26 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =
              (DialogueHandler) obj.get();
-            List<Scene> list = handler.getList();
-            if (dialogsStage == null) {
-                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
 
-            } else {
-                dialogsStage.play(list);
+            if (isNewDialogue())
+            {
+                guiStage.playDialogue(handler);
+                return;
             }
-            dialogsStage.setDialogueHandler(handler);
-            updateInputController();
+
+//            if (dialogsStage == null) {
+//                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
+//
+//            } else {
+//                dialogsStage.play(list);
+//            }
+//            dialogsStage.setDialogueHandler(handler);
+//            updateInputController();
         });
+    }
+
+    private boolean isNewDialogue() {
+        return true;
     }
 
     public RealTimeGameLoop getRealTimeGameLoop() {

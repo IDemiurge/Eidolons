@@ -46,8 +46,9 @@ public class DataUnitFactory<E extends DataUnit> {
         this.valueNames = valueNames;
     }
 
-    public void setValues(String... values) {
+    public DataUnitFactory<E> setValues(String... values) {
         this.values = values;
+        return this;
     }
 
     public void setFormat(Boolean format) {

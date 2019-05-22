@@ -233,7 +233,8 @@ public class FileManager {
 //                return file;
 //            }
 //            file = new File(path);
-            if (!CoreEngine.isFullFastMode()) {
+            if (!CoreEngine.isActiveTestMode())
+                if (!CoreEngine.isFullFastMode()) {
                 if (!missing.contains(file.getPath())) {
                     main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
                     missing.add(file.getPath());

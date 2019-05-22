@@ -212,9 +212,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SPECIAL_ABILITIES("SPECIAL_ABILITIES", true, "chars", "units"),
     SKILL_REQUIREMENTS("Skill REQ", true, "spells", "skills", "classes"),
     SKILL_OR_REQUIREMENTS("Skill OR REQ", true, "spells", "skills", "classes"),
-    TREE_NODE_GROUP(null, false, "spells", "skills", "classes"),
-    LINK_VARIANT(null, false, "spells", "skills", "classes"),
-    TREE_NODE_PRIORITY(null, false, "spells", "skills", "classes"),
+//    TREE_NODE_GROUP(null, false, "spells", "skills", "classes"),
+//    LINK_VARIANT(null, false, "spells", "skills", "classes"),
+//    TREE_NODE_PRIORITY(null, false, "spells", "skills", "classes"),
 
     CLASSES("Classes", true, "chars"),
     CLASSES_TIER_1("Classes", true, "chars"),
@@ -335,20 +335,20 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     ALT_BASE_LINKS(null, true, "skills", "classes"),
     ALT_BASE_TYPES(null, true, "skills", "classes"),
-    PARAMETER_BONUSES(null, true, "skills", "classes"),
-    ATTRIBUTE_BONUSES(null, true, "skills", "classes"),
+    PARAMETER_BONUSES(null, true, "skills", "classes", "perks"),
+    ATTRIBUTE_BONUSES(null, true, "skills", "classes", "perks"),
     APPLY_REQS(null, true, "skills", "classes"),
 
-    AUTO_TEST_TYPE(null, true, "skills", "actions", "spells", "abils", "classes"),
-    AUTO_TEST_GROUP(null, true, "skills", "actions", "spells", "abils", "classes"),
-    AUTO_TEST_RULE_FLAGS(null, true, "skills", "actions", "spells", "abils", "classes"),
-    AUTO_TEST_ASSERTIONS(null, true, "skills", "actions", "spells", "abils", "classes"),
-    AUTO_TEST_MEASUREMENTS(null, true, "skills", "actions", "spells", "abils", "classes"),
-    AUTO_TEST_PREFS(null, true, "skills", "actions", "spells", "abils", "classes"),
-    AUTO_TEST_CONSTRAINTS(null, true, "skills", "actions", "spells", "abils", "classes"),
-
-    AUTO_TEST_WEAPON(null, false, "skills", "actions", "classes"),
-    AUTO_TEST_OFFHAND_WEAPON(null, false, "skills", "actions", "classes"),
+//    AUTO_TEST_TYPE(null, true, "skills", "actions", "spells", "abils", "classes"),
+//    AUTO_TEST_GROUP(null, true, "skills", "actions", "spells", "abils", "classes"),
+//    AUTO_TEST_RULE_FLAGS(null, true, "skills", "actions", "spells", "abils", "classes"),
+//    AUTO_TEST_ASSERTIONS(null, true, "skills", "actions", "spells", "abils", "classes"),
+//    AUTO_TEST_MEASUREMENTS(null, true, "skills", "actions", "spells", "abils", "classes"),
+//    AUTO_TEST_PREFS(null, true, "skills", "actions", "spells", "abils", "classes"),
+//    AUTO_TEST_CONSTRAINTS(null, true, "skills", "actions", "spells", "abils", "classes"),
+//
+//    AUTO_TEST_WEAPON(null, false, "skills", "actions", "classes"),
+//    AUTO_TEST_OFFHAND_WEAPON(null, false, "skills", "actions", "classes"),
 
     ARCADE_LEVELS(null, true, "arcades"),
     ARCADE_ENEMY_GROUPS(null, true, "arcades"),
@@ -467,8 +467,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MASTERY_RANKS_4(null,true ,"chars" ),
     MASTERY_RANKS_5(null,true ,"chars" ),
 
-    CLASS_PERK_GROUP(null,false ,"classes" ), PERK_PARAM(null,false ,"perks"),
-    ;
+    CLASS_PERK_GROUP(null,false ,"classes" ),
+    PERK_FOR_CLASSES(null,false ,"perks" ),
+    PERK_PARAM(null,false ,"perks"),
+    KEY_TYPE(null, false, "bf obj");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

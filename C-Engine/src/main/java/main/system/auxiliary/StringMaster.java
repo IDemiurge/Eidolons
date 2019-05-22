@@ -1119,6 +1119,14 @@ public class StringMaster {
         if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {
             return newFile;
         }
+        newFile = cropFormat(file) + suffix + ".png";
+        if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {
+            return newFile;
+        }
+        newFile = cropFormat(file) + suffix + ".jpg";
+        if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {
+            return newFile;
+        }
         if (returnNull)
             return null;
         return file;

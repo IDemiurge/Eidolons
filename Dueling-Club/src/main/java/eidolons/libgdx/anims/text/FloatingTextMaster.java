@@ -78,6 +78,25 @@ public class FloatingTextMaster {
                 return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
             case BATTLE_COMMENT:
                 return GdxColorMaster.PALE_GOLD;
+
+            case ATTACK_CRITICAL:
+                return GdxColorMaster.ORANGE;
+            case ATTACK_SNEAK:
+                return GdxColorMaster.PURPLE;
+            case ATTACK_DODGED:
+            case ATTACK_BLOCKED:
+            case ATTACK_PARRIED:
+                return GdxColorMaster.YELLOW;
+            case ATTACK_MISSED:
+                return GdxColorMaster.PALE_GREEN;
+            case ATTACK_OF_OPPORTUNITY:
+                break;
+            case ATTACK_COUNTER:
+                break;
+            case ATTACK_INSTANT:
+                break;
+
+
             case PARAM_MOD:
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
                 return (pair.getValue() > 0)

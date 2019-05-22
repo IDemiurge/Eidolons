@@ -48,6 +48,7 @@ import static main.system.auxiliary.log.LogMaster.log;
  */
 public class Anim extends Group implements Animation {
     public static final float DEFAULT_ANIM_DURATION = 2;
+    public static final float DEFAULT_MAX_ANIM_DURATION = 6;
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -955,5 +956,21 @@ public class Anim extends Group implements Animation {
 
     public float getSpeedMod() {
         return speedMod;
+    }
+
+    public void startAsSingleAnim( ) {
+        startAsSingleAnim(getRef());
+    }
+    public void startAsSingleAnim(Ref ref) {
+        start(ref);
+        AnimMaster.getInstance().add(new CompositeAnim(this));
+    }
+
+    public void setOnDone(EventCallback onDone) {
+        this.onDone = onDone;
+    }
+
+    public EventCallback getOnDone() {
+        return onDone;
     }
 }

@@ -674,7 +674,7 @@ public class Ref implements Cloneable, Serializable {
         PLACE,
         ENCOUNTER,
         FACTION,
-        AREA, ATTACK_WEAPON,
+        AREA, ATTACK_WEAPON, RESERVE_WEAPON, RESERVE_OFFHAND_WEAPON,
     }
 
 }

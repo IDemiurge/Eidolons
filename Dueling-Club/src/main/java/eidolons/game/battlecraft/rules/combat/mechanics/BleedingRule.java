@@ -25,8 +25,8 @@ import main.system.entity.ConditionMaster;
  */
 
 public class BleedingRule extends DC_RuleImpl {
-    private static final Integer THRESHOLD = 20;
-    private static final Integer MODIFIER = 10;
+    private static final Integer THRESHOLD = 50;
+    private static final Integer MODIFIER = 20;
 
     public BleedingRule(GenericGame game) {
         super(game);
@@ -48,7 +48,7 @@ public class BleedingRule extends DC_RuleImpl {
         effects = new ModifyCounterEffect(COUNTER.Bleeding.getName(),
          MOD.MODIFY_BY_CONST,
 
-//                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+
+                "{SOURCE_BLEEDING_MOD}/100*"+
          StringMaster.wrapInParenthesis(
           // TODO formula?
           THRESHOLD + "-" + "({TARGET_C_TOUGHNESS}*100/"

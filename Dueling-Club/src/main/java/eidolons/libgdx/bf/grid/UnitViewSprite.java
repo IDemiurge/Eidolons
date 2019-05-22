@@ -31,7 +31,7 @@ public class UnitViewSprite extends GridUnitView {
     private float height;
     private float width;
     private FadeImageContainer glow;
-    private Map<EmitterActor, Vector2> emitters= new LinkedHashMap<>();
+    private Map<EmitterActor, Vector2> emitters ;
     SpriteModel spriteModel;
 
     public UnitViewSprite(UnitViewOptions o) {
@@ -60,14 +60,17 @@ public class UnitViewSprite extends GridUnitView {
         return new FadeImageContainer();
     }
 
-    protected EmitterActor createEmitter(String path) {
+    protected EmitterActor createEmitter(String path, int offsetX, int offsetY) {
         path = PathFinder.getVfxAtlasPath() + path;
         EmitterActor emitter = EmitterPools.getEmitterActor(path);
-        initEmitter(emitter, 0,0);
+        initEmitter(emitter, offsetX,offsetY);
         return emitter;
     }
 
     private void initEmitter(EmitterActor emitter, int offsetX, int offsetY) {
+        if (emitters == null) {
+            emitters = new LinkedHashMap<>();
+        }
         emitters.put(emitter, new Vector2(offsetX, offsetY));
         addActor(emitter);
         emitter.start();
@@ -92,7 +95,10 @@ public class UnitViewSprite extends GridUnitView {
     }
 
     protected void initEmitters() {
-         createEmitter("unit/");
+        createEmitter("unit/black soul bleed 3", 64, 64);
+        createEmitter("unit/chaotic dark", 32, 32);
+        createEmitter("unit/black soul bleed 3", -64, 64);
+        createEmitter("unit/chaotic dark", -32, 32);
     }
 
     @Override

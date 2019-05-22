@@ -114,7 +114,7 @@ public class CONTENT_CONSTS {
 
         CHAOS,
 
-        LIGHT,;
+        LIGHT, DWARF;
 
         public String getName() {
             return name();

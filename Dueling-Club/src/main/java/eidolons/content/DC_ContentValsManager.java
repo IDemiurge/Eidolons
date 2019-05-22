@@ -179,8 +179,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         // list.addAll(Arrays.asList(WEAPON_MODIFYING_PARAMS));
         list.addAll(Arrays.asList(ValuePages.UNIT_PARAMETERS));
         list.addAll(Arrays.asList(ValuePages.MASTERIES));
-        list.addAll(Arrays.asList(ValuePages.PRINCIPLE_IDENTITIES));
-        list.addAll(Arrays.asList(ValuePages.PRINCIPLE_ALIGNMENTS));
         list.addAll(Arrays.asList(FEAT_MODIFYING_PARAMS));
 
         FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);

@@ -89,7 +89,10 @@ public class QuickWeaponPanel extends TablePanelX {
     }
 
     public void setDataSource(WeaponDataSource source, boolean alt) {
-        if (source != null)
+        if (source != null){
+            if (source.getWeapon()==null ){
+                //TODO clear
+            }
             if (source.equals(alt ? this.dataSourceAlt : this.dataSource)) {
                 return;
             } else {
@@ -102,6 +105,7 @@ public class QuickWeaponPanel extends TablePanelX {
                 }
 
             }
+        }
     }
 
     @Override

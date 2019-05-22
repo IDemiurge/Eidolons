@@ -10,7 +10,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.construct.AnimResourceFinder;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
@@ -20,14 +19,18 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
+import main.content.CONTENT_CONSTS;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -118,7 +121,33 @@ if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
 
     }
 
-    public static void playEffectSound(SOUNDS sound_type, Obj obj) {
+    public static CONTENT_CONSTS.SOUNDSET getSoundSet(Unit unit) {
+        if (unit.getRace()== HeroEnums.RACE.HUMAN) {
+            return CONTENT_CONSTS.SOUNDSET.HUMAN;
+        }
+        if (unit.getRace()== HeroEnums.RACE.DWARF) {
+            return CONTENT_CONSTS.SOUNDSET.DWARF;
+        }
+        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
+            return CONTENT_CONSTS.SOUNDSET.WRAITH;
+        }
+
+        return CONTENT_CONSTS.SOUNDSET.CREATURE;
+    }
+        public static String getEffectSoundName(SOUNDS sound_type) {
+        switch (sound_type) {
+            case TAUNT:
+            case THREAT:
+            case ALERT:
+                return "warned";
+            case SPOT:
+                return "spoted ";
+
+
+        }
+        return sound_type.name();
+    }
+        public static void playEffectSound(SOUNDS sound_type, Obj obj) {
         setPositionFor(obj.getCoordinates());
         getPlayer().playEffectSound(sound_type, obj);
     }

@@ -36,6 +36,11 @@ public class MasteryRankSlot extends HtNode {
     }
 
     @Override
+    protected List<ObjType> createAvailable() {
+        return null;
+    }
+
+    @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         data = (MASTERY) userObject;

@@ -5,6 +5,7 @@ import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.anim3d.Potion3dAnim;
+import eidolons.libgdx.anims.std.sprite.LockKeyAnimation;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
@@ -20,6 +21,7 @@ public class EventAnimCreator {
                 case UNIT_HAS_USED_QUICK_ITEM:
                 case DOOR_CLOSES:
                 case DOOR_OPENS:
+                case DOOR_IS_UNLOCKED:
                     return true;
             }
         }
@@ -44,6 +46,9 @@ public class EventAnimCreator {
                 case DOOR_CLOSES:
                 case DOOR_OPENS:
                     return new DoorAnimation(e);
+
+                case DOOR_IS_UNLOCKED:
+                    return new LockKeyAnimation(e);
             }
 
         }

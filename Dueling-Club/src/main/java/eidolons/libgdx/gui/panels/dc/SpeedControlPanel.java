@@ -28,7 +28,7 @@ public class SpeedControlPanel extends GroupX {
         if (!VisUI.isLoaded()) {
             VisUI.load(PathFinder.getSkinPath());
         }
-        addActor(slider = new VisSlider(50, 400, 50, true));
+        addActor(slider = new VisSlider(50, 300, 50, true));
         setSize(background.getWidth(), background.getHeight());
         GdxMaster.center(slider);
 //        slider.setValue(OptionsMaster.getGameplayOptions().
@@ -39,7 +39,7 @@ public class SpeedControlPanel extends GroupX {
             public void changed(ChangeEvent event, Actor actor) {
                 float value =   slider.getValue();
                 if (ExplorationMaster.isExplorationOn()) {
-                    OptionsMaster.getAnimOptions().setValue(AnimationOptions.ANIMATION_OPTION.SPEED, value*10);
+                    OptionsMaster.getAnimOptions().setValue(AnimationOptions.ANIMATION_OPTION.SPEED, value*3);
                     OptionsMaster.getGameplayOptions().setValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED, value);
                     OptionsMaster.applyAnimOptions();
                     OptionsMaster.applyGameplayOptions();
@@ -72,7 +72,7 @@ public class SpeedControlPanel extends GroupX {
     public void draw(Batch batch, float parentAlpha) {
         if (ExplorationMaster.isExplorationOn()) {
             slider.setValue(OptionsMaster.getAnimOptions().getFloatValue(
-                    AnimationOptions.ANIMATION_OPTION.SPEED)/10);
+                    AnimationOptions.ANIMATION_OPTION.SPEED)/3);
         } else {
             checkBox.setChecked(OptionsMaster.getGameplayOptions().
                     getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL));

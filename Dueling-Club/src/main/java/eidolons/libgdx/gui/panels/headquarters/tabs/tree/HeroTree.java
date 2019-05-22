@@ -22,28 +22,29 @@ import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
  * Created by JustMe on 5/6/2018.
  */
 public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
- extends HqElement {
+        extends HqElement {
 
     protected N[][] mainNodeRows;
     protected N2[][] linkNodeRows;
 
-    public HeroTree( ) {
+    public HeroTree() {
         this(false);
     }
+
     public HeroTree(boolean altBackground) {
-        if (altBackground){
+        if (altBackground) {
             setSize(HeroCreationWorkspace.PREVIEW_WIDTH, HeroCreationWorkspace.SELECTION_HEIGHT);
             setBackground(NinePatchFactory.getLightPanelDrawable());
         } else
-        setBackgroundAndSize(GdxImageMaster.
-         getPanelBackground(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
-          530, 725));
+            setBackgroundAndSize(GdxImageMaster.
+                    getPanelBackground(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
+                            530, 725));
         mainNodeRows = createNodeRows(getMaxTier());
         linkNodeRows = createLinkNodeRows(getMaxTier());
         int tier = isTopToBottom() ? 0 : getMaxTier() - 1;
         for (; isTopToBottom()
-         ? tier < getMaxTier()
-         : tier >= 0;
+                ? tier < getMaxTier()
+                : tier >= 0;
              tier += isTopToBottom() ? 1 : -1) {
             TablePanelX rowContainer = new TablePanelX(getInnerWidth(), getRowHeight(tier));
             Stack rowStack = new Stack();
@@ -85,6 +86,7 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
     public float getRowHeight(int rowIndex) {
         return 125;
     }
+
     // build an empty tree always? probably!
     public void setBackgroundAndSize(Texture texture) {
         setBackground(new TextureRegionDrawable(new TextureRegion(texture)));
@@ -92,19 +94,22 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
         setSize(texture.getWidth(), texture.getHeight());
     }
 
-    protected   float getLinkOffsetY(int tier){
+    protected float getLinkOffsetY(int tier) {
         return 0;
-    };
+    }
+
+    ;
 
     protected float getLinkOffsetX(int tier) {
         return (getInnerWidth() - getLinkSlotsPerTier(tier) *
-         (getLinkWidth() + getLinksSpacing())) / 2;
+                (getLinkWidth() + getLinksSpacing())) / 2;
     }
 
     @Override
     public float getMinWidth() {
         return getWidth();
     }
+
     @Override
     public float getMinHeight() {
         return getHeight();
@@ -146,28 +151,83 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
 
     @Override
     protected void update(float delta) {
+        updateSlots();
+        updateLinks();
+    }
 
-        for (int tier = 0; tier < mainNodeRows.length; tier++) {
+    private void updateLinks() {
+        update(false);
+    }
+
+    private void updateSlots() {
+        update(true);
+    }
+
+    protected void update(  boolean slotsOrLinks) {
+        HtNode[][] array = slotsOrLinks ? mainNodeRows : linkNodeRows;
+
+        for (int tier = 0; tier < array.length; tier++) {
             HeroTreeDataSource treeDataSource = createTreeDataSource(dataSource);
-            int length = mainNodeRows[tier].length;
-            for (int slot = 0; slot <  length; slot++) {
-                mainNodeRows[tier][slot].setUserObject(treeDataSource.getSlotData(tier, slot));
-                mainNodeRows[tier][slot].update(delta);
-            }
-        }
-        for (int tier = 0; tier < linkNodeRows.length; tier++) {
-            HeroTreeDataSource treeDataSource = createTreeDataSource(dataSource);
-            int length = linkNodeRows[tier].length;
+            int length = array[tier].length;
+            Object lastData = null;
+            boolean lastSlot= false;
             for (int slot = 0; slot < length; slot++) {
-                linkNodeRows[tier][slot].setUserObject(treeDataSource.getLinkData(tier, slot));
-                linkNodeRows[tier][slot].update(delta);
+                if (isSequential(slotsOrLinks)) {
+                    if ( isDataAnOpenSlot(lastData)  ) {
+                        lastData = null;
+                    } else
+                        lastData = treeDataSource.getData(tier, slot, slotsOrLinks);
+                } else {
+                    lastData = treeDataSource.getData(tier, slot, slotsOrLinks);
+                }
+//                if (isSequential(slotsOrLinks))
+//                    if (lastData == null) {
+//                     if (!lastSlot)
+//                        lastData = getEmptySlotData(tier, slot);
+//                    lastSlot = true;
+//                }
+                array[tier][slot].setUserObject(lastData);
+                array[tier][slot].update(0);
             }
         }
+
+//        for (int tier = 0; tier < linkNodeRows.length; tier++) {
+//            HeroTreeDataSource treeDataSource = createTreeDataSource(dataSource);
+//            int length = linkNodeRows[tier].length;
+//            Object lastData = null;
+//            for (int slot = 0; slot < length; slot++) {
+//                if (isSequentialLinks()) {
+//                    if (lastData != null) {
+//                        if (isDataAnOpenSlot(lastData)) {
+//                            linkNodeRows[tier][slot].setUserObject(null);
+//                            linkNodeRows[tier][slot].update(delta);
+//                            continue;
+//                        }
+//                    }
+//
+//                }
+//                lastData = treeDataSource.getLinkData(tier, slot);
+//                linkNodeRows[tier][slot].setUserObject(lastData);
+//                linkNodeRows[tier][slot].update(delta);
+//            }
+//        }
 
 
         // or update all nodes?
         // yes, each node at a time,with anim actions!
     }
+
+    protected abstract boolean isDataAnOpenSlot(Object lastData);
+
+    protected boolean isSequential(boolean slotsOrLinks) {
+        return slotsOrLinks ? isSequentialSlots() : isSequentialLinks();
+    }
+
+    protected abstract Object getEmptySlotData(int tier, int slot);
+
+    protected abstract boolean isSequentialLinks();
+
+    protected abstract boolean isSequentialSlots();
 
     protected abstract HeroTreeDataSource createTreeDataSource(HqHeroDataSource dataSource);
 }

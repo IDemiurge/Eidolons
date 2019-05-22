@@ -22,10 +22,22 @@ public class DialogueMessage extends TablePanelX {
     LabelX actorName;
     Image actorImage;
 
-    public DialogueMessage(String message, String actorName, String actorImage, FONT font, float w) {
-        add(this.actorImage = new Image(TextureCache.getOrCreateR(actorImage)));
+    public DialogueMessage(String message, String actorName, String img, FONT font, float w) {
+        if (actorName == null || message == null) {
+            actorName = "Error";
+            message = "Report me!..";
+        }
+
+        this.actorImage = new Image(TextureCache.getOrCreateR(img));
+
+        if (actorName.isEmpty() && message.isEmpty()) {
+            add(this.actorImage = new Image(TextureCache.getOrCreateR(img))).size(actorImage.getPrefWidth(), actorImage.getPrefHeight()).center();
+            return;
+        } else {
+            add(actorImage).size(64, 64);
+        }
         TablePanelX<Actor> textTable = new TablePanelX<>();
-        textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).row();
+        textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).left().row();
         textTable.add(this.message = new TextBuilder(getMessageStyle(font)).addString(message).build(w));
 //        textTable.add(this.message = new LabelX(message, getMessageStyle(font)));
         add(textTable);
@@ -59,6 +71,7 @@ public class DialogueMessage extends TablePanelX {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //        ShaderMaster.drawWithCustomShader(this, DarkGrayscaleShader.getGrayscaleShader());
+        setX(0);
         super.draw(batch, parentAlpha);
     }
 }

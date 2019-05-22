@@ -68,7 +68,7 @@ public class ArcaneVault {
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
      "Full", "Battlecraft", "Arcane Tower",};
     private static final String actions = "actions;spells;buffs;abils;";
-    private static final String skills = "skills;classes;buffs;abils;";
+    private static final String skills = "skills;classes;buffs;abils;perks;actions;spells;";
     private static final String units = "chars;units;deities;dungeons;factions;";
     private static final String microForMacro =
      "party;scenarios;dungeons;factions;";

@@ -38,13 +38,13 @@ public class Structure extends BattleFieldObject {
         this(type, owner, game, ref);
         setCoordinates(Coordinates.get(x, y));
         if (isWall()) {
-            try {
-                if (getCoordinates().equals(((LocationMaster) game.getDungeonMaster()).getDungeonWrapper().
-                        getMainEntrance().getCoordinates())) {
-                    setCoordinates(Coordinates.get(0, 0));
-                }
-            } catch (Exception e) {
-            }
+//            try {  TODO igg demo fix - wtf is this
+//                if (getCoordinates().equals(((LocationMaster) game.getDungeonMaster()).getDungeonWrapper().
+//                        getMainEntrance().getCoordinates())) {
+//                    setCoordinates(Coordinates.get(0, 0));
+//                }
+//            } catch (Exception e) {
+//            }
         }
     }
 

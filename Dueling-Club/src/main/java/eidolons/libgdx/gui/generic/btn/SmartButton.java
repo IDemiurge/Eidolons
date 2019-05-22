@@ -40,13 +40,13 @@ public class SmartButton extends TextButton implements EventListener {
 
     public SmartButton(String text, STD_BUTTON button, Runnable runnable) {
         this(text, button, runnable,
-         FONT.MAGIC, 20, GdxColorMaster.PALE_GOLD);
+                FONT.MAGIC, 20, GdxColorMaster.PALE_GOLD);
     }
 
     public SmartButton(String text, STD_BUTTON button, Runnable runnable,
                        FONT font, int size, Color color_) {
         this(text, StyleHolder.getTextButtonStyle(button,
-         font, color_, size), runnable, button);
+                font, color_, size), runnable, button);
         this.style = button;
     }
 
@@ -89,15 +89,27 @@ public class SmartButton extends TextButton implements EventListener {
     //    }
     //        );
     @Override
-    public boolean handle(Event e) {
+    public boolean handle(Event event) {
+        // igg demo hack
+        try {
+            return handleEvent(event);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return true;
+    }
+
+    public boolean handleEvent(Event e) {
         if (!isIgnoreConfirmBlock())
             if (ConfirmationPanel.getInstance().isVisible())
                 return true;
+
+
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
         STD_SOUNDS sound = null;
         if (event.getType() == Type.touchUp) {
-            if ( event.getPointer()==-1 //programmatic
+            if (event.getPointer() == -1 //programmatic
                     || GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
                 if (!isDisabled()) {
                     if (getSoundMap() != null)
@@ -178,7 +190,7 @@ public class SmartButton extends TextButton implements EventListener {
         this.disabledRunnable = disabledRunnable;
     }
 
-    public SmartButton makeActive( ) {
+    public SmartButton makeActive() {
         GlobalController.setActiveButton(this);
         return this;
     }

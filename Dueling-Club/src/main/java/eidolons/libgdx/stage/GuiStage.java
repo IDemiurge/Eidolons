@@ -10,6 +10,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueWizard;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -59,6 +63,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
+import static eidolons.game.core.Eidolons.getScreen;
 import static main.system.GuiEventType.SHOW_QUESTS_INFO;
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 
@@ -92,10 +97,14 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected QuestJournal journal;
     protected SmartButton menuButton;
     protected boolean town;
+    protected boolean dialogueMode;
     protected Set<Actor> hiddenActors = new HashSet<>();
     protected ValueContainer locationLabel;
     PlaceNavigationPanel navigationPanel;
     private TipMessageWindow tipMessageWindow;
+    private ArrayList<Actor> townActors;
+    private ArrayList<Actor> dialogueActors;
+    private DialogueContainer dialogueContainer;
 
 
     public GuiStage(Viewport viewport, Batch batch) {
@@ -141,6 +150,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         //         GdxMaster.getHeight() - helpButton.getHeight());
         //        addActor(helpButton);
         tipMessageWindow = new TipMessageWindow(null);
+        addActor(dialogueContainer = new DialogueContainer());
         addActor(questProgressPanel = new QuestProgressPanel());
         HideButton hideQuests = new HideButton(questProgressPanel);
         addActor(hideQuests);
@@ -172,7 +182,12 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         gameMenu.setZIndex(Integer.MAX_VALUE);
 
-        addActor(actionTooltipContainer = new SuperContainer(actionTooltip));
+        addActor(actionTooltipContainer = new SuperContainer(actionTooltip){
+            @Override
+            public int getFluctuatingAlphaPeriod() {
+                return 0;
+            }
+        });
         actionTooltipContainer.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.ATB_POS);
         actionTooltipContainer.setAlphaFluctuationOn(true);
 
@@ -205,6 +220,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(tooltips = new ToolTipManager(this));
 
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
+                @Override
+                public int getFluctuatingAlphaPeriod() {
+                return 0;
+            }
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (parentAlpha == ShaderDrawer.SUPER_DRAW)
@@ -304,7 +323,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 actionTooltipContainer.setFluctuateAlpha(true);
                 if (!Eidolons.getGame().getManager().isSelecting())
                     if (!CoreEngine.isIggDemoRunning()) //TODO igg demo fix
-                     hideTooltip(actionTooltip, 1);
+                        hideTooltip(actionTooltip, 1);
             }
         if (infoTooltipContainer != null)
             if (infoTooltipContainer.getActions().size == 0)
@@ -320,6 +339,19 @@ public class GuiStage extends StageX implements StageWithClosable {
                 }
             }
         }
+        if (dialogueMode) {
+            for (Actor actor : getRoot().getChildren()) {
+                if (getActorsForDialogue().contains(actor)) {
+                    continue;
+                }
+                if (actor.isVisible()) {
+                    actor.setVisible(false);
+                    hiddenActors.add(actor);
+                }
+            }
+        } else
+            dialogueContainer.setVisible(false);
+
         if (locationLabel != null) {
             locationLabel.setPosition(0,
                     GdxMaster.getHeight() - locationLabel.getHeight());
@@ -328,20 +360,42 @@ public class GuiStage extends StageX implements StageWithClosable {
         resetZIndices();
     }
 
+    public List<Actor> getActorsForDialogue() {
+        if (dialogueActors == null) {
+            dialogueActors =
+                    new ArrayList<>(Arrays.asList(new Actor[]{
+                            dialogueContainer,
+                            confirmationPanel,
+                            getMenuButton().getParent(),
+                            getGameMenu(),
+                            getTooltips(),
+                            blackout,
+                            actionTooltipContainer,
+                            infoTooltipContainer,
+                            OptionsWindow.getInstance()
+                    }));
+        }
+        return dialogueActors;
+    }
+
     public List<Actor> getActorsForTown() {
-        return new ArrayList<>(Arrays.asList(new Actor[]{
-                dragManager,
-                confirmationPanel,
-                hqPanel,
-                textPanel,
-                getMenuButton().getParent(),
-                getGameMenu(),
-                getTooltips(),
-                blackout,
-                actionTooltipContainer,
-                infoTooltipContainer,
-                OptionsWindow.getInstance()
-        }));
+        if (townActors == null) {
+            townActors =
+                    new ArrayList<>(Arrays.asList(new Actor[]{
+                            dragManager,
+                            confirmationPanel,
+                            hqPanel,
+                            textPanel,
+                            getMenuButton().getParent(),
+                            getGameMenu(),
+                            getTooltips(),
+                            blackout,
+                            actionTooltipContainer,
+                            infoTooltipContainer,
+                            OptionsWindow.getInstance()
+                    }));
+        }
+        return townActors;
     }
 
     protected boolean checkBlocked() {
@@ -612,7 +666,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (DC_Game.game.getKeyManager() == null) {
             return false;
         }
-        if (DC_Game.game.getKeyManager().handleKeyDown(keyCode)){
+        if (DC_Game.game.getKeyManager().handleKeyDown(keyCode)) {
             return true;
         }
         return super.keyDown(keyCode);
@@ -759,5 +813,35 @@ public class GuiStage extends StageX implements StageWithClosable {
                 hiddenActors.remove(actor);
             }
         }
+    }
+
+    public void setDialogueMode(boolean dialogueMode) {
+        this.dialogueMode = dialogueMode;
+        if (!dialogueMode) {
+            for (Actor actor : new ArrayList<>(hiddenActors)) {
+                actor.setVisible(true);
+                hiddenActors.remove(actor);
+            }
+        }
+        getScreen().updateInputController();
+    }
+
+    public void playDialogue(DialogueHandler handler) {
+        if (dialogueMode){
+            dialogueDone();
+        }
+        dialogueContainer.fadeIn();
+        dialogueContainer.play(handler);
+        setDialogueMode(true);
+    }
+
+    public void dialogueDone() {
+        dialogueContainer.fadeOut();
+        setDialogueMode(false);
+
+    }
+
+    public boolean isDialogueMode() {
+        return dialogueMode;
     }
 }

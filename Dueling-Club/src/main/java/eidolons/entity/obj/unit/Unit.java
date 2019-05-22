@@ -55,7 +55,6 @@ import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
@@ -77,11 +76,13 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -97,6 +98,8 @@ public class Unit extends DC_UnitModel {
     protected DC_WeaponObj naturalWeapon;
     protected DC_WeaponObj weapon;
     protected DC_WeaponObj secondWeapon;
+    protected DC_WeaponObj reserveMainWeapon;
+    protected DC_WeaponObj reserveOffhandWeapon;
     // protected Footwear boots;
     // protected Helmet helmet;
     // protected Gloves gloves;
@@ -137,6 +140,8 @@ public class Unit extends DC_UnitModel {
                 if (Eidolons.getMainHero() != null) {
                     message += " SECOND TIME!...";
                     Eidolons.getMainHero().removeFromGame();
+
+                    addProperty(true, PROPS.INVENTORY, "Jade Key");
                 }
             }
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
@@ -658,7 +663,7 @@ public class Unit extends DC_UnitModel {
 
     public void setInventory(DequeImpl<DC_HeroItemObj> inventory) {
         if (inventory == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "Inventory nullified  " + this);
+            LogMaster.log(1, "Inventory nullified  " + this);
         }
         this.inventory = inventory;
     }
@@ -757,7 +762,7 @@ public class Unit extends DC_UnitModel {
         try {
             getInventory().add(item);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             return false;
         }
         item.setRef(getRef());
@@ -801,8 +806,17 @@ public class Unit extends DC_UnitModel {
             case OFF_HAND:
                 setSecondWeapon((DC_WeaponObj) item);
                 break;
+            case RESERVE_MAIN_HAND:
+                setReserveMainWeapon((DC_WeaponObj) item);
+                break;
+            case RESERVE_OFF_HAND:
+                setReserveOffhandWeapon((DC_WeaponObj) item);
+                break;
         }
         if (item != null) {
+            if (slot == ITEM_SLOT.RESERVE_MAIN_HAND|| slot == ITEM_SLOT.RESERVE_OFF_HAND) {
+//               TODO  item.equipReserve(ref);
+            } else
             item.equipped(ref);
         }
     }
@@ -914,11 +928,11 @@ public class Unit extends DC_UnitModel {
         item.setRef(ref);
     }
 
-    public void unequip(ITEM_SLOT slot) {
-        unequip(slot, false);
+    public DC_HeroItemObj unequip(ITEM_SLOT slot) {
+       return  unequip(slot, false);
     }
 
-    public void unequip(ITEM_SLOT slot, Boolean drop) {
+    public DC_HeroItemObj unequip(ITEM_SLOT slot, Boolean drop) {
         DC_HeroItemObj item = null;
         switch (slot) {
             case ARMOR:
@@ -933,6 +947,14 @@ public class Unit extends DC_UnitModel {
                 item = getOffhandWeapon();
                 setSecondWeapon(null);
                 break;
+            case RESERVE_MAIN_HAND:
+                item = getReserveMainWeapon();
+                setReserveMainWeapon(null);
+                break;
+            case RESERVE_OFF_HAND:
+                item = getReserveOffhandWeapon();
+                setReserveOffhandWeapon(null);
+                break;
         }
         if (item instanceof DC_WeaponObj) {
             if (((DC_WeaponObj) item).isRanged()) {
@@ -940,7 +962,7 @@ public class Unit extends DC_UnitModel {
             }
         }
         if (item == null) {
-            return;
+            return item;
         }
         if (drop != null) {
             addItemToInventory(item);
@@ -949,6 +971,8 @@ public class Unit extends DC_UnitModel {
             }
         }
         item.unequip();
+
+        return item;
     }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, BattleFieldObject target, Ref REF,
@@ -1317,7 +1341,7 @@ public class Unit extends DC_UnitModel {
                 if (getCoordinates().dst_(coordinates)>=2) {
                     if (game.isStarted())
                         if (!originalCoordinates.equals(coordinates)){
-                            main.system.auxiliary.log.LogMaster.log(1,"Teleport bug? " );
+                            LogMaster.log(1,"Teleport bug? " );
                             return;
                         }
                 }
@@ -1665,5 +1689,49 @@ public class Unit extends DC_UnitModel {
 
     public void applyBuffRules() {
         getResetter().applyBuffRules();
+    }
+
+    public DC_WeaponObj getReserveMainWeapon() {
+        return reserveMainWeapon;
+    }
+    public DC_WeaponObj getReserveOffhandWeapon() {
+        return reserveOffhandWeapon;
+    }
+
+
+    public void setReserveMainWeapon(DC_WeaponObj reserveMainWeapon) {
+        this.reserveMainWeapon = reserveMainWeapon;
+        if (reserveMainWeapon != null) {
+            reserveMainWeapon.setMainHand(true);
+        } else {
+            ref.setID(KEYS.RESERVE_WEAPON, null);
+        }
+        if (!game.isSimulation() && !isLoaded()) {
+            String id = "";
+            if (reserveMainWeapon != null) {
+                id = reserveMainWeapon.getId() + "";
+            }
+            setProperty(G_PROPS.RESERVE_MAIN_HAND_ITEM, id);
+        }
+    }
+    public void setReserveOffhandWeapon(DC_WeaponObj reserveOffhandWeapon) {
+
+        this.reserveOffhandWeapon = reserveOffhandWeapon;
+        if (reserveOffhandWeapon != null) {
+            reserveOffhandWeapon.setMainHand(false);
+        } else {
+            ref.setID(KEYS.RESERVE_OFFHAND_WEAPON, null);
+        }
+        if (!game.isSimulation() && !isLoaded()) {
+            String id = "";
+            if (reserveOffhandWeapon != null) {
+                id = reserveOffhandWeapon.getId() + "";
+            }
+            setProperty(G_PROPS.RESERVE_OFF_HAND_ITEM, id);
+        }
+    }
+
+    public DC_HeroItemObj getReserveWeapon(boolean offhand) {
+        return !offhand ? getReserveMainWeapon() : getReserveOffhandWeapon();
     }
 }

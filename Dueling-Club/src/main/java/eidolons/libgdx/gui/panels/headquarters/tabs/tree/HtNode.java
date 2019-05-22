@@ -1,9 +1,12 @@
 
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.bf.SpriteActor;
@@ -14,6 +17,7 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -26,7 +30,9 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextParser;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -34,16 +40,23 @@ import java.util.Collection;
 public abstract class HtNode extends DynamicLayeredActor {
 
     protected boolean editable;
-    private Unit hero;
+    protected Unit hero;
     protected int tier;
     protected int slot;
-    SpriteActor sprite = new SpriteActor();
+    protected List<ObjType> available;
 
     public HtNode(int tier, String rootPath, String overlay, String underlay, int slot) {
         super(getRootPath(rootPath, tier), overlay, underlay);
         this.tier = tier;
         this.slot = slot;
         init();
+    }
+
+
+
+    protected String getSpritePathRoot() {
+        return PathFinder.getHqPath() +
+                "trees/sprites/";
     }
 
 
@@ -59,38 +72,13 @@ public abstract class HtNode extends DynamicLayeredActor {
         return 64;
     }
 
-    protected void playStateAnim() {
-        boolean alt = RandomWizard.chance(getAltChance(status));
-        sprite.play(getAnimForStatus(status, alt));
 
-    }
-
-    protected int getAltChance(ACTOR_STATUS status) {
-        return 25;
-    }
-
-    protected SPRITE_ACTOR_ANIMATION getAnimForStatus(ACTOR_STATUS status, boolean alt) {
-        switch (status) {
-            case HOVER:
-                //TODO on status changed?
-                if (alt)
-                    return SPRITE_ACTOR_ANIMATION.FLASH;
-                return SPRITE_ACTOR_ANIMATION.SCUD_OVER;
-            case NORMAL:
-                if (alt)
-                    return SPRITE_ACTOR_ANIMATION.SCUD_OVER;
-                return SPRITE_ACTOR_ANIMATION.FADE_IN_OUT;
-            case DISABLED:
-                return SPRITE_ACTOR_ANIMATION.FADE_IN_OUT;
-            case ACTIVE:
-                if (alt)
-                    return SPRITE_ACTOR_ANIMATION.FLASH;
-                return SPRITE_ACTOR_ANIMATION.FADE_IN_OUT;
-        }
-        return null;
-    }
 
     public void update(float delta) {
+        updateListeners();
+    }
+
+    private void updateListeners() {
         clearListeners();
         Tooltip tooltip = getTooltip();
         if (tooltip != null)
@@ -120,6 +108,12 @@ public abstract class HtNode extends DynamicLayeredActor {
 //                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
             }
         });
+    }
+
+    protected abstract List<ObjType> createAvailable() ;
+
+    protected boolean isImgOnTop() {
+        return false;
     }
 
     public float getPeriod() { // alt
@@ -177,11 +171,11 @@ public abstract class HtNode extends DynamicLayeredActor {
     }
 
     protected void mouseEntered() {
-
+        setStatus(ACTOR_STATUS.HOVER);
     }
 
     protected void mouseExited() {
-
+        setStatus(defaultStatus);
     }
 
 

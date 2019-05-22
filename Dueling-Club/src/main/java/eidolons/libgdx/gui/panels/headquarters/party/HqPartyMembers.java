@@ -27,6 +27,7 @@ public class HqPartyMembers extends HqPartyElement {
     @Override
     protected void update(float delta) {
         clear();
+
         if (!vertical)
         {
             addActor(bg);

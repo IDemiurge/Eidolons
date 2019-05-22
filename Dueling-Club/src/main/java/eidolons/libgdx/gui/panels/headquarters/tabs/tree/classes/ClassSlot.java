@@ -56,6 +56,7 @@ public class ClassSlot extends HtNode {
     }
     public void update(float delta) {
         if (data != null) {
+            image.setZIndex(999);
             enable();
             setRootPath(
                     HeroClassMaster.getImgPath(data)
@@ -64,14 +65,19 @@ public class ClassSlot extends HtNode {
 //            setRootPath(GdxImageMaster.getRoundedPath(data.getImagePath()));
         } else {
             resetToOriginal();
-            available = HeroClassMaster.getClassesToChooseFrom(getHero(),
-             tier);
+            available = createAvailable();
             if (available.isEmpty())
                 disable();
             //TODO block(); if no reqs
         }
 
         super.update(delta);
+    }
+
+    @Override
+    protected List<ObjType> createAvailable() {
+        return HeroClassMaster.getClassesToChooseFrom(getHero(),
+                tier);
     }
 
 

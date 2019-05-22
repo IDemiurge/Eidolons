@@ -237,6 +237,9 @@ public class GuiVisualEffects extends GroupX {
 
     @Override
     public void act(float delta) {
+
+        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
+             return;
         if (emitters == null)
             if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
                 initEmitters();

@@ -183,7 +183,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         ai_delta += delta;
         ignore_reset_delta += delta;
 
-
+    if (!CoreEngine.isActiveTestMode())
         if (AiBehaviorManager.isNewAiOn()) {
             boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);

@@ -41,6 +41,7 @@ public class DialoguePortraitContainer extends TablePanelX {
 //         ImageManager.getValueIconPath(MACRO_PARAMS.AFFECTION));
 //        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
         add(nameLabel = new LabelX()).row();
+        nameLabel.setStyle(StyleHolder.getHqLabelStyle(20));
 //        add(teaInfo ).row();
         add(portrait = new FadeImageContainer()).row();
 

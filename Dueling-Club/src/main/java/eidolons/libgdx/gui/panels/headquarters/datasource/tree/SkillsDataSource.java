@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.datasource.tree;
 
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.entity.Ref;
@@ -20,7 +21,6 @@ import java.util.List;
  */
 public class SkillsDataSource extends HeroTreeDataSource {
 
-    private static DC_FeatObj dummy;
 
     public SkillsDataSource(Unit hero) {
         super(hero);
@@ -65,7 +65,7 @@ public class SkillsDataSource extends HeroTreeDataSource {
         while (true) {
             if (ranks.size() <= i+1) break;
 
-            DC_FeatObj skill = getEmptySkill();
+            DC_FeatObj skill =  SkillMaster.getEmptySkill();
 
             if (skills.get(i) !=null )
                 skill = skills.get(i);
@@ -78,12 +78,7 @@ public class SkillsDataSource extends HeroTreeDataSource {
         return list;
     }
 
-    private DC_FeatObj getEmptySkill() {
-        if (dummy == null) {
-            dummy = new DC_FeatObj(new ObjType(SkillMaster.DUMMY_SKILL), new Ref(hero));
-        }
-        return dummy;
-    }
+
 
 
 }

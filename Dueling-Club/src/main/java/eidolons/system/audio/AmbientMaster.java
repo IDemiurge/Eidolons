@@ -19,6 +19,27 @@ public class AmbientMaster {
     public static final String FORMAT = ".mp3";
     private static final AMBIENCE DEFAULT_AMBIENCE = EVIL;
 
+    public enum ATMO_SCOPE {
+        MENU, HC, BATTLE
+    }
+
+    public enum ATMO_SOUND_TYPE {
+        CREEK,
+        WHISPER,
+        WAVES,
+        WIND_HOWL,
+        WIND_BLOW,
+        ROCK_FALL,
+        BIRD_CHIRP,
+        RIVER,
+        WOLF_HOWL,
+        DOG_BARK,
+        HUMAN_CHATTER,
+        HUMAN_WHISPER,
+        PICK_AXE,
+
+    }
+
     public static AMBIENCE getCurrentAmbience(boolean alt, boolean global) {
 //        if (!ExplorationMaster.isExplorationOn()){
 //            return null;

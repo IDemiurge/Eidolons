@@ -91,7 +91,7 @@ public class EmitterActor extends SuperActor {
         super.act(delta);
         effect.setPosition(getX(), getY());
         //        effect.update(delta); TODO now drawing with alpha!
-effect.getEmitters().first().flipY();
+       //effect.getEmitters().first().flipY(); wh isn't there flipx
     }
 
     public void setFlipX(boolean flipX) {
