@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai.explore;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -39,7 +40,12 @@ public class AggroMaster extends ExplorationHandler {
         }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
-        for (Unit ally : DC_Game.game.getPlayer(true).collectControlledUnits_()) {
+        Set<Unit> heroes = DC_Game.game.getPlayer(true).collectControlledUnits_();
+        if (Eidolons.BOSS_FIGHT){
+            list.addAll(heroes);
+            return list;
+        }
+        for (Unit ally : heroes) {
             //            if (sightRequiredForAggro) {
             //                if (!VisionManager.checkDetected(ally, true)) {
             //                    continue;
@@ -68,6 +74,9 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getLastAggroGroup() {
+        if (lastAggroGroup == null) {
+            return new ArrayList<>();
+        }
         return lastAggroGroup;
     }
 

@@ -13,6 +13,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
@@ -38,6 +39,7 @@ import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Created by JustMe on 1/9/2017.
@@ -166,7 +168,7 @@ public class AnimMaster extends Group {
         int minTime = maxTime / 2;
 
         if (action.getContext().getSourceObj() instanceof BossUnit) {
-            maxTime= 2000;
+            maxTime = 2000;
             minTime = maxTime;
         }
 
@@ -181,8 +183,8 @@ public class AnimMaster extends Group {
             //update something? add "." to something?
             waitTime += period;
             System.out.print('.');
-                EUtils.showInfoText(show);
-                show += ".";
+            EUtils.showInfoText(show);
+            show += ".";
         }
         boolean control = OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL);
 
@@ -274,7 +276,7 @@ public class AnimMaster extends Group {
             bossAnimator = new BossAnimator((BossView) p.get(), this);
 
         });
-            GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
+        GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {
                 return;
             }
@@ -289,8 +291,20 @@ public class AnimMaster extends Group {
         });
         GuiEventManager.bind(GuiEventType.SHOW_SPRITE, p -> {
 //            AnimConstructor.createSpriteAnim(path);
+            try {
+                List z = (List) p.get();
+                String path = (String) z.get(0);
+                DC_ActiveObj active = (DC_ActiveObj) z.get(1);
+                new CustomSpriteAnim(active, path).startAsSingleAnim();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
-
+        });
+        GuiEventManager.bind(GuiEventType.SHOW_SPRITE_SUPPLIER, p -> {
+//            AnimConstructor.createSpriteAnim(path);
+            Supplier<SpriteAnimation> sup = (Supplier<SpriteAnimation>) p.get();
+            new CustomSpriteAnim(Eidolons.getMainHero().getLastAction(), sup.get()).startAsSingleAnim();
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p -> {

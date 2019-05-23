@@ -174,7 +174,7 @@ public class DC_Game extends GenericGame {
         loop = exploreLoop;
     }
 
-    protected void initMasters() {
+    public void initMasters() {
 
         master = new DC_GameObjMaster(this);
         manager = new DC_GameManager(getState(), this);

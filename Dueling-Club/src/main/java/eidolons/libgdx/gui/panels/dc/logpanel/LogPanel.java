@@ -73,9 +73,9 @@ public class LogPanel extends ScrollTextWrapper {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
-            return;
-        }
+//        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
+//            return;
+//        }  if it worked, could boost performance a bit when rolled out...
         super.draw(batch, parentAlpha);
     }
 

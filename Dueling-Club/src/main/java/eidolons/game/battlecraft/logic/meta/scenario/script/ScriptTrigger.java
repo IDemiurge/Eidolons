@@ -24,6 +24,8 @@ public class ScriptTrigger extends Trigger {
 
     @Override
     public boolean trigger() {
+        if (ScriptMaster.isScriptsOff())
+            return false;
         return super.trigger();
     }
 

@@ -50,7 +50,10 @@ public class SkillSlot extends HtNode {
                 //check last?
                 //or compare to prev data?
                 // or just allow to play it only once
-                playStateAnim();
+//                if (!animPlayed){
+//                    playStateAnim();
+//                    animPlayed= true;
+//                }
             }
         }
         super.update(delta);
@@ -60,9 +63,7 @@ public class SkillSlot extends HtNode {
       return   SkillMaster.getAllSkills(getHero(), tier, data.getMiddle(), data.getRight());
     }
 
-    protected boolean isImgOnTop() {
-        return false;
-    }
+
 
 
     @Override

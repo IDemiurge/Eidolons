@@ -2,6 +2,9 @@ package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
+import main.data.xml.XML_Converter;
+import main.data.xml.XML_Formatter;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 public class IGG_Demo {
@@ -31,8 +34,9 @@ public class IGG_Demo {
     };
 
     public static IGG_MISSION getMissionByName(String missionName) {
+        missionName=XML_Formatter.restoreXmlNodeName(missionName).trim();
         for (IGG_MISSION value : IGG_MISSION.values()) {
-            if (StringMaster.getWellFormattedString(value.name()).toLowerCase().contains(missionName.toLowerCase())) {
+            if (value.getMissionName().toLowerCase().contains(missionName.toLowerCase())) {
                 return value;
             }
         }
@@ -40,15 +44,33 @@ public class IGG_Demo {
         //better store in this form, what if real name changes in updates!
     }
 
-    public enum IGG_MISSION{
-        ACT_I_MISSION_I("Gates of Nyrn", 1,1),
-        ACT_I_MISSION_II("Fel Tunnels", 1,2),
-        ACT_I_MISSION_III("Blackfathom", 1,3),
+    public enum IGG_MISSION {
+        ACT_I_MISSION_I("Gates of Nyrn", 1, 1){
+            @Override
+            public boolean isTutorial() {
+                return true;
+            }
+        },
+        ACT_I_MISSION_II("Fortress of Nyrn", 1, 2),
+        ACT_I_FINALE("Rune Vault - boss", 1, 3),
 
-        FINALE("Nightmare", 4,1){
+        ACT_II_MISSION_I("Bastion", 1, 3),
+        ACT_II_FINALE("Shadow Tower - Boss", 2, 1) {
             @Override
             public boolean isBossFight() {
                 return true;
+            }
+        },
+
+        FINALE("Nightmare - Boss", 4, 1) {
+            @Override
+            public boolean isBossFight() {
+                return true;
+            }
+
+            @Override
+            public IGG_MISSION getNext() {
+                return null;
             }
         },
         ;
@@ -56,6 +78,13 @@ public class IGG_Demo {
         int act;
         int missionIndex;
 
+        public IGG_MISSION getNext() {
+            return values()[EnumMaster.getEnumConstIndex(getClass(), this) + 1];
+        }
+
+        public String getScenarioName() {
+            return StringMaster.getWellFormattedString(name().split("__")[0]);
+        }
         IGG_MISSION(String missionName, int act, int mission) {
             this.missionName = missionName;
             this.act = act;
@@ -77,6 +106,10 @@ public class IGG_Demo {
         public boolean isBossFight() {
             return false;
 
+        }
+
+        public boolean isTutorial() {
+            return false;
         }
     }
 }

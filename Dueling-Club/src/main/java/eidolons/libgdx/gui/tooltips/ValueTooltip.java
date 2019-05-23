@@ -84,6 +84,11 @@ public class ValueTooltip extends Tooltip {
     }
 
     @Override
+    public float getPrefWidth() {
+        return super.getPrefWidth();
+    }
+
+    @Override
     public void afterUpdateAct(float delta) {
         super.afterUpdateAct(delta);
         if (getDefaultBackground()!=null )

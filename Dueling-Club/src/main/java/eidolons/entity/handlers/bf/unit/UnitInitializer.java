@@ -182,7 +182,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initInventory() {
-        if (!getEntity().isPlayerCharacter())
+        if (!getEntity().isMine())
             if (ContainerMaster.isGenerateItemsForUnits())
                 if (ContainerMaster.isPregenerateItems(getEntity()))
                     if (!ListMaster.isNotEmpty(getEntity().getInventory())){

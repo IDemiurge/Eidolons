@@ -19,6 +19,7 @@ import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 /**
@@ -110,6 +111,11 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isImmortalityOn() {
+        if (CoreEngine.isLiteLaunch()){
+            if (CoreEngine.isContentTestMode()) {
+                return true;
+            }
+        }
         if (isMine()) {
             if (equals(getEntity().getOwner().getHeroObj())) {
                 return game.isDummyMode();

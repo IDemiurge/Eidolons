@@ -102,7 +102,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO
-                return !isOpen(door);
+                if (door.getState() == DOOR_STATE.CLOSED)
+                    return true;
+                return false;
             case CLOSE:
                 if (door.getGame().getObjectsAt(door.getCoordinates()).size() > 1) {
                     return false;
@@ -112,7 +114,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
                 return door.getState() == DOOR_STATE.LOCKED;
             case UNSEAL:
                 if (door.getState() == DOOR_STATE.SEALED){
-                    return checkCanUnseal(unit, door);
+                    if (checkCanUnseal(unit, door)) {
+                        return true;
+                    }
                 }
                 return false;
         }

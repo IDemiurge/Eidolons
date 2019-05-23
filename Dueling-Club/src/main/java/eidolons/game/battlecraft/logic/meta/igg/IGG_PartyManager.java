@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
+import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
@@ -18,6 +19,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.List;
@@ -47,9 +49,10 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
     private ObjType getPartyType() {
         return DataManager.getType("Chained", DC_TYPE.PARTY);
     }
+
     @Override
     public Party initPlayerParty() {
-        if ( getMaster().getMetaGame().getMissionIndex()>0) {
+        if (getMaster().getMetaGame().getMissionIndex() > 0) {
             party = Eidolons.getParty();
             //choose again?
             if (party != null)
@@ -58,12 +61,13 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
         ObjType type = new ObjType(getPartyType());
         List<String> members = ContainerUtils.openContainer(type.getProperty(PROPS.MEMBERS));
-                String hero = selectedHero; //for restart
-                if (hero == null)
-                    hero = chooseHero(members);
-                if (hero == null) {
-                    return null; //aborted
-                }
+        if (selectedHero == null)
+            selectedHero = chooseHero(members);
+        String hero = selectedHero; //for restart
+
+        if (hero == null) {
+            return null; //aborted
+        }
 
         if (party == null) {
             party = createParty(type, selectedHero);
@@ -92,9 +96,9 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     public void respawn(String newHero) {
 //        avatar = chain.findHero(newHero);
-        main.system.auxiliary.log.LogMaster.log(1,"respawn as " +
+        main.system.auxiliary.log.LogMaster.log(1, "respawn as " +
                 newHero +
-                "; old hero: " +Eidolons.getMainHero().getInfo());
+                "; old hero: " + Eidolons.getMainHero().getInfo());
         removeOldHero();
         selectedHero = newHero;
         ObjType type = DataManager.getType(selectedHero, DC_TYPE.CHARS);
@@ -127,9 +131,9 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
 
 
-        main.system.auxiliary.log.LogMaster.log(1,"respawned as " +
+        main.system.auxiliary.log.LogMaster.log(1, "respawned as " +
                 newHero +
-                "; new hero: " +Eidolons.getMainHero().getInfo());
+                "; new hero: " + Eidolons.getMainHero().getInfo());
     }
 
 
@@ -139,6 +143,9 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     @Override
     protected String chooseHero(List<String> members) {
+        if (!CoreEngine.isSelectHeroMode() || getMetaGame().getMissionIndex() > 0) {
+            return members.get(0);
+        }
         if (isWaitForGdx())
             WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
         return super.chooseHero(members);

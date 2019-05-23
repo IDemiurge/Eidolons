@@ -144,7 +144,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     private boolean isSpriteBgTest() {
-        return false;
+        return Eidolons.TUTORIAL;
     }
 
     @Override

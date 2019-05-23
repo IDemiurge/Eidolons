@@ -58,50 +58,50 @@ public class AnimMaster3d {
     private static final int frames = 30;
     //  TINY, SMALL, MEDIUM, LARGE, HUGE
     private static final int[] height_for_size = {
-     64, 128, 196, 256, 320,
+            64, 128, 196, 256, 320,
     };
     private static final int[] width_for_size = {
-     256, 320, 384, 448, 512,
+            256, 320, 384, 448, 512,
     };
     private static final String[][] substitutesWeapons = {
-     //     {"halbert", "axe"},
+            //     {"halbert", "axe"},
 
-     {"golem fist", "armored fist"},
-     {"tail", "insect claws"},
-     {"paws", "claws"},
-     {"tentacle", "insect claws"},
-          {"lance", "spear"},
-     //     {"pike", "spear"},
-     //     {"staff", "spear"},
-     //     {"battle staff", "spear"},
-     //     {"scythe", "spear"},
-     {"sickle", "hand axe"},
+            {"golem fist", "armored fist"},
+            {"tail", "insect claws"},
+            {"paws", "claws"},
+            {"tentacle", "insect claws"},
+            {"lance", "spear"},
+            //     {"pike", "spear"},
+            //     {"staff", "spear"},
+            //     {"battle staff", "spear"},
+            //     {"scythe", "spear"},
+            {"sickle", "hand axe"},
 
 
-     //     {"broad sword", "long sword"},
-     //     {"falchion", "scimitar"},
-     {"orcish arrows", "arrows"},
-     {"elven arrows", "arrows"},
+            //     {"broad sword", "long sword"},
+            //     {"falchion", "scimitar"},
+            {"orcish arrows", "arrows"},
+            {"elven arrows", "arrows"},
 
-     {"heavy bolts", "bolts"},
-     {"heavy crossbow", "crossbow"},
-     {"hand crossbow", "crossbow"},
-     {"longbow", "short bow"},
-     //     {"war axe", "battle axe"},
-     //     {"great axe", "battle axe"},
-     //     {"kriss", "stiletto"},
+            {"heavy bolts", "bolts"},
+            {"heavy crossbow", "crossbow"},
+            {"hand crossbow", "crossbow"},
+            {"longbow", "short bow"},
+            //     {"war axe", "battle axe"},
+            //     {"great axe", "battle axe"},
+            //     {"kriss", "stiletto"},
 
 
     };
     private static final String[][] substitutesActions = {
-     {"fist swing", "punch"},
-     {"aimed shot", "quick shot"}
+            {"fist swing", "punch"},
+            {"aimed shot", "quick shot"}
     };
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
     private static Boolean off;
-    private static float fps= fps30;
+    private static float fps = fps30;
 
     static {
         init();
@@ -205,10 +205,10 @@ public class AnimMaster3d {
                                                   Boolean offhand) {
         StringBuilder s = new StringBuilder();
         s.append(
-         ContainerUtils.join(SEPARATOR,
-          weaponName,
-          actionName, ANIM, projection
-         ));
+                ContainerUtils.join(SEPARATOR,
+                        weaponName,
+                        actionName, ANIM, projection
+                ));
 
         //       TODO  if (BooleanMaster.isTrue(offhand))
         //            s.append(SEPARATOR + "l");
@@ -230,7 +230,7 @@ public class AnimMaster3d {
 
         //        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
         projectionString = (projection == null ? "hor" :
-         (projection ? "from" : "to"));
+                (projection ? "from" : "to"));
         //        }
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
@@ -263,12 +263,12 @@ public class AnimMaster3d {
             }
         Boolean offhand = null;
 //       TODO !!! if (projection != null)
-            if (isAssymetric(weapon.getBaseTypeName()))
-                offhand = (activeObj.isOffhand());
+        if (isAssymetric(weapon.getBaseTypeName()))
+            offhand = (activeObj.isOffhand());
 
         return getAtlasFileKeyForAction(projectionString,
-         getWeaponAtlasKey(weapon),
-         actionName, offhand);
+                getWeaponAtlasKey(weapon),
+                actionName, offhand);
     }
 
     private static boolean isMissSupported() {
@@ -277,7 +277,7 @@ public class AnimMaster3d {
 
     private static String getActionAtlasKey(DC_ActiveObj activeObj) {
         String name = activeObj
-         .getName().replace("Off Hand ", "");
+                .getName().replace("Off Hand ", "");
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
             return substitute;
@@ -294,7 +294,7 @@ public class AnimMaster3d {
         if (name.equalsIgnoreCase("fist")) {
             if (weapon.getOwnerObj().getArmor() != null) {
                 if (weapon.getOwnerObj().getArmor().getArmorType() ==
-                 ARMOR_TYPE.HEAVY)
+                        ARMOR_TYPE.HEAVY)
                     name = "Armored Fist";
                 else if (ItemMaster.isGlovedFistOn())
                     name = "Gloved Fist";
@@ -311,10 +311,10 @@ public class AnimMaster3d {
         String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
         StrPathBuilder s = new StrPathBuilder(
-         PathFinder.getWeaponAnimPath(), "atlas",
-         weapon.getWeaponType().toString().replace("_", " ")
-         , groupName, name
-         + TexturePackerLaunch.ATLAS_EXTENSION);
+                PathFinder.getWeaponAnimPath(), "atlas",
+                weapon.getWeaponType().toString().replace("_", " ")
+                , groupName, name
+                + TexturePackerLaunch.ATLAS_EXTENSION);
         return s.toString();
     }
 
@@ -338,7 +338,7 @@ public class AnimMaster3d {
                                                      DC_ActiveObj activeObj,
                                                      WEAPON_ANIM_CASE aCase, PROJECTION projection) {
         return getSpriteForAction(duration, activeObj,
-         aCase, projection.bool);
+                aCase, projection.bool);
     }
 
     private static String getPotionKey(DC_ActiveObj activeObj) {
@@ -354,7 +354,7 @@ public class AnimMaster3d {
         String name = action.getItem().getName();
         String level = name.split(" ")[0];
         return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPathNew(),
-         "potions", "atlas", level, name + ".txt").replace(" ", "_");
+                "potions", "atlas", level, name + ".txt").replace(" ", "_");
 
     }
 
@@ -382,7 +382,7 @@ public class AnimMaster3d {
             frameDuration /= loops;
 
         SpriteAnimation sprite = SpriteAnimationFactory.
-         getSpriteAnimation(regions, frameDuration, loops);
+                getSpriteAnimation(regions, frameDuration, loops);
         //        sprite.setRotation(rotation);
         return sprite;
     }
@@ -397,12 +397,12 @@ public class AnimMaster3d {
         Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
         if (regions.size == 0) {
             regions = atlas instanceof SmartTextureAtlas
-              ? ((SmartTextureAtlas) atlas).findRegionsClosest(name.toLowerCase())
-              : null;
+                    ? ((SmartTextureAtlas) atlas).findRegionsClosest(name.toLowerCase())
+                    : null;
         }
         if (regions.size == 0) {
             regions = atlas.findRegions(name.toLowerCase()
-             .replace(ANIM + SEPARATOR, ""));
+                    .replace(ANIM + SEPARATOR, ""));
         }
         if (regions.size == 0) {
             if (isSearchAtlasRegions(activeObj))
@@ -415,7 +415,7 @@ public class AnimMaster3d {
         }
         if (regions.size == 0)
             LogMaster.log(
-             1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
+                    1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
         return regions;
     }
 
@@ -443,11 +443,11 @@ public class AnimMaster3d {
         List<Entity> types = null;
         if (searchOtherWeaponOrAction) {
             types = Arrays.stream(DataManager.getBaseWeaponTypes()).
-             filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
-              activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
+                    filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
+                            activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {
             types = new ArrayList<>(
-             activeObj.getParentAction().getSubActions());
+                    activeObj.getParentAction().getSubActions());
         }
         Array<AtlasRegion> regions = null;
         for (Entity sub : types) {
@@ -455,7 +455,7 @@ public class AnimMaster3d {
             regions = atlas.findRegions(name.toLowerCase());
 
             LogMaster.log(
-             1, activeObj + " searching " + name);
+                    1, activeObj + " searching " + name);
             if (regions.size > 0)
                 break;
         }
@@ -520,7 +520,7 @@ public class AnimMaster3d {
         if (broken.contains(weapon))
             return null;
         String path =
-         getFullAtlasPath(weapon);
+                getFullAtlasPath(weapon);
         try {
             return getOrCreateAtlas(path);
         } catch (Exception e) {
@@ -538,29 +538,35 @@ public class AnimMaster3d {
         if (atlas == null) {
             if (Assets.isOn()) {
                 Assets.get().getManager().load(path, TextureAtlas.class);
-                while (!Assets.get().getManager().isLoaded(path)) {
-                    Assets.get().getManager().update();
+//                while (!Assets.get().getManager().isLoaded(path)) {
+//                    if (Assets.get().getManager().update())
+//                        break;
+//                }
+                while (!Assets.get().getManager().update()) {
                 }
+
+                if (!Assets.get().getManager().isLoaded(path))
+                    main.system.auxiliary.log.LogMaster.log(1, "************* Atlas failed to load! " + path);
 //                try {
 //                    Assets.get().getManager().finishLoadingAsset(path);
 //                } catch (Exception e) {
 //                    main.system.ExceptionMaster.printStackTrace(e);
 //                }
-                atlas = Assets.get().getManager().get(path, TextureAtlas.class);
-            } else {
-                atlas = new SmartTextureAtlas(path);
-            }
+            atlas = Assets.get().getManager().get(path, TextureAtlas.class);
+        } else {
+            atlas = new SmartTextureAtlas(path);
         }
-        atlasMap.put(path, atlas);
+    }
+        atlasMap.put(path,atlas);
         return atlas;
 
 
-    }
+}
 
     public static String getFullAtlasPath(DC_WeaponObj weapon) {
         try {
             return TextureCache.formatTexturePath(PathFinder.getImagePath()
-             + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
+                    + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
@@ -634,14 +640,14 @@ public class AnimMaster3d {
         AnimMaster3d.fps = fps;
     }
 
-    public static   PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
+    public static PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
         if (!facing.isVertical())
             return PROJECTION.HOR;
         return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
     }
 
     public static PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
-        if (ref .getTargetObj() == null || ref==null )
+        if (ref.getTargetObj() == null || ref == null)
             return getProjectionByFacing(active.getOwnerUnit().getFacing());
         Boolean b =
                 PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
@@ -654,32 +660,34 @@ public class AnimMaster3d {
     }
 
 
-    public enum PROJECTION {
-        FROM(true), TO(false), HOR(null),;
-        public Boolean bool;
+public enum PROJECTION {
+    FROM(true), TO(false), HOR(null),
+    ;
+    public Boolean bool;
 
-        PROJECTION(Boolean bool) {
-            this.bool = bool;
-        }
+    PROJECTION(Boolean bool) {
+        this.bool = bool;
+    }
+}
+
+public enum WEAPON_ANIM_CASE {
+    NORMAL,
+    MISSILE_MISS,
+    MISSILE,
+    MISS,
+    READY,
+    PARRY,
+    BLOCKED,
+    RELOAD,
+    POTION,
+    ;
+
+    public boolean isMissile() {
+        return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
     }
 
-    public enum WEAPON_ANIM_CASE {
-        NORMAL,
-        MISSILE_MISS,
-        MISSILE,
-        MISS,
-        READY,
-        PARRY,
-        BLOCKED,
-        RELOAD,
-        POTION,;
-
-        public boolean isMissile() {
-            return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
-        }
-
-        public boolean isMiss() {
-            return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
-        }
+    public boolean isMiss() {
+        return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
     }
+}
 }

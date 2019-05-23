@@ -69,6 +69,7 @@ public class Eidolons {
     public static EidolonsGame mainGame;
     public static Application gdxApplication;
     public static boolean BOSS_FIGHT;
+    public static   boolean TUTORIAL;
     private static LwjglApplication application;
     private static String selectedMainHero;
     private static Unit mainHero;

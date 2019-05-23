@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.2b";
+    public static final String VERSION = "0.9.2c";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
@@ -80,6 +80,8 @@ public class CoreEngine {
     private static boolean skillTestMode;
     private static boolean contentTestMode;
     private static boolean ruleTestMode;
+    private static boolean levelTestMode;
+    private static boolean selectHeroMode;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -587,5 +589,21 @@ public class CoreEngine {
 
     public static void setRuleTestMode(boolean ruleTestMode) {
         CoreEngine.ruleTestMode = ruleTestMode;
+    }
+
+    public static boolean isLevelTestMode() {
+        return levelTestMode;
+    }
+
+    public static void setLevelTestMode(boolean levelTestMode) {
+        CoreEngine.levelTestMode = levelTestMode;
+    }
+
+    public static boolean isSelectHeroMode() {
+        return selectHeroMode;
+    }
+
+    public static void setSelectHeroMode(boolean selectHeroMode) {
+        CoreEngine.selectHeroMode = selectHeroMode;
     }
 }

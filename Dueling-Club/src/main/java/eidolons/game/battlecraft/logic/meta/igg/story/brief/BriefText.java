@@ -23,6 +23,8 @@ public class BriefText extends TablePanelX {
     LabelX mainText;
     // fade text; new passage on continue - better than rolling it down?
     SmartButton continueBtn;
+    private boolean done;
+    private boolean started;
 
     public BriefText(float width, float height, String... messages) {
         super(width, height);
@@ -58,8 +60,10 @@ public class BriefText extends TablePanelX {
         if (isDone()) {
             GuiEventManager.trigger(GuiEventType.BRIEFING_FINISHED);
             WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.BRIEFING_COMPLETE, true);
+            done = true;
             return;
         }
+        started = true;
         GuiEventManager.trigger(GuiEventType.BRIEFING_NEXT);
         setUserObject(messages[i++]);
         continueBtn.makeActive();
@@ -88,6 +92,13 @@ public class BriefText extends TablePanelX {
         mainText.setX(GdxMaster.centerWidth(mainText));
         mainText.setY(0);
 //         setX(0);
+    }
+
+    @Override
+    protected void drawBackground(Batch batch, float parentAlpha, float x, float y) {
+        if (started)
+            if (!done)
+                super.drawBackground(batch, parentAlpha, x, y);
     }
 
     @Override

@@ -154,8 +154,7 @@ public class HitAnim extends ActionAnim {
             spriteType = SPRITE_TYPE.SPARKS; //shield!
         }
         hitType = getHitType(spriteType);
-        String spritePath = StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
-                + ".txt";
+        String spritePath = getSpritePath(spriteType , hitType );
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
@@ -187,6 +186,11 @@ public class HitAnim extends ActionAnim {
             if (getBloodOff())
                 return;
         sprites.add(sprite);
+    }
+
+    public static final String getSpritePath(SPRITE_TYPE spriteType, HIT hitType) {
+        return StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
+                + ".txt";
     }
 
     @Override

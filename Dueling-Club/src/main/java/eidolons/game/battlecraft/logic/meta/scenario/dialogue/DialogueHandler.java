@@ -44,9 +44,11 @@ public class DialogueHandler {
     public SpeechDataSource lineSpoken(Speech speech, int index) {
         ArrayList<String> displayedOptions = new ArrayList<>();
         if (speech.getChildren().size() <= index) {
-            if (isLoopDialogueTest()){
+
+            if (isLoopDialogueTest() ){
                 return new SpeechDataSource(dialogue.getRoot());
             }
+
             return null;
         }
         Speech displayedSpeech = speech.getChildren().get(index);
@@ -69,11 +71,13 @@ public class DialogueHandler {
 //        Speech newSpeech= dialogue.getRoot();
         SpeechDataSource data = new SpeechDataSource(displayedSpeech);
         data.getResponses().addAll(displayedOptions);
+
+        setListenerLast(new ActorDataSource(data.getSpeech().getActor()));
         return data;
     }
 
     private boolean isLoopDialogueTest() {
-        return CoreEngine.isActiveTestMode();
+        return false;
     }
 
     public void lineSpoken(Scene actorObject, String line) {
@@ -109,6 +113,7 @@ public class DialogueHandler {
 
     public void setListenerLast(ActorDataSource listenerLast) {
         if (isMe(listenerLast)) {
+//            listenerLast.image= "";
             setMyActor(listenerLast);
         }
         this.listenerLast = listenerLast;

@@ -119,7 +119,6 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     protected void cameraShift() {
-        checkCameraFix();
         if (cameraDestination != null)
             if (cam != null && velocity != null && !velocity.isZero()) {
                 float x = velocity.x > 0
@@ -131,7 +130,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
 //                main.system.auxiliary.log.LogMaster.log(1,"cameraShift to "+ y+ ":" +x + " = "+cam);
                 cam.position.set(x, y, 0f);
-                float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
+                float dest = Math.min(MAX_CAM_DST, cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor());
                 Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
 
                 if (velocityNow.isZero() || velocity.hasOppositeDirection(velocityNow)) {
@@ -140,6 +139,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 cam.update();
                 controller.cameraChanged();
             }
+        checkCameraFix();
     }
 
     private void checkCameraFix() {
@@ -147,12 +147,19 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         if (cam.position.dst(lastPos)> MAX_CAM_DST) {
             cam.position.set(lastPos);
         }
-        lastPos = new Vector3(cam.position);
+        if (velocity.isZero())
+        if (!cameraDestination.isZero())
+        {
+            lastPos = new Vector3(cam.position);
+        }
     }
 
     public void cameraStop() {
         if (velocity != null)
-            velocity.setZero();
+        {
+//            velocity.setZero(); TODO abruptly?
+            cameraDestination.set(cam.position.x, cam.position.y);
+        }
     }
 
     public InputController getController() {

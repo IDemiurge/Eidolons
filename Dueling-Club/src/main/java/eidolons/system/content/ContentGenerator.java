@@ -276,9 +276,6 @@ public class ContentGenerator {
 //            setRandomizeDefaultSkillIcons();
 //            randomizeSkillIcons();
         }
-        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
-        if (DataManager.isTypesRead(DC_TYPE.ITEMS))
-            generateKeyObjects();
         if (DataManager.isTypesRead(DC_TYPE.SPELLS))
             generateSpellVfxVariants();
         if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
@@ -299,7 +296,24 @@ public class ContentGenerator {
 //            writeDataToText();
     }
 
-    private static void generateKeyObjects() {
+    public static void generateKeyObjects() {
+        List<ObjType> types = DataManager.getTypes(DC_TYPE.ITEMS);
+        for (ObjType type : types) {
+
+            if (type.getSubGroupingKey().equalsIgnoreCase("keys")) {
+
+                ObjType baseType = DataManager.getType("dummy hung obj", DC_TYPE.BF_OBJ);
+                ObjType newType = new ObjType("Hanging " + type.getName(), baseType);
+                newType.setProperty(G_PROPS.BF_OBJECT_CLASS, "Key");
+                newType.setGenerated(false);
+                newType.setImage("main/bf/hanging/keys/" +
+//                        type.getName()
+                       "Jade Key" + ".png");
+                DataManager.addType(newType);
+            }
+
+        }
+
     }
 
     private static void clearGenType() {
@@ -414,11 +428,11 @@ public class ContentGenerator {
             if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
                     type.checkBool(STD_BOOLS.FAUX))
                 continue;
-            ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
-            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
-            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
-            DataManager.addType(newType);
-            newType.setGenerated(false);
+//            ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
+//            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
+//            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
+//            DataManager.addType(newType);
+//            newType.setGenerated(false);
         }
     }
 

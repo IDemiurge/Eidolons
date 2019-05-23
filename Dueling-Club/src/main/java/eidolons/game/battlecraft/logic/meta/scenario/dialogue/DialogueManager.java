@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
@@ -22,6 +23,8 @@ import static main.system.GuiEventType.INIT_DIALOG;
  * Created by JustMe on 5/14/2017.
  */
 public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
+    private static boolean running;
+
     public DialogueManager(MetaGameMaster master) {
         super(master);
 //        GuiEventManager.bind(GuiEventType.DIALOG_SHOW, p->{
@@ -41,7 +44,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
                     key.toString());
             List<Scene> list = SceneFactory.getScenesLinear(dialogue);
 
-            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,
+            GuiEventManager.trigger(DIALOG_SHOW,
                     new DialogueHandler(dialogue, getGame(), list));
         });
     }
@@ -50,7 +53,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         GameDialogue dialogue = null;//new LinearDialogue();
         dialogue =  getMaster().getDialogueFactory().getDialogue("Interrogation");
         List<Scene> list = SceneFactory.getScenesLinear(dialogue);
-        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW,
+        GuiEventManager.trigger(DIALOG_SHOW,
          new DialogueHandler(dialogue, getGame(), list));
     }
     public void startScenarioIntroDialogues() {
@@ -80,10 +83,17 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         try {
             new DialogueWizard(dialogue).start();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         } finally {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
         }
     }
 
+    public static boolean isRunning() {
+        return running;
+    }
+
+    public static void setRunning(boolean running) {
+        DialogueManager.running = running;
+    }
 }

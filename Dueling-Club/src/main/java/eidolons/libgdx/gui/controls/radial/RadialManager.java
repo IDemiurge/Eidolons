@@ -448,6 +448,9 @@ public class RadialManager {
     }
 
     protected static boolean checkValid(DC_ActiveObj activeObj, DC_Obj target) {
+        if (target == null) {
+            return false;
+        }
         Ref ref = activeObj.getOwnerUnit().getRef().getTargetingRef(target);
         return activeObj.canBeActivated(ref);
     }

@@ -1,6 +1,7 @@
 package eidolons.game.core.master;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -61,8 +62,9 @@ public class DeathMaster extends Master {
          new Context(_killer, _killed)));
 
         GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
-                _killed.getCoordinates(),
-                HitAnim.HIT.BONE_CRACK.spritePath);
+                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
+                        HitAnim.HIT.BONE_CRACK),
+                _killed.getRef().getObj(KEYS.HOSTILITY));
 
         getGameMaster().remove(_killed, true);
 //	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);
@@ -94,6 +96,13 @@ public class DeathMaster extends Master {
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         if (_killed.isDead())
             return;
+        if (!quietly)
+        if (_killed.getChecker() instanceof UnitChecker) {
+            if (((UnitChecker) _killed.getChecker()).isImmortalityOn()) {
+                ((Unit) _killed).preventDeath();
+                return;
+            }
+        }
         String message = null;
         if (_killed == _killer) {
             message = _killed + " dies ";// + _killed.getInfoString();

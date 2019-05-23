@@ -527,7 +527,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public void setCoordinates(Coordinates coordinates) {
-        if (coordinates.equals(this.coordinates)) {
+        if (!coordinates.equals(this.coordinates)) {
             lastCoordinates = (this.coordinates);
         }
         super.setCoordinates(coordinates);

@@ -163,8 +163,22 @@ public class DC_LogManager extends LogManager {
         }
         return entry;
     }
+public enum LOG_IMAGE_CASE{
+        SNEAK,
+    COUNTER,
+    FORCE,
+    CRITICAL,
+    DODGE,
+    PARRY,
+
+}
 
     private String tryAddImage(String entry) {
+        if (entry.contains("FORCE")){
+            return "gen\\perk\\selected_00082.png"+IMAGE_SEPARATOR+ entry;
+//            return Images.ICONS_FORCE;
+        }
+
         if (entry.contains(IS_DEALING) || entry.contains(DAMAGE_IS_BEING_DEALT_TO)){
             for (DAMAGE_TYPE damage_type:DAMAGE_TYPE.values()){
                 if (entry.contains(damage_type.getName())) {

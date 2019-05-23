@@ -11,6 +11,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueWizard;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
@@ -838,10 +839,14 @@ public class GuiStage extends StageX implements StageWithClosable {
     public void dialogueDone() {
         dialogueContainer.fadeOut();
         setDialogueMode(false);
-
+        DialogueManager.setRunning(false);
     }
 
     public boolean isDialogueMode() {
         return dialogueMode;
+    }
+
+    public void resetConfirmPanel(ConfirmationPanel instance) {
+        confirmationPanel = instance;
     }
 }

@@ -8,12 +8,17 @@ import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.Bools;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RuleKeeper implements Controller {
 
+    private static final RULE[] RULES_BEING_TESTED = {
+            RULE.PARRYING,
+            RULE.SHIELD,
+    };
     static Map<Object, Boolean> overrideMap = new HashMap<>();
     private static Map<RULE, Boolean> map = new XLinkedMap<>();
     private static Map<RULE, Boolean> mapTest = new XLinkedMap<>();
@@ -27,7 +32,7 @@ public class RuleKeeper implements Controller {
     public static void init() {
         try {
             scope = new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
-             OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
+                    OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -40,6 +45,11 @@ public class RuleKeeper implements Controller {
                 }
             }
         }
+        if (CoreEngine.isIDE())
+            if (CoreEngine.isLiteLaunch())
+                for (RULE r : RULES_BEING_TESTED) {
+                    mapTest.put(r, true);
+                }
     }
 
     private static Boolean checkStatus(RULE_SCOPE statusForRule) {
@@ -379,6 +389,7 @@ public class RuleKeeper implements Controller {
         VISIBILITY(RULE_SCOPE.BASIC),
         CLEAR_SHOT(RULE_SCOPE.BASIC),
         PARRYING(RULE_SCOPE.BASIC),
+        SHIELD(RULE_SCOPE.BASIC),
         STEALTH(RULE_SCOPE.BASIC),
         // C
         DURABILITY(RULE_SCOPE.BASIC),

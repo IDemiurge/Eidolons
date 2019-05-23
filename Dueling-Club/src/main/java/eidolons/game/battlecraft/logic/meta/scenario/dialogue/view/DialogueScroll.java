@@ -77,7 +77,7 @@ public class DialogueScroll extends TablePanelX {
 
         DialogueMessage dialogueMessage = new DialogueMessage(message, actorName, actorImage,
                 FONT.MAGIC, getWidth()*0.85f);
-
+        dialogueMessage.fadeIn();
         inner.add(dialogueMessage).center();
         inner.row();
 //        inner.getRows()
@@ -96,6 +96,8 @@ public class DialogueScroll extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        inner.setY(0);
+        scrollPane.setY(0);
         super.draw(batch, parentAlpha);
         getStage().setScrollFocus(scrollPane );
     }

@@ -81,23 +81,29 @@ public class PerkSlot extends HtNode {
     }
     public void update(float delta) {
         if (data == null)
+        {
+            available = null;
+            sequentialDisabled = true;
             disable();
+        }
         else if (data.getLeft() != null) {
             enable();
             GdxImageMaster.round(data.getLeft().getImagePath(), true);
             setRootPath(GdxImageMaster.getRoundedPath(data.getLeft().getImagePath()));
-        } else {
+        } else if (data.getRight() != null && data.getMiddle() != null) {
+
             resetToOriginal();
-            if (data.getMiddle() != null)
-            if (data.getRight() != null) {
             HeroClass c1 = data.getMiddle();
             HeroClass c2 = data.getRight();
             available = PerkMaster.getAvailablePerks(getHero(),
-             tier, c1, c2);
-            if (available.isEmpty())
-                disable();
+                    tier, c1, c2);
+//            if (available.isEmpty())
+//                disable();
+        } else {
+//            disable();
         }
-        }
+
+
         super.update(delta);
 
     }

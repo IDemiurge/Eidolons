@@ -55,4 +55,8 @@ public class IGG_Meta extends MetaGame {
     public IGG_Mission getMission() {
         return mission;
     }
+
+    public boolean isFinalLevel() {
+        return false;
+    }
 }

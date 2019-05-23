@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -82,6 +83,14 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     @Override
+    public void draw(Batch batch, float parentAlpha) {
+     getColor().a=1;
+     closeButton.setVisible(false);
+     closeButton. getColor().a=0;
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
     protected List<RadialValueContainer> createNodes(Unit source, List<? extends ActiveObj> attacks) {
         List<RadialValueContainer> list = super.createNodes(source, attacks);
         int i=0;
@@ -105,16 +114,16 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     protected double getRadiusBase() {
-        return 102;
+        return 152;
     }
     @Override
     protected Vector2 getInitialPosition() {
-        return new Vector2(64, 64);
+        return new Vector2(164, 164);
     }
 
     @Override
     protected int getStartDegree() {
-        return offhand ? 60 : 100;
+        return offhand ? 10 : 150;
     }
 
     @Override
@@ -129,11 +138,40 @@ public class InfoAttackRadial extends QuickAttackRadial {
 
     @Override
     protected int getSpectrumDegrees() {
-        return 250;
+        return 150;
     }
     private RadialValueContainer createSlotNode() {
       return   new RadialValueContainer(TextureCache.getOrCreateR(STD_BUTTON.CIRCLE.getPath()), ()->{
         });
     }
 
+//    @Override
+//    public void init(List<RadialValueContainer> nodes) {
+//        super.init(nodes);
+//    }
+
+//    protected double getRadiusBase() {
+//        return 72;
+//    }
+
+//    protected boolean isMakeSecondRing(int size) {
+//        return size > 15;
+//    }
+
+
+//    protected boolean isClockwise() {
+//        return false;
+//    }
+//
+//    protected int getStartDegree() {
+//        return 90;
+//    }
+//
+//    protected int getSpectrumDegrees() {
+//        return 360;
+//    }
+//
+//    protected float getAnimationDuration() {
+//        return 0.65f;
+//    }
 }

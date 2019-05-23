@@ -410,7 +410,13 @@ public class DC_GameManager extends GameManager {
         GuiEventManager.trigger(ACTION_HOVERED, action);
     }
 
-    public void activateMyAction(int index, ACTION_TYPE group) {
+    public void activateMyAction(String actionName) {
+        DC_UnitAction action = getActiveObj().getAction(actionName);
+        if (action != null) {
+            action.invokeClicked();
+        }
+    }
+        public void activateMyAction(int index, ACTION_TYPE group) {
         getActiveObj().getActionMap().get(group).get(index).invokeClicked();
     }
 

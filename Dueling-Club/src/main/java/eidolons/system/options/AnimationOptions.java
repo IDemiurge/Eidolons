@@ -44,7 +44,7 @@ static {
 //        MELEE_ANIMS(true),
 
         HIT_ANIM_DISPLACEMENT(true),
-        FLOAT_TEXT_DURATION_MOD(100, 25, 500),
+        FLOAT_TEXT_DURATION_MOD(145, 25, 500),
 //        FLOAT_TEXT_SIZE_MOD(100, 50, 300)
         ;
 

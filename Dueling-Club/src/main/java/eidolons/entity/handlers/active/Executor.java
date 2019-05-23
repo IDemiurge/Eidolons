@@ -159,16 +159,19 @@ public class Executor extends ActiveHandler {
         AnimContext animContext = new AnimContext(getAction());
         animContext.setTarget(target);
 
+
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
         if (getAction().getLogger().isTargetLogged())
             if (target != null) {
+                target.getRef().setObj(KEYS.HOSTILITY, getEntity());
                 if (game.isDebugMode())
                     targets = " on " + getAction().getTargetObj().getNameAndCoordinate();
                 else
                     targets = " on " + getAction().getTargetObj().getNameIfKnown();
             } else if (getAction().getTargetGroup() != null) {
                 targets = " on " + getAction().getTargetGroup().toString();
+                getAction().getTargetGroup().getObjects().forEach(t->t.getRef().setObj(KEYS.HOSTILITY, getEntity()));
             }
         log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
                 + getAction().getName() + targets, false);
@@ -207,6 +210,7 @@ public class Executor extends ActiveHandler {
                 AnimConstructor.preconstruct(getAction());
         ActionInput input = new ActionInput(getAction(), animContext);
 
+        getEntity().getOwnerUnit().setLastAction(getEntity());
 
         if (getEntity().getOwnerUnit().isBoss()) { //TODO boss fix - what about spells?
             GuiEventManager.trigger(GuiEventType.BOSS_ACTION, input);

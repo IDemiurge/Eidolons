@@ -328,12 +328,14 @@ public class TestMasterContent {
     }
 
     public static void addVFX_TEST_Spells(Entity type, String filter) {
-        List<ObjType> types = DataManager.getTypes(DC_TYPE.SPELLS).stream().
-                filter(t -> t.getName().contains(ContentGenerator.SPELL_TESTED)
-                        && t.getName().contains(filter)
-                ).collect(Collectors.toList());
-        String list= ContainerUtils.constructEntityNameContainer(types);
-        addSpells(type, list);
+//        List<ObjType> types = DataManager.getTypes(DC_TYPE.SPELLS).stream().
+//                filter(t -> t.getName().contains(ContentGenerator.SPELL_TESTED)
+//                        && t.getName().contains(filter)
+//                ).collect(Collectors.toList());
+//        String list= ContainerUtils.constructEntityNameContainer(types);
+//        addSpells(type, list);
+
+        addSpells(type, "Shadow Fury;");
         return;
     }
     public static void addANIM_TEST_Spells(Entity type) {

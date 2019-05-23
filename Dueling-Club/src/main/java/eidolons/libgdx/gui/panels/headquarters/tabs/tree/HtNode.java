@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -39,6 +40,7 @@ import java.util.List;
  */
 public abstract class HtNode extends DynamicLayeredActor {
 
+    protected boolean sequentialDisabled;
     protected boolean editable;
     protected Unit hero;
     protected int tier;
@@ -52,7 +54,15 @@ public abstract class HtNode extends DynamicLayeredActor {
         init();
     }
 
+    @Override
+    public void disable() {
+        super.disable();
+        sequentialDisabled= true;
+    }
 
+    protected boolean isImgOnTop() {
+        return false;
+    }
 
     protected String getSpritePathRoot() {
         return PathFinder.getHqPath() +
@@ -112,9 +122,7 @@ public abstract class HtNode extends DynamicLayeredActor {
 
     protected abstract List<ObjType> createAvailable() ;
 
-    protected boolean isImgOnTop() {
-        return false;
-    }
+
 
     public float getPeriod() { // alt
         switch (status) {
@@ -130,13 +138,16 @@ public abstract class HtNode extends DynamicLayeredActor {
     protected Tooltip getTooltip() {
         Entity entity = getEntity();
         String text = getTextPrefix();
-        if (entity != null) {
+        if (entity != null && !HeroClassMaster.isDataAnOpenSlot(entity) ) {
             Ref ref = Eidolons.getMainHero().getRef().getCopy();
             ref.setID(KEYS.SKILL, entity.getId());
             text += "\n" + entity.getName();
             text += "\n" + entity.getProperty(G_PROPS.TOOLTIP);
             text += "\n" + TextParser.parse(entity.getDescription(),
                     ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+        } else
+        if (sequentialDisabled) {
+            text += "\n(Disabled: fill the previous slot!)";
         }
         return new ValueTooltip(text);
     }

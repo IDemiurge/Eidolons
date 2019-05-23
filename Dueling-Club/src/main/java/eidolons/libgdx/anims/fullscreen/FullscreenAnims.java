@@ -97,7 +97,7 @@ public class FullscreenAnims extends GroupX {
     private void initAnim(FullscreenAnimDataSource dataSource) {
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(dataSource.type.getSpritePath());
         float intensity = dataSource.intensity;
-        float alpha = RandomWizard.getRandomFloatBetween(intensity / 2, intensity * 2);
+        float alpha = RandomWizard.getRandomFloatBetween(intensity *2, intensity * 3);
         int fps = RandomWizard.getRandomIntBetween(10, 15);
         sprite.setFps(fps);
         sprite.setAlpha(1);

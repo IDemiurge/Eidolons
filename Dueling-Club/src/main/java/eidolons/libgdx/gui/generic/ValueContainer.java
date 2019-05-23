@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.headquarters.HqTooltipPanel;
 import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends TablePanelX implements AbstractValueContainer {
@@ -138,7 +139,23 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         }
 
         if (value != null) {
-            valueLabel = new Label(value, style);
+            valueLabel = new Label(value, style){
+                @Override
+                public float getMaxWidth() {
+                    return super.getPrefWidth();
+                }
+
+                @Override
+                public float getMinWidth() {
+                    return super.getPrefWidth();
+                }
+
+                @Override
+                public float getPrefWidth() {
+                    return Math.min(HqTooltipPanel.INNER_WIDTH-50, super.getPrefWidth());
+                }
+            };
+
         }
         valueContainer.setActor(
                 valueLabel).growX().fillX();

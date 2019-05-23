@@ -40,8 +40,8 @@ public class DialogueView extends TablePanelX implements Scene {
         middle.add(scroll = new DialogueScroll()).row();
         middle.add(replyBox = new TablePanelX());
         add(portraitRight = new DialoguePortraitContainer());
-        middle.setBackground(NinePatchFactory.getHqDrawable());
-        setBackground(NinePatchFactory.getHqDrawable());
+//        middle.setBackground(NinePatchFactory.getHqDrawable());
+//        setBackground(NinePatchFactory.getHqDrawable());
     }
 
     public void setContainer(DialogueContainer container) {
@@ -109,7 +109,9 @@ public class DialogueView extends TablePanelX implements Scene {
         ActorDataSource right = data.getRight();
 
         ActorDataSource listener = !data.isLeftActive() ? left : right;
-
+        if (listener == null) {
+            listener = handler.getMyActor();
+        }
         return listener;
     }
 
@@ -147,7 +149,9 @@ public class DialogueView extends TablePanelX implements Scene {
 
             final int i_ = i++;
             if (option.equals(SpeechDataSource.DEFAULT_RESPONSE)) {
-                response = new SmartButton(STD_BUTTON.OK, () -> respond(option, i_));
+                response = new SmartButton("Continue", StyleHolder.getDialogueReplyStyle(),
+                        () -> respond(option, i_), STD_BUTTON.TAB_HIGHLIGHT);
+//                response = new SmartButton(STD_BUTTON.OK, () -> respond(option, i_));
             } else
                 response = new SmartButton(option, StyleHolder.getDialogueReplyStyle(),
                         () -> respond(option, i_), STD_BUTTON.TAB_HIGHLIGHT);

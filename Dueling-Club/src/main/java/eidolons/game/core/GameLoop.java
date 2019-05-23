@@ -415,7 +415,7 @@ public class GameLoop {
                 //check party
                 return true;
             }
-        if (game.isDebugMode())
+        if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
             if (location.getMainEntrance() != null)
                 if (location.getMainEntrance().getCoordinates().equals(c)) {
                     return true;

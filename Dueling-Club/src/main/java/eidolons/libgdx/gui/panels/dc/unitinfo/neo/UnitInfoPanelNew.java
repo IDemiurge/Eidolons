@@ -17,6 +17,7 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.content.values.properties.G_PROPS;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/14/2018.
@@ -46,8 +47,8 @@ import main.content.values.properties.G_PROPS;
  */
 public class UnitInfoPanelNew extends HqElement implements Blocking {
 
-    public static final int WIDTH = 1350;
-    public static final int HEIGHT = 980;
+    public static final int WIDTH = 1920;
+    public static final int HEIGHT = 1080;
     private static UnitInfoPanelNew instance;
     public final Group outside;
     //centered?
@@ -68,7 +69,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     HqTraitsPanel traitsPanel;
 
     public static boolean isNewUnitInfoPanelWIP() {
-        return true;
+        return CoreEngine.isIDE();
     }
 
     @Override
@@ -84,12 +85,12 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
     private UnitInfoPanelNew() {
         super();
-
+        setSize(WIDTH, HEIGHT);
         setBackground(NinePatchFactory.getHqDrawable());
 
-          center = new AdjustingVerticalGroup(400, 0.75f);
-          left = new AdjustingVerticalGroup(455, 0.25f);
-          right = new AdjustingVerticalGroup(455, 0.25f);
+          center = new AdjustingVerticalGroup(WIDTH/3, 0.75f);
+          left = new AdjustingVerticalGroup(WIDTH/3, 0.25f);
+          right = new AdjustingVerticalGroup(WIDTH/3, 0.25f);
 
         float w1 = left.getWidth();
         setSize(w1 * 2 + center.getWidth(),   GdxMaster.getHeight());
@@ -102,6 +103,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         add(right).center().padTop(150);//.padTop(weapon.getHeight()/2);
 
         center.addActor(avatarPanel = new AvatarPanel());
+        center.addActor(  new ArmorPanel());
         center.addActor(mainInfoPanel = new HqVerticalValueTable(false, G_PROPS.NAME,
          G_PROPS.RACE,  PARAMS.LEVEL ));
         mainInfoPanel.setX(30);
@@ -110,21 +112,22 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
         //column1
         addActor(weapon);
-        weapon.setPosition((getWidth() - avatarPanel.getWidth() - weapon.getWidth()*2) / 2+186, GDX.top(weapon)+76);
+        weapon.setPosition((getWidth() - avatarPanel.getWidth() - weapon.getWidth()*2) / 2+146, GDX.top(weapon)+76);
 
         addActor(secondWeapon = new UnitInfoWeapon(true));
-        secondWeapon.setPosition(weapon.getX()+ secondWeapon.getWidth()+avatarPanel.getWidth()+86
+        secondWeapon.setPosition(weapon.getX()+ avatarPanel.getWidth()+188
 //                avatarPanel.getWidth() + secondWeapon.getWidth()+86
                 , GDX.top(secondWeapon)+76);
 
-        left.addActor(pointsPanel = new PointsPanel());
-        pointsPanel.setY(-42);
+//        left.addActor(pointsPanel = new PointsPanel());
+
+//        pointsPanel.setY(-42);
         left.addActor(tabs =  new UnitStatTabs(left.getWidth(), getHeight()-weapon.getHeight()-64));
 //        left.addActor(buffPanelSimple = new BuffPanelSimple());
 
         //column2
         //        column2.addActor(mainValuesPanel = new HqVerticalValueTable(G_PROPS.NAME, PARAMS.LEVEL));
-//        center.addActor(armorPanel = new ArmorPanel());
+//        center.addActor(  new ArmorPanel());
 //        center.addActor(dynamicParamPanel = new HqParamPanel(true));
 //        center.addActor(paramPanel = new HqParamPanel(false));
         TabbedPanel infoTabs = new UnitInfoTabs(center.getWidth(), getHeight()-avatarPanel.getHeight() );
@@ -135,7 +138,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 //         getHeight()-right.getHeight()));
 
         //column3
-        right.addActor(statusPanel = new StatusPanel());
+//        right.addActor(statusPanel = new StatusPanel());
         // column3.addActor(modePanel= new ModePanel());
         right.addActor(resistPanel = new ResistInfoTabsPanel());
         resistPanel.setY(-42);

@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
+import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 import main.system.images.ImageManager;
 
@@ -26,7 +27,11 @@ public class ActorDataSource {
         }
         actorName = actor.getName();
         actorImage = actor.getImagePath();
+        if (actor.checkSingleProp(PROPS.ACTOR_TYPE, "SECONDARY")) {
+            imageSuffix = ImageManager.FULL;
+        } else {
         imageSuffix = ImageManager.LARGE;
+        }
 //        actorImage = actor.getProperty()
     }
 

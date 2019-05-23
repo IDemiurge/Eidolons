@@ -285,7 +285,10 @@ public class ArcaneVault {
             SimulationManager.init();
         }
 
-        ContentGenerator.afterRead();
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+            if (DataManager.isTypesRead(DC_TYPE.ITEMS))
+                ContentGenerator.generateKeyObjects();
+//        ContentGenerator.afterRead();
 
         CharacterCreator.setAV(true);
     }

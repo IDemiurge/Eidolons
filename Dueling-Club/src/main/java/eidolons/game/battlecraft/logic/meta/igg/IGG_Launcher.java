@@ -48,7 +48,7 @@ public class IGG_Launcher {
         if (CoreEngine.isJar()) {
             return OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.INTRO_OFF);
         }
-        return CoreEngine.isActiveTestMode();
+        return CoreEngine.isLiteLaunch();
     }
 
     private static boolean introBriefing() {

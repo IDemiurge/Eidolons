@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg.hero;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.HeroCreator;
@@ -19,6 +20,8 @@ public class ChainParty extends Party {
     private int totalXp; //during this run; TODO - will it work with transits?
     private int goldStashed;
     private int deathTaxPerc = 35;
+
+    Set<DC_HeroItemObj> stash; //TODO
 
     public ChainParty(ObjType type, String selectedHero) {
         super(type);
@@ -46,7 +49,9 @@ public class ChainParty extends Party {
 
         String msg = hero + " inherits " + goldStashed +
                 " Gold!";
+
         hero.addParam(PARAMS.GOLD, goldStashed);
+
         EUtils.showInfoText(msg);
         getLeader().getGame().getLogManager().log(msg);
         goldStashed = 0;

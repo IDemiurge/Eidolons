@@ -3,6 +3,7 @@ package eidolons.system.controls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
@@ -81,6 +82,20 @@ public class GlobalController implements Controller {
             }
 
         switch (keyCode) {
+            case Keys.ESCAPE:
+                return escape();
+
+            case Keys.ENTER:
+                return enter();
+
+            case Keys.SPACE:
+                return space();
+
+        }
+        if (isDisabled())
+            return false;
+
+        switch (keyCode) {
             case Keys.F1:
                 if (Eidolons.getGame().isBossFight()) {
                     EUtils.showInfoText("There is no escape...");
@@ -94,11 +109,7 @@ public class GlobalController implements Controller {
                     return true;
                 }
                 return false;
-            case Keys.ESCAPE:
-                return escape();
 
-            case Keys.SPACE:
-                return space();
 
             case Keys.TAB:
                 try {
@@ -107,9 +118,14 @@ public class GlobalController implements Controller {
                     ExceptionMaster.printStackTrace(e);
                 }
                 return false;
-            case Keys.ENTER:
-                return enter();
 
+        }
+        return false;
+    }
+
+    private boolean isDisabled() {
+        if (DialogueManager.isRunning()) {
+            return true;
         }
         return false;
     }

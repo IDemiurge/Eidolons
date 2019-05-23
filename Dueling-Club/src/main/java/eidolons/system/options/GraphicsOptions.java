@@ -5,11 +5,7 @@ import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 
 
 public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
-    static {
-        //set default values
-        //BRIGHTNESS.set
-        //caching
-    }
+
 
     static {
         GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1920x1080);
@@ -37,7 +33,12 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         VIDEO(true),
         AMBIENCE_MOVE_SUPPORTED(true),
         FRAMERATE(60, 20, 80),
-        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
+        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
 //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
         SHADOW_MAP_OFF(false),

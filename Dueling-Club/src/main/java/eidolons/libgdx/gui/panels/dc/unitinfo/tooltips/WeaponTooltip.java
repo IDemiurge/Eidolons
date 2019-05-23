@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.item.DC_WeaponObj;
@@ -10,6 +11,10 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.texture.TextureCache;
+import main.system.auxiliary.StringMaster;
+import main.system.entity.CounterMaster;
+import main.system.graphics.FontMaster;
 import main.system.text.TextWrapper;
 
 import java.util.List;
@@ -23,6 +28,7 @@ public class WeaponTooltip extends ValueTooltip {
     public WeaponTooltip(DC_WeaponObj weapon) {
         this();
         setUserObject(new SlotItemToolTipDataSource(weapon));
+
     }
 
     @Override
@@ -30,10 +36,10 @@ public class WeaponTooltip extends ValueTooltip {
         final SlotItemToolTipDataSource source = (SlotItemToolTipDataSource) getUserObject();
 
         ValueContainer container = new ValueContainer(source.getItem().getName());
-        container.setStyle(StyleHolder.getHqLabelStyle(16));
+        container.setStyle(StyleHolder.getHqLabelStyle(13));
         addElement(container);
         row();
-        LabelStyle style = StyleHolder.getHqLabelStyle(15);
+        LabelStyle style = StyleHolder.getHqLabelStyle(12);
         String text = TextWrapper.processText(GdxMaster.getWidth() / 3,
          InventoryFactory.getTooltipsVals(source.getItem()), style);
         container = new ValueContainer(text);
@@ -41,7 +47,7 @@ public class WeaponTooltip extends ValueTooltip {
         addElement(container).left();
         row();
 
-        addElement(initTableValues(source.getMainParams())).left();
+        addElement(initTableValues(source, source.getMainParams())).left();
         row();
 
         if (source.getBuffs().size() > 0) {
@@ -56,8 +62,28 @@ public class WeaponTooltip extends ValueTooltip {
 
     }
 
-    private TablePanel initTableValues(List<ValueContainer> valueContainers) {
+    private TablePanel initTableValues(SlotItemToolTipDataSource source, List<ValueContainer> valueContainers) {
         TablePanel table = new TablePanel();
+        if (source!=null )
+        if (source.item.getCustomParamMap() != null) {
+            source.item.getCustomParamMap().keySet().forEach(counter -> {
+                final String name = StringMaster.getWellFormattedString(counter);
+                String img = CounterMaster.getImagePath(counter);
+                if (img != null) {
+
+                    TextureRegion texture = TextureCache.getOrCreateR(
+                            img);
+                    String val = source.item.getCustomParamMap().get(counter);
+                    final ValueContainer valueContainer = (texture == null)
+                            ? new ValueContainer(name, val)
+                            : new ValueContainer(texture, name, source.item.getCustomParamMap().get(counter));
+                    valueContainer.setNameAlignment(Align.left);
+                    valueContainer.setValueAlignment(Align.right);
+                    valueContainer.setStyle(StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 19));
+                    table.add(valueContainer).row();
+                }
+            });
+        }
         final int size = valueContainers.size();
         int halfSize = size / 2;
         if (size % 2 != 0) {
@@ -86,7 +112,7 @@ public class WeaponTooltip extends ValueTooltip {
             }
 
             table.row();
-        }
+        } 
 
         return table;
     }

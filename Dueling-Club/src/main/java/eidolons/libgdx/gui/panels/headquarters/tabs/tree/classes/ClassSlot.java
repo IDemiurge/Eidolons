@@ -19,13 +19,13 @@ public class ClassSlot extends HtNode {
     private List<ObjType> available;
     private HeroClass data;
 
-    public ClassSlot(int tier,int slot) {
-        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY,slot );
+    public ClassSlot(int tier, int slot) {
+        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY, slot);
     }
 
     @Override
     protected void init() {
-        setSize(getDefaultWidth(), getDefaultHeight() );
+        setSize(getDefaultWidth(), getDefaultHeight());
     }
 
     @Override
@@ -43,9 +43,10 @@ public class ClassSlot extends HtNode {
     public List<ObjType> getAvailable() {
         return available;
     }
+
     @Override
     protected String getTextPrefix() {
-        return "Tier " + NumberUtils.getRoman(tier+1) + " Class";
+        return "Tier " + NumberUtils.getRoman(tier + 1) + " Class";
     }
 
     @Override
@@ -54,6 +55,7 @@ public class ClassSlot extends HtNode {
             return data;
         return null;
     }
+
     public void update(float delta) {
         if (data != null) {
             image.setZIndex(999);
@@ -63,11 +65,13 @@ public class ClassSlot extends HtNode {
             );
 //            GdxImageMaster.round(data.getImagePath(), true);
 //            setRootPath(GdxImageMaster.getRoundedPath(data.getImagePath()));
+            if (HeroClassMaster.isDataAnOpenSlot(data)) {
+                available = createAvailable();
+            }
         } else {
             resetToOriginal();
-            available = createAvailable();
-            if (available.isEmpty())
-                disable();
+            available = null;
+            disable();
             //TODO block(); if no reqs
         }
 

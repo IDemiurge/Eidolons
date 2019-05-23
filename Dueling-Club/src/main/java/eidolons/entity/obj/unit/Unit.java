@@ -131,6 +131,7 @@ public class Unit extends DC_UnitModel {
     protected boolean leader;
     protected boolean usingStealth;
     private boolean scion;
+    private DC_ActiveObj lastAction;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -730,6 +731,9 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
+        if (item == null) {
+            return false;
+        }
         DC_HeroItemObj prevItem = getItem(slot);
         setItem(item, slot);
         item.equipped(ref);
@@ -1003,6 +1007,13 @@ public class Unit extends DC_UnitModel {
             return;
         } else if (getArmor() == item) {
             unequip(ITEM_SLOT.ARMOR, drop);
+            return;
+        }
+        else if (getReserveOffhandWeapon() == item) {
+            unequip(ITEM_SLOT.RESERVE_OFF_HAND, drop);
+            return;
+        } else if (getReserveMainWeapon() == item) {
+            unequip(ITEM_SLOT.RESERVE_MAIN_HAND, drop);
             return;
         }
         boolean result = removeJewelryItem(item);
@@ -1733,5 +1744,13 @@ public class Unit extends DC_UnitModel {
 
     public DC_HeroItemObj getReserveWeapon(boolean offhand) {
         return !offhand ? getReserveMainWeapon() : getReserveOffhandWeapon();
+    }
+
+    public DC_ActiveObj getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(DC_ActiveObj lastAction) {
+        this.lastAction = lastAction;
     }
 }

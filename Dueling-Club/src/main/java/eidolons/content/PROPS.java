@@ -470,7 +470,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CLASS_PERK_GROUP(null,false ,"classes" ),
     PERK_FOR_CLASSES(null,false ,"perks" ),
     PERK_PARAM(null,false ,"perks"),
-    KEY_TYPE(null, false, "bf obj");
+    KEY_TYPE(null, false, "bf obj"), ACTOR_TYPE(null, false,"actors" ), COATING_MOD(null, false, "chars", "units", "skills");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

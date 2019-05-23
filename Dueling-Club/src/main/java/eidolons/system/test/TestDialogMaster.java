@@ -19,8 +19,14 @@ public class TestDialogMaster {
 
     public static boolean key(char c){
         switch (c) {
-            case 's':
+            case 'S':
                 return prompt(DC_TYPE.SKILLS);
+            case 'P':
+                return prompt(DC_TYPE.SPELLS);
+            case 'K':
+                return prompt(DC_TYPE.PERKS);
+            case 'L':
+                return prompt(DC_TYPE.CLASSES);
             case 'p':
                 return prompt(DC_TYPE.SPELLS);
             case 'k':

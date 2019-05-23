@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     public static final java.lang.String NEW_HERO_PARTY = "Your Party";
-    public static final boolean PRESET_POWER = true;
+    public static final boolean PRESET_POWER = false;
     protected static String selectedHero;
     protected Party party;
     protected boolean chooseOneHero;

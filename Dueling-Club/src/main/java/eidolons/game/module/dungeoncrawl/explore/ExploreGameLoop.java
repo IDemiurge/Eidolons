@@ -344,6 +344,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     private boolean confirmExit() {
+        if (CoreEngine.isIggDemo()){
+            return true;
+        }
         EUtils.onConfirm("Leave this location? " +
                         "Don't forget to check your achievements from the main menu!", () ->
                         WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true),

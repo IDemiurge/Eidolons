@@ -1075,7 +1075,12 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum STD_SPEC_ACTIONS {
-        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait
+        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set
+
+//        @Override
+//        public String toString() {
+//            return StringMaster.getWellFormattedString(name());
+//        }
     }
 
     public enum WEAPON_ATTACKS {

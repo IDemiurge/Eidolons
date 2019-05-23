@@ -46,10 +46,12 @@ public   class HqVerticalValueTable extends HqElement {
             }
             AbstractValueContainer container = new ValueContainer(value.getName() + ": ", "");
 //            container.getActor().setSize(200, 50);
-            ((ValueContainer) container).setFixedMinSize(true);
-            ((ValueContainer) container).setWidth(getWidth());
+            if (isStretch()){
+                ((ValueContainer) container).setFixedMinSize(true);
+                ((ValueContainer) container).setWidth(getWidth());
+            }
             ((ValueContainer) container).setHeight(getHeight()* MathMaster.getFloatWithDigitsAfterPeriod(1, 1f/values.length));
-            ((ValueContainer) container).setValueAlignment(Align.right);
+            ((ValueContainer) container).setValueAlignment(getValueAlignment());
             containers.add(container);
             add(container.getActor()).uniform().left().row(); //.left()
 
@@ -58,6 +60,14 @@ public   class HqVerticalValueTable extends HqElement {
 
         }
 
+    }
+
+    protected boolean isStretch() {
+        return false;
+    }
+
+    protected int getValueAlignment() {
+        return Align.center;
     }
 
     protected LabelStyle getLabelStyle() {

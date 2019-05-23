@@ -17,6 +17,7 @@ import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.data.XLinkedMap;
+import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
@@ -357,7 +358,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public Coordinates getEntranceCoordinates() {
         if (entranceCoordinates == null) {
-            entranceCoordinates = new Coordinates(getEntranceData().split(";")[0]);
+            String s = (getEntranceData().split(";")[0]);
+            if (s.contains("(")) {
+                s = VariableManager.getVars(s);
+            }
+            entranceCoordinates = new Coordinates(s);
         }
         return entranceCoordinates;
     }

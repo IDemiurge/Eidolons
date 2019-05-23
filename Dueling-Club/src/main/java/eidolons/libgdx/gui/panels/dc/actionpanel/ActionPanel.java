@@ -23,6 +23,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
@@ -169,14 +170,15 @@ public class ActionPanel extends GroupX {
             if (hero.isDead()) {
                 return;
             }
-            mainHand.setUserObject(new ImmutablePair<>(
+            Pair<WeaponDataSource, WeaponDataSource> pair = new ImmutablePair<>(
                     new WeaponDataSource(hero.getActiveWeapon(false)),
-                    new WeaponDataSource(hero.getNaturalWeapon())
-            ));
-            offhand.setUserObject(new ImmutablePair<>(
+                    new WeaponDataSource(hero.getNaturalWeapon()));
+            mainHand.setUserObject(pair);
+            pair = new ImmutablePair<>(
                     new WeaponDataSource(hero.getActiveWeapon(true)),
-                    new WeaponDataSource(hero.getOffhandNaturalWeapon())
-            ));
+                    new WeaponDataSource(hero.getOffhandNaturalWeapon()));
+            offhand.setUserObject(pair);
+
             GuiEventManager.trigger(ACTION_PANEL_UPDATE,
                     new PanelActionsDataSource(hero));
 

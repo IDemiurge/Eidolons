@@ -25,7 +25,6 @@ public class LocationInitializer extends DungeonInitializer<Location> {
             setDungeonPath(game.getDataKeeper().getDungeonData()
              .getContainerValue(DUNGEON_VALUE.PATH, 0));
         //or take mission directly?
-
          return (Location) getBuilder().buildDungeon(getDungeonPath());
     }
 

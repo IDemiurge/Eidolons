@@ -26,6 +26,8 @@ import java.util.Collections;
 
 public class HqTooltipPanel extends TablePanelX {
 
+    public static final float WIDTH = 700;
+    public static final float INNER_WIDTH = WIDTH*0.8f;
     ScrollPane scrollPane;
     private Container<Actor> inner;
 
@@ -34,19 +36,19 @@ public class HqTooltipPanel extends TablePanelX {
     }
 
     public void init() {
-        setSize(700, 200);
-        add(scrollPane = new ScrollPane(inner= new Container<Actor>(){
+        setSize(WIDTH, 200);
+        add(scrollPane = new ScrollPane(inner = new Container<Actor>() {
             @Override
             public float getPrefHeight() {
                 return getHeight();
             }
-        }){
+        }) {
             @Override
             public float getPrefHeight() {
                 return getActor().getHeight();
             }
         });
-        inner.setSize(700, 200);
+        inner.setSize(WIDTH, 200);
         inner.
                 setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         inner.
@@ -76,12 +78,17 @@ public class HqTooltipPanel extends TablePanelX {
     public void init(Tooltip tooltip) {
         inner
                 .setActor(tooltip);
+
+
         Actor actor = null;
 
         if (tooltip.getUserObject() instanceof Collection) {
             actor = (Actor) ((Collection) tooltip.getUserObject()).iterator().next();
-        } else actor =
-                (Actor) tooltip.getUserObject();
+        } else {
+            if (tooltip.getUserObject() instanceof ValueContainer) {
+                actor = (ValueContainer) tooltip.getUserObject();
+            }
+        }
 //        tooltip.setActorWidth(getWidth()-50);
 
 
@@ -89,17 +96,17 @@ public class HqTooltipPanel extends TablePanelX {
             Label label = ((ValueContainer) actor).getNameLabel();
             tooltip.setHeight(((ValueContainer) actor).getPrefHeight());
             tooltip.setWidth(getWidth());
-            inner.setHeight(tooltip.getHeight()*1.5f);
+            inner.setHeight(tooltip.getHeight() * 1.5f);
             scrollPane.setScrollY(tooltip.getHeight());
             if (label == null) {
-                label =((ValueContainer) actor).getValueLabel();
+                label = ((ValueContainer) actor).getValueLabel();
             }
 //            label.setWidth(getWidth()*2);
 //            label.setWrap(true);
             label.setAlignment(Align.left);
             tooltip.pad(20);
 //            label.setText(label.getText());
-            label =((ValueContainer) actor).getValueLabel();
+            label = ((ValueContainer) actor).getValueLabel();
             if (label != null) {
 //            label.setWidth(getWidth());
             }

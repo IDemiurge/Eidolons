@@ -34,13 +34,13 @@ public class DialogueMessage extends TablePanelX {
             add(this.actorImage = new Image(TextureCache.getOrCreateR(img))).size(actorImage.getPrefWidth(), actorImage.getPrefHeight()).center();
             return;
         } else {
-            add(actorImage).size(64, 64);
+            add(actorImage).size(64, 64).pad(20);
         }
         TablePanelX<Actor> textTable = new TablePanelX<>();
-        textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).left().row();
-        textTable.add(this.message = new TextBuilder(getMessageStyle(font)).addString(message).build(w));
+        textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).pad(20) .left().row();
+        textTable.add(this.message = new TextBuilder(getMessageStyle(font)).addString(message).build(w).pad(20));
 //        textTable.add(this.message = new LabelX(message, getMessageStyle(font)));
-        add(textTable);
+        add(textTable).pad(20);
         //on hover remove shader
         //could be different!
         align(Align.topLeft);

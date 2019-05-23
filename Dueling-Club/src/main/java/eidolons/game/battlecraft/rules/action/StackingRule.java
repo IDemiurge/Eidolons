@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.objects.Door;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
@@ -215,6 +216,14 @@ public class StackingRule implements ActionRule {
             if (unit.getIntParam(PARAMS.GIRTH) > space) {
                 if (units.isEmpty()) {
                     result = true;
+                }
+            }
+        }
+        if (!result) {
+            units.removeIf(u -> u.isDead());
+            if (units.size()==1) {
+                if (units.get(0) instanceof Door) {
+                    return true;
                 }
             }
         }

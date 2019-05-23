@@ -262,6 +262,7 @@ public class HqPanel extends TablePanel implements Blocking {
 
     public void closed() {
         HqPanel.setActiveInstance(null);
+        ToolTipManager.setTooltipPanel(null );
         getStageWithClosable().closeClosable(this);
 
         for (HqHeroDataSource sub : heroes) {

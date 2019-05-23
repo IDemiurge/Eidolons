@@ -61,7 +61,7 @@ public class LocationSpawner extends Spawner<Location> {
                             "; Units" + list);
                     break;
                 }
-                member.setCoordinates(iterator.next());
+                member.setCoordinates(iterator.next(), true);
                 member.setConstructed(false);
                 getGame().getState().addObject(member);
                 member.setOriginalOwner(player);

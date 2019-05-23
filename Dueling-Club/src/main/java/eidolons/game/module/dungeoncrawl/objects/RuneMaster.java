@@ -45,7 +45,7 @@ public class RuneMaster {
         //which would I have really? maybe 3
 
         // I could do it via VFX - like circles ?
-
+// COMBINE THEM!
         NOR,
         TAR,
         URD,

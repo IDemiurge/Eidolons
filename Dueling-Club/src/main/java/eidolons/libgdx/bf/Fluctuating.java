@@ -83,15 +83,15 @@ public class Fluctuating extends GroupX {
             if (delta <= 0)
                 return;
         }
-        int period = getFluctuatingAlphaPeriod();
-        if (period!=0) {
+        int period = getFluctuatingAlphaPeriod()+1;
+        if (period!=1) {
             if (!GdxTimeMaster.isPeriodNow(period)) {
                 return;
             }
         }
         Color color = getDefaultColor(image);
 
-        fluctuatingAlpha = fluctuatingAlpha + randomizeAlpha(getAlphaFluctuation(delta));
+        fluctuatingAlpha = fluctuatingAlpha + randomizeAlpha(getAlphaFluctuation(period*delta));
 
         fluctuatingAlpha = MathMaster.getMinMax(
          fluctuatingAlpha, getAlphaFluctuationMin(),

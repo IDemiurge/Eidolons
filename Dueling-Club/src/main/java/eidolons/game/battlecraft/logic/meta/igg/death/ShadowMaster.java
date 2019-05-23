@@ -18,7 +18,9 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.std.sprite.ShadowAnimation;
 import eidolons.system.audio.DC_SoundMaster;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -70,17 +72,28 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     public void fall(Event event) {
         getGame().getLoop().setPaused(true);
         AnimMaster.waitForAnimations(null);
-        timeLeft = calcTimeLeft(event);
-        timesThisHeroFell++;
+        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__ENTER);
+        ShadowAnimation anim = new ShadowAnimation(true, (Entity) event.getRef().getActive(),
+                ()-> afterFall(event));
+        GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
+
+
+    }
+
+    private void afterFall(Event event) {
+        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__BATTLE_START2);
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
         WaitMaster.WAIT(1200);
 
         if (ExplorationMaster.isExplorationOn()){
+            // if we just fell as the combat was being finished... from poison or so
             restoreHero(event);
             main.system.auxiliary.log.LogMaster.log(1,"SHADOW: SHADOW: fall prevented; restoreHero! "+event );
             EUtils.showInfoText(RandomWizard.random()? "On the edge of consciousness...":"A narrow escape...");
             return;
         }
+        timeLeft = calcTimeLeft(event);
+        timesThisHeroFell++;
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 UNCONSCIOUS.message,
                 IGG_Images.SHADOW + timeLeft, "I Am Become Death", false, () ->
@@ -119,6 +132,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         shadowAlive = false;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
         if (!defeat) {
+            out();
             restoreHero(event);
         } else
             Eidolons.onThisOrNonGdxThread(() -> {
@@ -152,7 +166,6 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     private void dialogueFailed(Event event, boolean outOfTime) {
         if (!shadowAlive)
             return;
-        out();
         AnimMaster.waitForAnimations(null);
         String msg = outOfTime ? DEATH_SHADE_TIME.message : DEATH_SHADE
                 .message;
@@ -177,7 +190,6 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     }
 
     private void summonShade(Event event) {
-
         main.system.auxiliary.log.LogMaster.log(1,"SHADOW: summonShade "+event );
 
         Ref ref = event.getRef().getCopy();
@@ -199,7 +211,12 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         //horrid sound!
         DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.DEATH);
 
-        GuiEventManager.trigger(GuiEventType.POST_PROCESSING);
+        ShadowAnimation anim = new ShadowAnimation(false , (Entity) event.getRef().getActive(),
+                ()-> {
+                    GuiEventManager.trigger(GuiEventType.POST_PROCESSING);
+                    DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__BATTLE_START);
+                });
+        GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
         shadowAlive = true;
         return;
     }

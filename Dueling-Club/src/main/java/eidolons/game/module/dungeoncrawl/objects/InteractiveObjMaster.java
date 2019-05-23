@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -13,9 +14,11 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -36,11 +39,20 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     public static INTERACTIVE_OBJ_TYPE chooseTypeForInteractiveObj(ObjType type) {
-        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS)!=null ) {
-            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
-        }
+//        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
+//            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
+//        }
         if (type.getName().contains("Key")) {
             return INTERACTIVE_OBJ_TYPE.KEY;
+        }
+        if (type.getProperty(G_PROPS.BF_OBJECT_CLASS).contains("Key")) {
+            return INTERACTIVE_OBJ_TYPE.KEY;
+        }
+        if (type.getProperty(G_PROPS.BF_OBJECT_CLASS).contains("Glyph")) {
+            return INTERACTIVE_OBJ_TYPE.MAGE_CIRCLE;
+        }
+        if (type.getProperty(G_PROPS.BF_OBJECT_CLASS).contains("Consumable")) {
+            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
         return INTERACTIVE_OBJ_TYPE.RUNE;
     }
@@ -85,9 +97,14 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             case KEY:
                 pickup(obj, unit);
                 break;
+            case MAGE_CIRCLE:
+                boolean kill = doSpecial(obj, unit);
+                if (kill) {
+                    obj.kill(unit, false, false);
+                }
+                break;
 
             case RUNE:
-            case MAGE_CIRCLE:
                 //random spell?
                 doMagic(obj, unit);
                 obj.kill(unit, false, false);
@@ -110,9 +127,18 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
 //        }
     }
 
+    private boolean doSpecial(InteractiveObj obj, Unit unit) {
+        for (ActiveObj active : obj.getActives()) {
+            Ref ref = obj.getRef().getCopy();
+            ref.setTarget(unit.getId());
+            active.activatedOn(ref);
+        }
+        return false;
+    }
+
     private void pickup(InteractiveObj obj, Unit unit) {
         DC_HeroItemObj item = createItemFromObj(obj);
-        if (!unit.addItemToInventory(item)){
+        if (!unit.addItemToInventory(item)) {
             return;
         }
         obj.kill(unit, false, false);
@@ -124,20 +150,21 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
 
         ref.setObj(KEYS.ITEM, item);
         ref.setObj(KEYS.TARGET, item);
-        unit .getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
+        unit.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
     }
 
     private static DC_HeroItemObj createItemFromObj(InteractiveObj obj) {
-        String name =getConsumableItemName(obj.getName());
+        String name = getConsumableItemName(obj.getName());
 
-        return ItemFactory.createItemObj(name, DC_TYPE.ITEMS,  true);
+        return ItemFactory.createItemObj(name, DC_TYPE.ITEMS, true);
     }
+
     public static String getConsumableItemName(String name) {
-        if (name.contains("Key")){
+        if (name.contains("Key")) {
             //TODO one time vs permanent?
-            return  name  ;
+            return name.replace("Hanging ", "");
         }
-        return  name +" " + StringMaster.wrapInParenthesis("Consumable");
+        return name + " " + StringMaster.wrapInParenthesis("Consumable");
     }
 
     private void doMagic(InteractiveObj obj, Unit unit) {
@@ -146,16 +173,16 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         ref.setID(KEYS.ITEM, obj.getId());
         obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_MAGIC_USED, ref));
         if (RandomWizard.chance(80)) {
-        EUtils.showInfoText("Ancient lore has lessons to teach you...");
-        HeroLevelManager.addXp(unit, RandomWizard.getRandomIntBetween(5, 5*unit.getLevel()));
+            EUtils.showInfoText("Ancient lore has lessons to teach you...");
+            HeroLevelManager.addXp(unit, RandomWizard.getRandomIntBetween(5, 5 * unit.getLevel()));
             return;
         }
         String name = RandomWizard.getRandomListObject(ListMaster.toStringList(
-         "Arcane Bolt", "Fire Bolt", "Celestial Bolt", "Death Bolt", "Shadow Bolt",
-         "Feral Impulse", "Scare", "Hallucinations", "Cure", "Heal",
-         "Warp Shock", "Cripple", "Wraith Touch", "Fire Ball", "Shock Grasp",
-         "Cure", "Cure", "Cure", "Cure", "Cure",
-         "Fortify", "Touch of Warp", "Cure", "Cure", "Cure"
+                "Arcane Bolt", "Fire Bolt", "Celestial Bolt", "Death Bolt", "Shadow Bolt",
+                "Feral Impulse", "Scare", "Hallucinations", "Cure", "Heal",
+                "Warp Shock", "Cripple", "Wraith Touch", "Fire Ball", "Shock Grasp",
+                "Cure", "Cure", "Cure", "Cure", "Cure",
+                "Fortify", "Touch of Warp", "Cure", "Cure", "Cure"
         )).toString();
         ObjType type = DataManager.getType(name, DC_TYPE.SPELLS);
         obj.setParam(PARAMS.SPELLPOWER, RandomWizard.getRandomIntBetween(20, 50));

@@ -124,15 +124,15 @@ public class Formula {
         return new Formula("{" + formula + "}");
     }
 
-    public void applyFactor(Object mod) {
+    public Formula applyFactor(Object mod) {
         setFormula("((" + this.formula + ")*100+" + this.formula + "*" + "(" + mod.toString()
-         + "))/100");
-
+                + "))/100");
+        return this;
     }
 
-    public void applyModifier(Object mod) {
+    public Formula applyModifier(Object mod) {
         setFormula("(" + this.formula + "*" + "(" + mod.toString() + "))/100");
-
+        return this;
     }
 
     public Formula substituteVarValue(String var, String value) {
@@ -160,7 +160,7 @@ public class Formula {
             return this;
         }
         return new Formula("" + this.formula + "+" + "(" + this.formula + ")*" + "("
-         + mod.toString() + ")");
+                + mod.toString() + ")");
     }
 
 }

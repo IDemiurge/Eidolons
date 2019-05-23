@@ -54,7 +54,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DefeatHandler defeatHandler;
     protected LootMaster<E> lootMaster;
 
-    protected GameEventHandler  eventHandler;
+    protected GameEventHandler eventHandler;
 
     public MetaGameMaster(String data) {
         this.data = data;
@@ -142,8 +142,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public boolean isCustomQuestsEnabled() {
-        return  false;
+        return false;
     }
+
     protected boolean isTownEnabled() {
         if (CoreEngine.isFullFastMode()) {
             return false;
@@ -251,7 +252,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         }
         if (game.isStarted())
             try {
-                AnimMaster.getInstance().getDrawer(). cleanUp();
+                AnimMaster.getInstance().getDrawer().cleanUp();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -265,71 +266,85 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         ObjType type = DataManager.getType(getData(), DC_TYPE.SCENARIOS);
         if (type != null) {
             if (type.getGroup().equalsIgnoreCase("Demo")) {
-            if (type.checkProperty(PROPS.SCENARIO_TYPE, "Boss")) {
-                return false;
-            }
+                if (type.checkProperty(PROPS.SCENARIO_TYPE, "Custom")) {
+                    return false;
+                }
+                if (type.checkProperty(PROPS.SCENARIO_TYPE, "Boss")) {
+                    return false;
+                }
                 return true;
             }
 
             return
-             type.getGroup().equalsIgnoreCase("Random");
+                    type.getGroup().equalsIgnoreCase("Random");
         }
-        //        getMetaGame().isRestarted()
-        return false;
-    }
+        type = DataManager.getType(getData(), DC_TYPE.MISSIONS);
 
-    public String getDungeonInfo() {
-        if (getDungeonMaster().getDungeonLevel() != null) {
-            StringBuilder info = new StringBuilder(200);
-            DungeonLevel level = getDungeonMaster().getDungeonLevel();
-            info.append("Randomly generated ");
-            info.append(getWellFormattedString(level.getLocationType().toString()) +
-             " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
-
-            LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
-            LevelZone zone = block.getZone();
-
-            info.append(getWellFormattedString(block.getRoomType().toString())
-             + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
-
-            // objective?
-            // units left?
-            // secrets uncovered?
-            //level of illumination, time of day,
-            return info.toString();
-        } else {
-            return getScenarioInfo();
+        if (type != null) {
+            if (type.getName().toLowerCase().contains("boss")) {
+                return false;
+            }
+            if (type.getGroup().equalsIgnoreCase("Tutorial")) {
+                return false;
+            }
+            return true;
+        }
+            //        getMetaGame().isRestarted()
+            return false;
         }
 
+        public String getDungeonInfo () {
+            if (getDungeonMaster().getDungeonLevel() != null) {
+                StringBuilder info = new StringBuilder(200);
+                DungeonLevel level = getDungeonMaster().getDungeonLevel();
+                info.append("Randomly generated ");
+                info.append(getWellFormattedString(level.getLocationType().toString()) +
+                        " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
 
-    }
+                LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
+                LevelZone zone = block.getZone();
 
-    public DefeatHandler getDefeatHandler() {
-        return defeatHandler;
-    }
+                info.append(getWellFormattedString(block.getRoomType().toString())
+                        + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
 
-    protected String getScenarioInfo() {
-        return "No info!";
-    }
+                // objective?
+                // units left?
+                // secrets uncovered?
+                //level of illumination, time of day,
+                return info.toString();
+            } else {
+                return getScenarioInfo();
+            }
 
-    public QuestMaster getQuestMaster() {
-        return townMaster.getQuestMaster();
-    }
 
-    public void reinit() {
-        getQuestMaster().startQuests();
-    }
+        }
 
-    public TownMaster getTownMaster() {
-        return townMaster;
-    }
+        public DefeatHandler getDefeatHandler () {
+            return defeatHandler;
+        }
 
-    public GameEventHandler getEventHandler() {
-        return eventHandler;
-    }
+        protected String getScenarioInfo () {
+            return "No info!";
+        }
 
-    public boolean isAlliesSupported() {
-        return true;
-                //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
+        public QuestMaster getQuestMaster () {
+            return townMaster.getQuestMaster();
+        }
+
+        public void reinit () {
+            getQuestMaster().startQuests();
+        }
+
+        public TownMaster getTownMaster () {
+            return townMaster;
+        }
+
+        public GameEventHandler getEventHandler () {
+            return eventHandler;
+        }
+
+        public boolean isAlliesSupported () {
+            return true;
+            //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
+        }
     }
-}

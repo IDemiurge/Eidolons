@@ -29,6 +29,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
@@ -323,12 +324,21 @@ public class ForceRule {
 
         Ref ref = attack.getRef().getCopy();
         ref.setTarget(target.getId());
-        attack.getGame().getLogManager().log(attack.getName() + " has pushed " +
-                ref.getTargetObj().getNameIfKnown() +
-                distance + " cells away!");
+        Coordinates o = target.getCoordinates();
         new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
                 .apply(ref);
+        distance = o.dst(target.getCoordinates());
+        if (distance == 0) {
+            int damage = 2*getDamage(force, attack, source, target);
+            attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has slammed " +
+                    ref.getTargetObj().getNameIfKnown() + " against an obstacle!"  );
+            new DealDamageEffect(new Formula(""+damage), DAMAGE_TYPE.BLUDGEONING).apply(ref);
+        } else {
 
+            attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has pushed " +
+                    ref.getTargetObj().getNameIfKnown() + "[" +
+                    distance + "] cells away!");
+        }
 
         // roll dexterity against Fall Down
 
@@ -353,6 +363,9 @@ public class ForceRule {
         // if (target.getShield()!=null )
         Ref ref = attack.getRef().getCopy();
         ref.setTarget(target.getId());
+        attack.getGame().getLogManager().log(attack.getName() + "'s FORCE is dealing " +
+                damage + " damage to " +
+                ref.getTargetObj().getNameIfKnown() );
         new DealDamageEffect(new Formula(damage + ""), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(ref);
     }
 

@@ -56,7 +56,10 @@ public class QuickWeaponPanel extends TablePanelX {
                                 suffix + ".png")));
         addActor(radial = createRadial(offhand));
         //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
-        addListener(getListener());
+        EventListener listener = getListener();
+        if (listener != null) {
+            addListener(listener);
+        }
 
         initTooltip();
 
@@ -89,8 +92,8 @@ public class QuickWeaponPanel extends TablePanelX {
     }
 
     public void setDataSource(WeaponDataSource source, boolean alt) {
-        if (source != null){
-            if (source.getWeapon()==null ){
+        if (source != null) {
+            if (source.getWeapon() == null) {
                 //TODO clear
             }
             if (source.equals(alt ? this.dataSourceAlt : this.dataSource)) {
@@ -105,6 +108,8 @@ public class QuickWeaponPanel extends TablePanelX {
                 }
 
             }
+        } else {
+            initWeapon(null);
         }
     }
 
@@ -131,6 +136,11 @@ public class QuickWeaponPanel extends TablePanelX {
         initTooltip();
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+    }
+
     protected void toggleUnarmed() {
         unarmed = !unarmed;
         initWeapon(getActiveWeaponDataSource());
@@ -149,8 +159,10 @@ public class QuickWeaponPanel extends TablePanelX {
     }
 
     protected void initWeapon(WeaponDataSource dataSource) {
-        weapon.setImage(
-                dataSource.getNormalImage());
+        if (dataSource == null)
+            weapon.setImage("");
+        else
+            weapon.setImage(      dataSource.getNormalImage());
     }
 
 
@@ -172,6 +184,9 @@ public class QuickWeaponPanel extends TablePanelX {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (!getDataSource().getOwnerObj().isMine()) {
+                    return false;
+                }
                 if (button == 1) {
                     GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
                     GuiEventManager.trigger(
@@ -243,7 +258,7 @@ public class QuickWeaponPanel extends TablePanelX {
     }
 
     protected EventType getOpenEvent() {
-        return  GuiEventType. QUICK_RADIAL ;
+        return GuiEventType.QUICK_RADIAL;
     }
 
     public WeaponDataSource getDataSource() {

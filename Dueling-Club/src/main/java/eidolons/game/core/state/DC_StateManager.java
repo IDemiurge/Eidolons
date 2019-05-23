@@ -98,7 +98,7 @@ public class DC_StateManager extends StateManager {
                 return;
             }
         if (!resetting) {
-            resetLock.lock();
+//            resetLock.lock();
             if (!resetting) {
                 if (!isSelectiveResetOn() || (ExplorationMaster.isExplorationOn() && !isSelectiveResetInExplore())) {
                     objectsToReset = new LinkedHashSet<>(getGame().getBfObjects());
@@ -143,7 +143,7 @@ public class DC_StateManager extends StateManager {
                 resetAll();
                 resetting = false;
             }
-            resetLock.unlock();
+//            resetLock.unlock();
         }
     }
 

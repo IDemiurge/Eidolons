@@ -124,7 +124,7 @@ public class UnitResetter extends EntityResetter<Unit> {
             getInitializer().addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.TALL, true);
         }
         if (getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.SHORT)) {
-            getInitializer().addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.TALL, true);
+            getInitializer().addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.SHORT, true);
         }
 
         // Chronos.logTimeElapsedForMark(toString() + "to base (values)");

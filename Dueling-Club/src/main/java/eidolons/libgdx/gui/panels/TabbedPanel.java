@@ -48,8 +48,10 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
         row();
     }
 
-    protected void addTabTable() {
-        add(tabTable).expand(0, 0).fill(0, 0).align(getDefaultAlignment()).row();
+    protected Cell addTabTable() {
+        Cell table = add(tabTable).expand(0, 0).fill(0, 0).align(getDefaultAlignment());
+        table.row();
+        return table;
     }
 
     protected int getDefaultAlignment() {

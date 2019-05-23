@@ -21,6 +21,7 @@ import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -154,6 +155,11 @@ public class DeathAnim extends ActionAnim {
         super.finished();
         getActor().setVisible(false);
         dispose();
+
+        GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
+                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
+                        HitAnim.HIT.BONE_CRACK),
+                getActive());
     }
 
     public enum DEATH_ANIM {

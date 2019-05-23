@@ -11,6 +11,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.TextureCache;
@@ -45,9 +46,12 @@ public class DialoguePortraitContainer extends TablePanelX {
 //        add(teaInfo ).row();
         add(portrait = new FadeImageContainer()).row();
 
-        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN,
-        ImageManager.LARGE_ICON_WIDTH,  ImageManager.LARGE_ICON_HEIGHT);
-        setBackground(new TextureRegionDrawable(new TextureRegion(background)));
+//        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN,
+//        ImageManager.LARGE_ICON_WIDTH,  ImageManager.LARGE_ICON_HEIGHT);
+//        setBackground(new TextureRegionDrawable(new TextureRegion(background)));
+
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
     }
 
 

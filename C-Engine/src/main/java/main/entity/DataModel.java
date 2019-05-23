@@ -1478,7 +1478,8 @@ public abstract class DataModel {
     }
 
     public void addCounter(String name, String value) {
-        getCustomParamMap().put(name.toUpperCase(), value);
+        String properName = CounterMaster.findCounter(name);
+        getCustomParamMap().put(properName, value);
     }
 
     public Map<String, String> getCustomParamMap() {

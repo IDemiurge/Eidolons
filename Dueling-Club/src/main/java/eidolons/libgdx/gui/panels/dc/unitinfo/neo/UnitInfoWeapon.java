@@ -1,10 +1,13 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,6 +48,15 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
     }
 
     @Override
+    protected EventListener getListener() {
+        if (getUserObject() == null) {
+            return null;
+        }
+        HeroDataModel source = ((HqHeroDataSource) super.getUserObject()).getEntity();
+        return new WeaponTooltip( source.getWeapon(offhand)).getController();
+    }
+
+    @Override
     public Object getUserObject() {
         if (super.getUserObject() == null) {
             return null;
@@ -62,6 +74,7 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
         if (super.getUserObject() == null) {
             return;
         }
+        weapon.addListener(getListener());
         super.updateAct(delta);
           radial.openMenu();
     }

@@ -92,9 +92,13 @@ public class UnitInfoTabs extends TabbedPanel {
 
     @Override
     protected int getDefaultAlignment() {
-        return Align.bottomLeft;
+        return Align.top;
     }
 
+    @Override
+    protected int getDefaultTabAlignment() {
+        return Align.center;
+    }
 
     @Override
     protected Cell createContentsCell() {

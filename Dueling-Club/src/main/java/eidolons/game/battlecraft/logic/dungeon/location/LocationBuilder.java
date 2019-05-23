@@ -76,7 +76,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 //            }
 //            level.setMainStyle(mainStyle);
 //        }
-
+        level.setEntranceData(location.getEntranceData());
         return level;
     }
 

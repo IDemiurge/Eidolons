@@ -7,11 +7,15 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.std.HitAnim;
+import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.DC_Formulas;
 import main.content.enums.entity.ItemEnums;
 import main.entity.Ref;
 import main.game.logic.event.Event;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -56,6 +60,9 @@ public class ParryRule {
             if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
                 return false;
             }
+
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_PARRIED,
+                    "Parry!", attack.getAttacked());
         }
         Unit attacked = (Unit) attack.getAttackedUnit();
         Unit attacker = attack.getAttacker();
@@ -99,6 +106,8 @@ public class ParryRule {
         if (CoreEngine.isPhaseAnimsOn()) {
             //TODO
         }
+        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, new CustomSpriteAnim(attack.getAction(), HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.SPARKS,
+                HitAnim.HIT.SLICE)));
 
         // game.getLogManager().doneLogEntryNode(); ???
         return true;

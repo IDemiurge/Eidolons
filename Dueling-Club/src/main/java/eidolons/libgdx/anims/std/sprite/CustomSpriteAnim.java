@@ -12,7 +12,12 @@ import java.util.ArrayList;
 
 public class CustomSpriteAnim extends ActionAnim {
 
-protected     SpriteAnimation sprite;
+    protected SpriteAnimation sprite;
+
+    public CustomSpriteAnim(Entity active, SpriteAnimation sprite) {
+        this(active, "");
+        this.sprite = sprite;
+    }
 
     public CustomSpriteAnim(Entity active, String sprites) {
         super(active,
@@ -20,11 +25,14 @@ protected     SpriteAnimation sprite;
                         DataUnitFactory.getKeyValueString(true, AnimData.ANIM_VALUES.SPRITES, sprites)
                 ));
     }
+
     @Override
     protected void resetSprites() {
         sprites = new ArrayList<>();
-        sprite = getOrCreateSprite();
-        sprite.setFps(getDefaultFps());
+        if (sprite == null) {
+            sprite = getOrCreateSprite();
+            sprite.setFps(getDefaultFps());
+        } else sprite.reset();
         duration = sprite.getFrameNumber() * sprite.getFrameDuration();
         sprites.add(sprite);
     }
@@ -35,8 +43,13 @@ protected     SpriteAnimation sprite;
 
 
     private SpriteAnimation getOrCreateSprite() {
-        return   SpriteAnimationFactory.getSpriteAnimation(
-                PathFinder.getSpritesPathNew()+ data.getValue(AnimData.ANIM_VALUES.SPRITES)
-                        +".txt");
+        String path =  data.getValue(AnimData.ANIM_VALUES.SPRITES);
+        if (!path.contains(PathFinder.getSpritesPathNew())) {
+            path  = PathFinder.getSpritesPathNew()  + path;
+        }
+        if (!path.contains(".")) {
+            path += ".txt";
+        }
+        return SpriteAnimationFactory.getSpriteAnimation(path);
     }
 }

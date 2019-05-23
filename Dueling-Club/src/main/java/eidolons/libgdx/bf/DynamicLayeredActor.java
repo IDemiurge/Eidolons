@@ -78,11 +78,11 @@ public class DynamicLayeredActor extends LayeredActor {
     }
 
     protected float getSpriteOffsetY() {
-        return getHeight()/4;
+        return (sprite. getHeight()-getHeight())/2; //getHeight()/4;
     }
 
     protected float getSpriteOffsetX() {
-        return getWidth()/4;
+        return (sprite.getWidth()-getWidth())/2; //getWidth()/2;
     }
 
     @Override
@@ -123,7 +123,7 @@ public class DynamicLayeredActor extends LayeredActor {
             } else
             if (status== ACTOR_STATUS.ACTIVE) {
 //TODO
-            } else 
+            } else
             setShader(null);
         }
     }

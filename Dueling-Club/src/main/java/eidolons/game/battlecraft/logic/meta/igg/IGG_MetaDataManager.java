@@ -4,26 +4,42 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
-import main.content.DC_TYPE;
-import main.data.DataManager;
 
 public class IGG_MetaDataManager extends MetaDataManager<IGG_Meta> {
-    private final String startingAct;
+    private String scenarioName;
 
     public IGG_MetaDataManager(MetaGameMaster master) {
         super(master);
-        startingAct = master.getData();
     }
+
+    @Override
+    public String getData() {
+        return scenarioName;
+    }
+
+    public String nextMission() {
+        IGG_Demo.IGG_MISSION next = getMetaGame().getMission().getNext();
+        if (next==null) {
+            return null;
+        }
+        getPartyManager().getParty().setProperty(PROPS.PARTY_MISSION, next.getMissionName(), true);
+//        next.missionIndex;
+//        getMaster().getSaveMaster().autoSave();
+        scenarioName=  next.getScenarioName();
+        return next.getMissionName();
+    }
+
 
     public void initData() {
         //path?
         String missionName = getPartyManager().getParty().getProperty(PROPS.PARTY_MISSION);
         IGG_Demo.IGG_MISSION mission;
         if (missionName.isEmpty())
-            missionName = startingAct;
+            missionName = getMaster().getData(); //starting mission
         mission = IGG_Demo.getMissionByName(missionName);
         getGame().setBossFight(mission.isBossFight());
         Eidolons.BOSS_FIGHT = (mission.isBossFight());
+        Eidolons.TUTORIAL = (mission.isTutorial());
         getMetaGame().setMission(mission);
     }
 

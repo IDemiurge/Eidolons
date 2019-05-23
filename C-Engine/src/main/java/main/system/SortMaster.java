@@ -27,10 +27,10 @@ public class SortMaster<T> {
 
     public static List<? extends Entity> sortByValue(List<? extends Entity> listData,
                                                      VALUE sortValue) {
-        return sortByValue(listData, (PARAMETER) sortValue, true);
+        return sortByValue(listData,  sortValue, true);
     }
 
-    public static List<? extends Entity> sortByValue(List<? extends Entity> pool, PARAMETER p,
+    public static List<? extends Entity> sortByValue(List<? extends Entity> pool, VALUE p,
                                                      boolean descending) {
         if (ListMaster.isNotEmpty(pool)) {
             Collections.sort(pool, getSorter(p, descending));

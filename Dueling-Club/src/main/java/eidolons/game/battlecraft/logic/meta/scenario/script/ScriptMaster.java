@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.script;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/31/2017.
@@ -29,6 +30,10 @@ public class ScriptMaster {
 
 
         return name;
+    }
+
+    public static boolean isScriptsOff() {
+        return CoreEngine.isActiveTestMode();
     }
 
     public void generateScripts() {

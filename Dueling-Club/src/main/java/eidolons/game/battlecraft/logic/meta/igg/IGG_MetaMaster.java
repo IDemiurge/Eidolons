@@ -1,11 +1,23 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
+import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.story.IGG_TownMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
+import eidolons.libgdx.launch.ScenarioLauncher;
+import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.stage.ConfirmationPanel;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 /*
 custom party rules
@@ -25,11 +37,22 @@ defeatHandler...
 public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
     private final boolean boss;
-    ShadowMaster shadowMaster= new ShadowMaster(this);
+    ShadowMaster shadowMaster = new ShadowMaster(this);
 
     public IGG_MetaMaster(String data) {
         super(data);
-        boss = data.equalsIgnoreCase(IGG_Demo.IGG_MISSION.FINALE.toString());
+        ObjType scenario = DataManager.getType(data, DC_TYPE.SCENARIOS);
+        ObjType mission = DataManager.getType(data, DC_TYPE.MISSIONS);
+        if (mission == null) {
+            mission = DataManager.getType(scenario.getProperty(PROPS.SCENARIO_MISSIONS), DC_TYPE.MISSIONS);
+            if (mission != null) {
+                this.data = mission.getName();
+            }
+        }
+
+        boss =
+                data.equalsIgnoreCase(IGG_Demo.IGG_MISSION.FINALE.toString()) ||
+                        data.toLowerCase().contains("boss "); //TODO igg demo fix
     }
 
     public ShadowMaster getShadowMaster() {
@@ -43,7 +66,7 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
     @Override
     protected DC_Game createGame() {
-        game= new IGG_Game(this){
+        game = new IGG_Game(this) {
             @Override
             public boolean isBossFight() {
                 return boss;
@@ -72,20 +95,64 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
         return new IGG_MetaInitializer(this);
     }
 
+    @Override
+    public IGG_MetaDataManager getMetaDataManager() {
+        return (IGG_MetaDataManager) super.getMetaDataManager();
+    }
 
     public void next(Boolean outcome) {
         super.next(outcome);
-
+        String mission = getMetaDataManager().nextMission();
 //        IGG_Demo.nextMission();
 //        checkNewAct(getMetaGame().getActIndex());
 //        if (actIndex!=newAct){
 //
 //        }
+        boolean restart = false;
+//        if (outcome == null) {
+//            restart = true;
+//        }
+//        if (outcome != null)
+//            if (outcome) {
+//                if (getMetaGame().isFinalLevel()) {
+//                    getBattleMaster().getOutcomeManager().victory();
+//                    return;
+//                }
+//
+//                super.next(outcome);
+//                ScenarioLauncher.missionIndex++;
+//            }
+//        getMetaDataManager().setMissionName(null);
+//        getMetaDataManager().initMissionName();
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, mission);
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+//        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
+
+        if (restart) {
+            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
+            Eidolons.setParty(null);
+        } else {
+            Eidolons.setParty(getPartyManager().getParty());
+        }
+        if (!Eidolons.initScenario(
+                new IGG_MetaMaster(mission))) {
+            return;
+        }
+        ConfirmationPanel.clearInstance();
+
+        //TODO should not be necessary!
+        Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
+//        ?  Eidolons.mainGame.getMetaMaster(). init();
+        Eidolons.mainGame.getMetaMaster().getGame().getDungeonMaster().next();
+        Eidolons.mainGame.getMetaMaster().getGame().initMasters();
+        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
+        Eidolons.mainGame.getMetaMaster().getGame().battleInit();
+        Eidolons.mainGame.getMetaMaster().getGame().start(restart);
 
 
-        //epilogue
-        //
-
+        GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO);
+        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, Eidolons.getMainHero());
+        GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
     }
 
     @Override
@@ -99,9 +166,11 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
             return true;
         return false;
     }
+
     public boolean isCustomQuestsEnabled() {
-        return  true;
+        return true;
     }
+
     @Override
     public boolean isRngQuestsEnabled() {
         return false;

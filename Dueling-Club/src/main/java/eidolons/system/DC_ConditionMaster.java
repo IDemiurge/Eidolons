@@ -471,6 +471,9 @@ public class DC_ConditionMaster extends ConditionMaster {
 
                 break;
 
+            case ACTIVE_WEAPONS:
+                return ConditionMaster.getActiveWeaponsCondition();
+
             case ADJACENT:
                 break;
             case ALL:

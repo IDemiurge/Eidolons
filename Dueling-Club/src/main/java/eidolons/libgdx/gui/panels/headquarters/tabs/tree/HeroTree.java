@@ -17,6 +17,7 @@ import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationWorkspace;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -163,17 +164,19 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
         update(true);
     }
 
-    protected void update(  boolean slotsOrLinks) {
+    protected void update(boolean slotsOrLinks) {
         HtNode[][] array = slotsOrLinks ? mainNodeRows : linkNodeRows;
 
         for (int tier = 0; tier < array.length; tier++) {
             HeroTreeDataSource treeDataSource = createTreeDataSource(dataSource);
             int length = array[tier].length;
             Object lastData = null;
-            boolean lastSlot= false;
+            boolean lastSlot = false;
             for (int slot = 0; slot < length; slot++) {
-                if (isSequential(slotsOrLinks)) {
-                    if ( isDataAnOpenSlot(lastData)  ) {
+                if (lastSlot) {
+                    lastData = null;
+                } else if (isSequential(slotsOrLinks)) {
+                    if (isDataAnOpenSlot(lastData)) {
                         lastData = null;
                     } else
                         lastData = treeDataSource.getData(tier, slot, slotsOrLinks);
@@ -186,6 +189,13 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
 //                        lastData = getEmptySlotData(tier, slot);
 //                    lastSlot = true;
 //                }
+                if (!slotsOrLinks)
+                    if (lastData instanceof ImmutableTriple) {
+                        if (((ImmutableTriple) lastData).getLeft() == null) {
+                            lastSlot = true;
+                        }
+                    }
+
                 array[tier][slot].setUserObject(lastData);
                 array[tier][slot].update(0);
             }

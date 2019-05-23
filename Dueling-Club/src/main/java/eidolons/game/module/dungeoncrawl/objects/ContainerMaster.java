@@ -486,11 +486,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (isGroupsOrSubgroups(c, TYPE) == sub)
             return null;
         String groups = getItemGroups(c, TYPE);
-        List<String> list = groups == null?   new ArrayList<>()
+        List<String> list = groups == null ? new ArrayList<>()
                 : ContainerUtils.openContainer(groups);
         String filter = container.getProperty(PROPS.CONTAINER_GROUP_FILTER);
-        if (!filter .isEmpty()) {
-            list.removeIf(group-> !filter.toLowerCase().contains(group.toLowerCase()));
+        if (!filter.isEmpty()) {
+            list.removeIf(group -> !filter.toLowerCase().contains(group.toLowerCase()));
         }
         if (list.isEmpty()) {
             return null;
@@ -499,7 +499,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String checkCustomGroupForContents(CONTAINER_CONTENTS c, boolean sub, DC_TYPE type, BattleFieldObject container) {
-; //use as filter?
+        ; //use as filter?
 
         return null;
     }
@@ -563,15 +563,30 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     public void initContents(BattleFieldObject obj) {
         this.container = obj;
+        boolean unit = false;
         String contents = obj.getProperty(PROPS.INVENTORY);
 
+        if (obj instanceof Unit) {
+            if (contents.isEmpty())
+                if (RandomWizard.chance(80 - obj.getPower()))
+                    return;
+
+            unit = true;
+        }
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
-        Map<CONTAINER_CONTENTS, Integer> map =
-                wizard.
-                        constructWeightMap(prop, CONTAINER_CONTENTS.class);
+        Map<CONTAINER_CONTENTS, Integer> map = null;
+        if (unit) {
+            map = wizard.constructWeightMap("AMMO(3);POTIONS(4);JUNK(5);TREASURE(1);JEWELRY(3)", CONTAINER_CONTENTS.class);
+        } else {
+            map = wizard.constructWeightMap(prop, CONTAINER_CONTENTS.class);
+        }
+
 
         prop = obj.getProperty(PROPS.CONTAINER_CONTENT_VALUE);
+        if (unit) {
+            prop = CONTAINER_CONTENT_VALUE.COMMON.toString() + "(1)";
+        }
         RandomWizard<CONTAINER_CONTENT_VALUE> wizard_ = new RandomWizard<>();
         Map<CONTAINER_CONTENT_VALUE, Integer> typeMap =
                 wizard_.constructWeightMap(prop, CONTAINER_CONTENT_VALUE.class);
@@ -584,6 +599,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 //         (DEFAULT_POWER_MEASURE_FOR_TREASURE_AMOUNT))
         ;
 
+        if (unit) {
+            maxCost = obj.getPower() * RandomWizard.getRandomIntBetween(2, 5);
+        }
         int totalCost = 0;
         int maxGroups = 2; //size prop!
         Loop overLoop = new Loop(maxGroups);

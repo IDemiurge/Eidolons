@@ -57,10 +57,10 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
-
-        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
-            return;
+        if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
+            if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
+                return;
 
         postProcessing = getPostProcessController();
 

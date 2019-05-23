@@ -78,6 +78,9 @@ public class IGG_XmlMaster {
             .chain(DUNGEON_STYLE.CRYPTS, 6);
     //how about we make synthetic zones? just for style?
     public static final String LEVEL_NAME = "Underworld.xml";
+    public static final String[] MERGE_LEVEL_NAMES = {
+            "Underworld.xml", "Bastion.xml"
+    };
     private String folder;
     private String name;
     private int powerLevel = 300;
@@ -86,7 +89,7 @@ public class IGG_XmlMaster {
     private String rngFilePath = "dungeon/overfill dungeon boss - 2.xml"; //into custom property!
     private String TEMPLATE = "/crawl/Underworld.xml";
     private int timeToSpawn = 0;
-    private boolean initRequired=false;
+    private boolean initRequired = false;
 //    private String TEMPLATE="/crawl/Vampire Abode.xml";
 
     private String getLE_Path() {
@@ -116,7 +119,9 @@ public class IGG_XmlMaster {
         CoreEngine.systemInit();
         DC_Engine.dataInit();
         if (MERGE) {
-            new IGG_XmlMaster("", LEVEL_NAME).mergeData();
+            for (String mergeLevelName : MERGE_LEVEL_NAMES) {
+                new IGG_XmlMaster("", mergeLevelName).mergeData();
+            }
         } else
             for (File subfolder : FileManager.getFilesFromDirectory(
                     PathFinder.getDungeonLevelFolder() +
