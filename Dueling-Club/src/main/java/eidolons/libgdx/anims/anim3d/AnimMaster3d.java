@@ -12,6 +12,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
@@ -531,10 +532,14 @@ public class AnimMaster3d {
     }
 
     public static TextureAtlas getOrCreateAtlas(String path) {
+        return getOrCreateAtlas(path, true);
+    }
+    public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
         if (!FileManager.isFile(path))
             return null;
         path = TextureCache.formatTexturePath(path);
-        TextureAtlas atlas = atlasMap.get(path);
+
+        TextureAtlas atlas = cache ? atlasMap.get(path) : null;
         if (atlas == null) {
             if (Assets.isOn()) {
                 Assets.get().getManager().load(path, TextureAtlas.class);
@@ -552,16 +557,18 @@ public class AnimMaster3d {
 //                } catch (Exception e) {
 //                    main.system.ExceptionMaster.printStackTrace(e);
 //                }
-            atlas = Assets.get().getManager().get(path, TextureAtlas.class);
-        } else {
-            atlas = new SmartTextureAtlas(path);
+                atlas = Assets.get().getManager().get(path, TextureAtlas.class);
+            } else {
+                atlas = new SmartTextureAtlas(path);
+            }
         }
-    }
-        atlasMap.put(path,atlas);
+        if (cache) {
+        atlasMap.put(path, atlas);
+        }
         return atlas;
 
 
-}
+    }
 
     public static String getFullAtlasPath(DC_WeaponObj weapon) {
         try {
@@ -619,12 +626,12 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
+        if (CoreEngine.isLiteLaunch()) {
+            if (!Eidolons.BOSS_FIGHT)
+                return true;
+        }
         if (off == null)
             off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
-        return off;
-    }
-
-    public static Boolean getOff() {
         return off;
     }
 
@@ -660,34 +667,34 @@ public class AnimMaster3d {
     }
 
 
-public enum PROJECTION {
-    FROM(true), TO(false), HOR(null),
-    ;
-    public Boolean bool;
+    public enum PROJECTION {
+        FROM(true), TO(false), HOR(null),
+        ;
+        public Boolean bool;
 
-    PROJECTION(Boolean bool) {
-        this.bool = bool;
-    }
-}
-
-public enum WEAPON_ANIM_CASE {
-    NORMAL,
-    MISSILE_MISS,
-    MISSILE,
-    MISS,
-    READY,
-    PARRY,
-    BLOCKED,
-    RELOAD,
-    POTION,
-    ;
-
-    public boolean isMissile() {
-        return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
+        PROJECTION(Boolean bool) {
+            this.bool = bool;
+        }
     }
 
-    public boolean isMiss() {
-        return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
+    public enum WEAPON_ANIM_CASE {
+        NORMAL,
+        MISSILE_MISS,
+        MISSILE,
+        MISS,
+        READY,
+        PARRY,
+        BLOCKED,
+        RELOAD,
+        POTION,
+        ;
+
+        public boolean isMissile() {
+            return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
+        }
+
+        public boolean isMiss() {
+            return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
+        }
     }
-}
 }

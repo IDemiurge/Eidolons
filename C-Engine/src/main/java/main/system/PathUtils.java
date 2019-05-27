@@ -151,6 +151,12 @@ public class PathUtils {
         return StringMaster.replaceLast(cropped, "/", "");
     }
 
+    public static String cropLastPathSegment(String path, int times) {
+        for (int i = 0; i < times; i++) {
+            path = cropLastPathSegment(path);
+        }
+        return path;
+    }
     public static String cropFirstPathSegment(String path, int times) {
         for (int i = 0; i < times; i++) {
             path = cropFirstPathSegment(path);

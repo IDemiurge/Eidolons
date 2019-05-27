@@ -14,6 +14,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -101,17 +102,17 @@ public class GridPanel extends Group {
 
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
         units.removeIf(unit ->
-         {
-             if (unit.getCoordinates().x < 0)
-                 return true;
-             if (unit.getCoordinates().y < 0)
-                 return true;
-             if (unit.getCoordinates().x >= cols)
-                 return true;
-             if (unit.getCoordinates().y >= rows)
-                 return true;
-             return false;
-         }
+                {
+                    if (unit.getCoordinates().x < 0)
+                        return true;
+                    if (unit.getCoordinates().y < 0)
+                        return true;
+                    if (unit.getCoordinates().x >= cols)
+                        return true;
+                    if (unit.getCoordinates().y >= rows)
+                        return true;
+                    return false;
+                }
         );
         this.viewMap = new HashMap<>();
         manager = new GridManager(this);
@@ -127,7 +128,7 @@ public class GridPanel extends Group {
                     hasVoid = true;
                     continue;
                 }
-                emptyImage= TextureCache.getOrCreateR(cell.getImagePath());
+                emptyImage = TextureCache.getOrCreateR(cell.getImagePath());
                 cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
@@ -214,28 +215,30 @@ public class GridPanel extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         boolean paused = false;
-        if (HqPanel.getActiveInstance()!=null ){
-            if (HqPanel.getActiveInstance().getColor().a==1)
+        if (HqPanel.getActiveInstance() != null) {
+            if (HqPanel.getActiveInstance().getColor().a == 1)
                 return;
         }
         if (Eidolons.game != null)
             if (Eidolons.game.getLoop() != null)
                 paused = Eidolons.game.getLoop().isPaused();
+        if (ShadowMaster.isShadowAlive() && Eidolons.game.getLoop().getActiveUnit() != ShadowMaster.getShadowUnit()) {
+            paused = false;
+        }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW)
             super.draw(batch, 1);
         else
             ShaderDrawer.drawWithCustomShader(this, batch,
-             paused ? GrayscaleShader.getGrayscaleShader() : null, true);
+                    paused ? GrayscaleShader.getGrayscaleShader() : null, true);
     }
 
     @Override
     public void act(float delta) {
-        if (HqPanel.getActiveInstance()!=null ){
-            if (HqPanel.getActiveInstance().getColor().a==1)
+        if (HqPanel.getActiveInstance() != null) {
+            if (HqPanel.getActiveInstance().getColor().a == 1)
                 return;
         }
         if (resetVisibleRequired) {
-            if (!DeathAnim.isOn())
             resetVisible();
         }
         super.act(delta);
@@ -323,27 +326,27 @@ public class GridPanel extends Group {
             int i = hor ? 1 : -1;
             suffix = hor ? "right" : "left";
             Image image = new Image(TextureCache.getOrCreateR(
-             StrPathBuilder.build(
-              "ui", "bf", "gridBorder " +
-               suffix +
-               ".png")));
+                    StrPathBuilder.build(
+                            "ui", "bf", "gridBorder " +
+                                    suffix +
+                                    ".png")));
             addActor(image);
             image.setPosition(posX + i * GridMaster.CELL_W + (20 - 20 * i)//+40
-             , posY
-             //+ i * 35
+                    , posY
+                    //+ i * 35
             );
         }
         if (vert != null) {
             int i = vert ? 1 : -1;
             suffix = vert ? "up" : "down";
             Image image = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(
-             "ui", "bf", "gridBorder " +
-              suffix +
-              ".png")));
+                    "ui", "bf", "gridBorder " +
+                            suffix +
+                            ".png")));
             addActor(image);
             image.setPosition(posX //+ i * 35
-             , posY
-              + i * GridMaster.CELL_H + (20 - 20 * i));//+40
+                    , posY
+                            + i * GridMaster.CELL_H + (20 - 20 * i));//+40
         }
         TextureRegion cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
         if (hor != null)
@@ -351,7 +354,7 @@ public class GridPanel extends Group {
                 int i = vert ? 1 : -1;
                 Image image = new Image(cornerRegion);
                 image.setPosition(posX + i * 40 + i * GridMaster.CELL_W + i * -77, posY
-                 + i * 40 + i * GridMaster.CELL_H + i * -77);
+                        + i * 40 + i * GridMaster.CELL_H + i * -77);
 
                 if (!vert && hor) {
                     image.setX(image.getX() + 170);
@@ -430,8 +433,8 @@ public class GridPanel extends Group {
             Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             if (p.getLeft().isEmpty()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
-                 "No targets available!",
-                 Eidolons.getGame().getManager().getControlledObj());
+                        "No targets available!",
+                        Eidolons.getGame().getManager().getControlledObj());
                 GdxMaster.setDefaultCursor();
                 EUtils.playSound(STD_SOUNDS.NEW__CLICK_DISABLED);
                 return;
@@ -608,13 +611,13 @@ public class GridPanel extends Group {
                     BattleFieldObject obj = getObjectForView(view);
 
                     LastSeenMaster.resetLastSeen((GridUnitView) view,
-                     obj, !visible);
+                            obj, !visible);
                     if (obj.getLastSeenOutline() == null)
                         (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
-                         () -> null);
+                                () -> null);
                     else
                         (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
-                         () -> (obj.getLastSeenOutline().getImagePath())
+                                () -> (obj.getLastSeenOutline().getImagePath())
                         );
 
                 }
@@ -661,14 +664,14 @@ public class GridPanel extends Group {
                         overlay.setVisible(false);
                     viewMap.put(object, overlay);
                     Vector2 v = GridMaster.getVectorForCoordinate(
-                     object.getCoordinates(), false, false, this);
+                            object.getCoordinates(), false, false, this);
                     overlay.setPosition(v.x, v.y - GridMaster.CELL_H);
                     addOverlay(overlay);
                 }
             }
 
             final GridCellContainer gridCellContainer = cells[coordinates.getX()]
-             [rows - 1 - coordinates.getY()];
+                    [rows - 1 - coordinates.getY()];
             if (gridCellContainer == null) {
                 continue;
             }
@@ -714,7 +717,7 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(VALUE_MOD, p -> {
             FloatingTextMaster.getInstance().
-             createAndShowParamModText(p.get());
+                    createAndShowParamModText(p.get());
         });
 
 
@@ -765,8 +768,8 @@ public class GridPanel extends Group {
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
-        if (viewMap.get(battleFieldObjectbj)!=null ) {
-            main.system.auxiliary.log.LogMaster.log(1,">>>>>> UnitView already created!!! " +battleFieldObjectbj);
+        if (viewMap.get(battleFieldObjectbj) != null) {
+            main.system.auxiliary.log.LogMaster.log(1, ">>>>>> UnitView already created!!! " + battleFieldObjectbj);
             return viewMap.get(battleFieldObjectbj);
         }
         GridUnitView view = UnitViewFactory.create(battleFieldObjectbj);
@@ -843,7 +846,7 @@ public class GridPanel extends Group {
                 continue;
             }
             float alpha = DC_Game.game.getVisionMaster().
-             getGammaMaster().getLightEmitterAlpha(object, 0);
+                    getGammaMaster().getLightEmitterAlpha(object, 0);
 
             GenericGridView view = (GenericGridView) viewMap.get(object);
 
@@ -853,6 +856,10 @@ public class GridPanel extends Group {
     }
 
     private void resetVisible() {
+        if (DeathAnim.isOn() && animMaster.getDrawer().isDrawing()) {
+            return;
+        }
+
         for (BattleFieldObject sub : viewMap.keySet()) {
             BaseView view = viewMap.get(sub);
             if (view.getActions().size == 0) {
@@ -862,6 +869,8 @@ public class GridPanel extends Group {
                 }
             }
         }
+
+
         resetVisibleRequired = false;
     }
 
@@ -895,13 +904,13 @@ public class GridPanel extends Group {
                     //                TODO     cell.recalcUnitViewBounds();
                     for (GenericGridView sub : views) {
                         if (sub.isHovered() && sub instanceof GridUnitView
-                         ) {
+                        ) {
                             setHoverObj((GridUnitView) sub);
                             topCells.add(cell);
                             cell.setHovered(true);
                         } else if (
                                 sub.getUserObject().isBoss() ||
-                                sub.getUserObject().isPlayerCharacter() || sub.isStackView()) {
+                                        sub.getUserObject().isPlayerCharacter() || sub.isStackView()) {
                             topCells.add(cell);
                         }
                     }
@@ -927,15 +936,15 @@ public class GridPanel extends Group {
     }
 
     public void addOverlay(OverlayView view) {
-        int width = (int) (GridMaster.CELL_W * OverlayView.SCALE);
-        int height = (int) (GridMaster.CELL_H * OverlayView.SCALE);
-        Dimension dimension = GridMaster.getOffsetsForOverlaying(view.getDirection(), width, height);
+        int width = (int) (GridMaster.CELL_W * view.getScale());
+        int height = (int) (GridMaster.CELL_H * view.getScale());
+        Dimension dimension = GridMaster.getOffsetsForOverlaying(view.getDirection(), width, height, view);
         float calcXOffset = view.getX();
         float calcYOffset = view.getY();
 
         view.setBounds((float) dimension.getWidth() + calcXOffset
-         , (float) dimension.getHeight() + calcYOffset
-         , width, height);
+                , (float) dimension.getHeight() + calcYOffset
+                , width, height);
         addActor(view);
         overlays.add(view);
     }
@@ -961,8 +970,9 @@ public class GridPanel extends Group {
     }
 
     public BattleFieldObject getObjectForView(BaseView source) {
-        return new MapMaster<BattleFieldObject, BaseView>()
-         .getKeyForValue(viewMap, source);
+        return (BattleFieldObject) source.getUserObject(); //TODO igg demo fix
+//        return new MapMaster<BattleFieldObject, BaseView>()
+//         .getKeyForValue(viewMap, source);
     }
 
     public void clearSelection() {

@@ -33,7 +33,9 @@ public class HqButtonPanel extends HqElement {
         add(new SmartButton("Undo All", STD_BUTTON.MENU, () -> {
             undoAll();
         }));
-        add(new SmartButton("Save and Exit", STD_BUTTON.MENU, () -> {
+
+
+        add(new SmartButton("Done", STD_BUTTON.MENU, () -> {
             saveAndExit();
         }));
     }

@@ -1,14 +1,18 @@
 package eidolons.libgdx.gui.panels.headquarters.hero;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.Images;
 import main.ability.AbilityObj;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.BuffObj;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -21,7 +25,7 @@ public class HqTraitsPanel extends HqElement {
     protected boolean expanded;
 
     public HqTraitsPanel( ) {
-        super(700, 100);
+        super();
 //        expandButton;
     }
 
@@ -29,6 +33,10 @@ public class HqTraitsPanel extends HqElement {
     protected void update(float delta) {
         //slot based? to use fade 
         clear();
+        setWidth(465);
+        HorizontalFlowGroup group = new HorizontalFlowGroup(5);
+        group.setSize(getWidth()*0.7f, getHeight());
+        add(group).left();
         List<? extends Entity> list = getData();
         int i = 0;
         //fill with nulls? 
@@ -41,9 +49,10 @@ public class HqTraitsPanel extends HqElement {
                     break;
             }
             DynamicLayeredActor actor = createActor(sub);
-            add(actor).left();
+            group.addActor(actor);
         }
-        debug();
+
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
     }
 
     protected List<? extends Entity> getData() {
@@ -70,9 +79,9 @@ public class HqTraitsPanel extends HqElement {
          getOverlay(sub), getUnderlay(sub)){
             protected void init() {
                 setSize(getDefaultWidth(), getDefaultHeight() );
-//                GdxMaster.center(underlay);
-//                GdxMaster.center(image);
-//                GdxMaster.center(overlay);
+                GdxMaster.center(underlay);
+                GdxMaster.center(image);
+                GdxMaster.center(overlay);
             }
             protected float getDefaultWidth() {
                 return 50;
@@ -82,12 +91,13 @@ public class HqTraitsPanel extends HqElement {
             }
         };
 //        container.setSize(getSize(), getSize());
-        
+        actor.setSize(50, 50);
+        actor.addListener(new ValueTooltip(sub.getName()).getController());
         return actor;
     }
 
     protected String getUnderlay(Entity sub) {
-        return Images.EMPTY_RANK_SLOT;
+        return "";
     }
 
     protected String getOverlay(Entity sub) {

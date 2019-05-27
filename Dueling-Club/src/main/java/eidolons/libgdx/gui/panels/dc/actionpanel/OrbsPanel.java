@@ -4,11 +4,14 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
 import main.system.launch.CoreEngine;
 
@@ -33,7 +36,11 @@ public class OrbsPanel extends TablePanel {
 
     public static void addTooltip(OrbElement el, String name, String val) {
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(el.getIconRegion(), name, val)));
+        String description= DescriptionTooltips.tooltip(el.getParameter());
+        ValueContainer container = new VerticalValueContainer(el.getIconRegion(), name +": " + val, description);
+        container.setSize(600, 400);
+        container.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        tooltip.setUserObject(Arrays.asList(container));
         el.clearListeners();
         el.addListener(tooltip.getController());
         el.addListener(new SmartClickListener(el) {
@@ -46,7 +53,8 @@ public class OrbsPanel extends TablePanel {
                     }
                     int finalPerc = perc;
                     new Thread(() -> {
-                        Eidolons.getMainHero().modifyParamByPercent(ContentValsManager.getCurrentParam(el.getParameter()), finalPerc);
+                        Eidolons.getMainHero().modifyParamByPercent(ContentValsManager.getCurrentParam(
+                                el.getParameter()), finalPerc);
                         Eidolons.getGame().getManager().reset();
                     }, " thread").start();
 

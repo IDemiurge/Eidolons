@@ -26,6 +26,11 @@ public class CombatLoop extends GameLoop {
         manager.getAtbController().getUnitsInAtb().clear();
     }
 
+    @Override
+    public void start() {
+        super.start();
+    }
+
     public void endCombat() {
         setActiveUnit(null );
         getGame().getTurnManager().resetQueue();
@@ -34,5 +39,9 @@ public class CombatLoop extends GameLoop {
             unit.getAI().combatEnded();
         }
         getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(true);
+    }
+
+    public int getWaitOnStartTime() {
+        return 2000;
     }
 }

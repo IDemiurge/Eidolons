@@ -13,16 +13,22 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.SmartTextureAtlas;
+import eidolons.libgdx.texture.Sprites;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -114,7 +120,33 @@ public class Assets {
         EmitterPresetMaster.getInstance().init();
         EmitterPools.init(get().getManager());
 
+        if (isPreloadUI()){
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL);
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH);
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON);
+            SpriteAnimationFactory.getSpriteAnimation(IGG_Images.getBackground());
+             //locks
+            // blood
+            //boss
+        }
+
+        if (isPreloadHeroes()){
+
+        } else {
+            SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPathNew()
+                    + "unit/" + Eidolons.getMainHero().getName() + ".txt");
+
+        }
+
         return result;
+    }
+
+    private static boolean isPreloadUI() {
+        return !CoreEngine.isLiteLaunch();
+    }
+
+    private static boolean isPreloadHeroes() {
+        return false;
     }
 
     private static boolean checkPreloadUnit(BattleFieldObject sub) {

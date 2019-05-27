@@ -13,6 +13,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureManager;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 
@@ -35,7 +36,9 @@ public class HqParamPanel extends HqElement{
 //        add(group = new HorizontalGroup()).center();
 //        group.setSize(getWidth()-60, getHeight());
 //        group.space(GDX.size(10));
-       defaults().space(GDX.size(50));
+
+       defaults().space(GDX.size(30));
+
         this.params = params;
         containers = new Array<>(6);
 
@@ -54,10 +57,11 @@ public class HqParamPanel extends HqElement{
             container.overrideImageSize(32,32);
 //            container.setSize(GDX.size(100), GDX.size(64));
             container.setStyle(StyleHolder.getHqLabelStyle(18));
-            container.addListener(new ValueTooltip(sub.getName()).getController());
 
             containers.add(container);
             add(container).uniform().center();
+
+            container.setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
 //            group.addActor(container);
         }
     }
@@ -70,6 +74,9 @@ public class HqParamPanel extends HqElement{
             containers.get(i).setValueText(text);
             int size = 18 + Math.round(18 * new Float(2.0f) / (1 + text.length()) / 10);
             containers.get(i).setStyle(StyleHolder.getHqLabelStyle(size));
+            containers.get(i).clearListeners();
+            containers.get(i).addListener(new ValueTooltip(DescriptionTooltips.tooltip(sub, getUserObject().getEntity())).getController());
+
             i++;
         }
     }

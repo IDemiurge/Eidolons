@@ -355,17 +355,16 @@ public class DC_ConditionMaster extends ConditionMaster {
                 List<FACING_SINGLE> list = new ArrayList<>();
                 list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
 
-                c.add(new OrConditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT),
-
-                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
-                                new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-                                        G_PROPS.STANDARD_PASSIVES), UnitEnums.STANDARD_PASSIVES.HIND_REACH + "",
-                                        false)),
-
-                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT,
-                                UnitEnums.FACING_SINGLE.TO_THE_SIDE), new StringComparison(StringMaster.getValueRef(
-                                KEYS.SOURCE, G_PROPS.STANDARD_PASSIVES),
-                                UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
+                c.add(new OrConditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT)
+//                        , TODO igg demo hack
+//                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
+//                                new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
+//                                        G_PROPS.STANDARD_PASSIVES), UnitEnums.STANDARD_PASSIVES.HIND_REACH + "",
+//                                        false)),
+//                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT,
+//                                UnitEnums.FACING_SINGLE.TO_THE_SIDE), new StringComparison(StringMaster.getValueRef(
+//                                KEYS.SOURCE, G_PROPS.STANDARD_PASSIVES),
+//                                UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
 
                 ));
 //                c.add(new NotCondition(new RefCondition(KEYS.TARGET, KEYS.SOURCE)));

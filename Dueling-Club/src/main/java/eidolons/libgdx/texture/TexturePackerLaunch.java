@@ -158,10 +158,19 @@ public class TexturePackerLaunch {
     public static Settings getBestSettings() {
         Settings settings = getSettings();
         settings.format = Format.RGBA8888;
+        settings.jpegQuality = 0.85f;
+
+        settings.maxHeight = (int) Math.pow(2, 13);
+        settings.maxWidth = (int) Math.pow(2, 13);
+        return settings;
+    }
+        public static Settings getAtlasSettings() {
+        Settings settings = getSettings();
+        settings.format = Format.RGBA8888;
         settings.jpegQuality = 0.8f;
 
         settings.maxHeight = (int) Math.pow(2, 13);
-        settings.maxWidth = (int) Math.pow(2, 14);
+        settings.maxWidth = (int) Math.pow(2, 13);
         return settings;
     }
 
@@ -171,8 +180,8 @@ public class TexturePackerLaunch {
         settings = new Settings();
         settings.combineSubdirectories = DialogMaster.confirm("Is combine Subdirectories ?");
 
-        settings.maxHeight = (int) Math.pow(2, 14);
-        settings.maxWidth = (int) Math.pow(2, 15);
+        settings.maxHeight = (int) Math.pow(2, 13);
+        settings.maxWidth = (int) Math.pow(2, 13);
 //        settings.maxHeight = (int) Math.pow(2, 13);
 //        settings.maxWidth = (int) Math.pow(2, 13);
         settings.atlasExtension = ATLAS_EXTENSION;

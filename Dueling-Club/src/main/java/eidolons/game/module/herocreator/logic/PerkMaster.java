@@ -74,7 +74,7 @@ public class PerkMaster {
     private static List<ObjType> getCustomPerks(HeroClass c1) {
         List<ObjType> list = DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
                 t -> t.getProperty(PROPS.PERK_FOR_CLASSES)
-                        .toLowerCase(). contains(c1.toString().toLowerCase())
+                        .toLowerCase(). contains(c1.getName().toLowerCase())
         ).collect(Collectors.toList());
         return list;
     }

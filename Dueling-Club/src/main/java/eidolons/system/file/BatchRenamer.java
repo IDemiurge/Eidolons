@@ -8,6 +8,7 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -20,18 +21,20 @@ import java.nio.file.Files;
 import java.util.List;
 
 public class BatchRenamer {
+    private static String ANIM_ROOT;
+
     private static void moveFilesToPartFolders(String folder, int maxFilesPerFolder) {
         int i = 0;
         int suffix = 1;
 //        C:\drive\[2019]\Team\AE\tests\netherflame\misc\icons\skill\Symbols 128 square
         for (File file : FileManager.getFilesFromDirectory(folder, false)) {
 
-            String folderName = "part_" + (suffix+1);
-            String pathname = folder + "\\" + folderName+ "\\" +
+            String folderName = "part_" + (suffix + 1);
+            String pathname = folder + "\\" + folderName + "\\" +
                     new File(file.getName());
             File newFile = new File(
                     pathname);
-            new File(folder + "\\" + folderName+ "\\").mkdirs();
+            new File(folder + "\\" + folderName + "\\").mkdirs();
             if (!file.renameTo(newFile)) {
                 continue;
             }
@@ -58,6 +61,18 @@ public class BatchRenamer {
     }
 
     public static void main(String[] a) {
+        ANIM_ROOT = "C:\\drive\\[2019]\\Team\\AE\\" +
+                "tests\\netherflame\\misc\\weapons\\Battle Spear\\";
+        for (File folder : FileManager.getFilesFromDirectory(ANIM_ROOT+ "to rename", true, false)) {
+            if (folder.isDirectory()) {
+                try {
+                    renameAnimsInFolder(folder);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         if (DialogMaster.confirm("Move into subfolders?")) {
             moveFilesToPartFolders(DialogMaster.inputText("Root?"), 5000);
             return;
@@ -81,15 +96,7 @@ public class BatchRenamer {
  */
         DialogMaster.confirm("Manual folders?");
 
-        for (File folder : FileManager.getFilesFromDirectory("C:\\drive\\[2019]\\Team\\AE\\tests\\netherflame\\misc\\weapons\\SPEAR", true, false)) {
-            if (folder.isDirectory()) {
-                try {
-                    renameAnimsInFolder(folder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+
     }
 
     private static void processAE_Dir() {
@@ -123,16 +130,39 @@ public class BatchRenamer {
         }
     }
 
+    private static void renameAnimsInFolder(File folder, String... animNames) {
+        int frameNumber;
+
+        // we can at least do same Fps for projections
+
+
+    }
+
     private static void renameAnimsInFolder(File folder) throws IOException {
-        for (File file : FileManager.getFilesFromDirectory(folder.getPath(), false)) {
-            String name = StringMaster.cropLastSegment(file.getName(), "_", true);
-            File newFile = new File(folder.getPath() + file.getName().replace(name, folder.getName()));
-            if (!file.renameTo(newFile)) {
-                break;
-            }
-            continue;
+        for (File proj : FileManager.getFilesFromDirectory(folder.getPath(), true))
+        {
+            int i=0;
+            if (proj.isDirectory())
+                for (File file : FileManager.getFilesFromDirectory(proj.getPath(), false)) {
+
+                    String name = ANIM_ROOT
+                            + "/renamed/";
+                    String weapon = PathUtils.getLastPathSegment(ANIM_ROOT);
+                    String action = folder.getName();
+                    new File(name).mkdirs();
+
+                    name += ContainerUtils.construct("_", weapon, action, proj.getName());
+
+                    name += NumberUtils.getFormattedTimeString(i++, 4)+ ".png";
+                    File newFile = new File(name);
+
+                    if (!file.renameTo(newFile)) {
+                        break;
+                    }
+                    continue;
 //            Files.setAttribute()
 
+                }
         }
     }
 }

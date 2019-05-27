@@ -75,7 +75,11 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
             return;
         }
         weapon.addListener(getListener());
+        setVisible(true);
+        //TODO igg demo hack for null weapons
         super.updateAct(delta);
+        if (!isVisible())
+            return;
           radial.openMenu();
     }
 

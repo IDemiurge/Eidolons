@@ -577,7 +577,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
         Map<CONTAINER_CONTENTS, Integer> map = null;
         if (unit) {
-            map = wizard.constructWeightMap("AMMO(3);POTIONS(4);JUNK(5);TREASURE(1);JEWELRY(3)", CONTAINER_CONTENTS.class);
+            map = wizard.constructWeightMap(getUnitContentsWeightMap(obj), CONTAINER_CONTENTS.class);
         } else {
             map = wizard.constructWeightMap(prop, CONTAINER_CONTENTS.class);
         }
@@ -652,7 +652,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
-            if (RandomWizard.chance(Math.min(35, gold * 3))) {
+            int foodChance=Math.min(25, gold * 3);
+            MathMaster.addFactor(foodChance, Eidolons.getMainHero().getIntParam(PARAMS.FORAGING));
+
+            if (RandomWizard.chance(foodChance)) {
                 contents += "Food";
                 gold -= 50;
             }
@@ -667,6 +670,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         obj.setProperty(PROPS.INVENTORY, contents);
 
         //        contents+=goldItem
+    }
+
+    private String getUnitContentsWeightMap(BattleFieldObject unit) {
+        return "AMMO(4);POTIONS(8);JUNK(3);TREASURE(1);JEWELRY(5)";
     }
 
     private String checkSpecialContents(String contents, BattleFieldObject obj) {

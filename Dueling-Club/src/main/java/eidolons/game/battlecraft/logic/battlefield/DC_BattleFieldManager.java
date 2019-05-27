@@ -69,7 +69,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     public boolean canMoveOnto(Entity unit, Coordinates c) {
-        return game.getMovementManager().canMove((Obj) unit, c);
+        return game.getMovementManager().canMove( unit, c);
     }
 
 

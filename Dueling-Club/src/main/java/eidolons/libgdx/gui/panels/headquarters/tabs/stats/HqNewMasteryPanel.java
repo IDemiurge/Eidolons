@@ -7,6 +7,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -14,13 +15,16 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.headquarters.HqActor;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
@@ -31,14 +35,14 @@ import java.util.List;
  * Created by JustMe on 4/18/2018.
  */
 public class HqNewMasteryPanel extends ValueTable<PARAMETER,
- GroupX>
- implements HqActor  {
+        GroupX>
+        implements HqActor {
     private final SmartButton cancelButton;
 
     public HqNewMasteryPanel() {
-        super(6, DC_ContentValsManager.getMasteries().size());
+        super(12, DC_ContentValsManager.getMasteries().size());
         setVisible(false);
-        cancelButton = new SmartButton(STD_BUTTON.CANCEL, ()->{
+        cancelButton = new SmartButton(STD_BUTTON.CANCEL, () -> {
             fadeOut();
         });
         initDefaultBackground();
@@ -60,6 +64,12 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (HqPanel.getActiveInstance() == null) {
+            return;
+        }
+        setPosition(HqPanel.getActiveInstance().traits.getX(),
+                HqPanel.getActiveInstance().traits.getY());
+
     }
 
     @Override
@@ -82,7 +92,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     public void init() {
         super.init();
 //        row();
-        add(cancelButton).colspan(wrap+1).right();
+        add(cancelButton).colspan(wrap + 1).right();
     }
 
     @Override
@@ -93,13 +103,13 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     @Override
     protected GroupX createElement(PARAMETER datum) {
         FadeImageContainer container =
-         new FadeImageContainer(ImageManager.getValueIconPath(datum));
+                new FadeImageContainer(ImageManager.getValueIconPath(datum));
         GroupX group = new GroupX();
         group.addActor(container);
 //        group.addActor(overlay);
+        group.addListener(new ValueTooltip("Learn " + datum.getDisplayedName() + StringMaster.NEW_LINE +
+                DescriptionTooltips.tooltip(datum)).getController());
         group.addListener(getListener(datum, container));
-
-        group.addListener(new ValueTooltip("Learn " + datum.getName()).getController());
 
         container.setSize(getElementSize().x, getElementSize().y);
         group.setSize(getElementSize().x, getElementSize().y);
@@ -111,18 +121,15 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
 
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
-                if (event.getButton() == 1) {
-                    GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
-                     new ValueTooltip(DescriptionMaster.
-                      getMasteryDescription((PARAMS) datum)));
-
+                    EUtils.onConfirm("Learn " + datum+"?", true, ()-> {
+                        if (HqStatMaster.learnMastery(getUserObject().getEntity(), datum)) {
+                            modelChanged();
+                            fadeOut();
+                        }
+                                        });
                     return;
                 }
-                if (HqStatMaster.learnMastery(getUserObject().getEntity(), datum)) {
-                    modelChanged();
-                    fadeOut();
-                }
-            }
+
         };
     }
 
@@ -135,24 +142,21 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
 
     @Override
     protected PARAMETER[] initDataArray() {
+        List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
         if (CoreEngine.isIggDemoRunning()) {
-            switch (getUserObject().getEntity().getName()) {
-                case IGG_Demo.HERO_GORR:
-                    return IGG_Demo.HERO_NEW_MASTERY_GORR;
-                case IGG_Demo.HERO_DARK_ELF:
-                    return IGG_Demo.HERO_NEW_MASTERY_DARK_ELF;
-
-            }
+            List<PARAMETER> pool = IGG_Demo.getMasteriesForHero(getUserObject().getEntity().getName());
+            pool.removeIf(p ->
+                    unlocked.contains(p));
+            return pool.toArray(new PARAMETER[pool.size()]) ;
         }
         List<PARAMETER> availableMasteries = new ArrayList<>(
-         DC_ContentValsManager.getMasteries());
-
-        List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
-        availableMasteries.removeIf(p ->
-         unlocked.contains(p));
+                DC_ContentValsManager.getMasteries());
 
         availableMasteries.removeIf(p ->
-         !SkillMaster.isMasteryAvailable(p, getUserObject().getEntity() ));
+                unlocked.contains(p));
+
+        availableMasteries.removeIf(p ->
+                !SkillMaster.isMasteryAvailable(p, getUserObject().getEntity()));
         return availableMasteries.toArray(new PARAMETER[availableMasteries.size()]);
     }
 

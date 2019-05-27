@@ -61,10 +61,11 @@ public class DeathMaster extends Master {
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
          new Context(_killer, _killed)));
 
-        GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
-                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
-                        HitAnim.HIT.BONE_CRACK),
-                _killed.getRef().getObj(KEYS.HOSTILITY));
+//     TODO igg demo fix
+//      GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
+//                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
+//                        HitAnim.HIT.BONE_CRACK),
+//                _killed.getRef().getObj(KEYS.HOSTILITY));
 
         getGameMaster().remove(_killed, true);
 //	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);
@@ -103,6 +104,17 @@ public class DeathMaster extends Master {
                 return;
             }
         }
+        BattleFieldObject killed = (BattleFieldObject) _killed;
+        BattleFieldObject killer = (BattleFieldObject) _killer;
+        Ref ref = Ref.getCopy(killed.getRef());
+        ref.setSource(killer.getId());
+        ref.setTarget(killed.getId());
+
+        if (!quietly)
+        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, ref).fire()) {
+            return;
+        }
+
         String message = null;
         if (_killed == _killer) {
             message = _killed + " dies ";// + _killed.getInfoString();
@@ -116,11 +128,6 @@ public class DeathMaster extends Master {
             checkXpGranted(_killed, _killer);
         SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
         _killed.setDead(true);
-        BattleFieldObject killed = (BattleFieldObject) _killed;
-        BattleFieldObject killer = (BattleFieldObject) _killer;
-        Ref ref = Ref.getCopy(killed.getRef());
-        ref.setSource(killer.getId());
-        ref.setTarget(killed.getId());
 
 
         for (AbilityObj abil : killed.getPassives()) {

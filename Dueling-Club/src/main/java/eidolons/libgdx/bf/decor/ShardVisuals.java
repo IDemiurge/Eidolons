@@ -12,6 +12,9 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.options.GraphicsOptions;
+import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -55,6 +58,9 @@ public class ShardVisuals extends GroupX {
     }
 
     public static VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
+        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SHARD_VFX)) {
+            return new VFX[0];
+        }
         List<VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
         int n = 2;
         if (size != null)
@@ -225,7 +231,23 @@ public class ShardVisuals extends GroupX {
 
                     VFX[] presets = ShardVisuals.getEmitters(overlay, size);
                     for (VFX preset : presets) {
-                        EmitterActor actor = new EmitterActor(preset);
+                        EmitterActor actor = new EmitterActor(preset){
+                            @Override
+                            public void act(float delta) {
+                                if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                    return;
+                                }
+                                super.act(delta);
+                            }
+
+                            @Override
+                            public void draw(Batch batch, float parentAlpha) {
+                                if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                    return;
+                                }
+                                super.draw(batch, parentAlpha);
+                            }
+                        };
                         MapMaster.addToListMap(emittersMap, shard, actor);
                         emitterLayer.addActor(actor);
                         actor.setPosition(shard.getX() + shard.getWidth() / 2

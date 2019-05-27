@@ -1,11 +1,8 @@
 package eidolons.entity.obj.unit;
 
 import eidolons.content.*;
-import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.active.*;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
@@ -22,6 +19,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -49,12 +47,13 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
-import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
+import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
@@ -334,7 +333,7 @@ public class Unit extends DC_UnitModel {
                 }
             }
             if (param.isDynamic()) {
-                if (Debugger.isImmortalityOn())
+                if (Debugger.isImmortalityOn() || this == ShadowMaster.getShadowUnit())
                     if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
                         if (integer <= 0) {
                             return;
@@ -1403,7 +1402,7 @@ public class Unit extends DC_UnitModel {
         return false;
     }
 
-    public List<DC_ActiveObj> getAttacks(boolean offhand) {
+    public List<DC_UnitAction> getAttacks(boolean offhand) {
         return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK : DC_ActionManager.ATTACK).getSubActions();
     }
 
@@ -1690,8 +1689,8 @@ public class Unit extends DC_UnitModel {
     }
 
     public void xpGained(int xp) {
-        if (getRef().getObj(KEYS.PARTY) instanceof ChainParty) {
-            ((ChainParty) getRef().getObj(KEYS.PARTY)).xpGained(xp);
+        if (Eidolons.getParty() instanceof ChainParty) {
+            ((ChainParty) Eidolons.getParty()).xpGained(xp);
         }
         modifyParameter(PARAMS.XP, xp);
         modifyParameter(PARAMS.TOTAL_XP, xp, true);
@@ -1752,5 +1751,12 @@ public class Unit extends DC_UnitModel {
 
     public void setLastAction(DC_ActiveObj lastAction) {
         this.lastAction = lastAction;
+    }
+
+    public boolean isNamedUnit() {
+        return checkClassification(UnitEnums.CLASSIFICATIONS.UNIQUE) || checkBool(GenericEnums.STD_BOOLS.NAMED);
+    }
+    protected boolean isModifierMapOn() {
+        return isPlayerCharacter();
     }
 }

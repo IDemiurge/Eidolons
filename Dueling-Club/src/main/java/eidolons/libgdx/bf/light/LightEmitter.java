@@ -177,7 +177,7 @@ public class LightEmitter extends SuperActor {
             if (overlaying) {
                 Dimension dim = GridMaster.getOffsetsForOverlaying(direction,
                         64,
-                        64);
+                        64 );
                 x = (float) dim.getWidth() + 32;
                 y = (float) dim.getHeight() + 32;
             }
@@ -337,7 +337,7 @@ public class LightEmitter extends SuperActor {
 
         setBaseAlphaForChildren(baseAlpha);
 
-        main.system.auxiliary.log.LogMaster.log(1, baseAlpha + " alpha for " +
+        main.system.auxiliary.log.LogMaster.log(0, baseAlpha + " alpha for " +
                 getUserObject().getNameAndCoordinate() +
                 " set in " + alphaAction.getDuration());
     }

@@ -20,19 +20,24 @@ public class Door extends DungeonObj {
 
     public Door(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        setProperty( PROPS.KEY_TYPE, "Jade Key", true);
           obstructing =  checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING);
     }
 
     public DOOR_STATE getState() {
         if (state == null) {
             state =getInitialState();
+            if (state == DOOR_STATE.SEALED) {
+                addProperty(true, G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
+            }
         }
         return state;
     }
 
     private DOOR_STATE getInitialState() {
         if (!getProperty( PROPS.KEY_TYPE).isEmpty()) {
+            return DOOR_STATE.SEALED;
+        }
+        if (KeyMaster.isSealedDoor(this)){
             return DOOR_STATE.SEALED;
         }
             if (!getProperty(G_PROPS.CUSTOM_PROPS).isEmpty()) {

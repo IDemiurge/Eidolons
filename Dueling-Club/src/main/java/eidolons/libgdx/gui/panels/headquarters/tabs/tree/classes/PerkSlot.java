@@ -31,6 +31,11 @@ public class PerkSlot extends HtNode {
     }
 
     @Override
+    protected String getSlotTooltip() {
+        return "Fill the two Class Rank slots above to unlock a free Perk chosen from the pool of the related classes. If they are the same, the unique class perk will be available.";
+    }
+
+    @Override
     protected void init() {
         setSize(getDefaultWidth(), getDefaultHeight() );
     }

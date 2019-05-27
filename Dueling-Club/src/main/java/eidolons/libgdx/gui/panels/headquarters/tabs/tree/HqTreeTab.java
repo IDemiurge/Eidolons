@@ -24,6 +24,7 @@ public abstract class HqTreeTab extends HqElement{
         this.altBackground = altBackground;
         addActor(tabsBg = new Image(TextureCache.getOrCreate(Images.COLUMNS)));
         addActor(tree = createTree());
+        setSize(530, 890);
 //        tree.setPosition( 40-tree.getWidth()/2, -tree.getHeight()/2);
         setFixedSize(true);
         setSize(GDX.size(HqMaster.TAB_WIDTH) ,

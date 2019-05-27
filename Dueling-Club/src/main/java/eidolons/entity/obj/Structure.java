@@ -37,15 +37,6 @@ public class Structure extends BattleFieldObject {
     public Structure(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         this(type, owner, game, ref);
         setCoordinates(Coordinates.get(x, y));
-        if (isWall()) {
-//            try {  TODO igg demo fix - wtf is this
-//                if (getCoordinates().equals(((LocationMaster) game.getDungeonMaster()).getDungeonWrapper().
-//                        getMainEntrance().getCoordinates())) {
-//                    setCoordinates(Coordinates.get(0, 0));
-//                }
-//            } catch (Exception e) {
-//            }
-        }
     }
 
     @Override

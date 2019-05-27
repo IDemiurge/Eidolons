@@ -10,16 +10,20 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.VFX;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.text.TipMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 
@@ -30,7 +34,7 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class LoadingStage extends Stage {
     protected ScreenData data;
-    private boolean fogOn = false;
+    private boolean fogOn = !CoreEngine.isLiteLaunch();
     private boolean engineInit = true;
     private Image fullscreenImage;
     private List<Ambience> fogList = new ArrayList<>();
@@ -43,7 +47,7 @@ public class LoadingStage extends Stage {
         if (data.equals("Loading...")) {
             engineInit = true;
         }
-        underText = new Label(getBottonText(), StyleHolder.getHqLabelStyle(20));
+        underText = new Label(getBottonText(), StyleHolder.getHqLabelStyle(18));
 
         underText.addListener(TipMaster.getListener(underText));
         //TODO click to show next tip
@@ -74,8 +78,10 @@ public class LoadingStage extends Stage {
 //        return "Tip: " +
 //         TipMaster.getTip()
 //         + "(click to show next tip)";
-        return "Eidolons v" + CoreEngine.VERSION + " [beta] by Alexander @EiDemiurge     " +
-         "     ***        Got feedback? Contact me: EidolonsGame@gmail.com";
+        return "Eidolons: Netherflame v" + CoreEngine.VERSION + " [" +
+                CoreEngine.VERSION_NAME +
+                "] by Alexander Kamen   " +
+         "        ***      Found bugs? Contact me at @EiDemiurge and EidolonsGame@gmail.com";
     }
 
     public Label getUnderText() {
@@ -84,14 +90,18 @@ public class LoadingStage extends Stage {
 
     private void addFog() {
         int width = GdxMaster.getWidth();
-        int height = GdxMaster.getHeight();
-        for (int h = 0; h <= height; h += 300) {
-            for (int w = 0; w <= width; w += 300) {
-//                if (RandomWizard.chance(70)) {
-//                    continue;
-//                }
+        int height = 400;
+        for (int h = 0; h <= height; h +=RandomWizard.getRandomInt(200)+50) {
+            for (int w = 0; w <= width; w += RandomWizard.getRandomInt(200)+50) {
+                if (RandomWizard.chance(30)) {
+                    continue;
+                }
+
+                int n = AmbienceDataSource.AMBIENCE_TEMPLATE.COLD.nightly.length;
+                VFX vfx = AmbienceDataSource.AMBIENCE_TEMPLATE.COLD.nightly[RandomWizard.getRandomInt(n)];
+
                 Vector2 v = new Vector2(w, h);
-                Ambience fog = ParticleManager.addFogOn(v, VFX.MIST_WHITE);
+                Ambience fog = ParticleManager.addFogOn(v, vfx);
                 fogList.add(fog);
                 addActor(fog);
             }
@@ -116,7 +126,10 @@ public class LoadingStage extends Stage {
         for (Ambience sub : fogList) {
             sub.act(delta);
         }
-        underText.setVisible(!(Eidolons.getScreen() instanceof DungeonScreen));
+        if (IGG_Launcher.INTRO_RUNNING) {
+            underText.setVisible(false);
+        } else
+            underText.setVisible(!(Eidolons.getScreen() instanceof DungeonScreen));
 
     }
 

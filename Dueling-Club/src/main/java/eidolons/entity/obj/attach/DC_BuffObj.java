@@ -38,10 +38,8 @@ public class DC_BuffObj extends BuffObj {
 
     public DC_BuffObj(String name, BattleFieldObject basis,
                       float duration) {
-        this(
-                DataManager.getType(name, DC_TYPE.BUFFS) == null ?
-                        new BuffType(DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS))
-                        : DataManager.getType(name, DC_TYPE.BUFFS), basis, duration);
+        this( BuffMaster.getBuffType(name)
+               , basis, duration);
 
     }
     public DC_BuffObj(ObjType type, BattleFieldObject basis, float duration) {

@@ -200,7 +200,7 @@ public class IGG_XmlMaster {
 
     private void initAndWriteLevel(String path, int times) {
         for (int i = 0; i < times; i++) {
-            DungeonLevel level = RngLocationBuilder.loadLevel(path);
+            DungeonLevel level = RngLocationBuilder.loadLevelFromPath(path);
             //TODO reset lvl
             List<String> segments = PathUtils.getPathSegments(path);
             rngFilePath = segments.get(segments.size() - 2) + "/" + segments.get(segments.size() - 1);
@@ -217,6 +217,37 @@ public class IGG_XmlMaster {
         }
     }
 
+    public static String getDoorKeyData(String levelName) {
+        levelName= PathUtils.getLastPathSegment(levelName).toLowerCase();
+        switch (levelName) {
+            case "underworld.xml":
+                return "Iron Bars(Iron Key);Iron Door(Iron Key);Dwarven Door(Iron Key);" +
+                        "Crimson Door(Bone Key);Bone Door Enchanted(Ghost Key);" +
+                        "Dwarven Rune Door(Golden Key);Sinister Door(Dark Key)";
+            case "gates.xml":
+                return
+                        "Crimson Door(Master Key);Dwarven Rune Door(Master Key)";
+            case "vault.xml":
+                return
+                        "Crimson Door(Master Key);Bone Door Enchanted(Master Key)";
+
+        }
+        return "No door key data for " + levelName;
+    }
+
+    public static String getEntrancesData(String levelName) {
+        switch (PathUtils.getLastPathSegment(levelName.toLowerCase())) {
+            case "underworld.xml":
+                return "13-18=Upward Stairs;0-19=Dark Winding Downward Stairs";
+            case "gates.xml":
+                return "Winding Downward Stairs(12-19);Downward Stairs(12-0);";
+            case "vault.xml":
+                return
+                        "Wide Downward Stairs(7-11);Wide Downward Stairs(7-0)";
+        }
+        return levelName;
+    }
+
     public void mergeData(String levelName) {
         this.name = levelName;
         String le_data = FileManager.readFile(getOutputPath() + getLevelName());
@@ -224,7 +255,7 @@ public class IGG_XmlMaster {
         rngFilePath = XML_Converter.unwrap(XML_Converter.findNodeText(le_data, "Dungeon_Level"));
         String rng = FileManager.readFile(getRngPath());
 
-        DungeonLevel level = RngLocationBuilder.loadLevel(getRngPath());
+        DungeonLevel level = RngLocationBuilder.loadLevelFromPath(getRngPath());
         String metaData = FileManager.readFile(getMetaPath());
         /**
          * so, how will I update the RNG ?
@@ -281,13 +312,16 @@ public class IGG_XmlMaster {
         String directionMapData =
                 XML_Converter.findNode(le_data, RngXmlMaster.DIRECTION_MAP_NODE).getTextContent();
 
-        rng = rng.replaceFirst("<DIRECTION_MAP></DIRECTION_MAP>", XML_Converter.
-                wrap("DIRECTION_MAP", directionMapData));
+        rng = rng.replaceFirst("<DIRECTION_MAP></DIRECTION_MAP>", "");
+        rng +=
+                XML_Converter.
+                        wrap("DIRECTION_MAP", directionMapData);
         rng = XML_Converter.unwrap(rng);
         rng += objNode + "\n";
         rng += aiNode + "\n";
         rng += nonVoid + "\n";
         rng = XML_Converter.wrap("Level", rng, false);
+
         FileManager.write(rng, getMergedPath());
 
     }

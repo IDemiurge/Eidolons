@@ -67,7 +67,12 @@ public class TipMessageWindow extends TablePanelX {
                             WaitMaster.receiveInput(source.msgChannel, button);
                         }
 
-                    }).makeActive());
+                    }){
+                @Override
+                public boolean isIgnoreConfirmBlock() {
+                    return true;
+                }
+            }.makeActive());
 
             if (source.getButtons().length == 1) {
                 if (isAddToggle()){

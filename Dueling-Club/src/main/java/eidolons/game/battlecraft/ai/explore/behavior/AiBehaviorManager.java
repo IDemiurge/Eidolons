@@ -45,6 +45,10 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     public static boolean isNewAiOn() {
+        if (Eidolons.BOSS_FIGHT)
+            return false;
+        if (Eidolons.TUTORIAL   )
+            return false;
         return true;
     }
 

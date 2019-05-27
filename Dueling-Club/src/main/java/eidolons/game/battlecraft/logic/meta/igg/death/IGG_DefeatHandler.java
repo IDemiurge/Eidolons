@@ -1,20 +1,14 @@
 package eidolons.game.battlecraft.logic.meta.igg.death;
 
-import eidolons.ability.effects.oneshot.unit.SummonEffect;
-import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
-import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -97,7 +91,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
     public void fallsUnconscious(Event event) {
         if (!isOn())
             return;
-        getMaster().getShadowMaster().fall(event);
+        getMaster().getShadowMaster().heroFell(event);
 
     }
 }

@@ -2,10 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -26,8 +23,8 @@ import java.util.Collections;
 
 public class HqTooltipPanel extends TablePanelX {
 
-    public static final float WIDTH = 700;
-    public static final float INNER_WIDTH = WIDTH*0.8f;
+    public static final float WIDTH = 820;
+    public static final float INNER_WIDTH = WIDTH * 0.8f;
     ScrollPane scrollPane;
     private Container<Actor> inner;
 
@@ -40,15 +37,17 @@ public class HqTooltipPanel extends TablePanelX {
         add(scrollPane = new ScrollPane(inner = new Container<Actor>() {
             @Override
             public float getPrefHeight() {
-                return getHeight();
+//                return super.getPrefHeight();
+                return  getHeight();
             }
         }) {
             @Override
             public float getPrefHeight() {
-                return getActor().getHeight();
+//                return super.getPrefHeight();
+                return getActor().getHeight()*1.8f;
             }
         });
-        inner.setSize(WIDTH, 200);
+        inner.setSize(1.2f * WIDTH, 200);
         inner.
                 setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         inner.
@@ -58,6 +57,7 @@ public class HqTooltipPanel extends TablePanelX {
         scrollPane.setClamp(true);
         scrollPane.setScrollingDisabled(true, false);
         scrollPane.setFadeScrollBars(false);
+
     }
 
     @Override
@@ -76,27 +76,42 @@ public class HqTooltipPanel extends TablePanelX {
     }
 
     public void init(Tooltip tooltip) {
+        init(tooltip, true);
+    }
+
+    public void init(Tooltip tooltip, boolean first) {
+//        scrollPane.setScrollBarPositions(true, false);
         inner
                 .setActor(tooltip);
 
 
+
+        scrollPane.setScrollbarsOnTop(true);
         Actor actor = null;
 
         if (tooltip.getUserObject() instanceof Collection) {
             actor = (Actor) ((Collection) tooltip.getUserObject()).iterator().next();
         } else {
-            if (tooltip.getUserObject() instanceof ValueContainer) {
+            if (tooltip.getUserObject() instanceof Actor) {
                 actor = (ValueContainer) tooltip.getUserObject();
             }
         }
+        if (actor == null) {
+            actor = tooltip;
+        }
 //        tooltip.setActorWidth(getWidth()-50);
 
+        if (actor instanceof Table) {
+            inner.setHeight(((Table) actor).getPrefHeight() + 15);
+        } else {
+            inner.setHeight(actor.getHeight() + 15);
+        }
 
         if (actor instanceof ValueContainer) {
             Label label = ((ValueContainer) actor).getNameLabel();
             tooltip.setHeight(((ValueContainer) actor).getPrefHeight());
-            tooltip.setWidth(getWidth());
-            inner.setHeight(tooltip.getHeight() * 1.5f);
+//            tooltip.setWidth(getWidth()- scrollPane.getScrollWidth());
+//            tooltip.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
             scrollPane.setScrollY(tooltip.getHeight());
             if (label == null) {
                 label = ((ValueContainer) actor).getValueLabel();
@@ -104,20 +119,50 @@ public class HqTooltipPanel extends TablePanelX {
 //            label.setWidth(getWidth()*2);
 //            label.setWrap(true);
             label.setAlignment(Align.left);
-            tooltip.pad(20);
+            tooltip.pad(5);
 //            label.setText(label.getText());
             label = ((ValueContainer) actor).getValueLabel();
             if (label != null) {
 //            label.setWidth(getWidth());
             }
         }
-        tooltip.pack();
+//        tooltip.pack();
         tooltip.removeBackground();
 
-        scrollPane.setScrollY(inner.getHeight() / 4 + RandomWizard.getRandomInt(25 + (int)
+        if (inner.getHeight() < 300) {
+            scrollPane.setForceScroll(false, false);
+        } else
+            scrollPane.setForceScroll(false, true);
+
+        scrollPane.setScrollY(inner.getHeight() / 4 + RandomWizard.getRandomInt(12 + (int)
                 (tooltip.getHeight() / 3)));
         scrollPane.updateVisualScroll();
         getStage().setScrollFocus(scrollPane);
+        if (first)
+            for (int i = 0; i < 3; i++) {
+                init(tooltip, false);
+            }
+
     }
 
+    @Override
+    public void act(float delta) {
+        if (inner != null)
+        if (inner.getActor() != null) {
+        if (inner.getHeight() != inner.getActor().getHeight()) {
+//            if (inner.getHeight() < 200) {
+//                scrollPane.setForceScroll(false, false);
+//            } else{
+                scrollPane.setForceScroll(false, true);
+                inner.setHeight(inner.getActor().getHeight());
+//                scrollPane.setScrollY(inner.getHeight() / 4 + RandomWizard.getRandomInt(12 + (int)
+//                        (inner.getHeight() / 3)));
+                scrollPane.updateVisualScroll();
+//            }
+            scrollPane.layout(); //TODO igg demo fix good that it works, but why do I have to do this?
+        }
+        }
+
+        super.act(delta);
+    }
 }

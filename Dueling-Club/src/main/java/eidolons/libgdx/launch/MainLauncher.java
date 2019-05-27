@@ -2,6 +2,7 @@ package eidolons.libgdx.launch;
 
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -33,14 +34,15 @@ public class MainLauncher extends GenericLauncher {
         CoreEngine.setSafeMode(true);
         CoreEngine.setIggDemo(true);
 //        CoreEngine.setActiveTestMode(args.length > 0);
-//        CoreEngine.setLevelTestMode(args.length > 0);
+        CoreEngine.setLevelTestMode(args.length > 0);
         CoreEngine.setSkillTestMode(args.length > 0);
         CoreEngine.setLiteLaunch(args.length > 0);
-        CoreEngine.setContentTestMode(args.length > 0);
+        CoreEngine.setContentTestMode(args.length > 2);
 
         if (args.length > 0) {
             args = args[0].split(";");
             Eidolons.BOSS_FIGHT = args[0].contains("BOSS");
+            CoreEngine.setLevelTestMode(false);
         }
         if (!CoreEngine.isIggDemo()) {
             CoreEngine.setFastMode(args.length > 1);

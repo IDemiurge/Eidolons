@@ -98,9 +98,9 @@ public class InfoAttackRadial extends QuickAttackRadial {
             ActiveObj a = attacks.get(i++);
             processNode(node, a);
         }
-        for (int j = list.size(); j < SLOTS; j++) {
-            list.add(createSlotNode());
-        }
+//        for (int j = list.size(); j < SLOTS; j++) {
+//            list.add(createSlotNode());
+//        }
         return list;
     }
 
@@ -114,16 +114,16 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     protected double getRadiusBase() {
-        return 152;
+        return 139;
     }
     @Override
     protected Vector2 getInitialPosition() {
-        return new Vector2(164, 164);
+        return new Vector2( 114,  114);
     }
 
     @Override
     protected int getStartDegree() {
-        return offhand ? 10 : 150;
+        return offhand ? 10 : 155;
     }
 
     @Override

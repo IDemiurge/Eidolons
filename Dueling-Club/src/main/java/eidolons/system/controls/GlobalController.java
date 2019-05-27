@@ -23,6 +23,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.OptionsWindow;
 import eidolons.system.test.TestDialogMaster;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
@@ -98,12 +99,13 @@ public class GlobalController implements Controller {
         switch (keyCode) {
             case Keys.F1:
                 if (Eidolons.getGame().isBossFight()) {
-                    EUtils.showInfoText("There is no escape...");
+                    EUtils.showInfoText("There is no time...");
                     return false;
                 }
                 HqMaster.toggleHqPanel();
                 return true;
             case Keys.F4:
+                if (CoreEngine.isIDE())
                 if (Eidolons.getScope() != SCOPE.MENU) {
                     Eidolons.exitToMenu();
                     return true;
@@ -231,6 +233,10 @@ public class GlobalController implements Controller {
         GuiStage guiStage = Eidolons.getScreen().getGuiStage();
         if (guiStage.getDraggedEntity() != null) {
             guiStage.setDraggedEntity(null);
+            return true;
+        }
+        if (OptionsWindow.getInstance().isVisible()) {
+            OptionsWindow.getInstance().forceClose();
             return true;
         }
         if (guiStage.closeDisplayed())

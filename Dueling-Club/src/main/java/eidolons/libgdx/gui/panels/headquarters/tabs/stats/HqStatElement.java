@@ -19,6 +19,7 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.values.parameters.PARAMETER;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -122,12 +123,17 @@ public class HqStatElement extends HqElement {
                     return 20;
                 }
             });
-            container.addListener(new ValueTooltip(displayedParam.getName()).getController());
+            container.addListener(new ValueTooltip(DescriptionTooltips.tooltip(displayedParam, getUserObject().getEntity())).getController());
 
             container.getValueContainer().padLeft(5);
             container.getValueContainer().padRight(5);
         } else
-            container.addListener(new ValueTooltip("Mastery Slot").getController());
+        {
+            container.addListener(new ValueTooltip("Mastery Slot\n" +
+                    "Hero can have up to [10] Mastery types unlocked " +
+                    "(click to learn new ones))").getController());
+
+        }
 
         if (mastery) {
             container.addListener(getNewMasteryListener());

@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -38,11 +39,13 @@ import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
 import java.util.*;
@@ -76,10 +79,13 @@ public class RngLocationBuilder extends LocationBuilder {
                     path.contains(PathFinder.getDungeonLevelFolder()) ? path
                             : PathFinder.getDungeonLevelFolder() + path);
         }
+        DungeonLevel level =null ;
         if (!data.isEmpty()) {
-            path = data;
+            level = loadLevel(path, data);
+        } else {
+            level = loadLevelFromPath(path);
         }
-        DungeonLevel level = loadLevel(path);
+
         initPower(level);
         master.setDungeonLevel(level);
 
@@ -93,6 +99,11 @@ public class RngLocationBuilder extends LocationBuilder {
         new RngLevelInitializer().init(level);
         Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
         initWidthAndHeight(location);
+
+        if (CoreEngine.isIggDemo()){
+            level.setEntranceData(IGG_XmlMaster.getEntrancesData(path));
+            location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
+        }
         location.setEntranceData(level.getEntranceData());
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
@@ -162,13 +173,14 @@ public class RngLocationBuilder extends LocationBuilder {
     }
 
 
-    public static DungeonLevel loadLevel(String path) {
-        String xml = FileManager.readFile(path);
-        if (xml.isEmpty())
-            xml = path;
-        //        TODO
-        DungeonLevel level = new RestoredDungeonLevel();
+    public static DungeonLevel loadLevelFromPath(String path) {
+        String xml =  FileManager.readFile(path);
+        String name = PathUtils.getLastPathSegment(xml);
+        return loadLevel(name, xml);
+    }
+        public static DungeonLevel loadLevel(String name,String xml) {
 
+        DungeonLevel level = new RestoredDungeonLevel(name);
         int n = 0;
         for (Node node : XML_Converter.getNodeListFromFirstChild(XML_Converter.getDoc(xml), true)) {
             //TODO

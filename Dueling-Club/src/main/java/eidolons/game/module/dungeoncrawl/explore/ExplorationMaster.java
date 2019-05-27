@@ -128,11 +128,11 @@ public class ExplorationMaster {
                     AnimConstructor.preconstructAll(unit);
                 });
             getResetter().setResetNotRequired(false);
-            try {
-                MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+//            try {  done in game.startCombat()
+//                MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
         }
         getResetter().setResetNotRequired(false);
         game.startGameLoop();

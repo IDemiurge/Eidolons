@@ -33,7 +33,7 @@ static {
         MAX_ANIM_WAIT_TIME_COMBAT(1500, 0, 4500),
         PARALLEL_ANIMATIONS(false),
         //        INFO_LEVEL(1, 0, 1),
-        SPEED(350, 65, 1000),
+        SPEED(150, 50, 400),
 //        PHASE_TIME(500, 0, 1000),
 //        OFFSET_FOR_OVERLAP(true),
         PRECAST_ANIMATIONS(true),

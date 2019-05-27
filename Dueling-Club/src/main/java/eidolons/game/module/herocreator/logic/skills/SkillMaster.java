@@ -148,10 +148,20 @@ public class SkillMaster {
                 StringMaster.getWellFormattedString(mastery2.toString())));
 
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier);
+        list.removeIf(type -> isSkillProhibited(type, hero));
 
         return list;
     }
 
+    private static boolean isSkillProhibited(ObjType type, Unit hero) {
+        for (DC_FeatObj skill : hero.getSkills()) {
+            if (skill.getType().equals(type)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
     public static int getSlotsForTier(int tier) {
         return 7 - tier;
     }

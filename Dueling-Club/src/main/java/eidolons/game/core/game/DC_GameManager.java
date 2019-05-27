@@ -9,6 +9,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.*;
@@ -192,10 +193,21 @@ public class DC_GameManager extends GameManager {
         GuiEventManager.trigger(UPDATE_GUI, null);
         //        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
 
-        if (getActiveObj().isMine())
-            GuiEventManager.trigger(UPDATE_MAIN_HERO, getActiveObj() );
-        else
+        if (getMainHero().isUnconscious()) {
+            Unit unit = ShadowMaster.getShadowUnit();
+            if (unit != null) {
+                if (!unit.isDead()) {
+                    GuiEventManager.trigger(UPDATE_MAIN_HERO, unit);
+                }
+            }
+            return;
+        }
+
+        if (getActiveObj().isMine()) {
+            GuiEventManager.trigger(UPDATE_MAIN_HERO, getActiveObj());
+        } else {
             GuiEventManager.trigger(UPDATE_MAIN_HERO, getMainHero());
+        }
 
     }
 
@@ -236,7 +248,7 @@ public class DC_GameManager extends GameManager {
         if (!selectionObj) {
             if (C_OBJ_TYPE.BF_OBJ.equals(obj.getOBJ_TYPE_ENUM())) {
                 selectionObj = selectingSet.contains(getGame().getCellByCoordinate(
-                 obj.getCoordinates()));
+                        obj.getCoordinates()));
             }
         }
         if (!selectionObj) {
@@ -340,7 +352,7 @@ public class DC_GameManager extends GameManager {
         // add Cancel button? add hotkey listener?
         LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
         Integer selectedId = (Integer) WaitMaster.waitForInput(
-         WAIT_OPERATIONS.SELECT_BF_OBJ);
+                WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
         return selectedId;
@@ -416,7 +428,8 @@ public class DC_GameManager extends GameManager {
             action.invokeClicked();
         }
     }
-        public void activateMyAction(int index, ACTION_TYPE group) {
+
+    public void activateMyAction(int index, ACTION_TYPE group) {
         getActiveObj().getActionMap().get(group).get(index).invokeClicked();
     }
 
@@ -434,8 +447,8 @@ public class DC_GameManager extends GameManager {
     public boolean effectApplies(EffectImpl effect) {
         Ref ref = effect.getRef();
         if (!getGame().fireEvent(new
-         Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
-         ref))) {
+                Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED,
+                ref))) {
             return false;
         }
 
@@ -467,14 +480,15 @@ public class DC_GameManager extends GameManager {
     }
 
     public Unit getActiveObj() {
-        Unit active = null;;
+        Unit active = null;
+        ;
         if (game.isStarted()) {
-            active =   getGame().getLoop().getActiveUnit();
+            active = getGame().getLoop().getActiveUnit();
         }
         if (ExplorationMaster.isExplorationOn())
-        if ( active==null || active.isAiControlled() ){
-            return Eidolons.getMainHero();
-        }
+            if (active == null || active.isAiControlled()) {
+                return Eidolons.getMainHero();
+            }
         return active;
     }
 
@@ -520,18 +534,20 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean handleEvent(Event event) {
-        getGame().getMetaMaster().getEventHandler().handle(event);
+        if (!getGame().getMetaMaster().getEventHandler().handle(event)){
+            return false;
+        }
         if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
         if (event.getRef().getSourceObj() != null) {
             if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
                 if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
-                        try {
-                            AnimConstructor.preconstruct(event);
-                        } catch (Exception e) {
-                            ExceptionMaster.printStackTrace(e);
-                        }
+                    try {
+                        AnimConstructor.preconstruct(event);
+                    } catch (Exception e) {
+                        ExceptionMaster.printStackTrace(e);
+                    }
                 }
         } else {
             event.getRef().getSourceObj(); //TODO debug this
@@ -551,12 +567,12 @@ public class DC_GameManager extends GameManager {
         if (HpBar.isResetOnLogicThread())
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT ||
 
-             event.getType().name().startsWith("PARAM_MODIFIED")
-              && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
+                    event.getType().name().startsWith("PARAM_MODIFIED")
+                            && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
 
                 try {
                     DungeonScreen.getInstance().getGridPanel().getGridManager().
-                     checkHpBarReset(event.getRef().getSourceObj());
+                            checkHpBarReset(event.getRef().getSourceObj());
                 } catch (NullPointerException e) {
                 } catch (Exception e) {
                     ExceptionMaster.printStackTrace(e);

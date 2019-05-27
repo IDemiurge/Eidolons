@@ -4,6 +4,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.system.auxiliary.data.ListMaster;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -156,6 +157,10 @@ public class ContainerUtils {
         return joinStringList(list, getContainerSeparator(), false);
     }
 
+    public static String construct(String separator, String... parts) {
+        return constructStringContainer(Arrays.asList(parts), separator);
+
+    }
     public static String constructStringContainer(List<?> list) {
         return constructStringContainer(list, getContainerSeparator());
     }

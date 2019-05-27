@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg.story;
 
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -9,6 +11,8 @@ import eidolons.libgdx.gui.menu.selection.scenario.ScenarioInfoPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioListPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.launch.MainLauncher;
+import eidolons.libgdx.screens.menu.MainMenu;
+import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -28,7 +32,7 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
 
     @Override
     protected String getTitle() {
-        return "The Journey begins";
+        return "";
     }
 
     public void tryDone() {
@@ -47,14 +51,42 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
     }
 
     @Override
+    public void init() {
+        super.init();
+        listPanel.setPosition(
+                GdxMaster.centerWidthScreen(listPanel),
+                GdxMaster.centerHeightScreen(listPanel));
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        MainMenu.getInstance().setVisible(false);
+        listPanel.setPosition(
+                GdxMaster.centerWidthScreen(listPanel),
+                GdxMaster.centerHeightScreen(listPanel));
+    }
+
+    @Override
 
     protected SelectableItemDisplayer createInfoPanel() {
         return new ScenarioInfoPanel(null ){
             @Override
             protected void afterLayout() {
                 super.afterLayout();
-                startButton.setPosition(getBtnX(),
+//                startButton.setPosition(getBtnX(),
+//                        TiledNinePatchGenerator.NINE_PATCH_PADDING.SAURON.bottom);
+//                IggActChoicePanel.this.add(fullsizePortrait);
+//                fullsizePortrait.setPosition(
+//                        GdxMaster.centerWidth(fullsizePortrait),
+//                        GdxMaster.centerHeight(fullsizePortrait));
+
+                IggActChoicePanel.this.add(startButton);
+                startButton.setPosition(
+                        GdxMaster.centerWidth(startButton),
                         TiledNinePatchGenerator.NINE_PATCH_PADDING.SAURON.bottom);
+//                debugAll();
+                setVisible(false);
             }
 
             public void initStartButton(String text, Runnable runnable) {
@@ -88,13 +120,22 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
                        return false;
                     }
                 }
-                return !item.getName().equalsIgnoreCase("act i");
+                return !item.getName().equalsIgnoreCase("introduction");
+//                return !item.getName().equalsIgnoreCase("act i");
             }
         };
     }
 
     @Override
     protected List<ItemListPanel.SelectableItemData> createListData() {
-        return super.createListData();
+        List<ItemListPanel.SelectableItemData> list = super.createListData();
+        int i =0;
+        for (ItemListPanel.SelectableItemData selectableItemData : list) {
+            selectableItemData.setFullsizeImagePath(IGG_Images.BRIEF_ART.values()[i++].getPath());
+            selectableItemData.setDescription("Some enemies are resistant to your main weapon’s damage type. It is easier to defeat them using a different one!\n" +
+                    "\nUse G to swap your weapon set or adjust your weapons manually in the quick-inventory menu (be mindful of using it in combat, it will consume a lot of ATB and expose you to Attacks of Opportunity). \n" +
+                    "You may want to try using your spell on the next enemy too. " + i);
+        }
+        return list;
     }
 }

@@ -115,13 +115,17 @@ public class InstantAttackRule {
     public static boolean triggerInstantAttack(Unit unit, DC_ActiveObj action,
                                                DC_ActiveObj attack) {
         // if (WatchedCondition) //bonus ?
+        DC_Game game = unit.getGame();
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getOwnerUnit() +
+                " attempts an Instant Attack against " +
+                action.getOwnerUnit() +
+                " " + StringMaster.wrapInParenthesis(attack.getName()));
 
         if (!attack.tryInstantActivation(action)) {
             // try other attacks? could be preferred failed somehow
             LogMaster.log(1, "*** Instant attack failed! " + attack);
             return false;
         }
-        DC_Game game = unit.getGame();
         LogMaster.log(1, "*** Instant attack successful! " + attack);
 
         game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getOwnerUnit() + " makes an Instant Attack against " +

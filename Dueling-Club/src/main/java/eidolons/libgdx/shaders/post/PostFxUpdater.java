@@ -23,6 +23,9 @@ public class PostFxUpdater {
     PostProcessController controller;
     private Map<POST_FX_FACTOR, Float> fxMap = new LinkedHashMap<>();
 
+    public static Boolean heroFxOff;
+    public static Boolean shadowFxOff;
+
     public PostFxUpdater(PostProcessController controller) {
         this.controller = controller;
     }
@@ -56,6 +59,7 @@ public class PostFxUpdater {
             return;
         }
 
+        if (heroFxOff!=true){
         BUFF_RULE_STATUS
          status = ParamAnalyzer.getStatus(hero, BUFF_RULE.STAMINA);
         apply(status, BUFF_RULE.STAMINA);
@@ -65,8 +69,8 @@ public class PostFxUpdater {
         apply(status, BUFF_RULE.MORALE);
         status = ParamAnalyzer.getStatus(hero, BUFF_RULE.WOUNDS);
         apply(status, BUFF_RULE.WOUNDS);
-
-        //order?  
+        }
+        //order?
         // ++ bleeding
 
         applyFactors();
@@ -75,6 +79,9 @@ public class PostFxUpdater {
     private void applyTemplate(POST_FX_TEMPLATE template) {
         switch (template) {
             case UNCONSCIOUS:
+                if (shadowFxOff==true){
+                    return;
+                }
                 apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
 //                apply(POST_FX_FACTOR.DISCOLOR, 0.5f);
                 apply(POST_FX_FACTOR.BLOOM, 1.05f);

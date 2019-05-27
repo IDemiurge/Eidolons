@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static Boolean uiAtlasesOn=false;
+    private static Boolean uiAtlasesOn = false;
     private static final boolean tryCompressedFormat = true;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
@@ -51,6 +51,12 @@ public class TextureCache {
     private Pattern pattern;
     private boolean silent;
 
+    public void loadAtlases() {
+        uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
+//        mainAtlas = new SmartTextureAtlas(imagePath + "/main//main.txt");
+//            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
+    }
+
     private TextureCache() {
 //            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE() ;
 
@@ -58,9 +64,7 @@ public class TextureCache {
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
         if (atlasesOn) {
-            uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
-            mainAtlas = new SmartTextureAtlas(imagePath + "/main//main.txt");
-//            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
+            loadAtlases();
         } else {
             if (uiAtlasesOn) {
                 uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
@@ -163,22 +167,26 @@ public class TextureCache {
 
         if (matcher.matches()) {
             String name = path.substring(
-             //          1+path.indexOf(StringMaster.getPathSeparator())
-             3
-             , path.lastIndexOf("."));// matcher.group(1);
+                    //          1+path.indexOf(StringMaster.getPathSeparator())
+                    3
+                    , path.lastIndexOf("."));// matcher.group(1);
             name = ContainerUtils.constructStringContainer
-             (PathUtils.getPathSegments(name), "/");
+                    (PathUtils.getPathSegments(name), "/");
             name = name.substring(0, name.length() - 1);
 
-            if (atlasesOn && !overrideNoAtlas) {
-                region = getInstance().uiAtlas.findRegion(name);
-                if (region == null) {
-                    region = getInstance().mainAtlas.findRegion(name);
-                }
-            } else {
-                if (uiAtlasesOn) {
+            if (!overrideNoAtlas) {
+                if (getInstance().uiAtlas != null) {
                     region = getInstance().uiAtlas.findRegion(name);
                 }
+                if (region == null) {
+                    if (getInstance().mainAtlas != null) {
+                        region = getInstance().mainAtlas.findRegion(name);
+                    }
+                }
+            } else {
+                    if (getInstance().uiAtlas != null) {
+                        region = getInstance().uiAtlas.findRegion(name);
+                    }
             }
             if (region != null) {
 
@@ -242,8 +250,8 @@ public class TextureCache {
 
     private static String getEmptyPath() {
         return
-         ImageManager.getImageFolderPath() +
-          ImageManager.getDefaultEmptyListIcon();
+                ImageManager.getImageFolderPath() +
+                        ImageManager.getDefaultEmptyListIcon();
     }
 
     public static Texture createTexture(String path) {
@@ -273,7 +281,7 @@ public class TextureCache {
 
     public static String formatTexturePath(String path) {
         path = path.toLowerCase()
-         .replace("\\", "/").replace("//", "/");
+                .replace("\\", "/").replace("//", "/");
         if (path.endsWith("/"))
             return path.substring(0, path.length() - 1);
         return path;
@@ -334,12 +342,13 @@ public class TextureCache {
         if (texture == null) {
             return true;
         }
-        return emptyTexture==texture;
+        return emptyTexture == texture;
     }
 
     public static boolean isEmptyTexture(TextureRegion region) {
         return isEmptyTexture(region.getTexture());
     }
+
 
     public void dispose() {
         for (String s : cache.keySet()) {
@@ -400,7 +409,7 @@ public class TextureCache {
 
     private String getPathForCache(String path) {
         path = path
-         .toLowerCase();
+                .toLowerCase();
         if (!path.startsWith("/")) {
             path = "/" + path;
         }
@@ -422,7 +431,7 @@ public class TextureCache {
         if (checkAltTexture(filePath)) //TODO remove this already
             try {
                 t = new Texture(GDX.file(getAltTexturePath(filePath)),
-                 Pixmap.Format.RGBA8888, false);
+                        Pixmap.Format.RGBA8888, false);
                 if (putIntoCache)
                     cache.put(path, t);
             } catch (Exception e) {
@@ -431,13 +440,13 @@ public class TextureCache {
         if (t == null) {
             FileHandle fullPath = GDX.file(filePath);
             if (fullPath.exists())
-            try {
-                t = new Texture(fullPath, Pixmap.Format.RGBA8888, false);
-                if (putIntoCache) {
-                    cache.put(path, t);
+                try {
+                    t = new Texture(fullPath, Pixmap.Format.RGBA8888, false);
+                    if (putIntoCache) {
+                        cache.put(path, t);
+                    }
+                } catch (Exception e) {
                 }
-            } catch (Exception e) {
-            }
             if (t == null) {
                 if (!recursion) {
                     if (path.contains(".png"))
@@ -446,7 +455,7 @@ public class TextureCache {
                         return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
                 }
                 if (!silent)
-                   main.system.auxiliary.log.LogMaster.log(1,"No texture for " +fullPath);
+                    main.system.auxiliary.log.LogMaster.log(1, "No texture for " + fullPath);
                 if (!isReturnEmptyOnFail())
                     return null;
                 if (!cache.containsKey(getEmptyPath())) {

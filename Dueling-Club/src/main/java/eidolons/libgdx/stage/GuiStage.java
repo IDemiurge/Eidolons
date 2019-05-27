@@ -756,16 +756,18 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         if (hqPanel != null)
             hqPanel.setZIndex(Integer.MAX_VALUE);
+        if (confirmationPanel != null)
+            confirmationPanel.setZIndex(Integer.MAX_VALUE);
         if (infoTooltipContainer != null)
             infoTooltipContainer.setZIndex(Integer.MAX_VALUE);
         if (actionTooltipContainer != null)
             actionTooltipContainer.setZIndex(Integer.MAX_VALUE);
+        if (tipMessageWindow != null)
+            tipMessageWindow.setZIndex(Integer.MAX_VALUE);
         if (tooltips != null)
             tooltips.setZIndex(Integer.MAX_VALUE);
         if (dragManager != null)
             dragManager.setZIndex(Integer.MAX_VALUE);
-        if (tipMessageWindow != null)
-            tipMessageWindow.setZIndex(Integer.MAX_VALUE);
         if (blackout != null)
             blackout.setZIndex(Integer.MAX_VALUE);
     }

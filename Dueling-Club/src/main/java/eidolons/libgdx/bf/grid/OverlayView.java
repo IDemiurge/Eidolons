@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.module.dungeoncrawl.objects.KeyMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -99,5 +100,12 @@ public class OverlayView extends BaseView implements HpBarView{
 
     public void setDirection(DIRECTION direction) {
         this.direction = direction;
+    }
+
+    public float getScale() {
+      if( KeyMaster.isKey(getUserObject()) ){
+            return 0.66f;
+        }
+        return OverlayView.SCALE;
     }
 }

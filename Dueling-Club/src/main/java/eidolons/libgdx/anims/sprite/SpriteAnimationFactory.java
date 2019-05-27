@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.SmartTextureAtlas;
@@ -37,7 +38,12 @@ public class SpriteAnimationFactory {
         if (texturePath.toLowerCase().endsWith(".atlas")
                 || texturePath.toLowerCase().endsWith(".txt")) {
             texturePath = GdxImageMaster.appendImagePath(texturePath);
-            SpriteAnimation a = new SpriteAnimation(fps30, false, new SmartTextureAtlas(texturePath));
+
+            TextureAtlas atlas = AnimMaster3d.getOrCreateAtlas(texturePath);
+            if (atlas == null) {
+                return null;
+            }
+            SpriteAnimation a = new SpriteAnimation(fps30, false, atlas);
             cache.put(
                     key.toLowerCase() , a);
             return a;

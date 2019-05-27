@@ -128,8 +128,8 @@ public abstract class DC_Obj extends MicroObj {
         return (DC_Player) super.getOwner();
     }
 
-    public Integer getCounter(COUNTER c) {
-        return getCounter(c.getName());
+    public Integer getCounter(COUNTER counter) {
+        return getCounter(counter.getName());
     }
 
     @Override

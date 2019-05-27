@@ -5,6 +5,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
@@ -100,7 +101,7 @@ public class VisionRule {
             for (int j = 0; j < array[0].length; j++) {
                 Set<BattleFieldObject> objects =
                         master.getGame().getMaster().getObjectsOnCoordinate(
-                                Coordinates.get(i, j), null);
+                                Coordinates.get(i, j), false);
 //                 master.getGame().getMaster().getObjects(i, j, true);
                 DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(i, j));
                 if (cell == null)
@@ -165,6 +166,9 @@ public class VisionRule {
 
     private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
         if (sub instanceof BossUnit) {
+            return true;
+        }
+        if (sub == ShadowMaster.getShadowUnit()) {
             return true;
         }
 
@@ -241,6 +245,9 @@ public class VisionRule {
         if (object instanceof BossUnit) {
             return VISIBILITY_LEVEL.CLEAR_SIGHT;
         }
+        if (object == ShadowMaster.getShadowUnit()) {
+            return VISIBILITY_LEVEL.CLEAR_SIGHT;
+        }
         if (master.getGame().getRules().getStealthRule().
                 checkInvisible(source.getOwner(), object))
             return VISIBILITY_LEVEL.UNSEEN;
@@ -273,7 +280,7 @@ public class VisionRule {
     }
 
     public PLAYER_VISION playerVision(Unit source, BattleFieldObject object) {
-        if (DebugMaster.isOmnivisionOn()) {
+        if (DebugMaster.isOmnivisionOn() || source == ShadowMaster.getShadowUnit()) {
             if (source.isMine()) {
                 return PLAYER_VISION.DETECTED;
 
@@ -348,7 +355,7 @@ public class VisionRule {
         controller.getDetectionMapper().set(source.getOwner(), object, true);
         if (isDetectionLogged(source, object))
             master.getGame().getLogManager().logReveal(source, object);
-        if (isDetectionSoundOn(source, object)){
+        if (isDetectionSoundOn(source, object)) {
             DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
         }
     }
@@ -357,10 +364,9 @@ public class VisionRule {
         if (source.isPlayerCharacter()) {
             if (!object.isSneaking())
                 if (!object.isDisabled())
-                    if (!object.isAlliedTo(source.getOwner()))
-            {
-                return true;
-            }
+                    if (!object.isAlliedTo(source.getOwner())) {
+                        return true;
+                    }
         }
         return false;
     }
@@ -500,15 +506,21 @@ public class VisionRule {
     }
 
     public void resetIgnore() {
-        float dstCoef = 1;
+        float dstCoef = 1.5f;
+        Unit observer = Eidolons.getMainHero();
         for (Obj c : master.getGame().getCells()) {
             DC_Obj cell = (DC_Obj) c;
             cell.setResetIgnored(true);
-            Unit observer = Eidolons.MAIN_HERO;
-//            for (Unit observer : master.getGame().getPlayer(true).collectControlledUnits_()) {
-                if (PositionMaster.getExactDistance(observer, cell) < observer.getMaxVisionDistance() * dstCoef) {
+            if (master.getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof Structure) {
+                if (((Structure) master.getGame().getObjectByCoordinate(cell.getCoordinates())).isWall()) {
                     cell.setResetIgnored(false);
+                    continue;
                 }
+            }
+//            for (Unit observer : master.getGame().getPlayer(true).collectControlledUnits_()) {
+            if (PositionMaster.getExactDistance(observer, cell) < observer.getMaxVisionDistance() * dstCoef) {
+                cell.setResetIgnored(false);
+            }
 //            }
             for (Unit unit : master.getGame().getUnitsForCoordinates(c.getCoordinates())) {
                 unit.setResetIgnored(cell.isResetIgnored());

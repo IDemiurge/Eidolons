@@ -973,4 +973,7 @@ public class Anim extends Group implements Animation {
     public EventCallback getOnDone() {
         return onDone;
     }
+    public EventCallbackParam getCallbackParam() {
+        return callbackParam;
+    }
 }

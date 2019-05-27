@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
+import eidolons.ability.effects.oneshot.dialog.TownPortalEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -9,10 +10,15 @@ import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -30,18 +36,33 @@ import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
+import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE.UNCONSCIOUS;
+
 /**
  * Created by JustMe on 10/10/2018.
  */
 public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
+    private   InscriptionMaster inscriptionMaster;
+
     public InteractiveObjMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
+    }
+
+    public InscriptionMaster getInscriptionMaster() {
+        if (inscriptionMaster == null) {
+        inscriptionMaster = new InscriptionMaster(
+                dungeonMaster.getDungeonLevel().getLevelName());
+        }
+        return inscriptionMaster;
     }
 
     public static INTERACTIVE_OBJ_TYPE chooseTypeForInteractiveObj(ObjType type) {
 //        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
 //            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
 //        }
+        if (type.getName().contains("Inscription")) {
+            return INTERACTIVE_OBJ_TYPE.INSCRIPTION;
+        }
         if (type.getName().contains("Key")) {
             return INTERACTIVE_OBJ_TYPE.KEY;
         }
@@ -89,11 +110,14 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
 
         boolean off = obj.isOff();
-        if (off) {
-            return;
-        }
+//        if (off) {
+//            return;
+//        }
         //check scripts, throw event
         switch (type) {
+            case INSCRIPTION:
+                message(obj, unit);
+                break;
             case KEY:
                 pickup(obj, unit);
                 break;
@@ -127,11 +151,33 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
 //        }
     }
 
+    private void message(InteractiveObj obj, Unit unit) {
+        String src = getInscriptionMaster().getTextForInscription(obj);
+        //std tip with image?
+        String image = src.split("|")[0];
+        String text =src;
+        if (!TextureCache.isImage(image)) {
+            image = Images.SPELLBOOK;
+        } else {
+            text = src.split("|")[1];
+        }
+        GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
+                text, image, "Continue", false, () ->
+        {}));
+    }
+
     private boolean doSpecial(InteractiveObj obj, Unit unit) {
         for (ActiveObj active : obj.getActives()) {
             Ref ref = obj.getRef().getCopy();
             ref.setTarget(unit.getId());
             active.activatedOn(ref);
+            return true;
+        }
+        if (obj.getName().equalsIgnoreCase("gateway glyph")) {
+            //TODO igg demo hack
+
+            new TownPortalEffect().apply(new Ref(unit));
+            return true;
         }
         return false;
     }
@@ -208,7 +254,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         MECHANISM,
 
         BUTTON,
-        LEVER, CONSUMABLE, KEY,
+        LEVER, CONSUMABLE, KEY, INSCRIPTION,
 
 
     }

@@ -54,7 +54,10 @@ public class BaseView extends SuperActor {
             }
         });
     }
-
+    @Override
+    public int getFluctuatingAlphaPeriod() {
+        return 0;
+    }
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
         originalTexture = processPortraitTexture(portraitTexture, path);
         return new FadeImageContainer(new Image(originalTexture));

@@ -354,7 +354,13 @@ public class AnimMaster extends Group {
         });
         GuiEventManager.bind(GuiEventType.CUSTOM_ANIMATION, p -> {
             CustomSpriteAnim anim = (CustomSpriteAnim) p.get();
-            anim.startAsSingleAnim();
+            try {
+                anim.startAsSingleAnim();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                anim.getOnDone().call(anim.getCallbackParam());
+            }
+
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
                     if (!isOn()) {

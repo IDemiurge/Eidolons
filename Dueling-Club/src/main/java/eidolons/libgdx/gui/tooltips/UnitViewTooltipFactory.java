@@ -267,7 +267,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             text = "(out of reach) " + text;
         }
         return new ValueContainer(text +
-                "\nUnlocked\nNo Traps spotted");
+                "\nUnlocked\nNo Traps detected");
     }
 
     private ValueContainer getOverlayingTip(BattleFieldObject unit) {
@@ -278,7 +278,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             text = "(out of reach) " + text;
         }
         return new ValueContainer(text +
-                "\nUnlocked\nNo Traps spotted");
+                "\nUnlocked\nNo Traps detected");
     }
 
     private ValueContainer getAttackTip(BattleFieldObject unit) {

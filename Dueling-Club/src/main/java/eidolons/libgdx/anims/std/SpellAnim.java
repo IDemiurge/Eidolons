@@ -13,9 +13,12 @@ import eidolons.libgdx.particles.spell.SpellVfxPool;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.G_PARAMS;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
 import main.system.Producer;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.Set;
 
@@ -49,14 +52,96 @@ public class SpellAnim extends ActionAnim {
     }
 
     public static final  String getOverriddenVfx(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+        //could be a bit randomized too!
+        // enum for vfx after all?
+
+       String data = getForName(part, active.getName());
+        if (data != null) {
+            return data;
+        }
         SpellEnums.SPELL_GROUP group =null ;
         if (active instanceof Spell) {
             group = ((Spell) active).getSpellGroup();
 
         }
-        //could be a bit randomized too!
-        // enum for vfx after all?
-        switch (active.getName()) {
+        if (group != null) {
+            data = getForGroup(group, part);
+        }
+        /**
+         * advanced/missile cone
+         * advanced/missile cone 2
+         * advanced/missile cone 3
+         * unit/
+         *
+         createEmitter("unit/black soul bleed 3", 64, 64);
+         createEmitter("unit/chaotic dark", 32, 32);
+         createEmitter("unit/black soul bleed 3", -64, 64);
+         createEmitter("unit/chaotic dark", -32, 32);
+         */
+        return data ;
+    }
+
+    private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimConstructor.ANIM_PART part) {
+        String path = StrPathBuilder.build(part.getPartPath() , group, part.getPartPath());
+        if (FileManager.isFile(PathFinder.getEnginePath() + PathFinder.getSpellVfxPath() + path)) {
+            return path;
+        }
+
+        switch (group) {
+            case FIRE:
+                break;
+            case AIR:
+                break;
+            case WATER:
+                break;
+            case EARTH:
+                break;
+            case CONJURATION:
+                break;
+            case ENCHANTMENT:
+                break;
+            case SORCERY:
+                break;
+            case TRANSMUTATION:
+                break;
+            case VOID:
+                break;
+            case WITCHERY:
+                break;
+            case SHADOW:
+                break;
+            case PSYCHIC:
+                break;
+            case NECROMANCY:
+                break;
+            case AFFLICTION:
+                break;
+            case BLOOD_MAGIC:
+                break;
+            case WARP:
+                break;
+            case DEMONOLOGY:
+                break;
+            case DESTRUCTION:
+                break;
+            case CELESTIAL:
+                break;
+            case BENEDICTION:
+                break;
+            case REDEMPTION:
+                break;
+            case SYLVAN:
+                break;
+            case ELEMENTAL:
+                break;
+            case SAVAGE:
+                break;
+        }
+        return null;
+    }
+
+    private static String getForName(AnimConstructor.ANIM_PART part, String name) {
+        switch (name) {
             case "Burst of Rage":
             case "Shadow Fury":
                 switch (part) {
@@ -67,23 +152,10 @@ public class SpellAnim extends ActionAnim {
                 }
 
         }
-if (active.getName().contains("Shadow Fury")){
-    return "advanced/missile cone 3";
-}
-
-        /**
-         * advanced/missile cone
-         * advanced/missile cone 2
-         * advanced/missile cone 3
-         * unit/
-         *
-         *
-         createEmitter("unit/black soul bleed 3", 64, 64);
-         createEmitter("unit/chaotic dark", 32, 32);
-         createEmitter("unit/black soul bleed 3", -64, 64);
-         createEmitter("unit/chaotic dark", -32, 32);
-         */
-        return null ;
+        if (name.contains("Shadow Fury")){
+            return "advanced/missile cone 3";
+        }
+        return null;
     }
 
     private boolean isVfxOverridden(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {

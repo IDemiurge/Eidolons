@@ -32,6 +32,7 @@ import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.StageWithClosable;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
@@ -50,11 +51,11 @@ public class HqPanel extends TablePanel implements Blocking {
     HqPartyMembers partyMembers;
     HqHeroViewPanel heroViewPanel;
     HqTabs hqTabs;
-    HqHeroHeader header;
+    HqHeroHeader header = new HqHeroHeader();
     HqHeroXp heroXp;
     HqVerticalValueTable heroValues;
     HqScrolledValuePanel scrolledValuePanel;
-    HqTraitsPanel traits;
+    public HqTraitsPanel traits;
     HqControlPanel controlPanel;
     HqTooltipPanel tooltipPanel;
     private TablePanel infoTable;
@@ -102,20 +103,21 @@ public class HqPanel extends TablePanel implements Blocking {
             if (initialized || Eidolons.getGame().isBossFight()) {
                 return; //really?
             }
-        bgSprite = SpriteAnimationFactory.getSpriteAnimation("atlas.txt");
-
-        bgSprite.setAlpha(0.4f);
-        bgSprite.setFrameDuration(0.1f);
-        bgSprite.setOffsetX(GdxMaster.getWidth() / 2);
-        bgSprite.setOffsetY(GdxMaster.getHeight() / 2);
-
+        if (!CoreEngine.isLiteLaunch()) {
+            bgSprite = SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+            bgSprite.setAlpha(0.4f);
+            bgSprite.setFrameDuration(0.1f);
+            bgSprite.setOffsetX(GdxMaster.getWidth() / 2);
+            bgSprite.setOffsetY(GdxMaster.getHeight() / 2);
+        }
         initialized = true;
 //        setBackground(NinePatchFactory.getHqDrawable());
         tooltipPanel = new HqTooltipPanel();
         partyMembers = createPartyMembers();
         hqTabs = createTabs();
         heroViewPanel = new HqHeroViewPanel();
-        header = new HqHeroHeader();
+        addActor(header);
+        header.setPosition(GdxMaster.centerWidth(header), GdxMaster.top(header));
         heroXp = new HqHeroXp();
         heroValues = new HqVerticalValueTable(PARAMS.LEVEL, G_PROPS.RACE, G_PROPS.DEITY);
         dynamicParams = new HqParamPanel(true);
@@ -167,8 +169,11 @@ public class HqPanel extends TablePanel implements Blocking {
         if (Eidolons.getGame().isBossFight()) {
             return;
         }
+        addActor(header );
+        header.setPosition(130, GdxMaster.top(header)-75);
+//        header.setPosition(110, 110); // wtff TODO igg demo fix
+        header.setVisible(true);
         super.act(delta);
-
     }
 
     private void addElements() {
@@ -201,7 +206,7 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable.add(attributeTable).left().top().padLeft(30);
         //separator
         infoTable.add(masteryTable).right().top().row();
-//        infoTable.add(traits).center().colspan(2).row(); //TODO OVER THE PORTRAIT BOTTOM
+        infoTable.add(traits).center().colspan(2).row(); //TODO OVER THE PORTRAIT BOTTOM
         infoTable.add(tooltipPanel).center().colspan(2).row();
         attributeTable.setEditable(isEditable());
 
@@ -262,7 +267,7 @@ public class HqPanel extends TablePanel implements Blocking {
 
     public void closed() {
         HqPanel.setActiveInstance(null);
-        ToolTipManager.setTooltipPanel(null );
+        ToolTipManager.setTooltipPanel(null);
         getStageWithClosable().closeClosable(this);
 
         for (HqHeroDataSource sub : heroes) {
@@ -275,6 +280,10 @@ public class HqPanel extends TablePanel implements Blocking {
         HqPanel.setActiveInstance(this);
         getStageWithClosable().openClosable(this);
         ToolTipManager.setTooltipPanel(tooltipPanel);
+        hqTabs.tabSelected("Class");
+        hqTabs.tabSelected("Class");
+        hqTabs.tabSelected("Class");
+        hqTabs.tabSelected("Class");///aaaaaaaaaaaaa the default pos won't fix
     }
 
     @Override
@@ -304,6 +313,10 @@ public class HqPanel extends TablePanel implements Blocking {
 
         partyMembers.setUserObject(heroes);
         partyMembers.setUpdateRequired(true);
+
+        header.setUserObject(userObject);
+        header.updateAct(1f);
+
     }
 
     @Override

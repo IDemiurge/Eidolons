@@ -111,6 +111,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void loadDone(EventCallbackParam param) {
         this.param = param;
+
         if (param.get() instanceof BFDataCreatedEvent)
             if (Assets.isOn()) {
                 Chronos.mark(ASSET_LOADING);

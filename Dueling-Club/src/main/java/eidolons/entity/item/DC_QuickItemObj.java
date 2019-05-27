@@ -206,7 +206,9 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public boolean activate() {
-
+        if (getGame().getLoop().isPaused()) {
+            return false; //TODO igg demo hack
+        }
         if (!isConstructed() || wrapped) {
             construct();
         }

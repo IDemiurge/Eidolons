@@ -42,6 +42,7 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster.FONT;
 
@@ -102,7 +103,9 @@ public class InitiativePanel extends GroupX {
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
          "components", "dc", "atb",
          "atb background.png"));
-        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
+        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" +  NumberUtils.getFloatWithDigitsAfterPeriod(DC_Game.game.getLoop().getTime(), 1));
+
+
         addActor(panelImage = new ValueContainer(textureRegion));
         panelImage.addListener(tooltip.getController());
 

@@ -106,6 +106,7 @@ public class BriefText extends TablePanelX {
 //        setY(150);
 //        setX(GdxMaster.centerWidth(this));
         super.draw(batch, parentAlpha);
+        continueBtn.setVisible(started);
         continueBtn.setChecked(false);
         continueBtn.setDisabled(false);
 //        continueBtn.setPosition(GdxMaster.centerWidth(continueBtn), 0);

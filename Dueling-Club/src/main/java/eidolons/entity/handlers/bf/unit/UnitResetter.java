@@ -461,9 +461,9 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void afterEffectsApplied() {
         getEntity().setBeingReset(true);
         resetHeroValues();
-        if (game.isSimulation()) {
+//        if (game.isSimulation()) { TODO igg demo fix ?
             getInitializer().initSpellbook();
-        }
+//        }
 
         resetMorale();
         if (!getInitializer().dynamicValuesReady && !game.isSimulation()) {

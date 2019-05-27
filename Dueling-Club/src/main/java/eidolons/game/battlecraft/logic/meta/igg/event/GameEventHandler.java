@@ -2,8 +2,10 @@ package eidolons.game.battlecraft.logic.meta.igg.event;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.system.text.DC_LogManager;
@@ -21,16 +23,23 @@ public class GameEventHandler extends MetaGameHandler {
         return (IGG_MetaMaster) super.getMaster();
     }
 
-    public void handle(Event event) {
+    public boolean handle(Event event) {
 
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
+                case UNIT_IS_BEING_KILLED:
+//                    if (ShadowMaster.checkCheatDeath(event)) {
+//                        return false;
+//                    }
+                    if (UndyingCounterRule.check(event)){
+                        return false;
+                    }
+                    break;
                 case UNIT_HAS_BEEN_KILLED:
                     if (event.getRef().getTargetObj() == Eidolons.getMainHero()) {
                         waitForAnims();
                         getMaster().getShadowMaster().annihilated(event);
                     }
-
                     break;
                 case TIME_ELAPSED:
                     getMaster().getShadowMaster().timeElapsed(event);
@@ -50,6 +59,7 @@ public class GameEventHandler extends MetaGameHandler {
                     break;
             }
         }
+        return true;
     }
 
     private void waitForAnims() {
@@ -58,7 +68,7 @@ public class GameEventHandler extends MetaGameHandler {
 
     private void handleUnconscious(Event event) {
         if (event.getRef().getSourceObj() instanceof Unit) {
-            if (((Unit) event.getRef().getSourceObj()).isMainHero()) {
+            if (((Unit) event.getRef().getSourceObj()).isPlayerCharacter()) {
                 getMaster().getDefeatHandler().fallsUnconscious(event);
 
             }

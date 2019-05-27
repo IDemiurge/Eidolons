@@ -48,6 +48,8 @@ public class ValueTooltip extends Tooltip {
 
     public ValueTooltip(Actor actor) {
         super(actor);
+        setUserObject(new ListMaster<Actor>().
+                getList(actor));
     }
 
     @Override

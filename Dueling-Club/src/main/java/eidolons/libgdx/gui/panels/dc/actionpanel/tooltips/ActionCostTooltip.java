@@ -28,9 +28,14 @@ public class ActionCostTooltip extends ActionTooltip {
 
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 
-         setUserObject(new ActionCostSourceImpl(el));
+        setUserObject(new ActionCostSourceImpl(el));
     }
 
+    @Override
+    public float getPrefHeight() {
+        return super.getPrefHeight();
+
+    }
 
     @Override
     public void updateAct(float delta) {

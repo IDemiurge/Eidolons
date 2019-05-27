@@ -28,6 +28,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
+import eidolons.libgdx.stage.GuiVisualEffects;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
@@ -351,6 +352,9 @@ public class OptionsMaster {
                 break;
             case PERFORMANCE_BOOST:
                 Fluctuating.fluctuatingAlphaPeriodGlobal=(Integer.valueOf(value))/10;
+                break;
+            case UI_VFX:
+                GuiVisualEffects.setOn(bool);
                 break;
             case BRIGHTNESS:
                 GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));

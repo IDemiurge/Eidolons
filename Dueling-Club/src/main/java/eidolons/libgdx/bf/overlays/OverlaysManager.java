@@ -321,9 +321,12 @@ public class OverlaysManager extends SuperActor {
             }
         Vector2 v = parent.localToStageCoordinates(new Vector2(xPos, yPos));
         drawOverlay(parent, overlay, batch, v);
-        if (ActorMaster.getActionsOfClass(parent, MoveByActionLimited.class).size() == 0)
-            if (ActorMaster.getActionsOfClass(parent, MoveToAction.class).size() == 0)
-                addTooltip(obj, parent, overlay, v, x, y);
+        if (parent.getActions().size==0) {
+            addTooltip(obj, parent, overlay, v, x, y);
+        }
+//        if (ActorMaster.getActionsOfClass(parent, MoveByActionLimited.class).size() == 0)
+//            if (ActorMaster.getActionsOfClass(parent, MoveToAction.class).size() == 0)
+//                addTooltip(obj, parent, overlay, v, x, y);
 
     }
 

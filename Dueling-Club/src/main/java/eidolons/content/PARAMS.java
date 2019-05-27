@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
-import eidolons.system.text.TextMaster;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.Metainfo;
@@ -21,6 +21,9 @@ import java.util.Map;
 
 //Quantative properties of ..*what?*
 public enum PARAMS implements PARAMETER {
+    SLEIGHT_OF_HAND("chars","","",false,0),
+    FORAGING("chars","","",false,0),
+
     MAX_DEPTH(null, "", false, 3, "dungeons"),
     MIN_DEPTH(null, "", false, 1, "dungeons"),
     POWER_MOD(true, null, "", false, 100, "dungeons", "encounters"),
@@ -119,8 +122,8 @@ public enum PARAMS implements PARAMETER {
     C_FOCUS(null, "FOCUS", true, 0, "units", "chars", "perks"),
     ESSENCE(null, "ESSENCE", false, 0, "units", "chars", "perks"),
     C_ESSENCE(null, "ESSENCE", true, 0, "units", "chars", "perks"),
-    N_OF_COUNTERS("Counter pts", "", false, 0, "units", "chars", "perks", "skills"),
-    N_OF_ACTIONS("Action pts", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "perks", "bf obj", "skills"){
+    N_OF_COUNTERS("Extra Attacks", "", false, 0, "units", "chars", "perks", "skills"),
+    N_OF_ACTIONS("Initiative", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "perks", "bf obj", "skills"){
         @Override
         public String getDisplayedName() {
             if (DC_Engine.isAtbMode())
@@ -129,14 +132,14 @@ public enum PARAMS implements PARAMETER {
         }
     },
     C_N_OF_ACTIONS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
-    C_N_OF_COUNTERS("Number of Attacks", "", true, 2, "units", "chars", "perks"),
+    C_N_OF_COUNTERS("Extra Attacks", "", true, 2, "units", "chars", "perks"),
 
 
     INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars", "perks", "bf obj"),
     INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "perks", "bf obj"),
     C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
     C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
-    C_INITIATIVE("C Initiative", "", true, 0, "units", "chars", "perks", "bf obj"){
+    C_INITIATIVE("Current Initiative", "", true, 0, "units", "chars", "perks", "bf obj"){
         @Override
         public String getDisplayedName() {
             if (DC_Engine.isAtbMode())
@@ -1091,7 +1094,7 @@ public enum PARAMS implements PARAMETER {
     }
     @Override
     public String getDisplayedName() {
-        return TextMaster.getDisplayedName(this);
+        return DescriptionTooltips.getDisplayedName(this);
     }
     @Override
     public String toString() {

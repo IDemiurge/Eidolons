@@ -3,20 +3,25 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SpriteActor.SPRITE_ACTOR_ANIMATION;
+import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
@@ -137,20 +142,35 @@ public abstract class HtNode extends DynamicLayeredActor {
 
     protected Tooltip getTooltip() {
         Entity entity = getEntity();
-        String text = getTextPrefix();
+        String name = getTextPrefix();
+        String text = "";
         if (entity != null && !HeroClassMaster.isDataAnOpenSlot(entity) ) {
-            Ref ref = Eidolons.getMainHero().getRef().getCopy();
+            name = entity.getName();
+            Ref ref = getHero().getRef().getCopy();
             ref.setID(KEYS.SKILL, entity.getId());
-            text += "\n" + entity.getName();
-            text += "\n" + entity.getProperty(G_PROPS.TOOLTIP);
-            text += "\n" + TextParser.parse(entity.getDescription(),
-                    ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+            ref.setID(KEYS.INFO, entity.getId());
+
+            text +=  entity.getProperty(G_PROPS.TOOLTIP);
+            text += "\n" + TextParser.parse(entity.getDescription(ref),
+                    ref, TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+
+            if (!entity.getProperty(G_PROPS.LORE).isEmpty()) {
+            text += "\n" +"\n" + entity.getProperty(G_PROPS.LORE);
+            }
         } else
-        if (sequentialDisabled) {
-            text += "\n(Disabled: fill the previous slot!)";
+       {
+           text = getSlotTooltip();
+
+           if (sequentialDisabled)
+               text += "\n(Disabled: fill the previous slot!)";
         }
-        return new ValueTooltip(text);
+        ValueContainer container = new VerticalValueContainer(name, text);
+        container.setNameAlignment(Align.center);
+        container.setNameStyle(StyleHolder.getHqLabelStyle(19));
+        return new ValueTooltip(container);
     }
+
+    protected abstract String getSlotTooltip();
 
     protected abstract String getTextPrefix();
 
@@ -196,7 +216,7 @@ public abstract class HtNode extends DynamicLayeredActor {
 
     public Unit getHero() {
         if (hero == null) {
-            return HqPanel.getActiveInstance().getSelectedHero().getEntity();
+            hero = HqPanel.getActiveInstance().getSelectedHero().getEntity();
         }
         return hero;
     }

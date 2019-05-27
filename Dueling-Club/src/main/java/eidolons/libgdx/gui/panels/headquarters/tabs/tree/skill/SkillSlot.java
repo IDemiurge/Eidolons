@@ -63,7 +63,10 @@ public class SkillSlot extends HtNode {
       return   SkillMaster.getAllSkills(getHero(), tier, data.getMiddle(), data.getRight());
     }
 
-
+    @Override
+    protected String getSlotTooltip() {
+        return "Fill the two Mastery Rank slots above to buy a skill for Experience points, chosen from the pool of the two related masteries. If the two are the same, some skills can be chosen twice.";
+    }
 
 
     @Override

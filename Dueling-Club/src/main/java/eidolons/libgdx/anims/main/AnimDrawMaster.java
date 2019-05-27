@@ -41,13 +41,7 @@ public class AnimDrawMaster extends Group {
 
 
     public Boolean getParallelDrawing() {
-        //        if (parallelDrawing == null)
-        //            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
-        //        return parallelDrawing;
-        if (Eidolons.BOSS_FIGHT) {
-            return false;
-        }
-        return true;
+        return true; //don't turn that off.... unless you want chaos and madness
     }
 
     public void setParallelDrawing(Boolean parallelDrawing) {
@@ -87,7 +81,7 @@ public class AnimDrawMaster extends Group {
     }
 
     protected void add(CompositeAnim anim) {
-        main.system.auxiliary.log.LogMaster.log(1, "ANIMATION ADDED   " + anim);
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, "ANIMATION ADDED   " + anim);
         if (anim == leadAnimation) {
             return;
         }
@@ -182,6 +176,7 @@ public class AnimDrawMaster extends Group {
             result = anim.tryDraw(batch);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            anim.finished();
         }
 
         if (ExplorationMaster.isExplorationOn())

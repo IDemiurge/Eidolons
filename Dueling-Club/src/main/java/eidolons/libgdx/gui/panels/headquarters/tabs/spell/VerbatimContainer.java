@@ -19,7 +19,7 @@ public class VerbatimContainer extends HqSpellContainer {
     }
     @Override
     protected String getLabelText() {
-        return "Verbatim";
+        return "Verbatim\n ";
     }
     @Override
     protected boolean isOverlayOn() {

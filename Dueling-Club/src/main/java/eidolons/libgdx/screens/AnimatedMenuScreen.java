@@ -10,6 +10,7 @@ import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.graphics.RESOLUTION;
 import main.content.DC_TYPE;
 import main.entity.Entity;
@@ -33,8 +34,12 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     protected void initMenu() {
 
-        GuiEventManager.bind(GuiEventType.BRIEFING_START, p -> mainMenu.setVisible(false));
-        GuiEventManager.bind(GuiEventType.BRIEFING_FINISHED, p -> mainMenu.setVisible(true));
+        GuiEventManager.bind(GuiEventType.BRIEFING_START, p -> {
+            mainMenu.setVisible(false);
+        });
+        GuiEventManager.bind(GuiEventType.BRIEFING_FINISHED, p -> {
+            mainMenu.setVisible(true);
+        });
 //        getOverlayStage().clear(); TODO igg demo fix why needed??
         mainMenu = MainMenu.getInstance();
         mainMenu.setVisible(true);
@@ -58,6 +63,18 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     protected boolean isWaitForInput() {
         return false;
+    }
+
+    @Override
+    public void loadDone(EventCallbackParam param) {
+        super.loadDone(param);
+        if (CoreEngine.isLiteLaunch())
+            return;
+
+        setLoadingAtlases(true);
+        TextureCache.getInstance().loadAtlases();
+        GdxMaster.setLoadingCursor();
+        //TODO animated screen? or TIPS
     }
 
     @Override

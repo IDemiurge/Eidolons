@@ -65,6 +65,7 @@ public class WeaponTooltip extends ValueTooltip {
     private TablePanel initTableValues(SlotItemToolTipDataSource source, List<ValueContainer> valueContainers) {
         TablePanel table = new TablePanel();
         if (source!=null )
+        if (source.item!=null )
         if (source.item.getCustomParamMap() != null) {
             source.item.getCustomParamMap().keySet().forEach(counter -> {
                 final String name = StringMaster.getWellFormattedString(counter);

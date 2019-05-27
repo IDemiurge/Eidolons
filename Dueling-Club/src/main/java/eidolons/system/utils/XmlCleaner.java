@@ -1,11 +1,14 @@
 package eidolons.system.utils;
 
+import com.bitfire.utils.ItemsManager;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 
@@ -13,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XmlCleaner {
+
+    private static List<DC_TYPE> cleaned=    new ArrayList<>() ;
 
     public static final void cleanTypesXml(DC_TYPE TYPE) {
 //        DC_TYPE.values()
@@ -27,8 +32,11 @@ public class XmlCleaner {
         //save separately? and load selectively from cleaned 
     }
 
-    private static boolean isRemoveType(ObjType type, DC_TYPE TYPE) {
-        switch (TYPE) {
+    private static boolean isRemoveType(ObjType type, OBJ_TYPE TYPE) {
+        if (!cleaned.contains(TYPE)) {
+            return false;
+        }
+        switch (((DC_TYPE)TYPE)) {
             case UNITS:
                 return isRemoveUnit(type);
             case SPELLS:
@@ -104,11 +112,14 @@ public class XmlCleaner {
     }
 
     private static boolean isRemoveSKILLS(ObjType type) {
-        if (type.getIntParam("circle")>=3) {
+        if (type.getIntParam("circle")>=2) {
             return true;
         }
         SkillEnums.SKILL_GROUP group =
                 new EnumMaster<SkillEnums.SKILL_GROUP>().retrieveEnumConst(SkillEnums.SKILL_GROUP.class, type.getProperty(G_PROPS.SKILL_GROUP));
+        if (group == null) {
+            return true;
+        }
         switch (group) {
             case SPELLCASTING:
             case CHAOS_ARTS:
@@ -128,5 +139,13 @@ public class XmlCleaner {
 
     private static boolean isRemovePARTY(ObjType type) {
         return !type.getName().equalsIgnoreCase("chained");
+    }
+
+    public static void setCleanReadTypes(DC_TYPE... types) {
+        for (DC_TYPE T : types) {
+            cleaned.add(T);
+        }
+//        clean = true;
+        XML_Reader.setTypeChecker(t-> !isRemoveType(t, t.getOBJ_TYPE_ENUM()));
     }
 }

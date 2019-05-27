@@ -41,10 +41,7 @@ public class AggroMaster extends ExplorationHandler {
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
         Set<Unit> heroes = DC_Game.game.getPlayer(true).collectControlledUnits_();
-        if (Eidolons.BOSS_FIGHT){
-            list.addAll(heroes);
-            return list;
-        }
+
         for (Unit ally : heroes) {
             //            if (sightRequiredForAggro) {
             //                if (!VisionManager.checkDetected(ally, true)) {
@@ -103,7 +100,7 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (unit.isBoss() || unit.getAI().isEngaged()) {
+            if (unit.isNamedUnit() ||unit.isBoss() || unit.getAI().isEngaged()) {
                 set.add(unit);
                 newAggro = true;
                 unit.getAI().setEngaged(false);

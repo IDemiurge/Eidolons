@@ -116,7 +116,7 @@ public class SkillEnums {
 
     public enum SKILL_GROUP {
         BODY_MIND, SPELLCASTING, WEAPONS, OFFENSE, DEFENSE, COMMAND,
-        CRAFT,
+        CRAFT, MISC,
         PRIME_ARTS,
         ARCANE_ARTS, LIFE_ARTS, DARK_ARTS, CHAOS_ARTS, HOLY_ARTS, DEATH_ARTS,
 

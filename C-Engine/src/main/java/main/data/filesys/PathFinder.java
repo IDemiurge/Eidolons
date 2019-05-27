@@ -125,6 +125,10 @@ public class PathFinder {
         init();
         return RES_PATH + PathUtils.getPathSeparator() + "text" + PathUtils.getPathSeparator();
     }
+    public static String getTextPathLocale() {
+        init();
+        return getTextPath() + "english/";
+    }
 
     public static String getSavesPath() {
         return getXML_PATH() + PathUtils.getPathSeparator() + "saves" + PathUtils.getPathSeparator();

@@ -153,9 +153,11 @@ public class Weapon3dAnim extends ActionAnim {
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
         if (getProjection(ref,getActive()) == PROJECTION.HOR) {
-            flipHor = getActive().getOwnerUnit().getFacing() == main.game.bf.directions.FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
+            flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.EAST;// PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
             flipHor = (getProjection(ref,getActive()) == PROJECTION.TO) != offhand;
+            if (RandomWizard.chance(33))
+                flipHor = !flipHor;
         }
         return flipHor;
     }

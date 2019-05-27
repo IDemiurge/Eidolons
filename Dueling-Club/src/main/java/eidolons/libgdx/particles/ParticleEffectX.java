@@ -136,7 +136,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //        if (CoreEngine.isMacro())
         if (!effectFile.exists()){
             broken.add(effectFile.path());
-            main.system.auxiliary.log.LogMaster.log(1,"no such emitter preset: " +effectFile.path());
+            main.system.auxiliary.log.LogMaster.log(0,"no such emitter preset: " +effectFile.path());
             return;
         }
         InputStream input = effectFile.read();

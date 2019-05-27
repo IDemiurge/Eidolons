@@ -27,7 +27,7 @@ import java.util.*;
  */
 public class UnitViewSprite extends GridUnitView {
     public static final boolean randomEmitter = true;
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     private float height;
     private float width;
     private FadeImageContainer glow;

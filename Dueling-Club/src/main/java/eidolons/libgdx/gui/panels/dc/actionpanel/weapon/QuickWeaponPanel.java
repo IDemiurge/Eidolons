@@ -95,6 +95,8 @@ public class QuickWeaponPanel extends TablePanelX {
         if (source != null) {
             if (source.getWeapon() == null) {
                 //TODO clear
+                setVisible(false);
+                return;
             }
             if (source.equals(alt ? this.dataSourceAlt : this.dataSource)) {
                 return;

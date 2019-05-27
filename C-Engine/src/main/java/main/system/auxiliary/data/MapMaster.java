@@ -29,9 +29,10 @@ public class MapMaster<E, T> {
             map.put(key, new Float(i + n));
         }
     }
+
     public static void removeFromListMap(Map map, Object key, Object value) {
         Object o = map.get(key);
-        if (o instanceof Collection){
+        if (o instanceof Collection) {
             ((Collection) o).remove(value);
         }
     }
@@ -66,7 +67,7 @@ public class MapMaster<E, T> {
 
         for (Object e : map.keySet()) {
             s += e.toString() + StringMaster.wrapInParenthesis(map.get(e).toString())
-             + StringMaster.SEPARATOR;
+                    + StringMaster.SEPARATOR;
         }
         return s;
     }
@@ -85,11 +86,12 @@ public class MapMaster<E, T> {
     }
 
     public static void addToStringMap(Map<String, String> values, String name, String value
-   ) {
+    ) {
         addToStringMap(values, name, value, ContainerUtils.getContainerSeparator());
     }
-        public static void addToStringMap(Map<String, String> values, String name, String value
-         , String separator) {
+
+    public static void addToStringMap(Map<String, String> values, String name, String value
+            , String separator) {
         String val = values.get(name);
         if (val == null) {
             values.put(name, value);
@@ -107,6 +109,21 @@ public class MapMaster<E, T> {
             }
         }
         return null;
+    }
+
+    public static Map<String, String> createStringMap(String data) {
+        return createStringMap(false, data);
+    }
+
+    public static Map<String, String> createStringMap(boolean inverse, String data) {
+        Map<String, String> map = new HashMap<>();
+        for (String substring : ContainerUtils.openContainer(data)) {
+            if (inverse)
+                map.put(StringMaster.getWeightItem(substring, true), StringMaster.getWeightItem(substring, false));
+            else
+                map.put(StringMaster.getWeightItem(substring, false), StringMaster.getWeightItem(substring, true));
+        }
+        return map;
     }
 
     public HashMap<E, T> cloneHashMap(Map<E, T> map) {
@@ -208,7 +225,7 @@ public class MapMaster<E, T> {
     public Map<E, T> crop(Map<E, T> map, int crop, boolean first) {
         List<E> removeList = new ArrayList<>();
         Set<E> set = (!first) ? new MapMaster<E, T>().invertMapOrder(map, false).keySet() : map
-         .keySet();
+                .keySet();
         for (E o : set) {
             crop--;
             if (crop < 0) {
@@ -225,8 +242,8 @@ public class MapMaster<E, T> {
 
     }
 
-    public Map<E,Integer> getSortedMap(Map<E, Integer> map,
-                                       Function<Object, Integer> function) {
+    public Map<E, Integer> getSortedMap(Map<E, Integer> map,
+                                        Function<Object, Integer> function) {
         ArrayList<E> list = new ArrayList<>(map.keySet());
         SortMaster.sortByExpression(list, function);
 

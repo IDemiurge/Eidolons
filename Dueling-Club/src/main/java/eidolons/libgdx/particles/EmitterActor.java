@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
@@ -88,6 +89,7 @@ public class EmitterActor extends SuperActor {
     }
 
     public void act(float delta) {
+
         super.act(delta);
         effect.setPosition(getX(), getY());
         //        effect.update(delta); TODO now drawing with alpha!

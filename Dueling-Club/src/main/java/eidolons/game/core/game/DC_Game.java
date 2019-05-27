@@ -30,10 +30,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
-import eidolons.game.core.CombatLoop;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.GameLoop;
-import eidolons.game.core.GenericTurnManager;
+import eidolons.game.core.*;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.launch.LaunchDataKeeper;
@@ -83,6 +80,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.threading.WaitMaster;
 import main.system.util.Refactor;
 
 import java.util.*;
@@ -175,6 +173,10 @@ public class DC_Game extends GenericGame {
     }
 
     public void initMasters() {
+        initMasters(false);
+    }
+
+    public void initMasters(boolean nextLevel) {
 
         master = new DC_GameObjMaster(this);
         manager = new DC_GameManager(getState(), this);
@@ -194,14 +196,24 @@ public class DC_Game extends GenericGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
 
-        rules = new DC_Rules(this);
+        if (CoreEngine.isCombatGame())
+            rules = new DC_Rules(this);
 
         if (!CoreEngine.isCombatGame())
             return;
-        if (isSimulation()){
+        if (isSimulation()) {
             return;
         }
+        ExplorationMaster master = null;
+        if (nextLevel) {
+            master = dungeonMaster.getExplorationMaster();
+        }
         dungeonMaster = createDungeonMaster();
+
+        //TODO igg demo hack
+        if (nextLevel)
+            dungeonMaster.setExplorationMaster(master);
+
         battleMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
     }
@@ -346,6 +358,8 @@ public class DC_Game extends GenericGame {
     private void startCombat() {
         loop = combatLoop;
         exploreLoop.stop();
+        EUtils.showInfoText("The Battle is Joined!");
+
         if (!combatLoop.isStarted() || !combatLoop.checkThreadIsRunning()
 //                CoreEngine.isIggDemoRunning()
         )
@@ -357,6 +371,7 @@ public class DC_Game extends GenericGame {
         DC_SoundMaster.playStandardSound(
                 RandomWizard.random() ? STD_SOUNDS.NEW__BATTLE_START2
                         : STD_SOUNDS.NEW__BATTLE_START);
+
     }
 
 
@@ -705,7 +720,7 @@ public class DC_Game extends GenericGame {
     }
 
     public Set<BattleFieldObject> getObjectsAt(Coordinates c) {
-        return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, null, true, false);
+        return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, false, true, false);
     }
 
     public DC_InventoryManager getInventoryManager() {
@@ -814,15 +829,15 @@ public class DC_Game extends GenericGame {
 
     public GameLoop getGameLoop() {
         if (loop.getThread() != null)
-        if (!loop.getThread().isAlive()){
-            LogMaster.log(1,"********* getGameLoop() --> THREAD WAS DEAD! restarting.... " ); // igg demo hack
-            if (loop == combatLoop) {
-                combatLoop.endCombat();
-            } else {
-                //TODO what now?
-                startCombat();
+            if (!loop.getThread().isAlive()) {
+                LogMaster.log(1, "********* getGameLoop() --> THREAD WAS DEAD! restarting.... "); // igg demo hack
+                if (loop == combatLoop) {
+                    combatLoop.endCombat();
+                } else {
+                    //TODO what now?
+                    startCombat();
+                }
             }
-        }
         return loop;
     }
 
@@ -887,7 +902,7 @@ public class DC_Game extends GenericGame {
     }
 
     public boolean isBossFight() {
-        return bossFight;
+        return Eidolons.BOSS_FIGHT;
     }
 
     public void setBossFight(boolean bossFight) {

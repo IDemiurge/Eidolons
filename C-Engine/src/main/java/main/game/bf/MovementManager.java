@@ -2,6 +2,7 @@ package main.game.bf;
 
 import main.data.ability.construct.VarHolder;
 import main.data.ability.construct.VariableManager;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -11,7 +12,7 @@ public interface MovementManager {
 
     boolean move(Obj obj, Coordinates c);
 
-    boolean canMove(Obj obj, Coordinates c);
+    boolean canMove(Entity obj, Coordinates c);
 
     BattleFieldGrid getGrid();
 

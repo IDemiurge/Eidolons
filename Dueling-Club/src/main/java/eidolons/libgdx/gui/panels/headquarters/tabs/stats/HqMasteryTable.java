@@ -30,13 +30,18 @@ public class HqMasteryTable extends HqStatTable {
     protected int getCost(PARAMS sub) {
         HqHeroDataSource hero = getUserObject();
         return PointMaster.getCost(
-         hero.getEntity(),
-         sub);
+                hero.getEntity(),
+                sub);
     }
+
     @Override
     protected String getPointsText() {
-        return "    Mastery          pts.";
+        if (isEditable()) {
+            return "       Mastery         pts.";
+        }
+        return "        Mastery          ";
     }
+
     @Override
     protected boolean isMastery() {
         return true;
@@ -46,9 +51,9 @@ public class HqMasteryTable extends HqStatTable {
     protected PARAMS[] initDataArray() {
         HqHeroDataSource hero = getUserObject();
         List<PARAMETER> list = new ArrayList<>(SkillMaster.getUnlockedMasteries(hero.getEntity()));
-        list =list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).
-         collect(Collectors.toList());
+        list = list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).
+                collect(Collectors.toList());
         ListMaster.fillWithNullElements(list, size);
-        return   list.toArray(new PARAMS[list.size()]);
+        return list.toArray(new PARAMS[list.size()]);
     }
 }

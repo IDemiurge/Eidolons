@@ -22,9 +22,9 @@ public class UnitInfoTabs extends TabbedPanel {
 
     public UnitInfoTabs(float w, float h) {
         main = new TablePanelX();
-        main.add(new ArmorPanel()).row();
+        main.add(new HqParamPanel(false)).row(); //TODO igg demo fix
         main.add(new HqParamPanel(true)).row();
-        main.add(new HqParamPanel(false)).row();
+//        main.add(new ArmorPanel()).row();
         final float height = h * getHeightCoef();
         final float width = w * getWidthCoef();
         descriptionPanel = new UnitDescriptionPanel() {
@@ -38,6 +38,11 @@ public class UnitInfoTabs extends TabbedPanel {
                 return (width);
             }
         };
+        main.setSize(width, height/2);
+//        main.setY(100);
+        main.setFixedMinSize(true);
+        main.setFixedSize(true);
+
         descriptionPanel.setSize(
                 (width), (height));
 
@@ -87,17 +92,24 @@ public class UnitInfoTabs extends TabbedPanel {
             scrolledValuePanel.setUserObject(getUserObject());
             scrolledValuePanel.updateAct(0);
         }
+        cell.setActorY(100);
         return cell;
     }
 
     @Override
+    public void layout() {
+        super.layout();
+        contentTable.setY(100);
+    }
+
+    @Override
     protected int getDefaultAlignment() {
-        return Align.top;
+        return Align.center;
     }
 
     @Override
     protected int getDefaultTabAlignment() {
-        return Align.center;
+        return Align.top;
     }
 
     @Override

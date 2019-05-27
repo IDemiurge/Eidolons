@@ -150,7 +150,8 @@ public class DynamicLayeredActor extends LayeredActor {
         if (status==ACTOR_STATUS.NORMAL)
             return;
         setStatus(ACTOR_STATUS.NORMAL);
-        playStateAnim();
+        //TODO igg demo fix
+//        playStateAnim();
     }
 
     public enum ACTOR_STATUS {

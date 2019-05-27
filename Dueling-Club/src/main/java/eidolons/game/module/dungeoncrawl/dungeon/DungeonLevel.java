@@ -30,6 +30,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -65,6 +66,13 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private Set<Coordinates> voidCoordinates;
     private Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> unitGroups = new XLinkedMap<>();
     private Collection<ObjAtCoordinate> unassignedUnits = new ArrayList<>();
+
+    String name;
+
+    public DungeonLevel(String name) {
+        this(null, null, null);
+        this.name = name;
+    }
 
     public DungeonLevel(LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         //        this.tileMap = TileMapper.createTileMap(model);
@@ -311,6 +319,12 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public boolean isVoid(int i, int j) {
+        if (CoreEngine.isIggDemo()){
+            if (isVoidExplicit(i, j)) {
+                return true;
+            }
+            return false;
+        }
         Coordinates c = Coordinates.get(i, j);
         if (tileMap.getMap().get(c) != ROOM_CELL.VOID)
             return false;
@@ -526,6 +540,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             this.unassignedUnits = new LinkedHashSet<>();
         }
         return unassignedUnits;
+    }
+
+    public String getLevelName() {
+        return name;
     }
 
 

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
@@ -8,8 +9,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -19,8 +20,10 @@ import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
@@ -64,7 +67,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     private FauxDungeonLevel createFauxDungeonLevel(String path, Location location) {
-        FauxDungeonLevel level = new FauxDungeonLevel();
+        FauxDungeonLevel level = new FauxDungeonLevel(PathUtils.getLastPathSegment(path));
 
         List<LevelZone> zones=    createFauxZones(location) ;
         level.setZones(zones);
@@ -76,7 +79,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 //            }
 //            level.setMainStyle(mainStyle);
 //        }
-        level.setEntranceData(location.getEntranceData());
+            level.setEntranceData(location.getEntranceData());
         return level;
     }
 
@@ -150,15 +153,19 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
 
     @Override
-    public Location buildDungeon(String data, List<Node> nodeList) {
+    public Location buildDungeon(String path, String data, List<Node> nodeList) {
         this.nodeList = nodeList;
-        location = (super.buildDungeon(data, nodeList));
+        location = (super.buildDungeon(path, data, nodeList));
         DUNGEON_TEMPLATES template = null;
         DungeonPlan plan = new DungeonPlan(template, (location));
         plan.setLoaded(true);
         for (Node n : nodeList) {
             processNode(n, getDungeon(), plan);
 
+        }
+        if (CoreEngine.isIggDemo()){
+            location.setEntranceData(IGG_XmlMaster.getEntrancesData(path));
+            location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
         location.initEntrances();
         plan.setStringData(data);
@@ -235,7 +242,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
 
     public DungeonPlan loadDungeonMap(String data) {
-        return buildDungeon(data, nodeList).getPlan();
+        return buildDungeon("", data, nodeList).getPlan();
     }
 
     public enum BLOCK_TYPE {

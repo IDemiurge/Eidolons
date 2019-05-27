@@ -259,19 +259,20 @@ public class DC_AttackMaster {
         }
 
         if (!attacked.isDead())
-            if (!dodged) {
-                boolean parried = parryRule.tryParry(attack);
-                if (parried) {
-                    attack.setParried(true);
+            if (!dodged)
+                if (attacked instanceof Unit) {
+                    boolean parried = parryRule.tryParry(attack);
+                    if (parried) {
+                        attack.setParried(true);
 //                    if (
 //                     EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
-                    attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY, attacker, ref);
-                    attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY_SELF, attacked, ref);
+                        attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY, attacker, ref);
+                        attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY_SELF, attacked, ref);
 //                    }
-                    return true;
+                        return true;
+                    }
+                    dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
                 }
-                dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
-            }
 
         // BEFORE_ATTACK,
         // BEFORE_HIT
@@ -281,7 +282,7 @@ public class DC_AttackMaster {
                     return false;
                 }
                 if (attacker.isDead()) {
-                    return true;
+                    return true; // ???
                 }
 //            if (attacked.isDead()) {  // now in unit.kill()
 //                if (onKill != null) {
@@ -311,6 +312,7 @@ public class DC_AttackMaster {
                             return true;
                         }
                     }
+                    return true;
                 } else {
                     if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
                         log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
@@ -445,7 +447,16 @@ public class DC_AttackMaster {
 
             attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_ATTACK, attacked, ref);
             attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_ATTACK_SELF, attacker, ref);
+        if (attack.isCritical()){
+
+            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_HIT, attacker, ref);
+            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_SELF, attacked, ref);
+
+            attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT, attacked, ref);
+            attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_SELF, attacker, ref);
         }
+        }
+
 
         try {
             // map=

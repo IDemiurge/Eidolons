@@ -21,7 +21,13 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
  * Created by JustMe on 5/21/2018.
  */
 public class EUtils {
-    public static void showInfoText(String s) {
+    public static void showInfoText( String s) {
+        showInfoText(false, s);
+    }
+    public static void showInfoText(boolean logged, String s) {
+        if (logged){
+            Eidolons.getGame().getLogManager().log(s);
+        }
         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, s);
     }
 

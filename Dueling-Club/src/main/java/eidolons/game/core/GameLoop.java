@@ -1,5 +1,7 @@
 package eidolons.game.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -26,6 +28,7 @@ import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
@@ -65,6 +68,7 @@ public class GameLoop {
     protected boolean started;
     protected boolean stopped;
     protected ActionInput lastActionInput;
+    private boolean firstActionDone;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -274,6 +278,7 @@ public class GameLoop {
         } finally {
             activatingAction = null;
         }
+        firstActionDone= true;
         if (!result) {
             return false;
         }
@@ -299,10 +304,21 @@ public class GameLoop {
         }
         return endTurn;
     }
-
+    public int getWaitOnStartTime() {
+        return 0;
+    }
     protected ActionInput waitForAI() {
+        if (!firstActionDone){
+            Chronos.mark("First ai action");
+        }
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
+        if (!firstActionDone){
+            Long time =getWaitOnStartTime()- Chronos.getTimeElapsedForMark("First ai action");
+            if (time>0 )
+                WaitMaster.WAIT(Math.toIntExact(time));
+            firstActionDone = true;
+        }
         boolean failed = false;
         if (aiAction == null)
             failed = true;
@@ -415,6 +431,8 @@ public class GameLoop {
                 //check party
                 return true;
             }
+        if (CoreEngine.isIDE())
+        if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
         if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
             if (location.getMainEntrance() != null)
                 if (location.getMainEntrance().getCoordinates().equals(c)) {
@@ -468,6 +486,7 @@ public class GameLoop {
 
     public void resume() {
         stopped = false;
+        firstActionDone =false;
         signal();
     }
 

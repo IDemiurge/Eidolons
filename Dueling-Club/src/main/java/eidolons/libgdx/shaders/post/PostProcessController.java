@@ -182,6 +182,13 @@ public class PostProcessController {
     }
 
     public void update(PostProcessingOptions options) {
+        PostFxUpdater.heroFxOff =
+                options.getBooleanValue(
+                        POST_PROCESSING_OPTIONS.HERO_EFFECTS_OFF);
+        PostFxUpdater.shadowFxOff =
+                options.getBooleanValue(
+                        POST_PROCESSING_OPTIONS.SHADOW_EFFECT_OFF);
+
 
         if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
                 PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF)){
@@ -201,6 +208,8 @@ public class PostProcessController {
 
         setEnabled(darken, options.getBooleanValue(POST_PROCESSING_OPTIONS.STANDARD_ON));
         setEnabled(lens2, options.getBooleanValue(POST_PROCESSING_OPTIONS.LENS_ON));
+
+
     }
 
     private void setEnabled(PostProcessorEffect effect, boolean booleanValue) {

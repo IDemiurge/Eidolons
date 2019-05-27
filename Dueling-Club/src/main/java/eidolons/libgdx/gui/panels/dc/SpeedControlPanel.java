@@ -2,12 +2,14 @@ package eidolons.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.system.options.AnimationOptions;
@@ -23,12 +25,15 @@ public class SpeedControlPanel extends GroupX {
     private final ImageContainer background;
     private final VisCheckBox checkBox;
 
+    ButtonGroup speedButtons;
+
+
     public SpeedControlPanel() {
         addActor(background = new ImageContainer(BG_PATH));
         if (!VisUI.isLoaded()) {
             VisUI.load(PathFinder.getSkinPath());
         }
-        addActor(slider = new VisSlider(50, 300, 50, true));
+        addActor(slider = new VisSlider(10, 150, 10, true));
         setSize(background.getWidth(), background.getHeight());
         GdxMaster.center(slider);
 //        slider.setValue(OptionsMaster.getGameplayOptions().
@@ -60,7 +65,19 @@ public class SpeedControlPanel extends GroupX {
             }
         });
         GdxMaster.centerWidth(checkBox);
+        checkBox.getStyle().font = StyleHolder.getHqLabelStyle(18).font;
 
+//        addActor(checkBox2 = new VisCheckBox(
+//                StringMaster.getWellFormattedString(GameplayOptions.GAMEPLAY_OPTION.WAIT_BETWEEN_TURNS.getName())));
+//        checkBox2.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                OptionsMaster.getGameplayOptions().setValue(
+//                        GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL, checkBox.isChecked());
+//                OptionsMaster.applyGameplayOptions();
+//            }
+//        });
+//        GdxMaster.centerWidth(checkBox2);
     }
 
 //    @Override

@@ -49,7 +49,7 @@ public class StyleHolder {
     private static final String DOWN = "_down";
     private static final String UP = "_up";
     private static final String CHECKED = "_down";
-    private static final int DEFAULT_SIZE = 16;
+    private static final int DEFAULT_SIZE = 17;
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static final float SMART_FONT_SIZE_COEF = 0.15f;
     public static Boolean HIERO_ON = null;

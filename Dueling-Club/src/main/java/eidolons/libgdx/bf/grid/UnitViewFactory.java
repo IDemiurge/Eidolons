@@ -2,12 +2,14 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.boss.sprite.BossView;
@@ -54,6 +56,12 @@ public class UnitViewFactory {
                 return null;
             }
             if ( bfObj.isBoss()) {
+                return null;
+            }
+            if ( bfObj== ShadowMaster.getShadowUnit()) {
+                return null;
+            }
+            if (bfObj.isDetectedByPlayer()) {
                 return null;
             }
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
@@ -103,7 +111,17 @@ public class UnitViewFactory {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 tryDefaultAction(event);
+
                 super.clicked(event, x, y);
+            }
+
+            @Override
+            public boolean handle(Event e) {
+                if (Eidolons.getScreen().getGuiStage().isBlocked()) {
+                    return true;
+                }
+
+                return super.handle(e);
             }
 
             private void tryDefaultAction(InputEvent event) {

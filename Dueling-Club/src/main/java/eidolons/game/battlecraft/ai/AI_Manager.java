@@ -290,6 +290,7 @@ public class AI_Manager extends AiMaster {
                 groups.add(group);
             }
         }
+//        if (!CoreEngine.isIggDemo())
         if (game.getDungeonMaster().getDungeonLevel().isPregen()) {
             for (GroupAI group : groups) {
                 Coordinates c=group.getBlock().getCenterCoordinate();
@@ -299,6 +300,9 @@ public class AI_Manager extends AiMaster {
                         c = Positioner.adjustCoordinate(member, c, FacingMaster.getRandomFacing()); // direction
                         // preference?
                     }
+                    main.system.auxiliary.log.LogMaster.important( member+ " coordinate adjusted from " +
+                            member.getCoordinates() +
+                            " to " +c );
                     member.setCoordinates(c);
                 }
 

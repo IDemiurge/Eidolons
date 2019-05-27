@@ -314,7 +314,7 @@ public class GenericEnums {
         BUCKLER_THROWER,
         LEFT_RIGHT_REACH,
         FAUX,
-        NO_GOLD;
+        NO_GOLD, NAMED;
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.

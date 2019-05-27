@@ -1,17 +1,16 @@
 package eidolons.ability.effects.oneshot.attack;
 
-import com.sun.org.apache.regexp.internal.RE;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.EUtils;
 import main.ability.effects.OneshotEffect;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
@@ -25,10 +24,16 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         // getUnit().getAction(action)
         DC_ActiveObj attack = pickAttack();
         if (attack == null) {
-            ref.getActive().setCancelled(true);
-            EUtils.showInfoText("Could not find an attack!");
-            return false;
+            if (getUnit() == ShadowMaster.getShadowUnit()) {
+                attack = getActiveObj().getSubActions().get(0);
+            } else {
+                ref.getActive().setCancelled(true);
+                EUtils.showInfoText("Could not find an attack!");
+                return false;
+            }
         }
+
+        //TODO igg demo hack
         boolean result = attack.activatedOn(ref);
         if (result) {
             if (getActiveObj().getParentAction() != null) {
@@ -54,10 +59,12 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
     private DC_ActiveObj pickAttack() {
         List<DC_ActiveObj> subActions = getActiveObj().getValidSubactions(ref, target);
         if (subActions.isEmpty()) {
-            main.system.auxiliary.log.LogMaster.log(1,"Failing on our autoattack ... " );
+            main.system.auxiliary.log.LogMaster.log(1, "Failing on our autoattack ... ");
 
             for (DC_ActiveObj subAction : getActiveObj().getSubActions()) {
-                main.system.auxiliary.log.LogMaster.log(1,"Failing atk: "  +subAction );
+                if (subAction.isThrow()) {
+                    continue;
+                }
                 if (!subAction.canBeTargeted(target)) {
                     Ref REF = ref.getCopy();
                     REF.setMatch(target);

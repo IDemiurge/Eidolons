@@ -41,6 +41,8 @@ public class IGG_MetaDataManager extends MetaDataManager<IGG_Meta> {
         Eidolons.BOSS_FIGHT = (mission.isBossFight());
         Eidolons.TUTORIAL = (mission.isTutorial());
         getMetaGame().setMission(mission);
+
+        IGG_Demo.MISSION = mission;
     }
 
     @Override

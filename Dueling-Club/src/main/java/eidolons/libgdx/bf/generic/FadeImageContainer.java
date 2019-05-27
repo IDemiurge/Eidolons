@@ -145,9 +145,8 @@ public class FadeImageContainer extends ImageContainer {
         } else {
             if (pendingContents != null) {
                 setContents(pendingContents);
-                main.system.auxiliary.log.LogMaster.log(1,this+ " had pendingContents applied: " +pendingContents.toString());
                 pendingContents = null;
-                speedFactor=1.35f;
+                speedFactor=1.5f;
             }
         }
         super.act(delta);

@@ -39,6 +39,7 @@ public class GuiVisualEffects extends GroupX {
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
     private int emitterTypesCount;
+    private static boolean on;
 
     public GuiVisualEffects() {
         if (isVignetteOn()) {
@@ -63,6 +64,10 @@ public class GuiVisualEffects extends GroupX {
             initEmitters(AmbienceDataSource.getTemplate(block.getStyle()), (DAY_TIME) p.get());
 
         });
+    }
+
+    public static void setOn(boolean on) {
+        GuiVisualEffects.on = on;
     }
 
     @Override
@@ -238,8 +243,8 @@ public class GuiVisualEffects extends GroupX {
     @Override
     public void act(float delta) {
 
-        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
-             return;
+        if (!on)
+            return;
         if (emitters == null)
             if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
                 initEmitters();

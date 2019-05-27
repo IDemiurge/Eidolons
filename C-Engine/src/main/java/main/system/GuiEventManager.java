@@ -63,7 +63,7 @@ public class GuiEventManager {
                 obj = new EventCallbackParam(Arrays.asList(params));
             }
         }
-        checkSoundEvent(type, obj);
+//        checkSoundEvent(type, obj);
         GuiEventManagerImpl.trigger(type, obj);
     }
 

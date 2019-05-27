@@ -85,7 +85,7 @@ public class ParryRule {
         game.getLogManager().log(attack.getAttackedUnit().getName() + " parries " + attack.getAction().getName() + " from "
          + attack.getAttacker().getNameIfKnown()
          + StringMaster.wrapInParenthesis(chanceRounded + "%") + ", deflecting " + damage
-         + " " + attack.getDamageType() + " damage");
+         + " " + attack.getDamageType().getName() + " damage");
         int mod = DC_Formulas.DEFAULT_PARRY_DURABILITY_DAMAGE_MOD;
         if (dual) {
             mod /= 2;

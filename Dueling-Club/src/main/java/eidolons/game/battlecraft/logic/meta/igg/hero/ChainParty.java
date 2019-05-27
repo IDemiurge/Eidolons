@@ -1,19 +1,20 @@
 package eidolons.game.battlecraft.logic.meta.igg.hero;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
+import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ChainParty extends Party {
     Set<Unit> deadHeroes = new LinkedHashSet<>();
@@ -21,7 +22,8 @@ public class ChainParty extends Party {
     private int goldStashed;
     private int deathTaxPerc = 35;
 
-    Set<DC_HeroItemObj> stash; //TODO
+    Set<DC_HeroItemObj> stash = new LinkedHashSet<>(); //TODO
+    private Unit lastHero;
 
     public ChainParty(ObjType type, String selectedHero) {
         super(type);
@@ -37,6 +39,18 @@ public class ChainParty extends Party {
         return super.getMemberString();
     }
 
+    public Set<Unit> getDeadHeroes() {
+        return deadHeroes;
+    }
+
+    public Set<DC_HeroItemObj> getStash() {
+        return stash;
+    }
+
+    public Unit getLastHero() {
+        return lastHero;
+    }
+
     @Override
     public void addMember(Unit hero) {
         super.addMember(hero);
@@ -47,21 +61,31 @@ public class ChainParty extends Party {
         if (deadHeroes.isEmpty())
             return;
 
-        String msg = hero + " inherits " + goldStashed +
-                " Gold!";
-
-        hero.addParam(PARAMS.GOLD, goldStashed);
-
-        EUtils.showInfoText(msg);
+        if (lastHero == null) {
+            return;
+        } //TODO load?
+        String msg = hero + " recovers " + goldStashed +
+                " gold from " +
+                lastHero.getName() +
+                "'s ashes...";
         getLeader().getGame().getLogManager().log(msg);
+        EUtils.showInfoText(msg);
+        for (DC_HeroItemObj item : stash) {
+            msg = hero + " recovers " + item.getName()+"from " +
+            lastHero.getName() +
+                    "'s ashes...";
+
+            hero.getGame().getLogManager().log(msg);
+            hero.addItemToInventory(item);
+        }
+        stash.clear();
+        hero.addParam(PARAMS.GOLD, goldStashed);
         goldStashed = 0;
     }
 
     private void hideHero(Unit hero) {
         hero.setHidden(true);
         hero.kill();
-
-
     }
 
     private boolean isSpawnedAlive(Unit hero) {
@@ -71,7 +95,6 @@ public class ChainParty extends Party {
     /**
      * grant this amount to newly spawned heroes
      * the dead heroes will also receive it here
-     *
      * @param xp
      */
     public void xpGained(int xp) {
@@ -82,6 +105,10 @@ public class ChainParty extends Party {
     }
 
     public void death() {
+         lastHero = getLeader();
+        Collection<? extends DC_HeroItemObj> stashed = getStashedItems(lastHero.getInventory());
+         stash.addAll(stashed);
+
         deadHeroes.add(getLeader());
         goldStashed = getLeader().getIntParam(PARAMS.GOLD);
         int deathTax = goldStashed * deathTaxPerc / 100;
@@ -93,4 +120,15 @@ public class ChainParty extends Party {
         EUtils.showInfoText(msg);
         getLeader().getGame().getLogManager().log(msg + " Inventory items lay still among the ashes of " + getLeader().getName());
     }
+    private boolean isStashed(DC_HeroItemObj t) {
+        if (t.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("keys")) {
+            return true;
+        }
+        return false;
+    }
+
+    private Collection<? extends DC_HeroItemObj> getStashedItems(DequeImpl<DC_HeroItemObj> inventory) {
+        return inventory.stream().filter(t -> isStashed(t)).collect(Collectors.toList());
+    }
+
 }

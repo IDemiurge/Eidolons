@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -43,6 +44,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -99,12 +101,19 @@ public class HqDataMaster {
         EUtils.showInfoText(model.getName() + " saved");
         if (type) {
             if (asNew)
-                model.setName(NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS));
+                model.setName(getNewSaveHeroName(model));
 
             updateType(model);
             DataManager.addType(model.getType());
             XML_Writer.writeXML_ForType(model.getType(), DC_TYPE.CHARS, model.getGroupingKey());
         }
+    }
+
+    private static String getNewSaveHeroName(HeroDataModel model) {
+        if (CoreEngine.isIggDemo()) {
+            return model.getName()+" lvl " + model.getIntParam(PARAMS.HERO_LEVEL);
+        }
+        return NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS);
     }
 
     public static void updateType(HeroDataModel model) {
@@ -190,7 +199,7 @@ public class HqDataMaster {
     }
 
     public static void modelChanged(HeroDataModel entity) {
-        getMap().get(entity.getHero()).reset();
+//        getMap().get(entity.getHero()).reset(); TODO causes double reset; why? and what is it for?
     }
 
     public static HqDataMaster createInstance(Unit unit) {

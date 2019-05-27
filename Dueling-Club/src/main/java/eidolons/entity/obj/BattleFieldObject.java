@@ -99,10 +99,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     @Override
     public String getToolTip() {
-        if (OutlineMaster.isOutlinesOn()) {
+        if (!isMine())
+            if (OutlineMaster.isOutlinesOn()) {
             if (getOutlineTypeForPlayer() != null)
                 return getOutlineTypeForPlayer().getName();
-            //         if (!isDetected())
             if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
                 return "Unknown";
             }
@@ -168,11 +168,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         REF.setSource(killer.getId());
 
         if (!quietly) {
-            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, REF))) {
-                if (!ignoreInterrupt) {
-                    return false;
-                }
-            }
             ((BattleFieldObject) killer)
                     .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
 

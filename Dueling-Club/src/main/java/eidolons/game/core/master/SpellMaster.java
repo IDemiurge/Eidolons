@@ -3,10 +3,17 @@ package eidolons.game.core.master;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.system.test.TestMasterContent;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
+import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
+import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -17,6 +24,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +38,35 @@ public class SpellMaster extends Master {
 
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
-    HashMap<MicroObj, Map<ObjType, Spell>> spellCache = new HashMap<>();
+    Map<MicroObj, Map<ObjType, Spell>> spellCache = new HashMap<>();
+    static Map<ObjType, Spell> globalSpellCache = new HashMap<>();
 
     public SpellMaster(DC_Game game) {
         super(game);
+    }
+
+    public static List<Spell> getPotentialSpellsForHero(Unit entity) {
+        List<Spell> list = new ArrayList<>();
+
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            PARAMETER mastery = ContentValsManager.getPARAM(type.getProperty("SPELL_GROUP") + " Mastery");
+//check not custom? etc?!
+            if (!CoreEngine.isContentTestMode())
+                if (!HqMaster.isContentDisplayable(type)) {
+                    continue;
+                }
+
+            if (SkillMaster.isMasteryUnlocked(entity, mastery)) {
+                Spell spell = globalSpellCache.get(type);
+                if (spell == null) {
+                    spell = (Spell) entity.getGame().createSpell(type, Player.NEUTRAL, new Ref(entity.getGame()));
+                    globalSpellCache.put(type, spell);
+                }
+                list.add(spell);
+            }
+        }
+
+        return list;
     }
 
     public Spell createSpell(ObjType type, Player player, Ref ref) {
@@ -67,12 +100,12 @@ public class SpellMaster extends Master {
             }
 
             SPELL_POOL spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
-             PROP.getName());
+                    PROP.getName());
             if (spellPool != null) {
                 spell.setSpellPool(spellPool);
                 spell.setProperty(G_PROPS.SPELL_POOL, spellPool.toString());
             } else {
-                spell.setSpellPool(null  );
+                spell.setSpellPool(null);
                 spell.setProperty(G_PROPS.SPELL_POOL, "");
             }
 
@@ -110,6 +143,6 @@ public class SpellMaster extends Master {
 
     private List<Spell> getMySpells() {
         return ((Unit)
-         getGame().getPlayer(true).getHeroObj()).getSpells();
+                getGame().getPlayer(true).getHeroObj()).getSpells();
     }
 }

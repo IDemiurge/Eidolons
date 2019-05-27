@@ -35,7 +35,7 @@ public final class UnitEnums {
         INSECT,
         REPTILE,
         AVIAN,
-        GIANT,;
+        GIANT, UNIQUE;
         boolean displayed;
         private String toolTip;
 
@@ -124,13 +124,7 @@ public final class UnitEnums {
         Ward,
 
         Soul,
-        Undying_Counter,
-        Undying {
-            @Override
-            public String toString() {
-                return super.toString();
-            }
-        },
+        Undying ,
         Blight,
         Corrosion, Oblivion,
         Taint, Aether,

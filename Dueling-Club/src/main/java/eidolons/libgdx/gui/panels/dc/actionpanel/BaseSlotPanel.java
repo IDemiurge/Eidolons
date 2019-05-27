@@ -24,6 +24,7 @@ public class BaseSlotPanel extends TablePanel {
     private float resetPeriod = 4f;
     private boolean hovered;
     public static boolean hoveredAny;
+    private boolean firstUpdateDone;
 
     public BaseSlotPanel(int imageSize) {
         this.imageSize = imageSize;
@@ -40,22 +41,35 @@ public class BaseSlotPanel extends TablePanel {
     }
 
     @Override
-    public void updateAct(float delta) {
-
-        super.updateAct(delta);
+    protected void updateAllOnAct(float delta) {
+        updateAct(delta);
+        invalidate();
+        afterUpdateAct(delta);
+        updateRequired= false;
     }
 
     @Override
     public void act(float delta) {
+        beforeReset -= delta;
         if (hoveredAny) {
             updateRequired=false;
-        }
-        super.act(delta);
-        beforeReset -= delta;
-        PagesMod mod = PagesMod.NONE;
+        } else
         if (beforeReset <= 0) {
             beforeReset = resetPeriod;
+            updateRequired = true;
         } else {
+            updateRequired=false;
+        }
+        if (!firstUpdateDone) {
+            updateRequired = true;
+        }
+        super.act(delta);
+//        if (!updateRequired) {
+//            return;
+//        }
+        firstUpdateDone=true;
+        PagesMod mod = PagesMod.NONE;
+
             PagesMod[] pagesMods = PagesMod.getValues();
             for (int i = 0, pagesModsLength = pagesMods.length; i < pagesModsLength; i++) {
                 PagesMod pagesMod = pagesMods[i];
@@ -64,7 +78,6 @@ public class BaseSlotPanel extends TablePanel {
                     break;
                 }
             }
-        }
         if (mod != activePage) {
             if (modTableMap.containsKey(mod)) {
                 setActivePage(mod);

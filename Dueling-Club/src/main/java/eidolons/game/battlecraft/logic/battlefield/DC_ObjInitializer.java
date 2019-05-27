@@ -213,6 +213,7 @@ public class DC_ObjInitializer {
             if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                 level = NumberUtils.getInteger(StringMaster.getLastPart(typeName,
                         UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
+                typeName=StringMaster.cropLastSegment(typeName,  UnitGroupMaster.TYPE_LEVEL_SEPARATOR, true);
 
             }
             ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
@@ -431,7 +432,7 @@ public class DC_ObjInitializer {
             for (String data : flipMap.keySet()) {
                 Coordinates c = getCoordinatesFromObjString(data);
                 FLIP d = flipMap.get(data);
-                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(z, c, false, false, false)) {
                     String name = getNameFromObjString(data);
                     if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                         name = name.split(MULTI_DIRECTION_SUFFIX)[0];

@@ -13,6 +13,7 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.file.ResourceMaster;
 import eidolons.system.text.NameMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
@@ -44,6 +45,8 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
+import main.entity.Entity;
+import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
@@ -301,14 +304,17 @@ public class ContentGenerator {
         for (ObjType type : types) {
 
             if (type.getSubGroupingKey().equalsIgnoreCase("keys")) {
+                String name = "Hanging " + type.getName();
+                if (DataManager.isTypeName(name, DC_TYPE.BF_OBJ))
+                    continue;
 
                 ObjType baseType = DataManager.getType("dummy hung obj", DC_TYPE.BF_OBJ);
-                ObjType newType = new ObjType("Hanging " + type.getName(), baseType);
+                ObjType newType = new ObjType(name, baseType);
                 newType.setProperty(G_PROPS.BF_OBJECT_CLASS, "Key");
                 newType.setGenerated(false);
                 newType.setImage("main/bf/hanging/keys/" +
 //                        type.getName()
-                       "Jade Key" + ".png");
+                        "Jade Key" + ".png");
                 DataManager.addType(newType);
             }
 
@@ -341,16 +347,16 @@ public class ContentGenerator {
                 if (!ImageManager.isImage(ImageManager.getImageFolderPath() + path)) {
                     continue;
                 }
-                if ( path.contains("entity")) {
+                if (path.contains("entity")) {
                     continue;
                 }
                 try {
-                    String newPath = "gen/skills/" +type.getProperty(G_PROPS.MASTERY)+"/"
+                    String newPath = "gen/skills/" + type.getProperty(G_PROPS.MASTERY) + "/"
                             + type.getName() + ".png";
-                    String newPath2 = "gen/skills/" +type.getProperty(G_PROPS.MASTERY)+"/2/"
+                    String newPath2 = "gen/skills/" + type.getProperty(G_PROPS.MASTERY) + "/2/"
                             + type.getName() + ".png";
                     newPath = FileManager.formatPath(newPath);
-                    path =StringMaster.cropLast( FileManager.formatPath(path, true), 1);
+                    path = StringMaster.cropLast(FileManager.formatPath(path, true), 1);
                     if (path.equalsIgnoreCase(newPath))
                         continue;
                     type.setImage(newPath);
@@ -361,6 +367,56 @@ public class ContentGenerator {
             }
         }
     }
+
+    public static void updateImagePathsForJpg_Png() {
+        /**
+         * locks
+         * mushroom
+         * light emitters
+         * inscriptions
+         */
+        for (ObjType type : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
+
+//            if (!EntityCheckMaster.isOverlaying(type)) {
+//                continue;
+//            }
+
+            String folder = "";
+            if (type.getName().toLowerCase().contains("fungi")) {
+                folder = "fungi";
+            } else if (
+                    type.getGroup().equalsIgnoreCase("light emitters")) {
+                folder = "light emitters";
+            } else if (  type.getName().toLowerCase().contains("inscription")) {
+                folder = "inscription";
+            } else if ( type.getName().toLowerCase().contains("key")) {
+                folder = "keys";
+            }
+
+            String name = PathUtils.getLastPathSegment(type.getImagePath());
+            String newRoot = "sprites/bf/hanging/" + folder + "/" + name;
+            if (!TextureCache.isImage(newRoot)) {
+                continue;
+            }
+            type.setImage(newRoot);
+        }
+
+
+    }
+
+    private static void saveAllAsJPG() {
+
+        for (ObjType type : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
+            if (EntityCheckMaster.isOverlaying(type)) {
+                continue;
+            }
+            String path = type.getImagePath();
+            String newPath= StringMaster.cropFormat(path)+".jpg";
+            ResourceMaster.writeImage(path, newPath);
+
+            type.setImage(newPath);
+        }
+        }
 
     private static void updateImagePaths(OBJ_TYPE... TYPES) {
         for (OBJ_TYPE T : TYPES) {

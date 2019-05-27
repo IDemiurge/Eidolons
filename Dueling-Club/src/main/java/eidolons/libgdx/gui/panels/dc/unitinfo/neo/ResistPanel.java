@@ -157,7 +157,9 @@ public class ResistPanel extends TablePanel {
         if (getUserObject() instanceof ResistSource) {
             source = ((ResistSource) getUserObject()).getMagicResistList();
         } else source = (List<Pair<PARAMETER, String>>) getUserObject();
-
+        if (source == null) {
+            return;
+        }
         source.forEach(pair -> {
             PARAMS param = (PARAMS) pair.getLeft();
             DAMAGE_TYPE damageType = getFromParams(param);

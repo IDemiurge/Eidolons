@@ -128,7 +128,7 @@ public class Images {
     public static final String PLACEHOLDER_UNIT = "ui/empty.jpg";
     public static final String PLACEHOLDER_WALL = "main/bf/walls/ancient wall.png";
     public static final String PLACEHOLDER_DECOR = "main/bf/prop/magical/sphere_altar_dark_active.png";
-    public static final String DEFAULT_SPRITE = "sprites/spells/default 10 10.png";
+    public static final String DEFAULT_SPRITE = "mini/sprites/impact/wreathe in flames 5 5.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

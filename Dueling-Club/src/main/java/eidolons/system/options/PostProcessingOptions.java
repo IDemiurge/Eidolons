@@ -18,6 +18,9 @@ static {
 }
     public   enum POST_PROCESSING_OPTIONS implements Options.OPTION {
         ALL_OFF(false),
+        HERO_EFFECTS_OFF(true),
+        SHADOW_EFFECT_OFF(false),
+
         BLOOM_ON(false),
         VIGNETTE_ON(false),
         BLUR_ON(false),

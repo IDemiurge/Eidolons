@@ -104,7 +104,7 @@ public class MainMenuHandler {
         switch (item) {
             case DEMO:
                 IGG_Launcher.start(()-> startDemo());
-                break;
+                return null ;
             case NEXT_SCENARIO:
                 return startMicro(getScenarioTypes(),
                  false);

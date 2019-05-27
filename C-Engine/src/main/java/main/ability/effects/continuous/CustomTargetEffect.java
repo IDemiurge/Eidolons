@@ -18,6 +18,11 @@ public class CustomTargetEffect extends MicroEffect implements ContainerEffect {
     }
 
     @Override
+    public String getTooltip() {
+        return effect.getTooltip();
+    }
+
+    @Override
     public boolean applyThis() {
         Ref REF = ref.getCopy();
         Integer first_target = null;

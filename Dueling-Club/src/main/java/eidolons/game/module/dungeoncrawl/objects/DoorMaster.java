@@ -72,9 +72,10 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
                 return true;
         }
         switch (sub) {
+            case UNSEAL:
+                KeyMaster.doorUnsealed(door, unit);
             case OPEN:
             case UNLOCK:
-            case UNSEAL:
                 open(door, unit.getRef().getTargetingRef(obj));
                 return true;
             case CLOSE:

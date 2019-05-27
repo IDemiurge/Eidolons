@@ -1,7 +1,9 @@
 package main.content.enums.entity;
 
 import main.content.CONTENT_CONSTS.SOUNDSET;
+import main.content.ContentValsManager;
 import main.content.text.Descriptions;
+import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -252,36 +254,36 @@ public class HeroEnums {
     }
 
     public enum PERK_PARAM {
-        SPIRIT(2, 5, 10, false, "Indomitable"),
-        RESISTANCE(8, 16, 24, false, "Resilient"),
-        RESISTANCE_PENETRATION(10, 20, 30, false, "Penetrating"),
+        SPIRIT(3, 7, 15, false, "Indomitable"),
+        RESISTANCE(10, 20, 32, false, "Resilient"),
+        RESISTANCE_PENETRATION(21, 42, 70, false, "Penetrating"),
         SPELLPOWER(3, 7, 16, false, "Overpowering"),
         KNOWLEDGE(3, 8, 18, false, "Erudite"),
         MEMORIZATION_CAP(14, 35, 80, false, "Prodigious"),
         DIVINATION_CAP(14, 35, 80, false, "Favored"),
 
-        N_OF_COUNTERS(2, 5, 10, false, "Drilled"),
-        N_OF_ACTIONS(5, 15, 30, false, "Swift"),
-        ATTACK(15, 45, 120, false, "Accurate"),
+        N_OF_COUNTERS(3, 6, 10, false, "Drilled"),
+        N_OF_ACTIONS(1, 2, 3, false, "Swift"),
+        ATTACK(14, 40, 110, false, "Accurate"),
         DEFENSE(12, 35, 100, false, "Nimble"),
-        ARMOR(5, 18, 60, false, "Hard Skinned"),
-        FORTITUDE(3, 6, 12, false, "Hardy"),
+        ARMOR(6, 24, 80, false, "Hard Skinned"),
+        FORTITUDE(5, 9, 15, false, "Hardy"),
 
-        ENDURANCE_REGEN(15, 45, 135, false, "Undying"),
-         STAMINA_REGEN(1, 3, 9, false, "Crafty"),
-        ESSENCE_REGEN(7, 20, 50, false, "Meditative"),
+        ENDURANCE_REGEN(5, 15, 45, false, "Undying"),
+         STAMINA_REGEN(2, 5, 15, false, "Crafty"),
+        ESSENCE_REGEN(11, 25, 60, false, "Meditative"),
         FOCUS_REGEN(4, 10, 25, false, "Recovering"),
 
-        TOUGHNESS(35, 125, 350, false, "Tough"),
-        ENDURANCE(65, 250, 650, false, "Steadfast"),
+        TOUGHNESS(30, 100, 250, false, "Tough"),
+        ENDURANCE(75, 250, 650, false, "Steadfast"),
         STAMINA(5, 17, 50, false, "Relentless"),
-        ESSENCE(30, 90, 270 , false, "Aligned"),
+        ESSENCE(45, 110, 320 , false, "Aligned"),
         STARTING_FOCUS(7, 15, 30, false, "Sharp"),
 
-        CARRYING_CAPACITY(65, 200, 500, false, "Mighty"),
+        CARRYING_CAPACITY(115, 300, 700, false, "Mighty"),
         QUICK_SLOTS(2, 5, 10, false, "Resourceful"),
         SNEAK_ATTACK_MOD(25, 40, 75, false, "Cunning"),
-        DETECTION(15, 45, 95, false, "Observant"),
+        DETECTION(25, 65, 125, false, "Observant"),
         STEALTH(8, 22, 50, false, "Surreptitious"),
         SIGHT_RANGE(1, 2, 3, false, "Sharp Eyed"),
         LEADERSHIP_MASTERY(10, 22, 40, false, "Confident"),
@@ -291,7 +293,8 @@ public class HeroEnums {
 
         //rolls?
 
-       public float[] values;
+        public   PARAMETER param  ;
+        public float[] values;
         public boolean percentage;
         public String name;
 
@@ -302,6 +305,12 @@ public class HeroEnums {
             values[2] = value3;
             this.percentage = percentage;
             this.name = name;
+
+        }
+
+        public PARAMETER getParam() {
+            param = ContentValsManager.getPARAM(name());
+            return param;
         }
     }
 

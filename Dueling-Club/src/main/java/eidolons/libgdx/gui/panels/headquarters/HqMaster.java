@@ -6,6 +6,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import main.content.enums.system.MetaEnums;
+import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -102,5 +103,18 @@ public class HqMaster {
 
     public static void filterTestContent(List<ObjType> list) {
         list.removeIf(t -> t.getWorkspaceGroup() != TEST_GROUP);
+    }
+
+    public static boolean isContentDisplayable(Entity entity) {
+
+        if (entity.getWorkspaceGroup() == FILTER_GROUP) {
+            return true;
+        }
+        if (CoreEngine.isIDE())
+            if (entity.getWorkspaceGroup() == FILTER_GROUP_DEV) {
+                return true;
+            }
+
+        return false;
     }
 }

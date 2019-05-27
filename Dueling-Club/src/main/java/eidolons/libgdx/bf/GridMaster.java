@@ -21,11 +21,11 @@ public class GridMaster {
     public static final int CELL_W = 128;
     public static final int CELL_H = 128;
     public static final String emptyCellPath = StrPathBuilder.build(
-     "ui", "cells", "Empty Cell v3.png");
+            "ui", "cells", "Empty Cell v3.png");
     public static final String emptyCellPathFloor = StrPathBuilder.build(
-     "ui", "cells", "Floor.png");
+            "ui", "cells", "Floor.png");
     public static final String gridCornerElementPath = StrPathBuilder.build(
-     "ui", "bf", "gridCorner.png");
+            "ui", "bf", "gridCorner.png");
 
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 = getCenteredPos(coordinates);
@@ -45,7 +45,7 @@ public class GridMaster {
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
                                                  boolean center,
                                                  boolean camera
-     , GridPanel gridPanel) {
+            , GridPanel gridPanel) {
         return getVectorForCoordinate(sourceCoordinates, center, camera, false, gridPanel);
     }
 
@@ -53,7 +53,7 @@ public class GridMaster {
                                                  boolean center,
                                                  boolean camera) {
         return getVectorForCoordinate(sourceCoordinates, center, camera, false,
-         DungeonScreen.getInstance().getGridPanel());
+                DungeonScreen.getInstance().getGridPanel());
     }
 
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
@@ -63,7 +63,7 @@ public class GridMaster {
 //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * CELL_W;
         float y = (gridPanel.getRows()
-         - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * CELL_H;
+                - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * CELL_H;
 
         if (camera) {
 //            x -= controller.getXCamPos();
@@ -101,14 +101,22 @@ public class GridMaster {
         return getVectorForCoordinate(coordinates, false, false);
     }
 
-    public static Dimension getOffsetsForOverlaying(DIRECTION direction, int width, int height) {
-        int w = width * 2;
-        int h = height * 2;
+    public static Dimension getOffsetsForOverlaying(DIRECTION direction,
+                                                    int width, int height) {
+        return getOffsetsForOverlaying(direction, width, height, null);
+    }
+
+    public static Dimension getOffsetsForOverlaying(DIRECTION direction,
+                                                    int width, int height, OverlayView view) {
+
+        float scale = view == null ? 0.5f : view.getScale();
+        int w = (int) (width / scale);
+        int h = (int) (height / scale);
         int calcXOffset = 0;
         int calcYOffset = 0;
         if (direction == null) {
-            calcXOffset += (w - width) * OverlayView.SCALE;
-            calcYOffset += (h - height) * OverlayView.SCALE;
+            calcXOffset += (w - width) * (view == null ? OverlayView.SCALE : scale);
+            calcYOffset += (h - height) * (view == null ? OverlayView.SCALE : scale);
         } else {
             int size = width;
             int x = MigMaster.getCenteredPosition(w, size);

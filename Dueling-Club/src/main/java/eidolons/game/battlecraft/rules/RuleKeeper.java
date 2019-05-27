@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -16,8 +17,8 @@ import java.util.Map;
 public class RuleKeeper implements Controller {
 
     private static final RULE[] RULES_BEING_TESTED = {
-            RULE.PARRYING,
-            RULE.SHIELD,
+//            RULE.PARRYING,
+//            RULE.SHIELD,
     };
     static Map<Object, Boolean> overrideMap = new HashMap<>();
     private static Map<RULE, Boolean> map = new XLinkedMap<>();
@@ -148,6 +149,8 @@ public class RuleKeeper implements Controller {
     }
 
     public static boolean isRuleTestOn(RULE rule) {
+        if (Eidolons.getGame().isDebugMode())
+            return false;
         return Bools.isTrue(mapTest.get(rule));
     }
 

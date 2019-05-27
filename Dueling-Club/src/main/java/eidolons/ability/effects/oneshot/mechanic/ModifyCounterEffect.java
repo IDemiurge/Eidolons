@@ -12,6 +12,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -58,8 +59,8 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
         if (ref.getTargetObj() instanceof DC_HeroItemObj) {
             try {
                 mod = ref.getSourceObj().getIntParam(
-                 DC_ContentValsManager.getCoatingAppliedModParam(CounterMaster
-                  .findCounterConst(counterName)));
+                        DC_ContentValsManager.getCoatingAppliedModParam(CounterMaster
+                                .findCounterConst(counterName)));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -83,8 +84,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
                 break;
 
         }
-        if (CoreEngine.isPhaseAnimsOn())
-        {
+        if (CoreEngine.isPhaseAnimsOn()) {
             //TODO
         }
         REF.setAmount(ref.getTargetObj().getCounter(counterName));
@@ -101,6 +101,14 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
     public void setResistanceMod(int mod) {
         this.resistanceMod = mod;
 
+    }
+
+    @Override
+    public String getTooltip() {
+        return
+                StringMaster.getModifierString(formula
+                        .getInt(ref)) + " " +
+                        StringMaster.getFirstItem(StringMaster.getWellFormattedString(counterName), " ") + " counters";
     }
 
     public String getCounterName() {

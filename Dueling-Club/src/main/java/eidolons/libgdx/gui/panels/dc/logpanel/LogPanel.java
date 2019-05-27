@@ -29,7 +29,7 @@ import static main.system.GuiEventType.LOG_ENTRY_ADDED;
 public class LogPanel extends ScrollTextWrapper {
 
     public LogPanel() {
-        super(250, 400);
+        super(310, 500);
         if (getCallbackEvent() != null)
             bind();
     }
@@ -86,12 +86,12 @@ public class LogPanel extends ScrollTextWrapper {
 
     @Override
     protected float getDefaultHeight() {
-        return 250;
+        return 310;
     }
 
     @Override
     protected float getDefaultWidth() {
-        return 400;
+        return 500;
     }
 
     public void bind() {
@@ -131,9 +131,9 @@ public class LogPanel extends ScrollTextWrapper {
             Image img = null;
             if (image != null) {
                 img = new Image(TextureCache.getOrCreate(image));
-                imageOffset = img.getWidth();
                 img.setSize(Math.min(img.getWidth(), 32),
                         Math.min(img.getHeight(), 32));
+                imageOffset = img.getWidth();
             }
             LogMessage message = builder.build(getWidth() - offsetX - imageOffset);
             message.setFillParent(true);
@@ -142,7 +142,7 @@ public class LogPanel extends ScrollTextWrapper {
                 TablePanelX<Actor> table = new TablePanelX<>(
 //                        getWidth() - offsetX, Math.max(message.getHeight(), img.getHeight())
                 );
-                table.defaults().space(7).pad(5).padLeft(7);
+                table.defaults().space(2).pad(5).padLeft(7);
                 table.add(img);
                 table.add(message);
                 table.pack();

@@ -57,6 +57,12 @@ if (!getEntity().getActives().isEmpty()){
                         return;
                     }
                 }
+                if (!getEntity().getName().equalsIgnoreCase("wait"))
+                if (!getEntity().getName().equalsIgnoreCase("idle"))
+
+                {
+
+                }
                 main.system.auxiliary.log.LogMaster.log(1,">>> NO EFFECTS AFTER CONSTRUCT: " +getEntity());
                 if (getEntity().isAttackAny()) {
                     main.system.auxiliary.log.LogMaster.log(1,">>> ATTACK CONSTRUCT FAILeD: " +getEntity());

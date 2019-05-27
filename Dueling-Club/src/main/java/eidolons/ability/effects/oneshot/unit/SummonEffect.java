@@ -6,6 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.system.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
@@ -137,6 +138,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
             return effects.apply(REF);
         }
         DC_SoundMaster.playEffectSound(SOUNDS.READY, unit);
+        EUtils.showInfoText(true, unit.getName() + " is summoned");
         return true;
     }
 

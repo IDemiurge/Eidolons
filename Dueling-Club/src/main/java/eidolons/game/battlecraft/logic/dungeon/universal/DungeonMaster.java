@@ -16,7 +16,7 @@ import main.system.images.ImageManager;
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
 /*
- * 
+ *
  */
 public abstract class DungeonMaster<E extends DungeonWrapper> {
 
@@ -44,8 +44,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
-        if (ExplorationMaster.isExplorationSupported(game))
-            explorationMaster = new ExplorationMaster(game);
+        explorationMaster = new ExplorationMaster(game);
 
         doorMaster = new DoorMaster(this);
         lockMaster = new LockMaster(this);
@@ -55,6 +54,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     protected DungeonBuilder<E> createBuilder() {
         return new DungeonBuilder<E>(this);
+    }
+
+    public void setExplorationMaster(ExplorationMaster explorationMaster) {
+        this.explorationMaster = explorationMaster;
     }
 
     public void gameStarted() {
@@ -70,7 +73,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
         //TODO remove this!
 
-        if (dungeonWrapper == null){
+        if (dungeonWrapper == null) {
             dungeonWrapper = initDungeon();
             getBuilder().initLevel();
         }

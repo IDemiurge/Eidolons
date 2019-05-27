@@ -6,6 +6,7 @@ import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.system.math.Formula;
+import main.system.math.MathMaster;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -295,4 +296,9 @@ public class NumberUtils {
      digitsAfterPeriod +
       "f", v);
 }
+
+    public static float getFloatWithDigitsAfterPeriod(float time, int i) {
+        return
+        MathMaster.getFloatWithDigitsAfterPeriod(i, time);
+    }
 }

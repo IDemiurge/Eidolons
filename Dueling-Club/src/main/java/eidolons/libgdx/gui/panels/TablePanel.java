@@ -13,6 +13,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
+import main.system.launch.CoreEngine;
 
 import java.util.function.Supplier;
 
@@ -44,6 +45,22 @@ public class TablePanel<T extends Actor> extends Table {
             }
         }
         return cell;
+    }
+
+    @Override
+    public Table debugAll() {
+        if (!CoreEngine.isIDE()) {
+            return this;
+        }
+        return super.debugAll();
+    }
+
+    @Override
+    public Table debug() {
+        if (!CoreEngine.isIDE()) {
+            return this;
+        }
+        return super.debug();
     }
 
     @Override
@@ -127,11 +144,15 @@ public class TablePanel<T extends Actor> extends Table {
     public void act(float delta) {
         super.act(delta);
         if (updateRequired && isVisibleEffectively()) {
-            updateAct(delta);
-            invalidate();
-            afterUpdateAct(delta);
-            updateRequired = false;
+            updateAllOnAct(delta);
         }
+    }
+
+    protected void updateAllOnAct(float delta) {
+        updateAct(delta);
+        invalidate();
+        afterUpdateAct(delta);
+        updateRequired = false;
     }
 
     protected boolean isVisibleEffectively() {

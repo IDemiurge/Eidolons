@@ -91,7 +91,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
         Boolean unconscious = isTargetingUnconscious(ai);
-        Boolean visionRequired = true;
+        Boolean visionRequired = !Eidolons.BOSS_FIGHT;
         List<Unit> enemies = getUnits(ai, false, true, visionRequired, false, false, unconscious);
         if (enemies.isEmpty())
             if (unconscious != null) {

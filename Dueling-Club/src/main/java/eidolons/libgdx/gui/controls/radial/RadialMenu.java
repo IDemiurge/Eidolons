@@ -164,7 +164,7 @@ public class RadialMenu extends Group implements Closable {
 
     protected Vector2 getBackgroundPosition() {
         if (closeButton != null)
-            return parentToLocalCoordinates
+            return //parentToLocalCoordinates
                     (localToStageCoordinates(
                             new Vector2(closeButton.getX() + 20, closeButton.getY())));
         return parentToLocalCoordinates(localToStageCoordinates(

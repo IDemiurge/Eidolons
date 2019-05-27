@@ -349,8 +349,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Integer getCounter(COUNTER c) {
-        return getHero().getCounter(c);
+    public Integer getCounter(COUNTER counter) {
+        return getHero().getCounter(counter);
     }
 
     @Override
@@ -2521,7 +2521,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public List<DC_ActiveObj> getAttacks(boolean offhand) {
+    public List<DC_UnitAction> getAttacks(boolean offhand) {
         return getHero().getAttacks(offhand);
     }
 

@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
@@ -106,6 +107,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
              "Inventory is full!", hero);
+            EUtils.showInfoText(  "Inventory is full!");
             return false;
         }
         return true;
@@ -243,6 +245,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             if (operation == OPERATIONS.EQUIP_RESERVE){
                 return slot.getReserve();
             }
+            return slot;
         }
         return null;
     }

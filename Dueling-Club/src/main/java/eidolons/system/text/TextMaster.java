@@ -426,16 +426,4 @@ public class TextMaster {
 
     }
 
-    public static String getDisplayedName(PARAMS params) {
-        switch (params) {
-            case N_OF_ACTIONS:
-                if (DC_Engine.isAtbMode()) return "Initiative";
-            case C_INITIATIVE:
-                if (DC_Engine.isAtbMode()) return "Readiness";
-            case C_N_OF_COUNTERS:
-            case N_OF_COUNTERS:
-                return "Extra Attacks";
-        }
-        return params.getName();
-    }
 }

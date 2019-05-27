@@ -338,8 +338,8 @@ public class AmbienceDataSource {
             );
         }
 
-        VFX[] daily;
-        VFX[] nightly;
+        public VFX[] daily;
+        public VFX[] nightly;
 
         public void setDaily(VFX... daily) {
             this.daily = daily;

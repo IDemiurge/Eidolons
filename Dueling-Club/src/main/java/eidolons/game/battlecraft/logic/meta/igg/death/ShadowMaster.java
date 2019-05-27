@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.death;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.content.PARAMS;
@@ -28,6 +29,7 @@ import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -37,7 +39,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
     static float  timesThisHeroFell = 0;
     private int timeLeft;
-    private Unit shade;
+    private static Unit shade;
     private static   boolean shadowAlive;
 
     public ShadowMaster(MetaGameMaster master) {
@@ -60,6 +62,9 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         return false;
     }
 
+    public static Unit getShadowUnit() {
+        return shade;
+    }
 
     public boolean death() {
 //        if (timesThisHeroFell==0){
@@ -69,13 +74,14 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         return true;
     }
 
-    public void fall(Event event) {
+    public void heroFell(Event event) {
         getGame().getLoop().setPaused(true);
         AnimMaster.waitForAnimations(null);
         DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__ENTER);
         ShadowAnimation anim = new ShadowAnimation(true, (Entity) event.getRef().getActive(),
                 ()-> afterFall(event));
         GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
+
 
 
     }
@@ -88,8 +94,8 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         if (ExplorationMaster.isExplorationOn()){
             // if we just fell as the combat was being finished... from poison or so
             restoreHero(event);
-            main.system.auxiliary.log.LogMaster.log(1,"SHADOW: SHADOW: fall prevented; restoreHero! "+event );
-            EUtils.showInfoText(RandomWizard.random()? "On the edge of consciousness...":"A narrow escape...");
+            LogMaster.log(1,"SHADOW: SHADOW: fall prevented; restoreHero! "+event );
+            EUtils.showInfoText(true, RandomWizard.random()? "On the edge of consciousness...":"A narrow escape...");
             return;
         }
         timeLeft = calcTimeLeft(event);
@@ -109,8 +115,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
             return;
         }
         String msg = "[!] Shadow: " + timeLeft + " seconds left to finish combat";
-        getMaster().getGame().getLogManager().log(msg);
-        EUtils.showInfoText(msg);
+        EUtils.showInfoText(true,msg);
     }
 
     public void annihilated(Event event) {
@@ -127,7 +132,8 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     }
 
     private void unsummonShade(Event event, boolean defeat) {
-        main.system.auxiliary.log.LogMaster.log(1,"SHADOW: unsummonShade "+event );
+        Eidolons.onThisOrNonGdxThread(() -> {
+        LogMaster.log(1,"SHADOW: unsummonShade "+event );
         shade.removeFromGame();
         shadowAlive = false;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
@@ -135,13 +141,12 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
             out();
             restoreHero(event);
         } else
-            Eidolons.onThisOrNonGdxThread(() -> {
                 getMaster().getBattleMaster().getOutcomeManager().defeat(false, true);
             });
     }
 
     private void restoreHero(Event event) {
-        main.system.auxiliary.log.LogMaster.log(1,"SHADOW: restoreHero "  );
+        LogMaster.log(1,"SHADOW: restoreHero "  );
         Unit hero = Eidolons.getMainHero();
         UnconsciousRule.unitRecovers(hero);
         hero.setParam(PARAMS.C_FOCUS, hero.getParam(PARAMS.STARTING_FOCUS));
@@ -153,8 +158,21 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     public void victory(Event event) {
         if (!shadowAlive)
             return;
-        main.system.auxiliary.log.LogMaster.log(1,"SHADOW: victory " );
+        LogMaster.log(1,"SHADOW: victory " );
         AnimMaster.waitForAnimations(null);
+
+        ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
+                ()-> afterVictory(event)){
+            @Override
+            protected Animation.PlayMode getPlayMode() {
+                return Animation.PlayMode.REVERSED;
+            }
+        };
+        GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
+
+    }
+
+    private void afterVictory(Event event) {
         String msg = SHADE_RESTORE.message;
 //              btn="Into Evernight";
         String btn = "Return";
@@ -166,6 +184,9 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     private void dialogueFailed(Event event, boolean outOfTime) {
         if (!shadowAlive)
             return;
+
+        shade.getGame().getLoop().setPaused(true);
+
         AnimMaster.waitForAnimations(null);
         String msg = outOfTime ? DEATH_SHADE_TIME.message : DEATH_SHADE
                 .message;
@@ -190,7 +211,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     }
 
     private void summonShade(Event event) {
-        main.system.auxiliary.log.LogMaster.log(1,"SHADOW: summonShade "+event );
+        LogMaster.log(1,"SHADOW: summonShade "+event );
 
         Ref ref = event.getRef().getCopy();
         Coordinates c = ref.getSourceObj().getCoordinates();
@@ -206,7 +227,10 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         new SummonEffect("Torment").apply(ref);
         shade = (Unit) ref.getObj(Ref.KEYS.SUMMONED);
         shade.setScion(true);
-
+        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, shade);
+        GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, shade);
+//        GuiEventManager.trigger(GuiEventType.GAME_RESET, shade);
+        shade.setDetectedByPlayer(true);
         getGame().getLoop().setPaused(false);
         //horrid sound!
         DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.DEATH);

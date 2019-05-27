@@ -1,5 +1,6 @@
 package main.ability;
 
+import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
@@ -23,6 +24,15 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
         super(type, ref, player, game);
         this.ownerObj = ref.getSourceObj();
     }
+
+    public String getDescription() {
+        for (Effect effect : getEffects()) {
+
+
+        }
+        return super.toString();
+    }
+
 
     public Effects getEffects() {
         return abilities.getEffects();

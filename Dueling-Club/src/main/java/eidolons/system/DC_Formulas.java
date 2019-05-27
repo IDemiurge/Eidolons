@@ -115,7 +115,7 @@ public class DC_Formulas {
     private static final int OFF_HAND_DAMAGE_MOD = 75;
     private static final int MAIN_HAND_DUAL_ATTACK_MOD = -25;
     private static final String DEFENSE_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
-    private static final String DEFENSE_MOD_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
+//    private static final String DEFENSE_MOD_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
     private static final String ATTACK_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/50";
     private static final String DAMAGE_FROM_TWOHANDED_MASTERY_FORMULA = "{AMOUNT}/2+{AMOUNT}*{AMOUNT}/70";
     private static final String TOUGHNESS_FROM_STRENGTH_FORMULA = "{AMOUNT}*"
@@ -201,7 +201,7 @@ public class DC_Formulas {
     }
 
     public static int getActsFromDexAndHalfAgility(int amount) {
-        return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, amount) / 5 * 5;
+        return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, amount) ;
 //        return Math.round(amount * ACTS_DEX_MODIFIER);
     }
 
@@ -350,10 +350,6 @@ public class DC_Formulas {
 
     public static int getDefenseFromDefenseMastery(int amount) {
         return calculateFormula(DEFENSE_FROM_MASTERY_FORMULA, amount);
-    }
-
-    public static int getDefenseModFromDefenseMastery(int amount) {
-        return calculateFormula(DEFENSE_MOD_FROM_MASTERY_FORMULA, amount);
     }
 
     public static int getAttackFromWeaponMastery(int amount) {

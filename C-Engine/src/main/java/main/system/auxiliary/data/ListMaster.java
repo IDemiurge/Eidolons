@@ -247,6 +247,7 @@ public class ListMaster<E> {
         return list;
     }
 
+
     public static void removeNullElements(List<?> list) {
         List<Object> elements = new ArrayList<>(list);
         for (Object o : elements) {
@@ -606,9 +607,9 @@ public class ListMaster<E> {
     }
 
     public void removeDuplicates(List<E> list) {
-        ArrayList<E> ArrayList = new ArrayList<>(new LinkedHashSet<>(list));
+        List<E> cleaned = new ArrayList<>(new LinkedHashSet<>(list));
         list.clear();
-        list.addAll(ArrayList);
+        list.addAll(cleaned);
 
     }
 

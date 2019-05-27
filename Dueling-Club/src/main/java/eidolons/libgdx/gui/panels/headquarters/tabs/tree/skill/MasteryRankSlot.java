@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.texture.Images;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
@@ -24,6 +25,11 @@ public class MasteryRankSlot extends HtNode {
     public MasteryRankSlot(
      int tier,int slot) {
         super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY,slot );
+    }
+
+    @Override
+    protected String getSlotTooltip() {
+        return DescriptionTooltips.MASTERY_SLOT;
     }
 
     @Override

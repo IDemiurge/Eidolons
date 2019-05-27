@@ -43,11 +43,11 @@ public class UnitStatTabs extends TabbedPanel {
     }
 
     private float getWidthCoef() {
-        return 0.85f;
+        return 0.80f;
     }
 
     private float getHeightCoef() {
-        return 0.95f;
+        return 0.82f;
     }
 
     protected TablePanelX createContentsTable() {

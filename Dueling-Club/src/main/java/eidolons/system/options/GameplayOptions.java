@@ -52,7 +52,7 @@ static {
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
         DEFAULT_WAIT_TIME(60, 10, 300),
-        HP_BARS_ALWAYS_VISIBLE(false), GAME_SPEED(100, 10, 300),
+        HP_BARS_ALWAYS_VISIBLE(false), GAME_SPEED(100, 10, 150),
         TURN_CONTROL(true),
         ATB_WAIT_TIME(5, 0, 10),
         SHUFFLE_LEVELS(false),

@@ -1079,6 +1079,20 @@ public class ContentValsManager {
         return getPARAM(StringMaster.DEFAULT + sub.getName());
     }
 
+    public static VALUE getValueByDisplayedName(String name) {
+        for (PARAMETER parameter : getParamList()) {
+            if (parameter.getDisplayedName().equalsIgnoreCase(name)) {
+                return parameter;
+            }
+        }
+        for (PROPERTY property : getPropList()) {
+            if (property.getDisplayedName().equalsIgnoreCase(name)) {
+                return property;
+            }
+        }
+        return getValue(name);
+    }
+
     public void init() {
 
     }

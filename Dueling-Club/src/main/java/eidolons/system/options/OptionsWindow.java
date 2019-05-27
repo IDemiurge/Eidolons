@@ -76,6 +76,8 @@ public class OptionsWindow extends VisWindow {
         return instance;
     }
 
+
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ShaderProgram shader = batch.getShader();
@@ -107,6 +109,9 @@ public class OptionsWindow extends VisWindow {
         active = true;
     }
 
+    public void forceClose() {
+        close();
+    }
     @Override
     protected void close() {
         super.close();

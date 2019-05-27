@@ -142,6 +142,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         unit.getGame().fireEvent(
          new Event(STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS,
           unit.getRef()));
+        unit.getGame().getLogManager().log(unit.getNameIfKnown() + " falls unconscious!");
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.UNCONSCIOUS, unit);
 
         // double regen? what's with focus, stamina, essence, morale? ... some

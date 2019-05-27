@@ -53,7 +53,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float visibilityResetPeriod = 1.25f;
     private float visibilityResetTimer = visibilityResetPeriod;
     private float ignore_reset_delta;
-    private float ignore_reset_period = 12.5f;
+    private float ignore_reset_period = 5.5f;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;

@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.hero;
 
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 
 /**
@@ -13,8 +14,9 @@ public class HqHeroHeader extends HqElement{
 //    private final LabelX level;
 
     public HqHeroHeader() {
-        setBackground(getDefaultBackground());
-        add(name = new LabelX("", 20)).center().row();
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        setSize(330, 85);
+        add(name = new LabelX("", 21)).center().row();
 //        add(race = new LabelX("", 18)).center().row();
 //        add(level = new LabelX("", 18)).center();
     }

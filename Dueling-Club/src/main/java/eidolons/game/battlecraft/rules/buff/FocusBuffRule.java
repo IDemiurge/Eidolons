@@ -46,33 +46,33 @@ public class FocusBuffRule extends DC_BuffRule {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
                         MOD.MODIFY_BY_PERCENT, "("
                         + getValueRef() + "-"
-                        + formulas[1] + ")*5"),
+                        + formulas[1] + ")*10"),
 
-                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
-                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
-
-                        new ModifyValueEffect(true, PARAMS.EVASION, MOD.MODIFY_BY_CONST,
-                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
+//                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
+//                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
+//
+//                        new ModifyValueEffect(true, PARAMS.EVASION, MOD.MODIFY_BY_CONST,
+//                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
 
                         new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
                                 + getValueRef() + "-" + formulas[1]
-                                + ")*5"));
+                                + ")*10"));
             }
             case 2: {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
                         MOD.MODIFY_BY_PERCENT, "("
                         + getValueRef() + "-"
-                        + formulas[2] + ")"),
+                        + formulas[2] + ")* 2"),
 
-                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
-                                "(" + getValueRef() + " - " +formulas[2] +")* 2"),
-
-                        new ModifyValueEffect(true, PARAMS.EVASION, MOD.MODIFY_BY_CONST,
-                                "(" + getValueRef() + " - " +formulas[2]+")* 2"),
+//                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
+//                                "(" + getValueRef() + " - " +formulas[2] +")* 2"),
+//
+//                        new ModifyValueEffect(true, PARAMS.EVASION, MOD.MODIFY_BY_CONST,
+//                                "(" + getValueRef() + " - " +formulas[2]+")* 2"),
 
                         new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
                                 + getValueRef() + "-" + formulas[2]
-                                + ")"));
+                                + ")* 2" ));
             }
         }
 

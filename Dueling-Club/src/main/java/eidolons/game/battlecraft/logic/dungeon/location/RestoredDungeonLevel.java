@@ -17,18 +17,12 @@ import java.util.List;
 public class RestoredDungeonLevel extends DungeonLevel {
     private List<LevelZone> zones = new ArrayList<>();
     private LevelData data;
-
-    public RestoredDungeonLevel(TileMap tileMap, LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
-        super(  model, type, locationType);
-    }
-
-    public RestoredDungeonLevel(List<LevelZone> zones) {
-        super(  null, null, null);
+    public RestoredDungeonLevel(List<LevelZone> zones, String name) {
+        super(name);
         this.zones = zones;
     }
-
-    public RestoredDungeonLevel() {
-        this(new ArrayList<>());
+    public RestoredDungeonLevel(String name) {
+        this(    new ArrayList<>() , name);
     }
 
     public LevelData getData() {

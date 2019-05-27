@@ -144,7 +144,11 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
         Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
 //        ?  Eidolons.mainGame.getMetaMaster(). init();
         Eidolons.mainGame.getMetaMaster().getGame().getDungeonMaster().next();
+
+        //TODO dangerous
         Eidolons.mainGame.getMetaMaster().getGame().initMasters();
+
+
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
         Eidolons.mainGame.getMetaMaster().getGame().start(restart);

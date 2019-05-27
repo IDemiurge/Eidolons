@@ -43,8 +43,8 @@ public class ShadeLightCell extends SuperContainer {
 
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean alphaFluctuation = true;
-    private final Float width;
-    private final Float height;
+    private final float width;
+    private final float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     private SHADE_CELL type;
     private Float originalX;
@@ -294,7 +294,7 @@ public class ShadeLightCell extends SuperContainer {
                             setScale(d.growX == null ? 1 : 0.8f, d.growY == null ? 1 : 0.8f);
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
                              (int) getWidth() - 64,
-                             (int) getHeight() - 64);
+                             (int) getHeight() - 64 );
                             offsetX += dim.width;
                             offsetY += dim.height;
                             //so if 2+ overlays, will be centered between them...

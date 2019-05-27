@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -45,6 +47,7 @@ import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -113,10 +116,13 @@ public class DungeonScreen extends GameScreenWithTown {
         initGl();
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
-            if (isSpriteBgTest()) {
-                setBackground(Sprites.BG_DUNGEON);
+            if (CoreEngine.isIggDemo())
                 return;
-            }
+            if (!CoreEngine.isLiteLaunch())
+                if (isSpriteBgTest()) {
+                    setBackground(Sprites.BG_DUNGEON);
+                    return;
+                }
             final String path = (String) param.get();
             setBackground(path);
 
@@ -279,6 +285,19 @@ public class DungeonScreen extends GameScreenWithTown {
         checkInputController();
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
+
+
+        if (CoreEngine.isIggDemo())
+            initBackground();
+    }
+
+    private void initBackground() {
+        String path = IGG_Images.getBackground();
+
+//
+        setBackground(path);
+
+
     }
 
     private void centerCameraOnMainHero() {
@@ -405,196 +424,196 @@ public class DungeonScreen extends GameScreenWithTown {
         return true;
     }
 
-        private void updateBackground ( float delta){
-            if (backgroundSprite != null) {
-                backgroundSprite.act(delta);
-                backTexture = backgroundSprite.getCurrentFrame();
-                if (backgroundSprite.getCurrentFrameNumber() == backgroundSprite.getFrameNumber() - 1) {
-                    if (backgroundSprite.getPlayMode() == Animation.PlayMode.LOOP_REVERSED)
-                        backgroundSprite.setPlayMode(Animation.PlayMode.LOOP);
-                    else {
-                        backgroundSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
-                    }
+    private void updateBackground(float delta) {
+        if (backgroundSprite != null) {
+            backgroundSprite.act(delta);
+            backTexture = backgroundSprite.getCurrentFrame();
+            if (backgroundSprite.getCurrentFrameNumber() == backgroundSprite.getFrameNumber() - 1) {
+                if (backgroundSprite.getPlayMode() == Animation.PlayMode.LOOP_REVERSED)
+                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP);
+                else {
+                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
                 }
-                backTexture = backgroundSprite.getCurrentFrame();
-
             }
-        }
+            backTexture = backgroundSprite.getCurrentFrame();
 
-        @Override
-        protected boolean isPostProcessingDefault () {
-            return false;
-        }
-
-        @Override
-        protected Stage getMainStage () {
-            return guiStage;
-        }
-
-        @Override
-        public void render ( float delta){
-            batch.shaderFluctuation(delta);
-
-            if (speed != null) {
-                delta = delta * speed;
-            }
-            if (CoreEngine.isIDE())
-                //            checkDebugToggle();
-                if (DC_Game.game != null) {
-                    if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
-                        if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-                            DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-                        } else {
-                            if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-                                CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
-                            }
-                            if (Gdx.input.isKeyPressed(Keys.TAB)) {
-                                DC_Game.game.getVisionMaster().refresh();
-                                GuiEventManager.trigger(UPDATE_GUI);
-                            }
-                        }
-                    }
-
-                }
-            super.render(delta);
-        }
-
-        @Override
-        protected void renderLoaderAndOverlays ( float delta){
-            setBlocked(checkBlocked());
-            super.renderLoaderAndOverlays(delta);
-        }
-
-        protected void checkShaderReset () {
-            if (batch.getShader() == DarkShader.getDarkShader()) {
-                batch.shaderReset();
-            }
-            if (guiStage.getBatch().getShader() == DarkShader.getDarkShader()
-                    || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
-                    || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
-            ) {
-                guiStage.getCustomSpriteBatch().shaderReset();
-            }
-        }
-
-        protected void checkShader () {
-
-            batch.setShader(null);
-//        guiStage .getCustomSpriteBatch().setShader(null);
-
-            if (batch.getShader() != DarkShader.getDarkShader())
-                if (isBlocked() || ExplorationMaster.isWaiting()) {
-                    bufferedShader = batch.getShader();
-                    batch.setFluctuatingShader(DarkShader.getInstance());
-                    guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
-//                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
-                }
-        }
-
-        public boolean isBlocked () {
-            return blocked;
-        }
-
-        private void setBlocked ( boolean blocked){
-            if (this.blocked == blocked)
-                return;
-            this.blocked = blocked;
-            if (blocked)
-                EUtils.hideTooltip();
-        }
-
-        public boolean checkBlocked () {
-            if (manualPanel != null)
-                if (manualPanel.isVisible())
-                    return true;
-            if (selectionPanel != null)
-                if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
-                    return true;
-            return guiStage.isBlocked();
-        }
-
-        @Override
-        public void resize ( int width, int height){
-            //     animationEffectStage.getViewport().update(width, height);
-
-            //        float aspectRatio = (float) width / (float) height;
-            //        cam = new OrthographicCamera(width * aspectRatio, height) ;
-
-            gridStage.getRoot().setSize(width, height);
-            //        guiStage.getRoot().setSize(width, height);
-            gridStage.getViewport().update(width, height);
-            //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
-            guiStage.getViewport().update(width, height);
-            //        getGuiStage().getGuiVisuals().resized();
-
-            //        BattleGuiStage.camera.viewportWidth=width;
-            //        BattleGuiStage.camera.viewportHeight=height;
-        }
-
-        public GridPanel getGridPanel () {
-            return gridPanel;
-        }
-
-        public BattleGuiStage getGuiStage () {
-            return (BattleGuiStage) guiStage;
-        }
-
-        public InputController getController () {
-            return controller;
-        }
-
-        public Stage getGridStage () {
-            return gridStage;
-        }
-
-        public Float getSpeed () {
-            return speed;
-        }
-
-        public void setSpeed (Float speed){
-            this.speed = speed;
-        }
-
-        public void centerCameraOn (BattleFieldObject hero){
-            centerCameraOn(hero, null);
-        }
-
-        public void centerCameraOn (BattleFieldObject hero, Boolean force){
-            if (!isCenterAlways())
-                if (!Bools.isTrue(force))
-                    if (centerCameraOnAlliesOnly)
-                        if (!hero.isMine())
-                            return;
-
-            Coordinates coordinatesActiveObj =
-                    hero.getCoordinates();
-            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
-            cameraPan(unitPosition, force);
-
-
-        }
-
-        public void setCameraTimer ( int intValue){
-            if (cameraTimer == null) {
-                return;
-            }
-            cameraTimer.setPeriod(intValue);
-        }
-
-        public ParticleManager getParticleManager () {
-            return particleManager;
-        }
-
-        @Override
-        protected boolean isTownInLoaderOnly () {
-            return true;
-        }
-
-        public GridCellContainer getStackView () {
-            return stackView;
-        }
-
-        public void setStackView (GridCellContainer stackView){
-            this.stackView = stackView;
         }
     }
+
+    @Override
+    protected boolean isPostProcessingDefault() {
+        return false;
+    }
+
+    @Override
+    protected Stage getMainStage() {
+        return guiStage;
+    }
+
+    @Override
+    public void render(float delta) {
+        batch.shaderFluctuation(delta);
+
+        if (speed != null) {
+            delta = delta * speed;
+        }
+        if (CoreEngine.isIDE())
+            //            checkDebugToggle();
+            if (DC_Game.game != null) {
+                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
+                    if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+                        DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+                    } else {
+                        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+                            CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
+                        }
+                        if (Gdx.input.isKeyPressed(Keys.TAB)) {
+                            DC_Game.game.getVisionMaster().refresh();
+                            GuiEventManager.trigger(UPDATE_GUI);
+                        }
+                    }
+                }
+
+            }
+        super.render(delta);
+    }
+
+    @Override
+    protected void renderLoaderAndOverlays(float delta) {
+        setBlocked(checkBlocked());
+        super.renderLoaderAndOverlays(delta);
+    }
+
+    protected void checkShaderReset() {
+        if (batch.getShader() == DarkShader.getDarkShader()) {
+            batch.shaderReset();
+        }
+        if (guiStage.getBatch().getShader() == DarkShader.getDarkShader()
+                || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+                || guiStage.getBatch().getShader() == GrayscaleShader.getGrayscaleShader()
+        ) {
+            guiStage.getCustomSpriteBatch().shaderReset();
+        }
+    }
+
+    protected void checkShader() {
+
+        batch.setShader(null);
+//        guiStage .getCustomSpriteBatch().setShader(null);
+
+        if (batch.getShader() != DarkShader.getDarkShader())
+            if (isBlocked() || ExplorationMaster.isWaiting()) {
+                bufferedShader = batch.getShader();
+                batch.setFluctuatingShader(DarkShader.getInstance());
+                guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
+//                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
+            }
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    private void setBlocked(boolean blocked) {
+        if (this.blocked == blocked)
+            return;
+        this.blocked = blocked;
+        if (blocked)
+            EUtils.hideTooltip();
+    }
+
+    public boolean checkBlocked() {
+        if (manualPanel != null)
+            if (manualPanel.isVisible())
+                return true;
+        if (selectionPanel != null)
+            if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
+                return true;
+        return guiStage.isBlocked();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        //     animationEffectStage.getViewport().update(width, height);
+
+        //        float aspectRatio = (float) width / (float) height;
+        //        cam = new OrthographicCamera(width * aspectRatio, height) ;
+
+        gridStage.getRoot().setSize(width, height);
+        //        guiStage.getRoot().setSize(width, height);
+        gridStage.getViewport().update(width, height);
+        //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
+        guiStage.getViewport().update(width, height);
+        //        getGuiStage().getGuiVisuals().resized();
+
+        //        BattleGuiStage.camera.viewportWidth=width;
+        //        BattleGuiStage.camera.viewportHeight=height;
+    }
+
+    public GridPanel getGridPanel() {
+        return gridPanel;
+    }
+
+    public BattleGuiStage getGuiStage() {
+        return (BattleGuiStage) guiStage;
+    }
+
+    public InputController getController() {
+        return controller;
+    }
+
+    public Stage getGridStage() {
+        return gridStage;
+    }
+
+    public Float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Float speed) {
+        this.speed = speed;
+    }
+
+    public void centerCameraOn(BattleFieldObject hero) {
+        centerCameraOn(hero, null);
+    }
+
+    public void centerCameraOn(BattleFieldObject hero, Boolean force) {
+        if (!isCenterAlways())
+            if (!Bools.isTrue(force))
+                if (centerCameraOnAlliesOnly)
+                    if (!hero.isMine())
+                        return;
+
+        Coordinates coordinatesActiveObj =
+                hero.getCoordinates();
+        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
+        cameraPan(unitPosition, force);
+
+
+    }
+
+    public void setCameraTimer(int intValue) {
+        if (cameraTimer == null) {
+            return;
+        }
+        cameraTimer.setPeriod(intValue);
+    }
+
+    public ParticleManager getParticleManager() {
+        return particleManager;
+    }
+
+    @Override
+    protected boolean isTownInLoaderOnly() {
+        return true;
+    }
+
+    public GridCellContainer getStackView() {
+        return stackView;
+    }
+
+    public void setStackView(GridCellContainer stackView) {
+        this.stackView = stackView;
+    }
+}

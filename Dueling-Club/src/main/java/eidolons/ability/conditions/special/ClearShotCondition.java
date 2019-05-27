@@ -94,7 +94,7 @@ public class ClearShotCondition extends MicroCondition {
                                int x_, int y_) {
         for (DC_Obj obj :
                 target.getGame().getMaster().getObjectsOnCoordinate(
-                        Coordinates.get(x_, y_), null))
+                        Coordinates.get(x_, y_), false))
         //         target.getGame().getMaster().getObjects(x_, y_))
         {
             if (!obj.isTransparent()) {

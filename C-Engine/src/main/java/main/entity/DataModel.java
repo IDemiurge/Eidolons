@@ -124,6 +124,10 @@ public abstract class DataModel {
 
     }
 
+    public Integer getCounter(COUNTER counter) {
+        return getCounter(counter.getName());
+    }
+
     public Integer getCounter(String value_ref) {
         if (getCustomParamMap() == null) {
             return 0;
@@ -686,26 +690,34 @@ public abstract class DataModel {
 
         setParam(param, newValue.toString(), quietly);
 
-        Map<String, Double> map = getModifierMaps().get(param);
-        if (map == null) {
-            map = new XLinkedMap<>();
-            getModifierMaps().put(param, map);
-        }
-        if (modifierKey == null) {
-            modifierKey = this.modifierKey;
-        }
-        Double amountByModifier = map.get(modifierKey);
-        this.modifierKey = null;
-        if (amountByModifier == null) {
-            map.put(modifierKey, amount.doubleValue());
-        } else {
-            map.put(modifierKey, amountByModifier + amount.doubleValue());
+        if (isModifierMapOn()) {
+            Map<String, Double> map = getModifierMaps().get(param);
+            if (map == null) {
+                map = new XLinkedMap<>();
+                getModifierMaps().put(param, map);
+            }
+            if (modifierKey != null) {
+                modifierKey = this.modifierKey;
+            }
+            Double amountByModifier = map.get(modifierKey);
+            this.modifierKey = null; //for a single operation
+            if (modifierKey != null) {
+                if (amountByModifier == null) {
+                    map.put(modifierKey, amount.doubleValue());
+                } else {
+                    map.put(modifierKey, amountByModifier + amount.doubleValue());
+                }
+            }
         }
 
         if (newValue.intValue() <= 0) {
             result = false;
         }
         return result;
+    }
+
+    protected boolean isModifierMapOn() {
+        return false;
     }
 
     public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
@@ -1687,4 +1699,9 @@ public abstract class DataModel {
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
+
+    public void setDescription(String description) {
+        setProperty(G_PROPS.DESCRIPTION, description);
+    }
+
 }

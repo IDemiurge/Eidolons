@@ -1,6 +1,7 @@
 package eidolons.ability.effects.oneshot.dialog;
 
 import eidolons.ability.effects.DC_Effect;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -11,6 +12,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -22,10 +24,17 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
 //TODO confirm instead?
         EUtils.onConfirm("Use this to journey back to safety?", true,
                 () -> {
-                    String path =
-                            Sprites.BG_DUNGEON;
+                    String path = RandomWizard.random() ?
+                            Sprites.SHADOW_DEATH:
+                            Sprites.SHADOW_SUMMON;
 //                "spell/town portal.txt";
-                    CustomSpriteAnim anim = new CustomSpriteAnim((Entity) ref.getActive(), path) {
+                    DC_ActiveObj action;
+                    if (ref.getActive() == null) {
+                        action  =getUnit().getLastAction();
+                    } else {
+                        action  = (DC_ActiveObj) ref.getActive();
+                    }
+                    CustomSpriteAnim anim = new CustomSpriteAnim(action, path) {
                     };
                     anim.setRef(ref);
                     DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__TOWN_PORTAL_START);

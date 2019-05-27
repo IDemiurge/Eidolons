@@ -68,7 +68,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         BattleFieldObject[] array = getObjCells()[x_][y_];
         if (array == null) {
             Set<BattleFieldObject> set = game.getMaster().getObjectsOnCoordinate(
-                    Coordinates.get(x_, y_), null);
+                    Coordinates.get(x_, y_), false);
 //            list.addAll(
 //            game.getMaster().getObjectsOnCoordinate(
 //             Coordinates.get(x_, y_), true));

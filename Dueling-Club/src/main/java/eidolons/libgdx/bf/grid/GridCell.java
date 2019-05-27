@@ -174,12 +174,12 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
+        cordsText.setVisible(DC_Game.game.isDebugMode());
         if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
          ) {
             return;
         }
         super.act(delta);
-        cordsText.setVisible(DC_Game.game.isDebugMode());
         if (DC_Game.game.isDebugMode()) {
             if (GammaMaster.DEBUG_MODE) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));

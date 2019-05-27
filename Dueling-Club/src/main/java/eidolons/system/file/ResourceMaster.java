@@ -115,7 +115,7 @@ public class ResourceMaster {
                 outputfile.mkdirs();
                 outputfile.createNewFile();
             }
-            ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
+            ImageIO.write(bufferedImage, getNewImageFormat(""), outputfile);
         } catch (IOException e) {
             main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "Unused image failed to write: " + f.getPath());
@@ -188,7 +188,7 @@ public class ResourceMaster {
             {
                 outputfile.mkdirs();
                 outputfile.createNewFile();
-                ImageIO.write(bufferedImage, getNewImageFormat(), outputfile);
+                ImageIO.write(bufferedImage, getNewImageFormat(path), outputfile);
             }
         } catch (IOException e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -214,11 +214,14 @@ public class ResourceMaster {
          + USED_FOLDER + "\\"
          + propString
          + type.getOBJ_TYPE() + "\\" + group + subgroup + "\\" + typeName + "."
-         + getNewImageFormat()
+         + getNewImageFormat(type.getImagePath())
          .toLowerCase();
     }
 
-    private static String getNewImageFormat() {
+    private static String getNewImageFormat(String path) {
+        if (path.contains(".jpg")) {
+            return "jpg";
+        }
         return "png";
     }
 

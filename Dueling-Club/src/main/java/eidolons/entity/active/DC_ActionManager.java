@@ -402,7 +402,7 @@ public class DC_ActionManager implements ActionManager {
             if (action.isAttackGeneric()) {
                 continue;
             }
-            List<DC_ActiveObj> subActions = new ArrayList<>();
+            List<DC_UnitAction> subActions = new ArrayList<>();
 
             for (STD_ACTION_MODES mode : STD_ACTION_MODES.values()) {
                 if (checkModeForAction(action, unit, mode)) {
@@ -923,7 +923,7 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
-    private List<DC_UnitAction> getAndInitAttacks(boolean offhand, Unit unit) {
+    public List<DC_UnitAction> getAndInitAttacks(boolean offhand, Unit unit) {
         DC_ActiveObj action = unit.getAttackAction(offhand);
         if (action == null) {
             return null;

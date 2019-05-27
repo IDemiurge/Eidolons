@@ -116,7 +116,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     //    }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getObjectsOnCoordinate(null, c, true, true, false);
+        return getObjectsOnCoordinate(null, c, null , true, false);
 
     }
 
@@ -126,7 +126,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     public Set<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
-                                                         Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+                                                         Boolean overlayingIncluded_Not_Only, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
         //        if (c == null) {
         //            return null;
@@ -134,7 +134,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         //        = null;
         //        if (getCache(overlayingIncluded) != null)
         //            set =
-        Set<BattleFieldObject> set = getCache(overlayingIncluded).get(c);
+        Set<BattleFieldObject> set = getCache(overlayingIncluded_Not_Only).get(c);
 
         if (set != null) {
             if (!isCacheForStructures())
@@ -146,32 +146,36 @@ public class DC_GameObjMaster extends GameObjMaster {
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
             for (BattleFieldObject object : getGame().getStructures()) {
-                if (overlayingIncluded != null) {
-                    if (overlayingIncluded) {
-                        if (!object.isOverlaying())
+
+                if (overlayingIncluded_Not_Only != null) {
+                    if (overlayingIncluded_Not_Only)
+                        if (object.isOverlaying())
                             continue;
-                    } else if (object.isOverlaying())
+                } else {
+                    if (!object.isOverlaying())
                         continue;
                 }
+
                 if (object.getCoordinates().equals(c))
                     set.add(object);
             }
             if (isCacheForStructures())
-                getCache(overlayingIncluded).put(c, set);
+                getCache(overlayingIncluded_Not_Only).put(c, set);
         }
         if (set == null) {
             set = new HashSet<>();
         }
-        for (BattleFieldObject object : getGame().getUnits()) {
-            if (object.getCoordinates().equals(c)) {
-                set.add(object);
+        if (overlayingIncluded_Not_Only != null)
+            for (BattleFieldObject object : getGame().getUnits()) {
+                if (object.getCoordinates().equals(c)) {
+                    set.add(object);
+                }
             }
-        }
         //        if (overlayingIncluded == null)
         //        if (z == 0)
         if (!isCacheForStructures())
-            if (getCache(overlayingIncluded) != null) {
-                getCache(overlayingIncluded).put(c, set);
+            if (getCache(overlayingIncluded_Not_Only) != null) {
+                getCache(overlayingIncluded_Not_Only).put(c, set);
             }
         return set;
     }

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
+import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
@@ -8,7 +9,9 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StrPathBuilder;
 
 import java.util.List;
 
@@ -21,6 +24,18 @@ public class ClassSlot extends HtNode {
 
     public ClassSlot(int tier, int slot) {
         super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY, slot);
+    }
+
+    @Override
+    protected String getSlotTooltip() {
+//        Unlocked Class Trees:
+//        //check any is valid -> highlight
+//        available.size()
+
+        String text = "Fill this slot with a Class Rank that you qualify for from an unlocked Class Tree";
+        String sfx = ContainerUtils.construct("\n", getHero().getProperty(PROPS.FIRST_CLASS),
+                getHero().getProperty(PROPS.SECOND_CLASS), getHero().getProperty(PROPS.THIRD_CLASS));
+        return text+"\n" + sfx;
     }
 
     @Override

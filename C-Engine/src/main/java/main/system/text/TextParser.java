@@ -115,7 +115,8 @@ public class TextParser {
                 String ref_substring = null;
                 String result = null;
                 if (ch == StringMaster.VARIABLES_OPEN_CHAR.charAt(0) && !xmlParsing
-                 && variableParsing) {
+                 && variableParsing
+                ) {
                     ref_substring = StringMaster.openNextParenthesis(text);
                     // StringMaster.getSubString(true, text,
                     // StringMaster.VARIABLES_OPEN_CHAR,
@@ -125,8 +126,11 @@ public class TextParser {
                     }
                     result = parseVariables(ref_substring);
                 }
-                if (ch == StringMaster.FORMULA_REF_OPEN_CHAR.charAt(0) && !xmlParsing || xmlParsing
-                 && ch == StringMaster.VAR_REF_OPEN_CHAR.charAt(0)) {
+                String str =  xmlParsing ?StringMaster.VAR_REF_OPEN_CHAR : StringMaster.FORMULA_REF_OPEN_CHAR;
+                if ( ch == str.charAt(0)) {
+                    if (!text.contains(str)) {
+                        break;
+                    }
                     if (xmlParsing) {
                         ref_substring = StringMaster.getSubString(text,
                          StringMaster.VAR_REF_OPEN_CHAR, StringMaster.VAR_REF_CLOSE_CHAR);
@@ -329,7 +333,7 @@ public class TextParser {
                 if (NumberUtils.isInteger(replacement)) {
                     return replacement;
                 }
-                if (game.isSimulation() && !tooltipParsing) {
+                if ((  game.isSimulation()) && !tooltipParsing) {
                     Integer VAL = new Formula(replacement).getInt(ref);
                     replacement = VAL + " (" + replacement + ")";
                 } else {

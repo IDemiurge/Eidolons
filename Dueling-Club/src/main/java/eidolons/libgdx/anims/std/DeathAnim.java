@@ -156,10 +156,10 @@ public class DeathAnim extends ActionAnim {
         getActor().setVisible(false);
         dispose();
 
-        GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
-                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
-                        HitAnim.HIT.BONE_CRACK),
-                getActive());
+//     TODO    GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
+//                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
+//                        HitAnim.HIT.BONE_CRACK),
+//                getActive());
     }
 
     public enum DEATH_ANIM {

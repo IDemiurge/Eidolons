@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingData;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.entity.type.ObjType;
@@ -12,6 +14,7 @@ import main.system.threading.WaitMaster;
 public class IGG_Launcher {
 
 
+    public static boolean INTRO_RUNNING = false;
     private static String splitter = ";";
 
     public static void startIntro() {
@@ -25,23 +28,14 @@ public class IGG_Launcher {
     public static void start(Runnable onDone) {
         new Thread(() -> {
             CoreEngine.setIggDemoRunning(true);
-            if (isIntroSkipped()){
+            if (isIntroSkipped()) {
                 onDone.run();
                 return;
             }
             boolean aborted = !introBriefing();
-//            showMainMenu();
-//            WaitMaster.WAIT(255);
+            //TODO what to do?
             onDone.run();
         }, " thread").start();
-        /**
-         * intro sequence
-         * briefing
-         * hero selection
-         * dungeon
-         */
-//        FileManager.readFile(PathFinder.getTextPath() + "demo data.txt");
-// data unit?
     }
 
     private static boolean isIntroSkipped() {
@@ -63,29 +57,32 @@ public class IGG_Launcher {
 
                         "Yet I obtained the sacred ash, the final piece of the puzzle I worked so hard on all these years.;" +
 
-
                         "Now I know how the Sorcerer King raised his army, became more than a mere necromancer, but a god who could bring back the fallen, time and again, " +
                         "ad infinitum, while his minions brought him new souls to consume. \n;";
 
         String imgData =
                 IGG_Images.BRIEF_ART.EIDOLONS_CENTER.getPath() + ";"
-                + IGG_Images.BRIEF_ART.LEVI_FIGHT.getPath() + ";"
-                        + IGG_Images.BRIEF_ART.APHOLON.getPath()+ ";"
-                        + IGG_Images.BRIEF_ART.RITUAL.getPath()+ ";"
-                        + IGG_Images.BRIEF_ART.ENTER_GATE.getPath()
-
-                ;
+                        + IGG_Images.BRIEF_ART.LEVI_FIGHT.getPath() + ";"
+                        + IGG_Images.BRIEF_ART.APHOLON.getPath() + ";"
+                        + IGG_Images.BRIEF_ART.RITUAL.getPath() + ";"
+                        + IGG_Images.BRIEF_ART.ENTER_GATE.getPath();
         String[] imgs = imgData.split(splitter);
         String[] msgs = txtData.split(splitter);
+
         BriefingData briefingData = new BriefingData(
-                "atlas.txt",
+                Sprites.BG_DEFAULT,
                 IGG_Images.PROMO_ART.THE_HALL.getPath()
                 , imgs, msgs, true);
-        String name = "Briefing!";
-//        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.BRIEFING, new EventCallbackParam(briefingData)));
+
+
+        INTRO_RUNNING = true;
         GuiEventManager.trigger(GuiEventType.BRIEFING_START,
-                 briefingData)  ;
-        return (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.BRIEFING_COMPLETE);
+                briefingData);
+        boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.BRIEFING_COMPLETE);
+        INTRO_RUNNING = false;
+        return result;
+
+
 //        String videoData = null;
 //        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.CINEMATIC, name), videoData);
 

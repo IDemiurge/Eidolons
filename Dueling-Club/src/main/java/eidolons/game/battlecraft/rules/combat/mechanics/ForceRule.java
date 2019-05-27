@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.mechanics;
 
+import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.ability.effects.oneshot.attack.force.ForceEffect;
 import eidolons.ability.effects.oneshot.attack.force.KnockdownEffect;
@@ -9,6 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
@@ -38,10 +40,12 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
+import java.util.List;
+
 public class ForceRule {
     public static final int ROLL_FACTOR = 50;
     private static final int DAMAGE_FACTOR = 100;
-    private static final int DAMAGE_SUBTRACTION = 10;
+    private static final int DAMAGE_SUBTRACTION = 5;
     private static final float PUSH_DISTANCE_COEFFICIENT = 0.1F;
     private static final float KNOCK_MAX_WEIGHT_COEFFICIENT = 0.25F;
     private static final float KNOCK_ALWAYS_WEIGHT_COEFFICIENT = 0.05F;
@@ -83,7 +87,9 @@ public class ForceRule {
     }
 
     private static int getAttackerWeightModifier(DC_ActiveObj attack, Obj weapon) {
-        return MathMaster.applyMods(attack.getOwnerUnit().getIntParam(PARAMS.WEIGHT)
+        return MathMaster.applyMods(
+                attack.getOwnerUnit().getIntParam(PARAMS.WEIGHT) +
+                      2*  weapon.getIntParam(PARAMS.WEIGHT)
                 , weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
                 attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT));
     }
@@ -190,6 +196,23 @@ public class ForceRule {
                     action.isSpell() ? SPECIAL_EFFECTS_CASE.SPELL_IMPACT :
                             SPECIAL_EFFECTS_CASE.ON_ATTACK,
                     effects);
+            SPECIAL_EFFECTS_CASE CASE = action.isSpell() ? SPECIAL_EFFECTS_CASE.SPELL_IMPACT :
+                    SPECIAL_EFFECTS_CASE.ON_ATTACK;
+            Effect onCase = action.getSpecialEffects().get(CASE);
+            if (onCase !=null ) {
+                List<Effect> force = EffectFinder.getEffectsOfClass(onCase, ForceEffect.class);
+                if (onCase instanceof Effects) {
+                    for (Effect effect : force) {
+                        ((Effects) onCase).remove(effect);
+                    }
+                    ((Effects) onCase).add(effects);
+
+                } else {
+                    action.getSpecialEffects().put(CASE, effects);
+                }
+            }
+
+            //TODO igg demo hack - make it unique by class then
         }
 
         if (dmg != null) {
@@ -279,7 +302,7 @@ public class ForceRule {
                 + damage
                 * (attacked.getIntParam(PARAMS.FORCE_DAMAGE_MOD) - source
                 .getIntParam(PARAMS.FORCE_PROTECTION)) / 100;
-        return damage;
+        return Math.max(0, damage);
     }
 
     // TODO into PushEffect! With std knockdown on "landing" or damage!
@@ -328,6 +351,11 @@ public class ForceRule {
         new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
                 .apply(ref);
         distance = o.dst(target.getCoordinates());
+        boolean valid = new ClearShotCondition().check(o, target.getCoordinates());
+        if (!valid) {
+            target.setCoordinates(o);
+            distance=0;
+        }
         if (distance == 0) {
             int damage = 2*getDamage(force, attack, source, target);
             attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has slammed " +
@@ -372,9 +400,9 @@ public class ForceRule {
 
     private static int getPushDistance(int force, BattleFieldObject target) {
         int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT /
-                (1 + target.getIntParam(PARAMS.TOTAL_WEIGHT)));
+                (1 + 2*target.getIntParam(PARAMS.TOTAL_WEIGHT)));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"
-                + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = (max ==2) " + distance);
+                + 2*target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = (max ==2) " + distance);
         distance = MathMaster.getMinMax(distance, 0, 2);
         return distance;
     }

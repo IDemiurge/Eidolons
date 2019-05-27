@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GDX;
@@ -340,7 +341,7 @@ public class GridCellContainer extends GridCell {
                         i * 2 - getUnitViewsVisible().size()
                 )); //over cell at least
 
-            } else if (actor.isHovered())
+            } else if (actor.isHovered() || actor.getUserObject()== ShadowMaster.getShadowUnit())
                 hovered = actor;
             else if (actor.isActive()) {
                 if (hovered == null) hovered = actor;
@@ -418,6 +419,9 @@ public class GridCellContainer extends GridCell {
             }
             //recalc all
             indexMap.put(getZIndexForView(view), view);
+            if (actor instanceof LastSeenView) {
+                return;
+            }
             recalcUnitViewBounds();
 
             if (actor.getUserObject() == Eidolons.MAIN_HERO

@@ -28,6 +28,7 @@ import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -202,8 +203,8 @@ public class DC_MovementManager implements MovementManager {
          actionInput(new ActionInput(action.getActive(), context));
     }
 
-
-    public boolean canMove(Obj obj, Coordinates c) {
+@Override
+    public boolean canMove(Entity obj, Coordinates c) {
         return game.getRules().getStackingRule().canBeMovedOnto(obj, c);
     }
 

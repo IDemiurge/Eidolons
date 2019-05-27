@@ -9,6 +9,7 @@ import main.entity.Referred;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
+import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
 public interface Effect extends Interruptable, Referred, XmlConvertable,
@@ -176,6 +177,8 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         ON_SNEAK_HIT,
         ON_SNEAK_HIT_SELF,
 
+        ON_SNEAK_CRIT_HIT_SELF,
+        ON_SNEAK_CRIT_HIT,
         ON_SNEAK_CRIT_SELF,
         ON_SNEAK_CRIT,
 
@@ -187,6 +190,25 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         MOVE,
         NEW_TURN,
         END_TURN,
+        ;
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        SPECIAL_EFFECTS_CASE() {
+            name = StringMaster.getWellFormattedString(name().replace("_SELF", " (self)")
+                    .replace("_HIT", " being hit"));
+            if (name.contains("Crit")) {
+                name = name.replace("Crit", "") + "(Critical)";
+            }
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 
     enum SPELL_MANIPULATION {

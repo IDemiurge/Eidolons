@@ -10,6 +10,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -66,7 +67,7 @@ public class BattleGuiStage extends GuiStage {
 
         init();
 
-        if (!CoreEngine.isActiveTestMode())
+        if (!UnitInfoPanelNew.isNewUnitInfoPanelWIP())
             addActor( infoPanel = UnitInfoPanelNew.getInstance());
 
         combatInventory = new CombatInventory();
@@ -130,6 +131,7 @@ public class BattleGuiStage extends GuiStage {
             if (UnitInfoPanelNew.isNewUnitInfoPanelWIP()) {
                 addActor(infoPanel = UnitInfoPanelNew.getInstance());
             }
+            Eidolons.getGame().getLoop().setPaused(true, false);
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {

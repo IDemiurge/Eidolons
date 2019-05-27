@@ -4,7 +4,10 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
+import eidolons.game.battlecraft.rules.buff.MoraleBuffRule;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.unitinfo.old.MultiValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
@@ -13,6 +16,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.properties.G_PROPS;
+import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -162,11 +166,28 @@ public class AttackTooltipFactory {
             final ValueContainer container = new ValueContainer(TextureCache.getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
 
             Tooltip tooltip = new ValueTooltip();
-            tooltip.setUserObject(Arrays.asList(new ValueContainer(obj.getName(), "")));
-            container.addListener(tooltip.getController());
+            String descr = getDescriptionForBuff(obj);
 
+            tooltip.setUserObject(Arrays.asList(new VerticalValueContainer(obj.getName(), descr)));
+            container.addListener(tooltip.getController());
+            tooltip.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
             return container;
         };
+    }
+
+    private static <T extends Obj> String getDescriptionForBuff(T obj) {
+        if (obj instanceof BuffObj) {
+            if (((BuffObj) obj).isDynamic()) {
+                return obj.getDescription();
+            }
+        }
+        switch (obj.getName()) {
+            case "Inspired":
+                break;
+            case "":
+                return obj.getDescription();
+        }
+        return "";
     }
 
 

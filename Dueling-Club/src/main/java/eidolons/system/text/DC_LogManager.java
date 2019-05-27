@@ -221,7 +221,7 @@ public enum LOG_IMAGE_CASE{
 
     public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
 //    TODO     fullEntryList.add(entry);
-        main.system.auxiliary.log.LogMaster.log(1,log + " Game log: " +entry);
+        main.system.auxiliary.log.LogMaster.log(0,log + " Game log: " +entry);
         int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
          if (logLevel < i)
              return false;

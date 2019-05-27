@@ -77,7 +77,9 @@ public class DroppedItemManager {
     }
 
     private boolean checkLootDrops(DC_HeroItemObj item, Unit unit) {
-
+        if (unit.isBoss() || unit.isNamedUnit()) {
+            return true;
+        }
         if (item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys")) {
             return true;
         }
