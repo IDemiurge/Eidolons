@@ -1,7 +1,11 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.active.Spell;
 import eidolons.libgdx.gui.panels.headquarters.HqSlotActor;
+import eidolons.libgdx.shaders.DarkGrayscaleShader;
+import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -11,8 +15,34 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class SpellActor extends HqSlotActor<Spell> {
 
+    private boolean valid;
+    private boolean available;
+
     public SpellActor(Spell spellObj) {
         super(spellObj);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+        }
+        else
+        {
+            if (isValid()){
+            ShaderDrawer.drawWithCustomShader(this, batch, null);
+            } else
+            {
+                if (!isAvailable()) {
+                    ShaderDrawer.drawWithCustomShader(this, batch, DarkGrayscaleShader.getShader_());
+                }
+                else
+                ShaderDrawer.drawWithCustomShader(this, batch, DarkShader.getDarkShader());
+            }
+        }
     }
 
     @Override
@@ -25,6 +55,21 @@ public class SpellActor extends HqSlotActor<Spell> {
         return Images.EMPTY_SPELL;
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
 
     public enum SPELL_OVERLAY {
         VERBATIM,

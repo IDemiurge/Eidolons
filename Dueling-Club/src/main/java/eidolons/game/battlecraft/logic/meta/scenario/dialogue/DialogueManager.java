@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
@@ -34,11 +36,11 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 //            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
 //        });
         GuiEventManager.bind(INIT_DIALOG, obj -> {
-            if (CoreEngine.isActiveTestMode()){
-                if (!CoreEngine.isDialogueTest()){
-                    return;
-                }
-            }
+//            if (CoreEngine.isActiveTestMode()){
+//                if (!CoreEngine.isDialogueTest()){
+//                    return;
+//                }
+//            }
             Object key = obj.get();
             GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
                     key.toString());
@@ -49,9 +51,18 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         });
     }
 
-    public   void test() {
+    public  static void createTutorialJournal() {
+        DialogueLineFormatter.createTutorialJournal();
+    }
+        public  static void tutorialJournal() {
+
+        GuiEventManager.trigger(INIT_DIALOG, "Tutorial Journal");
+
+
+    }
+        public   void test() {
         GameDialogue dialogue = null;//new LinearDialogue();
-        dialogue =  getMaster().getDialogueFactory().getDialogue("Interrogation");
+        dialogue =  getMaster().getDialogueFactory().getDialogue("Bear hug");
         List<Scene> list = SceneFactory.getScenesLinear(dialogue);
         GuiEventManager.trigger(DIALOG_SHOW,
          new DialogueHandler(dialogue, getGame(), list));

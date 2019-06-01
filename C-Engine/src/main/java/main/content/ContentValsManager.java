@@ -319,7 +319,24 @@ public class ContentValsManager {
 
     public static PARAMETER getPARAM(String valueName, boolean strict) {
         for (PARAMETER p : params) {
-            if (StringMaster.compareByChar(valueName, p.toString(), strict)) {
+            if (StringMaster.compareByChar(valueName, p.toString(), true)) {
+                return p;
+            }
+        }
+        for (PARAMETER p : params) {
+            if (StringMaster.compareByChar(valueName, p.getDisplayedName(), true)) {
+                return p;
+            }
+        }
+        if ( strict)
+            return null ;
+        for (PARAMETER p : params) {
+            if (StringMaster.compareByChar(valueName, p.toString(), false)) {
+                return p;
+            }
+        }
+        for (PARAMETER p : params) {
+            if (StringMaster.compareByChar(valueName, p.getDisplayedName(), false)) {
                 return p;
             }
         }

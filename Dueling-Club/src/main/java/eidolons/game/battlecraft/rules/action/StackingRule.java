@@ -87,6 +87,13 @@ public class StackingRule implements ActionRule {
         }
         BattleFieldObject randomTarget = new RandomWizard<BattleFieldObject>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
+
+        action.getGame().getLogManager().log(action.getName()+" has missed " +
+                target.getNameIfKnown() +
+                " and hit " +
+                randomTarget +
+                        " instead!");
+
         action.activatedOn(ref);
 
     }
@@ -132,6 +139,9 @@ public class StackingRule implements ActionRule {
                     units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
+        if (unit != null)
+        if (EntityCheckMaster.isImmaterial(  unit ))
+            return true;
         //check if '1 unit per cell' is on
         if (maxSpaceTakenPercentage <= 0) {
             if (!units.isEmpty()) {

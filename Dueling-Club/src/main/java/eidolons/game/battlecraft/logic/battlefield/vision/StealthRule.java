@@ -196,14 +196,14 @@ public class StealthRule implements ActionRule {
             Unit unit = (Unit) sub;
             double d = PositionMaster.getExactDistance(source, unit);
 
-            if ((d <= getMaxDistance(unit, source))) {
-                if (isSpotRollAllowed(unit, source)) {
+            if ((d <= getMaxDistance(unit, source)) || action.getChecker().isPotentiallyHostile()) {
+                if (isSpotRollAllowed(action, unit, source)) {
                     rollSpotted(unit, source, action);
                 }
             }
 
             if ((d <= getMaxDistance(source, unit))) {
-                if (isSpotRollAllowed(source, unit)) {
+                if (isSpotRollAllowed(action, source, unit)) {
                     rollSpotted(source, unit, action);
                 }
             }
@@ -211,12 +211,14 @@ public class StealthRule implements ActionRule {
 
     }
 
-    private boolean isSpotRollAllowed(Unit source, Unit unit) {
+    private boolean isSpotRollAllowed(DC_ActiveObj action, Unit source, Unit unit) {
         if (source.isUnconscious())
             return false;
         if (!unit.isSneaking()) {
             return false;
         }
+        if (action.getChecker().isPotentiallyHostile())
+            return true;
         UNIT_VISION status = unit.getUnitVisionMapper().get(source, unit);
         if (status == UNIT_VISION.BEYOND_SIGHT)
             return false;
@@ -273,6 +275,7 @@ public class StealthRule implements ActionRule {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
+            //TODO better way to do it?
             activeUnit.setParam(PARAMS.DETECTION, base_detection);
         }
         Roll roll = RollMaster.getLastRoll();
@@ -280,7 +283,7 @@ public class StealthRule implements ActionRule {
         if (result) {
             applySpotted(target);
         } else {
-            if (RandomWizard.chance(10))
+            if (RandomWizard.chance(10)) //TODO depends on n of units?
                 DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, target);
         }
 

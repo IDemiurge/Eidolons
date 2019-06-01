@@ -105,6 +105,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void act(float delta) {
+        if (speed != 1) {
+            DungeonScreen.getInstance().setSpeed((float)Math.sqrt(speed));
+        } else {
+            DungeonScreen.getInstance().setSpeed(null );
+        }
         visibilityResetTimer -= delta;
         resetVisibilityResetTimer();
         delta *= speed;
@@ -143,7 +148,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             ExplorationMaster.setWaiting(true);
             Boolean result = true;
             try {
-                DungeonScreen.getInstance().setSpeed(speedFactor);
+                setSpeed(speedFactor);
                 while (true) {
                     if (time >= wakeUpTime)
                         break;
@@ -167,12 +172,17 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+            } finally{
+                DungeonScreen.getInstance().setSpeed(null);
+                ExplorationMaster.setWaiting(false);
+                WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
             }
-            DungeonScreen.getInstance().setSpeed(null);
-            ExplorationMaster.setWaiting(false);
-            WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
         });
         return true;
+    }
+
+    public static void setSpeed(float speed) {
+        ExplorationTimeMaster.speed = speed;
     }
 
     public void checkTimedEvents() {

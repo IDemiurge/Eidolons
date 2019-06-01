@@ -140,7 +140,7 @@ public class ActionSequenceConstructor extends AiHandler {
             sequences.addAll(newSequences);
         } else {
             // if no pathing is required/available [QUICK FIX]
-            if (!action.canBeTargetedOnAny()) {
+            if (!action.canBeTargeted(arg)) {
                 return sequences;
             }
             ActionSequence sequence = constructSingleActionSequence(action, task);

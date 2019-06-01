@@ -28,6 +28,7 @@ public class IGG_QuestMaster extends QuestMaster {
     @Override
     public boolean initQuests() {
         quests = new ArrayList<>();
+        if (TEST_MODE)
         for (ObjType type : getQuestTypePool()) {
             DungeonQuest quest = getCreator().create(type);
             quests.add(quest);

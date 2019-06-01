@@ -17,7 +17,6 @@ import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
 import main.system.SortMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
@@ -29,10 +28,10 @@ import java.util.*;
 public class AiBehaviorManager extends AiHandler {
 
     public static AI_BEHAVIOR_MODE TESTED = !CoreEngine.isFullFastMode() ? null :
-     AI_BEHAVIOR_MODE.GUARD;
+            AI_BEHAVIOR_MODE.GUARD;
     public static final boolean TEST_MODE = TESTED != null;
     private static UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
-     UNIT_GROUP_TYPE.GUARDS;
+            UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
     private Integer maxActiveCount = null;
@@ -45,10 +44,6 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     public static boolean isNewAiOn() {
-        if (Eidolons.BOSS_FIGHT)
-            return false;
-        if (Eidolons.TUTORIAL   )
-            return false;
         return true;
     }
 
@@ -77,8 +72,8 @@ public class AiBehaviorManager extends AiHandler {
         }
         if (testMode) {
             Collections.sort(groups,
-             new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
-              dst(Eidolons.getMainHero().getCoordinates())));
+                    new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
+                            dst(Eidolons.getMainHero().getCoordinates())));
         }
         Integer n = 0;
         for (GroupAI group : new ArrayList<>(groups)) {
@@ -127,15 +122,14 @@ public class AiBehaviorManager extends AiHandler {
                 if (behavior.canAct()) {
                     Action action = behavior.nextAction();
                     // check action has been executed?
-                    if (action==null )
-                    {
-                            main.system.auxiliary.log.LogMaster.log(  LOG_CHANNEL.AI_DEBUG,
-                                    "No action for " +ai);
+                    if (action == null) {
+                        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.AI_DEBUG,
+                                "No action for " + ai);
                         return false;
                     }
 
                     aiActionQueue.add(new ActionInput(action.getActive(),
-                     new Context(action.getRef())));
+                            new Context(action.getRef())));
                     return true;
                 } else {
                     behavior.queueNextAction();
@@ -161,7 +155,8 @@ public class AiBehaviorManager extends AiHandler {
         super.initialize();
         master.getManager().getGroups(); //TODO proper init groups!
         for (Unit unit : master.getGame().getUnits()) {
-            initBehaviors(unit.getAI());
+            if (unit.isAiControlled()) //TODO will need main hero ai anytime?
+                initBehaviors(unit.getAI());
         }
     }
 
@@ -179,8 +174,8 @@ public class AiBehaviorManager extends AiHandler {
                 if (ai.getGroupAI().getArg() == null) {
                     try {
                         ai.getGroupAI().setArg(game.getCellByCoordinate(
-                         ai.getGroupAI().getLeader().getCoordinates().getAdjacentCoordinate(
-                          ai.getGroup().getLeader().getFacing().getDirection())));
+                                ai.getGroupAI().getLeader().getCoordinates().getAdjacentCoordinate(
+                                        ai.getGroup().getLeader().getFacing().getDirection())));
                     } catch (Exception e) {
 //                        CoordinatesMaster.getra
                         main.system.ExceptionMaster.printStackTrace(e);
@@ -208,11 +203,14 @@ public class AiBehaviorManager extends AiHandler {
 //            behaviors.add(new WanderAi(master, ai));
 //            return behaviors;
 //        }
-        UNIT_GROUP_TYPE t = null;;
-        if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size()==1) {
+        UNIT_GROUP_TYPE t = null;
+
+        if (Eidolons.BOSS_FIGHT || Eidolons.TUTORIAL_MISSION)
+            t = UNIT_GROUP_TYPE.GUARDS;
+        else if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size() == 1) {
             t = UNIT_GROUP_TYPE.IDLERS;
         } else {
-            t=ai.getGroupAI().getType();
+            t = ai.getGroupAI().getType();
         }
         //TODO use createAi () ?!
         switch (t) {
@@ -226,7 +224,7 @@ public class AiBehaviorManager extends AiHandler {
             case GUARDS:
             case BOSS:
                 if (ai.getGroupAI().getArg() == null) {
-                    behaviors.add(new IdleAi(master, ai));
+//               TODO let them just STAND     behaviors.add(new IdleAi(master, ai));
                 } else {
                     behaviors.add(new GuardAi(master, ai, (DC_Obj) ai.getGroupAI().getArg()));
                 }

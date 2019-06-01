@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
@@ -20,7 +21,10 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.sprite.ShadowAnimation;
+import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.options.GameplayOptions;
+import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -30,6 +34,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -37,29 +42,64 @@ import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TI
 
 public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
-    static float  timesThisHeroFell = 0;
+    private static final boolean TEST_MODE = true;
+    static float timesThisHeroFell = 0;
+    private static boolean cheatedDeath;
+    private static boolean cheatDeathOn = true;
     private int timeLeft;
     private static Unit shade;
-    private static   boolean shadowAlive;
+    private static boolean shadowAlive;
 
     public ShadowMaster(MetaGameMaster master) {
         super(master);
     }
 
+    public static void reset() {
+        shade = null;
+        shadowAlive = false;
+        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, null);
+    }
+
     public static boolean isOn() {
-        return true;
+        if (ExplorationMaster.isExplorationOn())
+            return false;
+        if (TEST_MODE)
+        if (Eidolons.BOSS_FIGHT) {
+            return false;
+        }
+        return !OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.DEATH_SHADOW_OFF);
     }
 
     public static boolean isShadowAlive() {
         return shadowAlive;
     }
 
-    public static boolean checkCheatDeath() {
-        if (timesThisHeroFell==0){
+    public static boolean checkCheatDeath(BattleFieldObject object) {
+
+        if (!isOn()) {
+            return false;
+        }
+        if (!cheatDeathOn) {
+            return false;
+        }
+        if (cheatedDeath) {
+            return true;
+        }
+        if (timesThisHeroFell == 0) {
             timesThisHeroFell++;
+            cheatedDeath = true;
+            Eidolons.getGame().getLogManager().log(object.getName() +
+                    " cheats Death! The trick can only work once... ");
             return true;
         }
         return false;
+    }
+
+    public static void afterActionReset() {
+        if (cheatedDeath) {
+            cheatedDeath = false;
+            cheatDeathOn = false;
+        }
     }
 
     public static Unit getShadowUnit() {
@@ -75,27 +115,35 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     }
 
     public void heroFell(Event event) {
+        if (!isOn()) {
+            return;
+        }
+        if (shadowAlive)
+            return;
         getGame().getLoop().setPaused(true);
         AnimMaster.waitForAnimations(null);
-        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__ENTER);
+        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_FALL);
         ShadowAnimation anim = new ShadowAnimation(true, (Entity) event.getRef().getActive(),
-                ()-> afterFall(event));
-        GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
-
-
+                () -> afterFall(event));
+        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
 
     }
 
     private void afterFall(Event event) {
-        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__BATTLE_START2);
+        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_PRE_SUMMON);
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
         WaitMaster.WAIT(1200);
-
-        if (ExplorationMaster.isExplorationOn()){
+        if (Eidolons.getMainHero().isDead()) {
+//    dialogueFailed(event, true);
+            main.system.auxiliary.log.LogMaster.log(1,"SHADOW: hero was dead when fall event happened! " );
+            getMaster().getBattleMaster().getOutcomeManager().defeat(false, true);
+        }
+        if (ExplorationMaster.isExplorationOn() && !CoreEngine.isLiteLaunch()) {
             // if we just fell as the combat was being finished... from poison or so
             restoreHero(event);
-            LogMaster.log(1,"SHADOW: SHADOW: fall prevented; restoreHero! "+event );
-            EUtils.showInfoText(true, RandomWizard.random()? "On the edge of consciousness...":"A narrow escape...");
+            LogMaster.log(1, "SHADOW: SHADOW: fall prevented; restoreHero! " + event);
+            EUtils.showInfoText(true, RandomWizard.random() ?
+                    "On the edge of consciousness..." : "A narrow escape...");
             return;
         }
         timeLeft = calcTimeLeft(event);
@@ -115,10 +163,14 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
             return;
         }
         String msg = "[!] Shadow: " + timeLeft + " seconds left to finish combat";
-        EUtils.showInfoText(true,msg);
+        EUtils.showInfoText(true, msg);
     }
 
     public void annihilated(Event event) {
+
+        if (!isOn()) {
+            return;
+        }
         dialogueFailed(event, false);
     }
 
@@ -133,20 +185,20 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
     private void unsummonShade(Event event, boolean defeat) {
         Eidolons.onThisOrNonGdxThread(() -> {
-        LogMaster.log(1,"SHADOW: unsummonShade "+event );
-        shade.removeFromGame();
-        shadowAlive = false;
-        GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
-        if (!defeat) {
-            out();
-            restoreHero(event);
-        } else
+            LogMaster.log(1, "SHADOW: unsummonShade " + event);
+            shade.removeFromGame();
+            shadowAlive = false;
+            GuiEventManager.trigger(GuiEventType.POST_PROCESSING, null);
+            if (!defeat) {
+                out();
+                restoreHero(event);
+            } else
                 getMaster().getBattleMaster().getOutcomeManager().defeat(false, true);
-            });
+        });
     }
 
     private void restoreHero(Event event) {
-        LogMaster.log(1,"SHADOW: restoreHero "  );
+        LogMaster.log(1, "SHADOW: restoreHero ");
         Unit hero = Eidolons.getMainHero();
         UnconsciousRule.unitRecovers(hero);
         hero.setParam(PARAMS.C_FOCUS, hero.getParam(PARAMS.STARTING_FOCUS));
@@ -158,17 +210,17 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     public void victory(Event event) {
         if (!shadowAlive)
             return;
-        LogMaster.log(1,"SHADOW: victory " );
+        LogMaster.log(1, "SHADOW: victory ");
         AnimMaster.waitForAnimations(null);
 
         ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
-                ()-> afterVictory(event)){
+                () -> afterVictory(event)) {
             @Override
             protected Animation.PlayMode getPlayMode() {
                 return Animation.PlayMode.REVERSED;
             }
         };
-        GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
+        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
 
     }
 
@@ -211,7 +263,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     }
 
     private void summonShade(Event event) {
-        LogMaster.log(1,"SHADOW: summonShade "+event );
+        LogMaster.log(1, "SHADOW: summonShade " + event);
 
         Ref ref = event.getRef().getCopy();
         Coordinates c = ref.getSourceObj().getCoordinates();
@@ -219,7 +271,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         Coordinates finalC = c;
         c = Positioner.adjustCoordinate(shade,
                 c.getAdjacentCoordinate(facing.flip().getDirection()), facing,
-                c1 -> new ClearShotCondition().check(finalC, c1)&& finalC.dst(c1)<=1.5f);
+                c1 -> new ClearShotCondition().check(finalC, c1) && finalC.dst(c1) <= 1.5f);
         DC_Cell cell = getGame().getCellByCoordinate(c);
 
         ref.setTarget(cell.getId());
@@ -233,19 +285,19 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         shade.setDetectedByPlayer(true);
         getGame().getLoop().setPaused(false);
         //horrid sound!
-        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.DEATH);
+        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_SUMMON);
 
-        ShadowAnimation anim = new ShadowAnimation(false , (Entity) event.getRef().getActive(),
-                ()-> {
-                    GuiEventManager.trigger(GuiEventType.POST_PROCESSING);
-                    DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__BATTLE_START);
+        ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
+                () -> {
+                    GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.UNCONSCIOUS);
+                    DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__DREAD);
                 });
-        GuiEventManager.trigger(GuiEventType. CUSTOM_ANIMATION, anim);
+        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
         shadowAlive = true;
         return;
     }
 
-    private  int calcTimeLeft(Event event) {
+    private int calcTimeLeft(Event event) {
         return (int) (Math.round(Math.pow(3, 2 - timesThisHeroFell)) + 5 - timesThisHeroFell * 2)
                 + RandomWizard.getRandomInt(8);  //20, 12, 8, ...
 //        return (int) (Math.round(Math.pow(4, 2 - timesThisHeroFell ))+4 - timesThisHeroFell);  //20, 7, 3, ...

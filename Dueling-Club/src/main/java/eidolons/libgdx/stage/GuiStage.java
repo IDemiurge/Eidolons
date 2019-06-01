@@ -2,6 +2,7 @@ package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -20,6 +21,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
@@ -58,7 +60,9 @@ import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -73,8 +77,8 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
  */
 public class GuiStage extends StageX implements StageWithClosable {
 
-    protected final LabelX actionTooltip = new LabelX("", 16 + (int) GdxMaster.getFontSizeModSquareRoot());
-    protected final LabelX infoTooltip = new LabelX("", 16 + (int) GdxMaster.getFontSizeModSquareRoot());
+    protected final LabelX actionTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
+    protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
     protected OverlayTextPanel textPanel;
@@ -183,7 +187,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         gameMenu.setZIndex(Integer.MAX_VALUE);
 
-        addActor(actionTooltipContainer = new SuperContainer(actionTooltip){
+        addActor(actionTooltipContainer = new SuperContainer(actionTooltip) {
             @Override
             public int getFluctuatingAlphaPeriod() {
                 return 0;
@@ -221,10 +225,11 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(tooltips = new ToolTipManager(this));
 
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
-                @Override
-                public int getFluctuatingAlphaPeriod() {
+            @Override
+            public int getFluctuatingAlphaPeriod() {
                 return 0;
             }
+
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (parentAlpha == ShaderDrawer.SUPER_DRAW)
@@ -400,6 +405,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected boolean checkBlocked() {
+        if (tipMessageWindow != null)
+            if (tipMessageWindow.isVisible())
+                return true;
         return
 
                 tipMessageWindow.isVisible() || confirmationPanel.isVisible() || textPanel.isVisible() ||
@@ -459,24 +467,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     protected void bindEvents() {
 
-        GuiEventManager.bind(GuiEventType.TIP_MESSAGE, p -> {
-            if (tipMessageWindow != null) {
-                ActorMaster.addRemoveAfter(tipMessageWindow);
-            }
-            if (p.get() == null) {
-                return;
-            }
-            try {
-                tipMessageWindow = new TipMessageWindow((TipMessageSource) p.get());
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-            addActor(tipMessageWindow);
-            tipMessageWindow.fadeIn();
-            tipMessageWindow.setPosition(GdxMaster.centerWidth(tipMessageWindow),
-                    GdxMaster.centerHeight(tipMessageWindow));
 
-        });
         GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p -> {
             if (p.get() == this || p.get() == getClass()) {
                 openOptionsMenu();
@@ -523,10 +514,18 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (p.get() == null) {
                 hideTooltip(infoTooltip, 1f);
             } else {
+                String text = p.get().toString();
+                LABEL_STYLE style = null;
+                if (text.contains(EUtils.STYLE)) {
+                    String[] parts = text.split(EUtils.STYLE);
+                    style = new EnumMaster<LABEL_STYLE>().retrieveEnumConst(LABEL_STYLE.class, parts[0]);
+                    text = parts[1];
+                }
+
                 //                textToShow.add() queue!
                 infoTooltipContainer.setContents(infoTooltip);
                 hideTooltip(actionTooltip, 1f);
-                showTooltip(p.get().toString(), infoTooltip, 2f);
+                showTooltip(style, false, text, infoTooltip, 2f);
             }
         });
         GuiEventManager.bind(GuiEventType.TARGET_SELECTION, p -> {
@@ -581,12 +580,69 @@ public class GuiStage extends StageX implements StageWithClosable {
                 confirm(triple.getLeft(), (Boolean) triple.getMiddle(), triple.getRight(), null);
 
         });
+
+        GuiEventManager.bind(GuiEventType.TIP_MESSAGE, p -> {
+            tip((TipMessageSource) p.get());
+
+        });
+    }
+
+    private void tip(TipMessageSource o) {
+        if (o == null) {
+            return;
+        }
+        if (tipMessageWindow != null)
+            if (tipMessageWindow.isVisible()) {
+//            ActorMaster.addRemoveAfter(tipMessageWindow);
+                tipMessageWindow.setOnClose(() -> tip(o));
+                return;
+            }
+        try {
+            tipMessageWindow = new TipMessageWindow(o);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        addActor(tipMessageWindow);
+        tipMessageWindow.fadeIn();
+        tipMessageWindow.setPosition(GdxMaster.centerWidth(tipMessageWindow),
+                GdxMaster.centerHeight(tipMessageWindow));
+
     }
 
     public void confirm(String text,
                         boolean canCancel,
                         Runnable onConfirm,
                         Runnable onCancel) {
+        confirm(text, canCancel, onConfirm, onCancel, false);
+    }
+
+    public void confirm(String text,
+                        boolean canCancel,
+                        Runnable onConfirm,
+                        Runnable onCancel,
+                        boolean recursion) {
+        if (tipMessageWindow.isVisible()) {
+//                tipMessageWindow.getOnClose() TODO
+            tipMessageWindow.setOnClose(() -> {
+                confirm(text, canCancel, onConfirm, onCancel, true);
+            });
+            return;
+        }
+        if (!recursion)
+            if (confirmationPanel.isVisible()) {
+                confirmationPanel.setOnConfirm(
+                        () -> {
+                            confirmationPanel.getOnConfirm().run();
+                            confirm(text, canCancel, onConfirm, onCancel, true);
+                        }
+                );
+                confirmationPanel.setOnCancel(
+                        () -> {
+                            confirmationPanel.getOnCancel().run();
+                            confirm(text, canCancel, onConfirm, onCancel, true);
+                        }
+                );
+            }
         confirmationPanel.setText(text);
         confirmationPanel.setCanCancel(
                 canCancel);
@@ -600,10 +656,47 @@ public class GuiStage extends StageX implements StageWithClosable {
         showTooltip(false, s, tooltip, dur);
     }
 
+    public enum LABEL_STYLE {
+        AVQ_SMALL(17, FontMaster.FONT.AVQ),
+        AVQ_MED(20, FontMaster.FONT.AVQ),
+        AVQ_LARGE(24, FontMaster.FONT.AVQ),
+
+        MORPH_SMALL(14, FontMaster.FONT.METAMORPH),
+        MORPH_MED(16, FontMaster.FONT.METAMORPH),
+        MORPH_LARGE(20, FontMaster.FONT.METAMORPH),
+
+
+        ;
+
+        public int size;
+        public FontMaster.FONT font;
+        public Color color;
+
+        LABEL_STYLE(int size, FontMaster.FONT font) {
+            this(size, font, GdxColorMaster.getDefaultTextColor());
+        }
+
+        LABEL_STYLE(int size, FontMaster.FONT font, Color color) {
+            this.size = size;
+            this.font = font;
+            this.color = color;
+        }
+    }
+
     protected void showTooltip(boolean action, String s, LabelX tooltip, float dur) {
+        showTooltip(null, action, s, tooltip, dur);
+    }
+
+    protected void showTooltip(LABEL_STYLE style, boolean action, String s, LabelX tooltip, float dur) {
 
         infoTooltip.setVisible(true);
         actionTooltip.setVisible(true);
+
+        if (style != null) {
+            tooltip.setStyle(StyleHolder.getStyle(style));
+        } else {
+            tooltip.setStyle(StyleHolder.getDefaultInfoStyle());
+        }
 
         tooltip.setText(s);
         tooltip.getColor().a = 0;
@@ -830,7 +923,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     public void playDialogue(DialogueHandler handler) {
-        if (dialogueMode){
+        if (dialogueMode) {
             dialogueDone();
         }
         dialogueContainer.fadeIn();

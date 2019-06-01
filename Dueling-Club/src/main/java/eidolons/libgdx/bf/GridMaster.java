@@ -25,7 +25,7 @@ public class GridMaster {
     public static final String emptyCellPathFloor = StrPathBuilder.build(
             "ui", "cells", "Floor.png");
     public static final String gridCornerElementPath = StrPathBuilder.build(
-            "ui", "bf", "gridCorner.png");
+            "ui", "cells","bf", "gridCorner.png");
 
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 = getCenteredPos(coordinates);

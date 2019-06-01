@@ -36,8 +36,8 @@ public class OrbsPanel extends TablePanel {
 
     public static void addTooltip(OrbElement el, String name, String val) {
         ValueTooltip tooltip = new ValueTooltip();
-        String description= DescriptionTooltips.tooltip(el.getParameter());
-        ValueContainer container = new VerticalValueContainer(el.getIconRegion(), name +": " + val, description);
+        String description = DescriptionTooltips.tooltip(el.getParameter());
+        ValueContainer container = new VerticalValueContainer(el.getIconRegion(), name + ": " + val, description);
         container.setSize(600, 400);
         container.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         tooltip.setUserObject(Arrays.asList(container));
@@ -48,7 +48,7 @@ public class OrbsPanel extends TablePanel {
             public void clicked(InputEvent event, float x, float y) {
                 if (CoreEngine.isIDE()) {
                     int perc = 25;
-                    if (event.getButton() == 1 || getTapCount()>1) {
+                    if (event.getButton() == 1 || getTapCount() > 1) {
                         perc = -25;
                     }
                     int finalPerc = perc;
@@ -84,23 +84,29 @@ public class OrbsPanel extends TablePanel {
         if (source == null)
             return;
         int i = 0;
+//        for (PARAMS param : params) {
+//            OrbElement orb=orbs[i];
+//        }
         for (OrbElement orb : orbs) {
+            PARAMS param = params[i];
             if (orb == null) {
-                orb = (new OrbElement(params[i]
-                        , source.getParam(params[i]))
+                orb = (new OrbElement(param
+                        , source.getParam(param))
                 );
                 orbs[i] = orb;
                 orb.setPosition(i * 100, 0);
                 addActor(orb);
-            } else
-                orb.updateValue(source.getParam(params[i]));
+                i++;
+                continue;
+            }
             orb.act(delta);
-//            if (orb.getActor() != null)
-
-//
-
-            addTooltip(orb, params[i].getName(), source.getParam(params[i]));
             i++;
+            if (!orb.updateValue(source.getParam(param)) &&
+            orb.getListeners().size>0)
+            {
+              continue;
+            }
+            addTooltip(orb, param.getName(), source.getParam(param));
         }
     }
 

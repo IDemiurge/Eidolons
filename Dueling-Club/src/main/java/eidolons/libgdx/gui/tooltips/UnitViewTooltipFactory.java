@@ -9,6 +9,7 @@ import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
@@ -29,6 +30,7 @@ import main.entity.Ref.KEYS;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.entity.CounterMaster;
 import main.system.math.PositionMaster;
 
@@ -70,10 +72,11 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             if (Eidolons.getGame().getStateManager().isResetting()) {
                 return null;
             }
-            if (unit.isBeingReset()) {
-                return null;
-            }
             List<ValueContainer> values = new ArrayList<>();
+            if (unit.isBeingReset()) {
+                values.add(new ValueContainer("Calculating..."));
+                return  values;
+            }
             if (unit.isDead()) {
 //                addKeyAndValue();
                 values.add(new ValueContainer("Corpse of ", unit.getName()));
@@ -109,6 +112,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
             if (!unit.isMine())
                 if (!unit.getGame().isDebugMode())
+                    if (!ShadowMaster.isShadowAlive())
                     if (unit.getVisibilityLevelForPlayer() !=
                             VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         final ValueContainer nameContainer = new ValueContainer(unit.getToolTip(), "");

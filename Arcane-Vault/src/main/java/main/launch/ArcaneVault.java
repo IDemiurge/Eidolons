@@ -121,15 +121,21 @@ public class ArcaneVault {
     public static void main(String[] args) {
         CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
+
         if (args.length > 0) {
-            selectiveLaunch = false;
-            types = presetTypes;
-            CoreEngine.setSelectivelyReadTypes(types);
+            args= args[0].split(";");
+        }
+        if (args.length > 0) {
 
             if (args.length > 1) {
                 setMacroMode(true);
                 worldEditAutoInit = true;
                 types = microForMacro;
+                selectiveLaunch = false;
+            } else {
+                selectiveLaunch = false;
+                types = presetTypes;
+                CoreEngine.setSelectivelyReadTypes(types);
             }
         }
 

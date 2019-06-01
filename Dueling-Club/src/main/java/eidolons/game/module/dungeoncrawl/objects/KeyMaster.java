@@ -13,6 +13,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,9 @@ public class KeyMaster {
     }
 
     public static boolean hasKey(Unit unit, Door door) {
+        if (CoreEngine.isKeyCheat()) {
+            return true;
+        }
         String type = getRequiredKey(door);
         if (getKey(unit, type) != null) {
             return true;
@@ -89,15 +93,18 @@ public class KeyMaster {
     }
 
     public static void doorUnsealed(Door door, Unit unit) {
+        if (CoreEngine.isKeyCheat()) {
+            return;
+        }
         DC_HeroItemObj key = unit.findItem(getRequiredKey(door), true);
         if (key == null) {
             key = unit.findItem(getRequiredKey(door), false);
         }
         if (RandomWizard.chance(unit.getIntParam(PARAMS.SLEIGHT_OF_HAND))) {
-            EUtils.showInfoText(true, unit.getName()+" uses sleight of hand to retain " + key.getName());
+            EUtils.showInfoText(true, unit.getName() + " uses sleight of hand to retain " + key.getName());
         } else {
-            EUtils.showInfoText(true, unit.getName()+" uses " +
-                    key.getName()+" to open " + door.getName());
+            EUtils.showInfoText(true, unit.getName() + " uses " +
+                    key.getName() + " to open " + door.getName());
             unit.removeFromInventory(key);
         }
 

@@ -45,7 +45,12 @@ public class IGG_Launcher {
         return CoreEngine.isLiteLaunch();
     }
 
-    private static boolean introBriefing() {
+    public static boolean epilogueBriefing() {
+//show glory etc after!
+
+        return true;
+    }
+    public static boolean introBriefing() {
         String txtData =
                 "We were six in the end, when we met the faceless fiend. " +
                         "We were only two when it was over.;\n" +

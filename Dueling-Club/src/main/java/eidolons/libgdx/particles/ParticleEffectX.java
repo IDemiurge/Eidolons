@@ -106,9 +106,9 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     private boolean checkSprite(FileHandle effectFile) {
-        if (EmitterActor.spriteEmitterTest) {
-            return true;
-        }
+//        if (EmitterActor.spriteEmitterTest) {
+//            return true;
+//        }
         String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
         if (imgPath.contains("sprites")){
             main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );

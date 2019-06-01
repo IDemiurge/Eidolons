@@ -186,6 +186,12 @@ public class QuickWeaponPanel extends TablePanelX {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (getDataSource() == null) {
+                    return false;
+                }
+                if (getDataSource().getOwnerObj() == null) {
+                    return false;
+                }
                 if (!getDataSource().getOwnerObj().isMine()) {
                     return false;
                 }

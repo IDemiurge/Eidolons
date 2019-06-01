@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
+import eidolons.entity.active.DummyAction;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
@@ -30,24 +31,48 @@ public class TipMessageWindow extends TablePanelX {
     LabelX label;
     SmartButton[] btns;
     TipMessageSource source;
+    private Runnable onClose;
+
     public TipMessageWindow(TipMessageSource source) {
-        super(GdxMaster.getWidth() / 3, GdxMaster.getHeight() / 3);
+        super();
         this.source = source;
         if (source == null) {
             setVisible(false);
             return; //TODO ....
         }
-        setSize(source.getWidth(),source.getHeight());
+//        setSize(source.getWidth(), source.getHeight());
         if (!StringMaster.isEmpty(source.title)) {
 
         }
+        boolean large = false;
         if (!StringMaster.isEmpty(source.image)) {
             add(imageContainer = new FadeImageContainer(source.image));
+            if (imageContainer.getWidth() > 500) {
+                large = true;
+            }
             row();
         }
-        add(label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAGIC, 18)));
-        label.setMaxWidth(getWidth());
-        label.setWrap(true);
+        if (large) {
+            label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21));
+        } else {
+//            label = new LabelX(source.message, StyleHolder.getDefaultHiero());
+            label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
+        }
+        add(label)
+                .pad(15);
+        if (large) {
+            label.setMaxWidth(getPrefWidth());
+            label.setWrap(true);
+            label.pack();
+            layout();
+            setSize(getPrefWidth() + 100, getPrefHeight() + 100);
+        } else {
+            setSize(GdxMaster.getWidth() / 3, GdxMaster.getHeight() / 3);
+            label.setMaxWidth(getWidth());
+            label.setWrap(true);
+        }
+
+        defaults().space(30);
         row();
         TablePanelX btnsTable = new TablePanelX();
         int i = 0;
@@ -56,18 +81,18 @@ public class TipMessageWindow extends TablePanelX {
             Cell cell = btnsTable.add(new SmartButton(button, ButtonStyled.STD_BUTTON.MENU,
                     () -> {
                         if (source.isNonGdxThread()) {
-                            Eidolons.onThisOrNonGdxThread(()->{
+                            Eidolons.onThisOrNonGdxThread(() -> {
                                 runnable.run();
-                                fadeOut();
+                                close();
                                 WaitMaster.receiveInput(source.msgChannel, button);
                             });
                         } else {
                             runnable.run();
-                            fadeOut();
+                            close();
                             WaitMaster.receiveInput(source.msgChannel, button);
                         }
 
-                    }){
+                    }) {
                 @Override
                 public boolean isIgnoreConfirmBlock() {
                     return true;
@@ -75,27 +100,64 @@ public class TipMessageWindow extends TablePanelX {
             }.makeActive());
 
             if (source.getButtons().length == 1) {
-                if (isAddToggle()){
+                if (isAddToggle()) {
                     cell.colspan(5);
                 }
             }
         }
         if (source.isOptional())
-        if (isAddToggle()){
-            VisCheckBox box;
-            GDX.loadVisUI();
-            btnsTable.add(box= new VisCheckBox("Disable", OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF)));
-            box.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                   OptionsMaster.getSystemOptions().setValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF, box.isChecked());
-                }
-            });
-        }
+            if (isAddToggle()) {
+                VisCheckBox box;
+                GDX.loadVisUI();
+                btnsTable.add(box = new VisCheckBox("Disable", OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF)));
+                box.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        OptionsMaster.getSystemOptions().setValue(SystemOptions.SYSTEM_OPTION.MESSAGES_OFF, box.isChecked());
+                    }
+                });
+            }
         add(btnsTable);
-        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
-        main.system.auxiliary.log.LogMaster.log(1,"Tip msg created with text: " +source.getMessage());
+        if (large) {
+            setBackground(NinePatchFactory.getHqDrawable());
+        } else
+            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
+        main.system.auxiliary.log.LogMaster.log(1, "Tip msg created with text: " + source.getMessage());
+    }
+
+    private void close() {
+        fadeOut();
+
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (!visible) {
+            if (onClose != null) {
+                onClose.run();
+                onClose = null;
+            }
+        }
+    }
+
+    @Override
+    public boolean remove() {
+        if (onClose != null) {
+            onClose.run();
+            onClose = null;
+        }
+        return super.remove();
+    }
+
+    public Runnable getOnClose() {
+        return onClose;
+    }
+
+    public void setOnClose(Runnable onClose) {
+        this.onClose = onClose;
     }
 
     private boolean isAddToggle() {

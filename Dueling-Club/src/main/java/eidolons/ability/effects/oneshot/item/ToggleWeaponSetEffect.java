@@ -26,6 +26,11 @@ public class ToggleWeaponSetEffect extends DC_Effect {
         hero.equip(main2, ItemEnums.ITEM_SLOT.MAIN_HAND);
         hero.equip(off2, ItemEnums.ITEM_SLOT.OFF_HAND);
 
+        hero.removeFromInventory(main);
+        hero.removeFromInventory(main2);
+        hero.removeFromInventory(off);
+        hero.removeFromInventory(off2);
+
         if (hero.isPlayerCharacter()) {
             GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, hero);
         }

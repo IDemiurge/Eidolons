@@ -58,7 +58,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
                 case DEMO:
 //                case CONTINUE:
                 case EXIT:
-//                case MANUAL:
+                case MANUAL:
 //                case CREDITS:
                 case OPTIONS:
                    return false;

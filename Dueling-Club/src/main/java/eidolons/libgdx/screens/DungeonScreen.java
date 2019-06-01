@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -35,7 +34,6 @@ import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
-import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
@@ -47,7 +45,6 @@ import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -150,7 +147,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     private boolean isSpriteBgTest() {
-        return Eidolons.TUTORIAL;
+        return Eidolons.TUTORIAL_MISSION;
     }
 
     @Override
@@ -194,7 +191,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void checkGraphicsUpdates() {
-        if (backTexture == null) {
+        if (backTexture == null && backgroundSprite == null) {
             String path = null;
             try {
                 path = DC_Game.game.getDungeonMaster().getDungeonWrapper().getMapBackground();
@@ -214,7 +211,9 @@ public class DungeonScreen extends GameScreenWithTown {
     private void setBackground(String path) {
 
         if (!TextureCache.isImage(path)) {
-            backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(path);
+            if (path.endsWith(".txt")) {
+                backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
+            }
             return;
         }
 
@@ -319,6 +318,11 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected InputProcessor createInputController() {
+//        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
+//                if (selectionPanel.getStage()==guiStage) {
+//            return new InputMultiplexer(guiStage, controller);
+//            }
+//        }
         if (guiStage.isDialogueMode()) {
             return new InputMultiplexer(guiStage, controller);
         }
@@ -356,6 +360,14 @@ public class DungeonScreen extends GameScreenWithTown {
         return 5f;
     }
 
+    protected boolean canShowScreen() {
+//        if (selectionPanel != null) TODO igg demo fix
+//            if (selectionPanel.isVisible()) {
+//                return false;
+//            }
+        return super.canShowScreen();
+    }
+
     public void renderMain(float delta) {
 
         checkInputController();
@@ -366,7 +378,20 @@ public class DungeonScreen extends GameScreenWithTown {
         setBlocked(checkBlocked());
         cameraTimer.act(delta);
         cameraShift();
-        if (canShowScreen()) {
+        if (!canShowScreen()) {
+            cam.position.x=0;
+            cam.position.y=0;
+            if (postProcessing != null)
+                postProcessing.begin();
+            batch.begin();
+            drawBg(delta);
+//            selectionPanel.setPosition(0, 0);
+            selectionPanel.setPosition( selectionPanel.getWidth()/2, selectionPanel.getY());
+            selectionPanel.draw(batch, 1);
+            batch.end();
+            if (postProcessing != null)
+                postProcessing.end();
+        } else {
             if (DC_Game.game != null)
                 if (DC_Game.game.getLoop() instanceof RealTimeGameLoop) {
                     if (!isBlocked())
@@ -374,32 +399,7 @@ public class DungeonScreen extends GameScreenWithTown {
                 }
             if (postProcessing != null)
                 postProcessing.begin();
-            updateBackground(delta);
-            if (backTexture != null) {
-                Batch batch = guiStage.getCustomSpriteBatch();
-                batch.begin();
-                float colorBits = GdxColorMaster.WHITE.toFloatBits();
-                if (batch.getColor().toFloatBits() != colorBits)
-                    batch.setColor(colorBits); //gotta reset the alpha...
-
-                int w = backTexture.getRegionWidth();
-                int h = backTexture.getRegionHeight();
-                int x = (GdxMaster.getWidth() - w) / 2;
-                int y = (GdxMaster.getHeight() - h) / 2;
-                batch.draw(backTexture, x, y, w, h);
-                if (backTexture == null)
-                    if (backgroundSprite != null) {
-
-                        backgroundSprite.setOffsetY(-
-                                Gdx.graphics.getHeight() / 2);
-                        backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
-                        backgroundSprite.setSpeed(0.5f);
-                        backgroundSprite.setOffsetY(cam.position.y);
-                        backgroundSprite.setOffsetX(cam.position.x);
-                        backgroundSprite.draw(batch);
-                    }
-                batch.end();
-            }
+            drawBg(delta);
             gridStage.draw();
             if (postProcessing != null)
                 postProcessing.end();
@@ -413,6 +413,40 @@ public class DungeonScreen extends GameScreenWithTown {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
+    }
+
+    private void drawBg(float delta) {
+        updateBackground(delta);
+        if (backTexture != null) {
+            Batch batch = guiStage.getCustomSpriteBatch();
+            batch.begin();
+            float colorBits = GdxColorMaster.WHITE.toFloatBits();
+            if (batch.getColor().toFloatBits() != colorBits)
+                batch.setColor(colorBits); //gotta reset the alpha...
+
+            int w = backTexture.getRegionWidth();
+            int h = backTexture.getRegionHeight();
+            int x = (GdxMaster.getWidth() - w) / 2;
+            int y = (GdxMaster.getHeight() - h) / 2;
+            batch.draw(backTexture, x, y, w, h);
+            if (backTexture == null)
+                if (backgroundSprite != null) {
+                    drawSpriteBg(batch);
+                }
+            batch.end();
+
+        }
+
+    }
+
+    private void drawSpriteBg(Batch batch) {
+        backgroundSprite.setOffsetY(-
+                Gdx.graphics.getHeight() / 2);
+        backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
+        backgroundSprite.setSpeed(0.5f);
+        backgroundSprite.setOffsetY(cam.position.y);
+        backgroundSprite.setOffsetX(cam.position.x);
+        backgroundSprite.draw(batch);
     }
 
     private boolean isShowingGrid() {
@@ -457,8 +491,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (speed != null) {
             delta = delta * speed;
         }
-        if (CoreEngine.isIDE())
-            //            checkDebugToggle();
+        if (CoreEngine.isDevEnabled())
             if (DC_Game.game != null) {
                 if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
                     if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {

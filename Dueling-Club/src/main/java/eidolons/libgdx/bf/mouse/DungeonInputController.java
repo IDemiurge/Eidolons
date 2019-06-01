@@ -28,7 +28,7 @@ public class DungeonInputController extends InputController {
 
     @Override
     protected float getMargin() {
-        return 600;
+        return 1100;
     }
 
     @Override

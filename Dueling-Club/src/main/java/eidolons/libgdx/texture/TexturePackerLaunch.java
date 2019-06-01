@@ -236,7 +236,7 @@ public class TexturePackerLaunch {
                 "atlas name?",
                 "");
         if (StringMaster.isEmpty(name)) {
-            name = StringMaster.cropFormat(FileManager.getFilesFromDirectory(inputDir, false).get(0).getName());
+            name = PathUtils.getLastPathSegment(inputDir);
        if (name.endsWith("0")){
            name = StringMaster.cropLastSegment(name, "_", true);
        }

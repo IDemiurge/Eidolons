@@ -295,10 +295,11 @@ public class ArmorMaster {
 
             FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
                     "Shield block!", attacked);
-//            Integer finalBlockValue = blockValue;
-//            DC_WeaponObj finalShield = shield; TODO igg demo fix
-//            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
-//                    (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(finalShield, action, finalBlockValue));
+            Integer finalBlockValue = blockValue;
+            DC_WeaponObj finalShield = shield;
+            // TODO igg demo fix
+            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
+                    (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(finalShield, action, finalBlockValue));
 
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
              + blockValue + " out of " + damage + " " + damage_type + " damage from " +

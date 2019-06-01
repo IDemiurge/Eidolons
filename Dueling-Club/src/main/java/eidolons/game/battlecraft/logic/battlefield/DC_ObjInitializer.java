@@ -209,6 +209,11 @@ public class DC_ObjInitializer {
             if (i == items.length) {
                 last = true;
             }
+
+            if (checkDummyType(typeName, owner)){
+                continue;
+            }
+
             int level = 0;
             if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                 level = NumberUtils.getInteger(StringMaster.getLastPart(typeName,
@@ -373,6 +378,7 @@ public class DC_ObjInitializer {
         return map;
     }
 
+
     private static Structure createItem(ObjType type, Coordinates coordinates) {
         return HungItemMaster.createBfObjForItem(type, coordinates);
     }
@@ -491,5 +497,14 @@ public class DC_ObjInitializer {
         }
 
         return reformatted;
+    }
+
+    private static boolean checkDummyType(String typeName, Player owner) {
+//     TODO not a bad idea, but... too tedi0us for now
+//      if (typeName.equalsIgnoreCase("Facing")) {
+//            owner.getUnitFacingMap().put(c, facing);
+//            return true;
+//        }
+        return false;
     }
 }

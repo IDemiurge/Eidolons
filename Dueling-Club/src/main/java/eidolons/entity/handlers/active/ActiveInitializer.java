@@ -182,7 +182,8 @@ if (!getEntity().getActives().isEmpty()){
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
         switch (type) {
-            case HIDDEN:
+            case
+                    HIDDEN:
                 return ActionEnums.ACTION_TYPE_GROUPS.HIDDEN;
             case MODE:
                 return ActionEnums.ACTION_TYPE_GROUPS.MODE;

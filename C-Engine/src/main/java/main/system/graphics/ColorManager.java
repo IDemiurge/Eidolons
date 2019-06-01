@@ -238,7 +238,6 @@ public class ColorManager {
          (Integer.toHexString(goldenWhite.getRed())) +
           (Integer.toHexString(goldenWhite.getGreen())) +
           (Integer.toHexString(goldenWhite.getBlue()))
-
          ;
 
     }

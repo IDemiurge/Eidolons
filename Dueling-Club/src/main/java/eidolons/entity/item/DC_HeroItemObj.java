@@ -89,6 +89,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
 
     @Override
     public void apply() {
+        setCoordinates(getHero().getCoordinates());
 
         super.apply();
 

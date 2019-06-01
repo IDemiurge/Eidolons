@@ -13,7 +13,8 @@ import java.util.Set;
  */
 public class ExceptionMaster {
 
-    private static  boolean PRINT_ALL = CoreEngine.isFastMode();
+    private static  boolean SKIP_WRITE = CoreEngine.isLiteLaunch();
+    private static  boolean PRINT_ALL =false;// CoreEngine.isLiteLaunch();
     static Set<String> printed = new HashSet<>();
 
     public static void printStackTrace(Exception e) {
@@ -26,7 +27,7 @@ public class ExceptionMaster {
                         printed.add(e.getMessage());
             }
             e.printStackTrace();
-            if (PRINT_ALL) {
+            if (SKIP_WRITE) {
                 return;
             }
             LogMaster.getExceptions().add(e);

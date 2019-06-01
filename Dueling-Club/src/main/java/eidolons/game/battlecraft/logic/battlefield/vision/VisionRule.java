@@ -6,6 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowVisionMaster;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
@@ -168,7 +169,7 @@ public class VisionRule {
         if (sub instanceof BossUnit) {
             return true;
         }
-        if (sub == ShadowMaster.getShadowUnit()) {
+        if (observer == ShadowMaster.getShadowUnit()) {
             return true;
         }
 
@@ -245,8 +246,9 @@ public class VisionRule {
         if (object instanceof BossUnit) {
             return VISIBILITY_LEVEL.CLEAR_SIGHT;
         }
-        if (object == ShadowMaster.getShadowUnit()) {
-            return VISIBILITY_LEVEL.CLEAR_SIGHT;
+        if (source == ShadowMaster.getShadowUnit()) {
+           return ShadowVisionMaster.getVisibility(sight, object);
+
         }
         if (master.getGame().getRules().getStealthRule().
                 checkInvisible(source.getOwner(), object))
@@ -280,7 +282,7 @@ public class VisionRule {
     }
 
     public PLAYER_VISION playerVision(Unit source, BattleFieldObject object) {
-        if (DebugMaster.isOmnivisionOn() || source == ShadowMaster.getShadowUnit()) {
+        if (DebugMaster.isOmnivisionOn() ) {
             if (source.isMine()) {
                 return PLAYER_VISION.DETECTED;
 

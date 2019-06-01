@@ -33,6 +33,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
@@ -459,14 +460,18 @@ public abstract class DataModel {
     }
 
     public boolean checkProperty(PROPERTY p, String value, boolean base) {
-        Map<String, Boolean> boolCache = getPropCache().get(p);
-        if (boolCache == null) {
-            boolCache = new HashMap<>();
-            getPropCache().put(p, boolCache);
-        }
-        Boolean result = boolCache.get(value);
-        if (result != null) {
-            return result;
+        Boolean result = null;
+        Map<String, Boolean> boolCache = null;
+        if (!CoreEngine.isRamEconomy()) {
+            boolCache = getPropCache().get(p);
+            if (boolCache == null) {
+                boolCache = new HashMap<>();
+                getPropCache().put(p, boolCache);
+            }
+            result = boolCache.get(value);
+            if (result != null) {
+                return result;
+            }
         }
         if (base) {
             result = type.checkProperty(p, value, false);
@@ -475,7 +480,8 @@ public abstract class DataModel {
         } else {
             result = checkSingleProp(p, value);
         }
-        boolCache.put(value, result);
+        if (!CoreEngine.isRamEconomy())
+            boolCache.put(value, result);
         return result;
     }
 

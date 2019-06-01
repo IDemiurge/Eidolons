@@ -89,7 +89,7 @@ public class InitiativePanel extends GroupX {
 
     private void init() {
 
-        addActor(gears = new GearCluster(3, 0.8f));
+        addActor(gears = new GearCluster(3, 1.2f));
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
         addActor(
@@ -97,8 +97,8 @@ public class InitiativePanel extends GroupX {
                         speedControlPanel = new SpeedControlPanel(), FACING_DIRECTION.SOUTH));
         addActor( container = new Container<>(queueGroup));
         addActor(hideButton= new HideButton(speedControlPanel));
-        speedControlPanel.setPosition(0, -300);
-        hideButton.setPosition(160, -100);
+        speedControlPanel.setPosition(0, -150);
+        hideButton.setPosition(130, -100);
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
          "components", "dc", "atb",
@@ -422,7 +422,7 @@ public class InitiativePanel extends GroupX {
     private void toggleQueue(boolean visible) {
         cleanUp();
         rollComponent(container, visible);
-        rollComponent(speedControlPanel, visible);
+//        rollComponent(speedControlPanel, visible);
     }
 
     private void rollComponent(Actor container, boolean visible) {

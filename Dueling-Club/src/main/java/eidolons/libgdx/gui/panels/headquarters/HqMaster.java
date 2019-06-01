@@ -34,6 +34,15 @@ public class HqMaster {
         GuiEventManager.trigger(GuiEventType.GAME_RESUMED, null);
     }
 
+    public static void tab(String spells) {
+        try {
+            HqPanel.getActiveInstance().hqTabs.tabSelected(spells);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        //TODO igg demo hack
+    }
+
     public static void openHqPanel() {
 
         List<Unit> members = new ArrayList<>(DC_Game.game.getMetaMaster().getPartyManager().getParty().getMembers());
@@ -117,4 +126,15 @@ public class HqMaster {
 
         return false;
     }
+
+    public static boolean isDisabled(Entity type) {
+        if (type.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
+            return true;
+        }
+        if (type.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.IGG_TODO) {
+            return true;
+        }
+        return false;
+    }
+
 }

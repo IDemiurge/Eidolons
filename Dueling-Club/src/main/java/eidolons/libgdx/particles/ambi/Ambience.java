@@ -110,7 +110,7 @@ public class Ambience extends EmitterActor {
             super.draw(spriteBatch, delta);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            main.system.auxiliary.log.LogMaster.log(1, "AMBIENCE FAILED: " + getPath());
+            main.system.auxiliary.log.LogMaster.log(1, "AMBIENCE_VFX FAILED: " + getPath());
             blocked = true;
         }
     }

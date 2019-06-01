@@ -24,7 +24,7 @@ public class InteractiveObj extends DungeonObj {
         return off;
     }
 
-    public void setOff(boolean off) {
+    public void setUsed(boolean off) {
         this.off = off;
     }
 

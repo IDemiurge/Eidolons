@@ -9,6 +9,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_GROUP;
 import eidolons.game.battlecraft.rules.action.StackingRule;
@@ -142,7 +143,7 @@ public class Executor extends ActiveHandler {
 //            AbilityConstructor.constructActives(getEntity());
 //            getEntity().construct(); already done?
 //        }
-        reset();
+         reset();
         syncActionRefWithSource();
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_ACTIVATED, getAction());
@@ -477,6 +478,8 @@ if (getAction().isStandardAttack()
 
         getAction().setTargetGroup(null);
         getAction().setTargetObj(null);
+
+        ShadowMaster.afterActionReset();
     }
 
     public Activator getActivator() {

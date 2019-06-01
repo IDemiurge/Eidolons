@@ -63,7 +63,10 @@ public class FullscreenAnimation extends SuperActor {
     }
 
     public void initSprite(String path) {
-        sprite = SpriteAnimationFactory.getSpriteAnimation(path);
+        sprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
+        if (sprite == null) {
+            return;
+        }
         sprite.setAlpha(alpha);
         sprite.setOffsetX(GdxMaster.getWidth() / 2); //center...
         sprite.setOffsetY(GdxMaster.getHeight() / 2);

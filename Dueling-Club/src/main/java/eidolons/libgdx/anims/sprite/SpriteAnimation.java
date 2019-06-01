@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.SpriteActor;
+import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -47,6 +49,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Float scale;
     private boolean customAct;
     private float speed;
+    private boolean aDefault;
+    private SuperActor.BLENDING blending;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -79,7 +83,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
-        originalFps =  frameDuration;
+        originalFps = frameDuration;
     }
 
     public SpriteAnimation(Texture texture) {
@@ -93,7 +97,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         regions = re;
         this.looping = looping;
         this.frameNumber = re.size;
-        originalFps =  frameDuration;
+        originalFps = frameDuration;
     }
 
 
@@ -132,6 +136,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean draw(Batch batch) {
+
         if (CoreEngine.isCinematicMode())
             return false;
 
@@ -140,6 +145,25 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
         if (frameNumber == 0)
             return false;
+
+        boolean resetBlending = false;
+        if (blending != null)
+            if (batch instanceof CustomSpriteBatch) {
+                if ((((CustomSpriteBatch) batch).getBlending() != blending)) {
+                    ((CustomSpriteBatch) batch).setBlending(blending);
+                    resetBlending = true;
+                }
+            }
+        boolean result = drawThis(batch);
+
+        if (resetBlending)
+            if (batch instanceof CustomSpriteBatch) {
+                ((CustomSpriteBatch) batch).resetBlending();
+            }
+        return result;
+    }
+
+    public boolean drawThis(Batch batch) {
         if (getLifecycleDuration() != 0) {
             checkReverse();
             cycles = (int) (stateTime / getLifecycleDuration());
@@ -153,6 +177,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             dispose();
             return false;
         }
+
         float alpha = this.alpha;
         drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
 
@@ -175,6 +200,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             ExceptionMaster.printStackTrace(e);
         }
         return true;
+    }
+
+    public SuperActor.BLENDING getBlending() {
+        return blending;
+    }
+
+    public void setBlending(SuperActor.BLENDING blending) {
+        this.blending = blending;
     }
 
     private int getTrailingFramesNumber() {
@@ -460,17 +493,25 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public void centerOnParent(Actor actor) {
         Vector2 pos = new Vector2(actor.getX(), actor.getY());
-         actor.localToStageCoordinates(pos);
+        actor.localToStageCoordinates(pos);
 //        pos2= actor.getStage().stageToScreenCoordinates(pos2);
-        setX(pos .x);
-         setY(pos .y);
-        setOffsetX(Math.abs( actor.getWidth() -  getWidth()) / 2 +  getWidth()/2);
-        setOffsetY(Math.abs ( actor.getHeight() -  getHeight()) / 2 +  getHeight()/2);
+        setX(pos.x);
+        setY(pos.y);
+        setOffsetX(Math.abs(actor.getWidth() - getWidth()) / 2 + getWidth() / 2);
+        setOffsetY(Math.abs(actor.getHeight() - getHeight()) / 2 + getHeight() / 2);
 
     }
 
     public void setFps(int i) {
-        setFrameDuration(1f/i);
+        setFrameDuration(1f / i);
+    }
+
+    public void setDefault(boolean aDefault) {
+        this.aDefault = aDefault;
+    }
+
+    public boolean isDefault() {
+        return aDefault;
     }
 
 

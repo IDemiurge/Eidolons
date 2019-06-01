@@ -5,6 +5,7 @@ import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.Images;
@@ -66,6 +67,9 @@ public class HqTraitsPanel extends HqElement {
             }
         }
         for (BuffObj buff : dataSource.getEntity().getBuffs()) {
+            if (buff.isDynamic()){
+                continue;
+            }
             if (buff.isDisplayed()){
                 list.add(buff);
             }
@@ -92,6 +96,7 @@ public class HqTraitsPanel extends HqElement {
         };
 //        container.setSize(getSize(), getSize());
         actor.setSize(50, 50);
+        AttackTooltipFactory.createBuffTooltip(sub);
         actor.addListener(new ValueTooltip(sub.getName()).getController());
         return actor;
     }

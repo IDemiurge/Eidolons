@@ -124,6 +124,8 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
     public void tabSelected(String tabName) {
         buttonGroup.setChecked(tabName);
         setDisplayedActor(tabsToNamesMap.get(tabName));
+
+        contentCell.getActor().setZIndex(0);
     }
 
     protected Cell setDisplayedActor(T t) {

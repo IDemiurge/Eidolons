@@ -109,6 +109,9 @@ public class HqStatElement extends HqElement {
 
     @Override
     protected void update(float delta) {
+        if (dataSource == null) {
+            return;
+        }
         container.clearListeners();
         if (displayedParam != null) {
             button.setVisible(editable);

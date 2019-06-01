@@ -1171,6 +1171,16 @@ public class StringMaster {
         return s;
     }
 
+    public static boolean containsWord(String name, String word) {
+        if (            name.equalsIgnoreCase(word) ||
+                        name.contains(" " + word) ||
+                        name.contains(word + " ")
+        ) {
+            return true;
+        }
+        return false;
+    }
+
 
     public enum STD_DEITY_TYPE_NAMES {
         Faithless

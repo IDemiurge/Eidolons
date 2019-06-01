@@ -397,7 +397,7 @@ public class DamageDealer {
         boolean dead = DamageCalculator.isDead(attacked);
 
         boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
-        boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
+        boolean unconscious =false;
 
         if (!dead) {
             if (attacked.checkBool(STD_BOOLS.FAUX)) {
@@ -407,24 +407,30 @@ public class DamageDealer {
         if (dead) {
             // will start new entry... a good preCheck
             try {
-                attacked.kill(attacker, !annihilated, false);
+              if (! attacked.kill(attacker, !annihilated, false)){
+                  unconscious=true; //TODO wtf is this?
+              } else {
+                  unconscious=false;
                 if (annihilated) {
                     attacked.getGame().getManager().getDeathMaster().
                      unitAnnihilated(attacked, attacker);
 
                 }
+              }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
             ref.setAmount(damageDealt);
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
-        } else {
-            if (unconscious) {
+        }
+            unconscious =  attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS)<=0;
+//                    attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
+
+        if (unconscious) {
                 attacked.getGame().getRules().getUnconsciousRule().
                  fallUnconscious((Unit) attacked);
             }
-        }
         if (toughness_dmg < 0 || endurance_dmg < 0) {
             LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);
         } else

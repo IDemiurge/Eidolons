@@ -8,6 +8,8 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
+import eidolons.game.core.EUtils;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
@@ -145,19 +147,6 @@ public class DefenseVsAttackRule {
             crit = true;
         }
         if (result) {
-            if (crit) {
-
-                return false;
-            } else {
-
-                return true;
-            }
-        }
-        chance = action.getIntParam(PARAMS.AUTO_CRIT_CHANCE);
-        if (chance > 0) {
-            if (!RandomWizard.chance(chance)) {
-                return null;
-            }
             String msg = (crit ? attacker.getNameIfKnown() + " makes a Critical Strike against "
                     + attacked.getNameIfKnown()
                     : attacked.getNameIfKnown() + " has dodged an attack from " + attacker.getNameIfKnown()
@@ -166,6 +155,25 @@ public class DefenseVsAttackRule {
             main.system.auxiliary.log.LogMaster.log(1, msg);
             action.getGame().getLogManager().
                     log(msg);
+            if (crit) {
+                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_LARGE, attacker.getName()+ ": Critical hit!");
+                return false;
+            } else {
+                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_LARGE, attacked.getName()+ ": Dodge!");
+                return true;
+            }
+        }
+        chance = action.getIntParam(PARAMS.AUTO_CRIT_CHANCE);
+        if (chance > 0) {
+            if (!RandomWizard.chance(chance)) {
+                return null;
+            }
+            String msg =  attacker.getNameIfKnown() + " makes a Critical Strike (bonus chance) against "+
+                     StringMaster.wrapInParenthesis(chance + "%");
+            main.system.auxiliary.log.LogMaster.log(1, msg);
+            action.getGame().getLogManager().
+                    log(msg);
+
             return false;
         }
         return null;

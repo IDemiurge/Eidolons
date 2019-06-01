@@ -12,6 +12,7 @@ import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.game.logic.event.Event;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.HashMap;
@@ -33,6 +34,8 @@ public class HeroLevelManager {
                 TEXT_CASES.LEVEL_UP, "Level Up!", hero);
         EUtils.showInfoText(hero.getName() + "is now Level " + hero.getLevel());
         EUtils.playSound(STD_SOUNDS.LEVEL_UP);
+
+        hero.getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.HERO_LEVEL_UP, hero.getRef().getCopy()));
     }
 
     public static void levelUp(Unit hero, Boolean dc_hc_macro) {

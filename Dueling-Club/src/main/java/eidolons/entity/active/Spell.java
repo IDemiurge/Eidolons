@@ -80,7 +80,7 @@ public class Spell extends DC_ActiveObj {
     public SPELL_TYPE getSpellType() {
         if (spellType == null) {
             spellType = new EnumMaster<SPELL_TYPE>().retrieveEnumConst(SPELL_TYPE.class,
-             getProperty(G_PROPS.SPELL_TYPE));
+                    getProperty(G_PROPS.SPELL_TYPE));
         }
         if (spellType == null) {
             spellType = DEFAULT_SPELL_TYPE;
@@ -91,21 +91,28 @@ public class Spell extends DC_ActiveObj {
     public SPELL_POOL getSpellPool() {
         if (spellPool == null) {
             spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
-             getProperty(G_PROPS.SPELL_POOL));
+                    getProperty(G_PROPS.SPELL_POOL));
         }
         return spellPool;
 
     }
-    public boolean isMemorized(){
+
+    public boolean isMemorized() {
         return getSpellPool() == SPELL_POOL.MEMORIZED;
     }
-    public boolean isVerbatim(){
+
+    public boolean isVerbatim() {
         return getSpellPool() == SPELL_POOL.VERBATIM;
     }
+
+    public boolean isDivined() {
+        return getSpellPool() == SPELL_POOL.DIVINED;
+    }
+
     public SPELL_GROUP getSpellGroup() {
         if (spellGroup == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(SPELL_GROUP.class,
-             getProperty(G_PROPS.SPELL_GROUP));
+                    getProperty(G_PROPS.SPELL_GROUP));
         }
         if (spellGroup == null)
             return SPELL_GROUP.VOID;

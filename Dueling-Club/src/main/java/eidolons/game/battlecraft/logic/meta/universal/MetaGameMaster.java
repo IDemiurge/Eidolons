@@ -4,6 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.GameEventHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
@@ -245,6 +246,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void gameExited() {
         PartyManager.setSelectedHero(null);
+        ShadowMaster.reset();
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {

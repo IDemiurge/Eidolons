@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.battle.test;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.core.game.DC_Game;
 
 /**
@@ -13,6 +14,12 @@ public class TestBattleMaster extends BattleMaster<TestBattle> {
     public TestBattleMaster(DC_Game game) {
         super(game);
     }
+
+    @Override
+    protected ScriptManager createScriptManager() {
+        return new TestScriptExecutor(this);
+    }
+
 
     @Override
     protected TestBattle createBattle() {

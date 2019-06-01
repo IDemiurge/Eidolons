@@ -38,6 +38,7 @@ public class SpellMaster extends Master {
 
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
+    private static final PROPERTY DIVINED = PROPS.DIVINED_SPELLS;
     Map<MicroObj, Map<ObjType, Spell>> spellCache = new HashMap<>();
     static Map<ObjType, Spell> globalSpellCache = new HashMap<>();
 
@@ -51,10 +52,10 @@ public class SpellMaster extends Master {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             PARAMETER mastery = ContentValsManager.getPARAM(type.getProperty("SPELL_GROUP") + " Mastery");
 //check not custom? etc?!
-            if (!CoreEngine.isContentTestMode())
-                if (!HqMaster.isContentDisplayable(type)) {
-                    continue;
-                }
+//            if (!CoreEngine.isContentTestMode())
+//                if (!HqMaster.isContentDisplayable(type)) {
+//                    continue;
+//                }
 
             if (SkillMaster.isMasteryUnlocked(entity, mastery)) {
                 Spell spell = globalSpellCache.get(type);
@@ -62,6 +63,7 @@ public class SpellMaster extends Master {
                     spell = (Spell) entity.getGame().createSpell(type, Player.NEUTRAL, new Ref(entity.getGame()));
                     globalSpellCache.put(type, spell);
                 }
+                spell.getRef().setSource(entity.getId());
                 list.add(spell);
             }
         }
@@ -127,6 +129,7 @@ public class SpellMaster extends Master {
             }
 
         spells = new ArrayList<>(initSpellpool(obj, VERBATIM));
+//        spells.addAll(initSpellpool(obj, DIVINED)); TODO how is it added??
         spells.addAll(initSpellpool(obj, MEMORIZED));
         return spells;
     }

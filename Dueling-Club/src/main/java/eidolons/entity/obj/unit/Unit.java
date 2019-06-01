@@ -28,6 +28,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
@@ -73,6 +74,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.system.ExceptionMaster;
@@ -137,9 +139,9 @@ public class Unit extends DC_UnitModel {
         if (isHero() && !(this instanceof HeroDataModel)) {
             String message = this + " hero created " + getId();
             if (GenericLauncher.instance.initRunning) {
-                if (Eidolons.getMainHero() != null) {
+                if (Eidolons.MAIN_HERO != null) {
                     message += " SECOND TIME!...";
-                    Eidolons.getMainHero().removeFromGame();
+                    Eidolons.MAIN_HERO.removeFromGame();
 
                     addProperty(true, PROPS.INVENTORY, "Jade Key");
                 }
@@ -395,7 +397,7 @@ public class Unit extends DC_UnitModel {
             }
         }
         getResetter().afterEffectsApplied();
-
+        getEntity().setBeingReset(false);
     }
 
     @Override
@@ -736,6 +738,7 @@ public class Unit extends DC_UnitModel {
         DC_HeroItemObj prevItem = getItem(slot);
         setItem(item, slot);
         item.equipped(ref);
+
         if (prevItem != null) {
             addItemToInventory(prevItem);
         }
@@ -797,6 +800,12 @@ public class Unit extends DC_UnitModel {
         if (item instanceof DC_QuickItemObj) {
             if (((DC_QuickItemObj) item).getWrappedWeapon() != null) {
                 item = ((DC_QuickItemObj) item).getWrappedWeapon();
+            }
+        }
+        if (item != null) {
+            if (inventory.contains(item) ||
+                    item.getContainer()== CONTAINER.INVENTORY) {
+                removeFromInventory(item);
             }
         }
         switch (slot) {
@@ -1037,6 +1046,11 @@ public class Unit extends DC_UnitModel {
         for (DC_QuickItemObj q : toRemove) {
             unequip(q, false);
         }
+    }
+
+    @Override
+    public void setDead(boolean dead) {
+        super.setDead(dead);
     }
 
     @Override
@@ -1538,6 +1552,11 @@ public class Unit extends DC_UnitModel {
         //     getResetter().resetFacing();
     }
 
+    @Override
+    public void setFacing(FACING_DIRECTION facing) {
+        super.setFacing(facing);
+    }
+
     public DequeImpl<DC_JewelryObj> getRings() {
         DequeImpl<DC_JewelryObj> list = new DequeImpl<>(getJewelry());
         for (DC_JewelryObj j : getJewelry()) {
@@ -1689,6 +1708,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public void xpGained(int xp) {
+        if (!isDead())
         if (Eidolons.getParty() instanceof ChainParty) {
             ((ChainParty) Eidolons.getParty()).xpGained(xp);
         }

@@ -27,14 +27,19 @@ public class SpriteAnimationFactory {
 
     public static SpriteAnimation
     getSpriteAnimation(String key) {
+        return getSpriteAnimation(key, true);
+    }
+
+    public static SpriteAnimation
+    getSpriteAnimation(String key, boolean useDefault) {
         key = FileManager.formatPath(key, true);
         key = key.substring(0, key.length() - 1);
         SpriteAnimation sprite = cache.get(key.toLowerCase());
-        if (sprite!=null ){
+        if (sprite != null) {
             sprite.reset();
             return sprite;
         }
-        String texturePath= key;
+        String texturePath = key;
         if (texturePath.toLowerCase().endsWith(".atlas")
                 || texturePath.toLowerCase().endsWith(".txt")) {
             texturePath = GdxImageMaster.appendImagePath(texturePath);
@@ -45,15 +50,24 @@ public class SpriteAnimationFactory {
             }
             SpriteAnimation a = new SpriteAnimation(fps30, false, atlas);
             cache.put(
-                    key.toLowerCase() , a);
+                    key.toLowerCase(), a);
             return a;
         } else if (!ImageManager.isImage(texturePath)) {
 
-            main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
-                    + texturePath + ", replacing with default: " + defaultSpritePath);
-            texturePath = defaultSpritePath;
+            if (useDefault) {
+                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
+                        + texturePath + ", replacing with default: " + defaultSpritePath);
+                texturePath = defaultSpritePath;
+            } else {
+                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
+                        + texturePath);
+                return null;
+            }
         }
         SpriteAnimation a = new SpriteAnimation(texturePath);
+        if (texturePath.equalsIgnoreCase(defaultSpritePath)){
+            a.setDefault(true);
+        }
         cache.put(key.toLowerCase(), a);
         return a;
     }
@@ -80,8 +94,8 @@ public class SpriteAnimationFactory {
         return s;
     }
 
-    public static SpriteAnimation getSpriteAnimation(String path
-            , boolean singleSprite) {
+    public static SpriteAnimation getSpriteAnimation(boolean singleSprite, String path
+    ) {
         SpriteAnimation anim = cache.get(path.toLowerCase());
         if (anim != null)
             return anim;
@@ -122,4 +136,7 @@ public class SpriteAnimationFactory {
         return regions;
     }
 
+    public static boolean isDefault(SpriteAnimation sprite) {
+        return sprite.isDefault();
+    }
 }

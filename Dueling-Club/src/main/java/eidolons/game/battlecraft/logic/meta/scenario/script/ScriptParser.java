@@ -24,7 +24,7 @@ import java.util.List;
  * Created by JustMe on 5/19/2017.
  */
 public class ScriptParser {
-    private static final boolean TEST_MODE = false;
+    private static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch() ;
 
     public static Condition parseConditions(String conditionPart) {
         Condition c = DC_ConditionMaster.toConditions(conditionPart);
@@ -157,6 +157,7 @@ public class ScriptParser {
                 }
             };
         } else {
+            main.system.auxiliary.log.LogMaster.log(1,"Ability function in script: " + funcPart);
             abilities = AbilityConstructor.getAbilities(script, ref);
             if (abilities.getEffects().getEffects().isEmpty()) {
                 main.system.auxiliary.log.LogMaster.log(1, "SCRIPT NOT FOUND: " + funcPart);

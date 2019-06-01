@@ -19,6 +19,10 @@ public abstract class ScreenWithLoaderAndUI extends ScreenWithLoader {
         overlayStage = new IggBriefScreen();
     }
 
+    public SelectionPanel getSelectionPanel() {
+        return selectionPanel;
+    }
+
     public UiStage getOverlayStage() {
         return overlayStage;
     }

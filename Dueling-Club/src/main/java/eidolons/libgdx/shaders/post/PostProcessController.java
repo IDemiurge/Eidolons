@@ -1,6 +1,7 @@
 package eidolons.libgdx.shaders.post;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
@@ -43,6 +44,7 @@ import java.util.Map;
 public class PostProcessController {
     static PostProcessController instance;
     private final PostFxUpdater updater;
+    private final Actor actor;
     private Map<PostProcessorEffect, Fluctuating> effectMap = new LinkedHashMap<>();
     private PostProcessing main;
 
@@ -66,7 +68,8 @@ public class PostProcessController {
 
     public PostProcessController() {
         main = new PostProcessing();
-        updater = new PostFxUpdater(this);
+         actor = new Actor();
+        updater = new PostFxUpdater(this, actor);
 
         main.setEnabled(true);
         main.enableBlending();
@@ -130,16 +133,7 @@ public class PostProcessController {
             update(OptionsMaster.getPostProcessingOptions());
 
         });
-        GuiEventManager.bind(GuiEventType.POST_PROCESSING , p-> {
-//            PostProcessingOptions options = (PostProcessingOptions) p.get();
-//            update(options);
-            bloom.setEnabled(true);
-            vignette.setEnabled(true);
-            blur.setEnabled(true);
-            bloom.applyCoef(1.5f);
-            vignette.applyCoef(1.5f);
-            blur.applyCoef(1.5f);
-        });
+
     }
 
     public static boolean isTestMode() {
@@ -243,6 +237,7 @@ public class PostProcessController {
             return;
 //        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(POST_PROCESSING_OPTIONS.TEST_ON))
             updater.update();
+        actor.act(delta);
         fluctuate(delta);
 
         //        main.postProcessor.addEffect(vignette);

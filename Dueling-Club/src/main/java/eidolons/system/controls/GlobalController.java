@@ -3,6 +3,10 @@ package eidolons.system.controls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -25,12 +29,15 @@ import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import eidolons.system.test.TestDialogMaster;
+import main.content.enums.GenericEnums;
+import main.entity.Ref;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
+import main.system.math.Formula;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -98,6 +105,10 @@ public class GlobalController implements Controller {
 
         switch (keyCode) {
             case Keys.F1:
+                if (ShadowMaster.isShadowAlive()) {
+                    EUtils.showInfoText("Cannot do this now");
+                    return false;
+                }
                 if (Eidolons.getGame().isBossFight()) {
                     EUtils.showInfoText("There is no time...");
                     return false;
@@ -106,10 +117,10 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F4:
                 if (CoreEngine.isIDE())
-                if (Eidolons.getScope() != SCOPE.MENU) {
-                    Eidolons.exitToMenu();
-                    return true;
-                }
+                    if (Eidolons.getScope() != SCOPE.MENU) {
+                        Eidolons.exitToMenu();
+                        return true;
+                    }
                 return false;
 
 
@@ -134,6 +145,10 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
+            case Keys.F6:
+                new Thread(() -> IGG_Launcher.introBriefing(), " thread").start();
+
+                return true;
             case Keys.F2:
                 DC_Game.game.getMetaMaster().getDialogueManager().test();
 
@@ -146,6 +161,14 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F4:
                 Eidolons.getMainHero().kill(Eidolons.getMainHero(), true, true);
+//                WeaveMaster.openWeave();
+                return true;
+            case Keys.F5:
+                new DealDamageEffect(new Formula("1000"), GenericEnums.DAMAGE_TYPE.PURE)
+                        .apply(Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()));
+
+//                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 0);
+                Eidolons.getMainHero().getGame().getManager().reset();
 //                WeaveMaster.openWeave();
                 return true;
             //            case Keys.F4: already implemented?

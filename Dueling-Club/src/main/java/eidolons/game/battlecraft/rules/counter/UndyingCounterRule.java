@@ -26,7 +26,8 @@ public class UndyingCounterRule extends TriggerRule {
         }
         unit.modifyCounter(UnitEnums.COUNTER.Undying, -1);
         unit.preventDeath();
-        unit.addProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
+//     TODO shouldn't be necessary?
+//      unit.addProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
         String msg=unit.getName() + " will not die yet... [" +
                 (n-1) +
                 "]";

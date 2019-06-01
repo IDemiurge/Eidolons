@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.meta.igg.story.IggActChoicePanel;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingData;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
@@ -70,7 +71,8 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         super.loadDone(param);
         if (CoreEngine.isLiteLaunch())
             return;
-
+        Assets.preloadUI();
+//        Assets.preloadHeroes();
         setLoadingAtlases(true);
         TextureCache.getInstance().loadAtlases();
         GdxMaster.setLoadingCursor();

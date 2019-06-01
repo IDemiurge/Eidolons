@@ -55,11 +55,11 @@ public class FileManager {
 
                 }
                 System.out.println("Failed to read " + file.getPath());
-                try {
-                    throw new RuntimeException();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+//              TODO wtf  try {
+//                    throw new RuntimeException();
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                }
                 return "";
             }
             if (!file.getPath().contains(PathFinder.getEnginePath()))

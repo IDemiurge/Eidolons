@@ -168,7 +168,8 @@ public class DC_StateManager extends StateManager {
     }
 
     private void resetAll() {
-        if (getGame().getDungeonMaster().getExplorationMaster() != null) {
+        if (getGame().getDungeonMaster().getExplorationMaster() != null)
+            if (!getGame().getDungeonMaster().getExplorationMaster().isToggling()) {
             getGame().getDungeonMaster().getExplorationMaster()
              .getAggroMaster().checkStatusUpdate();
         }

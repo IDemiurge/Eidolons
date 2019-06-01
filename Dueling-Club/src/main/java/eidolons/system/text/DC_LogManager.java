@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.entity.DataModel;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
@@ -50,6 +51,27 @@ public class DC_LogManager extends LogManager {
      * log and control its filtering?
      */
 
+    public void logCounterModified(DataModel entity, String name, int modValue) {
+        Integer value = entity.getCounter(name);
+        name = StringMaster.getWellFormattedString(name);
+        LOGGING_DETAIL_LEVEL detail = LOGGING_DETAIL_LEVEL.ESSENTIAL;
+        if (!entity.isMine()) {
+            if (entity instanceof BattleFieldObject) {
+                if (!((BattleFieldObject) entity).isDetectedByPlayer()) {
+                    detail = LOGGING_DETAIL_LEVEL.FULL;
+                }
+            }
+        }
+        if (modValue > 0) {
+            log(detail, modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "
+                    + name + "s: " + value);
+        } else {
+            modValue = Math.abs(modValue);
+            logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown() + ", total "
+                    + name + "s: " + value);
+        }
+
+    }
     public void logOrderFailed(Order order, Unit unit) {
         String entry = unit.getName() + " has failed to obey " + order.toString();
         entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
@@ -147,6 +169,8 @@ public class DC_LogManager extends LogManager {
         else
             entry = tryAddImage(entry);
 
+        entry = tryAddColor(entry);
+
         if (isSeparatorTest())
             GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, null);
         else
@@ -154,6 +178,12 @@ public class DC_LogManager extends LogManager {
 
         GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, entry);
 
+    }
+
+    private String tryAddColor(String entry) {
+
+
+        return entry;
     }
 
     private String checkAddSeparator(String entry) {

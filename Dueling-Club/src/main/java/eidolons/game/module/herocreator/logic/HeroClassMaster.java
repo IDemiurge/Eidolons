@@ -13,6 +13,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -135,7 +136,25 @@ public class HeroClassMaster {
         }
         return list;
     }
-    public static String getImgPath(Entity data) {
+    public static String getPerkInfo(Entity classType) {
+        List<ObjType> perks = PerkMaster.getAvailablePerks(Eidolons.getMainHero(), classType.getIntParam("circle"), classType, classType);
+        String s = "Available class perks: \n";
+        for (ObjType type : perks) {
+                s += type.getName() + ", ";
+        }
+        return s.substring(0, s.length()-2);
+    }
+    public static String getNextClassInfo(Entity classType) {
+        List<ObjType> classes = DataManager.getTypes(DC_TYPE.CLASSES);
+        String s = "Unlocked Classes: \n";
+        for (ObjType aClass : classes) {
+            if (aClass.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(classType.getName())) {
+                s +="   "+ aClass.getName() + "\n";
+            }
+        }
+        return s;
+    }
+        public static String getImgPath(Entity data) {
         String  path = "gen/class/64/" + data.getName() + ".png";
         if (TextureCache.isImage(path))
             return path;
@@ -172,5 +191,6 @@ public class HeroClassMaster {
         }
         return openSlotType;
     }
+
 
 }

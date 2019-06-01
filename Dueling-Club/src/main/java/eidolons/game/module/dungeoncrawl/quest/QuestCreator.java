@@ -142,7 +142,7 @@ public class QuestCreator extends QuestHandler {
     public static ObjType getPreyType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
         ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
-                DC_TYPE.UNITS);
+               C_OBJ_TYPE.BF_OBJ);
         if (custom != null) {
             return custom;
         }
@@ -206,12 +206,16 @@ public class QuestCreator extends QuestHandler {
         return DataManager.getType("Food", DC_TYPE.ITEMS);
     }
 
-    public static ObjType getOverlayObjType(DungeonQuest quest) {
+    public static Object getOverlayObjType(DungeonQuest quest) {
+        if (quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG).contains(";")) {
+            return quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG);
+        }
         ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
                 DC_TYPE.BF_OBJ);
         if (custom != null) {
             return custom;
         }
+
         return
                 DataManager.getType(BfObjEnums.BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE.getName(), DC_TYPE.BF_OBJ);
     }

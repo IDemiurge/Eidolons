@@ -83,7 +83,10 @@ public class RadialMenu extends Group implements Closable {
         if (CoreEngine.isLiteLaunch()) {
             return;
         }
-        background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath());
+        background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath(), false);
+        if (background == null) {
+            return;
+        }
         background.setFrameDuration(0.05f);
     }
 

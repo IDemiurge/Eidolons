@@ -21,6 +21,7 @@ import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.ScrollPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
@@ -196,6 +197,7 @@ public class OptionsMaster {
                     try {
                         float speed = gameplayOptions.getFloatValue(key) / 100;
                         ExplorationTimeMaster.setDefaultSpeed(speed);
+                        ExplorationTimeMaster.setSpeed(speed);
                         MacroTimeMaster.getInstance().setSpeed(speed);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
@@ -241,6 +243,9 @@ public class OptionsMaster {
                     retrieveEnumConst(SOUND_OPTION.class,
                             soundOptions.getValues().get(sub).toString());
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
+            if (key == null) {
+                continue;
+            }
             String value = soundOptions.getValue(key);
 
             if (!NumberUtils.isInteger(value)) {
@@ -325,6 +330,9 @@ public class OptionsMaster {
 
     private static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
         switch (key) {
+            case DEV:
+                CoreEngine.setDevEnabled(bool);
+                break;
             case LOGGING:
                 break;
             case LOG_TO_FILE:
@@ -332,11 +340,37 @@ public class OptionsMaster {
                 break;
             case RESET_COSTS:
                 break;
+            case LOG_MORE_INFO:
+                break;
+            case LOG_DEV_INFO:
+                break;
+            case MESSAGES_OFF:
+                break;
+            case INTRO_OFF:
+                break;
             case CACHE:
                 break;
             case PRECONSTRUCT:
                 break;
             case LAZY:
+                break;
+            case ActiveTestMode:
+                CoreEngine.setActiveTestMode(bool);
+                break;
+            case Ram_economy:
+                CoreEngine.setRamEconomy(bool);
+                break;
+            case levelTestMode:
+                CoreEngine.setLevelTestMode(bool);
+                break;
+            case contentTestMode:
+                CoreEngine.setContentTestMode(bool);
+                break;
+            case reverseExit:
+                CoreEngine.setReverseExit(bool);
+                break;
+            case KeyCheat:
+                CoreEngine.setKeyCheat(bool);
                 break;
         }
 
@@ -354,7 +388,7 @@ public class OptionsMaster {
                 Fluctuating.fluctuatingAlphaPeriodGlobal=(Integer.valueOf(value))/10;
                 break;
             case UI_VFX:
-                GuiVisualEffects.setOn(bool);
+                GuiVisualEffects.setOff(!bool);
                 break;
             case BRIGHTNESS:
                 GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
@@ -363,12 +397,17 @@ public class OptionsMaster {
                 GenericLauncher launcher = Eidolons.getLauncher();
                 launcher.setForegroundFPS(Integer.valueOf(value));
                 break;
-            case AMBIENCE:
+            case AMBIENCE_VFX:
                 ParticleManager.setAmbienceOn(bool);
+                break;
+            case LITE_MODE:
+                CoreEngine.setLiteLaunch(bool);
                 break;
             case FULLSCREEN:
                 if (Eidolons.getScope() == SCOPE.MENU)
                     Eidolons.setFullscreen(bool);
+                break;
+            case VIDEO:
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
                 ParticleManager.setAmbienceMoveOn(
@@ -376,6 +415,8 @@ public class OptionsMaster {
                 break;
             case RESOLUTION:
                 Eidolons.setResolution(value);
+                break;
+            case VSYNC:
                 break;
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
@@ -385,6 +426,21 @@ public class OptionsMaster {
                 break;
             case UI_SCALE:
                 GdxMaster.setUserUiScale(Float.valueOf(value) / 100);
+                break;
+            case SPRITE_CACHE_ON:
+                break;
+            case LIGHT_OVERLAYS_OFF:
+                break;
+            case UI_ATLAS:
+                break;
+            case FULL_ATLAS:
+                break;
+            case SHARD_VFX:
+                break;
+            case COLOR_TEXT_LOG:
+                LogPanel.setColorText(bool);
+                break;
+            case NO_BACKGROUND_SPRITES:
                 break;
         }
     }
@@ -450,6 +506,7 @@ public class OptionsMaster {
         applySoundOptions(getSoundOptions());
         applyGameplayOptions(getGameplayOptions());
         applyControlOptions(getControlOptions());
+        applySystemOptions(getSystemOptions());
 
         if (GdxMaster.isLwjglThread()) {
             PostProcessController.getInstance().update(getPostProcessingOptions());
@@ -598,10 +655,12 @@ public class OptionsMaster {
 
         autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
 
-        if (CoreEngine.isMapPreview()) {
-            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
-        }
+//        if (CoreEngine.isMapPreview()) {
+//            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
+//        }
         OptionsMaster.cacheOptions();
+
+        initFlags();
         try {
             applyOptions();
             initialized = true;
@@ -609,6 +668,12 @@ public class OptionsMaster {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
+    }
+
+    private static void initFlags() {
+        if (CoreEngine.isLiteLaunch()) {
+            getGraphicsOptions().setValue(GRAPHIC_OPTION.LITE_MODE, true);
+        }
     }
 
 

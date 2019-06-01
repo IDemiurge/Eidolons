@@ -33,6 +33,12 @@ public class LayeredActor extends GroupX {
         GdxMaster.center(overlay);
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        image.getContent().setSize(width, height);
+        super.setSize(width, height);
+    }
+
     protected float getDefaultWidth() {
         return 64;
     }

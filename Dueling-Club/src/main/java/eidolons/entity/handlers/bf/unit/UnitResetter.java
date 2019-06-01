@@ -488,10 +488,12 @@ public class UnitResetter extends EntityResetter<Unit> {
 
         if (game.isSimulation()) {
             resetSpells();
+            getEntity().setBeingReset(false);
             return;
         }
         if (getGame().getInventoryTransactionManager() != null) {
             if (getGame().getInventoryTransactionManager().isActive()) {
+                getEntity().setBeingReset(false);
                 return;
             }
         }

@@ -287,6 +287,7 @@ public abstract class DC_Obj extends MicroObj {
             ref.setID(KEYS.THIS, getId());
         }
         Effect effect = specialEffects.get(case_type);
+        getGame().getLogManager().log(getName() + ": special effect " + case_type.getName());
         effect.apply(ref);
     }
 

@@ -1,14 +1,17 @@
 package eidolons.ability;
 
+import eidolons.ability.conditions.special.SpecialRequirements;
 import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.containers.AbilityEffect;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
+import main.elements.conditions.standard.CustomCondition;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref;
 import main.game.logic.event.Event;
@@ -83,11 +86,12 @@ public class AddSpecialEffects extends MicroEffect {
 //                        new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
 //                );
             case SPELL_IMPACT:
-                conditions.add(new RefCondition(Ref.KEYS.SOURCE, Ref.KEYS.EVENT_TARGET));
                 conditions.add(new RefCondition(Ref.KEYS.SOURCE, Ref.KEYS.EVENT_SOURCE));
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_HIT:
+                targeting = new FixedTargeting(Ref.KEYS.SOURCE); //TODO igg demo fix
+                conditions.add(new RefCondition(Ref.KEYS.SOURCE, Ref.KEYS.EVENT_TARGET));
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_RESISTED:
@@ -96,14 +100,38 @@ public class AddSpecialEffects extends MicroEffect {
             case SPELL_RESIST:
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
+            case ON_TURN:
+                conditions.add(new CustomCondition() {
+                    @Override
+                    public boolean check(Ref ref) {
+                        return !ExplorationMaster.isExplorationOn();
+                    }
+                }) ;
+                event = Event.STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING;
+                //TODO facing change
+                break;
             case MOVE:
+                conditions.add(new CustomCondition() {
+                    @Override
+                    public boolean check(Ref ref) {
+                        return !ExplorationMaster.isExplorationOn();
+                    }
+                }) ;
+
                 event = Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING;
                 //TODO facing change
                 break;
-            case NEW_TURN:
+            case ON_COMBAT_END:
+                event = Event.STANDARD_EVENT_TYPE.COMBAT_ENDS;
+                break;
+            case ON_COMBAT_START:
+                event = Event.STANDARD_EVENT_TYPE.COMBAT_STARTS;
+                //TODO combat end / start
+                break;
+            case  NEW_TURN:
                 event = Event.STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED;
                 break;
-            case END_TURN:
+            case  END_TURN:
                 event = Event.STANDARD_EVENT_TYPE.ROUND_ENDS;
                 //TODO combat end / start
                 break;

@@ -378,7 +378,7 @@ public final class UnitEnums {
         FREEZING,
         SOAKED,
         ENSNARED,
-
+        REVEALED,
         PRONE,
         BROKEN,
         UNLOCKED,
@@ -406,6 +406,7 @@ public final class UnitEnums {
         // stuff...
 
         ;
+
 
 
         public String toString() {

@@ -2,6 +2,7 @@ package eidolons.entity.obj.hero;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -9,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
+import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
@@ -121,6 +123,8 @@ public class DC_Attributes {
             case WILLPOWER:
                 hero.modifyParameter(PARAMS.RESISTANCE, DC_Formulas.getResistanceFromWill(amount),
                  modifierKey);
+
+
                 hero.modifyParameter(PARAMS.SPIRIT, DC_Formulas.getSpiritFromWill(amount),
                  modifierKey);
                 hero.modifyParameter(PARAMS.STARTING_FOCUS, DC_Formulas
@@ -176,6 +180,17 @@ public class DC_Attributes {
         }
 
     }
+    private void applyPostAttribute() {
+        int n = hero.getIntParam(PARAMS.SPIRIT);
+        for (PARAMETER param : DC_ValueManager.VALUE_GROUP.ASTRAL_RESISTANCES.getParams()) {
+            hero.modifyParameter(param, n );
+        }
+        n = hero.getIntParam(PARAMS.FORTITUDE);
+        for (PARAMETER param : DC_ValueManager.VALUE_GROUP.ASTRAL_RESISTANCES.getParams()) {
+            hero.modifyParameter(param, n );
+        }
+//        hero.modifyParameter(param, n);
+    }
 
     public void apply() {
         // main.system.auxiliary.LogMaster.log(1, "before: " +
@@ -183,8 +198,12 @@ public class DC_Attributes {
         for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
             applyAttr(attr);
         }
+
+        applyPostAttribute();
+
         // main.system.auxiliary.LogMaster.log(1, "after: " +
         // hero.getModifierMaps());
     }
+
 
 }

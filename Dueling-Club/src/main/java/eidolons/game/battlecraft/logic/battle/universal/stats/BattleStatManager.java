@@ -112,7 +112,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
                     Integer n = getStatAmount(event, eventType);
                     MapMaster.addToIntegerMap(stats.getMainStatMap(), name, n);
                     MapMaster.addToIntegerMap(stats.getUnitStats(
-                     source).getGeneralStats(), name, n);
+                            source).getGeneralStats(), name, n);
 
                     if (source.isPlayerCharacter())
                         checkAddGlory(target, event, eventType, n);
@@ -123,7 +123,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
             if (event.getRef().getAmount() != null) {
                 if (event.getType() instanceof EventType) {
                     modifyUnitModStat(target.isEnemyTo(source.getOwner()), (event.getType()).getArg()
-                     , source, event.getRef().getAmount());
+                            , source, event.getRef().getAmount());
 
                 }
             }
@@ -131,6 +131,22 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
     }
 
     protected void checkAddGlory(Unit target, Event event, STANDARD_EVENT_TYPE eventType, Integer n) {
+        int glory = getGloryFromEvent(event, target);
+        if (glory != 0) {
+            stats.addGlory(glory);
+        }
+    }
+
+    private int getGloryFromEvent(Event event, Unit target) {
+        switch ((STANDARD_EVENT_TYPE) event.getType()) {
+            case UNIT_HAS_BEEN_KILLED:
+                return target.getPower() / 10;
+            case SECRET_FOUND:
+                return (100);
+                //quest
+            //special actions?
+        }
+        return 0;
     }
 
     protected String getStatName(STANDARD_EVENT_TYPE eventType) {
@@ -146,7 +162,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
 
     protected void unitDealtDamage(Unit source, Unit target, Integer amount) {
-        if (source==null || target==null ){
+        if (source == null || target == null) {
             return;
         }
         if (source.isEnemyTo(target.getOwner())) {
@@ -158,17 +174,17 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
         modifyUnitStat(COMBAT_STATS.DAMAGE_TAKEN, target, amount);
 
         modifyPlayerStat(PLAYER_STATS.ALLIES_DAMAGE_DEALT,
-         source.getOwner(), amount);
+                source.getOwner(), amount);
         modifyPlayerStat(PLAYER_STATS.ALLIES_DAMAGE_TAKEN,
-         target.getOwner(), amount);
+                target.getOwner(), amount);
     }
 
     protected void modifyUnitModStat(boolean hostile, String stat, Unit sourceObj, int mod) {
         PARAMETER p = ContentValsManager.getPARAM(stat);
         Map<PARAMETER, Integer> map = hostile ? stats.getUnitStats(sourceObj).getEnemyModMap()
-         : stats.getUnitStats(sourceObj).getAllyModMap();
+                : stats.getUnitStats(sourceObj).getAllyModMap();
         MapMaster.addToIntegerMap(
-         map, p, mod);
+                map, p, mod);
 
     }
 
@@ -178,34 +194,38 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
         modifyUnitStat(COMBAT_STATS.DIED, killed, 1);
         if (killed.isEnemyTo(killer.getOwner())) {
             modifyPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED,
-             killer.getOwner(), 1);
+                    killer.getOwner(), 1);
             modifyPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED_POWER,
-             killer.getOwner(), killed.calculatePower());
+                    killer.getOwner(), killed.calculatePower());
             modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED, killer, 1);
             modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED_POWER, killer, killed.calculatePower());
         }
 
         modifyPlayerStat(PLAYER_STATS.ALLIES_DIED,
-         killed.getOwner(), 1);
+                killed.getOwner(), 1);
         modifyPlayerStat(PLAYER_STATS.ALLIES_DIED_POWER,
-         killed.getOwner(), killed.calculatePower());
+                killed.getOwner(), killed.calculatePower());
         if (killed.isHero())
             modifyPlayerStat(PLAYER_STATS.ALLY_HEROES_DIED,
-             killed.getOwner(), 1);
+                    killed.getOwner(), 1);
     }
 
     protected void modifyUnitStat(STAT stat, Unit sourceObj, int mod) {
         MapMaster.addToIntegerMap(
-         stats.getUnitStats(sourceObj).getStatMap(), stat, mod);
+                stats.getUnitStats(sourceObj).getStatMap(), stat, mod);
     }
 
     protected void modifyPlayerStat(PLAYER_STATS stat, DC_Player owner, int i) {
         MapMaster.addToIntegerMap(
-         stats.getPlayerStats(owner).getStatsMap(), stat, i);
+                stats.getPlayerStats(owner).getStatsMap(), stat, i);
     }
 
     protected void stat(STAT stat, Obj sourceObj, Obj targetObj) {
 
+    }
+
+    public void addGlory(Integer glory) {
+        getStats().addGlory(glory);
     }
 
     public enum COMBAT_STATS implements STAT {
@@ -229,7 +249,8 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
         ALLIES_DAMAGE_DEALT,
         ALLY_HEROES_DIED,
         ALLY_ENEMIES_KILLED,
-        ALLY_ENEMIES_KILLED_POWER,;
+        ALLY_ENEMIES_KILLED_POWER,
+        ;
     }
 
     public enum STAT_WATCHER {

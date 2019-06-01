@@ -615,7 +615,9 @@ public class ConditionMaster {
                 c = new StringComparison(str1, str2, true);
                 break;
             case DISTANCE:
-                return new DistanceCondition(3, str1, str2);
+                return new DistanceCondition(2, str1, str2);
+            case SPOT:
+                return new DistanceCondition(1, str1, str2);
             case CAN_ACTIVATE:
                 c = new DynamicCondition("CostCondition;" + str1 + "");
             case ITEM:
@@ -660,8 +662,8 @@ public class ConditionMaster {
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
-        MAINHERO("dst", "dist", "DISTANCE"),
-        CAN_ACTIVATE("cost", "can activate", "can pay");
+        MAINHERO("pc", "mainHero", "MAIN_HERO"),
+        CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot");
 
         private String[] names;
 

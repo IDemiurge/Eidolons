@@ -115,7 +115,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (getGame().isDebugMode())
             return false;
         if (CoreEngine.isLiteLaunch()){
-            if (CoreEngine.isContentTestMode()) {
+            if (CoreEngine.isActiveTestMode()) {
                 return true;
             }
         }

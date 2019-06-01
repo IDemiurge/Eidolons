@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
@@ -15,6 +17,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
@@ -27,6 +30,7 @@ import main.system.EventCallbackParam;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.math.MathMaster;
+import main.system.text.TextParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +128,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
 //        return v.lerp(mouse, 0.3f);
 
 
-        float w =  getWidth();
+        float w = getWidth();
         float h = getHeight();
 
         float x = 0;
@@ -135,12 +139,12 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
 
         x = MathMaster.minMax(v.x,
                 w / 2, GdxMaster.getWidth() - w);
-        x = x- x / 6 -100;
+        x = x - x / 6 - 100;
         y = MathMaster.minMax(v.y,
                 h / 2, GdxMaster.getHeight() - h);
 
         v = //stageToLocalCoordinates
-                (new Vector2(x-100, y));
+                (new Vector2(x - 100, y));
         return v;
     }
 
@@ -212,14 +216,23 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
                 node.setShader(GrayscaleShader.getGrayscaleShader());
             Ref ref = dataSource.getEntity().getRef().getCopy();
             ref.setID(KEYS.INFO, type.getId());
-            node.addListener(new ValueTooltip(type.getName() +
-                            "\n" + type.getProperty(G_PROPS.TOOLTIP)
-                            + "\n" + type.getDescription(ref)
-                            + (isFree() ? "" :
-                            (valid
-                                    ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
-                                    : ("\n" + reason))
-                    )).getController()
+            ref.setID(KEYS.SOURCE, Eidolons.getMainHero().getId());
+
+            DC_FeatObj infoFeat = new DC_FeatObj(type, ref);
+            node.addListener(new DynamicTooltip(() -> {
+                        ref.setID(KEYS.SKILL, infoFeat.getId());
+                        ref.setID(KEYS.INFO, infoFeat.getId());
+
+                        String text = type.getProperty(G_PROPS.TOOLTIP);
+                        text += "\n" + TextParser.parse(type.getDescription( ),
+                                ref,  TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+
+                        text += (isFree() ? ""
+                                : (valid ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
+                                : ("\n" + reason)));
+                        return text;
+
+                    }).getController()
             );
 
             node.setCustomRadialMenu(this);
@@ -245,7 +258,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         if (activeNode == null) {
             return;
         }
-        float w =  getWidth();
+        float w = getWidth();
         float h = getHeight();
 
         float x = 0;
@@ -256,12 +269,12 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
 
         x = MathMaster.minMax(v.x,
                 w / 2, GdxMaster.getWidth() - w);
-        x = x- x / 6;
+        x = x - x / 6;
         y = MathMaster.minMax(v.y,
                 h / 2, GdxMaster.getHeight() - h);
 
         v = //stageToLocalCoordinates
-                (new Vector2(x-200, y));
+                (new Vector2(x - 200, y));
 
         ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
 

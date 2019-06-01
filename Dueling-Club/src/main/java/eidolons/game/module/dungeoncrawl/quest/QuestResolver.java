@@ -13,6 +13,7 @@ import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 
 /**
  * Created by JustMe on 10/5/2018.
@@ -50,7 +51,7 @@ public class QuestResolver  extends QuestHandler{
             case COMMON_ITEMS:
             case OBJECTS:
                 return new DynamicCondition<ObjType>(obj ->
-             (obj.getType()).equalsAsBaseType(quest.getArg()));
+             checkType(obj, quest));
             case SPECIAL_ITEM:
                 return new DynamicCondition<Obj>(obj ->
                  (obj).equals(quest.getArg()));
@@ -59,6 +60,21 @@ public class QuestResolver  extends QuestHandler{
 
         return null;
     }
+
+    private boolean checkType(ObjType obj, DungeonQuest quest) {
+        if ((obj.getType()).equalsAsBaseType(quest.getArg())) {
+            return true;
+        }
+        if (quest.getArg() instanceof String) {
+            for(String substring: ContainerUtils.openContainer( ((String) quest.getArg()))){
+                if ((obj.getType().getName()).toLowerCase().contains(substring.toLowerCase())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private Condition getCompletionConditions(DungeonQuest quest) {
        return new DynamicCondition<>(q -> {
             if (q.getNumberRequired() <=

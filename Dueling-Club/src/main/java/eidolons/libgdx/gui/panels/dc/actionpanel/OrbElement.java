@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
@@ -17,14 +16,12 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
@@ -134,11 +131,11 @@ public class OrbElement extends SuperActor {
         return iconRegion;
     }
 
-    public void updateValue(String val) {
-        calculateOrbFullness(val);
+    public boolean updateValue(String val) {
+        return calculateOrbFullness(val);
     }
 
-    private void calculateOrbFullness(String value) {
+    private boolean calculateOrbFullness(String value) {
         orbFullnessPrevious = orbFullness;
         label.setText(value);
 
@@ -163,6 +160,9 @@ public class OrbElement extends SuperActor {
         } else {
             orbFullness = 62;
         }
+        if (orbFullnessPrevious==orbFullness)
+            return false;
+
         if (!isAlphaFluctuationOn()) {
             if (lighting != null)
                 lighting.setColor(1, 1, 1, 0.5f + new Float(orbFullness) / 100);
@@ -170,6 +170,7 @@ public class OrbElement extends SuperActor {
             fluctuation = MathMaster.getMinMax(
              super.getAlphaFluctuationPerDelta() / (1 + orbFullness) * 30, 0.4f, 0.7f);
 
+        return true;
     }
 
 

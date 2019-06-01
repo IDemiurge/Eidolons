@@ -91,6 +91,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
 
     private Integer getMaxDebt() {
         int max = getEntity().getMaxDebt();
+        max+= max* getEntity().getIntParam(PARAMS.DEBT_MOD)/100;
         max+= max*(getEntity().getReputation())/100;
         return max;
     }
@@ -370,6 +371,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
     private void addInterest(Unit hero) {
         if (playerDebt >0){
             Integer interest = getEntity().getIntParam(MACRO_PARAMS.DEBT_INTEREST);
+            interest+= interest*(hero).getIntParam(PARAMS.INTEREST_MOD)/100;
             interest= interest*getCostMod(hero)/100;
             playerDebt = playerDebt *interest/100;
         }

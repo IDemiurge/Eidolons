@@ -6,6 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -150,10 +151,18 @@ public class ActionPanel extends GroupX {
     }
 
     private void showSpellbook() {
-        HqMaster.openHqPanel();
+        if (DC_Game.game!=null )
+        if (DC_Game.game.isStarted() )
+        {
+            HqMaster.openHqPanel();
+            HqMaster.tab("Spells");
+        }
     }
 
     private void showInventory() {
+
+        if (DC_Game.game!=null )
+            if (DC_Game.game.isStarted() )
         Eidolons.activateMainHeroAction(DC_ActionManager.USE_INVENTORY);
     }
 

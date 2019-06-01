@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
@@ -15,12 +16,14 @@ import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
+
     public IGG_DefeatHandler(MetaGameMaster master) {
         super(master);
     }
 
     @Override
     public boolean isEnded(boolean surrender, boolean end) {
+
         if (!isOn()) {
             return true;
         }
@@ -42,15 +45,17 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         }
 
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
-        WaitMaster.WAIT(1500);
-        TipMessageMaster.death();
+        WaitMaster.WAIT(1000);
+        if (!ShadowMaster.isShadowAlive()) {
+            if (!Eidolons.TUTORIAL_PATH ) {
+                TipMessageMaster.death();
+            }
+        }
         //play sound
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
+        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 1.5f);
         WaitMaster.WAIT(1100);
-        GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
-                getMetaGame().getMaster().getPartyManager().getChain().getTypes());
         //use the normal selection events?
-        String newHero = (String) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.HERO_SELECTION);
+        String newHero =  getPartyManager().chooseNextHero();
         if (newHero == null) {
             return true;
         }
@@ -65,7 +70,11 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         return false;
     }
 
+
     public boolean isNoLivesLeft() {
+        if ( Eidolons.TUTORIAL_PATH ) {
+            return false;
+        }
         return getMetaGame().getMaster().getPartyManager().getHeroChain().isFinished();
     }
 

@@ -20,8 +20,6 @@ import eidolons.game.battlecraft.rules.mechanics.CollisionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -274,6 +272,7 @@ public class DC_MovementManager implements MovementManager {
 //        if (IGG_HACK_MOVE)
 //            DungeonScreen.getInstance().getGridPanel().unitMoved(obj); //igg demo hack
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
+        game.getDungeonMaster().getTrapMaster().unitMoved(obj);
         return game.fireEvent(event);
     }
 

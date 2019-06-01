@@ -23,6 +23,7 @@ import main.system.math.Formula;
 public class QuestReward {
     String xpFormula = "";
     String goldFormula = "";
+    String gloryFormula = "";
     String reputationFormula = "";
     String rewardItems = "";
     private QUEST_REWARD_TYPE type;
@@ -46,7 +47,7 @@ public class QuestReward {
         if (type == null) {
             xp += 50;
             gold += 50;
-        } else
+        } else {
             switch (type) {
                 case ITEM:
                     break;
@@ -64,7 +65,14 @@ public class QuestReward {
                     break;
                 case RANDOM:
                     break;
+                case ANTI_GLORY:
+                    gloryFormula = "-450";
+                    break;
+                case GLORY:
+                    gloryFormula = "150";
+                    break;
             }
+        }
         if (level != null) {
             xp = Math.round(xp * level.factor);
             gold = Math.round(gold * level.factor);
@@ -115,6 +123,9 @@ public class QuestReward {
         }
         Integer xp = new Formula(xpFormula).getInt(hero.getRef());
         Integer gold = new Formula(goldFormula).getInt(hero.getRef());
+        Integer glory  = new Formula(gloryFormula).getInt(hero.getRef());
+
+        hero.getGame().getBattleMaster().getStatManager().addGlory(glory);
 
         if (!inTown)
             HeroLevelManager.addXp(hero, xp);

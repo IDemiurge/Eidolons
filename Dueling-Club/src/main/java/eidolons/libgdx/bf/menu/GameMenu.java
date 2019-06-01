@@ -104,6 +104,9 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected boolean isHidden(GAME_MENU_ITEM item) {
+        if (item== GAME_MENU_ITEM.BACK_TO_TOWN) {
+            return CoreEngine.isLiteLaunch();
+        }
         if (TownPanel.getActiveInstance() != null) {
             if (item == GAME_MENU_ITEM.MAP_INFO
             ) {
@@ -160,7 +163,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         SAVE(true),
         //        LOAD(true),
         RESUME,
-        CLICK_ME(QUICK_HELP, HERO_INFO, MANUAL),
+        INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),
         ABOUT(true), LAUNCH_GAME(true),
         MAIN_MENU(true),

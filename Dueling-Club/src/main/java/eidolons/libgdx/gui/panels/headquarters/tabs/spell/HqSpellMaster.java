@@ -4,7 +4,10 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.SpellActor.SPELL_OVERLAY;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.elements.conditions.RequirementsManager;
@@ -30,12 +33,16 @@ public class HqSpellMaster {
 
     public static void learnSpellEnVerbatim(Unit hero, Spell spell) {
         //        LibraryManager.addVerbatimSpell(hero, spell.getType());
+        Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
+        hero.modifyParameter(PARAMS.XP, - cost);
         hero.addProperty(true, PROPS.VERBATIM_SPELLS, spell.getName());
         spellsChanged(hero);
 
     }
 
     public static void learnSpell(Unit hero, Spell spell) {
+        Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
+        hero.modifyParameter(PARAMS.XP, - cost);
         hero.addProperty(true, PROPS.LEARNED_SPELLS, spell.getName());
         spellsChanged(hero);
     }
@@ -46,6 +53,7 @@ public class HqSpellMaster {
     }
 
     private static void spellsChanged(Unit hero) {
+
         hero.initSpells(true);
     }
 
@@ -69,7 +77,7 @@ public class HqSpellMaster {
     }
 
     public static boolean canLearn(Spell spell) {
-        return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell) == null;
+        return spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell) == null; //TODO igg demo hack
     }
 
     public static boolean canLearnEnVerbatim(Spell spell) {

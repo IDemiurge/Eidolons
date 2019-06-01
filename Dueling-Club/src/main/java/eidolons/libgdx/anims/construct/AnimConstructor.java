@@ -363,7 +363,7 @@ public class AnimConstructor {
                     return null;
             }
             SPELL_ANIMS template = getTemplateFromTargetMode(active.getTargetingMode());
-            return new SpellAnim(active, data, template);
+            return new SpellAnim(active, data, template, part);
         }
         return new ActionAnim(active, data);
     }

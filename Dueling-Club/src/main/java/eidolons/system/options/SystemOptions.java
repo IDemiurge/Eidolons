@@ -22,6 +22,7 @@ public class SystemOptions
     }
 
     public enum SYSTEM_OPTION implements Options.OPTION {
+        DEV(false),
         LOGGING(true),
         LOG_TO_FILE(true),
         RESET_COSTS(false),
@@ -35,7 +36,13 @@ public class SystemOptions
         PRECONSTRUCT,
 
         LAZY,
-        ;
+
+        ActiveTestMode(false),
+        Ram_economy(false),
+        levelTestMode(false),
+        contentTestMode(false),
+        reverseExit(false),
+        KeyCheat(false);
 
         boolean exclusive;
         Object[] options;

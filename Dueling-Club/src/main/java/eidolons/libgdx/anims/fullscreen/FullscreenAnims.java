@@ -11,11 +11,13 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
+import main.entity.obj.Obj;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -44,41 +46,36 @@ public class FullscreenAnims extends GroupX {
     List<SpriteAnimation> spriteList = new ArrayList<>();
 
     public FullscreenAnims() {
-        init();
+        if (!SPRITE_MODE)
+            init();
         GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
             Event e = (Event) p.get();
-            if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
-                if (
-                        e.getRef().getTargetObj() == Eidolons.getMainHero()) {
-                    FACING_DIRECTION facing = null;
-                    if (randomFacingMode) {
-                        facing = FacingMaster.getRandomFacing();
-                    } else
-                        facing = FacingMaster.getRelativeFacing(e.getRef().getSourceObj().getCoordinates(),
-                                e.getRef().getTargetObj().getCoordinates());
-
-                    FULLSCREEN_ANIM type = FULLSCREEN_ANIM.BLOOD;
-                    if (e.getRef().getDamageType() == GenericEnums.DAMAGE_TYPE.POISON) {
-                        type = FULLSCREEN_ANIM.POISON;
-                    }
-                    float intensity = RandomWizard.getRandomFloatBetween(0.15f, 0.35f);
-                    intensity +=
-                            e.getRef().getAmount() / e.getRef().getTargetObj().getIntParam(PARAMS.ENDURANCE);
-                    intensity +=
-                            e.getRef().getAmount() / e.getRef().getTargetObj().getIntParam(PARAMS.TOUGHNESS) / 2;
+            FULLSCREEN_ANIM type = getType(e);
+            if (type == null) {
+                return;
+            }
+            float intensity = getIntensity(e);
+            FACING_DIRECTION facing = getFacing(e);
+            Obj obj = e.getRef().getTargetObj();
+            if (obj.isDead()) {
+                obj = e.getRef().getSourceObj();
+            }
+            {
+                if (obj == Eidolons.getMainHero())
+                {
+                    SuperActor.BLENDING blending = getBlending(e.getType());
 
                     if (SPRITE_MODE) {
                         data = new FullscreenAnimDataSource(type, intensity,
-                                facing);
+                                facing, blending);
                         initAnim(data);
                     }
-
                     if (showingTimer > 0) {
                         data.intensity += intensity;
                         return;
                     }
                     data = new FullscreenAnimDataSource(type, intensity,
-                            facing);
+                            facing, blending);
                     delayTimer = DELAY;
                     showingTimer = getDuration() + delayTimer;
                 }
@@ -93,17 +90,73 @@ public class FullscreenAnims extends GroupX {
         });
     }
 
+    private FULLSCREEN_ANIM getType(Event e) {
+        FULLSCREEN_ANIM type = null;
+
+        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS)
+        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED)
+        {
+            return FULLSCREEN_ANIM.GATES;
+        }
+        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
+            type = FULLSCREEN_ANIM.BLOOD;
+            if (e.getRef().getDamageType() == GenericEnums.DAMAGE_TYPE.POISON) {
+                type = FULLSCREEN_ANIM.POISON;
+            }
+        }
+        return type;
+    }
+
+    private float getIntensity(Event e) {
+        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS) {
+            return 1;
+        }
+        float intensity = RandomWizard.getRandomFloatBetween(0.15f, 0.35f);
+
+        intensity +=
+                e.getRef().getAmount() / e.getRef().getTargetObj().getIntParam(PARAMS.ENDURANCE);
+        intensity +=
+                e.getRef().getAmount() / e.getRef().getTargetObj().getIntParam(PARAMS.TOUGHNESS) / 2;
+
+        return intensity;
+    }
+
+    private FACING_DIRECTION getFacing(Event e) {
+        FACING_DIRECTION facing;
+        if (randomFacingMode) {
+            facing = FacingMaster.getRandomFacing();
+        } else
+            facing = FacingMaster.getRelativeFacing(e.getRef().getSourceObj().getCoordinates(),
+                    e.getRef().getTargetObj().getCoordinates());
+
+        return facing;
+    }
+
+    private SuperActor.BLENDING getBlending(Event.EVENT_TYPE type) {
+        if (type == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS) {
+            return SuperActor.BLENDING.SCREEN;
+        }
+        return null;
+    }
+
 
     private void initAnim(FullscreenAnimDataSource dataSource) {
-        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(dataSource.type.getSpritePath());
+        String path = FileManager.getRandomFilePathVariant(
+                PathFinder.getImagePath()+
+                dataSource.type.getSpritePath(), ".txt");
+        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
+        if (sprite == null) {
+            return;
+        }
+        sprite.setBlending(dataSource.getBlending());
         float intensity = dataSource.intensity;
-        float alpha = RandomWizard.getRandomFloatBetween(intensity *2, intensity * 3);
+        float alpha = RandomWizard.getRandomFloatBetween(intensity * 2, intensity * 3);
         int fps = RandomWizard.getRandomIntBetween(10, 15);
         sprite.setFps(fps);
         sprite.setAlpha(1);
         //TODO
-        sprite.setX(GdxMaster.getWidth()/2);
-        sprite.setY(GdxMaster.getHeight()/2);
+        sprite.setX(GdxMaster.getWidth() / 2);
+        sprite.setY(GdxMaster.getHeight() / 2);
         spriteList.add(sprite);
     }
 
@@ -121,6 +174,7 @@ public class FullscreenAnims extends GroupX {
         super.draw(batch, parentAlpha);
     }
 
+
     @Override
     public void act(float delta) {
         if (SPRITE_MODE)
@@ -132,7 +186,9 @@ public class FullscreenAnims extends GroupX {
             delayTimer -= delta;
             return;
         }
-        show(data);
+
+        if (!SPRITE_MODE)
+            show(data);
         super.act(delta);
     }
 
@@ -190,11 +246,16 @@ public class FullscreenAnims extends GroupX {
         //        BLACK,
         BLOOD,
         POISON,
-        ;
+        GATES {
+            @Override
+            public String toString() {
+                return "short2";
+            }
+        };
         //        DAMAGE
 
         public String getSpritePath() {
-            return PathFinder.getSpritesPathNew() + "fullscreen/" + name() + ".txt";
+            return PathFinder.getSpritesPathNew() + "fullscreen/" + toString() + ".txt";
         }
     }
 }

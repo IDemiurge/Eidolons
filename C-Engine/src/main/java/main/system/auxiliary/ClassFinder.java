@@ -75,6 +75,7 @@ public class ClassFinder {
             while (e.hasMoreElements()) {
                 JarEntry je = e.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                  if (CoreEngine.isDebugLaunch())
                     System.out.println("Jar entry passed: " +je.getName());
                     continue;
                 }

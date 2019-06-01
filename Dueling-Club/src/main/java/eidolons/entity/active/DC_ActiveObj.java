@@ -640,6 +640,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isStandardAttack() {
+        if (getName().equalsIgnoreCase("Shield Bash"))
+        {
+            return true;
+        }
         return getChecker().isStandardAttack();
     }
 

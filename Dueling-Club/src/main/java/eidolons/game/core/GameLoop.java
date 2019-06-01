@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
@@ -426,6 +427,10 @@ public class GameLoop {
         }
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
         Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
+//        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
+//        IGG_XmlMaster.getEntrancesData()
+
+
         if (location.getMainExit() != null)
             if (location.getMainExit().getCoordinates().equals(c)) {
                 //check party

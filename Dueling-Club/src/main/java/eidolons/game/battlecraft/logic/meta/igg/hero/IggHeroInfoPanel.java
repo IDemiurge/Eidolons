@@ -13,6 +13,10 @@ public class IggHeroInfoPanel extends HeroInfoPanel  {
         super(item);
     }
 
+    @Override
+    public void layout() {
+        super.layout();
+    }
 
     @Override
     public void initStartButton(String text, Runnable runnable) {

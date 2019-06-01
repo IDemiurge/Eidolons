@@ -202,4 +202,12 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     public void setOnCancel(Runnable onCancel) {
         this.onCancel = onCancel;
     }
+
+    public Runnable getOnConfirm() {
+        return onConfirm;
+    }
+
+    public Runnable getOnCancel() {
+        return onCancel;
+    }
 }

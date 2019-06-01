@@ -33,8 +33,8 @@ public class BriefText extends TablePanelX {
         setBackground(NinePatchFactory.getHqDrawable());
         addActor(mainText = new LabelX());
         mainText.setStyle(StyleHolder.getSizedLabelStyle(
-                FontMaster.FONT.MAGIC, 21));
-        mainText.setWidth(width);
+                FontMaster.FONT.AVQ, 22));
+        mainText.setWidth(width*2);
 
         addActor(continueBtn = new SmartButton("Continue", StyleHolder.getTextButtonStyle(ButtonStyled.STD_BUTTON.MENU,
                 FontMaster.FONT.DARK, GdxColorMaster.getDefaultTextColor(), 20)));

@@ -30,6 +30,11 @@ public class DC_Cell extends DC_Obj implements Cell {
         return;
     }
 
+    @Override
+    public Coordinates getCoordinates() {
+        return super.getCoordinates();
+    }
+
     public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
         super(t, Player.NEUTRAL, game, ref);
         this.x = i;

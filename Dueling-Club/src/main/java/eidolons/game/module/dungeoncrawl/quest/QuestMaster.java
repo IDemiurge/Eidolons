@@ -1,5 +1,7 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
@@ -27,7 +29,7 @@ import java.util.Set;
  */
 public class QuestMaster extends MetaGameHandler {
 
-    public static final boolean TEST_MODE =CoreEngine.isIDE();// CoreEngine.isFastMode() && !CoreEngine.isFullFastMode();
+    public static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch();// CoreEngine.isFastMode() && !CoreEngine.isFullFastMode();
     public static final boolean ON = true;
 
     //    static {
@@ -40,6 +42,7 @@ public class QuestMaster extends MetaGameHandler {
     protected List<DungeonQuest> quests = new ArrayList<>();
     protected boolean started;
     protected Set<DungeonQuest> questsPool;
+
     public QuestMaster(MetaGameMaster master) {
         super(master);
         resolver = new QuestResolver(this);
@@ -50,25 +53,25 @@ public class QuestMaster extends MetaGameHandler {
 //            XML_Reader.readTypeFile(true, MACRO_OBJ_TYPES.QUEST);
 //        }
         GuiEventManager.bind(GuiEventType.QUEST_TAKEN,
-         p -> {
-             questTaken(p.get().toString());
-             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_TAKEN);
-         });
+                p -> {
+                    questTaken(p.get().toString());
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_TAKEN);
+                });
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED,
-         p -> {
-             if (p.get() == null) {
-                 questsCancelled();
-             } else
-                 questCancelled(p.get().toString());
+                p -> {
+                    if (p.get() == null) {
+                        questsCancelled();
+                    } else
+                        questCancelled(p.get().toString());
 
-             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_CANCELLED);
-         });
+                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_CANCELLED);
+                });
         GuiEventManager.bind(GuiEventType.QUESTS_UPDATE_REQUIRED,
-         p -> {
-             if (!started) {
-                 startedQuests();
-             } else updateQuests();
-         });
+                p -> {
+                    if (!started) {
+                        startedQuests();
+                    } else updateQuests();
+                });
     }
 
     public static final boolean isPrecreatedQuests() {
@@ -101,6 +104,10 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public void questTaken(String name) {
+        questTaken(name, false);
+    }
+
+    public void questTaken(String name, boolean notify) {
         ObjType type = DataManager.getType(name, MACRO_OBJ_TYPES.QUEST);
         DungeonQuest quest = null;
         if (isPrecreatedQuests())
@@ -110,16 +117,25 @@ public class QuestMaster extends MetaGameHandler {
                     break;
                 }
             }
-        else
+        if (quest == null) {
             quest = getCreator().create(type);
-
+        }
         quest.setStarted(true);
         quests.add(quest);
+        startQuests();
+        if (notify) {
+            String txt = type.getName() + StringMaster.NEW_LINE +
+                    StringMaster.NEW_LINE + quest.getProgressText() + StringMaster.NEW_LINE +
+                    quest.getDescription();
+            TipMessageMaster.tip(new TipMessageSource(txt, type.getImagePath(), "Onward!", false, () -> {
+            }));
+
+        }
     }
 
     public void updateQuests() {
         quests.forEach(quest ->
-         GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest));
+                GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest));
     }
 
     public void startQuests() {
@@ -130,8 +146,8 @@ public class QuestMaster extends MetaGameHandler {
 
     public void startedQuests() {
         quests.forEach(quest ->
-         GuiEventManager.trigger(GuiEventType.QUEST_STARTED, quest));
-        GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED );
+                GuiEventManager.trigger(GuiEventType.QUEST_STARTED, quest));
+        GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED);
         started = true;
     }
 
@@ -148,7 +164,7 @@ public class QuestMaster extends MetaGameHandler {
     public Set<ObjType> getQuestTypePool() {
         String filter = getQuestGroupFilter();
         Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
-         filter, MACRO_PROPS.QUEST_GROUP));
+                filter, MACRO_PROPS.QUEST_GROUP));
 
         pool.removeIf(q -> !checkQuestForLocation(q));
 
@@ -164,7 +180,7 @@ public class QuestMaster extends MetaGameHandler {
 //            ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getScenario()
 //        }
         QUEST_TYPE type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(
-         QUEST_TYPE.class, q.getProperty(MACRO_PROPS.QUEST_TYPE));
+                QUEST_TYPE.class, q.getProperty(MACRO_PROPS.QUEST_TYPE));
         switch (type) {
 
             case BOSS:
@@ -208,10 +224,10 @@ public class QuestMaster extends MetaGameHandler {
         questCancelled(quest.getTitle()); // just in case?..
         GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, quest.getTitle());
         GuiEventManager.trigger(GuiEventType.QUEST_COMPLETED, quest.getTitle());
-        GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED );
+        GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED);
         questsPool.remove(quest); //can't retake it
         updateQuests();
-        quest.getReward().award( Eidolons.getMainHero(), true);
+        quest.getReward().award(Eidolons.getMainHero(), true);
         quest.setRewardTaken(true);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_COMPLETED);
     }

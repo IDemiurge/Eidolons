@@ -5,6 +5,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualArticles.MANUAL_ARTICLE;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -51,6 +52,16 @@ public class ManualPanel extends SelectionPanel {
         }
 
         return list;
+    }
+
+    @Override
+    protected String getBackgroundSpritePath() {
+        return Sprites.BG_DEFAULT;
+    }
+
+    @Override
+    protected float getBgAlpha() {
+        return 0.8f;
     }
 
     private String getArticlesPath() {

@@ -9,6 +9,8 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
@@ -41,6 +43,9 @@ public abstract class SelectionPanel extends TablePanelX {
     protected Label title;
     protected Object data;
 
+    SpriteAnimation backgroundSprite;
+
+
     public SelectionPanel() {
         this(null);
     }
@@ -48,6 +53,7 @@ public abstract class SelectionPanel extends TablePanelX {
     public SelectionPanel(Object data) {
         this.data = data;
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
+        backgroundSprite= initBackgroundSprite();
         listPanel = createListPanel();
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
@@ -93,6 +99,26 @@ public abstract class SelectionPanel extends TablePanelX {
 
     }
 
+    protected SpriteAnimation initBackgroundSprite() {
+        if (getBackgroundSpritePath() == null) {
+            return null;
+        }
+        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath());
+        sprite.setFps(20);
+        sprite.setOffsetY(GdxMaster.getHeight()/2);
+        sprite.setOffsetX(GdxMaster.getWidth()/2);
+        sprite.setAlpha(getBgAlpha());
+        return sprite;
+    }
+
+    protected float getBgAlpha() {
+        return 1;
+    }
+
+    protected String getBackgroundSpritePath() {
+        return null ;
+    }
+
     protected boolean isListOnTheRight() {
         return false;
     }
@@ -117,11 +143,15 @@ public abstract class SelectionPanel extends TablePanelX {
     public void act(float delta) {
         super.act(delta);
         infoPanel.setDoneDisabled(isDoneDisabled());
-
+        if (backgroundSprite!=null )
+            backgroundSprite.act(delta);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (backgroundSprite!=null )
+            backgroundSprite.draw(batch);
+
         if (isShadersEnabled()) {
             super.draw(batch, 1);
             return;

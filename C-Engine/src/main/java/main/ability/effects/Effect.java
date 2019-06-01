@@ -164,6 +164,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         ON_CRIT_HIT,
         ON_DODGE,
         ON_SHIELD_BLOCK,
+        ON_SHIELD_BLOCK_SPELL,
         ON_PARRY,
 
         ON_CRIT_SELF,
@@ -188,9 +189,10 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         SPELL_RESIST,
 
         MOVE,
+        ON_TURN,
         NEW_TURN,
         END_TURN,
-        ;
+        ON_COMBAT_END, ON_COMBAT_START;
 
         private String name;
 

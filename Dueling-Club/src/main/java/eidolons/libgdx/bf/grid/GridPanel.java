@@ -194,12 +194,6 @@ public class GridPanel extends Group {
         if (Eidolons.BOSS_FIGHT) {
             return false;
         }
-        boolean v = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADD_SHARDS_ALWAYS);
-        if (v)
-            return true;
-        v = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADD_SHARDS_NEVER);
-        if (v)
-            return false;
 
         if (DC_Game.game.getDungeonMaster().getDungeonLevel() == null) {
             switch (DC_Game.game.getDungeonMaster().getDungeonLevel().getLocationType().getGroup()) {
@@ -327,7 +321,7 @@ public class GridPanel extends Group {
             suffix = hor ? "right" : "left";
             Image image = new Image(TextureCache.getOrCreateR(
                     StrPathBuilder.build(
-                            "ui", "bf", "gridBorder " +
+                            "ui", "cells", "bf", "gridBorder " +
                                     suffix +
                                     ".png")));
             addActor(image);
@@ -340,7 +334,7 @@ public class GridPanel extends Group {
             int i = vert ? 1 : -1;
             suffix = vert ? "up" : "down";
             Image image = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(
-                    "ui", "bf", "gridBorder " +
+                    "ui", "cells", "bf", "gridBorder " +
                             suffix +
                             ".png")));
             addActor(image);

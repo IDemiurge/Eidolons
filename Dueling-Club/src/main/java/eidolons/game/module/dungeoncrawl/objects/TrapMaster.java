@@ -3,39 +3,92 @@ package eidolons.game.module.dungeoncrawl.objects;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import main.entity.Entity;
+import main.game.bf.Coordinates;
 import main.game.bf.ZCoordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 
 import java.util.*;
 
-public class TrapMaster {
+public class TrapMaster extends DungeonHandler {
 
-    private static Map<ZCoordinates, Set<Trap>> trapMap = new HashMap<>();
+    private   Map< Coordinates, Trap> trapMap = new HashMap<>();
 
-    /*
-     *  dual obj - bfObj and itemObj
-     *  coordinates?
-     *  stealth level...
-     *
-     *
-     *
-     */
-    public static boolean unitMoves(Unit unit) {
+    public TrapMaster(DungeonMaster master) {
+        super(master);
+    }
+
+
+    public Trap createTrap(Dungeon dungeon, String name, Coordinates coordinates) {
+        return new Trap() {
+            @Override
+            public void trigger(Unit victim) {
+                if (name.contains(victim.getName())){
+                    return;
+                }
+                if (!victim.isPlayerCharacter())
+                    return;
+
+                TIP_MESSAGE tip =  new EnumMaster<TIP_MESSAGE>().
+                        retrieveEnumConst(TIP_MESSAGE.class, name);
+                TipMessageSource data=new TipMessageSource(tip.message, tip.img, "Onward!", false,
+                        ()-> {
+                            tip.run();
+                            victim.kill(victim, true, null );
+                            victim.getGame().getLoop().actionInput(null);
+                        });
+                TipMessageMaster.tip(data);
+            }
+        };
+        //how does death work with items?
+        /**
+         * Tutorial deaths should be special?
+         * Option to get back to lvl+1 heroes
+         */
+    }
+
+    public void initTraps(Dungeon dungeon) {
+        for (String s : dungeon.getCustomDataMap().keySet()) {
+            if (dungeon.getCustomDataMap().get(s).toLowerCase().contains("trap")) {
+                Coordinates c = new Coordinates(s);
+                trapMap.put(c,   createTrap(dungeon, dungeon.getCustomDataMap().get(s),
+                        c));
+            }
+        }
+    }
+    public   void unitMoved(Unit unit) {
+        Trap traps = trapMap.get(unit.getCoordinates());
+        if (traps != null) {
+//            for (Trap trap : traps) {
+            if (traps.isRemoveOnTrigger()){
+                trapMap.remove(unit.getCoordinates());
+            }
+                traps.trigger(unit);
+//            }
+        }
+    }
+
         // trajectory? some traps would trigger even if 'jumped over'
 //        List<DC_HeroObj> objects = unit.getGame().getPassableObjectsForCoordinate(
 //                unit.getCoordinates());
         // before finishing move()?
-        trapMap.get(unit.getCoordinates());
 
         // traps.add(obj);
-        return false;
-    }
+//        return result;
+//    }
 
-    public static void initTraps(Dungeon dungeon) {
-        // in corridors, on doors, on chests, on entrances
-        // this method can be run last... or I can init traps one at a time for
-        // each of those
-        int trapDangerPool = dungeon.getIntParam(PARAMS.BATTLE_SPIRIT);
+//    public static void initTraps(Dungeon dungeon) {
+    // in corridors, on doors, on chests, on entrances
+    // this method can be run last... or I can init traps one at a time for
+    // each of those
+//        int trapDangerPool = dungeon.getIntParam(PARAMS.BATTLE_SPIRIT);
 //        for (MapBlock b : dungeon.getPlan().getBlocks()) {
 //
 //            if (b.getType() == BLOCK_TYPE.CORRIDOR) {
@@ -49,27 +102,27 @@ public class TrapMaster {
 //            // Trap trap = new Trap(type, owner, game, ref);
 //
 //        }
-    }
+//    }
 
-    public static Set<Trap> getTraps(Unit unit) {
-        return trapMap.get(new ZCoordinates(unit.getCoordinates().x, unit.getCoordinates().y, unit
-         .getZ()));
-    }
-
-    public static List<Trap> getTrapsToDisarm(Unit unit) {
-        List<Trap> list = new ArrayList<>();
-        Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
-         unit.getCoordinates().y, unit.getZ()));
-        if (set == null) {
-            return list;
-        }
-        for (Trap trap : set) {
-            // if (t) //visible, disarmable
-            list.add(trap);
-        }
-
-        return list;
-    }
+//    public static Set<Trap> getTraps(Unit unit) {
+//        return trapMap.get(new ZCoordinates(unit.getCoordinates().x, unit.getCoordinates().y, unit
+//                .getZ()));
+//    }
+//
+//    public static List<Trap> getTrapsToDisarm(Unit unit) {
+//        List<Trap> list = new ArrayList<>();
+//        Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
+//                unit.getCoordinates().y, unit.getZ()));
+//        if (set == null) {
+//            return list;
+//        }
+//        for (Trap trap : set) {
+//            // if (t) //visible, disarmable
+//            list.add(trap);
+//        }
+//
+//        return list;
+//    }
 
     public static boolean checkTrapTriggers(Unit unit, Trap trap) {
         // by weight, by unit type...

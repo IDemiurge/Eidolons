@@ -7,7 +7,9 @@ import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.particles.ambi.ParticleManager;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
@@ -34,10 +36,12 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private ContainerMaster containerMaster;
     private InteractiveObjMaster interactiveMaster;
     private DungeonLevel dungeonLevel;
+    private TrapMaster trapMaster;
 
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
+        trapMaster = new TrapMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
         positioner = createPositioner();
@@ -70,13 +74,17 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         if (dungeonWrapper == null)
             dungeonWrapper = initDungeon();
         getBuilder().initLevel();
-
         //TODO remove this!
 
         if (dungeonWrapper == null) {
             dungeonWrapper = initDungeon();
             getBuilder().initLevel();
         }
+        getDungeonLevel().initUnitFacingMap(dungeonWrapper.getDungeon().getCustomDataMap());
+
+        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
+
+        trapMaster.initTraps(getDungeon());
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
 
@@ -86,7 +94,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         try {
             return initializer.initDungeon();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return dungeonWrapper;
     }
@@ -197,4 +205,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public void next() {
         dungeonWrapper = null;
     }
+
+    public TrapMaster getTrapMaster() {
+        return trapMaster;
+    }
+
 }

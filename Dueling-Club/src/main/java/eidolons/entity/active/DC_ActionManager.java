@@ -7,6 +7,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.FEATURE;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
@@ -552,7 +553,7 @@ public class DC_ActionManager implements ActionManager {
         if (!unit.isBfObj()) {
             actives.addAll(getStandardActions(unit));
         }
-        if (unit.isBoss()) {
+        if (unit.isBoss() ) {
 
         } else {
         addSpecialActions(unit, actives);
@@ -809,6 +810,10 @@ public class DC_ActionManager implements ActionManager {
         if (weapon == null) {
             return false;
         }
+
+        if (weapon.getName().contains("Battle Spear")) {
+            return true;
+        }
         if (weapon.isShield()) {
             if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BUCKLERS) {
                 if (unit.checkBool(GenericEnums.STD_BOOLS.BUCKLER_THROWER)) {
@@ -959,6 +964,10 @@ public class DC_ActionManager implements ActionManager {
                 actives.addAllCast(generatedSubactions);
                 break;
             case MODE:
+                if (unit == ShadowMaster.getShadowUnit()) {
+                    actions.add(unit.getAction("Shadow Step"));
+                    break;
+                }
                 actions.addAll(getObjTypes(modeObjTypes, unit));
                 break;
             case STANDARD:

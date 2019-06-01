@@ -77,4 +77,14 @@ public class EntityCheckMaster {
         }
         return type.checkProperty(G_PROPS.CLASSIFICATIONS, "Boss");
     }
+
+    public static boolean isImmaterial(Entity unit) {
+        if (unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName())) {
+            return true;
+        }
+        if (unit.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.WRAITH.getName())) {
+            return true;
+        }
+        return false;
+    }
 }

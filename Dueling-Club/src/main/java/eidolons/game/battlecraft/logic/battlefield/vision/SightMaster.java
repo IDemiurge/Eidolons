@@ -7,7 +7,9 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.entity.Ref;
@@ -293,6 +295,11 @@ public class SightMaster {
 
 
     protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, BattleFieldObject activeUnit) {
+        if (unit.checkStatus(UnitEnums.STATUS.REVEALED)) {
+            unit.removeStatus(UnitEnums.STATUS.REVEALED.toString());
+            return UNIT_VISION.IN_PLAIN_SIGHT;
+        }
+
         if (unit.isMine())
             if (activeUnit.isMine())
                 return UNIT_VISION.IN_PLAIN_SIGHT;
@@ -308,6 +315,11 @@ public class SightMaster {
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
+            if (ShadowMaster.getShadowUnit() == activeUnit) {
+                if (activeUnit.getCoordinates().dst_(unit.getCoordinates()) <= 5) {
+                    return UNIT_VISION.IN_SIGHT;
+                }
+            }
             if (isBlocked(unit, activeUnit)) {
                 return UNIT_VISION.BLOCKED;
             }
@@ -387,16 +399,16 @@ public class SightMaster {
         if (observer.isMine())
             status = getUnitVisionStatusPrivate(unit, observer);
         else {
-        if (ExplorationMaster.isExplorationOn() &&
-                master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-            status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
-        } else {
+            if (ExplorationMaster.isExplorationOn() &&
+                    master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
+                status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+            } else {
 //            status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
-            if (status == null) {
+                if (status == null) {
                     //final hack
-                status = getUnitVisionStatusPrivate(unit, observer);
+                    status = getUnitVisionStatusPrivate(unit, observer);
+                }
             }
-        }
         }
         unit.setUnitVisionStatus(status, observer);
     }

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.line;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
+import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.system.text.TextMaster;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.filesys.PathFinder;
@@ -59,6 +60,7 @@ public class DialogueLineFormatter {
 
             }
         }
+        //   global !
         String path =PathFinder.getDialoguesPath(TextMaster.getLocale())
          + dialogueTextPath;
         parseDocs(path);
@@ -169,4 +171,14 @@ public class DialogueLineFormatter {
     }
 
 
+    public static void createTutorialJournal() {
+        String contents=DIALOGUE_SEPARATOR+"tut\n";
+            String actor= "Memories"+ACTOR_SEPARATOR;
+        for (String message : TutorialManager.messages) {
+            contents+= LINE_SEPARATOR + actor + message + "\n";
+        }
+        FileManager.write(contents,PathFinder.getDialoguesPath(TextMaster.getLocale())
+                + dialogueTextPath+ "tutorial.txt");
+
+    }
 }

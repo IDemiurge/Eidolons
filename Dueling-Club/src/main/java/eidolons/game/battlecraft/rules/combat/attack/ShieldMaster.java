@@ -33,6 +33,8 @@ public class ShieldMaster {
 //        String path =
         TextureAtlas atlas = AnimMaster3d.getOrCreateAtlas(shield);
 
+//        shield.getAttackActions()
+        //bash
         Boolean proj = AnimMaster3d.getProjection(shield.getOwnerObj().getRef(), atk).bool;
         int i = RandomWizard.getRandomIndex(shield.getAttackActions());
         String name = AnimMaster3d.getAtlasFileKeyForAction(proj,

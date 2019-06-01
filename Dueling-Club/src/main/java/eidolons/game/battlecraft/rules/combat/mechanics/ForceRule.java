@@ -186,10 +186,9 @@ public class ForceRule {
         if (!(action.getRef().getTargetObj() instanceof BattleFieldObject)) {
             return;
         }
-        BattleFieldObject source = action.getOwnerUnit();
-        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
-        Damage dmg = getDamageObject(action, source, target);
-
+//        BattleFieldObject source = action.getOwnerUnit();
+//        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
+//        Damage dmg = getDamageObject(action, source, target);
         Effect effects = getForceEffects(action);
         if (effects != null) {
             action.addSpecialEffect(
@@ -215,9 +214,10 @@ public class ForceRule {
             //TODO igg demo hack - make it unique by class then
         }
 
-        if (dmg != null) {
-            action.addBonusDamage(action.isSpell() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ATTACK, dmg);
-        }
+        //TODO igg demo hack - source of doubling?
+//        if (dmg != null) {
+//            action.addBonusDamage(action.isSpell() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ATTACK, dmg);
+//        }
 
     }
 

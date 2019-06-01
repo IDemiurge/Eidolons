@@ -4,12 +4,14 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.FacingAdjuster;
 import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -20,9 +22,12 @@ import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.data.DataUnit;
+import main.system.data.DataUnitFactory;
 import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
@@ -41,8 +46,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String ENTRANCE_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ENTRANCE_NODE);
     public static final String EXIT_NODE = "Exits";
     public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
+    public static final String UNIT_FACING_NODE = "Named_Coordinate_Points";
     public static final String AI_GROUPS_NODE = StringMaster
-     .getWellFormattedString("ai groups node");
+            .getWellFormattedString("ai groups node");
     @Refactor
     private List<Node> nodeList;
     private Location location;
@@ -58,10 +64,10 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     @Override
     public Location buildDungeon(String path) {
-        location= super.buildDungeon(path);
+        location = super.buildDungeon(path);
         FauxDungeonLevel level = createFauxDungeonLevel(path, location);
         master.setDungeonLevel(level);
-        level.getVoidCoordinates().addAll(location.getDungeon(). getVoidCoordinates());
+        level.getVoidCoordinates().addAll(location.getDungeon().getVoidCoordinates());
 //        location.setEntranceData();
         return location;
     }
@@ -69,9 +75,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     private FauxDungeonLevel createFauxDungeonLevel(String path, Location location) {
         FauxDungeonLevel level = new FauxDungeonLevel(PathUtils.getLastPathSegment(path));
 
-        List<LevelZone> zones=    createFauxZones(location) ;
+        List<LevelZone> zones = createFauxZones(location);
         level.setZones(zones);
-        DungeonEnums.DUNGEON_STYLE mainStyle= DungeonEnums.DUNGEON_STYLE.Somber ;
+        DungeonEnums.DUNGEON_STYLE mainStyle = DungeonEnums.DUNGEON_STYLE.Somber;
 //        if (mainStyle != null) {
 //            for (LevelZone zone : level.getZones()) {
 //                if (zone.getStyle() == level.getMainStyle())
@@ -79,7 +85,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 //            }
 //            level.setMainStyle(mainStyle);
 //        }
-            level.setEntranceData(location.getEntranceData());
+        level.setEntranceData(location.getEntranceData());
         return level;
     }
 
@@ -89,17 +95,17 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         Integer w = location.getWidth();
         Integer h = location.getHeight();
         for (int i = 0; i < 2; i++) {
-        LevelZone zone = new LevelZone(i);
-            LevelBlock block=null;
+            LevelZone zone = new LevelZone(i);
+            LevelBlock block = null;
             zone.addBlock(block = new LevelBlock(zone));
 
-            List<Coordinates> coords =i>0?
-                    CoordinatesMaster.getCoordinatesWithin(w/2-1, w  ,
+            List<Coordinates> coords = i > 0 ?
+                    CoordinatesMaster.getCoordinatesWithin(w / 2 - 1, w,
                             -1, h)
-                    : CoordinatesMaster.getCoordinatesWithin( -1,  w/2 ,
+                    : CoordinatesMaster.getCoordinatesWithin(-1, w / 2,
                     -1, h);
             block.setCoordinatesList(coords);
-            block.setCoordinates(coords.get(coords.size()-1));
+            block.setCoordinates(coords.get(coords.size() - 1));
             zones.add(zone);
             zone.setStyle(DungeonEnums.DUNGEON_STYLE.Somber);
         }
@@ -121,19 +127,19 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
 
                 objectMap = // TODO BETTER IN TYPES?
-                  DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
+                        DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
                 // TODO encounters?
             } else {
                 // BLOCK TYPE
                 if (StringMaster.compareByChar(subNode.getNodeName(), BLOCK_TYPE_NODE)) {
                     BLOCK_TYPE type = new EnumMaster<BLOCK_TYPE>().retrieveEnumConst(
-                     BLOCK_TYPE.class, subNode.getTextContent());
+                            BLOCK_TYPE.class, subNode.getTextContent());
                     b.setType(type);
 
                 }
                 if (StringMaster.compareByChar(subNode.getNodeName(), ROOM_TYPE_NODE)) {
                     ROOM_TYPE type = new EnumMaster<ROOM_TYPE>().retrieveEnumConst(ROOM_TYPE.class,
-                     subNode.getTextContent());
+                            subNode.getTextContent());
                     b.setRoomType(type);
                 }
 
@@ -163,7 +169,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             processNode(n, getDungeon(), plan);
 
         }
-        if (CoreEngine.isIggDemo()){
+        if (CoreEngine.isIggDemo()) {
             location.setEntranceData(IGG_XmlMaster.getEntrancesData(path));
             location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
@@ -183,7 +189,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     @Override
     protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
-        if (StringMaster.compareByChar(n.getNodeName(), (ZONES_NODE))) {
+        if (StringMaster.compareByChar(n.getNodeName(), (UNIT_FACING_NODE))) {
+            dungeon.setUnitFacingMap(createUnitFacingMap(n.getTextContent()));
+        } else if (StringMaster.compareByChar(n.getNodeName(), (ZONES_NODE))) {
             try {
                 initZones(n, plan);
             } catch (Exception e) {
@@ -192,6 +200,16 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
         } else
             super.processNode(n, dungeon, plan);
+    }
+
+    private Map<Coordinates, FACING_DIRECTION> createUnitFacingMap(String textContent) {
+        Map<Coordinates, FACING_DIRECTION> map = new HashMap<>();
+
+        DataUnit<FACING_DIRECTION> data = new DataUnit<>(textContent);
+        for (String s : data.getValues().keySet()) {
+            map.put(new Coordinates(s), FacingMaster.getFacing(data.getValues().get(s)));
+        }
+        return map;
     }
 
     private MapZone createZone(DungeonPlan plan, int zoneId, Node zoneNode) {
@@ -218,7 +236,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             } catch (Exception e) {
                 //                main.system.ExceptionMaster.printStackTrace(e);
                 zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
-                 plan.getDungeon().getHeight());
+                        plan.getDungeon().getHeight());
             } // ++ add coord exceptions
             zoneId++;
             zones.add(zone);
@@ -263,7 +281,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
 
-
     // how to support more loose building for, say, natural caverns?
 
     public enum ROOM_TYPE {
@@ -276,15 +293,15 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         ENTRANCE_ROOM(15, 35),
         EXIT_ROOM(35, 15),
         SECRET_ROOM(15, 15, 1, 4, 3, 6),
-        OUTSIDE(60, 45, 3, 0, 4, 0 );
+        OUTSIDE(60, 45, 3, 0, 4, 0);
 
-        public static ROOM_TYPE[] mainRoomTypes={
-         THRONE_ROOM,
-         COMMON_ROOM,
-         TREASURE_ROOM,
-         DEATH_ROOM,
-         GUARD_ROOM,
-         SECRET_ROOM
+        public static ROOM_TYPE[] mainRoomTypes = {
+                THRONE_ROOM,
+                COMMON_ROOM,
+                TREASURE_ROOM,
+                DEATH_ROOM,
+                GUARD_ROOM,
+                SECRET_ROOM
         };
         private int heightMod;
         private int widthMod;

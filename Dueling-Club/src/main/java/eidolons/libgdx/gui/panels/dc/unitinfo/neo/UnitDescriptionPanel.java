@@ -32,13 +32,19 @@ public class UnitDescriptionPanel extends DescriptionPanel{
     }
     @Override
     protected void updateAct() {
-        HqHeroDataSource dataSource = (HqHeroDataSource) getUserObject();
-        String text =dataSource==null  ?"" : dataSource.getDescription();
-        if (text.isEmpty()) {
-            text = "There isn't anything else to be said  here.";
+        String text = null ;
+        if (getUserObject() instanceof String){
+            text = (String) getUserObject();
+        } else {
+            HqHeroDataSource dataSource = (HqHeroDataSource) getUserObject();
+            text =dataSource==null  ?"" : dataSource.getDescription();
         }
-        text = "I am too deeply depressed by the state of this panel.\n"+text;
-        setText(StringMaster.getStringXTimes(15, text));
+
+        if (text.isEmpty()) {
+            text = "There isn't anything else to be said here.";
+            text = "I am too deeply depressed by the state of this panel.\n"+text;
+        }
+        setText(text);
         super.updateAct();
     }
 

@@ -89,7 +89,7 @@ public class DC_Formulas {
     private static final float ACTS_DEX_MODIFIER = 0.2f;
     private static final float DEF_DEX_MODIFIER = 2;
 //    private static final int TOUGHNESS_WIL_MODIFIER = 5;
-    private static final int RES_WIL_MODIFIER = 1;
+    private static final float RES_WIL_MODIFIER = 0.5f;
     private static final int RES_FOC_MODIFIER = 1;
     private static final float SPIRIT_WIL_MODIFIER = 0.25f;
     private static final int ESS_WIS_MODIFIER = 5;

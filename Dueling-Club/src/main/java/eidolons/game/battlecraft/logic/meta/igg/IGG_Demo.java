@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
-import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -24,6 +24,9 @@ public class IGG_Demo {
             PARAMS.AXE_MASTERY,
             PARAMS.BLUNT_MASTERY,
             PARAMS.FIRE_MASTERY,
+            PARAMS.DISCIPLINE_MASTERY,
+            PARAMS.MEDITATION_MASTERY,
+            PARAMS.FIRE_MASTERY,
 //            PARAMS.ARMORER_MASTERY,
 //            PARAMS.MEDITATION_MASTERY,
     };
@@ -35,6 +38,8 @@ public class IGG_Demo {
             PARAMS.SHADOW_MASTERY,
             PARAMS.WITCHERY_MASTERY,
             PARAMS.STEALTH,
+            PARAMS.ITEM_MASTERY,
+            PARAMS.MEDITATION_MASTERY,
             PARAMS.DUAL_WIELDING_MASTERY
     };
     public static final PARAMETER[] HERO_NEW_MASTERY_DARK_ELF = {
@@ -43,7 +48,9 @@ public class IGG_Demo {
             PARAMS.MARKSMANSHIP_MASTERY,
             PARAMS.POLEARM_MASTERY,
             PARAMS.AXE_MASTERY,
-            PARAMS.BLUNT_MASTERY,
+            PARAMS.ITEM_MASTERY,
+            PARAMS.DISCIPLINE_MASTERY,
+            PARAMS.MEDITATION_MASTERY,
 //            PARAMS.ARMORER_MASTERY,
 //            PARAMS.MEDITATION_MASTERY,
     };
@@ -52,10 +59,11 @@ public class IGG_Demo {
             PARAMS.DUAL_WIELDING_MASTERY,
             PARAMS.POLEARM_MASTERY,
             PARAMS.BLADE_MASTERY,
-            PARAMS.MARKSMANSHIP_MASTERY,
-            PARAMS.ARMORER_MASTERY,
-//            PARAMS.DEFENSE_MASTERY,
-//            PARAMS.MOBILITY_MASTERY,
+            PARAMS.SAVAGE_MASTERY,
+            PARAMS.DEFENSE_MASTERY,
+            PARAMS.MOBILITY_MASTERY,
+            PARAMS.ITEM_MASTERY,
+            PARAMS.MEDITATION_MASTERY,
     };
     public static IGG_MISSION MISSION;
 
@@ -92,6 +100,21 @@ public class IGG_Demo {
                 return new ArrayList<>(Arrays.asList(IGG_Demo.HERO_NEW_MASTERY_HERO_GRIMBART));
         }
         return     new ArrayList<>() ;
+    }
+
+    public static Color getHeroColor(String name) {
+        switch (name) {
+            case IGG_Demo.HERO_GORR:
+                return Color.ORANGE;
+            case IGG_Demo.HERO_DARK_ELF:
+                return Color.PURPLE;
+            case IGG_Demo.HERO_RAINA:
+                return Color.YELLOW;
+            case IGG_Demo.HERO_GRIMBART:
+                return Color.CYAN;
+
+        }
+        return Color.CYAN;
     }
 
     public enum IGG_MISSION {

@@ -12,6 +12,16 @@ public class IdleAi extends AiBehavior {
     }
 
     @Override
+    protected boolean isTargetCoordinateValid() {
+        return true;
+    }
+
+    @Override
+    public Coordinates updatePreferredPosition() {
+        return getUnit().getOriginalCoordinates();
+    }
+
+    @Override
     public boolean update() {
         return super.update();
     }
@@ -20,6 +30,7 @@ public class IdleAi extends AiBehavior {
     public boolean isPositionValid(Coordinates c) {
         return true;
     }
+
 
     @Override
     protected boolean checkNeedsToUpdate() {

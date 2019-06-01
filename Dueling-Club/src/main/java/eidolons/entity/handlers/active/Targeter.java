@@ -117,7 +117,7 @@ public class Targeter extends ActiveHandler {
             }
         if (targetingMode == null) {
             targetingMode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(
-             TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
+                    TARGETING_MODE.class, getType().getProperty(G_PROPS.TARGETING_MODE));
         }
 
         if (targetingMode == null) {
@@ -144,7 +144,7 @@ public class Targeter extends ActiveHandler {
             return true;
         }
         Map<FACING_DIRECTION, Boolean> map = getTargetingAnyCache().get(
-         getOwnerObj().getCoordinates());
+                getOwnerObj().getCoordinates());
         if (map == null) {
             map = new HashMap<>();
             targetingAnyCache.put(getOwnerObj().getCoordinates(), map);
@@ -165,11 +165,12 @@ public class Targeter extends ActiveHandler {
     public boolean canBeTargeted(Integer id, boolean caching) {
         return canBeTargeted(id, caching, false);
     }
-        public boolean canBeTargeted(Integer id, boolean caching, boolean recursion) {
+
+    public boolean canBeTargeted(Integer id, boolean caching, boolean recursion) {
 
         Targeting targeting = getTargeting();
         Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
-         getOwnerObj().getCoordinates());
+                getOwnerObj().getCoordinates());
 
         if (map == null) {
             map = new HashMap<>();
@@ -187,18 +188,26 @@ public class Targeter extends ActiveHandler {
         }
         if (targeting == null) {
             // TODO ??
+
+
             if (getEntity().getActives().size() > 1) {
                 return true;
             }
-            if (!getEntity().getActives().isEmpty()) {
-                if (getEntity().getActives().get(0).getAbilities().getAbils().size() > 1) {
-                    return true;
+
+            targeting = TargetingMaster.findTargeting(getAction(), SelectiveTargeting.class);
+            if (targeting == null) {
+                if (!getEntity().getActives().isEmpty()) {
+                    if (getEntity().getActives().get(0).getAbilities().getAbils().size() > 1) {
+                        return true;
+                    }
                 }
+                if (recursion) {
+                    return false;
+                }
+
+                ActivesConstructor.constructActive(TARGETING_MODE.SINGLE, getEntity());
+                return canBeTargeted(id, caching, true);
             }
-            if (recursion)
-                return false;
-            ActivesConstructor.constructActive(TARGETING_MODE.SINGLE, getEntity());
-            return canBeTargeted(id, caching, true);
         }
         Ref REF = getEntity().getRef().getCopy();
         REF.setMatch(id);

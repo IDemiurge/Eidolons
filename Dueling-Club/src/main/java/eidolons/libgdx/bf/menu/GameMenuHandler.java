@@ -100,7 +100,7 @@ public class GameMenuHandler {
                 menu.openOptionsMenu();
                 //                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
                 return null;
-            case CLICK_ME:
+            case INFO:
                 break;
             case WEBSITE:
                 break;

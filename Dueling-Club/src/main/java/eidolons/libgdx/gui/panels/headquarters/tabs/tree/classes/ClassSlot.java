@@ -27,6 +27,13 @@ public class ClassSlot extends HtNode {
     }
 
     @Override
+    protected String getSpecialInfo() {
+        return
+                HeroClassMaster.getPerkInfo(getEntity()) + "\n" +
+                        HeroClassMaster.getNextClassInfo(getEntity());
+    }
+
+    @Override
     protected String getSlotTooltip() {
 //        Unlocked Class Trees:
 //        //check any is valid -> highlight
@@ -35,7 +42,7 @@ public class ClassSlot extends HtNode {
         String text = "Fill this slot with a Class Rank that you qualify for from an unlocked Class Tree";
         String sfx = ContainerUtils.construct("\n", getHero().getProperty(PROPS.FIRST_CLASS),
                 getHero().getProperty(PROPS.SECOND_CLASS), getHero().getProperty(PROPS.THIRD_CLASS));
-        return text+"\n" + sfx;
+        return text + "\n" + sfx;
     }
 
     @Override

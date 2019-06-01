@@ -44,11 +44,11 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
         for (int i = rank; i <= rank * 5; i++) {
             switch (rank) {
                 case 0:
-                    return "Beardless";
+                    return "Untested";
                 case 1:
-                    return "Ill-Starred";
+                    return "Beardless";
                 case 3:
-                    return "Forlorn";
+                    return "Ill-Starred";
                 case 6:
                     return "Disfavored";
                 case 10:
@@ -60,7 +60,7 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
                 case 35:
                     return "Warsworn";
                 case 52:
-                    return "Fighting Man";
+                    return "A Fighting Man";
                 case 86:
                     return "Sleepless Evil";
                 case 124:
@@ -73,11 +73,6 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
     @Override
     protected void checkAddGlory(Unit target, Event event, STANDARD_EVENT_TYPE eventType, Integer n) {
         super.checkAddGlory(target, event, eventType, n);
-        switch (eventType) {
-            case UNIT_HAS_BEEN_KILLED:
-                stats.addGlory(target.getPower() / 10);
-                break;
-        }
     }
 
 }

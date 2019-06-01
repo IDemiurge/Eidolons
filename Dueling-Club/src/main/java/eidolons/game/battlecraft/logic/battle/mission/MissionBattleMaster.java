@@ -11,12 +11,9 @@ import eidolons.game.core.game.DC_Game;
  */
 public class MissionBattleMaster extends BattleMaster<MissionBattle> {
 
-    CombatScriptExecutor scriptManager;
 
     public MissionBattleMaster(DC_Game game) {
         super(game);
-        scriptManager = createScriptManager();
-
     }
 
     public String getMissionResourceFolderPath() {
@@ -33,9 +30,6 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
         return new CombatScriptExecutor(this);
     }
 
-    public CombatScriptExecutor getScriptManager() {
-        return scriptManager;
-    }
 
     @Override
     protected MissionBattle createBattle() {

@@ -24,8 +24,8 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.2d";
-    public static final String VERSION_NAME = "Backer Demo";
+    public static final String VERSION = "0.9.3b";
+    public static final String VERSION_NAME = "IGG demo";//"Backer Demo";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
@@ -83,6 +83,11 @@ public class CoreEngine {
     private static boolean ruleTestMode;
     private static boolean levelTestMode;
     private static boolean selectHeroMode;
+    private static boolean debugLaunch;
+    private static boolean devEnabled;
+    private static boolean reverseExit;
+    private static boolean ramEconomy;
+    private static boolean keyCheat;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -606,5 +611,45 @@ public class CoreEngine {
 
     public static void setSelectHeroMode(boolean selectHeroMode) {
         CoreEngine.selectHeroMode = selectHeroMode;
+    }
+
+    public static boolean isDebugLaunch() {
+        return debugLaunch;
+    }
+
+    public static void setDebugLaunch(boolean debugLaunch) {
+        CoreEngine.debugLaunch = debugLaunch;
+    }
+
+    public static boolean isDevEnabled() {
+        return devEnabled || isIDE();
+    }
+
+    public static void setDevEnabled(boolean devEnabled) {
+        CoreEngine.devEnabled = devEnabled;
+    }
+
+    public static boolean isReverseExit() {
+        return reverseExit;
+    }
+
+    public static void setReverseExit(boolean reverseExit) {
+        CoreEngine.reverseExit = reverseExit;
+    }
+
+    public static boolean isRamEconomy() {
+        return ramEconomy;
+    }
+
+    public static void setRamEconomy(boolean ramEconomy) {
+        CoreEngine.ramEconomy = ramEconomy;
+    }
+
+    public static boolean isKeyCheat() {
+        return keyCheat;
+    }
+
+    public static void setKeyCheat(boolean keyCheat) {
+        CoreEngine.keyCheat = keyCheat;
     }
 }

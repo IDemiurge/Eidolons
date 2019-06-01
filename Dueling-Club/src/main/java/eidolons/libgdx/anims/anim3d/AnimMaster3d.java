@@ -74,7 +74,7 @@ public class AnimMaster3d {
             {"lance", "spear"},
             //     {"pike", "spear"},
             //     {"staff", "spear"},
-            //     {"battle staff", "spear"},
+                 {"battle spear", "lance"},
             //     {"scythe", "spear"},
             {"sickle", "hand axe"},
 
@@ -626,7 +626,9 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
-        if (CoreEngine.isLiteLaunch()) {
+        if (CoreEngine.isIDE())
+            if (!CoreEngine.isGraphicTestMode())
+                if (CoreEngine.isLiteLaunch()) {
             if (!Eidolons.BOSS_FIGHT)
                 return true;
         }

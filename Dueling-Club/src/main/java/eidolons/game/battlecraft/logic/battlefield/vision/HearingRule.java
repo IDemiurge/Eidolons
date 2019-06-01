@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -96,7 +97,7 @@ public class HearingRule implements ActionRule {
             boolean repeat = false;
             if (unit.isMine()) {
                 repeat = playerWasHeard;
-                logged = "You have been heard!";
+                logged = "You have been heard!" + StringMaster.wrapInParenthesis(unit.getIntParam("noise") + " Noise level");
                 DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, listener);
                 playerWasHeard = true;
             } else {
@@ -113,7 +114,7 @@ public class HearingRule implements ActionRule {
                     EUtils.showInfoText(logged);
                     if (RandomWizard.chance(89)) {
                         DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.WHAT, unit, 100, 0);
-                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.IDLE, listener);
+                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.IDLE, unit);
                     } else
                         DC_SoundMaster.playMoveSound(unit);
                     //TODO
@@ -139,7 +140,7 @@ public class HearingRule implements ActionRule {
     }
 
     private boolean isOn() {
-        return false;
+        return RuleKeeper.isRuleOn(RuleKeeper.RULE.HEARING);
     }
 
     @Override

@@ -1,9 +1,16 @@
 package eidolons.libgdx.gui.panels.dc.logpanel;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -15,10 +22,18 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DC_LogManager;
+import main.content.enums.GenericEnums;
+import main.data.ability.construct.VariableManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
+import main.system.launch.CoreEngine;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static main.system.GuiEventType.LOG_ENTRY_ADDED;
@@ -28,11 +43,18 @@ import static main.system.GuiEventType.LOG_ENTRY_ADDED;
  */
 public class LogPanel extends ScrollTextWrapper {
 
+    private static boolean colorText;
+
     public LogPanel() {
         super(310, 500);
         if (getCallbackEvent() != null)
             bind();
     }
+
+    public static void setColorText(boolean colorText) {
+        LogPanel.colorText = colorText;
+    }
+
 
     protected ScrollPanel<Message> createScrollPanel() {
         return new TextScroll() {
@@ -122,10 +144,14 @@ public class LogPanel extends ScrollTextWrapper {
                 image = parts[0];
                 text = parts[1];
             }
-
-            builder.addString(
-                    text,
-                    ColorManager.toStringForLog(ColorManager.GOLDEN_WHITE));
+            if (!isColoredTextOn()) {
+                builder.addString(text, ColorManager.toStringForLog(ColorManager.GOLDEN_WHITE));
+            } else {
+                List<Pair<String, Color>> pairs = getTextColorPairs(text);
+                for (Pair<String, Color> pair : pairs) {
+                    builder.addString(pair.getKey(), GdxColorMaster.toStringForLog(pair.getValue()));
+                }
+            }
 
             float imageOffset = 0;
             Image img = null;
@@ -157,6 +183,70 @@ public class LogPanel extends ScrollTextWrapper {
                 scrollPanel.addElement(toAdd).align(align).padLeft(28);
             }
         });
+    }
+
+    private boolean isColoredTextOn() {
+        return colorText;
+    }
+
+    private List<Pair<String, Color>> getTextColorPairs(String text) {
+        List<Pair<String, Color>> list = new ArrayList<>();
+
+        //damage types
+        /**
+         * critical
+         * enemy / ally
+         * player-color
+         */
+        String[] words = text.split(" ");
+        String previous = null;
+        for (String word : words) {
+
+            Color c = getColor(previous, word);
+            Pair<String, Color> pair = new ImmutablePair<>(word+" ", c);
+            list.add(pair);
+            previous = word;
+        }
+        return list;
+    }
+
+    private Color getColor(String previous, String word) {
+        switch (word) {
+            case "Glory":
+                return Color.ORANGE;
+            case "Torment":
+                return Color.PURPLE;
+        }
+        word = word.replace(".", "");
+        if (previous == null) {
+            previous = word;
+        } else
+        previous = previous.replace(".", "");
+        if (Eidolons.MAIN_HERO != null)
+        if (StringMaster.containsWord( Eidolons.MAIN_HERO.getName(), word)
+        ) {
+            if (CoreEngine.isIggDemoRunning()) {
+                return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
+            }
+            return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
+        }
+        for (Unit unit : AggroMaster.getLastAggroGroup()) {
+            if (StringMaster.containsWord(unit.getName(), (word))) {
+                return GdxColorMaster.lighter(GdxColorMaster.getColor(unit.getOwner().getFlagColor().getColor()));
+            }
+            //chck names
+        }
+        for (GenericEnums.DAMAGE_TYPE damage_type : GenericEnums.DAMAGE_TYPE.values()) {
+            if (word.startsWith("("))
+            if (word.endsWith(")"))
+            if (StringMaster.cropParenthesises(word).equalsIgnoreCase(damage_type.getName())){
+                return GdxColorMaster.getDamageTypeColor(damage_type);
+            }
+        }
+        if (previous.equalsIgnoreCase("something") || word.equalsIgnoreCase("something")) {
+            return GdxColorMaster.GREY;
+        }
+        return GdxColorMaster.PALE_GOLD;
     }
 
     protected GuiEventType getCallbackEvent() {

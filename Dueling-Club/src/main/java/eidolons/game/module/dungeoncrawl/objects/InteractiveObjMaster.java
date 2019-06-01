@@ -2,7 +2,6 @@ package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.ability.effects.oneshot.dialog.TownPortalEffect;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -10,11 +9,8 @@ import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.libgdx.texture.Images;
@@ -36,13 +32,11 @@ import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
-import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE.UNCONSCIOUS;
-
 /**
  * Created by JustMe on 10/10/2018.
  */
 public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
-    private   InscriptionMaster inscriptionMaster;
+    private InscriptionMaster inscriptionMaster;
 
     public InteractiveObjMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
@@ -50,18 +44,18 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
 
     public InscriptionMaster getInscriptionMaster() {
         if (inscriptionMaster == null) {
-        inscriptionMaster = new InscriptionMaster(
-                dungeonMaster.getDungeonLevel().getLevelName());
+            inscriptionMaster = new InscriptionMaster(
+                    dungeonMaster.getDungeonLevel().getLevelName());
         }
         return inscriptionMaster;
     }
 
     public static INTERACTIVE_OBJ_TYPE chooseTypeForInteractiveObj(ObjType type) {
-//        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
-//            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
-//        }
         if (type.getName().contains("Inscription")) {
             return INTERACTIVE_OBJ_TYPE.INSCRIPTION;
+        }
+        if (type.getName().contains("Fungi")) {
+            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
         if (type.getName().contains("Key")) {
             return INTERACTIVE_OBJ_TYPE.KEY;
@@ -73,6 +67,10 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             return INTERACTIVE_OBJ_TYPE.MAGE_CIRCLE;
         }
         if (type.getProperty(G_PROPS.BF_OBJECT_CLASS).contains("Consumable")) {
+            return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
+        }
+
+        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
             return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
         return INTERACTIVE_OBJ_TYPE.RUNE;
@@ -107,9 +105,10 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         Ref ref = obj.getRef();
         ref.setTarget(obj.getId());
         ref.setID(KEYS.ITEM, obj.getId());
-        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
-
         boolean off = obj.isOff();
+        if (!off)
+            obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
+
 //        if (off) {
 //            return;
 //        }
@@ -143,7 +142,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 pickup(obj, unit);
                 break;
         }
-        obj.setOff(!obj.isOff());
+        obj.setUsed(true);
 //        if (!off) {
 //            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_ON, obj);
 //        } else {
@@ -155,7 +154,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         String src = getInscriptionMaster().getTextForInscription(obj);
         //std tip with image?
         String image = src.split("|")[0];
-        String text =src;
+        String text = src;
         if (!TextureCache.isImage(image)) {
             image = Images.SPELLBOOK;
         } else {
@@ -163,7 +162,8 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         }
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 text, image, "Continue", false, () ->
-        {}));
+        {
+        }));
     }
 
     private boolean doSpecial(InteractiveObj obj, Unit unit) {

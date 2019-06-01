@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager.
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStats.BATTLE_STATS;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
 import main.data.XLinkedMap;
 import main.system.data.DataUnit;
 import main.system.datatypes.DequeImpl;
@@ -77,6 +78,10 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
     }
     public void addGlory(Integer glory) {
         this.glory += glory;
+        game.getLogManager().log(
+                "Glory " +
+                        (glory>0 ? "gained" : "lost") +
+                        ": " + glory + ", total " + this.glory);
     }
 
     public DequeImpl<Unit> getSlainSummonedAllies() {

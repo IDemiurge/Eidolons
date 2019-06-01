@@ -144,25 +144,27 @@ public class DC_CostsFactory {
         formula = new Formula(amount + "");
         var = false;
 
-        Cost cost = new CostImpl(new Payment(pay_param, formula) {
-            @Override
-            public boolean pay(Obj payee, Ref ref) {
-                if (add) {
-                    if (payee == Eidolons.getMainHero()) {
-                        payee.getGame().getLogManager().log(payee + "'s " +
-                                pay_param.getName() + " is now " +
-                                payee.getIntParam(PARAMS.FOCUS_FATIGUE));
-                    }
-                }
-                return super.pay(payee, ref);
-            }
-        }, cost_param){
-            @Override
-            public boolean canBePaid(Ref REF, boolean noAlt) {
-                return true;
-            }
+        Cost cost =
+                (pay_param != PARAMS.FOCUS_FATIGUE) ? new CostImpl(new Payment(pay_param, formula)) :
+                        new CostImpl(new Payment(pay_param, formula) {
+                            @Override
+                            public boolean pay(Obj payee, Ref ref) {
+                                if (add) {
+                                    if (payee == Eidolons.getMainHero()) {
+                                        payee.getGame().getLogManager().log(payee + "'s " +
+                                                pay_param.getName() + " is now " +
+                                                payee.getIntParam(PARAMS.FOCUS_FATIGUE));
+                                    }
+                                }
+                                return super.pay(payee, ref);
+                            }
+                        }, cost_param) {
+                            @Override
+                            public boolean canBePaid(Ref REF, boolean noAlt) {
+                                return true;
+                            }
 
-        };
+                        };
         cost.setVariable(var);
         return cost;
     }

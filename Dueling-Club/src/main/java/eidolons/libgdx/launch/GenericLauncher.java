@@ -146,6 +146,9 @@ public class GenericLauncher extends Game {
         conf.samples = 4;
         conf.fullscreen = false;
         fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
+        if (CoreEngine.isGraphicTestMode()) {
+            fullscreen = true;
+        }
         conf.foregroundFPS = FRAMERATE;
         if (!CoreEngine.isJar())
             conf.backgroundFPS = isStopOnInactive() ? 1 : FRAMERATE;

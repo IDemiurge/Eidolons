@@ -22,7 +22,7 @@ import main.system.auxiliary.data.ListMaster;
 
 public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     private static final String[] STD_PASSIVES_EXCEPTIONS = {UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE
-     .getName(),};
+            .getName(),};
 
     protected Unit hero;
 
@@ -64,11 +64,24 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     // }
     @Override
     public Coordinates getCoordinates() {
-        if (hero == null) {
-            return super.getCoordinates();
-        }
-        // Coordinates.get(0,0);
-        return hero.getCoordinates();
+//        if (hero == null) {
+//            setCoordinates(hero.getCoordinates(super.getCoordinates()));
+//        }
+//        return new Coordinates( hero.getCoordinates());TODO this is DANGEROUS
+        return super.getCoordinates();
+    }
+
+    @Override
+    public int getY  () {
+        if (getHero() == null)
+            return super.getY();
+        return getHero().getY();
+    }
+    @Override
+    public int getX() {
+        if (getHero() == null)
+            return super.getX();
+        return getHero().getX();
     }
 
     @Override

@@ -18,6 +18,7 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
+import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -54,6 +55,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -85,6 +87,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void toBase() {
         maxVisionDistance = 0;
         super.toBase();
+    }
+
+    @Override
+    public void setPassives(List<AbilityObj> passives) {
+        super.setPassives(passives);
+        passivesReady=true;
+        activatePassives();
     }
 
     public boolean isWall() {
@@ -141,15 +150,15 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (!quietly)
         if (CoreEngine.isIggDemoRunning())
             if (isPlayerCharacter()) {
-                if (!ShadowMaster.isShadowAlive()) {
+//                if (!ShadowMaster.isShadowAlive()) {
+//                    preventDeath();
+//                    return false;
+//                }
+                if (ShadowMaster.checkCheatDeath(this)) {
                     preventDeath();
                     return false;
-                }
-                if (ShadowMaster.checkCheatDeath()) {
-                    preventDeath();
-                    Eidolons.getGame().getLogManager().log(getName()+
-                            " cheats Death! The trick can only work once... ");
-                    return false;
+                } else {
+
                 }
             }
 
@@ -179,7 +188,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
                 }
             }
         }
-
 
         getGame().getManager().unitDies(this, (Obj) killer, leaveCorpse, quietly);
 

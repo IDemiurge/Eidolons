@@ -1,10 +1,12 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
+import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
+import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 
@@ -19,6 +21,7 @@ public abstract class BattleMaster<E extends Battle> {
     protected BattleConstructor constructor;
     protected BattleOutcomeManager outcomeManager;
     protected PlayerManager playerManager;
+    ScriptManager scriptManager;
     private DC_Game game;
 
     public BattleMaster(DC_Game game) {
@@ -30,7 +33,10 @@ public abstract class BattleMaster<E extends Battle> {
         this.constructor = createConstructor();
         this.outcomeManager = createOutcomeManager();
         this.playerManager = createPlayerManager();
+        scriptManager= createScriptManager();
     }
+
+    protected abstract ScriptManager createScriptManager();
 
     public void init() {
         playerManager.initializePlayers();
@@ -104,4 +110,7 @@ public abstract class BattleMaster<E extends Battle> {
         return game;
     }
 
+    public ScriptManager getScriptManager() {
+        return scriptManager;
+    }
 }

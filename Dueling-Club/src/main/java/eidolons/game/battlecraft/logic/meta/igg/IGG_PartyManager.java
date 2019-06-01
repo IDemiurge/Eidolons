@@ -7,12 +7,10 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
-import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
+import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
-import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -29,9 +27,9 @@ import java.util.List;
 
 public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
-
     private HeroChain chain;
     private ChainHero avatar;
+    private int deaths=0;
 
     public HeroChain getHeroChain() {
         return chain;
@@ -100,7 +98,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     public void respawn(String newHero) {
 //        avatar = chain.findHero(newHero);
-
+        deaths++;
         // TODO igg demo hack
 
         for (Unit unit : getGame().getUnits()) {
@@ -149,11 +147,11 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
     }
 
     private Coordinates getRespawnCoordinates(ObjType type) {
-        if (Eidolons.BOSS_FIGHT || Eidolons.TUTORIAL) {
-            Positioner.adjustCoordinate(type,
-            getParty().getLastHero().getCoordinates(), getParty().getLastHero().getFacing().flip());
+        if (Eidolons.BOSS_FIGHT || Eidolons.TUTORIAL_MISSION) {
+            return Positioner.adjustCoordinate(type,
+                    getParty().getLastHero().getCoordinates(), getParty().getLastHero().getFacing().flip());
         }
-        return  getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates();
+        return getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates();
     }
 
 
@@ -163,17 +161,28 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     @Override
     protected String chooseHero(List<String> members) {
-        if (CoreEngine.isIDE()){
-            if (!Eidolons.TUTORIAL) {
-                Collections.shuffle(members);
-            }
+        if (!Eidolons.TUTORIAL_MISSION) {
+            Collections.shuffle(members);
         }
-        if (!CoreEngine.isSelectHeroMode() || getMetaGame().getMissionIndex() > 0) {
-            return members.get(0);
+        if (CoreEngine.isLiteLaunch() || getMetaGame().getMissionIndex() == 0) {
+            return TutorialManager.NEXT_HERO;
         }
+//        if (getMetaGame().getMissionIndex()>0) {
+//            return selectedHero;
+//        }
         if (isWaitForGdx())
             WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
         return super.chooseHero(members);
+    }
+
+    public String chooseNextHero() {
+        if (!CoreEngine.isIDE())
+        if ( Eidolons.TUTORIAL_PATH || (Eidolons.TUTORIAL_MISSION&& deaths ==0)) {
+            return TutorialManager.nextHero();
+        }
+        GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
+                getMetaGame().getMaster().getPartyManager().getChain().getTypes());
+        return (String) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.HERO_SELECTION);
     }
 
     private boolean isWaitForGdx() {

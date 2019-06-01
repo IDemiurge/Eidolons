@@ -183,6 +183,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                 return toughness <= 0;
             }
             if (checkFallsUnconscious(unit)) {
+                if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_FALLING_UNCONSCIOUS, unit.getRef()).fire()) {
+                    return true;
+                }
                 fallUnconscious(unit);
                 return false;
             }

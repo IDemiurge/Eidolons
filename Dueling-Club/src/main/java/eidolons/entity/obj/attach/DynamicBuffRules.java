@@ -19,7 +19,7 @@ import main.system.images.ImageManager;
 
 import java.util.ArrayList;
 
-public class DynamicBuffRules  {
+public class DynamicBuffRules {
     DC_Game game;
 
     public DynamicBuffRules(DC_Game game) {
@@ -28,7 +28,7 @@ public class DynamicBuffRules  {
 
     public void checkBuffs(Unit unit) {
 //on top of buffRules?
-        for (BuffObj buff :     new ArrayList<>(unit.getBuffs())) {
+        for (BuffObj buff : new ArrayList<>(unit.getBuffs())) {
             if (buff.isDynamic()) {
                 buff.remove();
             }
@@ -39,7 +39,6 @@ public class DynamicBuffRules  {
                 addDynamicBuff("Shadow of Death", unit, ": " + sfx);
             }
         }
-
 
 
         if (unit.checkDualWielding()) {
@@ -69,10 +68,14 @@ public class DynamicBuffRules  {
 
     private void addSpecialEffectsBuff(Effect.SPECIAL_EFFECTS_CASE effectsCase, Effect effects, Unit unit) {
         String descr = "";
-        String name = effectsCase.getName()+ " effects: ";
+        String name = effectsCase.getName() + " effects: ";
         if (effects instanceof Effects) {
             for (Effect effect : ((Effects) effects)) {
-                descr += effect.getTooltip() + StringMaster.NEW_LINE;
+                try {
+                    descr += effect.getTooltip() + StringMaster.NEW_LINE;
+                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+                }
 
             }
         }
@@ -96,7 +99,7 @@ public class DynamicBuffRules  {
 
             case ON_CRIT:
             case ON_CRIT_HIT:
-                case ON_CRIT_SELF:
+            case ON_CRIT_SELF:
             case ON_CRIT_HIT_SELF:
                 return ImageManager.getDamageTypeImagePath(GenericEnums.DAMAGE_TYPE.PIERCING.getName(), true);
             case ON_DODGE:
@@ -121,7 +124,7 @@ public class DynamicBuffRules  {
                 return ImageManager.getDamageTypeImagePath(GenericEnums.DAMAGE_TYPE.MAGICAL.getName(), true);
             case SPELL_RESISTED:
             case SPELL_RESIST:
-            return ImageManager.getValueIconPath(PARAMS.RESISTANCE);
+                return ImageManager.getValueIconPath(PARAMS.RESISTANCE);
             case MOVE:
                 return ImageManager.getValueIconPath(PARAMS.MOBILITY_MASTERY);
             case NEW_TURN:
@@ -140,12 +143,13 @@ public class DynamicBuffRules  {
     }
 
     private BuffObj addDynamicBuff(String name, Unit unit, String suffx) {
-        return addDynamicBuff(name, unit, suffx, null  );
+        return addDynamicBuff(name, unit, suffx, null);
     }
+
     private BuffObj addDynamicBuff(String name, Unit unit, String variableSuffix, String description) {
 
         BuffObj buff = new DC_BuffObj(name, unit, 0);
-        if (description!=null )
+        if (description != null)
             buff.setDescription(description);
         if (!StringMaster.isEmpty(variableSuffix)) {
             buff.setName(name + " " + variableSuffix);
@@ -158,7 +162,7 @@ public class DynamicBuffRules  {
         unit.getGame().getManager().buffCreated(buff, unit);
 //        unit.addBuff(buff);
 
-            return buff;
+        return buff;
     }
 
 }

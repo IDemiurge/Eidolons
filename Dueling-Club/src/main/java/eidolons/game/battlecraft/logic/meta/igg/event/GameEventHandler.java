@@ -27,6 +27,11 @@ public class GameEventHandler extends MetaGameHandler {
 
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
+
+                case HERO_LEVEL_UP:
+                    TipMessageMaster.onEvent(event.getType());
+                    break;
+                case UNIT_IS_FALLING_UNCONSCIOUS:
                 case UNIT_IS_BEING_KILLED:
 //                    if (ShadowMaster.checkCheatDeath(event)) {
 //                        return false;

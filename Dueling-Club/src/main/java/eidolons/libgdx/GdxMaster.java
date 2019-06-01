@@ -460,6 +460,9 @@ public class GdxMaster {
     }
 
     public static   boolean isVisibleEffectively(Group a) {
+        if (a == null) {
+            return false;
+        }
         if (!a.isVisible())
             return false;
         for (Group group : GdxMaster.getAncestors(a )) {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
@@ -62,7 +63,7 @@ public abstract class HtNode extends DynamicLayeredActor {
     @Override
     public void disable() {
         super.disable();
-        sequentialDisabled= true;
+        sequentialDisabled = true;
     }
 
     protected boolean isImgOnTop() {
@@ -86,7 +87,6 @@ public abstract class HtNode extends DynamicLayeredActor {
     protected float getDefaultHeight() {
         return 64;
     }
-
 
 
     public void update(float delta) {
@@ -125,8 +125,7 @@ public abstract class HtNode extends DynamicLayeredActor {
         });
     }
 
-    protected abstract List<ObjType> createAvailable() ;
-
+    protected abstract List<ObjType> createAvailable();
 
 
     public float getPeriod() { // alt
@@ -144,30 +143,41 @@ public abstract class HtNode extends DynamicLayeredActor {
         Entity entity = getEntity();
         String name = getTextPrefix();
         String text = "";
-        if (entity != null && !HeroClassMaster.isDataAnOpenSlot(entity) ) {
+        if (entity != null && !HeroClassMaster.isDataAnOpenSlot(entity)) {
             name = entity.getName();
-            Ref ref = getHero().getRef().getCopy();
-            ref.setID(KEYS.SKILL, entity.getId());
-            ref.setID(KEYS.INFO, entity.getId());
+            text = getTooltipText();
+        } else {
+            text = getSlotTooltip();
 
-            text +=  entity.getProperty(G_PROPS.TOOLTIP);
-            text += "\n" + TextParser.parse(entity.getDescription(ref),
-                    ref, TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
-
-            if (!entity.getProperty(G_PROPS.LORE).isEmpty()) {
-            text += "\n" +"\n" + entity.getProperty(G_PROPS.LORE);
-            }
-        } else
-       {
-           text = getSlotTooltip();
-
-           if (sequentialDisabled)
-               text += "\n(Disabled: fill the previous slot!)";
+            if (sequentialDisabled)
+                text += "\n(Disabled: fill the previous slot!)";
         }
         ValueContainer container = new VerticalValueContainer(name, text);
         container.setNameAlignment(Align.center);
         container.setNameStyle(StyleHolder.getHqLabelStyle(19));
         return new ValueTooltip(container);
+    }
+
+    protected String getTooltipText() {
+        Entity entity = getEntity();
+        String text = "";
+        Ref ref = getHero().getRef().getCopy();
+        ref.setID(KEYS.SKILL, entity.getId());
+        ref.setID(KEYS.INFO, entity.getId());
+
+        text += entity.getProperty(G_PROPS.TOOLTIP);
+        text += "\n" + TextParser.parse(entity.getDescription(ref),
+                ref, TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+
+        if (!entity.getProperty(G_PROPS.LORE).isEmpty()) {
+            text += "\n" + "\n" + entity.getProperty(G_PROPS.LORE);
+        }
+        text+= "\n" +getSpecialInfo();
+        return text;
+    }
+
+    protected String getSpecialInfo() {
+        return "";
     }
 
     protected abstract String getSlotTooltip();
@@ -179,16 +189,13 @@ public abstract class HtNode extends DynamicLayeredActor {
     }
 
     protected void click() {
-//      TODO   HqMaster.filterContent(getAvailable());
+//      TODO   HqMaster.filterContent(isAvailable());
         if (ListMaster.isNotEmpty(getAvailable())) {
 
             SlotSelectionRadialMenu.setActiveNode(this);
             GuiEventManager.trigger(getSelectionEvent(), getAvailable(), tier, slot);
         } else {
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                    "Nothing available for this slot yet!",   Eidolons.getMainHero());
-//            GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT,
-//                    "Nothing available for this slot yet!");
+            EUtils.showInfoText("Nothing available for this slot yet!");
         }
     }
 

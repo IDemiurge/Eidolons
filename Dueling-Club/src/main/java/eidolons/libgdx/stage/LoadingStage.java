@@ -1,3 +1,4 @@
+
 package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,13 +18,17 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.text.TipMaster;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.ArrayMaster;
+import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 
@@ -38,6 +43,8 @@ public class LoadingStage extends Stage {
     private boolean engineInit = true;
     private Image fullscreenImage;
     private List<Ambience> fogList = new ArrayList<>();
+
+    Group vfxLayer;
     private Label missionName;
     private Label underText;
     private float counter = 0;
@@ -47,7 +54,7 @@ public class LoadingStage extends Stage {
         if (data.equals("Loading...")) {
             engineInit = true;
         }
-        underText = new Label(getBottonText(), StyleHolder.getHqLabelStyle(18));
+        underText = new Label(getBottonText(), StyleHolder.getHqLabelStyle(17));
 
         underText.addListener(TipMaster.getListener(underText));
         //TODO click to show next tip
@@ -80,8 +87,8 @@ public class LoadingStage extends Stage {
 //         + "(click to show next tip)";
         return "Eidolons: Netherflame v" + CoreEngine.VERSION + " [" +
                 CoreEngine.VERSION_NAME +
-                "] by Alexander Kamen   " +
-         "        ***      Found bugs? Contact me at @EiDemiurge and EidolonsGame@gmail.com";
+                "] by Alexander Kamen" +
+         "    ***  Found bugs? Contact me at @EiDemiurge & EidolonsGame@gmail.com";
     }
 
     public Label getUnderText() {
@@ -97,8 +104,22 @@ public class LoadingStage extends Stage {
                     continue;
                 }
 
-                int n = AmbienceDataSource.AMBIENCE_TEMPLATE.COLD.nightly.length;
-                VFX vfx = AmbienceDataSource.AMBIENCE_TEMPLATE.COLD.nightly[RandomWizard.getRandomInt(n)];
+                //local time?!
+                AMBIENCE_TEMPLATE template =
+                         new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
+                        new WeightMap<>().
+//                        chain(AMBIENCE_TEMPLATE.COLD, 10).
+                        chain(AMBIENCE_TEMPLATE.CAVE, 10).
+                        chain(AMBIENCE_TEMPLATE.DEEP_MIST, 10).
+                        chain(AMBIENCE_TEMPLATE.CRYPT , 10).
+                        getRandomByWeight().toString());
+
+                boolean night = TimeMaster.getTime()% (3600*24*1000) > 3600*12*1000;
+
+                VFX[] vfxes = night ? template.nightly : template.daily;
+
+                int n = vfxes.length;
+                VFX vfx = vfxes[RandomWizard.getRandomInt(n)];
 
                 Vector2 v = new Vector2(w, h);
                 Ambience fog = ParticleManager.addFogOn(v, vfx);

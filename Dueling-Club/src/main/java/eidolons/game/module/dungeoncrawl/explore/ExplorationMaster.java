@@ -29,6 +29,7 @@ public class ExplorationMaster {
     private ExplorationResetHandler resetter;
     private ExplorationActionHandler actionHandler;
     private AggroMaster aggroMaster;
+    private boolean toggling;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
@@ -96,7 +97,9 @@ public class ExplorationMaster {
         if (explorationOn == on)
             return;
         explorationOn = on;
+        toggling=true;
         explorationToggled();
+        toggling=false;
     }
 
     private ExplorerUnit createExplorerUnit(Party party) {
@@ -122,6 +125,7 @@ public class ExplorationMaster {
              : STD_SOUNDS.NEW__BATTLE_END2);
 
         } else {
+            game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_STARTS, new Ref(game)));
             game.getLogManager().logBattleStarts();
             if (AnimConstructor.isPreconstructEnemiesOnCombatStart())
                 AggroMaster.getLastAggroGroup().forEach(unit -> {
@@ -180,4 +184,11 @@ public class ExplorationMaster {
         return (ExploreGameLoop) game.getLoop();
     }
 
+    public boolean isToggling() {
+        return toggling;
+    }
+
+    public void setToggling(boolean toggling) {
+        this.toggling = toggling;
+    }
 }

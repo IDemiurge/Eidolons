@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
@@ -69,7 +71,8 @@ public class Eidolons {
     public static EidolonsGame mainGame;
     public static Application gdxApplication;
     public static boolean BOSS_FIGHT;
-    public static boolean TUTORIAL;
+    public static boolean TUTORIAL_MISSION;
+    public static boolean TUTORIAL_PATH;
     private static LwjglApplication application;
     private static String selectedMainHero;
     private static Unit mainHero;
@@ -176,6 +179,17 @@ public class Eidolons {
         if (fullscreen) {
             int width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
             int height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+            if (width>1920)
+            {
+                cannotFullscreen();
+                return;
+            }
+            if (width>1080)
+            {
+                cannotFullscreen();
+                return;
+            }
+
             GdxMaster.setWidth(width);
             GdxMaster.setHeight(LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getGraphics().setUndecorated(true);
@@ -195,6 +209,15 @@ public class Eidolons {
             getApplication().getGraphics().setUndecorated(false);
         }
         Eidolons.getApplication().getGraphics().setResizable(false);
+    }
+
+    private static void cannotFullscreen() {
+        EUtils.onConfirm(
+                "Sorry, cannot go fullscreen on your monitor, only 1920x1080 supported yet. ",
+                false, ()->{});
+
+//        TipMessageMaster.tip(new TipMessageSource("", "", "Carry On", false, ()->{}));
+
     }
 
     public static void setResolution(String value) {
@@ -366,17 +389,18 @@ public class Eidolons {
     }
 
     public static void onNonGdxThread(Runnable o) {
-        if (logicThreadBusy) {
+//        if (!logicThreadBusy) {
+//            SwingUtilities.invokeLater(new Runnable() {
+//                @Override
+//                public void run() {
+//                    logicThreadBusy = true;
+//                    o.run();
+//                    logicThreadBusy = false;
+//                }
+//            });
+//        } else
             new Thread(o, "single task thread " + customThreadsUsed++).start();
-        } else
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    logicThreadBusy = true;
-                    o.run();
-                    logicThreadBusy = false;
-                }
-            });
+
 
     }
 

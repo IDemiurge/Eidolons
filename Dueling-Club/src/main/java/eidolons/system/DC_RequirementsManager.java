@@ -9,10 +9,12 @@ import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -23,6 +25,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.elements.conditions.*;
+import main.elements.conditions.standard.ImpossibleCondition;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -121,6 +124,10 @@ public class DC_RequirementsManager implements RequirementsManager {
     @Override
     public Requirements getRequirements(Entity type, int mode) {
 
+        if (HqMaster.isDisabled(type)) {
+            Requirements req = new Requirements();
+            req.add(new Requirement(new ImpossibleCondition(), "Not available yet, sorry!"));
+        }
         Map<Entity, Requirements> map = getReqMap(mode);
         if (map != null) {
             if (map.get(type) != null) // TODO
@@ -160,6 +167,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                     break;
             }
         }
+
         if (req == null) {
             return null;
         }
@@ -457,10 +465,12 @@ public class DC_RequirementsManager implements RequirementsManager {
     public Requirements generateClassRequirements(Entity type, int mode) {
         // preCheck has class of this Base Type of equal or greater Circle
         // multi :
+
         if (mode == RANK_MODE) {
             return generateClassRankRequirements(type);
         }
         Requirements requirements = new Requirements();
+
 
         for (PARAMS mastery : DC_ContentValsManager.getMasteryParams()) {
             PARAMETER req = ContentValsManager.getReqParam(mastery);
@@ -697,7 +707,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     public Entity getHero() {
         if (hero == null) {
-            return CharacterCreator.getHero();
+            return Eidolons.getMainHero();
         }
         return hero;
     }

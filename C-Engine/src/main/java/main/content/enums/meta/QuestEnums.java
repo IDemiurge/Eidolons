@@ -31,6 +31,7 @@ public class QuestEnums {
         GOLD,
         MIXED,
         RANDOM,
+        GLORY, ANTI_GLORY,
 
     }
 

@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai.explore;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
@@ -36,7 +37,7 @@ public class AggroMaster extends ExplorationHandler {
 
     public static List<Unit> getAggroGroup() {
         if (getPlayerUnseenMode()) {
-            return     new ArrayList<>() ;
+            return new ArrayList<>();
         }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
@@ -56,9 +57,9 @@ public class AggroMaster extends ExplorationHandler {
             }
         }
 
-        if (ListMaster.isNotEmpty(list) ||ListMaster.isNotEmpty(lastAggroGroup))
+        if (ListMaster.isNotEmpty(list) || ListMaster.isNotEmpty(lastAggroGroup))
             main.system.auxiliary.log.LogMaster.log(1, "Aggro group: " + list +
-             "; last: " + lastAggroGroup);
+                    "; last: " + lastAggroGroup);
         if (!ExplorationMaster.isExplorationOn()) if (!list.isEmpty()) {
             logAggro(list);
         }
@@ -88,7 +89,7 @@ public class AggroMaster extends ExplorationHandler {
 
     public static Set<Unit> getAggroGroup(Unit hero) {
         Set<Unit> set =
-         new ConcurrentHashSet<>();
+                new ConcurrentHashSet<>();
         //        Analyzer.getEnemies(hero, false, false, false);
         //            if (ExplorationMaster.isExplorationOn())
 
@@ -100,16 +101,23 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (unit.isNamedUnit() ||unit.isBoss() || unit.getAI().isEngaged()) {
+            if (unit.isNamedUnit() || unit.isBoss()) {
                 set.add(unit);
                 newAggro = true;
-                unit.getAI().setEngaged(false);
+
             }
+
             if (isCriticalBreak(unit, hero))
                 continue;
-            if (PositionMaster.getExactDistance(hero, unit)>=
-                    3+unit.getAI().getEngagementDuration()+ unit.getSightRangeTowards(hero))
+            if (PositionMaster.getExactDistance(hero, unit) >=
+                    5 + unit.getAI().getEngagementDuration()//+ unit.getSightRangeTowards(hero)
+            )
                 continue;
+
+            if (unit.getAI().isEngaged()) {
+                set.add(unit);
+                newAggro = true;
+            }
             if (unit.getAI().getEngagementDuration() > 0) {
                 set.add(unit);
             }
@@ -128,18 +136,19 @@ public class AggroMaster extends ExplorationHandler {
         //recheck, 'cause there is a bug there somewhere
         int i = set.size();
         set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
-                ||unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()  ));
-        if (i!=set.size()){
-            main.system.auxiliary.log.LogMaster.log(1,"Gotcha aggro! " + i + " " + set );
+                || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
+        if (i != set.size()) {
+            main.system.auxiliary.log.LogMaster.log(1, "Gotcha aggro! " + i + " " + set);
         }
 
         for (Unit unit : set) {
+            unit.getAI().setEngaged(false); //TODO better place for it?
             if (unit.getAI().getGroup() != null) {
                 for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
                     if (newAggro) {
                         int duration = getEngagementDuration(sub.getAI());
-                        if (set.size()>2){
+                        if (set.size() > 2) {
                             sub.getAI().setEngagementDuration(duration); //debug
                         }
                         sub.getAI().setEngagementDuration(duration);
@@ -161,7 +170,7 @@ public class AggroMaster extends ExplorationHandler {
 //     TODO igg demo hack   if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
 //            max = 1.35f * max;
 //        }
-        if (unit.getCoordinates().dst_(hero.getCoordinates())>=max) {
+        if (unit.getCoordinates().dst_(hero.getCoordinates()) >= max) {
             return true;
         }
         return false;
@@ -173,7 +182,7 @@ public class AggroMaster extends ExplorationHandler {
 
     private static boolean checkAggro(Unit unit, Unit hero, double range) {
         return PositionMaster.getExactDistance(
-         hero.getCoordinates(), unit.getCoordinates()) <= range;
+                hero.getCoordinates(), unit.getCoordinates()) <= range;
     }
 
     public static boolean isAiTestOn() {
@@ -210,9 +219,11 @@ public class AggroMaster extends ExplorationHandler {
 
         if (targetObj.isMine()) {
             action.getOwnerUnit().
-             getAI().setEngaged(true);
+                    getAI().setEngaged(true);
         } else {
-            ((Unit) targetObj).getAI().setEngaged(true);
+            if (checkAttackEngages(action, targetObj)) {
+                ((Unit) targetObj).getAI().setEngaged(true);
+            }
             //                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
             //                                //TODO
             //                                if (g == null) {
@@ -225,6 +236,14 @@ public class AggroMaster extends ExplorationHandler {
 
 
         //        }
+    }
+
+    private static boolean checkAttackEngages(DC_ActiveObj action, Obj targetObj) {
+//       done already?
+//       if (action.getGame().getRules().getStealthRule().rollSpotted(action.getOwnerUnit(), targetObj, action)) {
+//            return true;
+//        }
+        return true;
     }
 
     public static int getBattleDifficulty() {

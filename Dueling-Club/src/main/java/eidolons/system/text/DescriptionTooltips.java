@@ -5,13 +5,16 @@ import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -27,31 +30,57 @@ public class DescriptionTooltips {
 
     private static final String VALUE_SEPARATOR = "==";
     private static final String NAME_SEPARATOR = ">>";
-    private static Map<VALUE, String> map;
+    private static Map<VALUE, String> paramMap;
+    private static Map<TIP_MESSAGE, String> tipMap;
+    private static Map<String, String>  loreMap;
+    private static Map<String, String> descrMap;
 
     public static void init() {
-        map = new HashMap<>();
+        paramMap = new HashMap<>();
+        tipMap = new HashMap<>();
+        loreMap = new HashMap<>();
+        descrMap = new HashMap<>();
 
         String path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/values.txt";
         String source = FileManager.readFile(
                 path);
-        parseSource(source);
+        parseSource(source,true);
 
         path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/attributes.txt";
         source = FileManager.readFile(path);
         if (source.isEmpty()) {
             source = compileAndReadSource(path, DC_ContentValsManager.getAttributes());
         }
-        parseSource(source);
+        parseSource(source,true);
 
         path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/masteries.txt";
         source = FileManager.readFile(path);
         if (source.isEmpty()) {
             source = compileAndReadSource(path, DC_ContentValsManager.getMasteries());
         }
-        parseSource(source);
+        parseSource(source,true);
+
+        path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/messages.txt";
+        source = FileManager.readFile(path);
+        parseSource(source,false);
 
 
+        path= StrPathBuilder.build(PathFinder.getTextPath(),
+                TextMaster.getLocale(), "info", "heroes", "igg");
+        source = FileManager.readFile(path+"/heroes info.txt");
+        parseSource(source,descrMap,false);
+
+        path= StrPathBuilder.build(PathFinder.getTextPath(),
+                TextMaster.getLocale(), "info", "heroes", "igg");
+        source = FileManager.readFile(path+"/heroes.txt");
+        parseSource(source, loreMap, false);
+
+        /**
+         * quests
+         *
+         *
+         *
+         */
     }
 
     private static String compileAndReadSource(String path, List<PARAMETER> vals) {
@@ -72,15 +101,48 @@ public class DescriptionTooltips {
         return DescriptionMaster.getDescription(p);
     }
 
-    private static void parseSource(String source) {
+    public static Map<VALUE, String> getParamMap() {
+        return paramMap;
+    }
+
+    public static Map<TIP_MESSAGE, String> getTipMap() {
+        return tipMap;
+    }
+
+    public static Map<String, String> getLoreMap() {
+        return loreMap;
+    }
+
+    public static Map<String, String> getDescrMap() {
+        return descrMap;
+    }
+
+    private static void parseSource(String source, boolean paramOrTip) {
+        parseSource(source, null, paramOrTip);
+    }
+        private static void parseSource(String source, Map map, boolean paramOrTip) {
         for (String item : source.split(VALUE_SEPARATOR)) {
             if (!item.contains(NAME_SEPARATOR)) {
                 continue;
             }
             String name = item.split(NAME_SEPARATOR)[0].trim();
             String value = item.split(NAME_SEPARATOR)[1].trim();
-            VALUE val = ContentValsManager.getValueByDisplayedName(name);
-            map.put(val, value);
+            if (paramOrTip) {
+                VALUE val = ContentValsManager.getValueByDisplayedName(name);
+                paramMap.put(val, value);
+            } else {
+
+                TIP_MESSAGE tip = new EnumMaster<TIP_MESSAGE>().retrieveEnumConst(TIP_MESSAGE.class, name);
+                if ( map != null){
+                        map.put(name, value);
+                    continue;
+                }
+                if (tip == null) {
+                    continue;
+                }
+                tipMap.put(tip, value);
+                tip.message = value;
+            }
 
         }
     }
@@ -107,10 +169,10 @@ public class DescriptionTooltips {
     }
 
     public static String tooltip(PARAMETER value, Unit hero) {
-        if (map == null) {
+        if (paramMap == null) {
             init();
         }
-        return value.getDisplayedName() + StringMaster.NEW_LINE + map.get(ContentValsManager.getBaseParameterFromCurrent(value))
+        return value.getDisplayedName() + StringMaster.NEW_LINE + paramMap.get(ContentValsManager.getBaseParameterFromCurrent(value))
                 + getSpecialForHero(value, hero);
     }
 

@@ -544,6 +544,8 @@ public class HqDataMaster {
                 //                CharacterCreator.getHeroManager().removeContainerItem(hero, spell);
                 break;
         }
+        reset();
+        hero.initSpells(true);
     }
 
     protected void reset() {

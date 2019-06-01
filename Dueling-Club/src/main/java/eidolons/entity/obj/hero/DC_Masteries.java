@@ -55,6 +55,10 @@ public class DC_Masteries {
                 break;
 
             }
+            case MARKSMANSHIP_MASTERY:
+
+                boostParameter(amount, PARAMS.THROW_ATTACK_MOD, MOD.MODIFY_BY_CONST);
+                break;
             case LEADERSHIP_MASTERY: {
                 // boostParameter((amount), PARAMS.BATTLE_SPIRIT,
                 // MODVAL_TYPE.MODIFY_BY_CONST);

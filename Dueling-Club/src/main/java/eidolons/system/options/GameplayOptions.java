@@ -65,7 +65,9 @@ static {
         SEQUENTIAL_RNG(false),
         PREGENERATED_RNG_LEVELS(true),
         LOG_LENGTH_LIMIT(500, 50, 1500),
-        LIMIT_LOG_LENGTH(false);
+        LIMIT_LOG_LENGTH(false),
+        DEATH_SHADOW_OFF(false)
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;

@@ -164,7 +164,7 @@ public class AttackAnim extends ActionAnim {
     @Override
     public void start() {
         sprites.clear();
-        sprites.add(SpriteAnimationFactory.getSpriteAnimation(getTexturePath(), true));
+        sprites.add(SpriteAnimationFactory.getSpriteAnimation(true, getTexturePath()));
         super.start();
         add();
     }

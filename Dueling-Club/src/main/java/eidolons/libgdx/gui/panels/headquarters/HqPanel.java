@@ -94,7 +94,7 @@ public class HqPanel extends TablePanel implements Blocking {
     }
 
     public HqPanel() {
-        setSize(GDX.size(1880), GDX.size(1080));
+        setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
     }
 
     public void init() {
@@ -104,11 +104,13 @@ public class HqPanel extends TablePanel implements Blocking {
                 return; //really?
             }
         if (!CoreEngine.isLiteLaunch()) {
-            bgSprite = SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+            bgSprite = SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT, false);
+            if (bgSprite != null) {
             bgSprite.setAlpha(0.4f);
             bgSprite.setFrameDuration(0.1f);
             bgSprite.setOffsetX(GdxMaster.getWidth() / 2);
             bgSprite.setOffsetY(GdxMaster.getHeight() / 2);
+            }
         }
         initialized = true;
 //        setBackground(NinePatchFactory.getHqDrawable());
@@ -280,10 +282,10 @@ public class HqPanel extends TablePanel implements Blocking {
         HqPanel.setActiveInstance(this);
         getStageWithClosable().openClosable(this);
         ToolTipManager.setTooltipPanel(tooltipPanel);
-        hqTabs.tabSelected("Class");
-        hqTabs.tabSelected("Class");
-        hqTabs.tabSelected("Class");
-        hqTabs.tabSelected("Class");///aaaaaaaaaaaaa the default pos won't fix
+//        hqTabs.tabSelected("Class");
+//        hqTabs.tabSelected("Class");
+//        hqTabs.tabSelected("Class");
+//        hqTabs.tabSelected("Class");///aaaaaaaaaaaaa the default pos won't fix
     }
 
     @Override

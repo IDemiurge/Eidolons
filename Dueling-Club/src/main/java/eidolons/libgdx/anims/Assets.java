@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
@@ -121,24 +122,29 @@ public class Assets {
         EmitterPools.init(get().getManager());
 
         if (isPreloadUI()){
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL);
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH);
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON);
-            SpriteAnimationFactory.getSpriteAnimation(IGG_Images.getBackground());
-             //locks
-            // blood
-            //boss
+            preloadUI();
         }
 
         if (isPreloadHeroes()){
-
-        } else {
-            SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPathNew()
-                    + "unit/" + Eidolons.getMainHero().getName() + ".txt");
-
+            preloadHeroes();
         }
 
         return result;
+    }
+
+    public static void preloadHeroes() {
+        SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPathNew()
+                + "unit/" + Eidolons.getMainHero().getName() + ".txt", false);
+    }
+
+    public static void preloadUI() {
+        SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL, false);
+        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH, false);
+        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON, false);
+        SpriteAnimationFactory.getSpriteAnimation(IGG_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), false);
+        //locks
+        // blood
+        //boss
     }
 
     private static boolean isPreloadUI() {

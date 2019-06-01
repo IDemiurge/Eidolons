@@ -30,7 +30,7 @@ public class HqTabs extends TabbedPanel<HqElement> implements HqActor {
         addTab(new ClassTreeTab(), HQ_TAB.Class.name());
         addTab(new HqInvTab(), HQ_TAB.Items.name());
         addTab(new HqSpellTab(), HQ_TAB.Spells.name());
-        resetCheckedTab();
+//        resetCheckedTab();
 
     }
 
@@ -41,15 +41,26 @@ public class HqTabs extends TabbedPanel<HqElement> implements HqActor {
 
     @Override
     public HqHeroDataSource getUserObject() {
-        //        setSize(460, 832);
+                setSize(460, 832);
         return (HqHeroDataSource) super.getUserObject();
     }
 
     @Override
     public void setUserObject(Object userObject) {
-        //        setSize(460, 832);
+                setSize(460, 832);
+        if (getUserObject() == null) {
+            super.setUserObject(userObject);
+            tabsToNamesMap.values().forEach(tab -> tab.setUserObject(userObject));
+            tabSelected(HQ_TAB.Class.name());
+            return;
+        }
         super.setUserObject(userObject);
         tabsToNamesMap.values().forEach(tab -> tab.setUserObject(userObject));
+    }
+
+    @Override
+    public void tabSelected(String tabName) {
+        super.tabSelected(tabName);
     }
 
     public enum HQ_TAB {

@@ -99,7 +99,11 @@ public class Anim extends Group implements Animation {
     protected float speedMod = 1;
 
     public Anim(Entity active, AnimData params) {
+        this(active, params, null);
+    }
+    public Anim(Entity active, AnimData params, ANIM_PART part) {
         data = params;
+        this.part = part;
         this.active = active;
         if (active == null) {
             ref = new Ref();

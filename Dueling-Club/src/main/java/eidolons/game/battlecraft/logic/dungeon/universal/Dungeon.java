@@ -41,6 +41,7 @@ public class Dungeon extends LightweightEntity {
     private String levelFilePath;
     private LOCATION_TYPE dungeonSubtype;
     private Collection<Coordinates> voidCoordinates;
+    private Map<String, String> customDataMap;
 
     /*
      * Encounters Levels Rewards Loot
@@ -243,8 +244,7 @@ public class Dungeon extends LightweightEntity {
                     getProperty(PROPS.COORDINATE_POINTS));
             c = Coordinates.get(spawnPoints.get(i));
         } else {
-            Map<String, String> map = new DataUnitFactory(true).
-                    deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
+            Map<String, String> map =getCustomDataMap();
             String string = map.get(arg);
             if (string == null) {
                 //find
@@ -297,6 +297,15 @@ public class Dungeon extends LightweightEntity {
         }
         return voidCoordinates;
     }
+
+    public Map<String, String> getCustomDataMap() {
+        if (customDataMap == null) {
+            customDataMap= new DataUnitFactory(true).
+                    deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
+        }
+        return customDataMap;
+    }
+
 
     public enum POINTS {
         CENTER_SPAWN,
