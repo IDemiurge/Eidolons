@@ -1,15 +1,12 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
-import main.system.auxiliary.StringMaster;
 
 public class DialogueView extends TablePanelX implements Scene {
     //    private final TablePanelX<T> textArea;
@@ -94,6 +91,8 @@ public class DialogueView extends TablePanelX implements Scene {
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
         scroll.append(data.getMessage(), active.getActorName(), active.getActorImage());
+        scroll.scrollPane.setScrollPercentY(1);
+        scroll.scrollPane.setScrollY(getHeight());
         //TODO info about fx! "Gain 50 xp"
 
         initResponses(data);
@@ -162,9 +161,15 @@ public class DialogueView extends TablePanelX implements Scene {
     }
 
 
-    private void respond(String option, int index) {
+    public void playOut() {
+        while( respond(SpeechDataSource.DEFAULT_RESPONSE, 0, false)){
+        }
+    }
+        private boolean respond(String option, int index) {
+            return   respond(option, index, true);
+        }
+        private boolean respond(String option, int index, boolean allowFinish) {
         if (container != null) {
-
 //            container.respond(option);
             ActorDataSource actor = getSpeakerActor();
             if (!option.equalsIgnoreCase(SpeechDataSource.DEFAULT_RESPONSE))
@@ -178,9 +183,12 @@ public class DialogueView extends TablePanelX implements Scene {
             SpeechDataSource next =
                     handler.lineSpoken(getUserObject().speech, index);
             if (next == null) {
-                container.next();
+                if (allowFinish)
+                    container.next();
+                return false;
             } else {
                 update(next);
+                return true;
             }
 //            if (actor.isMe()){
 //                getUserObject().
@@ -188,7 +196,8 @@ public class DialogueView extends TablePanelX implements Scene {
 //            }
         }
 
-    }
+            return false;
+        }
 
     public boolean isDone() {
         return done;

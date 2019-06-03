@@ -374,7 +374,7 @@ public class ConditionMaster {
         return toConditions(condition).preCheck(ref);
     }
 
-    public static Condition toConditions(String string) {
+    public static Conditions toConditions(String string) {
         Conditions conditions = new Conditions();
         for (String conditionString :
                 ContainerUtils.openContainer(string, StringMaster.AND)) {

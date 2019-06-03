@@ -13,6 +13,7 @@ import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
+import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
@@ -71,6 +72,9 @@ public class DynamicBuffRules {
         String name = effectsCase.getName() + " effects: ";
         if (effects instanceof Effects) {
             for (Effect effect : ((Effects) effects)) {
+                if (effect.getRef() == null) {
+                    effect.setRef(new Ref()); //TODO
+                }
                 try {
                     descr += effect.getTooltip() + StringMaster.NEW_LINE;
                 } catch (Exception e) {

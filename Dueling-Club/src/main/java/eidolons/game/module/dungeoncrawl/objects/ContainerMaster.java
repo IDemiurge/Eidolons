@@ -648,11 +648,12 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         } else
             main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
 
-        contents = checkSpecialContents(contents, obj);
+        if (!CoreEngine.isIggDemo())
+            contents = checkSpecialContents(contents, obj);
 
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
-            int foodChance=Math.min(25, gold * 3);
+            int foodChance = Math.min(25, gold * 3);
             MathMaster.addFactor(foodChance, Eidolons.getMainHero().getIntParam(PARAMS.FORAGING));
 
             if (RandomWizard.chance(foodChance)) {

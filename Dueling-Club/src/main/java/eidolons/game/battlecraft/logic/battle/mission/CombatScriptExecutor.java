@@ -17,6 +17,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -173,13 +174,19 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     }
 
     private boolean doQuest(boolean tip, Ref ref, String[] args) {
-
+        if (!ExplorationMaster.isExplorationOn()) {
+            return false;
+        }
         if (args.length == 1) {
             getMaster().getMetaMaster().getQuestMaster().questTaken(args[0], true);
             return true;
         }
         if (tip) {
-            doCustomTip(ref, new String[]{args[0]});
+            try {
+                doCustomTip(ref, new String[]{args[0]});
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             doQuest(false, ref, new String[]{args[1]});
             return true;
         }

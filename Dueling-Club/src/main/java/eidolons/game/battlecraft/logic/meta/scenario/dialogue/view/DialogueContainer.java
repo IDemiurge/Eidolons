@@ -24,8 +24,21 @@ public class DialogueContainer extends TablePanelX {
     private List<Scene> toPlay;
     private Iterator<Scene> iterator;
 
+    public DialogueContainer() {
+        GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED, p -> {
+            DialogueDataSource data = (DialogueDataSource) p.get();
+            // INK ? not rly used?
+            if (current.isDone()) {
+                next();
+            }
+        });
+    }
+
     public void play(DialogueHandler handler) {
         play(handler.getList(), handler);
+        if (handler.isTutorial()) {
+            playOut();
+        }
     }
 
     public void play(List<Scene> list, DialogueHandler handler) {
@@ -34,14 +47,7 @@ public class DialogueContainer extends TablePanelX {
         dialogueHandler = handler;
         start();
 
-                GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED , p->{
-            DialogueDataSource data = (DialogueDataSource) p.get();
-            // INK ?
-            if (current.isDone()) {
-                next();
-            }
 
-        } );
     }
 
     private void done() {
@@ -60,6 +66,10 @@ public class DialogueContainer extends TablePanelX {
         next();
     }
 
+    private void playOut() {
+        current.playOut();
+    }
+
     public void next() {
         if (!iterator.hasNext()) {
             GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
@@ -73,9 +83,7 @@ public class DialogueContainer extends TablePanelX {
         current.setHandler(dialogueHandler);
         current.setContainer(this);
         addActor(current);
-
     }
-
 
     @Override
     public void updateAct(float delta) {
@@ -89,16 +97,37 @@ public class DialogueContainer extends TablePanelX {
 
     }
 
-
     private boolean isLinear() {
         return true;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        background.draw(batch,parentAlpha);
+        background.draw(batch, parentAlpha);
         super.draw(batch, parentAlpha);
     }
+
+    @Override
+    public float getHeight() {
+//        if (current != null) {
+//            return current.getHeight();
+//        }
+//        return super.getHeight();
+        return 600;
+    }
+
+    @Override
+    public float getWidth() {
+//        if (current != null) {
+//            return current.getWidth();
+//        }
+        return 1500;
+    }
+
+    public DialogueView getCurrent() {
+        return current;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -107,6 +136,7 @@ public class DialogueContainer extends TablePanelX {
                 done();
             }
         }
+
 //        if (current != null && ((Scene) current.getActor()).isDone()) {
 //            if (iterator.hasNext()) {
 //                if (dialogueHandler != null) {

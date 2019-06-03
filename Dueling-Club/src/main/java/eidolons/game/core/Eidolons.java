@@ -184,7 +184,7 @@ public class Eidolons {
                 cannotFullscreen();
                 return;
             }
-            if (width>1080)
+            if (height>1080)
             {
                 cannotFullscreen();
                 return;

@@ -60,7 +60,7 @@ public class DialogueMessage extends TablePanelX {
     }
 
     private LabelStyle getMessageStyle(FONT font) {
-        return StyleHolder.getSizedLabelStyle(font, 17);
+        return StyleHolder.getSizedLabelStyle(font, 21);
     }
 
     @Override

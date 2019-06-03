@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TutorialManager {
     public static final List<String> messages=    new ArrayList<>() ;
-    public static String NEXT_HERO= IGG_Demo.HERO_RAINA;
+    public static String NEXT_HERO= IGG_Demo.HERO_GORR;
 
     public static void init(){
         for (TipMessageMaster.TIP_MESSAGE tutorialTip : TipMessageMaster.tutorialTips) {

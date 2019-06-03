@@ -140,7 +140,10 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
     private int getGloryFromEvent(Event event, Unit target) {
         switch ((STANDARD_EVENT_TYPE) event.getType()) {
             case UNIT_HAS_BEEN_KILLED:
+                if (target != null) {
                 return target.getPower() / 10;
+                }
+                break;
             case SECRET_FOUND:
                 return (100);
                 //quest

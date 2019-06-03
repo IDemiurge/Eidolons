@@ -42,13 +42,14 @@ import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TI
 
 public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
-    private static final boolean TEST_MODE = true;
+    private static final boolean TEST_MODE = false;
     static float timesThisHeroFell = 0;
     private static boolean cheatedDeath;
     private static boolean cheatDeathOn = true;
     private int timeLeft;
     private static Unit shade;
     private static boolean shadowAlive;
+    private boolean summonActive;
 
     public ShadowMaster(MetaGameMaster master) {
         super(master);
@@ -63,8 +64,8 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     public static boolean isOn() {
         if (ExplorationMaster.isExplorationOn())
             return false;
-        if (TEST_MODE)
-        if (Eidolons.BOSS_FIGHT) {
+        if (!TEST_MODE)
+        if (Eidolons.BOSS_FIGHT ||Eidolons.TUTORIAL_PATH) {
             return false;
         }
         return !OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.DEATH_SHADOW_OFF);
@@ -76,7 +77,12 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
     public static boolean checkCheatDeath(BattleFieldObject object) {
 
-        if (!isOn()) {
+        if (Eidolons.TUTORIAL_PATH){
+            Eidolons.getGame().getLogManager().log(object.getName() +
+                    " bribes Death with Tutorial Pleas! The trick can only work so long, learn quickly! ");
+            return true;
+        }
+            if (!isOn()) {
             return false;
         }
         if (!cheatDeathOn) {
@@ -120,6 +126,9 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         }
         if (shadowAlive)
             return;
+        if (summonActive)
+            return;
+        summonActive=true;
         getGame().getLoop().setPaused(true);
         AnimMaster.waitForAnimations(null);
         DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_FALL);
@@ -144,6 +153,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
             LogMaster.log(1, "SHADOW: SHADOW: fall prevented; restoreHero! " + event);
             EUtils.showInfoText(true, RandomWizard.random() ?
                     "On the edge of consciousness..." : "A narrow escape...");
+            summonActive = false;
             return;
         }
         timeLeft = calcTimeLeft(event);
@@ -294,6 +304,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
                 });
         GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
         shadowAlive = true;
+        summonActive = false;
         return;
     }
 

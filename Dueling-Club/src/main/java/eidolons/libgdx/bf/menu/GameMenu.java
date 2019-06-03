@@ -145,10 +145,11 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 
 
     public enum GAME_MENU_ITEM implements MenuItem<GAME_MENU_ITEM> {
-        QUICK_HELP,
-        HERO_INFO,
+        QUICK_HELP(true),
+        HERO_INFO(true),
         MAP_INFO(true),
-        MANUAL,
+        TUTORIAL_RECAP(false),
+        MANUAL(false),
         //        SEND_FEEDBACK,
 //        SEND_LOG,
 //        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
@@ -163,12 +164,12 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         SAVE(true),
         //        LOAD(true),
         RESUME,
-        INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),
         ABOUT(true), LAUNCH_GAME(true),
         MAIN_MENU(true),
         OUTER_WORLD(true),
         EXIT(), //MAIN_MENU, OUTER_WORLD),
+//        INFO(QUICK_HELP, TUTORIAL_RECAP, MANUAL),
         ;
         boolean hidden;
         private GAME_MENU_ITEM[] items;

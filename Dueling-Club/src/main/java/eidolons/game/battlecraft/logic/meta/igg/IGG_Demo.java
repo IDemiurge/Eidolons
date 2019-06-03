@@ -65,6 +65,7 @@ public class IGG_Demo {
             PARAMS.ITEM_MASTERY,
             PARAMS.MEDITATION_MASTERY,
     };
+    public static final String IMAGE_KESERIM = "demo/heroes/keserim.png";
     public static IGG_MISSION MISSION;
 
     public static IGG_MISSION getByXmlLevelName(String levelName) {

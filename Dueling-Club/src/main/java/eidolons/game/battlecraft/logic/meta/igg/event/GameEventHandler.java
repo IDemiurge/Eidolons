@@ -60,7 +60,7 @@ public class GameEventHandler extends MetaGameHandler {
                     break;
                 case GAME_STARTED:
 
-                    TipMessageMaster.welcome();
+//                    TipMessageMaster.welcome();
                     break;
             }
         }

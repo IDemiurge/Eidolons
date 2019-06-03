@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.line;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
+import eidolons.system.text.DescriptionTooltips;
 import eidolons.system.text.TextMaster;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.filesys.PathFinder;
@@ -37,6 +38,7 @@ public class DialogueLineFormatter {
     private static int id;
 
     public static void main(String[] args) {
+        createTutorialJournal();
         fullUpdate();
     }
 
@@ -172,11 +174,21 @@ public class DialogueLineFormatter {
 
 
     public static void createTutorialJournal() {
-        String contents=DIALOGUE_SEPARATOR+"tut\n";
+        DescriptionTooltips.initTutorialMap();
+        String contents=DIALOGUE_SEPARATOR+"tutorial journal\n";
             String actor= "Memories"+ACTOR_SEPARATOR;
-        for (String message : TutorialManager.messages) {
-            contents+= LINE_SEPARATOR + actor + message + "\n";
+        for (String key : DescriptionTooltips.getTutorialMap().keySet()) {
+//              actor=  (key)+ACTOR_SEPARATOR;
+            if (DescriptionTooltips.getTutorialMap().get(key).isEmpty()) {
+                continue;
+            }
+            contents+= LINE_SEPARATOR + actor + "              "+key+ "\n"+
+                    DescriptionTooltips.getTutorialMap().get(key) + "\n";
         }
+
+//        for (String message : TutorialManager.messages) {
+//            contents+= LINE_SEPARATOR + actor + message + "\n";
+//        }
         FileManager.write(contents,PathFinder.getDialoguesPath(TextMaster.getLocale())
                 + dialogueTextPath+ "tutorial.txt");
 

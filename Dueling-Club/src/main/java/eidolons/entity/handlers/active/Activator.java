@@ -52,8 +52,8 @@ public class Activator extends ActiveHandler {
             return false;
         if (getGame().getTestMaster().isActionFree(getEntity().getName())) {
             return true;
-        } if (!getEntity().isMine()) //TODO igg demo hack
-        if (!first || broken) {
+        }  if (!getEntity().isMine()) //TODO igg demo hack
+        if (!first ) {//|| broken) {
             if (canActivate != null) {
 
                 return canActivate;

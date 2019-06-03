@@ -49,11 +49,18 @@ public class TipMessageMaster {
             TIP_MESSAGE tip = new EnumMaster<TIP_MESSAGE>().
                     retrieveEnumConst(TIP_MESSAGE.class, arg);
             if (tip == null) {
+                String text = DescriptionTooltips.getTipMap().get(arg.trim());
+                if (StringMaster.isEmpty(text)) {
+                    continue;
+                }
+                tip(new TipMessageSource(text, "", "Continue", true, ()->{}));
                 continue;
             }
             list.add(tip);
         }
-        tip(list.toArray(new TIP_MESSAGE[list.size()]));
+        if (!list.isEmpty()) {
+            tip(list.toArray(new TIP_MESSAGE[list.size()]));
+        }
     }
 
     public static void tip(  TIP_MESSAGE... tips) {
@@ -184,21 +191,20 @@ public class TipMessageMaster {
                 Eidolons.TUTORIAL_PATH=false;
             }
         },
-
-
-
         Gateway_Glyphs(true,         Images.GATEWAY_GLYPH,""),
 
         //ui
         // combat
         IMMORTAL("Soulforce is effectively infinite, but the negative value you end up with will show you how much better you should do next time to win fairly. "),
 
-        UNCONSCIOUS(
-
+        UNCONSCIOUS(false,
                 // "My avatar is failing. But it is not over yet, there is life still in this shell!
                 // All I need is time... !"),
+        IGG_Demo.IMAGE_KESERIM,
                 "This shell is waning. Time to put off the mask. The pain will be legendary... " +
-                        "I will have to be quick, kill every foe before my avatar crumbles. "),
+                        "I will have to be quick, kill every foe before my avatar crumbles. "
+
+        ),
         SHADE_RESTORE("Their pain will be enough to restore my avatar. Let these ashes rise anew..."),
         DEATH_SHADE_FINAL(false, "This torment is all but in vain, and cruel is the fate. " +
                 "Better to sleep now and harken to the song of the stars. Father, I am coming home..."),
@@ -219,14 +225,6 @@ public class TipMessageMaster {
         DEATH_FINAL(false, "And now comes the darkness. My hand is empty - is this the final hour?"),
         //TODO multiple random ones?!
 
-//        COMBAT_WONT_END,
-//        COMBAT_WONT_END,
-//        COMBAT_WONT_END,
-
-        //explore
-//        VISIBILITY,
-
-
         //demo
         WELCOME("Greetings! Alexander here, " + //my own pic?!
                 "very glad to have you on board! " +
@@ -238,62 +236,19 @@ public class TipMessageMaster {
                 " to practice your sword. "),
         WELCOME_3("Good luck!"),
 
-        TUTORIAL_COMBAT(""),
+//        ranged
+//        required reloading with ammo, which you carry in your Quick Slots alongside potions
+//        main\bf\prop\statues\angel statue.png
         /*
-        There are two values relevant to this for each unit - Noise and Perception.
-Some actions may create more Noise
 
-perception simply multiplies the remaining value, and the result is the hearing quality.
-On the range of 0 t o100,
-from “didn’t hear” to “heard where and what” with some things in between.
          */
 /*
 TODO DISPLAY TOOLTIP TITLE?
-EXPLORATION
-
-
-gwynn
-keep to the shadows, rush forwards and strike from behind
-use the debilitating sorcery to weaken your foes in open battle
- dual wielding attacks require Focus, but can be devastating indeed
-
  when things turn ill, you can attempt to escape into shadows again by using Stealth Mode in combination with Shadow Cloak.
-
-
-
-gorr
-let the enemy have the first swing, and return it with fury
-when
 use Fire Breath to 'breathe out' and reduce Rage, or just for good AoE damage
 be careful not to let the Rage Counters reach 100 - or Gorr will lose control over himself!
 another trick is to set yourself on fire and gain Rage each time the burning hurts you
 
-
-raina
-position
-use holy magic to ensure Raina is at her finest when she meets the foe
-consider using Defend
-
-
-ranged
-required reloading with ammo, which you carry in your Quick Slots alongside potions
-
-spells
-
-
-potions
-
-quests
-
-overlaying
-some of the objects you see overlaid on the walls can be interacted with.
-Pick up mushrooms to eat (or better not), examine the runes carved into the stone,
-
-walls and secrets
-
-if you examine closer
-some walls will have "Marked" prefix -
-those lead to secret passages, hidden treasures or into deadly traps.
 
 
  */

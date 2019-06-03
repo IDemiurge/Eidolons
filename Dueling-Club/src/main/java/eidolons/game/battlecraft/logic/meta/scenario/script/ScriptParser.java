@@ -14,6 +14,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.entity.ConditionMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
@@ -26,8 +27,8 @@ import java.util.List;
 public class ScriptParser {
     private static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch() ;
 
-    public static Condition parseConditions(String conditionPart) {
-        Condition c = DC_ConditionMaster.toConditions(conditionPart);
+    public static Conditions parseConditions(String conditionPart) {
+        Conditions c = DC_ConditionMaster.toConditions(conditionPart);
         if (c != null)
             return c;
         return null;
@@ -123,7 +124,15 @@ public class ScriptParser {
         }
         String conditionPart = StringMaster.getFirstItem(script,
                 ScriptSyntax.PART_SEPARATOR);
-        Condition customCondition = parseConditions(conditionPart);
+        Conditions customCondition = parseConditions(conditionPart);
+        {
+            String var1 = getVarOne(event_type, VariableManager.getVars(conditionPart));
+            String var2 = getVarTwo(event_type, VariableManager.getVars(conditionPart));
+            CONDITION_TEMPLATES template = new EnumMaster<CONDITION_TEMPLATES>().retrieveEnumConst(CONDITION_TEMPLATES.class,
+                    VariableManager.removeVarPart(conditionPart));
+            customCondition.add(DC_ConditionMaster.getInstance().getConditionFromTemplate(template, var1, var2));
+
+        }
         if (customCondition != null) {
             customCondition.setXml(conditionPart);
             conditions.add(customCondition);
@@ -151,13 +160,12 @@ public class ScriptParser {
             abilities = new AbilityImpl() {
                 @Override
                 public boolean activatedOn(Ref ref) {
-                    executor.execute(func, ref, args);
+                    return executor.execute(func, ref, args);
                     //reset after? not like normal action certainly...
-                    return true;
                 }
             };
         } else {
-            main.system.auxiliary.log.LogMaster.log(1,"Ability function in script: " + funcPart);
+            main.system.auxiliary.log.LogMaster.log(1, "Ability function in script: " + funcPart);
             abilities = AbilityConstructor.getAbilities(script, ref);
             if (abilities.getEffects().getEffects().isEmpty()) {
                 main.system.auxiliary.log.LogMaster.log(1, "SCRIPT NOT FOUND: " + funcPart);
@@ -166,8 +174,8 @@ public class ScriptParser {
         }
         abilities.setRef(ref);
         ScriptTrigger trigger = new ScriptTrigger(originalText, event_type, conditions, abilities);
-      if (TEST_MODE)
-          isRemove = false;
+        if (TEST_MODE)
+            isRemove = false;
         trigger.setRemoveAfterTriggers(isRemove);
         return trigger;
     }

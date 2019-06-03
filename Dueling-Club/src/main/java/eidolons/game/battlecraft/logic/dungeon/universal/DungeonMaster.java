@@ -192,9 +192,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public DungeonLevel getDungeonLevel() {
-        if (dungeonWrapper == null && dungeonLevel == null) {
-            dungeonWrapper = initDungeon();
-        }
+//        if (dungeonWrapper == null && dungeonLevel == null) {
+//            dungeonWrapper = initDungeon();
+//        } fk off lazy guy!
         return dungeonLevel;
     }
 

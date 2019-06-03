@@ -23,7 +23,7 @@ public class ActionFilter {
         for (DC_ActiveObj a : actionsList) {
             if (a==null || unit == null ){
                 continue;
-            }
+            } //a.getCosts().canBePaid(unit.getRef())
             if (a.canBeActivated(unit.getRef(), true) || checkException(a)) {
                 list.add(a);
             }

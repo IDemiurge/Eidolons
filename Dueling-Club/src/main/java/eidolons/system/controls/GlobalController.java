@@ -247,6 +247,11 @@ public class GlobalController implements Controller {
             activeButton = null;
             return true;
         }
+
+        if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
+            DungeonScreen.getInstance().getGuiStage().dialogueDone();
+            return true;
+        }
         if (DC_Game.game.getManager().isSelecting()
             //         DungeonScreen.getInstance().getGridPanel().isSelecting()
         ) {

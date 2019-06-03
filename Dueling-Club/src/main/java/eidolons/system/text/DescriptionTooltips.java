@@ -11,6 +11,7 @@ import eidolons.game.module.herocreator.logic.AttributeMaster;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
+import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -26,54 +27,66 @@ import java.util.stream.Collectors;
 public class DescriptionTooltips {
     public static final String MASTERY_SLOT = "Filled automatically when you attain sufficient Mastery of any type. " +
             "Mastery Ranks are given for every 5 score points, from 5 and 10 for Tier I to 45 and 50 for Tier V Mastery Ranks."
-            +"\nHero can have up to [10] Mastery types unlocked (click to learn at any time)";
+            + "\nHero can have up to [10] Mastery types unlocked (click to learn at any time)";
 
     private static final String VALUE_SEPARATOR = "==";
     private static final String NAME_SEPARATOR = ">>";
     private static Map<VALUE, String> paramMap;
-    private static Map<TIP_MESSAGE, String> tipMap;
-    private static Map<String, String>  loreMap;
+    private static Map<String, String> tipMap;
+    private static Map<String, String> loreMap;
     private static Map<String, String> descrMap;
+    private static Map<String, String> tutorialMap;
 
+    public static void initTutorialMap() {
+        tutorialMap = new XLinkedMap<>();
+        String path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
+        String source = FileManager.readFile(path);
+        parseSource(source,tutorialMap, false);
+    }
     public static void init() {
-        paramMap = new HashMap<>();
-        tipMap = new HashMap<>();
-        loreMap = new HashMap<>();
-        descrMap = new HashMap<>();
+        paramMap = new XLinkedMap<>();
+        tipMap = new XLinkedMap<>();
+        loreMap = new XLinkedMap<>();
+        descrMap = new XLinkedMap<>();
+        tutorialMap = new XLinkedMap<>();
 
         String path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/values.txt";
         String source = FileManager.readFile(
                 path);
-        parseSource(source,true);
+        parseSource(source, true);
 
         path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/attributes.txt";
         source = FileManager.readFile(path);
         if (source.isEmpty()) {
             source = compileAndReadSource(path, DC_ContentValsManager.getAttributes());
         }
-        parseSource(source,true);
+        parseSource(source, true);
 
         path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/masteries.txt";
         source = FileManager.readFile(path);
         if (source.isEmpty()) {
             source = compileAndReadSource(path, DC_ContentValsManager.getMasteries());
         }
-        parseSource(source,true);
+        parseSource(source, true);
 
         path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/messages.txt";
         source = FileManager.readFile(path);
-        parseSource(source,false);
+        parseSource(source, false);
 
 
-        path= StrPathBuilder.build(PathFinder.getTextPath(),
+        path = StrPathBuilder.build(PathFinder.getTextPath(),
                 TextMaster.getLocale(), "info", "heroes", "igg");
-        source = FileManager.readFile(path+"/heroes info.txt");
-        parseSource(source,descrMap,false);
+        source = FileManager.readFile(path + "/heroes info.txt");
+        parseSource(source, descrMap, false);
 
-        path= StrPathBuilder.build(PathFinder.getTextPath(),
+        path = StrPathBuilder.build(PathFinder.getTextPath(),
                 TextMaster.getLocale(), "info", "heroes", "igg");
-        source = FileManager.readFile(path+"/heroes.txt");
+        source = FileManager.readFile(path + "/heroes.txt");
         parseSource(source, loreMap, false);
+
+        path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
+        source = FileManager.readFile(path);
+        parseSource(source,tutorialMap, false);
 
         /**
          * quests
@@ -105,12 +118,16 @@ public class DescriptionTooltips {
         return paramMap;
     }
 
-    public static Map<TIP_MESSAGE, String> getTipMap() {
+    public static Map<String, String> getTipMap() {
         return tipMap;
     }
 
     public static Map<String, String> getLoreMap() {
         return loreMap;
+    }
+
+    public static Map<String, String> getTutorialMap() {
+        return tutorialMap;
     }
 
     public static Map<String, String> getDescrMap() {
@@ -120,7 +137,8 @@ public class DescriptionTooltips {
     private static void parseSource(String source, boolean paramOrTip) {
         parseSource(source, null, paramOrTip);
     }
-        private static void parseSource(String source, Map map, boolean paramOrTip) {
+
+    private static void parseSource(String source, Map map, boolean paramOrTip) {
         for (String item : source.split(VALUE_SEPARATOR)) {
             if (!item.contains(NAME_SEPARATOR)) {
                 continue;
@@ -133,14 +151,15 @@ public class DescriptionTooltips {
             } else {
 
                 TIP_MESSAGE tip = new EnumMaster<TIP_MESSAGE>().retrieveEnumConst(TIP_MESSAGE.class, name);
-                if ( map != null){
-                        map.put(name, value);
+                if (map != null) {
+                    map.put(name.toLowerCase(), value);
                     continue;
                 }
                 if (tip == null) {
+                    tipMap.put(name.toLowerCase(), value);
                     continue;
-                }
-                tipMap.put(tip, value);
+                } else
+                    tipMap.put(tip.toString().toLowerCase(), value);
                 tip.message = value;
             }
 
@@ -181,7 +200,7 @@ public class DescriptionTooltips {
             List<String> s = AttributeMaster.getAttributeBonusInfoStrings(
                     DC_ContentValsManager.ATTRIBUTE.getForParameter(value), hero);
             if (s.isEmpty()) {
-                return StringMaster.NEW_LINE +"[cannot display values provided!]" ;
+                return StringMaster.NEW_LINE + "[cannot display values provided!]";
             }
             return "Provides: " + StringMaster.NEW_LINE +
                     ContainerUtils.constructStringContainer(s, StringMaster.NEW_LINE);

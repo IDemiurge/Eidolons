@@ -67,7 +67,7 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
             switch (type) {
                 case "tip":
                     return "pos(" + c.toString() + ")>mainHero()>tip(" +
-                            arg + "," + arg + ")";
+                            arg + ")";
                 case "dialogue":
                     return "pos(" + c.toString() + ")>mainHero()>dialogue(" +
                             arg + "," + arg + ")";

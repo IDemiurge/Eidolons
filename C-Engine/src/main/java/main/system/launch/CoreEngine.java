@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.3b";
+    public static final String VERSION = "0.9.3c";
     public static final String VERSION_NAME = "IGG demo";//"Backer Demo";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");

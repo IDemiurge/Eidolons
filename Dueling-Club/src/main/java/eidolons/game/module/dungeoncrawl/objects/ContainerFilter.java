@@ -17,6 +17,7 @@ public class ContainerFilter {
     public static List<ObjType> filter(List<ObjType> list,
                                        CONTAINER_CONTENTS c, ITEM_RARITY rarity) {
         list = new ArrayList<>(list);
+        list.removeIf(type -> type==null );
         list.removeIf(type -> isFilteredOut(type, c, rarity));
 
         return list;

@@ -76,7 +76,7 @@ public class DialogueScroll extends TablePanelX {
         //actually, we'll need to append imgs too, eh?
 
         DialogueMessage dialogueMessage = new DialogueMessage(message, actorName, actorImage,
-                FONT.MAGIC, getWidth()*0.85f);
+                FONT.MAIN, getWidth()*0.85f);
         dialogueMessage.fadeIn();
         inner.add(dialogueMessage).center();
         inner.row();

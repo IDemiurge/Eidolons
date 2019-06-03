@@ -107,7 +107,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
     public String getTooltip() {
         return
                 StringMaster.getModifierString(formula
-                        .getInt(ref)) + " " +
+                        .getInt(getRef())) + " " +
                         StringMaster.getFirstItem(StringMaster.getWellFormattedString(counterName), " ") + " counters";
     }
 

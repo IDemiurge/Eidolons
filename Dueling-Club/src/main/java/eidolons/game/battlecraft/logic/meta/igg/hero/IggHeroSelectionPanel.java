@@ -115,8 +115,8 @@ public class IggHeroSelectionPanel extends HeroSelectionPanel {
 
     private String getHeroDescription(Entity entity) {
 //        DescriptionTooltips.getLoreMap().get(entity.getName());
-      return   DescriptionTooltips.getDescrMap().get(entity.getName())+
-              "\n\nLore\n"+DescriptionTooltips.getLoreMap().get(entity.getName());
+      return   DescriptionTooltips.getDescrMap().get(entity.getName().toLowerCase())+
+              "\n\nLore\n"+DescriptionTooltips.getLoreMap().get(entity.getName().toLowerCase());
     }
 //    protected String getOverviewText(Entity entity) {
 //        return HelpMaster.getHeroMainInfoText(item.getName());

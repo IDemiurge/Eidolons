@@ -47,7 +47,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
             List<Scene> list = SceneFactory.getScenesLinear(dialogue);
 
             GuiEventManager.trigger(DIALOG_SHOW,
-                    new DialogueHandler(dialogue, getGame(), list));
+                    new DialogueHandler(dialogue, getGame(), list.subList(0,1)));
         });
     }
 
@@ -62,7 +62,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
         public   void test() {
         GameDialogue dialogue = null;//new LinearDialogue();
-        dialogue =  getMaster().getDialogueFactory().getDialogue("Bear hug");
+        dialogue =  getMaster().getDialogueFactory().getDialogue("Bearhug");
         List<Scene> list = SceneFactory.getScenesLinear(dialogue);
         GuiEventManager.trigger(DIALOG_SHOW,
          new DialogueHandler(dialogue, getGame(), list));

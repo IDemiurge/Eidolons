@@ -48,7 +48,8 @@ public class SpellAnim extends ActionAnim {
     @Override
     protected void initEmitters() {
         //TODO use template!
-        if (!ListMaster.isNotEmpty(emitterList) || CoreEngine.isActiveTestMode()) {
+//        if (!ListMaster.isNotEmpty(emitterList) || CoreEngine.isActiveTestMode())
+        {
             String vfx = data.getValue(AnimData.ANIM_VALUES.PARTICLE_EFFECTS);
             if (StringMaster.isEmpty(vfx) || isVfxOverridden(getActive(), getPart())) {
                 vfx = //SpellAnimMaster.

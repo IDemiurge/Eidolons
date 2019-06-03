@@ -159,12 +159,12 @@ public class GenericEnums {
 
     }
     public enum DIFFICULTY {
-        NEOPHYTE(50, 25 ),
-        NOVICE(65, 35 ),
-        DISCIPLE(80, 50,true ),
-        ADEPT(100, 75,true),
-        CHAMPION(125, 100,true),
-        AVATAR(150, 150,true);
+        NEOPHYTE(33, 25 ),
+        NOVICE(50, 35 ),
+        DISCIPLE(65, 50,true ),
+        ADEPT(80, 75,true),
+        CHAMPION(100, 100,true),
+        AVATAR(125, 150,true);
 
         private int attributePercentage;
         private int masteryPercentage;

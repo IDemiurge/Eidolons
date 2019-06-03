@@ -138,7 +138,8 @@ public class DC_AttackMaster {
                     waitForAttackAnimation(effect.getAttack());
                     attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                     countered = true;
-                }
+                } else
+                    attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                 result = true;
 
             }

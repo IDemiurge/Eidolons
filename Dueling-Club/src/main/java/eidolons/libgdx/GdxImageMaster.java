@@ -202,6 +202,11 @@ public class GdxImageMaster extends LwjglApplication {
     public static void writeImage(FileHandle handle, TextureRegion region) {
         PixmapIO.writePNG(handle, getPixMapFromRegion(region));
     }
+
+    public static TextureRegion getSizeTemplate(String root){
+        return null;
+    }
+
     public static TextureRegion round(String path, boolean write) {
         if (!GdxMaster.isLwjglThread())
             return null;

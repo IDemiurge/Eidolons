@@ -8,6 +8,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -394,6 +395,13 @@ public class DamageDealer {
         }
         int damageDealt = Math.max(actual_e_damage, actual_t_damage);
 
+        processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
+
+        if (attacked.isMine()){
+            if (Eidolons.TUTORIAL_PATH){
+                return damageDealt;
+            }
+        }
         boolean dead = DamageCalculator.isDead(attacked);
 
         boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
@@ -441,7 +449,6 @@ public class DamageDealer {
             attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
              damageDealt);
         }
-        processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
 
         if (!CoreEngine.isGraphicsOff())
             if (HpBar.isResetOnLogicThread())

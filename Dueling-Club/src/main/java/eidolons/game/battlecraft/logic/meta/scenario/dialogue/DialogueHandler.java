@@ -41,6 +41,10 @@ public class DialogueHandler {
 
     }
 
+    public GameDialogue getDialogue() {
+        return dialogue;
+    }
+
     public SpeechDataSource lineSpoken(Speech speech, int index) {
         ArrayList<String> displayedOptions = new ArrayList<>();
         if (speech.getChildren().size() <= index) {
@@ -125,5 +129,9 @@ public class DialogueHandler {
 
     public void setMyActor(ActorDataSource myActor) {
         this.myActor = myActor;
+    }
+
+    public boolean isTutorial() {
+        return dialogue.getName().equalsIgnoreCase("tutorial journal");
     }
 }

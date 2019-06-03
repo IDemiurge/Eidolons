@@ -11,9 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueWizard;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.*;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.core.EUtils;
@@ -55,6 +53,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
+import main.content.ValueMap;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
@@ -110,6 +109,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     private ArrayList<Actor> townActors;
     private ArrayList<Actor> dialogueActors;
     private DialogueContainer dialogueContainer;
+    private Map<GameDialogue, DialogueContainer> cache = new HashMap<>();
 
 
     public GuiStage(Viewport viewport, Batch batch) {
@@ -346,6 +346,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             }
         }
         if (dialogueMode) {
+            dialogueContainer.setX(GdxMaster.centerWidth(dialogueContainer));
             for (Actor actor : getRoot().getChildren()) {
                 if (getActorsForDialogue().contains(actor)) {
                     continue;
@@ -355,8 +356,9 @@ public class GuiStage extends StageX implements StageWithClosable {
                     hiddenActors.add(actor);
                 }
             }
-        } else
+        } else {
             dialogueContainer.setVisible(false);
+        }
 
         if (locationLabel != null) {
             locationLabel.setPosition(0,
@@ -924,11 +926,25 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     public void playDialogue(DialogueHandler handler) {
         if (dialogueMode) {
+            if (isDialogueCached())
+                dialogueContainer.remove();
             dialogueDone();
+        }
+        if (isDialogueCached()) {
+            dialogueContainer = cache.get(handler.getDialogue());
+            if (dialogueContainer == null) {
+                addActor(dialogueContainer = new DialogueContainer());
+            }
         }
         dialogueContainer.fadeIn();
         dialogueContainer.play(handler);
         setDialogueMode(true);
+
+        cache.put(handler.getDialogue(), dialogueContainer);
+    }
+
+    private boolean isDialogueCached() {
+        return false;
     }
 
     public void dialogueDone() {

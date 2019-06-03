@@ -64,7 +64,7 @@ public class Trigger {
         if (abilities==null )
             return true;
         abilities.setForceTargeting(forceTargeting);
-        if (removeAfterTriggers) {
+        if (isRemoveAfterTriggers()) {
             remove();
         }
         Ref REF = abilities.getRef().getCopy();
