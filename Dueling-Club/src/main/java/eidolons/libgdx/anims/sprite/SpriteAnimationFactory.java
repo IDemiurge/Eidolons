@@ -44,7 +44,12 @@ public class SpriteAnimationFactory {
                 || texturePath.toLowerCase().endsWith(".txt")) {
             texturePath = GdxImageMaster.appendImagePath(texturePath);
 
-            TextureAtlas atlas = AnimMaster3d.getOrCreateAtlas(texturePath);
+            TextureAtlas atlas = null;
+            try {
+                atlas = AnimMaster3d.getOrCreateAtlas(texturePath);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             if (atlas == null) {
                 return null;
             }
@@ -65,7 +70,7 @@ public class SpriteAnimationFactory {
             }
         }
         SpriteAnimation a = new SpriteAnimation(texturePath);
-        if (texturePath.equalsIgnoreCase(defaultSpritePath)){
+        if (texturePath.equalsIgnoreCase(defaultSpritePath)) {
             a.setDefault(true);
         }
         cache.put(key.toLowerCase(), a);

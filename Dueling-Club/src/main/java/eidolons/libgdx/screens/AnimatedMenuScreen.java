@@ -69,13 +69,13 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     @Override
     public void loadDone(EventCallbackParam param) {
         super.loadDone(param);
-        if (CoreEngine.isLiteLaunch())
-            return;
-        Assets.preloadUI();
+//        if (CoreEngine.isLiteLaunch())
+//            return;
+//        Assets.preloadUI();
 //        Assets.preloadHeroes();
-        setLoadingAtlases(true);
-        TextureCache.getInstance().loadAtlases();
-        GdxMaster.setLoadingCursor();
+//        setLoadingAtlases(true);
+//        TextureCache.getInstance().loadAtlases();
+//        GdxMaster.setLoadingCursor();
         //TODO animated screen? or TIPS
     }
 
@@ -83,14 +83,16 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     protected void afterLoad() {
         getOverlayStage().setActive(true);
     }
+
     protected void back() {
         if (mainMenu != null)
             mainMenu.setVisible(true);
     }
+
     @Override
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
         List<? extends Entity> list = (List<? extends Entity>) p.get();
-            if (isLoadGame(list)){
+        if (isLoadGame(list)) {
             return new SaveSelectionPanel(() -> list) {
                 @Override
                 public void closed(Object selection) {
@@ -102,7 +104,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
                 }
             };
         }
-        if (isDemoScenario(list)){
+        if (isDemoScenario(list)) {
             return new IggActChoicePanel(() -> (List<? extends Entity>) p.get()) {
                 @Override
                 public void closed(Object selection) {
@@ -114,7 +116,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
                 }
             };
         }
-            if (isRngScenario(list)){
+        if (isRngScenario(list)) {
             return new RngSelectionPanel(() -> (List<? extends Entity>) p.get()) {
                 @Override
                 public void closed(Object selection) {
@@ -143,16 +145,26 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     }
 
     private boolean isLoadGame(List<? extends Entity> p) {
-        return p.get(0).getOBJ_TYPE_ENUM()== DC_TYPE.CHARS;
+        return p.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.CHARS;
     }
 
     private boolean isRngScenario(List<? extends Entity> p) {
         return p.get(0).getGroupingKey().equalsIgnoreCase("Random");
     }
+
     @Override
     protected void preLoad() {
         super.preLoad();
-//        mainMenu.setData(data);
+
+        if (CoreEngine.isLiteLaunch())
+            return;
+        try {
+            Assets.preloadUI();
+            setLoadingAtlases(true);
+            GdxMaster.setLoadingCursor();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     @Override

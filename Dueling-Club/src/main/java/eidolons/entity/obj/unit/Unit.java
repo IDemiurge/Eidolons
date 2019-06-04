@@ -1779,4 +1779,12 @@ public class Unit extends DC_UnitModel {
     protected boolean isModifierMapOn() {
         return isPlayerCharacter();
     }
+
+//    public UnitEnums.UNIT_GROUP getUnitGroup() {
+//        return  new EnumMaster<UnitEnums.UNIT_GROUP>().retrieveEnumConst(UnitEnums.UNIT_GROUP.class, getProperty(G_PROPS.UNIT_GROUP));
+//    }
+    public UnitEnums.UNIT_GROUPS getUnitGroup() {
+        return  new EnumMaster<UnitEnums.UNIT_GROUPS>().
+                retrieveEnumConst(UnitEnums.UNIT_GROUPS.class, getProperty(G_PROPS.UNIT_GROUP));
+    }
 }

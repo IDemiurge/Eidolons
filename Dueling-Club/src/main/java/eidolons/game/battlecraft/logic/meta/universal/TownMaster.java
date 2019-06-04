@@ -21,6 +21,7 @@ import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
@@ -146,6 +147,9 @@ public class TownMaster extends MetaGameHandler {
             GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
             main.system.auxiliary.log.LogMaster.log(1, "Town is SCREWED, trying it again");
         }
+
+        getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.TOWN_ENTERED, town.getRef()));
+
         boolean result =
                 (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);
         Waiter t = WaitMaster.getWaiters().remove(TownPanel.DONE_OPERATION);

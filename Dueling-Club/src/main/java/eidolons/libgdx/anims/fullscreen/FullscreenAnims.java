@@ -108,7 +108,7 @@ public class FullscreenAnims extends GroupX {
     }
 
     private float getIntensity(Event e) {
-        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS) {
+        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS) {
             return 1;
         }
         float intensity = RandomWizard.getRandomFloatBetween(0.15f, 0.35f);

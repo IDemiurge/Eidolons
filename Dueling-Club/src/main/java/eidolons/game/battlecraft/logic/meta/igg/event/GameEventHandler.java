@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.text.DC_LogManager;
 import main.game.logic.event.Event;
 import main.system.threading.WaitMaster;
@@ -24,7 +25,7 @@ public class GameEventHandler extends MetaGameHandler {
     }
 
     public boolean handle(Event event) {
-
+        SoundEvents.checkEventSound(event);
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
 
@@ -51,7 +52,7 @@ public class GameEventHandler extends MetaGameHandler {
                     break;
                 case UNIT_TURN_STARTED:
                     break;
-                case UNIT_FALLS_UNCONSCIOUS:
+                case UNIT_HAS_FALLEN_UNCONSCIOUS:
                     handleUnconscious(event);
                     break;
                 case COMBAT_ENDS:

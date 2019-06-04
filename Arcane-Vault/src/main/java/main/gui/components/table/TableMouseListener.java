@@ -78,7 +78,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PathFinder.getVfxPath();
     public static final String[] SINGLE_RES_FILE_IDS = {};
     public static final String[] RES_FILE_KEYS = {};
-    public static final String[] SINGLE_RES_FOLDER_IDS = {G_PROPS.SOUNDSET.name(),};
+    public static final String[] SINGLE_RES_FOLDER_IDS = {
+//            G_PROPS.SOUNDSET.name(),
+    };
     public static final String[] RES_FOLDER_KEYS = {"sound\\soundsets\\",};
 
     public static final String[] RES_KEYS = {
@@ -134,7 +136,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.SECONDARY_MISSION.name(), G_PROPS.SPELL_GROUP.name(),
      PROPS.RESISTANCE_TYPE.name(), G_PROPS.TARGETING_MODE.name(), G_PROPS.RACE.name(),
      G_PROPS.ASPECT.name(),
-     // G_PROPS.SOUNDSET.name(),
+      G_PROPS.SOUNDSET.name(),
      G_PROPS.RANK.name(), PROPS.FAVORED_ASPECT.name(), PROPS.SECOND_FAVORED_ASPECT.name(),
      PROPS.THIRD_FAVORED_ASPECT.name(), G_PROPS.SPELL_TYPE.name(),
      // "DEITY",

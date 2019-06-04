@@ -8,8 +8,10 @@ import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_MOMENT;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -48,10 +50,13 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         game.stop();
         if (Bools.isFalse(outcome)) {
             GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__DEFEAT);
+
+            getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.DEFEAT, new Ref()));
+//            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__DEFEAT);
         }
         if (Bools.isTrue(outcome)) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__VICTORY);
+            getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.VICTORY, new Ref()));
+//            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__VICTORY);
         }
         WaitMaster.WAIT(1500);
         GuiEventManager.trigger(GuiEventType.GAME_FINISHED, getGame());

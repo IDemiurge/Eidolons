@@ -158,6 +158,10 @@ public class PathFinder {
         init();
         return SND_PATH;
     }
+    public static String getSoundsetsPath() {
+        init();
+        return SND_PATH+"soundsets/";
+    }
 
     public static String getFontPath() {
         init();

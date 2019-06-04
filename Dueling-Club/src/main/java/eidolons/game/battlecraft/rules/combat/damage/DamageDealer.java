@@ -169,6 +169,8 @@ public class DamageDealer {
 
     //proceeds to deal the damage - to toughness and endurance separately and with appropriate events
     private static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
+
+        ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());
         Event event = new Event(
          magical ? STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE :
           STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);

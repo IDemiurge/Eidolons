@@ -13,11 +13,10 @@ import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.PathUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class Player {
     public static final String ALT = "_ALT";
@@ -101,7 +101,7 @@ public class Player {
             return;
         }
         String format //= (alt) ? ALT_FORMAT : FORMAT;
-          = StringMaster.getFormat(basePath);
+                = StringMaster.getFormat(basePath);
         basePath = StringMaster.cropFormat(basePath);
 
         if (!basePath.contains(SoundMaster.getPath())) {
@@ -119,8 +119,18 @@ public class Player {
             sound = FileManager.getRandomFilePathVariant(basePath, format, alt);
         }
         if (sound == null) {
-            // failedSounds.add(basePath);
-            return;
+            List<File> files = FileManager.getFilesFromDirectory(PathUtils.cropLastPathSegment(basePath), false);
+            if (files.isEmpty())
+                files = FileManager.getFilesFromDirectory((basePath), false);
+
+            if (!files.isEmpty()) {
+                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(basePath));
+                List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().contains(fileName)).collect(Collectors.toList());
+                sound = FileManager.getRandomFile(filtered).getPath();
+            } else {
+                // failedSounds.add(basePath);
+                return;
+            }
         }
         play(sound);
     }
@@ -152,7 +162,7 @@ public class Player {
             if (neverRepeat) {
                 if (!lastplayed.isEmpty())
                     if (lastplayed.peek().equals(sound)
-                     && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
+                            && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
                         LogMaster.log(0, "NOT playing twice! - " + sound);
                         return;
                     }
@@ -195,12 +205,12 @@ public class Player {
             return;
         try {
             Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
-             FileType.Absolute));
+                    FileType.Absolute));
 
             soundFile.setVolume(0, sound.getVolume());
             soundFile.play();
             if (neverRepeat)
-            lastplayed.push(sound.getSound());
+                lastplayed.push(sound.getSound());
 
         } catch (Exception ex) {
             main.system.ExceptionMaster.printStackTrace(ex);
@@ -209,29 +219,65 @@ public class Player {
 
 
     private String getRandomSound(SOUNDS sound_type, SOUNDSET soundSet) {
-        String corePath = getFullPath(sound_type, soundSet);
-
-        File file = FileManager.getFile(corePath + "_1" + FORMAT);
-        if (!file.isFile()) {
-            LogMaster.log(1, "no sound file available for " + sound_type + " - " + soundSet);
-            return null;
-        }
-        int i = 1;
-        while (file.isFile()) {
-
-            String newPath = corePath + "_" + i + FORMAT;
-            file = FileManager.getFile(newPath);
-            if (!file.isFile()) {
-                break;
-            }
-            i++;
-        }
-        // FileManager.getRandomFilePathVariant(corePath, FORMAT)
-        return corePath + "_" + (new Random().nextInt(i - 1) + 1) + FORMAT;
+        return getRandomSound(sound_type, soundSet, null, false);
     }
 
-    private String getFullPath(SOUNDS sound_type, SOUNDSET soundSet) {
-        return SoundMaster.getPath() + sound_type.getPath() + "_" + soundSet.getName();
+    private String getRandomSound(SOUNDS sound_type, SOUNDSET soundSet, Boolean variant, boolean filter) {
+        String corePath = getFullPath(sound_type, soundSet, variant);
+        if (filter) {
+            List<File> files = FileManager.getFilesFromDirectory(PathUtils.cropLastPathSegment(corePath), false);
+            if (files.isEmpty())
+                files = FileManager.getFilesFromDirectory((corePath), false);
+            if (!files.isEmpty()) {
+                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(corePath));
+                List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().
+                        contains(fileName)).collect(Collectors.toList());
+                return FileManager.getRandomFile(filtered).getPath();
+            }
+        } else {
+            File file = FileManager.getFile(corePath + "_01" + FORMAT);
+
+            if (!file.isFile()) {
+                if (variant == null) {
+                    corePath = getRandomSound(sound_type, soundSet, true, false);
+                    file = FileManager.getFile(corePath + "_01" + FORMAT);
+                    if (!file.isFile())
+                        corePath = getRandomSound(sound_type, soundSet, false, false);
+                }
+                if (!file.isFile()) {
+                    LogMaster.log(1, "no sound file available for " + sound_type + " - " + soundSet);
+                    return getRandomSound(sound_type, soundSet, false, true);
+                }
+            } else {
+                if (variant != null)
+                    return corePath;
+            }
+            int i = 1;
+            while (file.isFile()) {
+
+                String newPath = corePath + "_" + NumberUtils.prependZeroes(i, 2) + FORMAT;
+                file = FileManager.getFile(newPath);
+                if (!file.isFile()) {
+                    break;
+                }
+                i++;
+            }
+
+            String n = NumberUtils.prependZeroes((new Random().nextInt(i - 1) + 1), 2);
+            // FileManager.getRandomFilePathVariant(corePath, FORMAT)
+            return corePath + "_" + n + FORMAT;
+        }
+        return corePath;
+    }
+
+    private String getFullPath(SOUNDS sound_type, SOUNDSET soundSet, Boolean variant) {
+        if (variant != null) {
+            if (variant) {
+                return SoundMaster.getPath() + soundSet.getName() + "_" + sound_type.getAltName();
+            }
+            return SoundMaster.getPath() + soundSet.getName() + "_" + sound_type.getAltName2();
+        }
+        return SoundMaster.getPath() + soundSet.getName() + "_" + sound_type.getPath();
     }
 
     public void playEffectSound(final SOUNDS sound_type, final Obj obj) {
@@ -249,18 +295,21 @@ public class Player {
 
 
     public void playSoundOnCurrentThread(SOUNDS sound_type, Obj obj) {
-
-        String prop = obj.getProperty(G_PROPS.CUSTOM_SOUNDSET);
-        if (!StringMaster.isEmpty(prop)) {
+        SOUNDSET soundSet = SoundMaster.getSoundset(obj);
+        String prop = null;
+        if (soundSet == null) {
+             prop = obj.getProperty(G_PROPS.CUSTOM_SOUNDSET);
             if (!StringMaster.isEmpty(prop)) {
-                if (playCustomSoundsetSound(prop, sound_type)) {
-                    return;
+                if (!StringMaster.isEmpty(prop)) {
+                    if (playCustomSoundsetSound(prop, sound_type)) {
+                        return;
+                    }
                 }
             }
+            prop = obj.getProperty(G_PROPS.SOUNDSET);
+            soundSet = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, obj
+                    .getProperty(G_PROPS.SOUNDSET));
         }
-        prop = obj.getProperty(G_PROPS.SOUNDSET);
-        SOUNDSET soundSet = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, obj
-         .getProperty(G_PROPS.SOUNDSET));
         boolean result;
         if (soundSet == null) {
             result = playCustomSoundsetSound(prop, sound_type);
@@ -271,8 +320,8 @@ public class Player {
         if (!result) {
             if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
                 String autopath = SOUNDSET_FOLDER_PATH + "/spells/"
-                 + obj.getAspect().toString().toLowerCase() + "/"
-                 + obj.getProperty(G_PROPS.SPELL_GROUP) + "/" + obj.getName();
+                        + obj.getAspect().toString().toLowerCase() + "/"
+                        + obj.getProperty(G_PROPS.SPELL_GROUP) + "/" + obj.getName();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
                 if (result) {
@@ -281,13 +330,13 @@ public class Player {
                 // spell group level
                 autopath = PathUtils.cropLastPathSegment(autopath);
                 result = playCustomSoundsetSound(autopath + obj.getProperty(G_PROPS.SPELL_GROUP),
-                 sound_type);
+                        sound_type);
                 if (result) {
                     return;
                 }
                 // aspect level
                 autopath = PathUtils.cropLastPathSegment(autopath)
-                 + obj.getAspect().toString().toLowerCase();
+                        + obj.getAspect().toString().toLowerCase();
 
                 result = playCustomSoundsetSound(autopath, sound_type);
 
@@ -312,8 +361,8 @@ public class Player {
             prop = "soundsets/" + prop;
         }
         String path = PathFinder.getSoundPath()
-         // SOUNDSET_FOLDER_PATH + "//"
-         + prop.replace(PathFinder.getSoundPath(), "");
+                // SOUNDSET_FOLDER_PATH + "//"
+                + prop.replace(PathFinder.getSoundPath(), "");
         File folder = FileManager.getFile(path);
         String fileName = "";
         if (!folder.isDirectory()) {
@@ -337,10 +386,10 @@ public class Player {
             return false;
         }
 
-        int volume = getVolume()*checkAdditionalVolume(sound_type)/100;
+        int volume = getVolume() * checkAdditionalVolume(sound_type) / 100;
         File file = files.get(RandomWizard.getRandomIndex(files, new Random()));
         try {
-            play(file.getAbsolutePath(), volume , getDelay());
+            play(file.getAbsolutePath(), volume, getDelay());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
@@ -351,6 +400,7 @@ public class Player {
     protected int checkAdditionalVolume(SOUNDS sound) {
         return 100;
     }
+
     protected boolean checkSoundTypeOff(SOUNDS sound_type) {
         return false;
     }
@@ -399,7 +449,7 @@ public class Player {
         boolean add_name = sound_type != SOUNDS.READY;
 
         String string = SoundMaster.getPath()
-         + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
+                + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
         if (add_name) {
             string += StringMaster.FORMULA_REF_SEPARATOR + sound_type.toString();
         }
@@ -408,7 +458,7 @@ public class Player {
 
     private String getBasePath(String property, boolean b) {
         return StringMaster.clipEnding(property, (b) ? StringMaster.FORMULA_REF_SEPARATOR
-         : StringMaster.FORMAT_CHAR);
+                : StringMaster.FORMAT_CHAR);
     }
 
     public void playHitSound(Obj obj) {
@@ -420,7 +470,7 @@ public class Player {
         masteryGroup = ContentValsManager.getMasteryGroup(mastery, masteryGroup);
 
         String soundPath = SoundMaster.getPath() + "std/skills/" + "NEW_SKILL_" + masteryGroup
-         + FORMAT;
+                + FORMAT;
         if (!FileManager.getFile(soundPath).isFile()) {
             soundPath = SoundMaster.getPath() + "std/skills/" + "NEW_SKILL_GENERIC" + FORMAT;
         }
@@ -540,7 +590,7 @@ public class Player {
     }
 
     private Clip createSoundClip(String sound) throws UnsupportedAudioFileException, IOException,
-     LineUnavailableException {
+            LineUnavailableException {
         /*
          * Once you have a handle to the inputStream, get the audioInputStream and do the rest.
 
@@ -558,7 +608,7 @@ public class Player {
             // your audio hardware,
             // i.e. 44.1kHz sampling rate and 16 bit samples.
             AudioInputStream pcmIn = AudioSystem.getAudioInputStream(new AudioFormat(
-             AudioFormat.Encoding.PCM_SIGNED, 44100f, 16, 1, 2, 44100f, true), ulawIn);
+                    AudioFormat.Encoding.PCM_SIGNED, 44100f, 16, 1, 2, 44100f, true), ulawIn);
 
             clip.open(pcmIn);
             // clip.start();

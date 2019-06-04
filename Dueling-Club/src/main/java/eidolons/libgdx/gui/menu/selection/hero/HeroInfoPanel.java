@@ -40,7 +40,10 @@ public class HeroInfoPanel extends ItemInfoPanel {
         Cell c = getCell(fullsizePortrait);
         c.setActorY(c.getActorY()+ NINE_PATCH_PADDING.SAURON.bottom);
         description.setY(description.getY()+GDX.height(30));
+
+        description.setX(45);
         fullsizePortrait.setY(NINE_PATCH_PADDING.SAURON.bottom);
+        fullsizePortrait.setX(400);
     }
     @Override
     protected float getDescriptionHeight() {

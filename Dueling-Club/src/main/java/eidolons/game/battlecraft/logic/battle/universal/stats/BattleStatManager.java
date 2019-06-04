@@ -63,7 +63,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
         if (event.getType() instanceof STANDARD_EVENT_TYPE) {
             STANDARD_EVENT_TYPE eventType = (STANDARD_EVENT_TYPE) event.getType();
             switch (eventType) {
-                case UNIT_FALLS_UNCONSCIOUS:
+                case UNIT_HAS_FALLEN_UNCONSCIOUS:
                     modifyUnitStat(COMBAT_STATS.DIED, source, 1);
                     break;
                 case UNIT_HAS_BEEN_DEALT_PURE_DAMAGE: {
@@ -93,8 +93,6 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
 
                 case ATTACK_INSTANT:
 
-                case ACTION_MISSED:
-                case UNIT_HAS_FALLEN_UNCONSCIOUS:
                 case UNIT_HAS_BEEN_ANNIHILATED:
                 case UNIT_HAS_CHANGED_FACING:
                 case ITEM_BROKEN:

@@ -75,9 +75,9 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
             @Override
             protected float getDefaultWidth() {
 
-                 if (getDescriptionWidth()!=0)
-                return getDescriptionWidth();
-                return super.getDefaultWidth();
+//                 if (getDescriptionWidth()!=0)
+//                return getDescriptionWidth();
+                return 450;
             }
 
         };

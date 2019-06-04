@@ -136,12 +136,6 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
          fireEvent(new Event(
           STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS, unit.getRef()));
 
-
-        DC_SoundMaster.playEffectSound(RandomWizard.chance(35)?
-         SOUNDS.FALL : SOUNDS.HIT, unit);
-        unit.getGame().fireEvent(
-         new Event(STANDARD_EVENT_TYPE.UNIT_FALLS_UNCONSCIOUS,
-          unit.getRef()));
         unit.getGame().getLogManager().log(unit.getNameIfKnown() + " falls unconscious!");
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.UNCONSCIOUS, unit);
 

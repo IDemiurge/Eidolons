@@ -79,6 +79,9 @@ public class MusicMaster {
     private float PAUSE;
     private boolean shouldLoop;
     private boolean interruptOnSet;
+    private int loopPlayed;
+    private int maxLoopCount;
+    private boolean loopingTrack;
 
 
     // IDEA: map music per scope to resume()
@@ -276,32 +279,57 @@ public class MusicMaster {
     }
 
     private boolean isTrackLooping(String path) {
-        if (path.contains("loop")) {
+        if (path.toLowerCase().contains("loop")) {
             return true;
         }
         return false;
     }
 
     private boolean checkLoop() {
-//        if (loopingTrack) {
-//            if (loopPlayed >= maxLoopCount) {
-//                loopingTrack=false;
-//                shouldLoop=false;
-//                return false;
-//            }
-//            loopPlayed++;
+        switch (scope) {
+            case BATTLE:
+                if (tracksPlayedInScope>=0) {
+                    shouldLoop= true;
+                }
+        }
+
+        if (loopingTrack) {
+            if (loopPlayed >= maxLoopCount) {
+                loopingTrack=false;
+                shouldLoop=false;
+                return false;
+            }
+            loopPlayed++;
 //            playedMusic.play();
-//            //TODO versions?
-//            return true;
-//        }
+            //TODO versions?
+//            return true; TODO this one will control N
+        }
         return false;
     }
     MUSIC_TRACK  lastPlayed;
     int tracksPlayedInScope;
     private boolean checkTrackFits(String sub) {
         MUSIC_TRACK track = getTrackFromPath(sub);
+
+        if (shouldLoop!=isTrackLooping(sub))
+            return false;
+
         if (scope==MUSIC_SCOPE.BATTLE){
             //intro vs alt intro vs no intro...
+
+            if (Eidolons.BOSS_FIGHT) {
+                return fitTracks(track, 86, MUSIC_TRACK.SUFFOCATION_LOOP, MUSIC_TRACK.NIGHT_OF_DEMON);
+            }
+            if (Eidolons.TUTORIAL_PATH) {
+                return fitTracks(track, 70, MUSIC_TRACK.SUFFOCATION_LOOP, MUSIC_TRACK.TOWARDS_THE_UNKNOWN_LOOP);
+            }
+            if (tracksPlayedInScope==0){
+                return fitTracks(track, 86, MUSIC_TRACK.BATTLE_INTRO_LOOP );
+            }
+            if (tracksPlayedInScope==1){
+                return fitTracks(track, 86, MUSIC_TRACK.BATTLE_LOOP );
+            }
+
             Boolean intro = null ;
             if (lastPlayed== MUSIC_TRACK.BATTLE_LOOP)  {
                 intro = false;
@@ -314,19 +342,32 @@ public class MusicMaster {
             }
         }
         if (scope== MUSIC_SCOPE.MENU){
-
+            if (tracksPlayedInScope==0) {
+                return fitTracks(track, 86, MUSIC_TRACK.THE_END_OR_THE_BEGINNING);
+            }
         }
         if (scope== MUSIC_SCOPE.MAP){
-
+//tavern false !
         }
         if (scope== MUSIC_SCOPE.ATMO){
             if (tracksPlayedInScope>1) {
 
             }
         }
-        if (shouldLoop!=isTrackLooping(sub))
-                return false;
             return true;
+    }
+
+    private boolean fitTracks(MUSIC_TRACK track, int c, MUSIC_TRACK... tracks) {
+        for (MUSIC_TRACK music_track : tracks) {
+            if (music_track==track) {
+                return true;
+            }
+        }
+        if (RandomWizard.chance(c)) {
+            return false;
+        }
+
+        return true;
     }
 
     private MUSIC_TRACK getTrackFromPath(String sub) {
@@ -371,15 +412,22 @@ public class MusicMaster {
             }
 
             playList = new Stack<>();
+            ArrayList<String> fitting = new ArrayList<>();
             for (String sub : FileManager.getFilePaths(files)) {
                 if (isMusic(sub)) {
                     if (checkTrackFits(sub))
-                     playList.add(sub);
+                     fitting.add(sub);
                 }
             } //bind to scope?
-            if (shuffle) {
-                Collections.shuffle(playList);
+            if (shouldLoop) {
+                String track = RandomWizard.getRandomListObject(fitting).toString();
+                playList.add(track);
+                playList.add(track);
+                shouldLoop=false;
+            } else if (shuffle) {
+                playList.addAll(fitting);
             }
+                Collections.shuffle(playList);
             cachedPlayList = new Stack<>();
             cachedPlayList.addAll(playList);
             break;
@@ -688,13 +736,20 @@ public class MusicMaster {
 
     public enum MUSIC_MOMENT {
         SAD,
+        SECRET,
+        FALL,
+        VICTORY,
+        RISE,
+        DEATH,
+        TOWN,
+        GAMEOVER,
+
+
         DANGER,
-        DISCOVERY,
-        DEFEAT, VICTORY,
         WELCOME; // VARIANTS?
 
         public String getCorePath() {
-            return name();
+            return PathFinder.getSoundPath()+"moments/"+ name()+".mp3";
         }
     }
 

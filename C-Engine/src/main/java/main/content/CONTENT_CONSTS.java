@@ -16,8 +16,7 @@ public class CONTENT_CONSTS {
             public String getSuffix() {
                 return " v";
             }
-        }
-        , ORANGE,PINK,CRIMSON,CYAN,
+        }, ORANGE, PINK, CRIMSON, CYAN,
         ;
 
         COLOR_THEME() {
@@ -59,7 +58,8 @@ public class CONTENT_CONSTS {
     }
 
     public enum OBJECT_ARMOR_TYPE {
-        STONE, WOOD, METAL, FLESH, BONE, CRYSTAL, AETHER, ETHEREAL,;
+        STONE, WOOD, METAL, FLESH, BONE, CRYSTAL, AETHER, ETHEREAL,
+        ;
 
         public ITEM_MATERIAL_GROUP getGroup() {
             switch (this) {
@@ -99,6 +99,35 @@ public class CONTENT_CONSTS {
     }
 
     public enum SOUNDSET {
+        dark_elf,
+        barbarian,
+        female,
+        brute,
+        bone_knight,
+        dwarf,
+        knight,
+        lad,
+        skeleton,
+        skeleton_archer,
+        thug,
+        wraith,
+        zombie,
+        archer,
+        small_spiders,
+        big_spiders,
+        Golem_Metal,
+        Golem_Rock,
+
+
+        garpia,
+        gidra,
+        ironman,
+        manticora,
+        troglodit,
+        minotaur,
+        bear,
+
+
         HUMAN, ROGUE, BLACKGUARD, FEMALE, WIZARD,
 
         ANGEL, DAEMON, HORROR, BEAST, ABOMINATION, WOLF, BAT, WRAITH, GHOST, ZOMBIE, CREATURE,
@@ -114,7 +143,7 @@ public class CONTENT_CONSTS {
 
         CHAOS,
 
-        LIGHT, DWARF;
+        LIGHT, DWARF;;
 
         public String getName() {
             return name();
@@ -126,36 +155,36 @@ public class CONTENT_CONSTS {
         COMBAT_ONLY(";", "Cannot use outside combat!", String.class),
         CUSTOM("condition string", "[AV(condition)]", String.class),
         PARAM("param;amount", VariableManager.getVarIndex(0) + " required: "
-         + VariableManager.getVarIndex(1), PARAMETER.class, String.class),
+                + VariableManager.getVarIndex(1), PARAMETER.class, String.class),
         // PARAM_NOT("param;amount", VariableManager.getVarIndex(0)
         // + " required: " + VariableManager.getVarIndex(1), PARAMETER.class,
         // String.class),
         COUNTER("COUNTER;amount", VariableManager.getVarIndex(0) + " needed: "
-         + VariableManager.getVarIndex(1), String.class, String.class),
+                + VariableManager.getVarIndex(1), String.class, String.class),
         // COUNTER_NOT("COUNTER;amount", VariableManager.getVarIndex(0)
         // + " needed: " + VariableManager.getVarIndex(1), String.class,
         // String.class),
 
         HAS_ITEM("Item slot", "Must have an item in " + VariableManager.getVarIndex(0), ITEM_SLOT.class),
         ITEM("Item slot;property;value", "Must have an item in " + VariableManager.getVarIndex(0)
-         + " with " + VariableManager.getVarIndex(1) + " matching "
-         + VariableManager.getVarIndex(2), ITEM_SLOT.class, VariableManager.PROP_VAR_CLASS, VariableManager.PROP_VALUE_VAR_CLASS),
+                + " with " + VariableManager.getVarIndex(1) + " matching "
+                + VariableManager.getVarIndex(2), ITEM_SLOT.class, VariableManager.PROP_VAR_CLASS, VariableManager.PROP_VALUE_VAR_CLASS),
         NOT_ITEM("Item slot;property;value", "Must not have an item in "
-         + VariableManager.getVarIndex(0), ITEM_SLOT.class, VariableManager.PROP_VAR_CLASS, VariableManager.PROP_VALUE_VAR_CLASS),
+                + VariableManager.getVarIndex(0), ITEM_SLOT.class, VariableManager.PROP_VAR_CLASS, VariableManager.PROP_VALUE_VAR_CLASS),
         FREE_CELL("Relative position of the cell", "The cell " + VariableManager.getVarIndex(0)
-         + " must be free ", UNIT_DIRECTION.class),
+                + " must be free ", UNIT_DIRECTION.class),
 
         FREE_CELL_RANGE("Relative position of the cell", "The cell "
-         + VariableManager.getVarIndex(1) + " spaces " + VariableManager.getVarIndex(0)
-         + " must be free ", UNIT_DIRECTION.class, VariableManager.NUMBER_VAR_CLASS),
+                + VariableManager.getVarIndex(1) + " spaces " + VariableManager.getVarIndex(0)
+                + " must be free ", UNIT_DIRECTION.class, VariableManager.NUMBER_VAR_CLASS),
 
         NOT_FREE_CELL("Relative position of the cell", "The cell " + VariableManager.getVarIndex(0)
-         + " must be occupied", UNIT_DIRECTION.class),
+                + " must be occupied", UNIT_DIRECTION.class),
         REST("", "There are enemies nearby!", String.class),
         REF_NOT_EMPTY("obj to preCheck;ref to preCheck",
-         VariableManager.getVarIndex(1) + " is missing!", String.class, KEYS.class),
+                VariableManager.getVarIndex(1) + " is missing!", String.class, KEYS.class),
         REF_EMPTY("obj to preCheck;ref to preCheck",
-         VariableManager.getVarIndex(1) + " is already there!", String.class, KEYS.class);
+                VariableManager.getVarIndex(1) + " is already there!", String.class, KEYS.class);
 
         private String text;
         private Object[] vars;
@@ -168,7 +197,7 @@ public class CONTENT_CONSTS {
         }
 
         public String getText(Object... variables) {
-            if (variables==null )
+            if (variables == null)
                 return text;
 
             if (variables.length < 1) {

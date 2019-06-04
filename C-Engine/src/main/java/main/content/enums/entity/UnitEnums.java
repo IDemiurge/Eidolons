@@ -1340,6 +1340,6 @@ public final class UnitEnums {
         WILD,
         WOADS,
         WOLVES,
-        ;
+        DWARVES;
     }
 }

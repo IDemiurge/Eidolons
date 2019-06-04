@@ -257,7 +257,10 @@ public class NumberUtils {
         return result;
     }
 
-    public static String getFormattedTimeString(int number, int digits) {
+    public static String prependZeroes(int number, int digits) {
+        return getFormattedTimeString(number, digits);
+    }
+        public static String getFormattedTimeString(int number, int digits) {
         String result = "" + number;
         if (digits < result.length()) {
             while (digits < result.length()) {

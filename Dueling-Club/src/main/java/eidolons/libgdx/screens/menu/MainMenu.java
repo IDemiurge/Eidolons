@@ -108,7 +108,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
         LOAD(true),
         OPTIONS,
         CREDITS(true),
-        MANUAL(false),
+        MANUAL(true),
         ABOUT(true),
         EXIT;
         boolean secondary;

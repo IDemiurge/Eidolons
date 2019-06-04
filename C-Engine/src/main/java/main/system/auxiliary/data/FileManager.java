@@ -307,6 +307,10 @@ public class FileManager {
             String newPath = prefixPath + corePath + ((underslash) ? "_" : "") + i + format;
             file = FileManager.getFile(newPath);
             if (!file.isFile()) {
+                newPath = prefixPath + corePath + (  " ") + i + format;
+                file = FileManager.getFile(newPath);
+            }
+                if (!file.isFile()) {
 
                 break;
             }

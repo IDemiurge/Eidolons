@@ -52,7 +52,8 @@ public class SoundMaster {
     }
 
     public static void playRandomSoundVariant(String basePath, boolean alt) {
-        if (isOn()) if (isOn()) getPlayer().playRandomSoundVariant(basePath, alt);
+        if (isOn())
+            getPlayer().playRandomSoundVariant(basePath, alt);
     }
 
     public static boolean playEffectSound(SOUNDS sound_type, SOUNDSET soundset) {
@@ -202,6 +203,10 @@ public class SoundMaster {
         SoundMaster.on = on;
     }
 
+    public static SOUNDSET getSoundset(Obj obj) {
+        return null;
+    }
+
     public enum BUTTON_SOUND_MAP {
         //drag? scroll?
         MENU(null, null, NEW__CLICK_UP, NEW__CLICK_DISABLED),
@@ -220,7 +225,8 @@ public class SoundMaster {
         CANCEL(NEW__CLICK_DISABLED, NEW__TAB, NEW__ENTER, NEW__CLICK_DISABLED),
 
         //        REPAIR(NEW__OPEN_MENU , NEW__HOVER ,NEW__CONTAINER  , NEW__CLICK_DISABLED),
-        CHEST(NEW__OPEN_MENU, NEW__HOVER, NEW__CONTAINER, NEW__CLICK_DISABLED),;
+        CHEST(NEW__OPEN_MENU, NEW__HOVER, NEW__CONTAINER, NEW__CLICK_DISABLED),
+        ;
 
         public STD_SOUNDS down;
         public STD_SOUNDS hover;
@@ -240,9 +246,25 @@ public class SoundMaster {
     }
 
     public enum SOUNDS {
-        ATTACK, HIT, WHAT, MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, DEATH, READY, SPEC_ACTION,
-SPOT, IDLE, ALERT,
+        ATTACK {
+            @Override
+            public String getAltName() {
+                return "atk";
+            }
+        },
+        HIT{
+            @Override
+            public String getAltName() {
+                return "hurt";
+            }
+            @Override
+            public String getAltName2() {
+                return "pain";
+            }
+        }, DEATH,
+        SPOT, IDLE, ALERT,
 
+        MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, SPEC_ACTION,WHAT, READY,
         // spell
         IMPACT,
         CAST,
@@ -258,6 +280,18 @@ SPOT, IDLE, ALERT,
             }
         },
         FALL;
+
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
+        }
+
+        public String getAltName() {
+            return super.toString();
+        }
+        public String getAltName2() {
+            return super.toString();
+        }
 
         public String getPath() {
             return "effects/" + name().toLowerCase() + "/" + name();
@@ -370,8 +404,8 @@ SPOT, IDLE, ALERT,
         STD_SOUNDS(boolean alt) {
             this.alt = alt || toString().contains("__");
             path = STD_SOUND_PATH
-             + (alt ? toString() + ALT_FORMAT
-             : toString() + FORMAT).replace("__", "/").replace("_", " ");
+                    + (alt ? toString() + ALT_FORMAT
+                    : toString() + FORMAT).replace("__", "/").replace("_", " ");
 
         }
 
