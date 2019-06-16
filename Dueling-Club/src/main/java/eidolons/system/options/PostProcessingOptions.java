@@ -3,6 +3,8 @@ package eidolons.system.options;
 import eidolons.libgdx.shaders.post.PostFxUpdater.FX_TEST_MODE;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 
+import static eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS.TEST_MODE;
+
 /**
  * Created by JustMe on 12/3/2018.
  */
@@ -11,9 +13,15 @@ public class PostProcessingOptions extends Options<POST_PROCESSING_OPTIONS,POST_
     protected Class<? extends POST_PROCESSING_OPTIONS> getOptionClass() {
         return POST_PROCESSING_OPTIONS.class;
     }
-
+static {
+//    TEST_MODE.setDevOnly(true);
+}
     public   enum POST_PROCESSING_OPTIONS implements Options.OPTION {
-        BLOOM_ON(true),
+        ALL_OFF(false),
+        HERO_EFFECTS_OFF(true),
+        SHADOW_EFFECT_OFF(false),
+
+        BLOOM_ON(false),
         VIGNETTE_ON(false),
         BLUR_ON(false),
         ANTIALIASING_ON(false),
@@ -21,8 +29,7 @@ public class PostProcessingOptions extends Options<POST_PROCESSING_OPTIONS,POST_
         TEST_ON(false),
         LENS_ON(false),
         STANDARD_ON(false),
-
-//        vignetteIntensity,
+        //        vignetteIntensity,
 //        vignetteSaturationMul,
 //        vignetteSaturation,
 //        bloomBlurAmount(2),
@@ -32,7 +39,6 @@ public class PostProcessingOptions extends Options<POST_PROCESSING_OPTIONS,POST_
 //        TEST_BLUR_COEF(100, 0, 200),
 //        TEST_SATURATE_COEF(100, 0, 200),
         TEST_MODE(FX_TEST_MODE.values()),
-
         ;
         private Boolean exclusive;
         private Integer min;

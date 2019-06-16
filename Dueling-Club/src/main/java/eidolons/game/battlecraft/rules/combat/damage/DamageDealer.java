@@ -8,6 +8,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -168,6 +169,8 @@ public class DamageDealer {
 
     //proceeds to deal the damage - to toughness and endurance separately and with appropriate events
     private static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
+
+        ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());
         Event event = new Event(
          magical ? STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE :
           STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE, ref);
@@ -230,7 +233,7 @@ public class DamageDealer {
          : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
             return 0;
         }
-
+        ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());
         int result = dealPureDamage(attacked, attacker, t_damage, e_damage, ref);
         ref.setAmount(result);
         new Event(magical ?
@@ -394,10 +397,17 @@ public class DamageDealer {
         }
         int damageDealt = Math.max(actual_e_damage, actual_t_damage);
 
+        processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
+
+        if (attacked.isMine()){
+            if (Eidolons.TUTORIAL_PATH){
+                return damageDealt;
+            }
+        }
         boolean dead = DamageCalculator.isDead(attacked);
 
         boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
-        boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
+        boolean unconscious =false;
 
         if (!dead) {
             if (attacked.checkBool(STD_BOOLS.FAUX)) {
@@ -407,24 +417,30 @@ public class DamageDealer {
         if (dead) {
             // will start new entry... a good preCheck
             try {
-                attacked.kill(attacker, !annihilated, false);
+              if (! attacked.kill(attacker, !annihilated, false)){
+                  unconscious=true; //TODO wtf is this?
+              } else {
+                  unconscious=false;
                 if (annihilated) {
                     attacked.getGame().getManager().getDeathMaster().
                      unitAnnihilated(attacked, attacker);
 
                 }
+              }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
             ref.setAmount(damageDealt);
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
-        } else {
-            if (unconscious) {
+        }
+            unconscious =  attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS)<=0;
+//                    attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
+
+        if (unconscious) {
                 attacked.getGame().getRules().getUnconsciousRule().
                  fallUnconscious((Unit) attacked);
             }
-        }
         if (toughness_dmg < 0 || endurance_dmg < 0) {
             LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);
         } else
@@ -435,7 +451,6 @@ public class DamageDealer {
             attacked.getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.DAMAGE, attacked,
              damageDealt);
         }
-        processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
 
         if (!CoreEngine.isGraphicsOff())
             if (HpBar.isResetOnLogicThread())

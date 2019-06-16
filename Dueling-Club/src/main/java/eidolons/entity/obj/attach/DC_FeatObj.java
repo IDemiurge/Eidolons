@@ -26,12 +26,13 @@ import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
 import main.system.text.TextParser;
+import org.mockito.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
 
 // Includes Skills and Classes
-public class DC_FeatObj extends DC_HeroAttachedObj {
+    public class DC_FeatObj extends DC_HeroAttachedObj {
 
     public static PARAMS[] rankParams = {PARAMS.RANK_XP_MOD, PARAMS.RANK_SD_MOD,
      PARAMS.RANK_FORMULA_MOD};
@@ -41,7 +42,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     private Map<PARAMETER, String> bonusMap;
     private int tier;
 
-    public DC_FeatObj(ObjType featType, Player originalOwner, GenericGame game, Ref ref) {
+        public DC_FeatObj(ObjType featType, Player originalOwner, GenericGame game, Ref ref) {
         super(featType, originalOwner, game, ref);
         tier = getIntParam(PARAMS.CIRCLE);
     }

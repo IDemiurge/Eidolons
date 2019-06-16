@@ -21,6 +21,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,10 +43,12 @@ public class TextMaster {
     private static String[] extractedTypeGroups = {"Background"};
 
     public static void generateMissingDescrTemplate() {
+        CoreEngine.systemInit();
+        DC_Engine.dataInit(false);
         DC_TYPE TYPE = DC_TYPE.SKILLS;
-        generateMissingDescrTemplate(TYPE, 1, null, false);
-        generateMissingDescrTemplate(TYPE, 1, null, true);
-        Map<String, Set<String>> tabGroupMap = XML_Reader.getTabGroupMap();
+//        generateMissingDescrTemplate(TYPE, 1, null, false);
+//        generateMissingDescrTemplate(TYPE, 1, null, true);
+        Map<String, Set<String>> tabGroupMap = XML_Reader.getTabGroupMap(false);
         for (String sub : tabGroupMap.get(TYPE.getName())) {
 //            if (!ContentMaster.basicScope.contains(generic))
 //                continue;
@@ -423,16 +426,4 @@ public class TextMaster {
 
     }
 
-    public static String getDisplayedName(PARAMS params) {
-        switch (params) {
-            case N_OF_ACTIONS:
-                if (DC_Engine.isAtbMode()) return "Initiative";
-            case C_INITIATIVE:
-                if (DC_Engine.isAtbMode()) return "Readiness";
-            case C_N_OF_COUNTERS:
-            case N_OF_COUNTERS:
-                return "Extra Attacks";
-        }
-        return params.getName();
-    }
 }

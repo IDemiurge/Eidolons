@@ -10,13 +10,17 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static main.system.auxiliary.StringMaster.formatMapKey;
 
 /**
  * Created by JustMe on 5/17/2017.
@@ -41,7 +45,7 @@ public class DialogueFactory {
             int lastId = NumberUtils.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
             GameDialogue dialogue = createDialogue(name, ContainerUtils.joinList(ids));
-            map.put(name, dialogue);
+            map.put(formatMapKey(name), dialogue);
 
         }
 
@@ -50,10 +54,13 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        constructDialogues(StrPathBuilder.build( PathFinder.getEnginePath()+getFileRootPath(), getFileName()));
+        constructDialogues(StrPathBuilder.build(  getFileRootPath(), getFileName()));
     }
 
     protected String getFileRootPath() {
+        if (CoreEngine.isIggDemoRunning()){
+            return PathFinder.getDialoguesPath(TextMaster.getLocale());
+        }
         if (master.isRngDungeon()){
             return getCommonDialoguePath();
         }
@@ -74,9 +81,9 @@ public class DialogueFactory {
 
     @Refactor
     public GameDialogue getDialogue(String name) {
-        if (map.isEmpty())
+//       TODO igg demo hack if (map.isEmpty())
             init(Eidolons.game.getMetaMaster());
-        return map.get(name);
+        return map.get(StringMaster.formatMapKey(name));
     }
 
 
@@ -88,9 +95,9 @@ public class DialogueFactory {
             Speech speech = getSpeech(NumberUtils.getInteger(ID));
 
             String pathRoot = getFileRootPath();
-//                PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
+//             PathFinder.getEnginePath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();
-            String path = PathFinder.getEnginePath() + DialogueLineFormatter.getLinesFilePath(pathRoot);
+            String path =  DialogueLineFormatter.getLinesFilePath(pathRoot);
 
             speech.getSpeechBuilder(path).buildSpeech(speech);
 
@@ -100,6 +107,8 @@ public class DialogueFactory {
                 parent.addChild(speech);
                 speech.init(master, parent);
             }
+
+
             parent = speech;
         }
 

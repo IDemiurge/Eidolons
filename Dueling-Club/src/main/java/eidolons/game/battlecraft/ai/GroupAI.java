@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
@@ -40,6 +41,7 @@ public class GroupAI {
     private Patrol patrol;
     private Unit originalLeader;
     private Object arg;
+    private LevelBlock block;
 
     public GroupAI() {
 
@@ -255,5 +257,13 @@ public class GroupAI {
 
     public void setArg(Object arg) {
         this.arg = arg;
+    }
+
+    public void setBlock(LevelBlock block) {
+        this.block = block;
+    }
+
+    public LevelBlock getBlock() {
+        return block;
     }
 }

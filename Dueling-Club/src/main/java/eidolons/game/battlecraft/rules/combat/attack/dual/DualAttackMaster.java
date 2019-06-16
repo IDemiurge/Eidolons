@@ -12,6 +12,7 @@ import main.ability.ActiveAbility;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -49,8 +50,14 @@ public class DualAttackMaster {
     }
 
     private static boolean checkTypeCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
-
-        return true;
+        // good as counters?
+        if (offhand.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString())) {
+            return false;
+        }
+        if (main.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString())) {
+            return false;
+        }
+            return true;
     }
 
     private static boolean checkRangeCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
@@ -72,7 +79,7 @@ public class DualAttackMaster {
         abilities.add(activateAttacks);
         abilities.add(setCooldown);
         ObjType newType = new ObjType(
-         "Dual: " + main.getName() + " and " + offhand.getName(),
+         "Dual " + main.getName() + "&" + offhand.getName().replace("Off hand", ""),
          DataManager.getType("Dual Attack", DC_TYPE.ACTIONS));
         for (Cost cost : costs.getCosts()) {
             PARAMETER p = cost.getCostParam();

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.UnitActionsDataSource;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ModeActionsPanel extends BaseSlotPanel {
 
         final UnitActionsDataSource source = (UnitActionsDataSource) getUserObject();
 
-        final List<ActionValueContainer> sources = source.getDisplayedActions();
+        final List<ValueContainer> sources = source.getDisplayedActions();
         initContainer(sources, "ui/empty_list_item.jpg");
     }
 

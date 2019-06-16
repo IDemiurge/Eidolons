@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.controls.radial;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,16 +12,25 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
+import main.system.EventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -30,6 +40,7 @@ import static main.system.GuiEventType.*;
 
 public class RadialMenu extends Group implements Closable {
     protected RadialValueContainer currentNode;
+    SpriteAnimation background;
 
     protected RadialValueContainer closeButton;
     protected int radius;
@@ -41,8 +52,46 @@ public class RadialMenu extends Group implements Closable {
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Close", "")));
         closeButton.addListener(tooltip.getController());
-
+        initBackground();
         bindEvents();
+        getColor().a = 0;
+        setVisible(false);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (background != null) {
+            if (background != null)
+                updateBackground(0);
+            background.setScale(getColor().a);
+            if (batch instanceof CustomSpriteBatch) {
+                ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
+            }
+            try {
+                background.draw(batch);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            if (batch instanceof CustomSpriteBatch) {
+                ((CustomSpriteBatch) batch).resetBlending();
+            }
+        }
+        super.draw(batch, parentAlpha);
+    }
+
+    protected void initBackground() {
+        if (CoreEngine.isLiteLaunch()) {
+            return;
+        }
+        background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath(), false);
+        if (background == null) {
+            return;
+        }
+        background.setFrameDuration(0.05f);
+    }
+
+    protected String getBackgroundSpritePath() {
+        return Sprites.RADIAL;
     }
 
     protected void bindEvents() {
@@ -59,10 +108,14 @@ public class RadialMenu extends Group implements Closable {
         GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
             close();
         });
-        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+        GuiEventManager.bind(getOpenEvent(), obj -> {
             triggered(obj);
 
         });
+    }
+
+    protected EventType getOpenEvent() {
+        return GuiEventType.CREATE_RADIAL_MENU;
     }
 
     protected void triggered(EventCallbackParam obj) {
@@ -79,9 +132,12 @@ public class RadialMenu extends Group implements Closable {
     }
 
     public void close() {
+        ToolTipManager.setPresetTooltipPos(null);
         if (currentNode == null)
             return;
         ready = false;
+        if (!isVisible())
+            return;
         if (isAnimated()) {
             currentNode.getChildNodes().forEach(child -> {
                 ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), getAnimationDuration());
@@ -100,13 +156,35 @@ public class RadialMenu extends Group implements Closable {
 
     @Override
     public void act(float delta) {
-        //TODO fix
+
         if (getColor().a == 0.0f)
             setVisible(false);
         else {
             setVisible(true);
         }
         super.act(delta);
+    }
+
+    protected Vector2 getBackgroundPosition() {
+        if (closeButton != null)
+            return //parentToLocalCoordinates
+                    (localToStageCoordinates(
+                            new Vector2(closeButton.getX() + 20, closeButton.getY())));
+        return parentToLocalCoordinates(localToStageCoordinates(
+                new Vector2(getX() + 20, getY())));
+    }
+
+    protected void updateBackground(float delta) {
+        if (background == null) {
+            return;
+        }
+        Vector2 pos = getBackgroundPosition();
+        background.setOffsetX(pos.x);
+        background.setOffsetY(pos.y);
+    }
+
+    protected float getBackgroundRotationPerSecond() {
+        return 1;
     }
 
 
@@ -119,7 +197,7 @@ public class RadialMenu extends Group implements Closable {
 
         setParents(closeButton, null);
 
-        nodes.forEach(node-> node.setCustomRadialMenu(this));
+        nodes.forEach(node -> node.setCustomRadialMenu(this));
 
         if (closeButton.getChildren().size < 1) {
             return;
@@ -178,26 +256,46 @@ public class RadialMenu extends Group implements Closable {
             }
         });
         ActorMaster.addRotateByAction(closeButton, -90);
+
+        updateBackground(0);
     }
 
     protected void adjustPosition() {
         float w = getWidth();
         float h = getHeight();
 
-        float x=MathMaster.minMax(getX(),
-         w/2, GdxMaster.getWidth()-w );
-        float y=MathMaster.minMax(getY(),
-         h/2, GdxMaster.getHeight()-h );
+        float x = MathMaster.minMax(getX(),
+                w / 2, GdxMaster.getWidth() - w);
+        float y = MathMaster.minMax(getY(),
+                h / 2, GdxMaster.getHeight() - h);
         ActorMaster.addMoveToAction(this, x, y, 1);
 
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        if (isVisible()) {
+            Vector2 pos = parentToLocalCoordinates
+                    (localToStageCoordinates(
+                            new Vector2(getX(), getY())));
+
+            ToolTipManager.setPresetTooltipPos(getTooltipPos(pos.x + getWidth() / 3 * 2, pos.y + getHeight() / 3 * 2));
+        }
+    }
+
+    protected Vector2 getTooltipPos(float x, float y) {
+        return new Vector2(x, y);
     }
 
     protected float getMinCoef() {
         return 1.4f;
     }
+
     protected float getMaxCoef() {
         return 3.25f;
     }
+
     protected void updatePosition() {
         int step = getSpectrumDegrees() / currentNode.getChildNodes().size();
         int initial = getStartDegree();
@@ -207,15 +305,15 @@ public class RadialMenu extends Group implements Closable {
 //            coefficient = 2.5;
 //        }
         double coefficient = MathMaster.getMinMax((float) (currentNode.
-                 getChildNodes().size() / (Math.PI+1)), getMinCoef(), getMaxCoef());
+                getChildNodes().size() / (Math.PI + 1)), getMinCoef(), getMaxCoef());
         boolean makeSecondRing = isMakeSecondRing(currentNode.getChildNodes().size());
-        if (makeSecondRing ) {
+        if (makeSecondRing) {
             coefficient = 3.5;
         }
-        int xMax=0;
-        int xMin=0;
-        int yMax=0;
-        int yMin=0;
+        int xMax = 0;
+        int xMin = 0;
+        int yMax = 0;
+        int yMin = 0;
 
         radius = (int) (getRadiusBase() * coefficient);
         final List<RadialValueContainer> children = currentNode.getChildNodes();
@@ -229,20 +327,19 @@ public class RadialMenu extends Group implements Closable {
             if (isClockwise()) {
                 pos = initial - i * step;
             }
-            int y = (int) (r * Math.sin(Math.toRadians(pos )));
-            int x = (int) (r * Math.cos(Math.toRadians(pos )));
+            int y = (int) (r * Math.sin(Math.toRadians(pos)));
+            int x = (int) (r * Math.cos(Math.toRadians(pos)));
 
-            if (y<yMin)
-                yMin=y;
-            if (x<xMin)
-                xMin=x;
-            if (x>xMax)
-                xMax=x;
-            if (y>yMax)
-                yMax=y;
+            if (y < yMin)
+                yMin = y;
+            if (x < xMin)
+                xMin = x;
+            if (x > xMax)
+                xMax = x;
+            if (y > yMax)
+                yMax = y;
 
             Vector2 v = new Vector2(x + currentNode.getX(), y + currentNode.getY());
-
 
 
             if (isAnimated()) {
@@ -251,7 +348,7 @@ public class RadialMenu extends Group implements Closable {
             } else
                 valueContainer.setPosition(v.x, v.y);
         }
-        setSize(xMax-xMin,yMax-yMin);
+        setSize(xMax - xMin, yMax - yMin);
     }
 
     protected double getRadiusBase() {
@@ -327,8 +424,8 @@ public class RadialMenu extends Group implements Closable {
             v = currentNode.localToParentCoordinates(v);
             final int cradius = radius + 32;
             Rectangle rect = new Rectangle(
-             v.x - cradius, v.y - cradius,
-             cradius * 2, cradius * 2);
+                    v.x - cradius, v.y - cradius,
+                    cradius * 2, cradius * 2);
             if (rect.contains(v2)) {
                 actor = this;
             }

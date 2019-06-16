@@ -77,8 +77,9 @@ public class SpellEnums {
     }
 
     public enum SPELL_TAGS {
+        EXCLUSIVE_SUMMON,
         MIND_AFFECTING,
-
+        COMBAT_ONLY,
         FIRE,
         LAVA,
         CLAY,
@@ -109,6 +110,7 @@ public class SpellEnums {
         INSTANT,
         MISSILE,
         TOP_DOWN,
+        ;
     }
 
     public enum SPELL_TYPE {

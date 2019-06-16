@@ -37,7 +37,7 @@ public class JUnitMacroInit extends EidolonsTest {
 
 
     public void manualInit() {
-        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.MAP, null));
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.MAP));
     }
 
     @Override

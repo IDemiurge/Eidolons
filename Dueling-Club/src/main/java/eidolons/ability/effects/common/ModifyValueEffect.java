@@ -516,7 +516,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     public String getParamString() {
         if (sparam == null) {
-            return param.getName();
+            return param.getDisplayedName();
         }
         return sparam;
     }

@@ -219,10 +219,10 @@ public class HpBar extends SuperActor {
     }
 
     public void initChangeActions(FloatAction floatAction, Float previousPerc, float perc) {
-        main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar animated " +
-         dataSource +
-         " previousPerc=" + previousPerc +
-         " perc=" + perc);
+//        main.system.auxiliary.log.LogMaster.log(0, ">>> hp bar animated " +
+//         dataSource +
+//         " previousPerc=" + previousPerc +
+//         " perc=" + perc);
         floatAction.reset();
         floatAction.setStart(previousPerc);
         floatAction.setEnd(perc);

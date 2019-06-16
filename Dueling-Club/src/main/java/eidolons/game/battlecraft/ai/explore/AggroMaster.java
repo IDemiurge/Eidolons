@@ -3,22 +3,29 @@ package eidolons.game.battlecraft.ai.explore;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.audio.DC_SoundMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
+import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static eidolons.game.battlecraft.logic.battlefield.vision.VisionRule.getPlayerUnseenMode;
+
 public class AggroMaster extends ExplorationHandler {
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
-    private static final int DEFAULT_ENGAGEMENT_DURATION = 3;
+    private static final int DEFAULT_ENGAGEMENT_DURATION = 2;
+    private static final double MAX_AGGRO_DST = 5;
     private static boolean aiTestOn = true;
     private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
@@ -29,23 +36,30 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getAggroGroup() {
+        if (getPlayerUnseenMode()) {
+            return new ArrayList<>();
+        }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
-        for (Unit ally : DC_Game.game.getPlayer(true).getControlledUnits_()) {
+        Set<Unit> heroes = DC_Game.game.getPlayer(true).collectControlledUnits_();
+
+        for (Unit ally : heroes) {
             //            if (sightRequiredForAggro) {
             //                if (!VisionManager.checkDetected(ally, true)) {
             //                    continue;
             //                }
             //            }
+//            if (ally.isSneaking())
+//                continue; // TODO igg demo hack
             for (Unit unit : getAggroGroup(ally)) {
                 if (!list.contains(unit))
                     list.add(unit);
             }
         }
 
-        if (ListMaster.isNotEmpty(list) ||ListMaster.isNotEmpty(lastAggroGroup))
+        if (ListMaster.isNotEmpty(list) || ListMaster.isNotEmpty(lastAggroGroup))
             main.system.auxiliary.log.LogMaster.log(1, "Aggro group: " + list +
-             "; last: " + lastAggroGroup);
+                    "; last: " + lastAggroGroup);
         if (!ExplorationMaster.isExplorationOn()) if (!list.isEmpty()) {
             logAggro(list);
         }
@@ -58,6 +72,9 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getLastAggroGroup() {
+        if (lastAggroGroup == null) {
+            return new ArrayList<>();
+        }
         return lastAggroGroup;
     }
 
@@ -72,7 +89,7 @@ public class AggroMaster extends ExplorationHandler {
 
     public static Set<Unit> getAggroGroup(Unit hero) {
         Set<Unit> set =
-         new ConcurrentHashSet<>();
+                new ConcurrentHashSet<>();
         //        Analyzer.getEnemies(hero, false, false, false);
         //            if (ExplorationMaster.isExplorationOn())
 
@@ -84,30 +101,56 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (unit.getAI().getEngagementDuration() > 0) {
+            if (unit.isNamedUnit() || unit.isBoss()) {
                 set.add(unit);
+                newAggro = true;
+
             }
+
+            if (isCriticalBreak(unit, hero))
+                continue;
+            if (PositionMaster.getExactDistance(hero, unit) >=
+                    5 + unit.getAI().getEngagementDuration()//+ unit.getSightRangeTowards(hero)
+            )
+                continue;
+
             if (unit.getAI().isEngaged()) {
                 set.add(unit);
                 newAggro = true;
-                unit.getAI().setEngaged(false);
+            }
+            if (unit.getAI().getEngagementDuration() > 0) {
+                set.add(unit);
             }
             if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
                 continue;
             //TODO these units will instead 'surprise attack' you or stalk
 
+            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.THREAT, unit);
             newAggro = true;
             set.add(unit);
             //            }
         }
         //TODO add whole group of each unit
+//        for (Unit unit : set) {
+//        }
+        //recheck, 'cause there is a bug there somewhere
+        int i = set.size();
+        set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
+                || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
+        if (i != set.size()) {
+            main.system.auxiliary.log.LogMaster.log(1, "Gotcha aggro! " + i + " " + set);
+        }
 
         for (Unit unit : set) {
+            unit.getAI().setEngaged(false); //TODO better place for it?
             if (unit.getAI().getGroup() != null) {
                 for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
                     if (newAggro) {
                         int duration = getEngagementDuration(sub.getAI());
+                        if (set.size() > 2) {
+                            sub.getAI().setEngagementDuration(duration); //debug
+                        }
                         sub.getAI().setEngagementDuration(duration);
                     }
                 }
@@ -115,11 +158,22 @@ public class AggroMaster extends ExplorationHandler {
         }
 
 
-        for (Unit unit : set) {
-            if (unit.getAI().getEngagementDuration() <= 1)
-                return set;
-        }
+//      igg clean  for (Unit unit : set) {
+//            if (unit.getAI().getEngagementDuration() <= 1)
+//                return set;
+//        }
         return set;
+    }
+
+    private static boolean isCriticalBreak(Unit unit, Unit hero) {
+        double max = MAX_AGGRO_DST + unit.getAI().getEngagementDuration();
+//     TODO igg demo hack   if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
+//            max = 1.35f * max;
+//        }
+        if (unit.getCoordinates().dst_(hero.getCoordinates()) >= max) {
+            return true;
+        }
+        return false;
     }
 
     private static int getEngagementDuration(UnitAI ai) {
@@ -128,7 +182,7 @@ public class AggroMaster extends ExplorationHandler {
 
     private static boolean checkAggro(Unit unit, Unit hero, double range) {
         return PositionMaster.getExactDistance(
-         hero.getCoordinates(), unit.getCoordinates()) <= range;
+                hero.getCoordinates(), unit.getCoordinates()) <= range;
     }
 
     public static boolean isAiTestOn() {
@@ -165,9 +219,11 @@ public class AggroMaster extends ExplorationHandler {
 
         if (targetObj.isMine()) {
             action.getOwnerUnit().
-             getAI().setEngaged(true);
+                    getAI().setEngaged(true);
         } else {
-            ((Unit) targetObj).getAI().setEngaged(true);
+            if (checkAttackEngages(action, targetObj)) {
+                ((Unit) targetObj).getAI().setEngaged(true);
+            }
             //                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
             //                                //TODO
             //                                if (g == null) {
@@ -180,6 +236,18 @@ public class AggroMaster extends ExplorationHandler {
 
 
         //        }
+    }
+
+    private static boolean checkAttackEngages(DC_ActiveObj action, Obj targetObj) {
+//       done already?
+//       if (action.getGame().getRules().getStealthRule().rollSpotted(action.getOwnerUnit(), targetObj, action)) {
+//            return true;
+//        }
+        return true;
+    }
+
+    public static int getBattleDifficulty() {
+        return getLastAggroGroup().stream().mapToInt(u -> u.getPower()).sum();
     }
 
     private boolean checkEngaged() {

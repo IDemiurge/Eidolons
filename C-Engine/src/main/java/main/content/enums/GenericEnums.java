@@ -159,12 +159,12 @@ public class GenericEnums {
 
     }
     public enum DIFFICULTY {
-        NEOPHYTE(50, 25 ),
-        NOVICE(65, 35 ),
-        DISCIPLE(80, 50,true ),
-        ADEPT(100, 75,true),
-        CHAMPION(125, 100,true),
-        AVATAR(150, 150,true);
+        NEOPHYTE(33, 25 ),
+        NOVICE(50, 35 ),
+        DISCIPLE(65, 50,true ),
+        ADEPT(80, 75,true),
+        CHAMPION(100, 100,true),
+        AVATAR(125, 150,true);
 
         private int attributePercentage;
         private int masteryPercentage;
@@ -233,7 +233,7 @@ public class GenericEnums {
         DISPEL("Dispel"),
         UNLOCK("Unlock"),
         DISARM_TRAP("Disarm Trap"),
-        FORCE("Force"),;
+        FORCE("Force"), HEARING("Hearing");
         boolean logToTop;
         private String name;
 
@@ -314,7 +314,7 @@ public class GenericEnums {
         BUCKLER_THROWER,
         LEFT_RIGHT_REACH,
         FAUX,
-        NO_GOLD;
+        NO_GOLD, NAMED, BUFFING;
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.

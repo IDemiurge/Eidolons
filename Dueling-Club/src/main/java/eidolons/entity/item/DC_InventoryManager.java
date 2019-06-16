@@ -59,6 +59,8 @@ public class DC_InventoryManager {
 
 
     public boolean isFreeMode() {
+        if (ExplorationMaster.isExplorationOn())
+            return true;
         return freeMode;
     }
 
@@ -67,7 +69,7 @@ public class DC_InventoryManager {
     }
 
     public enum OPERATIONS {
-        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, BUY, SELL,
+        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP,EQUIP_RESERVE, EQUIP_QUICK_SLOT, BUY, SELL,
         STASH, UNSTASH, DESTROY,
     }
 

@@ -66,7 +66,7 @@ public class DataManager {
                 continue;
             }
             lists.add(getFilteredTypeNameList(criterion, ContentValsManager.getOBJ_TYPE(type),
-             filterValue));
+                    filterValue));
         }
 
         return lists;
@@ -117,7 +117,7 @@ public class DataManager {
             if (C_OBJ_TYPE.ITEMS.equals(obj_type))
                 try {
                     return Game.game.getItemGenerator().generateItemType(StringMaster.getWellFormattedString(
-                     typeName), obj_type);
+                            typeName), obj_type);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                     return null;
@@ -216,12 +216,12 @@ public class DataManager {
 
         if (!recursion) {
             LogMaster.log(log, "Type not found: " + TYPE
-             + ":" + typeName);
+                    + ":" + typeName);
             return null;
         }
         if (typeName.endsWith(";")) {
             LogMaster.log(log, "endsWith(\";\"): " + TYPE
-             + ":" + typeName);
+                    + ":" + typeName);
             typeName = StringMaster.getFormattedTypeName(typeName);
             type = getType(typeName, TYPE, false);
             if (type != null) {
@@ -230,7 +230,7 @@ public class DataManager {
         }
         //        if (typeName.contains(" ")) {
         LogMaster.log(log, "Type getWellFormattedString: " + TYPE
-         + ":" + typeName);
+                + ":" + typeName);
         return getType(StringMaster.getWellFormattedString(typeName), TYPE, false);
         //        }
 
@@ -245,7 +245,7 @@ public class DataManager {
             }
         }
         LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-         + ":" + typeName);
+                + ":" + typeName);
         return type;
     }
 
@@ -259,7 +259,7 @@ public class DataManager {
             }
         }
         LogMaster.log(LogMaster.DATA_DEBUG, "Type not found: " + obj_type
-         + ":" + typeName);
+                + ":" + typeName);
         return type;
     }
 
@@ -277,7 +277,7 @@ public class DataManager {
         List<String> parts = ContainerUtils.openContainer(typeName, " ");
         String qualityName = parts.get(0);
         QUALITY_LEVEL q = new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(QUALITY_LEVEL.class,
-         qualityName);
+                qualityName);
         if (q == null) {
             q = ItemEnums.QUALITY_LEVEL.NORMAL;
         } else {
@@ -587,7 +587,7 @@ public class DataManager {
                     list.add(objName);
                 }
             } else if (StringMaster.compare(objName.getValue(filterValue),
-             filter, true)) {
+                    filter, true)) {
                 list.add(objName);
             }
         }
@@ -625,7 +625,7 @@ public class DataManager {
         if (list.isEmpty()) {
             for (ObjType type : set) {
                 if (StringMaster.compareByChar(type.getProperty(TYPE.getSubGroupingKey()), group,
-                 true)) {
+                        true)) {
                     list.add(type);
                 }
             }
@@ -663,10 +663,15 @@ public class DataManager {
     }
 
     public static boolean isTypeName(String item, OBJ_TYPE TYPE) {
+        return isTypeName(item, TYPE, false);
+    }
+
+    public static boolean isTypeName(String item, OBJ_TYPE TYPE, boolean allowVarPart) {
         if (item == null) {
             return false;
         }
-        item = VariableManager.removeVarPart(item);
+        if (!allowVarPart)
+            item = VariableManager.removeVarPart(item);
         return (getType(item, TYPE) != null);
     }
 
@@ -680,7 +685,7 @@ public class DataManager {
                 continue;
             }
             if (StringMaster.compare(type.getProperty(ContentValsManager.getPROP(RES_LEVEL_PROP)),
-             res_level)) {
+                    res_level)) {
                 list.add(name);
             }
         }
@@ -752,7 +757,7 @@ public class DataManager {
             typesSubGroups = new HashMap<>();
             for (String sub : XML_Reader.getXmlMap().keySet()) {
                 typesSubGroups.put(ContentValsManager.getOBJ_TYPE(sub),
-                 new HashMap<>());
+                        new HashMap<>());
             }
         }
         return typesSubGroups;
@@ -959,7 +964,7 @@ public class DataManager {
 
     public static List<ObjType> getUpgradedTypes(ObjType baseType) {
         List<ObjType> list = new ArrayList<>(
-         getTypesSubGroup(baseType.getOBJ_TYPE_ENUM(), baseType.getSubGroupingKey()));
+                getTypesSubGroup(baseType.getOBJ_TYPE_ENUM(), baseType.getSubGroupingKey()));
         list.removeIf(type -> type.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(baseType.getName()));
         return list;
     }
@@ -1011,5 +1016,10 @@ public class DataManager {
 
     public static void setBaseAllItemTypes(ObjType[] baseAllItemTypes) {
         DataManager.baseAllItemTypes = baseAllItemTypes;
+    }
+
+    public static boolean isTypesRead(DC_TYPE type) {
+//        return  !getTypes(type).isEmpty();
+        return XML_Reader.getTypeMaps().get(type.getName()) != null;
     }
 }

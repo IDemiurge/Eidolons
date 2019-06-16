@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.dungeon.location.RngLocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
@@ -37,6 +38,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.*;
+
+import static eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel.VOID_CELL;
 
 /**
  * parses data strings for various purposes:
@@ -87,7 +90,7 @@ public class DC_ObjInitializer {
 
     public static String getObjString(ObjAtCoordinate obj) {
         return obj.getCoordinates().toString() + COORDINATES_OBJ_SEPARATOR
-         + obj.getType().getName();
+                + obj.getType().getName();
     }
 
     public static String getObjString(Obj obj) {
@@ -146,7 +149,7 @@ public class DC_ObjInitializer {
             return new ArrayList<>();
         }
         Map<Coordinates, MicroObj> processUnitDataStringToMap = processUnitDataStringToMap(owner,
-         objData, game);
+                objData, game);
         if (processUnitDataStringToMap == null) {
             return new ArrayList<>();
         }
@@ -183,7 +186,7 @@ public class DC_ObjInitializer {
             if (mapBlockMode) {
                 if (item.contains("%")) {
                     Integer chance = NumberUtils.getInteger(VariableManager.getVarPart(item)
-                     .replace("%", " "));
+                            .replace("%", " "));
                     if (chance < 0) {
                         chance = -chance;
                         excludeCoordinate = true;
@@ -206,10 +209,16 @@ public class DC_ObjInitializer {
             if (i == items.length) {
                 last = true;
             }
+
+            if (checkDummyType(typeName, owner)){
+                continue;
+            }
+
             int level = 0;
             if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                 level = NumberUtils.getInteger(StringMaster.getLastPart(typeName,
-                 UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
+                        UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
+                typeName=StringMaster.cropLastSegment(typeName,  UnitGroupMaster.TYPE_LEVEL_SEPARATOR, true);
 
             }
             ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
@@ -219,13 +228,20 @@ public class DC_ObjInitializer {
                     createItem(type, c);
                 continue;
             }
+
+
+            if (type.getName().equalsIgnoreCase(VOID_CELL)) {
+                c_dungeon.getVoidCoordinates().add(c);
+                continue;
+            }
+
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ)
                 owner = DC_Player.NEUTRAL;
             else if (level == 0) {
                 if (!owner.isMe())
                     if (owner.isAi()) {
                         level =
-                         game.getDungeonMaster().getSpawner().getMinLevel(typeName);
+                                game.getDungeonMaster().getSpawner().getMinLevel(typeName);
                     }
             }
             if (type == null) {
@@ -254,7 +270,7 @@ public class DC_ObjInitializer {
             }
             if (UnitGroupMaster.isMirror()) {
                 if (UnitGroupMaster.getFlip() == FLIP.CW90
-                 || UnitGroupMaster.getFlip() == FLIP.CCW90) {
+                        || UnitGroupMaster.getFlip() == FLIP.CCW90) {
                     c.setX(width - c.x);
                 } else {
 
@@ -281,14 +297,14 @@ public class DC_ObjInitializer {
                 if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
                     if (!game.isSimulation()) {
                         game.getBattleMaster().getSpawner().
-                         addDungeonEncounter(c_dungeon,
-                          block, c, type);
+                                addDungeonEncounter(c_dungeon,
+                                        block, c, type);
                     }
                     continue;
                 }
 
                 if (!CoreEngine.isLevelEditor()
-                 && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
+                        && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
                     owner = game.getPlayer(false);
                 } else {
                     owner = DC_Player.NEUTRAL;
@@ -308,13 +324,13 @@ public class DC_ObjInitializer {
 //                    data.addType(type, owner.isMe());
             }
 
-                if (owner.isMe()) {
-                    try {
-                        TestMasterContent.addTestItems(type, last);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
+            if (owner.isMe()) {
+                try {
+                    TestMasterContent.addTestItems(type, last);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
+            }
             last = false;
             //todo optimize create unit func it too slow
             BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);
@@ -362,6 +378,7 @@ public class DC_ObjInitializer {
         return map;
     }
 
+
     private static Structure createItem(ObjType type, Coordinates coordinates) {
         return HungItemMaster.createBfObjForItem(type, coordinates);
     }
@@ -403,7 +420,7 @@ public class DC_ObjInitializer {
                 if (unit.getType().getName().equals(typeName)) {
 
                     if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(
-                     unit, c)) {
+                            unit, c)) {
                         // TODO tactics?
                         c = Positioner.adjustCoordinate(c, FacingMaster.getRandomFacing()); // direction
                         // preference?
@@ -421,7 +438,7 @@ public class DC_ObjInitializer {
             for (String data : flipMap.keySet()) {
                 Coordinates c = getCoordinatesFromObjString(data);
                 FLIP d = flipMap.get(data);
-                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(z, c, false, false, false)) {
                     String name = getNameFromObjString(data);
                     if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                         name = name.split(MULTI_DIRECTION_SUFFIX)[0];
@@ -475,10 +492,19 @@ public class DC_ObjInitializer {
             }
             subString = VariableManager.removeVarPart(subString);
             subString = c + COORDINATES_OBJ_SEPARATOR
-             + subString;
+                    + subString;
             reformatted += subString + OBJ_SEPARATOR;
         }
 
         return reformatted;
+    }
+
+    private static boolean checkDummyType(String typeName, Player owner) {
+//     TODO not a bad idea, but... too tedi0us for now
+//      if (typeName.equalsIgnoreCase("Facing")) {
+//            owner.getUnitFacingMap().put(c, facing);
+//            return true;
+//        }
+        return false;
     }
 }

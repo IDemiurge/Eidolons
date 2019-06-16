@@ -1,11 +1,15 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
+import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.unit.Unit;
 import main.content.C_OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
+import main.system.math.MathMaster;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +25,21 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 
     public LootMaster(MetaGameMaster master) {
         super(master);
+    }
+
+    public int getChanceForOwnedItemToDrop(Unit unit, DC_HeroItemObj item){
+        // depends on difficulty?!
+        if (item instanceof DC_HeroSlotItem) {
+            int minChance=25;
+            int val=10+ item.getIntParam(PARAMS.C_DURABILITY) * item.getIntParam(PARAMS.GOLD_COST) / 500;
+            int maxChance=75;
+
+            //n of items on this unit?
+            // is enemy?
+            return MathMaster.getMinMax(val, minChance, maxChance);
+
+        }
+        return 100;
     }
 
     public void awardLoot() {

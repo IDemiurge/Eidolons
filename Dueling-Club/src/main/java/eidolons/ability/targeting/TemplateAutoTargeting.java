@@ -4,6 +4,7 @@ import eidolons.system.DC_ConditionMaster;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
+import main.entity.Ref;
 import main.system.auxiliary.EnumMaster;
 
 public class TemplateAutoTargeting extends AutoTargeting {
@@ -29,6 +30,11 @@ public class TemplateAutoTargeting extends AutoTargeting {
 
     public AUTO_TARGETING_TEMPLATES getTemplate() {
         return template;
+    }
+
+    @Override
+    public boolean select(Ref ref) {
+        return super.select(ref);
     }
 
     public void setTemplate(AUTO_TARGETING_TEMPLATES template) {

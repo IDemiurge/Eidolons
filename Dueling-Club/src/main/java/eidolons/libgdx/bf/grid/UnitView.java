@@ -15,6 +15,8 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.DarkGrayscaleShader;
+import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -41,6 +43,7 @@ public class UnitView extends BaseView implements HpBarView{
     protected Tooltip tooltip;
     protected float timeTillTurn = 10;
     protected float resetTimer;
+    protected Supplier<String> outlinePathSupplier;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -72,8 +75,12 @@ public class UnitView extends BaseView implements HpBarView{
 
     protected void updateModeImage(String pathToImage) {
         if (StringMaster.isEmpty(pathToImage)) {
+
+            modeImage.setImage("ui/really empty 32.png");
             if (modeImage.getContent() != null)
-                ActorMaster.addFadeOutAction(modeImage, 0.5f);
+            {
+//                ActorMaster.addFadeOutAction(modeImage, 0.5f);
+            }
             return;
         }
         if (!ImageManager.isImage(pathToImage)) {
@@ -194,7 +201,7 @@ public class UnitView extends BaseView implements HpBarView{
         }
         ShaderDrawer.drawWithCustomShader(this, batch,
          greyedOut ?
-          DarkGrayscaleShader.getShader_()
+          GrayscaleShader.getGrayscaleShader()
 //          GrayscaleShader.getGrayscaleShader()
           : null, true);
     }
@@ -209,6 +216,16 @@ public class UnitView extends BaseView implements HpBarView{
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
         this.outlineSupplier = outlineSupplier;
+    }
+
+
+    public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
+        this.outlinePathSupplier =pathSupplier;
+        if (pathSupplier.get()!=null )
+            if (!ImageManager.isImage(pathSupplier.get())) {
+                return;
+            }
+        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
     }
 
     public void setFlickering(boolean flickering) {

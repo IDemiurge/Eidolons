@@ -9,6 +9,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -33,7 +34,11 @@ public class OutlineMaster {
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
         if (DebugMaster.isOmnivisionOn()) {
-            if (activeUnit.isMine()) return null;
+            if (activeUnit.isMine())
+                return null;
+        }
+        if (CoreEngine.isCinematicMode()){
+            return null;
         }
         if (unit.getGame().isSimulation()) {
             return null;

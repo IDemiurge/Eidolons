@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.screens.menu.GenericMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 
@@ -28,6 +29,11 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         setVisible(false);
     }
 
+    @Override
+    protected String getBgPath() {
+        return StrPathBuilder.build(
+                "ui", "components", "generic", "game menu", "background.png");
+    }
 
     @Override
     protected void addButtons() {
@@ -43,6 +49,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
             close();
         else open();
     }
+
     @Override
     public void open() {
         getLoop().setPaused(true);
@@ -65,8 +72,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     protected Boolean clicked(MenuItem item) {
         if (item.getItems().length > 0)
             return true;
-        if (item instanceof GAME_MENU_ITEM)
-        {
+        if (item instanceof GAME_MENU_ITEM) {
             clicked();
             return getHandler().clicked((GAME_MENU_ITEM) item);
         }
@@ -98,13 +104,16 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected boolean isHidden(GAME_MENU_ITEM item) {
-        if (TownPanel.getActiveInstance()!=null ){
-            if (item== GAME_MENU_ITEM.MAP_INFO
-              ) {
+        if (item== GAME_MENU_ITEM.BACK_TO_TOWN) {
+            return CoreEngine.isLiteLaunch();
+        }
+        if (TownPanel.getActiveInstance() != null) {
+            if (item == GAME_MENU_ITEM.MAP_INFO
+            ) {
                 return true;
             }
         }
-        if (item==GAME_MENU_ITEM.RETREAT)
+        if (item == GAME_MENU_ITEM.RETREAT)
             return !CoreEngine.isMacro();
 //        if (item==GAME_MENU_ITEM.BACK_TO_TOWN)
 //            if (!CoreEngine.isFastMode())
@@ -135,12 +144,12 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
 
-
     public enum GAME_MENU_ITEM implements MenuItem<GAME_MENU_ITEM> {
-        QUICK_HELP,
-        HERO_INFO,
+        QUICK_HELP(true),
+        HERO_INFO(true),
         MAP_INFO(true),
-        MANUAL,
+        TUTORIAL_RECAP(false),
+        MANUAL(false),
         //        SEND_FEEDBACK,
 //        SEND_LOG,
 //        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
@@ -148,19 +157,19 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         OPTIONS,
         RESTART(true),
         PASS_TIME(true),
-//        QUESTS(),
-        BACK_TO_TOWN( ),
-        ACHIEVEMENTS( ),
+        //        QUESTS(),
+        BACK_TO_TOWN(),
+        ACHIEVEMENTS(),
         RETREAT(true),
         SAVE(true),
-//        LOAD(true),
+        //        LOAD(true),
         RESUME,
-        CLICK_ME(QUICK_HELP, HERO_INFO,   MANUAL),
         WEBSITE(true),
         ABOUT(true), LAUNCH_GAME(true),
         MAIN_MENU(true),
         OUTER_WORLD(true),
         EXIT(), //MAIN_MENU, OUTER_WORLD),
+//        INFO(QUICK_HELP, TUTORIAL_RECAP, MANUAL),
         ;
         boolean hidden;
         private GAME_MENU_ITEM[] items;

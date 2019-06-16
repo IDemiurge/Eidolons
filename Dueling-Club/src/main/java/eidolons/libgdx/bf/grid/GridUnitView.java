@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
@@ -25,20 +26,22 @@ public class GridUnitView extends GenericGridView {
 
     protected QueueView initiativeQueueUnitView;
     private LabelX debugInfo;
+    private float scaleResetPeriod = 4;
+    private float scaleResetTimer = scaleResetPeriod;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
         initQueueView(o);
         if (AiBehaviorManager.TEST_MODE)
             addActor(debugInfo = new LabelX(
-             "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
+                    "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
                 @Override
                 public void draw(Batch batch, float parentAlpha) {
                     if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
                         super.draw(batch, 1);
                     } else {
                         ShaderDrawer.drawWithCustomShader(this,
-                         batch, null);
+                                batch, null);
                     }
                 }
             });
@@ -50,6 +53,12 @@ public class GridUnitView extends GenericGridView {
         if (debugInfo == null) {
             return;
         }
+        scaleResetTimer -= delta;
+        if (scaleResetTimer <= 0) {
+            if (getScaleX() > 1)
+                ActorMaster.addScaleAction(this, 1, 3);
+            scaleResetTimer = scaleResetPeriod;
+        }
         if (DC_Game.game.isDebugMode()) {
             if (getUserObject() instanceof Unit) {
                 if (!getUserObject().isAiControlled()) {
@@ -59,7 +68,7 @@ public class GridUnitView extends GenericGridView {
                 //color for enabled
                 AiBehavior behavior = ((Unit) getUserObject()).getAI().getExploreAI().getActiveBehavior();
                 debugInfo.setText(behavior.getType()
-                 + ":\n " + behavior.getDebugInfo());
+                        + ":\n " + behavior.getDebugInfo());
             }
             debugInfo.setVisible(true);
             debugInfo.pack();
@@ -141,11 +150,13 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
+        super.setOutlinePathSupplier(pathSupplier);
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
 
+
         initiativeQueueUnitView.
-         setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-          TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
+                setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
+                        TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
     }
 
 
@@ -212,8 +223,19 @@ public class GridUnitView extends GenericGridView {
     }
 
     public void validateArrowRotation() {
-        if (arrow.getRotation() != arrowRotation) {
-            updateRotation(arrowRotation - ARROW_ROTATION_OFFSET);
+        int real = getUserObject().getFacing().getDirection().getDegrees() % 360;
+        if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
+            main.system.auxiliary.log.LogMaster.log(1, arrow.getRotation()
+                    + " raw val, to  " + real);
+            updateRotation(real);
+
+            if (real % 360 != arrowRotation) {
+                main.system.auxiliary.log.LogMaster.log(1,
+                        getUserObject() + "'s " +
+                                arrowRotation
+                                + " rotation updated to  " + arrowRotation);
+                arrowRotation = real;
+            }
         }
     }
 }

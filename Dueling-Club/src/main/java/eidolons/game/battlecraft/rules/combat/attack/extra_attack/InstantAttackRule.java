@@ -11,11 +11,15 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.perk.AlertRule;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.entity.Ref;
 import main.game.bf.Coordinates;
+import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -111,13 +115,30 @@ public class InstantAttackRule {
     public static boolean triggerInstantAttack(Unit unit, DC_ActiveObj action,
                                                DC_ActiveObj attack) {
         // if (WatchedCondition) //bonus ?
+        DC_Game game = unit.getGame();
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getOwnerUnit() +
+                " attempts an Instant Attack against " +
+                action.getOwnerUnit() +
+                " " + StringMaster.wrapInParenthesis(attack.getName()));
 
         if (!attack.tryInstantActivation(action)) {
             // try other attacks? could be preferred failed somehow
             LogMaster.log(1, "*** Instant attack failed! " + attack);
-        } else {
-            LogMaster.log(1, "*** Instant attack successful! " + attack);
+            return false;
         }
+        LogMaster.log(1, "*** Instant attack successful! " + attack);
+
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getOwnerUnit() + " makes an Instant Attack against " +
+                action.getOwnerUnit() +
+                " " + StringMaster.wrapInParenthesis(attack.getName()));
+
+        Ref ref = (attack.getOwnerUnit().getRef()).getCopy();
+        ref.setTarget(action.getOwnerUnit().getId());
+        game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_INSTANT, ref));
+
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_INSTANT,
+                "Instant Attack!", attack.getOwnerUnit());
+
         INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);
         EffectMaster.getAttackEffect(attack).getAttack().setInstantAttackType(type);
         if (type.isWakeUpAlert()) {
@@ -132,7 +153,7 @@ public class InstantAttackRule {
         int n = getInterruptChance(type, attack, action.getOwnerUnit());
         if (RandomWizard.chance(n)) {
             String entry = action + " has been stopped by an Instant Attack " + "(Chance: "
-             + StringMaster.wrapInParenthesis(n + "%");
+                    + StringMaster.wrapInParenthesis(n + "%");
             action.getGame().getLogManager().log(LOG.GAME_INFO, entry, ENTRY_TYPE.MOVE);
             return true;
         }
@@ -202,7 +223,7 @@ public class InstantAttackRule {
     // 3 seconds to choose then automatic! :)
     public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, Unit unit) {
         int distance = (PositionMaster.getDistance(DC_MovementManager
-         .getMovementDestinationCoordinate(action), unit.getCoordinates()));
+                .getMovementDestinationCoordinate(action), unit.getCoordinates()));
         // TODO moving away from same-cell ?
 
         // how to preCheck if jump trajectory intersects with IA range? for (c c :
@@ -238,7 +259,7 @@ public class InstantAttackRule {
     public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();
         List<DC_UnitAction> attacks = new ArrayList<>(unit.getActionMap().get(
-         ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
+                ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
 
         if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
             attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));

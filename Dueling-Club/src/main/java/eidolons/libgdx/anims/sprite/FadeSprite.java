@@ -25,6 +25,10 @@ public class FadeSprite extends FadeImageContainer {
         setBlending(BLENDING.SCREEN);
     }
 
+    public FadeSprite(String imagePath) {
+        this(SpriteAnimationFactory.getSpriteAnimation(imagePath));
+    }
+
     @Override
     public void setContents(Actor contents) {
         if (previousImage == contents)

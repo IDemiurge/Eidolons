@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.NumberUtils;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -12,6 +13,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
+import main.system.math.MathMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +46,28 @@ public   class HqVerticalValueTable extends HqElement {
             }
             AbstractValueContainer container = new ValueContainer(value.getName() + ": ", "");
 //            container.getActor().setSize(200, 50);
+            if (isStretch()){
+                ((ValueContainer) container).setFixedMinSize(true);
+                ((ValueContainer) container).setWidth(getWidth());
+            }
+            ((ValueContainer) container).setHeight(getHeight()* MathMaster.getFloatWithDigitsAfterPeriod(1, 1f/values.length));
+            ((ValueContainer) container).setValueAlignment(getValueAlignment());
             containers.add(container);
-            add(container.getActor()).uniform().row(); //.left()
+            add(container.getActor()).uniform().left().row(); //.left()
 
             container.setStyle(getLabelStyle());
 
 
         }
 
+    }
+
+    protected boolean isStretch() {
+        return false;
+    }
+
+    protected int getValueAlignment() {
+        return Align.center;
     }
 
     protected LabelStyle getLabelStyle() {
@@ -64,7 +80,7 @@ public   class HqVerticalValueTable extends HqElement {
 
     @Override
     protected Drawable getDefaultBackground() {
-        return NinePatchFactory.getLightPanelDrawable();
+        return NinePatchFactory.getLightDecorPanelFilledDrawable();
     }
 
     protected   int getDefaultWidth(){

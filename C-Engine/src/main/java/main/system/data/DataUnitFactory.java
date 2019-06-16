@@ -1,8 +1,12 @@
 package main.system.data;
 
+import main.data.XLinkedMap;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Map;
+
+import static javafx.scene.input.KeyCode.PROPS;
 
 /**
  * Created by JustMe on 5/11/2017.
@@ -46,8 +50,9 @@ public class DataUnitFactory<E extends DataUnit> {
         this.valueNames = valueNames;
     }
 
-    public void setValues(String... values) {
+    public DataUnitFactory<E> setValues(String... values) {
         this.values = values;
+        return this;
     }
 
     public void setFormat(Boolean format) {
@@ -55,8 +60,13 @@ public class DataUnitFactory<E extends DataUnit> {
     }
 
     public Map<String, String> deconstructDataString(String dataString) {
-
-        return null;
+        Map<String, String> map = new XLinkedMap<>();
+        for (String substring : ContainerUtils.openContainer(dataString)) {
+            String key = substring.split("=")[0];
+            String value = substring.split("=")[1];
+            map.put(key, value);
+        }
+        return map;
     }
 
     public String constructDataString() {

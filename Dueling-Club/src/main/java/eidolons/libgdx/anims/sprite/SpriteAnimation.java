@@ -3,13 +3,20 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.bf.SpriteActor;
+import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
+import main.system.ExceptionMaster;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
 
@@ -18,6 +25,7 @@ import java.util.Arrays;
  */
 public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
+    private float originalFps;
     public float x;
     public float y;
     boolean backAndForth;
@@ -27,7 +35,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private float stateTime;
     private float offsetY;
     private float offsetX;
-    private float frameNumber;
+    private int frameNumber;
     private float alpha = 1f;
     private int cycles;
     private float lifecycle;
@@ -40,20 +48,34 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Color color;
     private Float scale;
     private boolean customAct;
+    private float speed;
+    private boolean aDefault;
+    private SuperActor.BLENDING blending;
 
+    public void setBackAndForth(boolean backAndForth) {
+        this.backAndForth = backAndForth;
+    }
 
     public SpriteAnimation(String path) {
         this(defaultFrameDuration, false, 1, path, null, false);
     }
 
     public SpriteAnimation(String path
-     , boolean singleSprite) {
+            , boolean singleSprite) {
         this(defaultFrameDuration, false, 1, path, null, singleSprite);
+    }
+
+    public SpriteAnimation(float frameDuration, boolean backAndForth, TextureAtlas atlas) {
+        this(frameDuration, backAndForth, SpriteAnimationFactory.getSpriteRegions(backAndForth, atlas));
+    }
+
+    public SpriteAnimation(float frameDuration, boolean looping, TextureAtlas atlas, String name) {
+        this(frameDuration, looping, atlas.findRegions(name));
     }
 
     public SpriteAnimation(float frameDuration, boolean looping, int loops, String path,
                            Texture texture
-     , boolean singleSprite) {
+            , boolean singleSprite) {
         super(frameDuration, TextureManager.getSpriteSheetFrames(path, singleSprite, texture));
         if (path != null) {
             frameNumber = TextureManager.getFrameNumber(path);
@@ -61,6 +83,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
+        originalFps = frameDuration;
     }
 
     public SpriteAnimation(Texture texture) {
@@ -74,11 +97,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         regions = re;
         this.looping = looping;
         this.frameNumber = re.size;
+        originalFps = frameDuration;
     }
 
 
     public void start() {
     }
+
 
     public void reset() {
         stateTime = 0;
@@ -111,11 +136,34 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean draw(Batch batch) {
+
+        if (CoreEngine.isCinematicMode())
+            return false;
+
         if (!isCustomAct()) {
             act(Gdx.graphics.getDeltaTime());
         }
         if (frameNumber == 0)
             return false;
+
+        boolean resetBlending = false;
+        if (blending != null)
+            if (batch instanceof CustomSpriteBatch) {
+                if ((((CustomSpriteBatch) batch).getBlending() != blending)) {
+                    ((CustomSpriteBatch) batch).setBlending(blending);
+                    resetBlending = true;
+                }
+            }
+        boolean result = drawThis(batch);
+
+        if (resetBlending)
+            if (batch instanceof CustomSpriteBatch) {
+                ((CustomSpriteBatch) batch).resetBlending();
+            }
+        return result;
+    }
+
+    public boolean drawThis(Batch batch) {
         if (getLifecycleDuration() != 0) {
             checkReverse();
             cycles = (int) (stateTime / getLifecycleDuration());
@@ -123,11 +171,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
+
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
         if (currentFrame == null) {
             dispose();
             return false;
         }
+
         float alpha = this.alpha;
         drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
 
@@ -136,7 +186,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
                 TextureRegion frame = getOffsetFrame(stateTime, -i);
                 if (frame == null) {
-                    main.system.auxiliary.log.LogMaster.log(1, stateTime + " null");
+                    LogMaster.log(1, stateTime + " null");
                     return true;
                 }
                 i++;
@@ -147,17 +197,32 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                     return true;
             }
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return true;
     }
 
+    public SuperActor.BLENDING getBlending() {
+        return blending;
+    }
+
+    public void setBlending(SuperActor.BLENDING blending) {
+        this.blending = blending;
+    }
+
     private int getTrailingFramesNumber() {
+        if (!isDrawTrailing()) {
+            return 0;
+        }
         return (int) (getFrameNumber() - 1);
     }
 
+    private boolean isDrawTrailing() {
+        return false;
+    }
+
     private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha
-     , float offsetX, float offsetY
+            , float offsetX, float offsetY
     ) {
         if (alpha <= 0) {
             return;
@@ -176,12 +241,16 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             sprite.setScale(getScale());
         sprite.setRotation(rotation);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
-         + offsetY
-         - currentFrame.getRegionHeight() / 2);
+                + offsetY
+                - currentFrame.getRegionHeight() / 2);
 
         if (color != null)
             sprite.setColor(color);
+        if (!batch.isDrawing()) {
+            batch.begin();
+        }
         sprite.draw(batch);
+
     }
 
 
@@ -277,12 +346,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public TextureRegion getCurrentFrame() {
         return getKeyFrame(stateTime, looping);
     }
+
     public int getCurrentFrameNumber() {
         return getKeyFrameIndex(stateTime);
     }
 
     public TextureRegion getOffsetFrame(
-     float time, int offset) {
+            float time, int offset) {
         int index = getKeyFrameIndex(time);
         index += offset;
 
@@ -305,7 +375,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public TextureRegion getOffset(TextureRegion texture, int offset, boolean exceptLastFrame) {
         int index =
-         Arrays.asList(getKeyFrames()).indexOf(texture);
+                Arrays.asList(getKeyFrames()).indexOf(texture);
         index += offset;
 
         while (index < 0) {
@@ -343,7 +413,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this.offsetX = offsetX;
     }
 
-    public float getFrameNumber() {
+    public int getFrameNumber() {
         return frameNumber;
     }
 
@@ -376,6 +446,16 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean isAnimationFinished() {
+        if (looping)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP_PINGPONG)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP_REVERSED)
+            return false;
+        if (getPlayMode() == PlayMode.LOOP_RANDOM)
+            return false;
         return isAnimationFinished(getStateTime());
     }
 
@@ -385,6 +465,53 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public void setCustomAct(boolean customAct) {
         this.customAct = customAct;
+    }
+
+    public void setSpeed(float speed) {
+        setFrameDuration(originalFps / speed);
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+
+        return speed;
+    }
+
+    public float getHeight() {
+        if (!ListMaster.isNotEmpty(getRegions())) {
+            return 0;
+        }
+        return getRegions().get(0).packedHeight;
+    }
+
+    public float getWidth() {
+        if (!ListMaster.isNotEmpty(getRegions())) {
+            return 0;
+        }
+        return getRegions().get(0).packedWidth;
+    }
+
+    public void centerOnParent(Actor actor) {
+        Vector2 pos = new Vector2(actor.getX(), actor.getY());
+        actor.localToStageCoordinates(pos);
+//        pos2= actor.getStage().stageToScreenCoordinates(pos2);
+        setX(pos.x);
+        setY(pos.y);
+        setOffsetX(Math.abs(actor.getWidth() - getWidth()) / 2 + getWidth() / 2);
+        setOffsetY(Math.abs(actor.getHeight() - getHeight()) / 2 + getHeight() / 2);
+
+    }
+
+    public void setFps(int i) {
+        setFrameDuration(1f / i);
+    }
+
+    public void setDefault(boolean aDefault) {
+        this.aDefault = aDefault;
+    }
+
+    public boolean isDefault() {
+        return aDefault;
     }
 
 

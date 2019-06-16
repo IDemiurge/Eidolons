@@ -2,14 +2,17 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.bf.boss.sprite.BossView;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -21,6 +24,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.Map;
 
@@ -32,11 +36,12 @@ public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
-         bfObj.isMainHero()&&UnitViewSprite.TEST_MODE  ? new UnitViewSprite(options) :
+         bfObj.isBoss()&&UnitViewSprite.TEST_MODE  ? new BossView(options) :
           new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
             if (!bfObj.isPlayerCharacter())
+            if (!bfObj.isBoss())
                 if (!bfObj.isWall()) {
                     LastSeenView lsv = new LastSeenView(options, view);
                     view.setLastSeenView(lsv);
@@ -44,6 +49,21 @@ public class UnitViewFactory {
                 }
         }
         view.setOutlinePathSupplier(() -> {
+            if (CoreEngine.isCinematicMode()){
+                return null;
+            }
+            if (!CoreEngine.isOutlinesFixed()){
+                return null;
+            }
+            if ( bfObj.isBoss()) {
+                return null;
+            }
+            if ( bfObj== ShadowMaster.getShadowUnit()) {
+                return null;
+            }
+            if (bfObj.isDetectedByPlayer()) {
+                return null;
+            }
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
             if (type == null)
                 return null;
@@ -61,19 +81,18 @@ public class UnitViewFactory {
         view.getHpBar().setTeamColor(options.getTeamColor());
 
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         view.setToolTip(tooltip);
         ClickListener listener = createListener(bfObj);
         view.addListener(listener);
         view.getInitiativeQueueUnitView().addListener(listener);
-
         return view;
     }
 
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
         BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()), bfObj.getImagePath());
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         view.addListener(tooltip.getController());
         view.addListener(createListener(bfObj));
         view.setUserObject(bfObj);
@@ -92,7 +111,17 @@ public class UnitViewFactory {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 tryDefaultAction(event);
+
                 super.clicked(event, x, y);
+            }
+
+            @Override
+            public boolean handle(Event e) {
+                if (Eidolons.getScreen().getGuiStage().isBlocked()) {
+                    return true;
+                }
+
+                return super.handle(e);
             }
 
             private void tryDefaultAction(InputEvent event) {

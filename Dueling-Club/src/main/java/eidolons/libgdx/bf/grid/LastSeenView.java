@@ -1,6 +1,9 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
@@ -55,7 +58,21 @@ public class LastSeenView extends GenericGridView {
 
     @Override
     protected void updateVisible() {
-        super.updateVisible();
+        if (emblemImage != null)
+            emblemImage.setVisible(false);
+        if (modeImage != null)
+            modeImage.setVisible(false);
+        if (arrow != null)
+            arrow.setVisible(false);
+        if (getHpBar() != null)
+            getHpBar().setVisible(false);
+    }
+
+    @Override
+    protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
+        super.init(arrowTexture, arrowRotation, iconTexture, emblem);
+        if (arrow != null)
+            arrow.setVisible(false);
     }
 
     @Override
@@ -63,6 +80,8 @@ public class LastSeenView extends GenericGridView {
         //        setVisible(!getParentView().isVisible());
         if (getUserObject().isPlayerCharacter())
             return;
+
+        checkResetOutline(Gdx.graphics.getDeltaTime());
         super.draw(batch, parentAlpha);
     }
 
@@ -75,7 +94,7 @@ public class LastSeenView extends GenericGridView {
     @Override
     public String toString() {
         return isVisible() + " LSV for " + getParentView() + getColor().a +
-         getActionsOfClass(AlphaAction.class);
+                getActionsOfClass(AlphaAction.class);
     }
 
     @Override

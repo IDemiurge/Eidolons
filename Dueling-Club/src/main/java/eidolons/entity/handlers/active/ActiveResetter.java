@@ -6,6 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.TerrainRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
@@ -43,6 +44,10 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
     @Override
     public void toBase() {
+        if (ExplorationMaster.isExplorationOn()){
+            if (!getEntity().getOwnerUnit().isMine())
+                return;
+        }
         super.toBase();
         if (getOwnerObj() == null) {
             return;

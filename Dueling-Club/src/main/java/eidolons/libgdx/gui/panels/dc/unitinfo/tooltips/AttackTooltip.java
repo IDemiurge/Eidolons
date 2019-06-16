@@ -1,10 +1,12 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -110,6 +112,18 @@ public class AttackTooltip extends ActionTooltip {
         costsPanel.setUserObject(source.getCostsSource());
 
         addElement(costsPanel);
+
+        for (Actor allChild : GdxMaster.getAllChildren(this)) {
+            if (allChild instanceof ValueContainer) {
+//                ((ValueContainer) allChild).setFixedMinSize(true);
+//                ((ValueContainer) allChild). setFixedSize(true);
+                ((ValueContainer) allChild). removeBackground();
+                allChild.setWidth(allChild.getWidth()*1.3f);
+                allChild.setHeight(allChild.getHeight()*1.1f);
+                ((ValueContainer) allChild).setBackground(
+                        new NinePatchDrawable(NinePatchFactory.getLightPanelFilledSmall()));
+            }
+        }
     }
 
     @Override

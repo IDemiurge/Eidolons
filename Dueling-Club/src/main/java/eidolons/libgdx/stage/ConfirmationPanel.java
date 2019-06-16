@@ -58,6 +58,13 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     }
 
+    public static void clearInstance() {
+        instance=new ConfirmationPanel();
+        if (instance.getStage() instanceof GuiStage) {
+            ((GuiStage) instance.getStage()).resetConfirmPanel(instance);
+        }
+    }
+
     public boolean isPausing() {
         return false;
     }
@@ -73,7 +80,13 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (parentAlpha == ShaderDrawer.SUPER_DRAW)
+        {
+//            if (!batch.isDrawing())
+//                batch.begin(); // TODO igg demo fix
             super.draw(batch, 1);
+//            if (batch.isDrawing())
+//                batch.end();
+        }
         else
             ShaderDrawer.drawWithCustomShader(this, batch, null);
     }
@@ -188,5 +201,13 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     public void setOnCancel(Runnable onCancel) {
         this.onCancel = onCancel;
+    }
+
+    public Runnable getOnConfirm() {
+        return onConfirm;
+    }
+
+    public Runnable getOnCancel() {
+        return onCancel;
     }
 }

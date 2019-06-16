@@ -118,6 +118,10 @@ public class Event implements Referred {
         ref.setTriggered(triggered);
     }
 
+    public Event getClone() {
+        return new Event(getType(), getRef().getCopy());
+    }
+
     public enum MAP_EVENT_TYPE implements EVENT_TYPE {
 
         CAMPING_STARTED;
@@ -174,6 +178,7 @@ public class Event implements Referred {
         UNIT_HAS_FALLEN_UNCONSCIOUS,
         UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS,
         UNIT_HAS_BEEN_KILLED,
+        UNIT_IS_BEING_KILLED,
         UNIT_HAS_BEEN_ANNIHILATED,
         UNIT_HAS_CHANGED_FACING,
         UNIT_HAS_TURNED_CLOCKWISE,
@@ -206,7 +211,6 @@ public class Event implements Referred {
         UNIT_NEW_ROUND_STARTED,
         UNIT_NEW_ROUND_BEING_STARTED,
 
-        UNIT_IS_BEING_KILLED,
         UNIT_BEING_MOVED,
         UNIT_MOVED,
         UNIT_FINISHED_MOVING,
@@ -242,6 +246,7 @@ public class Event implements Referred {
         //DUNGEON
         DOOR_CLOSES,
         DOOR_OPENS,
+        DOOR_IS_UNLOCKED ,
         // DAMAGE
         UNIT_IS_BEING_DEALT_DAMAGE,
         UNIT_IS_BEING_DEALT_SPELL_DAMAGE,
@@ -259,10 +264,12 @@ public class Event implements Referred {
         UNIT_IS_DEALT_MAGICAL_ENDURANCE_DAMAGE,
         UNIT_IS_DEALT_MAGICAL_TOUGHNESS_DAMAGE,
         UNIT_HAS_BEEN_DEALT_PURE_DAMAGE, GAME_STARTED, UNIT_HAS_BEEN_ENGAGED,
-        UNIT_HAS_ENTERED_COMBAT, ENEMIES_CLEARED, UNIT_FALLS_UNCONSCIOUS,
+        UNIT_HAS_ENTERED_COMBAT, ENEMIES_CLEARED,
         UNIT_HAS_USED_QUICK_ITEM, TIME_ELAPSED,
 
-        INTERACTIVE_OBJ_USED, SECRET_FOUND;
+        INTERACTIVE_OBJ_USED, SECRET_FOUND, COMBAT_ENDS, INTERACTIVE_OBJ_MAGIC_USED,
+        INTERACTIVE_OBJ_PICKED_UP,
+        UNIT_IS_FALLING_UNCONSCIOUS, COMBAT_STARTS, HERO_LEVEL_UP, TOWN_ENTERED, VICTORY, DEFEAT;
         private String arg = "";
 
         STANDARD_EVENT_TYPE() {

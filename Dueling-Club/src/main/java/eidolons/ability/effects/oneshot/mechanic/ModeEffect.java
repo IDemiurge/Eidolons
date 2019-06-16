@@ -74,15 +74,15 @@ public class ModeEffect extends MicroEffect implements OneshotEffect {
             mode.setBuffName(name);
         }
         modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
-         .toString());
+                .toString());
 
         mapThisToConstrParams(template, name, defenseMod, disableCounter,
-         dispelOnHit);
+                dispelOnHit);
     }
 
     public ModeEffect(STD_MODES template) {
         modPropEffect = new ModifyPropertyEffect(G_PROPS.MODE, MOD_PROP_TYPE.SET, template
-         .toString());
+                .toString());
 
         this.mode = template;
     }
@@ -100,7 +100,7 @@ divination?
          */
         Unit unit = (Unit) getRef().getSourceObj();
         unit.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().
-         unitActivatesMode(unit);
+                unitActivatesMode(unit);
         unit.getGame().getStateManager().reset(unit);
         return false;
     }
@@ -115,7 +115,7 @@ divination?
         }
         timeModifier = getGame().getTurnManager().getTimeModifier();
         LogMaster.log(LogMaster.COMBAT_DEBUG,
-         getActiveObj() + "'s timeModifier= " + timeModifier);
+                getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }
@@ -145,8 +145,8 @@ divination?
                 addBuffEffect.setDuration(ContentValsManager.INFINITE_VALUE);
             } else {
                 addBuffEffect.setDuration(
-                 (!ExplorationMaster.isExplorationOn() && DC_Engine.isAtbMode()) ? mode.getDuration()
-                  : 1);
+                        (!ExplorationMaster.isExplorationOn() && DC_Engine.isAtbMode()) ? mode.getDuration()
+                                : 1);
             }
 
         }
@@ -160,29 +160,34 @@ divination?
 
     private void addInitiativeEffect() {
         addBuffEffect.addEffect(
-         new ImmobilizeEffect( ));
+                new ImmobilizeEffect());
     }
 
     private void addPeriodicEffect() {
         String periodicValues = mode.getPeriodicValues();
         if (periodicValues == null)
-            return;
-        for (String substring : ContainerUtils.openContainer(periodicValues)) {
-            String amount = VariableManager.getVar(substring, 0);
-            String maxAmount = VariableManager.getVar(substring, 1);
-            String periodicValue = VariableManager.removeVarPart(substring);
+            if (mode != STD_MODES.DIVINATION)
+                return;
+        Effects effects = new Effects();
+        String period = mode.getPeriod();
+        if (mode != STD_MODES.DIVINATION) {
+            for (String substring : ContainerUtils.openContainer(periodicValues)) {
+                String amount = VariableManager.getVar(substring, 0);
+                String maxAmount = VariableManager.getVar(substring, 1);
+                String periodicValue = VariableManager.removeVarPart(substring);
 
-            String period = mode.getPeriod();
-            Formula max = new Formula(maxAmount);
-            Formula formula = new Formula(amount);
-            Effect effect = new ModifyValueEffect(periodicValue, MOD.MODIFY_BY_CONST,
-             formula, max);
-            Effect fx = new PeriodicEffect(period, effect);
-            fx.setRef(Ref.getSelfTargetingRefCopy(ref.getSourceObj()));
-            addBuffEffect.addEffect(fx);
-
-
+                Formula max = new Formula(maxAmount);
+                Formula formula = new Formula(amount);
+                effects.add(new ModifyValueEffect(periodicValue, MOD.MODIFY_BY_CONST,
+                        formula, max));
+            }
+        } else {
+            effects.add(new DivinationEffect());
         }
+        Effect fx = new PeriodicEffect(period, effects);
+        fx.setRef(Ref.getSelfTargetingRefCopy(ref.getSourceObj()));
+        addBuffEffect.addEffect(fx);
+
     }
 
     public synchronized AddBuffEffect getAddBuffEffect() {
@@ -205,11 +210,11 @@ divination?
 
     private void addPropMods() {
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(mode
-         .getPropsAdded(), PROPERTY.class);
+                .getPropsAdded(), PROPERTY.class);
         for (PROPERTY property : map.keySet()) {
             if (property != null) {
                 addBuffEffect.addEffect(new ModifyPropertyEffect(property,
-                 MOD_PROP_TYPE.ADD, map.get(property)));
+                        MOD_PROP_TYPE.ADD, map.get(property)));
             }
         }
     }
@@ -231,7 +236,7 @@ divination?
         }
         // "Custom Parameters" of old...
         for (String s : ContainerUtils.open(ref.getSourceObj().getProperty(
-         G_PROPS.CUSTOM_PROPS))) {
+                G_PROPS.CUSTOM_PROPS))) {
             if (StringMaster.contains(s, mode.getBuffName(), true, false)) {
                 if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false)) {
                     string += VariableManager.removeVarPart(s) + ";";
@@ -239,11 +244,11 @@ divination?
             }
         }
         Map<PARAMETER, Integer> map = new RandomWizard<PARAMETER>().constructWeightMap(string,
-         PARAMETER.class);
+                PARAMETER.class);
         for (PARAMETER param : map.keySet()) {
             if (param != null) {
                 addBuffEffect.addEffect(new ModifyValueEffect(param, mod ? MOD.MODIFY_BY_PERCENT
-                 : MOD.MODIFY_BY_CONST, "" + map.get(param)));
+                        : MOD.MODIFY_BY_CONST, "" + map.get(param)));
             }
         }
     }
@@ -259,14 +264,14 @@ divination?
             // ++ remove disable actions?!
         }
         addBuffEffect.addEffect(new DelayedEffect(REMOVE_EVENT, new RemoveBuffEffect(addBuffEffect
-         .getBuffTypeName()), c));
+                .getBuffTypeName()), c));
         // .apply(ref);
     }
 
     private void addDefModEffect() {
         addBuffEffect.addEffect(new ModifyValueEffect(PARAMS.DEFENSE, MOD.MODIFY_BY_PERCENT, mode
-         .getDefenseMod()
-         + ""));
+                .getDefenseMod()
+                + ""));
     }
 
     private void addDispelOnHitTrigger() {
@@ -288,7 +293,7 @@ divination?
 
         STANDARD_EVENT_TYPE event_type = STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE; // TODO
         Condition conditions = (mode.equals(STD_MODES.ALERT)) ? InterruptRule.getConditionsAlert()
-         : InterruptRule.getConditions();
+                : InterruptRule.getConditions();
 
         addBuffEffect.addEffect(new DelayedEffect(event_type, effects, conditions));
     }
@@ -305,13 +310,13 @@ divination?
             DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
             if (activeObj.getParam(PARAMS.FORMULA).contains(StringMaster.MOD)) {
                 formula = StringMaster.wrapInParenthesis(formula) + "*"
-                 + activeObj.getParam(PARAMS.FORMULA) + "/100";
+                        + activeObj.getParam(PARAMS.FORMULA) + "/100";
             } else if (activeObj.getIntParam(PARAMS.FORMULA) != 0) {
                 formula += "+" + activeObj.getIntParam(PARAMS.FORMULA);
             }
         }
         ModifyValueEffect effect = new ModifyValueEffect(mode.getParameter(), MOD.MODIFY_BY_CONST,
-         new Formula("min(0, " + formula + ")"));
+                new Formula("min(0, " + formula + ")"));
         PARAMETER param = ContentValsManager.getPARAM(mode.getParameter());
         effect.setParam(param);
         effect.setMaxParam(ContentValsManager.getBaseParameterFromCurrent(param));

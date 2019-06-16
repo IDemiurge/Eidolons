@@ -8,6 +8,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.file.ResourceMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -20,11 +21,19 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
+
+import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 Double perks - combine two !
@@ -36,18 +45,79 @@ public class PerkGenerator {
 
     public static void main(String[] args) {
         generatePerks();
-
+        applyIconFolders();
+//        if (CoreEngine.isIggDemo()){
+//            return
+//        }
     }
 
+    private static void applyIconFolders() {
+        String root = "C:\\eidolons\\Eidolons\\resources\\res\\img\\gen\\perk\\full";
+        for (File folder : FileManager.getFilesFromDirectory(root, true)) {
+            if (folder.isDirectory()){
+                List<File> icons = FileManager.getFilesFromDirectory(folder.getPath(), false);
+                if (icons.isEmpty()) {
+                    continue;
+                }
+                List<ObjType> types = DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
+                        t -> t.getName().contains(folder.getName())).collect(Collectors.toList());
+                for (ObjType type : types) {
+                    File icon =
+                            icons.size() > 1 ?
+                            icons.remove(RandomWizard.getRandomIndex(icons)) :
+                            icons.get(RandomWizard.getRandomIndex(icons)) ;
+//                    String path = "gen/perk/" +type.getProperty(G_PROPS.PERK_GROUP) + "/" +type.getName()+".png";
+//                    ResourceMaster.writeImage(icon.getPath(),PathFinder.getImagePath()+ path);
+                    type.setImage(
+                            icon.getPath().split("img")[1]);
+//                            GdxImageMaster.cropImagePath(icon.getPath()));
+
+                }
+            }
+        }
+        for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
+            if (type.getIntParam("circle")>0)
+                continue;
+            new File(root + "/"+type.getName()).mkdirs();
+        }
+
+        XML_Writer.writeXML_ForTypeGroup(DC_TYPE.PERKS);
+    }
+        private static void createIconFolders() {
+        String root = "C:\\eidolons\\Eidolons\\resources\\res\\img\\gen\\perk\\full";
+        for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
+            if (type.getIntParam("circle")>0)
+                continue;
+            new File(root + "/"+type.getName()).mkdirs();
+        }
+    }
     public static void generatePerks() {
         DC_Engine.mainMenuInit();
+
+/**
+ * adjust descriptions
+ * random icon from folder
+ *
+ *  unique perks
+ *  perk for classes
+ *  diff prop
+ *
+ * append to class description
+ *
+ */
+
+//        for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
+//            type.setImage(img);
+//        }
+
         generateParameterPerks();
         adjustTypes();
         XML_Writer.writeXML_ForTypeGroup(DC_TYPE.PERKS);
-        //        generateAbilityPerks();
-        //        generatePassivePerks();
+//                generateAbilityPerks();
+//                generatePassivePerks();
 
     }
+
 
     private static void adjustTypes() {
         for (ObjType sub : DataManager.getTypes(DC_TYPE.CLASSES)) {
@@ -110,8 +180,7 @@ public class PerkGenerator {
                  level);
                 type.setParam(PARAMS.CIRCLE,
                  level);
-                type.setProperty(G_PROPS.IMAGE,
-                 getImage(sub, level));
+                type.setImage(getImage(sub, level));
                 type.setProperty(G_PROPS.GROUP, "Parameter");
 
                 //TODO image
@@ -122,7 +191,7 @@ public class PerkGenerator {
 
     private static String getDescription(PERK_PARAM sub, float amount) {
         return "Increases hero's " +
-         sub + " by " + amount;
+         sub.getParam().getDisplayedName() + " by " +(int) amount;
     }
 
     private static void syncPerkImages() {
@@ -151,6 +220,8 @@ public class PerkGenerator {
 
     private static String getImage(PERK_PARAM sub, int level) {
         //generate tiered via overlays
+
+
         PARAMETER relatedValue = ContentValsManager.getPARAM(sub.name());
         if (relatedValue != null) {
             String image = StrPathBuilder.build(PathFinder.getPerkImagePath(),

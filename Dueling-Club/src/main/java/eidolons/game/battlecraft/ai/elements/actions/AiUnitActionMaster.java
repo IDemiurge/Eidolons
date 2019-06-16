@@ -70,15 +70,8 @@ public class AiUnitActionMaster {
                 if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
                     actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
                 }
+                ActionFilter.filterAttacks(actions, unit);
 
-                actions.remove(AiActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
-                DC_UnitAction
-                 action = unit.getAction(
-                 "Throw", false);
-                actions.remove(action);
-                action = unit.getAction(
-                 "Throw", false);
-                actions.remove(action);
                 break;
 
             case DEFEND:
@@ -105,6 +98,8 @@ public class AiUnitActionMaster {
             case SEARCH: // can it be MOVE?
                 if (unit.getBuff("Search Mode") == null) {
                     actions.add(AiActionFactory.getUnitAction(unit, "Search Mode"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Turn Clockwise"));
+                    actions.add(AiActionFactory.getUnitAction(unit, "Turn Anticlockwise"));
                 } else {
                     actions.add(AiActionFactory.getUnitAction(unit, "Move"));
                 }

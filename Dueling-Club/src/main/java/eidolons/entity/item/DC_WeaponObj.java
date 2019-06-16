@@ -80,15 +80,15 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         if (isMainHand()) {
             getHero().multiplyParamByPercent(PARAMS.ATTACK_MOD, mod, false);
             getHero().modifyParameter(PARAMS.ATTACK_AP_PENALTY,
-             getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
+                    getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
             getHero().modifyParameter(PARAMS.ATTACK_STA_PENALTY,
-             getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
+                    getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
         } else {
             getHero().multiplyParamByPercent(PARAMS.OFFHAND_ATTACK_MOD, mod, false);
             getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_AP_PENALTY,
-             getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
+                    getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
             getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_STA_PENALTY,
-             getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
+                    getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
         }
     }
 
@@ -166,40 +166,40 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         // return true;
         // }
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-         .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
-         || checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-         .getWellFormattedString(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
+                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
+                || checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
+                .getWellFormattedString(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
     }
 
     public void applyUnarmedMasteryBonus() {
         PARAMETER mastery = getMastery();
         if (mastery != null) {
             getHero().modifyParameter((mainHand) ? PARAMS.ATTACK : PARAMS.OFF_HAND_ATTACK,
-             2 * DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(mastery)));
+                    2 * DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(mastery)));
         }
     }
 
     public void applyMasteryBonus() {
 
         getHero().modifyParameter((mainHand) ? PARAMS.ATTACK_MOD : PARAMS.OFFHAND_ATTACK_MOD,
-         DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(getMastery())) / 10);
+                DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(getMastery())) / 10);
 
         getHero().modifyParameter((mainHand) ? PARAMS.ATTACK : PARAMS.OFF_HAND_ATTACK,
-         DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(getMastery())));
+                DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(getMastery())));
         if (isTwoHanded() || getWeaponSize() == ItemEnums.WEAPON_SIZE.HUGE) {
             if (!isRanged()) {
                 getHero().modifyParameter(
-                 PARAMS.DAMAGE_MOD,
-                 DC_Formulas.getDamageFromTwohandedMastery(getHero().getIntParam(
-                  PARAMS.TWO_HANDED_MASTERY)));
+                        PARAMS.DAMAGE_MOD,
+                        DC_Formulas.getDamageFromTwohandedMastery(getHero().getIntParam(
+                                PARAMS.TWO_HANDED_MASTERY)));
                 // modifyParameter(PARAMS.STR_DMG_MODIFIER,
             }
         }
         if (isDouble()) {
             getHero().modifyParameter(
-             PARAMS.ATTACK_MOD,
-             DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(
-              PARAMS.DUAL_WIELDING_MASTERY) / 2));
+                    PARAMS.ATTACK_MOD,
+                    DC_Formulas.getAttackFromWeaponMastery(getHero().getIntParam(
+                            PARAMS.DUAL_WIELDING_MASTERY) / 2));
 
         }
 
@@ -211,7 +211,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean isDouble() {
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-         .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
+                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
     }
 
     private PARAMETER getMastery() {
@@ -226,7 +226,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         if (hero.getMainWeapon() != null) {
             if (!hero.getMainWeapon().isRanged()) {
                 int penalty = Math.min(0, DC_Formulas.getMainHandDualAttackMod()
-                 + getHero().getIntParam(PARAMS.DUAL_WIELDING_MASTERY));
+                        + getHero().getIntParam(PARAMS.DUAL_WIELDING_MASTERY));
                 getHero().modifyParameter(PARAMS.ATTACK_MOD, penalty);
             } else {
                 hero.setParam(PARAMS.OFFHAND_ATTACK_MOD, hero.getIntParam(PARAMS.ATTACK_MOD));
@@ -257,6 +257,11 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         }
     }
 
+    public void equippedInReserve(Ref ref) {
+        //TODO igg demo fix
+    }
+
+    @Override
     public void equipped(Ref ref) {
         this.equipped = true;
         setAttackActions(null);
@@ -361,22 +366,22 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public WEAPON_TYPE getWeaponType() {
         return new EnumMaster<WEAPON_TYPE>().retrieveEnumConst(WEAPON_TYPE.class,
-         getProperty(G_PROPS.WEAPON_TYPE));
+                getProperty(G_PROPS.WEAPON_TYPE));
     }
 
     public WEAPON_GROUP getWeaponGroup() {
         return new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(WEAPON_GROUP.class,
-         getProperty(G_PROPS.WEAPON_GROUP));
+                getProperty(G_PROPS.WEAPON_GROUP));
     }
 
     public WEAPON_SIZE getWeaponSize() {
         return new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class,
-         getProperty(G_PROPS.WEAPON_SIZE));
+                getProperty(G_PROPS.WEAPON_SIZE));
     }
 
     public WEAPON_CLASS getWeaponClass() {
         return new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class,
-         getProperty(G_PROPS.WEAPON_CLASS));
+                getProperty(G_PROPS.WEAPON_CLASS));
     }
 
     @Override
@@ -450,10 +455,10 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public String getSpriteImagePath() {
         if (!checkProperty(PROPS.SPRITE_PATH)) {
             setProperty(PROPS.SPRITE_PATH,
-             StrPathBuilder.build("main",
-              "item",
-              "weapon",
-              "sprites", getBaseType() + ".png"));
+                    StrPathBuilder.build("main",
+                            "item",
+                            "weapon",
+                            "sprites", getBaseType() + ".png"));
         }
         return getProperty(PROPS.SPRITE_PATH);
     }

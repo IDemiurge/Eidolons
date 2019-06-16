@@ -16,11 +16,15 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -40,6 +44,7 @@ public class Location extends DungeonWrapper {
     private Entrance mainEntrance;
     private Entrance mainExit;
     private BuildParameters buildParams;
+    private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
 
     public Location(LocationMaster master, Dungeon dungeon) {
         super(dungeon, master);
@@ -108,6 +113,9 @@ public class Location extends DungeonWrapper {
     }
 
     public void initEntrances() {
+        if (getGame().isBossFight()) { //TODO boss fix
+            entranceData = "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
+        }
         if (StringMaster.isEmpty(entranceData)) {
             entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
         }
@@ -154,6 +162,12 @@ public class Location extends DungeonWrapper {
             }
             setMainExit(new Entrance(c.x, c.y, type,
              getDungeon(), getDungeon()));
+        }
+        if (CoreEngine.isReverseExit()) {
+            Entrance e = getMainEntrance();
+            setMainEntrance(getMainExit());
+            setMainExit(e);
+
         }
     }
 
@@ -269,5 +283,16 @@ public class Location extends DungeonWrapper {
 
     public void setBuildParams(BuildParameters buildParams) {
         this.buildParams = buildParams;
+    }
+
+    public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {
+        this.unitFacingMap = unitFacingMap;
+    }
+
+    public Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
+        if (unitFacingMap == null) {
+            unitFacingMap = new HashMap<>();
+        }
+        return unitFacingMap;
     }
 }

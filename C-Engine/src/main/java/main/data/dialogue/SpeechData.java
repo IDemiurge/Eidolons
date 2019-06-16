@@ -15,6 +15,15 @@ public class SpeechData extends DataUnit<SPEECH_VALUE> {
         initValues();
     }
 
+    public String getText() {
+        return getValue(SPEECH_VALUE.MESSAGE);
+    }
+    public String getActorLeft() {
+        return getValue(SPEECH_VALUE.SPEAKER_ACTOR);
+    }
+    public String getActorRight() {
+        return getValue(SPEECH_VALUE.LISTENER_ACTOR);
+    }
     public SpeechData(String string) {
         super(string);
     }
@@ -30,9 +39,11 @@ public class SpeechData extends DataUnit<SPEECH_VALUE> {
         for (DataString string : strings) {
             addValue(string.getType(), string.getData());
         }
+        addValue(SPEECH_VALUE.SPRITE, "atlas.txt");
     }
 
     public DataString[] getStrings() {
         return strings;
     }
+
 }

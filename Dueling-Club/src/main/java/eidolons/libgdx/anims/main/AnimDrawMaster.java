@@ -2,7 +2,10 @@ package eidolons.libgdx.anims.main;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.controls.AnimController;
@@ -38,10 +41,7 @@ public class AnimDrawMaster extends Group {
 
 
     public Boolean getParallelDrawing() {
-        //        if (parallelDrawing == null)
-        //            parallelDrawing = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.PARALLEL_DRAWING);
-        //        return parallelDrawing;
-        return true;
+        return true; //don't turn that off.... unless you want chaos and madness
     }
 
     public void setParallelDrawing(Boolean parallelDrawing) {
@@ -73,15 +73,15 @@ public class AnimDrawMaster extends Group {
         leadAnimation = leadQueue.removeFirst();
 
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, "next animation: " + leadAnimation +
-         "; " +
-         leadQueue.size() +
-         " in Queue= " + leadQueue);
+                "; " +
+                leadQueue.size() +
+                " in Queue= " + leadQueue);
         //        leadAnimation.resetRef();
         return leadAnimation;
     }
 
     protected void add(CompositeAnim anim) {
-        main.system.auxiliary.log.LogMaster.log(1, "ANIMATION ADDED   " + anim);
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, "ANIMATION ADDED   " + anim);
         if (anim == leadAnimation) {
             return;
         }
@@ -168,9 +168,15 @@ public class AnimDrawMaster extends Group {
                         drawingPlayer = true;
 
         try {
+//         TODO    if (!anim.isRunning()) {
+//                if (!anim.isFinished()) {
+//                    anim.start();
+//                }
+//            }
             result = anim.tryDraw(batch);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            anim.finished();
         }
 
         if (ExplorationMaster.isExplorationOn())
@@ -183,7 +189,7 @@ public class AnimDrawMaster extends Group {
     }
 
     public void onDone(Event event, EventCallback callback, EventCallbackParam param) {
-        AnimMaster. getParentAnim(event.getRef()).onDone(callback, param);
+        AnimMaster.getParentAnim(event.getRef()).onDone(callback, param);
     }
 
     public boolean isDrawingPlayer() {
@@ -210,6 +216,19 @@ public class AnimDrawMaster extends Group {
 
     public CompositeAnim getLeadAnimation() {
         return leadAnimation;
+    }
+
+    public Animation findAnimation(DC_ActiveObj action) {
+        if (leadAnimation != null)
+            if (leadAnimation.getActive() == action) {
+                return leadAnimation;
+            }
+        for (CompositeAnim anim : leadQueue) {
+            if (anim.getActive() == action) {
+                return anim;
+            }
+        }
+        return null;
     }
 }
 

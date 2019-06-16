@@ -62,7 +62,7 @@ public class ScrollTextWrapper extends TablePanelX {
         addActor(scrollPanel);
     }
 
-    protected ScrollPanel<Message> createScrollPanel() {
+    protected ScrollPanel  createScrollPanel() {
         return new TextScroll();
     }
 

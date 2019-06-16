@@ -9,7 +9,8 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.texture.TextureCache;
+import eidolons.libgdx.bf.boss.anim.BossAnimator;
+import eidolons.libgdx.bf.boss.entity.BossMaster;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -34,6 +35,7 @@ public class UnitViewOptions {
     private String name;
     private boolean hoverResponsive;
     private String portraitPath;
+    private String spritePath;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
@@ -89,6 +91,10 @@ public class UnitViewOptions {
         this.portraitPath =  (obj.getImagePath());
         this.name = obj.getName();
 
+        if (obj.isBoss()) {
+           spritePath= BossAnimator.getSpritePath(obj);
+        }
+
         this.mainHero =obj.isMine() && obj.isMainHero();
 
         if (obj instanceof Structure) {
@@ -130,7 +136,7 @@ public class UnitViewOptions {
                     this.emblem = getOrCreateR(emblem);
             }
             if (this.emblem == null)
-                this.emblem = TextureCache.getOrCreateR(ImageManager.getEmptyEmblemPath());
+                this.emblem = getOrCreateR(ImageManager.getEmptyEmblemPath());
 
             this.clockValue = obj.getIntParam(PARAMS.C_INITIATIVE);
         }
@@ -161,5 +167,13 @@ public class UnitViewOptions {
 
     public void setPortraitPath(String portraitPath) {
         this.portraitPath = portraitPath;
+    }
+
+    public String getSpritePath() {
+        return spritePath;
+    }
+
+    public void setSpritePath(String spritePath) {
+        this.spritePath = spritePath;
     }
 }

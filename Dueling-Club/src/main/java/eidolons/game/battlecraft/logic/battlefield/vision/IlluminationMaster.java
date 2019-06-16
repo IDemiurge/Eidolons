@@ -19,8 +19,9 @@ import java.util.Map;
 public class IlluminationMaster {
 
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
-    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 30;
-    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 80;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 60;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 90;
+    public static final Integer DEFAULT_GLOBAL_ILLUMINATION_UNDERGROUND = 50;
     private VisionMaster master;
     private Integer lightEmissionModifier = 100;
     private Integer globalIllumination = 0;

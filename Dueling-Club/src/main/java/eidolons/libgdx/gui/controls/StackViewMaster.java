@@ -14,6 +14,7 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
@@ -162,6 +163,11 @@ public class StackViewMaster {
     }
 
     private boolean isStackHoverOn(GridCellContainer cell) {
+        if (CoreEngine.isCinematicMode())
+            return false;
+        if (isOff())
+            return false;
+
         int n = cell.getUnitViewCount();
         if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.OPEN_OBJECT_STACKS_ON_ALT_HOVER)) {
             if (Gdx.input.isKeyPressed(Keys.ALT_LEFT))
@@ -173,6 +179,10 @@ public class StackViewMaster {
             return true;
         }
         return false;
+    }
+
+    private boolean isOff() {
+        return true;
     }
 
 

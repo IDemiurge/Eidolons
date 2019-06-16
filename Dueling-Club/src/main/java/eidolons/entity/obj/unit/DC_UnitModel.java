@@ -14,6 +14,7 @@ import eidolons.entity.handlers.bf.unit.UnitResetter;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.logic.battlefield.vision.HintMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -95,16 +96,17 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             return getName();
         }
 
-        if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) //!VisionManager.checkVisible(this)) {
-            return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
-
-        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
+        if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT){
+            //!VisionManager.checkVisible(this)) {
+//        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
             // return "Something huge";
             // if (isSmall())
             // return "Something small";
             return "Something " + getGame().getVisionMaster().getHintMaster().getHintsString(this);
         }
+//        return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
+
         return getName();
     }
 
@@ -186,7 +188,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             return;
         }
         // setMode(STD_MODES.NORMAL); just don't.
-        if (game.getState().getRound() > 0)
+        if (game.getState().getRound() > -1) // ???
             getResetter().regenerateToughness();
         if (!DC_Engine.isAtbMode())
             getResetter().resetActions();
@@ -269,20 +271,23 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean turnStarted() {
-        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref))) {
-            return false;
-        }
+//        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, ref))) {
+//            return false;
+//        }
         return canActNow();
 
     }
 
     public BEHAVIOR_MODE getBehaviorMode() {
         MODE mode = getMode();
-        if (!(mode instanceof ModeImpl) || mode == null) {
+        if (  mode == null) {
             return null;
         }
-        ModeImpl modeImpl = (ModeImpl) mode;
-        return modeImpl.getBehaviorMode();
+        if (isPlayerCharacter())
+        if (ExplorationMaster.isExplorationOn()){
+            return null;
+        }
+        return mode.getBehaviorMode();
     }
 
 

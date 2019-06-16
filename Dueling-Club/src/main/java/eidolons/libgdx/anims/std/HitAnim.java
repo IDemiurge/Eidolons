@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -42,9 +43,11 @@ import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 import static main.system.GuiEventType.HP_BAR_UPDATE;
 
@@ -72,8 +75,8 @@ public class HitAnim extends ActionAnim {
 
     public HitAnim(DC_ActiveObj active, AnimData data, DAMAGE_TYPE damageType) {
         this(active, data, false, null, null,
-         ImageManager.getDamageTypeImagePath(
-          damageType == null ? "Physical" : damageType.getName(), true));
+                ImageManager.getDamageTypeImagePath(
+                        damageType == null ? "Physical" : damageType.getName(), true));
         setDamageType(damageType);
     }
 
@@ -100,6 +103,11 @@ public class HitAnim extends ActionAnim {
         part = ANIM_PART.IMPACT;
     }
 
+    @Override
+    public String toString() {
+        return "floating: " + text;
+    }
+
     public static Boolean getBloodOff() {
         if (bloodOff == null)
             bloodOff = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.BLOOD_ANIMS_OFF);
@@ -120,7 +128,7 @@ public class HitAnim extends ActionAnim {
 
     private void initImage() {
         this.imagePath = ImageManager.getDamageTypeImagePath(
-         getDamageType() == null ? "Physical" : damageType.getName(), true);
+                getDamageType() == null ? "Physical" : damageType.getName(), true);
     }
 
     private void initColor() {
@@ -137,20 +145,40 @@ public class HitAnim extends ActionAnim {
     protected void resetSprites() {
         super.resetSprites(); //from data
 
-        spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
-        hitType = getHitType(  spriteType);
-        String spritePath = StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
-         + ".txt";
+        try {
+            spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        if (spriteType == null || getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
+            spriteType = SPRITE_TYPE.SPARKS; //shield!
+        }
+        hitType = getHitType(spriteType);
+        String spritePath = getSpritePath(spriteType , hitType );
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
         SmartTextureAtlas atlas =
-         SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
+                SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
         if (atlas == null)
             return;
         Array<AtlasRegion> regions = atlas.getRegions();
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
-         getDuration() / regions.size, 1);
+                getDuration() / regions.size, 1);
+        float x = RandomWizard.getRandomFloatBetween(-10, 10);
+        float y = RandomWizard.getRandomFloatBetween(-10, 10);
+        if (spriteType == SPRITE_TYPE.SPARKS) {
+            x += -64;
+            y += -64;
+        }
+        sprite.setOffsetX(x);
+        sprite.setOffsetY(y);
+
+
+        sprite.setFlipX(RandomWizard.random());
+        sprite.setFlipY(RandomWizard.random());
+
+
         if (getRef().getTargetObj() instanceof Unit)
             sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
         blood = spriteType == SPRITE_TYPE.BLOOD;
@@ -158,6 +186,11 @@ public class HitAnim extends ActionAnim {
             if (getBloodOff())
                 return;
         sprites.add(sprite);
+    }
+
+    public static final String getSpritePath(SPRITE_TYPE spriteType, HIT hitType) {
+        return StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
+                + ".txt";
     }
 
     @Override
@@ -255,11 +288,13 @@ public class HitAnim extends ActionAnim {
     @Override
     public Actor getActor() {
         return DungeonScreen.getInstance().getGridPanel().getViewMap()
-         .get(getRef().getTargetObj());
+                .get(getRef().getTargetObj());
     }
+
     public String getTexturePath() {
-        return ImageManager.getDamageTypeImagePath(damageType.getName()) ;
+        return ImageManager.getDamageTypeImagePath(damageType.getName());
     }
+
     @Override
     public void start() {
         initColor();
@@ -273,21 +308,22 @@ public class HitAnim extends ActionAnim {
         Damage damage = null;
         if (getActive() != null) {
             damage = getActive().getDamageDealt();
-        } else {
+
+        } if (damage==null) {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
-         active, TEXT_CASES.HIT, text == null ?
-          damage.getAmount()
-          : text);
+                active, TEXT_CASES.HIT, text == null ?
+                        damage.getAmount()
+                        : text);
         floatingText.setImageSupplier(() -> imagePath);
         floatingText.setColor(c);
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
-
+        main.system.auxiliary.log.LogMaster.log(1,"dmg ADD_FLOATING_TEXT " +floatingText );
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
-        add();
+         add();
         //        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
     }
 
@@ -331,15 +367,15 @@ public class HitAnim extends ActionAnim {
         Obj block = getRef().getObj(KEYS.BLOCK);
         if (block != null) {
             ITEM_MATERIAL_GROUP group = new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
-             block.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
+                    block.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
             if (group == ITEM_MATERIAL_GROUP.METAL || group == ITEM_MATERIAL_GROUP.CRYSTAL)
                 return SPRITE_TYPE.SPARKS;
             if (group == ITEM_MATERIAL_GROUP.STONE)
                 return SPRITE_TYPE.STONE;
         }
         OBJECT_ARMOR_TYPE type =
-         new EnumMaster<OBJECT_ARMOR_TYPE>().retrieveEnumConst(OBJECT_ARMOR_TYPE.class,
-          targetObj.getProperty(PROPS.OBJECT_ARMOR_TYPE));
+                new EnumMaster<OBJECT_ARMOR_TYPE>().retrieveEnumConst(OBJECT_ARMOR_TYPE.class,
+                        targetObj.getProperty(PROPS.OBJECT_ARMOR_TYPE));
         if (type == OBJECT_ARMOR_TYPE.METAL) {
             return SPRITE_TYPE.SPARKS;
         }
@@ -382,6 +418,8 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (CoreEngine.isCinematicMode())
+            return;
         super.draw(batch, parentAlpha);
 
     }
@@ -393,7 +431,7 @@ public class HitAnim extends ActionAnim {
                     if (damageType == DAMAGE_TYPE.SLASHING)
                         return HIT.SLICE;
                     if (damageType == DAMAGE_TYPE.PIERCING)
-                        return HIT.SQUIRT;
+                        return RandomWizard.random() ? HIT.SQUIRT : HIT.SPLASH;
                     if (damageType == DAMAGE_TYPE.BLUDGEONING)
                         return HIT.SMASH;
                 }
@@ -412,14 +450,16 @@ public class HitAnim extends ActionAnim {
     //TO ATLASES!
     public enum HIT {
         SLICE("slice"),
-        SPLASH("blood splatter 3 3"),
+        SPLASH("shower"),
+        //                "blood splatter 3 3"),
         SMASH("smash 3 3"),
-        SQUIRT("squirt"),
+        SQUIRT("shower"),
+        //                "squirt"),
         SHOWER("shower"),
         //        TORRENT("smear 3 3")
-        ;
+        BONE_CRACK("bone");
 
-        String spritePath;
+       public String spritePath;
 
         HIT(String fileNameNoFormat) {
             spritePath = fileNameNoFormat;

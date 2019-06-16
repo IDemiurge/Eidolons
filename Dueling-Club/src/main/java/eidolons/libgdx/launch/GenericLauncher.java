@@ -2,13 +2,19 @@ package eidolons.libgdx.launch;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
+import eidolons.game.battlecraft.logic.meta.igg.story.IggIntroScreen;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreen;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreenOld;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
@@ -19,6 +25,7 @@ import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
@@ -53,7 +60,8 @@ public class GenericLauncher extends Game {
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
-    private boolean initRunning;
+    public boolean initRunning;
+    public static GenericLauncher instance;
 
     public static void setFirstInitDone(boolean firstInitDone) {
         GenericLauncher.firstInitDone = firstInitDone;
@@ -61,6 +69,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void create() {
+        instance= this;
         GdxMaster.setLoadingCursor();
         MusicMaster.preload(MUSIC_SCOPE.MENU);
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
@@ -124,7 +133,7 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return  CoreEngine.isFastMode();
+        return CoreEngine.isLiteLaunch();
     }
 
     public LwjglApplicationConfiguration getConf() {
@@ -137,6 +146,9 @@ public class GenericLauncher extends Game {
         conf.samples = 4;
         conf.fullscreen = false;
         fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
+        if (CoreEngine.isGraphicTestMode()) {
+            fullscreen = true;
+        }
         conf.foregroundFPS = FRAMERATE;
         if (!CoreEngine.isJar())
             conf.backgroundFPS = isStopOnInactive() ? 1 : FRAMERATE;
@@ -222,6 +234,8 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
+        GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
+
         if (CoreEngine.isIDE()) {
             try {
                 render_();
@@ -246,15 +260,16 @@ public class GenericLauncher extends Game {
             this.gameScreen = (GameScreen) screen;
     }
 
-    protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
+    protected void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
         GdxMaster.setLoadingCursor();
         main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
         Eidolons.screenSet(meta.getType());
         final Screen oldScreen = getScreen();
 
 //        oldScreen.getPostProcessing().end();
-        final ScreenWithVideoLoader newScreen = factory.get();
-        newScreen.getPostProcessing().setup();
+        final ScreenWithLoader newScreen = factory.get();
+
+        newScreen.setupPostProcessing();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
         newScreen.setData(meta);
@@ -284,16 +299,12 @@ public class GenericLauncher extends Game {
                 }
                 initRunning=true;
                 Eidolons.onThisOrNonGdxThread(() -> {
-                    main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + data.getName());
-                    DC_Engine.gameStartInit();
-                    //how to prevent this from being called twice?
-                    if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
-                    {
-                        initRunning=false;
-                        return; // INIT FAILED or EXITED
-                    }
-                    MusicMaster.preload(MUSIC_SCOPE.ATMO);
-                    Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
+                        if (Eidolons.getMainHero() != null) {
+                            main.system.auxiliary.log.LogMaster.log(1,"*************** Second init attempted, fuck it!" );
+                           return;
+                        }
+                    initScenarioBattle(data, data.getName());
+
                     firstInitDone = true;
                     initRunning=false;
                 });
@@ -301,12 +312,33 @@ public class GenericLauncher extends Game {
             case MAIN_MENU:
                 initRunning=false;
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(SCREEN_TYPE.MAIN_MENU, null));
+                 new ScreenData(SCREEN_TYPE.MAIN_MENU ));
                 break;
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(data.getType(), null));
+                 new ScreenData(data.getType( ) ));
         }
+    }
+
+
+    private void initScenarioBattle(ScreenData data, String name) {
+        main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + name);
+        DC_Engine.gameStartInit();
+        //how to prevent this from being called twice?
+        if (!Eidolons.initScenario(createMetaForScenario(data)))
+        {
+            initRunning=false;
+            return; // INIT FAILED or EXITED
+        }
+        MusicMaster.preload(MUSIC_SCOPE.ATMO);
+        Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
+    }
+
+    private MetaGameMaster createMetaForScenario(ScreenData data) {
+        if (data == null) {
+            return new ScenarioMetaMaster(data.getName());
+        }
+        return new IGG_MetaMaster(data.getName());
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {
@@ -339,6 +371,12 @@ public class GenericLauncher extends Game {
                     switchScreen(DungeonScreen::new, newMeta);
                     Eidolons.setScope(SCOPE.BATTLE);
                     break;
+                case BRIEFING:
+                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
+                    break;
+                case CINEMATIC:
+                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
+                    break;
                 case MAP:
                     Eidolons.setScope(SCOPE.MAP);
                     switchScreen(() -> MapScreen.getInstance(), newMeta);
@@ -366,7 +404,7 @@ public class GenericLauncher extends Game {
         if (getScreen() == null)
             return;
         else {
-            ((ScreenWithVideoLoader) getScreen()).loadDone(param);
+            ((ScreenWithLoader) getScreen()).loadDone(param);
         }
     }
 }

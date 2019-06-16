@@ -48,7 +48,10 @@ public interface InventoryClickHandler {
         QUICK_SLOT(Images.EMPTY_QUICK_ITEM),
         INVENTORY(Images.EMPTY_ITEM),
         CONTAINER(Images.EMPTY_LIST_ITEM),
-        STASH(Images.EMPTY_LIST_ITEM);
+        STASH(Images.EMPTY_LIST_ITEM)
+        , WEAPON_MAIN_RESERVE(Images.EMPTY_WEAPON_MAIN)
+        , WEAPON_OFFHAND_RESERVE(Images.EMPTY_WEAPON_OFFHAND)
+        ;
 
 
         private String slotImagePath;

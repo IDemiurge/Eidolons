@@ -37,6 +37,7 @@ public class InterruptEffect extends MicroEffect implements TriggeredEffect {
             return false;
         }
         i.setInterrupted(true);
+
         return true;
     }
 

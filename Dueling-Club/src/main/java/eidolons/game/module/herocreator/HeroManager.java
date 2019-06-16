@@ -67,7 +67,7 @@ public class HeroManager {
 
     public static Integer getIntCost(Entity type, Entity hero) {
         return
-         new Formula(getCost(type, hero, type.getOBJ_TYPE_ENUM(), null)).getInt(hero.getRef());
+                new Formula(getCost(type, hero, type.getOBJ_TYPE_ENUM(), null)).getInt(hero.getRef());
     }
 
     public static String getCost(Entity type, Entity hero) {
@@ -96,7 +96,7 @@ public class HeroManager {
         Formula costFormula = new Formula("" + value);
         if (discountParam != null) {
             costFormula.applyFactor((!buying ? "" : "-")
-             + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
+                    + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
         }
         if (!buying) {
             costFormula.applyFactor(-DC_Formulas.getSellingPriceReduction());
@@ -109,7 +109,7 @@ public class HeroManager {
                 value = 0;
             } else {
                 costFormula.applyFactor((!buying ? "" : "-")
-                 + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
+                        + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
             }
         }
         if (parsed) {
@@ -140,8 +140,8 @@ public class HeroManager {
     public static boolean isQuickSlotWeapon(Entity type) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
             if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
-             || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
-             || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
+                    || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
+                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
                 return true;
             }
         }
@@ -156,11 +156,13 @@ public class HeroManager {
 
     public static boolean canEquip(Unit hero, Entity item, ITEM_SLOT slot) {
         ITEM_SLOT possible_slot = getItemSlot(hero, item, false);
-        if(possible_slot == slot)
-            return true;
-          possible_slot = getItemSlot(hero, item, false, true);
-        if(possible_slot == slot)
-            return true;
+        if (possible_slot != null)
+            if (possible_slot == slot || possible_slot.getReserve() == slot)
+                return true;
+        possible_slot = getItemSlot(hero, item, false, true);
+        if (possible_slot != null)
+            if (possible_slot == slot || possible_slot.getReserve() == slot)
+                return true;
         return false;
     }
 
@@ -171,7 +173,8 @@ public class HeroManager {
     public static ITEM_SLOT getItemSlot(Unit hero, Entity type, boolean askSwap) {
         return getItemSlot(hero, type, askSwap, false);
     }
-        public static ITEM_SLOT getItemSlot(Unit hero, Entity type, boolean askSwap, boolean alt) {
+
+    public static ITEM_SLOT getItemSlot(Unit hero, Entity type, boolean askSwap, boolean alt) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             return null;
         }
@@ -179,32 +182,32 @@ public class HeroManager {
             WEAPON_CLASS CLASS = getWeaponClass(type);
             switch (CLASS) {
                 case OFF_HAND:
-                    if (hero.getMainWeapon() == null || (!askSwap&&!alt)) {
+                    if (hero.getMainWeapon() == null || (!askSwap && !alt)) {
                         return ItemEnums.ITEM_SLOT.MAIN_HAND;
                     }
-                    if ( askSwap)
+                    if (askSwap)
                         if (promptItemSwap(hero.getMainWeapon(),
-                         hero, type)) {
+                                hero, type)) {
                             return ItemEnums.ITEM_SLOT.MAIN_HAND;
                         }
                     if (hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED
-                     || hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
+                            || hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
                         return null;
                     }
-                    if (hero.getOffhandWeapon() == null|| (!askSwap&& alt)) {
+                    if (hero.getOffhandWeapon() == null || (!askSwap && alt)) {
                         return ItemEnums.ITEM_SLOT.OFF_HAND;
                     }
                     if (askSwap)
-                    if (promptItemSwap(hero.getOffhandWeapon(),
-                     hero, type)) {
-                        return ItemEnums.ITEM_SLOT.OFF_HAND;
-                    }
+                        if (promptItemSwap(hero.getOffhandWeapon(),
+                                hero, type)) {
+                            return ItemEnums.ITEM_SLOT.OFF_HAND;
+                        }
                     return null;
                 case MAIN_HAND_ONLY:
                     if (hero.getMainWeapon() != null) {
                         if (askSwap)
                             if (!promptItemSwap(
-                             hero.getMainWeapon(), hero, type)) {
+                                    hero.getMainWeapon(), hero, type)) {
                                 return null;
                             }
                     }
@@ -214,7 +217,7 @@ public class HeroManager {
                     if (hero.getOffhandWeapon() != null) {
                         if (askSwap)
                             if (!promptItemSwap(
-                             hero.getOffhandWeapon(), hero, type)) {
+                                    hero.getOffhandWeapon(), hero, type)) {
                                 return null;
                             }
                     }
@@ -231,10 +234,10 @@ public class HeroManager {
                     }
                     if (hero.getMainWeapon() != null) {
                         if (askSwap)
-                        if (!promptItemSwap(
-                         hero.getMainWeapon(), hero, type)) {
-                            return null;
-                        }
+                            if (!promptItemSwap(
+                                    hero.getMainWeapon(), hero, type)) {
+                                return null;
+                            }
                     }
                     return ItemEnums.ITEM_SLOT.MAIN_HAND;
                 default:
@@ -276,7 +279,7 @@ public class HeroManager {
 
         }
         if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM))
-         && hero.getArmor()!=null ) {
+                && hero.getArmor() != null) {
             if (!promptItemSwap(hero.getArmor(), hero, type)) {
                 return null;
             }
@@ -286,12 +289,12 @@ public class HeroManager {
 
     private static boolean promptItemSwap(Entity item, Unit hero, Entity newItem) {
         EUtils.onConfirm("Do you wish to swap " +
-         item.getName()+
-         " for " +
-         newItem.getName() + "?", true, null);
+                item.getName() +
+                " for " +
+                newItem.getName() + "?", true, null);
         return
-         Bools.isTrue(
-          (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM));
+                Bools.isTrue(
+                        (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM));
     }
 
     public static WEAPON_CLASS getWeaponClass(String type) {
@@ -304,7 +307,7 @@ public class HeroManager {
 
     public static WEAPON_CLASS getWeaponClass(Entity type) {
         return new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class, type
-         .getProperty(G_PROPS.WEAPON_CLASS));
+                .getProperty(G_PROPS.WEAPON_CLASS));
     }
 
     public void removeHero(Unit hero) {
@@ -513,9 +516,9 @@ public class HeroManager {
 
     private List<ObjType> getSortedJewelry(Unit hero) {
         List<ObjType> sortedJewelryData = JewelryMaster
-         .getSortedJewelryData(new ListMaster<DC_JewelryObj>().convertToTypeList(
-          hero
-           .getJewelry()));
+                .getSortedJewelryData(new ListMaster<DC_JewelryObj>().convertToTypeList(
+                        hero
+                                .getJewelry()));
         return sortedJewelryData;
     }
 
@@ -565,7 +568,7 @@ public class HeroManager {
         boolean skill = type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS;
         if (skill) {
             return feat.getGame().getRequirementsManager().check(hero, feat,
-             RequirementsManager.RANK_MODE) == null;
+                    RequirementsManager.RANK_MODE) == null;
         }
         List<String> reasons = feat.getGame().getRequirementsManager().checkRankReqs(feat);
         return reasons.isEmpty();
@@ -605,8 +608,8 @@ public class HeroManager {
         // return false; TODO DEPRECATED!
         // }
         if (!hero.getType().addProperty(PROP,
-         ((game.isSimulation() || trainer) ? type.getName() : type.getId() + ""),
-         checkNoDuplicates(TYPE)))
+                ((game.isSimulation() || trainer) ? type.getName() : type.getId() + ""),
+                checkNoDuplicates(TYPE)))
         // undoSave(hero);
         {
             return false;
@@ -736,7 +739,7 @@ public class HeroManager {
             return true;
         }
         return hero.checkParam(t.getParam(), ""
-         + new Formula(getCost(type, hero, t, PROP)).getInt(hero.getRef()));
+                + new Formula(getCost(type, hero, t, PROP)).getInt(hero.getRef()));
     }
 
     public Unit getHero(ObjType type) {
@@ -801,7 +804,7 @@ public class HeroManager {
         }
         hero.getType().setProperty(slot.getProp(), type.getNameOrId());
         if (getWeaponClass(type) == ItemEnums.WEAPON_CLASS.TWO_HANDED
-         || getWeaponClass(type) == ItemEnums.WEAPON_CLASS.DOUBLE) {
+                || getWeaponClass(type) == ItemEnums.WEAPON_CLASS.DOUBLE) {
 
         }
 
@@ -828,7 +831,7 @@ public class HeroManager {
                 if (hero.getOffhandWeapon() != null) {
                     if (hero.getOffhandWeapon().isWeapon()) {
                         if (!hero.getOffhandWeapon().checkSingleProp(G_PROPS.WEAPON_CLASS,
-                         ItemEnums.WEAPON_CLASS.OFF_HAND_ONLY + "")) {
+                                ItemEnums.WEAPON_CLASS.OFF_HAND_ONLY + "")) {
                             removeSlotItem(hero, ItemEnums.ITEM_SLOT.OFF_HAND, false);
                             setHeroItem(hero, slot, hero.getOffhandWeapon().getType());
                             return;
@@ -940,7 +943,7 @@ public class HeroManager {
             saveHero(hero);
             if (verbatim) {
                 hero.modifyParameter(PARAMS.XP, -SpellUpgradeMaster.getXpCost(entity, hero,
-                 selected));
+                        selected));
             }
             DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_LEARNED);
         } else {

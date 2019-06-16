@@ -17,6 +17,9 @@ public class Mission extends LightweightEntity {
     Scenario scenario;
     MissionLocation missionLocation;
 
+    public Mission(ObjType type ) {
+        super(type);
+    }
     public Mission(ObjType type, Scenario scenario) {
         super(type);
         this.scenario = (scenario);
@@ -32,7 +35,7 @@ public class Mission extends LightweightEntity {
 
     public String getMissionResourceFolderPath() {
         return PathUtils.buildPath(PathFinder.getScenariosPath(),
-         getScenario().getName(),
+//         getScenario().getName(),
          getName());
 
     }

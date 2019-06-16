@@ -101,6 +101,15 @@ public class ShopDataSource extends ContainerDataSource
         return invDataSource.mainWeapon();
     }
 
+    @Override
+    public InvItemActor mainWeaponReserve() {
+        return invDataSource.mainWeaponReserve();
+    }
+
+    @Override
+    public InvItemActor offWeaponReserve() {
+        return invDataSource.offWeaponReserve();
+    }
     public Shop getShop() {
         return shop;
     }
@@ -129,6 +138,7 @@ public class ShopDataSource extends ContainerDataSource
     public List<InvItemActor> rings() {
         return invDataSource.rings();
     }
+
 
     public ShopClickHandler getHandler() {
         return (ShopClickHandler) handler;

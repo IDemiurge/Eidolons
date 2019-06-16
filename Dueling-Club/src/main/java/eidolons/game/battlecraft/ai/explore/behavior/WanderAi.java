@@ -11,6 +11,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 10/18/2018.
@@ -171,13 +172,24 @@ public class WanderAi extends AiGroupBehavior {
             }
         }
         if (block == null) {
-            return 7;
+            return    getDefaultMaxDistance();
         }
-        return Math.min(7,
-         origin.dst(block.getCenterCoordinate())+
-         Math.max(block.getHeight()/2, block.getWidth()/2));
+        return Math.round(Math.min(7,
+                origin.dst(block.getCenterCoordinate()) +
+                        Math.max(block.getHeight() * getBlockSizeCoefForMaxDistance(), block.getWidth() * getBlockSizeCoefForMaxDistance())));
         //        }
         //        return WanderAiMaster.getMaxWanderTotalDistance(group, GOAL_TYPE.WANDER);
+    }
+
+    private int getDefaultMaxDistance() {
+        if (getUnit().getAI().getGroup().getMembers().size()==0){
+            return 1;
+        }
+        return CoreEngine.isSafeMode()? 2: 7;
+    }
+
+    private float getBlockSizeCoefForMaxDistance() {
+        return CoreEngine.isSafeMode()? 0.1f: 0.5f;
     }
 
 }

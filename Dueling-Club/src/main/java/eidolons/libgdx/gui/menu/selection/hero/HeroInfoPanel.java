@@ -15,6 +15,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.text.HelpMaster;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
+import main.entity.Entity;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -39,7 +40,10 @@ public class HeroInfoPanel extends ItemInfoPanel {
         Cell c = getCell(fullsizePortrait);
         c.setActorY(c.getActorY()+ NINE_PATCH_PADDING.SAURON.bottom);
         description.setY(description.getY()+GDX.height(30));
+
+        description.setX(45);
         fullsizePortrait.setY(NINE_PATCH_PADDING.SAURON.bottom);
+        fullsizePortrait.setX(400);
     }
     @Override
     protected float getDescriptionHeight() {
@@ -68,8 +72,12 @@ public class HeroInfoPanel extends ItemInfoPanel {
             return;
         super.updateAct(delta);
         emblem.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.getEntity().getProperty(G_PROPS.EMBLEM)));
-        mainInfo.setText(HelpMaster.getHeroMainInfoText(item.getName()));
+        mainInfo.setText(getOverviewText(item.getEntity()));
 
+    }
+
+    protected String getOverviewText(Entity entity) {
+        return HelpMaster.getHeroMainInfoText(item.getName());
     }
 
     @Override

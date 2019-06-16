@@ -243,6 +243,9 @@ public class GammaMaster {
                 }
             }
         }
+        if (cell == null) {
+            return 1;
+        }
         float dst = (float) c.dst_(cell.getCoordinates());
         //         (float) master.getGame().getCells().stream().sorted(new SortMaster<Obj>().getSorterByExpression_(
         //          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.get(x, y))
@@ -262,6 +265,13 @@ public class GammaMaster {
                  getDungeonWrapper()).getMainExit();
                 mainExitCoordingates = exit.getCoordinates();
             }
+        }
+
+        BattleFieldObject obj = master.getGame().getManager().getHighlightedObj();
+        if (obj!=null ){
+            if (obj.getCoordinates().x==x)
+                if (obj.getCoordinates().y==y)
+                    return 1;
         }
         if (mainExitCoordingates != null) {
             if (mainExitCoordingates.getX() == x)

@@ -6,6 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.system.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
@@ -15,6 +16,8 @@ import main.ability.effects.OneshotEffect;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.entity.SpellEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
@@ -90,6 +93,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
+
         // TODO XP -> LEVEL!
         Ref REF = Ref.getCopy(ref);
         REF.setValue(KEYS.STRING, typeName);
@@ -108,7 +112,10 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         if (owner == null) {
             owner = ref.getSourceObj().getOwner();
         }
-        setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, ref.getCopy()));
+        Ref REF45 = ref.getCopy();
+        REF45.removeValue(KEYS.TARGET);
+        setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, REF45));
+        unit.setSummoned(true);
         if (unit instanceof Unit) {
             if (!((Unit) unit).isHero()) {
                 UnitTrainingMaster.train((Unit) unit);
@@ -117,11 +124,20 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
 
         getUnit().getRef().setID(KEYS.SUMMONER, ref.getSource());
 
+        if (ref.getActive().checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.EXCLUSIVE_SUMMON.toString())) {
+            Obj prev = ref.getSourceObj().getRef().getObj(KEYS.SUMMONED);
+            if (prev != null) {
+                unit.getGame().getLogManager().log(ref.getSourceObj().getNameIfKnown() + " unsummons " + prev.getNameIfKnown());
+                prev.kill();
+            }
+        }
+
         REF.setID(KEYS.SUMMONED, getUnit().getId());
         ref.setID(KEYS.SUMMONED, getUnit().getId());
         game.fireEvent(new Event(getEventTypeDone(), REF));
 
         unit.getRef().setID(KEYS.ACTIVE, ref.getId(KEYS.ACTIVE));
+        unit.getRef().setID(KEYS.SPELL, ref.getId(KEYS.SPELL));
 
         UpkeepRule.addUpkeep(unit);
         if (unit instanceof Unit) {
@@ -133,6 +149,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
             return effects.apply(REF);
         }
         DC_SoundMaster.playEffectSound(SOUNDS.READY, unit);
+        EUtils.showInfoText(true, unit.getName() + " is summoned");
         return true;
     }
 
@@ -162,7 +179,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
             LogMaster.log(1, "Awarding xp to " + type.getName() + ": " + xp);
             type = new UnitLevelManager().awardXP(type, xp, false);
             LogMaster.log(1, "Unit level: "
-             + type.getParam(PARAMS.UNIT_LEVEL));
+                    + type.getParam(PARAMS.UNIT_LEVEL));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

@@ -5,6 +5,7 @@ import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Reader;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -23,7 +24,8 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.8.9b";
+    public static final String VERSION = "0.9.3e";
+    public static final String VERSION_NAME = "IGG demo";//"Backer Demo";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean EXE_MODE = true;
@@ -67,6 +69,25 @@ public class CoreEngine {
     private static long TOTAL_MEMORY;
     private static int CPU_NUMBER;
     private static boolean me;
+    private static boolean cinematicMode;
+    private static boolean mapPreview;
+    private static boolean safeMode;
+    private static boolean iggDemo;
+    private static boolean iggDemoRunning;
+    private static boolean toolIsRunning;
+    private static boolean activeTestMode;
+    private static boolean liteLaunch;
+    private static boolean dialogueTest;
+    private static boolean skillTestMode;
+    private static boolean contentTestMode;
+    private static boolean ruleTestMode;
+    private static boolean levelTestMode;
+    private static boolean selectHeroMode;
+    private static boolean debugLaunch;
+    private static boolean devEnabled;
+    private static boolean reverseExit;
+    private static boolean ramEconomy;
+    private static boolean keyCheat;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -82,7 +103,7 @@ public class CoreEngine {
 //         (TOTAL_MEMORY =
 //          Runtime.getRuntime().totalMemory()));
 
-        if ( System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustMe")){
+        if ( System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustM")){
             me = true;
         }
 
@@ -311,7 +332,7 @@ public class CoreEngine {
              classFolders);
             Chronos.logTimeElapsedForMark("MAPPER INIT");
         } catch (ClassNotFoundException | SecurityException | IOException e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -345,7 +366,7 @@ public class CoreEngine {
     }
 
     public static boolean isCombatGame() {
-        return !isArcaneTower() && !isArcaneVault() && !isLevelEditor();
+        return !toolIsRunning  &&!isArcaneTower() && !isArcaneVault() && !isLevelEditor() &&!isjUnit();
     }
 
     public static boolean isIDE() {
@@ -474,5 +495,161 @@ public class CoreEngine {
 
     public static void setMe(boolean me) {
         CoreEngine.me = me;
+    }
+
+    public static boolean isCinematicMode() {
+        return cinematicMode;
+    }
+
+    public static void setCinematicMode(boolean cinematicMode) {
+        CoreEngine.cinematicMode = cinematicMode;
+    }
+
+    public static void setMapPreview(boolean mapPreview) {
+        CoreEngine.mapPreview = mapPreview;
+    }
+
+    public static boolean isMapPreview() {
+        return mapPreview;
+    }
+
+    public static boolean isSafeMode() {
+        return safeMode;
+    }
+
+    public static void setSafeMode(boolean safeMode) {
+        CoreEngine.safeMode = safeMode;
+    }
+
+    public static boolean isOutlinesFixed() {
+        return true;
+    }
+
+    public static boolean isIggDemo() {
+        return iggDemo;
+    }
+
+    public static void setIggDemo(boolean iggDemo) {
+        CoreEngine.iggDemo = iggDemo;
+    }
+
+    public static void setIggDemoRunning(boolean iggDemoRunning) {
+        CoreEngine.iggDemoRunning = iggDemoRunning;
+    }
+
+    public static boolean isIggDemoRunning() {
+        return iggDemoRunning;
+    }
+
+    public static void setToolIsRunning(boolean toolIsRunning) {
+        CoreEngine.toolIsRunning = toolIsRunning;
+    }
+
+    public static boolean getToolIsRunning() {
+        return toolIsRunning;
+    }
+
+    public static boolean isActiveTestMode() {
+        return activeTestMode;
+    }
+
+    public static void setActiveTestMode(boolean activeTestMode) {
+        CoreEngine.activeTestMode = activeTestMode;
+    }
+
+    public static boolean isLiteLaunch() {
+        return liteLaunch;
+    }
+
+    public static void setLiteLaunch(boolean liteLaunch) {
+        CoreEngine.liteLaunch = liteLaunch;
+    }
+
+    public static boolean isDialogueTest() {
+        return dialogueTest;
+    }
+
+    public static void setDialogueTest(boolean dialogueTest) {
+        CoreEngine.dialogueTest = dialogueTest;
+    }
+
+    public static boolean isSkillTestMode() {
+        return skillTestMode;
+    }
+
+    public static void setSkillTestMode(boolean skillTestMode) {
+        CoreEngine.skillTestMode = skillTestMode;
+    }
+
+    public static boolean isContentTestMode() {
+        return contentTestMode;
+    }
+
+    public static void setContentTestMode(boolean contentTestMode) {
+        CoreEngine.contentTestMode = contentTestMode;
+    }
+
+    public static boolean isRuleTestMode() {
+        return ruleTestMode;
+    }
+
+    public static void setRuleTestMode(boolean ruleTestMode) {
+        CoreEngine.ruleTestMode = ruleTestMode;
+    }
+
+    public static boolean isLevelTestMode() {
+        return levelTestMode;
+    }
+
+    public static void setLevelTestMode(boolean levelTestMode) {
+        CoreEngine.levelTestMode = levelTestMode;
+    }
+
+    public static boolean isSelectHeroMode() {
+        return selectHeroMode;
+    }
+
+    public static void setSelectHeroMode(boolean selectHeroMode) {
+        CoreEngine.selectHeroMode = selectHeroMode;
+    }
+
+    public static boolean isDebugLaunch() {
+        return debugLaunch;
+    }
+
+    public static void setDebugLaunch(boolean debugLaunch) {
+        CoreEngine.debugLaunch = debugLaunch;
+    }
+
+    public static boolean isDevEnabled() {
+        return devEnabled || isIDE();
+    }
+
+    public static void setDevEnabled(boolean devEnabled) {
+        CoreEngine.devEnabled = devEnabled;
+    }
+
+    public static boolean isReverseExit() {
+        return reverseExit;
+    }
+
+    public static void setReverseExit(boolean reverseExit) {
+        CoreEngine.reverseExit = reverseExit;
+    }
+
+    public static boolean isRamEconomy() {
+        return ramEconomy;
+    }
+
+    public static void setRamEconomy(boolean ramEconomy) {
+        CoreEngine.ramEconomy = ramEconomy;
+    }
+
+    public static boolean isKeyCheat() {
+        return keyCheat;
+    }
+
+    public static void setKeyCheat(boolean keyCheat) {
+        CoreEngine.keyCheat = keyCheat;
     }
 }

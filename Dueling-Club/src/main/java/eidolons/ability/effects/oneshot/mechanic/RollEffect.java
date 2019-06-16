@@ -118,7 +118,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
             } else {
                 // init roll
                 if (getRollType() == null) {
-                    return false;
+                    return true;
                 }
 
                 return applyThis(); // TODO luck?
@@ -126,7 +126,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
 
         } else {
             if (!RollMaster.checkRollType(rollType, ref)) {
-                return false;
+                return true;
             }
 
             // ++ event
@@ -144,7 +144,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
                 return getElseEffect().apply(ref);
             }
         }
-        return false;
+        return true;
     }
 
     public Effect getElseEffect() {

@@ -117,7 +117,7 @@ public class AdventureInitializer {
 
     public static void load(String saveName) {
         Loader.load(saveName);
-        ScreenData data = new ScreenData(SCREEN_TYPE.MAP, null);
+        ScreenData data = new ScreenData(SCREEN_TYPE.MAP);
         data.setParam(new EventCallbackParam(saveName));
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
          data);

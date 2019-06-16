@@ -1,92 +1,102 @@
+
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SpriteActor.SPRITE_ACTOR_ANIMATION;
+import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.generic.VerticalValueContainer;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextParser;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by JustMe on 5/6/2018.
  */
 public abstract class HtNode extends DynamicLayeredActor {
 
+    protected boolean sequentialDisabled;
     protected boolean editable;
     protected Unit hero;
     protected int tier;
     protected int slot;
-    SpriteActor sprite = new SpriteActor();
+    protected List<ObjType> available;
 
     public HtNode(int tier, String rootPath, String overlay, String underlay, int slot) {
         super(getRootPath(rootPath, tier), overlay, underlay);
         this.tier = tier;
-        this.slot =  slot;
-        setSize(getDefaultWidth(), getDefaultHeight() );
+        this.slot = slot;
+        init();
+    }
 
+    @Override
+    public void disable() {
+        super.disable();
+        sequentialDisabled = true;
+    }
+
+    protected boolean isImgOnTop() {
+        return false;
+    }
+
+    protected String getSpritePathRoot() {
+        return PathFinder.getHqPath() +
+                "trees/sprites/";
     }
 
 
     private static String getRootPath(String rootPath, int tier) {
-        return StringMaster.getAppendedImageFile(rootPath, " "+ (tier+1));
+        return StringMaster.getAppendedImageFile(rootPath, " " + (tier + 1));
     }
 
     protected float getDefaultWidth() {
         return 64;
     }
+
     protected float getDefaultHeight() {
         return 64;
     }
 
-    protected void playStateAnim() {
-        boolean alt = RandomWizard.chance(getAltChance(status));
-       sprite. play(getAnimForStatus(status, alt));
 
-    }
-
-    protected int getAltChance(ACTOR_STATUS status) {
-        return 25;
-    }
-
-    protected SPRITE_ACTOR_ANIMATION getAnimForStatus(ACTOR_STATUS status, boolean alt) {
-        switch (status) {
-            case HOVER:
-                //TODO on status changed?
-                if (alt)
-                    return SPRITE_ACTOR_ANIMATION.FLASH;
-                return SPRITE_ACTOR_ANIMATION.SCUD_OVER;
-            case NORMAL:
-                if (alt)
-                    return SPRITE_ACTOR_ANIMATION.SCUD_OVER;
-                return SPRITE_ACTOR_ANIMATION.FADE_IN_OUT;
-            case DISABLED:
-                return SPRITE_ACTOR_ANIMATION.FADE_IN_OUT;
-            case ACTIVE:
-                if (alt)
-                    return SPRITE_ACTOR_ANIMATION.FLASH;
-                return SPRITE_ACTOR_ANIMATION.FADE_IN_OUT;
-        }
-        return null;
-    }
     public void update(float delta) {
+        updateListeners();
+    }
+
+    private void updateListeners() {
         clearListeners();
         Tooltip tooltip = getTooltip();
-        if (tooltip!=null )
+        if (tooltip != null)
             addListener(tooltip.getController());
         addListener(new SmartClickListener(this) {
             @Override
@@ -114,6 +124,10 @@ public abstract class HtNode extends DynamicLayeredActor {
             }
         });
     }
+
+    protected abstract List<ObjType> createAvailable();
+
+
     public float getPeriod() { // alt
         switch (status) {
             case HOVER:
@@ -125,19 +139,48 @@ public abstract class HtNode extends DynamicLayeredActor {
         return 2.5f;
     }
 
-    protected   Tooltip getTooltip(){
+    protected Tooltip getTooltip() {
         Entity entity = getEntity();
-        String text=getTextPrefix();
-        if (entity!=null ){
-            Ref ref = Eidolons.getMainHero().getRef().getCopy();
-            ref.setID(KEYS.SKILL,  entity.getId());
-            text +="\n"+ entity.getName();
-            text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
-            text +="\n"+ TextParser.parse( entity.getDescription(),
-           ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+        String name = getTextPrefix();
+        String text = "";
+        if (entity != null && !HeroClassMaster.isDataAnOpenSlot(entity)) {
+            name = entity.getName();
+            text = getTooltipText();
+        } else {
+            text = getSlotTooltip();
+
+            if (sequentialDisabled)
+                text += "\n(Disabled: fill the previous slot!)";
         }
-        return new ValueTooltip(text);
+        ValueContainer container = new VerticalValueContainer(name, text);
+        container.setNameAlignment(Align.center);
+        container.setNameStyle(StyleHolder.getHqLabelStyle(19));
+        return new ValueTooltip(container);
     }
+
+    protected String getTooltipText() {
+        Entity entity = getEntity();
+        String text = "";
+        Ref ref = getHero().getRef().getCopy();
+        ref.setID(KEYS.SKILL, entity.getId());
+        ref.setID(KEYS.INFO, entity.getId());
+
+        text += entity.getProperty(G_PROPS.TOOLTIP);
+        text += "\n" + TextParser.parse(entity.getDescription(ref),
+                ref, TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+
+        if (!entity.getProperty(G_PROPS.LORE).isEmpty()) {
+            text += "\n" + "\n" + entity.getProperty(G_PROPS.LORE);
+        }
+        text+= "\n" +getSpecialInfo();
+        return text;
+    }
+
+    protected String getSpecialInfo() {
+        return "";
+    }
+
+    protected abstract String getSlotTooltip();
 
     protected abstract String getTextPrefix();
 
@@ -146,16 +189,19 @@ public abstract class HtNode extends DynamicLayeredActor {
     }
 
     protected void click() {
+//      TODO   HqMaster.filterContent(isAvailable());
         if (ListMaster.isNotEmpty(getAvailable())) {
+
             SlotSelectionRadialMenu.setActiveNode(this);
             GuiEventManager.trigger(getSelectionEvent(), getAvailable(), tier, slot);
         } else {
+            EUtils.showInfoText("Nothing available for this slot yet!");
         }
     }
 
     protected abstract EventType getSelectionEvent();
 
-    protected abstract Collection getAvailable();
+    protected abstract Collection<ObjType> getAvailable();
 
     protected void doubleClick() {
         click();
@@ -163,15 +209,22 @@ public abstract class HtNode extends DynamicLayeredActor {
     }
 
     protected void mouseEntered() {
-
+        setStatus(ACTOR_STATUS.HOVER);
     }
 
     protected void mouseExited() {
-
+        setStatus(defaultStatus);
     }
 
 
     public void setHero(Unit hero) {
         this.hero = hero;
+    }
+
+    public Unit getHero() {
+        if (hero == null) {
+            hero = HqPanel.getActiveInstance().getSelectedHero().getEntity();
+        }
+        return hero;
     }
 }

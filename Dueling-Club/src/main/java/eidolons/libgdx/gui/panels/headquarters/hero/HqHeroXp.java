@@ -20,8 +20,9 @@ public class HqHeroXp extends HqElement {
     private final ValueContainer unspent;
 
     public HqHeroXp() {
-        setBackground(NinePatchFactory.getLightPanelDrawable());
-        GdxMaster.adjustAndSetSize(this, 380, 112);
+        setBackground(getDefaultBackground());
+//        GdxMaster.adjustAndSetSize(this,
+                setSize(380, 112);
 
        add( cur = new ValueContainer("", "" )).left().uniform();
         row();
@@ -44,6 +45,18 @@ public class HqHeroXp extends HqElement {
         cur.setNameAlignment(Align.left);
         next.setNameAlignment(Align.left);
         unspent.setNameAlignment(Align.left);
+
+        cur.setFixedMinSize(true);
+        next.setFixedMinSize(true);
+        unspent.setFixedMinSize(true);
+
+        cur.setWidth(getWidth()*0.8f);
+        next.setWidth(getWidth()*0.8f);
+        unspent.setWidth(getWidth()*0.8f);
+
+        cur.setHeight(getHeight()*0.3f);
+        next.setHeight(getHeight()*0.3f);
+        unspent.setHeight(getHeight()*0.3f);
     }
 
     @Override

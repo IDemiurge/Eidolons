@@ -24,7 +24,10 @@ public class HqAttributeTable extends HqStatTable {
 
     @Override
     protected String getPointsText() {
-        return "Attribute pts             ";
+        if (isEditable()) {
+            return "       Attributes         pts.";
+        }
+        return "        Attributes          ";
     }
 
     @Override
@@ -34,6 +37,9 @@ public class HqAttributeTable extends HqStatTable {
 
     @Override
     protected int getPointsLeft() {
+        if (getUserObject() == null) {
+            return 0;
+        }
         return getUserObject().getIntParam(PARAMS.ATTR_POINTS);
     }
 

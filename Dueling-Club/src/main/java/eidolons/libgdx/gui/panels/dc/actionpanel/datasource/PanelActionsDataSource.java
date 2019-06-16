@@ -9,7 +9,6 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
@@ -21,13 +20,11 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-
 public class PanelActionsDataSource implements
- ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
- EffectsAndAbilitiesSource, ResourceSource,
- MainWeaponDataSource<ActionValueContainer>, OffWeaponDataSource {
-    private static Map<DC_ActiveObj, ActionValueContainer> cache = new HashMap<>();
+        ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
+        EffectsAndAbilitiesSource, ResourceSource,
+        MainWeaponDataSource<ValueContainer>, OffWeaponDataSource {
+    private static Map<DC_ActiveObj, ValueContainer> cache = new HashMap<>();
     private Unit unit;
 
     private UnitDataSource unitDataSource;
@@ -37,17 +34,18 @@ public class PanelActionsDataSource implements
         unitDataSource = new UnitDataSource(unit);
     }
 
-    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el, int size) {
-        ActionValueContainer container = cache.get(el);
+    public static ValueContainer getValueContainer(DC_ActiveObj el, int size) {
+        ValueContainer container = cache.get(el);
         boolean valid = el.canBeManuallyActivated();
-        if (container != null) {
-            container.setValid(valid);
-            return container;
-        }
-        container = new ActionValueContainer(
-         size, valid, TextureCache.getOrCreateSizedRegion(size, getImage(el))
-         , el::invokeClicked);
-        cache.put(el, container);
+//        if (container != null) {
+//            container.setValid(valid);
+//            return container;
+//        }
+
+            container = new ActionValueContainer(
+                    size, valid, getImage(el)
+                    , el::invokeClicked);
+            cache.put(el, container);
 
 
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
@@ -84,25 +82,25 @@ public class PanelActionsDataSource implements
 
 
     @Override
-    public List<ActionValueContainer> getQuickSlotActions() {
+    public List<ValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
         if (items == null)
-            return (List<ActionValueContainer>)
-             ListMaster.fillWithNullElements(new ArrayList<ActionValueContainer>(), unit.getRemainingQuickSlots());
-        List<ActionValueContainer> list = items.stream()
-         .map((DC_QuickItemObj key) -> {
-             boolean valid = key.getActive().canBeManuallyActivated();
-             final ActionValueContainer valueContainer = new ActionValueContainer(
-              UiMaster.getBottomQuickItemIconSize(),
-              valid,
-              getOrCreateR(key.getImagePath()),
-              key::invokeClicked
-             );
-             ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());
-             valueContainer.addListener(tooltip.getController());
-             return valueContainer;
-         })
-         .collect(Collectors.toList());
+            return (List<ValueContainer>)
+                    ListMaster.fillWithNullElements(new ArrayList<ValueContainer>(), unit.getRemainingQuickSlots());
+        List<ValueContainer> list = items.stream()
+                .map((DC_QuickItemObj key) -> {
+                    boolean valid = key.getActive().canBeManuallyActivated();
+                    final ValueContainer valueContainer = new ActionValueContainer(
+                            UiMaster.getBottomQuickItemIconSize(),
+                            valid,
+                            (key.getImagePath()),
+                            key::invokeClicked
+                    );
+                    ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());
+                    valueContainer.addListener(tooltip.getController());
+                    return valueContainer;
+                })
+                .collect(Collectors.toList());
 
         // Now via special button!
         //        ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
@@ -111,7 +109,7 @@ public class PanelActionsDataSource implements
         //        if (action == null)
         //            return list;
         //        boolean valid = action.canBeManuallyActivated();
-        //        ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
+        //        ValueContainer invButton = new ValueContainer(valid, invTexture, () -> {
         //            action.clicked();
         //        });
         //        list.add(invButton);
@@ -124,33 +122,33 @@ public class PanelActionsDataSource implements
     }
 
     @Override
-    public List<ActionValueContainer> getDisplayedActions() {
-        List<ActionValueContainer> list = new ArrayList<>();
+    public List<ValueContainer> getDisplayedActions() {
+        List<ValueContainer> list = new ArrayList<>();
         list.addAll(getActions(ACTION_TYPE.MODE));
         list.addAll(getActions(ACTION_TYPE.SPECIAL_ACTION));
         return list;
     }
 
-    public List<ActionValueContainer> getActions(ACTION_TYPE type) {
+    public List<ValueContainer> getActions(ACTION_TYPE type) {
         if (unit.getActionMap().get(type) == null) {
             return new ArrayList<>();
         }
         return unit.getActionMap().get(type).stream()
-         .map(getActiveObjValueContainerFunction(UiMaster.getIconSize()))
-         .collect(Collectors.toList());
+                .map(getActiveObjValueContainerFunction(UiMaster.getIconSize()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<ActionValueContainer> getSpells() {
+    public List<ValueContainer> getSpells() {
         return unit.getSpells().stream()
-         .map(getActiveObjValueContainerFunction(UiMaster.getBottomSpellIconSize()))
-         .collect(Collectors.toList());
+                .map(getActiveObjValueContainerFunction(UiMaster.getBottomSpellIconSize()))
+                .collect(Collectors.toList());
     }
 
-    private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction(
-     int size) {
+    private Function<DC_ActiveObj, ValueContainer> getActiveObjValueContainerFunction(
+            int size) {
         return el -> {
-            return getActionValueContainer(el, size);
+            return getValueContainer(el, size);
         };
     }
 
@@ -215,22 +213,22 @@ public class PanelActionsDataSource implements
     }
 
     @Override
-    public ActionValueContainer getMainWeapon() {
+    public ValueContainer getMainWeapon() {
         return null;
     }
 
     @Override
-    public List<ActionValueContainer> getMainWeaponDetailInfo() {
+    public List<ValueContainer> getMainWeaponDetailInfo() {
         return null;
     }
 
     @Override
-    public ActionValueContainer getNaturalMainWeapon() {
+    public ValueContainer getNaturalMainWeapon() {
         return null;
     }
 
     @Override
-    public List<ActionValueContainer> getNaturalMainWeaponDetailInfo() {
+    public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
         return null;
     }
 }

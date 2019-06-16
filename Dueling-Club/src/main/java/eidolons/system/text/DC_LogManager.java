@@ -1,13 +1,15 @@
 package eidolons.system.text;
 
 import com.badlogic.gdx.utils.StringBuilder;
+import com.bitfire.utils.ItemsManager;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.options.GameplayOptions.LOGGING_DETAIL_LEVEL;
+import eidolons.libgdx.texture.Images;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.entity.DataModel;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
@@ -20,17 +22,25 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.images.ImageManager;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogManager;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static main.content.enums.GenericEnums.*;
+
 public class DC_LogManager extends LogManager {
 
 
-    private int logLevel=1;
+    public static final String ALIGN_CENTER = "<center>";
+    public static final String IMAGE_SEPARATOR = "[img==]";
+    public static final String UNIT_TURN_PREFIX = "Active: ";
+    private int logLevel = 1;
+    private List<String> fullEntryList=    new ArrayList<>() ;
 
     public DC_LogManager(Game game) {
         super(game);
@@ -41,6 +51,27 @@ public class DC_LogManager extends LogManager {
      * log and control its filtering?
      */
 
+    public void logCounterModified(DataModel entity, String name, int modValue) {
+        Integer value = entity.getCounter(name);
+        name = StringMaster.getWellFormattedString(name);
+        LOGGING_DETAIL_LEVEL detail = LOGGING_DETAIL_LEVEL.ESSENTIAL;
+        if (!entity.isMine()) {
+            if (entity instanceof BattleFieldObject) {
+                if (!((BattleFieldObject) entity).isDetectedByPlayer()) {
+                    detail = LOGGING_DETAIL_LEVEL.FULL;
+                }
+            }
+        }
+        if (modValue > 0) {
+            log(detail, modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "
+                    + name + "s: " + value);
+        } else {
+            modValue = Math.abs(modValue);
+            logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown() + ", total "
+                    + name + "s: " + value);
+        }
+
+    }
     public void logOrderFailed(Order order, Unit unit) {
         String entry = unit.getName() + " has failed to obey " + order.toString();
         entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
@@ -88,9 +119,9 @@ public class DC_LogManager extends LogManager {
             if (unit.isHostileTo(getGame().getPlayer(true)))
                 if (!unit.getAI().isOutsideCombat())
                     if (
-                     (!start && unit.isDead()) ||
-                      (start && unit.getPlayerVisionStatus(false) != PLAYER_VISION.INVISIBLE)) {
-                        String name = unit.getNameIfKnown();
+                            (!start && unit.isDead()) ||
+                                    (start && unit.getPlayerVisionStatus(false) != PLAYER_VISION.INVISIBLE)) {
+                        String name =start?  unit.getNameIfKnown() : unit.getName();
                         if (map.containsKey(name))
                             MapMaster.addToIntegerMap(map, name, 1);
                         else {
@@ -133,50 +164,117 @@ public class DC_LogManager extends LogManager {
     @Override
     protected void addTextToDisplayed(String entry) {
         super.addTextToDisplayed(entry);
+        if (isImgTest())
+            GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, Images.TINY_GOLD + IMAGE_SEPARATOR + entry);
+        else
+            entry = tryAddImage(entry);
+
+        entry = tryAddColor(entry);
+
+        if (isSeparatorTest())
+            GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, null);
+        else
+            entry = checkAddSeparator(entry);
+
         GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, entry);
+
+    }
+
+    private String tryAddColor(String entry) {
+
+
+        return entry;
+    }
+
+    private String checkAddSeparator(String entry) {
+        if (entry.contains(UNIT_TURN_PREFIX)) {
+//some might contain a prefix?
+            GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, null);
+        }
+        return entry;
+    }
+public enum LOG_IMAGE_CASE{
+        SNEAK,
+    COUNTER,
+    FORCE,
+    CRITICAL,
+    DODGE,
+    PARRY,
+
+}
+
+    private String tryAddImage(String entry) {
+        if (entry.contains("FORCE")){
+            return "gen\\perk\\selected_00082.png"+IMAGE_SEPARATOR+ entry;
+//            return Images.ICONS_FORCE;
+        }
+
+        if (entry.contains(IS_DEALING) || entry.contains(DAMAGE_IS_BEING_DEALT_TO)){
+            for (DAMAGE_TYPE damage_type:DAMAGE_TYPE.values()){
+                if (entry.contains(damage_type.getName())) {
+                    return ImageManager.getDamageTypeImagePath(
+                            damage_type.getName())+IMAGE_SEPARATOR+ entry;
+                }
+            }
+        }
+        return entry;
+    }
+
+    public enum LOG_ICON_TYPE {
+        DAMAGE,
+        ACTION,
+        ACTIVE,
+
+        CRITICAL,
+        SNEAK,
+        VISIBILITY,
+
+        //ADD TOOLTIP?
+    }
+
+    private boolean isImgTest() {
+        return false;
+    }
+
+    public void addImageToLog(String path) {
+        GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, path);
+    }
+
+    private boolean isSeparatorTest() {
+        return false;
     }
 
     @Override
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
         return super.log(log, entry, enclosingEntryType);
     }
-    public boolean log(LOGGING_DETAIL_LEVEL log, String entry  ) {
-        int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
-        if (logLevel<i)
-            return false;
 
-        return super.log(LOG.GAME_INFO, entry );
+    public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
+//    TODO     fullEntryList.add(entry);
+        main.system.auxiliary.log.LogMaster.log(0,log + " Game log: " +entry);
+        int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
+         if (logLevel < i)
+             return false;
+
+        return super.log(LOG.GAME_INFO, entry);
     }
 
 
     public void logHide(Unit source, BattleFieldObject object) {
-        log(LOG.GAME_INFO, source+ " loses sight of " + object.getName());
+        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
+        if (source.isPlayerCharacter()){
+            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
+        }
+        log(level, source + " loses sight of " + object.getName());
     }
 
     public void logReveal(Unit source, BattleFieldObject object) {
-        log(LOG.GAME_INFO, source+ " spots " + object.getName());
+        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
+        if (source.isPlayerCharacter()){
+            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
+        }
+        log(level, source + " spots " + object.getName());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

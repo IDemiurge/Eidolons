@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.ability.effects.containers.LoggedEffect;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
@@ -16,7 +17,7 @@ import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
 
 public class CorrosionRule extends DC_CounterRule {
-    private static final String DURABILITY_PER_COUNTER = "(-0.1)";
+    private static final String DURABILITY_PER_COUNTER = "(-0.06)";
     private static final String RESIST_PER_COUNTER = "(-1)";
     private static final String ARMOR_MOD_PER_COUNTER = "(-2)";
     private static final String ARMOR_PER_COUNTER = "(-0.5)";
@@ -31,19 +32,21 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
-        return 1;
+        return 3;
     }
 
     @Override
     protected Effect getSpecialRoundEffects() {
-        Effects effects = new Effects(new CustomTargetEffect(
+        Effects effects =   new Effects(new CustomTargetEffect(
          new FixedTargeting(KEYS.WEAPON), new ModifyValueEffect(
          PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
          getCounterRef() + "*" + DURABILITY_PER_COUNTER)),
          new CustomTargetEffect(new FixedTargeting(KEYS.ARMOR),
-          new ModifyValueEffect(PARAMS.C_DURABILITY,
+                 new LoggedEffect("Corrosion applies!, ",
+                         new ModifyValueEffect(PARAMS.C_DURABILITY,
            MOD.MODIFY_BY_CONST, getCounterRef()
-           + "*" + DURABILITY_PER_COUNTER)));
+           + "*" + DURABILITY_PER_COUNTER))
+                ));
 
         return effects;
     }

@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public final class UnitEnums {
     public enum CLASSIFICATIONS {
+        BOSS(true),
         MECHANICAL(true),
         UNDEAD(true),
         SKELETAL,
@@ -34,7 +35,7 @@ public final class UnitEnums {
         INSECT,
         REPTILE,
         AVIAN,
-        GIANT,;
+        GIANT, UNIQUE;
         boolean displayed;
         private String toolTip;
 
@@ -123,13 +124,7 @@ public final class UnitEnums {
         Ward,
 
         Soul,
-        Undying_Counter,
-        Undying {
-            @Override
-            public String toString() {
-                return super.toString();
-            }
-        },
+        Undying ,
         Blight,
         Corrosion, Oblivion,
         Taint, Aether,
@@ -282,10 +277,11 @@ public final class UnitEnums {
         SMALL("Will not block vision and missiles for non-Small units"),
         CLUMSY("This unit has difficulty with diagonal leaps"),
         DRUIDIC_VISIONS("Instead of adding Favor buff, will restore Essence when receiving already known spells thru Divination"),
-        HOLY_PRAYER("Will restore Morale when receiving already known spells thru Divination")
+        HOLY_PRAYER("Will restore Morale when receiving already known spells thru Divination"),
         // CORVIDAE("Immune to sneak attacks"),
-
+        VOIDWALKER("Can traverse Void cells"),
         ;
+
 
         static {
             DARKVISION.setToolTip("Unit is unaffected by Concealment penalties");
@@ -382,12 +378,13 @@ public final class UnitEnums {
         FREEZING,
         SOAKED,
         ENSNARED,
-
+        REVEALED,
         PRONE,
         BROKEN,
         UNLOCKED,
         LOCKED,
         UNCONSCIOUS,
+        UNDYING,
         ENGAGED,
         VIRULENT, // cannot
         // act/counter,
@@ -409,6 +406,8 @@ public final class UnitEnums {
         // stuff...
 
         ;
+
+
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());
@@ -447,6 +446,8 @@ public final class UnitEnums {
         HUMANS_PIRATES,
         HUMANS_BARBARIANS,
 
+        DWARVEN_SCUM(),
+        DWARVEN_LORDS(),
         DWARVES("forsworn,clansmen,"),
         NORTH("norse,woads,brutes,north"),
 
@@ -483,9 +484,8 @@ public final class UnitEnums {
 
         FOREST("greenies,creatures"),
         ANIMALS("Animals,Wolves,Wargs,wild,"),
-        REPTILES,
+        REPTILES, BANDIT_SCUM(), SPIDERS,;
 
-        ;
         private String subgroups;
 
         UNIT_GROUP(String groups) {
@@ -805,6 +805,8 @@ public final class UnitEnums {
         STORM_GIANT,
         GIANTESS,
         DWARF_BRAWLER,
+        DWARF_SHIELDMAN,
+        DWARF_RUNEPRIEST,
         VALKYRIE,
         DWARF_SHARPEYE,
         TROLL,
@@ -1338,6 +1340,6 @@ public final class UnitEnums {
         WILD,
         WOADS,
         WOLVES,
-        ;
+        DWARVES;
     }
 }

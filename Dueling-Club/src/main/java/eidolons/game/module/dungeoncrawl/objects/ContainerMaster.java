@@ -38,6 +38,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -62,10 +63,11 @@ import java.util.*;
 public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     public static final String[] treasureContents = {
-     CONTAINER_CONTENTS.AMMO.name()
+            CONTAINER_CONTENTS.AMMO.name()
     };
     public static final String OPEN = "_open";
     private static final int DEFAULT_POWER_MEASURE_FOR_TREASURE_AMOUNT = 200;
+    private static final float GOLD_CONTENTS_COEF = 0.2f;
     public static QUALITY_LEVEL[] exceptionalQualities;
     public static QUALITY_LEVEL[] rareQualities;
     public static QUALITY_LEVEL[] uncommonQualities;
@@ -76,8 +78,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     public static MATERIAL[] commonMaterials;
     private static boolean test_mode = QuestMaster.TEST_MODE;
     Map<ObjType, Map<CONTAINER_CONTENTS,
-     Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
+            Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
     private boolean noDuplicates = true;
+    private BattleFieldObject container;
 
 
     public ContainerMaster(DungeonMaster dungeonMaster) {
@@ -100,14 +103,12 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         unit.getGame().getInventoryManager().setOperationsPool(5);
 
         Pair<InventoryDataSource, ContainerDataSource> param =
-         new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
+                new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
 
-        if (getSpecialSound(obj)!=null ){
+        if (getSpecialSound(obj) != null) {
             DC_SoundMaster.playStandardSound(getSpecialSound(obj));
-        }
-        else
-        if (RandomWizard.random()) {
+        } else if (RandomWizard.random()) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
         } else
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
@@ -135,31 +136,31 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             case EXCEPTIONAL:
                 if (exceptionalMaterials == null) {
                     exceptionalMaterials = Arrays.asList(MATERIAL.values()).
-                     stream().filter(material -> material.getCost() > 200
-                     && material.isMagical()).toArray(MATERIAL[]::new);
+                            stream().filter(material -> material.getCost() > 200
+                            && material.isMagical()).toArray(MATERIAL[]::new);
                 }
                 return exceptionalMaterials;
             case RARE:
                 if (rareMaterials == null) {
                     rareMaterials = Arrays.asList(MATERIAL.values()).stream().
-                     filter(material -> material.getCost() > 150
-                      || material.isMagical()).toArray(MATERIAL[]::new);
+                            filter(material -> material.getCost() > 150
+                                    || material.isMagical()).toArray(MATERIAL[]::new);
                 }
                 return rareMaterials;
             case UNCOMMON:
                 if (uncommonMaterials == null) {
                     uncommonMaterials =
-                     Arrays.stream(MATERIAL.values()).filter(material -> material.getCost()
-                      >= 100
-                      || material.isMagical()).toArray(MATERIAL[]::new);
+                            Arrays.stream(MATERIAL.values()).filter(material -> material.getCost()
+                                    >= 100
+                                    || material.isMagical()).toArray(MATERIAL[]::new);
 
                 }
                 return uncommonMaterials;
             case COMMON:
                 if (commonMaterials == null) {
                     commonMaterials = Arrays.asList(MATERIAL.values()).stream().
-                     filter(material -> material.getCost() < 100
-                      && !material.isMagical()).toArray(MATERIAL[]::new);
+                            filter(material -> material.getCost() < 100
+                                    && !material.isMagical()).toArray(MATERIAL[]::new);
                 }
                 return commonMaterials;
         }
@@ -242,8 +243,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     private ObjType preselectBaseType(CONTAINER_CONTENTS contents, ITEM_RARITY rarity) {
         DC_TYPE TYPE = getRandomTYPE(contents);
         boolean iterate =
-         isIterateAlways() ||
-          TYPE == DC_TYPE.ITEMS || TYPE == DC_TYPE.JEWELRY;
+                isIterateAlways() ||
+                        TYPE == DC_TYPE.ITEMS || TYPE == DC_TYPE.JEWELRY;
 
         if (isFastSelect()) {
             String group = getItemGroup(contents, false, TYPE);
@@ -251,7 +252,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             ObjType type = null;
             List<ObjType> types = DataManager.getTypes(TYPE, iterate);
             main.system.auxiliary.log.LogMaster.log(1, " group= " + group + " subgroup= " + subgroup
-             + "; types = " + types);
+                    + "; types = " + types);
             Iterator<ObjType> iterator = types.iterator();
             int n = 0;
             Loop loop = new Loop(5);//Math.min(50, types.size() / 3));
@@ -265,7 +266,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
                     n++;
                     type = new RandomWizard<ObjType>().
-                     getRandomListItem(types);
+                            getRandomListItem(types);
                     if (n > types.size() / 5) {
                         if (!loop.continues())
                             return null;
@@ -298,9 +299,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             if (sub.trim().isEmpty())
                 sub = null;
             List<ObjType> group = new ArrayList<>(
-             isGroupsOrSubgroups(contents, TYPE) ?
-              DataManager.getTypesGroup(TYPE, sub) :
-              DataManager.getTypesSubGroup(TYPE, sub));
+                    isGroupsOrSubgroups(contents, TYPE) ?
+                            DataManager.getTypesGroup(TYPE, sub) :
+                            DataManager.getTypesSubGroup(TYPE, sub));
             //TODO set rarity to common by default
             FilterMaster.filterByPropJ8(group, PROPS.ITEM_RARITY.getName(), rarity.name());
             filter(contents, group, rarity, TYPE);
@@ -354,22 +355,22 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         switch (rarity) {
             case EXCEPTIONAL:
                 return new ITEM_LEVEL[]{
-                 ITEM_LEVEL.LEGENDARY
+                        ITEM_LEVEL.LEGENDARY
                 };
             case RARE:
                 return new ITEM_LEVEL[]{
-                 ITEM_LEVEL.LEGENDARY,
-                 ITEM_LEVEL.GREATER,
+                        ITEM_LEVEL.LEGENDARY,
+                        ITEM_LEVEL.GREATER,
                 };
             case UNCOMMON:
                 return new ITEM_LEVEL[]{
-                 ITEM_LEVEL.COMMON,
-                 ITEM_LEVEL.GREATER,
+                        ITEM_LEVEL.COMMON,
+                        ITEM_LEVEL.GREATER,
                 };
             case COMMON:
                 return new ITEM_LEVEL[]{
-                 ITEM_LEVEL.COMMON,
-                 ITEM_LEVEL.LESSER,
+                        ITEM_LEVEL.COMMON,
+                        ITEM_LEVEL.LESSER,
                 };
         }
         return new ITEM_LEVEL[0];
@@ -384,7 +385,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         List<ObjType> list = new ArrayList<>();
         list.add(type);
         list = generateTypes(c, rarity, list
-         //         new ListMaster<ObjType>().getList(type)
+                //         new ListMaster<ObjType>().getList(type)
         );
         list = ContainerFilter.filter(list, c, rarity);
         return list;
@@ -394,14 +395,14 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                                         List<ObjType> group) {
 
         if (c == CONTAINER_CONTENTS.POTIONS ||
-         group.get(0).getGroup().equalsIgnoreCase("Alchemy")) {
+                group.get(0).getGroup().equalsIgnoreCase("Alchemy")) {
             return
-             //             DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy");
-             DataManager.getTypesSubGroup(DC_TYPE.ITEMS, "Potions");
+                    //             DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy");
+                    DataManager.getTypesSubGroup(DC_TYPE.ITEMS, "Potions");
             //            return DataManager.gettype;
         }
         if (c == CONTAINER_CONTENTS.JEWELRY ||
-         group.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
+                group.get(0).getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             if (!ItemGenerator.isJewelryOn())
                 return new ArrayList<>();
             return generateJewelry(rarity, group);
@@ -435,7 +436,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
         while (TYPE instanceof C_OBJ_TYPE) {
             TYPE = new RandomWizard<DC_TYPE>().getRandomListItem(
-             Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
+                    Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
             if (TYPE == DC_TYPE.JEWELRY)
                 if (!ItemGenerator.isJewelryOn())
                     continue;
@@ -450,6 +451,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             case FOOD:
             case TOOLS:
                 return DC_TYPE.ITEMS;
+
+            case MISC:
+            case JUNK:
+                return
+                        RandomWizard.random() ? DC_TYPE.ITEMS : C_OBJ_TYPE.ITEMS;
             case ARMOR:
                 return DC_TYPE.ARMOR;
             case AMMO:
@@ -473,12 +479,29 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String getItemGroup(CONTAINER_CONTENTS c, boolean sub, DC_TYPE TYPE) {
+        String custom = container.getProperty(PROPS.CONTAINER_GROUP_SINGLE);
+        if (!custom.isEmpty()) {
+            return custom;
+        }
         if (isGroupsOrSubgroups(c, TYPE) == sub)
             return null;
-        String list = getItemGroups(c, TYPE);
-        if (list == null)
+        String groups = getItemGroups(c, TYPE);
+        List<String> list = groups == null ? new ArrayList<>()
+                : ContainerUtils.openContainer(groups);
+        String filter = container.getProperty(PROPS.CONTAINER_GROUP_FILTER);
+        if (!filter.isEmpty()) {
+            list.removeIf(group -> !filter.toLowerCase().contains(group.toLowerCase()));
+        }
+        if (list.isEmpty()) {
             return null;
-        return new RandomWizard<String>().getRandomListItem(ContainerUtils.openContainer(list));
+        }
+        return new RandomWizard<String>().getRandomListItem(list);
+    }
+
+    private String checkCustomGroupForContents(CONTAINER_CONTENTS c, boolean sub, DC_TYPE type, BattleFieldObject container) {
+        ; //use as filter?
+
+        return null;
     }
 
     private String getItemGroups(CONTAINER_CONTENTS c, DC_TYPE TYPE) {
@@ -487,7 +510,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 if (TYPE == DC_TYPE.ARMOR)
                     return "Cloth;";
                 if (TYPE == DC_TYPE.ITEMS)
-                    return "Coating;";
+                    return "Potions;";
+//                return "Coating;";
                 if (TYPE == DC_TYPE.JEWELRY)
                     return "Rings;";
                 //                if (DC_Game.game.isMacroOn())
@@ -496,7 +520,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 if (TYPE == DC_TYPE.ARMOR)
                     return "Heavy;";
                 if (TYPE == DC_TYPE.ITEMS)
-                    return "Elixirs;";
+                    return "Potions;";
+//                    return "Elixirs;";
                 if (TYPE == DC_TYPE.JEWELRY)
                     return null;
                 return "Magical;Blade;Axe;Blunt;";
@@ -504,7 +529,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 if (TYPE == DC_TYPE.ARMOR)
                     return "Light;";
                 if (TYPE == DC_TYPE.ITEMS)
-                    return "Alchemy;";
+//                    return "Alchemy;";
+                    return "Potions;";
                 if (TYPE == DC_TYPE.JEWELRY)
                     return null;
                 return "Magical;Ammo;Ranged;Pole Arm;";
@@ -527,7 +553,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();
         list.add(
-         createAction(CONTAINER_ACTION.OPEN, unit, obj));
+                createAction(CONTAINER_ACTION.OPEN, unit, obj));
         return list;
     }
 
@@ -536,26 +562,46 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public void initContents(BattleFieldObject obj) {
-
+        this.container = obj;
+        boolean unit = false;
         String contents = obj.getProperty(PROPS.INVENTORY);
 
+        if (obj instanceof Unit) {
+            if (contents.isEmpty())
+                if (RandomWizard.chance(80 - obj.getPower()))
+                    return;
+
+            unit = true;
+        }
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
-        Map<CONTAINER_CONTENTS, Integer> map =
-         wizard.
-          constructWeightMap(prop, CONTAINER_CONTENTS.class);
+        Map<CONTAINER_CONTENTS, Integer> map = null;
+        if (unit) {
+            map = wizard.constructWeightMap(getUnitContentsWeightMap(obj), CONTAINER_CONTENTS.class);
+        } else {
+            map = wizard.constructWeightMap(prop, CONTAINER_CONTENTS.class);
+        }
+
 
         prop = obj.getProperty(PROPS.CONTAINER_CONTENT_VALUE);
+        if (unit) {
+            prop = CONTAINER_CONTENT_VALUE.COMMON.toString() + "(1)";
+        }
         RandomWizard<CONTAINER_CONTENT_VALUE> wizard_ = new RandomWizard<>();
         Map<CONTAINER_CONTENT_VALUE, Integer> typeMap =
-         wizard_.constructWeightMap(prop, CONTAINER_CONTENT_VALUE.class);
+                wizard_.constructWeightMap(prop, CONTAINER_CONTENT_VALUE.class);
 
         List<CONTAINER_CONTENT_VALUE> itemValueList
-         = new ArrayList<>();
+                = new ArrayList<>();
         Integer maxCost = obj.getIntParam(PARAMS.GOLD_TOTAL);
-        maxCost =  (int)(RandomWizard.getRandomFloatBetween(0.2f, 1) *maxCost * obj.getGame().getDungeonMaster().getDungeonLevel().getPowerLevel() /
-         (DEFAULT_POWER_MEASURE_FOR_TREASURE_AMOUNT));
+        maxCost = (int) (RandomWizard.getRandomFloatBetween(0.2f, 1) * maxCost / 10)
+//                * obj.getGame().getDungeonMaster().getDungeonLevel().getPowerLevel() /
+//         (DEFAULT_POWER_MEASURE_FOR_TREASURE_AMOUNT))
+        ;
 
+        if (unit) {
+            maxCost = obj.getPower() * RandomWizard.getRandomIntBetween(2, 5);
+        }
         int totalCost = 0;
         int maxGroups = 2; //size prop!
         Loop overLoop = new Loop(maxGroups);
@@ -589,7 +635,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                     if (c == CONTAINER_CONTENTS.FOOD)
                         continue;
                 main.system.auxiliary.log.LogMaster.log(1, c + " rarity  " + rarity + " = " + item
-                 + "; total : " + cost);
+                        + "; total : " + cost);
                 if (item == null)
                     continue;
                 contents += item.getName() + StringMaster.SEPARATOR;
@@ -602,15 +648,19 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         } else
             main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
 
-        contents = checkSpecialContents(contents, obj);
+        if (!CoreEngine.isIggDemo())
+            contents = checkSpecialContents(contents, obj);
 
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
-            if (RandomWizard.chance(Math.min(35,  gold * 3))) {
+            int foodChance = Math.min(25, gold * 3);
+            MathMaster.addFactor(foodChance, Eidolons.getMainHero().getIntParam(PARAMS.FORAGING));
+
+            if (RandomWizard.chance(foodChance)) {
                 contents += "Food";
                 gold -= 50;
             }
-            if (gold>0 && !obj.checkBool(STD_BOOLS.NO_GOLD)){
+            if (gold > 0 && !obj.checkBool(STD_BOOLS.NO_GOLD)) {
                 if (GoldMaster.isGoldPacksOn()) {
                     contents += VariableManager.getStringWithVariable("Gold", gold);
                 }
@@ -623,18 +673,22 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         //        contents+=goldItem
     }
 
+    private String getUnitContentsWeightMap(BattleFieldObject unit) {
+        return "AMMO(4);POTIONS(8);JUNK(3);TREASURE(1);JEWELRY(5)";
+    }
+
     private String checkSpecialContents(String contents, BattleFieldObject obj) {
         for (DungeonQuest quest : obj.getGame().getMetaMaster().getQuestMaster().
-         getQuestsPool()) {
-            if (quest.getType()== QUEST_TYPE.SPECIAL_ITEM) {
+                getQuestsPool()) {
+            if (quest.getType() == QUEST_TYPE.SPECIAL_ITEM) {
                 if (quest.getArg() instanceof ObjType) {
                     Integer n = quest.getNumberPrepared();
-                    if (quest.getNumberRequired()<= n) {
+                    if (quest.getNumberRequired() <= n) {
                         continue;
                     }
-                    if (checkCanPlaceQuestItem(quest, contents, obj)){
+                    if (checkCanPlaceQuestItem(quest, contents, obj)) {
                         contents += ((ObjType) quest.getArg()).getName() + ";";
-                        quest.setNumberPrepared(quest.getNumberPrepared()+1);
+                        quest.setNumberPrepared(quest.getNumberPrepared() + 1);
                         quest.setCoordinate(obj.getCoordinates());
                         //TODO multiple!
                     }
@@ -646,7 +700,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private boolean checkCanPlaceQuestItem(DungeonQuest quest, String contents, BattleFieldObject obj) {
         if (obj instanceof ContainerObj) {
-            if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates())>20) {
+            if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates()) > 20) {
                 return false;
             }
             if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString())) {
@@ -661,14 +715,15 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         float c = 0;
         if (obj instanceof Unit) {
             float coef = RandomWizard.getRandomFloatBetween(1.5f, 3f);
-           coef= coef -  totalCost/100;
+            coef = coef - totalCost / 100;
             coef = MathMaster.minMax(coef, 0.1f, 0.5f);
-            c =  coef * obj.getIntParam(PARAMS.POWER)  ;
+            c = coef * obj.getIntParam(PARAMS.POWER);
 
         } else c =
-         RandomWizard.getRandomIntBetween(5, 15)
-          + RandomWizard.getRandomFloatBetween(0.7f, 1f)
-          * (obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost);
+                RandomWizard.getRandomIntBetween(5, 15)
+                        + RandomWizard.getRandomFloatBetween(0.7f, 1f)
+                        * (obj.getIntParam(PARAMS.GOLD_TOTAL) - totalCost) * GOLD_CONTENTS_COEF;
+
         return Math.round(c);
     }
 
@@ -691,35 +746,40 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             case EXCEPTIONAL:
                 if (exceptionalQualities == null)
                     exceptionalQualities = new QUALITY_LEVEL[]{
-                     QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.SUPERB, QUALITY_LEVEL.MASTERPIECE
+                            QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.SUPERB, QUALITY_LEVEL.MASTERPIECE
                     };
                 return exceptionalQualities;
             case RARE:
                 if (rareQualities == null)
                     rareQualities = new QUALITY_LEVEL[]{
-                     QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.SUPERIOR,
-                     QUALITY_LEVEL.SUPERB, QUALITY_LEVEL.MASTERPIECE
+                            QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.SUPERIOR,
+                            QUALITY_LEVEL.SUPERB, QUALITY_LEVEL.MASTERPIECE
                     };
                 return rareQualities;
             case UNCOMMON:
                 if (uncommonQualities == null)
                     uncommonQualities = new QUALITY_LEVEL[]{
-                     QUALITY_LEVEL.DAMAGED, QUALITY_LEVEL.OLD,
-                     QUALITY_LEVEL.NORMAL, QUALITY_LEVEL.SUPERIOR,
-                     QUALITY_LEVEL.INFERIOR,
-                     QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.SUPERIOR,
-                     QUALITY_LEVEL.SUPERB, QUALITY_LEVEL.MASTERPIECE};
+                            QUALITY_LEVEL.DAMAGED, QUALITY_LEVEL.OLD,
+                            QUALITY_LEVEL.NORMAL, QUALITY_LEVEL.SUPERIOR,
+                            QUALITY_LEVEL.INFERIOR,
+                            QUALITY_LEVEL.ANCIENT, QUALITY_LEVEL.SUPERIOR,
+                            QUALITY_LEVEL.SUPERB, QUALITY_LEVEL.MASTERPIECE};
                 return uncommonQualities;
             case COMMON:
                 if (commonQualities == null)
                     commonQualities = new QUALITY_LEVEL[]{
-                     QUALITY_LEVEL.DAMAGED, QUALITY_LEVEL.OLD,
-                     QUALITY_LEVEL.NORMAL, QUALITY_LEVEL.SUPERIOR,
-                     QUALITY_LEVEL.INFERIOR,
+                            QUALITY_LEVEL.DAMAGED, QUALITY_LEVEL.OLD,
+                            QUALITY_LEVEL.NORMAL, QUALITY_LEVEL.SUPERIOR,
+                            QUALITY_LEVEL.INFERIOR,
                     };
                 return commonQualities;
         }
         return QUALITY_LEVEL.values();
+    }
+
+    public static boolean isPregenerateItems(DC_Obj containerObj) {
+        return containerObj.getGame().getMetaMaster().isRngDungeon()
+                || CoreEngine.isSafeMode();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

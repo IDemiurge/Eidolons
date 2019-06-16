@@ -12,6 +12,7 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
@@ -20,6 +21,7 @@ import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -38,6 +40,8 @@ public class DeathAnim extends ActionAnim {
     BattleFieldObject unit;
     DEATH_ANIM template;
     private Image skull;
+
+    SpriteAnimation sprite;
 
     public DeathAnim(Event e) {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
@@ -88,13 +92,16 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     protected void add() {
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim adds with \n" +getRef());
         if (getActor() == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"Death Anim no actor for \n" +getRef());
             return;
         }
 //        AnimMaster.getInstance().addActor(getActor());
 //        getActor().setPosition(getOrigin().x, getOrigin().y);
         AlphaAction action = ActorMaster.addFadeOutAction(getActor());
         if (action == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"Death Anim fade failed for \n" +getRef());
             getActor().setVisible(false);
             return;
         }
@@ -135,15 +142,24 @@ public class DeathAnim extends ActionAnim {
     public void start() {
 //        addSfx();
         //skull / grave?
+
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim started with \n" +getRef());
+        unit = (BattleFieldObject) getRef().getTargetObj();
         super.start();
         add();
     }
 
     @Override
     public void finished() {
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim finished with \n" +getRef());
         super.finished();
         getActor().setVisible(false);
         dispose();
+
+//     TODO    GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
+//                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
+//                        HitAnim.HIT.BONE_CRACK),
+//                getActive());
     }
 
     public enum DEATH_ANIM {

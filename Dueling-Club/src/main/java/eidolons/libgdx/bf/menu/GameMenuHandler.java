@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.menu;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
@@ -24,6 +25,9 @@ public class GameMenuHandler {
             case QUICK_HELP:
                 GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
                  HelpMaster.getHelpText());
+                break;
+            case TUTORIAL_RECAP:
+                DialogueManager.tutorialJournal();
                 break;
             case MANUAL:
                 GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL,
@@ -100,8 +104,6 @@ public class GameMenuHandler {
                 menu.openOptionsMenu();
                 //                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
                 return null;
-            case CLICK_ME:
-                break;
             case WEBSITE:
                 break;
             case ABOUT:

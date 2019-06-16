@@ -7,6 +7,9 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.entity.Ref;
@@ -30,13 +33,14 @@ public class SightMaster {
     private Map<DC_Obj, DequeImpl<Coordinates>> cache = new HashMap<>();
     private Map<DC_Obj, DequeImpl<Coordinates>> cacheSecondary = new HashMap<>();
 
-    public DequeImpl<Coordinates> getCachedSpectrumCoordinates(DC_Obj obj){
+    public DequeImpl<Coordinates> getCachedSpectrumCoordinates(DC_Obj obj) {
         if (!cache.containsKey(obj)) {
             return new DequeImpl<>();
         }
         return cache.get(obj);
 
     }
+
     public SightMaster(VisionMaster visionManager) {
         master = visionManager;
     }
@@ -48,8 +52,8 @@ public class SightMaster {
                                                          FACING_DIRECTION facing
     ) {
         return getSpectrumCoordinates(range,
-         side_penalty, back_bonus, source, vision,
-         facing, false);
+                side_penalty, back_bonus, source, vision,
+                facing, false);
     }
 
     public DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
@@ -77,14 +81,14 @@ public class SightMaster {
             range = source.getIntParam(PARAMS.SIGHT_RANGE);
             if (extended) {
                 range = MathMaster.applyModIfNotZero(range, source
-                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION));
+                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION));
             }
         }
         if (side_penalty == null) {
             side_penalty = source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
             if (extended) {
                 side_penalty = MathMaster.applyModIfNotZero(side_penalty, source
-                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_SIDES));
+                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_SIDES));
             }
         }
         if (back_bonus == null) {
@@ -133,14 +137,14 @@ public class SightMaster {
 
     private Boolean isBlocked(DC_Obj target, BattleFieldObject source) {
         Boolean clearShot = master.getVisionController().getClearshotMapper().get(source,
-         target);
+                target);
         if (clearShot != null) {
             return !clearShot;
         }
-            Ref ref = new Ref(source);
-            ref.setMatch(target.getId());
-            clearShot = getClearShotCondition().preCheck(ref);
-            master.getVisionController().getClearshotMapper().set(source, target, clearShot);
+        Ref ref = new Ref(source);
+        ref.setMatch(target.getId());
+        clearShot = getClearShotCondition().preCheck(ref);
+        master.getVisionController().getClearshotMapper().set(source, target, clearShot);
         return !clearShot;
     }
 
@@ -291,9 +295,31 @@ public class SightMaster {
 
 
     protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, BattleFieldObject activeUnit) {
+        if (unit.checkStatus(UnitEnums.STATUS.REVEALED)) {
+            unit.removeStatus(UnitEnums.STATUS.REVEALED.toString());
+            return UNIT_VISION.IN_PLAIN_SIGHT;
+        }
+
+        if (unit.isMine())
+            if (activeUnit.isMine())
+                return UNIT_VISION.IN_PLAIN_SIGHT;
+        if (unit instanceof Unit) {
+            if (!((Unit) unit).getAI().isOutsideCombat()) {
+                if (activeUnit instanceof Unit) {
+                    if (((Unit) activeUnit).isScion()) {
+                        return UNIT_VISION.IN_PLAIN_SIGHT;
+                    }
+                }
+            }
+        }
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
+            if (ShadowMaster.getShadowUnit() == activeUnit) {
+                if (activeUnit.getCoordinates().dst_(unit.getCoordinates()) <= 5) {
+                    return UNIT_VISION.IN_SIGHT;
+                }
+            }
             if (isBlocked(unit, activeUnit)) {
                 return UNIT_VISION.BLOCKED;
             }
@@ -345,8 +371,8 @@ public class SightMaster {
         resetUnitVision(observer, master.getGame().getUnits());
         //        master.getVisionController().getUnitVisionMapper().
         Set<Obj> cells = isFastMode() ? master.getGame().getBattleFieldManager().
-         getCellsWithinRange(observer, observer.getMaxVisionDistance()
-         ) : master.getGame().getCells();
+                getCellsWithinRange(observer, observer.getMaxVisionDistance()
+                ) : master.getGame().getCells();
         resetUnitVision(observer, cells);
     }
 
@@ -368,7 +394,22 @@ public class SightMaster {
     }
 
     public void resetUnitVision(BattleFieldObject observer, DC_Obj unit) {
-        UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
+        UNIT_VISION status = null;
+
+        if (observer.isMine())
+            status = getUnitVisionStatusPrivate(unit, observer);
+        else {
+            if (ExplorationMaster.isExplorationOn() &&
+                    master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
+                status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+            } else {
+//            status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+                if (status == null) {
+                    //final hack
+                    status = getUnitVisionStatusPrivate(unit, observer);
+                }
+            }
+        }
         unit.setUnitVisionStatus(status, observer);
     }
 }

@@ -29,7 +29,7 @@ public class DynamicCondition<T> extends ConditionImpl {
     public boolean check(Ref ref) {
         if (predicate != null) {
             if (arg == null) {
-                if (ref.getMatch() != null) {
+                if (ref.getMatchObj() != null) { //TODO this is dubious
                     return predicate.test((T) ref.getMatchObj());
                 }
                 if (ref.getTarget() != null) {

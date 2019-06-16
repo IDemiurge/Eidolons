@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.perk;
 
 import eidolons.ability.effects.DC_Effect;
+import eidolons.ability.effects.containers.LoggedEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.mechanic.DelayedEffect;
 import eidolons.entity.obj.unit.Unit;
@@ -68,8 +69,11 @@ public class AlertRule {
     }
 
     public static Effect getWakeUpTriggerEffect() {
-        return new DelayedEffect(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, new RemoveBuffEffect(
-         STD_MODES.ALERT.getBuffName()), AlertRule.getWakeUpConditions());
+        return
+                new DelayedEffect(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE,
+                        new LoggedEffect("{source_name} wakes up from Alert Mode!",
+                                new RemoveBuffEffect(
+         STD_MODES.ALERT.getBuffName())), AlertRule.getWakeUpConditions());
     }
 
 }

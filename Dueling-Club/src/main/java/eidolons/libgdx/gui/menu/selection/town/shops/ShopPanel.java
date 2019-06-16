@@ -222,6 +222,10 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
 
     @Override
     public void setUserObject(Object userObject) {
+        if (userObject != null)         if (!(userObject instanceof ShopDataSource)) {
+            main.system.auxiliary.log.LogMaster.log(1,this+ " Wtf are you doing with tis shop " + userObject);
+            return;
+        }
         super.setUserObject(userObject);
         stashPanel.setUserObject(userObject);
     }

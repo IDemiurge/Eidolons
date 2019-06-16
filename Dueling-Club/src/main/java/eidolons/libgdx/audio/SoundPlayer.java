@@ -2,10 +2,17 @@ package eidolons.libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
+import main.content.CONTENT_CONSTS;
+import main.content.values.properties.G_PROPS;
+import main.entity.obj.Obj;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.sound.Player;
 import main.system.sound.SoundFx;
+import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
 import java.util.Stack;
@@ -24,9 +31,11 @@ public class SoundPlayer extends Player {
         this.dungeonScreen = dungeonScreen;
 
     }
-    public enum SOUND_TYPE{
+
+    public enum SOUND_TYPE {
         VOICE,
     }
+
     protected SOUND_TYPE getSoundType(SOUNDS sound_type) {
         switch (sound_type) {
             case ATTACK:
@@ -44,34 +53,42 @@ public class SoundPlayer extends Player {
                 return SOUND_TYPE.VOICE;
 
         }
-        return null ;
+        return null;
     }
-        protected boolean checkSoundTypeOff(SOUNDS sound) {
-            SOUND_TYPE sound_type = getSoundType(sound);
-            if (sound_type!=null )
-        switch (sound_type) {
-            case VOICE:
-                return OptionsMaster.getSoundOptions().
-                 getBooleanValue(SOUND_OPTION.VOICE_OFF);
 
-        }
-        return false;
-    }
-    protected int checkAdditionalVolume(SOUNDS sound) {
+    protected boolean checkSoundTypeOff(SOUNDS sound) {
         SOUND_TYPE sound_type = getSoundType(sound);
-        if (sound_type!=null )
+        if (sound_type != null)
             switch (sound_type) {
                 case VOICE:
                     return OptionsMaster.getSoundOptions().
-                     getIntValue(SOUND_OPTION.VOICE_VOLUME);
+                            getBooleanValue(SOUND_OPTION.VOICE_OFF);
+
+            }
+        return false;
+    }
+
+    protected int checkAdditionalVolume(SOUNDS sound) {
+        SOUND_TYPE sound_type = getSoundType(sound);
+        if (sound_type != null)
+            switch (sound_type) {
+                case VOICE:
+                    return OptionsMaster.getSoundOptions().
+                            getIntValue(SOUND_OPTION.VOICE_VOLUME);
 
             }
         return 100;
     }
+
     @Override
     public int getVolume() {
 //        OptionsMaster.get
         return super.getVolume();
+    }
+
+    public void playSoundOnCurrentThread(SOUNDS sound_type, Obj obj) {
+        CONTENT_CONSTS.SOUNDSET soundSet = DC_SoundMaster.getSoundset(obj);
+         playEffectSound(sound_type, soundSet);
     }
 
     @Override

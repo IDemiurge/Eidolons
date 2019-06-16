@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.town;
 
-import eidolons.libgdx.screens.ScreenWithLoader;
+import eidolons.libgdx.screens.ScreenWithLoaderAndUI;
 
 /**
  * Created by JustMe on 3/14/2018.
@@ -13,7 +13,7 @@ import eidolons.libgdx.screens.ScreenWithLoader;
  * <p>
  * town info
  */
-public class TownScreen extends ScreenWithLoader {
+public class TownScreen extends ScreenWithLoaderAndUI {
 
     TownDataSource dataSource;
 

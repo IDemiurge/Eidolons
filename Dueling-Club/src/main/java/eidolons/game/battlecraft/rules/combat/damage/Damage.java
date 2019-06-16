@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class Damage {
     protected boolean spell;
     protected boolean attack;
-    protected Integer amount;
+    protected Integer amount=0;
     protected BattleFieldObject target;
     protected BattleFieldObject source;
     protected boolean offhand;

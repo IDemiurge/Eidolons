@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -82,6 +83,14 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     @Override
+    public void draw(Batch batch, float parentAlpha) {
+     getColor().a=1;
+     closeButton.setVisible(false);
+     closeButton. getColor().a=0;
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
     protected List<RadialValueContainer> createNodes(Unit source, List<? extends ActiveObj> attacks) {
         List<RadialValueContainer> list = super.createNodes(source, attacks);
         int i=0;
@@ -89,9 +98,9 @@ public class InfoAttackRadial extends QuickAttackRadial {
             ActiveObj a = attacks.get(i++);
             processNode(node, a);
         }
-        for (int j = list.size(); j < SLOTS; j++) {
-            list.add(createSlotNode());
-        }
+//        for (int j = list.size(); j < SLOTS; j++) {
+//            list.add(createSlotNode());
+//        }
         return list;
     }
 
@@ -101,19 +110,20 @@ public class InfoAttackRadial extends QuickAttackRadial {
         node.addListener(tooltip.getController());
         TextureRegion underlay= TextureCache.getOrCreateR(STD_BUTTON.CIRCLE.getPath() );
         node.setUnderlay_(underlay);
+        node.setTextOverlayOn(false);
     }
 
     protected double getRadiusBase() {
-        return 102;
+        return 139;
     }
     @Override
     protected Vector2 getInitialPosition() {
-        return new Vector2(64, 64);
+        return new Vector2( 114,  114);
     }
 
     @Override
     protected int getStartDegree() {
-        return offhand ? 60 : 100;
+        return offhand ? 10 : 155;
     }
 
     @Override
@@ -128,11 +138,40 @@ public class InfoAttackRadial extends QuickAttackRadial {
 
     @Override
     protected int getSpectrumDegrees() {
-        return 250;
+        return 150;
     }
     private RadialValueContainer createSlotNode() {
       return   new RadialValueContainer(TextureCache.getOrCreateR(STD_BUTTON.CIRCLE.getPath()), ()->{
         });
     }
 
+//    @Override
+//    public void init(List<RadialValueContainer> nodes) {
+//        super.init(nodes);
+//    }
+
+//    protected double getRadiusBase() {
+//        return 72;
+//    }
+
+//    protected boolean isMakeSecondRing(int size) {
+//        return size > 15;
+//    }
+
+
+//    protected boolean isClockwise() {
+//        return false;
+//    }
+//
+//    protected int getStartDegree() {
+//        return 90;
+//    }
+//
+//    protected int getSpectrumDegrees() {
+//        return 360;
+//    }
+//
+//    protected float getAnimationDuration() {
+//        return 0.65f;
+//    }
 }

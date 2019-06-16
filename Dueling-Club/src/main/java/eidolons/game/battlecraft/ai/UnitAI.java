@@ -180,6 +180,7 @@ public class UnitAI {
     }
 
     public GroupAI getGroupAI() {
+        if (getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
         if (groupAI == null) {
             groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
             if (groupAI != null) {
@@ -330,6 +331,11 @@ public class UnitAI {
 
     public void setExplorationMoveSpeedMod(float explorationMoveSpeedMod) {
         exploreAI.setExplorationMoveSpeedMod(explorationMoveSpeedMod);
+    }
+
+    public void combatEnded() {
+        setEngagementDuration(0);
+        setEngaged(false);
     }
 
     public enum AI_BEHAVIOR_MODE {

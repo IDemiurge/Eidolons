@@ -34,6 +34,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -46,6 +47,8 @@ import static main.system.auxiliary.log.LogMaster.log;
  * Created by JustMe on 1/9/2017.
  */
 public class Anim extends Group implements Animation {
+    public static final float DEFAULT_ANIM_DURATION = 2;
+    public static final float DEFAULT_MAX_ANIM_DURATION = 6;
     protected Entity active;
     protected Vector2 origin;
     protected Vector2 destination;
@@ -84,18 +87,23 @@ public class Anim extends Group implements Animation {
     protected Ref ref;
     EventCallback onDone;
     EventCallbackParam callbackParam;
-    private boolean emittersWaitingDone;
-    private List<FloatingText> floatingText = new ArrayList<>();
-    private AnimMaster master;
-    private CompositeAnim composite;
-    private boolean done;
-    private Vector2 offsetOrigin;
-    private Vector2 offsetDestination;
-    private CompositeAnim parentAnim;
-    private Set<EmitterActor> completingVfx = new HashSet();
+    protected boolean emittersWaitingDone;
+    protected List<FloatingText> floatingText = new ArrayList<>();
+    protected AnimMaster master;
+    protected CompositeAnim composite;
+    protected boolean done;
+    protected Vector2 offsetOrigin;
+    protected Vector2 offsetDestination;
+    protected CompositeAnim parentAnim;
+    protected Set<EmitterActor> completingVfx = new HashSet();
+    protected float speedMod = 1;
 
     public Anim(Entity active, AnimData params) {
+        this(active, params, null);
+    }
+    public Anim(Entity active, AnimData params, ANIM_PART part) {
         data = params;
+        this.part = part;
         this.active = active;
         if (active == null) {
             ref = new Ref();
@@ -162,6 +170,8 @@ public class Anim extends Group implements Animation {
     }
 
     public boolean tryDraw(Batch batch) {
+        if (CoreEngine.isCinematicMode())
+            return false;
         return draw(batch);
     }
 
@@ -182,10 +192,10 @@ public class Anim extends Group implements Animation {
         {
             if (checkFinished()) {
                 if (!emitterList.isEmpty())
-                if (completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
-                    waitForVfx();
-                    return true;
-                }
+                    if (!completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
+                        waitForVfx();
+                        return true;
+                    }
                 log(ANIM_DEBUG, this + " finished; duration = " + duration);
                 finished();
                 dispose();
@@ -232,7 +242,7 @@ public class Anim extends Group implements Animation {
         return true;
     }
 
-    private void waitForVfx() {
+    protected void waitForVfx() {
 
         emitterList.forEach(e -> {
             if (!e.isComplete()) {
@@ -261,12 +271,12 @@ public class Anim extends Group implements Animation {
         return false;
     }
 
-    private float getTimeToFinish() {
+    protected float getTimeToFinish() {
         float time = 0;
         for (EmitterActor e : emitterList) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 float timeLeft = emitter.getDuration().getLowMax() / 1000 *
-                 Math.max(0, emitter.getPercentComplete());
+                        Math.max(0, emitter.getPercentComplete());
                 if (timeLeft > time) {
                     time = timeLeft;
                 }
@@ -302,9 +312,9 @@ public class Anim extends Group implements Animation {
         float w = Math.min(64, this.getWidth());
         float h = Math.min(64, this.getHeight());
         batch.draw((texture), this.getX(), getY(), this.getOriginX(),
-         this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
-         this.getRotation(), 0, 0,
-         texture.getWidth(), texture.getHeight(), flipX, flipY);
+                this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
+                this.getRotation(), 0, 0,
+                texture.getWidth(), texture.getHeight(), flipX, flipY);
 
         batch.setColor(color);
     }
@@ -324,10 +334,15 @@ public class Anim extends Group implements Animation {
 
     protected void resetSprites() {
         //TODO
-        sprites.clear();
+        if (sprites == null) {
+            sprites = new ArrayList<>();
+        } else {
+            sprites.clear();
+        }
         for (String s : ContainerUtils.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(s);
             sprite.setFrameDuration(getDuration() / sprite.getFrameNumber());
+            sprite.setSpeed(speedMod);
             sprites.add(sprite);
         }
     }
@@ -343,11 +358,11 @@ public class Anim extends Group implements Animation {
     protected void resetEmitters() {
 
         getEmitterList().forEach(e ->
-         {
-             if (e.isGenerated()) {
-                 e.getEffect().dispose();
-             }
-         }
+                {
+                    if (e.isGenerated()) {
+                        e.getEffect().dispose();
+                    }
+                }
         );
         if (ListMaster.isNotEmpty(emitterCache))
             emitterList = new ArrayList<>(emitterCache);
@@ -367,12 +382,13 @@ public class Anim extends Group implements Animation {
 
         getEmitterList().forEach(e -> {
             e.reset();
+
         });
     }
 
     protected void initDuration() {
 
-        setDuration(2);
+        setDuration(DEFAULT_ANIM_DURATION);
         if (part != null) {
             setDuration(part.getDefaultDuration());
         }
@@ -419,7 +435,7 @@ public class Anim extends Group implements Animation {
 
     }
 
-    private double calcDistance() {
+    protected double calcDistance() {
         float x = destination.x - origin.x;
         float y = destination.y - origin.y;
         return Math.sqrt(x * x + y * y);
@@ -457,7 +473,7 @@ public class Anim extends Group implements Animation {
 
     protected String getDefaultTexturePath() {
         return
-         VISUALS.QUESTION.getImgPath();
+                VISUALS.QUESTION.getImgPath();
     }
 
     @Override
@@ -561,14 +577,14 @@ public class Anim extends Group implements Animation {
 
     public void initPosition() {
         origin = GridMaster
-         .getCenteredPos(getOriginCoordinates());
+                .getCenteredPos(getOriginCoordinates());
         if (getOffsetOrigin() != null)
             origin.add(getOffsetOrigin());
         //        main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
         //         this + " origin: " + origin);
 
         destination = GridMaster
-         .getCenteredPos(getDestinationCoordinates());
+                .getCenteredPos(getDestinationCoordinates());
         if (getOffsetDestination() != null)
             destination.add(getOffsetDestination());
 
@@ -637,11 +653,11 @@ public class Anim extends Group implements Animation {
                     break;
             }
         }
-
-        if (getActions().size == 0) {
-            setX(defaultPosition.x + getOffsetX());
-            setY(defaultPosition.y + getOffsetY());
-        }
+        if (defaultPosition != null)
+            if (getActions().size == 0) {
+                setX(defaultPosition.x + getOffsetX());
+                setY(defaultPosition.y + getOffsetY());
+            }
         sprites.forEach(s -> {
             if (s.isAttached()) {
                 if (getActions().size == 0) {
@@ -777,7 +793,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected float getDefaultSpeed() {
-        return 200;
+        return 100;
     }
 
     public AnimData getData() {
@@ -811,7 +827,7 @@ public class Anim extends Group implements Animation {
                 ref.setTarget(ref.getActive().getRef().getTarget());
                 if (ref.getTargetObj() != null) {
                     log(1, ref.getActive() + " HAD TARGET! " +
-                     ref.getTargetObj());
+                            ref.getTargetObj());
                 }
             }
         }
@@ -848,7 +864,7 @@ public class Anim extends Group implements Animation {
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
                 Vector2 floatTextPos = //localToSctageCoordinates
-                 (defaultPosition);
+                        (defaultPosition);
                 floatingText1.setX(floatTextPos.x);
                 floatingText1.setY(floatTextPos.y);
                 GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);
@@ -936,5 +952,32 @@ public class Anim extends Group implements Animation {
 
     public void setParentAnim(CompositeAnim parentAnim) {
         this.parentAnim = parentAnim;
+    }
+
+    public void setSpeedMod(float speedMod) {
+        this.speedMod = speedMod;
+    }
+
+    public float getSpeedMod() {
+        return speedMod;
+    }
+
+    public void startAsSingleAnim( ) {
+        startAsSingleAnim(getRef());
+    }
+    public void startAsSingleAnim(Ref ref) {
+        start(ref);
+        AnimMaster.getInstance().add(new CompositeAnim(this));
+    }
+
+    public void setOnDone(EventCallback onDone) {
+        this.onDone = onDone;
+    }
+
+    public EventCallback getOnDone() {
+        return onDone;
+    }
+    public EventCallbackParam getCallbackParam() {
+        return callbackParam;
     }
 }

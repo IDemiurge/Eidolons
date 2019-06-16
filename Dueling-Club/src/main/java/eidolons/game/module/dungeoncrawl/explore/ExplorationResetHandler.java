@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.system.math.PositionMaster;
 
@@ -45,22 +46,31 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public boolean isAggroCheckNeeded(ActionInput input) {
-        Unit unit = input.getAction().getOwnerUnit();
-        Unit enemy = input.getAction().getGame().getAiManager().getAnalyzer().
-         getClosestEnemy(unit);
+        Unit unit = Eidolons.getMainHero();
+        //input.getAction().getGame().getAiManager().getAnalyzer().
+        //         getClosestEnemy(unit)
+        Unit enemy =  input.getAction().getOwnerUnit();
         if (enemy == null)
             return false;
-        double distance = PositionMaster.getExactDistance(enemy.getCoordinates(),
-         input.getAction().getOwnerUnit().getCoordinates());
-        //TODO visible?
-        //stealth: when is *that* check made?
-        if (distance > unit.getSightRangeTowards(enemy)) {
+        if (!isCloseEnoughToReset(enemy, unit)){
             return false;
         }
+
         if (input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
             return true;
         }
         return input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.TURN;
+    }
+
+    public static boolean isCloseEnoughToReset(Unit enemy, Unit unit) {
+        double distance = PositionMaster.getExactDistance(enemy.getCoordinates(),
+                unit.getCoordinates());
+        //TODO visible?
+        //stealth: when is *that* check made?
+        if (distance > enemy.getSightRangeTowards(unit)) {
+            return false;
+        }
+        return true;
     }
 
     public boolean isResetNotRequired() {

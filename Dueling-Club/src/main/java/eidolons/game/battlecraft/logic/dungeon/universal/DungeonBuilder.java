@@ -76,7 +76,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         List<Node> nodeList = XML_Converter.getNodeList(levelNode);
         Node planNode = XML_Converter.getChildByName(levelNode, "Plan");
         nodeList.addAll(XML_Converter.getNodeList(planNode));
-        E dungeonWrapper = buildDungeon(data, nodeList);
+        E dungeonWrapper = buildDungeon(path, data, nodeList);
 
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         initWidthAndHeight(dungeonWrapper);
@@ -97,7 +97,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         GammaMaster.resetCaches();
     }
 
-    public E buildDungeon(String path, List<Node> nodeList) {
+    public E buildDungeon(String s, String path, List<Node> nodeList) {
         Node typeNode = XML_Converter.getNodeByName(nodeList, DUNGEON_TYPE_NODE);
         ObjType type = null;
         if (typeNode == null) {

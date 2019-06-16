@@ -15,8 +15,9 @@ public class StageX extends Stage {
     public StageX() {
     }
 
-    public StageX(Viewport viewport) {
-        super(viewport);
+    @Override
+    public Batch getBatch() {
+        return CustomSpriteBatch.getMainInstance();
     }
 
     public StageX(Viewport viewport, Batch batch) {

@@ -131,6 +131,9 @@ public abstract class SuperActor extends Fluctuating implements Borderable {
 
     @Override
     public void addAction(Action action) {
+        if (getActions().size>50) {
+            getActions().clear(); //TODO igg demo hack
+        }
         if (!getActions().contains(action, true))
             super.addAction(action);
     }

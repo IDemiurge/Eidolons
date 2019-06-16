@@ -6,6 +6,8 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -18,6 +20,7 @@ import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 /**
@@ -26,6 +29,11 @@ import main.system.math.PositionMaster;
 public class UnitChecker extends EntityChecker<Unit> {
     public UnitChecker(Unit entity, EntityMaster<Unit> entityMaster) {
         super(entity, entityMaster);
+    }
+
+    public static boolean isUnarmedFighter(Unit unit) {
+        //check mastery or monster
+        return false;
     }
 
     @Override
@@ -50,7 +58,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean canUseArmor() {
         return checkContainerProp(G_PROPS.CLASSIFICATIONS,
-         UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
+                UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
     }
 
 
@@ -104,6 +112,13 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isImmortalityOn() {
+        if (getGame().isDebugMode())
+            return false;
+        if (CoreEngine.isLiteLaunch()){
+            if (CoreEngine.isActiveTestMode()) {
+                return true;
+            }
+        }
         if (isMine()) {
             if (equals(getEntity().getOwner().getHeroObj())) {
                 return game.isDummyMode();
@@ -111,7 +126,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         }
         if (getGame().getTestMaster().isImmortal() != null) {
             return
-             getGame().getTestMaster().isImmortal();
+                    getGame().getTestMaster().isImmortal();
         }
         return getGame().isDummyPlus();
     }
@@ -194,7 +209,22 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkModeDisablesCounters()) {
             return false;
         }
-        if (checkStatusDisablesCounters()) {
+        if (checkStatus(STATUS.DISCOMBOBULATED)) {
+            return false;
+        }
+        if (checkStatus(STATUS.ENSNARED)) {
+            return false;
+        }
+        if (checkStatus(STATUS.CHARMED)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+            return false;
+        }
+        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
             return false;
         }
         // TODO getMinimumAttackCost
@@ -231,7 +261,16 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isUnconscious() {
-        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
+        if (checkStatus(UnitEnums.STATUS.UNCONSCIOUS))
+            return true;
+        if (getEntity().isPlayerCharacter()) {
+            if (ShadowMaster.isShadowAlive())
+                return true; //TODO igg demo hack
+            if (getEntity().getBuff("Unconscious") != null)
+                return true;
+        }
+
+        return false;
     }
 
     public boolean canAttack() {
@@ -329,7 +368,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(UnitEnums.STATUS.FROZEN)) {
             return true;
         }
-        return checkStatus(UnitEnums.STATUS.UNCONSCIOUS);
+        return isUnconscious();
     }
 
     public boolean isIncapacitated() {
@@ -400,7 +439,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean hasDoubleStrike() {
         return
-         checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+                checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
     }
 
     public boolean checkImmunity(IMMUNITIES type) {

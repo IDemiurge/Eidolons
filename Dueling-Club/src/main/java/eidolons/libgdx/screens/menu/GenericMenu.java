@@ -43,20 +43,23 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     List<TextButton> buttons = new ArrayList<>();
 
     public GenericMenu() {
-        TextureRegionDrawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
-                "ui", "components", "generic", "game menu", "background.png"));
-        //TODO initResolutionScaling();
+        if (getBgPath() != null) {
+            TextureRegionDrawable texture = TextureCache.getOrCreateTextureRegionDrawable(getBgPath());
+            //TODO initResolutionScaling();
 //        setSize(texture.getRegion().getRegionWidth()*getScaleX(), texture.getRegion().getRegionHeight()*getScaleY());
 //        texture.setMinWidth(getWidth());
 //        texture.setMinHeight(getHeight());
-        setBackground(texture);
+            setBackground(texture);
+        }
         addButtons();
 
         keyListener = createKeyListener();
     }
 
+    protected abstract String getBgPath();
+
     private InputListener createKeyListener() {
-        return  new InputListener(){
+        return new InputListener() {
             @Override
             public boolean keyUp(InputEvent event, int keycode) {
                 switch (keycode) {
@@ -79,15 +82,17 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
                 }
                 return super.keyUp(event, keycode);
             }
-        } ;
+        };
     }
 
     private void previous() {
 
     }
+
     private void next() {
 
-        }
+    }
+
     private void selectCurrent() {
     }
 
@@ -100,6 +105,9 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         if (currentItem != null) {
             MenuItem[] items = currentItem.getItems();
             List<MenuItem<T>> list = new ArrayList<>();
+            if (items==null) {
+                return getDefaultItems();
+            }
             for (MenuItem sub : items)
                 list.add(sub);
             list.add(new MenuItem<T>() {
@@ -213,28 +221,29 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     protected abstract STD_BUTTON getButtonStyle();
 
     public Runnable getClickRunnable(T sub) {
-       return () -> {
-           if (sub == null) {
-               setCurrentItem(previousItem);
-               setPreviousItem(null);
-               updateRequired = true;
-               return  ;
-           }
-           if (currentItem == sub) {
-               return  ; //why duplicate events?!
-           }
-           Boolean result = GenericMenu.this.clicked(sub);
-           if (result == null) {
-               close();
-               return  ;
-           }
-           if (result) {
-               setPreviousItem(currentItem);
-               setCurrentItem(sub);
-               updateRequired = true;
-           }
+        return () -> {
+            if (sub == null) {
+                setCurrentItem(previousItem);
+                setPreviousItem(null);
+                updateRequired = true;
+                return;
+            }
+            if (currentItem == sub) {
+                return; //why duplicate events?!
+            }
+            Boolean result = GenericMenu.this.clicked(sub);
+            if (result == null) {
+                close();
+                return;
+            }
+            if (result) {
+                setPreviousItem(currentItem);
+                setCurrentItem(sub);
+                updateRequired = true;
+            }
         };
     }
+
     protected EventListener getClickListener(T sub) {
         return new ClickListener() {
             @Override
@@ -295,17 +304,18 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (keyListener!=null )
-            if (getStage() != null&& visible) {
+        if (keyListener != null)
+            if (getStage() != null && visible) {
                 getStage().addListener(keyListener);
             } else {
                 if (getStage() != null)
                     getStage().removeListener(keyListener);
             }
     }
+
     @Override
     public void setStage(Stage stage) {
-        if (keyListener!=null )
+        if (keyListener != null)
             if (stage != null) {
                 stage.addListener(keyListener);
             } else {
@@ -314,6 +324,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
             }
         super.setStage(stage);
     }
+
     public void setCurrentItem(T currentItem) {
         main.system.auxiliary.log.LogMaster.log(1, "setCurrentItem " +
                 this.currentItem +

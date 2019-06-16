@@ -21,7 +21,7 @@ public class HqHeroPreview extends FadeImageContainer {
         this.data = sub;
 //        String path = StringMaster.getAppendedImageFile(sub.getImagePath(), " mini");
 //        addActor(new ImageContainer(path));
-        setSize(128,46);
+//        setSize(128,46);
 
         if (data.isDead()) {
 //            addActor(new ImageContainer(Images.DEAD_HERO_128));

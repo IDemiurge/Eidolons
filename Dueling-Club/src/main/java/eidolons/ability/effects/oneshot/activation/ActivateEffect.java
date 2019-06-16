@@ -33,7 +33,6 @@ public class ActivateEffect extends DC_Effect implements OneshotEffect {
     @Override
     public boolean applyThis() {
         Unit source = (Unit) ref.getObj(sourceKey);
-        Unit target = (Unit) ref.getObj(key);
         DC_ActiveObj active;
 
         if (!spell) {
@@ -45,7 +44,7 @@ public class ActivateEffect extends DC_Effect implements OneshotEffect {
             active.setFree(free);
         }
         try {
-            active.activatedOn(Ref.getSelfTargetingRefCopy(target));
+            active.activatedOn(Ref.getSelfTargetingRefCopy(ref.getObj(key)));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {

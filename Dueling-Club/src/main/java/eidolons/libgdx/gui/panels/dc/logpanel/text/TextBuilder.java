@@ -13,12 +13,17 @@ import main.system.graphics.FontMaster.FONT;
  */
 public class TextBuilder {
     protected Message message;
-
     protected StringBuilder sb;
-    private LabelStyle defaultHiero;
-
+    LabelStyle style;
     public TextBuilder() {
+       this(null );
+    }
+    public TextBuilder(LabelStyle style) {
         sb = new StringBuilder();
+        if (style==null ){
+            style = getDefaultLabelStyle();
+        }
+        this.style = style;
     }
 
     public static TextBuilder createNew() {
@@ -26,7 +31,7 @@ public class TextBuilder {
     }
 
     public Message build(float w) {
-        Label l = new Label(sb.toString(), getDefaultLabelStyle());
+        Label l = new Label(sb.toString(),style);
         l.setWrap(true);
         l.setAlignment(Align.left);
         message = newMessage();
@@ -58,9 +63,7 @@ public class TextBuilder {
     protected LabelStyle getDefaultLabelStyle() {
         if (StyleHolder.isHieroOn())
         {
-            if (defaultHiero==null)
-                defaultHiero=  new LabelStyle(StyleHolder.getHieroFontHigh(), getColor());
-            return defaultHiero;
+          return   StyleHolder.getDefaultHiero();
         }
         return
          StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(),

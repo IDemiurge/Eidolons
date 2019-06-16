@@ -48,11 +48,11 @@ public class GoalManager extends AiHandler {
         if (unit.getAiType() == AiEnums.AI_TYPE.SNEAK) {
             list.add(AiEnums.GOAL_TYPE.STEALTH);
         }
-        if (Analyzer.getVisibleEnemies(unit.getUnitAI()).isEmpty()) {
-            list = new ListMaster<GOAL_TYPE>().getList(AiEnums.GOAL_TYPE.SEARCH);
-            addNonEnemyGoals(list);
-            return list;
-        }
+//        if (Analyzer.getVisibleEnemies(unit.getUnitAI()).isEmpty()) {
+//            list = new ListMaster<GOAL_TYPE>().getList(AiEnums.GOAL_TYPE.SEARCH); //TODO igg demo fix
+//            addNonEnemyGoals(list);
+//            return list;
+//        }
         if (unit.checkAiMod(AI_MODIFIERS.TRUE_BRUTE)) {
             return new ListMaster<GOAL_TYPE>().getList(AiEnums.GOAL_TYPE.ATTACK);
         }

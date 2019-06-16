@@ -87,7 +87,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         } else {
             String name = getProperty(PROPS.FACING_DIRECTION);
             facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
-             name));
+                    name));
             if (facing == null) {
                 if (getEntity().getDirection() != null) {
                     FacingMaster.getFacingFromDirection(getEntity().getDirection());
@@ -118,22 +118,13 @@ public class UnitResetter extends EntityResetter<Unit> {
 //        if (game.isSimulation()) {
 //            return;
 //        }
-        if (getEntity().isMine()) {
-            if (CoreEngine.isLogicTest())
-                TestMasterContent.addTestGroupSpells(getEntity());
 
-            if (CoreEngine.isAnimationTestMode()) {
-                TestMasterContent.addANIM_TEST_Spells(getEntity());
-            } else if (CoreEngine.isGuiTestMode()) {
-                TestMasterContent.addGRAPHICS_TEST_Spells(getEntity());
-            }
-        }
 
         if (getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.TALL)) {
             getInitializer().addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.TALL, true);
         }
         if (getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.SHORT)) {
-            getInitializer().addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.TALL, true);
+            getInitializer().addProperty(G_PROPS.STANDARD_PASSIVES, "" + UnitEnums.CLASSIFICATIONS.SHORT, true);
         }
 
         // Chronos.logTimeElapsedForMark(toString() + "to base (values)");
@@ -150,8 +141,8 @@ public class UnitResetter extends EntityResetter<Unit> {
                 for (Spell s : getEntity().getSpells()) {
                     if (!s.getProperty(PROPS.SPELL_UPGRADES).isEmpty()) {
                         value += s.getName()
-                         + StringMaster.wrapInParenthesis(s
-                         .getProperty(PROPS.SPELL_UPGRADES).replace(";", ",")) + ";";
+                                + StringMaster.wrapInParenthesis(s
+                                .getProperty(PROPS.SPELL_UPGRADES).replace(";", ",")) + ";";
                     }
                 }
                 if (!value.isEmpty()) {
@@ -353,7 +344,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (getGame().getState().getRound() == 0)
             carryOverFactor = 0;
         int actions = (int) (getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
-         * carryOverFactor);
+                * carryOverFactor);
 
         setParam(PARAMS.C_N_OF_ACTIONS, actions);
 
@@ -373,10 +364,10 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void applyBackground() {
         if (getEntity().getBackgroundType() == null) {
             getEntity().setBackgroundType(DataManager.getType(getProperty(G_PROPS.BACKGROUND_TYPE),
-             getEntity().getOBJ_TYPE_ENUM()));
+                    getEntity().getOBJ_TYPE_ENUM()));
             if (getEntity().getBackgroundType() == null) {
                 getEntity().setBackgroundType(DataManager.getType(getProperty(G_PROPS.BASE_TYPE),
-                 getEntity().getOBJ_TYPE_ENUM()));
+                        getEntity().getOBJ_TYPE_ENUM()));
             }
         }
         if (getEntity().getBackgroundType() == null) {
@@ -407,7 +398,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     public void resetDefaultAttr(ATTRIBUTE attr) {
         getEntity().getType().setParam(DC_ContentValsManager.getDefaultAttr(attr.getParameter()),
-         getIntParam(DC_ContentValsManager.getBaseAttr(attr.getParameter())));
+                getIntParam(DC_ContentValsManager.getBaseAttr(attr.getParameter())));
     }
 
     /**
@@ -445,7 +436,7 @@ public class UnitResetter extends EntityResetter<Unit> {
             }
         }
         getEntity().setParam(PARAMS.MORALE, getIntParam(PARAMS.SPIRIT) * DC_Formulas.MORALE_PER_SPIRIT
-         * getIntParam(PARAMS.BATTLE_SPIRIT) / 100);
+                * getIntParam(PARAMS.BATTLE_SPIRIT) / 100);
         // the C_ value cannot be changed, but the PERCENTAGE
         getEntity().setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
 
@@ -454,12 +445,13 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void regenerateToughness() {
         regenerateToughness(1f);
     }
+
     public void regenerateToughness(float delta) {
         if (getEntity().isFull(PARAMS.TOUGHNESS))
             return;
         Integer amount = Math.round(getIntParam(PARAMS.TOUGHNESS_RECOVERY)
-         * getIntParam(PARAMS.TOUGHNESS)
-         / 100*delta);
+                * getIntParam(PARAMS.TOUGHNESS)
+                / 100 * delta);
         // setParam(PARAMS.C_TOUGHNESS, amount);
         if (amount > 0) {
             getEntity().modifyParameter(PARAMS.C_TOUGHNESS, amount, getIntParam(PARAMS.TOUGHNESS));
@@ -469,9 +461,9 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void afterEffectsApplied() {
         getEntity().setBeingReset(true);
         resetHeroValues();
-        if (game.isSimulation()) {
+//        if (game.isSimulation()) { TODO igg demo fix ?
             getInitializer().initSpellbook();
-        }
+//        }
 
         resetMorale();
         if (!getInitializer().dynamicValuesReady && !game.isSimulation()) {
@@ -486,21 +478,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
         if (!game.isSimulation()) { // TODO perhaps I should apply and display
             // them!
-            if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
-            }
-            if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
-            }
-            if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
-            }
-            if (!getGame().getRules().getWeightRule().apply(getEntity())) {
-                getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
-            }
-            if (RuleKeeper.isRuleOn(RULE.WATCH))
-                getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
-            getGame().getRules().getWoundsRule().apply(getEntity());
+            applyBuffRules();
 
 
 //            recalculateInitiative();
@@ -510,10 +488,12 @@ public class UnitResetter extends EntityResetter<Unit> {
 
         if (game.isSimulation()) {
             resetSpells();
+            getEntity().setBeingReset(false);
             return;
         }
         if (getGame().getInventoryTransactionManager() != null) {
             if (getGame().getInventoryTransactionManager().isActive()) {
+                getEntity().setBeingReset(false);
                 return;
             }
         }
@@ -521,6 +501,24 @@ public class UnitResetter extends EntityResetter<Unit> {
         resetQuickItemActives();
         resetActives();
         getEntity().setBeingReset(false);
+    }
+
+    public void applyBuffRules() {
+        if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
+        }
+        if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
+        }
+        if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
+        }
+        if (!getGame().getRules().getWeightRule().apply(getEntity())) {
+            getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
+        }
+        if (RuleKeeper.isRuleOn(RULE.WATCH))
+            getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
+        getGame().getRules().getWoundsRule().apply(getEntity());
     }
 
     public void afterBuffRuleEffects() {
@@ -540,6 +538,12 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
         getCalculator().calculateAndSetDamage(false);
         applyMods();
+
+        finalizeReset();
+    }
+
+    private void finalizeReset() {
+        getGame().getRules().getDynamicBuffRules().checkBuffs(getEntity());
     }
 
 }

@@ -37,13 +37,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     }
 
-    @Override
-    protected String chooseHero(List<String> members) {
-        if (isWaitForGdx())
-            WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
-        return super.chooseHero(members);
-    }
-
     protected boolean isWaitForGdx() {
         return true;
     }
@@ -153,7 +146,12 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     }
 
-
+    @Override
+    protected String chooseHero(List<String> members) {
+        if (isWaitForGdx())
+            WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
+        return super.chooseHero(members);
+    }
 
     private boolean isCreateNewHero() {
         return HeroCreationMaster.NEW_ON_LAUNCH;

@@ -1,6 +1,7 @@
 package eidolons.system.hotkey;
 
 import eidolons.content.ValueHelper;
+import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
@@ -24,11 +25,13 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,9 +48,10 @@ public class DC_KeyManager
     public static CONTROLLER DEFAULT_CONTROLLER = CONTROLLER.DEBUG;
     GlobalController globalController = new GlobalController();
     private Map<String, Integer> stdActionKeyMap;
+    private Map<String, String> customActionKeyMap;
     private Map<String, Integer> stdModeKeyMap;
     private Map<String, Integer> addMoveActionKeyMap;
-    private Map<String, HOTKEYS> specKeyMap;
+//    private Map<String, HOTKEYS> specKeyMap;
     // private Map<Integer, HotKey> keyMap;
     private DC_GameManager mngr;
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
@@ -105,7 +109,12 @@ public class DC_KeyManager
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
         }
-
+        customActionKeyMap = new LinkedHashMap<>();
+        customActionKeyMap.put("v", DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString());
+        customActionKeyMap.put("g",
+                StringMaster.getWellFormattedString(
+                DC_ActionManager.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
+        customActionKeyMap.put("h", DC_ActionManager.STD_SPEC_ACTIONS.Search_Mode.toString());
     }
 
     private boolean checkCustomHotkey(KeyEvent e) {
@@ -288,6 +297,13 @@ public class DC_KeyManager
                     return true;
             }
         }
+
+        for (String s : customActionKeyMap.keySet()) {
+            if (charString.equals(s)){
+                mngr.activateMyAction(customActionKeyMap.get(s));
+                return true;
+            }
+        }
         return false;
     }
 
@@ -418,8 +434,10 @@ public class DC_KeyManager
         actionHotkey(n, action_group);
     }
 
-    public void handleKeyDown(int keyCode) {
+    public boolean handleKeyDown(int keyCode) {
         controller.keyDown(keyCode);
-        globalController.keyDown(keyCode);
+       if (globalController.keyDown(keyCode))
+        return true;
+        return false;
     }
 }

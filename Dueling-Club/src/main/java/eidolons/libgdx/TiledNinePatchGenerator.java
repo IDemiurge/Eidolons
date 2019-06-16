@@ -135,11 +135,11 @@ public class TiledNinePatchGenerator implements ApplicationListener {
      String path,
      boolean preventOverlapping,
      boolean fillWithBlack) {
+        boolean write = CoreEngine.isIDE() && !CoreEngine.isIggDemo();
 
         FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
           path);
-
         if (bottom == null || bottom == TextureCache.getEmptyTexture()) {
             //            GdxImageMaster.flip()
             bottom = top;
@@ -208,8 +208,13 @@ public class TiledNinePatchGenerator implements ApplicationListener {
                 for (int y = maxHeight - h; y < (maxHeight) / 2; y++)
                     pixmap.drawPixel(y, y, Color.BLACK.toIntBits());
         }
-        GdxImageMaster.writeImage(handle, pixmap);
-        return TextureCache.getOrCreate(path);
+        if (write) {
+            GdxImageMaster.writeImage(handle, pixmap);
+            return TextureCache.getOrCreate(path);
+        } else {
+
+            return new Texture(pixmap);
+        }
     }
 
     public static TextureRegionDrawable getOrCreateNinePatchDrawable(NINE_PATCH ninePatch,

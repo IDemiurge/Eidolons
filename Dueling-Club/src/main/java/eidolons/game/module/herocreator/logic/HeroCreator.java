@@ -50,8 +50,6 @@ public class HeroCreator {
          new Ref(Eidolons.getGame()));
         newId(type);
         Eidolons.getGame().getState().addObject(hero);
-//        hero.toBase();
-//        hero.afterEffects();
         return hero;
     }
 

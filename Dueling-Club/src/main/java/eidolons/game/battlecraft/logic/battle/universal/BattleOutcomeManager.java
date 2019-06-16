@@ -1,14 +1,17 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_MOMENT;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -46,11 +49,14 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         // battle.setOutcome(outcome);
         game.stop();
         if (Bools.isFalse(outcome)) {
-            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK );
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__DEFEAT);
+            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+
+            getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.DEFEAT, new Ref()));
+//            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__DEFEAT);
         }
         if (Bools.isTrue(outcome)) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__VICTORY);
+            getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.VICTORY, new Ref()));
+//            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__VICTORY);
         }
         WaitMaster.WAIT(1500);
         GuiEventManager.trigger(GuiEventType.GAME_FINISHED, getGame());
@@ -70,6 +76,9 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void defeat(boolean surrender, boolean end) {
+        if (!game.getMetaMaster().getDefeatHandler().isEnded(surrender, end)) {
+            return;
+        }
         // TODO last level doesn't support saving! Disconnects perhaps, for the
         // dishonorable ones :)
         outcome = false;
@@ -125,7 +134,10 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
             return true;
         } else {
             if (checkDefeat()) {
-                defeat();
+                //TODO final hack
+                new Thread(() -> {
+                    defeat();
+                }, "defeat thread").start();
                 return true;
             }
         }
@@ -134,9 +146,10 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     protected boolean checkDefeat() {
-        if (!OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
-            if (!game.isDebugMode())
-                return (game.getPlayer(true).getHeroObj().isDead());
+        if (!getMaster().getMetaMaster().isAlliesSupported())
+//            if (!game.isDebugMode())
+            return Eidolons.getMainHero().isDead();
+        //(game.getPlayer(true).getHeroObj().isDead());
 
         return checkNoPlayerUnitsLeft();
     }
@@ -158,7 +171,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     private boolean checkPlayerHasNoUnits(Player player) {
-        for (Obj d : player.getControlledUnits()) {
+        for (Obj d : player.collectControlledUnits()) {
             if (d instanceof Unit) {
 //                ((Unit) d).isAiControlled()
 

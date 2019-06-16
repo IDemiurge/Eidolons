@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -8,12 +9,17 @@ import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.Bools;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RuleKeeper implements Controller {
 
+    private static final RULE[] RULES_BEING_TESTED = {
+//            RULE.PARRYING,
+//            RULE.SHIELD,
+    };
     static Map<Object, Boolean> overrideMap = new HashMap<>();
     private static Map<RULE, Boolean> map = new XLinkedMap<>();
     private static Map<RULE, Boolean> mapTest = new XLinkedMap<>();
@@ -27,7 +33,7 @@ public class RuleKeeper implements Controller {
     public static void init() {
         try {
             scope = new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
-             OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
+                    OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -40,6 +46,11 @@ public class RuleKeeper implements Controller {
                 }
             }
         }
+        if (CoreEngine.isIDE())
+            if (CoreEngine.isLiteLaunch())
+                for (RULE r : RULES_BEING_TESTED) {
+                    mapTest.put(r, true);
+                }
     }
 
     private static Boolean checkStatus(RULE_SCOPE statusForRule) {
@@ -101,8 +112,8 @@ public class RuleKeeper implements Controller {
                 return RULE_SCOPE.TEST;
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
-                return RULE_SCOPE.FULL;
             case FORCE:
+                return RULE_SCOPE.FULL;
             case TRAMPLE:
                 return RULE_SCOPE.ADVANCED;
 
@@ -138,6 +149,8 @@ public class RuleKeeper implements Controller {
     }
 
     public static boolean isRuleTestOn(RULE rule) {
+        if (Eidolons.getGame().isDebugMode())
+            return false;
         return Bools.isTrue(mapTest.get(rule));
     }
 
@@ -168,10 +181,11 @@ public class RuleKeeper implements Controller {
             case BASIC:
                 switch (feature) {
 
-                    case THROW_WEAPON:
+//                    case THROW_WEAPON:
                     case ORDERS:
                     case WATCH:
                     case GUARD_MODE:
+                    case TOSS_ITEM:
 //                    case USE_INVENTORY:
 //                    case DUAL_ATTACKS:
 //                    case VISIBILITY:
@@ -360,7 +374,7 @@ public class RuleKeeper implements Controller {
     public enum FEATURE {
         USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP,
         ENTER, DUAL_ATTACKS,
-        VISIBILITY, ORDERS, GUARD_MODE, THROW_WEAPON;
+        VISIBILITY, ORDERS, GUARD_MODE, THROW_WEAPON, TOGGLE_WEAPON_SET;
         int featureLevel;
     }
 
@@ -369,30 +383,32 @@ public class RuleKeeper implements Controller {
     }
 
     public enum RULE {
-        FORCE(RULE_SCOPE.FULL),
+        FORCE(RULE_SCOPE.BASIC),
         CHANNELING(RULE_SCOPE.TEST),
-        ATTACK_OF_OPPORTUNITY(RULE_SCOPE.FULL),
-        INSTANT_ATTACK(RULE_SCOPE.FULL),
+        ATTACK_OF_OPPORTUNITY(RULE_SCOPE.BASIC),
+        INSTANT_ATTACK(RULE_SCOPE.BASIC),
         COUNTER_ATTACK(RULE_SCOPE.BASIC),
         TIME(RULE_SCOPE.BASIC),
-        VISIBILITY(RULE_SCOPE.FULL),
+        VISIBILITY(RULE_SCOPE.BASIC),
         CLEAR_SHOT(RULE_SCOPE.BASIC),
-        PARRYING(RULE_SCOPE.FULL),
+        PARRYING(RULE_SCOPE.BASIC),
+        SHIELD(RULE_SCOPE.BASIC),
         STEALTH(RULE_SCOPE.BASIC),
         // C
-        DURABILITY,
-        UNCONSCIOUS,
-        FOCUS,
-        MORALE,
-        MORALE_KILL,
-        STAMINA,
-        WOUNDS,
-        BLEEDING,
-        WEIGHT,
+        DURABILITY(RULE_SCOPE.BASIC),
+        UNCONSCIOUS(RULE_SCOPE.BASIC),
+        FOCUS(RULE_SCOPE.BASIC),
+        MORALE(RULE_SCOPE.BASIC),
+        MORALE_KILL(RULE_SCOPE.BASIC),
+        STAMINA(RULE_SCOPE.BASIC),
+        WOUNDS(RULE_SCOPE.BASIC),
+        BLEEDING(RULE_SCOPE.BASIC),
+        WEIGHT(RULE_SCOPE.BASIC),
         INJURY(RULE_SCOPE.FULL),
-        CRITICAL_ATTACK(),
-        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.ADVANCED), TRAMPLE(), WATCH(RULE_SCOPE.ADVANCED),
-        CLEAVE(RULE_SCOPE.ADVANCED);
+        CRITICAL_ATTACK(RULE_SCOPE.BASIC),
+        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.BASIC),
+        TRAMPLE((RULE_SCOPE.ADVANCED)), WATCH(RULE_SCOPE.ADVANCED),
+        CLEAVE(RULE_SCOPE.BASIC), HEARING(RULE_SCOPE.FULL);
 
         String tooltip;
         RULE_SCOPE scope;

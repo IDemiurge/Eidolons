@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
@@ -21,6 +22,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -108,6 +110,24 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
 
+    public  static Pixmap getPixMapFromRegion(TextureRegion region){
+        Texture texture = region.getTexture();
+        TextureData data = texture.getTextureData();
+        if (!data.isPrepared()) {
+            data.prepare();
+        }
+        Pixmap pixmap = data.consumePixmap();
+        int width = region.getRegionWidth();
+        int height = region.getRegionHeight();
+        Pixmap px = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int colorInt = pixmap.getPixel(region.getRegionX() + x, region.getRegionY() + y);
+                px.drawPixel(x, y, colorInt);
+            }
+        }
+        return px;
+    }
     public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
         final int width = src.getWidth();
         final int height = src.getHeight();
@@ -177,6 +197,14 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static void writeImage(FileHandle handle, Texture texture) {
         PixmapIO.writePNG(handle, getPixmap(texture));
+    }
+
+    public static void writeImage(FileHandle handle, TextureRegion region) {
+        PixmapIO.writePNG(handle, getPixMapFromRegion(region));
+    }
+
+    public static TextureRegion getSizeTemplate(String root){
+        return null;
     }
 
     public static TextureRegion round(String path, boolean write) {
@@ -249,6 +277,9 @@ public class GdxImageMaster extends LwjglApplication {
         return round;
     }
 
+    public static String getRoundedPathNew(String path) {
+        return "gen/radial icons/" + PathUtils.getLastPathSegment(path);
+    }
     public static String getRoundedPath(String path) {
         path= FileManager.formatPath( path);
         return StringMaster.cropFormat(path) + " rounded.png";
@@ -286,8 +317,13 @@ public class GdxImageMaster extends LwjglApplication {
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 
-    public static String cropImagePath(String s) {
-        return s.replace('/', '/').toLowerCase().replace(PathFinder.getImagePath().toLowerCase(), "");
+    public static String appendImagePath(String s) {
+        s = cropImagePath(s);
+        return PathFinder.getImagePath().toLowerCase()+"/"+s;
+    }
+        public static String cropImagePath(String s) {
+        return s.toLowerCase()
+                .replace(PathFinder.getImagePath().toLowerCase(), "");
     }
 
     public static String getAttackActionPath(DC_ActiveObj obj) {
@@ -313,7 +349,7 @@ public class GdxImageMaster extends LwjglApplication {
         String path = StrPathBuilder.build("main", "actions", "standard attack",
          weaponGroup,
          baseType,
-         action.getName().replace(DC_ActionManager.OFFHAND, "") + ".png");
+         action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
         return path;
     }
 
@@ -321,8 +357,12 @@ public class GdxImageMaster extends LwjglApplication {
         String baseType = weapon.getProperty(G_PROPS.BASE_TYPE);
         String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
         String path = getStandardAttackIcon(baseType, weaponGroup, action);
+
+
         if (!ImageManager.isImage(path)) {
-            path = findClosestIcon(action, weapon);
+            path = path.replace("_", "");
+            if (!ImageManager.isImage(path))
+                path = findClosestIcon(action, weapon).replace("_", "");
         }
         return path;
     }

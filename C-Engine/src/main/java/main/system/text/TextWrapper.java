@@ -52,7 +52,7 @@ public class TextWrapper {
     }
 
     public static String processText(int width, String text, LabelStyle style ) {
-        if (text.isEmpty())
+        if (text.trim().isEmpty())
             return "";
         String newText = "";
         int maxLength = (int) (width / style.font.getSpaceWidth()*2/3);

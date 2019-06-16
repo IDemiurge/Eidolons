@@ -1,5 +1,6 @@
 package main.content.mode;
 
+import main.content.enums.system.AiEnums;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public interface MODE {
@@ -68,4 +69,6 @@ public interface MODE {
     Integer getDuration();
 
     String getImagePath();
+
+    AiEnums.BEHAVIOR_MODE getBehaviorMode();
 }

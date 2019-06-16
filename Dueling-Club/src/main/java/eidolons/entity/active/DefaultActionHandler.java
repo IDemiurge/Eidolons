@@ -1,6 +1,7 @@
 package eidolons.entity.active;
 
 import eidolons.ability.conditions.special.ClearShotCondition;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -33,12 +34,13 @@ public class DefaultActionHandler {
 
     public static boolean leftClickActor(DC_Obj userObject) {
         if (userObject instanceof InteractiveObj) {
-            activate(new Context( Eidolons.getMainHero(),userObject), ((InteractiveObj) userObject).getDM().getDefaultAction(
-             Eidolons.getMainHero(),(DungeonObj) userObject));
+            activate(new Context(Eidolons.getMainHero(), userObject), ((InteractiveObj) userObject).getDM().getDefaultAction(
+                    Eidolons.getMainHero(), (DungeonObj) userObject));
             return true;
         }
         return false;
     }
+
     private static boolean moveToMotion(Unit source, Coordinates coordinates) {
 //        List<ActionPath> paths = source.getGame().getAiManager().getPathBuilder().getInstance(source)
 //         .build(new ListMaster<Coordinates>().getList(coordinates));
@@ -47,7 +49,7 @@ public class DefaultActionHandler {
         source.getGame().getMovementManager().cancelAutomove(source);
         new Thread(() -> {
             source.getGame().getMovementManager().moveTo(
-             source.getGame().getCellByCoordinate(coordinates));
+                    source.getGame().getCellByCoordinate(coordinates));
         }, "moveTo thread").start();
         return true;
 //       return      source.getGame().getMovementManager().getAutoPath(source)!=null ;
@@ -69,8 +71,8 @@ public class DefaultActionHandler {
     public static DC_ActiveObj getTurnToAction(Unit source, Coordinates coordinates) {
 
         List<Action> sequence =
-         source.getGame().getAiManager().getTurnSequenceConstructor().
-          getTurnSequence(FACING_SINGLE.IN_FRONT, source, coordinates);
+                source.getGame().getAiManager().getTurnSequenceConstructor().
+                        getTurnSequence(FACING_SINGLE.IN_FRONT, source, coordinates);
         if (sequence.isEmpty())
             return null;
         return sequence.get(0).getActive();
@@ -115,7 +117,7 @@ public class DefaultActionHandler {
             return false;
         }
         Obj target = action.getTargeting() instanceof SelectiveTargeting ?
-         Eidolons.getGame().getCellByCoordinate(c) : null;
+                Eidolons.getGame().getCellByCoordinate(c) : null;
         Context context = new Context(source, target);
         return activate(context, action);
 
@@ -131,15 +133,15 @@ public class DefaultActionHandler {
             if (!action.canBeTargeted(context.getTarget(), false))
                 return false;
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(action, context));
+                new ActionInput(action, context));
         return true;
     }
 
     public static DC_UnitAction getMoveToCellAction(Unit source, Coordinates c) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
-         c);
+                c);
         FACING_SINGLE f = FacingMaster.getSingleFacing(source.getFacing(), source.getCoordinates(),
-         c);
+                c);
         String name = null;
 
         switch (f) {
@@ -147,7 +149,7 @@ public class DefaultActionHandler {
                 if (d.isDiagonal()) {
 //                    target = Eidolons.getGame().getCellByCoordinate(c);
                     name =
-                     "Clumsy Leap";
+                            "Clumsy Leap";
                     break;
                 }
                 name = "Move";
@@ -160,15 +162,15 @@ public class DefaultActionHandler {
             case TO_THE_SIDE:
 
                 boolean right =
-                 !source.getFacing().isVertical() ?
-                  d.growY : d.growX;
+                        !source.getFacing().isVertical() ?
+                                d.growY : d.growX;
                 if (!source.getFacing().isVertical()) {
                     if (source.getFacing().isCloserToZero())
                         right = !right;
                 } else if (!source.getFacing().isCloserToZero())
                     right = !right;
                 name = right ? "Move Right" :
-                 "Move Left";
+                        "Move Left";
                 break;
             case NONE:
                 break;
@@ -189,7 +191,7 @@ public class DefaultActionHandler {
             return leftClickCell(false, true, target.getX(), target.getY());
         }
         if (!OptionsMaster.getGameplayOptions().getBooleanValue
-         (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
+                (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
             return false;
         Unit source = Eidolons.getGame().getManager().getActiveObj();
 
@@ -213,10 +215,11 @@ public class DefaultActionHandler {
         if (action == null) {
             EUtils.showInfoText(msg);
             main.system.auxiliary.log.LogMaster.log(1, source + " " +
-             msg + " " + target);
+                    msg + " " + target);
             return false;
         }
-        Context context = new Context(source, target);
+        Context context = new Context(action.getRef());
+        context.setTarget(target);
         return activate(context, action);
 
     }
@@ -226,12 +229,10 @@ public class DefaultActionHandler {
     }
 
     public static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
-// if (offhand)
-        DC_ActiveObj action = pickAutomatically(
-         source.getAttack().getSubActions(), target);
-        if (action == null)
-            if (source.getOffhandAttack() != null)
-                action = pickAutomatically(source.getOffhandAttack().getSubActions(), target);
+        DC_ActiveObj action = getPreferredAttackAction(false, source, target);
+        if (action == null) {
+            action = getPreferredAttackAction(true, source, target);
+        }
         if (action != null)
             if (action.isAttackGeneric()) {
                 return null;
@@ -239,12 +240,32 @@ public class DefaultActionHandler {
         return action;
     }
 
+    public static DC_ActiveObj getPreferredAttackAction(boolean offhand, Unit source, BattleFieldObject target) {
+// if (offhand)
+        DC_WeaponObj w = source.getWeapon(offhand);
+        List<DC_UnitAction> atks = source.getGame().getActionManager().getOrCreateWeaponActions(w);
+        w = source.getNaturalWeapon(offhand);
+        atks.addAll(source.getGame().getActionManager().getOrCreateWeaponActions(w));
+        DC_ActiveObj action = pickAutomatically(
+                atks, target);
+
+        return action;
+    }
+
     //
-    private static DC_ActiveObj pickAutomatically(List<DC_ActiveObj> subActions,
+    private static DC_ActiveObj pickAutomatically(List<DC_UnitAction> subActions,
                                                   BattleFieldObject target) {
         DC_ActiveObj pick = null;
         int max = 0;
         for (DC_ActiveObj attack : subActions) {
+            if (attack.isThrow()) {
+                continue;
+            }
+            if (attack.isRanged()) {
+                if (target.getCoordinates().dst_(attack.getOwnerUnit().getCoordinates()) < 1.4f) {
+                    continue;
+                }
+            }
             if (attack.getActiveWeapon().isNatural())
                 if (attack.getOwnerUnit().getWeapon(attack.isOffhand()) != null)
                     continue;
@@ -258,10 +279,10 @@ public class DefaultActionHandler {
                     return attack.getOwnerUnit();
                 }
             });
-            int priority = 0;
+            int priority = Integer.MIN_VALUE;
             try {
                 priority = DC_PriorityManager.getAttackPriority(
-                 attack, target);
+                        attack, target);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
@@ -289,7 +310,7 @@ public class DefaultActionHandler {
         target.getGame().getVisionMaster().getVisionController().log(source, target);
         target.getGame().getVisionMaster().getVisionController().logFor(target);
 
-        if (target instanceof Unit){
+        if (target instanceof Unit) {
             ((Unit) target).getAI().getExploreAI().toggleGroupBehaviorOff();
         }
         return false;

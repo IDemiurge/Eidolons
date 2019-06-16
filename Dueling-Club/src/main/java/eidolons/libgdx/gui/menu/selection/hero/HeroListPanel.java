@@ -5,6 +5,7 @@ import eidolons.system.text.HelpMaster;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 
 import java.util.Collection;
@@ -18,6 +19,8 @@ public class HeroListPanel extends ItemListPanel {
 
     @Override
     public boolean isBlocked(SelectableItemData item) {
+        if (CoreEngine.isIDE())
+            return false;
         return
          !item.getEntity().getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(WORKSPACE_GROUP
           .COMPLETE.toString());

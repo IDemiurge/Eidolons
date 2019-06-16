@@ -2,20 +2,28 @@ package eidolons.entity.handlers.active;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
+import eidolons.game.core.ActionInput;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 2/25/2017.
@@ -33,21 +41,32 @@ public class Activator extends ActiveHandler {
 
     public String getStatusString() {
         return (Bools.isTrue(canActivate)) ? "Activate " : "" +
-         getAction().getCosts().getReasonsString() + " to activate ";
+                getAction().getCosts().getReasonsString() + " to activate ";
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
+        if (CoreEngine.isActiveTestMode()){
+            return true;
+        }
         if (getGame().getCombatMaster().isActionBlocked(getAction()))
             return false;
         if (getGame().getTestMaster().isActionFree(getEntity().getName())) {
             return true;
-        }
-        if (!first || broken) {
+        }  if (!getEntity().isMine()) //TODO igg demo hack
+        if (!first ) {//|| broken) {
             if (canActivate != null) {
 
                 return canActivate;
             }
         }
+//     TODO req string   if (ExplorationMaster.isExplorationOn()) {
+//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
+//                return false;
+//            }
+//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
+//                return false;
+//            }
+//        }
         if (getChecker().checkStatus(UnitEnums.STATUS.BLOCKED)) {
             return false;
         }
@@ -56,7 +75,7 @@ public class Activator extends ActiveHandler {
         try {
             getInitializer().initCosts(); // TODO ++ preCheck if there are any targets
 
-            result = getAction().getCosts().canBePaid(getRef());
+            result = getAction().getCosts().canBePaid(ref);
             broken = false;
         } catch (Exception e) {
             if (!broken) {
@@ -81,34 +100,49 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeManuallyActivated() {
+        //TODO igg demo hack critical
+        if (getEntity().getOwnerUnit().getName().contains("Gorr ")) {
+            if (getEntity().getOwnerUnit().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
+//                GuiEventManager.trigger(GuiEventType.)
+                try {
+                    getGame().getLoop().actionInput(null);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+//                new ActionInput());
+                return false;
+            }
+        }
         if (getChecker().isBlocked()) {
             return false;
         }
         if (game.isDebugMode())
             return true;
         Boolean checkSubActionMode =
-         checkSubActionModeActivation();
+                checkSubActionModeActivation();
         if (checkSubActionMode != null) {
             return checkSubActionMode;
         }
-
+        if (getAction() instanceof DC_QuickItemAction) {
+            return canBeActivated(getAction().getOwnerUnit().getRef(), true);
+        }
         return canBeActivated(getRef(), true);
     }
 
     public void cannotActivate() {
         LogMaster.log(1, "Cannot Activate " +
-         getEntity().getName() +
-         ": " + getEntity().getCosts().getReasonsString());
+                getEntity().getName() +
+                ": " + getEntity().getCosts().getReasonsString());
         if (!getEntity().getOwnerUnit().isMine())
             if (getEntity().getOwnerUnit().isAiControlled())
                 return;
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
-         TEXT_CASES.REQUIREMENT,
-         getEntity().getCosts().getReasonsString());
+                TEXT_CASES.REQUIREMENT,
+                getEntity().getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
         Vector2 c = GridMaster.getCenteredPos(getEntity()
-         .getOwnerUnit().getCoordinates());
+                .getOwnerUnit().getCoordinates());
         f.setX(c.x);
         f.setY(c.y);
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, f);
@@ -149,7 +183,7 @@ public class Activator extends ActiveHandler {
 
     public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, Unit target) {
         boolean watch = getOwnerObj().getMode().equals(STD_MODES.ALERT)
-         || WatchRule.checkWatched(getOwnerObj(), target);
+                || WatchRule.checkWatched(getOwnerObj(), target);
 
         if (!watch) {
             if (pending) {

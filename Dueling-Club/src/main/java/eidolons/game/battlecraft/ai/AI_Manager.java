@@ -14,12 +14,15 @@ import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.boss.logic.BossAi;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.type.ObjAtCoordinate;
@@ -128,6 +131,9 @@ public class AI_Manager extends AiMaster {
     }
 
     public Action getAction(Unit unit) {
+        if (unit.isBoss()) {
+            return getBossAi(unit).getAction();
+        }
         if (unit.isMine()) {
             unit.getQuickItemActives();
         }
@@ -177,6 +183,7 @@ public class AI_Manager extends AiMaster {
 
         return action;
     }
+
 
 
     public UnitAI getAI(Unit unit) {
@@ -263,6 +270,7 @@ public class AI_Manager extends AiMaster {
             for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
                 GroupAI group = new GroupAI();
                 group.setType(block.getUnitGroups().get(list));
+                group.setBlock(block);
                 for (ObjAtCoordinate at : list) {
                     game.getUnitsForCoordinates(at.getCoordinates()).stream().filter(
                      u -> u.getName().equals(at.getType().getName())
@@ -280,6 +288,24 @@ public class AI_Manager extends AiMaster {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 groups.add(group);
+            }
+        }
+//        if (!CoreEngine.isIggDemo())
+        if (game.getDungeonMaster().getDungeonLevel().isPregen()) {
+            for (GroupAI group : groups) {
+                Coordinates c=group.getBlock().getCenterCoordinate();
+                for (Unit member : group.getMembers()) {
+                    if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(member, c)) {
+                        // TODO tactics?
+                        c = Positioner.adjustCoordinate(member, c, FacingMaster.getRandomFacing()); // direction
+                        // preference?
+                    }
+                    main.system.auxiliary.log.LogMaster.important( member+ " coordinate adjusted from " +
+                            member.getCoordinates() +
+                            " to " +c );
+                    member.setCoordinates(c);
+                }
+
             }
         }
         return;
@@ -320,7 +346,8 @@ public class AI_Manager extends AiMaster {
         if (isAutoGroups()) {
             if (groups == null)
                 initGroups();
-            return;
+//            if (isOnlyLargeGroups())
+//                return;
         }
         //by proximity... not all mobs will be part of a group
 
@@ -333,7 +360,10 @@ public class AI_Manager extends AiMaster {
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
-            for (Unit unit : player.getControlledUnits_()) {
+            if (player.isMe()) {
+                continue;
+            }
+            for (Unit unit : player.collectControlledUnits_()) {
                 //if (unit.getAI().getGroupAI()!=null )
                 //    continue;
 
@@ -341,7 +371,7 @@ public class AI_Manager extends AiMaster {
                 GroupAI group = unit.getAI().getGroup();
                 if (group == null)
                     group = new GroupAI(unit);
-                for (Unit unit1 : player.getControlledUnits_()) {
+                for (Unit unit1 : player.collectControlledUnits_()) {
                     if (unit1.getAI().getGroup() != null)
                         continue;
                     if (unit1.equals(unit))
@@ -361,6 +391,24 @@ public class AI_Manager extends AiMaster {
 
 
         }
+
+        String report = ">>>>>>>>> " +
+                groups.size() +
+                " AI groups created: \n";
+        report+= "" + groups.stream().filter(g->g.getMembers().size()>1).count() +
+                " (non-singletons)\n";
+        for (GroupAI group : groups) {
+            report += group+  "\n";
+        }
+        int checkNumber =   groups.stream().mapToInt(group -> group.getMembers().size()).sum();
+        if (checkNumber!= game.getPlayer(false).collectControlledUnits_().size()){
+            main.system.auxiliary.log.LogMaster.log(1,">>>> AI GROUP UNIT COUNT MISMATCH!!! " );
+            main.system.auxiliary.log.LogMaster.log(1,game.getPlayer(false).collectControlledUnits_().size()+
+                    " VS " +checkNumber);
+            // find unit who is in 2+ groups!
+        }
+
+        main.system.auxiliary.log.LogMaster.log(1," "  + report);
         if (!groups.isEmpty())
             return;
         else
@@ -368,10 +416,14 @@ public class AI_Manager extends AiMaster {
     }
 
     private boolean isAutoGroups() {
-        return game.getDungeonMaster().getDungeonLevel() != null;
+        return game.getMetaMaster().isRngDungeon();
     }
 
     public Action getDefaultAction(Unit activeUnit) {
         return getAtomicAi().getAtomicWait(activeUnit);
+    }
+
+    public boolean isDefaultAiGroupForUnitOn() {
+        return false; //isRngDungeon() ?
     }
 }

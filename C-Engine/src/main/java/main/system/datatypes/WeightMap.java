@@ -1,18 +1,26 @@
 package main.system.datatypes;
 
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.OBJ_TYPE_ENUM;
+import main.data.DataManager;
 import main.data.XLinkedMap;
+import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
     private Class<E> clazz;
-    private String separator= ContainerUtils.getContainerSeparator();
+    private String separator = ContainerUtils.getContainerSeparator();
+
+    public static final boolean smartRandom = true;
+    private WeightMap<Object> original;
+    private OBJ_TYPE objType;
 
     public WeightMap(String data, Class<E> clazz) {
         super(new RandomWizard<E>().constructWeightMap(data, clazz));
@@ -35,7 +43,7 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         if (key.getClass() == clazz)
             return putChain((E) key, value);
         if (key instanceof OBJ_TYPE_ENUM) {
-            return putChain((E)((OBJ_TYPE_ENUM) key).getName(), value);
+            return putChain((E) ((OBJ_TYPE_ENUM) key).getName(), value);
         }
         return putChain((E) key.toString(), value);
     }
@@ -51,19 +59,51 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         }
         return this;
     }
+
     @Override
     public String toString() {
         String string = "";
         for (E e : keySet()) {
             string += e + StringMaster.wrapInParenthesis(StringMaster.toStringForm(get(e)))
-             + separator;
+                    + separator;
+
         }
         return string;
     }
 
     public E getRandomByWeight() {
+        if (smartRandom && objType != null)
+            if (original == null) {
+                original = new WeightMap<>();
+                for (E e : keySet()) {
+                    if (e != null)
+                        original.put(e, get(e));
+                }
+            }
 
-        return new RandomWizard<E>().getObjectByWeight(this);
+        E obj = new RandomWizard<E>().getObjectByWeight(this);
+
+        if (get(obj) == null) {
+            return obj;
+        } else if (smartRandom && objType != null) {
+            put(obj, get(obj) - 1 - get(obj) / 10);
+            if (get(obj) <= 0)
+                remove(obj);
+            if (isEmpty()) {
+                for (Object e : original.keySet()) {
+                    if (objType != null) {
+                        ObjType type = (ObjType) e;
+//                        if (type == null) {
+//                            main.system.auxiliary.log.LogMaster.log(1,"No such type: " +e);
+//                            continue;
+//                        }
+                        put((E) type, original.get(e));
+                    } else
+                        chain(e, original.get(e));
+                }
+            }
+        }
+        return obj;
     }
 
     public E getGreatest() {
@@ -87,5 +127,13 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
     public String getSeparator() {
         return separator;
+    }
+
+    public OBJ_TYPE getObjType() {
+        return objType;
+    }
+
+    public void setObjType(OBJ_TYPE objType) {
+        this.objType = objType;
     }
 }

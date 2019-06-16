@@ -1,9 +1,9 @@
 package eidolons.libgdx.gui.panels.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.town.quest.QuestInfoPanel;
 import eidolons.libgdx.gui.menu.selection.town.quest.QuestListPanel;
@@ -39,7 +39,7 @@ public class QuestJournal extends SelectionPanel implements Blocking{
 
 
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new QuestInfoPanel(null);
     }
 

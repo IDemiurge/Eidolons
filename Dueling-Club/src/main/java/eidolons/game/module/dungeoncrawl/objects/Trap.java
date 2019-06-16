@@ -6,8 +6,16 @@ public class Trap {
     // actives -> upon trigger (spec effects!)
 
 
+    public void trigger(Unit trapper) {
+
+    }
+
     public void disarmed(Unit trapper) {
 
+    }
+
+    public boolean isRemoveOnTrigger() {
+        return true;
     }
 
 

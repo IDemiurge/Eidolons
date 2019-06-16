@@ -2,6 +2,7 @@ package eidolons.game.core.atb;
 
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Ref;
@@ -10,6 +11,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
+import main.system.text.LogManager;
 import main.system.threading.WaitMaster;
 
 import java.util.Comparator;
@@ -28,6 +30,7 @@ public class AtbController implements Comparator<Unit> {
     private float totalTime = 0f;
     private int step;   //during this round
     private boolean nextTurn;
+    private float unloggedTimePassed=0;
 
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
@@ -44,7 +47,7 @@ public class AtbController implements Comparator<Unit> {
 
     private static int compareForSort(AtbUnit first, AtbUnit second) {
         if (first.getTimeTillTurn() == second.getTimeTillTurn())
-            return 0;
+            return first.getUnit()== Eidolons.getMainHero() ? -1 : second.getUnit()== Eidolons.getMainHero()? 1 : 0; //igg demo hack
         if (first.getTimeTillTurn() < second.getTimeTillTurn())
             return -1;
         else
@@ -63,12 +66,14 @@ public class AtbController implements Comparator<Unit> {
             timeElapsed = getDefaultTimePeriod(); //gradual time loop! For modes etc
         }
         if (timeElapsed <= 0) {
-            if (checkAllInactive())
+            if (checkAllInactive()) {
                 timeElapsed = getDefaultTimePeriod();
-            int n = 100 * OptionsMaster.getGameplayOptions().getIntValue(
-             (GAMEPLAY_OPTION.ATB_WAIT_TIME));
-          if (!isPrecalc())  //initial step may be 0
-              if (step > 0)                 WaitMaster.WAIT(n);
+                int n = 100 * OptionsMaster.getGameplayOptions().getIntValue(
+                        (GAMEPLAY_OPTION.ATB_WAIT_TIME));
+                if (!isPrecalc())  //initial step may be 0
+                    if (step > 0)
+                        WaitMaster.WAIT(n);
+            }
         }
         this.processTimeElapsed(timeElapsed + 0.0001f);
         this.updateTimeTillTurn();
@@ -114,7 +119,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     public void passTime(Float time) {
-        while (time>0){
+        while (time > 0) {
             float timeToPass = Math.min(time, SECONDS_IN_ROUND);
             time -= timeToPass;
             processTimeElapsed(timeToPass);
@@ -125,16 +130,23 @@ public class AtbController implements Comparator<Unit> {
     private void processTimeElapsed(Float time) {
         addTime(time);
 
-        getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
-         new Ref(Math.round(time * TIME_LOGIC_MODIFIER))));
+        if (!isPrecalc()) {
+        int toLog = Math.round(time * TIME_LOGIC_MODIFIER + unloggedTimePassed);
+        if (toLog>0){
+            unloggedTimePassed-=toLog;
+            getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
+                    new Ref(toLog)));
+        } else {
+            unloggedTimePassed+=time * TIME_LOGIC_MODIFIER;
+        }
         GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
-
+        }
         if (!isPrecalc()) {
-            if (time>0)
-            manager.getGame().getLogManager().log(getTimeString(time) + " passed, " +
-             getTimeString(SECONDS_IN_ROUND - this.time) +
-             " until end of round");
+            if (time > 0)
+                manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
+                        getTimeString(SECONDS_IN_ROUND - this.time) +
+                        " until end of round");
         }
 
         for (AtbUnit unit : this.unitsInAtb) {
@@ -155,7 +167,7 @@ public class AtbController implements Comparator<Unit> {
 
     private String getTimeString(float v) {
         return
-         NumberUtils.formatFloat(1, v)  + " seconds";
+                NumberUtils.formatFloat(1, v) + " seconds";
     }
 
     private void updateTurnOrder() {
@@ -168,7 +180,7 @@ public class AtbController implements Comparator<Unit> {
 //                unit.setTimeTillTurn(Float.MAX_VALUE);
 //            } else {
             unit.setTimeTillTurn(
-             calculateTimeTillTurn(unit));
+                    calculateTimeTillTurn(unit));
 //            }
 
         }
@@ -223,7 +235,7 @@ public class AtbController implements Comparator<Unit> {
         }
         addUnit(new AtbUnitImpl(this, unit));
         unit.getGame().fireEvent(new Event(
-         STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT, unit.getRef()));
+                STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT, unit.getRef()));
     }
 
     public void removeUnit(Unit unit) {

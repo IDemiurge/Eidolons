@@ -64,6 +64,6 @@ public class NavigationMaster {
     }
 
     public static boolean isTestOn() {
-        return true;
+        return false;
     }
 }

@@ -102,7 +102,18 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
+    public Ref getRef() {
+        return getHero().getRef();
+    }
+
+    @Override
+    public void setRef(Ref ref) {
+        getHero().setRef(ref);
+        this.ref=ref;
+    }
+    @Override
     public void setGame(DC_Game game) {
+        // ?
     }
 
     public boolean isSimulation() {
@@ -338,8 +349,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Integer getCounter(COUNTER c) {
-        return getHero().getCounter(c);
+    public Integer getCounter(COUNTER counter) {
+        return getHero().getCounter(counter);
     }
 
     @Override
@@ -1330,6 +1341,16 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
+    public DC_WeaponObj getReserveMainWeapon() {
+        return getHero().getReserveMainWeapon();
+    }
+
+    @Override
+    public DC_WeaponObj getReserveOffhandWeapon() {
+        return getHero().getReserveOffhandWeapon();
+    }
+
+    @Override
     public void setArmor(DC_ArmorObj armor) {
         getHero().setArmor(armor);
     }
@@ -1675,15 +1696,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().setLastSeenOutline(lastSeenOutline);
     }
 
-    @Override
-    public Ref getRef() {
-        return getHero().getRef();
-    }
-
-    @Override
-    public void setRef(Ref ref) {
-        getHero().setRef(ref);
-    }
 
     @Override
     public boolean isQuickSlotsFull() {
@@ -2136,13 +2148,15 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void unequip(ITEM_SLOT slot) {
+    public DC_HeroItemObj unequip(ITEM_SLOT slot) {
         getHero().unequip(slot);
+        return null;
     }
 
     @Override
-    public void unequip(ITEM_SLOT slot, Boolean drop) {
+    public DC_HeroItemObj unequip(ITEM_SLOT slot, Boolean drop) {
         getHero().unequip(slot, drop);
+        return null;
     }
 
     @Override
@@ -2507,7 +2521,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public List<DC_ActiveObj> getAttacks(boolean offhand) {
+    public List<DC_UnitAction> getAttacks(boolean offhand) {
         return getHero().getAttacks(offhand);
     }
 

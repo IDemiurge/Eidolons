@@ -78,6 +78,25 @@ public class FloatingTextMaster {
                 return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
             case BATTLE_COMMENT:
                 return GdxColorMaster.PALE_GOLD;
+
+            case ATTACK_CRITICAL:
+                return GdxColorMaster.ORANGE;
+            case ATTACK_SNEAK:
+                return GdxColorMaster.PURPLE;
+            case ATTACK_DODGED:
+            case ATTACK_BLOCKED:
+            case ATTACK_PARRIED:
+                return GdxColorMaster.YELLOW;
+            case ATTACK_MISSED:
+                return GdxColorMaster.PALE_GREEN;
+            case ATTACK_OF_OPPORTUNITY:
+                break;
+            case ATTACK_COUNTER:
+                break;
+            case ATTACK_INSTANT:
+                break;
+
+
             case PARAM_MOD:
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
                 return (pair.getValue() > 0)
@@ -127,6 +146,8 @@ public class FloatingTextMaster {
 
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case ANNIHILATED:
+                return "Annihilated!";
             case PARAM_MOD: {
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
                 if (pair.getValue() > 0)
@@ -167,6 +188,8 @@ public class FloatingTextMaster {
 //        }
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
+                case UNIT_HAS_BEEN_ANNIHILATED:
+                    return TEXT_CASES.ANNIHILATED;
                 case DURABILITY_LOST:
                     return TEXT_CASES.DURABILITY_LOSS;
                 case UNIT_ACQUIRES_STATUS:
@@ -271,7 +294,7 @@ public class FloatingTextMaster {
 //                  (DC_ActiveObj) arg))
             case BONUS_DAMAGE:
                 int size = 18;
-                size = Math.min(23, size + ((Damage) arg).getAmount() / 21);
+                size =Math.max(14, Math.min(23, size + ((Damage) arg).getAmount() / 21));
                 return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, size);
             case ATTACK_CRITICAL:
                 break;
@@ -473,7 +496,7 @@ public class FloatingTextMaster {
                 };
             }
         }, DURABILITY_LOSS
-        ,
+        , ANNIHILATED,
         XP,
         GOLD,
         LEVEL_UP

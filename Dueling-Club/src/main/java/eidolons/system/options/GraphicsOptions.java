@@ -5,11 +5,7 @@ import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 
 
 public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
-    static {
-        //set default values
-        //BRIGHTNESS.set
-        //caching
-    }
+
 
     static {
         GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1920x1080);
@@ -28,22 +24,48 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
     }
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
+        LITE_MODE(false),
 
         FULLSCREEN(true),
 //        GAMMA(),
 
-        AMBIENCE(true),
-        AMBIENCE_DENSITY(30, 0, 100),
+        AMBIENCE_VFX(true),
+        AMBIENCE_DENSITY(10, 0, 50),
         VIDEO(true),
-        AMBIENCE_MOVE_SUPPORTED(true),
-        FRAMERATE(60, 20, 80),
-        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
+        AMBIENCE_MOVE_SUPPORTED(true){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
+        FRAMERATE(60, 20, 80){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
+        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
 //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
         SHADOW_MAP_OFF(false),
         UI_VFX(false),
-        FONT_SIZE(100, 50, 200),
-        UI_SCALE(100, 50, 200),
+        FONT_SIZE(100, 50, 200){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
+        UI_SCALE(100, 50, 200){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
         SPRITE_CACHE_ON(false){
             @Override
             public boolean isDevOnly() {
@@ -56,10 +78,31 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
                 return true;
             }
         }
-        , ADD_SHARDS_ALWAYS(true), ADD_SHARDS_NEVER(false)
-        , ADDITIVE_LIGHT(false)
-        ,  SIDE_LIGHT_OFF(false),
-        UI_ATLAS(true), FULL_ATLAS(false);
+        , ADDITIVE_LIGHT(false){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        }
+        ,
+        LIGHT_OVERLAYS_OFF(false),
+        UI_ATLAS(true){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
+        FULL_ATLAS(false){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
+        PERFORMANCE_BOOST(20, 0, 100),
+        SHARD_VFX(true),
+        COLOR_TEXT_LOG(true),
+        NO_BACKGROUND_SPRITES(true);
+
         private Boolean exclusive;
         private Integer min;
         private Integer max;

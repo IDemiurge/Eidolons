@@ -3,6 +3,8 @@ package eidolons.game.battlecraft.logic.meta.scenario.script;
 import main.ability.Ability;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
+import main.entity.Ref;
+import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 
 /**
@@ -21,6 +23,31 @@ public class ScriptTrigger extends Trigger {
         return false;
     }
 
+    @Override
+    public boolean trigger() {
+        if (ScriptMaster.isScriptsOff())
+            return false;
+        boolean result = super.trigger();
+        if (result) {
+            remove();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isRemoveAfterTriggers() {
+        return false;
+    }
+
+    @Override
+    public boolean check(Event event) {
+        return super.check(event);
+    }
+
+    @Override
+    protected Ref getRef(Event event) {
+        return event.getRef();
+    }
 
     public String getScriptText() {
         return scriptText;

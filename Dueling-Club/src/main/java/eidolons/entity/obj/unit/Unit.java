@@ -1,11 +1,8 @@
 package eidolons.entity.obj.unit;
 
 import eidolons.content.*;
-import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.active.*;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
@@ -22,16 +19,26 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
+import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
+import eidolons.system.content.ContentGenerator;
 import eidolons.system.test.Debugger;
+import eidolons.system.test.TestMasterContent;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
@@ -41,10 +48,10 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
-import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.UnitEnums;
@@ -67,11 +74,16 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
+import main.system.ExceptionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -87,6 +99,8 @@ public class Unit extends DC_UnitModel {
     protected DC_WeaponObj naturalWeapon;
     protected DC_WeaponObj weapon;
     protected DC_WeaponObj secondWeapon;
+    protected DC_WeaponObj reserveMainWeapon;
+    protected DC_WeaponObj reserveOffhandWeapon;
     // protected Footwear boots;
     // protected Helmet helmet;
     // protected Gloves gloves;
@@ -117,21 +131,33 @@ public class Unit extends DC_UnitModel {
     protected DC_WeaponObj rangedWeapon;
     protected boolean leader;
     protected boolean usingStealth;
+    private boolean scion;
+    private DC_ActiveObj lastAction;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        if (isHero()) {
+        if (isHero() && !(this instanceof HeroDataModel)) {
             String message = this + " hero created " + getId();
+            if (GenericLauncher.instance.initRunning) {
+                if (Eidolons.MAIN_HERO != null) {
+                    message += " SECOND TIME!...";
+                    Eidolons.MAIN_HERO.removeFromGame();
+
+                    addProperty(true, PROPS.INVENTORY, "Jade Key");
+                }
+            }
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-
-
-
+            setName(getName().replace(" IGG", ""));
 
         }
+        //TODO make it more apparent why and how this is done
+        //cleanRef();
+        ref.removeValue(KEYS.TARGET);
     }
+
     public Unit(Unit hero) {
         this(new ObjType(hero.getType(), true), hero.getX(), hero.getY(), hero.getOriginalOwner(),
-         hero.getGame(), hero.getRef().getCopy());
+                hero.getGame(), hero.getRef().getCopy());
         // transfer all buffs and other dynamic stuff?
     }
 
@@ -221,6 +247,11 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
+        for (DC_FeatObj feat : getSkills()) {
+            if (feat.getName().equalsIgnoreCase(type.getName())) {
+                return feat;
+            }
+        }
         return null;// TODO
     }
 
@@ -304,11 +335,11 @@ public class Unit extends DC_UnitModel {
                 }
             }
             if (param.isDynamic()) {
-                if (integer < 0) {
+                if (Debugger.isImmortalityOn() || this == ShadowMaster.getShadowUnit())
                     if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
-                        if (Debugger.isImmortalityOn())
+                        if (integer <= 0) {
                             return;
-                }
+                        }
             }
         }
         if (isValidMapStored(param))
@@ -366,7 +397,7 @@ public class Unit extends DC_UnitModel {
             }
         }
         getResetter().afterEffectsApplied();
-
+        getEntity().setBeingReset(false);
     }
 
     @Override
@@ -565,7 +596,7 @@ public class Unit extends DC_UnitModel {
     public boolean isQuickSlotsFull() {
         if (game.isSimulation()) {
             return getIntParam(PARAMS.QUICK_SLOTS) <= ContainerUtils.openContainer(
-             getProperty(PROPS.QUICK_ITEMS)).size();
+                    getProperty(PROPS.QUICK_ITEMS)).size();
         }
         if (quickItems == null) {
             return false;
@@ -592,10 +623,9 @@ public class Unit extends DC_UnitModel {
     }
 
     public DequeImpl<DC_QuickItemObj> getQuickItems() {
-        if (!isItemsInitialized()) {
-            if (quickItems == null) {
-                quickItems = new DequeImpl<>();
-            }
+//        if (!isItemsInitialized()) {
+        if (quickItems == null) {
+            quickItems = new DequeImpl<>();
         }
         return quickItems;
     }
@@ -626,15 +656,17 @@ public class Unit extends DC_UnitModel {
     }
 
     public DequeImpl<DC_HeroItemObj> getInventory() {
-        if (!isItemsInitialized()) {
-            if (inventory == null) {
-                inventory = new DequeImpl<>();
-            }
+//        if (!isItemsInitialized()) {
+        if (inventory == null) {
+            inventory = new DequeImpl<>();
         }
         return inventory;
     }
 
     public void setInventory(DequeImpl<DC_HeroItemObj> inventory) {
+        if (inventory == null) {
+            LogMaster.log(1, "Inventory nullified  " + this);
+        }
         this.inventory = inventory;
     }
 
@@ -700,9 +732,13 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
+        if (item == null) {
+            return false;
+        }
         DC_HeroItemObj prevItem = getItem(slot);
         setItem(item, slot);
         item.equipped(ref);
+
         if (prevItem != null) {
             addItemToInventory(prevItem);
         }
@@ -717,12 +753,32 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean addItemToInventory(DC_HeroItemObj item) {
+        return addItemToInventory(item, false);
+    }
+
+    public boolean addItemToInventory(DC_HeroItemObj item, boolean quiet) {
         if (isInventoryFull())
             return false;
-        inventory.add(item);
-        item.setRef(ref);
-
+        if (getInventory() == null) { //TODO  igg demo hack
+            setProperty(PROPS.INVENTORY, getType().getProperty(getProperty(PROPS.INVENTORY)));
+            itemsInitialized = false;
+            inventory = (DequeImpl<DC_HeroItemObj>) getInitializer().initContainedItems(PROPS.INVENTORY, null, false);
+//        inventory = new DequeImpl<>();
+        }
+        try {
+            getInventory().add(item);
+        } catch (Exception e) {
+            ExceptionMaster.printStackTrace(e);
+            return false;
+        }
+        item.setRef(getRef());
         item.setContainer(CONTAINER.INVENTORY);
+        if (isPlayerCharacter())
+            if (!quiet) {
+//            main.system.auxiliary.log.LogMaster.log(1," " );
+                getGame().getLogManager().log(getName() + " receives item: " + item.getName());
+                EUtils.showInfoText("Received: " + item.getName());
+            }
         return true;
         // EVENT,
     }
@@ -733,9 +789,9 @@ public class Unit extends DC_UnitModel {
         //TODO need to copy all dynamic params!
         // or implement a real buffer copy
         type.copyValues(this,
-         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
-          (PARAMETER p) -> ContentValsManager.getPercentageParam(p)).
-          collect(Collectors.toList()));
+                Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
+                        (PARAMETER p) -> ContentValsManager.getPercentageParam(p)).
+                        collect(Collectors.toList()));
         type.copyValues(this, Arrays.asList(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT));
         super.applyType(type);
     }
@@ -744,6 +800,12 @@ public class Unit extends DC_UnitModel {
         if (item instanceof DC_QuickItemObj) {
             if (((DC_QuickItemObj) item).getWrappedWeapon() != null) {
                 item = ((DC_QuickItemObj) item).getWrappedWeapon();
+            }
+        }
+        if (item != null) {
+            if (inventory.contains(item) ||
+                    item.getContainer()== CONTAINER.INVENTORY) {
+                removeFromInventory(item);
             }
         }
         switch (slot) {
@@ -756,8 +818,17 @@ public class Unit extends DC_UnitModel {
             case OFF_HAND:
                 setSecondWeapon((DC_WeaponObj) item);
                 break;
+            case RESERVE_MAIN_HAND:
+                setReserveMainWeapon((DC_WeaponObj) item);
+                break;
+            case RESERVE_OFF_HAND:
+                setReserveOffhandWeapon((DC_WeaponObj) item);
+                break;
         }
         if (item != null) {
+            if (slot == ITEM_SLOT.RESERVE_MAIN_HAND|| slot == ITEM_SLOT.RESERVE_OFF_HAND) {
+//               TODO  item.equipReserve(ref);
+            } else
             item.equipped(ref);
         }
     }
@@ -785,7 +856,11 @@ public class Unit extends DC_UnitModel {
     public boolean dropItemFromInventory(DC_HeroItemObj item, Coordinates c) {
         removeFromInventory(item);
         if (!isSimulation()) //sim just remembers for real hero to drop via operation
+        {
+            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+                    type.getName() + " is dropped down!");
             getGame().getDroppedItemManager().drop(item, c);
+        }
 
         return true;
     }
@@ -840,11 +915,11 @@ public class Unit extends DC_UnitModel {
 
     public BACKGROUND getBackground() {
         BACKGROUND background = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
-         getProperty(G_PROPS.BACKGROUND));
+                getProperty(G_PROPS.BACKGROUND));
         if (getGender() != null) {
             return getGender() == GENDER.FEMALE
-             ? background.getFemale()
-             : background.getMale();
+                    ? background.getFemale()
+                    : background.getMale();
         }
         return background;
     }
@@ -865,11 +940,11 @@ public class Unit extends DC_UnitModel {
         item.setRef(ref);
     }
 
-    public void unequip(ITEM_SLOT slot) {
-        unequip(slot, false);
+    public DC_HeroItemObj unequip(ITEM_SLOT slot) {
+       return  unequip(slot, false);
     }
 
-    public void unequip(ITEM_SLOT slot, Boolean drop) {
+    public DC_HeroItemObj unequip(ITEM_SLOT slot, Boolean drop) {
         DC_HeroItemObj item = null;
         switch (slot) {
             case ARMOR:
@@ -884,6 +959,14 @@ public class Unit extends DC_UnitModel {
                 item = getOffhandWeapon();
                 setSecondWeapon(null);
                 break;
+            case RESERVE_MAIN_HAND:
+                item = getReserveMainWeapon();
+                setReserveMainWeapon(null);
+                break;
+            case RESERVE_OFF_HAND:
+                item = getReserveOffhandWeapon();
+                setReserveOffhandWeapon(null);
+                break;
         }
         if (item instanceof DC_WeaponObj) {
             if (((DC_WeaponObj) item).isRanged()) {
@@ -891,7 +974,7 @@ public class Unit extends DC_UnitModel {
             }
         }
         if (item == null) {
-            return;
+            return item;
         }
         if (drop != null) {
             addItemToInventory(item);
@@ -900,6 +983,8 @@ public class Unit extends DC_UnitModel {
             }
         }
         item.unequip();
+
+        return item;
     }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, BattleFieldObject target, Ref REF,
@@ -923,21 +1008,28 @@ public class Unit extends DC_UnitModel {
 
     public void unequip(DC_HeroItemObj item, Boolean drop) {
         if (getWeapon(false) == item) {
-            unequip(ItemEnums.ITEM_SLOT.MAIN_HAND, drop);
+            unequip(ITEM_SLOT.MAIN_HAND, drop);
             return;
         } else if (getWeapon(true) == item) {
-            unequip(ItemEnums.ITEM_SLOT.OFF_HAND, drop);
+            unequip(ITEM_SLOT.OFF_HAND, drop);
             return;
         } else if (getArmor() == item) {
-            unequip(ItemEnums.ITEM_SLOT.ARMOR, drop);
+            unequip(ITEM_SLOT.ARMOR, drop);
+            return;
+        }
+        else if (getReserveOffhandWeapon() == item) {
+            unequip(ITEM_SLOT.RESERVE_OFF_HAND, drop);
+            return;
+        } else if (getReserveMainWeapon() == item) {
+            unequip(ITEM_SLOT.RESERVE_MAIN_HAND, drop);
             return;
         }
         boolean result = removeJewelryItem(item);
         if (!result)
             if (item instanceof DC_QuickItemObj)
-                result = removeQuickItem((DC_QuickItemObj) item);
+                result = removeQuickItem(item);
         if (result) {
-            boolean full = !addItemToInventory(item);
+            boolean full = !addItemToInventory(item, true);
             if (full || drop) {
                 dropItemFromInventory(item);
             }
@@ -954,6 +1046,11 @@ public class Unit extends DC_UnitModel {
         for (DC_QuickItemObj q : toRemove) {
             unequip(q, false);
         }
+    }
+
+    @Override
+    public void setDead(boolean dead) {
+        super.setDead(dead);
     }
 
     @Override
@@ -985,11 +1082,11 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean hasBroadReach() {
-        return hasWeaponPassive(null, UnitEnums.STANDARD_PASSIVES.BROAD_REACH);
+        return hasWeaponPassive(null, STANDARD_PASSIVES.BROAD_REACH);
     }
 
     public boolean hasHindReach() {
-        return hasWeaponPassive(null, UnitEnums.STANDARD_PASSIVES.HIND_REACH);
+        return hasWeaponPassive(null, STANDARD_PASSIVES.HIND_REACH);
     }
 
     public boolean hasWeaponPassive(Boolean offhand, STANDARD_PASSIVES passive) {
@@ -1021,9 +1118,9 @@ public class Unit extends DC_UnitModel {
                 if (getUnitAI() == null) {
                     return true;
                 }
-                if (getUnitAI().getType() != AiEnums.AI_TYPE.SNEAK) {
-                    if (getUnitAI().getType() != AiEnums.AI_TYPE.CASTER) {
-                        if (getUnitAI().getType() != AiEnums.AI_TYPE.ARCHER) {
+                if (getUnitAI().getType() != AI_TYPE.SNEAK) {
+                    if (getUnitAI().getType() != AI_TYPE.CASTER) {
+                        if (getUnitAI().getType() != AI_TYPE.ARCHER) {
                             if (getSpells().isEmpty()) {
                                 return true;
                             }
@@ -1061,7 +1158,7 @@ public class Unit extends DC_UnitModel {
             if (!getGame().isDebugMode()) {
                 if (!getGame().getCombatMaster().isFullManualControl()) {
                     if (owner.getHeroObj() != null) {
-                        if (!isMainHero()) {
+                        if (!isMainHero() && !isScion()) {
                             return !AI_Manager.isOff();
                         }
                     }
@@ -1090,7 +1187,7 @@ public class Unit extends DC_UnitModel {
     public MACRO_MODES getMacroMode() {
         if (macroMode == null) {
             macroMode = new EnumMaster<MACRO_MODES>().retrieveEnumConst(MACRO_MODES.class,
-             getProperty(MACRO_PROPS.MACRO_MODE));
+                    getProperty(MACRO_PROPS.MACRO_MODE));
         }
         return macroMode;
     }
@@ -1107,7 +1204,7 @@ public class Unit extends DC_UnitModel {
     public GENDER getGender() {
         if (gender == null || isSimulation()) {
             gender = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class,
-             getProperty(G_PROPS.GENDER));
+                    getProperty(G_PROPS.GENDER));
         }
         return gender;
     }
@@ -1129,6 +1226,13 @@ public class Unit extends DC_UnitModel {
 
     public void setMainHero(boolean mainHero) {
         this.mainHero = mainHero;
+    }
+
+    public boolean isRevenant() {
+        if (isPlayerCharacter()) {
+            return CoreEngine.isIggDemoRunning();
+        }
+        return false;
     }
 
     public boolean isPlayerCharacter() {
@@ -1220,8 +1324,8 @@ public class Unit extends DC_UnitModel {
                 if (!removeJewelryItem(item))
                     if (!removeQuickItem(item)) {
                         unequip(item, false);
-                       if (!removeFromInventory(item))
-                           return false;
+                        if (!removeFromInventory(item))
+                            return false;
                     }
         }
         return true;
@@ -1230,37 +1334,49 @@ public class Unit extends DC_UnitModel {
     public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
         if (quick_inv_slot == null) {
             return new ListMaster<DC_HeroSlotItem>().findType(typeName, new ArrayList<>(
-             getSlotItems()));
+                    getSlotItems()));
         }
         DC_HeroItemObj item = !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
-         new ArrayList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
-         typeName, new ArrayList<>(getQuickItems()));
+                new ArrayList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
+                typeName, new ArrayList<>(getQuickItems()));
         return item;
     }
 
     public void setCoordinates(Coordinates coordinates) {
+        setCoordinates(coordinates, false);
+    }
+
+    public void setCoordinates(Coordinates coordinates, boolean force) {
         if (coordinates.isInvalid()) {
             coordinates = CoordinatesMaster.getClosestValid(coordinates);
             super.setCoordinates(coordinates);
             return;
         }
-        if (isPlayerCharacter()) {
-            if (!getCoordinates().equals(coordinates)) {
-                if (AI_Manager.isRunning()) {
-                    return;
+        if (!force)
+            if (isPlayerCharacter()) {
+                if (!getCoordinates().equals(coordinates)) {
+                    if (AI_Manager.isRunning()) {
+                        return;
+                    }
+                    if (getGame().getLoop().getActiveUnit() != this) {
+                        return;
+                    }
                 }
-                if (getGame().getLoop().getActiveUnit() != this) {
-                    return;
+                if (getCoordinates().dst_(coordinates)>=2) {
+                    if (game.isStarted())
+                        if (!originalCoordinates.equals(coordinates)){
+                            LogMaster.log(1,"Teleport bug? " );
+                            return;
+                        }
                 }
             }
-        }
         super.setCoordinates(coordinates);
     }
 
     public DC_ActiveObj getAttackAction(boolean offhand) {
 
         return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK :
-         DC_ActionManager.ATTACK);
+                DC_ActionManager.ATTACK);
     }
 
     public Unit getEngagementTarget() {
@@ -1300,7 +1416,7 @@ public class Unit extends DC_UnitModel {
         return false;
     }
 
-    public List<DC_ActiveObj> getAttacks(boolean offhand) {
+    public List<DC_UnitAction> getAttacks(boolean offhand) {
         return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK : DC_ActionManager.ATTACK).getSubActions();
     }
 
@@ -1436,6 +1552,11 @@ public class Unit extends DC_UnitModel {
         //     getResetter().resetFacing();
     }
 
+    @Override
+    public void setFacing(FACING_DIRECTION facing) {
+        super.setFacing(facing);
+    }
+
     public DequeImpl<DC_JewelryObj> getRings() {
         DequeImpl<DC_JewelryObj> list = new DequeImpl<>(getJewelry());
         for (DC_JewelryObj j : getJewelry()) {
@@ -1482,17 +1603,17 @@ public class Unit extends DC_UnitModel {
         if (isDead()) {
             prefix += "(Dead) ";
         }
-        return prefix + getName() + (game.isDebugMode() ? " at " + getCoordinates()
-         : "");
+        return prefix + getName() + (game.isDebugMode() || AI_Manager.isRunning() ? " at " + getCoordinates()
+                : "");
     }
 
     public AI_TYPE getAiType() {
         if (getAI() != null)
             return getAI().getType();
         AI_TYPE ai = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
-         getProperty(PROPS.AI_TYPE));
+                getProperty(PROPS.AI_TYPE));
         if (ai == null) {
-            return AiEnums.AI_TYPE.NORMAL;
+            return AI_TYPE.NORMAL;
         }
         return ai;
     }
@@ -1508,10 +1629,10 @@ public class Unit extends DC_UnitModel {
     public int getSightRangeTowards(Coordinates coordinates) {
         int sight = getIntParam(PARAMS.SIGHT_RANGE);
         FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this.getFacing(), this.getCoordinates(),
-         coordinates);
-        if (singleFacing == UnitEnums.FACING_SINGLE.BEHIND) {
+                coordinates);
+        if (singleFacing == FACING_SINGLE.BEHIND) {
             sight = getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (singleFacing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
+        } else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {
             sight -= getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         return sight;
@@ -1530,15 +1651,30 @@ public class Unit extends DC_UnitModel {
         if (getAI().isOutsideCombat()) {
             return;
         }
+        if ( isMine()) {
+            if (CoreEngine.isActiveTestMode()) {
+                TestMasterContent.addVFX_TEST_Spells(getType(), ContentGenerator.getTestSpellFilter(getName()));
+
+            }
+            if (CoreEngine.isAnimationTestMode()) {
+                TestMasterContent.addANIM_TEST_Spells(getType());
+            }
+            if (CoreEngine.isLogicTest())
+                TestMasterContent.addTestGroupSpells(getType());
+
+            if (CoreEngine.isGuiTestMode()) {
+                TestMasterContent.addGRAPHICS_TEST_Spells(getType());
+            }
+        }
         super.toBase();
     }
 
 
     public DC_ActiveObj getTurnAction(boolean clockwise) {
         return getAction(
-         clockwise
-          ? STD_ACTIONS.Turn_Clockwise.toString()
-          : STD_ACTIONS.Turn_Anticlockwise.toString());
+                clockwise
+                        ? STD_ACTIONS.Turn_Clockwise.toString()
+                        : STD_ACTIONS.Turn_Anticlockwise.toString());
     }
 
     public DequeImpl<Perk> getPerks() {
@@ -1561,5 +1697,94 @@ public class Unit extends DC_UnitModel {
 
     public int getGold() {
         return getIntParam(PARAMS.GOLD);
+    }
+
+    public boolean isScion() {
+        return scion;
+    }
+
+    public void setScion(boolean scion) {
+        this.scion = scion;
+    }
+
+    public void xpGained(int xp) {
+        if (!isDead())
+        if (Eidolons.getParty() instanceof ChainParty) {
+            ((ChainParty) Eidolons.getParty()).xpGained(xp);
+        }
+        modifyParameter(PARAMS.XP, xp);
+        modifyParameter(PARAMS.TOTAL_XP, xp, true);
+        HeroLevelManager.checkLevelUp(this);
+    }
+
+    public void applyBuffRules() {
+        getResetter().applyBuffRules();
+    }
+
+    public DC_WeaponObj getReserveMainWeapon() {
+        return reserveMainWeapon;
+    }
+    public DC_WeaponObj getReserveOffhandWeapon() {
+        return reserveOffhandWeapon;
+    }
+
+
+    public void setReserveMainWeapon(DC_WeaponObj reserveMainWeapon) {
+        this.reserveMainWeapon = reserveMainWeapon;
+        if (reserveMainWeapon != null) {
+            reserveMainWeapon.setMainHand(true);
+        } else {
+            ref.setID(KEYS.RESERVE_WEAPON, null);
+        }
+        if (!game.isSimulation() && !isLoaded()) {
+            String id = "";
+            if (reserveMainWeapon != null) {
+                id = reserveMainWeapon.getId() + "";
+            }
+            setProperty(G_PROPS.RESERVE_MAIN_HAND_ITEM, id);
+        }
+    }
+    public void setReserveOffhandWeapon(DC_WeaponObj reserveOffhandWeapon) {
+
+        this.reserveOffhandWeapon = reserveOffhandWeapon;
+        if (reserveOffhandWeapon != null) {
+            reserveOffhandWeapon.setMainHand(false);
+        } else {
+            ref.setID(KEYS.RESERVE_OFFHAND_WEAPON, null);
+        }
+        if (!game.isSimulation() && !isLoaded()) {
+            String id = "";
+            if (reserveOffhandWeapon != null) {
+                id = reserveOffhandWeapon.getId() + "";
+            }
+            setProperty(G_PROPS.RESERVE_OFF_HAND_ITEM, id);
+        }
+    }
+
+    public DC_HeroItemObj getReserveWeapon(boolean offhand) {
+        return !offhand ? getReserveMainWeapon() : getReserveOffhandWeapon();
+    }
+
+    public DC_ActiveObj getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(DC_ActiveObj lastAction) {
+        this.lastAction = lastAction;
+    }
+
+    public boolean isNamedUnit() {
+        return checkClassification(UnitEnums.CLASSIFICATIONS.UNIQUE) || checkBool(GenericEnums.STD_BOOLS.NAMED);
+    }
+    protected boolean isModifierMapOn() {
+        return isPlayerCharacter();
+    }
+
+//    public UnitEnums.UNIT_GROUP getUnitGroup() {
+//        return  new EnumMaster<UnitEnums.UNIT_GROUP>().retrieveEnumConst(UnitEnums.UNIT_GROUP.class, getProperty(G_PROPS.UNIT_GROUP));
+//    }
+    public UnitEnums.UNIT_GROUPS getUnitGroup() {
+        return  new EnumMaster<UnitEnums.UNIT_GROUPS>().
+                retrieveEnumConst(UnitEnums.UNIT_GROUPS.class, getProperty(G_PROPS.UNIT_GROUP));
     }
 }

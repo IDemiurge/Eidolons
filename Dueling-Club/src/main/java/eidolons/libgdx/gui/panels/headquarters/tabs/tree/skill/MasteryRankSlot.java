@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.texture.Images;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
@@ -27,6 +28,11 @@ public class MasteryRankSlot extends HtNode {
     }
 
     @Override
+    protected String getSlotTooltip() {
+        return DescriptionTooltips.MASTERY_SLOT;
+    }
+
+    @Override
     public void update(float delta) {
         if (param != null)
             setRootPath(ImageManager.getValueIconPath(param));
@@ -36,12 +42,22 @@ public class MasteryRankSlot extends HtNode {
     }
 
     @Override
+    protected List<ObjType> createAvailable() {
+        return null;
+    }
+
+    @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         data = (MASTERY) userObject;
         if (data != null)
             param = ContentValsManager.getPARAM(data.name());
         else param = null;
+    }
+
+    @Override
+    protected void init() {
+       setSize(getDefaultWidth(), getDefaultHeight());
     }
 
     @Override
@@ -57,8 +73,8 @@ public class MasteryRankSlot extends HtNode {
     @Override
     protected String getTextPrefix() {
         if (data == null)
-            return "Mastery Slot, Rank " + NumberUtils.getRoman(tier);
-        return StringMaster.getWellFormattedString(data.name()) + " Rank " + NumberUtils.getRoman(tier);
+            return "Mastery Slot, Rank " + NumberUtils.getRoman(tier+1);
+        return StringMaster.getWellFormattedString(data.name()) + " Rank " + NumberUtils.getRoman(tier+1);
     }
     @Override
     protected EventType getSelectionEvent() {

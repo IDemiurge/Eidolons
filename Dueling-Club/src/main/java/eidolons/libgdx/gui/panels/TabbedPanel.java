@@ -48,8 +48,10 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
         row();
     }
 
-    protected void addTabTable() {
-        add(tabTable).expand(0, 0).fill(0, 0).align(getDefaultAlignment()).row();
+    protected Cell addTabTable() {
+        Cell table = add(tabTable).expand(0, 0).fill(0, 0).align(getDefaultAlignment());
+        table.row();
+        return table;
     }
 
     protected int getDefaultAlignment() {
@@ -122,6 +124,8 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
     public void tabSelected(String tabName) {
         buttonGroup.setChecked(tabName);
         setDisplayedActor(tabsToNamesMap.get(tabName));
+
+        contentCell.getActor().setZIndex(0);
     }
 
     protected Cell setDisplayedActor(T t) {

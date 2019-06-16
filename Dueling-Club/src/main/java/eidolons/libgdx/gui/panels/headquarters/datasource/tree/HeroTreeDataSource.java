@@ -33,4 +33,8 @@ public abstract class HeroTreeDataSource {
             return null;
         return linkData.get(slot);
     }
+
+    public   Object getData(int tier, int slot, boolean slotsOrLinks){
+        return slotsOrLinks ? getSlotData(tier, slot) : getLinkData(tier, slot);
+    }
 }

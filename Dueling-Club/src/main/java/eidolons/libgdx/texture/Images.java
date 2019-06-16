@@ -1,9 +1,11 @@
 package eidolons.libgdx.texture;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.Deity;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 4/17/2018.
@@ -93,8 +95,17 @@ public class Images {
 
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
+    public static final String PARTY_BACKGROUND_COLS = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/columns.png");
+
+    public static final String COLUMNS = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/columns.png");
+    public static final String SEPARATOR_ALT = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
     public static final String SEPARATOR = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+            PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+    public static final String SEPARATOR_LARGE = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic","decor" ,"horizontal slice white.png");
     public static final  String TINY_CHEST = "ui/components/tiny/chest.png";
     public static final  String TINY_GOLD = "ui/components/tiny/gold.png";
     public static final java.lang.String GOLD_INV_ITEM_OVERLAY = "ui/components/hq/inv/gold overlay.png";
@@ -113,6 +124,14 @@ public class Images {
     public static final String ITEM_BACKGROUND = "ui/components/hq/inv/ITEM BACKGROUND.png";
     public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "ui/components/hq/inv/slots/overlay light.png";
     public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "ui/components/hq/inv/slots/overlay light2.png";
+    public static final String PLACEHOLDER = "ui/empty1.jpg";
+    public static final String PLACEHOLDER_UNIT = "ui/empty.jpg";
+    public static final String PLACEHOLDER_WALL = "main/bf/walls/ancient wall.png";
+    public static final String PLACEHOLDER_DECOR = "main/bf/prop/magical/sphere_altar_dark_active.png";
+    public static final String DEFAULT_SPRITE = "mini/sprites/impact/wreathe in flames 5 5.png";
+    public static final String DEFEAT = "ui/big/defeat.png";
+    public static final String VICTORY = "ui/big/victory.png";
+    public static final String GATEWAY_GLYPH = "sprites/bf/hanging/occult_circles.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {
@@ -195,5 +214,10 @@ public class Images {
 
     public static String getSketch(Deity deity) {
         return null;
+    }
+
+    public static String getDefaultSkillImage(String mastery) {
+        return "gen/skill/mastery/"+mastery+".png";
+
     }
 }

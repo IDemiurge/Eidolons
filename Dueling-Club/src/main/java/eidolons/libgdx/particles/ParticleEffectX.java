@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public String path;
     private static List<String> broken=    new ArrayList<>() ;
 
@@ -37,7 +37,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         if (broken.contains(path))
             return;
         if (isEmitterAtlasesOn()) {
-            FileHandle presetFile = Gdx.files.internal(path);
+            FileHandle presetFile = new FileHandle(path);
             if (!presetFile.exists())
                 presetFile=Gdx.files.internal(PathFinder.getVfxPath()+path);
 
@@ -106,15 +106,16 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     private boolean checkSprite(FileHandle effectFile) {
-        if (EmitterActor.spriteEmitterTest) {
-            return true;
-        }
+//        if (EmitterActor.spriteEmitterTest) {
+//            return true;
+//        }
         String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
         if (imgPath.contains("sprites")){
             main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );
             return true;
         }
-        main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
+        if (TEST_MODE)
+            main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
         return false;
     }
 
@@ -135,7 +136,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //        if (CoreEngine.isMacro())
         if (!effectFile.exists()){
             broken.add(effectFile.path());
-            main.system.auxiliary.log.LogMaster.log(1,"no such emitter preset: " +effectFile.path());
+            main.system.auxiliary.log.LogMaster.log(0,"no such emitter preset: " +effectFile.path());
             return;
         }
         InputStream input = effectFile.read();

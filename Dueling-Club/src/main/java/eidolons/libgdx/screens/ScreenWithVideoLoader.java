@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.hero.IggHeroSelectionPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
@@ -33,7 +34,7 @@ import java.util.List;
 
 import static main.system.GuiEventType.*;
 
-public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
+public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
     private static final Object QUEST_PANEL_ARG = 2;
     private static Boolean videoEnabled;
@@ -54,6 +55,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         getOverlayStage().addActor(underText);
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
+        GuiEventManager.bind(BRIEFING_START, p -> underText.setVisible(false));
+        GuiEventManager.bind(BRIEFING_FINISHED, p -> underText.setVisible(true));
     }
 
     public static void setVideoEnabled(Boolean videoEnabled) {
@@ -61,6 +64,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     public static Boolean isVideoEnabled() {
+        if (CoreEngine.isIggDemo()){
+            return false;
+        }
         if (videoEnabled == null)
             videoEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
         return videoEnabled;
@@ -202,6 +208,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
                 return new QuestSelectionPanel(() -> (List<? extends Entity>) iterator.next());
             }
         }
+        if (CoreEngine.isIggDemoRunning())
+            return new IggHeroSelectionPanel(() -> (List<? extends Entity>) p.get());
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
     }
@@ -265,7 +273,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected void renderLoader(float delta) {
-
         super.renderLoader(delta);
 
         if (video != null) {
@@ -298,6 +305,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         overlayStage.act(delta);
         overlayStage.draw();
         //        }
+    }
+
+    @Override
+    public CustomSpriteBatch getBatch() {
+        return super.getBatch();
     }
 
     protected boolean isLoadingWithVideo() {

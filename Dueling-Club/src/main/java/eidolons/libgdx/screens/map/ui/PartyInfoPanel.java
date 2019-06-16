@@ -89,7 +89,7 @@ header for the party?
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     if (button == 1) {
                         GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                         new UnitDataSource(hero));
+                          (hero));
                     } else {
                         MapScreen.getInstance().centerCamera();
                     }

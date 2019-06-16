@@ -345,6 +345,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         return null;
     }
 
+    protected String getValueRef() {
+        return StringMaster.getValueRef(KEYS.SOURCE, getValue());
+    }
     protected abstract Effect getEffect();
 
     protected abstract VALUE getValue();

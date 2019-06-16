@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
 
 /**
@@ -22,12 +23,23 @@ public class SmartClickListener extends ClickListener {
 
     @Override
     public boolean handle(Event e) {
-        if (isBattlefield())
-            if (HqPanel.getActiveInstance()!=null )
+        if (isBattlefield()) {
+            if (HqPanel.getActiveInstance() != null)
                 return true;
-
+            if (DungeonScreen.getInstance() == null)
+                return true;
+            if (!DungeonScreen.getInstance().isLoaded())
+                return true;
+            if (DungeonScreen.getInstance().getSelectionPanel() != null) {
+                if (DungeonScreen.getInstance().getSelectionPanel().isVisible()) {
+                    return true;
+                }
+            }
+        }
         if (ConfirmationPanel.getInstance().isVisible())
             return true;
+
+
         return super.handle(e);
     }
 
@@ -52,7 +64,7 @@ public class SmartClickListener extends ClickListener {
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         onTouchDown(event, x, y);
-        return  super.touchDown(event, x, y, pointer, button);
+        return super.touchDown(event, x, y, pointer, button);
     }
 
     @Override

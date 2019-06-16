@@ -206,7 +206,9 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public boolean activate() {
-
+        if (getGame().getLoop().isPaused()) {
+            return false; //TODO igg demo hack
+        }
         if (!isConstructed() || wrapped) {
             construct();
         }
@@ -267,11 +269,12 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     private void removeCharge() {
+        main.system.auxiliary.log.LogMaster.log(1, this + " - removeCharge ");
         modifyParameter(PARAMS.C_CHARGES, -1);
         if (wrapped) {
             modifyParameter(PARAMS.C_DURABILITY, -1);
             getWrappedWeapon().modifyParameter(PARAMS.C_DURABILITY, -1);
-        }
+        } main.system.auxiliary.log.LogMaster.log(1,this+" - Charge removed; left: " + getIntParam(PARAMS.C_CHARGES));
         if (getIntParam(PARAMS.C_CHARGES) <= 0) {
             outOfCharges();
         }
@@ -285,8 +288,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     private void outOfCharges() {
+        main.system.auxiliary.log.LogMaster.log(1,"outOfCharges: " + this);
         if (!checkBool(GenericEnums.STD_BOOLS.PERMANENT_ITEM)) {
-            getHero().removeQuickItem(this);
+           if (getHero().removeQuickItem(this)){
+               main.system.auxiliary.log.LogMaster.log(1,"QI removed: " + this);
+           }
         }
 
     }

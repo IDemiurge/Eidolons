@@ -59,7 +59,7 @@ public abstract class DC_RuleImpl implements Rule {
 
     @Override
     public boolean check(Event event) {
-        if (isOn())
+        if (!isOn())
             return false;
         if (event_types != null) {
             if (!Arrays.asList(event_types).contains(event.getType())) {

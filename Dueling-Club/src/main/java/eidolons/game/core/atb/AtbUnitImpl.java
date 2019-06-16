@@ -2,10 +2,10 @@ package eidolons.game.core.atb;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.system.options.GameplayOptions.LOGGING_DETAIL_LEVEL;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.NumberUtils;
+import main.system.text.LogManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import static main.system.GuiEventType.INITIATIVE_CHANGED;
@@ -55,7 +55,7 @@ public class AtbUnitImpl implements AtbUnit {
         double value = (i) * AtbController.TIME_LOGIC_MODIFIER;
 
         atbController.getManager().getGame().getLogManager().
-         log(LOGGING_DETAIL_LEVEL.FULL,
+         log(LogManager.LOGGING_DETAIL_LEVEL.FULL,
          getUnit().getName() + " has " +
           (getDisplayedAtbReadiness()) + "%" + " readiness");
 

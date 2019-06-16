@@ -8,21 +8,27 @@ import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.AvatarDataSource;
 
 public class AvatarPanel extends TablePanelX {
     private final FadeImageContainer portrait;
-
+public static final int h = 404;
+    public static final     int w = 274;
     public AvatarPanel() {
+        super(w, h);
         //        TextureRegion textureRegion = TextureCache.getOrCreateR("/UI/components/infopanel/avatar-panel.png");
         //        TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-
         //        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         center();
         top();
         portrait = new FadeImageContainer();
-        addElement(portrait).pad(22, 60, 22, 55).growY();
+        addElement(portrait).pad(22, 60, 22, 55);//.growY();
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+//        Texture back = TiledNinePatchGenerator.getOrCreateNinePatch(
+//         NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN, w, h);
+//        setBackground(new TextureRegionDrawable(new TextureRegion(back)));
 
         //        row();
         //        nameLabel = new Label("", StyleHolder.getHqLabelStyle(19));
@@ -36,13 +42,6 @@ public class AvatarPanel extends TablePanelX {
         //        param2Label = new Label("", StyleHolder.getHqLabelStyle(18));
         //        addElement(param2Label).uniformX().center() ;
         //        pack();
-
-        int h = 404;
-        int w = 274;
-        setSize(w, h);
-        Texture back = TiledNinePatchGenerator.getOrCreateNinePatch(
-         NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN, w, h);
-        setBackground(new TextureRegionDrawable(new TextureRegion(back)));
     }
 
     @Override
@@ -61,10 +60,10 @@ public class AvatarPanel extends TablePanelX {
             texture = source.getAvatar();
         }
         portrait.setImage(new Image(texture));
-        setSize(texture.getRegionWidth(), texture.getRegionHeight());
+//        setSize(texture.getRegionWidth(), texture.getRegionHeight());
         //        nameLabel.setText(source.getName());
         //        param1Label.setText(source.getParam1());
         //        param2Label.setText(source.getParam2());
-        pack();
+//        pack();
     }
 }

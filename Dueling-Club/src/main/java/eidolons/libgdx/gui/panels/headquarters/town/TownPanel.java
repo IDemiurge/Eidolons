@@ -15,6 +15,7 @@ import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.NoHitImage;
@@ -57,6 +58,7 @@ public class TownPanel extends TabbedPanel {
     private final SmartButton hqBtn;
     private final Texture frame;
     private String tooltip;
+    SpriteAnimation backgroundSprite;
 
     public TownPanel() {
         super();

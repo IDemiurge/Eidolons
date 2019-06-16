@@ -19,6 +19,12 @@ public class HcSkillsetPanel extends HqElement {
         add(tabs = new HcSkillsetTabs());
     }
 
+    @Override
+    public void layout() {
+        super.layout();
+        tabs.setX(tabs.getX()+10);
+    }
+
     private String getText() {
         return "Experience Points: " + getUserObject().getIntParam(PARAMS.XP);
     }

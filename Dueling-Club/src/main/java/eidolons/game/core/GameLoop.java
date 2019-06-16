@@ -1,5 +1,7 @@
 package eidolons.game.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -8,6 +10,7 @@ import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
@@ -19,11 +22,14 @@ import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.DC_LogManager;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
@@ -61,7 +67,9 @@ public class GameLoop {
     protected DequeImpl<ActionInput> playerActionQueue = new DequeImpl<>();
     protected Thread thread;
     protected boolean started;
-    private boolean stopped;
+    protected boolean stopped;
+    protected ActionInput lastActionInput;
+    private boolean firstActionDone;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -80,8 +88,8 @@ public class GameLoop {
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_STARTED, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
 
-        while (true) {
-            //for JUnit
+        while (true) {//for JUnit
+
             if (exited)
                 break;
             if (game.getUnits().isEmpty()) {
@@ -198,6 +206,10 @@ public class GameLoop {
     protected Boolean makeAction() {
         if (exited)
             return true;
+//TODO refactor - extract
+        if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, getActiveUnit().getRef()))) {
+            return false;
+        }
         Boolean result = null;
         ActionInput action = null;
         boolean channeling = false;
@@ -208,28 +220,28 @@ public class GameLoop {
             channeling = true;
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
-            try {
+//            try {
                 action = (waitForAI());
                 AI_Manager.setOff(false);
-            } catch (Exception e) {
-                AI_Manager.setOff(true);
-                if (!aiFailNotified) {
-                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
-                    aiFailNotified = true;
-                    return false;
-                }
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+//            } catch (Exception e) {
+//                AI_Manager.setOff(true);
+//                if (!aiFailNotified) {
+//                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
+//                    aiFailNotified = true;
+//                    return false;
+//                }
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
         } else {
             action = (waitForPlayerInput());
         }
         if (channeling)
             ChannelingRule.channelingResolves(activeUnit);
 
-        waitForAnimations(action);
-
         result =
          activateAction(action);
+
+        waitForAnimations(action);
         if (exited)
             return true;
         waitForPause();
@@ -245,48 +257,9 @@ public class GameLoop {
     }
 
     protected void waitForAnimations(ActionInput action) {
-        if (isMustWaitForAnim(action)) {
-            int maxTime = getMaxAnimWaitTime(action);
-            int minTime = getMinAnimWaitTime(action);
-            //*speed ?
-            int period = getAnimWaitPeriod();
-            int waitTime = 0;
-            while (waitTime < minTime || (isMustWaitForAnim(action) &&  waitTime< maxTime)){
-                WaitMaster.WAIT(period);
-                waitTime += period;
-                main.system.auxiliary.log.LogMaster.log(1, toString() + " waited for anim to draw: " + waitTime);
-
-            }
-        }
+                    AnimMaster.waitForAnimations(action);
     }
 
-    protected int getMinAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME_COMBAT);
-    }
-
-    protected int getMaxAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME_COMBAT);
-    }
-
-    protected int getAnimWaitPeriod() {
-        return 50;
-    }
-
-    protected boolean isMustWaitForAnim(ActionInput action) {
-        return AnimMaster.getInstance().isDrawing();
-    }
-
-    protected void waitForAnimationsOld() {
-        Integer MAX_ANIM_TIME =
-         OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
-        if (MAX_ANIM_TIME != null) {
-            if (MAX_ANIM_TIME > 0) {
-                if (AnimMaster.getInstance().isDrawing()) {
-                    WaitMaster.waitForInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, MAX_ANIM_TIME);
-                }
-            }
-        }
-    }
 
     protected Boolean activateAction(ActionInput input) {
         if (input == null) {
@@ -306,6 +279,7 @@ public class GameLoop {
         } finally {
             activatingAction = null;
         }
+        firstActionDone= true;
         if (!result) {
             return false;
         }
@@ -331,16 +305,28 @@ public class GameLoop {
         }
         return endTurn;
     }
-
+    public int getWaitOnStartTime() {
+        return 0;
+    }
     protected ActionInput waitForAI() {
+        if (!firstActionDone){
+            Chronos.mark("First ai action");
+        }
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
+        if (!firstActionDone){
+            Long time =getWaitOnStartTime()- Chronos.getTimeElapsedForMark("First ai action");
+            if (time>0 )
+                WaitMaster.WAIT(Math.toIntExact(time));
+            firstActionDone = true;
+        }
         boolean failed = false;
         if (aiAction == null)
             failed = true;
         else if (!aiAction.getActive().isChanneling())
+            if(!aiAction.getSource().isBoss()) //TODO boss fix
             if (!aiAction.canBeTargeted()) {
-                {
+                { main.system.auxiliary.log.LogMaster.log(1,"**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
                     AI_Manager.getBrokenActions().add(aiAction.getActive());
                     failed = true;
                 }
@@ -406,8 +392,9 @@ public class GameLoop {
             EUtils.showInfoText(RandomWizard.random() ? "The game is Paused!" : "Game is paused now...");
             return;
         }
-
         WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput, false);
+        if (actionInput != null)
+        lastActionInput = actionInput;
     }
 
     public Unit getActiveUnit() {
@@ -417,9 +404,15 @@ public class GameLoop {
     }
 
     public void setActiveUnit(Unit activeUnit) {
+        if (activeUnit ==  this.activeUnit)
+            return;
         this.activeUnit = activeUnit;
         if (activeUnit != null)
+        {
+            getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
+                    + activeUnit.getNameIfKnown());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+        }
 
     }
 
@@ -434,12 +427,18 @@ public class GameLoop {
         }
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
         Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
+//        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
+//        IGG_XmlMaster.getEntrancesData()
+
+
         if (location.getMainExit() != null)
             if (location.getMainExit().getCoordinates().equals(c)) {
                 //check party
                 return true;
             }
-        if (game.isDebugMode())
+        if (CoreEngine.isIDE())
+        if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
+        if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
             if (location.getMainEntrance() != null)
                 if (location.getMainEntrance().getCoordinates().equals(c)) {
                     return true;
@@ -492,6 +491,7 @@ public class GameLoop {
 
     public void resume() {
         stopped = false;
+        firstActionDone =false;
         signal();
     }
 
@@ -523,4 +523,21 @@ public class GameLoop {
         return started;
     }
 
+    public boolean checkThreadIsRunning() {
+        if (thread != null) {
+            if (thread.isAlive()) {
+                return true;
+            }
+        }
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getName().equalsIgnoreCase(getThreadName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ActionInput getLastActionInput() {
+        return lastActionInput;
+    }
 }

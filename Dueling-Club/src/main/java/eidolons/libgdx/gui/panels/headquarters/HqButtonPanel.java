@@ -24,16 +24,20 @@ public class HqButtonPanel extends HqElement {
             add(new SmartButton("Save as New", STD_BUTTON.MENU, () -> {
                 saveTypeNew();
             }));
-        } else {
+        }
+
             add(new SmartButton("View Info", STD_BUTTON.MENU, () -> {
                 viewInfo();
             }));
-        }
+
+
         if (!HqDataMaster.isSimulationOff())
         add(new SmartButton("Undo All", STD_BUTTON.MENU, () -> {
             undoAll();
         }));
-        add(new SmartButton("Save and Exit", STD_BUTTON.MENU, () -> {
+
+
+        add(new SmartButton("Done", STD_BUTTON.MENU, () -> {
             saveAndExit();
         }));
     }

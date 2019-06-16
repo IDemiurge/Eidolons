@@ -37,10 +37,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master = game.getDungeonMaster().getExplorationMaster();
         macroTimeMaster = MacroTimeMaster.getInstance();
         GuiEventManager.bind(GuiEventType.GAME_RESET,
-         d -> {
-             resetRequired = true;
-             signal();
-         });
+                d -> {
+                    resetRequired = true;
+                    signal();
+                });
     }
 
 
@@ -155,16 +155,20 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master.getResetter().setResetNeeded(true);
         //recheck?!
         ActionInput playerAction = playerActionQueue.removeLast();
+
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
-            activateAction(playerAction);
-            boolean result =playerAction.getAction().getHandler().isResult();
+            //TODO igg demo fix
+            Eidolons.onNonGdxThread(() ->
+                    activateAction(playerAction)
+            );
+            waitForAnimations(playerAction);
+            boolean result = playerAction.getAction().getHandler().isResult();
             master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
             master.getTimeMaster().setGuiDirtyFlag(true);
             master.getPartyMaster().leaderActionDone(playerAction);
 
-
-            waitForAnimations(playerAction);
+            getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer();
 
         }
         waitForPause();
@@ -175,6 +179,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (master.getAiMaster().isAiActs()) {
             DequeImpl<ActionInput> queue = getAiActionQueue();
             while (!queue.isEmpty()) {
+//            while (queue.size()>3) {
                 //sort? change display?
                 // active unit?
                 try {
@@ -194,7 +199,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                         game.getManager().reset();
 
                         getGame().getDungeonMaster().getExplorationMaster()
-                         .getAggroMaster().checkStatusUpdate();
+                                .getAggroMaster().checkStatusUpdate();
                         if (!ExplorationMaster.isExplorationOn()) {
                             return false;
                         }
@@ -235,13 +240,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
     }
 
-    protected int getMinAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MIN_ANIM_WAIT_TIME);
-    }
 
     protected boolean isMustWaitForAnim(ActionInput action) {
         return DungeonScreen.getInstance().getGridPanel()
-         .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
+                .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
     }
 
     @Override
@@ -275,15 +277,17 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         }
         if (isPaused()) {
             EUtils.showInfoText(
-             RandomWizard.random() ?
-              "The game is Paused!" :
-              "Game is paused now...");
+                    RandomWizard.random() ?
+                            "The game is Paused!" :
+                            "Game is paused now...");
             return;
         }
         if (ExplorationMaster.isWaiting()) {
             ExplorationMaster.setWaiting(false);
             return;
         }
+        if (actionInput != null)
+            lastActionInput = actionInput;
         queueActionInput(actionInput);
         signal();
 
@@ -303,7 +307,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             super.loopExited();
         else {
             SpecialLogger.getInstance().appendSpecialLog(
-             SPECIAL_LOG.EXCEPTIONS, "Explore game loop failed to exit");
+                    SPECIAL_LOG.EXCEPTIONS, "Explore game loop failed to exit");
         }
 
     }
@@ -340,11 +344,14 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     private boolean confirmExit() {
+        if (CoreEngine.isIggDemo()){
+            return true;
+        }
         EUtils.onConfirm("Leave this location? " +
-          "Don't forget to check your achievements from the menu...", () ->
-          WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true),
-         () ->
-          WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false));
+                        "Don't forget to check your achievements from the main menu!", () ->
+                        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true),
+                () ->
+                        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false));
         return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
     }
 

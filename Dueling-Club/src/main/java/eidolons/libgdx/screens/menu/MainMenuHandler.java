@@ -1,5 +1,7 @@
 package eidolons.libgdx.screens.menu;
 
+import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -9,10 +11,13 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -31,7 +36,10 @@ public class MainMenuHandler {
     }
 
     public static Boolean startMicro(List<ObjType> scenarioTypes, Boolean random_preset_select) {
-        if (random_preset_select != null) {
+        scenarioTypes= (List<ObjType>) SortMaster.sortByValue(scenarioTypes, G_PROPS.ID, false);
+        if (random_preset_select == null) {
+
+        } else {
             if (random_preset_select) {
                 scenarioTypes.removeIf(type ->
                 {
@@ -77,9 +85,11 @@ public class MainMenuHandler {
         return getScenarioTypes(getScenarioGroup(false));
     }
 
-    private static String getScenarioGroup(boolean rng) {
+    private static String getScenarioGroup(Boolean rng_beta_demo) {
+        if (rng_beta_demo==null )
+            return "Demo";
         //        return "Crawl";
-        return rng ? "Random" : "Beta";
+        return rng_beta_demo ? "Random" : "Beta";
     }
 
     public static List<ObjType> getScenarioTypes(String scenarioGroup) {
@@ -87,8 +97,14 @@ public class MainMenuHandler {
          StringMaster.getWellFormattedString(scenarioGroup));
     }
 
+    private void startDemo() {
+        startMicro(getScenarioTypes(getScenarioGroup(null )), null );
+    }
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
+            case DEMO:
+                IGG_Launcher.start(()-> startDemo());
+                return null ;
             case NEXT_SCENARIO:
                 return startMicro(getScenarioTypes(),
                  false);
@@ -131,5 +147,6 @@ public class MainMenuHandler {
 
         return true;
     }
+
 
 }

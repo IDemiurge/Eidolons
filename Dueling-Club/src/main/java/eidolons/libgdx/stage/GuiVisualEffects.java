@@ -10,6 +10,7 @@ import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.VFX;
@@ -39,6 +40,11 @@ public class GuiVisualEffects extends GroupX {
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
     private int emitterTypesCount;
+    private static boolean off ;
+
+    public static void setOff(Boolean off) {
+        GuiVisualEffects.off = off;
+    }
 
     public GuiVisualEffects() {
         if (isVignetteOn()) {
@@ -63,12 +69,18 @@ public class GuiVisualEffects extends GroupX {
             initEmitters(AmbienceDataSource.getTemplate(block.getStyle()), (DAY_TIME) p.get());
 
         });
+
+        fadeIn();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX)) {
+        if ( off) {
             return;
+        }
+        if (!CoreEngine.isDebugLaunch())
+        if (HqPanel.getActiveInstance()!= null) {
+            return; //TODO igg demo fix
         }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {
@@ -237,6 +249,9 @@ public class GuiVisualEffects extends GroupX {
 
     @Override
     public void act(float delta) {
+
+        if (off)
+            return;
         if (emitters == null)
             if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
                 initEmitters();

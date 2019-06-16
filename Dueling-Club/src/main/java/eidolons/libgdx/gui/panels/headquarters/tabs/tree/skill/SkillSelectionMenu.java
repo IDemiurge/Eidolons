@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 
+import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
@@ -12,6 +13,14 @@ import main.system.GuiEventType;
  */
 public class SkillSelectionMenu extends SlotSelectionRadialMenu {
 
+    protected Vector2 getBackgroundPosition() {
+        return parentToLocalCoordinates(localToStageCoordinates(
+                new Vector2(getX() + 20, getY() - 11)));
+    }
+    @Override
+    protected int getIconSize() {
+        return 64;
+    }
     protected EventType getEvent() {
         return   GuiEventType.SHOW_SKILL_CHOICE;
     }
@@ -23,7 +32,7 @@ public class SkillSelectionMenu extends SlotSelectionRadialMenu {
 
     @Override
     protected String getImagePath(ObjType type) {
-        return SkillMaster.getSkillImgPath(type);
+        return (type).getImagePath();
     }
 
     @Override

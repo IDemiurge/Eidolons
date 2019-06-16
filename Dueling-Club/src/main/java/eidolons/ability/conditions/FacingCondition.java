@@ -6,6 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.libgdx.bf.boss.entity.BossUnit;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -39,6 +40,9 @@ public class FacingCondition extends ConditionImpl {
             return false;
         }
         BattleFieldObject obj1 = (BattleFieldObject) ref.getSourceObj();
+        if (obj1 instanceof BossUnit){
+            return true;
+        }
         DC_Obj obj2;
 
         if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {

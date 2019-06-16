@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.menu.selection.saves;
 
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.macro.AdventureInitializer;
 import main.entity.Entity;
@@ -32,7 +32,7 @@ public class SaveSelectionPanel extends HeroSelectionPanel {
         return "Select a Save";
     }
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new SaveInfoPanel(null);
     }
 

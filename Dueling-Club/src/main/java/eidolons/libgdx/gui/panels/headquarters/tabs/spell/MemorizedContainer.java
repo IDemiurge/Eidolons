@@ -24,7 +24,7 @@ public class MemorizedContainer extends HqSpellContainer {
     }
     @Override
     protected String getLabelText() {
-        return "Memorized "+ getUserObject().getEntity().calculateUsedMemory()+"/"+
+        return "Memorized\n     "+ getUserObject().getEntity().calculateUsedMemory()+"/"+
          getUserObject().getEntity().getIntParam(PARAMS.MEMORIZATION_CAP);
     }
     @Override

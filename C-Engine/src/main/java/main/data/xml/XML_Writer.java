@@ -437,7 +437,8 @@ public class XML_Writer {
 
     public static boolean write(String content, String path, String fileName) {
 
-        if (fileName.contains("rack")) {
+        if (content.equalsIgnoreCase(EMPTY_XML)) {
+            main.system.auxiliary.log.LogMaster.log(1,"not writing EMPTY_XML! - " +path);
             return false;
         }
 

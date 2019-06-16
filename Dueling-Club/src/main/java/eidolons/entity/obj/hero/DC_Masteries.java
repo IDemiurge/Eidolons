@@ -55,6 +55,10 @@ public class DC_Masteries {
                 break;
 
             }
+            case MARKSMANSHIP_MASTERY:
+
+                boostParameter(amount, PARAMS.THROW_ATTACK_MOD, MOD.MODIFY_BY_CONST);
+                break;
             case LEADERSHIP_MASTERY: {
                 // boostParameter((amount), PARAMS.BATTLE_SPIRIT,
                 // MODVAL_TYPE.MODIFY_BY_CONST);
@@ -86,9 +90,17 @@ public class DC_Masteries {
                      MOD.MODIFY_BY_CONST);
                 }
                 break;
+            case DETECTION_MASTERY:
+                boostParameter(amount, PARAMS.DETECTION,
+                        MOD.MODIFY_BY_CONST);
+                boostParameter( amount/2, PARAMS.PERCEPTION,
+                        MOD.MODIFY_BY_CONST);
+                break;
             case STEALTH_MASTERY:
                 boostParameter(amount, PARAMS.STEALTH,
-                 MOD.MODIFY_BY_CONST);
+                        MOD.MODIFY_BY_CONST);
+                boostParameter(-amount/2, PARAMS.NOISE,
+                        MOD.MODIFY_BY_CONST);
                 break;
 
             case ATHLETICS_MASTERY:

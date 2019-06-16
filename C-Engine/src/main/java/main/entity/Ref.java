@@ -11,6 +11,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
@@ -36,6 +37,7 @@ public class Ref implements Cloneable, Serializable {
     };
     protected static final long serialVersionUID = 1L; //why was it necessary? => deep clone...
     protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
+    private static final KEYS[] KEYS_VALUES = KEYS.values();
     public Game game; //reference to the game object
     public Event event; //reference to the event associated with this ref branch/stack
     public boolean base; // affects calculations - all entity params will be taken from base type
@@ -57,6 +59,8 @@ public class Ref implements Cloneable, Serializable {
     protected boolean debug; // some things may work differently when ref debug is on
     protected boolean triggered; // signifies that this branch/stack comes from a trigger
     protected boolean animationDisabled; // outdated phase anim flag...
+    private boolean clone;
+    private boolean original;
 
     public Ref() {
         this.game = Game.game;
@@ -89,6 +93,7 @@ public class Ref implements Cloneable, Serializable {
         setTarget(target.getId());
     }
 
+
     public static Ref getCopy(Ref ref) {
         if (ref == null) {
             return new Ref(Game.game);
@@ -97,7 +102,14 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public static boolean isKey(String key) {
-        return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
+        for (KEYS keys : KEYS_VALUES) {
+            if (keys.name().equalsIgnoreCase(key)) {
+                return true;
+            }
+        }
+//     way too heavy
+//     return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
+        return false;
     }
 
     public static Ref getSelfTargetingRefCopy(Obj obj) {
@@ -233,6 +245,7 @@ public class Ref implements Cloneable, Serializable {
 
     public Object clone() {
         Ref ref = new Ref();
+        ref.setClone(true);
         ref.cloneMaps(this);
         ref.setPlayer(player);
         ref.setEvent(event);
@@ -252,7 +265,7 @@ public class Ref implements Cloneable, Serializable {
 
     protected void cloneMaps(Ref ref) {
         // no deep copy required here
-        values = new HashMap<>(ref.getValues());
+        values = new HashMap<>(ref.values);
     }
 
     protected String formatKeyString(String key) {
@@ -297,7 +310,11 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Integer getAmount() {
-        return getInteger(KEYS.AMOUNT.name());
+        Integer amount = getInteger(KEYS.AMOUNT.name());
+        if (amount == null) {
+            return 0;
+        }
+        return  amount;
     }
 
     public void setAmount(Integer amount) {
@@ -360,7 +377,9 @@ public class Ref implements Cloneable, Serializable {
 
     public void setTarget(Integer this_target) {
         setID(KEYS.TARGET, this_target);
-
+        if (original && !isClone() && getSource()!=null ) {
+            main.system.auxiliary.log.LogMaster.log(1,">>>> target set for original ref? => \n " +this);
+        }
     }
 
     public Ref getCopy() {
@@ -446,7 +465,7 @@ public class Ref implements Cloneable, Serializable {
             return game.getObjectById(NumberUtils.getInteger(getRemovedValues()
              .get(key)));
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             return null;
         }
     }
@@ -592,6 +611,14 @@ public class Ref implements Cloneable, Serializable {
         return "Ref: target =" + getTargetObj() + "\n ; group =" + getGroup();
     }
 
+    public void setClone(boolean clone) {
+        this.clone = clone;
+    }
+
+    public boolean isClone() {
+        return clone;
+    }
+
     public enum KEYS {
         THIS,
 
@@ -647,7 +674,7 @@ public class Ref implements Cloneable, Serializable {
         PLACE,
         ENCOUNTER,
         FACTION,
-        AREA, ATTACK_WEAPON,
+        AREA, ATTACK_WEAPON, RESERVE_WEAPON, RESERVE_OFFHAND_WEAPON, HOSTILITY,
     }
 
 }

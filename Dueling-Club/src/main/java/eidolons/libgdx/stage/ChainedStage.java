@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -12,32 +13,33 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.libgdx.GdxMaster;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class ChainedStage extends Stage {
+public class ChainedStage<T extends Scene> extends Stage {
     private boolean done;
-    private Container<DialogueView> current;
-    private Iterator<DialogueView> iterator;
-    private List<DialogueView> newList = null;
     private Runnable onDoneCallback;
     private DialogueHandler dialogueHandler;
+    private Container  current;
+    private Iterator<T> iterator;
+    private List<T> newList = null;
     private Matrix4 idt = new Matrix4();
     private Matrix4 shear = new Matrix4();
     private OrthographicCamera cam;
 
-    public ChainedStage(ScreenViewport viewport, Batch batch, List<DialogueView> list) {
+    public ChainedStage(ScreenViewport viewport, Batch batch, List<T> list) {
         super(viewport == null ?
           new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
            GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
          batch == null ? new SpriteBatch() :
           batch);
-        current = new Container<>();
+        current = new Container ();
         iterator = list.iterator();
         if (iterator.hasNext()) {
-            current.setActor(iterator.next());
+            current.setActor((Actor) iterator.next());
         }
         setKeyboardFocus(current.getActor());
         addActor(current);
@@ -51,7 +53,7 @@ public class ChainedStage extends Stage {
         return m;
     }
 
-    public void play(List<DialogueView> list) {
+    public void play(List<T> list) {
         newList = list;
     }
 
@@ -63,15 +65,15 @@ public class ChainedStage extends Stage {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (current.getActor() != null && current.getActor().isDone()) {
+        if (current.getActor() != null && ((Scene) current.getActor()).isDone()) {
             if (iterator.hasNext()) {
                 if (dialogueHandler != null) {
-                    dialogueHandler.lineSpoken(current.getActor());
+//                    dialogueHandler.lineSpoken((Scene) current.getActor());
                 }
-                current.setActor(iterator.next());
+                current.setActor((Actor) iterator.next());
                 setKeyboardFocus(current.getActor());
             } else if (newList != null) {
-                final List<DialogueView> list = this.newList;
+                final List<T> list = this.newList;
                 newList = null;
                 iterator = list.iterator();
             } else {
@@ -92,20 +94,21 @@ public class ChainedStage extends Stage {
 
     @Override
     public void draw() {
-        final Matrix4 combined = getCamera().combined.cpy();
-        getCamera().update();
-
-        final Group root = getRoot();
-
-        if (!root.isVisible()) return;
-
-        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-
-        Batch batch = this.getBatch();
-        batch.setProjectionMatrix(combined);
-        batch.begin();
-        root.draw(batch, 1);
-        batch.end();
+        super.draw();
+//        final Matrix4 combined = getCamera().combined.cpy();
+//        getCamera().update();
+//
+//        final Group root = getRoot();
+//
+//        if (!root.isVisible()) return;
+//
+//        combined.setToOrtho2D(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+//
+//        Batch batch = this.getBatch();
+//        batch.setProjectionMatrix(combined);
+//        batch.begin();
+//        root.draw(batch, 1);
+//        batch.end();
     }
 
     //    @Override

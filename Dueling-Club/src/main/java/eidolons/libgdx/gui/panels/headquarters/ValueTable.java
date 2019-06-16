@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
@@ -84,7 +85,10 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
         for (D sub : data) {
             if (i >= actors.length)
                 break;
-            addElement(actors[i] = createElement(sub)).top().space(getSpace());
+            Cell cell = addElement(actors[i] = createElement(sub)).top().space(getSpace());
+            if (getElementSize() != null) {
+                cell.size(getElementSize().x,getElementSize().y);
+            }
             j++;
             i++;
             if (j >= wrap) {

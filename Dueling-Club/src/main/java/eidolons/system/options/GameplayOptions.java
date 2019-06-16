@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
+import main.system.text.LogManager;
 
 public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
@@ -32,7 +33,10 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
     protected Class<? extends GAMEPLAY_OPTION> getOptionClass() {
         return GAMEPLAY_OPTION.class;
     }
-
+static {
+    GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.defaultValue = INFO_LEVEL.VERBOSE;
+//    GAMEPLAY_OPTION.LOG_DETAIL_LEVEL.defaultValue= LOG_DETAIL_LEVEL.verbose
+}
     public enum GAMEPLAY_OPTION implements Options.OPTION {
         RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
@@ -44,11 +48,12 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
-        LOG_DETAIL_LEVEL(LOGGING_DETAIL_LEVEL.values()),
+        LOG_DETAIL_LEVEL(LogManager.LOGGING_DETAIL_LEVEL.values()),
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
         DEFAULT_WAIT_TIME(60, 10, 300),
-        HP_BARS_ALWAYS_VISIBLE(false), GAME_SPEED(100, 10, 300),
+        HP_BARS_ALWAYS_VISIBLE(false), GAME_SPEED(100, 10, 150),
+        TURN_CONTROL(true),
         ATB_WAIT_TIME(5, 0, 10),
         SHUFFLE_LEVELS(false),
         REVERSE_LEVELS(false),
@@ -60,7 +65,9 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         SEQUENTIAL_RNG(false),
         PREGENERATED_RNG_LEVELS(true),
         LOG_LENGTH_LIMIT(500, 50, 1500),
-        LIMIT_LOG_LENGTH(false);
+        LIMIT_LOG_LENGTH(false),
+        DEATH_SHADOW_OFF(false)
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -134,10 +141,4 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
     }
 
-    public enum LOGGING_DETAIL_LEVEL {
-        CONCISE,
-        ESSENTIAL,
-        FULL,
-        DEV,;
-    }
 }

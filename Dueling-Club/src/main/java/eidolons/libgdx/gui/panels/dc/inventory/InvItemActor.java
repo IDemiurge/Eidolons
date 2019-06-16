@@ -59,6 +59,11 @@ public class InvItemActor extends ItemActor {
         initSize();
     }
 
+    @Override
+    public String toString() {
+        return model + "'s Actor";
+    }
+
     public InvItemActor(DC_HeroItemObj model, CELL_TYPE cellType, InventoryClickHandler handler) {
         super(model);
         this.cellType = cellType;

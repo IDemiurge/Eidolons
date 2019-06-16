@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 
@@ -15,6 +16,16 @@ public abstract class HqElement extends TablePanelX implements HqActor{
     }
 
     public HqElement() {
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        super.setBackground(background);
+    }
+
+    @Override
+    protected Drawable getDefaultBackground() {
+        return super.getDefaultBackground();
     }
 
     @Override

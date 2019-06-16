@@ -32,6 +32,7 @@ import java.util.ArrayList;
 public class DungeonQuest {
 
     private final ObjType objType;
+    private final QuestPreparer preparer;
     protected Integer numberRequired = 0;
     protected Integer numberAchieved = 0;
     protected Integer numberPrepared = 0;
@@ -58,59 +59,20 @@ public class DungeonQuest {
     public DungeonQuest(ObjType type) {
         this.objType=type;
         initValues(type);
-        initArg();
+        preparer= new QuestPreparer(this);
+        preparer.initArg();
         description = parseDescriptionVars(type, description);
         description+="\n" + getReward().toString();
         //create a trigger?
     }
 
-    private void initArg() {
-        int powerLevel= Eidolons.getMainHero().getIntParam(PARAMS.POWER) ;
-        main.system.auxiliary.log.LogMaster.log(1,"powerLevel= " +powerLevel);
-        style =  Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
-        switch (type) {
-            case BOSS:
-                setArg(QuestCreator.getBossType(powerLevel, this,
-                 style ));
-                break;
-            case HUNT:
-                ObjType unitType = QuestCreator.getPreyType(powerLevel, this,
-                 style );
-                float coef = getMobPower(powerLevel, unitType);
-                setPowerCoef(coef);
-                setArg(unitType);
-                break;
-            case OBJECTS:
-                setPowerCoef(new Float(powerLevel)/40);
-                setArg(DataManager.getType(BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE.getName(), DC_TYPE.BF_OBJ));
-                break;
-            case SECRETS:
-                setPowerCoef(new Float(powerLevel)/180);
-                setArg(DataManager.getType("Old Stone Wall", DC_TYPE.BF_OBJ));
-                break;
-            case COMMON_ITEMS:
-                setPowerCoef(new Float(powerLevel)/70);
-                setArg(QuestCreator.getItemTypeCommon(powerLevel, this,
-                 style ));
-                break;
-            case SPECIAL_ITEM:
-                setArg(QuestCreator.getItemTypeSpecial(objType, powerLevel, this,
-                 style ));
-                break;
-            case ESCAPE:
-                break;
-        }
+    private String parseDescriptionVars(ObjType type, String description) {
+        return preparer.parseVars(false, type, description, preparer.getDescriptor(),
+                ""+getNumberRequired());
     }
-
-    private float getMobPower(int powerLevel, ObjType unitType) {
-        return MathMaster.minMax(new Float(powerLevel) / unitType.getIntParam(PARAMS.POWER)
-          , 0.25f, 3);
-    }
-
     public void update() {
-        progressText = parseVars(true, objType, progressTextTemplate,
-         getDescriptor(), getNumberTooltip());
-
+        progressText =preparer.parseVars(true, objType, progressTextTemplate,
+                preparer.getDescriptor(), getNumberTooltip());
         GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, this);
     }
 
@@ -119,18 +81,9 @@ public class DungeonQuest {
             return null;
         }
         return StringMaster.wrapInBraces(
-         numberAchieved + " / " +
-          numberRequired);
+                numberAchieved + " / " +
+                        numberRequired);
     }
-
-    private String getDescriptor() {
-        switch (type) {
-            case ESCAPE:
-                return null;
-        }
-        return StringMaster.toStringForm(arg);
-    }
-
 
     private void initValues(ObjType type) {
         this.title = type.getName();
@@ -153,34 +106,6 @@ public class DungeonQuest {
         }
     }
 
-    private String parseDescriptionVars(ObjType type, String description) {
-       return parseVars(false, type, description, getDescriptor(),
-         ""+getNumberRequired());
-    }
-
-    private String parseVars(boolean inverse, ObjType type, String template,
-                             String name,
-                             String number) {
-        if (type.getProperty(G_PROPS.VARIABLES).isEmpty()) {
-            if (inverse) {
-                return VariableManager.substitute(template,
-                 number,name);
-            }
-            return VariableManager.substitute(template,
-             name,
-             number);
-        }
-        ArrayList<Object> vars = new ArrayList<>();
-
-        for (String var : ContainerUtils.openContainer(type.getProperty(G_PROPS.VARIABLES))) {
-            if (var.equalsIgnoreCase("name")) {
-                vars.add(name);
-            } else if (var.equalsIgnoreCase("number")) {
-                vars.add(number);
-            }
-        }
-        return VariableManager.substitute(template,vars);
-    }
 
     public String getTitle() {
         return title;
@@ -311,5 +236,9 @@ public class DungeonQuest {
 
     public Town getTown() {
         return town;
+    }
+
+    public ObjType getObjType() {
+        return objType;
     }
 }

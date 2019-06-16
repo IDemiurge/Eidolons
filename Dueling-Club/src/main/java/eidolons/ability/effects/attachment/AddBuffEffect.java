@@ -103,7 +103,8 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
         // if (buff == null)
         buff = getBuffCache().get(target);
         if (buff != null) {
-            buff.setDuration(buff.getIntParam(G_PARAMS.DURATION));
+//            buff.setDuration(buff.getIntParam(G_PARAMS.DURATION));
+            buff.setDuration(initDuration());
             buff.setDead(false);
             if (!buff.getBasis().hasBuff(buff.getName()) || checkStacking()) {
                 game.getManager().buffCreated(buff, buff.getBasis());

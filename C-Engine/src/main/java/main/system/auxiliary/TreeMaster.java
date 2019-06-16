@@ -2,6 +2,7 @@ package main.system.auxiliary;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -15,10 +16,10 @@ public class TreeMaster {
     @SuppressWarnings("unchecked")
     public static List<DefaultMutableTreeNode> getChildren(DefaultMutableTreeNode selectedNode,
                                                            boolean recursive) {
-        Enumeration<DefaultMutableTreeNode> e = selectedNode.children();
+        Enumeration<TreeNode> e = selectedNode.children();
         List<DefaultMutableTreeNode> list = new ArrayList<>();
         while (e.hasMoreElements()) {
-            DefaultMutableTreeNode nextElement = e.nextElement();
+            DefaultMutableTreeNode nextElement = (DefaultMutableTreeNode) e.nextElement();
             if (recursive) {
                 if (!nextElement.isLeaf()) {
                     list.addAll(getChildren(nextElement, true));
@@ -41,22 +42,22 @@ public class TreeMaster {
 
     public static DefaultMutableTreeNode findChildNode(DefaultMutableTreeNode subNode,
                                                        String property) {
-        Enumeration<DefaultMutableTreeNode> e = subNode.children();
+        Enumeration<TreeNode> e = subNode.children();
         List<DefaultMutableTreeNode> list = new ArrayList<>();
         while (e.hasMoreElements()) {
-            DefaultMutableTreeNode child = e.nextElement();
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) e.nextElement();
             if (child.getUserObject().toString().equals(property)) {
                 return child;
             }
         }
         while (e.hasMoreElements()) {
-            DefaultMutableTreeNode child = e.nextElement();
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) e.nextElement();
             if (StringMaster.compare(child.getUserObject().toString(), property)) {
                 return child;
             }
         }
         while (e.hasMoreElements()) {
-            DefaultMutableTreeNode child = e.nextElement();
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) e.nextElement();
             if (StringMaster.compare(child.getUserObject().toString(), property, false)) {
                 return child;
             }

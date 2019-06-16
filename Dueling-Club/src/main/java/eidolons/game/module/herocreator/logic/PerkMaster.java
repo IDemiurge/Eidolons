@@ -2,7 +2,6 @@ package eidolons.game.module.herocreator.logic;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.utils.PerkGenerator.PERK_TYPE;
@@ -11,12 +10,14 @@ import main.content.enums.entity.HeroEnums.CLASS_PERK_GROUP;
 import main.content.enums.entity.HeroEnums.PERK_PARAM;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/1/2018.
@@ -25,8 +26,14 @@ public class PerkMaster {
 
 
     public static List<ObjType> getAvailablePerks(Unit hero, int tier,
-                                                  HeroClass c1, HeroClass c2) {
+                                                  Entity c1, Entity c2) {
         List<ObjType> list = new ArrayList<>();
+
+        if (HeroClassMaster.isDataAnOpenSlot(c1))
+            return list;
+        if (HeroClassMaster.isDataAnOpenSlot(c2))
+            return list;
+
         CLASS_PERK_GROUP group1 =
          new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
           c1.getProperty(PROPS.CLASS_PERK_GROUP));
@@ -57,16 +64,32 @@ public class PerkMaster {
         }
         if (c1.getType() == c2.getType()) {
             //addSpecial
+            List<ObjType> custom = getCustomPerks(c1);
+            list.addAll(custom);
         }
 
         return list;
     }
 
+    private static List<ObjType> getCustomPerks(Entity c1) {
+        List<ObjType> list = DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
+                t -> t.getProperty(PROPS.PERK_FOR_CLASSES)
+                        .toLowerCase(). contains(c1.getName().toLowerCase())
+        ).collect(Collectors.toList());
+        return list;
+    }
+
     private static boolean isPerkProhibited(ObjType type, Unit hero) {
+        for (Perk perk : hero.getPerks()) {
+            if (perk.getType().equals(type)) {
+                return true;
+            }
+
+        }
         return false;
     }
 
-    private static boolean checkCustomPerkReqs(ObjType type, Unit hero, HeroClass c1, HeroClass c2) {
+    private static boolean checkCustomPerkReqs(ObjType type, Unit hero, Entity c1, Entity c2) {
         String string = type.getProperty(G_PROPS.PERK_CLASS_REQUIREMENTS);
         //syntax: OR== class1;class2 AND == class1+class2;class3+class2;...
         for (String substring : ContainerUtils.openContainer(string)) {
@@ -84,7 +107,7 @@ public class PerkMaster {
         return false;
     }
 
-    private static boolean checkAliasForClass(String substring, HeroClass heroClass) {
+    private static boolean checkAliasForClass(String substring, Entity heroClass) {
         substring = substring.toLowerCase();
         if (substring.contains(heroClass.getName().toLowerCase())) return true;
         CLASS_PERK_GROUP group =

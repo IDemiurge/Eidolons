@@ -20,6 +20,8 @@ public class InventoryPanel extends TablePanel {
     private InventoryQuickSlotPanel quickSlot;
     private Cell mainWeapon;
     private Cell offWeapon;
+    private   Cell offWeaponReserve;
+    private   Cell mainWeaponReserve;
     private RingSlotsPanel leftRingSlotsPanel;
     private RingSlotsPanel rightRingSlotsPanel;
     private Cell avatarPanel;
@@ -62,6 +64,8 @@ public class InventoryPanel extends TablePanel {
 
         mainWeapon = left.addElement(null).fill(0, 0).bottom();
         left.row();
+        mainWeaponReserve = left.addElement(null).fill(0, 0).bottom();
+        left.row();
 
         leftRingSlotsPanel = new RingSlotsPanel(true);
 
@@ -79,6 +83,8 @@ public class InventoryPanel extends TablePanel {
 
 
         offWeapon = right.addElement(null).fill(0, 0).bottom();
+        right.row();
+        offWeaponReserve = right.addElement(null).fill(0, 0).bottom();
         right.row();
 
         rightRingSlotsPanel = new RingSlotsPanel(false);
@@ -119,6 +125,9 @@ public class InventoryPanel extends TablePanel {
         super.updateAct(delta);
 
         final EquipDataSource source = (EquipDataSource) getUserObject();
+
+        mainWeaponReserve.setActor(source.mainWeaponReserve());
+        offWeaponReserve.setActor(source.offWeaponReserve());
 
         mainWeapon.setActor(source.mainWeapon());
         offWeapon.setActor(source.offWeapon());

@@ -55,11 +55,11 @@ public class FileManager {
 
                 }
                 System.out.println("Failed to read " + file.getPath());
-                try {
-                    throw new RuntimeException();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+//              TODO wtf  try {
+//                    throw new RuntimeException();
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                }
                 return "";
             }
             if (!file.getPath().contains(PathFinder.getEnginePath()))
@@ -233,7 +233,8 @@ public class FileManager {
 //                return file;
 //            }
 //            file = new File(path);
-            if (!CoreEngine.isFullFastMode()) {
+            if (!CoreEngine.isActiveTestMode())
+                if (!CoreEngine.isFullFastMode()) {
                 if (!missing.contains(file.getPath())) {
                     main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
                     missing.add(file.getPath());
@@ -306,6 +307,10 @@ public class FileManager {
             String newPath = prefixPath + corePath + ((underslash) ? "_" : "") + i + format;
             file = FileManager.getFile(newPath);
             if (!file.isFile()) {
+                newPath = prefixPath + corePath + (  " ") + i + format;
+                file = FileManager.getFile(newPath);
+            }
+                if (!file.isFile()) {
 
                 break;
             }

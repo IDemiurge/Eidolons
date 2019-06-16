@@ -651,6 +651,9 @@ public class ItemGenerator implements GenericItemGenerator {
     public ObjType getOrCreateJewelry(ObjType baseType, JEWELRY_ITEM_TRAIT trait,
                                       ITEM_LEVEL level) {
         String name = generateName(trait, level, baseType);
+        if (baseType.getOBJ_TYPE_ENUM()!= DC_TYPE.JEWELRY) {
+            return null;
+        }
         ObjType type = DataManager.getType(name, DC_TYPE.JEWELRY);
         if (type != null) {
             return type;
@@ -673,6 +676,9 @@ public class ItemGenerator implements GenericItemGenerator {
                 typeName = typeName.replaceFirst(type.getName(), "");
                 break;
             }
+        }
+        if (objType == null) {
+            return null ;
         }
         JEWELRY_ITEM_TRAIT trait =
          new EnumMaster<JEWELRY_ITEM_TRAIT>().

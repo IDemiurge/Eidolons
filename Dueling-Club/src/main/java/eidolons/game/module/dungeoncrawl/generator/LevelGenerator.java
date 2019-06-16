@@ -7,6 +7,7 @@ import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
+import eidolons.game.module.dungeoncrawl.generator.level.BlockCreator;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModelBuilder;
 import eidolons.game.module.dungeoncrawl.generator.model.ModelFinalizer;
@@ -124,7 +125,11 @@ public class LevelGenerator {
             try {
                 LevelModel model = generateLevelModel(data);
                 PositionMaster.initDistancesCache(model.getCurrentWidth(), model.getCurrentHeight());
+                new BlockCreator().createBlocks(model);
                 RngFillMaster.fill(model, data);
+                for (int i = 0; i < data.getIntValue(GeneratorEnums.LEVEL_VALUES.ADDITIONAL_FILL_RUNS); i++) {
+                    RngFillMaster.fill(model, data);
+                }
                 if (data.isNatural())
                     ModelFinalizer.randomizeEdges(model);
                 DungeonLevel level = new DungeonLevel(model, data.getSublevelType(), data.getLocationType());

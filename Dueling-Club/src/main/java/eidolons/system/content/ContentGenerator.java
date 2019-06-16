@@ -8,15 +8,23 @@ import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
+import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.file.ResourceMaster;
+import eidolons.system.text.NameMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.enums.GenericEnums.STD_BOOLS;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -37,7 +45,10 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
+import main.entity.Entity;
+import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
@@ -47,6 +58,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,14 +67,106 @@ import java.util.Map;
 
 public class ContentGenerator {
 
+    public static final String SPELL_TESTED = "Shadow Fury";
     private static final boolean OVERWRITE_DESCR = false;
     static PARAMS[] params = {PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.ARMOR,};
     static PROPERTY[] heroProps = {
-     PROPS.SKILLS,
-     PROPS.CLASSES,
-     PROPS.PERKS,
-     PROPS.INVENTORY,
+            PROPS.SKILLS,
+            PROPS.CLASSES,
+            PROPS.PERKS,
+            PROPS.INVENTORY,
     };
+
+    public static String getTestSpellFilter(String name) {
+        switch (name) {
+            case "Grimbart":
+                return "VFX";
+            case "Gwynn":
+                return "CAST";
+            case "Raina Ardren":
+                return "IMPACT";
+            case "Gorr Eddar":
+                return "MAIN";
+        }
+        return name;
+    }
+
+    public static void generateSpellVfxVariants() {
+        generateSpellVfxVariants(SPELL_TESTED, PathFinder.getVfxPath() + "advanced/",
+                PROPS.ANIM_MISSILE_VFX, PROPS.ANIM_VFX_CAST
+                , PROPS.ANIM_VFX_IMPACT
+                , PROPS.ANIM_VFX_MAIN
+        );
+    }
+
+    public static void generateSpellVfxVariants(String baseName, String vfxFolder, PROPERTY... props) {
+        ObjType type = DataManager.getType(baseName, DC_TYPE.SPELLS);
+        generateSpellVfxVariants(type, vfxFolder, props);
+    }
+
+    public static void setRandomizeDefaultSkillIcons() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SKILLS)) {
+            File folder = new File(PathFinder.getImagePath() + "gen/skills/workshop/map/" + type.getProperty(G_PROPS.MASTERY));
+            if (!folder.isDirectory()) {
+                continue;
+            }
+            String imgPath = FileManager.getRandomFilePath(folder.getPath());
+            if (ImageManager.isImage(
+                    imgPath
+            )) {
+                type.setImage(imgPath);
+            }
+        }
+    }
+
+    public static void randomizeSkillIcons() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SKILLS)) {
+            File folder = new File(PathUtils.cropLastPathSegment(type.getImagePath()));
+            if (!folder.isDirectory()) {
+                continue;
+            }
+            String newImage = FileManager.getRandomFilePath(
+                    folder.getPath());
+            if (ImageManager.isImage(newImage)) {
+                newImage = GdxImageMaster.cropImagePath(newImage);
+                type.setImage(newImage);
+            }
+        }
+    }
+
+    public static void setDefaultSkillIcons() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SKILLS)) {
+            if (ImageManager.isImage(type.getImagePath())) {
+                type.setImage(Images.getDefaultSkillImage(type.getProperty(G_PROPS.MASTERY)));
+            }
+        }
+
+    }
+
+    public static void generateSpellVfxVariants(ObjType type, String vfxFolder, PROPERTY... props) {
+        String name = type.getName();
+
+        for (File file : FileManager.getFilesFromDirectory(vfxFolder, false)) {
+            if (props.length == 1) {
+                String vfxPath = GdxImageMaster.cropImagePath(file.getPath());
+                vfxPath = PathUtils.cropFirstPathSegment(vfxPath);
+                name = type.getName() + " " + StringMaster.getLastPart(props[0].name(), "_") + " " + PathUtils.getLastPathSegment(vfxPath);
+                ObjType newType = new ObjType(name, type);
+                newType.setProperty(props[0], vfxPath);
+                main.system.auxiliary.log.LogMaster.log(1, "Vfx spell new Type " + newType);
+                DataManager.addType(newType);
+                newType.setGenerated(false);
+            } else {
+                for (PROPERTY prop : props) {
+//                    name = NameMaster.getUniqueVersionedName(name, type.getOBJ_TYPE_ENUM());
+                    generateSpellVfxVariants(type, vfxFolder, prop);
+                }
+                return;
+            }
+        }
+        return;
+
+    }
 
     public static void markPartyUsedContent() {
         String partyName = "Dark Heroes";
@@ -89,12 +193,12 @@ public class ContentGenerator {
                     continue loop;
             }
             contents += StringMaster.getEnumFormat(
-             StringMaster.getEnumFormatSaveCase(
-              StringMaster.cropFormat(file.getName()))) + ",\n";
+                    StringMaster.getEnumFormatSaveCase(
+                            StringMaster.cropFormat(file.getName()))) + ",\n";
 
         }
         String text = "public enum " +
-         " {" + contents + ";\n}";
+                " {" + contents + ";\n}";
         System.out.println(text);
 
     }
@@ -103,7 +207,7 @@ public class ContentGenerator {
         DC_Engine.mainMenuInit();
         generateUnitGroupsEnumsTxt();
         generateTypeEnumsTxt(true, new DC_TYPE[]{
-         DC_TYPE.UNITS, DC_TYPE.BF_OBJ
+                DC_TYPE.UNITS, DC_TYPE.BF_OBJ
         });
 
     }
@@ -118,13 +222,13 @@ public class ContentGenerator {
                 contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
                 if (perGroup) {
                     MapMaster.addToListMap(subMap, type.getSubGroupingKey().toUpperCase(),
-                     type);
+                            type);
                     MapMaster.addToListMap(map, type.getGroup().toUpperCase(),
-                     type);
+                            type);
                 }
             }
             String text = "public enum " + TYPE.name().toUpperCase() + "_TYPES" +
-             " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
+                    " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
             System.out.println(text);
             for (String group : map.keySet()) {
                 contents = "";
@@ -132,8 +236,8 @@ public class ContentGenerator {
                     contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
                 }
                 text = "public enum  " + TYPE.name().toUpperCase() + "_TYPES_" +
-                 StringMaster.toEnumFormat(group) +
-                 " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
+                        StringMaster.toEnumFormat(group) +
+                        " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
                 System.out.println(text);
 
             }
@@ -143,8 +247,8 @@ public class ContentGenerator {
                     contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
                 }
                 text = "public enum  " + TYPE.name().toUpperCase() + "_SUB_TYPES_" +
-                 StringMaster.toEnumFormat(group) +
-                 " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
+                        StringMaster.toEnumFormat(group) +
+                        " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
                 System.out.println(text);
 
             }
@@ -168,33 +272,163 @@ public class ContentGenerator {
     }
 
     public static final void afterRead() {
-        if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
+        clearGenType();
+
+        if (DataManager.isTypesRead(DC_TYPE.SKILLS)) {
+//            setDefaultSkillIcons();
+//            setRandomizeDefaultSkillIcons();
+//            randomizeSkillIcons();
+        }
+        if (DataManager.isTypesRead(DC_TYPE.SPELLS))
+            generateSpellVfxVariants();
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
             generateIndestructibleWalls();
-        if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ))
             generateFalseWalls();
-        if (!DataManager.getTypes(DC_TYPE.SCENARIOS).isEmpty())
+        if (DataManager.isTypesRead(DC_TYPE.SCENARIOS))
             generateRngScenarios();
-        if (!DataManager.getTypes(DC_TYPE.PARTY).isEmpty())
+        if (DataManager.isTypesRead(DC_TYPE.PARTY))
             try {
                 markPartyUsedContent();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-            updateImagePaths();
-
+//        updateImagePaths(DC_TYPE.SKILLS);
+//        writeImages(DC_TYPE.SKILLS);
 //            writeDataToText();
     }
 
-    private static void updateImagePaths() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.UNITS)) {
-            String path = type.getImagePath();
-            path =path.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
-            if (!ImageManager.isImage(path)){
-                main.system.auxiliary.log.LogMaster.log(1,path+ " - is not a valid img for " +type);
+    public static void generateKeyObjects() {
+        List<ObjType> types = DataManager.getTypes(DC_TYPE.ITEMS);
+        for (ObjType type : types) {
+
+            if (type.getSubGroupingKey().equalsIgnoreCase("keys")) {
+                String name = "Hanging " + type.getName();
+                if (DataManager.isTypeName(name, DC_TYPE.BF_OBJ))
+                    continue;
+
+                ObjType baseType = DataManager.getType("dummy hung obj", DC_TYPE.BF_OBJ);
+                ObjType newType = new ObjType(name, baseType);
+                newType.setProperty(G_PROPS.BF_OBJECT_CLASS, "Key");
+                newType.setGenerated(false);
+                newType.setImage("main/bf/hanging/keys/" +
+//                        type.getName()
+                        "Jade Key" + ".png");
+                DataManager.addType(newType);
+            }
+
+        }
+
+    }
+
+    private static void clearGenType() {
+        for (ObjType type : new ArrayList<>(DataManager.getTypes(DC_TYPE.BF_OBJ))) {
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
+                    type.checkBool(STD_BOOLS.FAUX)) {
+                if (type.getName().contains("Indestructible Indestructible")) {
+                    DataManager.removeType(type);
+                }
+                if (type.getName().contains("Marked Indestructible")) {
+                    DataManager.removeType(type);
+                }
+                if (type.getName().contains("Marked Marked")) {
+                    DataManager.removeType(type);
+                }
+            }
+
+        }
+    }
+
+    private static void writeImages(OBJ_TYPE... TYPES) {
+        for (OBJ_TYPE T : TYPES) {
+            for (ObjType type : DataManager.getTypes(T)) {
+                String path = type.getImagePath();
+                if (!ImageManager.isImage(ImageManager.getImageFolderPath() + path)) {
+                    continue;
+                }
+                if (path.contains("entity")) {
+                    continue;
+                }
+                try {
+                    String newPath = "gen/skills/" + type.getProperty(G_PROPS.MASTERY) + "/"
+                            + type.getName() + ".png";
+                    String newPath2 = "gen/skills/" + type.getProperty(G_PROPS.MASTERY) + "/2/"
+                            + type.getName() + ".png";
+                    newPath = FileManager.formatPath(newPath);
+                    path = StringMaster.cropLast(FileManager.formatPath(path, true), 1);
+                    if (path.equalsIgnoreCase(newPath))
+                        continue;
+                    type.setImage(newPath);
+                    ResourceMaster.writeImage(path, newPath2, true);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+        }
+    }
+
+    public static void updateImagePathsForJpg_Png() {
+        /**
+         * locks
+         * mushroom
+         * light emitters
+         * inscriptions
+         */
+        for (ObjType type : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
+
+//            if (!EntityCheckMaster.isOverlaying(type)) {
+//                continue;
+//            }
+
+            String folder = "";
+            if (type.getName().toLowerCase().contains("fungi")) {
+                folder = "fungi";
+            } else if (
+                    type.getGroup().equalsIgnoreCase("light emitters")) {
+                folder = "light emitters";
+            } else if (  type.getName().toLowerCase().contains("inscription")) {
+                folder = "inscription";
+            } else if ( type.getName().toLowerCase().contains("key")) {
+                folder = "keys";
+            }
+
+            String name = PathUtils.getLastPathSegment(type.getImagePath());
+            String newRoot = "sprites/bf/hanging/" + folder + "/" + name;
+            if (!TextureCache.isImage(newRoot)) {
                 continue;
             }
-            type.setImage(path);
+            type.setImage(newRoot);
+        }
+
+
+    }
+
+    private static void saveAllAsJPG() {
+
+        for (ObjType type : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
+            if (EntityCheckMaster.isOverlaying(type)) {
+                continue;
+            }
+            String path = type.getImagePath();
+            String newPath= StringMaster.cropFormat(path)+".jpg";
+            ResourceMaster.writeImage(path, newPath);
+
+            type.setImage(newPath);
+        }
+        }
+
+    private static void updateImagePaths(OBJ_TYPE... TYPES) {
+        for (OBJ_TYPE T : TYPES) {
+            for (ObjType type : DataManager.getTypes(T)) {
+                String path = type.getImagePath();
+                path = path.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
+                if (!ImageManager.isImage(path)) {
+                    main.system.auxiliary.log.LogMaster.log(1, path + " - is not a valid img for " + type);
+                    continue;
+                }
+                type.setImage(path);
+            }
         }
     }
 
@@ -203,11 +437,10 @@ public class ContentGenerator {
         for (String s : XML_Reader.getTypeMaps().keySet()) {
             for (ObjType t : XML_Reader.getTypeMaps().get(s).values()) {
                 String data = t.getDescription();
-                if (!data.isEmpty())
-                {
+                if (!data.isEmpty()) {
                     String old = DescriptionMaster.getDescription(t, false);
-                    if (!old.isEmpty()){
-                        if (!OVERWRITE_DESCR){
+                    if (!old.isEmpty()) {
+                        if (!OVERWRITE_DESCR) {
                             continue;
                         }
                     }
@@ -217,10 +450,26 @@ public class ContentGenerator {
         }
     }
 
+    public static void generateConsumableItemsFromOverlaying() {
+        ObjType baseType = DataManager.getType("Consumable", DC_TYPE.ITEMS);
+        for (ObjType type : DataManager.getTypes(
+                DC_TYPE.BF_OBJ)) {
+            if (!type.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.CONSUMABLE.toString()))
+                continue;
+            ObjType newType = new ObjType(
+                    InteractiveObjMaster.getConsumableItemName(type.getName()),
+                    baseType);
+            newType.setImage(type.getImagePath());
+            DataManager.addType(newType);
+            newType.setGenerated(false); //to save it!
+        }
+    }
+
     public static void generateFalseWalls() {
         for (ObjType type : DataManager.getTypesGroup(
-         DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
-            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE))
+                DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
+                    type.checkBool(STD_BOOLS.FAUX))
                 continue;
             ObjType newType = new ObjType(type.getName() + WallMap.v(null), type);
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.FAUX.name());
@@ -232,18 +481,21 @@ public class ContentGenerator {
     public static void generateIndestructibleWalls() {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
 
-            ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
-            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
-            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
-            DataManager.addType(newType);
-            newType.setGenerated(false);
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
+                    type.checkBool(STD_BOOLS.FAUX))
+                continue;
+//            ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
+//            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
+//            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
+//            DataManager.addType(newType);
+//            newType.setGenerated(false);
         }
     }
 
     public static void generateRngScenarios() {
         for (LOCATION_TYPE type : LOCATION_TYPE.values()) {
             ObjType newType = new ObjType(StringMaster.getWellFormattedString(type.name()),
-             DC_TYPE.SCENARIOS);
+                    DC_TYPE.SCENARIOS);
             newType.setGroup("Random", true);
             switch (type) {
                 case CAVE:
@@ -252,10 +504,10 @@ public class ContentGenerator {
                 default:
                     newType.setImage(Images.EMPTY_SPELL);
                     newType.setProperty(G_PROPS.FULLSIZE_IMAGE,
-                     "demo/previews/Ironhelm Tunnel.png");
+                            "demo/previews/Ironhelm Tunnel.png");
             }
             newType.setProperty(PROPS.SUBDUNGEON_TYPE,
-             type.toString());
+                    type.toString());
             DataManager.addType(newType);
         }
     }
@@ -599,7 +851,7 @@ public class ContentGenerator {
 
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             RESIST_GRADE grade = (material == null) ? getGradeForUnitType(t, dmg_type) : material
-             .getResistGrade(dmg_type);
+                    .getResistGrade(dmg_type);
             PROPERTY prop = DC_ContentValsManager.getResistGradeForDmgType(dmg_type);
             if (prop == null) {
                 continue;
@@ -607,25 +859,25 @@ public class ContentGenerator {
 
             t.setProperty(prop, grade.toString());
             t.setParam(DC_ContentValsManager.getArmorParamForDmgType(dmg_type), Math.round(armor
-             * grade.getPercent() / 100));
+                    * grade.getPercent() / 100));
             if (material == null) {
                 grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
-                 .getProperty(DC_ContentValsManager.getResistGradeForDmgType(dmg_type)));
+                        .getProperty(DC_ContentValsManager.getResistGradeForDmgType(dmg_type)));
             } else {
                 grade = material.getSelfDamageGrade(dmg_type);
             }
             t.setProperty(DC_ContentValsManager.getSelfDamageGradeForDmgType(dmg_type), grade
-             .toString());
+                    .toString());
 
             prop = DC_ContentValsManager.getSelfDamageGradeForDmgType(dmg_type);
             if (prop == null) {
                 continue;
             }
             grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
-             .getProperty(prop));
+                    .getProperty(prop));
 
             t.setParam(DC_ContentValsManager.getArmorSelfDamageParamForDmgType(dmg_type), Math
-             .round(grade.getPercent()));
+                    .round(grade.getPercent()));
 
         }
 
@@ -635,94 +887,94 @@ public class ContentGenerator {
         switch (group) {
             case AXES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop, WEAPON_ATTACKS.Hack,
-                 WEAPON_ATTACKS.Hook));
+                        WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop, WEAPON_ATTACKS.Hack,
+                        WEAPON_ATTACKS.Hook));
             case POLLAXES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Spike_Stab, WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop,
-                 WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Hook));
+                        WEAPON_ATTACKS.Spike_Stab, WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop,
+                        WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Hook));
 
             case FLAILS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Heavy_Swing, WEAPON_ATTACKS.Chain_Thrust,
-                 WEAPON_ATTACKS.Head_Smash));
+                        WEAPON_ATTACKS.Heavy_Swing, WEAPON_ATTACKS.Chain_Thrust,
+                        WEAPON_ATTACKS.Head_Smash));
             case HAMMERS:
                 return ContainerUtils
-                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
-                  WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
+                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
+                                WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
             case MACES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Heavy_Swing));
+                        WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Heavy_Swing));
             case CLUBS:
                 return ContainerUtils
-                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
-                  WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
+                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
+                                WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
 
             case GREAT_SWORDS:
             case LONG_SWORDS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Sword_Swing, WEAPON_ATTACKS.Slash,
-                 WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Hilt_Smash));
+                        WEAPON_ATTACKS.Sword_Swing, WEAPON_ATTACKS.Slash,
+                        WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Hilt_Smash));
             case SHORT_SWORDS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash,
-                 WEAPON_ATTACKS.Hilt_Smash, WEAPON_ATTACKS.Stab));
+                        WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash,
+                        WEAPON_ATTACKS.Hilt_Smash, WEAPON_ATTACKS.Stab));
             case DAGGERS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash, WEAPON_ATTACKS.Stab));
+                        WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash, WEAPON_ATTACKS.Stab));
 
             case SCYTHES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook,
-                 WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Pole_Push,
-                 WEAPON_ATTACKS.Pole_Smash));
+                        WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Pole_Push,
+                        WEAPON_ATTACKS.Pole_Smash));
             case SPEARS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Spear_Poke, WEAPON_ATTACKS.Impale,
-                 WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Push));
+                        WEAPON_ATTACKS.Spear_Poke, WEAPON_ATTACKS.Impale,
+                        WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Push));
             case STAVES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Thrust,
-                 WEAPON_ATTACKS.Pole_Push));
+                        WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Thrust,
+                        WEAPON_ATTACKS.Pole_Push));
             case SHIELDS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Shield_Push, WEAPON_ATTACKS.Shield_Bash));
+                        WEAPON_ATTACKS.Shield_Push, WEAPON_ATTACKS.Shield_Bash));
             case CLAWS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Rip));
+                        WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Rip));
             case FISTS:
                 return ContainerUtils.constructStringContainer(ListMaster
-                 .toList(WEAPON_ATTACKS.Punch, WEAPON_ATTACKS.Fist_Swing,
-                  WEAPON_ATTACKS.Elbow_Smash));
+                        .toList(WEAPON_ATTACKS.Punch, WEAPON_ATTACKS.Fist_Swing,
+                                WEAPON_ATTACKS.Elbow_Smash));
             case FEET:
                 return ContainerUtils
-                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
+                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
             case MAWS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
-                 WEAPON_ATTACKS.Dig_Into, WEAPON_ATTACKS.Tear));
+                        WEAPON_ATTACKS.Dig_Into, WEAPON_ATTACKS.Tear));
             case FANGS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
-                 WEAPON_ATTACKS.Dig_Into));
+                        WEAPON_ATTACKS.Dig_Into));
             case TAILS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Tail_Smash, WEAPON_ATTACKS.Tail_Sting));
+                        WEAPON_ATTACKS.Tail_Smash, WEAPON_ATTACKS.Tail_Sting));
             case HORNS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Tear));
+                        WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Tear));
             case INSECTOID:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                 WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Stab));
+                        WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Stab));
             case HOOVES:
                 return ContainerUtils.constructStringContainer(ListMaster
-                 .toList(WEAPON_ATTACKS.Hoof_Slam));
+                        .toList(WEAPON_ATTACKS.Hoof_Slam));
             case BEAKS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
-                 WEAPON_ATTACKS.Tear, WEAPON_ATTACKS.Dig_Into));
+                        WEAPON_ATTACKS.Tear, WEAPON_ATTACKS.Dig_Into));
             case EYES:
                 return ContainerUtils
-                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
+                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
             case FORCE:
                 return ContainerUtils
-                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
+                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
 
         }
         return null;
@@ -731,7 +983,7 @@ public class ContentGenerator {
     public static void generateWeaponParams(ObjType t) {
         // if (!t.checkProperty(PROPS.WEAPON_ATTACKS)) {
         WEAPON_GROUP group = new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(WEAPON_GROUP.class, t
-         .getProperty(G_PROPS.WEAPON_GROUP));
+                .getProperty(G_PROPS.WEAPON_GROUP));
         if (group != null) {
             String weaponActions = getDefaultWeaponActions(group);
             if (weaponActions != null) {
@@ -751,7 +1003,7 @@ public class ContentGenerator {
         if (t.getIntParam(PARAMS.IMPACT_AREA) == 0) {
             if (group == null) {
                 WEAPON_TYPE ty = new EnumMaster<WEAPON_TYPE>().retrieveEnumConst(WEAPON_TYPE.class,
-                 t.getProperty(G_PROPS.WEAPON_TYPE));
+                        t.getProperty(G_PROPS.WEAPON_TYPE));
                 if (ty == ItemEnums.WEAPON_TYPE.NATURAL) {
                     Integer area = 20;
                     t.setParam(PARAMS.IMPACT_AREA, area);
@@ -762,7 +1014,7 @@ public class ContentGenerator {
                 return;
             }
             WEAPON_SIZE size = new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class, t
-             .getProperty(G_PROPS.WEAPON_SIZE));
+                    .getProperty(G_PROPS.WEAPON_SIZE));
             if (size == null) {
                 return;
             }
@@ -1005,9 +1257,9 @@ public class ContentGenerator {
             case BF_OBJ:
 
                 BF_OBJECT_TYPE type = new EnumMaster<BF_OBJECT_TYPE>().retrieveEnumConst(
-                 BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
+                        BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
                 BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
-                 BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
+                        BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
                 if (type != null) {
                     switch (type) {
                         // TODO
@@ -1031,7 +1283,7 @@ public class ContentGenerator {
 
             case UNITS:
                 List<CLASSIFICATIONS> c = new EnumMaster<CLASSIFICATIONS>().getEnumList(
-                 CLASSIFICATIONS.class, t.getProperty(G_PROPS.CLASSIFICATIONS));
+                        CLASSIFICATIONS.class, t.getProperty(G_PROPS.CLASSIFICATIONS));
 
                 if (c.contains(UnitEnums.CLASSIFICATIONS.GIANT)) {
                     height = 600;
@@ -1049,11 +1301,11 @@ public class ContentGenerator {
 
             case CHARS:
                 RACE race = new EnumMaster<RACE>().retrieveEnumConst(RACE.class, t
-                 .getProperty(G_PROPS.RACE));
+                        .getProperty(G_PROPS.RACE));
                 BACKGROUND bg = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, t
-                 .getProperty(G_PROPS.BACKGROUND));
+                        .getProperty(G_PROPS.BACKGROUND));
                 GENDER g = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, t
-                 .getProperty(G_PROPS.GENDER));
+                        .getProperty(G_PROPS.GENDER));
                 if (race != null) {
                     switch (race) {
                         case DEMON:

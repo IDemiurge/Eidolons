@@ -8,7 +8,7 @@ public class Roll {
     int drawRange;
     private String success;
     private String fail;
-    private Boolean result;
+    private Boolean result; //null means draw
     private int rolledValue;
     private int rolledValue2;
     private String logAppendix;

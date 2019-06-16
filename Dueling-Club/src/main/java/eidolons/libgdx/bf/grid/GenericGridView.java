@@ -47,14 +47,16 @@ public class GenericGridView extends UnitView {
         super.reset();
         if (emblemImage != null) {
             emblemImage.setPosition(getWidth() - emblemImage.getWidth(),
-             getHeight() - emblemImage.getHeight());
+                    getHeight() - emblemImage.getHeight());
             emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(),
-             getHeight() - emblemLighting.getHeight());
+                    getHeight() - emblemLighting.getHeight());
             if (getTeamColor() != null)
                 emblemLighting.setColor(getTeamColor());
         }
-        if (arrow != null)
+        if (arrow != null) {
             arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
+//            arrow.setRotation(arrowRotation);
+        }
 
     }
 
@@ -64,15 +66,15 @@ public class GenericGridView extends UnitView {
             arrow = new NoHitGroup();
             arrow.addActor(new Image(arrowTexture));
             arrow.setSize(arrowTexture.getRegionWidth(), arrowTexture.getRegionHeight());
-            arrow.addActor(torch = new FadeImageContainer(StrPathBuilder.build("ui", "unit light directional.png")){
+            arrow.addActor(torch = new FadeImageContainer(StrPathBuilder.build("ui", "unit light directional.png")) {
                 @Override
                 public boolean isAlphaFluctuationOn() {
-                    return getBaseAlpha()>0;
+                    return getBaseAlpha() > 0;
                 }
 
                 @Override
                 public void setBaseAlpha(float baseAlpha) {
-                    super.setBaseAlpha(baseAlpha/2);
+                    super.setBaseAlpha(baseAlpha / 2);
                 }
 
                 @Override
@@ -80,15 +82,15 @@ public class GenericGridView extends UnitView {
                     super.setColor(color);
                 }
             });
-            torch.setPosition(GdxMaster.centerWidth(torch)-7, arrow.getHeight()-torch.getHeight());
-            torch.getColor().a=0;
+            torch.setPosition(GdxMaster.centerWidth(torch) - 3, arrow.getHeight() - torch.getHeight());
+            torch.getColor().a = 0;
             torch.setAlphaTemplate(ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
 
             addActor(arrow);
 //            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
-            arrow.setOrigin(getWidth() / 2  , getHeight() / 2 );
-            this.arrowRotation = arrowRotation + ARROW_ROTATION_OFFSET;
-            arrow.setRotation(this.arrowRotation);
+            arrow.setOrigin(getWidth() / 2, getHeight() / 2);
+            this.arrowRotation = arrowRotation;
+            updateRotation();
         }
 
         if (iconTexture != null) {
@@ -152,19 +154,33 @@ public class GenericGridView extends UnitView {
         if (emblemLighting != null)
             alphaFluctuation(emblemLighting, delta);
         super.act(delta);
-        if (hpBar!=null )
+        if (hpBar != null)
             hpBar.act(delta);
     }
 
 
+    public void updateRotation() {
+        updateRotation(arrowRotation, false);
+    }
+
     public void updateRotation(int val) {
+        if (arrow.getRotation()-ARROW_ROTATION_OFFSET ==  val)
+            if (arrowRotation == val) {
+                return;
+        }
+        updateRotation(val, isVisible());
+    }
+
+    public void updateRotation(int val, boolean animated) {
         if (arrow != null) {
-           val= val % 360;
-            if (isVisible())
-            ActorMaster.addRotateByAction(arrow, arrowRotation, val  + 90);
+            val = val % 360;
+            if (animated)
+                ActorMaster.addRotateByAction(arrow, arrowRotation + ARROW_ROTATION_OFFSET,
+                        val + ARROW_ROTATION_OFFSET);
             else
-                arrow.setRotation(val   + 90);
-            arrowRotation = val + 90;
+                arrow.setRotation(val + ARROW_ROTATION_OFFSET);
+
+            arrowRotation = val;
 
         }
     }
@@ -176,17 +192,9 @@ public class GenericGridView extends UnitView {
             return false;
         if (!isCellBackground() && HpBar.getHpAlwaysVisible())
             return true;
-        return getHpBar(). isHpBarVisible();
+        return getHpBar().isHpBarVisible();
     }
 
-
-    public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
-        if (pathSupplier.get()!=null )
-        if (!ImageManager.isImage(pathSupplier.get())) {
-            return;
-        }
-        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
-    }
 
     public void setMainHero(boolean mainHero) {
         super.setMainHero(mainHero);
@@ -246,7 +254,8 @@ public class GenericGridView extends UnitView {
         if (arrow != null) {
             arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
             arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-            arrow.setRotation(arrowRotation);
+//       TODO was it ever necessary?
+//        arrow.setRotation(arrowRotation);
         }
 
         if (getScaledWidth() == 0)
@@ -266,8 +275,6 @@ public class GenericGridView extends UnitView {
     public boolean isCellBackground() {
         return cellBackground;
     }
-
-
 
 
     @Override

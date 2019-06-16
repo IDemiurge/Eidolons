@@ -249,7 +249,8 @@ public class FontMaster {
         METAMORPH("/metamorphous-regular.ttf", true),
         MAGIC("/magicmedieval.ttf"),
         MANORLY_("/manorly_.ttf"),
-        FERTIGO("/fertigo_pro.otf"),;
+        FERTIGO("/fertigo_pro.otf"),
+        SUPER_KNIGHT("/supernatural_knight.ttf");
         public Font font;
         public String path;
         private boolean hieroSupported;

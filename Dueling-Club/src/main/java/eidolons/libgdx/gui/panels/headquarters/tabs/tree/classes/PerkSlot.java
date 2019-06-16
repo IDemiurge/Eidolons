@@ -30,6 +30,15 @@ public class PerkSlot extends HtNode {
         super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY, slot);
     }
 
+    @Override
+    protected String getSlotTooltip() {
+        return "Fill the two Class Rank slots above to unlock a free Perk chosen from the pool of the related classes. If they are the same, the unique class perk will be available.";
+    }
+
+    @Override
+    protected void init() {
+        setSize(getDefaultWidth(), getDefaultHeight() );
+    }
 
     @Override
     public void setUserObject(Object userObject) {
@@ -41,7 +50,7 @@ public class PerkSlot extends HtNode {
     protected void click() {
         if (ListMaster.isNotEmpty(available)) {
             SlotSelectionRadialMenu.setActiveNode(this);
-            GuiEventManager.trigger(GuiEventType.SHOW_PERK_CHOICE, available);
+            GuiEventManager.trigger(GuiEventType.SHOW_PERK_CHOICE, available, tier, slot);
         } else {
         }
     }
@@ -66,7 +75,7 @@ public class PerkSlot extends HtNode {
 
     @Override
     protected String getTextPrefix() {
-        return "Tier " + NumberUtils.getRoman(tier) + " Perk";
+        return "Tier " + NumberUtils.getRoman(tier+1) + " Perk";
     }
 
     @Override
@@ -77,24 +86,35 @@ public class PerkSlot extends HtNode {
     }
     public void update(float delta) {
         if (data == null)
+        {
+            available = null;
+            sequentialDisabled = true;
             disable();
+        }
         else if (data.getLeft() != null) {
             enable();
             GdxImageMaster.round(data.getLeft().getImagePath(), true);
             setRootPath(GdxImageMaster.getRoundedPath(data.getLeft().getImagePath()));
-        } else {
+        } else if (data.getRight() != null && data.getMiddle() != null) {
+
             resetToOriginal();
-            if (data.getMiddle() != null)
-            if (data.getRight() != null) {
             HeroClass c1 = data.getMiddle();
             HeroClass c2 = data.getRight();
-            available = PerkMaster.getAvailablePerks(hero,
-             tier, c1, c2);
-            if (available.isEmpty())
-                disable();
+            available = PerkMaster.getAvailablePerks(getHero(),
+                    tier, c1, c2);
+//            if (available.isEmpty())
+//                disable();
+        } else {
+//            disable();
         }
-        }
+
+
         super.update(delta);
 
+    }
+
+    @Override
+    protected List<ObjType> createAvailable() {
+        return null;
     }
 }

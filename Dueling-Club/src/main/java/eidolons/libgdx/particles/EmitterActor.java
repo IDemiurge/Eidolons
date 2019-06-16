@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,10 +89,11 @@ public class EmitterActor extends SuperActor {
     }
 
     public void act(float delta) {
+
         super.act(delta);
         effect.setPosition(getX(), getY());
         //        effect.update(delta); TODO now drawing with alpha!
-
+       //effect.getEmitters().first().flipY(); wh isn't there flipx
     }
 
     public void setFlipX(boolean flipX) {
@@ -102,7 +105,7 @@ public class EmitterActor extends SuperActor {
     }
 
     public void updatePosition(float x, float y) {
-        main.system.auxiliary.log.LogMaster.log(1, this + " from " +
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VERBOSE_CHECK, this + " from " +
          getX() +
          " " +
          getY() +

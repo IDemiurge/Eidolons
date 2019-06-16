@@ -84,7 +84,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         MODE mode = (new EnumMaster<STD_MODES>().retrieveEnumConst(STD_MODES.class, name));
         if (mode == null) {
             BEHAVIOR_MODE behavior = new EnumMaster<BEHAVIOR_MODE>().retrieveEnumConst(
-             BEHAVIOR_MODE.class, name);
+                    BEHAVIOR_MODE.class, name);
             if (behavior != null) {
                 mode = new ModeImpl(behavior);
             }
@@ -132,12 +132,12 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         boolean initUpgrades = false;
         if (game.isSimulation()) {
             if (!ListMaster.isNotEmpty(
-             getEntity().getSpells())) {
+                    getEntity().getSpells())) {
                 initUpgrades = true;
             }
         }
         getEntity().setSpells(
-         getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
+                getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
 
         if (initUpgrades) {
             SpellUpgradeMaster.initSpellUpgrades(getEntity());
@@ -147,9 +147,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initSpellbook() {
         SpellMaster.initSpellbook(getEntity());
         List<Spell> spellbook =
-         new ArrayList<>(getEntity().getSpells());
+                new ArrayList<>(getEntity().getSpells());
         spellbook.addAll(getGame().getManager().getSpellMaster().
-         initSpellpool(getEntity(), PROPS.SPELLBOOK));
+                initSpellpool(getEntity(), PROPS.SPELLBOOK));
         getEntity().setSpellbook(spellbook);
         // init objects for all the known spells as well!
     }
@@ -157,13 +157,13 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initPerks() {
         getEntity().setPerks(new DequeImpl<>());
         initFeatContainer(PROPS.PERKS, PERKS,
-         (DequeImpl<? extends DC_FeatObj>) getEntity().getPerks());
+                (DequeImpl<? extends DC_FeatObj>) getEntity().getPerks());
     }
 
     public void initClasses() {
         getEntity().setClasses(new DequeImpl<>());
         initFeatContainer(PROPS.CLASSES, DC_TYPE.CLASSES,
-         getEntity().getClasses());
+                getEntity().getClasses());
     }
 
     public void initSkills() {
@@ -182,17 +182,21 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initInventory() {
-        if (!getEntity().isPlayerCharacter())
+        if (!getEntity().isMine())
             if (ContainerMaster.isGenerateItemsForUnits())
-                if (ContainerMaster.isPregenerateItems())
-                    if (!ListMaster.isNotEmpty(getEntity().getInventory())){
-                        ContainerMaster master =(ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
-                    master.initContents(getEntity());
-                }
+                if (ContainerMaster.isPregenerateItems(getEntity()))
+                    if (!ListMaster.isNotEmpty(getEntity().getInventory())) {
+                        ContainerMaster master = (ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
+                        try {
+                            master.initContents(getEntity());
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                    }
 
         getEntity().setInventory(
-         new DequeImpl<>(initContainedItems(PROPS.INVENTORY,
-          getEntity().getInventory(), false)));
+                new DequeImpl<>(initContainedItems(PROPS.INVENTORY,
+                        getEntity().getInventory(), false)));
     }
 
 
@@ -205,7 +209,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             initInventory();
         } catch (ExpressionParseException e) {
             LogMaster.log(1, "failed to parse for initQuickItems "
-             + e.getMessage());
+                    + e.getMessage());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "failed to initInventory");
@@ -215,7 +219,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                 initJewelry();
             } catch (ExpressionParseException e) {
                 LogMaster.log(1, "failed to parse for initQuickItems "
-                 + e.getMessage());
+                        + e.getMessage());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, "failed to initJewelry");
@@ -224,7 +228,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             initQuickItems();
         } catch (ExpressionParseException e) {
             LogMaster.log(1, "failed to parse for initQuickItems "
-             + e.getMessage());
+                    + e.getMessage());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "failed to initQuickItems");
@@ -234,19 +238,26 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         if (getEntity().getNaturalWeapon(false) == null) {
             initNaturalWeapon(false);
         } else if (!getEntity().getNaturalWeapon(false).getType().getName().equalsIgnoreCase(
-         getProperty(PROPS.NATURAL_WEAPON))) {
+                getProperty(PROPS.NATURAL_WEAPON))) {
             initNaturalWeapon(false);
         }
 
         getEntity().setSecondWeapon((DC_WeaponObj) initItem(getEntity().getOffhandWeapon(), G_PROPS.OFF_HAND_ITEM,
-         DC_TYPE.WEAPONS));
+                DC_TYPE.WEAPONS));
 
         if (getEntity().getNaturalWeapon(true) == null) {
             initNaturalWeapon(true);
         } else if (!getEntity().getNaturalWeapon(true).getType().getName().equalsIgnoreCase(
-         getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
+                getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
             initNaturalWeapon(true);
         }
+
+        getEntity().setReserveMainWeapon((DC_WeaponObj) initItem(getEntity().getReserveMainWeapon(),
+                G_PROPS.RESERVE_MAIN_HAND_ITEM, DC_TYPE.WEAPONS));
+        getEntity().setReserveOffhandWeapon((DC_WeaponObj) initItem(getEntity().getReserveOffhandWeapon(),
+                G_PROPS.RESERVE_OFF_HAND_ITEM, DC_TYPE.WEAPONS));
+
+
         getEntity().setArmor((DC_ArmorObj) initItem(getEntity().getArmor(), G_PROPS.ARMOR_ITEM, DC_TYPE.ARMOR));
 
         getEntity().setItemsInitialized(true);
@@ -283,9 +294,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             int rank = 0;
             // or special separator!
             if (NumberUtils.isInteger(StringMaster.cropParenthesises(VariableManager
-             .getVarPart(feat)))) {
+                    .getVarPart(feat)))) {
                 rank = NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager
-                 .getVarPart(feat)));
+                        .getVarPart(feat)));
                 feat = VariableManager.removeVarPart(feat);
             }
             ObjType featType = DataManager.getType(feat, TYPE);
@@ -386,16 +397,16 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     private DC_HeroItemObj createItem(PROPERTY prop, ObjType type) {
         return (prop != G_PROPS.ARMOR_ITEM) ? (new DC_WeaponObj(type,
-         getEntity().getOriginalOwner(), getGame(), getRef(),
+                getEntity().getOriginalOwner(), getGame(), getRef(),
 
-         prop == G_PROPS.MAIN_HAND_ITEM)) : (new DC_ArmorObj(type,
-         getEntity().getOriginalOwner(), getGame(), getRef()));
+                prop == G_PROPS.MAIN_HAND_ITEM)) : (new DC_ArmorObj(type,
+                getEntity().getOriginalOwner(), getGame(), getRef()));
     }
 
 
     public void initJewelry() {
         DequeImpl<? extends DC_HeroItemObj> items = initContainedItems(PROPS.JEWELRY, getEntity().getJewelry(),
-         false);
+                false);
         if (items == getEntity().getJewelry()) {
             return;
         }
@@ -414,9 +425,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         // setQuickItems(new DequeImpl<DC_QuickItemObj>(
 
         DequeImpl<? extends DC_HeroItemObj> items = initContainedItems(PROPS.QUICK_ITEMS,
-         getEntity().getQuickItems(), true)
-         // )) TODO
-         ;
+                getEntity().getQuickItems(), true)
+                // )) TODO
+                ;
         if (items == getEntity().getQuickItems()) {
             return;
         }
@@ -430,7 +441,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     public void initIntegrityAlignments() {
         Map<PRINCIPLES, Integer> map = new RandomWizard<PRINCIPLES>().constructWeightMap(
-         getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
+                getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
         for (PRINCIPLES principle : map.keySet()) {
             Integer amount = map.get(principle);
             if (amount == 0) {

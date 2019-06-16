@@ -23,10 +23,16 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
     private boolean playerHasSeen;
+    private boolean VOID;
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
         return;
+    }
+
+    @Override
+    public Coordinates getCoordinates() {
+        return super.getCoordinates();
     }
 
     public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
@@ -38,7 +44,7 @@ public class DC_Cell extends DC_Obj implements Cell {
             setZ(dungeon.getZ());
         }
         addDynamicValues();
-        setImage(ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion()));
+        setImage(dungeon.getCellImagePath(i, j));
     }
 
     public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
@@ -203,5 +209,13 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void setPlayerHasSeen(boolean playerHasSeen) {
         this.playerHasSeen = playerHasSeen;
+    }
+
+    public boolean isVOID() {
+        return VOID;
+    }
+
+    public void setVOID(boolean VOID) {
+        this.VOID = VOID;
     }
 }

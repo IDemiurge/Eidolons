@@ -2,10 +2,12 @@ package eidolons.game.core;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
@@ -21,7 +23,15 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
  * Created by JustMe on 5/21/2018.
  */
 public class EUtils {
+    public static final String STYLE = "=STYLE=";
+
     public static void showInfoText(String s) {
+        showInfoText(false, s);
+    }
+    public static void showInfoText(boolean logged, String s) {
+        if (logged){
+            Eidolons.getGame().getLogManager().log(s);
+        }
         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, s);
     }
 
@@ -112,6 +122,10 @@ public class EUtils {
 
     public static void switchBackScreen() {
         SCREEN_TYPE type = Eidolons.getPreviousScreenType();
-        switchScreen(new ScreenData(type, null));
+        switchScreen(new ScreenData(type));
+    }
+
+    public static void showInfoTextStyled(GuiStage.LABEL_STYLE style, String s) {
+        showInfoText(style + STYLE + s);
     }
 }

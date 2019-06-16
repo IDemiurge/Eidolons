@@ -66,7 +66,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     protected boolean interrupted;
     protected boolean free = false;
     protected boolean quietMode = false;
-    protected List<DC_ActiveObj> subActions;
+    protected List<DC_UnitAction> subActions;
     private RESISTANCE_TYPE resistType;
     private DAMAGE_TYPE energyType;
     private ACTION_TYPE_GROUPS actionTypeGroup;
@@ -321,6 +321,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (getOwnerUnit() == null) {
             return getName();
         }
+        if (CoreEngine.isIDE()) {
+        return StringMaster.getPossessive(getOwnerUnit().getName()) + " " + getName();
+        }
         return StringMaster.getPossessive(getOwnerUnit().getNameIfKnown()) + " " + getName();
     }
 
@@ -455,14 +458,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
 
-    public List<DC_ActiveObj> getSubActions() {
+    public List<DC_UnitAction> getSubActions() {
         if (subActions == null) {
-            subActions = new ArrayList<>();
+            subActions = new ArrayList<DC_UnitAction>();
         }
         return subActions;
     }
 
-    public void setSubActions(List<DC_ActiveObj> subActions) {
+    public void setSubActions(List<DC_UnitAction> subActions) {
         this.subActions = subActions;
         if (subActions != null) {
             for (DC_ActiveObj a : subActions) {
@@ -637,6 +640,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isStandardAttack() {
+        if (getName().equalsIgnoreCase("Shield Bash"))
+        {
+            return true;
+        }
         return getChecker().isStandardAttack();
     }
 

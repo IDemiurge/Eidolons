@@ -330,11 +330,11 @@ public class RollMaster {
     }
 
     private static boolean checkRollLogged(ROLL_TYPES roll_type, Boolean result) {
-        if (roll_type == GenericEnums.ROLL_TYPES.STEALTH) {
-            return result;
-        }
-        if (roll_type == GenericEnums.ROLL_TYPES.DETECTION) {
-            return result;
+        switch (roll_type) {
+            case DETECTION:
+            case STEALTH:
+            case HEARING:
+                return result;
         }
 
         return true;
@@ -532,6 +532,10 @@ public class RollMaster {
             luck = false;
         }
         return luck;
+    }
+
+    public static Roll getLastRoll() {
+        return roll;
     }
 
     @Override

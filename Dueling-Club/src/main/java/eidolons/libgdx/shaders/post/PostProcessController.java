@@ -1,14 +1,20 @@
 package eidolons.libgdx.shaders.post;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
+import eidolons.libgdx.shaders.post.fx.BloomFx;
 import eidolons.libgdx.shaders.post.fx.BlurFx;
 import eidolons.libgdx.shaders.post.fx.SaturateFx;
 import eidolons.libgdx.shaders.post.spec.LocalFxProcessor;
@@ -18,8 +24,11 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 import main.system.ExceptionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,42 +44,60 @@ import java.util.Map;
 public class PostProcessController {
     static PostProcessController instance;
     private final PostFxUpdater updater;
+    private final Actor actor;
     private Map<PostProcessorEffect, Fluctuating> effectMap = new LinkedHashMap<>();
     private PostProcessing main;
 
-    private LensFlare2 lens;
+    private LensFlare2 lens2;
+    private LensFlare  lens1;
     private Zoomer zoomer;
     private SaturateFx saturate;
     private Bloom bloom;
+    private BloomFx bloomBright;
     private Vignette vignette;
     private Nfaa nfaa;
     private BlurFx blur;
     private MotionBlur motionBlur;
+    private  Curvature curvature;
+    private  CrtMonitor discolor;
     private CustomPostEffect darken;
 
     LocalFxProcessor localFxProcessor;
+    private boolean off;
+    private Map<FloatAction, PostFxUpdater.POST_FX_FACTOR> actionMap;
 
     public PostProcessController() {
         main = new PostProcessing();
-        updater = new PostFxUpdater(this);
+         actor = new Actor();
+        updater = new PostFxUpdater(this, actor);
 
         main.setEnabled(true);
         main.enableBlending();
 
+
         addEffect(darken = new CustomPostEffect(SHADER.DARKEN));
         addEffect(motionBlur = new MotionBlur());
+        addEffect(curvature = new Curvature());
         addEffect(nfaa = new Nfaa(GdxMaster.getWidth(), GdxMaster.getHeight()));
         addEffect(blur = new BlurFx());
-        addEffect(vignette = main.vignette);
         addEffect(zoomer = main.zoomer, false);
         //TODO
         zoomer.setEnabled(false);
 
+        addEffect(bloomBright = new BloomFx( (int)(Gdx.graphics.getWidth() * 0.5f),
+                (int)(Gdx.graphics.getHeight() * 0.5f) , true, true));
         addEffect(saturate = new SaturateFx(GdxMaster.getWidth(), GdxMaster.getHeight()));
 
-        addEffect(lens = new LensFlare2(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
-        lens.setLensColorTexture(TextureCache.getOrCreate(Images.EMPTY_WEAPON_OFFHAND));
+        addEffect(lens1 = new LensFlare(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
 
+        addEffect(lens2 = new LensFlare2(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
+        lens2.setLensColorTexture(TextureCache.getOrCreate(IGG_Images.PROMO_ART.THE_HALL.getPath()));
+//TODO this lens could be better....
+
+
+//        addEffect(vignette = main.vignette);
+        addFluctuationForEffect(this.vignette = main.vignette);
+        addFluctuationForEffect(this.discolor = main.crt);
         addFluctuationForEffect(this.bloom = main.bloom);
 
         initFxForScreen(SCREEN_TYPE.MAIN_MENU);
@@ -81,7 +108,32 @@ public class PostProcessController {
             bloom.setBloomIntesity(0.2f);
             vignette.setIntensity(1);
         }
+        for (PostProcessorEffect effect : effectMap.keySet()) {
+            effect.setEnabled(false);
+        }
+        bindEvents();
         //what else determines defaults? Type of level? Cinematic mode
+    }
+
+    private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.POST_PROCESS_FX_ANIM, p -> {
+            List args = (List) p.get();
+            PostFxUpdater.POST_FX_FACTOR fx = (PostFxUpdater.POST_FX_FACTOR) args.get(0);
+            FloatAction action= (FloatAction) args.get(1);
+            actionMap.put(action, fx);
+
+        });
+            GuiEventManager.bind(GuiEventType.POST_PROCESSING_RESET, p -> {
+//            bloom.rebind( );
+//            vignette.rebind( );
+//            blur.rebind( );
+            bloom.applyCoef(1.0f);
+            vignette.applyCoef(1.0f);
+            blur.applyCoef(1.0f);
+            update(OptionsMaster.getPostProcessingOptions());
+
+        });
+
     }
 
     public static boolean isTestMode() {
@@ -124,6 +176,24 @@ public class PostProcessController {
     }
 
     public void update(PostProcessingOptions options) {
+        PostFxUpdater.heroFxOff =
+                options.getBooleanValue(
+                        POST_PROCESSING_OPTIONS.HERO_EFFECTS_OFF);
+        PostFxUpdater.shadowFxOff =
+                options.getBooleanValue(
+                        POST_PROCESSING_OPTIONS.SHADOW_EFFECT_OFF);
+
+
+        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF)){
+            for (PostProcessorEffect effect : effectMap.keySet()) {
+                effect.setEnabled(false);
+            }
+            off=true;
+            return;
+        }
+
+        off=false;
         setEnabled(bloom, options.getBooleanValue(POST_PROCESSING_OPTIONS.BLOOM_ON));
         setEnabled(blur, options.getBooleanValue(POST_PROCESSING_OPTIONS.BLUR_ON));
         setEnabled(nfaa, options.getBooleanValue(POST_PROCESSING_OPTIONS.ANTIALIASING_ON));
@@ -131,7 +201,9 @@ public class PostProcessController {
         setEnabled(motionBlur, options.getBooleanValue(POST_PROCESSING_OPTIONS.MOTION_BLUR_ON));
 
         setEnabled(darken, options.getBooleanValue(POST_PROCESSING_OPTIONS.STANDARD_ON));
-        setEnabled(lens, options.getBooleanValue(POST_PROCESSING_OPTIONS.LENS_ON));
+        setEnabled(lens2, options.getBooleanValue(POST_PROCESSING_OPTIONS.LENS_ON));
+
+
     }
 
     private void setEnabled(PostProcessorEffect effect, boolean booleanValue) {
@@ -161,8 +233,11 @@ public class PostProcessController {
     }
 
     public void act(float delta) {
-        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(POST_PROCESSING_OPTIONS.TEST_ON))
+        if (off)
+            return;
+//        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(POST_PROCESSING_OPTIONS.TEST_ON))
             updater.update();
+        actor.act(delta);
         fluctuate(delta);
 
         //        main.postProcessor.addEffect(vignette);
@@ -236,8 +311,12 @@ public class PostProcessController {
         return saturate;
     }
 
-    public LensFlare2 getLens() {
-        return lens;
+    public LensFlare2 getLens2() {
+        return lens2;
+    }
+
+    public LensFlare getLens () {
+        return lens1;
     }
 
     public Map<PostProcessorEffect, Fluctuating> getEffectMap() {
@@ -258,6 +337,18 @@ public class PostProcessController {
 
     public BlurFx getBlur() {
         return blur;
+    }
+
+    public BloomFx getBloomBright() {
+        return bloomBright;
+    }
+
+    public Curvature getCurvature() {
+        return curvature;
+    }
+
+    public CrtMonitor getDiscolor() {
+        return discolor;
     }
 
     public MotionBlur getMotionBlur() {

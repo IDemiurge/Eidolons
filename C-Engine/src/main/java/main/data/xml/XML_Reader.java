@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static main.system.auxiliary.log.LogMaster.*;
 
@@ -58,6 +59,12 @@ public class XML_Reader {
     private static boolean microLoaded;
     private static boolean macroAndMicro;
 
+    static Predicate<ObjType> typeChecker;
+
+    public static void setTypeChecker(Predicate<ObjType> typeChecker) {
+        XML_Reader.typeChecker = typeChecker;
+    }
+
     private static void constructTypeMap(Document doc, String key,
                                          Map<String, Set<String>> tabGroupMap,
                                          Map<String, Set<String>> treeSubGroupMap
@@ -84,6 +91,10 @@ public class XML_Reader {
                     continue;
                 }
                 ObjType type = TypeBuilder.buildType(typeNode, key);
+                if (typeChecker != null)
+                if (!typeChecker.test(type)){
+                    continue;
+                }
                 if (type != null) {
                     name = type.getName();
                     // TAB GROUPS
@@ -102,7 +113,9 @@ public class XML_Reader {
                 }
             }
         }
-
+        if (groupSet.isEmpty()) {
+            return;
+        }
         if (tabGroupMap.get(key) == null) {
             tabGroupMap.put(key, groupSet);
         } else {
@@ -242,7 +255,12 @@ public class XML_Reader {
         List<Node> nodes = XML_Converter.getNodeList(XML_Converter.getNodeList(doc).get(0));
         for (Node node : nodes) {
             // typeName = node.getNodeName();
+
             ObjType type = TypeBuilder.buildType(node, TYPE.toString());
+            if (typeChecker != null)
+                if (!typeChecker.test(type)){
+                    continue;
+                }
             if (game != null)
                 game.initType(type);
 

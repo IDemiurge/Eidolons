@@ -69,13 +69,14 @@ public class DC_Formulas {
     public static final Integer INTELLIGENCE_ORGANIZATION_CAP_MOD = 10;
     public static final String DRUIDIC_VISIONS_ESSENCE = "5+{wisdom}*{spell_spell_difficulty}/10";
     public static final String HOLY_PRAYER_MORALE = "5+{Willpower}*{spell_spell_difficulty}/10";
-    private static final int TOUGHNESS_STR_MODIFIER = 5;
+    private static final int TOUGHNESS_STR_MODIFIER = 14;
+    private static final int TOUGHNESS_STR_MODIFIER_HERO = 10;
     private static final float TOUGHNESS_STR_SQUARE_MODIFIER = 0.05f;
     private static final float TOUGHNESS_STR_SQUARE_BARRIER = 200;
     private static final int CARRYING_CAPACITY_STR_MODIFIER = 2;
-    private static final int TOUGHNESS_VIT_MODIFIER = 5;
+    private static final int TOUGHNESS_VIT_MODIFIER = 2;
     private static final float FORTITUDE_VIT_MODIFIER = 0.25f;
-    private static final float ENDURANCE_VIT_MODIFIER = 15;
+    private static final float ENDURANCE_VIT_MODIFIER = 25;
     private static final float ENDURANCE_VIT_SQUARE_MODIFIER = 0.15f;
     private static final float ENDURANCE_VIT_SQUARE_BARRIER = 400;
     private static final float STAMINA_VIT_MODIFIER = 2;
@@ -87,7 +88,8 @@ public class DC_Formulas {
     private static final float INIT_MOD_AGI_MODIFIER = 0.5f;
     private static final float ACTS_DEX_MODIFIER = 0.2f;
     private static final float DEF_DEX_MODIFIER = 2;
-    private static final int RES_WIL_MODIFIER = 1;
+//    private static final int TOUGHNESS_WIL_MODIFIER = 5;
+    private static final float RES_WIL_MODIFIER = 0.5f;
     private static final int RES_FOC_MODIFIER = 1;
     private static final float SPIRIT_WIL_MODIFIER = 0.25f;
     private static final int ESS_WIS_MODIFIER = 5;
@@ -113,7 +115,7 @@ public class DC_Formulas {
     private static final int OFF_HAND_DAMAGE_MOD = 75;
     private static final int MAIN_HAND_DUAL_ATTACK_MOD = -25;
     private static final String DEFENSE_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
-    private static final String DEFENSE_MOD_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
+//    private static final String DEFENSE_MOD_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
     private static final String ATTACK_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/50";
     private static final String DAMAGE_FROM_TWOHANDED_MASTERY_FORMULA = "{AMOUNT}/2+{AMOUNT}*{AMOUNT}/70";
     private static final String TOUGHNESS_FROM_STRENGTH_FORMULA = "{AMOUNT}*"
@@ -130,12 +132,16 @@ public class DC_Formulas {
     private static final Integer ATTR_POINTS_PER_LEVEL_DEFAULT = 5;
     private static final Integer SELLING_PRICE_REDUCTION = 50;
     private static final int MAX_UNIT_LEVEL = 100;
+    private static final String ACTS_DEX_MODIFIER_FORMULA = "{AMOUNT}*max(0.1, (0.2-{AMOUNT}*0.02))";
     public static Formula DIVINATION_MAX_SD_FORMULA = new Formula("2+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /5+" // WISDOM?
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /2")
      .getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE,
       PARAMS.DIVINATION_MAX_SD_MOD));
 
+    public static int getToughnessFromStrengthHero(int amount) {
+        return Math.round(amount * TOUGHNESS_STR_MODIFIER_HERO);
+    }
     public static int getToughnessFromStrength(int amount) {
         return Math.round(amount * TOUGHNESS_STR_MODIFIER);
     }
@@ -158,7 +164,7 @@ public class DC_Formulas {
         // return Math.round(amount * ESS_WIS_MODIFIER);
     }
 
-    public static int getDamageFromStrength(int amount) {
+    public static int getDamageFromStrength(int amount) { // igg demo TODO
         return calculateFormula(TOUGHNESS_FROM_STRENGTH_FORMULA, amount) / 5 * 5;
     }
 
@@ -194,9 +200,9 @@ public class DC_Formulas {
         return Math.round(amount * INIT_MOD_AGI_MODIFIER);
     }
 
-    public static int getActsFromDex(int amount) {
-
-        return Math.round(amount * ACTS_DEX_MODIFIER);
+    public static int getActsFromDexAndHalfAgility(int amount) {
+        return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, amount) ;
+//        return Math.round(amount * ACTS_DEX_MODIFIER);
     }
 
     public static int getDefFromDex(int amount) {
@@ -344,10 +350,6 @@ public class DC_Formulas {
 
     public static int getDefenseFromDefenseMastery(int amount) {
         return calculateFormula(DEFENSE_FROM_MASTERY_FORMULA, amount);
-    }
-
-    public static int getDefenseModFromDefenseMastery(int amount) {
-        return calculateFormula(DEFENSE_MOD_FROM_MASTERY_FORMULA, amount);
     }
 
     public static int getAttackFromWeaponMastery(int amount) {

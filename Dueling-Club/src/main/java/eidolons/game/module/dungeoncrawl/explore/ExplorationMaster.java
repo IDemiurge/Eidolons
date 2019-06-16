@@ -7,6 +7,8 @@ import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
+import main.entity.Ref;
+import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -27,6 +29,7 @@ public class ExplorationMaster {
     private ExplorationResetHandler resetter;
     private ExplorationActionHandler actionHandler;
     private AggroMaster aggroMaster;
+    private boolean toggling;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
@@ -94,7 +97,9 @@ public class ExplorationMaster {
         if (explorationOn == on)
             return;
         explorationOn = on;
+        toggling=true;
         explorationToggled();
+        toggling=false;
     }
 
     private ExplorerUnit createExplorerUnit(Party party) {
@@ -110,6 +115,7 @@ public class ExplorationMaster {
             //TODO quick-fix
             cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
+            game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_ENDS, new Ref(game)));
             getResetter().setResetNotRequired(false);
 
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
@@ -119,17 +125,18 @@ public class ExplorationMaster {
              : STD_SOUNDS.NEW__BATTLE_END2);
 
         } else {
+            game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_STARTS, new Ref(game)));
             game.getLogManager().logBattleStarts();
             if (AnimConstructor.isPreconstructEnemiesOnCombatStart())
                 AggroMaster.getLastAggroGroup().forEach(unit -> {
                     AnimConstructor.preconstructAll(unit);
                 });
             getResetter().setResetNotRequired(false);
-            try {
-                MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+//            try {  done in game.startCombat()
+//                MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
         }
         getResetter().setResetNotRequired(false);
         game.startGameLoop();
@@ -177,4 +184,11 @@ public class ExplorationMaster {
         return (ExploreGameLoop) game.getLoop();
     }
 
+    public boolean isToggling() {
+        return toggling;
+    }
+
+    public void setToggling(boolean toggling) {
+        this.toggling = toggling;
+    }
 }

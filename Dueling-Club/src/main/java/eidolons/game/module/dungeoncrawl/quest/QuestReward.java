@@ -12,6 +12,7 @@ import main.content.enums.meta.QuestEnums.QUEST_REWARD_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
@@ -22,19 +23,23 @@ import main.system.math.Formula;
 public class QuestReward {
     String xpFormula = "";
     String goldFormula = "";
+    String gloryFormula = "";
     String reputationFormula = "";
-    String itemDescriptor = "";
+    String rewardItems = "";
     private QUEST_REWARD_TYPE type;
     private QUEST_LEVEL level;
     private String title;
 
     public QuestReward(ObjType objType) {
         type =
-         new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
-          objType.getProperty(MACRO_PROPS.QUEST_REWARD_TYPE));
+                new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
+                        objType.getProperty(MACRO_PROPS.QUEST_REWARD_TYPE));
         level =
-         new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
-          objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
+                new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
+                        objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
+
+        rewardItems = objType.getProperty(MACRO_PROPS.QUEST_REWARD_ITEMS);
+
         int gold = 20 * Eidolons.getMainHero().getLevel();
         int xp = 20 * Eidolons.getMainHero().getLevel();
         int reputation = 10;
@@ -42,7 +47,7 @@ public class QuestReward {
         if (type == null) {
             xp += 50;
             gold += 50;
-        } else
+        } else {
             switch (type) {
                 case ITEM:
                     break;
@@ -60,7 +65,14 @@ public class QuestReward {
                     break;
                 case RANDOM:
                     break;
+                case ANTI_GLORY:
+                    gloryFormula = "-450";
+                    break;
+                case GLORY:
+                    gloryFormula = "150";
+                    break;
             }
+        }
         if (level != null) {
             xp = Math.round(xp * level.factor);
             gold = Math.round(gold * level.factor);
@@ -85,8 +97,8 @@ public class QuestReward {
             s += " Gold: " + new Formula(goldFormula).getInt();
         if (!xpFormula.isEmpty())
             s += " Experience: " + new Formula(xpFormula).getInt();
-        if (!itemDescriptor.isEmpty())
-            s += " Item: " + itemDescriptor;
+        if (!rewardItems.isEmpty())
+            s += " Item: " + rewardItems;
         if (!reputationFormula.isEmpty())
             s += " Reputation: " + new Formula(reputationFormula).getInt();
         return s;
@@ -111,16 +123,21 @@ public class QuestReward {
         }
         Integer xp = new Formula(xpFormula).getInt(hero.getRef());
         Integer gold = new Formula(goldFormula).getInt(hero.getRef());
+        Integer glory  = new Formula(gloryFormula).getInt(hero.getRef());
+
+        hero.getGame().getBattleMaster().getStatManager().addGlory(glory);
 
         if (!inTown)
             HeroLevelManager.addXp(hero, xp);
         if (inTown) {
             HeroLevelManager.addGold(hero, gold);
-            if (DataManager.isTypeName(itemDescriptor, C_OBJ_TYPE.ITEMS)) {
-                DC_HeroItemObj item = ItemFactory.createItemObj(DataManager.getType(itemDescriptor,
-                 C_OBJ_TYPE.ITEMS), hero, false);
-                hero.addItemToInventory(item);
-                EUtils.showInfoText("Added to inventory: " + item);
+            for (String s : ContainerUtils.openContainer(rewardItems)) {
+                if (DataManager.isTypeName(s, C_OBJ_TYPE.ITEMS)) {
+                    DC_HeroItemObj item = ItemFactory.createItemObj(DataManager.getType(s,
+                            C_OBJ_TYPE.ITEMS), hero, false);
+                    hero.addItemToInventory(item);
+                    EUtils.showInfoText("Added to inventory: " + item);
+                }
             }
         }
     }
@@ -145,8 +162,8 @@ public class QuestReward {
         return reputationFormula;
     }
 
-    public String getItemDescriptor() {
-        return itemDescriptor;
+    public String getRewardItems() {
+        return rewardItems;
     }
 
     public String getGoldFormula() {

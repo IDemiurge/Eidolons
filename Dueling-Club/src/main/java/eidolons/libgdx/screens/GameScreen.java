@@ -7,7 +7,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
@@ -31,6 +36,7 @@ import static main.system.GuiEventType.DIALOG_SHOW;
  */
 public abstract class GameScreen extends ScreenWithVideoLoader {
 
+    private static final float MAX_CAM_DST = 500;
     private static Float cameraPanMod;
     public InputController controller;
     protected ChainedStage dialogsStage = null;
@@ -44,6 +50,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected GuiStage guiStage;
     private RealTimeGameLoop realTimeGameLoop;
     private Boolean centerCameraAlways;
+    private Vector3 lastPos;
 
     public GameScreen() {
         GuiEventManager.bind(GuiEventType.GAME_PAUSED, d -> {
@@ -74,7 +81,13 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         cameraPan(unitPosition, null);
     }
 
+    protected boolean isCameraPanningOff() {
+        return false; //TODO
+    }
     protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
+        if (isCameraPanningOff()){
+            return;
+        }
         this.cameraDestination = unitPosition;
         float dst = cam.position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
 
@@ -88,13 +101,14 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 return;
 
         velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dst));
-        if (CoreEngine.isGraphicTestMode()) {
-            //            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dst);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
-        }
+//        if (CoreEngine.isGraphicTestMode()) {
+//            //            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
+//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
+//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dst);
+//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
+//        }
     }
+
 
     protected float getCameraMinCameraPanDist() {
         return (GDX.size(1600, 0.1f)) / 3 * getCameraPanMod(); //TODO if too close to the edge also
@@ -113,8 +127,10 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 float y = velocity.y > 0
                  ? Math.min(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime())
                  : Math.max(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime());
+
+//                main.system.auxiliary.log.LogMaster.log(1,"cameraShift to "+ y+ ":" +x + " = "+cam);
                 cam.position.set(x, y, 0f);
-                float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
+                float dest = Math.min(MAX_CAM_DST, cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor());
                 Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
 
                 if (velocityNow.isZero() || velocity.hasOppositeDirection(velocityNow)) {
@@ -123,11 +139,27 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 cam.update();
                 controller.cameraChanged();
             }
+        checkCameraFix();
+    }
+
+    private void checkCameraFix() {
+        if (lastPos != null)
+        if (cam.position.dst(lastPos)> MAX_CAM_DST) {
+            cam.position.set(lastPos);
+        }
+        if (velocity.isZero())
+        if (!cameraDestination.isZero())
+        {
+            lastPos = new Vector3(cam.position);
+        }
     }
 
     public void cameraStop() {
         if (velocity != null)
-            velocity.setZero();
+        {
+//            velocity.setZero(); TODO abruptly?
+            cameraDestination.set(cam.position.x, cam.position.y);
+        }
     }
 
     public InputController getController() {
@@ -150,18 +182,30 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     protected void initDialogue() {
 
+
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =
              (DialogueHandler) obj.get();
-            List<DialogueView> list = handler.getList();
-            if (dialogsStage == null) {
-                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
-                updateInputController();
-            } else {
-                dialogsStage.play(list);
+
+            if (isNewDialogue())
+            {
+                guiStage.playDialogue(handler);
+                return;
             }
-            dialogsStage.setDialogueHandler(handler);
+
+//            if (dialogsStage == null) {
+//                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
+//
+//            } else {
+//                dialogsStage.play(list);
+//            }
+//            dialogsStage.setDialogueHandler(handler);
+//            updateInputController();
         });
+    }
+
+    private boolean isNewDialogue() {
+        return true;
     }
 
     public RealTimeGameLoop getRealTimeGameLoop() {

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.MicroCondition;
@@ -35,9 +36,6 @@ public class SneakCondition extends MicroCondition {
     @Override
     public boolean check(Ref ref) {
         boolean result = checkSneak(ref);
-        if (result) {
-            main.system.auxiliary.log.LogMaster.log(1, "ya sneaky, ser!");
-        }
         return result;
     }
 
@@ -61,6 +59,7 @@ public class SneakCondition extends MicroCondition {
         }
 
         Unit attacker = (Unit) ref.getSourceObj();
+
         DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
 
         // if (attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
@@ -71,11 +70,22 @@ public class SneakCondition extends MicroCondition {
         // // if (!attacked.checkPassive(STANDARD_PASSIVES.CORVIDAE))
         // return true;
         // }
-
+        VisionEnums.VISIBILITY_LEVEL v = attacker.getGame().getVisionMaster().getVisionController().getVisibilityLevelMapper().get(attacked, attacker);
+        switch (v) {
+            case CLEAR_SIGHT:
+            case OUTLINE:
+                return false;
+            case VAGUE_OUTLINE:
+            case CONCEALED:
+            case BLOCKED:
+            case UNSEEN:
+                break;
+        }
         if (!attacker.checkInSightForUnit(attacked)) {
             if (attacked.getMode().equals(STD_MODES.ALERT)) // TODO wake up?
             {
-                return false;
+                if (!attacker.isSneaking())
+                    return false;
             }
             // if (attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
             // return false;

@@ -73,19 +73,19 @@ public class EmitterPresetMaster {
             suffix = " ";
             for (String substring : ContainerUtils.open(buffer, value_separator)) {
                 suffix += StringMaster.cropFormat(
-                 PathUtils.getLastPathSegment(substring)) + " ";
+                        PathUtils.getLastPathSegment(substring)) + " ";
             }
         }
         String newName = (name != null) ? name :
-         FileManager.getUniqueVersion(FileManager.getFile(PathFinder.getVfxPath() + prefix +
-          "/" + last.path + suffix));
+                FileManager.getUniqueVersion(FileManager.getFile(PathFinder.getVfxPath() + prefix +
+                        "/" + last.path + suffix));
 
         String path = StringMaster.replace(true, last.path,
-         PathFinder.getVfxPath(), "").replace(prefix, "");
+                PathFinder.getVfxPath(), "").replace(prefix, "");
         String pathAndName = PathFinder.getVfxPath() + prefix +
-         "/" +
-         PathUtils.cropLastPathSegment(path) +
-         newName;
+                "/" +
+                PathUtils.cropLastPathSegment(path) +
+                newName;
         XML_Writer.write(c, pathAndName);
 
         return pathAndName;
@@ -119,9 +119,10 @@ public class EmitterPresetMaster {
         }
 
         FileHandle file = Gdx.files.internal(imagePath);
-        if (file.exists()) {
-            return imagePath;
-        }
+//        if (!imagePath.isEmpty())
+            if (file.exists()) {
+                return imagePath;
+            }
         try {
             imagePath = FileManager.formatPath(imagePath, true);
             String afterClassPath = imagePath.split("img/")[1];
@@ -155,8 +156,8 @@ public class EmitterPresetMaster {
         }
 
         imagePath =
-         PathFinder.removeSpecificPcPrefix(
-          EmitterPresetMaster.getInstance().getImagePath(path));
+                PathFinder.removeSpecificPcPrefix(
+                        EmitterPresetMaster.getInstance().getImagePath(path));
         file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;
@@ -172,7 +173,7 @@ public class EmitterPresetMaster {
         if (spriteEmitterTest) {
             //            effect.getEmitters().forEach(e -> {
             String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPathFull() +
-             "impact/").getPath();
+                    "impact/").getPath();
             return randomPath;
             //        ((Emitter) e).offset(20, "scale");
             //        e.setImagePath(randomPath);
@@ -277,7 +278,7 @@ public class EmitterPresetMaster {
             }
         }
         if (group == EMITTER_VALUE_GROUP.Image_Path
-         && text.startsWith("\n")) {
+                && text.startsWith("\n")) {
             data = data.replace(text, "\n" + val);
         } else
             data = data.replace(text, val);
@@ -291,8 +292,8 @@ public class EmitterPresetMaster {
             if (lowHighMinMax.contains(p.getKey().toString())) {
                 double newValue = NumberUtils.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
-                 p.getKey() + value_separator + String.valueOf(
-                  newValue));
+                        p.getKey() + value_separator + String.valueOf(
+                                newValue));
             }
         }
         data = data.replace(getGroupText(data, group), text);
@@ -350,13 +351,17 @@ public class EmitterPresetMaster {
         return text;
     }
 
-    public String getModifiedData(String path, EMITTER_VALUE_GROUP image_path, String newVal) {
+    public String getModifiedData(String data, EMITTER_VALUE_GROUP image_path, String newVal) {
+        return setValue(image_path, newVal, data);
+    }
+
+    public String readAndModifyData(String path, EMITTER_VALUE_GROUP image_path, String newVal) {
         String data = getData(path);
         return setValue(image_path, newVal, data);
 
     }
 
-    private String getData(String path) {
+    public String getData(String path) {
         path = path.toLowerCase();
         path = PathUtils.addMissingPathSegments(path, PathFinder.getVfxPath());
         String data = map.get(path);

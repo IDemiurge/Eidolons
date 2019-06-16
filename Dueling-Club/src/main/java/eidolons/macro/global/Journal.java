@@ -3,6 +3,7 @@ package eidolons.macro.global;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Route;
+import main.entity.DataModel;
 import main.entity.Ref;
 import main.game.core.game.Game;
 import main.system.text.LogManager;
@@ -54,6 +55,16 @@ public class Journal extends LogManager {
     @Override
     public boolean logMovement(Ref ref) {
         return false;
+    }
+
+    @Override
+    public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
+        return false;
+    }
+
+    @Override
+    public void logCounterModified(DataModel entity, String name, int modValue) {
+
     }
 
 

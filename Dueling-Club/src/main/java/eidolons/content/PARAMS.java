@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
-import eidolons.system.text.TextMaster;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.Metainfo;
@@ -21,6 +21,9 @@ import java.util.Map;
 
 //Quantative properties of ..*what?*
 public enum PARAMS implements PARAMETER {
+    SLEIGHT_OF_HAND("chars","","",false,0),
+    FORAGING("chars","","",false,0),
+
     MAX_DEPTH(null, "", false, 3, "dungeons"),
     MIN_DEPTH(null, "", false, 1, "dungeons"),
     POWER_MOD(true, null, "", false, 100, "dungeons", "encounters"),
@@ -37,27 +40,27 @@ public enum PARAMS implements PARAMETER {
     BATTLE_SPIRIT(null, "", true, 100, "units", "chars", "perks", "party"),
     PRINCIPLE_CLASHES(null, "", true, 0, "units", "chars", "perks", "party"),
     PRINCIPLE_CLASHES_REDUCTION(null, "", true, 0, "units", "chars", "perks", "party"),
-    WAR_ALIGNMENT(StringMaster.getWellFormattedString("WAR_ALIGNMENT"), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    PEACE_ALIGNMENT(StringMaster.getWellFormattedString("PEACE AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    HONOR_ALIGNMENT(StringMaster.getWellFormattedString("HONOR AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    TREACHERY_ALIGNMENT(StringMaster.getWellFormattedString("TREACHERY AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    LAW_ALIGNMENT(StringMaster.getWellFormattedString("LAW_ALIGNMENT"), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    FREEDOM_ALIGNMENT(StringMaster.getWellFormattedString("FREEDOM AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    CHARITY_ALIGNMENT(StringMaster.getWellFormattedString("CHARITY AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    AMBITION_ALIGNMENT(StringMaster.getWellFormattedString("AMBITION AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    TRADITION_ALIGNMENT(StringMaster.getWellFormattedString("TRADITION AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    PROGRESS_ALIGNMENT(StringMaster.getWellFormattedString("PROGRESS AL."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
+    WAR_ALIGNMENT(StringMaster.getWellFormattedString("WAR_ALIGNMENT"), null, false, 0, "units", "chars"),
+    PEACE_ALIGNMENT(StringMaster.getWellFormattedString("PEACE AL."), null, false, 0, "units", "chars"),
+    HONOR_ALIGNMENT(StringMaster.getWellFormattedString("HONOR AL."), null, false, 0, "units", "chars"),
+    TREACHERY_ALIGNMENT(StringMaster.getWellFormattedString("TREACHERY AL."), null, false, 0, "units", "chars"),
+    LAW_ALIGNMENT(StringMaster.getWellFormattedString("LAW_ALIGNMENT"), null, false, 0, "units", "chars"),
+    FREEDOM_ALIGNMENT(StringMaster.getWellFormattedString("FREEDOM AL."), null, false, 0, "units", "chars"),
+    CHARITY_ALIGNMENT(StringMaster.getWellFormattedString("CHARITY AL."), null, false, 0, "units", "chars"),
+    AMBITION_ALIGNMENT(StringMaster.getWellFormattedString("AMBITION AL."), null, false, 0, "units", "chars"),
+    TRADITION_ALIGNMENT(StringMaster.getWellFormattedString("TRADITION AL."), null, false, 0, "units", "chars"),
+    PROGRESS_ALIGNMENT(StringMaster.getWellFormattedString("PROGRESS AL."), null, false, 0, "units", "chars"),
 
-    WAR_IDENTITY(StringMaster.getWellFormattedString("WAR_IDENTITY"), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    PEACE_IDENTITY(StringMaster.getWellFormattedString("PEACE id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    HONOR_IDENTITY(StringMaster.getWellFormattedString("HONOR id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    TREACHERY_IDENTITY(StringMaster.getWellFormattedString("TREACHERY id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    LAW_IDENTITY(StringMaster.getWellFormattedString("LAW_IDENTITY"), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    FREEDOM_IDENTITY(StringMaster.getWellFormattedString("FREEDOM id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    CHARITY_IDENTITY(StringMaster.getWellFormattedString("CHARITY id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    AMBITION_IDENTITY(StringMaster.getWellFormattedString("AMBITION id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    TRADITION_IDENTITY(StringMaster.getWellFormattedString("TRADITION id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
-    PROGRESS_IDENTITY(StringMaster.getWellFormattedString("PROGRESS id."), null, false, 0, "units", "chars", "perks", "classes", "skills", "deities"),
+    WAR_IDENTITY(StringMaster.getWellFormattedString("WAR_IDENTITY"), null, false, 0, "units", "chars"),
+    PEACE_IDENTITY(StringMaster.getWellFormattedString("PEACE id."), null, false, 0, "units", "chars"),
+    HONOR_IDENTITY(StringMaster.getWellFormattedString("HONOR id."), null, false, 0, "units", "chars"),
+    TREACHERY_IDENTITY(StringMaster.getWellFormattedString("TREACHERY id."), null, false, 0, "units", "chars"),
+    LAW_IDENTITY(StringMaster.getWellFormattedString("LAW_IDENTITY"), null, false, 0, "units", "chars"),
+    FREEDOM_IDENTITY(StringMaster.getWellFormattedString("FREEDOM id."), null, false, 0, "units", "chars"),
+    CHARITY_IDENTITY(StringMaster.getWellFormattedString("CHARITY id."), null, false, 0, "units", "chars"),
+    AMBITION_IDENTITY(StringMaster.getWellFormattedString("AMBITION id."), null, false, 0, "units", "chars"),
+    TRADITION_IDENTITY(StringMaster.getWellFormattedString("TRADITION id."), null, false, 0, "units", "chars"),
+    PROGRESS_IDENTITY(StringMaster.getWellFormattedString("PROGRESS id."), null, false, 0, "units", "chars"),
 
     IDENTITY_POINTS(null, "", true, 0, "chars", "skills", "classes", "deities"),
     STARTING_IDENTITY_POINTS(null, "", false, 3, "chars"),
@@ -119,8 +122,8 @@ public enum PARAMS implements PARAMETER {
     C_FOCUS(null, "FOCUS", true, 0, "units", "chars", "perks"),
     ESSENCE(null, "ESSENCE", false, 0, "units", "chars", "perks"),
     C_ESSENCE(null, "ESSENCE", true, 0, "units", "chars", "perks"),
-    N_OF_COUNTERS("Counter pts", "", false, 0, "units", "chars", "perks", "skills"),
-    N_OF_ACTIONS("Action pts", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "perks", "bf obj", "skills"){
+    N_OF_COUNTERS("Extra Attacks", "", false, 0, "units", "chars", "perks", "skills"),
+    N_OF_ACTIONS("Initiative", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "perks", "bf obj", "skills"){
         @Override
         public String getDisplayedName() {
             if (DC_Engine.isAtbMode())
@@ -129,18 +132,18 @@ public enum PARAMS implements PARAMETER {
         }
     },
     C_N_OF_ACTIONS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
-    C_N_OF_COUNTERS("Number of Attacks", "", true, 2, "units", "chars", "perks"),
+    C_N_OF_COUNTERS("Extra Attacks", "", true, 2, "units", "chars", "perks"),
 
 
     INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars", "perks", "bf obj"),
     INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "perks", "bf obj"),
     C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
     C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
-    C_INITIATIVE("C Initiative", "", true, 0, "units", "chars", "perks", "bf obj"){
+    C_INITIATIVE("Current Initiative", "", true, 0, "units", "chars", "perks", "bf obj"){
         @Override
         public String getDisplayedName() {
             if (DC_Engine.isAtbMode())
-                return "Readiness";
+                return "ATB";
             return "Initiative";
         }
     },
@@ -196,6 +199,7 @@ public enum PARAMS implements PARAMETER {
     ESSENCE_REGEN("Ess. Regen", "ESSENCE_REGEN", false, 0, "units", "chars", "perks"),
     FOCUS_REGEN(null, "FOCUS_REGEN", false, 0, "units", "chars", "perks"),
     STARTING_FOCUS("Start foc", "FOCUS", false, 0, "units", "chars", "perks"),
+    FOCUS_FATIGUE("Focus Fatigue", "Focus Fatigue", true, 0, "units", "chars" ),
     BASE_DAMAGE("Base Damage", "", false, 0, "units", "chars", "perks"),
     DAMAGE("Damage", "", false, 0, "units", "chars", "perks"),
     MIN_DAMAGE("Min Damage", "", false, 0, "units", "chars", "perks"),
@@ -281,8 +285,8 @@ public enum PARAMS implements PARAMETER {
     GLOBAL_ILLUMINATION(null, null, false, 0, "dungeons"),
     LIGHT_EMISSION_MODIFIER(null, null, false, 0, "dungeons"),
 
-    PERCEPTION(null, null, false, 0, "bf obj", "units", "chars", "perks", "armor"),
-    NOISE(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "perks", "armor"),
+    PERCEPTION(null, null, false, 20, "bf obj", "units", "chars", "perks", "armor"),
+    NOISE(null, null, false, 50, "action", "spell", "bf obj", "units", "chars", "perks", "armor"),
     REVEALMENT(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "perks", "armor"),
 
     SIGHT_RANGE(null, "Sight Range", false, 0, "bf obj", "units", "chars", "perks", "armor"),
@@ -465,14 +469,14 @@ public enum PARAMS implements PARAMETER {
     RANK_XP_MOD(true, "", "", false, 50, "skills", "classes"),
     RANK_SD_MOD(true, "", "", false, 25, "skills", "classes"),
     RANK_FORMULA_MOD(true, "", "", false, 25, "skills", "classes"),
-    TREE_LINK_OFFSET_X("", "", false, 0, "skills", "classes"),
-    TREE_LINK_OFFSET_Y("", "", false, 0, "skills", "classes"),
-    TREE_NODE_OFFSET_X("", "", false, 0, "skills", "classes"),
-    TREE_NODE_OFFSET_Y("", "", false, 0, "skills", "classes"),
+//    TREE_LINK_OFFSET_X("", "", false, 0, "skills", "classes"),
+//    TREE_LINK_OFFSET_Y("", "", false, 0, "skills", "classes"),
+//    TREE_NODE_OFFSET_X("", "", false, 0, "skills", "classes"),
+//    TREE_NODE_OFFSET_Y("", "", false, 0, "skills", "classes"),
     // SPELL
     AI_PRIORITY(null, "", false, 0, "spells", "actions"),
     CIRCLE("Circle", "", false, 1, "spells", "skills", "classes"),
-    FORMULA("Formula", "", false, 0, "actions", "spells", "skills", "classes", "items"),
+    FORMULA("Formula", "", false, 0, "actions", "spells", "skills", "classes", "items", "perks" ),
     // CHANNELING("spells", "CHANNELING", "", false, 0),
     // CHANNELING_ESS_COST("spells", "CHANNELING", "", false, 0),
     // CHANNELING_FOC_COST("spells", "CHANNELING", "", false, 0),
@@ -798,10 +802,16 @@ public enum PARAMS implements PARAMETER {
     DISARM_TRAP(null, "", false, 0, "classes", "units", "chars", "perks", "skills"),
 
     AUTO_TEST_ID("", "", false, 0, "spells", "actions", "classes", "skills"),
-    HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
-    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
+//    HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
+//    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
     ANIM_FRAME_DURATION("", "", false, 0, "spells", "actions"),
-    ANIM_SPEED("", "", false, 0, "spells", "actions"),;
+    ANIM_SPEED("", "", false, 0, "spells", "actions"), SOULFORCE(null, "", false, 0, "party"),
+
+    SELF_BUFF_MOD(null , "", false, 60, "chars", "units"),
+    DEBT_MOD(null , "", false,  0, "chars", "units"),
+    INTEREST_MOD(null , "", false,  0, "chars", "units")
+
+    ;
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
@@ -1090,7 +1100,7 @@ public enum PARAMS implements PARAMETER {
     }
     @Override
     public String getDisplayedName() {
-        return TextMaster.getDisplayedName(this);
+        return DescriptionTooltips.getDisplayedName(this);
     }
     @Override
     public String toString() {

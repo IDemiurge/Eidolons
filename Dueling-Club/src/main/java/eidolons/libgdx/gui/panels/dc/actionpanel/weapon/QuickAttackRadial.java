@@ -18,11 +18,15 @@ public class QuickAttackRadial extends RadialMenu {
     protected final boolean offhand;
     protected QuickWeaponPanel quickWeaponPanel;
 
+
     public QuickAttackRadial(QuickWeaponPanel quickWeaponPanel, boolean offhand) {
         this.offhand = offhand;
         this.quickWeaponPanel = quickWeaponPanel;
     }
 
+    @Override
+    protected void initBackground() {
+    }
     @Override
     protected void triggered(EventCallbackParam obj) {
         if (!(obj.get() instanceof DC_WeaponObj)) {

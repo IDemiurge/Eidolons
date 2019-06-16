@@ -100,4 +100,14 @@ public class GraveyardView extends TablePanel {
 
         setVisible(userObject.size() > 0);
     }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
+    protected boolean isVisibleEffectively() {
+        return true;
+    }
 }

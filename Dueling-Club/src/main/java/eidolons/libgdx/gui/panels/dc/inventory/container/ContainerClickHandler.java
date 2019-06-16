@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
@@ -43,10 +44,10 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     protected CharSequence containerName;
 
     public ContainerClickHandler(
-     String containerImagePath,
-     Collection<DC_HeroItemObj> items, Unit unit, Obj container) {
+            String containerImagePath,
+            Collection<DC_HeroItemObj> items, Unit unit, Obj container) {
         this(HqDataMaster.getInstance(unit),
-         containerImagePath, items, container);
+                containerImagePath, items, container);
     }
 
     public ContainerClickHandler(HqDataMaster dataMaster,
@@ -59,7 +60,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
             this.containerName = "Dropped Items";
             try {
                 this.containerImagePath = DataManager.getType(BF_OBJ_SUB_TYPES_REMAINS.REMAINS.getName(),
-                 DC_TYPE.BF_OBJ).getImagePath();
+                        DC_TYPE.BF_OBJ).getImagePath();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -77,7 +78,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
         if (!GoldMaster.isGoldPack(item) && hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!", hero);
+                    "Inventory is full!", hero);
+            EUtils.showInfoText("Inventory is full!");
             return false;
         }
         pickUp(item);
@@ -93,8 +95,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     protected void update() {
         dataMaster.applyModifications();
         Pair<InventoryDataSource, ContainerDataSource> param =
-         new ImmutablePair<>(new InventoryDataSource(hero.getHero()),
-          new ContainerDataSource(container, hero.getHero()));
+                new ImmutablePair<>(new InventoryDataSource(hero.getHero()),
+                        new ContainerDataSource(container, hero.getHero()));
         GuiEventManager.trigger(getGuiEvent(), param);
 
     }
@@ -109,7 +111,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
                 continue;
             if (hero.isInventoryFull()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-                 "Inventory is full!", hero);
+                        "Inventory is full!", hero);
+                EUtils.showInfoText("Inventory is full!");
                 return;
             }
             items.remove(item);
@@ -164,7 +167,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 
     protected void close() {
         GuiEventManager.trigger(getGuiEvent(),
-         null);
+                null);
         dataMaster.applyModifications();
     }
 

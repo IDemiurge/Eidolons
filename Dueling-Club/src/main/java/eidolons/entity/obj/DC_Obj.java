@@ -75,6 +75,7 @@ public abstract class DC_Obj extends MicroObj {
     Coordinates blockingCoordinate;
     private VisionController visionController;
     private boolean visibilityOverride;
+    private boolean resetIgnored;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -127,8 +128,8 @@ public abstract class DC_Obj extends MicroObj {
         return (DC_Player) super.getOwner();
     }
 
-    public Integer getCounter(COUNTER c) {
-        return getCounter(c.getName());
+    public Integer getCounter(COUNTER counter) {
+        return getCounter(counter.getName());
     }
 
     @Override
@@ -286,6 +287,7 @@ public abstract class DC_Obj extends MicroObj {
             ref.setID(KEYS.THIS, getId());
         }
         Effect effect = specialEffects.get(case_type);
+        getGame().getLogManager().log(getName() + ": special effect " + case_type.getName());
         effect.apply(ref);
     }
 
@@ -754,5 +756,12 @@ public abstract class DC_Obj extends MicroObj {
 
     public DIRECTION getDirection() {
         return null;
+    }
+    public boolean isResetIgnored() {
+        return resetIgnored;
+    }
+
+    public void setResetIgnored(boolean resetIgnored) {
+        this.resetIgnored = resetIgnored;
     }
 }

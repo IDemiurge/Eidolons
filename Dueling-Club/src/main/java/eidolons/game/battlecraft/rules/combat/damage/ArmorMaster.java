@@ -11,17 +11,25 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
+import eidolons.game.battlecraft.rules.combat.attack.ShieldMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+
+import java.util.function.Supplier;
 
 public class ArmorMaster {
     // is the damage already reduced by defense/... ?
@@ -196,6 +204,8 @@ public class ArmorMaster {
 
     public boolean checkCanShieldBlock(DC_ActiveObj active, BattleFieldObject targetObj) {
         // if (active.isMissile())
+        if (RuleKeeper.isRuleTestOn(RuleKeeper.RULE.SHIELD))
+            return true;
         if (targetObj.getActiveWeapon(true) != null) {
             if (targetObj.getActiveWeapon(true).isShield()) {
                 return true;
@@ -227,11 +237,21 @@ public class ArmorMaster {
             return 0;
         }
         DC_WeaponObj shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.OFFHAND);
+
+        boolean testOn =!simulation && RuleKeeper.isRuleTestOn(RuleKeeper.RULE.SHIELD);
+        if (testOn)
+        {
+            if (shield == null) {
+                shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.WEAPON);
+            }
+        }
         String message;
         boolean spell = action.isSpell();
         boolean zone = action.isZone();
         boolean offhand = action.isOffhand();
-        Integer chance = getShieldBlockChance(shield, attacked, attacker, weapon, action, offhand,
+        Integer chance =
+         testOn ? 100 :
+         getShieldBlockChance(shield, attacked, attacker, weapon, action, offhand,
          spell);
         if (!zone) {
             if (!simulation)// will be average instead
@@ -248,7 +268,11 @@ public class ArmorMaster {
         }
         Integer blockValue = getShieldBlockValue(damage, shield, attacked, attacker, weapon,
          action, zone);
-
+        if (blockValue==0) {
+            if (testOn) {
+                blockValue = damage;
+            }
+        }
         blockValue = Math.min(blockValue, damage);
         if (!simulation) {
             action.getRef().setID(KEYS.BLOCK, shield.getId());
@@ -268,6 +292,15 @@ public class ArmorMaster {
 //                animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
 //                 durabilityLost, damage, damage_type, shield));
             }
+
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
+                    "Shield block!", attacked);
+            Integer finalBlockValue = blockValue;
+            DC_WeaponObj finalShield = shield;
+            // TODO igg demo fix
+            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
+                    (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(finalShield, action, finalBlockValue));
+
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
              + blockValue + " out of " + damage + " " + damage_type + " damage from " +
              // StringMaster.wrapInParenthesis

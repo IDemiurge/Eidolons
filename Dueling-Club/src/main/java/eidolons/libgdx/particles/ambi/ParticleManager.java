@@ -30,7 +30,7 @@ import java.util.Map;
 public class ParticleManager extends GroupX {
     private static final VFX FOG_VFX = VFX.SMOKE_TEST;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
-     GRAPHIC_OPTION.AMBIENCE);
+     GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;
     private static Dungeon dungeon_;
     public boolean debugMode;
@@ -41,7 +41,8 @@ public class ParticleManager extends GroupX {
     SmartAmbienceMap ambienceMap;
 
     public ParticleManager() {
-        new AttachEmitterManager();
+//        if (OptionsMaster) TODO
+//        new AttachEmitterManager();
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             DC_Game game = (DC_Game) p.get();
             DungeonLevel level = game.getDungeonMaster().getDungeonLevel();

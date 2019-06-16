@@ -20,6 +20,7 @@ public class MicroObj extends Obj {
     protected int z;
     protected Boolean overlayingInitialized; //for performance
     protected Coordinates originalCoordinates;
+    private boolean invalidCoordinates;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -52,8 +53,9 @@ public class MicroObj extends Obj {
 
 
     public Coordinates getCoordinates() {
-        if (coordinates == null) {
+        if (coordinates == null || invalidCoordinates) {
             coordinates = Coordinates.get(getX(), getY());
+            invalidCoordinates = false;
         } else {
             //            coordinates.setX(getX());
             //            coordinates.setY(getY());
@@ -80,6 +82,10 @@ public class MicroObj extends Obj {
     }
 
     public void setY(int y) {
+        if ( this.y == y){
+            return;
+        }
+        invalidCoordinates= true;
         this.y = y;
         setParam(G_PARAMS.POS_Y, y, true);
         getCoordinates().setY(y);
@@ -91,9 +97,12 @@ public class MicroObj extends Obj {
     }
 
     public void setX(int x) {
+        if ( this.x == x){
+            return;
+        }
+        invalidCoordinates= true;
         this.x = x;
         setParam(G_PARAMS.POS_X, x, true);
-        getCoordinates().setX(x);
     }
 
     @Override

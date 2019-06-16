@@ -6,6 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -23,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
@@ -81,7 +83,7 @@ public class ActionPanel extends GroupX {
 
         rigthOrbPanel = new OrbsPanel(PARAMS.MORALE, PARAMS.ESSENCE, PARAMS.FOCUS);
         rigthOrbPanel.setPosition(spellOffset - 11
-         , IMAGE_SIZE);
+                , IMAGE_SIZE);
         addActor(rigthOrbPanel);
 
         addActor(facingPanel = new FacingPanel());
@@ -90,12 +92,12 @@ public class ActionPanel extends GroupX {
 
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
         offhand.setPosition(leftOrbPanel.getX() + 272,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
 
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
-         leftOrbPanel.getY() + 32);
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 7,
+                leftOrbPanel.getY() + 32);
 
         addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
         orbOverlay.setPosition(EMPTY_OFFSET + 136, 56);
@@ -110,9 +112,9 @@ public class ActionPanel extends GroupX {
         addActor(spellbookBtn);
         addActor(invBtn);
         spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
-         2);
+                2);
         invBtn.setPosition(modeActionsPanel.getX() - 58,
-         2);
+                2);
 
         setY(-IMAGE_SIZE);
         bindEvents();
@@ -149,10 +151,18 @@ public class ActionPanel extends GroupX {
     }
 
     private void showSpellbook() {
-        HqMaster.openHqPanel();
+        if (DC_Game.game!=null )
+        if (DC_Game.game.isStarted() )
+        {
+            HqMaster.openHqPanel();
+            HqMaster.tab("Spells");
+        }
     }
 
     private void showInventory() {
+
+        if (DC_Game.game!=null )
+            if (DC_Game.game.isStarted() )
         Eidolons.activateMainHeroAction(DC_ActionManager.USE_INVENTORY);
     }
 
@@ -165,18 +175,27 @@ public class ActionPanel extends GroupX {
         });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
-            mainHand.setUserObject(new ImmutablePair<>(
-             new WeaponDataSource(hero.getActiveWeapon(false)),
-             new WeaponDataSource(hero.getNaturalWeapon())
-            ));
-            offhand.setUserObject(new ImmutablePair<>(
-             new WeaponDataSource(hero.getActiveWeapon(true)),
-             new WeaponDataSource(hero.getOffhandNaturalWeapon())
-            ));
+            // dirty flag?
+            if (hero.isDead()) {
+                return;
+            }
+            Pair<WeaponDataSource, WeaponDataSource> pair = new ImmutablePair<>(
+                    new WeaponDataSource(hero.getActiveWeapon(false)),
+                    new WeaponDataSource(hero.getNaturalWeapon()));
+            mainHand.setUserObject(pair);
+            pair = new ImmutablePair<>(
+                    new WeaponDataSource(hero.getActiveWeapon(true)),
+                    new WeaponDataSource(hero.getOffhandNaturalWeapon()));
+            offhand.setUserObject(pair);
+
             GuiEventManager.trigger(ACTION_PANEL_UPDATE,
-             new PanelActionsDataSource(hero));
+                    new PanelActionsDataSource(hero));
 
         });
+    }
+
+    private void nullifyUi() {
+
     }
 
     protected void initListeners() {
@@ -190,6 +209,8 @@ public class ActionPanel extends GroupX {
                     //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                     //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
                 }
+
+
                 quickSlotPanel.setUserObject(source);
                 modeActionsPanel.setUserObject(source);
                 spellPanel.setUserObject(source);
@@ -215,20 +236,29 @@ public class ActionPanel extends GroupX {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (quickSlotPanel.isHovered() ||
+                spellPanel.isHovered() ||
+                modeActionsPanel.isHovered()
+        ) {
+            //TODO while hovering, don't update!!!
+            BaseSlotPanel.hoveredAny = true;
+        } else {
+            BaseSlotPanel.hoveredAny = false;
+        }
 
         spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
-         2);
+                2);
         invBtn.setPosition(modeActionsPanel.getX() - 55,
-         2);
+                2);
 
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
         offhand.setPosition(leftOrbPanel.getX() + 272,
-         leftOrbPanel.getY() + 12);
+                leftOrbPanel.getY() + 12);
 
         facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
-         leftOrbPanel.getY() + 32);
+                leftOrbPanel.getY() + 32);
     }
 
     @Override

@@ -29,11 +29,11 @@ public abstract class DynamicValue implements Referred {
             if (Ref.isKey(fullString)) {
                 this.value_string = fullString;
             } else {
-
                 if (fullString.contains("_")) {
                     String s[] = fullString.split("_");
                     obj_string = s[0];
-                    this.value_string = fullString.substring(fullString.indexOf("_") + 1);
+                    value_string = s[1];
+//                    this.value_string = fullString.substring(fullString.indexOf("_") + 1);
                 } else {
                     obj_string = KEYS.SOURCE.toString();
                     obj_string = fullString;

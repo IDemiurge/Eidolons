@@ -42,12 +42,16 @@ public class Blackout extends Group {
     public void fadeOutAndBack( ) {
         fadeOutAndBack(null );
     }
-        public void fadeOutAndBack(Float dur) {
+        public void fadeOutAndBack(Number dur) {
         if (dur == null)
             dur = 3f;
+
+            if (dur instanceof Integer) {
+                dur = Float.valueOf((int) dur);
+            }
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
-        ActorMaster.addFadeInAndOutAction(image.getContent(), dur, false);
+        ActorMaster.addFadeInAndOutAction(image.getContent(), (Float) dur, false);
         //controller?
         //vignette?
     }

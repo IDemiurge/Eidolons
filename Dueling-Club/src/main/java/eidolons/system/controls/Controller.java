@@ -7,8 +7,9 @@ public interface Controller {
 
     boolean charTyped(char c);
 
-    default void keyDown(int keyCode) {
+    default boolean keyDown(int keyCode) {
 
+        return false;
     }
 
     enum CONTROLLER {

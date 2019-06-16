@@ -39,11 +39,14 @@ public class DataString {
 
     public enum SPEECH_VALUE {
         VFX,
+        SPRITE,
         SOUND,
         MUSIC,
-        ACTOR,
+        LISTENER_ACTOR,
+        SPEAKER_ACTOR,
         ACTORS,
         BACKGROUND,
         MESSAGE,
+        ;
     }
 }

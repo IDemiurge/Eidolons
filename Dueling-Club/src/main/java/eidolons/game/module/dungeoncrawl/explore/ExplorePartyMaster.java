@@ -34,7 +34,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
     }
 
     public Collection<Unit> getAllies() {
-        return master.getGame().getPlayer(true).getControlledUnits_();
+        return master.getGame().getPlayer(true).collectControlledUnits_();
     }
 
     public void reset() {

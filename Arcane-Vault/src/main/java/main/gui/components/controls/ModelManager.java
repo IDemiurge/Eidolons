@@ -75,6 +75,7 @@ public class ModelManager {
     private static boolean backupOnLaunch;
     private static List<String> masteriesToCleanUp = Arrays.asList("Spellcraft",
             "Spellcraft", "Spellcraft", "Affliction");
+    private static boolean autoAdjust;
 
     public static void addParent() {
         add(false);
@@ -204,6 +205,7 @@ public class ModelManager {
     }
 
     public static void toggle() {
+        autoAdjust = !autoAdjust;
         setAutoSaveOff(!isAutoSaveOff());
         ArcaneVault.setSimulationOn(!ArcaneVault.isSimulationOn());
         ArcaneVault.getMainBuilder().getEditViewPanel().AE_VIEW_TOGGLING = !ArcaneVault
@@ -268,6 +270,7 @@ public class ModelManager {
     private static void updateSpells() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             ContentGenerator.generateSpellParams(type);
+
         }
     }
 
@@ -731,7 +734,7 @@ public class ModelManager {
     }
 
     private static boolean isSkillSdAutoAdjusting() {
-        return true;
+        return autoAdjust;
     }
 
     public static void save() {

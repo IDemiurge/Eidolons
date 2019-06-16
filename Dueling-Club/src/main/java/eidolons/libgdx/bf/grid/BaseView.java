@@ -6,9 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.TARGET_SELECTION;
@@ -51,14 +54,33 @@ public class BaseView extends SuperActor {
             }
         });
     }
-
+    @Override
+    public int getFluctuatingAlphaPeriod() {
+        return 0;
+    }
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
         originalTexture = processPortraitTexture(portraitTexture, path);
         return new FadeImageContainer(new Image(originalTexture));
     }
 
     protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
+        if (TextureCache.isEmptyTexture(texture)){
+            return getPlaceholderPortrait();
+        }
         return texture;
+    }
+
+    protected TextureRegion getPlaceholderPortrait() {
+        if (getUserObject() instanceof Structure) {
+            if (((Structure) getUserObject()).isWall()) {
+                return TextureCache.getOrCreateR(Images.PLACEHOLDER_WALL);
+            }
+            return TextureCache.getOrCreateR(Images.PLACEHOLDER_DECOR);
+        } else {
+            return TextureCache.getOrCreateR(Images.PLACEHOLDER_UNIT);
+
+        }
+//        return TextureCache.getOrCreateR(Images.PLACEHOLDER);
     }
 
     public FadeImageContainer getPortrait() {

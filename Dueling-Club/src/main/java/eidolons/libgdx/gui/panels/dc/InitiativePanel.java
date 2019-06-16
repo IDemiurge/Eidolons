@@ -26,6 +26,8 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.QueueView;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
+import eidolons.libgdx.gui.HideButton;
+import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -36,9 +38,11 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster.FONT;
 
@@ -66,6 +70,10 @@ public class InitiativePanel extends GroupX {
     private   GearCluster gears;
     private ClockActor clock;
     private FadeImageContainer light;
+
+    SpeedControlPanel speedControlPanel;
+    private HideButton hideButton;
+
     public InitiativePanel() {
         init();
         bindEvents();
@@ -77,6 +85,40 @@ public class InitiativePanel extends GroupX {
 
     public static boolean isLeftToRight() {
         return true;
+    }
+
+    private void init() {
+
+        addActor(gears = new GearCluster(3, 1.2f));
+        queue = new QueueViewContainer[maxSize];
+        queueGroup = new WidgetGroup();
+        addActor(
+                RollDecorator.decorate(
+                        speedControlPanel = new SpeedControlPanel(), FACING_DIRECTION.SOUTH));
+        addActor( container = new Container<>(queueGroup));
+        addActor(hideButton= new HideButton(speedControlPanel));
+        speedControlPanel.setPosition(0, -150);
+        hideButton.setPosition(130, -100);
+
+        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
+         "components", "dc", "atb",
+         "atb background.png"));
+        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" +  NumberUtils.getFloatWithDigitsAfterPeriod(DC_Game.game.getLoop().getTime(), 1));
+
+
+        addActor(panelImage = new ValueContainer(textureRegion));
+        panelImage.addListener(tooltip.getController());
+
+        addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
+
+        addActor(clock =  new ClockActor());
+        clock.addListener(getClockListener());
+
+        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
+        addActor(timeLabel);
+
+        resetPositions();
+
     }
 
 
@@ -147,32 +189,6 @@ public class InitiativePanel extends GroupX {
             });
         }
     }
-    private void init() {
-
-        addActor(gears = new GearCluster(3, 0.8f));
-        queue = new QueueViewContainer[maxSize];
-        queueGroup = new WidgetGroup();
-        addActor( container = new Container<>(queueGroup));
-
-        final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
-         "components", "dc", "atb",
-         "atb background.png"));
-        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
-        addActor(panelImage = new ValueContainer(textureRegion));
-        panelImage.addListener(tooltip.getController());
-
-        addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
-
-        addActor(clock =  new ClockActor());
-        clock.addListener(getClockListener());
-
-        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
-        addActor(timeLabel);
-
-        resetPositions();
-
-    }
-
     private EventListener getClockListener() {
 
         return new ClickListener() {
@@ -372,6 +388,9 @@ public class InitiativePanel extends GroupX {
 
     @Override
     public void act(float delta) {
+
+        hideButton.setPosition(160, -100);
+        speedControlPanel.setPosition(0, -300);
         super.act(delta);
         if (isRealTime()) {
             updateTime();
@@ -401,14 +420,18 @@ public class InitiativePanel extends GroupX {
     }
 
     private void toggleQueue(boolean visible) {
-
         cleanUp();
+        rollComponent(container, visible);
+//        rollComponent(speedControlPanel, visible);
+    }
+
+    private void rollComponent(Actor container, boolean visible) {
         float x = container.getX();
         float y = !visible ? container.getHeight() : queueOffsetY;
         ActorMaster.addMoveToAction(container, x, y, 1);
         gears.activeWork(0.5f, 1);
         if (visible)
-            container.setVisible(visible);
+            container.setVisible(true);
         else
             ActorMaster.addHideAfter(container);
     }

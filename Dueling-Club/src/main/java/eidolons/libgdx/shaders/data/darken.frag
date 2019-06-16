@@ -10,6 +10,5 @@
      
      void main() {
        vec4 c = v_color * texture2D(u_texture, v_texCoords);
-//           float grey = (c.r + c.g + c.b) / 3.0;
-       gl_FragColor = vec4(c.r*coef*base, c.g*coef*base, c.b*coef*base, c.a);
+       gl_FragColor = vec4(c.r*0.8f, c.g*0.8f, c.b*0.8f, c.a);
      }

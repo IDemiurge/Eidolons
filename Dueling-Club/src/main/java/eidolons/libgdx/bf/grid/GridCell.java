@@ -20,8 +20,9 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.shaders.DarkGrayscaleShader;
+import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 
@@ -36,6 +37,17 @@ public class GridCell extends Group implements Borderable {
     protected int gridY;
     protected TextureRegion borderTexture;
     protected Label cordsText;
+
+    boolean VOID;
+    // some creatures can walk there?
+
+    /**
+     * so we do create cells, but hide them...
+     * fade in
+     *
+     * check if void - via prop
+     *
+     */
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -65,6 +77,7 @@ public class GridCell extends Group implements Borderable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                GlobalController.cellClicked(event,x, y);
                 if (getTapCount() > 1) {
                     if (!isAlt()) {
                         if (!DefaultActionHandler.
@@ -118,6 +131,10 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (Eidolons.BOSS_FIGHT) {
+            super.draw(batch, 1);
+            return;
+        }
         if (!DungeonScreen.getInstance().controller.isWithinCamera
          (this)) {
             return;
@@ -127,6 +144,7 @@ public class GridCell extends Group implements Borderable {
              getGridX(), getGridY()
             ));
         }*/
+
         if (parentAlpha == ShaderDrawer.SUPER_DRAW
 //         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
          ) {
@@ -136,7 +154,7 @@ public class GridCell extends Group implements Borderable {
             ShaderDrawer.drawWithCustomShader(this,
              batch,
              !getUserObject().isPlayerHasSeen() ?
-             DarkGrayscaleShader.getShader_()
+             DarkShader.getDarkShader()
 //             FishEyeShader.getShader()
               : null, true);
         }
@@ -156,15 +174,13 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
+        cordsText.setVisible(DC_Game.game.isDebugMode());
         if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
          ) {
             return;
         }
         super.act(delta);
         if (DC_Game.game.isDebugMode()) {
-            if (!cordsText.isVisible()) {
-                cordsText.setVisible(true);
-            }
             if (GammaMaster.DEBUG_MODE) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
                 cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="

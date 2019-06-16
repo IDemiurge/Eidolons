@@ -12,14 +12,16 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.FloatTextLayer;
+import eidolons.libgdx.anims.FloatingTextLayer;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.ScrollPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
@@ -27,12 +29,13 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
+import eidolons.libgdx.stage.GuiVisualEffects;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
+import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -76,9 +79,12 @@ public class OptionsMaster {
 
         for (Object sub : animOptions.getValues().keySet()) {
             new EnumMaster<ANIMATION_OPTION>().
-             retrieveEnumConst(ANIMATION_OPTION.class,
-              animOptions.getValues().get(sub).toString());
+                    retrieveEnumConst(ANIMATION_OPTION.class,
+                            animOptions.getValues().get(sub).toString());
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
+            if (key == null) {
+                continue;
+            }
             String value = animOptions.getValue(key);
             boolean booleanValue = animOptions.getBooleanValue(key);
             Integer intValue = animOptions.getIntValue(key);
@@ -87,10 +93,10 @@ public class OptionsMaster {
             switch (key) {
                 case SPEED:
                     AnimMaster.getInstance().setAnimationSpeedFactor(
-                     floatValue);
+                            floatValue);
                     break;
                 case FLOAT_TEXT_DURATION_MOD:
-                    FloatTextLayer.setDurationMod(floatValue);
+                    FloatingTextLayer.setDurationMod(floatValue);
                     break;
 
                 case WEAPON_3D_ANIMS_OFF:
@@ -99,11 +105,9 @@ public class OptionsMaster {
                 case BLOOD_ANIMS_OFF:
                     HitAnim.setBloodOff(booleanValue);
                     break;
-                case WAIT_FOR_ANIM:
-                    break;
                 case MAX_ANIM_WAIT_TIME:
                     break;
-                case PARALLEL_DRAWING:
+                case PARALLEL_ANIMATIONS:
                     AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
                     break;
 
@@ -123,11 +127,15 @@ public class OptionsMaster {
 
     }
 
+    public static void applyControlOptions() {
+        applyControlOptions(getControlOptions());
+    }
+
     private static void applyControlOptions(ControlOptions options) {
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<CONTROL_OPTION>().
-             retrieveEnumConst(CONTROL_OPTION.class,
-              options.getValues().get(sub).toString());
+                    retrieveEnumConst(CONTROL_OPTION.class,
+                            options.getValues().get(sub).toString());
             CONTROL_OPTION key = options.getKey((sub.toString()));
             if (key == null)
                 continue;
@@ -170,40 +178,48 @@ public class OptionsMaster {
         }
     }
 
+    public static void applyAnimOptions() {
+        applyAnimOptions(getAnimOptions());
+    }
+    public static void applyGameplayOptions() {
+        applyGameplayOptions(getGameplayOptions());
+    }
+
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
             new EnumMaster<GAMEPLAY_OPTION>().
-             retrieveEnumConst(GAMEPLAY_OPTION.class,
-              gameplayOptions.getValues().get(sub).toString());
+                    retrieveEnumConst(GAMEPLAY_OPTION.class,
+                            gameplayOptions.getValues().get(sub).toString());
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
             String value = gameplayOptions.getValue(key);
-                switch (key) {
-                    case GAME_SPEED:
-                        try {
-                            float speed = gameplayOptions.getFloatValue(key) / 100;
-                            ExplorationTimeMaster.setDefaultSpeed(speed);
-                            MacroTimeMaster.getInstance().setSpeed(speed);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
-                        break;
-                    case GHOST_MODE:
-                        if (!CoreEngine.isFastMode())
-                            VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
-                        break;
-                    case RULES_SCOPE:
-                        RuleKeeper.setScope(
-                         new EnumMaster<RULE_SCOPE>().
-                          retrieveEnumConst(RULE_SCOPE.class,
-                           gameplayOptions.getValues().get(sub).toString()
-                          ));
-                        break;
-                    case GAME_DIFFICULTY:
-                        if (Eidolons.game != null)
-                            if (Eidolons.game.getBattleMaster() != null)
-                                Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
-                        break;
-                }
+            switch (key) {
+                case GAME_SPEED:
+                    try {
+                        float speed = gameplayOptions.getFloatValue(key) / 100;
+                        ExplorationTimeMaster.setDefaultSpeed(speed);
+                        ExplorationTimeMaster.setSpeed(speed);
+                        MacroTimeMaster.getInstance().setSpeed(speed);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                    break;
+                case GHOST_MODE:
+                    if (!CoreEngine.isFastMode())
+                        VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
+                    break;
+                case RULES_SCOPE:
+                    RuleKeeper.setScope(
+                            new EnumMaster<RULE_SCOPE>().
+                                    retrieveEnumConst(RULE_SCOPE.class,
+                                            gameplayOptions.getValues().get(sub).toString()
+                                    ));
+                    break;
+                case GAME_DIFFICULTY:
+                    if (Eidolons.game != null)
+                        if (Eidolons.game.getBattleMaster() != null)
+                            Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
+                    break;
+            }
         }
     }
 
@@ -212,7 +228,7 @@ public class OptionsMaster {
             return;
         if (!GdxMaster.isLwjglThread()) {
             Gdx.app.postRunnable(() ->
-             applySoundOptions_(soundOptions));
+                    applySoundOptions_(soundOptions));
         } else
             applySoundOptions_(soundOptions);
     }
@@ -224,25 +240,23 @@ public class OptionsMaster {
         }
         for (Object sub : soundOptions.getValues().keySet()) {
             new EnumMaster<SOUND_OPTION>().
-             retrieveEnumConst(SOUND_OPTION.class,
-              soundOptions.getValues().get(sub).toString());
+                    retrieveEnumConst(SOUND_OPTION.class,
+                            soundOptions.getValues().get(sub).toString());
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
+            if (key == null) {
+                continue;
+            }
             String value = soundOptions.getValue(key);
 
             if (!NumberUtils.isInteger(value)) {
                 switch (key) {
                     case SOUNDS_OFF:
                         SoundMaster.setOn(!OptionsMaster.getSoundOptions().
-                         getBooleanValue(SOUND_OPTION.SOUNDS_OFF));
+                                getBooleanValue(SOUND_OPTION.SOUNDS_OFF));
                         //                        MusicMaster.resetSwitcher();
                         break;
                     case MUSIC_OFF:
                         MusicMaster.resetSwitcher();
-                        break;
-                    case MUSIC_VARIANT:
-                        master.setVariant(
-                         new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
-                          soundOptions.getValue(key)));
                         break;
                 }
             } else {
@@ -270,7 +284,7 @@ public class OptionsMaster {
         }
         if (!GdxMaster.isLwjglThread()) {
             Gdx.app.postRunnable(() ->
-             applyGraphicsOptions_(graphicsOptions));
+                    applyGraphicsOptions_(graphicsOptions));
         } else
             applyGraphicsOptions_(graphicsOptions);
     }
@@ -316,6 +330,9 @@ public class OptionsMaster {
 
     private static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
         switch (key) {
+            case DEV:
+                CoreEngine.setDevEnabled(bool);
+                break;
             case LOGGING:
                 break;
             case LOG_TO_FILE:
@@ -323,11 +340,37 @@ public class OptionsMaster {
                 break;
             case RESET_COSTS:
                 break;
+            case LOG_MORE_INFO:
+                break;
+            case LOG_DEV_INFO:
+                break;
+            case MESSAGES_OFF:
+                break;
+            case INTRO_OFF:
+                break;
             case CACHE:
                 break;
             case PRECONSTRUCT:
                 break;
             case LAZY:
+                break;
+            case ActiveTestMode:
+                CoreEngine.setActiveTestMode(bool);
+                break;
+            case Ram_economy:
+                CoreEngine.setRamEconomy(bool);
+                break;
+            case levelTestMode:
+                CoreEngine.setLevelTestMode(bool);
+                break;
+            case contentTestMode:
+                CoreEngine.setContentTestMode(bool);
+                break;
+            case reverseExit:
+                CoreEngine.setReverseExit(bool);
+                break;
+            case KeyCheat:
+                CoreEngine.setKeyCheat(bool);
                 break;
         }
 
@@ -341,6 +384,12 @@ public class OptionsMaster {
             case ADDITIVE_LIGHT:
                 LightLayer.setAdditive(bool);
                 break;
+            case PERFORMANCE_BOOST:
+                Fluctuating.fluctuatingAlphaPeriodGlobal=(Integer.valueOf(value))/10;
+                break;
+            case UI_VFX:
+                GuiVisualEffects.setOff(!bool);
+                break;
             case BRIGHTNESS:
                 GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
                 break;
@@ -348,19 +397,26 @@ public class OptionsMaster {
                 GenericLauncher launcher = Eidolons.getLauncher();
                 launcher.setForegroundFPS(Integer.valueOf(value));
                 break;
-            case AMBIENCE:
+            case AMBIENCE_VFX:
                 ParticleManager.setAmbienceOn(bool);
+                break;
+            case LITE_MODE:
+                CoreEngine.setLiteLaunch(bool);
                 break;
             case FULLSCREEN:
                 if (Eidolons.getScope() == SCOPE.MENU)
                     Eidolons.setFullscreen(bool);
                 break;
+            case VIDEO:
+                break;
             case AMBIENCE_MOVE_SUPPORTED:
                 ParticleManager.setAmbienceMoveOn(
-                 bool);
+                        bool);
                 break;
             case RESOLUTION:
                 Eidolons.setResolution(value);
+                break;
+            case VSYNC:
                 break;
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
@@ -370,6 +426,21 @@ public class OptionsMaster {
                 break;
             case UI_SCALE:
                 GdxMaster.setUserUiScale(Float.valueOf(value) / 100);
+                break;
+            case SPRITE_CACHE_ON:
+                break;
+            case LIGHT_OVERLAYS_OFF:
+                break;
+            case UI_ATLAS:
+                break;
+            case FULL_ATLAS:
+                break;
+            case SHARD_VFX:
+                break;
+            case COLOR_TEXT_LOG:
+                LogPanel.setColorText(bool);
+                break;
+            case NO_BACKGROUND_SPRITES:
                 break;
         }
     }
@@ -411,7 +482,7 @@ public class OptionsMaster {
             return null;
         }
         OPTIONS_GROUP group = new EnumMaster<OPTIONS_GROUP>().retrieveEnumConst(
-         OPTIONS_GROUP.class, name);
+                OPTIONS_GROUP.class, name);
         Options options = getOptions(group);
 
         if (options == null) {
@@ -419,7 +490,7 @@ public class OptionsMaster {
         }
 
         String optionName = ListChooser.chooseString(ListMaster.toStringList(options.getValues()
-         .keySet().toArray()));
+                .keySet().toArray()));
         String value = DialogMaster.inputText("", options.getValue(optionName));
         if (value == null) {
             options.removeValue(optionName);
@@ -435,6 +506,7 @@ public class OptionsMaster {
         applySoundOptions(getSoundOptions());
         applyGameplayOptions(getGameplayOptions());
         applyControlOptions(getControlOptions());
+        applySystemOptions(getSystemOptions());
 
         if (GdxMaster.isLwjglThread()) {
             PostProcessController.getInstance().update(getPostProcessingOptions());
@@ -460,19 +532,23 @@ public class OptionsMaster {
             //OR PUT UNID-DATA-STRING there
             for (Object option : optionsMap.get(sub).getValues().keySet()) {
                 content.append(XML_Converter.wrap(option.toString(),
-                 optionsMap.get(sub).getValues().get(option).toString()) + StringMaster.NEW_LINE);
+                        optionsMap.get(sub).getValues().get(option).toString()) + StringMaster.NEW_LINE);
             }
             content.append(XML_Converter.closeXml(sub.toString()) + StringMaster.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
-        FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
-        FileManager.write(content.toString(), getGlobalOptionsPath());
+        if (isLocalOptionsPreferred()) {
+            FileManager.write(content.toString(), getLocalOptionsPath());
+        } else {
+//    TODO igg demo fix    FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
+            FileManager.write(content.toString(), getGlobalOptionsPath());
+        }
     }
 
     private static String getGlobalOptionsPath() {
-        if (optionsPath!=null )
+        if (optionsPath != null)
             return optionsPath;
-        return PathFinder.OPTIONS_PATH+ "options.xml";
+        return PathFinder.OPTIONS_PATH + "options.xml";
     }
 
     private static String getLocalOptionsPath() {
@@ -519,7 +595,7 @@ public class OptionsMaster {
         //        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
         //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
-         "Options", new Dimension(800, 600));
+                "Options", new Dimension(800, 600));
         modalOptionsPanelFrame.setAlwaysOnTop(true);
     }
 
@@ -556,13 +632,15 @@ public class OptionsMaster {
     }
 
     private static boolean isLocalOptionsPreferred() {
-        return CoreEngine.isMe() && CoreEngine.isJar();
+        return //CoreEngine.isMe() &&
+                CoreEngine.isJar();
     }
+
     public static void init() {
         if (initialized)
             return;
         String data = FileManager.readFile(getGlobalOptionsPath());
-        if (data.isEmpty()  || isLocalOptionsPreferred()) {
+        if (data.isEmpty() || isLocalOptionsPreferred()) {
             data = FileManager.readFile(getLocalOptionsPath());
         }
         if (data.isEmpty()) {
@@ -577,7 +655,12 @@ public class OptionsMaster {
 
         autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
 
+//        if (CoreEngine.isMapPreview()) {
+//            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
+//        }
         OptionsMaster.cacheOptions();
+
+        initFlags();
         try {
             applyOptions();
             initialized = true;
@@ -585,6 +668,12 @@ public class OptionsMaster {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
+    }
+
+    private static void initFlags() {
+        if (CoreEngine.isLiteLaunch()) {
+            getGraphicsOptions().setValue(GRAPHIC_OPTION.LITE_MODE, true);
+        }
     }
 
 
@@ -751,7 +840,7 @@ public class OptionsMaster {
         applyOptions();
     }
 
-    public static SystemOptions getEngineOptions() {
+    public static SystemOptions getSystemOptions() {
         return (SystemOptions) getOptions(OPTIONS_GROUP.SYSTEM);
     }
 
@@ -778,7 +867,6 @@ public class OptionsMaster {
     public static PostProcessingOptions getPostProcessingOptions() {
         return (PostProcessingOptions) optionsMap.get(OPTIONS_GROUP.POST_PROCESSING);
     }
-
 
 
     public enum OPTIONS_GROUP {

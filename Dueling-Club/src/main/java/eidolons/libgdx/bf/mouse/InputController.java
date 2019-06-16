@@ -30,7 +30,7 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
  */
 public abstract class InputController implements InputProcessor {
     protected static final float MARGIN = 300;
-    private static float zoomStep_ = OptionsMaster.getControlOptions().
+    protected static float zoomStep_ = OptionsMaster.getControlOptions().
             getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
     protected float zoomStep;
     protected OrthographicCamera camera;
@@ -46,10 +46,10 @@ public abstract class InputController implements InputProcessor {
     protected float yTouchPos;
     protected static  float halfWidth;
     protected static float halfHeight;
-    private Set<SuperActor> cachedPosActors = new HashSet<>();
-    private static boolean unlimitedZoom;
-    private static boolean dragOff;
-    private float defaultZoom = 1;
+    protected Set<SuperActor> cachedPosActors = new HashSet<>();
+    protected static boolean unlimitedZoom;
+    protected static boolean dragOff;
+    protected float defaultZoom = 1;
 
 
     public InputController(OrthographicCamera camera) {
@@ -329,6 +329,7 @@ public abstract class InputController implements InputProcessor {
         for (SuperActor sub : cachedPosActors) {
             sub.cameraMoved();
         }
+
 //        cachedPosActors.clear(); not needed?
     }
 

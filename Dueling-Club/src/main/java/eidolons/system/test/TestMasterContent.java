@@ -7,6 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
+import eidolons.system.content.ContentGenerator;
 import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
@@ -20,12 +21,14 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.entity.type.SpellType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestMasterContent {
     public static final String TEST_WEAPONS = "inferior iron long sword;"
@@ -134,7 +137,7 @@ public class TestMasterContent {
 
     // WORKSPACE_GROUP[] ws_groups_included = {WORKSPACE_GROUP.TEST,
     // WORKSPACE_GROUP.FIX, WORKSPACE_GROUP.POLISH};
-    private static boolean addSkills;
+    private static boolean addSkills= CoreEngine.isSkillTestMode();
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
@@ -324,7 +327,20 @@ public class TestMasterContent {
 
     }
 
+    public static void addVFX_TEST_Spells(Entity type, String filter) {
+//        List<ObjType> types = DataManager.getTypes(DC_TYPE.SPELLS).stream().
+//                filter(t -> t.getName().contains(ContentGenerator.SPELL_TESTED)
+//                        && t.getName().contains(filter)
+//                ).collect(Collectors.toList());
+//        String list= ContainerUtils.constructEntityNameContainer(types);
+//        addSpells(type, list);
+
+        addSpells(type, "Shadow Fury;");
+        return;
+    }
     public static void addANIM_TEST_Spells(Entity type) {
+
+
         addSpells(type, ANIM_TEST_LIST);
     }
 
@@ -627,4 +643,15 @@ public class TestMasterContent {
 
     }
 
+    public static void setAddSkills(boolean addSkills) {
+        TestMasterContent.addSkills = addSkills;
+    }
+
+    public static void setAddItems(boolean addItems) {
+        TestMasterContent.addItems = addItems;
+    }
+
+    public static void setAddActives(boolean addActives) {
+        TestMasterContent.addActives = addActives;
+    }
 }

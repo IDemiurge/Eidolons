@@ -9,6 +9,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_GROUP;
 import eidolons.game.battlecraft.rules.action.StackingRule;
@@ -18,12 +19,15 @@ import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
+import main.ability.Ability;
+import main.ability.ActiveAbility;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -39,6 +43,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+import main.system.text.LogManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -113,7 +118,7 @@ public class Executor extends ActiveHandler {
 
 
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), new Context(ref)));
+                new ActionInput(getAction(), new Context(ref)));
     }
 
     public void activateOn(DC_Obj t) {
@@ -124,13 +129,13 @@ public class Executor extends ActiveHandler {
             return;
         }
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), t));
+                new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
 
         Eidolons.getGame().getGameLoop().actionInput(
-         new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
+                new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
     public boolean activate() {
@@ -138,7 +143,7 @@ public class Executor extends ActiveHandler {
 //            AbilityConstructor.constructActives(getEntity());
 //            getEntity().construct(); already done?
 //        }
-        reset();
+         reset();
         syncActionRefWithSource();
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_ACTIVATED, getAction());
@@ -155,22 +160,25 @@ public class Executor extends ActiveHandler {
         AnimContext animContext = new AnimContext(getAction());
         animContext.setTarget(target);
 
+
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
         if (getAction().getLogger().isTargetLogged())
             if (target != null) {
+                target.getRef().setObj(KEYS.HOSTILITY, getEntity());
                 if (game.isDebugMode())
-                    targets = getAction().getTargetObj().getNameAndCoordinate();
+                    targets = " on " + getAction().getTargetObj().getNameAndCoordinate();
                 else
-                    targets = getAction().getTargetObj().getNameIfKnown();
+                    targets = " on " + getAction().getTargetObj().getNameIfKnown();
             } else if (getAction().getTargetGroup() != null) {
-                targets = getAction().getTargetGroup().toString();
+                targets = " on " + getAction().getTargetGroup().toString();
+                getAction().getTargetGroup().getObjects().forEach(t->t.getRef().setObj(KEYS.HOSTILITY, getEntity()));
             }
         log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
-         + getAction().getName() + " on " + targets, false);
+                + getAction().getName() + targets, false);
         if (gameLog)
             log(getAction().getOwnerObj().getNameIfKnown() + " activates "
-             + getAction().getNameIfKnown() + " " + targets, true);
+                    + getAction().getNameIfKnown() + targets, true);
 
         beingActivated();
         if (isInterrupted()) {
@@ -186,6 +194,10 @@ public class Executor extends ActiveHandler {
                 setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
             }
             payCosts();
+        } else {
+            cancelled();
+            EUtils.showInfoText(getEntity().getName() + " cancelled");
+            return false;
         }
 //        else {???
 //            if (BooleanMaster.isFalse(cancelled))
@@ -193,13 +205,21 @@ public class Executor extends ActiveHandler {
 //        }
         //TODO BEFORE RESOLVE???
 
+
         if (AnimMaster.isOn())
             if (!AnimConstructor.isReconstruct())
                 AnimConstructor.preconstruct(getAction());
+        ActionInput input = new ActionInput(getAction(), animContext);
 
-        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-         new ActionInput(getAction(), animContext)
-        );
+        getEntity().getOwnerUnit().setLastAction(getEntity());
+
+        if (getEntity().getOwnerUnit().isBoss()) { //TODO boss fix - what about spells?
+            GuiEventManager.trigger(GuiEventType.BOSS_ACTION, input);
+        } else {
+            GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
+                    input
+            );
+        }
 
         actionComplete();
         return isResult();
@@ -207,12 +227,12 @@ public class Executor extends ActiveHandler {
 
     @Override
     protected void log(String string, boolean gameLog) {
-        if (!ExplorationMaster.isExplorationOn()){
+        if (!ExplorationMaster.isExplorationOn()) {
             super.log(string, gameLog);
             if (!gameLog)
                 SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
         }
-         }
+    }
 
     protected void syncActionRefWithSource() {
         if (getAction() instanceof DC_QuickItemAction) {
@@ -228,7 +248,11 @@ public class Executor extends ActiveHandler {
             }
         }
 
-        getAction().setRef(getAction().getOwnerObj().getRef());
+        try {
+            getAction().setRef(getAction().getOwnerObj().getRef());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
     }
 
@@ -261,7 +285,6 @@ public class Executor extends ActiveHandler {
         }
 
 
-
         if (getChecker().isRangedTouch()) {
             boolean missed = ConcealmentRule.checkMissed(getAction());
             if (!missed) {
@@ -280,7 +303,7 @@ public class Executor extends ActiveHandler {
             }
         }
 //        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(getAction())) {
-            // return false; TODO
+        // return false; TODO
 //        }
     }
 
@@ -308,17 +331,23 @@ public class Executor extends ActiveHandler {
             try {
                 setResult(getAction().getAbilities().activatedOn(
 //                 getTargeter(). TODO would this be ok?
-                 getRef()));
+                        getRef()));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        } else
-        // for Multi-targeting when single-wrapped Abilities cannot be used
-        {
+        }
+//        else
+         // for Multi-targeting when single-wrapped Abilities cannot be used
+if (getAction().isStandardAttack()
+//if (getAction().isRanged()
+        || getAction().getAbilities() == null) //TODO broke on aimed shot eh?
+        if (!isResult() && getAction().getActives() != null) {
+            result = true;
             for (Active active : getAction().getActives()) {
+                ((Ability) active).setForcePresetTargeting(true); //TODO igg demo hack
                 try {
                     setResult(isResult() & active.activatedOn(getRef()));
-                 } catch (Exception e) {
+                } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 if (!isResult()) {
@@ -356,7 +385,7 @@ public class Executor extends ActiveHandler {
         }
         if (!StringMaster.isEmpty(getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES))) {
             getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES,
-             getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
+                    getAction().getProperty(PROPS.STANDARD_ACTION_PASSIVES));
         }
     }
 
@@ -367,7 +396,7 @@ public class Executor extends ActiveHandler {
         if (ExplorationMaster.isExplorationOn()) {
             getGame().getDungeonMaster().getExplorationMaster().getActionHandler().payCosts(getEntity());
             getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
-             getEntity(), getOwnerObj());
+                    getEntity(), getOwnerObj());
         } else {
             if (DC_Engine.isAtbMode())
                 reduceAtbReadiness();
@@ -384,14 +413,13 @@ public class Executor extends ActiveHandler {
     private void reduceAtbReadiness() {
 
         long initiativeCost = Math.round(
-         -AtbMaster.reduceReadiness(getAction()));
+                -AtbMaster.reduceReadiness(getAction()));
 
 
-
-        log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
-         -initiativeCost +
-         "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
-         "%", true);
+        getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
+                -initiativeCost +
+                "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
+                "%");
 
     }
 
@@ -431,17 +459,17 @@ public class Executor extends ActiveHandler {
         }
         getGame().getManager().applyActionRules(getAction());
         if (isResult())
-        try {
-            checkPendingAttacksOfOpportunity();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                checkPendingAttacksOfOpportunity();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
         if (result) {
             if (getAction().getTargetObj() instanceof Unit)
                 if (getAction().getChecker().isPotentiallyHostile())
                     if (getAction().getTargetObj().getOwner() !=
-                     getAction().getOwner()) {
+                            getAction().getOwner()) {
                         AggroMaster.unitAttacked(getAction(), getAction().getTargetObj());
 
                     }
@@ -450,6 +478,8 @@ public class Executor extends ActiveHandler {
 
         getAction().setTargetGroup(null);
         getAction().setTargetObj(null);
+
+        ShadowMaster.afterActionReset();
     }
 
     public Activator getActivator() {

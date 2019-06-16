@@ -1,13 +1,7 @@
 package eidolons.system.options;
 
-import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
-import eidolons.system.options.SoundOptions.SOUND_OPTION;
 
-public class SoundOptions extends Options<SOUND_OPTION, SOUND_OPTION> {
-    static {
-        SOUND_OPTION.MUSIC_VARIANT.setDefaultValue(MUSIC_VARIANT.EIDOLONS_SCORE);
-    }
+public class SoundOptions extends Options<SoundOptions.SOUND_OPTION, SoundOptions.SOUND_OPTION> {
 
     @Override
     protected Class<? extends SOUND_OPTION> getOptionClass() {
@@ -22,14 +16,8 @@ public class SoundOptions extends Options<SOUND_OPTION, SOUND_OPTION> {
         MASTER_VOLUME(70, 0, 100),
         MUSIC_VOLUME(45, 0, 100),
         VOICE_VOLUME(75, 0, 100),
-        AMBIENCE_VOLUME(40, 0, 100),
+        AMBIENCE_VOLUME(40, 0, 100);
         //        EFFECT_VOLUME(100, 0, 100),
-        MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values()) {
-            @Override
-            public boolean isDevOnly() {
-                return true;
-            }
-        };
         private Boolean exclusive;
         private Integer min;
         private Integer max;

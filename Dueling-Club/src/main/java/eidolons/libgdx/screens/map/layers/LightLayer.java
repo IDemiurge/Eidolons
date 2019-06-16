@@ -105,7 +105,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     @Override
     protected void spawnLayer() {
         setVisible(!OptionsMaster.getGraphicsOptions().
-         getBooleanValue(GRAPHIC_OPTION.SIDE_LIGHT_OFF));
+         getBooleanValue(GRAPHIC_OPTION.LIGHT_OVERLAYS_OFF));
 
         if (uiStage)
             setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
@@ -269,6 +269,11 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         public boolean removeActor(Actor actor) {
             remove();
             return super.removeActor(actor);
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            super.draw(batch, parentAlpha);
         }
     }
 }

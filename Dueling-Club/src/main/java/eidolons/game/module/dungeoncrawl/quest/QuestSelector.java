@@ -51,7 +51,7 @@ public class QuestSelector extends QuestHandler {
             DungeonQuest quest = master.getCreator().create(type);
             list.add(quest);
         }
-        if (CoreEngine.isFastMode())
+        if (CoreEngine.isFastMode() )
             GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL, null);
         return list;
     }

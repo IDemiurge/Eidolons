@@ -10,6 +10,9 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.objects.Door;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
@@ -84,6 +87,13 @@ public class StackingRule implements ActionRule {
         }
         BattleFieldObject randomTarget = new RandomWizard<BattleFieldObject>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
+
+        action.getGame().getLogManager().log(action.getName()+" has missed " +
+                target.getNameIfKnown() +
+                " and hit " +
+                randomTarget +
+                        " instead!");
+
         action.activatedOn(ref);
 
     }
@@ -129,6 +139,9 @@ public class StackingRule implements ActionRule {
                     units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
+        if (unit != null)
+        if (EntityCheckMaster.isImmaterial(  unit ))
+            return true;
         //check if '1 unit per cell' is on
         if (maxSpaceTakenPercentage <= 0) {
             if (!units.isEmpty()) {
@@ -142,14 +155,20 @@ public class StackingRule implements ActionRule {
             // instead, just empty type with 0 girth!
             unit = new ObjType();
         }
-        Obj cell;
+        DC_Cell cell;
         if (!game.isSimulation()) {
             cell = game.getCellByCoordinate(c);
         } else {
             cell = new DC_Cell(c, game);
         }
         if (cell == null) {
+            //TODO cell is utter void!
             return false;
+        }
+        if (cell.isVOID()) {
+            if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
+                return false;
+            }
         }
 
         if (z == null) {
@@ -207,6 +226,14 @@ public class StackingRule implements ActionRule {
             if (unit.getIntParam(PARAMS.GIRTH) > space) {
                 if (units.isEmpty()) {
                     result = true;
+                }
+            }
+        }
+        if (!result) {
+            units.removeIf(u -> u.isDead());
+            if (units.size()==1) {
+                if (units.get(0) instanceof Door) {
+                    return true;
                 }
             }
         }

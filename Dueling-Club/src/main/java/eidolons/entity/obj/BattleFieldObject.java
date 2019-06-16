@@ -11,10 +11,14 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
+import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -42,12 +46,16 @@ import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -64,6 +72,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private Coordinates lastCoordinates;
     private OUTLINE_TYPE lastSeenOutline;
     private ObjType originalType;
+    private boolean summoned;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -80,6 +89,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         super.toBase();
     }
 
+    @Override
+    public void setPassives(List<AbilityObj> passives) {
+        super.setPassives(passives);
+        passivesReady=true;
+        activatePassives();
+    }
+
     public boolean isWall() {
         return false;
     }
@@ -92,10 +108,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     @Override
     public String getToolTip() {
-        if (OutlineMaster.isOutlinesOn()) {
+        if (!isMine())
+            if (OutlineMaster.isOutlinesOn()) {
             if (getOutlineTypeForPlayer() != null)
                 return getOutlineTypeForPlayer().getName();
-            //         if (!isDetected())
             if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
                 return "Unknown";
             }
@@ -131,6 +147,21 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             quietly = false;
 
         }
+        if (!quietly)
+        if (CoreEngine.isIggDemoRunning())
+            if (isPlayerCharacter()) {
+//                if (!ShadowMaster.isShadowAlive()) {
+//                    preventDeath();
+//                    return false;
+//                }
+                if (ShadowMaster.checkCheatDeath(this)) {
+                    preventDeath();
+                    return false;
+                } else {
+
+                }
+            }
+
         if ((game.isDebugMode() && isMine()) || (!ignoreInterrupt && !quietly)) {
             if ((game.isDebugMode() && isMine()) || checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                 preventDeath();
@@ -146,23 +177,17 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         REF.setSource(killer.getId());
 
         if (!quietly) {
-            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, REF))) {
-                if (!ignoreInterrupt) {
-                    return false;
-                }
-            }
             ((BattleFieldObject) killer)
-             .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
+                    .applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL, this, REF);
 
             applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH,
-             ((BattleFieldObject) killer), REF);
+                    ((BattleFieldObject) killer), REF);
             if (!ignoreInterrupt) {
                 if (ref.checkInterrupted()) {
                     return false;
                 }
             }
         }
-
 
         getGame().getManager().unitDies(this, (Obj) killer, leaveCorpse, quietly);
 
@@ -173,7 +198,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return false;
     }
 
-    private void preventDeath() {
+    public void preventDeath() {
         LogMaster.log(1, "****preventDeath for " + this);
         setParam(PARAMS.C_ENDURANCE, Math.max(1, getIntParam(PARAMS.C_ENDURANCE)));
         setParam(PARAMS.C_TOUGHNESS, Math.max(1, getIntParam(PARAMS.C_TOUGHNESS)));
@@ -302,8 +327,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.C_TOUGHNESS) {
             if (NumberUtils.getInteger(value) >
-             getIntParam(PARAMS.TOUGHNESS)) {
-                main.system.auxiliary.log.LogMaster.log(1, "gotcha dwarf " + this + value);
+                    getIntParam(PARAMS.TOUGHNESS)) {
+                LogMaster.log(1, "gotcha dwarf " + this + value);
+            //igg demo hack!
+                value = getParam(PARAMS.TOUGHNESS);
             }
         }
         if (param == PARAMS.C_N_OF_ACTIONS) {
@@ -382,6 +409,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         Integer regen = getIntParam(ContentValsManager.getRegenParam(p));
         if (regen != 0) {
+            //TODO igg demo hack
+            if (p == PARAMS.STAMINA) {
+                regen = MathMaster.getMinMax(regen, 5, getIntParam("stamina")/2);
+            }
             modifyParameter(ContentValsManager.getCurrentParam(p), regen, getIntParam(p));
         }
 
@@ -429,7 +460,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public DIRECTION getDirection() {
         if (direction == null) {
             direction = new EnumMaster<DIRECTION>().retrieveEnumConst(DIRECTION.class,
-             getProperty(PROPS.DIRECTION));
+                    getProperty(PROPS.DIRECTION));
         }
         return direction;
     }
@@ -499,7 +530,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public void setCoordinates(Coordinates coordinates) {
-        if (coordinates.equals(this.coordinates)) {
+        if (!coordinates.equals(this.coordinates)) {
             lastCoordinates = (this.coordinates);
         }
         super.setCoordinates(coordinates);
@@ -532,7 +563,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public boolean isSpotted() {
-        return checkStatus(UnitEnums.STATUS.SPOTTED);
+        return checkStatus(STATUS.SPOTTED);
     }
 
     public Float getLastSeenTime() {
@@ -575,6 +606,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isIndestructible() {
         if (getGame().isDebugMode())
             return false;
+        if (checkStatus( STATUS.UNDYING ))
+            return true;
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
     }
 
@@ -630,6 +663,31 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             if (!getType().isGenerated())
                 cloneType();
         }
+    }
+
+
+    public boolean isBoss() {
+        return false;
+    }
+
+    public String getInfo() {
+        return getNameAndCoordinate() + " ";
+    }
+
+    public void removeFromGame() {
+        if (!isDead())
+            kill(this, false, true);
+        getGame().softRemove(this);
+        getVisionController().reset();
+        GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, this);
+    }
+
+    public boolean isSummoned() {
+        return summoned;
+    }
+
+    public void setSummoned(boolean summoned) {
+        this.summoned = summoned;
     }
 
 

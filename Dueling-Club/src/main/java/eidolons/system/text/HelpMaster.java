@@ -5,6 +5,7 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 11/17/2017.
@@ -22,18 +23,21 @@ public class HelpMaster {
     }
 
     public static String getHeroInfoText(String name, String suffix) {
-        boolean demo=false;
+        String prefix = null ;
+        if (CoreEngine.isIggDemo()) {
+            prefix = "igg";
+        } else
         if (name.contains(" ")) {
             if (name.split(" ")[0].equalsIgnoreCase("demo")){
                 name = name.split(" ")[1];
-                demo = true;
+                prefix = "demo";
             } else
                 name = name.split(" ")[0];
         }
         String path=StrPathBuilder.build(PathFinder.getTextPath(),
          TextMaster.getLocale(), "info", "heroes");
-        if (demo){
-            path=StrPathBuilder.build(path, "demo");
+        if (prefix!=null ){
+            path=StrPathBuilder.build(path, prefix);
         }
         String text = FileManager.readFile(
          StrPathBuilder.build(path,

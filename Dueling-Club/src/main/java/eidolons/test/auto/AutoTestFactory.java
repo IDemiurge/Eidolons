@@ -113,7 +113,7 @@ public class AutoTestFactory {
         initArgList(list, type);
         String args = ContainerUtils.constructContainer(list);
         AUTO_TEST_TYPE t = new EnumMaster<AUTO_TEST_TYPE>().retrieveEnumConst(AUTO_TEST_TYPE.class,
-         type.getProperty(PROPS.AUTO_TEST_TYPE));
+         type.getProperty(PROPS.SECOND_CLASS));
         if (t == null) {
             t = getType(type);
         }
@@ -122,7 +122,7 @@ public class AutoTestFactory {
     }
 
     private void initArgList(List<String> list, ObjType testType) {
-        String weapon = testType.getProperty(PROPS.AUTO_TEST_WEAPON);
+        String weapon = testType.getProperty(PROPS.SECOND_CLASS);
         String actionNames = "";
         if (weapon.isEmpty()) {
             if (testType.getName().contains("Specialization")) {

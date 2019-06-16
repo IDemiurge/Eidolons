@@ -8,6 +8,7 @@ import eidolons.libgdx.particles.VFX;
 import main.content.VALUE;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
+import main.system.data.DataUnitFactory;
 
 import java.awt.*;
 
@@ -28,10 +29,13 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     int lightEmission;
     Color lightColor;
 
-    public AnimData(String... data) {
-
+    public AnimData(String data) {
+        super(data);
     }
 
+    public AnimData() {
+
+    }
     @Override
     public void setValue(ANIM_VALUES name, String value) {
         if (!StringMaster.isEmpty(value)) {
@@ -86,6 +90,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
                 break;
             case ANIM_VFX_CAST:
             case ANIM_VFX_MAIN:
+            case ANIM_MISSILE_VFX:
             case ANIM_VFX_IMPACT:
             case ANIM_VFX_RESOLVE:
             case ANIM_VFX_AFTEREFFECT:

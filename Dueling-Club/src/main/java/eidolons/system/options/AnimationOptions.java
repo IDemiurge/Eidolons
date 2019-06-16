@@ -11,8 +11,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION, ANIMATION_OPTION
     }
 
 static {
-    WAIT_FOR_ANIM.setDevOnly(true);
-    PARALLEL_DRAWING.setDevOnly(true);
+    PARALLEL_ANIMATIONS.setDevOnly(true);
 
 
     PRECAST_ANIMATIONS.setDevOnly(true);
@@ -26,15 +25,15 @@ static {
         ENEMY_3D_ANIMS_OFF(false),
         BLOOD_ANIMS_OFF(false),
 
-        WAIT_FOR_ANIM(false),
-        MIN_ANIM_WAIT_TIME(150, 100, 500),
-        MIN_ANIM_WAIT_TIME_COMBAT(300, 150, 1250),
+//        WAIT_FOR_ANIM(false),
+//        MIN_ANIM_WAIT_TIME(150, 100, 500),
+//        MIN_ANIM_WAIT_TIME_COMBAT(300, 150, 1250),
 
         MAX_ANIM_WAIT_TIME(1000, 0, 3000),
         MAX_ANIM_WAIT_TIME_COMBAT(1500, 0, 4500),
-        PARALLEL_DRAWING(false),
-        SPEED(350, 65, 1000),
+        PARALLEL_ANIMATIONS(false),
         //        INFO_LEVEL(1, 0, 1),
+        SPEED(150, 50, 400),
 //        PHASE_TIME(500, 0, 1000),
 //        OFFSET_FOR_OVERLAP(true),
         PRECAST_ANIMATIONS(true),
@@ -45,7 +44,7 @@ static {
 //        MELEE_ANIMS(true),
 
         HIT_ANIM_DISPLACEMENT(true),
-        FLOAT_TEXT_DURATION_MOD(100, 25, 500),
+        FLOAT_TEXT_DURATION_MOD(145, 25, 500),
 //        FLOAT_TEXT_SIZE_MOD(100, 50, 300)
         ;
 

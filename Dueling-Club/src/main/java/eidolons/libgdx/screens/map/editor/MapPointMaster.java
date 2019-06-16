@@ -67,6 +67,8 @@ public class MapPointMaster {
         float minDistance = Float.MAX_VALUE;
         Coordinates c = MacroGame.getGame().getPointMaster().getCoordinates(point);
         Place place = null;
+        if (c==null )
+            return null;
         for (Place sub : MacroGame. getGame().getPlaces()) {
             float distance = new Vector2(c.x, c.y).dst(new Vector2(sub.getX(), sub.getY()));
             if (distance < minDistance) {

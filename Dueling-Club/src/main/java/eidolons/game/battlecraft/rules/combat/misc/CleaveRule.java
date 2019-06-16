@@ -2,12 +2,14 @@ package eidolons.game.battlecraft.rules.combat.misc;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
@@ -15,6 +17,8 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class CleaveRule {
     private static final int DEFAULT_CRITICAL_JUMPS = 2;
@@ -37,17 +41,17 @@ public class CleaveRule {
 
     public static void addCriticalCleave(Unit attacker) {
         attacker.modifyParameter(PARAMS.CLEAVE_MAX_TARGETS,
-         DEFAULT_CRITICAL_JUMPS);
+                DEFAULT_CRITICAL_JUMPS);
         attacker.modifyParameter(PARAMS.CLEAVE_DAMAGE_PERCENTAGE_TRANSFER,
-         DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER);
+                DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER);
         attacker.setParam(PARAMS.CLEAVE_DAMAGE_LOSS_PER_JUMP,
-         DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP);
+                DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP);
 
     }
 
     public void apply(Ref ref, Attack attack) {
-        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)){
-            return ;
+        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)) {
+            return;
         }
         this.attack = attack;
 
@@ -99,22 +103,22 @@ public class CleaveRule {
         // it fails, then short one
 
         DIRECTION direction = DirectionMaster.getRelativeDirection(source,
-         currentTarget);
+                currentTarget);
         Obj objectByCoordinate = game.getObjectByCoordinate(
-         source.getCoordinates().getAdjacentCoordinate(
-          DirectionMaster.rotate45(direction, clockwise)), true);
+                source.getCoordinates().getAdjacentCoordinate(
+                        DirectionMaster.rotate45(direction, clockwise)), true);
         if (objectByCoordinate instanceof Unit) {
             currentTarget = (Unit) objectByCoordinate;
 
         } else if (first) {
             clockwise = false;
             objectByCoordinate = game.getObjectByCoordinate(
-             source.getCoordinates().getAdjacentCoordinate(
-              DirectionMaster.rotate45(direction, clockwise)),
-             true);
+                    source.getCoordinates().getAdjacentCoordinate(
+                            DirectionMaster.rotate45(direction, clockwise)),
+                    true);
 
             if (objectByCoordinate != null) {
-                currentTarget = (Unit) objectByCoordinate;
+                currentTarget = (BattleFieldObject) objectByCoordinate;
             }
 
         }
@@ -126,13 +130,20 @@ public class CleaveRule {
         // // ??
         initNextTarget();
         if (currentTarget == null) {
+            action.getGame().getLogManager().log(action +
+                    " finds no targets to cleave for its remaining damage (" +
+                    Math.abs(attack.getRemainingDamage()) + ")");
             return true;
         }
         attack.getRef().setTarget(currentTarget.getId());
         attack.setDamage(attack.getRemainingDamage());
         // TODO override atk logging!
+
+        action.getGame().getLogManager().log(action + " cleaves, remaining damage: " + attack.getRemainingDamage());
         boolean result = source.getGame().getAttackMaster().attack(attack);
+//       GuiEventManager.trigger(GuiEventType. ADD_FLOATING_TEXT)
         // "dodged" or alive...
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_CRITICAL, "Cleave!", currentTarget);
         if (result) {
             result = !currentTarget.isDead();
         }
@@ -150,7 +161,7 @@ public class CleaveRule {
             }
         }
         if (attack.getDamageType() == GenericEnums.DAMAGE_TYPE.SLASHING
-         || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
+                || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return true;
         }
         if (attack.isCritical()) {

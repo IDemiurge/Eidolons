@@ -40,6 +40,7 @@ public class Trigger {
         this.game = game;
 
         if (abilities != null) {
+        if (abilities.getEffects() != null)
             abilities.getEffects().setTrigger(this);
         }
     }
@@ -63,7 +64,7 @@ public class Trigger {
         if (abilities==null )
             return true;
         abilities.setForceTargeting(forceTargeting);
-        if (removeAfterTriggers) {
+        if (isRemoveAfterTriggers()) {
             remove();
         }
         Ref REF = abilities.getRef().getCopy();

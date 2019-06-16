@@ -66,6 +66,8 @@ public class InventorySlotsPanel extends TablePanelX {
         if (scroll != null) {
             max = Math.max(max, inventorySlots.size());
         }
+
+
         for (int i = 0; i < max; i++) {
             InvItemActor actor = null;
             if (inventorySlots.size() > i) {
@@ -78,6 +80,7 @@ public class InventorySlotsPanel extends TablePanelX {
                     actor.setUserObject(getUserObject());
                 }
             }
+
             slots.add(actor);
             table.add(actor);
 
@@ -116,7 +119,9 @@ public class InventorySlotsPanel extends TablePanelX {
     }
 
     protected List<InvItemActor> getSlotActors() {
-        return getUserObject().getInventorySlots();
+        List<InvItemActor> inventorySlots = getUserObject().getInventorySlots();
+        inventorySlots.removeIf(slot-> slot.getParent()!=null );
+        return inventorySlots;
     }
 
     @Override

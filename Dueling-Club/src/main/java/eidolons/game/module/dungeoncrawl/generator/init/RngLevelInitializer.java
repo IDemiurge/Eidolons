@@ -40,7 +40,7 @@ public class RngLevelInitializer {
         if (level instanceof RestoredDungeonLevel) {
             assignBlockTileMaps(level);
             if (!level.getObjects().isEmpty())
-                return;
+                return; //no need to translate symbols to objects, already done
         }
         for (LevelZone levelZone : level.getSubParts()) {
             for (LevelBlock block : levelZone.getSubParts()) {

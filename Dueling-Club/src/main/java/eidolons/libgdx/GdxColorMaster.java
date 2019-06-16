@@ -42,6 +42,7 @@ public class GdxColorMaster {
     public static final Color FIRE = getColor(255, 115, 75, 1f);
     public static final Color WHITE = new Color(1, 1, 1, 1f);
     public static final Color PALE_GOLD = getColor(252, 238, 210, 1f);
+    public static final Color PALE_GREEN = getColor( 202, 258, 220, 1f);
     public static final Color GOLDEN_GRAY = getColor(233, 218, 192, 1f);
 
     public static final Color BRONZE = getColor(175, 115, 25, 1f);
@@ -69,7 +70,7 @@ public class GdxColorMaster {
     private static final Color MAGENTA = getColor(195, 55, 225, 1f);
 
     public static Color getColor(java.awt.Color c) {
-        return new Color(c.getRed(), c.getGreen(), c.getBlue(), 1);
+        return new Color(c.getRed()/255f, c.getGreen()/255f, c.getBlue()/255f, 1);
     }
 
     public static Color getColor(int r, int b, int g, float a) {
@@ -267,5 +268,14 @@ public class GdxColorMaster {
         }
 
             return Color.WHITE;
+    }
+
+    public static String toStringForLog(Color color) {
+        return
+                (Integer.toHexString((int) color.r*255)) +
+                        (Integer.toHexString((int) color.g*255)) +
+                        (Integer.toHexString((int) color.b*255))
+                ;
+
     }
 }

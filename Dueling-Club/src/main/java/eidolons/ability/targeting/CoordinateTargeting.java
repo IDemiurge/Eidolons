@@ -25,6 +25,10 @@ public class CoordinateTargeting extends TargetingImpl {
         this.direction = (d);
     }
 
+    public CoordinateTargeting() {
+        this(KEYS.SOURCE.toString(), null);
+    }
+
     public CoordinateTargeting(String key, UNIT_DIRECTION d) {
         this.unitDirection = (d);
         this.key = (key);
@@ -36,14 +40,17 @@ public class CoordinateTargeting extends TargetingImpl {
 
     public boolean select(Ref ref) {
         DC_Obj obj = (DC_Obj) ref.getObj(key);
+        Coordinates coordinate = obj.getCoordinates();
         DIRECTION used_direction = direction;
         if (unitDirection != null) {
             Unit unit = (Unit) obj;
             used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
         }
-        Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(used_direction);
+        if (used_direction != null)
+            coordinate = coordinate.getAdjacentCoordinate(used_direction);
+
         Set<BattleFieldObject> objects = obj.getGame().getMaster().
-         getObjectsOnCoordinate(coordinate, false);
+                getObjectsOnCoordinate(coordinate, false);
         if (objects.size() == 0) {
             ref.setTarget(obj.getGame().getCellByCoordinate(coordinate).getId());
         } else if (objects.size() == 1) {

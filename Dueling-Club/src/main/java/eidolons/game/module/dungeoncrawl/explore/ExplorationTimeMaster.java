@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
+import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -20,6 +21,7 @@ import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
@@ -28,6 +30,10 @@ import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+
+import java.util.ArrayList;
+
+import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -41,9 +47,13 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float ai_delta = 0;
     private float delta;
     private boolean guiDirtyFlag;
-    private static  float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
-      getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
-    private static float speed=defaultSpeed;
+    private static float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
+            getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+    private static float speed = defaultSpeed;
+    private float visibilityResetPeriod = 1.25f;
+    private float visibilityResetTimer = visibilityResetPeriod;
+    private float ignore_reset_delta;
+    private float ignore_reset_period = 5.5f;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -66,8 +76,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public String getDisplayedTime() {
         return NumberUtils.getFormattedTimeString(((int) time / 3600), 2)
-         + ":" + NumberUtils.getFormattedTimeString(((int) time / 60), 2)
-         + ":" + NumberUtils.getFormattedTimeString(((int) time % 60), 2);
+                + ":" + NumberUtils.getFormattedTimeString(((int) time / 60), 2)
+                + ":" + NumberUtils.getFormattedTimeString(((int) time % 60), 2);
         //        return TimeMaster.getFormattedTime((long) time, true, false);
     }
 
@@ -81,10 +91,31 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //        return ai.getExplorationTimePassed();
     }
 
+    public void killVisibilityResetTimer() {
+        visibilityResetTimer = 0;
+    }
+
+    public void resetVisibilityResetTimer() {
+        if (visibilityResetTimer < 0)
+            visibilityResetTimer = visibilityResetPeriod;
+    }
+
+    public float getVisibilityResetTimer() {
+        return visibilityResetTimer;
+    }
+
     public void act(float delta) {
+        if (speed != 1) {
+            DungeonScreen.getInstance().setSpeed((float)Math.sqrt(speed));
+        } else {
+            DungeonScreen.getInstance().setSpeed(null );
+        }
+        visibilityResetTimer -= delta;
+        resetVisibilityResetTimer();
         delta *= speed;
         time += delta;
         master.act(delta);
+
     }
 
     public Boolean playerRests(float timeInSeconds) {
@@ -117,7 +148,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             ExplorationMaster.setWaiting(true);
             Boolean result = true;
             try {
-                DungeonScreen.getInstance().setSpeed(speedFactor);
+                setSpeed(speedFactor);
                 while (true) {
                     if (time >= wakeUpTime)
                         break;
@@ -141,20 +172,28 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+            } finally{
+                DungeonScreen.getInstance().setSpeed(null);
+                ExplorationMaster.setWaiting(false);
+                WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
             }
-            DungeonScreen.getInstance().setSpeed(null);
-            ExplorationMaster.setWaiting(false);
-            WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);
-    });
+        });
         return true;
-}
+    }
+
+    public static void setSpeed(float speed) {
+        ExplorationTimeMaster.speed = speed;
+    }
 
     public void checkTimedEvents() {
         delta = time - lastTimeChecked;
         if (delta == 0) return;
         lastTimeChecked = time;
         round_delta += delta;
-        ai_delta = +delta;
+        ai_delta += delta;
+        ignore_reset_delta += delta;
+
+    if (!CoreEngine.isActiveTestMode())
         if (AiBehaviorManager.isNewAiOn()) {
             boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);
@@ -168,6 +207,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processTimedEffects() {
         guiDirtyFlag = false;
+
+        if (ignore_reset_delta> ignore_reset_period) {
+            master.getGame().getVisionMaster().getVisionRule().resetIgnore();
+            ignore_reset_delta=0;
+        }
+
         master.getAiMaster().getAlliesAndActiveUnitAIs(false).forEach(ai -> {
             if (ai.getUnit().getModeFinal() != null) {
                 processModeEffect(ai.getUnit(), ai.getUnit().getModeFinal());
@@ -180,6 +225,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             //            round_delta -= getRoundEffectPeriod();
             round_delta = 0;
             processEndOfRoundEffects();
+            checkParamBuffs();
         }
         if (ai_delta >= getAiCheckPeriod()) {
             //            ai_delta -= getAiCheckPeriod();
@@ -190,6 +236,19 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
             guiDirtyFlag = false;
         }
+
+        GuiEventManager.trigger(ACTION_PANEL_UPDATE, //igg demo hack
+                new PanelActionsDataSource(Eidolons.getMainHero()));
+    }
+
+    private void checkParamBuffs() {
+        if (time % 10 <= 1)
+            for (Unit unit : master.getGame().getUnits()) {
+                unit.applyBuffRules();
+            }
+        else
+            //TODO img demo hack performance
+            Eidolons.getMainHero().applyBuffRules();
     }
 
     private void processAiChecks() {
@@ -202,7 +261,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private float getRoundEffectPeriod() {
         if (DC_Engine.isAtbMode()) {
-            return 1;
+            return 5; //TODO igg demo hack
         }
         return 10;
     }
@@ -222,8 +281,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     private void processCustomRules() {
         // List<RoundRule> list = new ArrayList<>();
-
-        master.getGame().getUnits().forEach(unit -> {
+        for (Unit unit : new ArrayList<>(master.getGame().getUnits())) {
             float delta = getRoundEffectPeriod() / AtbController.SECONDS_IN_ROUND;
             unit.getResetter().regenerateToughness(delta);
             for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
@@ -235,7 +293,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                             master.getGame().getStateManager().reset(unit);
                 }
             }
-        });
+        }
+
     }
 
     private void processCounterRules() {
@@ -276,11 +335,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         float delta = time - last;
         for (PARAMETER param : DC_ContentValsManager.REGENERATED_PARAMS) {
             int value = getParamRestoration(delta, param,
-             unit.getParamFloat(ContentValsManager.getRegenParam(param))
+                    unit.getParamFloat(ContentValsManager.getRegenParam(param))
             );
             if (value > 0) {
                 unit.modifyParameter(ContentValsManager.getCurrentParam(param), value,
-                 unit.getIntParam(param), true);
+                        unit.getIntParam(param), true);
                 unit.getAI().setExplorationTimeOfRegenEffects(time);
             }
         }
@@ -297,14 +356,14 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         PARAMETER param = (ContentValsManager.getPARAM(mode.getParameter()));
         PARAMETER base = ContentValsManager.getBaseParameterFromCurrent(param);
         int value = getParamRestoration(delta,
-         base, 1);
+                base, 1);
         int max =
-         base == PARAMS.FOCUS ? unit.getIntParam(PARAMS.STARTING_FOCUS) * 3 / 2 :
-          unit.getIntParam(base);
+                base == PARAMS.FOCUS ? unit.getIntParam(PARAMS.STARTING_FOCUS) * 3 / 2 :
+                        unit.getIntParam(base);
 
         if (base == PARAMS.FOCUS)
             max += unit.getIntParam(PARAMS.FOCUS_RETAINMENT)
-             * max / 100;
+                    * max / 100;
 
         int min = 0;
         if (unit.getGame().isDebugMode())
@@ -374,10 +433,14 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (master.getGame().isPaused())
             return;
         int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
-         GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
-        if (CoreEngine.isFastMode()){
-            defaultWaitTime*=100;
+                GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
+        if (CoreEngine.isFastMode()) {
+            defaultWaitTime *= 100;
         }
         wait(defaultWaitTime, false);
+    }
+
+    public boolean isPeriodResetRunning() {
+        return visibilityResetTimer >= 0; //visibilityResetPeriod/2;
     }
 }

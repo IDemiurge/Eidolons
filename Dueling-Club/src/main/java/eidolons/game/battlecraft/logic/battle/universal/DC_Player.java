@@ -84,12 +84,12 @@ public class DC_Player extends Player {
         return (DC_Game) super.getGame();
     }
 
-    public Set<Unit> getControlledUnits_() {
+    public Set<Unit>  collectControlledUnits_() {
         return getGame().getUnits().stream().filter(unit -> unit.isOwnedBy(this))
          .collect(Collectors.toSet());
     }
 
-    public Set<Obj> getControlledUnits() {
+    public Set<Obj> collectControlledUnits() {
         return getGame().getUnits().stream().
          filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toSet());
 //        Set<Obj> units = new LinkedHashSet<>();

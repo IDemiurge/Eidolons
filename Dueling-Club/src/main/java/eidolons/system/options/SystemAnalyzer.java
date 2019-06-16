@@ -54,14 +54,13 @@ public class SystemAnalyzer {
             animation.setValue(ANIMATION_OPTION.CAST_ANIMATIONS, false);
             animation.setValue(ANIMATION_OPTION.AFTER_EFFECTS_ANIMATIONS, false);
             animation.setValue(ANIMATION_OPTION.PRECAST_ANIMATIONS, false);
-            animation.setValue(ANIMATION_OPTION.PARALLEL_DRAWING, false);
+            animation.setValue(ANIMATION_OPTION.PARALLEL_ANIMATIONS, false);
             
             sound.setValue(SOUND_OPTION.MUSIC_OFF, true);
             gameplay.setValue(GAMEPLAY_OPTION.LIMIT_LOG_LENGTH, true);
             
-            graphics.setValue(GRAPHIC_OPTION.AMBIENCE, false);
+            graphics.setValue(GRAPHIC_OPTION.AMBIENCE_VFX, false);
             graphics.setValue(GRAPHIC_OPTION.SHADOW_MAP_OFF, true);
-            graphics.setValue(GRAPHIC_OPTION.ADD_SHARDS_NEVER, true);
             graphics.setValue(GRAPHIC_OPTION.UI_VFX, false);
             graphics.setValue(GRAPHIC_OPTION.UI_ATLAS, false);
             graphics.setValue(GRAPHIC_OPTION.FRAMERATE, 45);
@@ -71,7 +70,6 @@ public class SystemAnalyzer {
             gameplay.setValue(GAMEPLAY_OPTION.LIMIT_LOG_LENGTH, true);
             
             graphics.setValue(GRAPHIC_OPTION.AMBIENCE_DENSITY, 25);
-            graphics.setValue(GRAPHIC_OPTION.ADD_SHARDS_NEVER, true);
             graphics.setValue(GRAPHIC_OPTION.UI_ATLAS, false);
             graphics.setValue(GRAPHIC_OPTION.FRAMERATE, 50);
         } else if (pcLevel <= 2) {

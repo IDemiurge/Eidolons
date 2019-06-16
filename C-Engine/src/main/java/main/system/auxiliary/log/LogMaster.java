@@ -17,10 +17,19 @@ import java.io.PrintStream;
 import java.util.*;
 
 public class LogMaster {
-    public static final int PRIORITY_INFO = 0;
-    public static final int PRIORITY_IMPORTANT = 1;
-    public static final int PRIORITY_WARNING = 2;
-    public static final int PRIORITY_ERROR = 3;
+    public static final int PRIORITY_VERBOSE = 0;
+    public static final int PRIORITY_INFO = 1;
+    public static final int PRIORITY_IMPORTANT = 2;
+    public static final int PRIORITY_WARNING = 3;
+    public static final int PRIORITY_ERROR = 4;
+
+    public static final String PREFIX_VERBOSE = "VERBOSE: ";
+    public static final String PREFIX_INFO = "INFO: ";
+    public static final String PREFIX_IMPORTANT = "IMPORTANT: ";
+    public static final String PREFIX_WARNING = "WARNING: ";
+    public static final String PREFIX_ERROR = "ERROR: ";
+
+    private static int PRIORITY_LEVEL_LOGGED = CoreEngine.isIDE() ? 1 : 2;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;
@@ -139,7 +148,6 @@ public class LogMaster {
     public static boolean ERROR_CRITICAL_ON = false;
     static String shout = "\n******************\n";
     private static boolean off = false;
-    private static int PRIORITY = 1;
     private static Map<LOG_CHANNEL, StringBuilder> logBufferMap;
     private static Set<Exception> exceptions = new LinkedHashSet<>();
     private static String criticalLogFilePath;
@@ -150,7 +158,7 @@ public class LogMaster {
 
     public static Logger getInstance() {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
-         .getCanonicalName();
+                .getCanonicalName();
         return Logger.getLogger(callingClassName);
     }
 
@@ -158,21 +166,23 @@ public class LogMaster {
         if (off) {
             return;
         }
-        if (CoreEngine.isExe()) {
+        if (CoreEngine.isExe() || CoreEngine.isFullFastMode()) {
             return;
         }
 
         if (APPEND_TIME) {
             s = TimeMaster.getFormattedTime() + " - " + s;
         }
-        if (isFullLogging()){
+        if (isFullLogging()) {
             getFullPrintStream().println(s);
         }
         System.out.println(s);
     }
 
     private static boolean isFullLogging() {
-        return true;
+        if (!CoreEngine.isIDE())
+            return true;
+        return false;
     }
 
     public static void logInNewThread(final String s) {
@@ -207,7 +217,7 @@ public class LogMaster {
 //        for (Exception sub : exceptions) {
 //            sub.printStackTrace(new PrintStream(getLogFilePath()));
 //        }
-        if (isFullLogging()){
+        if (isFullLogging()) {
             getFullPrintStream().flush();
             getExceptionPrintStream().flush();
         }
@@ -223,7 +233,7 @@ public class LogMaster {
     }
 
     public static void writeStatInfo(String string) {
-                FileManager.write(string, getStatFilePath());
+        FileManager.write(string, getStatFilePath());
     }
 
 
@@ -239,21 +249,22 @@ public class LogMaster {
     private static String getLogFilePath() {
         if (fullLogFilePath == null)
             fullLogFilePath = StrPathBuilder.build(PathFinder.getLogPath(),
-             CoreEngine.filesVersion+ " full " + TimeMaster.getTimeStampForThisSession() + ".txt");
+                    CoreEngine.filesVersion + " full " + TimeMaster.getTimeStampForThisSession() + ".txt");
         return fullLogFilePath;
     }
 
     private static String getCriticalLogFilePath() {
         if (criticalLogFilePath == null)
             criticalLogFilePath = StrPathBuilder.build(PathFinder.getLogPath(),
-             CoreEngine.filesVersion+ " critical " + TimeMaster.getTimeStampForThisSession() + ".txt");
+                    CoreEngine.filesVersion + " critical " + TimeMaster.getTimeStampForThisSession() + ".txt");
         return criticalLogFilePath;
     }
 
     private static String getStatFilePath() {
-        return PathFinder.getLogPath()+
-        "/stats/"+CoreEngine.filesVersion + " game stats "+TimeMaster.getTimeStampForThisSession() + ".txt";
+        return PathFinder.getLogPath() +
+                "/stats/" + CoreEngine.filesVersion + " game stats " + TimeMaster.getTimeStampForThisSession() + ".txt";
     }
+
     public static void log(int priority, String s) {
 
         if (priority < 0) {
@@ -416,14 +427,13 @@ public class LogMaster {
                 addToLogBuffer(c, s);
             return;
         }
-        if (priority >= PRIORITY) {
+        if (priority >= PRIORITY_LEVEL_LOGGED) {
             log(s);
         }
         if (isLogBufferOn())
             addToLogBuffer(null, s);
         //        LogFileMaster.checkWriteToFileNewThread(priority, s);
     }
-
 
 
     private static Map<LOG_CHANNEL, StringBuilder> getLogBufferMap() {
@@ -447,7 +457,7 @@ public class LogMaster {
 
     private static void addToLogBuffer(LOG_CHANNEL c, String s) {
         getLogBufferMap()
-         .get(c).append(s + "\n");
+                .get(c).append(s + "\n");
     }
 
     private static boolean isLogInNewThread() {
@@ -504,8 +514,20 @@ public class LogMaster {
         c.setOn(!c.isOn());
     }
 
+    public static void info(String string) {
+        log(PRIORITY_INFO, PREFIX_INFO + string);
+    }
+
+    public static void warn(String string) {
+        log(PRIORITY_WARNING, PREFIX_WARNING + string);
+    }
+
+    public static void important(String string) {
+        log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + string);
+    }
+
     public static void error(String string) {
-        log(ERROR_PREFIX + string);
+        log(PRIORITY_ERROR, ERROR_PREFIX + string);
 
     }
 
@@ -522,18 +544,19 @@ public class LogMaster {
         if (fullPrintStream == null) {
             try {
                 fullPrintStream = new PrintStream(
-                 new FileOutputStream(PathFinder.getEnginePath()+ PathUtils.getPathSeparator()+ getLogFilePath(), true));
+                        new FileOutputStream(PathFinder.getEnginePath() + PathUtils.getPathSeparator() + getLogFilePath(), true));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return fullPrintStream;
     }
-        public static PrintStream getExceptionPrintStream() {
+
+    public static PrintStream getExceptionPrintStream() {
         if (exceptionPrintStream == null) {
             try {
-                exceptionPrintStream= new PrintStream(
-                 new FileOutputStream(PathFinder.getEnginePath()+ PathUtils.getPathSeparator()+getCriticalLogFilePath(), true));
+                exceptionPrintStream = new PrintStream(
+                        new FileOutputStream(PathFinder.getEnginePath() + PathUtils.getPathSeparator() + getCriticalLogFilePath(), true));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -548,7 +571,6 @@ public class LogMaster {
     public static void setLogBufferOn(boolean logBufferOn) {
         LogMaster.logBufferOn = logBufferOn;
     }
-
 
 
     public enum LOG {

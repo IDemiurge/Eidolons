@@ -10,4 +10,5 @@ public class PointsPanel extends HqParamPanel{
     public PointsPanel( ) {
         super(PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_ACTIONS);
     }
+
 }

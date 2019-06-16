@@ -8,6 +8,7 @@ import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 
 import java.util.List;
@@ -70,4 +71,20 @@ public class EntityCheckMaster {
         return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.name());
     }
 
+    public static boolean isBoss(ObjType type) {
+        if (type.getName().equalsIgnoreCase("steel golem")) {
+            return true;
+        }
+        return type.checkProperty(G_PROPS.CLASSIFICATIONS, "Boss");
+    }
+
+    public static boolean isImmaterial(Entity unit) {
+        if (unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName())) {
+            return true;
+        }
+        if (unit.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.WRAITH.getName())) {
+            return true;
+        }
+        return false;
+    }
 }

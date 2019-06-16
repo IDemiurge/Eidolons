@@ -81,6 +81,7 @@ public enum VFX {
     CINDERS3("ambient", "CINDERS tight3"),
     SMOKE,
     ;
+    private static final boolean NEW_MIST =false ;
     public String path;
 
     VFX() {
@@ -92,6 +93,11 @@ public enum VFX {
 
     VFX(String... pathParts) {
         this.setPath(StrPathBuilder.build(pathParts));
+        if (NEW_MIST){
+            if (pathParts[0].equalsIgnoreCase("mist")) {
+                setPath("mist/a new subtle mist 2");
+            }
+        }
     }
 
 

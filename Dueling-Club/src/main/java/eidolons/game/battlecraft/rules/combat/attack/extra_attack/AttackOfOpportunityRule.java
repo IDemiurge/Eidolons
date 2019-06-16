@@ -13,6 +13,8 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
+import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
@@ -23,8 +25,11 @@ import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
+import main.game.logic.event.Event;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.ConditionMaster;
@@ -370,7 +375,24 @@ if (isOff())
         // TODO Attack bonus
         if (!attack.tryOpportunityActivation(action)) {
 
+            LogMaster.log(1, "*** Attack of Opportunity failed! " + attack);
+            return false;
         }
+        LogMaster.log(1, "*** Attack of Opportunity  successful! " + attack);
+        DC_Game game = unit.getGame();
+
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO,
+                attack.getOwnerUnit() + " makes an Attack of Opportunity against " +
+                action.getOwnerUnit() +
+                " " + StringMaster.wrapInParenthesis(attack.getName()));
+
+        Ref ref = (attack.getOwnerUnit().getRef()).getCopy();
+        ref.setTarget(action.getOwnerUnit().getId());
+        game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_OF_OPPORTUNITY, ref));
+
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_OF_OPPORTUNITY,
+                "Attack of Opportunity!", attack.getOwnerUnit());
+
         return false; // interrupts when?
     }
 

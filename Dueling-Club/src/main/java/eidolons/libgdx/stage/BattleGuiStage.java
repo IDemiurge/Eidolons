@@ -8,8 +8,11 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Game;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -25,8 +28,10 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -43,6 +48,12 @@ public class BattleGuiStage extends GuiStage {
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
 
+
+    @Override
+    public void resetZIndices() {
+        super.resetZIndices();
+        guiVisualEffects.setZIndex(Integer.MAX_VALUE);
+    }
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
@@ -63,7 +74,8 @@ public class BattleGuiStage extends GuiStage {
 
         init();
 
-        addActor( infoPanel = UnitInfoPanelNew.getInstance());
+        if (!UnitInfoPanelNew.isNewUnitInfoPanelWIP())
+            addActor( infoPanel = UnitInfoPanelNew.getInstance());
 
         combatInventory = new CombatInventory();
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
@@ -73,6 +85,7 @@ public class BattleGuiStage extends GuiStage {
         addActor(outcomePanel);
         outcomePanel.setVisible(false);
         addActor( new FullscreenAnims());
+
     }
 
     @Override
@@ -91,6 +104,9 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     protected boolean checkBlocked() {
+        if (CoreEngine.isActiveTestMode()) {
+            return super.checkBlocked()  || outcomePanel.isVisible();
+        }
         return super.checkBlocked()  || outcomePanel.isVisible() || infoPanel.isVisible();
     }
 
@@ -98,6 +114,8 @@ public class BattleGuiStage extends GuiStage {
     public void outsideClick() {
         setDraggedEntity(null);
         super.outsideClick();
+        setScrollFocus(DungeonScreen.getInstance().getGridPanel());
+
         if (combatInventory.isVisible()) {
             //            combatInventory.close(ExplorationMaster.isExplorationOn());
             InventoryDataSource dataSource = (InventoryDataSource) combatInventory.getUserObject();
@@ -120,20 +138,34 @@ public class BattleGuiStage extends GuiStage {
             if (UnitInfoPanelNew.isNewUnitInfoPanelWIP()) {
                 addActor(infoPanel = UnitInfoPanelNew.getInstance());
             }
+            Eidolons.getGame().getLoop().setPaused(true, false);
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             CharSequence text = "";
             CharSequence v= "";
-            try {
-                ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
-                text = m.getMetaGame().getScenario().getName();
-                v = m.getMetaDataManager().getMissionName()
-                 +", Level [" + (m.getMetaGame().getMissionIndex()+1)+"/" +
-                 m.getMetaGame().getMissionNumber() +"]";
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+            if (ScenarioGame.getGame() instanceof ScenarioGame) {
+                try {
+                    ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
+                    text = m.getMetaGame().getScenario().getName();
+                    v = m.getMetaDataManager().getMissionName()
+                            + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
+                            m.getMetaGame().getMissionNumber() + "]";
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            } else {
+
+                if (DC_Game.game instanceof IGG_Game) {
+//               TODO igg demo fix
+//                IGG_MetaMaster m = m = ScenarioGame.getGame().getMetaMaster();
+//                    text = m.getMetaGame().getScenario().getName();
+//                    v = m.getMetaDataManager().getMissionName()
+//                            + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
+//                            m.getMetaGame().getMissionNumber() + "]";
+                }
             }
+
             locationLabel.setNameText(text);
             locationLabel.setValueText(v);
             locationLabel.pack();

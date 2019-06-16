@@ -62,7 +62,7 @@ public class MoveAnimation extends ActionAnim {
         } else {
             action.reset();
         }
-        setDuration(1);
+        setDuration(0.6f);
         float x = getDestination().x - getOrigin().x;
         if (x > 160) {
             x = GridMaster.CELL_W;
@@ -72,8 +72,7 @@ public class MoveAnimation extends ActionAnim {
             y = GridMaster.CELL_H;
         }
         action.setAmount(x
-         ,
-         y);
+         ,         y);
 
         action.setDuration(getDuration());
 
@@ -142,6 +141,11 @@ public class MoveAnimation extends ActionAnim {
     }
 
     @Override
+    public boolean tryDraw(Batch batch) {
+        return super.draw(batch);
+    }
+
+    @Override
     public boolean draw(Batch batch) {
         return super.draw(batch);
     }
@@ -161,7 +165,8 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public float getPixelsPerSecond() {
-        return CoreEngine.isIDE() ? CoreEngine.isFastMode() ? 2350 : 1950 : 1750;
+        return 160;
+//        return CoreEngine.isIDE() ? CoreEngine.isFastMode() ? 2350 : 1950 : 1750;
     }
 
     //getSpeed()

@@ -14,13 +14,14 @@ import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {
     public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),
-     MetaEnums.STD_BUFF_NAMES.Dizzy.getName(), MetaEnums.STD_BUFF_NAMES.Razorsharp.getName()};
+            MetaEnums.STD_BUFF_NAMES.Dizzy.getName(), MetaEnums.STD_BUFF_NAMES.Razorsharp.getName()};
     public static final String[] formulas = {"1", "10", "50",};
 
     // reverse means MORE THAN {THIS} and
@@ -36,34 +37,48 @@ public class FocusBuffRule extends DC_BuffRule {
     protected Effect getEffect(int level) {
         switch (level) {
             case 0: {
-                return new Effects(getEffect(1), new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.CONFUSED));
+                return new Effects(getEffect(1),
+                        new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.CONFUSED));
                 // return new ModeEffect(STD_MODES.CONCENTRATION); // BEHAVIOR -
                 // CONFUSED
             }
             case 1: {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
-                 MOD.MODIFY_BY_PERCENT, "("
-                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                 + formulas[1] + ")*5"),
+                        MOD.MODIFY_BY_PERCENT, "("
+                        + getValueRef() + "-"
+                        + formulas[1] + ")*10"),
 
-                 new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
-                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
-                  + ")*5"));
+//                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
+//                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
+//
+//                        new ModifyValueEffect(true, PARAMS.EVASION, MOD.MODIFY_BY_CONST,
+//                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
+
+                        new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
+                                + getValueRef() + "-" + formulas[1]
+                                + ")*10"));
             }
             case 2: {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
-                 MOD.MODIFY_BY_PERCENT, "("
-                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                 + formulas[2] + ")"),
+                        MOD.MODIFY_BY_PERCENT, "("
+                        + getValueRef() + "-"
+                        + formulas[2] + ")* 2"),
 
-                 new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
-                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[2]
-                  + ")"));
+//                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
+//                                "(" + getValueRef() + " - " +formulas[2] +")* 2"),
+//
+//                        new ModifyValueEffect(true, PARAMS.EVASION, MOD.MODIFY_BY_CONST,
+//                                "(" + getValueRef() + " - " +formulas[2]+")* 2"),
+
+                        new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
+                                + getValueRef() + "-" + formulas[2]
+                                + ")* 2" ));
             }
         }
 
         return null;
     }
+
 
     protected Condition getBuffConditions() {
         return new NotCondition(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.ZOMBIFIED));

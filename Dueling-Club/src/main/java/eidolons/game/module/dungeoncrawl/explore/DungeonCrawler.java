@@ -22,7 +22,7 @@ public class DungeonCrawler {
         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
          "A false wall? Interesting...");
 
-        Ref ref = hero.getRef();
+        Ref ref = hero.getRef().getCopy();
         ref.setTarget(wall.getId());
         hero.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.SECRET_FOUND, ref));
     }

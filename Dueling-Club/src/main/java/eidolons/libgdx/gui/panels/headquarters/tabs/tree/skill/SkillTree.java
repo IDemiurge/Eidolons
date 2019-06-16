@@ -1,10 +1,14 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.SkillsDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HeroTree;
+import main.content.enums.entity.SkillEnums;
+import org.apache.commons.lang3.tuple.Triple;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -20,6 +24,15 @@ public class SkillTree extends HeroTree<MasteryRankSlot, SkillSlot> {
         return new SkillsDataSource(dataSource.getEntity());
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
 
     @Override
     protected int getLinkWidth() {
@@ -77,6 +90,29 @@ public class SkillTree extends HeroTree<MasteryRankSlot, SkillSlot> {
     @Override
     protected SkillSlot[] createLinkRow(int n) {
         return new SkillSlot[n];
+    }
+
+    @Override
+    protected boolean isDataAnOpenSlot(Object lastData) {
+        return SkillMaster.isDataAnOpenSlot(
+                (Triple<DC_FeatObj, SkillEnums.MASTERY, SkillEnums.MASTERY>) lastData);
+    }
+
+    @Override
+    protected Object getEmptySlotData(int tier, int slot) {
+        return SkillMaster.getEmptySkill();
+    }
+
+
+
+    @Override
+    protected boolean isSequentialLinks() {
+        return true;
+    }
+
+    @Override
+    protected boolean isSequentialSlots() {
+        return false;
     }
 
 }

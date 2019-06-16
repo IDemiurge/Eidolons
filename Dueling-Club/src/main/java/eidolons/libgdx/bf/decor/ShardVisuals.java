@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
@@ -11,6 +12,9 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.options.GraphicsOptions;
+import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -54,8 +58,12 @@ public class ShardVisuals extends GroupX {
     }
 
     public static VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
+        if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SHARD_VFX)) {
+            return new VFX[0];
+        }
         List<VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
         int n = 2;
+        if (size != null)
         switch (size) {
             case SMALL:
                 n = 1;
@@ -177,6 +185,9 @@ public class ShardVisuals extends GroupX {
                 }
                 AbstractCoordinates c = new AbstractCoordinates(x, y);
                 SHARD_SIZE size = chooseSize(x, y, direction);
+                if (size == null) {
+//                just empty    continue;
+                }
                 SHARD_TYPE type = SHARD_TYPE.ROCKS;
                 SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
                  getRandomEnumConst(SHARD_OVERLAY.class);
@@ -220,7 +231,23 @@ public class ShardVisuals extends GroupX {
 
                     VFX[] presets = ShardVisuals.getEmitters(overlay, size);
                     for (VFX preset : presets) {
-                        EmitterActor actor = new EmitterActor(preset);
+                        EmitterActor actor = new EmitterActor(preset){
+                            @Override
+                            public void act(float delta) {
+                                if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                    return;
+                                }
+                                super.act(delta);
+                            }
+
+                            @Override
+                            public void draw(Batch batch, float parentAlpha) {
+                                if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                    return;
+                                }
+                                super.draw(batch, parentAlpha);
+                            }
+                        };
                         MapMaster.addToListMap(emittersMap, shard, actor);
                         emitterLayer.addActor(actor);
                         actor.setPosition(shard.getX() + shard.getWidth() / 2
@@ -257,6 +284,9 @@ public class ShardVisuals extends GroupX {
         }
         if (checkNormal(x, y, (DIRECTION) direction)) {
             return SHARD_SIZE.NORMAL;
+        }
+        if (Eidolons.getGame().isBossFight()){
+            return null;
         }
         return SHARD_SIZE.SMALL;
     }

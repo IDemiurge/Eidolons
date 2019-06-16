@@ -9,13 +9,13 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 public interface SelectableItemDisplayer {
     void setItem(SelectableItemData sub);
 
-    Actor getActor();
+    default Actor getActor(){
+        return (Actor) this;
+    }
 
     default void subItemClicked(SelectableItemData item, String sub) {
 
     }
-
-    void addActor(Actor actor);
 
     void setDoneDisabled(boolean doneDisabled);
 

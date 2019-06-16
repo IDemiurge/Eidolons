@@ -1,6 +1,8 @@
 package eidolons.entity.item;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -69,5 +71,9 @@ public class ItemFactory {
 
     public static DC_HeroItemObj createItemObj(ObjType type, Unit hero, boolean quick) {
         return createItemObj(type, hero.getOwner(), hero.getGame(), hero.getRef(), quick);
+    }
+
+    public static DC_HeroItemObj createItemObj(String name, DC_TYPE type, boolean quick) {
+        return createItemObj(name, type, DC_Player.NEUTRAL, Eidolons.getGame(), new Ref(), quick);
     }
 }

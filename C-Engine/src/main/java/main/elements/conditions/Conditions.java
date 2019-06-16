@@ -151,9 +151,14 @@ public class Conditions extends Vector<Condition> implements Condition {
     }
 
     protected boolean isFastFailOnCheck() {
-        return CoreEngine.isjUnit();// fastFailOnCheck;
+        return true;
+//        CoreEngine.isjUnit();// fastFailOnCheck;
     }
 
+    public Condition getFirstFalse(Ref ref) {
+        check(ref);
+        return lastCheckedCondition;
+    }
     public void setFastFailOnCheck(boolean fastFailOnCheck) {
         this.fastFailOnCheck = fastFailOnCheck;
     }

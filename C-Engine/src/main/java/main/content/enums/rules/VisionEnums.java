@@ -1,6 +1,7 @@
 package main.content.enums.rules;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
@@ -100,7 +101,15 @@ public class VisionEnums {
         UNKNOWN,
         CONCEALED,
         INVISIBLE,
-        INVISIBLE_ALLY
+        INVISIBLE_ALLY;
+
+        public boolean isGreater(PLAYER_VISION oldVision) {
+            if (oldVision==null) {
+                return true;
+            }
+            return EnumMaster.getEnumConstIndex(PLAYER_VISION.class , this)<
+                    EnumMaster.getEnumConstIndex(PLAYER_VISION.class , oldVision);
+        }
     }
 
     public enum UNIT_VISION {

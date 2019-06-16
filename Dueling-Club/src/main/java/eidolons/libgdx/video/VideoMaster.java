@@ -88,7 +88,9 @@ public class VideoMaster {
     }
 
     public String getTestPath() {
-        return PathFinder.getVideoPath() + "Main_Menu_slow_original_size.ogv"; //moneda.ogg
+        return PathFinder.getVideoPath() +
+                "title.ogv";
+//                "Main_Menu_slow_original_size.ogv"; //moneda.ogg
     }
 
     public CameraInputController getInputController() {

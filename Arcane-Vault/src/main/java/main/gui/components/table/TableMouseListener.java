@@ -78,7 +78,9 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PathFinder.getVfxPath();
     public static final String[] SINGLE_RES_FILE_IDS = {};
     public static final String[] RES_FILE_KEYS = {};
-    public static final String[] SINGLE_RES_FOLDER_IDS = {G_PROPS.SOUNDSET.name(),};
+    public static final String[] SINGLE_RES_FOLDER_IDS = {
+//            G_PROPS.SOUNDSET.name(),
+    };
     public static final String[] RES_FOLDER_KEYS = {"sound\\soundsets\\",};
 
     public static final String[] RES_KEYS = {
@@ -113,7 +115,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.ITEM_RARITY.name(),
      PROPS.WEAPON_ATTACKS.name(),
      G_PROPS.UNIT_GROUP.name(), G_PROPS.CUSTOM_HERO_GROUP.name(),
-     PROPS.BF_OBJ_MATERIAL.name(), PROPS.BF_OBJECT_SIZE.name(), PROPS.LINK_VARIANT.name(),
+     PROPS.BF_OBJ_MATERIAL.name(), PROPS.BF_OBJECT_SIZE.name(),
      G_PROPS.GAME_VERSION.name(), PROPS.SUBDUNGEON_TYPE.name(),
      G_PROPS.DUNGEON_SUBFOLDER.name(), G_PROPS.ENCOUNTER_SUBGROUP.name(),
      MACRO_PROPS.SHOP_TYPE.name(), MACRO_PROPS.SHOP_LEVEL.name(),
@@ -134,7 +136,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.SECONDARY_MISSION.name(), G_PROPS.SPELL_GROUP.name(),
      PROPS.RESISTANCE_TYPE.name(), G_PROPS.TARGETING_MODE.name(), G_PROPS.RACE.name(),
      G_PROPS.ASPECT.name(),
-     // G_PROPS.SOUNDSET.name(),
+      G_PROPS.SOUNDSET.name(),
      G_PROPS.RANK.name(), PROPS.FAVORED_ASPECT.name(), PROPS.SECOND_FAVORED_ASPECT.name(),
      PROPS.THIRD_FAVORED_ASPECT.name(), G_PROPS.SPELL_TYPE.name(),
      // "DEITY",
@@ -163,6 +165,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     public static final String[] MULTI_TYPE_LIST_IDS = {
 
+            PROPS.PERKS.getName(),
      MACRO_PROPS.FACTIONS.getName(),
      PROPS.HERO_BACKGROUNDS.getName(),
      PROPS.HEADQUARTER_DUNGEON.getName(), PROPS.FACTION_DUNGEONS.getName(),
@@ -184,6 +187,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     };
     public static final OBJ_TYPE[] MULTI_TYPE_LIST = {
+            DC_TYPE.PERKS,
      MACRO_OBJ_TYPES.FACTIONS,
      DC_TYPE.CHARS, DC_TYPE.DUNGEONS,
      DC_TYPE.DUNGEONS, MACRO_OBJ_TYPES.FACTIONS, DC_TYPE.UNITS,

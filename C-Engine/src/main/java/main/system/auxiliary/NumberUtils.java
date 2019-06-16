@@ -6,6 +6,7 @@ import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.system.math.Formula;
+import main.system.math.MathMaster;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -256,7 +257,10 @@ public class NumberUtils {
         return result;
     }
 
-    public static String getFormattedTimeString(int number, int digits) {
+    public static String prependZeroes(int number, int digits) {
+        return getFormattedTimeString(number, digits);
+    }
+        public static String getFormattedTimeString(int number, int digits) {
         String result = "" + number;
         if (digits < result.length()) {
             while (digits < result.length()) {
@@ -295,4 +299,9 @@ public class NumberUtils {
      digitsAfterPeriod +
       "f", v);
 }
+
+    public static float getFloatWithDigitsAfterPeriod(float time, int i) {
+        return
+        MathMaster.getFloatWithDigitsAfterPeriod(i, time);
+    }
 }

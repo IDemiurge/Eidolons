@@ -7,7 +7,9 @@ import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.particles.ambi.ParticleManager;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
@@ -16,7 +18,7 @@ import main.system.images.ImageManager;
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
 /*
- * 
+ *
  */
 public abstract class DungeonMaster<E extends DungeonWrapper> {
 
@@ -34,18 +36,19 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private ContainerMaster containerMaster;
     private InteractiveObjMaster interactiveMaster;
     private DungeonLevel dungeonLevel;
+    private TrapMaster trapMaster;
 
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
+        trapMaster = new TrapMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
         positioner = createPositioner();
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
-        if (ExplorationMaster.isExplorationSupported(game))
-            explorationMaster = new ExplorationMaster(game);
+        explorationMaster = new ExplorationMaster(game);
 
         doorMaster = new DoorMaster(this);
         lockMaster = new LockMaster(this);
@@ -55,6 +58,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     protected DungeonBuilder<E> createBuilder() {
         return new DungeonBuilder<E>(this);
+    }
+
+    public void setExplorationMaster(ExplorationMaster explorationMaster) {
+        this.explorationMaster = explorationMaster;
     }
 
     public void gameStarted() {
@@ -67,21 +74,19 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         if (dungeonWrapper == null)
             dungeonWrapper = initDungeon();
         getBuilder().initLevel();
-
         //TODO remove this!
 
-        if (dungeonWrapper == null){
+        if (dungeonWrapper == null) {
             dungeonWrapper = initDungeon();
             getBuilder().initLevel();
         }
+        getDungeonLevel().initUnitFacingMap(dungeonWrapper.getDungeon().getCustomDataMap());
+
+        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
+
+        trapMaster.initTraps(getDungeon());
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
-        if (!ImageManager.isImage(dungeonWrapper.getMapBackground())) {
-            LogMaster.log(1,
-             dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
-            return;
-        }
-
 
     }
 
@@ -89,7 +94,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         try {
             return initializer.initDungeon();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return dungeonWrapper;
     }
@@ -187,9 +192,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public DungeonLevel getDungeonLevel() {
-        if (dungeonLevel == null) {
-            dungeonWrapper = initDungeon();
-        }
+//        if (dungeonWrapper == null && dungeonLevel == null) {
+//            dungeonWrapper = initDungeon();
+//        } fk off lazy guy!
         return dungeonLevel;
     }
 
@@ -200,4 +205,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public void next() {
         dungeonWrapper = null;
     }
+
+    public TrapMaster getTrapMaster() {
+        return trapMaster;
+    }
+
 }

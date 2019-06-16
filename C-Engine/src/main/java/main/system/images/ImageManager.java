@@ -52,6 +52,10 @@ public class ImageManager {
     public static final int CENTERED = -999;
     public static final String VALUE_ICONS_PATH = "ui/content/value icons/" ;
     public static final String DEAD_ICON = "ui/dead.png";
+    public static final int LARGE_ICON_HEIGHT = 350;
+    public static final int LARGE_ICON_WIDTH= 250;
+    public static final int FULL_ICON_HEIGHT = 700;
+    public static final int FULL_ICON_WIDTH=  500;
     private static final String EMPTY_LIST_ITEM = "ui/empty_item.jpg";
     private static final String EMPTY_LIST_ITEM_ALT = "ui/empty_item_alt.jpg";
     private static final String EMPTY_LIST_ITEM_SMALL = "ui/empty_item_small.jpg";
@@ -65,6 +69,8 @@ public class ImageManager {
     private static final String DEFAULT_CURSOR = "ui/cursor.png";
     private static final String PORTRAIT_ROOT_PATH = separator+"mini/char/std"+separator;
     private static final String EMBLEM_PATH = "ui/emblems/std"+separator;
+    public static final String FULL = " full";
+    public static final String LARGE = " large";
     private static String PATH;
     private static String DEFAULT;
     private static ImageObserver observer = new ImageObserver() {
@@ -1236,7 +1242,7 @@ public class ImageManager {
 
     public static String getFullSizeImage(Entity entity) {
         String format = StringMaster.getFormat(entity.getImagePath());
-        String path = StringMaster.cropFormat(entity.getImagePath()) + " full" + format;
+        String path = StringMaster.cropFormat(entity.getImagePath()) + FULL + format;
         if (isImage(path))
             return path;
         return null;
@@ -1245,7 +1251,7 @@ public class ImageManager {
 
     public static String getLargeImage(Entity entity) {
         String format = StringMaster.getFormat(entity.getImagePath());
-        String path = StringMaster.cropFormat(entity.getImagePath()) + " large" + format;
+        String path = StringMaster.cropFormat(entity.getImagePath()) + LARGE + format;
         if (isImage(path))
             return path;
         return null;

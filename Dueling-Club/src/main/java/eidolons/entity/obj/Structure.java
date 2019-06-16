@@ -9,6 +9,7 @@ import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
@@ -36,15 +37,19 @@ public class Structure extends BattleFieldObject {
     public Structure(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         this(type, owner, game, ref);
         setCoordinates(Coordinates.get(x, y));
-        if (isWall()) {
-            try {
-                if (getCoordinates().equals(((LocationMaster) game.getDungeonMaster()).getDungeonWrapper().
-                        getMainEntrance().getCoordinates())) {
-                    setCoordinates(Coordinates.get(0, 0));
-                }
-            } catch (Exception e) {
-            }
+    }
+
+    @Override
+    public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
+        boolean results = super.kill(killer, leaveCorpse, quietly);
+    if (!overlaying)
+        for (BattleFieldObject overlayingObject : getGame().getOverlayingObjects(getCoordinates())) {
+            overlayingObject.kill(killer, leaveCorpse, quietly);
         }
+if (isWall()){
+    getVisionController().getWallObstructionMapper().wallDestroyed(this);
+}
+        return results;
     }
 
     @Override

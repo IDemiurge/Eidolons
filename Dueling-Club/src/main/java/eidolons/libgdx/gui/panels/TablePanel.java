@@ -13,6 +13,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
+import main.system.launch.CoreEngine;
 
 import java.util.function.Supplier;
 
@@ -20,15 +21,14 @@ public class TablePanel<T extends Actor> extends Table {
 
     protected boolean updateRequired;
     private boolean fixedSize;
+    private boolean fixedMinSize;
 
     public TablePanel() {
     }
 
-    @Override
-    public float getPrefWidth() {
-        if (isFixedSize())
-            return getWidth();
-        return super.getPrefWidth();
+
+    public void removeBackground() {
+        background(new EmptyDrawable());
     }
 
     @Override
@@ -48,10 +48,56 @@ public class TablePanel<T extends Actor> extends Table {
     }
 
     @Override
+    public Table debugAll() {
+        if (!CoreEngine.isIDE()) {
+            return this;
+        }
+        return super.debugAll();
+    }
+
+    @Override
+    public Table debug() {
+        if (!CoreEngine.isIDE()) {
+            return this;
+        }
+        return super.debug();
+    }
+
+    @Override
+    public float getPrefWidth() {
+        if (isFixedSize())
+            return getWidth();
+        return super.getPrefWidth();
+    }
+    @Override
     public float getPrefHeight() {
         if (isFixedSize())
             return getHeight();
         return super.getPrefHeight();
+    }
+
+    @Override
+    public float getMinHeight() {
+        if (fixedMinSize) {
+            return getHeight();
+        }
+        return super.getMinHeight();
+    }
+
+    @Override
+    public float getMinWidth() {
+        if (fixedMinSize) {
+            return getWidth();
+        }
+        return super.getMinWidth();
+    }
+
+    public boolean isFixedMinSize() {
+        return fixedMinSize;
+    }
+
+    public void setFixedMinSize(boolean fixedMinSize) {
+        this.fixedMinSize = fixedMinSize;
     }
 
     public Cell<T> addNormalSize(T el) {
@@ -85,11 +131,12 @@ public class TablePanel<T extends Actor> extends Table {
     @Override
     public void setBackground(Drawable background) {
         if (!(background instanceof NinePatchDrawable))
-        if (background instanceof TextureRegionDrawable) {
-            final TextureRegionDrawable drawable = ((TextureRegionDrawable) background);
-            final TextureRegion region = drawable.getRegion();
-            setSize(region.getRegionWidth(), region.getRegionHeight());
-        }
+            if (background instanceof TextureRegionDrawable) {
+                final TextureRegionDrawable drawable = ((TextureRegionDrawable) background);
+                final TextureRegion region = drawable.getRegion();
+                if (region != null)
+                    setSize(region.getRegionWidth(), region.getRegionHeight());
+            }
         super.setBackground(background);
     }
 
@@ -97,25 +144,20 @@ public class TablePanel<T extends Actor> extends Table {
     public void act(float delta) {
         super.act(delta);
         if (updateRequired && isVisibleEffectively()) {
-            updateAct(delta);
-            invalidate();
-            afterUpdateAct(delta);
-            updateRequired = false;
+            updateAllOnAct(delta);
         }
     }
 
-    private boolean isVisibleEffectively() {
-        if (!isVisible())
-            return false;
-        for (Group group : GdxMaster.getAncestors(this)) {
-            if (group == null) {
-                continue;
-            }
-            if (!group.isVisible()) {
-                return false;
-            }
-        }
-        return true;
+    protected void updateAllOnAct(float delta) {
+        updateAct(delta);
+        invalidate();
+        afterUpdateAct(delta);
+        updateRequired = false;
+    }
+
+    protected boolean isVisibleEffectively() {
+        return GdxMaster.isVisibleEffectively(this);
+
     }
 
     public void afterUpdateAct(float delta) {
@@ -156,23 +198,27 @@ public class TablePanel<T extends Actor> extends Table {
     }
 
     public TablePanel<T> initDefaultBackground() {
-            if (getDefaultBackground()!=null )
-                setBackground(getDefaultBackground());
+        if (getDefaultBackground() != null)
+            setBackground(getDefaultBackground());
         return this;
     }
+
     protected Drawable getDefaultBackground() {
-        return  new NinePatchDrawable(NinePatchFactory.getLightPanelFilled());
+        return new NinePatchDrawable(NinePatchFactory.getLightPanelFilled());
     }
+
     public void fadeOut() {
         clearActions();
         ActorMaster.addFadeOutAction(this, 0.25f);
         ActorMaster.addHideAfter(this);
     }
+
     public void fadeIn() {
         clearActions();
         setVisible(true);
         ActorMaster.addFadeInAction(this, 0.25f);
     }
+
     public boolean isFixedSize() {
         return fixedSize;
     }

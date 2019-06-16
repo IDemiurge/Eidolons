@@ -20,7 +20,11 @@ public class ExploreAiManager extends AiMaster {
     @Override
     public void initialize() {
         super.initialize();
-        behaviorManager.initialize();
+        try {
+            behaviorManager.initialize();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public AiBehaviorManager getBehaviorManager() {

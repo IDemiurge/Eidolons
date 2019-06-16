@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf;
 
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.system.auxiliary.StringMaster;
@@ -23,6 +24,26 @@ public class LayeredActor extends GroupX {
     }
     public LayeredActor(String rootPath) {
         this(rootPath, "", "");
+    }
+
+    protected void init() {
+        setSize(getDefaultWidth(), getDefaultHeight() );
+        GdxMaster.center(underlay);
+        GdxMaster.center(image);
+        GdxMaster.center(overlay);
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        image.getContent().setSize(width, height);
+        super.setSize(width, height);
+    }
+
+    protected float getDefaultWidth() {
+        return 64;
+    }
+    protected float getDefaultHeight() {
+        return 64;
     }
 
     public void setUnderlayImage(String path) {

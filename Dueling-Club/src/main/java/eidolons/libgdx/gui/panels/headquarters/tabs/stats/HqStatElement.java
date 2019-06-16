@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,9 +19,12 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.values.parameters.PARAMETER;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.images.ImageManager;
 
 /**
@@ -63,9 +67,12 @@ public class HqStatElement extends HqElement {
         button.setVisible(false);
         button.addListener(getListener());
         button.setFixedSize(true);
-        button.setSize(
-         STD_BUTTON.STAT.getTexture().getMinWidth(),
-         STD_BUTTON.STAT.getTexture().getMinHeight());
+        TextureRegion r = TextureCache.getOrCreateR(StrPathBuilder.build(PathFinder.getUiPath(),
+                "components", "hq", "stats", "cross.png"));
+        button.setSize(22, 22);
+//                r.getRegionWidth(), r.getRegionHeight());
+//         STD_BUTTON.STAT.getTexture().getMinWidth(), TODO atlas..
+//         STD_BUTTON.STAT.getTexture().getMinHeight());
 
         if (leftToRight) {
             add(button).left();
@@ -102,6 +109,9 @@ public class HqStatElement extends HqElement {
 
     @Override
     protected void update(float delta) {
+        if (dataSource == null) {
+            return;
+        }
         container.clearListeners();
         if (displayedParam != null) {
             button.setVisible(editable);
@@ -116,12 +126,17 @@ public class HqStatElement extends HqElement {
                     return 20;
                 }
             });
-            container.addListener(new ValueTooltip(displayedParam.getName()).getController());
+            container.addListener(new ValueTooltip(DescriptionTooltips.tooltip(displayedParam, getUserObject().getEntity())).getController());
 
             container.getValueContainer().padLeft(5);
             container.getValueContainer().padRight(5);
         } else
-            container.addListener(new ValueTooltip("Mastery Slot").getController());
+        {
+            container.addListener(new ValueTooltip("Mastery Slot\n" +
+                    "Hero can have up to [10] Mastery types unlocked " +
+                    "(click to learn new ones))").getController());
+
+        }
 
         if (mastery) {
             container.addListener(getNewMasteryListener());

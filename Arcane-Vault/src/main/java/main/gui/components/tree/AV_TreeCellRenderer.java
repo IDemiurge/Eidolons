@@ -65,7 +65,6 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
         }
         try {
-            if (DataManager.isTypeName(typeName, TYPE))
             if (workspace != null) {
                 type = DataManager.getType(typeName, workspace.getOBJ_TYPE(typeName, parent));
             } else {

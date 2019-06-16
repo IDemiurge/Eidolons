@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.StageX;
 import eidolons.system.options.GraphicsOptions;
@@ -199,14 +200,24 @@ public class GdxMaster {
     }
 
     public static float getFontSizeMod() {
+
         if (fontSizeMod == null) {
             fontSizeMod = new Float(getWidth() * getHeight()) / getDefaultWidth() / getDefaultHeight();
             fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
+
+            if (isFixedSize()){
+                fontSizeMod=1f;
+                fontSizeModSquareRoot=1f;
+            }
         }
         if (fontSizeMod < 0) {
             fontSizeMod = Float.valueOf(1);
         }
         return fontSizeMod * getUserFontScale();
+    }
+
+    private static boolean isFixedSize() {
+        return true;
     }
 
     private static int getDefaultWidth() {
@@ -222,6 +233,9 @@ public class GdxMaster {
     public static Float getWidthMod() {
         if (widthMod == null) {
             widthMod = new Float(getWidth()) / getDefaultWidth();
+            if (isFixedSize()){
+                widthMod=1f;
+            }
         }
         return widthMod;
     }
@@ -229,6 +243,9 @@ public class GdxMaster {
     public static Float getHeightMod() {
         if (heightMod == null) {
             heightMod = new Float(getHeight()) / getDefaultHeight();
+            if (isFixedSize()){
+                heightMod=1f;
+            }
         }
         return heightMod;
     }
@@ -321,18 +338,19 @@ public class GdxMaster {
 
 
     public static Group getFirstParentOfClass(Actor child, Class clazz) {
-        Group actor = child.getParent();
-        while (true) {
-            if (actor == null) {
-                break;
-            }
-            if (ClassMaster.isInstanceOf(actor, clazz)) {
-                return actor;
-            }
-            actor = actor.getParent();
-
-        }
-        return null;
+        return (Group) child.firstAscendant(clazz);
+//        Group actor = child.getParent();
+//        while (true) {
+//            if (actor == null) {
+//                break;
+//            }
+//            if (ClassMaster.isInstanceOf(actor, clazz)) {
+//                return actor;
+//            }
+//            actor = actor.getParent();
+//
+//        }
+//        return null;
     }
 
 
@@ -389,7 +407,7 @@ public class GdxMaster {
         GdxMaster.brightness = brightness;
     }
 
-    public static boolean hasController(InputProcessor inputProcessor, StageX gridStage) {
+    public static boolean hasController(InputProcessor inputProcessor, Stage  gridStage) {
         if (inputProcessor instanceof InputMultiplexer) {
             for (InputProcessor processor : ((InputMultiplexer) inputProcessor).getProcessors()) {
                 if (hasController(processor, gridStage)) {
@@ -439,6 +457,23 @@ public class GdxMaster {
     public static void setTargetingCursor() {
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+    }
+
+    public static   boolean isVisibleEffectively(Group a) {
+        if (a == null) {
+            return false;
+        }
+        if (!a.isVisible())
+            return false;
+        for (Group group : GdxMaster.getAncestors(a )) {
+            if (group == null) {
+                continue;
+            }
+            if (!group.isVisible()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public enum CURSOR {

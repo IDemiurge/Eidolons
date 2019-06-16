@@ -17,6 +17,10 @@ import java.util.Map;
 public class SmartTextureAtlas extends TextureAtlas {
     private static Map<String, SmartTextureAtlas> cache = new HashMap<>();
 
+    @Override
+    public Sprite createSprite(String name, int index) {
+        return super.createSprite(name, index);
+    }
 
     public SmartTextureAtlas(String s) {
         super(s);

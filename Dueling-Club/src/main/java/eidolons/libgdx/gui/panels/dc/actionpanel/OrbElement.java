@@ -31,6 +31,7 @@ public class OrbElement extends SuperActor {
      PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
     private static final String OVERLAY_PATH = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
+    private final PARAMS parameter;
     private Label label;
     private Image background;
     private Image gem;
@@ -49,6 +50,7 @@ public class OrbElement extends SuperActor {
         icon = new Image(iconRegion);
         orbRegion = texture;
         this.iconRegion = iconRegion;
+        this.parameter = param;
         label = new Label(value, StyleHolder.
          getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
@@ -64,6 +66,7 @@ public class OrbElement extends SuperActor {
         //        gemLight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
 
         //TODO ORB GOES TO THE FORE ON HOVER
+
     }
 
     public OrbElement(PARAMS param, String value) {
@@ -82,6 +85,7 @@ public class OrbElement extends SuperActor {
         lighting = new Image(texture);
         addActor(lighting);
         lighting.setPosition(-15, -15);
+
     }
 
     private static String getOrbPath(String value) {
@@ -127,11 +131,11 @@ public class OrbElement extends SuperActor {
         return iconRegion;
     }
 
-    public void updateValue(String val) {
-        calculateOrbFullness(val);
+    public boolean updateValue(String val) {
+        return calculateOrbFullness(val);
     }
 
-    private void calculateOrbFullness(String value) {
+    private boolean calculateOrbFullness(String value) {
         orbFullnessPrevious = orbFullness;
         label.setText(value);
 
@@ -156,6 +160,9 @@ public class OrbElement extends SuperActor {
         } else {
             orbFullness = 62;
         }
+        if (orbFullnessPrevious==orbFullness)
+            return false;
+
         if (!isAlphaFluctuationOn()) {
             if (lighting != null)
                 lighting.setColor(1, 1, 1, 0.5f + new Float(orbFullness) / 100);
@@ -163,6 +170,7 @@ public class OrbElement extends SuperActor {
             fluctuation = MathMaster.getMinMax(
              super.getAlphaFluctuationPerDelta() / (1 + orbFullness) * 30, 0.4f, 0.7f);
 
+        return true;
     }
 
 
@@ -192,5 +200,9 @@ public class OrbElement extends SuperActor {
 
         //TODO if hover
         //        batch.draw(iconRegion, 30, 30);
+    }
+
+    public PARAMS getParameter() {
+        return parameter;
     }
 }

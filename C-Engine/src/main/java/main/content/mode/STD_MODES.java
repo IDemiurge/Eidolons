@@ -1,7 +1,9 @@
 package main.content.mode;
 
+import main.content.enums.system.AiEnums;
 import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.math.FormulaMaster;
@@ -30,14 +32,31 @@ public enum STD_MODES implements MODE {
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
      + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
     COWER(true, true, true),
-    PANIC(false, true, false),
-    CONFUSED(false, true, false),
-    BERSERK(false, false, false),
+    PANIC(false, true, false){
+        @Override
+        public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+            return AiEnums.BEHAVIOR_MODE.PANIC;
+        }
+    },
+    CONFUSED(false, true, false){
+        @Override
+        public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+            return AiEnums.BEHAVIOR_MODE.CONFUSED;
+        }
+    },
+    BERSERK(false, false, false){
+        @Override
+        public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+            return AiEnums.BEHAVIOR_MODE.BERSERK;
+        }
+    },
     NORMAL(false, false, false);
 
     private static final String DEFAULT_ATB_PERIOD="0.25";
 
     static {
+        DEFENDING.duration=2;
+
         COWER.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD * 3 / 2);
 
         DEFENDING.setDefenseMod(Formulas.DEFENDING_MODE_DEF_MOD);
@@ -81,11 +100,12 @@ public enum STD_MODES implements MODE {
          "," +
          FormulaMaster.getMaxParamFormula(MEDITATION.getParameter() +
           ")");
-        CONCENTRATION.periodicValues = CONCENTRATION.getParameter() + "(" +
-         Formulas.CONCENTRATION_PERIODIC_GAIN +
-         "," +
-         FormulaMaster.getMaxParamFormula(CONCENTRATION.getParameter() +
-          ")");
+        String vals = CONCENTRATION.getParameter() + "(" +
+                Formulas.CONCENTRATION_PERIODIC_GAIN +
+                "," + FormulaMaster.getMaxParamFormula(CONCENTRATION.getParameter() +
+                ")");
+        vals += ";FOCUS_FATIGUE" + "(" + Formulas.CONCENTRATION_FOCUS_FATIGUE_GAIN + "),100";
+        CONCENTRATION.periodicValues = vals;
         RESTING.periodicValues = RESTING.getParameter() + "(" +
          Formulas.RESTING_PERIODIC_GAIN +
          "," +
@@ -120,6 +140,7 @@ public enum STD_MODES implements MODE {
     private String buffName;
     private String periodicValues;
     private String period;
+    private Integer duration=Formulas.DEFAULT_MODE_DURATION;
 
     STD_MODES(boolean dispelOnHit, boolean disableCounter, boolean disableActions,
               boolean endTurnEffect) {
@@ -175,7 +196,7 @@ public enum STD_MODES implements MODE {
 
     @Override
     public Integer getDuration() {
-        return Formulas.DEFAULT_MODE_DURATION;
+        return duration;
     }
 
     @Override
@@ -185,6 +206,11 @@ public enum STD_MODES implements MODE {
          PathFinder.getUiContentPath(),"modes",
            toString() +
            ".png");
+    }
+
+    @Override
+    public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
+        return null;
     }
 
     @Override

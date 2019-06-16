@@ -1,10 +1,20 @@
 package eidolons.ability;
 
+import eidolons.ability.conditions.special.SpecialRequirements;
 import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.containers.AbilityEffect;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.ability.ActiveAbility;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
+import main.elements.conditions.Condition;
+import main.elements.conditions.Conditions;
+import main.elements.conditions.RefCondition;
+import main.elements.conditions.standard.CustomCondition;
+import main.elements.targeting.FixedTargeting;
+import main.entity.Ref;
+import main.game.logic.event.Event;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -44,6 +54,7 @@ public class AddSpecialEffects extends MicroEffect {
         targetObj.addSpecialEffect(case_type, effects);
         if (triggerEffect == null) {
             triggerEffect = getTriggerEffect();
+            //TODO might be easier to use direct hard-code for those cases
             if (triggerEffect != null) {
                 triggerEffect.apply(ref);
             }
@@ -60,7 +71,9 @@ public class AddSpecialEffects extends MicroEffect {
 
     private AddTriggerEffect getTriggerEffect() {
 //TODO MISSING CASES
-
+        FixedTargeting targeting = new FixedTargeting(Ref.KEYS.SOURCE);
+        Event.STANDARD_EVENT_TYPE event=null ;
+        Conditions conditions=new Conditions();
         switch (case_type) {
             case ON_KILL:
             case ON_DEATH:
@@ -73,21 +86,61 @@ public class AddSpecialEffects extends MicroEffect {
 //                        new ActiveAbility(new FixedTargeting(KEYS.TARGET), getEffects())
 //                );
             case SPELL_IMPACT:
+                conditions.add(new RefCondition(Ref.KEYS.SOURCE, Ref.KEYS.EVENT_SOURCE));
+                event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_HIT:
+                targeting = new FixedTargeting(Ref.KEYS.SOURCE); //TODO igg demo fix
+                conditions.add(new RefCondition(Ref.KEYS.SOURCE, Ref.KEYS.EVENT_TARGET));
+                event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_RESISTED:
+                event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_RESIST:
+                event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
+                break;
+            case ON_TURN:
+                conditions.add(new CustomCondition() {
+                    @Override
+                    public boolean check(Ref ref) {
+                        return !ExplorationMaster.isExplorationOn();
+                    }
+                }) ;
+                event = Event.STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING;
+                //TODO facing change
                 break;
             case MOVE:
+                conditions.add(new CustomCondition() {
+                    @Override
+                    public boolean check(Ref ref) {
+                        return !ExplorationMaster.isExplorationOn();
+                    }
+                }) ;
+
+                event = Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING;
+                //TODO facing change
                 break;
-            case NEW_TURN:
+            case ON_COMBAT_END:
+                event = Event.STANDARD_EVENT_TYPE.COMBAT_ENDS;
                 break;
-            case END_TURN:
+            case ON_COMBAT_START:
+                event = Event.STANDARD_EVENT_TYPE.COMBAT_STARTS;
+                //TODO combat end / start
+                break;
+            case  NEW_TURN:
+                event = Event.STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED;
+                break;
+            case  END_TURN:
+                event = Event.STANDARD_EVENT_TYPE.ROUND_ENDS;
+                //TODO combat end / start
                 break;
         }
-        return null;
+        if (event == null) {
+            return null;
+        }
+        ActiveAbility abils = new ActiveAbility(targeting, effects);
+        return new AddTriggerEffect(event, conditions, abils);
     }
 
     public Effect getEffects() {

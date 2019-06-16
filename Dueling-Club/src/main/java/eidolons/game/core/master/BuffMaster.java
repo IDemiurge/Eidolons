@@ -12,6 +12,7 @@ import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static main.entity.obj.BuffObj.DUMMY_BUFF_TYPE;
 import static main.system.GuiEventType.UPDATE_BUFFS;
 
 public class BuffMaster extends Master {
@@ -85,6 +87,15 @@ public class BuffMaster extends Master {
         return buffTypes;
     }
 
+    public static ObjType getBuffType(String name) {
+        ObjType type = DataManager.getType(name, DC_TYPE.BUFFS);
+        if (type == null) {
+            type = new BuffType(DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS));
+            type.setName(name);
+        }
+        return type;
+    }
+
     public void atbTimeElapsed(Float time) {
         for (Obj sub : getBuffs()) {
             BuffObj buff = ((BuffObj) sub);
@@ -133,7 +144,7 @@ public class BuffMaster extends Master {
     public BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect,
                               double duration, Condition retainCondition) {
         ref = Ref.getCopy(ref);
-        if (type.getName().equals(BuffObj.DUMMY_BUFF_TYPE)) {
+        if (type.getName().equals(DUMMY_BUFF_TYPE)) {
             try {
                 String name = ref.getObj(KEYS.ACTIVE.name()).getName() + "'s buff";
                 String img = ref.getObj(KEYS.ACTIVE.name()).getProperty(G_PROPS.IMAGE);

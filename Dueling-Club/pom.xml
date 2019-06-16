@@ -173,11 +173,17 @@
             <artifactId>vis-ui</artifactId>
             <version>1.4.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>${libgdx.version}</version>
+            <version>1.9.7</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>

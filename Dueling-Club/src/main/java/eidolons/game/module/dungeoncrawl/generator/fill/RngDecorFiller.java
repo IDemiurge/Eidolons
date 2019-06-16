@@ -15,11 +15,11 @@ public class RngDecorFiller extends RngFiller {
 
     @Override
     protected ROOM_CELL getFillCellType() {
-        return ROOM_CELL.DESTRUCTIBLE;
+        return ROOM_CELL.ART_OBJ;
     }
     @Override
     public float getFillCoef() {
-        return 0.6f;
+        return 0.85f;
     }
 
     @Override
@@ -67,10 +67,10 @@ public class RngDecorFiller extends RngFiller {
             case THRONE_ROOM:
                 return 80;
             case COMMON_ROOM:
-                return 30;
+                return 60;
             case ENTRANCE_ROOM:
             case EXIT_ROOM:
-                return 40;
+                return 70;
         }
         return 0;
     }

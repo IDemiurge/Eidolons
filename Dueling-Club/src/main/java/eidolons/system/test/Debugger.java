@@ -89,7 +89,7 @@ public class Debugger {
             GridUnitView view = ((GridUnitView) baseView);
             if (view.getActions().size == 0) {
                 if (view.getColor().a == 0) {
-                    main.system.auxiliary.log.LogMaster.log(1, "Validation was required for " + view +
+                    main.system.auxiliary.log.LogMaster.log(2, "Validation was required for " + view +
                      " - alpha==0");
                     view.fadeIn();
                 }

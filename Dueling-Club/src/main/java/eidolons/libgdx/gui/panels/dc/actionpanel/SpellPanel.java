@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.SpellDataSource;
 import eidolons.libgdx.texture.Images;
 
@@ -24,7 +25,7 @@ public class SpellPanel extends BaseSlotPanel {
 
         final SpellDataSource source = (SpellDataSource) getUserObject();
 
-        final List<ActionValueContainer> sources = source.getSpells();
+        final List<ValueContainer> sources = source.getSpells();
         initContainer(sources, Images.EMPTY_SPELL);
     }
 }

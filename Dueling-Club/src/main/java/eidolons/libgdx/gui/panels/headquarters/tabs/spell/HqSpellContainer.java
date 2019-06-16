@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -12,6 +13,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqActor;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
@@ -65,9 +67,23 @@ implements HqActor {
         };
         if (datum != null) {
             actor.addListener(createSpellListener(datum, actor));
-            actor.addListener(new ActionCostTooltip(datum).getController());
+            actor.addListener(createTooltip(datum).getController());
+        actor.setValid(checkValid(datum));
+        actor.setAvailable(checkAvailable(datum));
         }
         return actor;
+    }
+
+    private Tooltip<Actor> createTooltip(Spell datum) {
+        ActionCostTooltip tooltip = new ActionCostTooltip(datum);
+        return tooltip;
+    }
+
+    protected boolean checkValid(Spell datum) {
+        return true;
+    }
+    protected boolean checkAvailable(Spell datum) {
+        return true;
     }
 
     protected abstract boolean isOverlayOn();

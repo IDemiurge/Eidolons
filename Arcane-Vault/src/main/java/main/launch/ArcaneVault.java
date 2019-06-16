@@ -8,6 +8,8 @@ import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
+import eidolons.system.file.ResourceMaster;
+import eidolons.system.utils.XmlCleaner;
 import main.AV_DataManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -34,7 +36,6 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.utilities.hotkeys.AV_KeyListener;
-import main.utilities.res.ResourceMaster;
 import main.utilities.workspace.WorkspaceManager;
 import net.miginfocom.swing.MigLayout;
 
@@ -61,14 +62,18 @@ public class ArcaneVault {
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
     public final static String presetTypes = "units;bf obj;chars;party;missions;scenarios;" +
-     //     "abils;spells;skills;"+
-     "weapons;armor;" +
+          "abils;spells;skills;"+
+     "weapons;armor;items;" +
+            "buffs;" +
+            "classes;" +
+            "perks;" +
+            "" +
      "actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
      "Full", "Battlecraft", "Arcane Tower",};
     private static final String actions = "actions;spells;buffs;abils;";
-    private static final String skills = "skills;classes;buffs;abils;";
+    private static final String skills = "skills;classes;buffs;abils;perks;actions;spells;";
     private static final String units = "chars;units;deities;dungeons;factions;";
     private static final String microForMacro =
      "party;scenarios;dungeons;factions;";
@@ -116,13 +121,22 @@ public class ArcaneVault {
     public static void main(String[] args) {
         CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
+
         if (args.length > 0) {
-            setMacroMode(true);
+            args= args[0].split(";");
+        }
+        if (args.length > 0) {
+
             if (args.length > 1) {
+                setMacroMode(true);
                 worldEditAutoInit = true;
+                types = microForMacro;
+                selectiveLaunch = false;
+            } else {
+                selectiveLaunch = false;
+                types = presetTypes;
+                CoreEngine.setSelectivelyReadTypes(types);
             }
-            selectiveLaunch = false;
-            types = microForMacro;
         }
 
         GuiManager.init();
@@ -143,7 +157,7 @@ public class ArcaneVault {
                         List<DC_TYPE> enumList = new EnumMaster<DC_TYPE>()
                          .getEnumList(DC_TYPE.class);
                         for (DC_TYPE sub : DC_TYPE.values()) {
-                            if (sub.isNonBattlecraft()) {
+                            if (sub.isNonBattlecraft() || sub.isOmitted()) {
                                 enumList.remove(sub);
                             }
                         }
@@ -207,7 +221,10 @@ public class ArcaneVault {
             ResourceMaster.updateImagePaths();
 
         }
-        mainBuilder = new MainBuilder();
+        ContentGenerator.updateImagePathsForJpg_Png();
+
+
+                mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
         if (!isCustomLaunch()) {
             if (XML_Reader.getTypeMaps().keySet().contains(MACRO_OBJ_TYPES.FACTIONS.getName())) {
@@ -266,6 +283,10 @@ public class ArcaneVault {
         // MacroContentManager.init();
         // MacroEngine.init();
         // } else
+        XmlCleaner.setCleanReadTypes(
+                DC_TYPE.SKILLS,
+                DC_TYPE.CHARS
+                );
         getContentValsManager().init();
         AV_DataManager.init();
 
@@ -285,7 +306,12 @@ public class ArcaneVault {
             SimulationManager.init();
         }
 
-        ContentGenerator.afterRead();
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+            if (DataManager.isTypesRead(DC_TYPE.ITEMS))
+                ContentGenerator.generateKeyObjects();
+
+//        XmlCleaner.cleanTypesXml(DC_TYPE.SKILLS);
+//        ContentGenerator.afterRead();
 
         CharacterCreator.setAV(true);
     }
@@ -316,7 +342,7 @@ public class ArcaneVault {
     private static void setArcaneVaultIcon() {
         ImageIcon img = ImageManager.getIcon(ICON_PATH);
         if (macroMode) {
-            img = ImageManager.getIcon("UI\\" + "PentagramX3" + ".png");
+            img = ImageManager.getIcon("UI\\" + "spellbook" + ".png");
         }
 
         window.setIconImage(img.getImage());

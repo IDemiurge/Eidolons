@@ -11,20 +11,20 @@ import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
-import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.data.filesys.PathFinder;
 import main.elements.triggers.Trigger;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -38,10 +38,13 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -86,15 +89,20 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public String readScriptsFile() {
         String text = FileManager.readFile(
-         PathUtils.buildPath(
-          getMaster().getMissionResourceFolderPath()
-          , ScriptGenerator.SCRIPTS_FILE_NAME));
+                getScriptsPath());
 //        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
         String[] parts = text.split(ScriptSyntax.COMMENT_CLOSE);
         if (parts.length == 1)
             return "";
         return parts[1];
     }
+
+    private String getScriptsPath() {
+        return PathUtils.buildPath(
+                PathFinder.getTextPath(), "scripts", "demo"
+                , getBattle().getMission().getName() + " " + ScriptGenerator.SCRIPTS_FILE_NAME);
+    }
+    //getMaster().getMetaMaster().getMetaGame().getScenario()
 
     @Override
     public MissionBattleMaster getMaster() {
@@ -114,7 +122,17 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 return doSpawn(ref, args);
             case DIALOGUE:
                 return doDialogue(ref, args);
+            case TIP_MSG:
+                return doTipAndMsg(ref, args);
 
+            case TIP:
+                return doCustomTip(ref, args);
+            case MESSAGE:
+                return doMessage(ref, args);
+            case TIP_QUEST:
+                return doQuest(true, ref, args);
+            case QUEST:
+                return doQuest(false, ref, args);
             case SCRIPT:
                 return doScript(ref, args);
 
@@ -134,6 +152,55 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return doUnitOperation(function, ref, args);
     }
 
+    private boolean doTipAndMsg(Ref ref, String[] args) {
+        TipMessageMaster.tip(args);
+        String msg = args[0];
+        EUtils.onConfirm(msg, false, () -> {
+        });
+        WaitMaster.waitForInput(MESSAGE_RESPONSE);
+        return true;
+    }
+
+    private boolean doCustomTip(Ref ref, String[] args) {
+        TipMessageMaster.tip(args);
+        return true;
+    }
+
+    private boolean doMessage(Ref ref, String[] args) {
+        String msg = args[0];
+        EUtils.onConfirm(msg, false, () -> {
+        });
+        return true;
+    }
+
+    private boolean doQuest(boolean tip, Ref ref, String[] args) {
+        if (!ExplorationMaster.isExplorationOn()) {
+            return false;
+        }
+        if (args.length == 1) {
+            getMaster().getMetaMaster().getQuestMaster().questTaken(args[0], true);
+            return true;
+        }
+        if (tip) {
+            try {
+                doCustomTip(ref, new String[]{args[0]});
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            doQuest(false, ref, new String[]{args[1]});
+            return true;
+        }
+
+        String msg = args[0];
+        String questName = args[1];
+
+        EUtils.onConfirm(msg, false, () -> {
+            getMaster().getMetaMaster().getQuestMaster().questTaken(questName, true);
+        });
+
+        return true;
+    }
+
 
     //moves all party members to new positions around given origin
     private boolean doReposition(Ref ref, String[] args) {
@@ -142,10 +209,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 //        String group = args[i];
 //        i++;
         List<Unit> members = getMaster().getMetaMaster().getPartyManager().getParty().
-         getMembers();
+                getMembers();
         List<Coordinates> coordinates =
-         getCoordinatesListForUnits(args[i], getPlayerManager().getPlayer(true),
-          members.stream().map(m -> m.getName()).collect(Collectors.toList()), ref);
+                getCoordinatesListForUnits(args[i], getPlayerManager().getPlayer(true),
+                        members.stream().map(m -> m.getName()).collect(Collectors.toList()), ref);
         i = 0;
         for (Unit unit : members) {
             unit.setCoordinates(coordinates.get(i));
@@ -160,16 +227,12 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
     private boolean doComment(Unit unit, String text) {
         FloatingTextMaster.getInstance().createFloatingText
-         (TEXT_CASES.BATTLE_COMMENT, text, unit);
+                (TEXT_CASES.BATTLE_COMMENT, text, unit);
         return true;
     }
 
     private boolean doDialogue(Ref ref, String[] args) {
-        GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
-         args[0]);
-        List<DialogueView> list = SceneFactory.getScenes(dialogue);
-
-        GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, new DialogueHandler(dialogue, getGame(), list));
+        GuiEventManager.trigger(GuiEventType.INIT_DIALOG, args[0]);
         return true;
     }
 
@@ -225,7 +288,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 Boolean distance = null;
                 Boolean ownership = null;
                 unit = ((DC_Game) ref.getGame()).getMaster().getUnitByName(name, ref,
-                 ownership, distance, power);
+                        ownership, distance, power);
             }
         }
         //options - annihilate, ...
@@ -257,7 +320,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ObjType wave = DataManager.getType(unitString, DC_TYPE.ENCOUNTERS);
         if (wave != null) {
             for (String sub : ContainerUtils.open(
-             wave.getProperty(PROPS.PRESET_GROUP))) {
+                    wave.getProperty(PROPS.PRESET_GROUP))) {
                 if (level > 0)
                     units.add(UnitLevelManager.getLeveledTypeName(level, sub));
                 else
@@ -270,7 +333,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         boolean group = false;
         if (units.isEmpty()) {
             units.addAll(ContainerUtils.openContainer(UnitGroupMaster.
-             getUnitGroupData(unitString, level)));
+                    getUnitGroupData(unitString, level)));
         }
         if (units.isEmpty()) { //DataManager.gettypes
             units.addAll(ContainerUtils.openContainer(unitString));
@@ -290,14 +353,14 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
             }
         } else coordinates =
-         getCoordinatesListForUnits(unitString, player, units, ref);
+                getCoordinatesListForUnits(unitString, player, units, ref);
         String data = "";
         data +=
-         DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-          PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+                DataUnitFactory.getKeyValueString(UnitData.FORMAT,
+                        PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
         data +=
-         DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-          PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+                DataUnitFactory.getKeyValueString(UnitData.FORMAT,
+                        PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
 
         UnitData unitData = new UnitData(data);
 
@@ -324,7 +387,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
             Integer i = NumberUtils.getInteger(arg) - 1;
             List<String> spawnPoints = ContainerUtils.openContainer(
-             getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
+                    getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
             origin = Coordinates.get(spawnPoints.get(i));
             origin = getMaster().getDungeon().getPoint(arg);
 //            getUnit(arg).getCoordinates()
@@ -360,7 +423,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         FREEZE,
         UNFREEZE,
         ORDER,
-        ATOMIC,
+        ATOMIC, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST,
     }
 
 }

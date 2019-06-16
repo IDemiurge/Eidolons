@@ -53,6 +53,15 @@ public class InventoryDataSource implements QuickSlotDataSource,
     public InvItemActor offWeapon() {
         return getFactory().get(unit.getOffhandWeapon(), CELL_TYPE.WEAPON_OFFHAND);
     }
+    @Override
+    public InvItemActor offWeaponReserve() {
+        return getFactory().get(unit.getReserveOffhandWeapon(), CELL_TYPE.WEAPON_OFFHAND_RESERVE);
+    }
+    @Override
+    public InvItemActor mainWeaponReserve() {
+        return getFactory().get(unit.getReserveMainWeapon(), CELL_TYPE.WEAPON_MAIN_RESERVE);
+    }
+
 
     @Override
     public InvItemActor armor() {

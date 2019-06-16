@@ -26,6 +26,7 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
@@ -38,8 +39,8 @@ public class DualWieldingRule {
     private static final G_PROPS PROP = G_PROPS.ACTION_TAGS;
     // private static final String DEFAULT_STA_REDUCTION = "-25";
     // private static final String DEFAULT_AP_REDUCTION = "-33";
-    public static final String buffTypeNameOffHand = MetaEnums.STD_BUFF_NAMES.Off_Hand_Cadence.name();
-    public static final String buffTypeNameMainHand = MetaEnums.STD_BUFF_NAMES.Main_Hand_Cadence.name();
+    public static final String buffTypeNameOffHand = StringMaster.getWellFormattedString(MetaEnums.STD_BUFF_NAMES.Off_Hand_Cadence.name());
+    public static final String buffTypeNameMainHand = StringMaster.getWellFormattedString(MetaEnums.STD_BUFF_NAMES.Main_Hand_Cadence.name());
     private static final Formula DURATION = new Formula("1");
 
     private static boolean checkSingleWeaponCadence(Unit unit, DC_UnitAction action) {
@@ -94,20 +95,24 @@ public class DualWieldingRule {
             return;
         }
         Ref ref = new Ref(unit.getGame(), unit.getId());
-
         DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
         List<Obj> targets = new ArrayList<>();
+
         if (unit.getWeapon(!offhand) != null) {
             targets.add(unit.getWeapon(!offhand));
         }
         if (unit.getNaturalWeapon(!offhand) != null) {
             targets.add(unit.getNaturalWeapon(!offhand));
         }
+
+        //TODO
+        targets.add(unit);
+
         GroupImpl group = new GroupImpl(targets);
         LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies to " + group);
         ref.setGroup(group);
 
-
+        // INIT COST CADENCE EFFECTS
         if (checkFocusBonusApplies(unit, action, singleCadence)) {
             Integer amount = action.getOwnerUnit().getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
             amount += action.getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
@@ -115,7 +120,6 @@ public class DualWieldingRule {
              PARAMS.CADENCE_FOCUS_BOOST);
             action.getOwnerUnit().modifyParameter(PARAMS.C_FOCUS, amount, 100);
         }
-        // INIT COST CADENCE EFFECTS
         Effects effects = new Effects();
         String cadence = unit.getParam(PARAMS.CADENCE_AP_MOD);
         if (cadence.isEmpty()) {
@@ -124,7 +128,6 @@ public class DualWieldingRule {
         ModifyValueEffect valueEffect = new ModifyValueEffect(
          PARAMS.ATTACK_AP_PENALTY,
          MOD.MODIFY_BY_CONST, cadence);
-
 
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
         effects.add(valueEffect);
@@ -150,6 +153,8 @@ public class DualWieldingRule {
              , MOD.MODIFY_BY_CONST, unit
              .getParam(PARAMS.CADENCE_ATTACK_MOD)));
         }
+
+
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;
 
         // ADD REMOVE TRIGGER
@@ -164,24 +169,8 @@ public class DualWieldingRule {
          new ActiveAbility(new FixedTargeting(KEYS.BASIS),
           new RemoveBuffEffect(buffTypeName))));
 
-//        effect = new AddBuffEffect(buffTypeName, effects, DURATION);
-
-//        Condition condition = new StringComparison(StringMaster.getValueRef(KEYS.MATCH, PROP),
-//         (offhand) ? MAIN_HAND : OFF_HAND, false);
-
-
-        // retain condition - hero hasBuff()
-        // add remove trigger on attack? either off/main hand, so there is no
-        // stacking...
-        // linked buffs?
-//        effect.setIrresistible(false);
         AddBuffEffect addBuffEffect = new AddBuffEffect(buffTypeName,
-//         new CustomTargetEffect(
-//                new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ACTIONS, condition),
-         effects
-//        )
-         ,
-         DURATION);
+         effects, DURATION);
         // preCheck perk
         addBuffEffect.addEffect(new AddTriggerEffect( // what about
          // counters/AoO?
@@ -197,7 +186,15 @@ public class DualWieldingRule {
 
         addBuffEffect.setIrresistible(true);
         addBuffEffect.apply(ref);
+
+        addHeroBuff(action.getOwnerUnit(), offhand);
         // TODO defense mod effect
     }
+
+    private static void addHeroBuff(Unit unit, Boolean offhand) {
+
+
+    }
+
 
 }

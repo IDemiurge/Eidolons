@@ -26,4 +26,7 @@ public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
     public void setMissionPath(String missionPath) {
         this.missionPath = missionPath;
     }
+
+    public void initData() {
+    }
 }

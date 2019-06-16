@@ -7,6 +7,7 @@ public class QuestEnums {
     public enum QUEST_GROUP {
         TUTORIAL,
         SCENARIO,
+        DEMO,
         RNG,
         ADVENTURE,
     }
@@ -30,6 +31,7 @@ public class QuestEnums {
         GOLD,
         MIXED,
         RANDOM,
+        GLORY, ANTI_GLORY,
 
     }
 

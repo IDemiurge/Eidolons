@@ -9,13 +9,14 @@ import eidolons.system.options.OptionsMaster;
  */
 public class UiMaster {
 
-    private static Float speedFactor;
+    private static Float speedFactor= 0.7f;
 
     public static float getSpeedFactor() {
-        if (speedFactor == null) {
-            speedFactor =new Float(100)
-             / OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)            ;
-        }
+//        if (speedFactor == null) {
+//       TODO another option value for it
+//        speedFactor =new Float(100)
+//             / OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)            ;
+//        }
         return speedFactor;
     }
 

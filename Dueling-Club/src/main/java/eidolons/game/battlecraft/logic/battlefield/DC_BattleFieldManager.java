@@ -69,7 +69,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     public boolean canMoveOnto(Entity unit, Coordinates c) {
-        return game.getMovementManager().canMove((Obj) unit, c);
+        return game.getMovementManager().canMove( unit, c);
     }
 
 
@@ -98,7 +98,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         visibleDiagonalJoints.keySet().removeIf((sub) -> !visibleWallMap.containsKey(sub));
     }
 
-    public void resetWalls() {
+    private void resetWalls() {
         doorMap.clear();
         Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {

@@ -125,7 +125,7 @@ public class SpectrumEffect extends DC_Effect {
             // DC_Cell))
             // continue;
             DequeImpl<? extends Obj> objects = new DequeImpl<>(getGame().getObjectsOnCoordinate(
-             getGame().getDungeon().getZ(), c, null, true, applyThrough));
+             getGame().getDungeon().getZ(), c, false, true, applyThrough));
 
             if (applyThrough) {
                 DC_Cell cell = getGame().getCellByCoordinate(c);

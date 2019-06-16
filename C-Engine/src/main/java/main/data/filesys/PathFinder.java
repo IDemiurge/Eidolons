@@ -118,12 +118,16 @@ public class PathFinder {
 
     public static String getDungeonLevelFolder() {
         init();
-        return XML_PATH + "dungeons/levels" + PathUtils.getPathSeparator();
+        return XML_PATH + "dungeons/levels/"  ;
     }
 
     public static String getTextPath() {
         init();
         return RES_PATH + PathUtils.getPathSeparator() + "text" + PathUtils.getPathSeparator();
+    }
+    public static String getTextPathLocale() {
+        init();
+        return getTextPath() + "english/";
     }
 
     public static String getSavesPath() {
@@ -153,6 +157,10 @@ public class PathFinder {
     public static String getSoundPath() {
         init();
         return SND_PATH;
+    }
+    public static String getSoundsetsPath() {
+        init();
+        return SND_PATH+"soundsets/";
     }
 
     public static String getFontPath() {
@@ -472,10 +480,30 @@ public class PathFinder {
     }
 
     public static String getShadersPath() {
-        return getTextPath() + "shaders/";
+        return   "xml/shaders/";
     }
 
     public static String getCampaignSavePath() {
         return getSavesPath()+"campaign/";
+    }
+
+    public static String getCellImagesPath() {
+        return "ui/cells/advanced/";
+    }
+
+    public static String getArtFolder() {
+        return "main/art/";
+    }
+
+//    public static String getDialoguesPath(String locale) {
+//        return getDialoguesPath(texmaster)
+//    }
+    public static String getDialoguesPath(String locale) {
+        return getEnginePath() + PathFinder.getTextPath()
+                + locale + "/dialogue/";
+    }
+
+    public static String getHqPath() {
+        return "ui/components/hq/";
     }
 }

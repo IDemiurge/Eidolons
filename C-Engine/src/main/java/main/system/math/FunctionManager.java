@@ -12,6 +12,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -214,7 +215,15 @@ public class FunctionManager {
                  .toString())));
             }
         },
-        DISTANCE(true, FUNC_ARGS.OBJ_REF, FUNC_ARGS.OBJ_REF) {
+        DIST(true, FUNC_ARGS.OBJ_REF, FUNC_ARGS.COORDINATE) {
+            @Override
+            public Object evaluate(List<Object> values) {
+                Obj obj1 = (Obj) values.get(0);
+               return Math.round(PositionMaster.getDistance(obj1.getCoordinates(),
+                        (Coordinates) values.get(1)));
+            }
+        },
+            DISTANCE(true, FUNC_ARGS.OBJ_REF, FUNC_ARGS.OBJ_REF) {
             @Override
             public Object evaluate(List<Object> values) {
                 Obj obj1 = (Obj) values.get(0);
@@ -309,7 +318,12 @@ public class FunctionManager {
             public Object evaluate(String s_arg, Ref ref) {
                 return s_arg;
             }
-        },;
+        }, COORDINATE{
+            public Object evaluate(String s_arg, Ref ref) {
+                return new Coordinates(s_arg);
+            }
+        },
+        ;
 
         public Object evaluate(String s_arg, Ref ref) {
             return null;

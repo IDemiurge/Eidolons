@@ -106,15 +106,18 @@ public class DivinationMaster {
                 hero.getSpells().add(spell);
                 if (SpellMaster.checkHeroHasSpell(hero, spellType)) {
                     applyKnownSpellDivinationEffect(spell);
+                    hero.getGame().getLogManager().log(hero.getNameIfKnown() + " applies a Divination bonus to a spell: " + spell);
                 }
             } else {
                 if (!spell.getGame().isSimulation()) {
                     applyKnownSpellDivinationEffect(spell);
+                    hero.getGame().getLogManager().log(hero.getNameIfKnown() + " applies a Divination bonus to a spell: " + spell);
                 }
             }
             pool -= spell.getIntParam(PARAMS.SPELL_DIFFICULTY);
             spell.setProperty(G_PROPS.SPELL_POOL, SpellEnums.SPELL_POOL.DIVINED.toString());
             hero.addProperty(PROPS.DIVINED_SPELLS, spell.getName());
+            hero.getGame().getLogManager().log(hero.getNameIfKnown() + " has Divined a spell: " + spell);
             return spell;
 
         }

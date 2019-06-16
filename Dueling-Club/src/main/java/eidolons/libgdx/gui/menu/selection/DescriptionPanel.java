@@ -112,7 +112,7 @@ public class DescriptionPanel extends ScrollTextWrapper {
 
     @Override
     protected float getTextLineWidth() {
-        return getWidth() * 0.86f;
+        return getWidth() * 0.69f;
     }
 
     @Override

@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.Structure;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GDX;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GridCellContainer extends GridCell {
     Map<Integer, GenericGridView> indexMap = new HashMap<>();
@@ -45,6 +48,7 @@ public class GridCellContainer extends GridCell {
     private List<GenericGridView> visibleViews;
     private List<GenericGridView> allViews;
     private boolean main;
+    private int n;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -90,6 +94,10 @@ public class GridCellContainer extends GridCell {
     }
 
     private boolean isViewCacheOn() {
+        if (Eidolons.BOSS_FIGHT)  //hasBackground
+            return true;
+        //TODO igg demo hack
+
         if (checkIgnored())
             return false;
         if (main)
@@ -106,7 +114,7 @@ public class GridCellContainer extends GridCell {
 
     public List<GenericGridView> getUnitViews(boolean visibleOnly) {
 
-        if (isViewCacheOn())
+        if ( isViewCacheOn())
             if (visibleOnly) {
                 if (visibleViews != null && !main)
                     return visibleViews;
@@ -150,6 +158,7 @@ public class GridCellContainer extends GridCell {
 
 
     public void recalcUnitViewBounds() {
+        unitViewCount = getUnitViewsVisible().size();
         if (getUnitViewCount() == 0) {
             return;
         }
@@ -292,62 +301,84 @@ public class GridCellContainer extends GridCell {
             return Z++ + 1;
     }
 
-    @Override
-    public void act(float delta) {
-        if (checkIgnored())
-            return;
-        super.act(delta);
+    public void resetZIndices() {
         List<GenericGridView> views = getUnitViewsVisible();
-        int n = 0;
+        n = 0;
+        GenericGridView    hovered =    resetZIndices(views, false);
+        if (hovered != null) {
+            GenericGridView unitHovered = resetZIndices(views, true);
+            if (unitHovered != null)
+                hovered= unitHovered;
+        } else
+            hovered =   resetZIndices(views, true);
+        if (hovered != null)
+            hovered.setZIndex(Integer.MAX_VALUE);
+        if (getTopUnitView() != null)
+            getTopUnitView().setZIndex(Integer.MAX_VALUE);
+        graveyard.setZIndex(Integer.MAX_VALUE);
+        backImage.setZIndex(0);
+    }
+
+    private GenericGridView resetZIndices(List<GenericGridView> filtered, boolean units) {
         GenericGridView hovered = null;
-        for (GenericGridView actor : views) {
+
+        for (GenericGridView actor : filtered) {
+            if (units != actor.getUserObject() instanceof Unit) {
+                continue;
+            }
+            if (!actor.isCellBackground())
+                n++;
             if (!actor.isVisible())
                 continue;
-            if (actor.isCellBackground() || actor.getUserObject() instanceof Structure) {
+            if (actor.isCellBackground() || !units) {
                 Integer i = (Integer) MapMaster.getKeyForValue_(indexMap, actor);
                 if (i == null) {
                     i = 0;
                 }
                 i = Math.max(1, i);
                 actor.setZIndex(Math.max(i - 1,
-                 //                 i / 2 +1
-                 i * 2 - views.size()
+                        //                 i / 2 +1
+                        i * 2 - getUnitViewsVisible().size()
                 )); //over cell at least
 
-            } else if (actor.isHovered())
+            } else if (actor.isHovered() || actor.getUserObject()== ShadowMaster.getShadowUnit())
                 hovered = actor;
             else if (actor.isActive()) {
                 if (hovered == null) hovered = actor;
             } else {
-                if (isStaticZindex()) {
+                if (isStaticZindex() && !units) { //useless?
                     Integer z = (Integer) MapMaster.getKeyForValue_(indexMap, actor);
                     if (z != null) {
                         actor.setZIndex(z);
-                        n++;
+//                        n++; why here
                         continue;
                     }
                 }
                 if (!actor.isHpBarVisible()) {
                     actor.setZIndex(n + 1);
                 } else
-                    actor.setZIndex(n + 2);
+                    actor.setZIndex(666);
 
+                indexMap.put(n, actor);
             }
-            n++;
+
         }
-        if (hovered != null)
-            hovered.setZIndex(Integer.MAX_VALUE);
-        if (getTopUnitView() != null)
-            getTopUnitView().setZIndex(Integer.MAX_VALUE);
-        graveyard.setZIndex(Integer.MAX_VALUE);
+        return hovered;
+    }
+
+    @Override
+    public void act(float delta) {
+        if (checkIgnored())
+            return;
+        super.act(delta);
+         resetZIndices();
+
         if (n != unitViewCount || secondCheck) {
             dirty = true;
         }
-
-
         if (dirty) {
             unitViewCount = n;
-            recalcUnitViewBounds();
+            recalcUnitViewBounds();            dirty = false;
         }
         info.setPosition(GDX.centerWidth(info), maxY + 10);
     }
@@ -384,10 +415,13 @@ public class GridCellContainer extends GridCell {
             unitViewCount = getUnitViewsVisible().size();
 
             if (isAnimated()) {
-                ActorMaster.addFadeInAction(actor, getFadeDuration());
+                ActorMaster.addFadeInAction(actor, getFadeDuration()/1.5f); //igg demo hack
             }
             //recalc all
             indexMap.put(getZIndexForView(view), view);
+            if (actor instanceof LastSeenView) {
+                return;
+            }
             recalcUnitViewBounds();
 
             if (actor.getUserObject() == Eidolons.MAIN_HERO
@@ -402,7 +436,7 @@ public class GridCellContainer extends GridCell {
         allViews = null;
     }
     protected float getFadeDuration() {
-        return 0.3f;
+        return 0.21f;
     }
 
     @Override

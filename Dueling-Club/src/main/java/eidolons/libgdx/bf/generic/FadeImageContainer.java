@@ -3,7 +3,9 @@ package eidolons.libgdx.bf.generic;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.rules.VisionEnums;
 
 /**
  * Created by JustMe on 3/30/2018.
@@ -15,6 +17,8 @@ public class FadeImageContainer extends ImageContainer {
     protected float fadeDuration = 2f;
     protected String imagePath;
     protected String previousPath;
+    private Actor pendingContents;
+    private float speedFactor=1f;
 
     public FadeImageContainer(String path, float fadeDuration) {
         super(path);
@@ -96,9 +100,14 @@ public class FadeImageContainer extends ImageContainer {
 
     @Override
     public void setContents(Actor contents) {
-        if (previousImage == contents)
-            return;
-
+//        if (previousImage == contents)
+//            return;
+        if (fadePercentage > 0) {
+            if (isNoInterruptions()) {
+                pendingContents = contents;
+                return;
+            }
+        }
         if (previousImage != null)
             previousImage.remove();
         previousImage = getContent();
@@ -110,20 +119,41 @@ public class FadeImageContainer extends ImageContainer {
             getContent().getColor().a = 0;
             fadePercentage = 1f;
         }
+        speedFactor=1;
+    }
+
+    private boolean isNoInterruptions() {
+        return true;
     }
 
     @Override
     public void act(float delta) {
+
+//        if (getContent().getDrawable().equals(
+//                TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath()))) {
+//            return;
+//        }
+//        if (getContent().getDrawable().equals(
+//                TextureCache.getOrCreate(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath()))) {
+//            return;
+//        }
+
         if (fadePercentage > 0) {
             fadePercentage = Math.max(0, fadePercentage - delta / getFadeDuration());
             previousImage.getColor().a = fadePercentage;
             getContent().getColor().a = 1 - fadePercentage;
+        } else {
+            if (pendingContents != null) {
+                setContents(pendingContents);
+                pendingContents = null;
+                speedFactor=1.5f;
+            }
         }
         super.act(delta);
     }
 
     public float getFadeDuration() {
-        return fadeDuration;
+        return fadeDuration/speedFactor;
     }
 
     public void setFadeDuration(float fadeDuration) {

@@ -4,17 +4,23 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.gui.generic.GearCluster;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.auxiliary.ClassMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.threading.WaitMaster;
 
 import java.util.*;
 
@@ -150,7 +156,7 @@ public class ActorMaster {
     public static AlphaAction getAlphaAction(Actor actor, float dur, float alpha, boolean add) {
 
         AlphaAction action = (AlphaAction) getAction(
-         alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
+                alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
 
         action.setAlpha(alpha);
         action.setDuration(dur);
@@ -158,7 +164,12 @@ public class ActorMaster {
         action.setInterpolation(Interpolation.fade);
         if (add) {
             if (alpha == actor.getColor().a) {
-                return null;
+//                if (isAlphaAdjustmentAllowed())
+//                return null;
+                if (alpha >= 1f)
+                    actor.getColor().a = 0;
+                else actor.getColor().a = 1;
+
             }
             actor.addAction(action);
         }
@@ -236,11 +247,7 @@ public class ActorMaster {
         action.setScale(scaleX, scaleY);
         action.setDuration(v);
         addAction(actor, action);
-        if (scaleX <= 1) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER_OFF);
-        } else {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
-        }
+
         if (centered) {
             float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
             float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;
@@ -275,16 +282,16 @@ public class ActorMaster {
 
     public static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
         return ClassMaster.getInstances(
-         new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
-         c);
+                new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
+                c);
     }
 
     public static void addScaleActionIfNoActions(Actor actor, float scaleX,
                                                  float scaleY, float v) {
         if (actor.getActions().size > 0) {
             if (ClassMaster.getInstances(
-             new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
-             ScaleToAction.class).size() > 0) {
+                    new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
+                    ScaleToAction.class).size() > 0) {
                 return;
             }
         }
@@ -312,5 +319,23 @@ public class ActorMaster {
         action.setScale(scale);
         action.setDuration(v);
         return action;
+    }
+
+    public static void click(Actor actor) {
+        Array<com.badlogic.gdx.scenes.scene2d.EventListener> listeners = actor.getListeners();
+        for (int i = 0; i < listeners.size; i++) {
+            if (listeners.get(i) instanceof SmartButton) {
+                SmartButton clickListener = (SmartButton) listeners.get(i);
+                InputEvent e = new InputEvent();
+                e.setListenerActor(actor);
+                e.setPointer(-1);
+                e.setType(InputEvent.Type.touchDown);
+                clickListener.handle(e);
+                e.setType(InputEvent.Type.touchUp);
+                WaitMaster.WAIT(50);
+                clickListener.handle(e);
+
+            }
+        }
     }
 }

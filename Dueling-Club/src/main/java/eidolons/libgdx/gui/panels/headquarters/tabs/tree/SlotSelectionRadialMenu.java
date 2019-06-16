@@ -1,17 +1,23 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
@@ -23,6 +29,8 @@ import main.entity.type.ObjType;
 import main.system.EventCallbackParam;
 import main.system.EventType;
 import main.system.GuiEventManager;
+import main.system.math.MathMaster;
+import main.system.text.TextParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +81,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 return event.getTarget() == SlotSelectionRadialMenu.this
-                 || super.mouseMoved(event, x, y);
+                        || super.mouseMoved(event, x, y);
             }
 
             @Override
@@ -101,16 +109,43 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         if (!ExplorationMaster.isExplorationOn())
             return;
         HqDataMaster.operation(dataSource,
-         getOperation(), type, tier, slot);
+                getOperation(), type, tier, slot);
     }
 
     protected abstract HERO_OPERATION getOperation();
 
     @Override
     protected Vector2 getInitialPosition() {
-        Vector2 pos = super.getInitialPosition();
-        setPosition(0, 0);
-        return stageToLocalCoordinates(pos);
+//        Vector2 pos = super.getInitialPosition();
+//        pos.lerp(new Vector2(-GdxMaster.getWidth() / 2, -GdxMaster.getHeight() / 2), 0.35f);
+//        setPosition(pos.x, pos.y);
+//        return pos;
+//        return screenToLocalCoordinates(pos);
+//        stageToLocalCoordinates(pos);
+//        Vector2 v = new Vector2(GdxMaster.getWidth() / 2 - getWidth() * 3,
+//                GdxMaster.getHeight() / 2 - getHeight() / 2);
+//        Vector2 mouse = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+//        return v.lerp(mouse, 0.3f);
+
+
+        float w = getWidth();
+        float h = getHeight();
+
+        float x = 0;
+        float y = 0;
+
+        Vector2 v = activeNode.localToAscendantCoordinates(
+                activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0, 0));
+
+        x = MathMaster.minMax(v.x,
+                w / 2, GdxMaster.getWidth() - w);
+        x = x - x / 6 - 100;
+        y = MathMaster.minMax(v.y,
+                h / 2, GdxMaster.getHeight() - h);
+
+        v = //stageToLocalCoordinates
+                (new Vector2(x - 100, y));
+        return v;
     }
 
     @Override
@@ -124,8 +159,8 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     protected void triggered(EventCallbackParam obj) {
         List params = (List) obj.get();
         List<ObjType> available = (List<ObjType>) params.get(0);
-          tier = (int) params.get(1);
-          slot = (int) params.get(2);
+        tier = (int) params.get(1);
+        slot = (int) params.get(2);
         List<RadialValueContainer> nodes = getNodes(available);
         init(nodes);
         open();
@@ -142,6 +177,9 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     @Override
     protected void updatePosition() {
         super.updatePosition();
+        Vector2 v = getInitialPosition();
+        setPosition(v.x, v.y);
+        adjustPosition();
     }
 
     @Override
@@ -165,7 +203,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
             String reason = getReqReason(type);
             boolean valid = reason == null;
             TextureRegion region = TextureCache.getOrCreateR(getImagePath(type));
-            RadialValueContainer node = new RadialValueContainer(region, () -> {
+            RadialValueContainer node = new RadialValueContainer(getIconSize(), region, () -> {
 
                 if (valid)
                     selected(type);
@@ -173,18 +211,28 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
                     //floating text?
                 }
             });
+            node.setUserObject(type);
             if (!valid)
                 node.setShader(GrayscaleShader.getGrayscaleShader());
             Ref ref = dataSource.getEntity().getRef().getCopy();
             ref.setID(KEYS.INFO, type.getId());
-            node.addListener(new ValueTooltip(type.getName() +
-              "\n" + type.getProperty(G_PROPS.TOOLTIP)
-              + "\n" + type.getDescription(ref)
-              + (isFree() ? "" :
-              (valid
-               ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
-               : ("\n" + reason))
-             )).getController()
+            ref.setID(KEYS.SOURCE, Eidolons.getMainHero().getId());
+
+            DC_FeatObj infoFeat = new DC_FeatObj(type, ref);
+            node.addListener(new DynamicTooltip(() -> {
+                        ref.setID(KEYS.SKILL, infoFeat.getId());
+                        ref.setID(KEYS.INFO, infoFeat.getId());
+
+                        String text = type.getProperty(G_PROPS.TOOLTIP);
+                        text += "\n" + TextParser.parse(type.getDescription( ),
+                                ref,  TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+
+                        text += (isFree() ? ""
+                                : (valid ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
+                                : ("\n" + reason)));
+                        return text;
+
+                    }).getController()
             );
 
             node.setCustomRadialMenu(this);
@@ -194,6 +242,8 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         return list;
     }
 
+    protected abstract int getIconSize();
+
     protected abstract String getImagePath(ObjType type);
 
     protected boolean isFree() {
@@ -201,31 +251,32 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     }
 
     protected abstract String getReqReason(ObjType type);
+
     @Override
     protected void adjustPosition() {
+        //       TODO
+        if (activeNode == null) {
+            return;
+        }
+        float w = getWidth();
+        float h = getHeight();
 
-        //       TODO  if (activeNode == null) {
-        //            return;
-        //        }
-        //        float w = activeNode.getWidth();
-        //        float h = activeNode.getHeight();
-        //
-        //        float x = activeNode.getX() + w / 2;
-        //        float y = activeNode.getY() + h / 2;
-        //
-        //        Vector2 v = activeNode.localToAscendantCoordinates(activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0,0));
-        ////        localToStageCoordinates(new Vector2(x, y));
-        //
-        //        w = getWidth();
-        //        h = getHeight();
-        //
-        //        x = MathMaster.minMax(v.x,
-        //         w / 2, GdxMaster.getWidth() - w);
-        //        y = MathMaster.minMax(v.y,
-        //         h / 2, GdxMaster.getHeight() - h);
-        //
-        //        v = stageToLocalCoordinates(new Vector2(x, y));
-        //        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
+        float x = 0;
+        float y = 0;
+
+        Vector2 v = activeNode.localToAscendantCoordinates(
+                activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0, 0));
+
+        x = MathMaster.minMax(v.x,
+                w / 2, GdxMaster.getWidth() - w);
+        x = x - x / 6;
+        y = MathMaster.minMax(v.y,
+                h / 2, GdxMaster.getHeight() - h);
+
+        v = //stageToLocalCoordinates
+                (new Vector2(x - 200, y));
+
+        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
 
     }
 

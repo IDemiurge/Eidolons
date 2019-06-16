@@ -12,6 +12,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
@@ -32,14 +33,21 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
+import main.entity.Ref;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.math.PositionMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static eidolons.libgdx.anims.sprite.SpriteAnimationFactory.fps30;
 
 /**
  * Created by JustMe on 9/6/2017.
@@ -51,48 +59,50 @@ public class AnimMaster3d {
     private static final int frames = 30;
     //  TINY, SMALL, MEDIUM, LARGE, HUGE
     private static final int[] height_for_size = {
-     64, 128, 196, 256, 320,
+            64, 128, 196, 256, 320,
     };
     private static final int[] width_for_size = {
-     256, 320, 384, 448, 512,
+            256, 320, 384, 448, 512,
     };
     private static final String[][] substitutesWeapons = {
-     //     {"halbert", "axe"},
+            //     {"halbert", "axe"},
 
-     {"golem fist", "armored fist"},
-     {"tail", "insect claws"},
-     {"tentacle", "insect claws"},
-     //     {"lance", "spear"},
-     //     {"pike", "spear"},
-     //     {"staff", "spear"},
-     //     {"battle staff", "spear"},
-     //     {"scythe", "spear"},
-     {"sickle", "hand axe"},
+            {"golem fist", "armored fist"},
+            {"tail", "insect claws"},
+            {"paws", "claws"},
+            {"tentacle", "insect claws"},
+            {"lance", "spear"},
+            //     {"pike", "spear"},
+            //     {"staff", "spear"},
+                 {"battle spear", "lance"},
+            //     {"scythe", "spear"},
+            {"sickle", "hand axe"},
 
 
-     //     {"broad sword", "long sword"},
-     //     {"falchion", "scimitar"},
-     {"orcish arrows", "arrows"},
-     {"elven arrows", "arrows"},
+            //     {"broad sword", "long sword"},
+            //     {"falchion", "scimitar"},
+            {"orcish arrows", "arrows"},
+            {"elven arrows", "arrows"},
 
-     {"heavy bolts", "bolts"},
-     {"heavy crossbow", "crossbow"},
-     {"hand crossbow", "crossbow"},
-     {"longbow", "short bow"},
-     //     {"war axe", "battle axe"},
-     //     {"great axe", "battle axe"},
-     //     {"kriss", "stiletto"},
+            {"heavy bolts", "bolts"},
+            {"heavy crossbow", "crossbow"},
+            {"hand crossbow", "crossbow"},
+            {"longbow", "short bow"},
+            //     {"war axe", "battle axe"},
+            //     {"great axe", "battle axe"},
+            //     {"kriss", "stiletto"},
 
 
     };
     private static final String[][] substitutesActions = {
-     {"fist swing", "punch"},
-     {"aimed shot", "quick shot"}
+            {"fist swing", "punch"},
+            {"aimed shot", "quick shot"}
     };
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
     private static Boolean off;
+    private static float fps = fps30;
 
     static {
         init();
@@ -176,8 +186,8 @@ public class AnimMaster3d {
                     try {
                         path = getPotionAtlasPath(sub.getActive());
                     } catch (Exception e) {
-                        main.system.auxiliary.log.LogMaster.log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        LogMaster.log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
+                        ExceptionMaster.printStackTrace(e);
                         return;
                     }
                     preloadAtlas(path);
@@ -196,10 +206,10 @@ public class AnimMaster3d {
                                                   Boolean offhand) {
         StringBuilder s = new StringBuilder();
         s.append(
-         ContainerUtils.join(SEPARATOR,
-          weaponName,
-          actionName, ANIM, projection
-         ));
+                ContainerUtils.join(SEPARATOR,
+                        weaponName,
+                        actionName, ANIM, projection
+                ));
 
         //       TODO  if (BooleanMaster.isTrue(offhand))
         //            s.append(SEPARATOR + "l");
@@ -221,7 +231,7 @@ public class AnimMaster3d {
 
         //        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
         projectionString = (projection == null ? "hor" :
-         (projection ? "from" : "to"));
+                (projection ? "from" : "to"));
         //        }
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
@@ -253,13 +263,13 @@ public class AnimMaster3d {
                     actionName = getActionAtlasKey(activeObj);
             }
         Boolean offhand = null;
-        if (projection != null)
-            if (isAssymetric(weapon.getBaseTypeName()))
-                offhand = (activeObj.isOffhand());
+//       TODO !!! if (projection != null)
+        if (isAssymetric(weapon.getBaseTypeName()))
+            offhand = (activeObj.isOffhand());
 
         return getAtlasFileKeyForAction(projectionString,
-         getWeaponAtlasKey(weapon),
-         actionName, offhand);
+                getWeaponAtlasKey(weapon),
+                actionName, offhand);
     }
 
     private static boolean isMissSupported() {
@@ -268,7 +278,7 @@ public class AnimMaster3d {
 
     private static String getActionAtlasKey(DC_ActiveObj activeObj) {
         String name = activeObj
-         .getName().replace("Off Hand ", "");
+                .getName().replace("Off Hand ", "");
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
             return substitute;
@@ -276,7 +286,7 @@ public class AnimMaster3d {
         return name;
     }
 
-    private static String getWeaponAtlasKey(DC_WeaponObj weapon) {
+    public static String getWeaponAtlasKey(DC_WeaponObj weapon) {
         String name = weapon.getBaseTypeName();
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
@@ -285,7 +295,7 @@ public class AnimMaster3d {
         if (name.equalsIgnoreCase("fist")) {
             if (weapon.getOwnerObj().getArmor() != null) {
                 if (weapon.getOwnerObj().getArmor().getArmorType() ==
-                 ARMOR_TYPE.HEAVY)
+                        ARMOR_TYPE.HEAVY)
                     name = "Armored Fist";
                 else if (ItemMaster.isGlovedFistOn())
                     name = "Gloved Fist";
@@ -296,22 +306,24 @@ public class AnimMaster3d {
 
     public static String getAtlasPath(DC_WeaponObj weapon, String name) {
         if (weapon.getWeaponGroup() == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
+            LogMaster.log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
             return "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP);
         }
         String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
         StrPathBuilder s = new StrPathBuilder(
-         PathFinder.getWeaponAnimPath(), "atlas",
-         weapon.getWeaponType().toString().replace("_", " ")
-         , groupName, name
-         + TexturePackerLaunch.ATLAS_EXTENSION);
+                PathFinder.getWeaponAnimPath(), "atlas",
+                weapon.getWeaponType().toString().replace("_", " ")
+                , groupName, name
+                + TexturePackerLaunch.ATLAS_EXTENSION);
         return s.toString();
     }
 
     private static boolean isAssymetric(String activeWeapon) {
         switch (activeWeapon) {
             case "Fist":
+                return true;
+            case "Armored Fist":
                 return true;
 
         }
@@ -327,7 +339,7 @@ public class AnimMaster3d {
                                                      DC_ActiveObj activeObj,
                                                      WEAPON_ANIM_CASE aCase, PROJECTION projection) {
         return getSpriteForAction(duration, activeObj,
-         aCase, projection.bool);
+                aCase, projection.bool);
     }
 
     private static String getPotionKey(DC_ActiveObj activeObj) {
@@ -343,7 +355,7 @@ public class AnimMaster3d {
         String name = action.getItem().getName();
         String level = name.split(" ")[0];
         return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPathNew(),
-         "potions", "atlas", level, name + ".txt").replace(" ", "_");
+                "potions", "atlas", level, name + ".txt").replace(" ", "_");
 
     }
 
@@ -371,7 +383,7 @@ public class AnimMaster3d {
             frameDuration /= loops;
 
         SpriteAnimation sprite = SpriteAnimationFactory.
-         getSpriteAnimation(regions, frameDuration, loops);
+                getSpriteAnimation(regions, frameDuration, loops);
         //        sprite.setRotation(rotation);
         return sprite;
     }
@@ -381,15 +393,17 @@ public class AnimMaster3d {
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
 
+        main.system.auxiliary.log.LogMaster.log(1, activeObj + " has invalid atlas: " + name);
+
         Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
         if (regions.size == 0) {
             regions = atlas instanceof SmartTextureAtlas
-              ? ((SmartTextureAtlas) atlas).findRegionsClosest(name.toLowerCase())
-              : null;
+                    ? ((SmartTextureAtlas) atlas).findRegionsClosest(name.toLowerCase())
+                    : null;
         }
         if (regions.size == 0) {
             regions = atlas.findRegions(name.toLowerCase()
-             .replace(ANIM + SEPARATOR, ""));
+                    .replace(ANIM + SEPARATOR, ""));
         }
         if (regions.size == 0) {
             if (isSearchAtlasRegions(activeObj))
@@ -401,8 +415,8 @@ public class AnimMaster3d {
                     regions = findAtlasRegions(atlas, projection, activeObj, false);
         }
         if (regions.size == 0)
-            main.system.auxiliary.log.LogMaster.log(
-             1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
+            LogMaster.log(
+                    1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
         return regions;
     }
 
@@ -430,19 +444,19 @@ public class AnimMaster3d {
         List<Entity> types = null;
         if (searchOtherWeaponOrAction) {
             types = Arrays.stream(DataManager.getBaseWeaponTypes()).
-             filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
-              activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
+                    filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
+                            activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {
             types = new ArrayList<>(
-             activeObj.getParentAction().getSubActions());
+                    activeObj.getParentAction().getSubActions());
         }
         Array<AtlasRegion> regions = null;
         for (Entity sub : types) {
             name = sub.getName() + name.substring(name.indexOf(SEPARATOR));
             regions = atlas.findRegions(name.toLowerCase());
 
-            main.system.auxiliary.log.LogMaster.log(
-             1, activeObj + " searching " + name);
+            LogMaster.log(
+                    1, activeObj + " searching " + name);
             if (regions.size > 0)
                 break;
         }
@@ -483,8 +497,8 @@ public class AnimMaster3d {
         try {
             path = getFullAtlasPath(weapon);
         } catch (Exception e) {
-            main.system.auxiliary.log.LogMaster.log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
-            main.system.ExceptionMaster.printStackTrace(e);
+            LogMaster.log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
+            ExceptionMaster.printStackTrace(e);
             return;
         }
         preloadAtlas(path);
@@ -495,10 +509,10 @@ public class AnimMaster3d {
             return;
         if (!FileManager.isFile(path)) {
             //            brokenPaths.add(path)
-            main.system.auxiliary.log.LogMaster.log(1, path + " needs to preload, but it is not a file!..");
+            LogMaster.log(1, path + " needs to preload, but it is not a file!..");
             return;
         }
-        main.system.auxiliary.log.LogMaster.log(1, path + " loading...");
+        LogMaster.log(1, path + " loading...");
         Assets.get().getManager().load(path, TextureAtlas.class);
         atlasMap.put(path, null);
     }
@@ -507,27 +521,37 @@ public class AnimMaster3d {
         if (broken.contains(weapon))
             return null;
         String path =
-         getFullAtlasPath(weapon);
+                getFullAtlasPath(weapon);
         try {
             return getOrCreateAtlas(path);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             broken.add(weapon);
             return null;
         }
     }
 
     public static TextureAtlas getOrCreateAtlas(String path) {
+        return getOrCreateAtlas(path, true);
+    }
+    public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
         if (!FileManager.isFile(path))
             return null;
         path = TextureCache.formatTexturePath(path);
-        TextureAtlas atlas = atlasMap.get(path);
+
+        TextureAtlas atlas = cache ? atlasMap.get(path) : null;
         if (atlas == null) {
             if (Assets.isOn()) {
                 Assets.get().getManager().load(path, TextureAtlas.class);
-                while (!Assets.get().getManager().isLoaded(path)) {
-                    Assets.get().getManager().update();
+//                while (!Assets.get().getManager().isLoaded(path)) {
+//                    if (Assets.get().getManager().update())
+//                        break;
+//                }
+                while (!Assets.get().getManager().update()) {
                 }
+
+                if (!Assets.get().getManager().isLoaded(path))
+                    main.system.auxiliary.log.LogMaster.log(1, "************* Atlas failed to load! " + path);
 //                try {
 //                    Assets.get().getManager().finishLoadingAsset(path);
 //                } catch (Exception e) {
@@ -538,18 +562,20 @@ public class AnimMaster3d {
                 atlas = new SmartTextureAtlas(path);
             }
         }
+        if (cache) {
         atlasMap.put(path, atlas);
+        }
         return atlas;
 
 
     }
 
-    private static String getFullAtlasPath(DC_WeaponObj weapon) {
+    public static String getFullAtlasPath(DC_WeaponObj weapon) {
         try {
             return TextureCache.formatTexturePath(PathFinder.getImagePath()
-             + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
+                    + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return null;
     }
@@ -600,12 +626,14 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
+        if (CoreEngine.isIDE())
+            if (!CoreEngine.isGraphicTestMode())
+                if (CoreEngine.isLiteLaunch()) {
+            if (!Eidolons.BOSS_FIGHT)
+                return true;
+        }
         if (off == null)
             off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
-        return off;
-    }
-
-    public static Boolean getOff() {
         return off;
     }
 
@@ -613,8 +641,37 @@ public class AnimMaster3d {
         AnimMaster3d.off = off;
     }
 
+    public static float getFps() {
+        return fps;
+    }
+
+    public static void setFps(float fps) {
+        AnimMaster3d.fps = fps;
+    }
+
+    public static PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
+        if (!facing.isVertical())
+            return PROJECTION.HOR;
+        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
+    }
+
+    public static PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+        if (ref.getTargetObj() == null || ref == null)
+            return getProjectionByFacing(active.getOwnerUnit().getFacing());
+        Boolean b =
+                PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
+        if (active.getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
+            b = active.getOwnerUnit().isMine();
+        PROJECTION projection = PROJECTION.HOR;
+        if (b != null)
+            projection = b ? PROJECTION.FROM : PROJECTION.TO;
+        return projection;
+    }
+
+
     public enum PROJECTION {
-        FROM(true), TO(false), HOR(null),;
+        FROM(true), TO(false), HOR(null),
+        ;
         public Boolean bool;
 
         PROJECTION(Boolean bool) {
@@ -631,7 +688,8 @@ public class AnimMaster3d {
         PARRY,
         BLOCKED,
         RELOAD,
-        POTION,;
+        POTION,
+        ;
 
         public boolean isMissile() {
             return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;

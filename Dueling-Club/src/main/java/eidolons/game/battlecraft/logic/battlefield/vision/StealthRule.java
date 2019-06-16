@@ -12,8 +12,11 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.ActionRule;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.BuffMaster;
+import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.math.roll.Roll;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.common.AddStatusEffect;
 import main.content.enums.GenericEnums;
@@ -25,14 +28,16 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
+import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
+import main.system.sound.SoundMaster;
 
 import java.util.List;
 
 public class StealthRule implements ActionRule {
     /*
      * After each action by the stealthy unit or the spotter
-	 */
+     */
 
     public static final String SPOTTED = "Spotted";
     private static final Integer DETECTION_FACTOR = 3;
@@ -45,20 +50,29 @@ public class StealthRule implements ActionRule {
 
 
     public static void applySpotted(Unit target) {
+        if (target.isPlayerCharacter()) {
+            EUtils.showInfoText("You have been spotted!");
+        } else {
+            if (!target.isMine()) {
+                EUtils.showInfoText("Spotted " + target);
+            }
+        }
         BuffMaster.applyBuff(SPOTTED, new AddStatusEffect(UnitEnums.STATUS.SPOTTED), target, 1); // TODO
         // also negate concealment? // dispel
         // hidden?
         target.setPlayerVisionStatus(PLAYER_VISION.DETECTED);
+
+        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, target);
         target.setSneaking(false);
         // to be dispelled by renewed use of Invisiblity or special Hide
         // actions
         // or perhaps upon moving beyond vision range TODO
     }
 
-    public   boolean checkInvisible(DC_Player player,  BattleFieldObject unit) {
+    public boolean checkInvisible(DC_Player player, BattleFieldObject unit) {
         if (VisionManager.isVisionHacked()) {
             if (!unit.isMine())
-            return false;
+                return false;
         }
         if (unit.isSpotted())
         // ***BY UNIT*** - if "spotter" is killed, can become invisible
@@ -81,27 +95,37 @@ public class StealthRule implements ActionRule {
         // return false; // TODO ???
 
         boolean result = game.getVisionMaster().getVisionController()
-         .getDetectionMapper().get(player, unit);
+                .getDetectionMapper().get(player, unit);
         if (result) {
             game.getVisionMaster().getVisionController()
-             .getStealthMapper().set(player, unit, false);
+                    .getStealthMapper().set(player, unit, false);
             return false;
         }
-        result = game.getVisionMaster().getVisionController()
-         .getStealthMapper().get(player, unit);
-        if (!result)
+        Boolean stealth = game.getVisionMaster().getVisionController()
+                .getStealthMapper().get(player, unit);
+        if (stealth != null)
+            result = stealth;
+        else
+            result = checkStealth(unit);
+
+        game.getVisionMaster().getVisionController()
+                .getStealthMapper().set(player, unit, result);
+        return result;
+    }
+
+    private boolean checkStealth(BattleFieldObject unit) {
+        boolean result = false;
         if (unit.getIntParam(PARAMS.STEALTH) > 0) {
-              result = true;
+            result = true;
             int stealth = unit.getIntParam(PARAMS.STEALTH);
 
-            for (Unit obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).getControlledUnits_()) {
-
+            for (Unit obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).collectControlledUnits_()) {
                 // if (checkInSight((DC_UnitObj) obj, unit))
                 // continue; TODO Used to be like this? If within sight range,
                 // no stealth possible?
-                int detection = getDetection(unit, obj, null );
+                int detection = getDetection(unit, obj, null);
                 if (obj.isPlayerCharacter())
-                        detection += DETECTION_BONUS_MAIN_HERO;
+                    detection += DETECTION_BONUS_MAIN_HERO;
 
                 if (detection >= stealth) { // detected
                     result = false;
@@ -112,10 +136,7 @@ public class StealthRule implements ActionRule {
         }
         if (result) {
             unit.setSneaking(true);
-        game.getVisionMaster().getVisionController()
-         .getStealthMapper().set(player, unit, result);
         }
-
         return result;
     }
 
@@ -124,7 +145,7 @@ public class StealthRule implements ActionRule {
         if (distance == 0) {
             distance = 1; // TODO ++ CONCEALMENT
         }
-        Integer factor =2* source.getIntParam(PARAMS.SIGHT_RANGE);
+        Integer factor = 2 * source.getIntParam(PARAMS.SIGHT_RANGE);
 
         if (FacingMaster.getSingleFacing((DC_UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.BEHIND) {
             factor = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
@@ -132,12 +153,12 @@ public class StealthRule implements ActionRule {
             factor -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         if (action != null) {
-        if (action.isAttackAny()){
-            factor=factor*2;
-        }
-        if (action.isSpell()){
-            factor=factor*3/2;
-        }
+            if (action.isAttackAny()) {
+                factor = factor * 2;
+            }
+            if (action.isSpell()) {
+                factor = factor * 3 / 2;
+            }
         }
 
         int detection = factor * source.getIntParam(PARAMS.DETECTION) / distance;
@@ -175,14 +196,14 @@ public class StealthRule implements ActionRule {
             Unit unit = (Unit) sub;
             double d = PositionMaster.getExactDistance(source, unit);
 
-            if ((d <= getMaxDistance( unit, source))) {
-                if (isSpotRollAllowed(unit, source)) {
+            if ((d <= getMaxDistance(unit, source)) || action.getChecker().isPotentiallyHostile()) {
+                if (isSpotRollAllowed(action, unit, source)) {
                     rollSpotted(unit, source, action);
                 }
             }
 
-            if ((d <= getMaxDistance(source, unit ))) {
-                if (isSpotRollAllowed(source,unit)) {
+            if ((d <= getMaxDistance(source, unit))) {
+                if (isSpotRollAllowed(action, source, unit)) {
                     rollSpotted(source, unit, action);
                 }
             }
@@ -190,22 +211,24 @@ public class StealthRule implements ActionRule {
 
     }
 
-    private boolean isSpotRollAllowed(Unit source, Unit unit) {
+    private boolean isSpotRollAllowed(DC_ActiveObj action, Unit source, Unit unit) {
         if (source.isUnconscious())
             return false;
-        if (!unit.isSneaking()){
-            return  false;
-        }
-        UNIT_VISION status = unit.getUnitVisionMapper().get(source, unit);
-        if (status== UNIT_VISION.BEYOND_SIGHT )
+        if (!unit.isSneaking()) {
             return false;
-        if (status== UNIT_VISION.BLOCKED )
+        }
+        if (action.getChecker().isPotentiallyHostile())
+            return true;
+        UNIT_VISION status = unit.getUnitVisionMapper().get(source, unit);
+        if (status == UNIT_VISION.BEYOND_SIGHT)
+            return false;
+        if (status == UNIT_VISION.BLOCKED)
             return false;
         if (PositionMaster.getExactDistance(source, unit) > source.getMaxVisionDistance()) {
             return false;
         }
         return unit.getPlayerVisionMapper().get(source.getOwner(), unit)
-         == PLAYER_VISION.INVISIBLE;
+                == PLAYER_VISION.INVISIBLE;
     }
 
     private double getMaxDistance(Unit source, DC_Obj unit) {
@@ -252,10 +275,16 @@ public class StealthRule implements ActionRule {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
+            //TODO better way to do it?
             activeUnit.setParam(PARAMS.DETECTION, base_detection);
         }
+        Roll roll = RollMaster.getLastRoll();
+
         if (result) {
             applySpotted(target);
+        } else {
+            if (RandomWizard.chance(10)) //TODO depends on n of units?
+                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, target);
         }
 
         return result;

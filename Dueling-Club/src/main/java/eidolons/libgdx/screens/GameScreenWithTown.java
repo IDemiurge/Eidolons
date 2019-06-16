@@ -36,7 +36,11 @@ public abstract class GameScreenWithTown extends GameScreen {
                 townPanel.fadeIn();
                 townPanel.entered();
             }
-            townPanel.setUserObject(town);
+            try {
+                townPanel.setUserObject(town); //  // TODO
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
             overlayStage.setActive(true);
             GdxMaster.setDefaultCursor();
@@ -51,7 +55,7 @@ public abstract class GameScreenWithTown extends GameScreen {
     @Override
     protected void renderLoaderAndOverlays(float delta) {
         super.renderLoaderAndOverlays(delta);
-        if (townPanel != null&&townPanel.isVisible()){
+        if (townPanel != null && townPanel.isVisible()) {
             guiStage.act(delta);
             guiStage.draw();
         }

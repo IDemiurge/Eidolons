@@ -1,10 +1,11 @@
 package eidolons.libgdx.gui.menu.selection.manual;
 
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualArticles.MANUAL_ARTICLE;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public class ManualPanel extends SelectionPanel {
     @Override
-    protected ItemInfoPanel createInfoPanel() {
+    protected SelectableItemDisplayer createInfoPanel() {
         return new ManualDetails(null);
     }
     protected String getDoneText() {
@@ -51,6 +52,16 @@ public class ManualPanel extends SelectionPanel {
         }
 
         return list;
+    }
+
+    @Override
+    protected String getBackgroundSpritePath() {
+        return Sprites.BG_DEFAULT;
+    }
+
+    @Override
+    protected float getBgAlpha() {
+        return 0.8f;
     }
 
     private String getArticlesPath() {

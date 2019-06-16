@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
@@ -106,6 +107,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
              "Inventory is full!", hero);
+            EUtils.showInfoText(  "Inventory is full!");
             return false;
         }
         return true;
@@ -124,6 +126,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (arg == null) {
             switch (operation) {
                 case EQUIP:
+                case EQUIP_RESERVE:
                     if (type.getOBJ_TYPE_ENUM() != DC_TYPE.JEWELRY)
                         return false;
             }
@@ -154,7 +157,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return ITEM_SLOT.OFF_HAND;
             case ARMOR:
                 return ITEM_SLOT.ARMOR;
-
+            case WEAPON_MAIN_RESERVE:
+                return ITEM_SLOT.RESERVE_MAIN_HAND;
+            case WEAPON_OFFHAND_RESERVE:
+                return ITEM_SLOT.RESERVE_OFF_HAND;
         }
         return null;
     }
@@ -174,7 +180,15 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return OPERATIONS.UNEQUIP;
         }
         if (checkContentMatches(cell_type, dragged))
+        {
+            if (cell_type== CELL_TYPE.WEAPON_MAIN_RESERVE) {
+                return OPERATIONS.EQUIP_RESERVE;
+            }
+            if (cell_type== CELL_TYPE.WEAPON_OFFHAND_RESERVE) {
+                return OPERATIONS.EQUIP_RESERVE;
+            }
             return OPERATIONS.EQUIP;
+        }
         return null;
     }
 
@@ -182,6 +196,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     protected boolean checkContentMatches(CELL_TYPE cell_type, Entity dragged) {
         switch (cell_type) {
             case WEAPON_OFFHAND:
+            case WEAPON_OFFHAND_RESERVE:
+            case WEAPON_MAIN_RESERVE:
                 //                if (dragged)
             case WEAPON_MAIN:
                 if (dragged instanceof DC_WeaponObj)
@@ -210,9 +226,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     protected void execute(OPERATIONS operation, Entity type, Object arg) {
 
-        if (operation == OPERATIONS.DROP)
-            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-             type.getName() + " is dropped down!");
 
         HqDataMaster.operation(hero, getHqOperation(operation), type, arg);
         if (manager != null)
@@ -224,11 +237,15 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     protected Object getSecondArg(OPERATIONS operation, Entity type) {
-        if (operation == OPERATIONS.EQUIP) {
+        if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_RESERVE) {
             if (type instanceof DC_JewelryObj) {
                 return null;
             }
-            return HeroManager.getItemSlot(dataMaster.getHeroModel(), type);
+            ITEM_SLOT slot = HeroManager.getItemSlot(dataMaster.getHeroModel(), type);
+            if (operation == OPERATIONS.EQUIP_RESERVE){
+                return slot.getReserve();
+            }
+            return slot;
         }
         return null;
     }
@@ -243,6 +260,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return HERO_OPERATION.UNEQUIP;
             case UNEQUIP_QUICK_SLOT:
                 return HERO_OPERATION.UNEQUIP_QUICK_SLOT;
+            case EQUIP_RESERVE:
+                return HERO_OPERATION.EQUIP_RESERVE;
             case EQUIP:
                 return HERO_OPERATION.EQUIP;
             case EQUIP_QUICK_SLOT:
@@ -271,6 +290,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         switch (cell_type) {
             case AMULET:
             case RING:
+            case WEAPON_OFFHAND_RESERVE:
+            case WEAPON_MAIN_RESERVE:
             case WEAPON_MAIN:
             case WEAPON_OFFHAND:
                 if (altClick) {

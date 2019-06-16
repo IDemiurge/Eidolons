@@ -13,6 +13,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
+import main.elements.conditions.standard.CustomCondition;
 import main.elements.conditions.standard.DynamicCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
@@ -57,12 +58,12 @@ public class ConditionMaster {
 
     public static Condition getNotDeadCondition() {
         return new NotCondition(getStatusMatchCondition(StringMaster
-         .getWellFormattedString(UnitEnums.STATUS.DEAD.name())));
+                .getWellFormattedString(UnitEnums.STATUS.DEAD.name())));
     }
 
     public static Condition getAliveAndConsciousFilterCondition() {
         return new Conditions(new NotCondition(new PropCondition(G_PROPS.STATUS, "unconscious")),
-         getNotDeadCondition());
+                getNotDeadCondition());
     }
 
     public static Condition getAliveFilterCondition() {
@@ -85,7 +86,7 @@ public class ConditionMaster {
 
     public static Condition getTargetMatchingParamCondition(String greater, String than) {
         return new NumericCondition(new Formula("{SOURCE_" + greater + "}"), new Formula("{MATCH_"
-         + than + "}"), false);
+                + than + "}"), false);
     }
 
     public static Condition getUnit_Char_BfObj_TerrainTypeCondition() {
@@ -146,13 +147,13 @@ public class ConditionMaster {
         Conditions conditions = new Conditions();
         if (!bidirectional) {
             Condition sideCondition = (!PositionMaster.isAbove(obj1, obj2)) ? new NumericCondition(
-             new Formula("{SOURCE_POS_Y}"), new Formula("{MATCH_POS_Y}"), false)
-             : new NumericCondition(new Formula("{MATCH_POS_Y}"), new Formula(
-             "{SOURCE_POS_Y}"), false);
+                    new Formula("{SOURCE_POS_Y}"), new Formula("{MATCH_POS_Y}"), false)
+                    : new NumericCondition(new Formula("{MATCH_POS_Y}"), new Formula(
+                    "{SOURCE_POS_Y}"), false);
             conditions.add(sideCondition);
         }
         Condition lineCondition = new NumericCondition(new Formula("{SOURCE_POS_X}"), new Formula(
-         "{MATCH_POS_X}"), true);
+                "{MATCH_POS_X}"), true);
         conditions.add(lineCondition);
 
         return conditions;
@@ -162,13 +163,13 @@ public class ConditionMaster {
         Conditions conditions = new Conditions();
         if (!bidirectional) {
             Condition sideCondition = (PositionMaster.isToTheLeft(obj1, obj2)) ? new NumericCondition(
-             new Formula("{MATCH_POS_X}"), new Formula("{SOURCE_POS_X}"), false)
-             : new NumericCondition(new Formula("{SOURCE_POS_X}"), new Formula(
-             "{MATCH_POS_X}"), false);
+                    new Formula("{MATCH_POS_X}"), new Formula("{SOURCE_POS_X}"), false)
+                    : new NumericCondition(new Formula("{SOURCE_POS_X}"), new Formula(
+                    "{MATCH_POS_X}"), false);
             conditions.add(sideCondition);
         }
         Condition lineCondition = new NumericCondition(new Formula("{SOURCE_POS_Y}"), new Formula(
-         "{MATCH_POS_Y}"), true);
+                "{MATCH_POS_Y}"), true);
 
         conditions.add(lineCondition);
         return conditions;
@@ -192,21 +193,21 @@ public class ConditionMaster {
         Conditions conditions = new Conditions();
         if (!bidirectional) {
             Condition sideCondition = (PositionMaster.isToTheLeft(targetObj, sourceObj)) ? new NumericCondition(
-             new Formula("{SOURCE_POS_X}"), new Formula("{MATCH_POS_X}"), false)
-             : new NumericCondition(new Formula("{MATCH_POS_X}"), new Formula(
-             "{SOURCE_POS_X}"), false);
+                    new Formula("{SOURCE_POS_X}"), new Formula("{MATCH_POS_X}"), false)
+                    : new NumericCondition(new Formula("{MATCH_POS_X}"), new Formula(
+                    "{SOURCE_POS_X}"), false);
             conditions.add(sideCondition);
 
             Condition sideCondition2 = (!PositionMaster.isAbove(targetObj, sourceObj)) ? new NumericCondition(
-             new Formula("{MATCH_POS_Y}"), new Formula("{SOURCE_POS_Y}"), false)
-             : new NumericCondition(new Formula("{SOURCE_POS_Y}"), new Formula(
-             "{MATCH_POS_Y}"), false);
+                    new Formula("{MATCH_POS_Y}"), new Formula("{SOURCE_POS_Y}"), false)
+                    : new NumericCondition(new Formula("{SOURCE_POS_Y}"), new Formula(
+                    "{MATCH_POS_Y}"), false);
             conditions.add(sideCondition2);
         }
 
         Condition diagonalCondition = new NumericCondition(new Formula(
-         "[ABS({MATCH_POS_X} - {SOURCE_POS_X})]"), new Formula(
-         "[ABS({MATCH_POS_Y} - {SOURCE_POS_Y})]"), true);
+                "[ABS({MATCH_POS_X} - {SOURCE_POS_X})]"), new Formula(
+                "[ABS({MATCH_POS_Y} - {SOURCE_POS_Y})]"), true);
         conditions.add(diagonalCondition);
         return conditions;
     }
@@ -229,7 +230,7 @@ public class ConditionMaster {
 
     public static Condition getOwnershipFilterCondition(String name, boolean ally) {
         return (ally) ? new OwnershipCondition(MATCH, name) : new NotCondition(
-         new OwnershipCondition(MATCH, name));
+                new OwnershipCondition(MATCH, name));
 
     }
 
@@ -251,7 +252,7 @@ public class ConditionMaster {
 
     public static Condition getAttackConditions() {
         return new Conditions(new NotCondition(getSelfFilterCondition()), getBFObjTypesCondition(),
-         getDistanceFilterCondition(SOURCE, "{ACTIVE_RANGE}"));
+                getDistanceFilterCondition(SOURCE, "{ACTIVE_RANGE}"));
     }
 
     public static Condition getAdjacentCondition() {
@@ -277,7 +278,7 @@ public class ConditionMaster {
     public static Conditions getClaimedBfObjConditions(String BF_OBJECT_TYPE) {
         Conditions conditions = new Conditions();
         conditions.add(ConditionMaster.getPropCondition("MATCH", G_PROPS.BF_OBJECT_TYPE,
-         BF_OBJECT_TYPE));
+                BF_OBJECT_TYPE));
         conditions.add(ConditionMaster.getTYPECondition(DC_TYPE.BF_OBJ));
 
         conditions.add(new OwnershipCondition(KEYS.MATCH, KEYS.SOURCE));
@@ -293,7 +294,7 @@ public class ConditionMaster {
     public static Condition getPropCondition(PROPERTY p, PROPERTY p2, String firstReference,
                                              String secondReference, boolean strict) {
         return new StringContainersComparison(strict, "{" + firstReference + "_" + p.getName()
-         + "}", "{" + secondReference + "_" + p2.getName() + "}", false); // harken
+                + "}", "{" + secondReference + "_" + p2.getName() + "}", false); // harken
         // thee
         // -
         // name
@@ -329,7 +330,7 @@ public class ConditionMaster {
             mod = 1;
         }
         return new NumericCondition(false, "{" + OBJ_REF + "_" + p.getName() + "}", mod + "*{"
-         + OBJ_REF2 + "_" + p2.getName() + "}+" + add);
+                + OBJ_REF2 + "_" + p2.getName() + "}+" + add);
     }
 
     public static Condition getParamCondition(PARAMETER p, PARAMETER p2) {
@@ -338,7 +339,7 @@ public class ConditionMaster {
 
     public static Condition getParamCondition(String paramName, String amount, boolean base) {
         return new NumericCondition(false, "{" + ((base) ? StringMaster.BASE_CHAR : "") + SOURCE
-         + "_" + paramName + "}", amount);
+                + "_" + paramName + "}", amount);
     }
 
     public static Condition getParamCondition(String paramName, String amount) {
@@ -353,12 +354,12 @@ public class ConditionMaster {
 
     public static Condition getLivingCondition(String key) { // TODO |
         return new NotCondition(new OrConditions(new ClassificationCondition(UnitEnums.CLASSIFICATIONS.WRAITH
-         .toString(), key), new OrConditions(new ClassificationCondition(
-         UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString(), key), new ClassificationCondition(
-         UnitEnums.CLASSIFICATIONS.ELEMENTAL.toString(), key), new ClassificationCondition(
-         UnitEnums.CLASSIFICATIONS.STRUCTURE.toString(), key), new ClassificationCondition(
-         UnitEnums.CLASSIFICATIONS.UNDEAD.toString(), key), new ClassificationCondition(
-         UnitEnums.CLASSIFICATIONS.MECHANICAL.toString(), key))));
+                .toString(), key), new OrConditions(new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.ELEMENTAL.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.STRUCTURE.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.UNDEAD.toString(), key), new ClassificationCondition(
+                UnitEnums.CLASSIFICATIONS.MECHANICAL.toString(), key))));
     }
 
     public static Condition getLivingMatchCondition() {
@@ -373,10 +374,10 @@ public class ConditionMaster {
         return toConditions(condition).preCheck(ref);
     }
 
-    public static Condition toConditions(String string) {
+    public static Conditions toConditions(String string) {
         Conditions conditions = new Conditions();
         for (String conditionString :
-         ContainerUtils.openContainer(string, StringMaster.AND)) {
+                ContainerUtils.openContainer(string, StringMaster.AND)) {
             Condition c;
             if (conditionString.contains(StringMaster.OR)) {
                 String[] parts = conditionString.split(StringMaster.OR);
@@ -414,7 +415,7 @@ public class ConditionMaster {
             negative = true;
         }
         CONDITION_TEMPLATES template = new EnumMaster<CONDITION_TEMPLATES>().retrieveEnumConst(
-         CONDITION_TEMPLATES.class, templateName);
+                CONDITION_TEMPLATES.class, templateName);
         if (template == null) {
             template = findConditionTemplate(string);
         }
@@ -436,7 +437,7 @@ public class ConditionMaster {
         if (TextParser.isRef(arg)) { // TODO sometimes it's SOURCE!!!
             if (!arg.contains(StringMaster.FORMULA_REF_SEPARATOR)) {
                 arg = KEYS.MATCH.toString() + StringMaster.FORMULA_REF_SEPARATOR
-                 + StringMaster.cropRef(arg);
+                        + StringMaster.cropRef(arg);
                 arg = StringMaster.wrapInCurlyBraces(arg);
             }
         }
@@ -573,6 +574,17 @@ public class ConditionMaster {
         ConditionMaster.instance = instance;
     }
 
+    protected static Condition getActiveWeaponsCondition() {
+        Conditions c = new Conditions();
+        c.add(new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
+        c.add(new ObjTypeComparison(DC_TYPE.WEAPONS));
+//        c.add(new ActiveWeaponCondition());
+        c.add(new OrConditions(new ObjComparison("SOURCE_WEAPON", "MATCH"),
+                new ObjComparison("SOURCE_OFFHAND", "MATCH")));
+        return c;
+    }
+
+
     public Condition getConditionFromTemplate(CONDITION_TEMPLATES template, String str1, String str2) {
         Condition c = null;
         switch (template) {
@@ -602,9 +614,14 @@ public class ConditionMaster {
             case STRING_STRICT:
                 c = new StringComparison(str1, str2, true);
                 break;
-
+            case DISTANCE:
+                return new DistanceCondition(2, str1, str2);
+            case SPOT:
+                return new DistanceCondition(1, str1, str2);
             case CAN_ACTIVATE:
                 c = new DynamicCondition("CostCondition;" + str1 + "");
+            case ITEM:
+                break;
         }
         return c;
     }
@@ -623,7 +640,8 @@ public class ConditionMaster {
     }
 
     public enum CONDITION_SHORTCUTS {
-        isMe("ref(source, match)"),;
+        isMe("ref(source, match)"),
+        ;
 
         CONDITION_SHORTCUTS(String s) {
 
@@ -633,6 +651,7 @@ public class ConditionMaster {
 
 
     public enum CONDITION_TEMPLATES {
+        DISTANCE("dst", "dist", "DISTANCE"),
         STRING("string", "fullString", "has"),
         STRING_STRICT("strStrict", "strEqual", "strict"),
         CONTAINER("contains"),
@@ -643,7 +662,8 @@ public class ConditionMaster {
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
-        CAN_ACTIVATE("cost", "can activate", "can pay");
+        MAINHERO("pc", "mainHero", "MAIN_HERO"),
+        CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot");
 
         private String[] names;
 
@@ -662,6 +682,7 @@ public class ConditionMaster {
             // TODO
             return false;
         }
+
     }
 
 }

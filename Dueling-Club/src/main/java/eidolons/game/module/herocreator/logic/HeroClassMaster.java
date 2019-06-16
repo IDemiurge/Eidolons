@@ -3,19 +3,25 @@ package eidolons.game.module.herocreator.logic;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,8 @@ import java.util.List;
  */
 public class HeroClassMaster {
     public static final String CLASSES_TIER_ = "CLASSES_TIER_";
+    private static ObjType openSlotType;
+    private static HeroClass openSlot;
 
     public static boolean isMulticlass(Entity type) {
         return false; //TODO
@@ -48,6 +56,9 @@ public class HeroClassMaster {
     public static List<DC_FeatObj> getClasses(Unit hero, int tier) {
         ArrayList<DC_FeatObj> list = new ArrayList<>(hero.getClasses());
         list.removeIf(c -> c.getTier() != tier);
+        if (list.size()< getMaxClassSlots(tier)){
+            list.add(getOpenSlot());
+        }
         return list;
     }
 
@@ -70,7 +81,42 @@ public class HeroClassMaster {
         return list;
     }
 
-    public static List<ObjType> getAllClasses(Unit hero, int tier) {
+    public static List<ObjType> getPotentiallyAvailableClasses(Unit hero, int tier) {
+        List<ObjType> list = new ArrayList<>(DataManager.getTypes(DC_TYPE.CLASSES));
+
+        list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier
+                || (tier>0 && !hasRootTreeClass(hero, type)) //TODO hasEmptyClassSlot(hero) ||
+        );
+//        ContentFilter
+        if (tier>0) {
+        HqMaster.filterContent(list);
+        }
+        //just check same root tree!
+
+        return list;
+    }
+
+    private static boolean hasRootTreeClass(Unit hero, ObjType type) {
+        String property = type.getProperty(G_PROPS.CLASS_GROUP);
+        if (hero.getProperty(PROPS.FIRST_CLASS).equalsIgnoreCase(property)) {
+            return true;
+        }
+        if (hero.getProperty(PROPS.SECOND_CLASS).equalsIgnoreCase(property)) {
+            return true;
+        }
+        if (hero.getProperty(PROPS.THIRD_CLASS).equalsIgnoreCase(property)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static List<ObjType> getClassesToChooseFrom(Unit hero, int tier) {
+        if (CoreEngine.isIggDemoRunning()){
+            return getPotentiallyAvailableClasses(hero, tier);
+        }
+        return getAllClasses(hero, tier);
+    }
+        public static List<ObjType> getAllClasses(Unit hero, int tier) {
         List<ObjType> list = new ArrayList<>(DataManager.getTypes(DC_TYPE.CLASSES));
         //check if branching is OK
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier);
@@ -90,11 +136,61 @@ public class HeroClassMaster {
         }
         return list;
     }
-    public static String getImgPath(Entity data) {
-        String path = "main/skills/gen/" + data.getName() + ".png";
+    public static String getPerkInfo(Entity classType) {
+        List<ObjType> perks = PerkMaster.getAvailablePerks(Eidolons.getMainHero(), classType.getIntParam("circle"), classType, classType);
+        String s = "Available class perks: \n";
+        for (ObjType type : perks) {
+                s += type.getName() + ", ";
+        }
+        return s.substring(0, s.length()-2);
+    }
+    public static String getNextClassInfo(Entity classType) {
+        List<ObjType> classes = DataManager.getTypes(DC_TYPE.CLASSES);
+        String s = "Unlocked Classes: \n";
+        for (ObjType aClass : classes) {
+            if (aClass.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(classType.getName())) {
+                s +="   "+ aClass.getName() + "\n";
+            }
+        }
+        return s;
+    }
+        public static String getImgPath(Entity data) {
+        String  path = "gen/class/64/" + data.getName() + ".png";
         if (TextureCache.isImage(path))
             return path;
-
-        return GdxImageMaster.getRoundedPath(data.getImagePath());
+        return (data.getImagePath());
     }
+    public static String getImgPathRadial(Entity data) {
+        String  path = "gen/class/96/" + data.getName() + ".png";
+        if (TextureCache.isImage(path))
+            return path;
+        return (data.getImagePath());
+//        String path =GdxImageMaster.getRoundedPathNew(data.getName() + ".png");
+//        if (TextureCache.isImage(path))
+//            return path;
+//
+//        path = "main/skills/gen/" + data.getName() + ".png";
+//        if (TextureCache.isImage(path))
+//            return path;
+//        return GdxImageMaster.getRoundedPath(data.getImagePath());
+    }
+
+    public static boolean isDataAnOpenSlot(Object lastData) {
+        return lastData== getOpenSlot ();
+    }
+
+    public static HeroClass getOpenSlot() {
+        if (openSlot == null) {
+            openSlot = new HeroClass(getOpenSlotType(), (Eidolons.getMainHero()));
+        }
+        return openSlot;
+    }
+        public static ObjType getOpenSlotType() {
+        if (openSlotType == null) {
+            openSlotType = new ObjType("Dummy Class", DC_TYPE.CLASSES);
+        }
+        return openSlotType;
+    }
+
+
 }

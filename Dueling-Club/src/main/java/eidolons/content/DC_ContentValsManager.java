@@ -40,11 +40,12 @@ public class DC_ContentValsManager extends ContentValsManager {
      PARAMS.C_ENDURANCE,
      PARAMS.C_STAMINA,
      PARAMS.C_MORALE,
+            PARAMS.C_ESSENCE,
      PARAMS.C_FOCUS,
-     PARAMS.C_ESSENCE,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
-     PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
+     PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.N_OF_ACTIONS, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
+              PARAMS.N_OF_COUNTERS,
     };
     public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
      PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
@@ -179,8 +180,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         // list.addAll(Arrays.asList(WEAPON_MODIFYING_PARAMS));
         list.addAll(Arrays.asList(ValuePages.UNIT_PARAMETERS));
         list.addAll(Arrays.asList(ValuePages.MASTERIES));
-        list.addAll(Arrays.asList(ValuePages.PRINCIPLE_IDENTITIES));
-        list.addAll(Arrays.asList(ValuePages.PRINCIPLE_ALIGNMENTS));
         list.addAll(Arrays.asList(FEAT_MODIFYING_PARAMS));
 
         FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);
@@ -1106,7 +1105,18 @@ public class DC_ContentValsManager extends ContentValsManager {
             this.params = params;
         }
 
-        public PARAMS getParameter() {
+        public static ATTRIBUTE  getForParameter(PARAMETER parameter) {
+            for (ATTRIBUTE value : values()) {
+                if (value.parameter==parameter) {
+                    return value;
+                }
+                if (value.parameter==ContentValsManager.getBaseAttribute(parameter)) {
+                    return value;
+                }
+            }
+            return null;
+        }
+            public PARAMS getParameter() {
             return parameter;
         }
 

@@ -23,7 +23,7 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
 
 
 //        ScenarioMeta meta = (ScenarioMeta) getMaster().getMetaMaster().getMetaGame();
-        String name = getMaster().getMetaMaster().getMissionName();
+        String name = getMaster().getMetaMaster().getMetaDataManager(). getMissionName();
 //         StringMaster.openContainer(
 //         meta.getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).get(index);
         ObjType type = DataManager.getType(name, DC_TYPE.MISSIONS);
@@ -46,7 +46,8 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
         String levelPath = type.getProperty(PROPS.MISSION_FILE_PATH);
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
          levelPath);
-        Mission mission = new Mission(type, getMaster().getMetaMaster().getMetaGame().getScenario());
+        Mission mission = new Mission(type);
+        //, getMaster().getMetaMaster().getMetaGame().getScenario()
 
         getBattle().setMission(mission);
 

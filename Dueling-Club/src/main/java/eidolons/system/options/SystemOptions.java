@@ -6,23 +6,43 @@ import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
  * Created by JustMe on 8/27/2017.
  */
 public class SystemOptions
- extends Options<SYSTEM_OPTION,SYSTEM_OPTION>
-{
+        extends Options<SYSTEM_OPTION, SYSTEM_OPTION> {
 
     protected Class<? extends SYSTEM_OPTION> getOptionClass() {
 
         return SYSTEM_OPTION.class;
     }
 
-    public  enum SYSTEM_OPTION implements Options.OPTION {
-        LOGGING(true) ,
+    public enum GAME_LOG_LEVEL {
+        DEV,
+        FULL,
+        DEFAULT,
+        CONCISE,
+        MINIMAL
+    }
+
+    public enum SYSTEM_OPTION implements Options.OPTION {
+        DEV(false),
+        LOGGING(true),
         LOG_TO_FILE(true),
         RESET_COSTS(false),
+        LOG_MORE_INFO(false),
+        LOG_DEV_INFO(false),
+
+        MESSAGES_OFF(false),
+        INTRO_OFF(false),
+
         CACHE,
         PRECONSTRUCT,
 
         LAZY,
-        ;
+
+        ActiveTestMode(false),
+        Ram_economy(false),
+        levelTestMode(false),
+        contentTestMode(false),
+        reverseExit(false),
+        KeyCheat(false);
 
         boolean exclusive;
         Object[] options;
@@ -44,7 +64,8 @@ public class SystemOptions
             this.options = options;
         }
 
-        SYSTEM_OPTION(boolean defaultValue) {this.exclusive = defaultValue;
+        SYSTEM_OPTION(boolean defaultValue) {
+            this.exclusive = defaultValue;
             this.defaultValue = defaultValue;
         }
 

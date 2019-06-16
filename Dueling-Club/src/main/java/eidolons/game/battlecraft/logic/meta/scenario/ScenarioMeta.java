@@ -59,7 +59,7 @@ public class ScenarioMeta extends MetaGame {
     }
 
     public boolean isPartyRespawn() {
-//        if (getMission().checkProperty(PROPS.MISSION_BRIEFING_DATA))
+//        if (getMissionIndex().checkProperty(PROPS.MISSION_BRIEFING_DATA))
         if (CoreEngine.isMacro()) {
             return false;
         }

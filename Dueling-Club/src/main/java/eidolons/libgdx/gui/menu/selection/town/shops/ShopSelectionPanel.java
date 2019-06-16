@@ -6,6 +6,7 @@ import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.town.PlaceSelectionPanel;
 import eidolons.macro.entity.shop.Shop;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,23 +44,29 @@ public class ShopSelectionPanel extends PlaceSelectionPanel {
     protected String getTitle() {
         return "Available Shops";
     }
+
     @Override
     protected SelectableItemDisplayer createInfoPanel() {
-        return new ShopPanel( );
+        return new ShopPanel();
     }
 
     @Override
     protected ItemListPanel createListPanel() {
         return new ShopsListPanel();
     }
+
     @Override
     protected List<SelectableItemData> createListData() {
-        Collection<Shop> shops = (Collection< Shop>) getUserObject();
+        Collection<Shop> shops = (Collection<Shop>) getUserObject();
+        if (shops == null) {
+             main.system.auxiliary.log.LogMaster.log(1,"<<<<<<< Null UserObj on shops! " +this);
+            return new ArrayList<>();
+        }
         return shops.stream().map(shop -> {
             SelectableItemData item =
-             new SelectableItemData(shop);
+                    new SelectableItemData(shop);
             return item;
-        }).collect(Collectors.toList()) ;
+        }).collect(Collectors.toList());
     }
 
 }

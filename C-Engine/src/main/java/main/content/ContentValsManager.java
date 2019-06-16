@@ -319,7 +319,24 @@ public class ContentValsManager {
 
     public static PARAMETER getPARAM(String valueName, boolean strict) {
         for (PARAMETER p : params) {
-            if (StringMaster.compareByChar(valueName, p.toString(), strict)) {
+            if (StringMaster.compareByChar(valueName, p.toString(), true)) {
+                return p;
+            }
+        }
+        for (PARAMETER p : params) {
+            if (StringMaster.compareByChar(valueName, p.getDisplayedName(), true)) {
+                return p;
+            }
+        }
+        if ( strict)
+            return null ;
+        for (PARAMETER p : params) {
+            if (StringMaster.compareByChar(valueName, p.toString(), false)) {
+                return p;
+            }
+        }
+        for (PARAMETER p : params) {
+            if (StringMaster.compareByChar(valueName, p.getDisplayedName(), false)) {
                 return p;
             }
         }
@@ -1077,6 +1094,20 @@ public class ContentValsManager {
 
     public static PARAMETER getDefaultAttribute(PARAMETER sub) {
         return getPARAM(StringMaster.DEFAULT + sub.getName());
+    }
+
+    public static VALUE getValueByDisplayedName(String name) {
+        for (PARAMETER parameter : getParamList()) {
+            if (parameter.getDisplayedName().equalsIgnoreCase(name)) {
+                return parameter;
+            }
+        }
+        for (PROPERTY property : getPropList()) {
+            if (property.getDisplayedName().equalsIgnoreCase(name)) {
+                return property;
+            }
+        }
+        return getValue(name);
     }
 
     public void init() {

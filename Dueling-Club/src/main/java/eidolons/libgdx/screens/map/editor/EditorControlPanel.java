@@ -33,7 +33,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
 //
         setSize(GdxMaster.getWidth() / 3 * 2, 64);
         TextButtonStyle style = StyleHolder.getTextButtonStyle(FONT.AVQ,
-         GdxColorMaster.PALE_GOLD, 18);
+                GdxColorMaster.PALE_GOLD, 18);
         for (MAP_EDITOR_FUNCTION sub : MAP_EDITOR_FUNCTION.values()) {
             TextButton button = new TextButton(sub.name(), style);
             button.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
@@ -69,15 +69,19 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 //type? create local type
                 break;
             case SAVE:
-                SaveMasterOld.saveTheWorld();
+                try {
+                    SaveMasterOld.saveTheWorld();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
                 EditorMapView.getInstance().getEditorParticles().saveAll();
                 MapPointMaster.getInstance()
-                 .save();
+                        .save();
 //                MacroManager.saveCustomTypes();
                 //data into World/Campaign type?
                 break;
             case ALL_TIMES:
-                GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED,null );
+                GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED, null);
                 break;
             case NEXT_TIME:
                 int i = EnumMaster.getEnumConstIndex(DAY_TIME.class, MacroGame.getGame().getTime());
@@ -85,7 +89,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 if (DAY_TIME.values().length <= i)
                     i = 0;
                 DAY_TIME time = DAY_TIME.values()[i];
-                GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED,time);
+                GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED, time);
                 break;
             case UNDO:
                 EditorManager.undo();

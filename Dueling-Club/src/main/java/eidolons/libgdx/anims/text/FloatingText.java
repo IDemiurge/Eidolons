@@ -76,14 +76,27 @@ public class FloatingText extends Group {
         return getClass().getSimpleName() + ": " + getText() + "; delay: " + delay;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof FloatingText) {
+            if (((FloatingText) obj).getText().equals(getText())) {
+                if (((FloatingText) obj).getDelay() == getDelay()) {
+                    if (((FloatingText) obj).getDuration() == getDuration()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return super.equals(obj);
+    }
 
     public FloatingText init() {
         Vector2 v = new Vector2(getX(), getY());
-        if (coordinates!=null ){
-           v= GridMaster.getCenteredPos(coordinates);
+        if (coordinates != null) {
+            v = GridMaster.getCenteredPos(coordinates);
         }
         return
-         init(v, displacementX, displacementY, getDuration());
+                init(v, displacementX, displacementY, getDuration());
     }
 
     public FloatingText init(Vector2 origin, float x, float y, float duration) {
@@ -124,10 +137,10 @@ public class FloatingText extends Group {
             if (imageSupplier != null) {
                 if (!StringMaster.isEmpty(imageSupplier.get())) {
                     if (!ImageManager.isImage(imageSupplier.get())
-                     ||
-                     ImageManager.getImage(imageSupplier.get()).getWidth(null) >= 64)
+                            ||
+                            ImageManager.getImage(imageSupplier.get()).getWidth(null) >= 64)
                         image = new Image
-                         (TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath()));
+                                (TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath()));
 
                     image = new Image(TextureCache.getOrCreateR(imageSupplier.get()));
 
@@ -138,7 +151,7 @@ public class FloatingText extends Group {
             addActor(image);
         if (label == null) {
             label =
-             new Label(getText(), getFontStyle());
+                    new Label(getText(), getFontStyle());
             label.setColor(c);
             label.setPosition(0, -20);
             addActor(label);
@@ -217,7 +230,7 @@ public class FloatingText extends Group {
     public LabelStyle getFontStyle() {
         if (fontStyle == null)
             return StyleHolder.getSizedLabelStyle(
-             StyleHolder.DEFAULT_FONT_FLOAT_TEXT, StyleHolder.DEFAULT_FONT_SIZE_FLOAT_TEXT);
+                    StyleHolder.DEFAULT_FONT_FLOAT_TEXT, StyleHolder.DEFAULT_FONT_SIZE_FLOAT_TEXT);
         return fontStyle;
     }
 

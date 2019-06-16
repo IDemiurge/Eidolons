@@ -170,7 +170,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         List<Unit> list = new ArrayList<>();
         for (Obj unit : DC_Game.game
          .getPlayer(activeObj.getOwnerUnit().isMine())
-         .getControlledUnits()) {
+         .collectControlledUnits()) {
             list.add((Unit) unit);
         }
         return list;

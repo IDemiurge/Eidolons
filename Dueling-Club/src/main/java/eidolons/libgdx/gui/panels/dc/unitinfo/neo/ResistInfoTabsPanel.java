@@ -1,7 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResistSource;
 
@@ -16,6 +18,7 @@ public class ResistInfoTabsPanel extends eidolons.libgdx.gui.panels.TabbedPanel<
         addTab(new ResistPanel(), "Armor");
         addTab(new ResistPanel(), "Durability");
         resetCheckedTab();
+        setBackground(NinePatchFactory.getLightPanelFilledDrawable());
     }
 
     @Override
@@ -29,7 +32,7 @@ public class ResistInfoTabsPanel extends eidolons.libgdx.gui.panels.TabbedPanel<
     }
     @Override
     protected int getDefaultTabAlignment() {
-        return super.getDefaultTabAlignment();
+        return Align.center;
     }
 
     @Override

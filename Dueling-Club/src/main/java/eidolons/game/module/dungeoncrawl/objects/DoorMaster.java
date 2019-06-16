@@ -18,6 +18,7 @@ import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -71,7 +72,10 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
                 return true;
         }
         switch (sub) {
+            case UNSEAL:
+                KeyMaster.doorUnsealed(door, unit);
             case OPEN:
+            case UNLOCK:
                 open(door, unit.getRef().getTargetingRef(obj));
                 return true;
             case CLOSE:
@@ -99,7 +103,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO
-                return !isOpen(door);
+                if (door.getState() == DOOR_STATE.CLOSED)
+                    return true;
+                return false;
             case CLOSE:
                 if (door.getGame().getObjectsAt(door.getCoordinates()).size() > 1) {
                     return false;
@@ -108,10 +114,19 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
             case UNLOCK:
                 return door.getState() == DOOR_STATE.LOCKED;
             case UNSEAL:
-                return door.getState() == DOOR_STATE.SEALED;
+                if (door.getState() == DOOR_STATE.SEALED){
+                    if (checkCanUnseal(unit, door)) {
+                        return true;
+                    }
+                }
+                return false;
         }
 
         return false;
+    }
+
+    private boolean checkCanUnseal(Unit unit, Door door) {
+       return KeyMaster.hasKey(unit, door);
     }
 
     @Override
@@ -170,22 +185,30 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     @Override
     public void open(DungeonObj obj, Ref ref) {
         Door door = (Door) obj;
-        door.setState(DOOR_STATE.OPEN);
-//        GuiEventManager.trigger(GuiEventType.OPEN_DOOR);
-        obj.getGame().fireEvent(
-         new Event(STANDARD_EVENT_TYPE.DOOR_OPENS,
-          ref));
+        if (CoreEngine.isActiveTestMode())
+            door.setState(DOOR_STATE.SEALED);
+
+        if (door.getState()==DOOR_STATE.SEALED){
+            KeyMaster.initAnimRef(obj, ref);
+            obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DOOR_IS_UNLOCKED  , ref));
+//            GuiEventManager.trigger(GuiEventType.SINGLE_ANIM, LockKeyAnimation.class, ref);
+            door.setState(DOOR_STATE.OPEN);
+            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__UNLOCK);
+            return;
+        }
+//        door.setState(DOOR_STATE.OPEN);
+        obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DOOR_OPENS, ref));
         door.setState(DOOR_STATE.OPEN);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GATE);
     }
 
 
     public enum DOOR_ACTION implements DUNGEON_OBJ_ACTION {
+        UNSEAL,
         OPEN,
         CLOSE,
         LOCK,
         UNLOCK,
-        UNSEAL,
     }
 
     public enum DOOR_STATE {

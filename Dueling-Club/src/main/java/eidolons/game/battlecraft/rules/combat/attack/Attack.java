@@ -69,6 +69,7 @@ public class Attack {
                 offhand = action.isOffhand();
             }
         }
+        if (action != null) {
         if (!counter) {
             counter = action.isCounterMode();
         }
@@ -76,6 +77,7 @@ public class Attack {
         setInstant(action.isInstantMode());
         setAttackOfOpportunity(action.isAttackOfOpportunityMode());
 
+        }
         if (this.canCounter) {
             if (instant || attackOfOpportunity || counter) {
                 this.canCounter = false;

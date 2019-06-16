@@ -2,8 +2,10 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -11,6 +13,8 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureManager;
+import eidolons.system.text.DescriptionTooltips;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 
 /**
@@ -27,11 +31,14 @@ public class HqParamPanel extends HqElement{
          : DC_ContentValsManager.MAIN_PARAMETERS);
     }
     public HqParamPanel(PARAMETER...params) {
-        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
-        setSize(GDX.size(300), GDX.size(75));
-        add(group = new HorizontalGroup()).center();
-        group.setSize(getWidth()-60, getHeight());
-        group.space(GDX.size(10));
+        setBackground(getDefaultBackground());
+        setSize(params.length*100, GDX.size(75));
+//        add(group = new HorizontalGroup()).center();
+//        group.setSize(getWidth()-60, getHeight());
+//        group.space(GDX.size(10));
+
+       defaults().space(GDX.size(30));
+
         this.params = params;
         containers = new Array<>(6);
 
@@ -43,14 +50,19 @@ public class HqParamPanel extends HqElement{
                 protected boolean isVertical() {
                     return true;
                 }
+
+
             };
+            container.getValueContainer().align(Align.left);
             container.overrideImageSize(32,32);
-            container.setSize(GDX.size(50), GDX.size(64));
+//            container.setSize(GDX.size(100), GDX.size(64));
             container.setStyle(StyleHolder.getHqLabelStyle(18));
-            container.addListener(new ValueTooltip(sub.getName()).getController());
 
             containers.add(container);
-            group.addActor(container);
+            add(container).uniform().center();
+
+            container.setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
+//            group.addActor(container);
         }
     }
 
@@ -58,8 +70,39 @@ public class HqParamPanel extends HqElement{
     protected void update(float delta) {
         int i =0;
         for (PARAMETER sub : params) {
-            containers.get(i).setValueText(dataSource.getParamRounded(sub));
+            CharSequence text=getText(sub);
+            containers.get(i).setValueText(text);
+            int size = 18 + Math.round(18 * new Float(2.0f) / (1 + text.length()) / 10);
+            containers.get(i).setStyle(StyleHolder.getHqLabelStyle(size));
+            containers.get(i).clearListeners();
+            containers.get(i).addListener(new ValueTooltip(DescriptionTooltips.tooltip(sub, getUserObject().getEntity())).getController());
+
             i++;
         }
+    }
+
+    private String getText(PARAMETER sub) {
+        if (checkShowFraction(sub)) {
+            String c = getUserObject().getParamRounded(sub);
+            String m = getUserObject().getParamRounded(ContentValsManager.getBaseParameterFromCurrent(sub));
+           if (!c.equalsIgnoreCase(m))
+            return c + "/" + m;
+        }
+        return dataSource.getParamRounded(sub);
+    }
+
+    private boolean checkShowFraction(PARAMETER sub) {
+        if (sub instanceof PARAMS) {
+            switch (((PARAMS) sub)) {
+//                case C_ENDURANCE:
+                case C_TOUGHNESS:
+//                case C_MORALE:
+                case C_ESSENCE:
+                case C_STAMINA:
+//                case C_FOCUS:
+                    return true;
+            }
+        }
+        return false;
     }
 }
