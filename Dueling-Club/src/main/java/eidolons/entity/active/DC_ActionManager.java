@@ -742,7 +742,8 @@ public class DC_ActionManager implements ActionManager {
             }
         }
 
-        actives.add(getOrCreateAction(SEARCH_MODE, unit));
+//        actives.add(getOrCreateAction(SEARCH_MODE, unit));
+
 //  TODO condition?      if (unit.isHero())
 
         if (RuleKeeper.checkFeature(FEATURE.GUARD_MODE))
@@ -1084,7 +1085,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public enum STD_SPEC_ACTIONS {
-        Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set
+        On_Alert,  Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set
 
 //        @Override
 //        public String toString() {

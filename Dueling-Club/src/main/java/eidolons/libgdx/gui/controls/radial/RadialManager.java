@@ -78,6 +78,9 @@ public class RadialManager {
         if (!(el instanceof DC_ActiveObj)) {
             return false;
         }
+        if (el.getName().equalsIgnoreCase("Use Inventory")) {
+            return false;
+        }
         if (((DC_ActiveObj) el).getGame().isDebugMode())
             return true;
         DC_ActiveObj action = ((DC_ActiveObj) el);

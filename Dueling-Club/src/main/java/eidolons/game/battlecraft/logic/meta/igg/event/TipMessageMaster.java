@@ -180,7 +180,7 @@ public class TipMessageMaster {
 
 
 
-        TUTORIAL_PATH(false, "", "Good choice! Let's start with the basics then. Disable the Basic Tutorial no ignore these"){
+        TUTORIAL_PATH(false, "", "Good choice! You will not be able to die on this path, but still get to try each of the 4 heroes. Try to collect all the Rune Inscriptions, and experiment freely!"){
             public void run() {
                 Eidolons.TUTORIAL_PATH=true;
             }

@@ -124,9 +124,9 @@ public class Player {
                 files = FileManager.getFilesFromDirectory((basePath), false);
 
             if (!files.isEmpty()) {
-                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(basePath));
-                List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().contains(fileName)).collect(Collectors.toList());
-                sound = FileManager.getRandomFile(filtered).getPath();
+//                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(basePath));
+//                List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().contains(fileName)).collect(Collectors.toList());
+                sound = FileManager.getRandomFile(files).getPath();
             } else {
                 // failedSounds.add(basePath);
                 return;
@@ -223,15 +223,28 @@ public class Player {
     }
 
     private String getRandomSound(SOUNDS sound_type, SOUNDSET soundSet, Boolean variant, boolean filter) {
-        String corePath = getFullPath(sound_type, soundSet, variant);
+        String fileName = getSoundName(sound_type, variant);
+        String corePath = StrPathBuilder.build(PathFinder.getSoundsetsPath(), "units", soundSet,
+                soundSet+"_"+fileName);
+
         if (filter) {
             List<File> files = FileManager.getFilesFromDirectory(PathUtils.cropLastPathSegment(corePath), false);
             if (files.isEmpty())
                 files = FileManager.getFilesFromDirectory((corePath), false);
             if (!files.isEmpty()) {
-                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(corePath));
                 List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().
-                        contains(fileName)).collect(Collectors.toList());
+                        contains(fileName.toLowerCase())).collect(Collectors.toList());
+
+                if (filtered.isEmpty()) {
+                    filtered = files.stream().filter(file -> file.getName().toLowerCase().
+                            contains(getSoundName(sound_type, true).toLowerCase())).collect(Collectors.toList());
+                    if (filtered.isEmpty()) {
+                        filtered = files.stream().filter(file -> file.getName().toLowerCase().
+                                contains(getSoundName(sound_type, null ).toLowerCase())).collect(Collectors.toList());
+                    }
+
+
+                }
                 return FileManager.getRandomFile(filtered).getPath();
             }
         } else {
@@ -270,15 +283,16 @@ public class Player {
         return corePath;
     }
 
-    private String getFullPath(SOUNDS sound_type, SOUNDSET soundSet, Boolean variant) {
+    private String getSoundName(SOUNDS sound_type, Boolean variant) {
         if (variant != null) {
             if (variant) {
-                return SoundMaster.getPath() + soundSet.getName() + "_" + sound_type.getAltName();
+                return  sound_type.getAltName();
             }
-            return SoundMaster.getPath() + soundSet.getName() + "_" + sound_type.getAltName2();
+            return  sound_type.getAltName2();
         }
-        return SoundMaster.getPath() + soundSet.getName() + "_" + sound_type.getPath();
+        return  sound_type.getPath();
     }
+
 
     public void playEffectSound(final SOUNDS sound_type, final Obj obj) {
         playEffectSound(sound_type, obj, 100);

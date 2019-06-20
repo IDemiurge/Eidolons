@@ -4,6 +4,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import main.data.filesys.PathFinder;
+import main.entity.EntityCheckMaster;
 import main.game.logic.event.Event;
 
 public class SoundEvents {
@@ -34,7 +35,7 @@ public class SoundEvents {
                     return MusicMaster.MUSIC_MOMENT.VICTORY.getCorePath();
                 case DEFEAT:
                     return MusicMaster.MUSIC_MOMENT.GAMEOVER.getCorePath();
-                    case TOWN_ENTERED:
+                case TOWN_ENTERED:
                     return MusicMaster.MUSIC_MOMENT.TOWN.getCorePath();
                 case SECRET_FOUND:
                     return MusicMaster.MUSIC_MOMENT.SECRET.getCorePath();
@@ -42,15 +43,19 @@ public class SoundEvents {
                 case ATTACK_MISSED:
 
                     DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
-                            +"combat/miss/", true);
+                            + "combat/miss/", true);
                     break;
 
                 case UNIT_HAS_BEEN_KILLED:
+                    if (EntityCheckMaster.isOverlaying(event.getRef().getTargetObj()))
+                        break;
                     if (event.getRef().getTargetObj() != Eidolons.MAIN_HERO) {
                         DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
-                        +"combat/fall/", true);
+                                + "combat/fall/", true);
                         break;
                     }
+
+
                     return MusicMaster.MUSIC_MOMENT.DEATH.getCorePath();
 
                 case UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS:
@@ -62,7 +67,7 @@ public class SoundEvents {
                 case UNIT_HAS_FALLEN_UNCONSCIOUS:
                     if (event.getRef().getSourceObj() != Eidolons.MAIN_HERO) {
                         DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
-                                +"combat/fall/", true);
+                                + "combat/fall/", true);
                         break;
                     }
                     return MusicMaster.MUSIC_MOMENT.FALL.getCorePath();

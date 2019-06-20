@@ -14,12 +14,18 @@ public class TipMessageSource {
     String message;
     String image;
     String[] buttons;
+    String soundPath;
     Runnable[] btnRun;
     private boolean optional;
     private boolean nonGdxThread;
     float width = GdxMaster.getWidth() / 3;
     float height = GdxMaster.getHeight() / 3;
 
+
+    public TipMessageSource(String message, String soundPath, String image, String button, boolean optional, Runnable r) {
+        this(message, image, button, optional, r, MESSAGE_RESPONSE);
+        this.soundPath = soundPath;
+    }
     public TipMessageSource(String message, String image, String button, boolean optional, Runnable r) {
         this(message, image, button, optional, r, MESSAGE_RESPONSE);
     }
@@ -37,7 +43,7 @@ public class TipMessageSource {
         this.btnRun = new Runnable[]{
                 btnRun
         };
-    init();
+         init();
     }
 
     private void init() {

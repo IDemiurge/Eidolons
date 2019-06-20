@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
@@ -20,6 +21,7 @@ import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class Spell extends DC_ActiveObj {
@@ -60,6 +62,65 @@ public class Spell extends DC_ActiveObj {
     @Override
     public void setEffectSoundPlayed(boolean effectSoundPlayed) {
 
+    }
+
+    @Override
+    public GenericEnums.DAMAGE_TYPE getDamageType() {
+        if (super.getDamageType() != GenericEnums.DAMAGE_TYPE.PHYSICAL)
+            return super.getDamageType();
+        switch (getAspect()) {
+            case NEUTRAL:
+                break;
+            case ARCANUM:
+                if (RandomWizard.random())
+                    return GenericEnums.DAMAGE_TYPE.MAGICAL;
+                return GenericEnums.DAMAGE_TYPE.ARCANE;
+            case LIFE:
+                break;
+            case DARKNESS:
+                if (getSpellGroup() == SPELL_GROUP.PSYCHIC) {
+                    return GenericEnums.DAMAGE_TYPE.PSIONIC;
+                }
+                return GenericEnums.DAMAGE_TYPE.SHADOW;
+            case CHAOS:
+                if (getSpellGroup() == SPELL_GROUP.DESTRUCTION) {
+                    if (RandomWizard.random())
+                        return GenericEnums.DAMAGE_TYPE.FIRE;
+                    return GenericEnums.DAMAGE_TYPE.SONIC;
+                }
+                return GenericEnums.DAMAGE_TYPE.CHAOS;
+            case LIGHT:
+                if (getSpellGroup() == SPELL_GROUP.CELESTIAL) {
+                    return GenericEnums.DAMAGE_TYPE.LIGHT;
+                }
+                return GenericEnums.DAMAGE_TYPE.HOLY;
+            case DEATH:
+                if (getSpellGroup() == SPELL_GROUP.AFFLICTION) {
+                    if (RandomWizard.random())
+                        return GenericEnums.DAMAGE_TYPE.ACID;
+                    return GenericEnums.DAMAGE_TYPE.POISON;
+                }
+                return GenericEnums.DAMAGE_TYPE.DEATH;
+        }
+        switch (getSpellGroup()) {
+            case FIRE:
+                return GenericEnums.DAMAGE_TYPE.FIRE;
+            case AIR:
+                if (RandomWizard.chance(33))
+                    return GenericEnums.DAMAGE_TYPE.LIGHTNING;
+                return GenericEnums.DAMAGE_TYPE.SONIC;
+            case WATER:
+                if (RandomWizard.chance(33))
+                    return GenericEnums.DAMAGE_TYPE.ACID;
+                return GenericEnums.DAMAGE_TYPE.COLD;
+            case EARTH:
+                return GenericEnums.DAMAGE_TYPE.BLUDGEONING;
+
+            case SYLVAN:
+            case SAVAGE:
+                return GenericEnums.DAMAGE_TYPE.LIGHT;
+        }
+        return super.getDamageType();
     }
 
     @Override

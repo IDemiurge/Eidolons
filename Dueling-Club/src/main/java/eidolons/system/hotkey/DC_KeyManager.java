@@ -1,5 +1,6 @@
 package eidolons.system.hotkey;
 
+import com.badlogic.gdx.Input;
 import eidolons.content.ValueHelper;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
@@ -36,8 +37,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DC_KeyManager
- // extends KeyboardFocusManager
- implements KeyListener {
+        // extends KeyboardFocusManager
+        implements KeyListener {
 
     public static final int DEFAULT_MODE = 2;
     public static final int ALT_MODE = 1;
@@ -51,7 +52,7 @@ public class DC_KeyManager
     private Map<String, String> customActionKeyMap;
     private Map<String, Integer> stdModeKeyMap;
     private Map<String, Integer> addMoveActionKeyMap;
-//    private Map<String, HOTKEYS> specKeyMap;
+    //    private Map<String, HOTKEYS> specKeyMap;
     // private Map<Integer, HotKey> keyMap;
     private DC_GameManager mngr;
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
@@ -82,7 +83,7 @@ public class DC_KeyManager
         int i = 0; //TODO [quick fix] - due to "either camp or defend", one removed always
         for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-             G_PROPS.HOTKEY);
+                    G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
             if (action != STD_MODE_ACTIONS.Defend)
@@ -96,7 +97,7 @@ public class DC_KeyManager
         int i = 0;
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-             G_PROPS.HOTKEY);
+                    G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -104,16 +105,17 @@ public class DC_KeyManager
         i = 0;
         for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-             G_PROPS.HOTKEY);
+                    G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
         }
         customActionKeyMap = new LinkedHashMap<>();
+        customActionKeyMap.put("l", DC_ActionManager.STD_SPEC_ACTIONS.On_Alert.toString());
         customActionKeyMap.put("v", DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString());
         customActionKeyMap.put("g",
                 StringMaster.getWellFormattedString(
-                DC_ActionManager.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
+                        DC_ActionManager.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
         customActionKeyMap.put("h", DC_ActionManager.STD_SPEC_ACTIONS.Search_Mode.toString());
     }
 
@@ -194,7 +196,7 @@ public class DC_KeyManager
 
     private void selectController() {
         CONTROLLER c =
-         new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
+                new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
         if (c == null) {
             controller = new GlobalController();
         } else {
@@ -232,6 +234,7 @@ public class DC_KeyManager
                 return true;
             }
         }
+
         if (!CoreEngine.isJar() && !CoreEngine.isJarlike()) {
             if (checkControllerHotkey(keyMod, CHAR)) {
                 return true;
@@ -299,7 +302,7 @@ public class DC_KeyManager
         }
 
         for (String s : customActionKeyMap.keySet()) {
-            if (charString.equals(s)){
+            if (charString.equals(s)) {
                 mngr.activateMyAction(customActionKeyMap.get(s));
                 return true;
             }
@@ -307,7 +310,8 @@ public class DC_KeyManager
         return false;
     }
 
-    public static  char checkReplaceWasd(char aChar) {
+
+    public static char checkReplaceWasd(char aChar) {
         FACING_DIRECTION moveDirection = getAbsoluteDirectionForWasd(aChar);
 
         if (moveDirection == null)
@@ -325,7 +329,7 @@ public class DC_KeyManager
         return getCorrectedWsad(facing, moveDirection);
     }
 
-    public static  FACING_DIRECTION getAbsoluteDirectionForWasd(char aChar) {
+    public static FACING_DIRECTION getAbsoluteDirectionForWasd(char aChar) {
         switch (aChar) {
             case 'w':
                 return FACING_DIRECTION.NORTH;
@@ -340,12 +344,10 @@ public class DC_KeyManager
     }
 
 
-
-
     public static char getCorrectedWsad(FACING_DIRECTION facing,
-                                  FACING_DIRECTION moveDirection) {
-        int degrees =  (360+moveDirection.getDirection().getDegrees()
-         - facing.getDirection().getDegrees() + 90) % 360;
+                                        FACING_DIRECTION moveDirection) {
+        int degrees = (360 + moveDirection.getDirection().getDegrees()
+                - facing.getDirection().getDegrees() + 90) % 360;
         switch (degrees) {
             case 0:
                 return 'd';
@@ -436,8 +438,45 @@ public class DC_KeyManager
 
     public boolean handleKeyDown(int keyCode) {
         controller.keyDown(keyCode);
-       if (globalController.keyDown(keyCode))
-        return true;
+        if (globalController.keyDown(keyCode))
+            return true;
+
+        Character CHAR = getKeyTyped(keyCode);
+        if (CHAR != null) {
+            return handleKeyTyped(0, CHAR);
+        }
+
         return false;
+    }
+
+    private Character getKeyTyped(int keyCode) {
+        switch (keyCode) {
+            case Input.Keys.NUMPAD_8:
+                return 'w';
+            case Input.Keys.NUMPAD_4:
+                return 'a';
+            case Input.Keys.NUMPAD_6:
+                return 'd';
+            case Input.Keys.NUMPAD_2:
+                return 's';
+
+            case Input.Keys.NUMPAD_7:
+                return 'q';
+            case Input.Keys.NUMPAD_9:
+                return 'e';
+            case Input.Keys.NUMPAD_0:
+                return ' ';
+
+            case Input.Keys.UP:
+                return 'w';
+            case Input.Keys.LEFT:
+                return 'a';
+            case Input.Keys.RIGHT:
+                return 'd';
+            case Input.Keys.DOWN:
+                return 's';
+
+        }
+        return null;
     }
 }

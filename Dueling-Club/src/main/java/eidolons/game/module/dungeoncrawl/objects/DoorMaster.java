@@ -107,7 +107,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
                     return true;
                 return false;
             case CLOSE:
-                if (door.getGame().getObjectsAt(door.getCoordinates()).size() > 1) {
+                if (door.getGame().getObjectsOnCoordinate(null, door.getCoordinates(), true, true, false).size() > 1) {
                     return false;
                 }
                 return isOpen(door);

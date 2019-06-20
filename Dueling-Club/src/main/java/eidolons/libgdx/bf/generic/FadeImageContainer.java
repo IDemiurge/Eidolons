@@ -38,6 +38,15 @@ public class FadeImageContainer extends ImageContainer {
     }
 
     @Override
+    public String toString() {
+        if (imagePath != null) {
+            return super.toString() +" for " + imagePath;
+        }
+
+        return super.toString();
+    }
+
+    @Override
     public void setImage(String path) {
         previousPath = imagePath;
         super.setImage(path);

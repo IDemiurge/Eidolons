@@ -43,7 +43,7 @@ public class MainLauncher extends GenericLauncher {
         }
         CoreEngine.setSkillTestMode(args.length > 0);
         CoreEngine.setLiteLaunch(args.length > 0);
-        CoreEngine.setContentTestMode(args.length > 2);
+//        CoreEngine.setContentTestMode(args.length > 2);
         if (!Eidolons.BOSS_FIGHT)
             CoreEngine.setLevelTestMode(args.length > 4);
 

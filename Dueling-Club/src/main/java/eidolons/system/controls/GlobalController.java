@@ -282,7 +282,7 @@ public class GlobalController implements Controller {
             active = true;
             return true;
         }
-        if (CoreEngine.isContentTestMode() || CoreEngine.isIDE()) {
+        if (CoreEngine.isContentTestMode()  ) {
             if (TestDialogMaster.key(c))
                 return false;
         }

@@ -176,7 +176,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
     }
 
     public String chooseNextHero() {
-        if (!CoreEngine.isIDE())
+//        if (!CoreEngine.isIDE())
         if ( Eidolons.TUTORIAL_PATH || (Eidolons.TUTORIAL_MISSION&& deaths ==0)) {
             return TutorialManager.nextHero();
         }

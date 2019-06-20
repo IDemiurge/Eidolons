@@ -44,7 +44,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                                boolean altClick, Entity cellContents, boolean ctrlClick) {
 
         OPERATIONS operation = getInvOperation(cell_type, clickCount, rightClick,
-         altClick, ctrlClick, cellContents);
+                altClick, ctrlClick, cellContents);
         return handleOperation(operation, cell_type, cellContents);
     }
 
@@ -91,8 +91,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 if (canDoOperation(operation, getDragged(), arg)) {
                     execute(operation, getDragged(), arg);
                     setDragged(cellContents);
-                } else{
-                    if (cellContents==null ){
+                } else {
+                    if (cellContents == null) {
                         setDragged(null);
                     }
                 }
@@ -106,8 +106,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     protected boolean checkCanAddInventory() {
         if (hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!", hero);
-            EUtils.showInfoText(  "Inventory is full!");
+                    "Inventory is full!", hero);
+            EUtils.showInfoText("Inventory is full!");
             return false;
         }
         return true;
@@ -138,7 +138,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 }
                 if (hero.isQuickSlotsFull()) {
                     GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-                     "Quick slots are full!");
+                            "Quick slots are full!");
                     return false;
                 }
                 break;
@@ -179,12 +179,11 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 //                if (cellContents == null)
                 return OPERATIONS.UNEQUIP;
         }
-        if (checkContentMatches(cell_type, dragged))
-        {
-            if (cell_type== CELL_TYPE.WEAPON_MAIN_RESERVE) {
+        if (checkContentMatches(cell_type, dragged)) {
+            if (cell_type == CELL_TYPE.WEAPON_MAIN_RESERVE) {
                 return OPERATIONS.EQUIP_RESERVE;
             }
-            if (cell_type== CELL_TYPE.WEAPON_OFFHAND_RESERVE) {
+            if (cell_type == CELL_TYPE.WEAPON_OFFHAND_RESERVE) {
                 return OPERATIONS.EQUIP_RESERVE;
             }
             return OPERATIONS.EQUIP;
@@ -202,7 +201,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case WEAPON_MAIN:
                 if (dragged instanceof DC_WeaponObj)
                     return HeroManager.canEquip(dataMaster.getHeroModel(), dragged,
-                     getSlotArg(cell_type));
+                            getSlotArg(cell_type));
 
             case ARMOR:
                 return dragged instanceof DC_ArmorObj;
@@ -211,13 +210,13 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
             case AMULET:
                 return dragged instanceof DC_JewelryObj
-                 && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
-                 equalsIgnoreCase(JEWELRY_TYPE.AMULET.toString());
+                        && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
+                        equalsIgnoreCase(JEWELRY_TYPE.AMULET.toString());
 
             case RING:
                 return dragged instanceof DC_JewelryObj
-                 && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
-                 equalsIgnoreCase(JEWELRY_TYPE.RING.toString());
+                        && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
+                        equalsIgnoreCase(JEWELRY_TYPE.RING.toString());
 
 
         }
@@ -242,7 +241,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return null;
             }
             ITEM_SLOT slot = HeroManager.getItemSlot(dataMaster.getHeroModel(), type);
-            if (operation == OPERATIONS.EQUIP_RESERVE){
+            if (operation == OPERATIONS.EQUIP_RESERVE) {
                 return slot.getReserve();
             }
             return slot;
@@ -382,14 +381,14 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             dirty = false;
         }
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-         new InventoryDataSource(dataMaster.getHeroModel()));
+                new InventoryDataSource(dataMaster.getHeroModel()));
         //        refreshPanel();
 
     }
 
     public void refreshPanel() {
         GuiEventManager.trigger(GuiEventType.UPDATE_INVENTORY_PANEL);
-        //        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, sim.getHero());
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,  new InventoryDataSource(hero) );
     }
 
     @Override
@@ -406,7 +405,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     public void apply() {
         dataMaster.applyModifications();
         GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO,
-         dataMaster.getHeroModel().getHero());
+                dataMaster.getHeroModel().getHero());
     }
 
     @Override

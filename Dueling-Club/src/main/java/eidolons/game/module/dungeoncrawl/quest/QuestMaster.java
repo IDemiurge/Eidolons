@@ -2,10 +2,12 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
+import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefMusic;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.meta.QuestEnums;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
@@ -127,7 +129,9 @@ public class QuestMaster extends MetaGameHandler {
             String txt = type.getName() + StringMaster.NEW_LINE +
                     StringMaster.NEW_LINE + quest.getProgressText() + StringMaster.NEW_LINE +
                     quest.getDescription();
-            TipMessageMaster.tip(new TipMessageSource(txt, type.getImagePath(), "Onward!", false, () -> {
+            MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
+
+            TipMessageMaster.tip(new TipMessageSource(txt,  type.getImagePath(), "Onward!", false, () -> {
             }));
 
         }

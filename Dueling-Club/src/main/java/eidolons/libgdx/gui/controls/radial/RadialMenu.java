@@ -124,7 +124,8 @@ public class RadialMenu extends Group implements Closable {
         if ((obj.get() instanceof DC_WeaponObj))
             return;
         DC_Obj dc_obj = (DC_Obj) obj.get();
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        if ((CoreEngine.isIDE() || CoreEngine.isDevEnabled())
+            && Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             init(DebugRadialManager.getDebugNodes(dc_obj));
         } else {
             init(RadialManager.getOrCreateRadialMenu(dc_obj));

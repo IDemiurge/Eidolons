@@ -120,7 +120,7 @@ public class InventorySlotsPanel extends TablePanelX {
 
     protected List<InvItemActor> getSlotActors() {
         List<InvItemActor> inventorySlots = getUserObject().getInventorySlots();
-        inventorySlots.removeIf(slot-> slot.getParent()!=null );
+//        inventorySlots.removeIf(slot-> slot.getParent()!=null && slot.getParent()!=table );
         return inventorySlots;
     }
 
