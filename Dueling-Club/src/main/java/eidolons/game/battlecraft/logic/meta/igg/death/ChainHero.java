@@ -7,14 +7,15 @@ public class ChainHero {
     int lives;
     Unit unit;
     ObjType type;
+    private int deaths;
 
     public ChainHero(int lives, ObjType type) {
         this.lives = lives;
         this.type = type;
     }
 
-    public ChainHero(Unit member) {
-        this(1, member.getType());
+    public ChainHero(int lives, Unit member) {
+        this(lives, member.getType());
         this.unit = member;
     }
 
@@ -36,5 +37,13 @@ public class ChainHero {
 
     public void death() {
         lives--;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
     }
 }

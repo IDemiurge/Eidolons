@@ -76,11 +76,12 @@ public class ValueContainerSimple extends GroupX implements AbstractValueContain
     }
 
     @Override
-    public void setStyle(LabelStyle labelStyle) {
+    public ValueContainer setStyle(LabelStyle labelStyle) {
         if (getNameLabel() != null)
             getNameLabel().setStyle(labelStyle);
         if (getValueLabel() != null)
             getValueLabel().setStyle(labelStyle);
+        return null;
     }
 
     @Override

@@ -260,13 +260,13 @@ public class ItemTraitParser {
     }
 
     private static String parseBoost(PARAMETER p1, float n) {
-        return PROPS.PARAMETER_BONUSES.getName() + ": " + VariableManager.getStringWithVariable(p1.toString(),
+        return PROPS.PARAMETER_BONUSES.getName() +VALUE_SEPARATOR + VariableManager.getStringWithVariable(p1.toString(),
          getBoostCoef(p1, n));
 
     }
 
     private static String parseBind(PARAMETER p1, PARAMETER p2, float n) {
-        String s = PROPS.PARAMETER_BONUSES.getName() + ": " +
+        String s = PROPS.PARAMETER_BONUSES.getName() +VALUE_SEPARATOR +
          p1.getName() + StringMaster.wrapInParenthesis(
          StringMaster.getValueRef(KEYS.SOURCE, p2) + "*" + getBindCoef(p1, p2, n));
 
@@ -308,6 +308,8 @@ public class ItemTraitParser {
 
         atk("attack"),
         def("defense"),
+        atkMod("attack Mod"),
+        defMod("defense Mod"),
         str("Strength"),
         vit("Vitality "),
         agi("Agility "),
@@ -322,6 +324,9 @@ public class ItemTraitParser {
 
         tou("Toughness "),
         end("Endurance  "),
+
+
+
 /*
 tou Toughness
 end Endurance

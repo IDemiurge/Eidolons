@@ -471,7 +471,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PERK_FOR_CLASSES(null,false ,"perks" ),
     PERK_PARAM(null,false ,"perks"),
     KEY_TYPE(null, false, "bf obj"), ACTOR_TYPE(null, false,"actors" ), COATING_MOD(null, false, "chars", "units", "skills"),
-    KEY_DOOR_PAIRS(null, false, "dungeons" );
+    KEY_DOOR_PAIRS(null, false, "dungeons" )
+
+    , LORD_SOULS(null,true ,"lord"),
+
+    EIDOLON_ASPECTS(null,true ,"chars" , "units");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

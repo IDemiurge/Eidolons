@@ -13,6 +13,7 @@ import eidolons.libgdx.gui.controls.Clicker;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.tooltips.ScaleAndTextTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -87,7 +88,7 @@ public class QuickWeaponPanel extends TablePanelX {
         if (getActiveWeaponDataSource() == null)
             return;
         weapon.clearListeners();
-        WeaponTooltip t = new WeaponTooltip(getActiveWeaponDataSource().getWeapon());
+        SlotItemTooltip t = new WeaponTooltip(getActiveWeaponDataSource().getWeapon());
         weapon.addListener(t.getController());
     }
 

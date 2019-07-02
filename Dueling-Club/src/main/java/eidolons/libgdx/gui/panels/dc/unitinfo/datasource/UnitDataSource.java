@@ -12,10 +12,7 @@ import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltip;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemToolTipDataSource;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
@@ -351,29 +348,7 @@ public class UnitDataSource implements
         if (armor != null) {
             container = new ValueContainer(getOrCreateR(armor.getImagePath()));
 
-            WeaponTooltip tooltip = new WeaponTooltip();
-
-            tooltip.setUserObject(new SlotItemToolTipDataSource(null) {
-                @Override
-                public DC_HeroSlotItem getItem() {
-                    return armor;
-                }
-
-                @Override
-                public List<ValueContainer> getMainParams() {
-                    return Arrays.stream(ARMOR_TOOLTIP)
-                     .map(el -> new ValueContainer(el.getName(), armor.getStrParam(el)).pad(10))
-                     .collect(Collectors.toList());
-                }
-
-                @Override
-                public List<ValueContainer> getBuffs() {
-                    return armor.getBuffs().stream()
-                     .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                     .map(AttackTooltipFactory.getObjValueContainerMapper())
-                     .collect(Collectors.toList());
-                }
-            });
+            SlotItemTooltip tooltip = new ArmorTooltip(armor);
 
             container.addListener(tooltip.getController());
         } else {
@@ -568,7 +543,7 @@ public class UnitDataSource implements
                 list.add(tooltipContainer);
             }
 
-            Tooltip tooltip = new WeaponTooltip();
+            Tooltip tooltip = new SlotItemTooltip();
             tooltip.setUserObject(new SlotItemToolTipDataSource(weapon));
             valueContainer.addListener(tooltip.getController());
         }

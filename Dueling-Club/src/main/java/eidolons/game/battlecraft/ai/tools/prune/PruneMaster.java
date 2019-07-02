@@ -122,12 +122,13 @@ public class PruneMaster extends AiHandler {
                 byHealth = false;
                 byDanger = true;
                 break;
-            case BUFF:
-                byDanger = true; // TODO ignore near-dead and 'surrounded'
-                // enemies ready to fall
-                break;
             case CUSTOM_HOSTILE:
             case CUSTOM_SUPPORT:
+
+            case BUFF:
+            case DEBILITATE:
+                targets.removeIf(t -> t.getBuff(action.getName()) != null);
+                break;
         }
         Boolean enemy = GoalManager.isGoalVsEnemies(goal);
         int minDistance =

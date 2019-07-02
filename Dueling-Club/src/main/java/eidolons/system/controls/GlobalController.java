@@ -104,6 +104,9 @@ public class GlobalController implements Controller {
             return false;
 
         switch (keyCode) {
+            case Keys.F2:
+                GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
+                return true;
             case Keys.F1:
                 if (ShadowMaster.isShadowAlive()) {
                     EUtils.showInfoText("Cannot do this now");
@@ -149,7 +152,7 @@ public class GlobalController implements Controller {
                 new Thread(() -> IGG_Launcher.introBriefing(), " thread").start();
 
                 return true;
-            case Keys.F2:
+            case Keys.F7:
                 DC_Game.game.getMetaMaster().getDialogueManager().test();
 
                 return true;

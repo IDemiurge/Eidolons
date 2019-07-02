@@ -8,6 +8,7 @@ import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 /**
@@ -30,9 +31,13 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaMax;
     ALPHA_TEMPLATE alphaTemplate;
     private int fluctuatingAlphaPeriod;
-    public  static int fluctuatingAlphaPeriodGlobal = OptionsMaster.getGraphicsOptions().
-            getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 +1;
-
+    public  static int fluctuatingAlphaPeriodGlobal = 1;
+static {
+    if (CoreEngine.isMainGame()) {
+        fluctuatingAlphaPeriodGlobal = OptionsMaster.getGraphicsOptions().
+                getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 +1;
+    }
+}
     public Fluctuating() {
     }
 

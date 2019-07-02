@@ -1,13 +1,13 @@
 package eidolons.game.module.nethergate.apholon;
 
-import eidolons.game.module.nethergate.apholon.eidola.RealEidolon;
+import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 
 /**
  * Created by JustMe on 12/7/2018.
  */
 public class ApholonManager {
 
-    public void sacrifice(RealEidolon eidolon) {
+    public void sacrifice(Soul eidolon) {
 //Curse.get(eidolon.getAmount());
 
     }

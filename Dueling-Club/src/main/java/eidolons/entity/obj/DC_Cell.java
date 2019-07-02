@@ -5,6 +5,8 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import main.content.CONTENT_CONSTS;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
@@ -24,6 +26,10 @@ public class DC_Cell extends DC_Obj implements Cell {
     private static ObjType EMPTY_CELL_TYPE;
     private boolean playerHasSeen;
     private boolean VOID;
+
+    DungeonLevel.CELL_IMAGE cellType;
+    int cellVariant;
+    CONTENT_CONSTS.COLOR_THEME colorTheme;
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
@@ -45,6 +51,8 @@ public class DC_Cell extends DC_Obj implements Cell {
         }
         addDynamicValues();
         setImage(dungeon.getCellImagePath(i, j));
+        cellVariant=(dungeon.getCellVariant(i, j));
+        cellType=(dungeon.getCellType(i, j));
     }
 
     public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {

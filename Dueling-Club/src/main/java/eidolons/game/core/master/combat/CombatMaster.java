@@ -1,5 +1,6 @@
 package eidolons.game.core.master.combat;
 
+import eidolons.entity.active.ActionInitializer;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.DC_Engine;
@@ -37,7 +38,7 @@ public class CombatMaster {
         armorMaster = new ArmorMaster(false);
         armorSimulator = new ArmorMaster(true);
         attackMaster = new DC_AttackMaster(game);
-        actionManager = new DC_ActionManager(game);
+        actionManager = new ActionInitializer(game);
         turnManager = DC_Engine.isAtbMode() ? new AtbTurnManager(game) : new PtsTurnManager(game);
         movementManager = new DC_MovementManager(game);
         graveyardManager = new DC_GraveyardManager(game);

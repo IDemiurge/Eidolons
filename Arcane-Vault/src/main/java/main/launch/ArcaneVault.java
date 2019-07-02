@@ -67,7 +67,7 @@ public class ArcaneVault {
             "buffs;" +
             "classes;" +
             "perks;" +
-            "" +
+            "lord;" +
      "actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",

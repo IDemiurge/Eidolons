@@ -18,7 +18,7 @@ public interface AbstractValueContainer {
 
     void setValueStyle(LabelStyle labelStyle);
 
-    void setStyle(LabelStyle labelStyle);
+    ValueContainer setStyle(LabelStyle labelStyle);
 
     String getValueText();
 

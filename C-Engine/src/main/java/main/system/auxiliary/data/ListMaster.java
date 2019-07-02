@@ -56,7 +56,7 @@ public class ListMaster<E> {
         return list;
     }
 
-    public static List<String> toStringList(List list) {
+    public static List<String> toStringList(Collection list) {
         return toStringList(list.toArray());
     }
 
@@ -157,6 +157,14 @@ public class ListMaster<E> {
         return getIndexString(list, item, strict) != -1;
     }
 
+    public static Collection<String> fillWithEmptyStrings(Collection<String> list, int size) {
+        if (list.size() < size) {
+            for (int i = list.size(); i < size; i++) {
+                list.add("");
+            }
+        }
+        return list;
+    }
     public static Collection<?> fillWithNullElements(Collection<?> list, int size) {
         if (list.size() < size) {
             for (int i = list.size(); i < size; i++) {

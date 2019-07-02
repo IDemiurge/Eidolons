@@ -1,10 +1,11 @@
-package eidolons.libgdx.bf.boss.logic;
+package eidolons.game.battlecraft.logic.meta.igg.soul;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
+import main.entity.type.ObjType;
 
 /**
  * Shadow action costs?
@@ -17,7 +18,17 @@ import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 public class SoulforceRule {
 
 
-    //exchange for life
+    /**
+     *
+    exchange for life
+
+     advance the Lord
+
+     auto-accumulate?
+
+     souls - manually consume or use for <...> </...>
+
+     */
 
 
     public int applySoulforce(Unit hero, HeroChain chain) {
@@ -37,8 +48,12 @@ public class SoulforceRule {
 
         return 0;
     }
-    public int getSoulforceFromKill(Unit killed) {
-        return 0;
+    public static int getSoulforceFromKill(Unit killed) {
+        return getForce(killed.getType());
+    }
+
+    public static int getForce(ObjType type) {
+        return type.getIntParam(PARAMS.POWER);
     }
 
 }

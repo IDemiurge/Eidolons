@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -491,7 +492,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return getRegions().get(0).packedWidth;
     }
 
-    public void centerOnParent(Actor actor) {
+    public void centerOnScreen() {
+        setOffsetX(Math.abs(GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
+        setOffsetY(Math.abs(GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
+    }
+        public void centerOnParent(Actor actor) {
         Vector2 pos = new Vector2(actor.getX(), actor.getY());
         actor.localToStageCoordinates(pos);
 //        pos2= actor.getStage().stageToScreenCoordinates(pos2);

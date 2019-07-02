@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.generic.btn;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -97,6 +98,11 @@ public class SmartButton extends TextButton implements EventListener {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return true;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
     public boolean handleEvent(Event e) {

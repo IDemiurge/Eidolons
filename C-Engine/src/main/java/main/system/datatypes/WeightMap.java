@@ -5,12 +5,15 @@ import main.content.enums.entity.OBJ_TYPE_ENUM;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;
+import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class WeightMap<E> extends XLinkedMap<E, Integer> {
@@ -136,4 +139,13 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
     public void setObjType(OBJ_TYPE objType) {
         this.objType = objType;
     }
+
+//    public void sortByWeight() {
+//        List<E> list = new SortMaster<E>().sortByExpression_(false, new ArrayList<>(keySet()),
+//                (o) -> get(o));
+//        for (E e : list) {
+//            put(e, get(e));
+//        }
+//    }
+
 }

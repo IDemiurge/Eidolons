@@ -10,5 +10,8 @@ public class Sprites {
     public static final String SHADOW_DEATH = "boss/reaper/attack/sever";
     public static final String SHADOW_SUMMON = "boss/reaper/attack/soul rip";
 
+
+    public static final String HERO_KESERIM = "sprites/unit/keserim2.txt";
+
     // "boss/reaper/attack/sever"
 }

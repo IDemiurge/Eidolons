@@ -1076,7 +1076,11 @@ public class Unit extends DC_UnitModel {
         return null;
     }
 
-    public List<DC_HeroSlotItem> getSlotItems() {
+    public List<DC_HeroSlotItem> getReserveItems() {
+        ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<>();
+        return listMaster.removeNulls(listMaster.getList(reserveMainWeapon, reserveOffhandWeapon));
+    }
+        public List<DC_HeroSlotItem> getSlotItems() {
         ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<>();
         return listMaster.removeNulls(listMaster.getList(weapon, armor, secondWeapon));
     }
@@ -1787,4 +1791,6 @@ public class Unit extends DC_UnitModel {
         return  new EnumMaster<UnitEnums.UNIT_GROUPS>().
                 retrieveEnumConst(UnitEnums.UNIT_GROUPS.class, getProperty(G_PROPS.UNIT_GROUP));
     }
+
+
 }

@@ -62,16 +62,21 @@ public class IGG_XmlMaster {
 //            .chain(DUNGEON_STYLE.ROGUE, 4)
 //            .chain(DUNGEON_STYLE.SPIDER, 6);
 
+    //CAVERN
+    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.CAVE;
+    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.CAVE;
+    public static final DUNGEON_STYLE exitStyle = DUNGEON_STYLE.TELRAZI;
+    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.TELRAZI;
 
     //BASTION2
 //    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.PRISON;
 //    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.BASTION;
 //    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.CRYPTS;
     //BASTION
-    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.BASTION;
-    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.CRYPTS;
-    public static final DUNGEON_STYLE exitStyle = DUNGEON_STYLE.PRISON;
-    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.PRISON;
+//    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.BASTION;
+//    public static final DUNGEON_STYLE enterStyle = DUNGEON_STYLE.CRYPTS;
+//    public static final DUNGEON_STYLE exitStyle = DUNGEON_STYLE.PRISON;
+//    public static final DUNGEON_STYLE altStyle = DUNGEON_STYLE.PRISON;
     WeightMap<DUNGEON_STYLE> styleMap = new WeightMap<>(DUNGEON_STYLE.class)
             .chain(DUNGEON_STYLE.PRISON, 10)
             .chain(DUNGEON_STYLE.BASTION, 24)
@@ -89,7 +94,7 @@ public class IGG_XmlMaster {
     private String rngFilePath = "dungeon/overfill dungeon boss - 2.xml"; //into custom property!
     private String TEMPLATE = "/crawl/Underworld.xml";
     private int timeToSpawn = 0;
-    private boolean initRequired = false;
+    private boolean initRequired = true;
 //    private String TEMPLATE="/crawl/Vampire Abode.xml";
 
     private String getLE_Path() {

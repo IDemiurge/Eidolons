@@ -72,6 +72,7 @@ public abstract class DC_Obj extends MicroObj {
     protected DIRECTION blockingWallDirection;
     protected boolean blockingDiagonalSide;
     protected Coordinates blockingWallCoordinate;
+    protected boolean pale;
     Coordinates blockingCoordinate;
     private VisionController visionController;
     private boolean visibilityOverride;
@@ -763,5 +764,13 @@ public abstract class DC_Obj extends MicroObj {
 
     public void setResetIgnored(boolean resetIgnored) {
         this.resetIgnored = resetIgnored;
+    }
+
+    public void setPale(boolean pale) {
+        this.pale = pale;
+    }
+
+    public boolean isPale() {
+        return pale;
     }
 }

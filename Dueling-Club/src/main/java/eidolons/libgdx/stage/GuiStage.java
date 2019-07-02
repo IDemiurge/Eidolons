@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
+import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.*;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
@@ -111,6 +112,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     private DialogueContainer dialogueContainer;
     private Map<GameDialogue, DialogueContainer> cache = new HashMap<>();
 
+    LordPanel lordPanel;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -201,6 +203,11 @@ public class GuiStage extends StageX implements StageWithClosable {
                 GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
 
+
+        addActor(lordPanel = LordPanel.getInstance());
+        lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
+                GdxMaster.centerHeight(lordPanel));
+        lordPanel.setVisible(false);
 
         addActor(journal = new QuestJournal());
         journal.setPosition(GdxMaster.centerWidth(journal),
@@ -411,8 +418,8 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (tipMessageWindow.isVisible())
                 return true;
         return
-
-                tipMessageWindow.isVisible() || confirmationPanel.isVisible() || textPanel.isVisible() ||
+                LordPanel.getInstance().isVisible() ||
+                        tipMessageWindow.isVisible() || confirmationPanel.isVisible() || textPanel.isVisible() ||
                         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                         || GameMenu.menuOpen;
     }
@@ -430,17 +437,18 @@ public class GuiStage extends StageX implements StageWithClosable {
                 if (actor instanceof Group)
                     ancestors.add((Group) actor);
                 if (checkContainsNoOverlaying(ancestors)) {
-                    if (!ancestors.contains(OptionsWindow.getInstance())) {
-                        if (GdxMaster.getFirstParentOfClass(
-                                actor, RadialValueContainer.class) == null) {
-                            if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
+                    if (!ancestors.contains(LordPanel.getInstance()))
+                        if (!ancestors.contains(OptionsWindow.getInstance())) {
+                            if (GdxMaster.getFirstParentOfClass(
+                                    actor, RadialValueContainer.class) == null) {
+                                if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
+                                    return null;
+                            } else if (
+                                    tipMessageWindow.isVisible() || confirmationPanel.isVisible())
                                 return null;
-                        } else if (
-                                tipMessageWindow.isVisible() || confirmationPanel.isVisible())
-                            return null;
-                    } else {
-                        return actor;
-                    }
+                        } else {
+                            return actor;
+                        }
                 }
             }
         return actor;
@@ -469,6 +477,13 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     protected void bindEvents() {
 
+        GuiEventManager.bind(GuiEventType.TOGGLE_LORD_PANEL, p -> {
+            if (lordPanel.isVisible()) {
+                GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, null);
+            } else {
+                GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, Eidolons.getMainHero());
+            }
+        });
 
         GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p -> {
             if (p.get() == this || p.get() == getClass()) {
@@ -851,6 +866,8 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         if (hqPanel != null)
             hqPanel.setZIndex(Integer.MAX_VALUE);
+        if (lordPanel != null)
+            lordPanel.setZIndex(Integer.MAX_VALUE);
         if (confirmationPanel != null)
             confirmationPanel.setZIndex(Integer.MAX_VALUE);
         if (infoTooltipContainer != null)

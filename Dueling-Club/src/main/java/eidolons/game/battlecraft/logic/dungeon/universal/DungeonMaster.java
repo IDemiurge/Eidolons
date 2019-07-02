@@ -81,6 +81,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             getBuilder().initLevel();
         }
         getDungeonLevel().initUnitFacingMap(dungeonWrapper.getDungeon().getCustomDataMap());
+        getDungeonLevel().initCellTypeMap(dungeonWrapper.getDungeon().getCustomDataMap());
 
         getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
 

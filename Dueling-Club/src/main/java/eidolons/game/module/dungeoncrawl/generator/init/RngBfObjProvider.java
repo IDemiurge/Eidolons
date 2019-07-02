@@ -48,9 +48,9 @@ public class RngBfObjProvider {
             case DWARF:
                 return getWeightMapForDwarves( cell);
             case CAVE:
-                break;
+                return getWeightMapForCave( cell);
             case TELRAZI:
-                break;
+                return getWeightMapForTelrazi( cell);
             case BASTION:
                 return getWeightMapForBastion(cell);
             case MONASTERY:
@@ -412,6 +412,104 @@ public class RngBfObjProvider {
                 return getDoorWeightMap(DUNGEON_STYLE.PRISON, false);
             case SPECIAL_DOOR:
                 return getDoorWeightMap(DUNGEON_STYLE.PRISON, true);
+        }
+        return map;
+    }
+    private static WeightMap<String> getWeightMapForCave(ROOM_CELL type) {
+        WeightMap<String> map = new WeightMap<>();
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.Stony);
+            case INDESTRUCTIBLE:
+            case WALL:
+                map.
+                        chain(CAVE_WALL, 15).
+                        chain(CAVE_WALL, 15);
+                break;
+            case DESTRUCTIBLE:
+                map.
+                        chain(SLEEK_ROCK, 15).
+                        chain( ROCKS, 15);
+                break;
+            case CONTAINER:
+                map.chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 5);
+                break;
+            case SPECIAL_CONTAINER:
+
+                map.chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 3).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.OLD_BONES, 20).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.PUTRID_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.COBWEBBED_SKULL, 10).
+                        chain(BF_OBJ_SUB_TYPES_REMAINS.DECOMPOSING_REMAINS, 10).
+                        chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 1)
+                ;
+                break;
+            case SPECIAL_ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_STATUES.TITAN_HEAD, 15).
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.UNDERGROUND_COLUMN, 15) ;
+
+                break;
+            case ART_OBJ:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.STALACTITE, 13).
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.STALAGMITE, 10).
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_MUSHROOM, 16).
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_LUMINESCENT_MUSHROOM, 10).
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.UNDERGROUND_COLUMN, 6);
+                break;
+            case LIGHT_EMITTER:
+                map
+                        .
+                                chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_LUMINESCENT_MUSHROOM, 10)
+                ;
+
+                break;
+            case WALL_WITH_LIGHT_OVERLAY:
+                map.
+                        chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 15)
+                ;
+                break;
+            case WALL_WITH_DECOR_OVERLAY:
+                map.chain(AMETHYST_LANTERN, 1).
+                        chain(SAPPHIRE_LANTERN, 1).
+                        chain(RUBY_LANTERN, 1).
+                        chain(EMERALD_LANTERN, 1).
+                        chain(ANCIENT_RUNE, 5).
+                        chain(RUNE_INSCRIPTION, 10)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.LUMINESCENT_FUNGI, 5)
+                        .chain(BF_OBJ_SUB_TYPES_DUNGEON.FEL_FUNGI, 15);
+
+                break;
+            case DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.Grimy, false);
+            case SPECIAL_DOOR:
+                return getDoorWeightMap(DUNGEON_STYLE.Grimy, true);
+        }
+        return map;
+    }
+
+
+    private static WeightMap<String> getWeightMapForTelrazi(ROOM_CELL type) {
+        WeightMap<String> map = new WeightMap<>();
+        switch (type) {
+            case ENTRANCE:
+            case EXIT:
+                return getWeightMap(type, DUNGEON_STYLE.Somber);
+            case INDESTRUCTIBLE:
+                return getWallWeightMap(DUNGEON_STYLE.Somber, true);
+            case WALL:
+                return getWallWeightMap(DUNGEON_STYLE.DarkElegance, false);
         }
         return map;
     }

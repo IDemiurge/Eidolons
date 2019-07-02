@@ -175,6 +175,12 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
 
     }
 
+    public void remove() {
+        getHero().unequip(this, null );
+        getHero().removeFromInventory(this);
+        kill();
+        getGame().remove(this);
+    }
     public void broken() {
         if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_BROKEN, getRef()))) {
             return;

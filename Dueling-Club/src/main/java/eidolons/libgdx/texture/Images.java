@@ -2,6 +2,7 @@ package eidolons.libgdx.texture;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.Deity;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -132,6 +133,9 @@ public class Images {
     public static final String DEFEAT = "ui/big/defeat.png";
     public static final String VICTORY = "ui/big/victory.png";
     public static final String GATEWAY_GLYPH = "sprites/bf/hanging/occult_circles.png";
+    public static final String COLUMNS_AND_TREE_BG = "ui/components/lord/tab bg.png";
+
+    public static final String BG_EIDOLONS = IGG_Images.MAIN_ART.HALL2.getPath();
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

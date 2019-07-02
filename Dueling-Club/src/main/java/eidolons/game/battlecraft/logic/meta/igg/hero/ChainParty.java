@@ -27,11 +27,19 @@ public class ChainParty extends Party {
 
     public ChainParty(ObjType type, String selectedHero) {
         super(type);
-        addMember(HeroCreator.initHero(selectedHero));
+//        addMember(HeroCreator.initHero(selectedHero));
+
     }
 
     @Override
     public void initMembers() {
+        super.initMembers();
+        for (Unit member : members) {
+            if (!member.isLeader()) {
+                member.setPale(true);
+            }
+
+        }
     }
 
     @Override

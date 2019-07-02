@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
+import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
+    private static final String LORD_TYPE = "Anphis Ar Keserim";
     private HeroChain chain;
     private ChainHero avatar;
     private int deaths=0;
@@ -77,9 +79,10 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
         }
         chain = new HeroChain(party, //getMetaGame().getActIndex()+
                 1);
-
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));
+
+        new EidolonLord(DataManager.getType(LORD_TYPE, DC_TYPE.LORD));
 
 //        party.setProperty(PROPS.PARTY_MISSION,
 //                getMetaGame().getMission().getName(), true);

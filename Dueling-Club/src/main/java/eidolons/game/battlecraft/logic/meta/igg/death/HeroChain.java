@@ -21,7 +21,9 @@ public class HeroChain {
     public HeroChain(Party party, int lives) {
         this.party = party;
         types = party.getMemberTypes();
-        heroes = party.getMemberTypes().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
+        party.initMembers();
+        heroes = party.getMembers().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
+//        heroes = party.getMemberTypes().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
     }
 
     public void spawned(Unit hero) {

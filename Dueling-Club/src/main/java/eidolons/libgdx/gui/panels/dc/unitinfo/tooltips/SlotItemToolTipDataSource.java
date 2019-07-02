@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 import static eidolons.content.UNIT_INFO_PARAMS.WEAPON_DC_INFO_PARAMS;
 
 public class SlotItemToolTipDataSource {
-    DC_WeaponObj item;
+    DC_HeroSlotItem item;
     List<ValueContainer> list = new ArrayList<>();
 
-    public SlotItemToolTipDataSource(DC_WeaponObj item) {
+    public SlotItemToolTipDataSource(DC_HeroSlotItem item) {
         this.item = item;
         if (item != null)
             for (int i = 0; i < WEAPON_DC_INFO_PARAMS.length; i++) {

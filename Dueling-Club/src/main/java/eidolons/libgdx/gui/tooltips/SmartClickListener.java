@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -24,6 +25,8 @@ public class SmartClickListener extends ClickListener {
     @Override
     public boolean handle(Event e) {
         if (isBattlefield()) {
+            if (LordPanel.getInstance() != null)
+                return true;
             if (HqPanel.getActiveInstance() != null)
                 return true;
             if (DungeonScreen.getInstance() == null)

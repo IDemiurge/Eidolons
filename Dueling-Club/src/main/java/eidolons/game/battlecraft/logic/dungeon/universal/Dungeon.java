@@ -6,12 +6,12 @@ import eidolons.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -277,6 +277,14 @@ public class Dungeon extends LightweightEntity {
 
     public DUNGEON_STYLE getStyle() {
         return ZoneCreator.getStyle(ZONE_TYPE.OUTSKIRTS, getDungeonSubtype());
+    }
+
+
+    public int getCellVariant(int i, int j) {
+        return getGame().getDungeonMaster().getDungeonLevel().getCellVariant(i, j);
+    }
+    public DungeonLevel.CELL_IMAGE getCellType(int i, int j) {
+        return getGame().getDungeonMaster().getDungeonLevel().getCellType(i, j);
     }
 
     public String getCellImagePath(int i, int j) {

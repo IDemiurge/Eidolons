@@ -2,8 +2,8 @@ package eidolons.game.module.herocreator.logic.items;
 
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.module.nethergate.apholon.eidola.RealEidolon;
-import eidolons.game.module.nethergate.apholon.eidola.EidolonImbuer;
+import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
+import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -29,7 +29,7 @@ public class ItemTraitNamer {
         for (int i = 0; i < 5; i++) {
             ObjType type = DataManager.getRandomType(TYPE);
             Set<ItemTrait> traits = new EidolonImbuer().getTraits(
-             new RealEidolon(DataManager.getRandomType(DC_TYPE.UNITS)), type);
+                    type, new Soul(DataManager.getRandomType(DC_TYPE.UNITS)));
             names += "\n" +
              getName(type, new ArrayList<>(traits));
         }

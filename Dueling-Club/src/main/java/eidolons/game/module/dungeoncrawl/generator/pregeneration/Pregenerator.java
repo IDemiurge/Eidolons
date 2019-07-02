@@ -43,9 +43,9 @@ public class Pregenerator implements Runnable {
     public static final String customPrefix = "overfill ";
 
     public static final SUBLEVEL_TYPE[] GENERATED_SUBLEVELS_ALL = {
-//     SUBLEVEL_TYPE.COMMON,
+     SUBLEVEL_TYPE.COMMON,
 //     SUBLEVEL_TYPE.PRE_BOSS,
-     SUBLEVEL_TYPE.BOSS,
+//     SUBLEVEL_TYPE.BOSS,
     };
     public static final SUBLEVEL_TYPE[][] GENERATED_SUBLEVELS = {
      {SUBLEVEL_TYPE.COMMON,},
@@ -61,15 +61,15 @@ public class Pregenerator implements Runnable {
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
      {
-             LOCATION_TYPE.CASTLE,
+//             LOCATION_TYPE.CASTLE,
 //      LOCATION_TYPE.CRYPT,
-//      LOCATION_TYPE.CAVE,
+      LOCATION_TYPE.CAVE,
 //      LOCATION_TYPE.CEMETERY,
 //      LOCATION_TYPE.TOWER,
      },
      {
 //      LOCATION_TYPE.CASTLE,
-             LOCATION_TYPE.TOWER,
+//             LOCATION_TYPE.TOWER,
 //      LOCATION_TYPE.DUNGEON,
 //      LOCATION_TYPE.TEMPLE,
 //      LOCATION_TYPE.CEMETERY,
@@ -82,7 +82,8 @@ public class Pregenerator implements Runnable {
     private static final boolean KEEP_STATS = true;
     private static final boolean RANDOM_ORDER = true;
     private static final boolean CUSTOM_REQS = true;
-    public static final String CUSTOM_REQS_maxRooms = "3";
+    public static final String CUSTOM_REQS_maxRooms = "11";
+    public static final String CUSTOM_REQS_minRooms = "8";
 
     private static List<Pregenerator> running = new ArrayList<>();
     private static Map<PregeneratorData, List<GenerationStats>> analysisStats = new XLinkedMap<>();
@@ -279,10 +280,11 @@ public class Pregenerator implements Runnable {
         LevelData data = LevelDataMaker.generateData(type, locationType);
         if (CUSTOM_REQS) {
             data.getReqs().setValue(maxRooms, CUSTOM_REQS_maxRooms);
+            data.getReqs().setValue(minRooms, CUSTOM_REQS_minRooms);
             data.setValue(CLEAN_DISABLED, true);
             data.setValue(FILL_GLOBAL_COEF, 250);
             data.setValue(ADDITIONAL_FILL_RUNS, 2);
-
+            data.setValue(SIZE_MOD, 200);
         }
         for (GeneratorEnums.LEVEL_VALUES fillVal : FILL_VALS) {
             int product = data.getIntValue(fillVal) * data.getIntValue(FILL_GLOBAL_COEF) / 100;

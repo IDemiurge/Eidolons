@@ -31,30 +31,6 @@ import main.system.sound.SoundMaster;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by JustMe on 4/1/2018.
- * <p>
- * what are the annoying cases now?
- * <p>
- * shifting outlines - back and forth
- * especially on BF
- * new outline get()
- * <p>
- * VIS LEVEL
- * <p>
- * SIGHT
- * <p>
- * PLAYER STATUS
- * <p>
- * use cases:
- * <p>
- * AI
- * Targeting
- * Information (examine/ tooltip)
- * Location
- * Sneak Attacks
- * Aggro
- */
 public class VisionRule {
     private static Boolean playerUnseenMode;
     VisionMaster master;
@@ -197,6 +173,9 @@ public class VisionRule {
         //changed position
         //is close enough
         //is hostile
+
+        if (observer.isPale() != cell.isPale())
+            return false;
 
         if (ExplorationMaster.isExplorationOn())
             if (cell.isResetIgnored()) {

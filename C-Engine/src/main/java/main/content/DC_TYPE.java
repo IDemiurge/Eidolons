@@ -73,7 +73,7 @@ public enum DC_TYPE implements OBJ_TYPE {
             return true;
         }
     },
-    ACTORS("actors", G_PROPS.GROUP, 25),
+    ACTORS("actors", G_PROPS.GROUP, 25), LORD("lord", G_PROPS.GROUP, 26 ),
 //    this is macro!!! SHOPS("shops", G_PROPS.GROUP, 26),
 
     //    CHARACTER("character", G_PROPS.GROUP, 32),

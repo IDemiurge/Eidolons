@@ -79,8 +79,9 @@ public class Party extends Obj {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        if (!getMembers().isEmpty()) {
-            setLeader(getMembers().get(0)); // how safe is that?
+        if (getLeader()==null )
+            if (!getMembers().isEmpty()) {
+                setLeader(getMembers().get(0)); // how safe is that?
         }
     }
 

@@ -33,6 +33,7 @@ public class MainLauncher extends GenericLauncher {
 //        if (!CoreEngine.isIDE())
         CoreEngine.setSafeMode(true);
         CoreEngine.setIggDemo(true);
+        CoreEngine.setMainGame(true);
 //        CoreEngine.setGraphicTestMode(args.length > 0);
 //        CoreEngine.setActiveTestMode(args.length > 0);
 //        CoreEngine.setReverseExit(args.length > 0);

@@ -19,6 +19,9 @@ public class LabelX extends VisLabel {
 
     }
 
+    public LabelX(String text ) {
+        this(text, StyleHolder.getDefaultLabelStyle());
+    }
     public LabelX(String text, LabelStyle sizedLabelStyle) {
         super(text, sizedLabelStyle);
     }

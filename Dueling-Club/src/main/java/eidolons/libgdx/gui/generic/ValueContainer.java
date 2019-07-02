@@ -139,7 +139,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         }
 
         if (value != null) {
-            valueLabel = new Label(value, style){
+            valueLabel = new Label(value, style) {
                 @Override
                 public float getMaxWidth() {
                     return super.getPrefWidth();
@@ -152,7 +152,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
 
                 @Override
                 public float getPrefWidth() {
-                    return Math.min(HqTooltipPanel.INNER_WIDTH-50, super.getPrefWidth());
+                    return Math.min(HqTooltipPanel.INNER_WIDTH - 50, super.getPrefWidth());
                 }
             };
 
@@ -352,11 +352,12 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         getValueLabel().setStyle(labelStyle);
     }
 
-    public void setStyle(LabelStyle labelStyle) {
+    public ValueContainer setStyle(LabelStyle labelStyle) {
         if (getNameLabel() != null)
             getNameLabel().setStyle(labelStyle);
         if (getValueLabel() != null)
             getValueLabel().setStyle(labelStyle);
+        return this;
     }
 
     public String getValueText() {

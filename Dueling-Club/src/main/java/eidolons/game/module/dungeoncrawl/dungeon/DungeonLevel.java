@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.GenericMapper;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
@@ -28,6 +29,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
@@ -72,6 +74,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     String name;
     private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
+    private Map<Coordinates, CELL_IMAGE> cellTypeSpecialMap = new HashMap<>();
 
     public DungeonLevel(String name) {
         this(null, null, null);
@@ -440,9 +443,18 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     Map<LevelBlock, CELL_IMAGE> cellTypeMap = new HashMap();
 
-    public String getCellImgPath(int i, int j) {
-        LevelBlock block = getBlockForCoordinate(new Coordinates(i, j));
-        CELL_IMAGE img = cellTypeMap.get(block);
+    public int getCellVariant(int i, int j) {
+        return 0;
+    }
+
+    public CELL_IMAGE getCellType(int i, int j) {
+        Coordinates c = new Coordinates(i, j);
+        CELL_IMAGE img = cellTypeSpecialMap.get(c);
+        if (img != null) {
+            return img;
+        }
+        LevelBlock block = getBlockForCoordinate(c);
+        img = cellTypeMap.get(block);
         if (img == null) {
             DUNGEON_STYLE style = block == null ? getMainStyle() : block.getZone().getStyle();
             img = getCellImageType(style);
@@ -451,10 +463,18 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
                 img = getCellImageType(style);
             }
             cellTypeMap.put(block, img);
-            return StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png");
         }
+        return img;
+    }
+
+    public String getCellImgPath(int i, int j) {
+        CELL_IMAGE img = getCellType(i, j);
 //        CELL_IMAGE_SUFFIX suffix =
         return StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png");
+    }
+
+    public Map<Coordinates, CELL_IMAGE> getCellTypeSpecialMap() {
+        return cellTypeSpecialMap;
     }
 
     private CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
@@ -598,7 +618,19 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         for (String s : customDataMap.keySet()) {
             map.put(new Coordinates(s), FacingMaster.getFacing(customDataMap.get(s)));
         }
-            setUnitFacingMap(map);
+        setUnitFacingMap(map);
+    }
+
+    public void initCellTypeMap(Map<String, String> customDataMap) {
+        Map<Coordinates, CELL_IMAGE> map = new HashMap<>();
+        for (String s : customDataMap.keySet()) {
+            CELL_IMAGE type = new EnumMaster<CELL_IMAGE>().retrieveEnumConst(CELL_IMAGE.class, customDataMap.get(s));
+            if (type == null) {
+                continue;
+            }
+            map.put(new Coordinates(s),type);
+        }
+       cellTypeSpecialMap = (map);
     }
 
 

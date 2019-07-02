@@ -115,6 +115,14 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
         tabs.add(actor);
         buttonGroup.setChecked(tabName);
         tabsToNamesMap.put(tabName, actor);
+
+        if (tabs.size() == 1) {
+            try {
+                tabSelected(tabName);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
     }
 
     protected Cell<TextButton> addTabActor(TextButton b) {
@@ -124,8 +132,8 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
     public void tabSelected(String tabName) {
         buttonGroup.setChecked(tabName);
         setDisplayedActor(tabsToNamesMap.get(tabName));
-
-        contentCell.getActor().setZIndex(0);
+        tabTable.setZIndex(Integer.MAX_VALUE);
+//        contentCell.getActor().setZIndex(0);
     }
 
     protected Cell setDisplayedActor(T t) {
@@ -151,6 +159,6 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
 
     protected TextButton.TextButtonStyle getTabStyle() {
         return
-         StyleHolder.getHqTabStyle();
+                StyleHolder.getHqTabStyle();
     }
 }

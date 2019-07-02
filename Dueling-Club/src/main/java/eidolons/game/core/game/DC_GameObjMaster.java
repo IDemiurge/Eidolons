@@ -38,6 +38,8 @@ public class DC_GameObjMaster extends GameObjMaster {
     private Unit[] unitsArray;
     private Structure[] structuresArray;
 
+    boolean paleAspect;
+
 
     public DC_GameObjMaster(DC_Game game) {
         super(game);

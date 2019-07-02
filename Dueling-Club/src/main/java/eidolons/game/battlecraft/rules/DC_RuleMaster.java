@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
@@ -27,6 +28,10 @@ public class DC_RuleMaster {
 
     public void timePassed(Float time) {
         for (BattleFieldObject object : game.getBfObjects()) {
+
+            if (object.isPale() != PaleAspect.ON)
+                continue;
+
             if (object.isResetIgnored()) {
                 continue;
             }

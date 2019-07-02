@@ -8,18 +8,20 @@ import eidolons.libgdx.GdxMaster;
  * Created by JustMe on 2/11/2018.
  */
 public class TablePanelX<T extends Actor> extends TablePanel<T> {
+    public TablePanelX() {
+    }
+
     public TablePanelX(float width, float height) {
         super();
         setFixedSize(true);
         setSize(width, height);
     }
 
-    public TablePanelX() {
-    }
     protected void initResolutionScaling() {
-        float coef = (float) Math.pow(GdxMaster.getFontSizeMod(),0.3f);
+        float coef = (float) Math.pow(GdxMaster.getFontSizeMod(), 0.3f);
         setScale(coef, coef);
     }
+
     @Override
     public void setSize(float width, float height) {
         setFixedSize(true);
@@ -28,9 +30,9 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
 
     @Override
     public void setUserObject(Object userObject) {
-        if (userObject!=null )
-            if (getUserObjectClass() !=null )
-                if (userObject.getClass()!=getUserObjectClass())
+        if (userObject != null)
+            if (getUserObjectClass() != null)
+                if (userObject.getClass() != getUserObjectClass())
                     return;
         super.setUserObject(userObject);
     }

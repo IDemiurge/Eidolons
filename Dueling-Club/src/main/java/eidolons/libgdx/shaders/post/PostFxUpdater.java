@@ -349,7 +349,10 @@ main.system.auxiliary.log.LogMaster.log(1,">>>>>>>>>>>>>>  Post processing templ
         FATIGUE,
         ENERGIZED,
         FEAR,
-        INSPIRED, UNCONSCIOUS();
+        INSPIRED, UNCONSCIOUS(),
+
+        PALE_ASPECT
+        ;
 
         public final POST_FX_FACTOR[] factors;
 
