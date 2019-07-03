@@ -2,7 +2,7 @@ package eidolons.libgdx.particles.spell;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.particles.PhaseVfx;
@@ -69,8 +69,8 @@ public class VfxShaper {
                     vfx.setActionManger(() -> {
                         int dest = segmentN % 2 == 0 ? 0 : (int) shapeW;
                         if (vfx.getActionsOfClass(MoveByActionLimited.class).size == 0)
-                            ActorMaster.addMoveByAction(vfx, dest, posY, 0.5f);
-                        ActorMaster.addAfter(vfx, new Action() {
+                            ActionMaster.addMoveByAction(vfx, dest, posY, 0.5f);
+                        ActionMaster.addAfter(vfx, new Action() {
                             @Override
                             public boolean act(float delta) {
                                 vfx.getEffect().allowCompletion();

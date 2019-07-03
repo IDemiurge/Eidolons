@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.particles.VFX;
@@ -152,7 +152,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         }
 
         if (sub.maxDuration != null) {
-            ActorMaster.addFadeInAndOutAction(container, sub.maxDuration, true);
+            ActionMaster.addFadeInAndOutAction(container, sub.maxDuration, true);
         }
 
         for (DAY_TIME day_time : sub.times) {

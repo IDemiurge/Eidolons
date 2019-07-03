@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Route;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 
@@ -57,12 +57,12 @@ public class MapRoutes extends Group {
 
     private void hoverOff(RouteActor sub) {
         sub.setHighlighted(false);
-        ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY(), 0.5f);
+        ActionMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY(), 0.5f);
     }
 
     private void hover(RouteActor sub) {
         sub.setHighlighted(true);
-        ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY() + GdxMaster.adjustSize(25), 0.5f);
+        ActionMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY() + GdxMaster.adjustSize(25), 0.5f);
     }
 
     public boolean isRouteHighlighted() {

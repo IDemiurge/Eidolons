@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
@@ -52,7 +52,7 @@ public class SelectableImageItem extends FadeImageContainer{
         else {
             if (highlight.getColor().a>0) {
                 if (highlight.getActions().size==0)
-                    ActorMaster.addFadeOutAction(highlight,1, false);
+                    ActionMaster.addFadeOutAction(highlight,1, false);
             }
         }
     }
@@ -69,7 +69,7 @@ public class SelectableImageItem extends FadeImageContainer{
     public void setSelected(boolean selected) {
         this.selected = selected;
         if (!selected)
-            ActorMaster.addFadeOutAction(highlight,1, false);
+            ActionMaster.addFadeOutAction(highlight,1, false);
             else {
                 return;
         }

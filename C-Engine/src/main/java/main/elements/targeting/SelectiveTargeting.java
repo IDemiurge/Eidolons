@@ -100,7 +100,7 @@ public class SelectiveTargeting extends TargetingImpl {
             case ATTACK:
                 return C_OBJ_TYPE.BF_OBJ;
             case BF_OBJ:
-                return C_OBJ_TYPE.UNITS_CHARS;
+                return DC_TYPE.BF_OBJ;
             case BLAST:
                 return C_OBJ_TYPE.BF;
             case CELL:

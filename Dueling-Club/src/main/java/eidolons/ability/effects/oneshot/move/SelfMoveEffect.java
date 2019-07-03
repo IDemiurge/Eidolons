@@ -6,6 +6,7 @@ import eidolons.system.DC_ConditionMaster;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
@@ -43,7 +44,7 @@ public class SelfMoveEffect extends MoveEffect {
 
     @Override
     public boolean applyThis() {
-        BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
+        BattleFieldObject obj = getObjToMove();
         origin = Coordinates.get(obj.getCoordinates().getX(), obj.getCoordinates().getY());
         destination = getCoordinates();
         if (destination == null) // if selective?
@@ -54,18 +55,22 @@ public class SelfMoveEffect extends MoveEffect {
         return true;
     }
 
+    protected FACING_DIRECTION getFacing() {
+        return getObjToMove().getFacing();
+    }
     @Override
     public Coordinates getCoordinates() {
-        BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
+        BattleFieldObject obj = getObjToMove();
+        FACING_DIRECTION facing =  getFacing();
         if (template != null) {
             // ++ variables
-            destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
+            destination = game.getMovementManager().getTemplateMoveCoordinate(template, facing, obj,
              ref);
         } else if (direction != null) {
             if (origin == null) {
                 origin = obj.getCoordinates();
             }
-            destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
+            destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(facing,
              direction));
         } else {
             if (formula == null) {
@@ -92,6 +97,10 @@ public class SelfMoveEffect extends MoveEffect {
             destination = ref.getTargetObj().getCoordinates();
         }
         return destination;
+    }
+
+    protected BattleFieldObject getObjToMove() {
+        return (BattleFieldObject) ref.getSourceObj();
     }
 
     public UNIT_DIRECTION getDirection() {

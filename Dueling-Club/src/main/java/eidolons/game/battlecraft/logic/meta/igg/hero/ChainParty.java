@@ -35,7 +35,7 @@ public class ChainParty extends Party {
     public void initMembers() {
         super.initMembers();
         for (Unit member : members) {
-            if (!member.isLeader()) {
+            if ( member!=getLeader()) {
                 member.setPale(true);
             }
 
@@ -65,9 +65,15 @@ public class ChainParty extends Party {
 //        if (!isSpawnedAlive(hero)) {
 //            hideHero(hero);
 //        }
-        hero.xpGained(totalXp);
-        if (deadHeroes.isEmpty())
-            return;
+
+        /**
+         * now we just add xp at once!
+         *
+         * but what about gold and the like?
+         */
+//        hero.xpGained(totalXp);
+//        if (deadHeroes.isEmpty())
+//            return;
 
         if (lastHero == null) {
             return;

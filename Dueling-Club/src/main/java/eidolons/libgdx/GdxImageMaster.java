@@ -69,16 +69,11 @@ public class GdxImageMaster extends LwjglApplication {
                                String newPath) {
         Texture texture = TextureCache.getOrCreate(path);
         if (newPath == null) {
-            String suffix = "";
-            if (x)
-                suffix += " flip x";
-            if (y)
-                suffix += " flip y";
-            newPath = StringMaster.cropFormat(path) + " " + suffix + StringMaster.getFormat(path);
+            newPath = getFlippedPath(path, x, y);
         }
         FileHandle handle = GDX.file(
-         PathFinder.getImagePath() +
-          newPath);
+                PathFinder.getImagePath() +
+                        newPath);
         if (handle.exists())
             return TextureCache.getOrCreate(newPath);
 
@@ -91,13 +86,23 @@ public class GdxImageMaster extends LwjglApplication {
         return texture;
     }
 
+    public static String getFlippedPath(String path, boolean x, boolean y) {
+
+        String suffix = "";
+        if (x)
+            suffix += " flip x";
+        if (y)
+            suffix += " flip y";
+        return StringMaster.cropFormat(path) + " " + suffix + StringMaster.getFormat(path);
+    }
+
     public static Pixmap getCustomPixmap(Texture texture) {
         Pixmap pixmap = pixmaps.get(texture);
         if (pixmap != null) {
             return pixmap;
         }
         pixmap = new Pixmap(texture.getWidth(), texture.getHeight(),
-         texture.getTextureData().getFormat());
+                texture.getTextureData().getFormat());
         drawTextureRegion(0, 0, texture, texture.getWidth(), texture.getHeight(), pixmap);
         pixmaps.put(texture, pixmap);
         return pixmap;
@@ -110,7 +115,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
 
-    public  static Pixmap getPixMapFromRegion(TextureRegion region){
+    public static Pixmap getPixMapFromRegion(TextureRegion region) {
         Texture texture = region.getTexture();
         TextureData data = texture.getTextureData();
         if (!data.isPrepared()) {
@@ -128,6 +133,7 @@ public class GdxImageMaster extends LwjglApplication {
         }
         return px;
     }
+
     public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
         final int width = src.getWidth();
         final int height = src.getHeight();
@@ -161,8 +167,8 @@ public class GdxImageMaster extends LwjglApplication {
         String newPath = getSizedImagePath(path, size);
 
         FileHandle handle = GDX.file(
-         PathFinder.getImagePath() +
-          newPath);
+                PathFinder.getImagePath() +
+                        newPath);
         if (handle.exists())
             return TextureCache.getOrCreate(newPath);
         if (!texture.getTextureData().isPrepared())
@@ -170,8 +176,8 @@ public class GdxImageMaster extends LwjglApplication {
         Pixmap pixmap = texture.getTextureData().consumePixmap();
         Pixmap pixmap2 = new Pixmap(width, height, pixmap.getFormat());
         pixmap2.drawPixmap(pixmap,
-         0, 0, pixmap.getWidth(), pixmap.getHeight(),
-         0, 0, pixmap2.getWidth(), pixmap2.getHeight()
+                0, 0, pixmap.getWidth(), pixmap.getHeight(),
+                0, 0, pixmap2.getWidth(), pixmap2.getHeight()
         );
         if (write) {
             writeImage(handle, pixmap2);
@@ -187,7 +193,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getSizedImagePath(String path, int size) {
-        path= FileManager.formatPath( path);
+        path = FileManager.formatPath(path);
         return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
     }
 
@@ -203,7 +209,7 @@ public class GdxImageMaster extends LwjglApplication {
         PixmapIO.writePNG(handle, getPixMapFromRegion(region));
     }
 
-    public static TextureRegion getSizeTemplate(String root){
+    public static TextureRegion getSizeTemplate(String root) {
         return null;
     }
 
@@ -224,7 +230,7 @@ public class GdxImageMaster extends LwjglApplication {
 
         Pixmap rounded = roundTexture(textureRegion);
         FileHandle handle = GDX.file(
-         PathFinder.getImagePath() + newPath);
+                PathFinder.getImagePath() + newPath);
         if (write) {
             PixmapIO.writePNG(handle, rounded);
         } else
@@ -236,7 +242,7 @@ public class GdxImageMaster extends LwjglApplication {
     public static void roundTextures(String directory) {
         CoreEngine.systemInit();
         for (String filePath : FileManager.getFileNames(FileManager.
-         getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
+                getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
             //            FileHandle handle=GDX.file(filePath);
             round(directory + filePath, true);
 
@@ -280,8 +286,9 @@ public class GdxImageMaster extends LwjglApplication {
     public static String getRoundedPathNew(String path) {
         return "gen/radial icons/" + PathUtils.getLastPathSegment(path);
     }
+
     public static String getRoundedPath(String path) {
-        path= FileManager.formatPath( path);
+        path = FileManager.formatPath(path);
         return StringMaster.cropFormat(path) + " rounded.png";
     }
 
@@ -319,9 +326,10 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static String appendImagePath(String s) {
         s = cropImagePath(s);
-        return PathFinder.getImagePath().toLowerCase()+"/"+s;
+        return PathFinder.getImagePath().toLowerCase() + "/" + s;
     }
-        public static String cropImagePath(String s) {
+
+    public static String cropImagePath(String s) {
         return s.toLowerCase()
                 .replace(PathFinder.getImagePath().toLowerCase(), "");
     }
@@ -332,7 +340,7 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
         return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
-         : getStandardAttackIcon(obj);
+                : getStandardAttackIcon(obj);
         //            if (obj.isOffhand()){
         //                Texture texture = GdxImageMaster.flip(path, true, false, true);
         //                return new TextureRegion(texture);
@@ -347,9 +355,9 @@ public class GdxImageMaster extends LwjglApplication {
     private static String getStandardAttackIcon(String baseType, String weaponGroup,
                                                 ObjType action) {
         String path = StrPathBuilder.build("main", "actions", "standard attack",
-         weaponGroup,
-         baseType,
-         action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
+                weaponGroup,
+                baseType,
+                action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
         return path;
     }
 

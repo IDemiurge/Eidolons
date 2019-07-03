@@ -113,6 +113,8 @@ public class DC_KeyManager
         customActionKeyMap = new LinkedHashMap<>();
         customActionKeyMap.put("l", DC_ActionManager.STD_SPEC_ACTIONS.On_Alert.toString());
         customActionKeyMap.put("v", DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString());
+        customActionKeyMap.put("p", DC_ActionManager.STD_SPEC_ACTIONS.Push.toString());
+        customActionKeyMap.put("u", DC_ActionManager.STD_SPEC_ACTIONS.Pull.toString());
         customActionKeyMap.put("g",
                 StringMaster.getWellFormattedString(
                         DC_ActionManager.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));

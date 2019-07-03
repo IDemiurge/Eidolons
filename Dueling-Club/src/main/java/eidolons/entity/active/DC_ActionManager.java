@@ -779,7 +779,7 @@ public class DC_ActionManager implements ActionManager {
 
     public enum STD_SPEC_ACTIONS {
         On_Alert,  Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set
-
+, Push, Pull,
 //        @Override
 //        public String toString() {
 //            return StringMaster.getWellFormattedString(name());

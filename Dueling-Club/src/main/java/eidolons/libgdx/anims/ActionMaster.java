@@ -5,9 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import eidolons.libgdx.anims.actions.FadeInAction;
@@ -17,9 +15,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
-import eidolons.system.audio.DC_SoundMaster;
 import main.system.auxiliary.ClassMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -27,7 +23,7 @@ import java.util.*;
 /**
  * Created by JustMe on 1/26/2017.
  */
-public class ActorMaster {
+public class ActionMaster {
     public static final Map<Class, ActionPool> poolMap = new HashMap<>();
     private static final float DEFAULT_FADE_OUT_DURATION = 2;
     private static final float DEFAULT_FADE_IN_DURATION = 0.5f;
@@ -208,16 +204,17 @@ public class ActorMaster {
         action.setTarget(actor);
     }
 
-    public static void addMoveByAction(Actor actor, float x, float y, float v) {
-        addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
+    public static MoveToAction addMoveByAction(Actor actor, float x, float y, float v) {
+       return  addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
     }
 
-    public static void addMoveToAction(Actor actor, float x, float y, float v) {
+    public static MoveToAction addMoveToAction(Actor actor, float x, float y, float v) {
         MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);
         action.setDuration(v);
         actor.addAction(action);
         action.setTarget(actor);
+        return action;
     }
 
     public static MoveToAction getMoveToAction(float x, float y, float v) {

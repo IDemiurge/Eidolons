@@ -25,6 +25,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
@@ -68,6 +69,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.GraveyardManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
+import main.game.core.game.GameObjMaster;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.ExceptionMaster;
@@ -133,9 +135,12 @@ public class DC_Game extends GenericGame {
     protected Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
     protected MusicMaster musicMaster;
     protected DC_BattleFieldGrid grid;
+
     @Refactor
     public Town town; //TODO
     private boolean bossFight;
+
+    protected DC_GameObjMaster paleMaster;
 
     public DC_Game() {
         this(false);
@@ -179,6 +184,7 @@ public class DC_Game extends GenericGame {
     public void initMasters(boolean nextLevel) {
 
         master = new DC_GameObjMaster(this);
+        paleMaster = new DC_GameObjMaster(this, true);
         manager = new DC_GameManager(getState(), this);
         manager.init();
 
@@ -441,7 +447,13 @@ public class DC_Game extends GenericGame {
     }
 
     public DC_GameObjMaster getMaster() {
+        if (PaleAspect.ON)
+            return getPaleMaster();
         return (DC_GameObjMaster) master;
+    }
+
+    public DC_GameObjMaster getPaleMaster() {
+        return paleMaster;
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
@@ -847,6 +859,7 @@ public class DC_Game extends GenericGame {
 
     public void reinit(boolean restart) {
         master = new DC_GameObjMaster(this);
+        paleMaster = new DC_GameObjMaster(this, true);
         List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
             for (Obj sub : getState().getObjects().values()) {

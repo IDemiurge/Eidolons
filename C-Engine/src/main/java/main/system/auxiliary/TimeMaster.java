@@ -130,8 +130,7 @@ public class TimeMaster {
     }
 
     public static String getDateString() {
-        return NumberUtils.getFormattedTimeString(getDay(), 2) + "."
-         + NumberUtils.getFormattedTimeString(getMonth() + 1, 2);
+        return NumberUtils.getOrdinal(getDay()) +" of " + getMonthName() +" " +   getYear();
 
     }
 

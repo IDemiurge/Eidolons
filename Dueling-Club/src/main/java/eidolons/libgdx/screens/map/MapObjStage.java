@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.screens.map.editor.EditorManager;
@@ -76,14 +76,14 @@ public class MapObjStage extends Stage {
                     case VISIBLE:
                     case KNOWN:
                         if (place.getColor().a == 0) {
-                            ActorMaster.addFadeInAction(place, 0.84f);
+                            ActionMaster.addFadeInAction(place, 0.84f);
                         }
                         break;
                     case CONCEALED:
                     case UNKNOWN:
                     case INVISIBLE:
                         if (place.getColor().a > 0) {
-                            ActorMaster.addFadeOutAction(place, 0.84f);
+                            ActionMaster.addFadeOutAction(place, 0.84f);
                         }
                         break;
                 }

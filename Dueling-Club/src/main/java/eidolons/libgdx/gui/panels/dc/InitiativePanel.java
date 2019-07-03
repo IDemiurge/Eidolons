@@ -10,16 +10,20 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -36,6 +40,8 @@ import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.texture.Sprites;
+import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -46,6 +52,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster.FONT;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +74,7 @@ public class InitiativePanel extends GroupX {
     private float timePassedSincePosCheck = Integer.MAX_VALUE;
     private ImageContainer previewActor;
 
-    private   GearCluster gears;
+    private GearCluster gears;
     private ClockActor clock;
     private FadeImageContainer light;
 
@@ -95,15 +102,15 @@ public class InitiativePanel extends GroupX {
         addActor(
                 RollDecorator.decorate(
                         speedControlPanel = new SpeedControlPanel(), FACING_DIRECTION.SOUTH));
-        addActor( container = new Container<>(queueGroup));
-        addActor(hideButton= new HideButton(speedControlPanel));
+        addActor(container = new Container<>(queueGroup));
+        addActor(hideButton = new HideButton(speedControlPanel));
         speedControlPanel.setPosition(0, -150);
         hideButton.setPosition(130, -100);
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("ui",
-         "components", "dc", "atb",
-         "atb background.png"));
-        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" +  NumberUtils.getFloatWithDigitsAfterPeriod(DC_Game.game.getLoop().getTime(), 1));
+                "components", "dc", "atb",
+                "atb background.png"));
+        DynamicTooltip tooltip = new DynamicTooltip(() -> "Time:" + NumberUtils.getFloatWithDigitsAfterPeriod(DC_Game.game.getLoop().getTime(), 1));
 
 
         addActor(panelImage = new ValueContainer(textureRegion));
@@ -111,7 +118,7 @@ public class InitiativePanel extends GroupX {
 
         addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
 
-        addActor(clock =  new ClockActor());
+        addActor(clock = new ClockActor());
         clock.addListener(getClockListener());
 
         timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
@@ -189,13 +196,14 @@ public class InitiativePanel extends GroupX {
             });
         }
     }
+
     private EventListener getClockListener() {
 
         return new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (!GdxMaster.isWithin(event.getTarget(),
-                 new Vector2(event.getStageX(), event.getStageY()), true))
+                        new Vector2(event.getStageX(), event.getStageY()), true))
                     return;
                 if (button == 0) {
                     DC_Game.game.getLoop().togglePaused();
@@ -208,9 +216,9 @@ public class InitiativePanel extends GroupX {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == 1) {
                     if (!DC_Game.game.getLoop().isPaused())
-                    DC_Game.game.getDungeonMaster().
-                     getExplorationMaster().
-                     getTimeMaster().playerWaits();
+                        DC_Game.game.getDungeonMaster().
+                                getExplorationMaster().
+                                getTimeMaster().playerWaits();
                 }
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -223,15 +231,15 @@ public class InitiativePanel extends GroupX {
             container.setVisible(false);
         }
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
-         imageSize + queueOffsetY);
-        queueGroup.setBounds(imageSize*2, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+                imageSize + queueOffsetY);
+        queueGroup.setBounds(imageSize * 2, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         timeLabel.setPosition(15, 100);
         light.setPosition(-2, -14);
         clock.setPosition(-5, -31);
         panelImage.setPosition(50, 25 + queueOffsetY);
-        container.setBounds(imageSize*2 //imageSize - offset
-         , queueOffsetY, imageSize * visualSize +
-         (offset - 1) * visualSize, imageSize);
+        container.setBounds(imageSize * 2 //imageSize - offset
+                , queueOffsetY, imageSize * visualSize +
+                        (offset - 1) * visualSize, imageSize);
         container.left().bottom();
     }
 
@@ -266,7 +274,7 @@ public class InitiativePanel extends GroupX {
     private void removeView(int id) {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
-                ActorMaster.addFadeInAndOutAction(queue[i], 0.35f, true);
+                ActionMaster.addFadeInAndOutAction(queue[i], 0.35f, true);
 //                queueGroup.removeActor(queue[i]);
                 queue[i] = null;
                 sort();
@@ -298,7 +306,7 @@ public class InitiativePanel extends GroupX {
             moveApplied = true;
             sub.getActions().clear();
             AfterAction a = new AfterAction();
-            a.setAction(ActorMaster.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
+            a.setAction(ActionMaster.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
             sub.addAction(a);
             a.setTarget(sub);
 //            sub.setX(relToPixPos(n));
@@ -355,7 +363,7 @@ public class InitiativePanel extends GroupX {
             queueGroup.addActor(container);
         }
 
-        container.queuePriority = 1f/unitView.getTimeTillTurn();
+        container.queuePriority = 1f / unitView.getTimeTillTurn();
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.isQueueMoving();
         sort();
@@ -380,7 +388,7 @@ public class InitiativePanel extends GroupX {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
-         if (actor == this) {
+        if (actor == this) {
             actor = null;
         }
         return actor;
@@ -395,18 +403,18 @@ public class InitiativePanel extends GroupX {
         if (isRealTime()) {
             updateTime();
             if (container.isVisible())
-                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size() == 0) {
+                if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0) {
                     toggleQueue(false);
                 }
         } else {
             if (!container.isVisible())
-                if (ActorMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
+                if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
                     toggleQueue(true);
 
             timePassedSincePosCheck += delta;
             if (DC_Game.game.isDebugMode() ||
-             timePassedSincePosCheck > 2 ||
-             (checkPositionsRequired && timePassedSincePosCheck >= maxMoveAnimDuration))
+                    timePassedSincePosCheck > 2 ||
+                    (checkPositionsRequired && timePassedSincePosCheck >= maxMoveAnimDuration))
                 checkPositions();
             else {
 //                for (QueueView sub : queue)
@@ -428,12 +436,12 @@ public class InitiativePanel extends GroupX {
     private void rollComponent(Actor container, boolean visible) {
         float x = container.getX();
         float y = !visible ? container.getHeight() : queueOffsetY;
-        ActorMaster.addMoveToAction(container, x, y, 1);
+        ActionMaster.addMoveToAction(container, x, y, 1);
         gears.activeWork(0.5f, 1);
         if (visible)
             container.setVisible(true);
         else
-            ActorMaster.addHideAfter(container);
+            ActionMaster.addHideAfter(container);
     }
 
     private boolean isRealTime() {
@@ -446,10 +454,10 @@ public class InitiativePanel extends GroupX {
             time = Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster().getDisplayedTime();
         } else {
             time =
-             DC_Engine.isAtbMode() ?
-              Eidolons.game.getTurnManager().getTimeString()
-              :
-              String.valueOf(Eidolons.game.getRules().getTimeRule().getTimeRemaining());
+                    DC_Engine.isAtbMode() ?
+                            Eidolons.game.getTurnManager().getTimeString()
+                            :
+                            String.valueOf(Eidolons.game.getRules().getTimeRule().getTimeRemaining());
         }
         timeLabel.setText(time);
     }
@@ -471,8 +479,8 @@ public class InitiativePanel extends GroupX {
                     queue[ip1] = cur;
                 } else {
                     boolean result =
-                     isSortByTimeTillTurn() ? cur.queuePriority > next.queuePriority || (cur.id > next.id && cur.queuePriority == next.queuePriority)
-                      : cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative);
+                            isSortByTimeTillTurn() ? cur.queuePriority > next.queuePriority || (cur.id > next.id && cur.queuePriority == next.queuePriority)
+                                    : cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative);
                     if (result) {
                         queue[ip1] = cur;
                         queue[i] = next;
@@ -535,14 +543,14 @@ public class InitiativePanel extends GroupX {
         previewActor.clearActions();
         previewActor.setY(-30);
         previewActor.setX(container.getX() + (i + 1) * (imageSize + offset) - offset / 2);
-        ActorMaster.addScaleActionCentered(previewActor, 0, 1, 8);
+        ActionMaster.addScaleActionCentered(previewActor, 0, 1, 8);
 //        ActorMaster.addMoveToAction(previewActor, previewActor.getX()+previewActor.getWidth()/2,
 //         previewActor.getY(), 5);
     }
 
     private String getPreviewPath() {
         return StrPathBuilder.build(PathFinder.getComponentsPath()
-         , "dc", "atb pos preview.png"
+                , "dc", "atb pos preview.png"
         ) + PathUtils.getPathSeparator();
     }
 
@@ -559,6 +567,35 @@ public class InitiativePanel extends GroupX {
         return null;
     }
 
+    public enum INTENT_ICON {
+        ATTACK,
+        MOVE,
+        OTHER,
+        SPELL,
+        DEBUFF,
+        BUFF,
+        HOSTILE_SPELL,
+        UNKNOWN,
+
+        PREPARE,
+
+        DEFEND;
+
+        public String getPath() {
+            if (true){
+                return Sprites.RADIAL;
+            }
+            switch (this) {
+                case ATTACK:
+                case MOVE:
+                case PREPARE:
+                    return "ui/content/intent icons/" + name() + ".txt";
+            }
+            return "ui/content/intent icons/" +
+                    "prepare.txt";
+        }
+
+    }
 
     private class QueueViewContainer extends Container<QueueView> {
         public int initiative;
@@ -570,19 +607,38 @@ public class InitiativePanel extends GroupX {
         public boolean mainHero;
         public boolean immobilized;
 
+        SpriteAnimation intentIconSprite;
+        Map<INTENT_ICON, SpriteAnimation> iconMap = new HashMap<>();
+        private INTENT_ICON intentIcon;
+
         public QueueViewContainer(QueueView actor) {
             super(actor);
             mainHero = actor.isMainHero();
             if (actor == null) {
                 return;
             }
-//            Image shadow = new Image(TextureCache.getOrCreateR(
-//             StrPathBuilder.build("ui",
-//              "components", "dc", "atb",
-//              "initiativepanel unitview shadow.png")));
-//            shadow.setY(-48);
-//            actor.addActor(shadow);
+            Image shadow = new Image(TextureCache.getOrCreateR(
+                    StrPathBuilder.build("ui",
+                            "components", "dc", "atb",
+                            "initiativepanel unitview shadow.png")));
+            shadow.setY(-48);
+            actor.addActor(shadow);
+//            shadow.addListener(new DynamicTooltip(() -> getIntentTooltip(actor.getUserObject())));
+        }
 
+        @Override
+        public void act(float delta) {
+            super.act(delta);
+//            IntentIconMaster
+            if (getActor().getUserObject() instanceof Unit) {
+                intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI(). getIntentIcon();
+                intentIconSprite = iconMap.get(intentIcon);
+                if (intentIcon != null)
+                    if (intentIconSprite == null) {
+                        iconMap.put(intentIcon,
+                                intentIconSprite = SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
+                    }
+            }
         }
 
         @Override
@@ -592,6 +648,12 @@ public class InitiativePanel extends GroupX {
                 if (batch instanceof CustomSpriteBatch) {
                     ((CustomSpriteBatch) batch).setFluctuatingShader(DarkShader.getInstance());
                 }
+            }
+            if (intentIconSprite != null) {
+                intentIconSprite.centerOnParent(getActor());
+                intentIconSprite.setOffsetY(intentIconSprite.getOffsetY()-500);
+                intentIconSprite.setOffsetX(intentIconSprite.getOffsetX());
+                intentIconSprite.draw(batch);
             }
             super.draw(batch, parentAlpha);
             batch.setShader(shader);

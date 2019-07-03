@@ -1,19 +1,18 @@
 package eidolons.system.controls;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -104,6 +103,9 @@ public class GlobalController implements Controller {
             return false;
 
         switch (keyCode) {
+            case Keys.F8:
+                PaleAspect.togglePale();
+                return true;
             case Keys.F2:
                 GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
                 return true;
@@ -184,7 +186,7 @@ public class GlobalController implements Controller {
     private boolean space() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActorMaster.click(activeButton);
+                ActionMaster.click(activeButton);
             activeButton = null;
             return true;
         }
@@ -194,7 +196,7 @@ public class GlobalController implements Controller {
     private boolean enter() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActorMaster.click(activeButton);
+                ActionMaster.click(activeButton);
             activeButton = null;
             return true;
         }
@@ -246,7 +248,7 @@ public class GlobalController implements Controller {
     private boolean escape() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActorMaster.click(activeButton);
+                ActionMaster.click(activeButton);
             activeButton = null;
             return true;
         }

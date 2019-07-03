@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 
 /**
@@ -49,7 +49,7 @@ public abstract class SuperActor extends Fluctuating implements Borderable {
         //        fluctuatingAlpha = 0.75f;
 
         if (texture == null) {
-            ActorMaster.addFadeOutAction(border, 0.65f, true);
+            ActionMaster.addFadeOutAction(border, 0.65f, true);
             //            border = null;
             borderTexture = null;
             setTeamColorBorder(false);
@@ -59,7 +59,7 @@ public abstract class SuperActor extends Fluctuating implements Borderable {
             }
             addActor(border = new Image(texture));
             border.getColor().a = 0;
-            ActorMaster.addFadeInAction(border, 0.65f);
+            ActionMaster.addFadeInAction(border, 0.65f);
 
             borderTexture = texture;
             updateBorderSize();

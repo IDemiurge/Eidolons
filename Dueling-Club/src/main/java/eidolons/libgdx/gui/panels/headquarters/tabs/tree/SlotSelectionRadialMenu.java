@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,7 +9,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -19,7 +18,6 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.properties.G_PROPS;
@@ -276,7 +274,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         v = //stageToLocalCoordinates
                 (new Vector2(x - 200, y));
 
-        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
+        ActionMaster.addMoveToAction(this, v.x, v.y, 1.5f);
 
     }
 

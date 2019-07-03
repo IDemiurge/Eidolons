@@ -89,6 +89,7 @@ public class Eidolons {
     private static SCREEN_TYPE previousScreenType;
     private static boolean logicThreadBusy;
     private static int customThreadsUsed = 0;
+    private static Unit bufferedMainHero;
 
     public static boolean initScenario(MetaGameMaster master) {
         mainGame = new EidolonsGame();
@@ -472,6 +473,18 @@ public class Eidolons {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    public static void bufferMainHero() {
+        bufferedMainHero = getMainHero();
+    }
+
+    public static void resetMainHero() {
+        if (bufferedMainHero == null) {
+            return;
+        }
+        setMainHero(bufferedMainHero);
+        bufferedMainHero=null;
     }
 
 

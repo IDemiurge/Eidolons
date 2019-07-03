@@ -6,18 +6,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
-import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
-
-import java.util.function.Supplier;
 
 /**
  * Created by JustMe on 4/6/2018.
@@ -175,7 +171,7 @@ public class GenericGridView extends UnitView {
         if (arrow != null) {
             val = val % 360;
             if (animated)
-                ActorMaster.addRotateByAction(arrow, arrowRotation + ARROW_ROTATION_OFFSET,
+                ActionMaster.addRotateByAction(arrow, arrowRotation + ARROW_ROTATION_OFFSET,
                         val + ARROW_ROTATION_OFFSET);
             else
                 arrow.setRotation(val + ARROW_ROTATION_OFFSET);

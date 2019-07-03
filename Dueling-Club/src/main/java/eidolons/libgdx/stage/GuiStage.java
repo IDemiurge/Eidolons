@@ -11,10 +11,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
+import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.*;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -23,7 +23,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
@@ -54,7 +54,6 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
-import main.content.ValueMap;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
@@ -481,7 +480,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (lordPanel.isVisible()) {
                 GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, null);
             } else {
-                GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, Eidolons.getMainHero());
+                GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, EidolonLord.lord);
             }
         });
 
@@ -719,9 +718,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         tooltip.getColor().a = 0;
         tooltip.clearActions();
         if (dur != 0) {
-            ActorMaster.addFadeInAndOutAction(tooltip, dur, true);
+            ActionMaster.addFadeInAndOutAction(tooltip, dur, true);
         } else {
-            ActorMaster.addFadeInAction(tooltip, 0.5f);
+            ActionMaster.addFadeInAction(tooltip, 0.5f);
         }
         tooltip.layout();
         tooltip.pack();
@@ -737,7 +736,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     protected void hideTooltip(LabelX tooltip, float dur) {
         SuperContainer container = (SuperContainer) tooltip.getParent();
-        ActorMaster.addFadeOutAction(tooltip, dur, true);
+        ActionMaster.addFadeOutAction(tooltip, dur, true);
         if (container == null)
             return;
         //        tooltip.clearActions();

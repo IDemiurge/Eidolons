@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.generic;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.EnumMaster;
@@ -102,13 +102,13 @@ public class GearCluster extends GroupX {
     public void applySpeedChange(float dur, float forTime, float to) {
         clearActions();
         Float cached = speed;
-        speedAction = ActorMaster.addFloatAction(this, speed, speed, to, dur);
+        speedAction = ActionMaster.addFloatAction(this, speed, speed, to, dur);
         speedAction.setInterpolation(Interpolation.bounce);
         if (forTime > 0) {
-            ActorMaster.addDelayedAction(this, forTime + dur, new Action() {
+            ActionMaster.addDelayedAction(this, forTime + dur, new Action() {
                 @Override
                 public boolean act(float delta) {
-                    ActorMaster.addFloatAction(GearCluster.this, speed, speed, cached, dur);
+                    ActionMaster.addFloatAction(GearCluster.this, speed, speed, cached, dur);
                     return true;
                 }
             });

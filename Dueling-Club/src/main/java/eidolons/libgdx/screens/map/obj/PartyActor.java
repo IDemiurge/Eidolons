@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.macro.entity.party.MacroParty;
-import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.screens.map.obj.PartyActorFactory.PartyActorParameters;
 import eidolons.libgdx.screens.map.path.SteerableParty;
 import eidolons.libgdx.texture.TextureCache;
@@ -60,7 +60,7 @@ public class PartyActor extends MapActor {
         if (getAllChildrenActions(ScaleToAction.class).size > 0)
             return;
         hovered = true;
-        ActorMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
+        ActionMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
         //highlight underlay?
 
         highlight.setZIndex(0);
@@ -68,25 +68,25 @@ public class PartyActor extends MapActor {
 
         portrait.setVisible(true);
         portrait.setColor(1, 1, 1, 0);
-        ActorMaster.addFadeInAction(portrait, 0.5f);
-        ActorMaster.addScaleAction(portrait, 1.0f, 1.0f, 0.5f);
+        ActionMaster.addFadeInAction(portrait, 0.5f);
+        ActionMaster.addScaleAction(portrait, 1.0f, 1.0f, 0.5f);
 
-        ActorMaster.addFadeInAction(ironBorder, 1.0f);
-        ActorMaster.addMoveToAction(ironBorder, 0, 0, 0.75f);
+        ActionMaster.addFadeInAction(ironBorder, 1.0f);
+        ActionMaster.addMoveToAction(ironBorder, 0, 0, 0.75f);
 
-        ActorMaster.addFadeInAction(highlight, 0.5f);
-        ActorMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
-        ActorMaster.addMoveToAction(emblem,
+        ActionMaster.addFadeInAction(highlight, 0.5f);
+        ActionMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
+        ActionMaster.addMoveToAction(emblem,
          getWidth() - emblem.getWidth()
 //          *getEmblemScale()
          , getHeight() - emblem.getHeight()
 //          *getEmblemScale()
          , 0.5f);
 
-        ActorMaster.addScaleAction(portrait, getPortraitScale()
+        ActionMaster.addScaleAction(portrait, getPortraitScale()
          , 0.5f);
 
-        ActorMaster.addScaleAction(emblem, getEmblemScaleHovered(), 0.5f);
+        ActionMaster.addScaleAction(emblem, getEmblemScaleHovered(), 0.5f);
     }
 
     private float getEmblemScaleHovered() {
@@ -141,18 +141,18 @@ public class PartyActor extends MapActor {
             return;
         hovered = false;
         emblem.setTouchable(Touchable.enabled);
-        ActorMaster.addFadeOutAction(ironBorder, 1.25f);
-        ActorMaster.addMoveToAction(ironBorder, -ironBorder.getWidth() / 2, 0, 1.25f);
+        ActionMaster.addFadeOutAction(ironBorder, 1.25f);
+        ActionMaster.addMoveToAction(ironBorder, -ironBorder.getWidth() / 2, 0, 1.25f);
 
-        ActorMaster.addFadeOutAction(portrait, 0.5f);
-        ActorMaster.addMoveToAction(emblem, 0f, 0f, 0.5f);
+        ActionMaster.addFadeOutAction(portrait, 0.5f);
+        ActionMaster.addMoveToAction(emblem, 0f, 0f, 0.5f);
 
-        ActorMaster.addFadeOutAction(highlight, 0.5f);
-        ActorMaster.addScaleAction(highlight.getContent(), 0f, 0f, 0.5f);
+        ActionMaster.addFadeOutAction(highlight, 0.5f);
+        ActionMaster.addScaleAction(highlight.getContent(), 0f, 0f, 0.5f);
 
-        ActorMaster.addScaleAction(emblem, getEmblemScaleDefault(), 0.5f);
+        ActionMaster.addScaleAction(emblem, getEmblemScaleDefault(), 0.5f);
 
-        ActorMaster.addScaleAction(portrait, 0
+        ActionMaster.addScaleAction(portrait, 0
          , 0.5f);
 
     }

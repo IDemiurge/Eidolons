@@ -79,7 +79,12 @@ public class TipMessageMaster {
                 return;
             }
         }
-        GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, source);
+        if (StringMaster.isEmpty(source.getImage())
+        && source.getBtnRun()[0]==null ) {
+            GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED, source.getMessage());
+        } else {
+            GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, source);
+        }
     }
 
     public static void tip(TipMessageSource source) {

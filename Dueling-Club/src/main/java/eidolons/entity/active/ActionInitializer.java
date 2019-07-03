@@ -36,34 +36,6 @@ public class ActionInitializer extends DC_ActionManager{
         super(game);
     }
 
-    protected List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
-        List<DC_ActiveObj> subActions = new ArrayList<>();
-        for (String mode : ContainerUtils.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
-            DC_UnitAction baseAction = unit.getAction(VariableManager.getVar(mode));
-            DC_UnitAction subAction;
-            if (DataManager.getType(VariableManager.removeVarPart(mode), DC_TYPE.ACTIONS) != null) {
-                subAction = generateModeAction(VariableManager.removeVarPart(mode), baseAction);
-            }
-            subAction = getOrCreateAction(VariableManager.removeVarPart(mode), unit);
-            baseAction.getSubActions().add(subAction);
-            // DataManager.getType(VariableManager.getVar(mode),
-            // OBJ_TYPES.ACTIONS);
-        }
-
-        return subActions;
-    }
-
-    public boolean isActionAvailable(ActiveObj activeObj, boolean exploreMode) {
-        switch (activeObj.getName()) {
-            case "Defend":
-                return !exploreMode;
-            case "Camp":
-                return exploreMode;
-
-        }
-        return true;
-    }
-
     @Override
     public void resetActions(Entity entity) {
         if (!(entity instanceof Unit)) {
@@ -91,19 +63,48 @@ public class ActionInitializer extends DC_ActionManager{
         if (unit.isBoss() ) {
 
         } else {
-        addSpecialActions(unit, actives);
-        addCustomActions(unit, actives);
-        try {
-            constructActionMaps(unit);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            addSpecialActions(unit, actives);
+            addCustomActions(unit, actives);
+            try {
+                constructActionMaps(unit);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         // entity.setProperty(ACTIVES, StringMaster
         // .constructContainer(StringMaster.convertToIdList(actives)));
         entity.setActivesReady(true);
 
         unit.setActives(new ArrayList<>(actives));
+    }
+
+    protected List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
+        List<DC_ActiveObj> subActions = new ArrayList<>();
+        for (String mode : ContainerUtils.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
+            DC_UnitAction baseAction = unit.getAction(VariableManager.getVar(mode));
+            DC_UnitAction subAction;
+            if (DataManager.getType(VariableManager.removeVarPart(mode), DC_TYPE.ACTIONS) != null) {
+                subAction = generateModeAction(VariableManager.removeVarPart(mode), baseAction);
+            }
+            subAction = getOrCreateAction(VariableManager.removeVarPart(mode), unit);
+            baseAction.getSubActions().add(subAction);
+            // DataManager.getType(VariableManager.getVar(mode),
+            // OBJ_TYPES.ACTIONS);
+        }
+
+        return subActions;
+    }
+
+    public boolean isActionAvailable(ActiveObj activeObj, boolean exploreMode) {
+        switch (activeObj.getName()) {
+            case "Defend":
+                return !exploreMode;
+            case "Camp":
+            case "Dissolve":
+                return exploreMode;
+
+        }
+        return true;
     }
 
     private void addCustomActions(Unit unit, DequeImpl<ActiveObj> actives) {
@@ -172,6 +173,12 @@ public class ActionInitializer extends DC_ActionManager{
 
         }
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
+
+
+//        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PUSH))
+        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Push.name(), unit));
+        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Pull.name(), unit));
+
         if (UnitAnalyzer.checkOffhand(unit)) {
             actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
 
@@ -304,7 +311,8 @@ public class ActionInitializer extends DC_ActionManager{
                     }
                 }
             }
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ORDERS))
+
+            if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ORDERS))
             actives.addAll(getOrderActions(unit));
         // checkDual(unit);
         // checkInv(unit);

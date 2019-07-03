@@ -6,7 +6,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY;
+import eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.system.math.PositionMaster;

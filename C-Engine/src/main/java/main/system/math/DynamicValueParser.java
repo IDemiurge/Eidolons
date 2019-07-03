@@ -73,7 +73,7 @@ public class DynamicValueParser {
         return formula;
     }
 
-    private int getIntFromDynamicValue(String ref_substring) {
+    private int getIntFromDynamicValue(String ref_substring ) {
         String obj_ref;
         String param;
         boolean base = false;
@@ -81,8 +81,10 @@ public class DynamicValueParser {
             ref_substring = ref_substring.replace(StringMaster.FORMULA_BASE_CHAR, "");
             base = true;
         }
-        if (ref != null) {
-            ref.setBase(base);
+        if (this.ref != null) {
+            this.ref.setBase(base);
+        } else {
+           this.ref = new Ref();
         }
         if (ref_substring.contains("_")) {
 
@@ -99,20 +101,20 @@ public class DynamicValueParser {
             param = StringMaster.getSubString(ref_substring, "" + '{', "" + '}', false);
         }
         if (NumberUtils.isInteger(param)) {
-            String parsedString = TextParser.parse(ref_substring, ref);
+            String parsedString = TextParser.parse(ref_substring, this.ref);
             if (!TextParser.isRef(parsedString)) {
-                return new Formula(parsedString).getInt(ref);
+                return new Formula(parsedString).getInt(this.ref);
             }
         }
 
         try {
-            int val = new Parameter(obj_ref, param).getInt(ref);
+            int val = new Parameter(obj_ref, param).getInt(this.ref);
             return val;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             int val = new Parameter(KEYS.SOURCE.toString(),
              obj_ref + " " + param)
-             .getInt(ref);
+             .getInt(this.ref);
             return val;
         }
 

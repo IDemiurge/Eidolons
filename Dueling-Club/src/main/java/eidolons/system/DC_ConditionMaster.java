@@ -4,6 +4,7 @@ import eidolons.ability.conditions.*;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.req.CostCondition;
 import eidolons.ability.conditions.req.ItemCondition;
+import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.conditions.shortcut.RangeCondition;
 import eidolons.ability.conditions.shortcut.SpaceCondition;
 import eidolons.ability.conditions.shortcut.StdPassiveCondition;
@@ -71,6 +72,10 @@ public class DC_ConditionMaster extends ConditionMaster {
     public static Condition getTargetingModConditions(TARGETING_MODIFIERS MOD) {
         String obj_ref = KEYS.MATCH.toString();
         switch (MOD) {
+
+            case PUSHABLE:
+                return new PushableCondition();
+
             case NO_STEALTH:
                 return new NotCondition(new SneakingCondition());
             case SPACE:

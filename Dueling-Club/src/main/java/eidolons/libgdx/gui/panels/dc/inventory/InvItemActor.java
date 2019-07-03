@@ -16,7 +16,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
@@ -272,9 +272,9 @@ public class InvItemActor extends ItemActor {
                     //                        if (defaultScale != 1)
                     {
                         if (image.getActions().size == 0)
-                            ActorMaster.addScaleAction(image, hoverScale, 0.5f);
+                            ActionMaster.addScaleAction(image, hoverScale, 0.5f);
                         else
-                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(hoverScale, 0.5f));
+                            ActionMaster.addAfter(image, ActionMaster.getScaleAction(hoverScale, 0.5f));
                     }
                 super.entered();
             }
@@ -287,9 +287,9 @@ public class InvItemActor extends ItemActor {
                 if (image.getActions().size < 3)
                     if (image.getScaleX() != defaultScale) {
                         if (image.getActions().size == 0)
-                            ActorMaster.addScaleAction(image, defaultScale, 0.5f);
+                            ActionMaster.addScaleAction(image, defaultScale, 0.5f);
                         else
-                            ActorMaster.addAfter(image, ActorMaster.getScaleAction(defaultScale, 0.5f));
+                            ActionMaster.addAfter(image, ActionMaster.getScaleAction(defaultScale, 0.5f));
                     }
                 super.exited();
             }

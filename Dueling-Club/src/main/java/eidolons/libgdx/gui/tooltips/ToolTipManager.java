@@ -6,14 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -27,8 +26,6 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -105,7 +102,7 @@ public class ToolTipManager extends TablePanel {
                         return;
                     }
             }
-            ActorMaster.addFadeOutAction(tooltip, 0.35f);
+            ActionMaster.addFadeOutAction(tooltip, 0.35f);
         }
         if (object == null) {
             actorCell.setActor(tooltip = null);
@@ -199,7 +196,7 @@ public class ToolTipManager extends TablePanel {
 
         tooltip.getColor().a = 0;
         tooltip.clearActions();
-        ActorMaster.addFadeInAction(tooltip, 0.5f);
+        ActionMaster.addFadeInAction(tooltip, 0.5f);
         if (tooltip.getEntity() != null)
             entityHover(tooltip.getEntity());
     }
@@ -440,7 +437,7 @@ public class ToolTipManager extends TablePanel {
         if (object.getScaleY() == getDefaultScale(object))
             scaleY = getZoomScale(object);
 
-        ActorMaster.
+        ActionMaster.
                 addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
 
         if (object instanceof GridUnitView) {
@@ -448,7 +445,7 @@ public class ToolTipManager extends TablePanel {
                 scaleX = getZoomScale(object);
             if (scaleY == getDefaultScale(object))
                 scaleY = getZoomScale(object);
-            ActorMaster.
+            ActionMaster.
                     addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
                             , scaleX, scaleY, 0.35f);
         }
@@ -472,17 +469,17 @@ public class ToolTipManager extends TablePanel {
         if (object instanceof GridUnitView) {
             scaleX = object.getScaledWidth();
             scaleY = object.getScaledHeight();
-            ActorMaster.
+            ActionMaster.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
             scaleX = getDefaultScale(object);
             scaleY = getDefaultScale(object);
-            ActorMaster.
+            ActionMaster.
                     addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
                             , scaleX, scaleY, 0.35f);
         } else {
             scaleX = getDefaultScale(object);
             scaleY = getDefaultScale(object);
-            ActorMaster.
+            ActionMaster.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
         }
 

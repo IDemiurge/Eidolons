@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -24,15 +24,15 @@ public class HideButton extends SmartButton {
             if (actor instanceof GroupX) {
                 ((GroupX) actor).fadeOut();
             } else {
-                ActorMaster.addFadeInAction(actor);
+                ActionMaster.addFadeInAction(actor);
             }
-            ActorMaster.addHideAfter(actor);
+            ActionMaster.addHideAfter(actor);
         } else {
             actor.setVisible(true);
             if (actor instanceof GroupX) {
                 ((GroupX) actor).fadeIn();
             } else {
-                ActorMaster.addFadeInAction(actor);
+                ActionMaster.addFadeInAction(actor);
             }
         }
     }

@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.Goal;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
@@ -33,6 +34,7 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
@@ -82,12 +84,33 @@ public class ActionManager extends AiHandler {
         getBehaviorMaster().initialize();
     }
 
+    public void initIntents() {
+        Chronos.mark("initIntents");
+        for (Unit unit : AggroMaster.getAggroGroup()) {
+            if (unit.getAI().getCombatAI().getLastSequence() == null) {
+                Action action = chooseAction(true);
+                //check no side fx ?
+
+                //don't pop the action?
+                main.system.auxiliary.log.LogMaster.log(1,unit + " has Intent action: " +action);
+            }
+
+        }
+        Chronos.logTimeElapsedForMark("initIntents");
+    }
+
     public Action chooseAction() {
+        return chooseAction(false);
+    }
+
+    public Action chooseAction(boolean intent) {
         UnitAI ai = getMaster().getUnitAI();
         if (ai.checkStandingOrders()) {
             return ai.getStandingOrders().get(0);
         }
-
+        if (!intent) {
+            getUnitAi().getCombatAI().setLastSequence(null);
+        }
         getPathSequenceConstructor().clearCache(); // TODO try not to? :)
         Unit unit = getUnit();
 
@@ -154,10 +177,13 @@ public class ActionManager extends AiHandler {
             if (action == null) {
                 action = getForcedAction(ai);
             }
+
+            ai.getCombatAI().setLastSequence(new ActionSequence(action));
+
             return action;
         } else {
-            if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
-                return chosenSequence.popNextAction();
+//            if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
+//                return chosenSequence.popNextAction(); what for?
 
         }
         if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_NONE) {
@@ -172,6 +198,8 @@ public class ActionManager extends AiHandler {
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, message);
         }
         //TODO for behaviors? ai-issued-orders?
+
+        ai.getCombatAI().setLastSequence(chosenSequence);
         ai.checkSetOrders(chosenSequence);
         return chosenSequence.popNextAction();
     }

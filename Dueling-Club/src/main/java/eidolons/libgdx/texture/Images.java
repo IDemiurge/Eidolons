@@ -136,6 +136,7 @@ public class Images {
     public static final String COLUMNS_AND_TREE_BG = "ui/components/lord/tab bg.png";
 
     public static final String BG_EIDOLONS = IGG_Images.MAIN_ART.HALL2.getPath();
+    public static final String CIRCLE_BORDER = "ui/components/generic/borders/border circle.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

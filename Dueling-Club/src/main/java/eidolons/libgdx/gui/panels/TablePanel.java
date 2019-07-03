@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -11,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import main.system.launch.CoreEngine;
 
@@ -209,14 +208,14 @@ public class TablePanel<T extends Actor> extends Table {
 
     public void fadeOut() {
         clearActions();
-        ActorMaster.addFadeOutAction(this, 0.25f);
-        ActorMaster.addHideAfter(this);
+        ActionMaster.addFadeOutAction(this, 0.25f);
+        ActionMaster.addHideAfter(this);
     }
 
     public void fadeIn() {
         clearActions();
         setVisible(true);
-        ActorMaster.addFadeInAction(this, 0.25f);
+        ActionMaster.addFadeInAction(this, 0.25f);
     }
 
     public boolean isFixedSize() {

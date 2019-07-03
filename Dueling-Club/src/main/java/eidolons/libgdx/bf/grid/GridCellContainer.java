@@ -15,7 +15,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GridCellContainer extends GridCell {
     Map<Integer, GenericGridView> indexMap = new HashMap<>();
@@ -184,7 +183,7 @@ public class GridCellContainer extends GridCell {
             if (isAnimated()) {
 
                 actor.setPosition(x, y);
-                ActorMaster.addScaleAction(actor,
+                ActionMaster.addScaleAction(actor,
                  scaleX, scaleY, 0.25f);
                 actor.sizeChanged();
             } else {
@@ -415,7 +414,7 @@ public class GridCellContainer extends GridCell {
             unitViewCount = getUnitViewsVisible().size();
 
             if (isAnimated()) {
-                ActorMaster.addFadeInAction(actor, getFadeDuration()/1.5f); //igg demo hack
+                ActionMaster.addFadeInAction(actor, getFadeDuration()/1.5f); //igg demo hack
             }
             //recalc all
             indexMap.put(getZIndexForView(view), view);
@@ -460,7 +459,7 @@ public class GridCellContainer extends GridCell {
             setDirty(true);
             unitViewCount = getUnitViewsVisible().size();
             if (isAnimated())
-                ActorMaster.addFadeOutAction(actor, getFadeDuration());
+                ActionMaster.addFadeOutAction(actor, getFadeDuration());
             //            recalcUnitViewBounds();
             ((GenericGridView) actor).sizeChanged();
 

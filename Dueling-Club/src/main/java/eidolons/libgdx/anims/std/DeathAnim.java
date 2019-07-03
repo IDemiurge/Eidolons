@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -21,7 +21,6 @@ import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -99,14 +98,14 @@ public class DeathAnim extends ActionAnim {
         }
 //        AnimMaster.getInstance().addActor(getActor());
 //        getActor().setPosition(getOrigin().x, getOrigin().y);
-        AlphaAction action = ActorMaster.addFadeOutAction(getActor());
+        AlphaAction action = ActionMaster.addFadeOutAction(getActor());
         if (action == null) {
             main.system.auxiliary.log.LogMaster.log(1,"Death Anim fade failed for \n" +getRef());
             getActor().setVisible(false);
             return;
         }
         action.setDuration(duration);
-        ActorMaster.addRemoveAfter(getActor());
+        ActionMaster.addRemoveAfter(getActor());
     }
 
     @Override

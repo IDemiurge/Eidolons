@@ -9,13 +9,13 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.FadeSprite;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.OverlayView;
+import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -52,7 +52,7 @@ public class LightEmitter extends SuperActor {
     private DIRECTION direction;
     private FadeImageContainer center;
     private int freeRays = 2;
-    private FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
+    private FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
     private FadeImageContainer overlay;
     private LIGHT_RAY type;
     private float baseAlpha;
@@ -89,7 +89,7 @@ public class LightEmitter extends SuperActor {
             overlay = new FadeImageContainer(obj.getImagePath());
             overlay.setScale(OverlayView.SCALE, OverlayView.SCALE);
             addActor(overlay);
-            Dimension dim = GridMaster.getOffsetsForOverlaying(direction,
+            Dimension dim = OverlayingMaster.getOffsetsForOverlaying(direction,
                     (int) 64,
                     (int) 64);
             //get grid?
@@ -152,7 +152,7 @@ public class LightEmitter extends SuperActor {
                     if (!checkCellFree(c)) {
                         freeRays++;
                         ray.fadeOut();
-                        ActorMaster.addRemoveAfter(ray);
+                        ActionMaster.addRemoveAfter(ray);
                         rays.remove(d);
                     }
                 } else {
@@ -175,7 +175,7 @@ public class LightEmitter extends SuperActor {
             float x = getWidth() / 2;
             float y = getHeight() / 2;
             if (overlaying) {
-                Dimension dim = GridMaster.getOffsetsForOverlaying(direction,
+                Dimension dim = OverlayingMaster.getOffsetsForOverlaying(direction,
                         64,
                         64 );
                 x = (float) dim.getWidth() + 32;

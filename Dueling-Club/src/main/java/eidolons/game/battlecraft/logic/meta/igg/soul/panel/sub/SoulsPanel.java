@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
@@ -15,6 +17,8 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 
@@ -27,11 +31,11 @@ public class SoulsPanel extends SoulTab {
     private ImbuePanel imbuePanel;
     TablePanelX infoHeader = new TablePanelX();
     TablePanelX headerButtons = new TablePanelX();
+    private ButtonGroup<Button> btnGroup;
 
     public SoulsPanel() {
         imbuePanel = new ImbuePanel();
         imbuePanel.setVisible(false);
-        imbuePanel.setPosition(getWidth(), getHeight() - 500);
         addActor(imbuePanel);
 
         TablePanelX header = new TablePanelX();
@@ -49,7 +53,7 @@ public class SoulsPanel extends SoulTab {
         souls = new TablePanelX();
         add(souls).row();
 
-        debugAll();
+        imbuePanel.setPosition(getPrefWidth() + 300, 100);
     }
 
     private void toggleImbuePanel() {
@@ -60,6 +64,7 @@ public class SoulsPanel extends SoulTab {
     @Override
     public void updateAct(float delta) {
         souls.clearChildren();
+        btnGroup = new ButtonGroup<>();
         int i = 0;
         for (Soul soul : getUserObject().getSouls()) {
             SoulActor actor = new SoulActor(soul);
@@ -92,16 +97,28 @@ public class SoulsPanel extends SoulTab {
             List<String> parts = ContainerUtils.openContainer(
                     EidolonImbuer.getAspects(soul), " ");
             ListMaster.fillWithEmptyStrings(parts, 4);
-            String aspects1 = parts.get(0) + " " +  parts.get(1) ;
-            String aspects2 = parts.get(2) + " " +  parts.get(3) ;
+            String aspects1 = parts.get(0) + " " + parts.get(1);
+            String aspects2 = parts.get(2) + " " + parts.get(3);
             VerticalValueContainer aspects = new VerticalValueContainer(aspects1, aspects2);
             table.add(aspects).center().row();
+
             SmartButton btn = new SmartButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
-                    () -> SoulMaster.consume(soul));
+                    () -> {
+
+                        if (imbuePanel.isVisible()) {
+                            imbuePanel.addSoul(soul);
+                            GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
+                            return;
+                        }
+
+                        SoulMaster.consume(soul);
+                        GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
+                    });
+            btnGroup.add(btn);
             table.add(btn);
 
             btn.addListener(new ValueTooltip("Destroy this soul to gain " +
-                   sf +
+                    sf +
                     " Soulforce").getController());
 
             add(table);

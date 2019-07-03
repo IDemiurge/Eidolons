@@ -9,13 +9,11 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.shaders.DarkGrayscaleShader;
-import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
@@ -88,7 +86,7 @@ public class UnitView extends BaseView implements HpBarView{
         }
         modeImage.setVisible(true);
         modeImage.setImage(pathToImage);
-        ActorMaster.addFadeInAction(modeImage, 0.5f);
+        ActionMaster.addFadeInAction(modeImage, 0.5f);
         modeImage.setPosition(GdxMaster.top(modeImage), GdxMaster.right(modeImage));
     }
 

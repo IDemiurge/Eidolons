@@ -29,6 +29,7 @@ public class CombatLoop extends GameLoop {
     @Override
     public void start() {
         super.start();
+//        getGame().getAiManager().getActionManager().initIntents();
     }
 
     public void endCombat() {

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.UiMaster;
@@ -99,7 +99,7 @@ public class ActionValueContainer extends ValueContainer {
                 if (!valid)
                     return true;
                 if (isScaledOnHover())
-                    ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
+                    ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
                             UiMaster.getDuration(SCALE_ACTION_ICON));
                 setLastPressed(ActionValueContainer.this);
                 return super.touchDown(event, x, y, pointer, button);
@@ -110,7 +110,7 @@ public class ActionValueContainer extends ValueContainer {
                 if (!valid)
                     return;
                 if (isScaledOnHover())
-                    ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(), getImageScaleY(),
+                    ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(), getImageScaleY(),
                             UiMaster.getDuration(SCALE_ACTION_ICON));
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -193,21 +193,21 @@ public class ActionValueContainer extends ValueContainer {
 
     public void scaleUp() {
         imageContainer.getActor().clearActions();
-        ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
+        ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
                 UiMaster.getDuration(SCALE_ACTION_ICON));
 
-        ActorMaster.addMoveToAction(imageContainer.getActor(),
+        ActionMaster.addMoveToAction(imageContainer.getActor(),
                 imageContainer.getActor().getX(),
                 6, 0.25f);
     }
 
     public void scaleDown() {
         imageContainer.getActor().clearActions();
-        ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
+        ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
                 getImageScaleY(),
                 UiMaster.getDuration(SCALE_ACTION_ICON));
 
-        ActorMaster.addMoveToAction(imageContainer.getActor(),
+        ActionMaster.addMoveToAction(imageContainer.getActor(),
                 imageContainer.getActor().getX(),
                 0, 0.25f);
     }

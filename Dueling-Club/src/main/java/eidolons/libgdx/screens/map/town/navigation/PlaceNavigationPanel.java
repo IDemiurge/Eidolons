@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.town.navigation;
 
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
@@ -81,10 +81,10 @@ public class PlaceNavigationPanel extends TablePanelX {
             x = -x;
             displayed.remove(joint);
         }
-        ActorMaster.addMoveByAction(joint, x, 0, x / getRollSpeed());
+        ActionMaster.addMoveByAction(joint, x, 0, x / getRollSpeed());
         if (remove) {
-            ActorMaster.addFadeOutAction(joint, x / getRollSpeed());
-            ActorMaster.addHideAfter(joint);
+            ActionMaster.addFadeOutAction(joint, x / getRollSpeed());
+            ActionMaster.addHideAfter(joint);
         }
     }
 

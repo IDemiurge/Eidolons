@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.macro.map.Place;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;
 
 /**
@@ -41,8 +41,8 @@ public class PlaceActor extends MapActor {
     }
 
     public void hover() {
-        ActorMaster.addScaleAction(this, getHoveredScale(), 0.5f);
-        ActorMaster.addFadeInAction(border, 0.5f);
+        ActionMaster.addScaleAction(this, getHoveredScale(), 0.5f);
+        ActionMaster.addFadeInAction(border, 0.5f);
         setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
     }
 
@@ -73,7 +73,7 @@ public class PlaceActor extends MapActor {
     }
 
     public void minimize() {
-        ActorMaster.addScaleAction(this, getDefaultScale(), 0.5f);
+        ActionMaster.addScaleAction(this, getDefaultScale(), 0.5f);
         setAlphaTemplate(ALPHA_TEMPLATE.TOP_LAYER);
     }
 

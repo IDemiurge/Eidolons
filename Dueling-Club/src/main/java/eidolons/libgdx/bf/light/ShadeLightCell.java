@@ -15,13 +15,13 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
+import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
@@ -45,7 +45,7 @@ public class ShadeLightCell extends SuperContainer {
     private static boolean alphaFluctuation = true;
     private final float width;
     private final float height;
-    FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
+    FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
     private SHADE_CELL type;
     private Float originalX;
     private Float originalY;
@@ -292,7 +292,7 @@ public class ShadeLightCell extends SuperContainer {
                             }
 
                             setScale(d.growX == null ? 1 : 0.8f, d.growY == null ? 1 : 0.8f);
-                            Dimension dim = GridMaster.getOffsetsForOverlaying(d,
+                            Dimension dim = OverlayingMaster.getOffsetsForOverlaying(d,
                              (int) getWidth() - 64,
                              (int) getHeight() - 64 );
                             offsetX += dim.width;

@@ -214,15 +214,15 @@ public class DC_MovementManager implements MovementManager {
 
     @Override
     public boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref) {
-        return move((Unit) obj, getGrid().getCell(c), free, mod, ref);
+        return move((BattleFieldObject) obj, getGrid().getCell(c), free, mod, ref);
     }
 
     @Override
     public boolean move(Obj obj, Coordinates c) {
-        return move((Unit) obj, getGrid().getCell(c), false, MOVE_MODIFIER.NONE, obj.getRef());
+        return move((BattleFieldObject) obj, getGrid().getCell(c), false, MOVE_MODIFIER.NONE, obj.getRef());
     }
 
-    public boolean move(Unit obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
+    public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
         Ref REF = new Ref(obj.getGame());
         REF.setTarget(cell.getId());
@@ -264,15 +264,19 @@ public class DC_MovementManager implements MovementManager {
                     return false;
                 }
         }
-
-        if (!game.getRules().getEngagedRule().unitMoved(obj, c.x, c.y)) {
-            return false;
+        if (obj instanceof Unit) {
+            if (!game.getRules().getEngagedRule().unitMoved((Unit) obj, c.x, c.y)) {
+                return false;
+            }
         }
+
         obj.setCoordinates(c);
 //        if (IGG_HACK_MOVE)
 //            DungeonScreen.getInstance().getGridPanel().unitMoved(obj); //igg demo hack
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
-        game.getDungeonMaster().getTrapMaster().unitMoved(obj);
+
+        if (obj instanceof Unit)
+            game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
         return game.fireEvent(event);
     }
 

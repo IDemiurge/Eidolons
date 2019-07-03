@@ -2,9 +2,11 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
@@ -21,7 +23,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
@@ -33,7 +35,8 @@ import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.bf.overlays.OverlaysManager;
+import eidolons.libgdx.bf.overlays.GridOverlaysManager;
+import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -51,7 +54,6 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -78,7 +80,7 @@ public class GridPanel extends Group {
     private GridManager manager;
 
     private AnimMaster animMaster;
-    private OverlaysManager overlayManager;
+    private GridOverlaysManager overlayManager;
     private ShadowMap shadowMap;
     private WallMap wallMap;
     private ShardVisuals shards;
@@ -172,7 +174,7 @@ public class GridPanel extends Group {
                 return false;
             }
         });
-        addActor(overlayManager = new OverlaysManager(this));
+        addActor(overlayManager = new GridOverlaysManager(this));
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
 
@@ -592,10 +594,10 @@ public class GridPanel extends Group {
             if (visible) {
                 view.getColor().a = 0;
                 view.setVisible(true);
-                ActorMaster.addFadeInAction(view, 0.25f);
+                ActionMaster.addFadeInAction(view, 0.25f);
             } else {
-                ActorMaster.addFadeOutAction(view, 0.25f);
-                ActorMaster.addSetVisibleAfter(view, false);
+                ActionMaster.addFadeOutAction(view, 0.25f);
+                ActionMaster.addSetVisibleAfter(view, false);
 
                 if (overlayManager != null)
                     overlayManager.clearTooltip(view.getUserObject());
@@ -677,7 +679,21 @@ public class GridPanel extends Group {
         wallMap = new WallMap();
         addActor(wallMap);
 
-        GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
+        GuiEventManager.bind(MOVE_OVERLAYING, obj -> {
+            for (OverlayView overlay : overlays) {
+                if (overlay.getUserObject() == obj.get()) {
+                   Vector2 v = OverlayingMaster.getOffset(overlay.getDirection(),
+                    overlay.getUserObject().getDirection());
+
+                    overlay.setDirection( overlay.getUserObject().getDirection());
+
+                    MoveToAction a = ActionMaster.addMoveByAction(overlay, v.x, v.y, 0.5f);
+                    a.setInterpolation(Interpolation.circleOut);
+                }
+            }
+
+        });
+            GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
             UnitView view = (UnitView) getViewMap().get(list.get(0));
             view.updateModeImage((String) list.get(1));
@@ -734,9 +750,6 @@ public class GridPanel extends Group {
         GridUnitView uv = (GridUnitView) viewMap.get(object);
         if (uv == null) {
             return;
-        }
-        if (uv.getUserObject().isPlayerCharacter()) {
-            uv.getUserObject();
         }
         Coordinates c = object.getCoordinates();
         //        if (!(object instanceof Entrance))
@@ -932,7 +945,7 @@ public class GridPanel extends Group {
     public void addOverlay(OverlayView view) {
         int width = (int) (GridMaster.CELL_W * view.getScale());
         int height = (int) (GridMaster.CELL_H * view.getScale());
-        Dimension dimension = GridMaster.getOffsetsForOverlaying(view.getDirection(), width, height, view);
+        Dimension dimension = OverlayingMaster.getOffsetsForOverlaying(view.getDirection(), width, height, view);
         float calcXOffset = view.getX();
         float calcYOffset = view.getY();
 

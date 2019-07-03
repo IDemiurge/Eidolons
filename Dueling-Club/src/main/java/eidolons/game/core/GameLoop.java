@@ -119,7 +119,7 @@ public class GameLoop {
 
         if (game.getLoop() == this)
             SpecialLogger.getInstance().appendSpecialLog(
-             SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
+                    SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
     }
 
     public Thread startInNewThread() {
@@ -179,6 +179,11 @@ public class GameLoop {
                 VisionManager.refresh();
                 started = true;
             }
+            try {
+                getGame().getAiManager().getActionManager().initIntents();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             result = makeAction();
             if (!aftermath)
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
@@ -221,8 +226,8 @@ public class GameLoop {
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
 //            try {
-                action = (waitForAI());
-                AI_Manager.setOff(false);
+            action = (waitForAI());
+            AI_Manager.setOff(false);
 //            } catch (Exception e) {
 //                AI_Manager.setOff(true);
 //                if (!aiFailNotified) {
@@ -239,7 +244,7 @@ public class GameLoop {
             ChannelingRule.channelingResolves(activeUnit);
 
         result =
-         activateAction(action);
+                activateAction(action);
 
         waitForAnimations(action);
         if (exited)
@@ -257,7 +262,7 @@ public class GameLoop {
     }
 
     protected void waitForAnimations(ActionInput action) {
-                    AnimMaster.waitForAnimations(action);
+        AnimMaster.waitForAnimations(action);
     }
 
 
@@ -279,7 +284,7 @@ public class GameLoop {
         } finally {
             activatingAction = null;
         }
-        firstActionDone= true;
+        firstActionDone = true;
         if (!result) {
             return false;
         }
@@ -289,7 +294,7 @@ public class GameLoop {
     protected Boolean checkEndRound(ActionInput input) {
         int timeCost = input.getAction().getHandler().getTimeCost();
         Boolean endTurn = getGame().getRules().getTimeRule().
-         actionComplete(input.getAction(), timeCost);
+                actionComplete(input.getAction(), timeCost);
         if (!endTurn) {
             game.getManager().reset();
             if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
@@ -301,22 +306,24 @@ public class GameLoop {
             return true;
         } else {
             game.getTurnManager().
-             resetInitiative(false);
+                    resetInitiative(false);
         }
         return endTurn;
     }
+
     public int getWaitOnStartTime() {
         return 0;
     }
+
     protected ActionInput waitForAI() {
-        if (!firstActionDone){
+        if (!firstActionDone) {
             Chronos.mark("First ai action");
         }
         Action aiAction =
-         game.getAiManager().getAction(game.getManager().getActiveObj());
-        if (!firstActionDone){
-            Long time =getWaitOnStartTime()- Chronos.getTimeElapsedForMark("First ai action");
-            if (time>0 )
+                game.getAiManager().getAction(game.getManager().getActiveObj());
+        if (!firstActionDone) {
+            Long time = getWaitOnStartTime() - Chronos.getTimeElapsedForMark("First ai action");
+            if (time > 0)
                 WaitMaster.WAIT(Math.toIntExact(time));
             firstActionDone = true;
         }
@@ -324,14 +331,15 @@ public class GameLoop {
         if (aiAction == null)
             failed = true;
         else if (!aiAction.getActive().isChanneling())
-            if(!aiAction.getSource().isBoss()) //TODO boss fix
-            if (!aiAction.canBeTargeted()) {
-                { main.system.auxiliary.log.LogMaster.log(1,"**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
-                    AI_Manager.getBrokenActions().add(aiAction.getActive());
-                    failed = true;
-                }
+            if (!aiAction.getSource().isBoss()) //TODO boss fix
+                if (!aiAction.canBeTargeted()) {
+                    {
+                        main.system.auxiliary.log.LogMaster.log(1, "**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
+                        AI_Manager.getBrokenActions().add(aiAction.getActive());
+                        failed = true;
+                    }
 
-            }
+                }
         if (failed)
             aiAction = game.getAiManager().getDefaultAction(getActiveUnit());
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
@@ -358,7 +366,8 @@ public class GameLoop {
     public void setPaused(boolean paused, boolean logged) {
         setPaused(paused, logged, false);
     }
-        public void setPaused(boolean paused, boolean logged, boolean manual) {
+
+    public void setPaused(boolean paused, boolean logged, boolean manual) {
         if (!game.isStarted()) {
             return;
         }
@@ -394,7 +403,7 @@ public class GameLoop {
         }
         WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput, false);
         if (actionInput != null)
-        lastActionInput = actionInput;
+            lastActionInput = actionInput;
     }
 
     public Unit getActiveUnit() {
@@ -404,11 +413,10 @@ public class GameLoop {
     }
 
     public void setActiveUnit(Unit activeUnit) {
-        if (activeUnit ==  this.activeUnit)
+        if (activeUnit == this.activeUnit)
             return;
         this.activeUnit = activeUnit;
-        if (activeUnit != null)
-        {
+        if (activeUnit != null) {
             getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
                     + activeUnit.getNameIfKnown());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
@@ -437,12 +445,12 @@ public class GameLoop {
                 return true;
             }
         if (CoreEngine.isIDE())
-        if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
-        if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
-            if (location.getMainEntrance() != null)
-                if (location.getMainEntrance().getCoordinates().equals(c)) {
-                    return true;
-                }
+            if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
+                if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
+                    if (location.getMainEntrance() != null)
+                        if (location.getMainEntrance().getCoordinates().equals(c)) {
+                            return true;
+                        }
         return false;
     }
 
@@ -463,13 +471,13 @@ public class GameLoop {
         if (exited) {
             main.system.auxiliary.log.LogMaster.log(1, this + " interrupting thread... ");
             WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-            if (thread!=null )
-            try {
-                thread.interrupt();
-                main.system.auxiliary.log.LogMaster.log(1, this + " interrupted thread!");
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            if (thread != null)
+                try {
+                    thread.interrupt();
+                    main.system.auxiliary.log.LogMaster.log(1, this + " interrupted thread!");
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
 
             if (this instanceof ExploreGameLoop) {
 
@@ -491,7 +499,7 @@ public class GameLoop {
 
     public void resume() {
         stopped = false;
-        firstActionDone =false;
+        firstActionDone = false;
         signal();
     }
 

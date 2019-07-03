@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.town.navigation;
 
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
@@ -46,10 +46,10 @@ public class NavigationJoint extends TablePanelX{
 
     public void rollDown(){
         //scissors later
-        ActorMaster.addMoveToAction(childTable, 0,  150, 1f);
+        ActionMaster.addMoveToAction(childTable, 0,  150, 1f);
     }
 
     public void rollUp() {
-        ActorMaster.addMoveToAction(childTable, 0, 450, 1f);
+        ActionMaster.addMoveToAction(childTable, 0, 450, 1f);
     }
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.datasource.FullUnitDataSource;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -113,7 +113,7 @@ public class FacingPanel extends TablePanel {
             animated = false;
         }
         if (animated) {
-            ActorMaster.addRotateByAction(background,
+            ActionMaster.addRotateByAction(background,
              facing.getDirection().getDegrees(),
              dataSource.getFacing().getDirection().getDegrees());
         } else {

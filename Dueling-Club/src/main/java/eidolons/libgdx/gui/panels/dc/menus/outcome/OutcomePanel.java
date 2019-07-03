@@ -23,7 +23,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -161,7 +161,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         float y = GdxMaster.getHeight() -
          (GdxMaster.getHeight() - getHeight() / 2);
         float x = (GdxMaster.getWidth() - getWidth()) / 2;
-        ActorMaster.addMoveToAction(this, x, y, 2.5f);
+        ActionMaster.addMoveToAction(this, x, y, 2.5f);
         //        addElement(buttonTable).pad(0, 20, 20, 20);
     }
 
@@ -241,9 +241,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     }
 
     private void rollBack() {
-        ActorMaster.addMoveToAction(this, getX(),
+        ActionMaster.addMoveToAction(this, getX(),
          GdxMaster.getHeight() - exitButton.getActorHeight(), 1.5f);
-        ActorMaster.addHideAfter(this);
+        ActionMaster.addHideAfter(this);
     }
 
     private String getGameStats(OutcomeDatasource datasource) {

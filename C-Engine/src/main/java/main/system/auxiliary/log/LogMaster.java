@@ -4,6 +4,7 @@ import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
@@ -25,7 +26,7 @@ public class LogMaster {
 
     public static final String PREFIX_VERBOSE = "VERBOSE: ";
     public static final String PREFIX_INFO = "INFO: ";
-    public static final String PREFIX_IMPORTANT = "IMPORTANT: ";
+    public static final String PREFIX_IMPORTANT = "                         ";
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
@@ -529,6 +530,12 @@ public class LogMaster {
     public static void error(String string) {
         log(PRIORITY_ERROR, ERROR_PREFIX + string);
 
+    }
+
+    public static void header(String string) {
+        log(PRIORITY_IMPORTANT, "");
+        log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + StringMaster.wrapInBraces(string));
+        log(PRIORITY_IMPORTANT, "");
     }
 
     public static Set<Exception> getExceptions() {

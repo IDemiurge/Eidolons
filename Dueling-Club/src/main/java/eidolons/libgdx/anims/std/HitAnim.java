@@ -17,7 +17,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -239,10 +239,10 @@ public class HitAnim extends ActionAnim {
         float x = originalActorX;
         float y = originalActorY;
 
-        MoveByAction move = (MoveByAction) ActorMaster.getAction(MoveByAction.class);
+        MoveByAction move = (MoveByAction) ActionMaster.getAction(MoveByAction.class);
         move.setAmount(dx, dy);
         move.setDuration(getDuration() / 2);
-        MoveToAction moveBack = (MoveToAction) ActorMaster.getAction(MoveToAction.class);
+        MoveToAction moveBack = (MoveToAction) ActionMaster.getAction(MoveToAction.class);
         if (getRef().getSourceObj() instanceof DC_Obj) {
             if (((DC_Obj) getRef().getSourceObj()).isOverlaying()) {
                 moveBack.setPosition(x, y);

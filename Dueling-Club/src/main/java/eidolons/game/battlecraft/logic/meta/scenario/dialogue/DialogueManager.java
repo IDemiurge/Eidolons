@@ -36,11 +36,13 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 //            GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
 //        });
         GuiEventManager.bind(INIT_DIALOG, obj -> {
-//            if (CoreEngine.isActiveTestMode()){
-//                if (!CoreEngine.isDialogueTest()){
-//                    return;
-//                }
-//            }
+            if (CoreEngine.isIDE())
+            if (CoreEngine.isLiteLaunch())
+            {
+                if (!CoreEngine.isDialogueTest()){
+                    return;
+                }
+            }
             Object key = obj.get();
             GameDialogue dialogue = getGame().getMetaMaster().getDialogueFactory().getDialogue(
                     key.toString());

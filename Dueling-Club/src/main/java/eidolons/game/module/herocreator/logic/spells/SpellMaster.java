@@ -236,6 +236,8 @@ public class SpellMaster {
     }
 
     public static void addVerbatimSpell(Unit hero, ObjType type) {
+        hero.getType().addProperty(PROPS.VERBATIM_SPELLS, type.getName(), true);
+        hero.getType(). addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
         hero.addProperty(PROPS.VERBATIM_SPELLS, type.getName(), true);
         hero.addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
     }

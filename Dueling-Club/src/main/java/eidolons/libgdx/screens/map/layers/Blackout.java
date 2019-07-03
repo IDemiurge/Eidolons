@@ -3,7 +3,7 @@ package eidolons.libgdx.screens.map.layers;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import main.data.filesys.PathFinder;
 
@@ -25,7 +25,7 @@ public class Blackout extends Group {
         image.getContent().getColor().a = 0;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
-        ActorMaster.addFadeInAction(image.getContent(), dur);
+        ActionMaster.addFadeInAction(image.getContent(), dur);
     }
 
     public void fadeIn(Float dur) {
@@ -34,9 +34,9 @@ public class Blackout extends Group {
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
         if (image.getContent().getColor().a != 1) {
-            ActorMaster.addFadeInAndOutAction(image.getContent(), dur, false);
+            ActionMaster.addFadeInAndOutAction(image.getContent(), dur, false);
         } else
-            ActorMaster.addFadeOutAction(image.getContent(), dur);
+            ActionMaster.addFadeOutAction(image.getContent(), dur);
     }
 
     public void fadeOutAndBack( ) {
@@ -51,7 +51,7 @@ public class Blackout extends Group {
             }
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
-        ActorMaster.addFadeInAndOutAction(image.getContent(), (Float) dur, false);
+        ActionMaster.addFadeInAndOutAction(image.getContent(), (Float) dur, false);
         //controller?
         //vignette?
     }

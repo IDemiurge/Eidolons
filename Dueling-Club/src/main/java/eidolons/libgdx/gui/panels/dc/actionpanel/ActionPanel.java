@@ -7,7 +7,7 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -168,10 +168,10 @@ public class ActionPanel extends GroupX {
 
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {
-            ActorMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
+            ActionMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
         });
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
-            ActorMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -15, 0.4f);
+            ActionMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -15, 0.4f);
         });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
@@ -205,7 +205,7 @@ public class ActionPanel extends GroupX {
                 ActionValueContainer.setDarkened(false);
                 if (getY() < 0) {
                     if (isMovedDownOnEnemyTurn())
-                        ActorMaster.addMoveToAction(this, getX(), 0, 1);
+                        ActionMaster.addMoveToAction(this, getX(), 0, 1);
                     //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                     //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
                 }
@@ -220,7 +220,7 @@ public class ActionPanel extends GroupX {
             } else {
                 //                setY(-IMAGE_SIZE);
                 if (isMovedDownOnEnemyTurn())
-                    ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
+                    ActionMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
 
                 ActionValueContainer.setDarkened(true);
                 // ActorMaster.addFadeInOrOut(leftOrbPanel, 1);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
@@ -51,6 +52,8 @@ public class BattleClickListener extends ClickListener {
         if (!Eidolons.game.isBattleInit())
             return true;
         if (HqPanel.getActiveInstance()!=null )
+            return true;
+        if (LordPanel.getActiveInstance()!=null )
             return true;
         return super.handle(e);
     }

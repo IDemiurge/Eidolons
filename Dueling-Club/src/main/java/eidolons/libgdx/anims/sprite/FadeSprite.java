@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 
@@ -35,7 +35,7 @@ public class FadeSprite extends FadeImageContainer {
             return;
 
         if (previousImage != null) {
-            ActorMaster.addFadeOutAction(previousImage, getFadeDuration() * 2, true);
+            ActionMaster.addFadeOutAction(previousImage, getFadeDuration() * 2, true);
         }
         previousImage = getContent();
 

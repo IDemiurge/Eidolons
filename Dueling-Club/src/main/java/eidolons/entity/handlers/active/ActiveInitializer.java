@@ -48,24 +48,22 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
         }
         getMaster().getHandler().getTargeter().initTargetingMode();
-if (!getEntity().getActives().isEmpty()){
-    return;
-}
-            if (EffectFinder.getEffectsFromAbilities(getEntity().getAbilities()).size()==0){
-                if (getEntity() instanceof DC_UnitAction) {
-                    if (((DC_UnitAction) getEntity()).isDummy()) {
-                        return;
-                    }
+        if (!getEntity().getActives().isEmpty()) {
+            return;
+        }
+        if (EffectFinder.getEffectsFromAbilities(getEntity().getAbilities()).size() == 0) {
+            if (getEntity() instanceof DC_UnitAction) {
+                if (((DC_UnitAction) getEntity()).isDummy()) {
+                    return;
                 }
-                if (!getEntity().getName().equalsIgnoreCase("wait"))
-                if (!getEntity().getName().equalsIgnoreCase("idle"))
-
-                {
+            }
+            if (!getEntity().getName().equalsIgnoreCase("wait"))
+                if (!getEntity().getName().equalsIgnoreCase("idle")) {
 
                 }
-                main.system.auxiliary.log.LogMaster.log(1,">>> NO EFFECTS AFTER CONSTRUCT: " +getEntity());
-                if (getEntity().isAttackAny()) {
-                    main.system.auxiliary.log.LogMaster.log(1,">>> ATTACK CONSTRUCT FAILeD: " +getEntity());
+            main.system.auxiliary.log.LogMaster.log(1, ">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
+            if (getEntity().isAttackAny()) {
+                main.system.auxiliary.log.LogMaster.log(1, ">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
 
             }
         }
@@ -82,26 +80,26 @@ if (!getEntity().getActives().isEmpty()){
         } else {
             try {
                 costs = DC_CostsFactory.getCostsForSpell(getEntity(),
-                 getChecker().isSpell());
+                        getChecker().isSpell());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
             Cost cp_cost = costs.getCost(PARAMS.C_N_OF_COUNTERS);
             Formula ap_cost = DC_Engine.isAtbMode() ? new Formula(getParam(PARAMS.AP_COST))
-             : costs.getCost(PARAMS.C_N_OF_ACTIONS)
-             .getPayment().getAmountFormula();
+                    : costs.getCost(PARAMS.C_N_OF_ACTIONS)
+                    .getPayment().getAmountFormula();
             boolean noCounterCost = cp_cost == null;
             if (!noCounterCost) {
                 noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
-                 || cp_cost.getPayment().getAmountFormula().toString().equals("0");
+                        || cp_cost.getPayment().getAmountFormula().toString().equals("0");
             }
             if (noCounterCost) { // if not specifically set...
                 if (getHandler().isExtraAttackMode()) {
                     cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS,
-                     (ap_cost)));
+                            (ap_cost)));
                     cp_cost.getPayment().getAmountFormula().applyModifier(
-                     getEntity().getOwnerUnit().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
+                            getEntity().getOwnerUnit().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
                     cp_cost.setCostParam(PARAMS.CP_COST);
 
                 }
@@ -143,17 +141,17 @@ if (!getEntity().getActives().isEmpty()){
         if (getHandler().isCounterMode()) {
             ap = ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY);
             sta = ownerObj
-             .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY);
+                    .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY);
         }
         if (getHandler().isInstantMode()) {
             ap = ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY);
             sta = ownerObj
-             .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY);
+                    .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY);
         }
         if (getHandler().isAttackOfOpportunityMode()) {
             ap = ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY);
             sta = ownerObj
-             .getIntParam(PARAMS.AOO_STAMINA_PENALTY);
+                    .getIntParam(PARAMS.AOO_STAMINA_PENALTY);
         }
         if (ap != 0)
             costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
@@ -166,7 +164,7 @@ if (!getEntity().getActives().isEmpty()){
     public ACTION_TYPE_GROUPS initActionTypeGroup() {
         if (checkProperty(G_PROPS.ACTION_TYPE_GROUP)) {
             return new EnumMaster<ACTION_TYPE_GROUPS>()
-             .retrieveEnumConst(ACTION_TYPE_GROUPS.class, getProperty(G_PROPS.ACTION_TYPE_GROUP));
+                    .retrieveEnumConst(ACTION_TYPE_GROUPS.class, getProperty(G_PROPS.ACTION_TYPE_GROUP));
         }
         if (getChecker().isStandardAttack()) {
             return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
@@ -175,15 +173,14 @@ if (!getEntity().getActives().isEmpty()){
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
         ACTION_TYPE type =
-         getEntity().getActionType();
+                getEntity().getActionType();
 //         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
 //         getProperty(G_PROPS.ACTION_TYPE));
         if (type == null) {
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
         switch (type) {
-            case
-                    HIDDEN:
+            case HIDDEN:
                 return ActionEnums.ACTION_TYPE_GROUPS.HIDDEN;
             case MODE:
                 return ActionEnums.ACTION_TYPE_GROUPS.MODE;

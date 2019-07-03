@@ -8,14 +8,14 @@ import main.system.math.Formula;
 /**
  * Created by JustMe on 3/24/2017.
  */
-public class PushEffect extends DC_Effect {
+public class ForcePushEffect extends DC_Effect {
 
 
-    public PushEffect(String force) {
+    public ForcePushEffect(String force) {
         this.formula = new Formula(force);
     }
 
-    public PushEffect() {
+    public ForcePushEffect() {
     }
 
     @Override

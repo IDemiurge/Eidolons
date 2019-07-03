@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ public class ScaleAndTextTooltip extends DynamicTooltip {
     @Override
     protected void exited() {
         super.exited();
-        ActorMaster.addScaleAction(actor,
+        ActionMaster.addScaleAction(actor,
          1,
          1,
          getDuration(), isCentered());
@@ -30,7 +30,7 @@ public class ScaleAndTextTooltip extends DynamicTooltip {
     @Override
     protected void entered() {
         super.entered();
-        ActorMaster.addScaleAction(actor,
+        ActionMaster.addScaleAction(actor,
          getScale(),
          getScale(),
          getDuration(), isCentered());

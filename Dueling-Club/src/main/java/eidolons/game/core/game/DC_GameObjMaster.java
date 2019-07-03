@@ -10,6 +10,7 @@ import main.data.XList;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.game.core.game.Game;
 import main.game.core.game.GameObjMaster;
 import main.game.logic.battle.player.Player;
 import main.system.SortMaster;
@@ -40,11 +41,14 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     boolean paleAspect;
 
+    public DC_GameObjMaster(DC_Game game, boolean paleAspect) {
+        this(game);
+        this.paleAspect = paleAspect;
+    }
 
     public DC_GameObjMaster(DC_Game game) {
         super(game);
         structures = new HashSet<>();
-
         units = new HashSet<>();
         //         new DequeImpl<Unit>() {
         //            public boolean add(Unit e) {
@@ -148,7 +152,9 @@ public class DC_GameObjMaster extends GameObjMaster {
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
             for (BattleFieldObject object : getGame().getStructures()) {
-
+                if (object.isPale()!=paleAspect) {
+                    continue;
+                }
                 if (overlayingIncluded_Not_Only != null) {
                     if (overlayingIncluded_Not_Only)
                         if (object.isOverlaying())

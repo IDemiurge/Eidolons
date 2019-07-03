@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
@@ -23,7 +23,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
-import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class Weapon3dAnim extends ActionAnim {
     @Override
     protected Action getAction() {
         setColor(new Color(1, 1, 1, 1));
-        AlphaAction alphaAction = (AlphaAction) ActorMaster.getAction(AlphaAction.class);
+        AlphaAction alphaAction = (AlphaAction) ActionMaster.getAction(AlphaAction.class);
         alphaAction.setDuration(getDuration() / 2);
         alphaAction.setAlpha(0);
         DelayAction delayed = new DelayAction(getDuration() / 2);

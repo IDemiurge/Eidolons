@@ -10,6 +10,9 @@ public class DisplacementEffect extends SelfMoveEffect {
 
     private Coordinates c;
 
+    public DisplacementEffect() {
+    }
+
     @Override
     public boolean applyThis() {
         c = ref.getTargetObj().getCoordinates();

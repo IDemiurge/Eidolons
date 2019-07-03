@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -78,7 +78,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 //        container.setAlphaTemplate(sub.alphaTemplate);
 
         adjust(container);
-        ActorMaster.addFadeInAndOutAction(container.getContent(), 2.5f, true);
+        ActionMaster.addFadeInAndOutAction(container.getContent(), 2.5f, true);
 
     }
 

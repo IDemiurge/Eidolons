@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.NumberUtils;
@@ -66,7 +66,7 @@ public class ScrollPanel<T extends Actor> extends Container  {
             scroll.setScrollPercentY(105);
         }
         if (isFadeIn()){
-            ActorMaster.addFadeInAction(obj, 1);
+            ActionMaster.addFadeInAction(obj, 1);
         }
 //        else
         if (offsetY == 0)

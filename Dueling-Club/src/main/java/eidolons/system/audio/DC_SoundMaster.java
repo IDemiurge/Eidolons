@@ -127,12 +127,15 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static CONTENT_CONSTS.SOUNDSET getSoundset(Obj obj) {
 
-        Unit unit = (Unit) obj;
         CONTENT_CONSTS.SOUNDSET soundset = new EnumMaster<CONTENT_CONSTS.SOUNDSET>().retrieveEnumConst(CONTENT_CONSTS.SOUNDSET.class,
-                unit.getProperty(G_PROPS.SOUNDSET));
+                obj.getProperty(G_PROPS.SOUNDSET));
         if (soundset != null) {
             return soundset;
         }
+        if (!(obj instanceof Unit)) {
+            return null;
+        }
+        Unit unit = (Unit) obj;
 //        if (unit.getRace()== HeroEnums.RACE.HUMAN) {
 //            return CONTENT_CONSTS.SOUNDSET.HUMAN;
 //        }

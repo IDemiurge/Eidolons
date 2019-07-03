@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
@@ -19,8 +18,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
@@ -35,6 +32,8 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -47,12 +46,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
+import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 
 /**
  * Created by JustMe on 2/20/2017.
  */
-public class OverlaysManager extends SuperActor {
+public class GridOverlaysManager extends SuperActor {
 
     private final GridCellContainer[][] cells;
     GridPanel gridPanel;
@@ -62,7 +61,7 @@ public class OverlaysManager extends SuperActor {
     Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
     private BattleFieldObject observer;
 
-    public OverlaysManager(GridPanel gridPanel) {
+    public GridOverlaysManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
         cells = gridPanel.getCells();
         setAlphaTemplate(ALPHA_TEMPLATE.OVERLAYS);

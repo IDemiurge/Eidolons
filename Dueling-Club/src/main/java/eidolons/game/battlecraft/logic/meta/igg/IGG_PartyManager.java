@@ -82,7 +82,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));
 
-        new EidolonLord(DataManager.getType(LORD_TYPE, DC_TYPE.LORD));
+        new EidolonLord(DataManager.getType(LORD_TYPE, DC_TYPE.LORD)).setChain(chain);
 
 //        party.setProperty(PROPS.PARTY_MISSION,
 //                getMetaGame().getMission().getName(), true);

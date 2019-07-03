@@ -9,8 +9,10 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.system.auxiliary.data.ArrayMaster;
 
 public class ImbuePanel extends TablePanelX {
+    private  SmartButton imbueBtn;
     private EidolonImbuer imbuer;
     ImbueSoulSlots soulSlots;
     ImbueItems items;
@@ -18,12 +20,15 @@ public class ImbuePanel extends TablePanelX {
     ImbueTraitsInfo traitsInfo;
 
     public ImbuePanel() {
+        super(700, 900);
         imbuer = new EidolonImbuer();
 
-      add( soulSlots = new ImbueSoulSlots(this)) ;
+        add( soulSlots = new ImbueSoulSlots(this)) ;
         add(itemInfo = new ImbueItemInfo()).row();
+
         add( items = new ImbueItems());
         add(traitsInfo = new ImbueTraitsInfo());
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
     }
 
     private Soul[] getSouls() {
@@ -32,6 +37,10 @@ public class ImbuePanel extends TablePanelX {
 
     private DC_HeroItemObj getSelectedItem() {
         return items.getSelected();
+    }
+
+    public void addSoul(Soul soul) {
+        soulSlots.addSoul(soul);
     }
 
     private class ImbueTraitsInfo extends TablePanelX {
@@ -45,16 +54,18 @@ public class ImbuePanel extends TablePanelX {
             add(aspectInfo = new LabelX("", style)).center().row();
             add(traitInfo = new LabelX("", style)).growY().row();
 
-            add(new SmartButton("Imbue", () -> imbuer.imbue(getSelectedItem(), getSouls())));
+            add(imbueBtn = new SmartButton("Imbue", () -> imbuer.imbue(getSelectedItem(), getSouls())));
 //            addActor(new SmartButton("Imbue", () -> imbuer.imbue(getSelectedItem(), getSouls())));
         }
 
         @Override
         public void updateAct(float delta) {
             super.updateAct(delta);
+            imbueBtn.setDisabled(getSelectedItem()==null
+            || !ArrayMaster.isNotEmpty(getSouls()));
 
             aspectInfo.setText(initAspectInfo());
-            aspectInfo.setText(initTraitInfo());
+            traitInfo.setText(initTraitInfo());
         }
     }
 

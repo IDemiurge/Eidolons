@@ -1223,6 +1223,8 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean isMainHero() {
+        if (Eidolons.getMainHero()==this)
+            return true;
         if (mainHero == null)
             mainHero = owner.getHeroObj() == this;
         return mainHero;

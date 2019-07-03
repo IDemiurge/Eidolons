@@ -2,6 +2,7 @@ package main.data.filesys;
 
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.TimeMaster;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
@@ -141,7 +142,8 @@ public class PathFinder {
 
     public static String getLogPath() {
         init();
-        return getTextPath() + PathUtils.getPathSeparator() + "log" + PathUtils.getPathSeparator();
+        return getTextPath() + PathUtils.getPathSeparator() + "log" + PathUtils.getPathSeparator()
+                + TimeMaster.getDateString()+ PathUtils.getPathSeparator();
     }
 
     public static String getUnitGroupPath() {

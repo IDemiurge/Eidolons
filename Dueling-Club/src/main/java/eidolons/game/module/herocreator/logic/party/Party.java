@@ -64,8 +64,14 @@ public class Party extends Obj {
         // HeroCreator.initHero(type.getProperty(PROPS.LEADER));
     }
 
+    @Override
+    public void addToState() {
+        super.addToState();
+    }
+
     public void initMembers() {
         members.clear();
+        addToState();
         for (String heroName : ContainerUtils.openContainer
          (type.getProperty(PROPS.MEMBERS))) {
             //TODO refactor

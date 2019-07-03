@@ -25,8 +25,8 @@ public class SmartClickListener extends ClickListener {
     @Override
     public boolean handle(Event e) {
         if (isBattlefield()) {
-            if (LordPanel.getInstance() != null)
-                return true;
+//            if (LordPanel.getInstance() != null)
+//                return true;
             if (HqPanel.getActiveInstance() != null)
                 return true;
             if (DungeonScreen.getInstance() == null)

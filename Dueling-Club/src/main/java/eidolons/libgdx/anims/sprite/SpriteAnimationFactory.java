@@ -25,8 +25,11 @@ public class SpriteAnimationFactory {
     static Map<String, SpriteAnimation> cache = new HashMap<>();
     private static String defaultSpritePath = Images.DEFAULT_SPRITE;
 
-    public static SpriteAnimation
-    getSpriteAnimation(String key) {
+//    public static SpriteAnimation getSpriteFromAtlas(String key, String atlasPath) {
+//        //TODO
+//        return getSpriteAnimation(key, true);
+//    }
+    public static SpriteAnimation getSpriteAnimation(String key) {
         return getSpriteAnimation(key, true);
     }
 
@@ -43,6 +46,8 @@ public class SpriteAnimationFactory {
         if (texturePath.toLowerCase().endsWith(".atlas")
                 || texturePath.toLowerCase().endsWith(".txt")) {
             texturePath = GdxImageMaster.appendImagePath(texturePath);
+
+//            return getSpriteFromAtlas()
 
             TextureAtlas atlas = null;
             try {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -169,10 +169,10 @@ public class RollDecorator {
                     break;
             }
 
-            ActorMaster.addMoveToAction(
+            ActionMaster.addMoveToAction(
              this, toX, toY, getDuration());
 
-            ActorMaster.addRotateByAction(
+            ActionMaster.addRotateByAction(
              arrow.getContent(), 180);
         }
 

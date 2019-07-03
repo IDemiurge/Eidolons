@@ -47,6 +47,9 @@ public class EidolonImbuer {
         full.addAll(hero.getReserveItems());
 
         full.removeIf(item -> !isValidItem(item));
+        for (DC_HeroItemObj itemObj : full) {
+            set.add((DC_HeroSlotItem) itemObj);
+        }
         return set;
     }
 
@@ -190,8 +193,8 @@ public class EidolonImbuer {
         WeightMap<EIDOLON_ASPECT> map = createMap(souls);
 //        map.sortByWeight();
 
-        return ContainerUtils.constructStringContainer(ListMaster.toStringList(map.keySet()).stream().map(
-                a -> StringMaster.getWellFormattedString(a) + StringMaster.wrapInParenthesis(map.get(a) + "")
+        return ContainerUtils.constructStringContainer(map.keySet().stream().map(
+                a -> StringMaster.getWellFormattedString(a.toString()) + StringMaster.wrapInParenthesis(map.get(a) + "")
         ).collect(Collectors.toList()), " ");
     }
 

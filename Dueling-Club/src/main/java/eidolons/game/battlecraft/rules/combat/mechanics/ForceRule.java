@@ -251,7 +251,7 @@ public class ForceRule {
     private static Effect getForceEffects(DC_ActiveObj action) {
         String force = String.valueOf(getForce(action));
         KnockdownEffect e = new KnockdownEffect(force);
-//        PushEffect e1 = new PushEffect(force);
+//        ForcePushEffect e1 = new ForcePushEffect(force);
 //        InterruptionEffect e2 = new InterruptionEffect(force);
         Effects effects = new Effects();
 //        if ()
@@ -305,7 +305,7 @@ public class ForceRule {
         return Math.max(0, damage);
     }
 
-    // TODO into PushEffect! With std knockdown on "landing" or damage!
+    // TODO into ForcePushEffect! With std knockdown on "landing" or damage!
     public static void applyPush(int force, DC_ActiveObj attack, BattleFieldObject source,
                                  BattleFieldObject target) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source, target);

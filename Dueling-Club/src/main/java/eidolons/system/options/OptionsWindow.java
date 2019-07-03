@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
@@ -21,12 +20,11 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
-import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -117,8 +115,8 @@ public class OptionsWindow extends VisWindow {
     protected void close() {
 //        super.close();
         active = false;
-        ActorMaster.addFadeOutAction(this, 1, false);
-        ActorMaster.addHideAfter(this );
+        ActionMaster.addFadeOutAction(this, 1, false);
+        ActionMaster.addHideAfter(this );
         GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
     }
 

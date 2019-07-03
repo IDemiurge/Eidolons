@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.controls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
@@ -87,7 +87,7 @@ public class StackViewMaster {
         int y = !horizontal ? -size * views.size() / 2 + size / 2 : 0;
         for (GenericGridView view : views) {
             //sorted?
-            ActorMaster.addMoveByAction(view, x, y, 0.9f);
+            ActionMaster.addMoveByAction(view, x, y, 0.9f);
             posMap.put(view, new Vector2(-x, -y));
             if (horizontal) {
                 x += 140;
@@ -97,7 +97,7 @@ public class StackViewMaster {
             view.setStackView(true);
             view.setHovered(true);
 
-            ActorMaster.addScaleAction(view, 1, 1.2f);
+            ActionMaster.addScaleAction(view, 1, 1.2f);
             //                DungeonScreen.getInstance().getGridPanel().getCells()[c.x][c.y];
             //stackView(true);
             scaleMap.put(view, view.getScaleX());
@@ -123,10 +123,10 @@ public class StackViewMaster {
             Vector2 v = posMap.get(view);
             view.setHovered(false);
             view.setStackView(false);
-            ActorMaster.addMoveByAction(view, v.x, v.y, 1.2f);
+            ActionMaster.addMoveByAction(view, v.x, v.y, 1.2f);
         }
         for (GenericGridView view : scaleMap.keySet()) {
-            ActorMaster.addScaleAction(view, scaleMap.get(view), 1.4f);
+            ActionMaster.addScaleAction(view, scaleMap.get(view), 1.4f);
         }
         posMap.clear();
         scaleMap.clear();

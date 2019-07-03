@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Game;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -17,7 +16,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
@@ -179,7 +178,7 @@ public class BattleGuiStage extends GuiStage {
              (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);
             float x = (GdxMaster.getWidth() - outcomePanel.getWidth()) / 2;
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
-            ActorMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
+            ActionMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
         });
 
     }

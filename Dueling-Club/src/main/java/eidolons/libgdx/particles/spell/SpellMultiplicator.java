@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.std.SpellAnim;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
@@ -206,7 +206,7 @@ public class SpellMultiplicator implements Runnable {
         actor.setPosition(getX(), getY());
         actor.setAttached(false);
         actor.setGenerated(true);
-        ActorMaster.addRemoveAfter(actor);
+        ActionMaster.addRemoveAfter(actor);
         anim.getMaster().addActor(actor);
 
         if (angle != null) {
@@ -263,7 +263,7 @@ public class SpellMultiplicator implements Runnable {
             speed = template.speed;
         }
         MoveByAction action =
-         ActorMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
+         ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
 
 
         if (action.getDuration() > this.duration) {
@@ -306,7 +306,7 @@ public class SpellMultiplicator implements Runnable {
             this.duration = duration;
         }
 
-        ActorMaster.addRemoveAfter(actor);
+        ActionMaster.addRemoveAfter(actor);
 
         //TRY ALPHA/ROTATE ACTION
         return action;

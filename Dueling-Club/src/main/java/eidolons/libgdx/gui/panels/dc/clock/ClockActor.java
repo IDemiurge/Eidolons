@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.dc.clock;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -81,11 +81,11 @@ public class ClockActor extends GroupX {
                 if (timeToTurn < 1)
                     return;
                 displayedTime += timeToTurn;//+delta;
-                ActorMaster.addRotateByAction(smallHand, -6 * timeToTurn); //60 sec == 360 degrees
+                ActionMaster.addRotateByAction(smallHand, -6 * timeToTurn); //60 sec == 360 degrees
             } else {
                 if (timeToTurn < 0.1f)
                     return;
-                ActorMaster.addRotateByAction(smallHand, -30 * timeToTurn); //12 sec == 360 degrees
+                ActionMaster.addRotateByAction(smallHand, -30 * timeToTurn); //12 sec == 360 degrees
                 centerGears.activeWork(0.25f, timeToTurn);
             }
             timeToTurn = 0;
@@ -101,14 +101,14 @@ public class ClockActor extends GroupX {
             float minutes = time / 60;
             float seconds = time % 60;
 
-            ActorMaster.addRotateByAction(smallHand, smallHand.getRotation(), seconds * 6);
-            ActorMaster.addRotateByAction(hand, hand.getRotation(), minutes * 6);
+            ActionMaster.addRotateByAction(smallHand, smallHand.getRotation(), seconds * 6);
+            ActionMaster.addRotateByAction(hand, hand.getRotation(), minutes * 6);
 
             centerGears.setDefaultSpeed(0.45f);
         } else {
             centerGears.setDefaultSpeed(0.15f);
-            ActorMaster.addRotateByAction(smallHand, smallHand.getRotation(), 90);
-            ActorMaster.addRotateByAction(hand, hand.getRotation(), 90);
+            ActionMaster.addRotateByAction(smallHand, smallHand.getRotation(), 90);
+            ActionMaster.addRotateByAction(hand, hand.getRotation(), 90);
             centerGears.activeWork(0.25f, 1);
             displayedTime = 0;
         }

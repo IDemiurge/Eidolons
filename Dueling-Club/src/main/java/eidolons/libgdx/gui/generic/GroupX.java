@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import main.system.auxiliary.ClassMaster;
 
 /**
@@ -127,8 +127,8 @@ public class GroupX extends Group {
             removeAction(sub);
         }
         setVisible(true);
-        ActorMaster.addFadeOutAction(this, getFadeOutDuration());
-        ActorMaster.addHideAfter(this);
+        ActionMaster.addFadeOutAction(this, getFadeOutDuration());
+        ActionMaster.addHideAfter(this);
     }
 
     protected float getFadeOutDuration() {
@@ -148,7 +148,7 @@ public class GroupX extends Group {
         for (Action sub : getActionsOfClass(AfterAction.class)) {
             removeAction(sub);
         }
-        ActorMaster.addFadeInAction(this, getFadeInDuration());
+        ActionMaster.addFadeInAction(this, getFadeInDuration());
     }
 
     public void offset(float dX, float dY) {

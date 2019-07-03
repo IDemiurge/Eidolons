@@ -14,6 +14,7 @@ import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
@@ -135,6 +136,10 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     @Override
     public String getTooltip() {
+        Ref ref = getRef();
+        if (ref == null) {
+            ref = new Ref();
+        }
         if (mod_type == MOD.SET) {
             return getParamString() + " set to " + formula.getInt(ref);
         }
