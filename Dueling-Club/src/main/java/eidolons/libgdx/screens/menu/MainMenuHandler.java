@@ -20,6 +20,7 @@ import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -37,6 +38,12 @@ public class MainMenuHandler {
 
     public static Boolean startMicro(List<ObjType> scenarioTypes, Boolean random_preset_select) {
         scenarioTypes= (List<ObjType>) SortMaster.sortByValue(scenarioTypes, G_PROPS.ID, false);
+
+//        if (CoreEngine.isLiteLaunch()) {
+//            scenarioTypes =
+//                    new ListMaster<ObjType>().getList(DataManager.getType("Hall of Lord", DC_TYPE.SCENARIOS));
+//        }
+
         if (random_preset_select == null) {
 
         } else {

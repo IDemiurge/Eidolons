@@ -12,6 +12,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.tooltips.Tooltip;
@@ -29,6 +30,8 @@ public class GridUnitView extends GenericGridView {
     private float scaleResetPeriod = 4;
     private float scaleResetTimer = scaleResetPeriod;
 
+    OverlayView attachedObj;
+
     public GridUnitView(UnitViewOptions o) {
         super(o);
         initQueueView(o);
@@ -45,6 +48,22 @@ public class GridUnitView extends GenericGridView {
                     }
                 }
             });
+    }
+
+    public void attachObj(OverlayView view){
+        view.setDirection(getUserObject().getDirection());
+
+        addActor(view);
+//        arrow.get
+
+        //TODO  will we keep it as normal overlaying obj?
+        // So basically maybe all we do really is change its position dynamically?
+
+        /**
+         *
+         */
+
+//        OverlayingMaster.getOffsetsForOverlaying()
     }
 
     @Override

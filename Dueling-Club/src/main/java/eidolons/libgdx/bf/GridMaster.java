@@ -101,42 +101,6 @@ public class GridMaster {
         return getVectorForCoordinate(coordinates, false, false);
     }
 
-    public static Dimension getOffsetsForOverlaying(DIRECTION direction,
-                                                    int width, int height) {
-        return getOffsetsForOverlaying(direction, width, height, null);
-    }
-
-    public static Dimension getOffsetsForOverlaying(DIRECTION direction,
-                                                    int width, int height, OverlayView view) {
-
-        float scale = view == null ? 0.5f : view.getScale();
-        int w = (int) (width / scale);
-        int h = (int) (height / scale);
-        int calcXOffset = 0;
-        int calcYOffset = 0;
-        if (direction == null) {
-            calcXOffset += (w - width) * (view == null ? OverlayView.SCALE : scale);
-            calcYOffset += (h - height) * (view == null ? OverlayView.SCALE : scale);
-        } else {
-            int size = width;
-            int x = MigMaster.getCenteredPosition(w, size);
-
-            if (direction.growX != null)
-                x = (direction.growX) ? w - size : 0;
-
-
-            int y = MigMaster.getCenteredPosition(h, size);
-
-            if (direction.growY != null)
-                y = (!direction.growY) ? h - size : 0;
-
-
-            calcXOffset += x;
-            calcYOffset += y;
-        }
-        return new Dimension(calcXOffset, calcYOffset);
-    }
-
     public static boolean isHpBarsOnTop() {
         return true;
     }

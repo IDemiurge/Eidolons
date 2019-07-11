@@ -1,9 +1,12 @@
 package eidolons.game.module.herocreator.logic.items;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
+import eidolons.libgdx.gui.panels.dc.logpanel.LogMessageBuilder;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -22,21 +25,22 @@ import java.util.*;
  * Created by JustMe on 12/7/2018.
  */
 public class ItemTraitNamer {
-    private static final String ITEM_NAME_TRAITS_SEPARATOR = " with traits ";
+    public static final String ITEM_NAME_TRAITS_SEPARATOR = " with traits ";
 
-    private static void testNaming(DC_TYPE TYPE) {
+    public static void testNaming(DC_TYPE TYPE) {
         String names = "";
         for (int i = 0; i < 5; i++) {
             ObjType type = DataManager.getRandomType(TYPE);
             Set<ItemTrait> traits = new EidolonImbuer().getTraits(
                     type, new Soul(DataManager.getRandomType(DC_TYPE.UNITS)));
             names += "\n" +
-             getName(type, new ArrayList<>(traits));
+                    getName(type, new ArrayList<>(traits));
         }
         main.system.auxiliary.log.LogMaster.log(1, "Result: \n " + names);
     }
 
-    static String getName(ObjType type, List<ItemTrait> traits) {
+    public static String getName(ObjType type, Collection<ItemTrait> TRAITS) {
+        List<ItemTrait> traits = new ArrayList<>(TRAITS);
         //TODO certain combo's should be mapped to CUSTOM SINGLE NAMES, e.g. Reaper, Carnifex etc
         String base = type.getProperty(G_PROPS.BASE_TYPE);
         if (base.isEmpty()) {
@@ -84,7 +88,7 @@ public class ItemTraitNamer {
                 }
                 prefix = adjectives[n1];
                 suffix = Localization.of(
-                 adjectives[n2] + " " + nouns[n3]);
+                        adjectives[n2] + " " + nouns[n3]);
                 // pref for suf! e.g. Horrid Axe of Ravenous Glory
                 break;
             case 4:
@@ -92,24 +96,24 @@ public class ItemTraitNamer {
                 break;
         }
         return StringMaster.getWellFormattedString(prefix + " " + base + " " + suffix).trim()
-         .replace("Of", "of");
+                .replace("Of", "of");
     }
 
-    private static String[] toNouns(List<ItemTrait> traits) {
+    public static String[] toNouns(List<ItemTrait> traits) {
         return to(false, traits);
     }
 
-    private static String[] toAdjectives(List<ItemTrait> traits) {
+    public static String[] toAdjectives(List<ItemTrait> traits) {
         return to(true, traits);
     }
 
-    private static String[] to(boolean adjectives, List<ItemTrait> traits) {
+    public static String[] to(boolean adjectives, List<ItemTrait> traits) {
         String[] array = new String[traits.size()];
 
         for (int a = 0; a < traits.size(); a++) {
             int i = a;
             String[] from = adjectives ? traits.get(i).getTemplate().adjectives
-             : traits.get(i).getTemplate().nouns;
+                    : traits.get(i).getTemplate().nouns;
             if (from.length == 0) {
                 continue;
             }
@@ -127,7 +131,7 @@ public class ItemTraitNamer {
         return array;
     }
 
-    private static boolean isValid(String noun) {
+    public static boolean isValid(String noun) {
         if (noun.isEmpty()) {
             return false;
         }
@@ -153,6 +157,71 @@ public class ItemTraitNamer {
             suffix += trait.toString() + ", ";
         }
         return item.getDisplayedName() + suffix.substring(0, suffix.length() - 2);
+    }
+
+    public static String getDescription(ObjType newType, Set<ItemTrait> traits) {
+        String descr = newType.getDescription();
+        descr += "\n" + "Imbued with traits: ";
+        for (ItemTrait trait : traits) {
+            descr += "\n" +
+                    StringMaster.indent(10) +
+                    getDescription(trait);
+
+        }
+
+        return descr + "\n";
+    }
+
+    private static String getDescription(ItemTrait trait) {
+        String text =
+
+                TextBuilder.wrapInColor(
+                        getColorForTrait(trait.template),
+                        StringMaster.getWellFormattedString(trait.template.toString()))
+                        + StringMaster.wrapInParenthesis(
+                        TextBuilder.wrapInColor(
+                                getColorForLevel(trait.level),
+                                trait.level.toString()));
+
+
+        for (String arg : ContainerUtils.openContainer(trait.template.args)) {
+            text += "\n" +
+
+                    ItemTraitParser.parseMnemonic(arg, trait.level, DC_TYPE.WEAPONS);
+        }
+
+//        switch (trait.template.type) {
+//        }
+        return text;
+    }
+
+    private static Color getColorForLevel(ITEM_LEVEL level) {
+        switch (level) {
+
+            case MINOR:
+
+                return Color.GREEN;
+            case LESSER:
+
+                return Color.YELLOW;
+            case COMMON:
+
+                return Color.ORANGE;
+            case GREATER:
+
+                return Color.RED;
+            case LEGENDARY:
+
+                return Color.VIOLET;
+        }
+        return null;
+    }
+
+    private static Color getColorForTrait(ItemTraits.ITEM_TRAIT template) {
+        for (ItemTraits.EIDOLON_ASPECT eidolon_aspect : template.styleMap.keySet()) {
+
+        }
+        return Color.MAROON;
     }
 
     //TODO LOCALIZATION?!

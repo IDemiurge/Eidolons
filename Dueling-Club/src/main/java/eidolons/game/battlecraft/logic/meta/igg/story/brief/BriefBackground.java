@@ -21,6 +21,10 @@ public class BriefBackground extends FullscreenAnimation {
     public BriefBackground() {
         super(true);
     }
+    public BriefBackground(String background) {
+        super(true);
+        setUserObject(background);
+    }
 
     @Override
     public void setUserObject(Object userObject) {

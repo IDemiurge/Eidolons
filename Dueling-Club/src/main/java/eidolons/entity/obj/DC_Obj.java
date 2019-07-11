@@ -773,4 +773,8 @@ public abstract class DC_Obj extends MicroObj {
     public boolean isPale() {
         return pale;
     }
+
+    public void log(String s) {
+        getGame().getLogManager().log(getName() + ": " + s);
+    }
 }

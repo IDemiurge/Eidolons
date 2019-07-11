@@ -24,14 +24,12 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.4b";
+    public static final String VERSION = "0.9.4d";
     public static final String VERSION_NAME = "IGG demo";//"Backer Demo";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
-    public static boolean EXE_MODE = true;
     public static boolean swingOn = true;
     public static boolean animationTestMode;
-    public static long BUILD; //read from POM!
     private static CoreEngine engineObject;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;
@@ -92,8 +90,9 @@ public class CoreEngine {
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
+        System.out.println("Eidolons "+VERSION);
+        System.out.println("Core Engine Init... ");
 
-        System.getProperties().list(System.out);
 
         windows = System.getProperty("os.name").startsWith("Windows");
         System.out.println("Heap size:  " +
@@ -118,6 +117,14 @@ public class CoreEngine {
         SoundMaster.initialize();
         DataManager.init();
         Chronos.logTimeElapsedForMark("SYSTEM INIT");
+
+        System.out.println("...Core Engine Init finished");
+//        if (!me)
+        {
+            System.out.println();
+            System.getProperties().list(System.out);
+            System.out.println();
+        }
     }
 
     public static void init(boolean macro) {

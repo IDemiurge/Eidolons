@@ -11,6 +11,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.boss.entity.BossMaster;
+import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -38,6 +39,9 @@ public class UnitViewOptions {
     private String spritePath;
 
 
+    public UnitViewOptions() {
+
+    }
     public UnitViewOptions(BattleFieldObject obj) {
         createFromGameObject(obj);
     }
@@ -93,6 +97,8 @@ public class UnitViewOptions {
 
         if (obj.isBoss()) {
            spritePath= BossAnimator.getSpritePath(obj);
+        } else {
+            spritePath= OverlayingMaster.getSpritePath(obj);
         }
 
         this.mainHero =obj.isMine() && obj.isMainHero();

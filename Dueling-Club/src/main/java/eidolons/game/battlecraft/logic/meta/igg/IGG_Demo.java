@@ -119,6 +119,12 @@ public class IGG_Demo {
     }
 
     public enum IGG_MISSION {
+        TUTORIAL("Hall of Lords.xml", "Hall of Lords", 0, 1){
+            @Override
+            public boolean isTutorial() {
+                return true;
+            }
+        },
         ACT_I_MISSION_I("Gates.xml", "Gates of Nyrn", 1, 1){
             @Override
             public boolean isTutorial() {

@@ -4,6 +4,7 @@ import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.game.module.herocreator.logic.items.ItemTraits.ITEM_TRAIT;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 12/7/2018.
@@ -46,6 +47,7 @@ public class ItemTrait {
     //some templates are put before level!
     @Override
     public String toString() {
-        return template + " - " + level.getLevel();
+        return StringMaster.getWellFormattedString(template.toString()) + " " +
+                StringMaster.wrapInParenthesis(level.toString());
     }
 }

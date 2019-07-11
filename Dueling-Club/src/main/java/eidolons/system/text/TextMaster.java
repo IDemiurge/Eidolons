@@ -406,7 +406,7 @@ public class TextMaster {
     }
 
     public static String getTextPath() {
-        return PathFinder.getEnginePath() + PathFinder.getTextPath() + locale + "/";
+        return PathFinder.getRootPath() + PathFinder.getTextPath() + locale + "/";
     }
 
     public static String getLocale() {

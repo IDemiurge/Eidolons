@@ -130,7 +130,7 @@ public class TimeMaster {
     }
 
     public static String getDateString() {
-        return NumberUtils.getOrdinal(getDay()) +" of " + getMonthName() +" " +   getYear();
+        return NumberUtils.getOrdinal(getDay()) +" of " + getMonthName() +" 2019"  ;
 
     }
 

@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.bf.grid.OverlayView;
+import eidolons.libgdx.texture.Sprites;
 import main.content.enums.entity.UnitEnums;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
@@ -24,8 +25,8 @@ public class OverlayingMaster {
 //    a graceful mathematical solution was coming...
 //    int diff = direction.getDegrees() - direction1.getDegrees();
 //        int middle = (direction.getDegrees() + direction1.getDegrees()) / 2;
-        int x = dim1.width - dim2.width;
-        int y = dim1.height - dim2.height;
+        int x = dim2     .width - dim1.width;
+        int y = dim2.height - dim1.height;
 
 //        if (Math.abs(diff) == 45) {
 ////        int dist = Math
@@ -152,5 +153,17 @@ public class OverlayingMaster {
             calcYOffset += y;
         }
         return new Dimension(calcXOffset, calcYOffset);
+    }
+
+    public static String getSpritePath(BattleFieldObject obj) {
+        if (obj.isOverlaying()) {
+            if (obj.getName().equalsIgnoreCase("torch")) {
+            return Sprites.TORCH;
+            }
+        } else {
+            if (obj.getName().equalsIgnoreCase("ALTAR"))
+                return Sprites.ALTAR;
+        }
+        return null;
     }
 }

@@ -95,7 +95,7 @@ public class DialogueFactory {
             Speech speech = getSpeech(NumberUtils.getInteger(ID));
 
             String pathRoot = getFileRootPath();
-//             PathFinder.getEnginePath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
+//             PathFinder.getRootPath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();
             String path =  DialogueLineFormatter.getLinesFilePath(pathRoot);
 

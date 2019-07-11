@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,6 +25,7 @@ import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.*;
@@ -32,13 +34,14 @@ public class GridCell extends Group implements Borderable {
     protected static boolean spriteCacheOn;
     protected Image backImage;
     protected TextureRegion backTexture;
+    protected TextureRegion overlay;
+    protected float overlayRotation;
     protected Image border = null;
     protected int gridX;
     protected int gridY;
     protected TextureRegion borderTexture;
     protected Label cordsText;
 
-    boolean VOID;
     // some creatures can walk there?
 
     /**
@@ -59,6 +62,14 @@ public class GridCell extends Group implements Borderable {
 
     public static void setSpriteCacheOn(boolean spriteCacheOn) {
         GridCell.spriteCacheOn = spriteCacheOn;
+    }
+
+    public Image getBackImage() {
+        return backImage;
+    }
+
+    public TextureRegion getBackTexture() {
+        return backTexture;
     }
 
     public GridCell init() {
@@ -112,7 +123,7 @@ public class GridCell extends Group implements Borderable {
                                  leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
                                     return;
                             } catch (Exception e) {
-                                main.system.ExceptionMaster.printStackTrace(e);
+                                ExceptionMaster.printStackTrace(e);
                             }
                     GuiEventManager.trigger(TARGET_SELECTION, GridCell.this);
 
@@ -157,6 +168,19 @@ public class GridCell extends Group implements Borderable {
              DarkShader.getDarkShader()
 //             FishEyeShader.getShader()
               : null, true);
+        }
+
+        if (overlay != null) {
+
+            Vector2 v =  localToStageCoordinates
+                    (new Vector2(getGridX()*128, getGridY()*128));
+            float x= v.x;
+            float y= v.y;
+            batch.draw(overlay, x, y, x+64, y+64, 128, 128, 1, 1, overlayRotation);
+//              v = localToStageCoordinates(new Vector2(0, 0));
+//              x= v.x;
+//              y= v.y;
+//            batch.draw(overlay, 0, 0, x+64, y+64, 128, 128, 1, 1, overlayRotation);
         }
 
     }
@@ -258,4 +282,19 @@ public class GridCell extends Group implements Borderable {
 
     }
 
+    public void setOverlayRotation(float overlayRotation) {
+        this.overlayRotation = overlayRotation;
+    }
+
+    public void setOverlay(TextureRegion overlay) {
+        this.overlay = overlay;
+    }
+
+    public TextureRegion getOverlay() {
+        return overlay;
+    }
+
+    public float getOverlayRotation() {
+        return overlayRotation;
+    }
 }

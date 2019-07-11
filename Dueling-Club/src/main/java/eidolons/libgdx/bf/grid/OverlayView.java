@@ -28,6 +28,18 @@ public class OverlayView extends BaseView implements HpBarView{
         return bar;
     }
 
+    @Override
+    public void init(UnitViewOptions o) {
+        super.init(o);
+        if (overlaySprite!=null )
+        {
+            overlaySprite.setBlending(BLENDING.SCREEN);
+            overlaySprite.setScale(0.5f);
+//            overlaySprite.setHeight(64);
+//            overlaySprite.setWidth(64);
+        }
+    }
+
     public HpBar getHpBar() {
         return hpBar;
     }

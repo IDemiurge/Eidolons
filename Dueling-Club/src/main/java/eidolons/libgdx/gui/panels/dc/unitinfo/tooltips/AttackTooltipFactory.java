@@ -135,6 +135,11 @@ public class AttackTooltipFactory {
             public ValueContainer getPrecalcRow() {
                 return precalcRow;
             }
+
+            @Override
+            public String getDescription() {
+                return el.getDescription();
+            }
         });
         return toolTip;
     }

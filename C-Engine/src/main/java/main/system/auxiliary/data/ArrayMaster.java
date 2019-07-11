@@ -2,6 +2,7 @@ package main.system.auxiliary.data;
 
 
 import main.entity.obj.Obj;
+import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 
@@ -174,7 +175,6 @@ public class ArrayMaster<T> {
 //        main.system.auxiliary.log.LogMaster.log(1, i + ":" + i1);
         return booleanFalseArrays[i][i1];
     }
-
     /**
      * This method rotates the matrix 90 degrees counter clockwise without using extra buffer..
      */

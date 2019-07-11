@@ -54,7 +54,7 @@ public class RoomTemplateMaster {
     private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>>> templateMap;
     private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> preloadedData;
 
-    public RoomTemplateMaster(LevelData data, LevelModel model) {
+    public RoomTemplateMaster(LevelData data) {
         this.data = data;
         groups = this.data.getTemplateGroups();
         templateMap = new XLinkedMap<>();
@@ -235,15 +235,20 @@ public class RoomTemplateMaster {
     }
 
 
-    private RoomModel createRoomModel(String data,
-                                      EXIT_TEMPLATE exit,
-                                      ROOM_TYPE template) {
+    public    RoomModel createRoomModel(String data,
+                                             EXIT_TEMPLATE exit,
+                                             ROOM_TYPE template) {
+        return createRoomModel(wrapWidth, wrapType, data, exit, template);
+    }
+        public static  RoomModel createRoomModel(int wrapWidth, String wrapType, String data,
+                                                 EXIT_TEMPLATE exit,
+                                                 ROOM_TYPE template) {
         String[] array = StringMaster.splitLines(data.trim());
         if (array.length < 1) {
             log(1, "EMPTY ROOM FOR " + template + exit);
             return null;
         }
-        int wrapWidth = getWrapWidthForRoomModel(exit, template);
+          wrapWidth = getWrapWidthForRoomModel(wrapWidth, exit, template);
 
         String[][] cells = new String[array.length + wrapWidth * 2][array[0].length() + wrapWidth * 2];
         //        boolean hor = array[0].length() + wrapWidth * 2 > array.length + wrapWidth * 2;
@@ -280,7 +285,7 @@ public class RoomTemplateMaster {
         return model;
     }
 
-    private String[][] applyFailSafe(String[][] cells) {
+    public static String[][] applyFailSafe(String[][] cells) {
         int w = cells.length;
         int h = cells[0].length;
         if (cells[0][h / 2].equalsIgnoreCase(ROOM_CELL.INDESTRUCTIBLE.getSymbol())) {
@@ -298,7 +303,10 @@ public class RoomTemplateMaster {
         return cells;
     }
 
-    private int getWrapWidthForRoomModel(EXIT_TEMPLATE exit, ROOM_TYPE template) {
+    private     int getWrapWidthForRoomModel(EXIT_TEMPLATE exit, ROOM_TYPE template) {
+        return getWrapWidthForRoomModel(wrapWidth, exit, template);
+    }
+        public static  int getWrapWidthForRoomModel(int wrapWidth, EXIT_TEMPLATE exit, ROOM_TYPE template) {
         if (wrapWidth > 1) {
             if (template == ROOM_TYPE.CORRIDOR
                 //             || template == ROOM_TYPE.DEATH_ROOM

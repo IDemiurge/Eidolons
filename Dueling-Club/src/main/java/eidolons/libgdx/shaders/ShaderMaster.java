@@ -33,7 +33,7 @@ public class ShaderMaster {
     @Test
     public  void syncShaderData(){
         CoreEngine.systemInit();
-        String srcPath = (PathFinder.getEnginePath() + getClass().getPackage().toString())
+        String srcPath = (PathFinder.getRootPath() + getClass().getPackage().toString())
          .replace(".", "/")
          .replace("target", "src\\main\\java")
          .replace("package ", "") + "/data"
@@ -64,7 +64,7 @@ public class ShaderMaster {
     private static String getShadersPath() {
         if (path == null) {
             path = PathFinder. getShadersPath();
-//            path = (PathFinder.getEnginePath() +ShaderMaster.class.getPackage().toString())
+//            path = (PathFinder.getRootPath() +ShaderMaster.class.getPackage().toString())
 //             .replace(".", "/")
 //             .replace("target", "src\\main\\java")
 //             .replace("package ", "") + "/data/"

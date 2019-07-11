@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
+import main.system.auxiliary.StringMaster;
+import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -15,12 +17,14 @@ public class TextBuilder {
     protected Message message;
     protected StringBuilder sb;
     LabelStyle style;
+
     public TextBuilder() {
-       this(null );
+        this(null);
     }
+
     public TextBuilder(LabelStyle style) {
         sb = new StringBuilder();
-        if (style==null ){
+        if (style == null) {
             style = getDefaultLabelStyle();
         }
         this.style = style;
@@ -31,7 +35,7 @@ public class TextBuilder {
     }
 
     public Message build(float w) {
-        Label l = new Label(sb.toString(),style);
+        Label l = new Label(sb.toString(), style);
         l.setWrap(true);
         l.setAlignment(Align.left);
         message = newMessage();
@@ -61,13 +65,12 @@ public class TextBuilder {
     }
 
     protected LabelStyle getDefaultLabelStyle() {
-        if (StyleHolder.isHieroOn())
-        {
-          return   StyleHolder.getDefaultHiero();
+        if (StyleHolder.isHieroOn()) {
+            return StyleHolder.getDefaultHiero();
         }
         return
-         StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(),
-          getColor());
+                StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(),
+                        getColor());
     }
 
     protected Color getColor() {
@@ -100,6 +103,11 @@ public class TextBuilder {
         sb.append(s);
         sb.append("[]");
         return this;
+    }
+
+    public static String wrapInColor(Color color, String s) {
+        return StringMaster.wrapInBraces("#" + GdxColorMaster.toStringForLog(color))
+                + s + StringMaster.wrapInBraces("");
     }
 
     public void startColor(String colorRGBA) {

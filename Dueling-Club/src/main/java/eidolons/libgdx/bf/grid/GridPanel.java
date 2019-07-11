@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -16,12 +17,15 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -50,6 +54,7 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.Debugger;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -381,10 +386,52 @@ public class GridPanel extends Group {
         return (UnitView) viewMap.get(battleFieldObject);
     }
 
+
+    List<Manipulator> manipulators = new ArrayList<>();
     private void bindEvents() {
 
+        GuiEventManager.bind(INIT_MANIPULATOR, (obj) -> {
+            Manipulator manipulator = (Manipulator) obj.get();
+            addActor(manipulator);
+            manipulators.add(manipulator);
+            Coordinates c = manipulator.getCoordinates();
+            manipulator.setPosition(c.x * 128,
+                    (getGdxY(c.y)));
+        });
+        GuiEventManager.bind(INIT_CELL_OVERLAY, (obj) -> {
+            DC_Cell cell = (DC_Cell) obj.get();
+            GridCellContainer container = cells[cell.getX()][rows - 1 - cell.getY()];
+            String overlayData = cell.getOverlayData();
+
+            String path = VariableManager.removeVarPart(overlayData);
+            Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
+            TextureRegion region = new TextureRegion(TextureCache.getOrCreateR(path),
+                    c.x * 128, c.y * 128, 128, 128);
+            container.setOverlay(region);
+            container.setOverlayRotation(cell.getOverlayRotation());
+
+
+            container.getBackImage().setDrawable(new TextureRegionDrawable(region));
+        });
+        GuiEventManager.bind(INTERACTIVE_OBJ_RESET, (p) -> {
+            InteractiveObj obj = (InteractiveObj) p.get();
+            if (obj.isOff()) {
+                //TODO find and disble  light emitter
+                GuiEventManager.trigger(RESET_LIGHT_EMITTER, obj);
+            }
+        });
         GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
+        });
+        GuiEventManager.bind(CELL_RESET, obj -> {
+            DC_Cell cell = (DC_Cell) obj.get();
+            GridCellContainer container = cells[cell.getX()][cell.getY()];
+            //overlays
+            container.getBackImage().setDrawable(
+                    new TextureRegionDrawable(TextureCache.getOrCreateR(cell.getImagePath())));
+
+            container.setOverlayRotation(cell.getOverlayRotation());
+
         });
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
@@ -544,6 +591,11 @@ public class GridPanel extends Group {
 
     }
 
+
+    public float getGdxY(int y) {
+        return getRows() - 1 - y;
+    }
+
     private void updateHpBar(Object o) {
         HpBarView view = null;
         if (o instanceof BattleFieldObject) {
@@ -682,10 +734,10 @@ public class GridPanel extends Group {
         GuiEventManager.bind(MOVE_OVERLAYING, obj -> {
             for (OverlayView overlay : overlays) {
                 if (overlay.getUserObject() == obj.get()) {
-                   Vector2 v = OverlayingMaster.getOffset(overlay.getDirection(),
-                    overlay.getUserObject().getDirection());
+                    Vector2 v = OverlayingMaster.getOffset(overlay.getDirection(),
+                            overlay.getUserObject().getDirection());
 
-                    overlay.setDirection( overlay.getUserObject().getDirection());
+                    overlay.setDirection(overlay.getUserObject().getDirection());
 
                     MoveToAction a = ActionMaster.addMoveByAction(overlay, v.x, v.y, 0.5f);
                     a.setInterpolation(Interpolation.circleOut);
@@ -693,7 +745,7 @@ public class GridPanel extends Group {
             }
 
         });
-            GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
+        GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
             UnitView view = (UnitView) getViewMap().get(list.get(0));
             view.updateModeImage((String) list.get(1));
@@ -932,6 +984,12 @@ public class GridPanel extends Group {
         //        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
         //        shards.setZIndex(Integer.MAX_VALUE);
         wallMap.setZIndex(Integer.MAX_VALUE);
+
+        manipulators.forEach(manipulator -> {
+            manipulator.setZIndex(Integer.MAX_VALUE);
+
+
+        });
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
 
 

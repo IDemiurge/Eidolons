@@ -8,9 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.old.MultiValueContainer;
 
 import java.util.ArrayList;
@@ -35,6 +37,40 @@ public class AttackTooltip extends ActionTooltip {
         TablePanel left = new TablePanel();
 
         final ActionTooltipSource source = (ActionTooltipSource) getUserObject();
+
+        /**
+         * damage
+         * cases
+         * damage breakdown - via atk calculator, should be possible?
+         * description
+         * costs
+         *
+         * colored text!
+         * strongest - cheapest - optimal
+         *
+         *
+         * format
+         *
+         * a few boxes but not too many!
+         *
+         */
+
+        String description= source.getDescription();
+
+        TablePanelX table = new TablePanelX();
+
+        TablePanelX header = new TablePanelX();
+        //title
+        //
+
+        TablePanelX basics = new TablePanelX();
+        new LabelX(description, StyleHolder.getDefaultLabelStyle());
+
+        TablePanelX advanced = new TablePanelX();
+
+
+
+
 
         final MultiValueContainer valueContainer = source.getHead();
 

@@ -5,7 +5,6 @@ import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
 import main.content.ContentValsManager;
@@ -19,7 +18,6 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +37,7 @@ public class DescriptionTooltips {
 
     public static void initTutorialMap() {
         tutorialMap = new XLinkedMap<>();
-        String path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
+        String path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
         String source = FileManager.readFile(path);
         parseSource(source,tutorialMap, false);
     }
@@ -50,26 +48,26 @@ public class DescriptionTooltips {
         descrMap = new XLinkedMap<>();
         tutorialMap = new XLinkedMap<>();
 
-        String path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/values.txt";
+        String path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/values.txt";
         String source = FileManager.readFile(
                 path);
         parseSource(source, true);
 
-        path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/attributes.txt";
+        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/attributes.txt";
         source = FileManager.readFile(path);
         if (source.isEmpty()) {
             source = compileAndReadSource(path, DC_ContentValsManager.getAttributes());
         }
         parseSource(source, true);
 
-        path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/masteries.txt";
+        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/masteries.txt";
         source = FileManager.readFile(path);
         if (source.isEmpty()) {
             source = compileAndReadSource(path, DC_ContentValsManager.getMasteries());
         }
         parseSource(source, true);
 
-        path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/messages.txt";
+        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/messages.txt";
         source = FileManager.readFile(path);
         parseSource(source, false);
 
@@ -84,7 +82,7 @@ public class DescriptionTooltips {
         source = FileManager.readFile(path + "/heroes.txt");
         parseSource(source, loreMap, false);
 
-        path = PathFinder.getEnginePath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
+        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
         source = FileManager.readFile(path);
         parseSource(source,tutorialMap, false);
 

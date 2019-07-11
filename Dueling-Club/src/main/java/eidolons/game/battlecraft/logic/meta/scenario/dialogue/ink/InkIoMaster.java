@@ -69,7 +69,7 @@ public class InkIoMaster {
     public static String readJson(String path) throws IOException {
 
         BufferedReader br = new BufferedReader(
-         new FileReader(FileManager.getFile(PathFinder.getEnginePath()+PathFinder.getTextPath()+
+         new FileReader(FileManager.getFile(PathFinder.getRootPath()+PathFinder.getTextPath()+
          path )));
 
         try {

@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -176,6 +177,8 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         location.initEntrances();
         plan.setStringData(data);
         initDynamicObjData(location, plan);
+
+
 
         return location;
     }

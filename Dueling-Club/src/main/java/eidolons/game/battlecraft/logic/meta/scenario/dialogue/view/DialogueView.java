@@ -22,6 +22,7 @@ public class DialogueView extends TablePanelX implements Scene {
     private boolean done;
 
     DialogueHandler handler;
+    private String backgroundPath;
 //    boolean lightweight;
 //    boolean upsideDown;
     /*
@@ -87,6 +88,7 @@ public class DialogueView extends TablePanelX implements Scene {
         ActorDataSource active = getSpeakerActor();
         ActorDataSource listener = getListenerActor();
 
+        backgroundPath = data.getBackground();
 
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
@@ -233,4 +235,11 @@ public class DialogueView extends TablePanelX implements Scene {
         super.setPosition(x, y);
     }
 
+    public String getBackgroundPath() {
+        return backgroundPath;
+    }
+
+    public void setBackgroundPath(String backgroundPath) {
+        this.backgroundPath = backgroundPath;
+    }
 }

@@ -33,11 +33,13 @@ import java.util.List;
 public class DefaultActionHandler {
 
     public static boolean leftClickActor(DC_Obj userObject) {
+        if (!Eidolons.getGame().getManager().isSelecting())
         if (userObject instanceof InteractiveObj) {
             activate(new Context(Eidolons.getMainHero(), userObject), ((InteractiveObj) userObject).getDM().getDefaultAction(
                     Eidolons.getMainHero(), (DungeonObj) userObject));
             return true;
         }
+
         return false;
     }
 

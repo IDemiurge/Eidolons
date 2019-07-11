@@ -107,6 +107,7 @@ public class StringMaster {
     public static final String IDENTITY = " Identity";
     public static final String ALIGNMENT = " Alignment";
     public static final String MAP_VALUE_KEY_SEPARATOR = null;
+    public static final String CELL_DATA_SEPARATOR = "::";
     private static final String COORDINATES_SEPARATOR = "-";
     private static final String ALT_SEPARATOR = ",";
     private static final String standard_symbols = "'-(),";
@@ -1179,6 +1180,10 @@ public class StringMaster {
             return true;
         }
         return false;
+    }
+
+    public static String indent(int i) {
+        return getStringXTimes(i, " ");
     }
 
 

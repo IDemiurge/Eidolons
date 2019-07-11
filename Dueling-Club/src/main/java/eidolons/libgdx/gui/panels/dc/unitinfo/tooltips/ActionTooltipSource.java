@@ -17,4 +17,6 @@ public interface ActionTooltipSource {
     CostTableSource getCostsSource();
 
     ValueContainer getPrecalcRow();
+
+    String getDescription();
 }

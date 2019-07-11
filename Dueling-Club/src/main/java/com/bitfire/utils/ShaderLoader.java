@@ -19,10 +19,9 @@ package com.bitfire.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import main.data.filesys.PathFinder;
-import main.system.launch.CoreEngine;
 
 public final class ShaderLoader {
-    public static String BasePath =PathFinder.getEnginePath()+ PathFinder.getShadersPath() + "bitfire/";
+    public static String BasePath =PathFinder.getRootPath()+ PathFinder.getShadersPath() + "bitfire/";
     public static boolean Pedantic = true;
 
 

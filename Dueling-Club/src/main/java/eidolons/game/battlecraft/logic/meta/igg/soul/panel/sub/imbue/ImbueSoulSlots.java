@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.imbue;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxImageMaster;
@@ -17,7 +18,7 @@ public class ImbueSoulSlots extends TablePanelX {
 
     public ImbueSoulSlots(ImbuePanel imbuePanel) {
         this.imbuePanel = imbuePanel;
-        addActor(new NoHitImage(Images.COLUMNS));
+//        addActor(new NoHitImage(Images.COLUMNS));
         defaults().space(99);
         for (int i = 0; i < 4; i++) {
             add(slots[i] = new SoulSlot(i));
@@ -47,6 +48,7 @@ public class ImbueSoulSlots extends TablePanelX {
                 return;
             }
         }
+        souls[0].setBeingUsed(false);
         souls[0]= soul;
     }
 
@@ -66,7 +68,11 @@ public class ImbueSoulSlots extends TablePanelX {
             if (soul == null) {
                 container.setImage("");
             } else
-                container.setImage(soul.getUnitType().getImagePath());
+            {
+                container.setImage(new Image(GdxImageMaster.round(soul.getUnitType().getImagePath(),false)));
+                container.setScale(0.76f);
+//                container.setImage(soul.getUnitType().getImagePath());
+            }
         }
     }
 }

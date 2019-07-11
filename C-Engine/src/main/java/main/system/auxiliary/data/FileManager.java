@@ -62,8 +62,8 @@ public class FileManager {
 //                }
                 return "";
             }
-            if (!file.getPath().contains(PathFinder.getEnginePath()))
-                return readFile(FileManager.getFile(PathFinder.getEnginePath() + file.getPath()),
+            if (!file.getPath().contains(PathFinder.getRootPath()))
+                return readFile(FileManager.getFile(PathFinder.getRootPath() + file.getPath()),
                  lineSeparator);
             return "";
         }
@@ -228,7 +228,7 @@ public class FileManager {
                 return file;
             }
 //            if (!allowInvalid)
-//            file = getFile(PathFinder.getEnginePath() + path, false);
+//            file = getFile(PathFinder.getRootPath() + path, false);
 //            if (file.isFile() || file.isDirectory()) {
 //                return file;
 //            }
@@ -236,7 +236,7 @@ public class FileManager {
             if (!CoreEngine.isActiveTestMode())
                 if (!CoreEngine.isFullFastMode()) {
                 if (!missing.contains(file.getPath())) {
-                    main.system.auxiliary.log.LogMaster.log(1, "FILE NOT FOUND: " + file);
+                    main.system.auxiliary.log.LogMaster.verbose("FILE NOT FOUND: " + file);
                     missing.add(file.getPath());
                 }
             }
@@ -251,12 +251,12 @@ public class FileManager {
 
     public static String formatPath(String path, boolean force) {
         StringBuilder formatted = new StringBuilder();
-        int index = path.lastIndexOf(PathFinder.getEnginePath(), PathFinder.getEnginePath().length() - 1);
+        int index = path.lastIndexOf(PathFinder.getRootPath(), PathFinder.getRootPath().length() - 1);
         if (index == -1 && !force) {
             return path.toLowerCase();
         }
         if (index == 0 && !force) {
-            index += PathFinder.getEnginePath().length() - 1;
+            index += PathFinder.getRootPath().length() - 1;
         }
         String afterClass = force ? path : path.substring(
          index, path.length());
@@ -270,11 +270,11 @@ public class FileManager {
         }
         if (!CoreEngine.isWindows()) {
 
-            return (PathFinder.getEnginePath() + formatted.toString().toLowerCase())
+            return (PathFinder.getRootPath() + formatted.toString().toLowerCase())
              .replace("%20", " ");
         }
         //fix case
-        return PathFinder.getEnginePath() + formatted.toString().toLowerCase();
+        return PathFinder.getRootPath() + formatted.toString().toLowerCase();
     }
 
     public static String getRandomFilePathVariant(String corePath, String format) {
@@ -457,7 +457,7 @@ public class FileManager {
     public static boolean write(String content, String filepath, boolean formatPath) {
         if (CoreEngine.isWindows())
             if (!filepath.contains(":")) {
-                filepath = PathFinder.getEnginePath() + "/" + filepath;
+                filepath = PathFinder.getRootPath() + "/" + filepath;
             }
         if (formatPath) {
             filepath = formatPath(filepath);

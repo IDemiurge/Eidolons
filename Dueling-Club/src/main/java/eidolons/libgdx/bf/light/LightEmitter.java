@@ -58,6 +58,8 @@ public class LightEmitter extends SuperActor {
     private float baseAlpha;
     private Boolean withinCamera;
     private boolean alphaChanging;
+    private boolean off;
+
 
     public LightEmitter(BattleFieldObject obj, LightEmittingEffect effect) {
         this.overlaying = obj.isOverlaying();
@@ -150,10 +152,8 @@ public class LightEmitter extends SuperActor {
                 FadeImageContainer ray = rays.get(d);
                 if (ray != null) {
                     if (!checkCellFree(c)) {
-                        freeRays++;
-                        ray.fadeOut();
-                        ActionMaster.addRemoveAfter(ray);
-                        rays.remove(d);
+                        removeRay(ray, d);
+
                     }
                 } else {
                     if (freeRays > 0) {
@@ -204,6 +204,13 @@ public class LightEmitter extends SuperActor {
 
     }
 
+    private void removeRay(FadeImageContainer ray, DIRECTION d) {
+        freeRays++;
+        ray.fadeOut();
+        ActionMaster.addRemoveAfter(ray);
+        rays.remove(d);
+    }
+
     private boolean isRandomLightDirection() {
         return true;
     }
@@ -229,8 +236,28 @@ public class LightEmitter extends SuperActor {
         return true;
     }
 
+    public void setOff(boolean off) {
+        this.off = off;
+        if (off) {
+            alphaAction.setEnd(0);
+        } else {
+            alphaAction.setEnd(baseAlpha);
+
+        }
+    }
+
     @Override
     public void act(float delta) {
+
+//        if (getUserObject().checkStatus(UnitEnums.STATUS.OFF)) {
+//            alphaAction.setEnd(0);
+//            off = true;
+//        } else {
+//            if (off){
+//                off=false;
+//            }
+//        }
+
         boolean b = alphaAction.getTime() < alphaAction.getDuration();
         boolean changed = b != alphaChanging;
         alphaChanging = b;
@@ -289,7 +316,7 @@ public class LightEmitter extends SuperActor {
         ray.setAlphaTemplate(template);
 
         ray.setTransform(false);
-        Color c = ShadeLightCell.getLightColor(getUserObject());
+        Color c = ShadowMap.getLightColor(getUserObject());
         ray.setColor(c);
 
         return ray;
@@ -340,6 +367,14 @@ public class LightEmitter extends SuperActor {
         main.system.auxiliary.log.LogMaster.log(0, baseAlpha + " alpha for " +
                 getUserObject().getNameAndCoordinate() +
                 " set in " + alphaAction.getDuration());
+    }
+
+    public void reset() {
+        for (DIRECTION direction1 : rays.keySet()) {
+            removeRay(rays.get(direction1), direction1);
+        }
+        freeRays = 2;
+        update();
     }
 
     public enum LIGHT_RAY {

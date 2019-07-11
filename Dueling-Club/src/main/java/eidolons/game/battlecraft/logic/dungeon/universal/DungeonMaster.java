@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -21,7 +23,7 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
  *
  */
 public abstract class DungeonMaster<E extends DungeonWrapper> {
-
+    ;
     protected DC_Game game;
     protected E dungeonWrapper;
     protected DungeonInitializer<E> initializer;
@@ -37,6 +39,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private InteractiveObjMaster interactiveMaster;
     private DungeonLevel dungeonLevel;
     private TrapMaster trapMaster;
+    private PuzzleMaster puzzleMaster;
 
 
     public DungeonMaster(DC_Game game) {
@@ -54,6 +57,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         lockMaster = new LockMaster(this);
         containerMaster = new ContainerMaster(this);
         interactiveMaster = new InteractiveObjMaster(this);
+        puzzleMaster = new PuzzleMaster(this);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -65,6 +69,12 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void gameStarted() {
+
+        try {
+            puzzleMaster.initPuzzles(getDungeon(), getDungeonLevel());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         ParticleManager.init(dungeonWrapper.getDungeon());
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
         spawner.spawn();
@@ -86,6 +96,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
 
         trapMaster.initTraps(getDungeon());
+
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
 

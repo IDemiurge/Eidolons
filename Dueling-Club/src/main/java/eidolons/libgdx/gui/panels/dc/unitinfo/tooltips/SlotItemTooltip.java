@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -24,11 +25,19 @@ public class SlotItemTooltip extends ValueTooltip {
     public SlotItemTooltip() {
     }
 
+    @Override
+    public SlotItemToolTipDataSource getUserObject() {
+        Object obj = super.getUserObject();
+        if (obj instanceof DC_HeroSlotItem) {
+            return  new SlotItemToolTipDataSource((DC_HeroSlotItem) obj);
+        }
+        return (SlotItemToolTipDataSource) obj;
+    }
 
 
     @Override
     public void updateAct(float delta) {
-        final SlotItemToolTipDataSource source = (SlotItemToolTipDataSource) getUserObject();
+        final SlotItemToolTipDataSource source =  getUserObject();
 
         ValueContainer container = new ValueContainer(source.getItem().getName());
         container.setStyle(StyleHolder.getHqLabelStyle(13));

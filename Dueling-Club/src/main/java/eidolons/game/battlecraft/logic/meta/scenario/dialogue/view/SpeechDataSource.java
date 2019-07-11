@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import eidolons.libgdx.texture.Sprites;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class SpeechDataSource {
     ActorDataSource left;
     ActorDataSource right;
     private boolean leftActive = true;
+    private String background= Sprites.BG_DEFAULT;
     //custom font/style?
 
 
@@ -54,6 +56,14 @@ public class SpeechDataSource {
 
     public void setLeftActive(boolean leftActive) {
         this.leftActive = leftActive;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 
     public enum SPEECH_EFFECT {

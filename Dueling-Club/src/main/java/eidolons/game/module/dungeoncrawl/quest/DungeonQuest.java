@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.DC_TYPE;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by JustMe on 10/5/2018.
  */
-public class DungeonQuest {
+public class DungeonQuest implements Quest {
 
     private final ObjType objType;
     private final QuestPreparer preparer;
@@ -107,6 +108,7 @@ public class DungeonQuest {
     }
 
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -142,10 +144,13 @@ public class DungeonQuest {
         return type;
     }
 
+
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public String getProgressText() {
         return progressText;
     }
@@ -177,6 +182,7 @@ public class DungeonQuest {
         return numberAchieved;
     }
 
+    @Override
     public QuestReward getReward() {
         return reward;
     }
@@ -198,6 +204,7 @@ public class DungeonQuest {
         this.coordinate = coordinate;
     }
 
+    @Override
     public String getImage() {
         return image;
     }
@@ -214,18 +221,22 @@ public class DungeonQuest {
         this.powerCoef = powerCoef;
     }
 
+    @Override
     public boolean isStarted() {
         return started;
     }
 
+    @Override
     public void setStarted(boolean started) {
         this.started = started;
     }
 
+    @Override
     public boolean isRewardTaken() {
         return rewardTaken;
     }
 
+    @Override
     public void setRewardTaken(boolean rewardTaken) {
         this.rewardTaken = rewardTaken;
     }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -22,6 +23,8 @@ public class BaseView extends SuperActor {
     protected FadeImageContainer portrait;
     private Image altPortrait;
 
+    SpriteX overlaySprite;
+
     public BaseView(UnitViewOptions o) {
         init(o);
     }
@@ -32,6 +35,16 @@ public class BaseView extends SuperActor {
 
     public void init(UnitViewOptions o) {
         init(o.getPortraitTexture(), o.getPortraitPath());
+        if (o.getSpritePath() != null) {
+            overlaySprite = new SpriteX(o.getSpritePath());
+            addActor(overlaySprite);
+            overlaySprite.setFps(10);
+            //TODO disable hover?
+            /**
+             * fade?
+             * scale?
+             */
+        }
     }
 
     public void init(TextureRegion portraitTexture, String path) {
@@ -54,17 +67,19 @@ public class BaseView extends SuperActor {
             }
         });
     }
+
     @Override
     public int getFluctuatingAlphaPeriod() {
         return 0;
     }
+
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
         originalTexture = processPortraitTexture(portraitTexture, path);
         return new FadeImageContainer(new Image(originalTexture));
     }
 
     protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
-        if (TextureCache.isEmptyTexture(texture)){
+        if (TextureCache.isEmptyTexture(texture)) {
             return getPlaceholderPortrait();
         }
         return texture;

@@ -405,7 +405,7 @@ public final class UnitEnums {
         // seems similar to Ensnare - must spend X ap/sta to get rid of the
         // stuff...
 
-        ;
+        OFF;
 
 
 

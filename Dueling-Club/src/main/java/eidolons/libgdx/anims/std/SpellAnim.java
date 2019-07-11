@@ -23,8 +23,6 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.Set;
 
@@ -100,7 +98,7 @@ public class SpellAnim extends ActionAnim {
 
     private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimConstructor.ANIM_PART part) {
         String path = StrPathBuilder.build(part.getPartPath(), group, part.getPartPath());
-        if (FileManager.isFile(PathFinder.getEnginePath() + PathFinder.getSpellVfxPath() + path)) {
+        if (FileManager.isFile(PathFinder.getRootPath() + PathFinder.getSpellVfxPath() + path)) {
             return path;
         }
 

@@ -254,7 +254,6 @@ where does QUANTITY become QUALITY?
 
         GLAMOUR("", "bliss;decadent; adoration;worship", "blithe"),
 
-
         FORLORN("", "chagrin;", "somber;barren;forsaken;wailful;"),
         ECHO("", "", "haunting"),
 

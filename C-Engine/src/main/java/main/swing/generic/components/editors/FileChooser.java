@@ -101,7 +101,7 @@ public class FileChooser implements EDITOR {
          PathFinder.getResPath()
          , "");
         selected = StringMaster.replaceFirst(selected,
-         PathFinder.getEnginePath()
+         PathFinder.getRootPath()
          , "");
         return selected;
     }

@@ -140,6 +140,12 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         this.objType = objType;
     }
 
+    public void modifyByCoef(float v) {
+        for (E e : keySet()) {
+            put(e, Math.round(get(e) * v));
+        }
+    }
+
 //    public void sortByWeight() {
 //        List<E> list = new SortMaster<E>().sortByExpression_(false, new ArrayList<>(keySet()),
 //                (o) -> get(o));

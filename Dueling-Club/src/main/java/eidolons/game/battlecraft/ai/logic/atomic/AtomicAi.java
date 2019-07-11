@@ -270,7 +270,7 @@ public class AtomicAi extends AiHandler {
     }
 
     public Action getAtomicMove(Coordinates pick, Unit unit) {
-        List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
+        List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit, pick);
         Action action = null;
         if (!sequence.isEmpty()) {
             action = sequence.get(0);

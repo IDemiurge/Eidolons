@@ -515,6 +515,9 @@ public class LogMaster {
         c.setOn(!c.isOn());
     }
 
+    public static void verbose(String string) {
+        log(PRIORITY_VERBOSE, PREFIX_INFO + string);
+    }
     public static void info(String string) {
         log(PRIORITY_INFO, PREFIX_INFO + string);
     }
@@ -551,7 +554,7 @@ public class LogMaster {
         if (fullPrintStream == null) {
             try {
                 fullPrintStream = new PrintStream(
-                        new FileOutputStream(PathFinder.getEnginePath() + PathUtils.getPathSeparator() + getLogFilePath(), true));
+                        new FileOutputStream(PathFinder.getRootPath() + PathUtils.getPathSeparator() + getLogFilePath(), true));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -563,7 +566,7 @@ public class LogMaster {
         if (exceptionPrintStream == null) {
             try {
                 exceptionPrintStream = new PrintStream(
-                        new FileOutputStream(PathFinder.getEnginePath() + PathUtils.getPathSeparator() + getCriticalLogFilePath(), true));
+                        new FileOutputStream(PathFinder.getRootPath() + PathUtils.getPathSeparator() + getCriticalLogFilePath(), true));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

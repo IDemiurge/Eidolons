@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.imbue;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
@@ -20,14 +21,16 @@ public class ImbuePanel extends TablePanelX {
     ImbueTraitsInfo traitsInfo;
 
     public ImbuePanel() {
-        super(700, 900);
+        super(600, 800);
         imbuer = new EidolonImbuer();
 
-        add( soulSlots = new ImbueSoulSlots(this)) ;
-        add(itemInfo = new ImbueItemInfo()).row();
+        TablePanelX<Actor> table = new TablePanelX<>();
+        table.add( soulSlots = new ImbueSoulSlots(this)).center().row(); ;
+        table.add(traitsInfo = new ImbueTraitsInfo()).center().row();
+        table.add( items = new ImbueItems(this));
 
-        add( items = new ImbueItems());
-        add(traitsInfo = new ImbueTraitsInfo());
+        add(table);
+        add(itemInfo = new ImbueItemInfo()).row();
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
     }
 
@@ -48,9 +51,10 @@ public class ImbuePanel extends TablePanelX {
         LabelX traitInfo;
 
         public ImbueTraitsInfo() {
-            super(400, 500);
+            super(600, 200);
             setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
             Label.LabelStyle style = StyleHolder.getDefaultLabelStyle();
+            add(  new LabelX("Eidolon Aspects", style)).center().row();
             add(aspectInfo = new LabelX("", style)).center().row();
             add(traitInfo = new LabelX("", style)).growY().row();
 
@@ -70,6 +74,11 @@ public class ImbuePanel extends TablePanelX {
     }
 
     @Override
+    public void update() {
+        setUserObject(getUserObject());
+    }
+
+    @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         itemInfo.setUserObject(getSelectedItem());
@@ -80,7 +89,7 @@ public class ImbuePanel extends TablePanelX {
     }
 
     private String initAspectInfo() {
-        String info = "Eidolon Aspects\n" + imbuer.getAspects(getSouls());
+        String info = "\n" + imbuer.getAspects(getSouls());
 
         return info;
     }

@@ -507,8 +507,8 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
                 if (RandomWizard.chance(66))
                     return CELL_IMAGE.octagonal;
             case Brimstone:
-                if (RandomWizard.chance(66))
-                    return CELL_IMAGE.circle;
+//                if (RandomWizard.chance(66))
+//                    return CELL_IMAGE.circle;
             case Grimy:
                 if (RandomWizard.chance(66))
                     return CELL_IMAGE.tiles;

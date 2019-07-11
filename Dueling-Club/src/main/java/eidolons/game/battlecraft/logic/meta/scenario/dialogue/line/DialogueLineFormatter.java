@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.line;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
-import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.system.text.DescriptionTooltips;
 import eidolons.system.text.TextMaster;
 import main.data.dialogue.DataString.SPEECH_VALUE;
@@ -50,7 +49,7 @@ public class DialogueLineFormatter {
     public static void fullUpdate() {
         //TODO TUTORIAL?
         for (File scenarioFolder : FileManager.getFilesFromDirectory(
-         PathFinder.getEnginePath() + PathFinder.getScenariosPath()
+         PathFinder.getRootPath() + PathFinder.getScenariosPath()
          , false, true)) {
             //TODO scenario intro?
             for (File missionFolder : FileManager.getFilesFromDirectory(scenarioFolder.getPath()
@@ -69,7 +68,7 @@ public class DialogueLineFormatter {
     }
 
     public static String getDialogueTextPath(String fileName) {
-        return PathFinder.getEnginePath() + PathFinder.getScenariosPath()
+        return PathFinder.getRootPath() + PathFinder.getScenariosPath()
          + fileName + PathUtils.getPathSeparator()
          + TextMaster.getLocale()
          ;
@@ -163,7 +162,7 @@ public class DialogueLineFormatter {
     }
 
     public static String getIntrosFilePath() {
-        return PathFinder.getEnginePath() + PathFinder.getTextPath()
+        return PathFinder.getRootPath() + PathFinder.getTextPath()
          + TextMaster.getLocale() + introsPath;
     }
 

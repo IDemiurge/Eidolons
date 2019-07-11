@@ -70,6 +70,9 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         if (type.getProperty(G_PROPS.BF_OBJECT_CLASS).contains("Consumable")) {
             return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
+        if (type.getProperty(G_PROPS.BF_OBJECT_GROUP).contains("Light Emitter")) {
+            return INTERACTIVE_OBJ_TYPE.LIGHT_EMITTER;
+        }
 
         if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
             return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
@@ -107,12 +110,16 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         ref.setTarget(obj.getId());
         ref.setID(KEYS.ITEM, obj.getId());
         boolean off = obj.isOff();
-        if (!off)
+        if (off) {
+            if (isToggleOffForObj(obj)){
+                obj.setOff(false);
+            }
+            return;
+        }
+        boolean used = obj.isUsed();
+        if (!used)
             obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED, ref));
 
-//        if (off) {
-//            return;
-//        }
         //check scripts, throw event
         switch (type) {
             case INSCRIPTION:
@@ -142,13 +149,20 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             case CONSUMABLE:
                 pickup(obj, unit);
                 break;
+
         }
         obj.setUsed(true);
-//        if (!off) {
-//            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_ON, obj);
-//        } else {
-//            GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_OFF, obj);
-//        }
+        if (isToggleOffForObj(obj)){
+            obj.setOff(true);
+        }
+    }
+
+    private boolean isToggleOffForObj(InteractiveObj obj) {
+        switch (obj.getTYPE()) {
+            case LIGHT_EMITTER:
+                return true;
+        }
+        return false;
     }
 
     private void message(InteractiveObj obj, Unit unit) {
@@ -257,7 +271,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         MECHANISM,
 
         BUTTON,
-        LEVER, CONSUMABLE, KEY, INSCRIPTION,
+        LEVER, CONSUMABLE, KEY, INSCRIPTION, LIGHT_EMITTER,
 
 
     }

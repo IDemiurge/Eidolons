@@ -7,14 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
-import eidolons.content.PROPS;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.generic.SuperContainer;
@@ -24,11 +19,9 @@ import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -41,7 +34,6 @@ import java.util.Random;
  */
 public class ShadeLightCell extends SuperContainer {
 
-    private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean alphaFluctuation = true;
     private final float width;
     private final float height;
@@ -62,7 +54,7 @@ public class ShadeLightCell extends SuperContainer {
         randomize();
         baseAlpha = 0;
         if (isColored()) {
-            teamColor = getLightColor(null);
+            teamColor = ShadowMap.getLightColor(null);
             if (getTeamColor() != null)
                 getContent().setColor(getTeamColor());
         }
@@ -88,26 +80,6 @@ public class ShadeLightCell extends SuperContainer {
                  StringMaster.cropFormat(type.getTexturePath()), ".png", false, false);
         }
         return type.getTexturePath();
-    }
-
-    public static Color getLightColor(BattleFieldObject userObject) {
-
-        COLOR_THEME colorTheme = null;
-        if (userObject != null) {
-            colorTheme = new EnumMaster<COLOR_THEME>().
-             retrieveEnumConst(COLOR_THEME.class, userObject.getProperty
-              (PROPS.COLOR_THEME, true));
-        }
-        if (colorTheme == null) {
-            Dungeon obj = Eidolons.game.getDungeon();
-            colorTheme = obj.getColorTheme();
-        }
-
-        Color c = null;
-        if (colorTheme != null)
-            c = GdxColorMaster.getColorForTheme(colorTheme);
-        if (c != null) return c;
-        return DEFAULT_COLOR;
     }
 
     @Override
@@ -335,6 +307,6 @@ public class ShadeLightCell extends SuperContainer {
         this.baseAlpha = baseAlpha;
 
         if (isColored())
-            teamColor = getLightColor(null);
+            teamColor = ShadowMap.getLightColor(null);
     }
 }

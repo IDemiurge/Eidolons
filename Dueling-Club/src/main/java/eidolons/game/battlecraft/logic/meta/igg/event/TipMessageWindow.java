@@ -27,6 +27,7 @@ import main.system.threading.WaitMaster;
 
 public class TipMessageWindow extends TablePanelX {
 
+    private   boolean large;
     FadeImageContainer imageContainer;
     LabelX label;
     SmartButton[] btns;
@@ -44,13 +45,14 @@ public class TipMessageWindow extends TablePanelX {
         if (!StringMaster.isEmpty(source.title)) {
 
         }
-        boolean large = false;
+          large = false;
         if (!StringMaster.isEmpty(source.image)) {
             add(imageContainer = new FadeImageContainer(source.image));
             if (imageContainer.getWidth() > 500) {
                 large = true;
             }
-            row();
+            if (isVertical())
+                row();
         }
         if (large) {
             label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21));
@@ -125,6 +127,10 @@ public class TipMessageWindow extends TablePanelX {
             setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
         main.system.auxiliary.log.LogMaster.log(1, "Tip msg created with text: " + source.getMessage());
+    }
+
+    private boolean isVertical() {
+        return true;
     }
 
     private void close() {

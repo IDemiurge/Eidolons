@@ -11,12 +11,16 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.Cell;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -30,6 +34,11 @@ public class DC_Cell extends DC_Obj implements Cell {
     DungeonLevel.CELL_IMAGE cellType;
     int cellVariant;
     CONTENT_CONSTS.COLOR_THEME colorTheme;
+
+    String overlayPath;
+    float overlayRotation;
+    private String overlayData;
+
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
@@ -72,6 +81,73 @@ public class DC_Cell extends DC_Obj implements Cell {
             EMPTY_CELL_TYPE = DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
              "terrain");
         return EMPTY_CELL_TYPE;
+    }
+
+    public void setCellType(DungeonLevel.CELL_IMAGE cellType) {
+        this.cellType = cellType;
+        resetCell();
+    }
+
+
+    public DungeonLevel.CELL_IMAGE getCellType() {
+        return cellType;
+    }
+
+    public int getCellVariant() {
+        return cellVariant;
+    }
+
+    public String getOverlayPath() {
+        return overlayPath;
+    }
+
+    public void setOverlayPath(String overlayPath) {
+        this.overlayPath = overlayPath;
+    }
+
+    public float getOverlayRotation() {
+        return overlayRotation;
+    }
+
+    public void setOverlayRotation(float overlayRotation) {
+        this.overlayRotation = overlayRotation;
+    }
+
+    public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
+        return colorTheme;
+    }
+
+    private void resetCell() {
+        setImage(getImagePath(getCellType(), getCellVariant()));
+        GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
+    }
+
+    public static String getImagePath(DungeonLevel.CELL_IMAGE cellType, int cellVariant) {
+        String suffix =getCellImgSuffix(cellVariant);
+
+        return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix +".png");
+    }
+
+    private static String getCellImgSuffix(int cellVariant) {
+        switch (cellVariant) {
+            case 1:
+                return "hl";
+            case 2:
+                return "lite";
+            case 3:
+                return "dark";
+            case 4:
+                return "rough";
+        }
+        return "";
+    }
+
+    public void setCellVariant(int cellVariant) {
+        this.cellVariant = cellVariant;
+    }
+
+    public void setColorTheme(CONTENT_CONSTS.COLOR_THEME colorTheme) {
+        this.colorTheme = colorTheme;
     }
 
     @Override
@@ -225,5 +301,13 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void setVOID(boolean VOID) {
         this.VOID = VOID;
+    }
+
+    public String getOverlayData() {
+        return overlayData;
+    }
+
+    public void setOverlayData(String overlayData) {
+        this.overlayData = overlayData;
     }
 }

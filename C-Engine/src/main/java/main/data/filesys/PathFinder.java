@@ -13,23 +13,20 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PathFinder {
 
-    public static final String PATH_SEPARATOR = PathUtils.getPathSeparator();
     public static final String HOME = System.getProperty("user.home");
     public static final String OPTIONS_PATH = HOME + "/Eidolons/";
-    private static final String PRESENTATION = "presentation" + PathUtils.getPathSeparator();
     private static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + PathUtils.getPathSeparator() +
      "templates";
     private static String MACRO_MODULE_NAME = "macro";
     private static String XML_PATH;
-    private static String ENGINE_PATH;
+    private static String ROOT_PATH;
     private static String IMG_PATH;
     private static String SND_PATH;
     private static String FONT_PATH;
     private static String TYPES_PATH;
     private static String MACRO_TYPES_PATH;
-    private static boolean PRESENTATION_MODE;
     private static String RES_PATH;
     private static Lock initLock = new ReentrantLock();
     private static volatile boolean isInitialized = false;
@@ -40,9 +37,9 @@ public class PathFinder {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
         if (classLoader.getResource("") != null) {
             File temp = new File(classLoader.getResource("").getFile());
-            ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
+            ROOT_PATH = new File(temp.getParentFile().toURI()) + File.separator;
             XML_PATH = new File(temp.getParentFile() + File.separator + "xml") + File.separator;
-            System.out.println("Engine path: " + ENGINE_PATH);
+            System.out.println("Root path: " + ROOT_PATH);
         } else {
             //FOR JARS
             CoreEngine.setJar(true);
@@ -66,25 +63,23 @@ public class PathFinder {
             String path =
              new File(uri.toString().replace(jarName + PathUtils.getPathSeparator(), "")).getAbsolutePath();
             path = path.split("file:")[0];
-            System.out.println("Engine path for Jar: " + path);
+            System.out.println("Root path for Jar: " + path);
 
-            ENGINE_PATH = path + File.separator;
+            ROOT_PATH = path + File.separator;
             XML_PATH = path + File.separator + "xml" + File.separator;
 
         }
 
         RES_PATH = RES_FOLDER_NAME + File.separator;
-        IMG_PATH = ENGINE_PATH + RES_PATH + "img" + PathUtils.getPathSeparator();
+        IMG_PATH = ROOT_PATH + RES_PATH + "img" + PathUtils.getPathSeparator();
 
-        System.out.println("IMG_PATH PATH= " + IMG_PATH);
-        SND_PATH = ENGINE_PATH + RES_PATH + "sound" + PathUtils.getPathSeparator();
+        SND_PATH = ROOT_PATH + RES_PATH + "sound" + PathUtils.getPathSeparator();
 
-        FONT_PATH = ENGINE_PATH + RES_PATH + "fonts" + PathUtils.getPathSeparator();
+        FONT_PATH = ROOT_PATH + RES_PATH + "fonts" + PathUtils.getPathSeparator();
 
         MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();
 
-        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator()
-         + ((PRESENTATION_MODE) ? PRESENTATION : "");
+        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();
 
     }
 
@@ -190,25 +185,14 @@ public class PathFinder {
         return TYPES_PATH;
     }
 
-    public static void setPresentationMode(boolean PRESENTATION) {
-        PRESENTATION_MODE = PRESENTATION;
-    }
-
-    public static String getEnginePath() {
+    public static String getRootPath() {
         init();
-        return ENGINE_PATH;
-    }
-
-    public static String getModulePath() {
-        init();
-        //        if (CoreEngine.isJar())
-        //            return ENGINE_PATH;
-        return PathUtils.cropLastPathSegment(ENGINE_PATH);
+        return ROOT_PATH;
     }
 
     public static String getResPath() {
         init();
-        return ENGINE_PATH + PathUtils.getPathSeparator() + RES_FOLDER_NAME + PathUtils.getPathSeparator();
+        return ROOT_PATH + PathUtils.getPathSeparator() + RES_FOLDER_NAME + PathUtils.getPathSeparator();
     }
 
     public static String getMACRO_TYPES_PATH() {
@@ -218,7 +202,7 @@ public class PathFinder {
 
     public static String getPrefsPath() {
         init();
-        return ENGINE_PATH + getTextPath() + "prefs" + PathUtils.getPathSeparator();
+        return ROOT_PATH + getTextPath() + "prefs" + PathUtils.getPathSeparator();
     }
 
     public static String getWorkspacePath() {
@@ -248,7 +232,7 @@ public class PathFinder {
 
     public static boolean isFullPath(String path) {
         init();
-        return path.contains(ENGINE_PATH);
+        return path.contains(ROOT_PATH);
     }
 
     public static String getVfxPath() {
@@ -299,11 +283,11 @@ public class PathFinder {
 
     public static String removeSpecificPcPrefix(String imagePath) {
         init();
-        return imagePath.replace(getEnginePath(), "");
+        return imagePath.replace(getRootPath(), "");
     }
 
     public static String getJarPath() {
-        return getEnginePath() + jarName;
+        return getRootPath() + jarName;
     }
 
     public static String getEmblemsPath() {
@@ -501,7 +485,7 @@ public class PathFinder {
 //        return getDialoguesPath(texmaster)
 //    }
     public static String getDialoguesPath(String locale) {
-        return getEnginePath() + PathFinder.getTextPath()
+        return getRootPath() + PathFinder.getTextPath()
                 + locale + "/dialogue/";
     }
 

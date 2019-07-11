@@ -3,6 +3,8 @@ package eidolons.game.module.dungeoncrawl.objects;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTIVE_OBJ_TYPE;
 import main.content.enums.GenericEnums;
 import main.entity.type.ObjType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 10/10/2018.
@@ -14,7 +16,7 @@ public class InteractiveObj extends DungeonObj {
 
     public InteractiveObj(ObjType type, int x, int y) {
         super(type, x, y);
-        TYPE=InteractiveObjMaster.chooseTypeForInteractiveObj(type); //TODO
+        TYPE = InteractiveObjMaster.chooseTypeForInteractiveObj(type); //TODO
 
         off = type.checkBool(GenericEnums.STD_BOOLS.OFF_DEFAULT);
     }
@@ -29,7 +31,11 @@ public class InteractiveObj extends DungeonObj {
     }
 
     public void setOff(boolean off) {
+        if ( this.off == off )
+            return;
+
         this.off = off;
+        GuiEventManager.trigger(GuiEventType.INTERACTIVE_OBJ_RESET, this);
     }
 
     public boolean isUsed() {

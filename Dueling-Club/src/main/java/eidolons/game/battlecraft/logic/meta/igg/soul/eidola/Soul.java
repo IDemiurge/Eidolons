@@ -25,6 +25,7 @@ public class Soul {
 
     ObjType unitType;
     private WeightMap<EIDOLON_ASPECT> aspects;
+    private boolean beingUsed;
 //    EIDOLON_STATE state;
 
     public Soul(ObjType unitType) {
@@ -55,7 +56,7 @@ public class Soul {
         } else {
             aspects = new WeightMap<>(new RandomWizard< EIDOLON_ASPECT>().constructWeightMap(prop, EIDOLON_ASPECT.class));
         }
-
+        aspects.modifyByCoef(new Float(getForce()) / 100);
     }
 
     private WeightMap<EIDOLON_ASPECT> fromGroup(UnitEnums.UNIT_GROUPS group) {
@@ -86,5 +87,13 @@ public class Soul {
                 return new WeightMap<>(EIDOLON_ASPECT.class).chain(ASH, 8).chain(VENOM, 7).chain(BLOOD, 6);
         }
         return null;
+    }
+
+    public boolean isBeingUsed() {
+        return beingUsed;
+    }
+
+    public void setBeingUsed(boolean beingUsed) {
+        this.beingUsed = beingUsed;
     }
 }

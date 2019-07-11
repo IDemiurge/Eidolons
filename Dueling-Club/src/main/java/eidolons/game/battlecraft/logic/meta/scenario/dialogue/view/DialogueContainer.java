@@ -16,13 +16,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DialogueContainer extends TablePanelX {
-    private boolean done;
-    private Runnable onDoneCallback;
-    private DialogueHandler dialogueHandler;
-    private BriefBackground background;
-    DialogueView current;
-    private List<Scene> toPlay;
-    private Iterator<Scene> iterator;
+    protected boolean done;
+    protected Runnable onDoneCallback;
+    protected DialogueHandler dialogueHandler;
+    protected BriefBackground background;
+    protected DialogueView current;
+    protected List<Scene> toPlay;
+    protected Iterator<Scene> iterator;
 
     public DialogueContainer() {
         GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED, p -> {
@@ -50,7 +50,7 @@ public class DialogueContainer extends TablePanelX {
 
     }
 
-    private void done() {
+    protected void done() {
         getStage().dialogueDone();
         hide();
     }
@@ -60,13 +60,13 @@ public class DialogueContainer extends TablePanelX {
         return (GuiStage) super.getStage();
     }
 
-    private void start() {
+    protected void start() {
         //init key listening
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
         next();
     }
 
-    private void playOut() {
+    protected void playOut() {
         current.playOut();
     }
 
@@ -78,10 +78,10 @@ public class DialogueContainer extends TablePanelX {
         }
         clearChildren();
         //fade out and back?
-        addActor(background = new BriefBackground());
         current = (DialogueView) iterator.next();
         current.setHandler(dialogueHandler);
         current.setContainer(this);
+        addActor(background = new BriefBackground(current.getBackgroundPath()));
         addActor(current);
     }
 
@@ -97,7 +97,7 @@ public class DialogueContainer extends TablePanelX {
 
     }
 
-    private boolean isLinear() {
+    protected boolean isLinear() {
         return true;
     }
 

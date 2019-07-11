@@ -64,7 +64,6 @@ public class PaleAspect {
     }
 
     public static void enterPale() {
-        ON = true;
         d = 0;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.PALE_ASPECT);
         if (avatar == null) {
@@ -80,7 +79,6 @@ public class PaleAspect {
                 }
             }
         }
-
         //GuiEventManager.trigger(GuiEventType. )
 
         for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
@@ -91,6 +89,7 @@ public class PaleAspect {
         Eidolons.bufferMainHero();
         Eidolons.setMainHero(avatar);
 
+        ON = true;
     }
 
     private static void shadowLeapToLocation(Unit unit, boolean adjacent) {

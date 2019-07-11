@@ -231,8 +231,10 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         if (sprite == null) {
             sprite = new Sprite(currentFrame);
+            sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
         } else {
             sprite.setRegion(currentFrame);
+            //update orig?
         }
         sprite.flip(flipX, flipY);
 
@@ -482,14 +484,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         if (!ListMaster.isNotEmpty(getRegions())) {
             return 0;
         }
-        return getRegions().get(0).packedHeight;
+        return getRegions().get(getCurrentFrameNumber()).packedHeight;
     }
 
     public float getWidth() {
         if (!ListMaster.isNotEmpty(getRegions())) {
             return 0;
         }
-        return getRegions().get(0).packedWidth;
+        return getRegions().get(getCurrentFrameNumber()).packedWidth;
     }
 
     public void centerOnScreen() {

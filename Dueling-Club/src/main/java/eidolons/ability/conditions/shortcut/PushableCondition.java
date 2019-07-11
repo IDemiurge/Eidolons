@@ -1,13 +1,22 @@
 package eidolons.ability.conditions.shortcut;
 
 import eidolons.ability.conditions.DC_Condition;
+import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.Structure;
 import main.content.enums.entity.BfObjEnums;
+import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 
 public class PushableCondition extends DC_Condition {
     @Override
     public boolean check(Ref ref) {
+
+        if (EntityCheckMaster.isOverlaying(ref.getMatchObj())) {
+            if (!new ClearShotCondition().check(ref.getSourceObj(), ref.getMatchObj())) {
+                return false;
+            }
+        }
+
         if (ref.getMatchObj() instanceof Structure) {
             if (((Structure) ref.getMatchObj()).isWall()) {
                 return false;

@@ -33,7 +33,7 @@ public class ScriptGenerator {
              PathFinder.getScenariosPath(), scenario.getName());
             for (String sub : ContainerUtils.open(scenario.getProperty(PROPS.SCENARIO_MISSIONS))) {
                 String path = PathUtils.buildPath(root, sub, SCRIPTS_FILE_NAME);
-                File scriptFile = FileManager.getFile(PathFinder.getEnginePath() + path);
+                File scriptFile = FileManager.getFile(PathFinder.getRootPath() + path);
                 if (scriptFile.exists()) {
                     //save scripts <?>
                     continue;

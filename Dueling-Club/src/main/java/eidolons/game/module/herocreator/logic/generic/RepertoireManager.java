@@ -82,6 +82,7 @@ public class RepertoireManager<T, E> {
                 }
                 //apply buffer to max value
             }
+            result.add(pick);
             if (neverRepeat)
                 pool.remove(pick);
             n++;

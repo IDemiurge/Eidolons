@@ -7,6 +7,7 @@ import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.module.herocreator.logic.generic.RepertoireManager;
 import eidolons.game.module.herocreator.logic.items.ItemTrait;
 import eidolons.game.module.herocreator.logic.items.ItemTraitNamer;
@@ -57,7 +58,9 @@ public class EidolonImbuer {
         if (item instanceof DC_HeroSlotItem) {
 
 //            item.getProperty(PROPS.SOULS_IMBUED)   forbid double imbue?
-
+            if (item.getGroup().equalsIgnoreCase("ammo")) {
+                return false;
+            }
             return true;
         }
         return false;
@@ -86,24 +89,41 @@ public class EidolonImbuer {
 
     }
 
-    public DC_HeroSlotItem imbue(DC_HeroItemObj item, Soul... eidolon) {
+    public DC_HeroItemObj imbue(DC_HeroItemObj item, Soul... souls) {
         //basically create a new item?
 
         //copy durability, previous...
         ObjType newType = new ObjType(item.getType());
 
-        Set<ItemTrait> traits = getTraits(item, eidolon);
+        Set<ItemTrait> traits = getTraits(item, souls);
         //replace old traits? that wouldn't be much fun...
+        if (traits.isEmpty()) {
+            return item;
+        }
+
+        String name = //item.getName() + " imbued: " + ItemTraitNamer.getDescriptor(item, traits);
+        ItemTraitNamer.getName(newType, traits);
+
+        String descr=ItemTraitNamer.getDescription(newType, traits);
+        newType.setDescription(descr);
 
         ItemTraitParser.applyTraits(newType, traits.toArray(new ItemTrait[traits.size()]));
-
-        String name = item.getName() + " imbued: " + ItemTraitNamer.getDescriptor(item, traits);
-
         newType.setName(name);
-
+        Unit owner = item.getOwnerObj();
         item.remove();
+        main.system.auxiliary.log.LogMaster.log(1, item + " imbued with traits: " + traits);
 
-        return (DC_HeroSlotItem) ItemFactory.createItemObj(newType, item.getOriginalUnit(), false);
+        EidolonLord.lord.soulsLost(souls);
+
+        item.log(item + " imbued with traits: " + traits);
+        DataManager.addType(newType);
+        item = ItemFactory.createItemObj(newType, item.getOriginalUnit(), false);
+        if (owner != null) {
+            if (!owner.addItemToInventory(item)) {
+                //stash
+            }
+        }
+        return item;
     }
 
     //DC_HeroSlotItem
@@ -137,7 +157,7 @@ public class EidolonImbuer {
         int maxValue = getMaxValue(item, souls);
         List<ItemTrait> traits = new RepertoireManager<ItemTrait, EIDOLON_ASPECT>().select(
                 n + 1, n - 1, n, set, maxValue, 0, getMapFunction(), getValueFunction(),
-                map, 0.3f, true, false
+                map, 0.5f, true, false
         );
         return new LinkedHashSet<>(traits);
     }
@@ -145,7 +165,9 @@ public class EidolonImbuer {
     private int getMaxValue(Entity item, Soul... eidolon) {
         int force = 0;
         for (Soul soul : eidolon) {
-            force += soul.getForce();
+            if (soul != null) {
+                force += soul.getForce();
+            }
         }
         return force;
     }
@@ -154,7 +176,9 @@ public class EidolonImbuer {
 
         int force = 0;
         for (Soul soul : eidolon) {
-            force += soul.getForce();
+            if (soul != null) {
+                force += soul.getForce();
+            }
         }
 
         for (ITEM_LEVEL value : ITEM_LEVEL.values()) {
@@ -185,7 +209,15 @@ public class EidolonImbuer {
     }
 
     private Function<Pair<ItemTrait, EIDOLON_ASPECT>, Integer> getMapFunction() {
-        return pair -> pair.getKey().getTemplate().getStyleMap().get(pair.getValue());
+        return pair -> {
+            Integer j = 0;
+            j = pair.getKey().getTemplate().getStyleMap().get(pair.getValue());
+            if (j == null) {
+                return 0;
+            }
+            return j;
+        };
+
     }
 
 
@@ -215,10 +247,15 @@ public class EidolonImbuer {
         if (trait.getStyleMap() == null) {
             return false;
         }
-        for (EIDOLON_ASPECT aspect : trait.getStyleMap().keySet()) {
-            if (map.keySet().contains(aspect)) {
-                return true;
+        try {
+            for (EIDOLON_ASPECT aspect : trait.getStyleMap().keySet()) {
+                if (map.keySet().contains(aspect)) {
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            main.system.auxiliary.log.LogMaster.log(2, "Invalid aspect map on trait: " + trait);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return false;
     }

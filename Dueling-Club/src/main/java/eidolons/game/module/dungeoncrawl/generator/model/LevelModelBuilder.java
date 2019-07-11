@@ -60,7 +60,7 @@ public class LevelModelBuilder {
             model = new LevelModel(data, this);
             model.setZones(graph.getZones());
             model.setGraph(graph);
-            templateMaster = new RoomTemplateMaster(data, model);
+            templateMaster = new RoomTemplateMaster(data);
             this.attacher = new RoomAttacher(data, model, templateMaster);
             build(false, graph.findFirstNodeOfType(ROOM_TYPE.ENTRANCE_ROOM), null);
 

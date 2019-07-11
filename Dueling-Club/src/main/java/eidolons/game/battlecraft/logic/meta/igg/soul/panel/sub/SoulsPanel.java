@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -17,6 +19,9 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.stage.ConfirmationPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
@@ -83,7 +88,16 @@ public class SoulsPanel extends SoulTab {
     }
 
     public class SoulActor extends TablePanelX {
+        private  ShaderProgram shader;
         Soul soul;
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            if (parentAlpha == ShaderDrawer.SUPER_DRAW )
+            super.draw(batch, 1);
+        else
+            ShaderDrawer.drawWithCustomShader(this, batch, shader);
+        }
 
         public SoulActor(Soul soul) {
             super(240, 128);
@@ -102,11 +116,17 @@ public class SoulsPanel extends SoulTab {
             VerticalValueContainer aspects = new VerticalValueContainer(aspects1, aspects2);
             table.add(aspects).center().row();
 
-            SmartButton btn = new SmartButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
+            boolean used = soul.isBeingUsed();
+            if (used) {
+                shader = DarkShader.getDarkShader();
+                table.add(new LabelX("Used"));
+            } else {
+                SmartButton btn = new SmartButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
                     () -> {
 
                         if (imbuePanel.isVisible()) {
                             imbuePanel.addSoul(soul);
+                            soul.setBeingUsed(true);
                             GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
                             return;
                         }
@@ -116,10 +136,10 @@ public class SoulsPanel extends SoulTab {
                     });
             btnGroup.add(btn);
             table.add(btn);
-
             btn.addListener(new ValueTooltip("Destroy this soul to gain " +
                     sf +
                     " Soulforce").getController());
+        }
 
             add(table);
 

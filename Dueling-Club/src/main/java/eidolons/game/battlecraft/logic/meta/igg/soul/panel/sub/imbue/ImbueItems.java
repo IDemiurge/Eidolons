@@ -13,17 +13,21 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.ArrayList;
 
 public class ImbueItems extends TablePanelX {
+    private final ImbuePanel imbuePanel;
     private DC_HeroItemObj selected;
     ArrayList<DC_HeroItemObj> items = new ArrayList<>();
     ScrollPane scrollPane;
     ValueTable<DC_HeroItemObj, ImbueItemActor  > table;
 
-    public ImbueItems() {
-        table = new ValueTable<DC_HeroItemObj, ImbueItemActor>(12, 24) {
+    public ImbueItems(ImbuePanel imbuePanel) {
+        this.imbuePanel = imbuePanel;
+        table = new ValueTable<DC_HeroItemObj, ImbueItemActor>(8, 32) {
             @Override
             protected ImbueItemActor createElement(DC_HeroItemObj item) {
                  ImbueItemActor itemActor = new ImbueItemActor(item);
@@ -55,16 +59,26 @@ public class ImbueItems extends TablePanelX {
             }
 
             @Override
+            public float getMaxWidth() {
+                return 592;
+            }
+
+            @Override
+            public float getMaxHeight() {
+                return 256;
+            }
+
+            @Override
             public float getWidth() {
-                return 764;
+                return 592;
             }
 
             @Override
             public float getHeight() {
-                return 128;
+                return 256;
             }
         };
-        add(new LabelX("Valid Items"));
+//        add(new LabelX("Valid Items"));
         add((table));
 //        add(scrollPane = new ScrollPaneX(table));
 
@@ -72,9 +86,8 @@ public class ImbueItems extends TablePanelX {
 
     @Override
     public void updateAct(float delta) {
-        clearChildren();
         LordPanel.LordDataSource data = (LordPanel.LordDataSource) getUserObject();
-
+        items.clear();
         for (ChainHero chainHero : data.getChain().getHeroes()) {
             items.addAll(EidolonImbuer.getValidItems(chainHero.getUnit()));
         }
@@ -83,27 +96,30 @@ public class ImbueItems extends TablePanelX {
         debug();
     }
 
+    public void setSelected(DC_HeroItemObj selected) {
+        this.selected = selected;
+        imbuePanel.update();
+//        GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        table.setX(0);
 //        table.setY(0);
-        for (int i = 0; i < 500; i+=100) {
-            setY(i);
-            setX(0);
-            super.draw(batch, parentAlpha);
-            setY(0);
-            setX(i);
-            super.draw(batch, parentAlpha);
-        }
+//        for (int i = 0; i < 500; i+=100) {
+//            setY(i);
+//            setX(0);
+//            super.draw(batch, parentAlpha);
+//            setY(0);
+//            setX(i);
+//            super.draw(batch, parentAlpha);
+//        }
+        super.draw(batch, parentAlpha);
     }
 
     public DC_HeroItemObj getSelected() {
         return selected;
     }
 
-    public void setSelected(DC_HeroItemObj selected) {
-        this.selected = selected;
-    }
 
     private class ImbueItemActor extends ItemActor {
 

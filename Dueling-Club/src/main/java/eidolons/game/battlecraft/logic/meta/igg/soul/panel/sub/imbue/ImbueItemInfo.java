@@ -8,6 +8,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.NoHitImage;
+import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.ArmorTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemTooltip;
@@ -18,14 +19,27 @@ public class ImbueItemInfo extends TablePanelX {
 
     private final TablePanelX  table;
     private final FadeImageContainer img;
+    private   ScrollPaneX scroll;
 
     public ImbueItemInfo() {
-        super(300, 500);
+        super(300, 800);
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         ActorMaster.addTop(this,  new NoHitImage(Images.CIRCLE_BORDER));
         ActorMaster.addTop(this,  img = new FadeImageContainer(Images.EMPTY_LIST_ITEM));
 
-        add(table = new TablePanelX<>());
+//        add(scroll = new ScrollPaneX(table = new TablePanelX<>()));
+//        scroll.setSize(300, 500);
+        add( table = new TablePanelX<>()) ;
+    }
+
+    @Override
+    public float getMaxHeight() {
+        return getHeight();
+    }
+
+    @Override
+    public float getMaxWidth() {
+        return super.getWidth();
     }
 
     @Override
@@ -36,7 +50,7 @@ public class ImbueItemInfo extends TablePanelX {
             img.setImage("");
             return;
         }
-        img.setImage(item.getImagePath());
+        img.setImage(item.getImagePath().replace("icons", "sprites"));
         if (item instanceof DC_WeaponObj) {
             SlotItemTooltip tooltip = new WeaponTooltip((DC_WeaponObj) item);
             table. add(tooltip);

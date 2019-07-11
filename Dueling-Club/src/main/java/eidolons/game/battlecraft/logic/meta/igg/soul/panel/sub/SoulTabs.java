@@ -11,10 +11,10 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 public class SoulTabs extends TabbedPanel {
-    private final Image background;
+//    private final Image background;
 
     public SoulTabs(LordPanel.SOUL_TABS... tabs) {
-        addActor(background = new Image(TextureCache.getOrCreate(Images.COLUMNS_AND_TREE_BG)));
+//        addActor(background = new Image(TextureCache.getOrCreate(Images.COLUMNS_AND_TREE_BG)));
 //        background.setPosition();
         for (LordPanel.SOUL_TABS tab : tabs) {
             addTab(createTab(tab), StringMaster.getWellFormattedString(tab.toString()));
@@ -30,7 +30,8 @@ public class SoulTabs extends TabbedPanel {
     @Override
     protected TablePanelX createContentsTable() {
         TablePanelX table = super.createContentsTable();
-        table.setSize(background.getPrefWidth(),background.getPrefHeight());
+//        table.setSize(background.getPrefWidth(),background.getPrefHeight());
+        table.setSize(555,898);
         return table;
     }
 
