@@ -6,9 +6,15 @@ import main.game.bf.Coordinates;
 
 public class OccupiedCondition extends ConditionImpl {
     protected String obj_ref;
+    protected String key;
 
     public OccupiedCondition(String obj_ref) {
+        this(obj_ref, Ref.KEYS.SOURCE.toString());
+    }
+
+    public OccupiedCondition(String obj_ref, String key) {
         this.obj_ref = obj_ref;
+        this.key = key;
     }
 
     @Override
@@ -18,7 +24,7 @@ public class OccupiedCondition extends ConditionImpl {
             return true;
         }
         boolean result = !game.getMovementManager().canMove(
-         ref.getSourceObj(), c);
+         ref.getObj(key), c);
         return  result;
 //        if (result) {
 //            for (Obj obj : game.getObjectsOnCoordinate(c)) {

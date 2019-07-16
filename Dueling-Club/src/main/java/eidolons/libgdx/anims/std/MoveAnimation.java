@@ -21,11 +21,15 @@ import main.game.bf.Coordinates;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.auxiliary.log.LogMaster.*;
 
 /**
  * Created by JustMe on 1/14/2017.
@@ -82,11 +86,11 @@ public class MoveAnimation extends ActionAnim {
     public void initPosition() {
         origin = GridMaster
          .getVectorForCoordinate(getOriginCoordinates(), false, true);
-        main.system.auxiliary.log.LogMaster.log(1,
+        log(LOG_CHANNEL.ANIM_DEBUG,
          this + " origin: " + origin);
         destination = GridMaster
          .getVectorForCoordinate(getDestinationCoordinates(), false, true);
-        main.system.auxiliary.log.LogMaster.log(1,
+        log(ANIM_DEBUG,
          this + " destination: " + destination);
 
         defaultPosition = getDefaultPosition();

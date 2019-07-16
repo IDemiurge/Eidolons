@@ -4,6 +4,7 @@ import eidolons.ability.ActionGenerator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
@@ -29,6 +30,7 @@ import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
+import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -105,7 +107,7 @@ public class ModelManager {
             newType.setProperty(PROPS.UNIT_POOL, u.getUnits());
             newType.setProperty(PROPS.UNIT_TYPES, u.getUnits());
             newType.setProperty(G_PROPS.NAME, u.toString());
-            newType.setProperty(G_PROPS.TYPE,MACRO_OBJ_TYPES.FACTIONS.toString());
+            newType.setProperty(G_PROPS.TYPE, MACRO_OBJ_TYPES.FACTIONS.toString());
             newType.setImage(u.getImage());
             // newType.setProperty(PROPS.ALLY_FACTIONS, u.getAllyFactions());
             newType.setProperty(G_PROPS.FACTION_GROUP, u.getGroup());
@@ -146,9 +148,9 @@ public class ModelManager {
             try {
                 TreeMaster.collapseTree(tb.getTree());
                 DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
-                if (node == null ) {
+                if (node == null) {
 //                    tb.getTabbedPane().setSelectedIndex(prevIndex);
-                    return ;
+                    return;
                 }
                 tb.getTree().setSelectionPath(new TreePath(node.getPath()));
             } catch (Exception e) {
@@ -189,7 +191,7 @@ public class ModelManager {
         DefaultMutableTreeNode node = ArcaneVault.getMainBuilder().getSelectedNode();
         String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
 
-        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM().isTreeEditType() ) {
+        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM().isTreeEditType()) {
             AE_Manager.saveTreeIntoXML(ArcaneVault.getSelectedType());
         }
         String newName = DialogMaster
@@ -282,19 +284,19 @@ public class ModelManager {
 
     private static void checkAdjustIcon(OBJ_TYPE obj_type) {
         for (ObjType type : DataManager.getTypes(obj_type)) {
-                if (obj_type instanceof DC_TYPE) {
-                    switch (((DC_TYPE) obj_type)) {
-                        case WEAPONS:
-                            type.setImage(InventoryFactory.getWeaponIconPath(type));
-                            break;
-                        case ARMOR:
-                            type.setImage(InventoryFactory.getArmorIconPath(type));
-                            break;
-                        case JEWELRY:
-                            type.setImage(InventoryFactory.getItemIconPath(type));
-                            break;
-                    }
+            if (obj_type instanceof DC_TYPE) {
+                switch (((DC_TYPE) obj_type)) {
+                    case WEAPONS:
+                        type.setImage(InventoryFactory.getWeaponIconPath(type));
+                        break;
+                    case ARMOR:
+                        type.setImage(InventoryFactory.getArmorIconPath(type));
+                        break;
+                    case JEWELRY:
+                        type.setImage(InventoryFactory.getItemIconPath(type));
+                        break;
                 }
+            }
 
         }
     }
@@ -310,7 +312,7 @@ public class ModelManager {
             }
 
 
-                if (obj_type == DC_TYPE.CHARS) {
+            if (obj_type == DC_TYPE.CHARS) {
                 for (ObjType type : DataManager.getTypes(obj_type)) {
                     // ContentGenerator.generateArmorPerDamageType(type, null);
                     if (type.getGroup().equals("Background")) {
@@ -388,7 +390,7 @@ public class ModelManager {
         if (obj_type == DC_TYPE.BF_OBJ) {
             generateBfObjProps();
         }
-        if ( obj_type.isTreeEditType() || obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
+        if (obj_type.isTreeEditType() || obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
 
             if (obj_type == DC_TYPE.CHARS) {
                 // XML_Reader.checkHeroesAdded();
@@ -470,8 +472,8 @@ public class ModelManager {
 
 
     private static void initRarity(ObjType type) {
-        if (type.getProperty(PROPS.ITEM_RARITY).isEmpty()){
-            type.setProperty(PROPS.ITEM_RARITY,  StringMaster.getWellFormattedString(ITEM_RARITY.COMMON.name()));
+        if (type.getProperty(PROPS.ITEM_RARITY).isEmpty()) {
+            type.setProperty(PROPS.ITEM_RARITY, StringMaster.getWellFormattedString(ITEM_RARITY.COMMON.name()));
         }
     }
 
@@ -495,6 +497,20 @@ public class ModelManager {
     private static void generateBfObjProps() {
         for (ObjType t : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
             BfObjPropGenerator.generateBfObjProps(t);
+            if (t.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase("water")) {
+                for (PARAMETER resistance : ValuePages.RESISTANCES) {
+                    if (resistance == PARAMS.FIRE_RESISTANCE)
+                        t.setParam(resistance, 20);
+                    else if (resistance == PARAMS.SONIC_RESISTANCE)
+                        t.setParam(resistance, 30);
+                    else if (resistance == PARAMS.ACID_RESISTANCE)
+                        t.setParam(resistance, 40);
+                    else
+                        t.setParam(resistance, 100);
+                    //TODO freeze to ice?
+                }
+//                BfObjPropGenerator.generateBfObjStatProps(t);
+            }
         }
     }
 
@@ -792,7 +808,7 @@ public class ModelManager {
     public static void saveAll() {
         if (!auto)
             if (CoreEngine.isMacro())
-                if (MacroGame.getGame()!=null )
+                if (MacroGame.getGame() != null)
                     SaveMasterOld.saveTheWorld();
         ArcaneVault.setDirty(true);
         SoundMaster.playStandardSound(STD_SOUNDS.DONE);
@@ -906,10 +922,10 @@ public class ModelManager {
                 objType.setWorkspaceGroup(WORKSPACE_GROUP.DEMO);
             }
             boolean result = ArcaneVault.getWorkspaceManager().addTypeToActiveWorkspace(
-             objType);
+                    objType);
             if (!result) {
                 ChangeEvent sc = new ChangeEvent(ArcaneVault.getMainBuilder().getTabBuilder()
-                 .getWorkspaceTab().getTabs());
+                        .getWorkspaceTab().getTabs());
                 ArcaneVault.getMainBuilder().getTabBuilder().stateChanged(sc);
             }
         }

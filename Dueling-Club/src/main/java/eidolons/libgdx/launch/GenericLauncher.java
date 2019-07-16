@@ -133,7 +133,7 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return CoreEngine.isLiteLaunch();
+        return !CoreEngine.isLiteLaunch();
     }
 
     public LwjglApplicationConfiguration getConf() {

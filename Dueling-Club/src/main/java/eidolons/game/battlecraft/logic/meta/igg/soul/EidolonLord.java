@@ -16,8 +16,11 @@ public class EidolonLord extends LightweightEntity {
     public void soulsLost(Soul... souls) {
 
         for (Soul soul : souls) {
+            if (soul == null) {
+                continue;
+            }
             removeProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
-            getGame().getLogManager().log("Soul is lost : "  + soul.getUnitType().getName());
+            getGame().getLogManager().log("A Soul is lost: "  + soul.getUnitType().getName());
         }
         SoulMaster.clear();
 
@@ -33,6 +36,11 @@ public class EidolonLord extends LightweightEntity {
     public EidolonLord(ObjType type) {
         super(type);
         lord = this;
+    }
+
+    public void soulsGained(Soul soul) {
+        addProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
+        getGame().getLogManager().log("A Soul is trapped: "  + soul.getUnitType().getName());
     }
 
 

@@ -6,7 +6,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.particles.VFX;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -53,36 +53,36 @@ public class AttachEmitterManager {
     }
 
     private Ambience createAttachedEmitter(ATTACHED_EMITTER_TYPE type, BattleFieldObject obj) {
-        VFX preset = getVfx(type);
+        GenericEnums.VFX preset = getVfx(type);
         //chance to miss a cycle? or pause for X
         return new AttachedEmitter(preset);
     }
 
-    private VFX getVfx(ATTACHED_EMITTER_TYPE type) {
-        WeightMap<VFX> map = new WeightMap<>(VFX.class);
+    private GenericEnums.VFX getVfx(ATTACHED_EMITTER_TYPE type) {
+        WeightMap<GenericEnums.VFX> map = new WeightMap<>(GenericEnums.VFX.class);
         switch (type) {
             case FIRE:
                 return map.
-                 chain(VFX.CINDERS, 10).
-                 chain(VFX.CINDERS2, 4).
-                 chain(VFX.CINDERS3, 4).
+                 chain(GenericEnums.VFX.CINDERS, 10).
+                 chain(GenericEnums.VFX.CINDERS2, 4).
+                 chain(GenericEnums.VFX.CINDERS3, 4).
                  getRandomByWeight();
             case FIRE_MAGIC:
                 break;
             case SMOKE:
-                return VFX.SMOKE;
+                return GenericEnums.VFX.SMOKE;
             case CORPSE:
                 return map.
-                 chain(VFX.FLIES, 10).
-                 chain(VFX.MOTHS, 4).
+                 chain(GenericEnums.VFX.FLIES, 10).
+                 chain(GenericEnums.VFX.MOTHS, 4).
                  getRandomByWeight();
             case MIST:
                 return map.
-                 chain(VFX.MIST_WHITE, 10).
-                 chain(VFX.MIST_WIND, 8).
-                 chain(VFX.MIST_WHITE2, 10).
-                 chain(VFX.MIST_WHITE3, 8).
-                 chain(VFX.MIST_ARCANE, 12).
+                 chain(GenericEnums.VFX.MIST_WHITE, 10).
+                 chain(GenericEnums.VFX.MIST_WIND, 8).
+                 chain(GenericEnums.VFX.MIST_WHITE2, 10).
+                 chain(GenericEnums.VFX.MIST_WHITE3, 8).
+                 chain(GenericEnums.VFX.MIST_ARCANE, 12).
                  getRandomByWeight();
             case BUFF:
                 break;

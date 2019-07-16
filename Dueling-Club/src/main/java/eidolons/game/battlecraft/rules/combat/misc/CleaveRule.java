@@ -25,7 +25,7 @@ public class CleaveRule {
     private static final int DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER = 75;
     private static final String DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP = "50 -{Strength}";
     Boolean clockwise;
-    private Unit originalTarget;
+    private BattleFieldObject originalTarget;
     private DC_Obj currentTarget;
     private Unit source;
     private Integer jumpsRemaining;
@@ -59,7 +59,7 @@ public class CleaveRule {
         attack.setCanCounter(false);
         attack.setCounter(false);
 
-        originalTarget = (Unit) ref.getObj(KEYS.TARGET);
+        originalTarget = (BattleFieldObject) ref.getObj(KEYS.TARGET);
         currentTarget = originalTarget;
         source = (Unit) ref.getObj(KEYS.SOURCE);
         jumpsRemaining = source.getIntParam(PARAMS.CLEAVE_MAX_TARGETS);

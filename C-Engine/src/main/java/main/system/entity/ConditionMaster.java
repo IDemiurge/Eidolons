@@ -13,7 +13,6 @@ import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
-import main.elements.conditions.standard.CustomCondition;
 import main.elements.conditions.standard.DynamicCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
@@ -637,6 +636,10 @@ public class ConditionMaster {
 
     public Condition getSelectiveTemplateConditions(SELECTIVE_TARGETING_TEMPLATES template) {
         return null;
+    }
+
+    public Condition getConditionFromTemplate(CONDITION_TEMPLATES templates) {
+        return getConditionFromTemplate(templates, "", "");
     }
 
     public enum CONDITION_SHORTCUTS {

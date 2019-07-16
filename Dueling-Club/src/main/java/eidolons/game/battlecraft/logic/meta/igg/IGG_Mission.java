@@ -26,6 +26,9 @@ public class IGG_Mission {
     public String getMissionName() {
         return mission.getMissionName();
     }
+    public String getXmlLevelName() {
+        return mission.getXmlLevelName();
+    }
 
     public boolean isBossFight() {
         return mission.isBossFight();

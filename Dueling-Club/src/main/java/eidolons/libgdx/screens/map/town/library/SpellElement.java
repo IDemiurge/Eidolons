@@ -61,8 +61,8 @@ public void setVfxPart(ANIM_PART part){
     }
 
     @Override
-    protected FadeImageContainer createBackgroundOverlay() {
-        return super.createBackgroundOverlay();
+    protected FadeImageContainer createBackgroundOverlay(Spell model) {
+        return super.createBackgroundOverlay(model);
     }
 
     @Override

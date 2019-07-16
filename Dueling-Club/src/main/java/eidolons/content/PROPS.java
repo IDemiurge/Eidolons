@@ -475,7 +475,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     , LORD_SOULS(null,true ,"lord"),
 
-    EIDOLON_ASPECTS(null,true ,"chars" , "units");
+    EIDOLON_ASPECTS(null,true ,"chars" , "units"),
+    ITEM_TRAITS(null ,true , "weapons" , "armor" , "jewelry"),
+    CUSTOM_OBJECT(null , false,"bf obj" );
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

@@ -691,4 +691,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
 
+    public boolean isWater() {
+        return false;
+    }
 }

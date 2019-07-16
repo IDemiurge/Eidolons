@@ -42,7 +42,7 @@ OOO##
 
     public enum GRAPH_NODE_ATTRIBUTE {
         LOCK_MAIN, KEY_MAIN,
-        LOCK, KEY ,
+        LOCK, KEY,
     }
 
     public enum GRAPH_RULE {
@@ -59,7 +59,8 @@ OOO##
     public enum LEVEL_GRAPH_LINK_TYPE {
         NORMAL, AMBUSH, LONG, LOCKED,
     }
-    public enum LEVEL_DATA_MODIFICATION{
+
+    public enum LEVEL_DATA_MODIFICATION {
         DOUBLE_ROOM_CHANCE,
         HALF_ROOM_CHANCE,
         NO_FILL,
@@ -94,9 +95,10 @@ OOO##
         DECREASE_ROOM_COUNT,
         NO_ROOM_CHANCE, NO_RANDOM_ROTATIONS;
     }
+
     public enum LEVEL_VALUES
-     //for manual skirmish generation; but we'll need more ad hoc values...
-     implements OPTION {
+            //for manual skirmish generation; but we'll need more ad hoc values...
+            implements OPTION {
 
         //MODEL
         ZONES,
@@ -170,12 +172,12 @@ OOO##
         WIDTH,
         HEIGHT,
         Z_LEVEL, CLEAN_DISABLED(), FILL_GLOBAL_COEF(),
-        ADDITIONAL_FILL_RUNS(0,0,10);
+        ADDITIONAL_FILL_RUNS(0, 0, 10);
         public static final LEVEL_VALUES[] FILL_VALS = {
                 FILL_LIGHT_EMITTER_COEF,
                 FILL_WALL_WITH_LIGHT_OVERLAY_COEF,
                 FILL_WALL_WITH_DECOR_OVERLAY_COEF,
-                FILL_DESTRUCTIBLE_COEF ,
+                FILL_DESTRUCTIBLE_COEF,
                 FILL_CONTAINER_COEF,
                 FILL_SPECIAL_CONTAINER_COEF,
                 FILL_ART_OBJ_COEF,
@@ -260,7 +262,7 @@ OOO##
         AMBUSH("M"),
         CROWD("W"),
         IDLERS("i"),
-        STALKER("K") ,
+        STALKER("K"),
         MINI_BOSS("b"),
         BOSS("B"),
 
@@ -307,8 +309,7 @@ OOO##
     BUTTON,
     SHRINE,
 
-     */
-        ;
+     */;
         static ROOM_CELL[] vals = ROOM_CELL.values();
         public final String symbol;
         private String randomWeightMap;
@@ -358,6 +359,7 @@ OOO##
         TOWER, //narrow and stylish
         DUNGEON, //classic and simple
         MAZE, //always spinning, fractal like
+        PUZZLE_MAZE, //always spinning, fractal like
         GROVE, //chaos...
         CEMETERY, //enclosed areas
         RANDOM, //will mix all
@@ -370,15 +372,22 @@ OOO##
         TEMPLE_CRYPT,
         TOWER_TEMPLE,
         DUNGEON_CASTLE,
-        CRYPT_TOWER,;
+        CRYPT_TOWER,
+        ;
 
         public boolean isMultiGroup() {
+            if (this == PUZZLE_MAZE) {
+                return false;
+            }
             return name().contains("_");
+
         }
 
         public ROOM_TEMPLATE_GROUP getMultiGroupOne() {
+
             return valueOf(name().split("_")[0]);
         }
+
         public ROOM_TEMPLATE_GROUP getMultiGroupTwo() {
             return valueOf(name().split("_")[1]);
         }

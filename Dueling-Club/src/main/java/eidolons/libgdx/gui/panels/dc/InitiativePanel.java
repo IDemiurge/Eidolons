@@ -24,6 +24,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -140,6 +141,12 @@ public class InitiativePanel extends GroupX {
                     cleanUp();
                 resetZIndices();
             }
+        });
+        GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
+            rollComponent(speedControlPanel, false);
+        });
+        GuiEventManager.bind(GuiEventType.PUZZLE_FINISHED, p -> {
+            rollComponent(speedControlPanel, true);
         });
 
         GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED, obj -> {
@@ -582,9 +589,6 @@ public class InitiativePanel extends GroupX {
         DEFEND;
 
         public String getPath() {
-            if (true){
-                return Sprites.RADIAL;
-            }
             switch (this) {
                 case ATTACK:
                 case MOVE:
@@ -607,7 +611,7 @@ public class InitiativePanel extends GroupX {
         public boolean mainHero;
         public boolean immobilized;
 
-        SpriteAnimation intentIconSprite;
+        SpriteX intentIconSprite;
         Map<INTENT_ICON, SpriteAnimation> iconMap = new HashMap<>();
         private INTENT_ICON intentIcon;
 
@@ -623,6 +627,9 @@ public class InitiativePanel extends GroupX {
                             "initiativepanel unitview shadow.png")));
             shadow.setY(-48);
             actor.addActor(shadow);
+            shadow.setZIndex(0);
+            actor.addActor(intentIconSprite = new SpriteX());
+            intentIconSprite.setFps(20);
 //            shadow.addListener(new DynamicTooltip(() -> getIntentTooltip(actor.getUserObject())));
         }
 
@@ -630,15 +637,23 @@ public class InitiativePanel extends GroupX {
         public void act(float delta) {
             super.act(delta);
 //            IntentIconMaster
+            if (isIntentIconsOn())
             if (getActor().getUserObject() instanceof Unit) {
-                intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI(). getIntentIcon();
-                intentIconSprite = iconMap.get(intentIcon);
+                intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
+                SpriteAnimation sprite = iconMap.get(intentIcon);
                 if (intentIcon != null)
-                    if (intentIconSprite == null) {
+                    if (sprite == null) {
                         iconMap.put(intentIcon,
-                                intentIconSprite = SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
+                                sprite =
+                                        SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
                     }
+                intentIconSprite.setSprite(sprite);
             }
+
+        }
+
+        private boolean isIntentIconsOn() {
+            return false;
         }
 
         @Override
@@ -649,12 +664,12 @@ public class InitiativePanel extends GroupX {
                     ((CustomSpriteBatch) batch).setFluctuatingShader(DarkShader.getInstance());
                 }
             }
-            if (intentIconSprite != null) {
-                intentIconSprite.centerOnParent(getActor());
-                intentIconSprite.setOffsetY(intentIconSprite.getOffsetY()-500);
-                intentIconSprite.setOffsetX(intentIconSprite.getOffsetX());
-                intentIconSprite.draw(batch);
-            }
+//            if (intentIconSprite != null) {
+//                intentIconSprite.centerOnParent(getActor());
+//                intentIconSprite.setOffsetY(intentIconSprite.getOffsetY()-500);
+//                intentIconSprite.setOffsetX(intentIconSprite.getOffsetX());
+//                intentIconSprite.draw(batch);
+//            }
             super.draw(batch, parentAlpha);
             batch.setShader(shader);
         }

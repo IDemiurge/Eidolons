@@ -8,12 +8,12 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer.LightContainer;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
@@ -29,7 +29,7 @@ import java.util.Map;
 public class LightLayer extends MapTimedLayer<LightContainer> {
 
     static {
-        LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths(VFX.STARS.getPath());
+        LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths(GenericEnums.VFX.STARS.getPath());
     }
 
     boolean uiStage;

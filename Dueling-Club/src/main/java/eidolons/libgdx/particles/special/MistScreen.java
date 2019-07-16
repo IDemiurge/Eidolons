@@ -1,7 +1,7 @@
 package eidolons.libgdx.particles.special;
 
 import eidolons.libgdx.particles.ambi.Ambience;
-import eidolons.libgdx.particles.VFX;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -15,6 +15,6 @@ public class MistScreen {
         this.width = width;
         this.height = height;
 
-         new Ambience(VFX.MIST_TRUE);
+         new Ambience(GenericEnums.VFX.MIST_TRUE);
     }
 }

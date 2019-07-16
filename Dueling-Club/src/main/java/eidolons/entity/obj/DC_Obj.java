@@ -282,11 +282,11 @@ public abstract class DC_Obj extends MicroObj {
         }
         Ref ref = Ref.getCopy(REF);
         ref.setTarget(target.getId());
-        if (this instanceof Unit) {
+//        if (this instanceof Unit) { //TODO igg demo hack
             ref.setSource(getId());
-        } else {
+//        } else {
             ref.setID(KEYS.THIS, getId());
-        }
+//        }
         Effect effect = specialEffects.get(case_type);
         getGame().getLogManager().log(getName() + ": special effect " + case_type.getName());
         effect.apply(ref);

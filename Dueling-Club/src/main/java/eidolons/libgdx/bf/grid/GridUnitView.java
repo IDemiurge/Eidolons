@@ -244,12 +244,12 @@ public class GridUnitView extends GenericGridView {
     public void validateArrowRotation() {
         int real = getUserObject().getFacing().getDirection().getDegrees() % 360;
         if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
-            main.system.auxiliary.log.LogMaster.log(1, arrow.getRotation()
-                    + " raw val, to  " + real);
+            main.system.auxiliary.log.LogMaster.verbose( arrow.getRotation()
+                    + " raw rotation val, to real => " + real);
             updateRotation(real);
 
             if (real % 360 != arrowRotation) {
-                main.system.auxiliary.log.LogMaster.log(1,
+                main.system.auxiliary.log.LogMaster.verbose(
                         getUserObject() + "'s " +
                                 arrowRotation
                                 + " rotation updated to  " + arrowRotation);

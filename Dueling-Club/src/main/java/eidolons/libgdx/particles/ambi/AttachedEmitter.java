@@ -1,14 +1,14 @@
 package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 11/16/2018.
  */
 public class AttachedEmitter extends Ambience {
-    public AttachedEmitter(VFX preset) {
+    public AttachedEmitter(GenericEnums.VFX preset) {
         super(preset);
     }
 

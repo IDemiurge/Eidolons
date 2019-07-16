@@ -21,8 +21,11 @@ public class QuickSlotPanel extends BaseSlotPanel {
 
     @Override
     public void updateAct(float delta) {
-        clear();
         final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) getUserObject();
+        if (source == null) {
+            return;
+        }
+        clear();
         final List<ValueContainer> sources = source.getQuickSlotActions();
         initContainer(sources, Images.EMPTY_QUICK_ITEM);
     }

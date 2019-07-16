@@ -2,9 +2,9 @@ package eidolons.libgdx.particles.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.PathUtils;
@@ -376,7 +376,7 @@ public class EmitterPresetMaster {
 
     public void init() {
         imagePathMap = new HashMap<>();
-        for (VFX sub : VFX.values()) {
+        for (GenericEnums.VFX sub : GenericEnums.VFX.values()) {
             String path = null;
             try {
                 path = findImagePath(sub.getPath());

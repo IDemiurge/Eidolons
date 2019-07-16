@@ -2,8 +2,8 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.libgdx.particles.VFX;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
+import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.WeightMap;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE.*;
-import static eidolons.libgdx.particles.VFX.*;
+import static main.content.enums.GenericEnums.VFX.*;
 
 /**
  * Created by JustMe on 4/24/2018.
@@ -32,7 +32,7 @@ public class AmbienceDataSource {
         float daynessCoef = getDayness(time);
         float priority = 1f;
         if (daynessCoef != 0)
-            for (VFX preset : template.daily) {
+            for (GenericEnums.VFX preset : template.daily) {
                 float chance = (daynessCoef)*5/template.daily.length;
                 emitters.add(string(preset, (int) (chance * 100 * priority)));
                 priority -= 0.05f;
@@ -40,7 +40,7 @@ public class AmbienceDataSource {
             }
         priority = 1f;
         if (daynessCoef != 1)
-            for (VFX preset : template.nightly) {
+            for (GenericEnums.VFX preset : template.nightly) {
                 float chance = (1 - daynessCoef)*5/template.nightly.length;
                 emitters.add(string(preset, (int) (chance * 100 * priority)));
                 priority -= 0.05f;
@@ -169,7 +169,7 @@ public class AmbienceDataSource {
         return colorHue;
     }
 
-    private String string(VFX emitterPreset, int i) {
+    private String string(GenericEnums.VFX emitterPreset, int i) {
         return emitterPreset.getPath()
          + StringMaster.wrapInParenthesis("" + i / 3);
     }
@@ -338,10 +338,10 @@ public class AmbienceDataSource {
             );
         }
 
-        public VFX[] daily;
-        public VFX[] nightly;
+        public GenericEnums.VFX[] daily;
+        public GenericEnums.VFX[] nightly;
 
-        public void setDaily(VFX... daily) {
+        public void setDaily(GenericEnums.VFX... daily) {
             this.daily = daily;
         }
 /*
@@ -355,7 +355,7 @@ public class AmbienceDataSource {
 
          */
 
-        public void setNightly(VFX... nightly) {
+        public void setNightly(GenericEnums.VFX... nightly) {
             this.nightly = nightly;
         }
     }

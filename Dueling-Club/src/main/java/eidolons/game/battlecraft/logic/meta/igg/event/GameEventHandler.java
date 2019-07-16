@@ -26,6 +26,8 @@ public class GameEventHandler extends MetaGameHandler {
 
     public boolean handle(Event event) {
         SoundEvents.checkEventSound(event);
+        getMaster().getDungeonMaster().getPuzzleMaster().processEvent(event);
+
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
 

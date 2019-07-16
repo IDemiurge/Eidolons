@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.4d";
+    public static final String VERSION = "0.9.5";
     public static final String VERSION_NAME = "IGG demo";//"Backer Demo";
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
@@ -87,6 +87,7 @@ public class CoreEngine {
     private static boolean ramEconomy;
     private static boolean keyCheat;
     private static boolean mainGame;
+    private static boolean autoFixOn;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -669,4 +670,11 @@ public class CoreEngine {
         return mainGame;
     }
 
+    public static boolean isAutoFixOn() {
+        return autoFixOn;
+    }
+
+    public static void setAutoFixOn(boolean autoFixOn) {
+        CoreEngine.autoFixOn = autoFixOn;
+    }
 }

@@ -21,6 +21,7 @@ public class TablePanel<T extends Actor> extends Table {
     protected boolean updateRequired;
     private boolean fixedSize;
     private boolean fixedMinSize;
+    private boolean fixedMaxSize;
 
     public TablePanel() {
     }
@@ -90,7 +91,29 @@ public class TablePanel<T extends Actor> extends Table {
         }
         return super.getMinWidth();
     }
+    @Override
+    public float getMaxHeight() {
+        if (fixedMaxSize) {
+            return getHeight();
+        }
+        return super.getMaxHeight();
+    }
 
+    @Override
+    public float getMaxWidth() {
+        if (fixedMaxSize) {
+            return getWidth();
+        }
+        return super.getMaxWidth();
+    }
+
+    public boolean isFixedMaxSize() {
+        return fixedMaxSize;
+    }
+
+    public void setFixedMaxSize(boolean fixedMaxSize) {
+        this.fixedMaxSize = fixedMaxSize;
+    }
     public boolean isFixedMinSize() {
         return fixedMinSize;
     }
@@ -149,9 +172,14 @@ public class TablePanel<T extends Actor> extends Table {
 
     protected void updateAllOnAct(float delta) {
         updateAct(delta);
-        invalidate();
+        if (invalidateOnUpdate())
+            invalidate();
         afterUpdateAct(delta);
         updateRequired = false;
+    }
+
+    protected boolean invalidateOnUpdate() {
+        return true;
     }
 
     protected boolean isVisibleEffectively() {

@@ -130,6 +130,12 @@ public class DC_GameObjMaster extends GameObjMaster {
                                                          Boolean overlayingIncluded) {
         return getObjectsOnCoordinate(null, c, overlayingIncluded, true, false);
     }
+    public void clearCache(Coordinates c){
+        getCache(true).remove(c);
+        getCache(false).remove(c);
+        getCache(null ).remove(c);
+        //TODO also remove if dead
+    }
 
     public Set<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
                                                          Boolean overlayingIncluded_Not_Only, boolean passableIncluded, boolean cellsIncluded) {

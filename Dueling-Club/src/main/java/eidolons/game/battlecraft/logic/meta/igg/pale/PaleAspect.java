@@ -1,11 +1,10 @@
 package eidolons.game.battlecraft.logic.meta.igg.pale;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
+import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
-import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -18,82 +17,100 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.threading.WaitMaster;
+
+import static main.system.auxiliary.log.LogMaster.*;
 
 public class PaleAspect {
-
-
-    private static final String AVATAR_TYPE = "Anphis Ar Keserim";
+    private static final String AVATAR_TYPE = IGG_Demo.IMAGE_KESERIM;
+    private static final String AVATAR_TYPE_BRIDGE = "Torment";
     public static boolean ON;
-    private static Unit avatar;
+    private static Unit avatarTrue;
+    private static Unit avatarShade;
+    private static Unit activeAvatar;
+
     private static int d;
-
-    /**
-     * transformation rules
-     * <p>
-     * movement
-     * <p>
-     * vision
-     * <p>
-     * avatar
-     * <p>
-     * enter/exit
-     */
-
-    private static Unit createPaleAvatar() {
-        avatar = (Unit) DC_Game.game.createUnit(DataManager.getType(AVATAR_TYPE, DC_TYPE.CHARS),
-                Eidolons.getMainHero().getX(),
-                Eidolons.getMainHero().getY(), DC_Game.game.getPlayer(true));
-        return avatar;
-    }
 
 
     public static void togglePale() {
         if (ON) {
-            exitPale();
+            Eidolons.onThisOrNonGdxThread(() ->
+                    exitPale());
         } else {
-            enterPale();
+            Eidolons.onThisOrNonGdxThread(() ->
+                    enterPale());
         }
     }
 
     public static void exitPale() {
         ON = false;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
-
+        important("Pale exited!");
         Eidolons.resetMainHero();
     }
 
     public static void enterPale() {
         d = 0;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.PALE_ASPECT);
-        if (avatar == null) {
-            avatar = createPaleAvatar();
-            avatar.setPale(true);
-            avatar.getGame().getPaleMaster().tryAddUnit(avatar);
-            avatar.getGame().getMaster().remove(avatar, true);
-            //reset vision etc
-            GuiEventManager.trigger(GuiEventType.UNIT_CREATED, avatar);
+        getAvatar();
+        if (!Eidolons.BRIDGE)
             for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
-                if (!hero.getUnit().isLeader()) {
-                    GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero.getUnit());
-                }
+                shadowLeapToLocation(hero.getUnit(), true);
             }
-        }
-        //GuiEventManager.trigger(GuiEventType. )
-
-        for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
-            shadowLeapToLocation(hero.getUnit(), true);
-        }
-        shadowLeapToLocation(avatar, false);
-
+        shadowLeapToLocation(getAvatar(), false);
         Eidolons.bufferMainHero();
-        Eidolons.setMainHero(avatar);
+        Eidolons.setMainHero(getAvatar());
 
         ON = true;
+        important("Pale eneterd!");
     }
 
-    private static void shadowLeapToLocation(Unit unit, boolean adjacent) {
+    private static Unit createPaleAvatar(boolean alt) {
+        Unit avatar = (Unit) DC_Game.game.createUnit(DataManager.getType(alt ? AVATAR_TYPE_BRIDGE : AVATAR_TYPE,
+                alt ? DC_TYPE.UNITS : DC_TYPE.CHARS),
+                Eidolons.getMainHero().getX(),
+                Eidolons.getMainHero().getY(), DC_Game.game.getPlayer(true));
+        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, avatar);
+        avatar.setPale(true);
+        avatar.getGame().getPaleMaster().tryAddUnit(avatar);
+        avatar.getGame().getMaster().remove(avatar, true);
+        return avatar;
+    }
+
+    private static Unit getAvatar() {
+        return getAvatar(Eidolons.BRIDGE);
+    }
+
+    public static Unit getAvatar(boolean shade) {
+        if (shade) activeAvatar = avatarShade;
+        else activeAvatar = avatarTrue;
+
+        if (activeAvatar == null) {
+            //reset vision etc
+            if (shade) {
+                avatarShade = createPaleAvatar(shade);
+            } else {
+                avatarTrue = createPaleAvatar(shade);
+                for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
+                    if (!hero.getUnit().isLeader()) {
+                        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero.getUnit());
+                    }
+                }
+            }
+
+        }
+        return activeAvatar;
+    }
+
+    public static void shadowLeapToLocation(Coordinates coordinates) {
+        shadowLeapToLocation(getAvatar(), false, coordinates);
+    }
+
+    public static void shadowLeapToLocation(Unit unit, boolean adjacent) {
         Coordinates c = Eidolons.getMainHero().getCoordinates();
+        shadowLeapToLocation(unit, adjacent, c);
+    }
+
+    public static void shadowLeapToLocation(Unit unit, boolean adjacent, Coordinates c) {
         if (adjacent) {
             c = c.getAdjacentCoordinate(DIRECTION.DIAGONAL[d]);
             if (c == null) {
@@ -107,15 +124,14 @@ public class PaleAspect {
             unit.initSpells(true);
         }
         if (unit.getSpell("Leap into Darkness") == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "PALE: failed to init LEAP" + unit);
+            log(1, "PALE: failed to init LEAP" + unit);
             unit.setCoordinates(c);
             return;
         }
 
-        unit.getGame().getLoop().actionInput(new ActionInput(unit.getSpell("Leap into Darkness"),
-                avatar.getGame().getCellByCoordinate(c)));
+        unit.getGame().getLoop().activateAction(new ActionInput(unit.getSpell("Leap into Darkness"),
+                getAvatar().getGame().getCellByCoordinate(c)));
 //        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(unit.getSpell("Leap into Darkness"),
 //                avatar.getGame().getCellByCoordinate(c)));
     }
-
 }

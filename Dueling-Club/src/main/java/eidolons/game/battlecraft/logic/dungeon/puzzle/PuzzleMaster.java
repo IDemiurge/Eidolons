@@ -1,19 +1,24 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +26,20 @@ import java.util.Map;
 
 public class PuzzleMaster {
     DungeonMaster master;
-    List<Puzzle> puzzles = new ArrayList<>();
+    DequeImpl<Puzzle> puzzles = new DequeImpl<>();
+    DequeImpl<Puzzle> activePuzzles = new DequeImpl<>();
 
     public PuzzleMaster(DungeonMaster master) {
         this.master = master;
+    }
+
+
+    public void processEvent(Event event) {
+        for (Puzzle activePuzzle : activePuzzles) {
+            for (PuzzleTrigger trigger : activePuzzle.getTriggers()) {
+                trigger.check(event);
+            }
+        }
     }
 
     public void initPuzzles(Dungeon dungeon, DungeonLevel dungeonLevel) {
@@ -32,24 +47,31 @@ public class PuzzleMaster {
             String s = dungeon.getCustomDataMap().get(coord);
             for (String substring : ContainerUtils.openContainer(s)) {
                 if (substring.split("::")[0].trim().equalsIgnoreCase("puzzle")) {
-                    Coordinates c = Coordinates.get(coord);
-                    LevelBlock block = dungeonLevel.getBlockForCoordinate(c);
-                    Puzzle puzzle =//PuzzleConstructor.
-                            createPuzzle(dungeon.getCustomDataMap(), block, substring.split("::")[1], c);
-                    puzzles.add(puzzle);
+                    try {
+                        Coordinates c = Coordinates.get(coord);
+                        LevelBlock block = dungeonLevel.getBlockForCoordinate(c);
+                        Puzzle puzzle =//PuzzleConstructor.
+                                createPuzzle(dungeon.getCustomDataMap(), block, substring.split("::")[1], c);
+                        puzzles.add(puzzle);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
 
                 }
             }
         }
     }
 
-    private void initManipulator(Puzzle puzzle,
-                                 Coordinates c, String data) {
-
-        GuiEventManager.trigger(GuiEventType.INIT_MANIPULATOR, new Manipulator(puzzle,
-                Manipulator.Manipulator_template.rotating_cross,
-                c, data));
+    public void activated(Puzzle puzzle) {
+        activePuzzles.add(puzzle);
+        GuiEventManager.trigger(GuiEventType.PUZZLE_STARTED, puzzle);
     }
+
+    public void deactivated(Puzzle puzzle) {
+        activePuzzles.remove(puzzle);
+        GuiEventManager.trigger(GuiEventType.PUZZLE_FINISHED, puzzle);
+    }
+
 
     private Puzzle createPuzzle(Map<String, String> customDataMap, LevelBlock block,
                                 String s, Coordinates coordinates) {
@@ -65,42 +87,27 @@ public class PuzzleMaster {
             String data = customDataMap.get(c.toString());
             if (data != null) {
                 setupData += VariableManager.getStringWithVariable(c.toString(), data) + ";";
-
-
             }
 
         }
-
-        switch (new EnumMaster<puzzle_type>().retrieveEnumConst(puzzle_type.class, name)) {
-            case art:
-                return setupPuzzle(new ArtPuzzle("1"), args, setupData, coordinates);
-            case maze:
-                break;
-        }
-
-        return null;
+        PuzzleConstructor constructor = getPuzzleConstructor(name);
+        return constructor.create(args, setupData, coordinates, block);
     }
 
-    private Puzzle setupPuzzle(Puzzle puzzle, String args, String setupData, Coordinates coordinates) {
-//        puzzle.initArgs(args);
-        puzzle.setCoordinates(coordinates);
-        puzzle.setup(new PuzzleSetup(puzzle, ""));
-        puzzle.setRules(new PuzzleRules(puzzle));
-        puzzle.setResolutions(new PuzzleResolution(puzzle));
-
-        for (String data : ContainerUtils.openContainer(setupData)) {
-            if (data.contains("manip(")) {
-                initManipulator(puzzle, Coordinates.get(VariableManager.removeVarPart(data)),
-                        VariableManager.getVarPart(data));
-            }
+    private PuzzleConstructor getPuzzleConstructor(String name) {
+        String[] args = name.split("-");
+        name = args[0];
+        if (args.length > 1)
+            args = args[1].split("_");
+        else
+            args = new String[0];
+        switch (new EnumMaster<puzzle_type>().retrieveEnumConst(puzzle_type.class, name)) {
+            case art:
+                return new ArtPuzzleConstructor(args);
+            case maze:
+                return new MazePuzzleConstructor(args);
         }
-        /**
-         * we could skip this for now and do direct init!
-         *
-         * maybe just bind via shortcuts, to be generalized later
-         *
-         */
-        return puzzle;
+        return null;
     }
 
 
@@ -125,13 +132,14 @@ public class PuzzleMaster {
 
     public enum PUZZLE_ACTION_BASE {
         MOVE,
-        MOVE_AFTER,
+        MOVE_AFTER, ACTION, FACING,
 
 
     }
 
-    public enum PUZZLE_ACTION_MUTATOR {
-        FACING,
+    public enum PUZZLE_ACTION {
+        ROTATE_MOSAIC_CELL_CLOCKWISE,
+        ROTATE_MOSAIC_CELL_ANTICLOCKWISE,
 
     }
 
@@ -154,7 +162,8 @@ public class PuzzleMaster {
     }
 
     public enum PUZZLE_SOLUTION {
-        ALL_SAME,
+        GET_TO_EXIT,
+        MOSAIC,
         SHAPE,
         PATH,
 

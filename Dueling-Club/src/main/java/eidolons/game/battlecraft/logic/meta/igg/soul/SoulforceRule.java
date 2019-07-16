@@ -5,6 +5,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
+import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.entity.type.ObjType;
 
 /**
@@ -15,8 +16,7 @@ import main.entity.type.ObjType;
  *
  *
  */
-public class SoulforceRule {
-
+public class SoulforceRule   {
 
     /**
      *
@@ -29,7 +29,6 @@ public class SoulforceRule {
      souls - manually consume or use for <...> </...>
 
      */
-
 
     public int applySoulforce(Unit hero, HeroChain chain) {
         int amount=0;

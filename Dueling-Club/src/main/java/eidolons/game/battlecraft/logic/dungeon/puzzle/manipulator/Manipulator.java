@@ -29,30 +29,27 @@ import main.game.logic.battle.player.Player;
  *
  * btw, this could be same for bosses etc
  */
-public class Manipulator extends GridUnitView {
+public class Manipulator extends GridObject {
 
-    private   Object[] args;
     Manipulator_template template;
-
     Manipulator_type type;
     float timePeriod;
     int width;
     int height;
     private int interval;
 
-    SpriteX sprite;
-    Coordinates coordinates;
     FloatAction floatAction;
     private float timer;
     private long cycles;
     private  float rotationTime;
     Puzzle puzzle;
 
+    SpriteX underlay;
+
     public Manipulator(Puzzle puzzle, Manipulator_template template, Coordinates coordinates, String data) {
-        super(getOptions() );
+        super(coordinates, Sprites.ROTATING_ARROW );
         floatAction = new FloatAction();
         floatAction.setInterpolation(Interpolation.swing);
-        this.coordinates= coordinates;
         this.puzzle= puzzle;
 
         this.template = template;
@@ -63,42 +60,48 @@ public class Manipulator extends GridUnitView {
         this.timePeriod = template.period;
         this.rotationTime = template.rotationTime;
 
-        initVisual(template);
 
         initObject();
     }
 
-    private static UnitViewOptions getOptions() {
-        UnitViewOptions options = new UnitViewOptions( );
-//        options.setSpritePath();
-        return options;
-    }
 
     private void initObject() {
-        setUserObject(Eidolons.getGame().createUnit(getObjType(), getCoordinates(), DC_Player.NEUTRAL));
-
+//        setUserObject(Eidolons.getGame().createUnit(getObjType(), getCoordinates(), DC_Player.NEUTRAL));
     }
 
     private ObjType getObjType() {
         return DataManager.getType("Manipulator", DC_TYPE.BF_OBJ);
     }
 
-    private void initVisual(Manipulator_template template) {
-        switch (template) {
-            case rotating_cross:
-                sprite = new SpriteX((Sprites.ROTATING_ARROW));
-                sprite.setOrigin(sprite.getWidth()/2, 0);
-                sprite.setFps(15);
-                addActor(sprite);
-                break;
-        }
+    @Override
+    protected void init() {
+        addActor(underlay = new SpriteX(Sprites.HELL_WHEEL));
+        underlay.setFps(getFps());
+        super.init();
+        sprite.setOrigin(sprite.getWidth()/2, 0);
     }
 
+    @Override
+    protected boolean isClearshotRequired() {
+        return true;
+    }
+
+    @Override
+    protected double getDefaultVisionRange() {
+        return 7;
+    }
+
+    @Override
+    protected int getFps() {
+        return 15;
+    }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        sprite.setRotation(sprite.getRotation() + (360 / rotationTime));
+        sprite.setOrigin(sprite.getWidth()/2, 0);
+        sprite.setY(sprite.getHeight()/2);
+        sprite.setRotation(sprite.getRotation() + (360 / rotationTime)*delta);
         timer+=delta;
         if (timer>=timePeriod) {
             timer=0;
@@ -125,28 +128,13 @@ public class Manipulator extends GridUnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        /*
-        offset
-        pause?
-         */
         super.draw(batch, parentAlpha);
-    }
-
-    public Object[] getArgs() {
-        return args;
     }
 
     public Manipulator_type getType() {
         return type;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
 
     public enum Manipulator_template {
         rotating_cross(Manipulator_type.rotating,3, 3,  12, 4, 1),

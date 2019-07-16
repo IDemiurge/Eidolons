@@ -17,10 +17,12 @@ public class ModeActionsPanel extends BaseSlotPanel {
 
     @Override
     public void updateAct(float delta) {
-        clear();
 
         final UnitActionsDataSource source = (UnitActionsDataSource) getUserObject();
-
+        if (source == null) {
+            return;
+        }
+        clear();
         final List<ValueContainer> sources = source.getDisplayedActions();
         initContainer(sources, "ui/empty_list_item.jpg");
     }

@@ -48,12 +48,12 @@ public class SpeechBuilder {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        try {
-            Abilities abils = DialogueSyntax.getAbilities(text);
-            speech.setAbilities(abils);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+//        try { TODO
+//            Abilities abils = DialogueSyntax.getAbilities(text);
+//            speech.setAbilities(abils);
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//        }
         try {
             String script = DialogueSyntax.getScript(text);
 

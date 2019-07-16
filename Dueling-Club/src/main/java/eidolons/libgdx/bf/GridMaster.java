@@ -3,15 +3,10 @@ package eidolons.libgdx.bf;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.graphics.MigMaster;
-
-import java.awt.*;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -56,6 +51,9 @@ public class GridMaster {
                 DungeonScreen.getInstance().getGridPanel());
     }
 
+    public static Coordinates invertGdxY(Coordinates c) {
+        return new Coordinates(c.x,  DungeonScreen.getInstance().getGridPanel().getRows()-1-c.getY());
+    }
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
                                                  boolean center,
                                                  boolean camera, boolean gdxY, GridPanel gridPanel) {
@@ -104,4 +102,5 @@ public class GridMaster {
     public static boolean isHpBarsOnTop() {
         return true;
     }
+
 }

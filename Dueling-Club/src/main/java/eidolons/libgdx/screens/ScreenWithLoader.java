@@ -215,7 +215,10 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         renderLoader(delta);
         if (postProcessing != null)
             if (isPostProcessingDefault())
+            {
+                batch.resetBlending();
                 postProcessing.end();
+            }
         waited(delta);
         checkShaderReset();
         if (isLoadingAtlases()) {

@@ -5,7 +5,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import main.entity.Ref;
 
-public abstract class CellCondition extends DC_Condition {
+public abstract class CellComparison extends DC_Condition {
 
     @Override
     public boolean check(Ref ref) {

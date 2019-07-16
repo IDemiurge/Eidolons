@@ -11,7 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
@@ -35,6 +38,8 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.entity.ItemEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -116,14 +121,44 @@ public class InvItemActor extends ItemActor {
         return new FadeImageContainer(Images.ITEM_BACKGROUND);
     }
 
-    protected FadeImageContainer createBackgroundOverlay() {
+    protected FadeImageContainer createBackgroundOverlay(DC_HeroItemObj model) {
+        String path = getUnderlayPathForItem(model);
+        if (path == null) {
+            return null;
+        }
         FadeImageContainer overlay = new FadeImageContainer(
-
-         RandomWizard.random() ?
-          Images.ITEM_BACKGROUND_OVERLAY_LIGHT2 :
-          Images.ITEM_BACKGROUND_OVERLAY_LIGHT);
+                path
+         );
         overlay.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.ITEM_BACKGROUND_OVERLAY);
         return overlay;
+    }
+
+    private String getUnderlayPathForItem(DC_HeroItemObj model) {
+        if (model instanceof DC_HeroSlotItem) {
+            if (EidolonImbuer.isImbued(model)) {
+                return Images.ITEM_BACKGROUND_OVERLAY_MAGIC;
+            }
+        ItemEnums.QUALITY_LEVEL qualityLevel =  ((DC_HeroSlotItem) model).getQuality();
+            switch (qualityLevel) {
+
+                case ANCIENT:
+                case OLD:
+                case DAMAGED:
+                case INFERIOR:
+                return Images.ITEM_BACKGROUND_OVERLAY_CRACKS;
+                case NORMAL:
+//                    return Images.ITEM_BACKGROUND_OVERLAY_NORMAL;
+                return null ;
+                case SUPERIOR:
+                case SUPERB:
+                    return Images.ITEM_BACKGROUND_OVERLAY_LIGHT;
+                case MASTERPIECE:
+                    return Images.ITEM_BACKGROUND_OVERLAY_BRILLIANT;
+            }
+        }
+
+
+        return null ;
     }
 
     @Override

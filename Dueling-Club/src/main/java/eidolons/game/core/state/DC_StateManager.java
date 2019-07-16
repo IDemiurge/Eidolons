@@ -430,7 +430,7 @@ public class DC_StateManager extends StateManager {
                     continue;
                 }
                 if (buff.isAppliedThrough()) {
-                    Condition retainCondition = new PositionCondition(KEYS.SOURCE.toString(), cell);
+                    Condition retainCondition = new PositionCondition(KEYS.SOURCE.toString(), cell.getCoordinates());
                     getGame().getManager().copyBuff(buff, unit, retainCondition);
 
                 }

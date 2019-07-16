@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
-import eidolons.libgdx.screens.DungeonScreen;
+import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
@@ -26,7 +26,7 @@ public class EmitterActor extends SuperActor {
     public String path;
     protected ParticleEffectX effect;
     protected ParticleEffectPool pool;
-    protected VFX sfx;
+    protected GenericEnums.VFX sfx;
     protected Sprite sprite;
     protected boolean attached = true;
     protected boolean generated;
@@ -39,7 +39,7 @@ public class EmitterActor extends SuperActor {
     boolean flipY;
     private String imgPath;
 
-    public EmitterActor(VFX fx) {
+    public EmitterActor(GenericEnums.VFX fx) {
         this(fx.getPath());
         this.sfx = fx;
     }
@@ -125,7 +125,7 @@ public class EmitterActor extends SuperActor {
          e.getTransparency().scale(alpha));
     }
 
-    public VFX getTemplate() {
+    public GenericEnums.VFX getTemplate() {
         return sfx;
     }
 
@@ -169,11 +169,11 @@ public class EmitterActor extends SuperActor {
         effect.start();
     }
 
-    public VFX getSfx() {
+    public GenericEnums.VFX getSfx() {
         return sfx;
     }
 
-    public void setSfx(VFX sfx) {
+    public void setSfx(GenericEnums.VFX sfx) {
         this.sfx = sfx;
     }
 

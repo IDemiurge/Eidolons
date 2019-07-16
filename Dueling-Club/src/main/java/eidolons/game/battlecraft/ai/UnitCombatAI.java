@@ -34,7 +34,7 @@ public class UnitCombatAI {
     Unit unit;
     private int engagementDuration;
     private boolean engaged;
-    private List<Action> forcedActions=     new ArrayList<>() ;
+    private List<Action> forcedActions = new ArrayList<>();
     private Map<ObjType, Integer> actionPriorityMods;
     private Map<ObjType, Integer> actionPriorityBonuses;
     private boolean ordered;
@@ -45,9 +45,10 @@ public class UnitCombatAI {
     public UnitCombatAI(Unit unit) {
         this.unit = unit;
     }
+
     private void initType() {
         type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
-         .getProperty(PROPS.AI_TYPE));
+                .getProperty(PROPS.AI_TYPE));
         if (unit.isMine() || type == null) {
             CompanionMaster.initCompanionAiParams(unit);
         }
@@ -55,12 +56,12 @@ public class UnitCombatAI {
 
     private void initActionPriorities() {
         actionPriorityBonuses = RandomWizard.constructWeightMap(unit
-         .getProperty(PROPS.ACTION_PRIORITY_BONUSES), C_OBJ_TYPE.ACTIVE);
+                .getProperty(PROPS.ACTION_PRIORITY_BONUSES), C_OBJ_TYPE.ACTIVE);
         actionPriorityMods = RandomWizard.constructWeightMap(unit
-         .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
+                .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
 
         for (ObjType spell : DataManager.toTypeList(unit.getProperty(PROPS.VERBATIM_SPELLS),
-         DC_TYPE.SPELLS)) {
+                DC_TYPE.SPELLS)) {
             Integer mastery = unit.getIntParam(ContentValsManager.getSpellMasteryForSpell(spell));
 
             // WHY VERBATIM? MAYBE FROM *TYPE*, YES...
@@ -69,7 +70,7 @@ public class UnitCombatAI {
         // default additions?
         /*
          * verbatim spell list per mastery
-		 */
+         */
     }
 
     public AI_TYPE getType() {
@@ -164,42 +165,46 @@ public class UnitCombatAI {
     }
 
     public void setLastSequence(ActionSequence lastSequence) {
-        setIntentIcon(initIntent(lastSequence.getCurrentAction()));
+        if (lastSequence == null) {
+            setIntentIcon(null);
+        } else
+            setIntentIcon(initIntent(lastSequence.getCurrentAction()));
         this.lastSequence = lastSequence;
     }
 
     private InitiativePanel.INTENT_ICON initIntent(Action currentAction) {
-        switch (currentAction.getTask().getType()) {
-            case ATTACK:
-                return InitiativePanel.INTENT_ICON.ATTACK;
-            case APPROACH:
-                break;
-            case BUFF:
-            case SELF:
-            case DEBUFF:
-            case RESTORE:
-            case DEBILITATE:
-            case SUMMONING:
-            case ZONE_DAMAGE:
-            case CUSTOM_HOSTILE:
-            case CUSTOM_SUPPORT:
-            case ZONE_SPECIAL:
-            return  InitiativePanel.INTENT_ICON.SPELL;
-            case MOVE:
-                return  InitiativePanel.INTENT_ICON.MOVE;
-            case WAIT:
-                break;
-            case PREPARE:
-                return  InitiativePanel.INTENT_ICON.PREPARE;
-            case DEFEND:
-                return  InitiativePanel.INTENT_ICON.DEFEND;
-            case PROTECT:
-                break;
-            case RETREAT:
-                break;
-            case SEARCH:
-                break;
-        }
+        if (currentAction.getTask().getType() != null)
+            switch (currentAction.getTask().getType()) {
+                case ATTACK:
+                    return InitiativePanel.INTENT_ICON.ATTACK;
+                case APPROACH:
+                    break;
+                case BUFF:
+                case SELF:
+                case DEBUFF:
+                case RESTORE:
+                case DEBILITATE:
+                case SUMMONING:
+                case ZONE_DAMAGE:
+                case CUSTOM_HOSTILE:
+                case CUSTOM_SUPPORT:
+                case ZONE_SPECIAL:
+                    return InitiativePanel.INTENT_ICON.SPELL;
+                case MOVE:
+                    return InitiativePanel.INTENT_ICON.MOVE;
+                case WAIT:
+                    break;
+                case PREPARE:
+                    return InitiativePanel.INTENT_ICON.PREPARE;
+                case DEFEND:
+                    return InitiativePanel.INTENT_ICON.DEFEND;
+                case PROTECT:
+                    break;
+                case RETREAT:
+                    break;
+                case SEARCH:
+                    break;
+            }
         return InitiativePanel.INTENT_ICON.OTHER;
     }
 

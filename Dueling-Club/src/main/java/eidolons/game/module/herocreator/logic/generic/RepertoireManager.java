@@ -68,6 +68,7 @@ public class RepertoireManager<T, E> {
                 while(retryLoop.continues()){
                     List<T> list = select(max, min, preferred, pool, maxValue, buffer,
                      mapFunction, valueFunction, weightMap, randomness, neverRepeat, true);
+                    if (list != null)
                     if (list.size()>=preferred) {
                         return list;
                     }

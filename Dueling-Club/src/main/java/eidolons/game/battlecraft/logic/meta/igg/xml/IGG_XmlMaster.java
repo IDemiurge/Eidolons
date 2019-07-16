@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.RngLocationBuilder;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -223,7 +224,7 @@ public class IGG_XmlMaster {
     }
 
     public static String getDoorKeyData(String levelName) {
-        levelName= PathUtils.getLastPathSegment(levelName).toLowerCase();
+        levelName = PathUtils.getLastPathSegment(levelName).toLowerCase();
         switch (levelName) {
             case "underworld.xml":
                 return "Iron Bars(Iron Key);Iron Door(Iron Key);Dwarven Door(Iron Key);" +
@@ -241,6 +242,18 @@ public class IGG_XmlMaster {
     }
 
     public static String getEntrancesData(String levelName) {
+        if (Eidolons.BOSS_FIGHT) { //TODO boss fix
+            return "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
+        }
+//        if (CoreEngine.isLiteLaunch()) { //TODO boss fix
+//            entranceData = "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
+//        }
+        if (Eidolons.BRIDGE) {
+            return "Blackness(0-15);The Light(12-10)";
+//            return "Blackness(0-15);The Light(20-1)";
+        } else if (Eidolons.TUTORIAL_MISSION) {
+            return "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
+        }
         switch (PathUtils.getLastPathSegment(levelName.toLowerCase())) {
             case "underworld.xml":
                 return "13-18=Upward Stairs;0-19=Dark Winding Downward Stairs";

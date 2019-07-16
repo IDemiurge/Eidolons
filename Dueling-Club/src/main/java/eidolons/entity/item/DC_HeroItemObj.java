@@ -30,6 +30,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     private PROPERTY[] props = {G_PROPS.STD_BOOLS};
     private CONTAINER container=CONTAINER.UNASSIGNED;
     private Unit originalUnit;
+    private ObjType baseType;
 
     public DC_HeroItemObj(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
                           // , PROPERTY[] props
@@ -212,4 +213,11 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         return originalUnit;
     }
 
+    public void setBaseType(ObjType baseType) {
+        this.baseType = baseType;
+    }
+
+    public ObjType getBaseType() {
+        return baseType;
+    }
 }

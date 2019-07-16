@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.meta.igg.soul.eidola;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceRule;
 import javafx.beans.property.SetProperty;
@@ -22,6 +24,7 @@ public class SoulMaster {
     private static final boolean TEST_MODE = true;
     static Map<Integer, Soul> soulMap = new XLinkedMap<>();
     static Map<ObjType, Integer> soulTypeIntMap = new XLinkedMap<>();
+    private static List<Soul> lastList;
 
     public static List<Soul> getSoulList() {
         soulTypeIntMap.clear();
@@ -31,13 +34,21 @@ public class SoulMaster {
         List<ObjType> types = DataManager.toTypeList(EidolonLord.lord.getProperty(PROPS.LORD_SOULS),
                 DC_TYPE.UNITS);
 
-        return types.stream().map(type -> getOrCreate(type)).collect(Collectors.toList());
+        lastList = types.stream().map(type -> getOrCreate(type)).collect(Collectors.toList());
+        return lastList;
     }
 
     public static void clear() {
         soulMap.clear();
     }
 
+    public static void resetSouls() {
+        if (lastList != null) {
+            for (Soul soul : lastList) {
+                soul.setBeingUsed(false);
+            }
+        }
+    }
     private static Soul getOrCreate(ObjType type) {
         //TODO wtf do we do when a soul is removed?!
 
@@ -59,9 +70,29 @@ public class SoulMaster {
     public static void consume(Soul soul) {
         int force = SoulforceRule.getForce(soul.getUnitType());
 //        GuiEventManager.trigger(GuiEventType. VFX_PLAY_LAST)
-        // https://soundcloud
         EidolonLord.lord.addParam(PARAMS.SOULFORCE, force);
         EidolonLord.lord.soulsLost(soul);
-        GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
+        GuiEventManager.trigger(GuiEventType.UPDATE_SOULS_PANEL);
+
     }
+
+    private static boolean isSoulTrapOn(BattleFieldObject killed) {
+        if (killed instanceof Structure) {
+            return false;
+        }
+        return true;
+    }
+    public static void gainSoul(BattleFieldObject killed) {
+        Soul soul = getOrCreate(killed.getType());
+        EidolonLord.lord.soulsGained(soul);
+    }
+    public static void slain(BattleFieldObject killed) {
+        if(isSoulTrapOn(killed)){
+            gainSoul(killed);
+
+        }
+
+
+    }
+
 }

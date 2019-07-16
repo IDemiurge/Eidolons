@@ -118,7 +118,12 @@ public class Coordinates {
     }
 
     public static String[] splitCoordinateString(String s) {
-        return StringMaster.cropParenthesises(s).split(StringMaster.getCoordinatesSeparator());
+        if (s.contains(StringMaster.COORDINATES_SEPARATOR_ALT)) {
+        return StringMaster.cropParenthesises(s).split(
+                StringMaster.COORDINATES_SEPARATOR_ALT);
+        }
+        return StringMaster.cropParenthesises(s).split(
+                StringMaster.COORDINATES_SEPARATOR );
     }
 
     public static Coordinates[] getCoordinates(String string) {
@@ -253,6 +258,12 @@ public class Coordinates {
         x=y;
         y = n;
         return this;
+    }
+    public Coordinates negativeY() {
+        return new Coordinates(getX(), -getY());
+    }
+    public Coordinates negativeX() {
+        return new Coordinates(-getX(), getY());
     }
         public Coordinates invert() {
         if (h == 0) {
@@ -546,7 +557,7 @@ public class Coordinates {
     }
 
     public Coordinates getOffset(Coordinates coordinates) {
-        return getOffsetByX(coordinates.x).getOffsetByY(coordinates.y);
+        return get(getX()+coordinates.x, getY()+coordinates.y);
     }
 
     public float dist(Coordinates coordinates) {

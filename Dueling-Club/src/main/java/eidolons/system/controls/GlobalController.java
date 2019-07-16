@@ -6,6 +6,7 @@ import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -107,6 +108,8 @@ public class GlobalController implements Controller {
                 PaleAspect.togglePale();
                 return true;
             case Keys.F2:
+                if (CoreEngine.isIDE())
+                    LordPanel.getInstance().init();
                 GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
                 return true;
             case Keys.F1:

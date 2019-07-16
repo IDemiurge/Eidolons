@@ -18,6 +18,7 @@ import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 
@@ -64,7 +65,7 @@ public class SpellMultiplicator implements Runnable {
     @Override
     public void run() {
         main.system.auxiliary.log.LogMaster.log(1, getClass().getSimpleName() + " works on " + anim);
-        main.system.auxiliary.log.LogMaster.log(1, "getEmitterList= " + anim.getEmitterList());
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, "getEmitterList= " + anim.getEmitterList());
         emitterList = anim.getEmitterList();
         duration = anim.getDuration();
         active = anim.getActive();

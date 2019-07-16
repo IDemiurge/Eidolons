@@ -1,8 +1,8 @@
 package eidolons.libgdx.particles.spell;
 
 import com.badlogic.gdx.utils.Pool;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterPools;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Chronos;
@@ -55,8 +55,8 @@ public class SpellVfxPool extends EmitterPools{
 
             Chronos.mark("emitter " + path);
             SpellVfx emitter = null;
-            VFX sfx = new EnumMaster<VFX>().
-             retrieveEnumConst(VFX.class, path);
+            GenericEnums.VFX sfx = new EnumMaster<GenericEnums.VFX>().
+             retrieveEnumConst(GenericEnums.VFX.class, path);
 
             emitter =  getEmitterActor(path);
             if (emitter != null) {

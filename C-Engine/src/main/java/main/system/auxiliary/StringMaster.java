@@ -108,10 +108,11 @@ public class StringMaster {
     public static final String ALIGNMENT = " Alignment";
     public static final String MAP_VALUE_KEY_SEPARATOR = null;
     public static final String CELL_DATA_SEPARATOR = "::";
-    private static final String COORDINATES_SEPARATOR = "-";
-    private static final String ALT_SEPARATOR = ",";
-    private static final String standard_symbols = "'-(),";
-    private static final String PREFIX_SEPARATOR = "::";
+    public static final String COORDINATES_SEPARATOR = "-";
+    public static final String COORDINATES_SEPARATOR_ALT = ":";
+    public static final String ALT_SEPARATOR = ",";
+    public static final String standard_symbols = "'-(),";
+    public static final String PREFIX_SEPARATOR = "::";
     static Pattern pattern_ = Pattern.compile("_");
     static Pattern pattern_space = Pattern.compile(" ");
     public static final String UPGRADE = getWellFormattedString("UPGRADE");
@@ -751,6 +752,7 @@ public class StringMaster {
     }
 
     public static boolean getBoolean(String value) {
+        value = value.trim();
         if (isEmpty(value)) {
             return false;
         }
@@ -1185,6 +1187,7 @@ public class StringMaster {
     public static String indent(int i) {
         return getStringXTimes(i, " ");
     }
+
 
 
     public enum STD_DEITY_TYPE_NAMES {

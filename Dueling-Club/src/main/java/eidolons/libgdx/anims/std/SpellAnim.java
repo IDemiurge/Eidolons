@@ -52,7 +52,7 @@ public class SpellAnim extends ActionAnim {
             if (StringMaster.isEmpty(vfx) || isVfxOverridden(getActive(), getPart())) {
                 vfx = //SpellAnimMaster.
                         getOverriddenVfx(getActive(), getPart());
-                main.system.auxiliary.log.LogMaster.log(1,getActive() + " gets an OVERRIDE VFX: " +vfx);
+                main.system.auxiliary.log.LogMaster.verbose( getActive() + " gets an OVERRIDE VFX: " +vfx);
             }
             setEmitterList(SpellVfxPool.getEmitters(vfx));
         }

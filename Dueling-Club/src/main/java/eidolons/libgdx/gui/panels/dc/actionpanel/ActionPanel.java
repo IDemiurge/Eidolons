@@ -167,6 +167,13 @@ public class ActionPanel extends GroupX {
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
+            ActionMaster.addMoveToAction(this, getX(),  -64, 1.4f);
+        });
+        GuiEventManager.bind(GuiEventType.PUZZLE_FINISHED, p -> {
+            ActionMaster.addMoveToAction(this, getX(), 0, 1.4f);
+        });
+
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {
             ActionMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
         });

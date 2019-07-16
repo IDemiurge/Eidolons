@@ -440,8 +440,10 @@ public class GdxMaster {
         if (CoreEngine.isFastMode()) {
             return;
         }
+        int x = Gdx.input.getX();
+        int y = Gdx.input.getY();
         Gdx.graphics.setCursor(cursor);
-        Gdx.input.setCursorPosition(Gdx.input.getX() + 1, Gdx.input.getY() + 1);
+        Gdx.input.setCursorPosition(x  ,y );
     }
 
     public static void setDefaultCursor() {

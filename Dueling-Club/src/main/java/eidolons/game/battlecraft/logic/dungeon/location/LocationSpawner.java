@@ -13,6 +13,7 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.test.PresetMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.data.DataUnitFactory;
@@ -54,14 +55,19 @@ public class LocationSpawner extends Spawner<Location> {
             getPositioner().setMaxSpacePercentageTaken(50);
             List<Coordinates> coords = getPositioner().getPlayerPartyCoordinates(list);
             Iterator<Coordinates> iterator = coords.iterator();
-
+//            coords.removeIf(c -> c == null); TODO concurrent mod ...
             for (Unit member : party.getMembers()) {
                 if (!iterator.hasNext()) {
                     main.system.auxiliary.log.LogMaster.log(1, "Spawn failed: Coordinates: " + coords +
                             "; Units" + list);
                     break;
                 }
-                member.setCoordinates(iterator.next(), true);
+                Coordinates c = iterator.next();
+                if (c == null) {
+//                    c = (Coordinates) RandomWizard.getRandomListObject(coords);
+                    c = coords.get(0);
+                }
+                member.setCoordinates(c, true);
                 member.setConstructed(false);
                 getGame().getState().addObject(member);
                 member.setOriginalOwner(player);

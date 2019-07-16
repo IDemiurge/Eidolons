@@ -458,12 +458,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
                     StrPathBuilder.build("main",
                             "item",
                             "weapon",
-                            "sprites", getBaseType() + ".png"));
+                            "sprites", getBaseTypeName() + ".png"));
         }
         return getProperty(PROPS.SPRITE_PATH);
     }
 
-    private String getBaseType() {
+    public String getBaseTypeName() {
         if (!getType().isGenerated())
             return getName();
         return getProperty(G_PROPS.BASE_TYPE);

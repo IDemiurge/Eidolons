@@ -13,13 +13,13 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.VignetteShader;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -101,63 +101,63 @@ public class GuiVisualEffects extends GroupX {
         emitterTypesCount=0;
         emitters = new ArrayList<>();
         boolean night = time.isNight();
-        WeightMap<VFX> map = getEmittersWeightMap(template, night);
+        WeightMap<GenericEnums.VFX> map = getEmittersWeightMap(template, night);
         int n = getEmitterCount(template, time);
         for (int i = 0; i < n; i++) {
-            VFX preset = map.getRandomByWeight();
+            GenericEnums.VFX preset = map.getRandomByWeight();
             boolean bottom=RandomWizard.random();
             createEmitters(bottom, preset, 220 - 50 + RandomWizard.getRandomInt(100));
         }
         switch (template) {
             case CAVE:
-                createEmitters(false, VFX.MIST_WIND, 250);
+                createEmitters(false, GenericEnums.VFX.MIST_WIND, 250);
                 break;
             case COLD:
-                createEmitters(false, VFX.SNOWFALL, 250);
+                createEmitters(false, GenericEnums.VFX.SNOWFALL, 250);
                 break;
             case POISON:
-                createEmitters(false, VFX.MIST_BLACK, 250);
-                createEmitters(false, VFX.ASH, 250);
+                createEmitters(false, GenericEnums.VFX.MIST_BLACK, 250);
+                createEmitters(false, GenericEnums.VFX.ASH, 250);
                 break;
             case DUNGEON:
             case CRYPT:
-                createEmitters(false, VFX.MIST_BLACK, 250);
+                createEmitters(false, GenericEnums.VFX.MIST_BLACK, 250);
             case HELL:
-                createEmitters(false, VFX.ASH, 250);
+                createEmitters(false, GenericEnums.VFX.ASH, 250);
                 break;
             case HALL:
                 break;
             case FOREST:
-                createEmitters(false, VFX.FALLING_LEAVES_WINDY, 250);
-                createEmitters(false, VFX.FALLING_LEAVES, 250);
+                createEmitters(false, GenericEnums.VFX.FALLING_LEAVES_WINDY, 250);
+                createEmitters(false, GenericEnums.VFX.FALLING_LEAVES, 250);
                 break;
             case DEEP_MIST:
-                createEmitters(false, VFX.MIST_ARCANE, 250);
-                createEmitters(false, VFX.MIST_NEW, 250);
+                createEmitters(false, GenericEnums.VFX.MIST_ARCANE, 250);
+                createEmitters(false, GenericEnums.VFX.MIST_NEW, 250);
                 break;
         }
         if (night) {
             switch (template) {
                 case COLD:
-                    createEmitters(false, VFX.SNOW, 250);
+                    createEmitters(false, GenericEnums.VFX.SNOW, 250);
                 case CAVE:
                 case FOREST:
-                    createEmitters(false, VFX.STARS, 250);
+                    createEmitters(false, GenericEnums.VFX.STARS, 250);
                     break;
 
                 case POISON:
                     break;
                 case DUNGEON:
-                    createEmitters(false, VFX.WISPS, 250);
+                    createEmitters(false, GenericEnums.VFX.WISPS, 250);
                     break;
                 case CRYPT:
-                    createEmitters(false, VFX.MOTHS_BLUE3, 250);
+                    createEmitters(false, GenericEnums.VFX.MOTHS_BLUE3, 250);
                     break;
                 case HELL:
-                    createEmitters(false, VFX.CINDERS3, 250);
+                    createEmitters(false, GenericEnums.VFX.CINDERS3, 250);
                     break;
                 case HALL:
-                    createEmitters(false, VFX.MOTHS_TIGHT2, 250);
+                    createEmitters(false, GenericEnums.VFX.MOTHS_TIGHT2, 250);
                     break;
                 case DEEP_MIST:
                     break;
@@ -165,10 +165,10 @@ public class GuiVisualEffects extends GroupX {
         } else
             switch (template) {
                 case CAVE:
-                    createEmitters(false, VFX.MIST_WHITE, 200);
+                    createEmitters(false, GenericEnums.VFX.MIST_WHITE, 200);
                     break;
                 case COLD:
-                    createEmitters(false, VFX.SNOW, 250);
+                    createEmitters(false, GenericEnums.VFX.SNOW, 250);
                     break;
                 case POISON:
                     break;
@@ -191,34 +191,34 @@ public class GuiVisualEffects extends GroupX {
         return 3;
     }
 
-    private WeightMap<VFX> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
-        WeightMap<VFX> map = new WeightMap<>(VFX.class);
+    private WeightMap<GenericEnums.VFX> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
+        WeightMap<GenericEnums.VFX> map = new WeightMap<>(GenericEnums.VFX.class);
         int fog = night ? 10 : 5;
         int down = night? 5 : 10;
-        VFX special = night ? VFX.STARS : VFX.MOTHS;
-        VFX special2 = night ? VFX.WISPS : VFX.CINDERS;
+        GenericEnums.VFX special = night ? GenericEnums.VFX.STARS : GenericEnums.VFX.MOTHS;
+        GenericEnums.VFX special2 = night ? GenericEnums.VFX.WISPS : GenericEnums.VFX.CINDERS;
 
         switch (template) {
             case CAVE:
-                map.chain(VFX.MIST_WIND, fog);
-                map.chain(VFX.MIST_WIND, fog);
+                map.chain(GenericEnums.VFX.MIST_WIND, fog);
+                map.chain(GenericEnums.VFX.MIST_WIND, fog);
 
-                map.chain(VFX.ASH, down);
-                map.chain(VFX.SNOWFALL, down);
-                map.chain(VFX.SNOWFALL_THICK, down);
-                map.chain(VFX.SNOWFALL_THICK, down);
-                map.chain(VFX.SNOW, down);
-                map.chain(VFX.SNOW_TIGHT, down);
+                map.chain(GenericEnums.VFX.ASH, down);
+                map.chain(GenericEnums.VFX.SNOWFALL, down);
+                map.chain(GenericEnums.VFX.SNOWFALL_THICK, down);
+                map.chain(GenericEnums.VFX.SNOWFALL_THICK, down);
+                map.chain(GenericEnums.VFX.SNOW, down);
+                map.chain(GenericEnums.VFX.SNOW_TIGHT, down);
 
-                map.chain(VFX.MIST_WIND, fog);
-                map.chain(VFX.MIST_ARCANE, fog);
-                map.chain(VFX.MIST_BLACK, fog);
-                map.chain(VFX.MIST_CYAN, fog);
-                map.chain(VFX.MIST_WHITE3, fog);
-                map.chain(VFX.DARK_MIST_LITE, fog);
-                map.chain(VFX.DARK_MIST, fog);
-                map.chain(VFX.POISON_MIST, fog);
-                map.chain(VFX.POISON_MIST2, fog);
+                map.chain(GenericEnums.VFX.MIST_WIND, fog);
+                map.chain(GenericEnums.VFX.MIST_ARCANE, fog);
+                map.chain(GenericEnums.VFX.MIST_BLACK, fog);
+                map.chain(GenericEnums.VFX.MIST_CYAN, fog);
+                map.chain(GenericEnums.VFX.MIST_WHITE3, fog);
+                map.chain(GenericEnums.VFX.DARK_MIST_LITE, fog);
+                map.chain(GenericEnums.VFX.DARK_MIST, fog);
+                map.chain(GenericEnums.VFX.POISON_MIST, fog);
+                map.chain(GenericEnums.VFX.POISON_MIST2, fog);
 
                 break;
             case COLD:
@@ -268,17 +268,17 @@ public class GuiVisualEffects extends GroupX {
 
         emitters = new ArrayList<>();
         if (!isCustomEmitters()) {
-            createEmitters(true, VFX.MIST_BLACK, 250);
-            createEmitters(false, VFX.MIST_WHITE, 200);
+            createEmitters(true, GenericEnums.VFX.MIST_BLACK, 250);
+            createEmitters(false, GenericEnums.VFX.MIST_WHITE, 200);
         }
 
     }
 
-    private void createEmitters(boolean bottom, VFX preset, int gap) {
+    private void createEmitters(boolean bottom, GenericEnums.VFX preset, int gap) {
         emitterTypesCount++;
         int chance = (int) Math.max(15, 50 - emitterTypesCount * 10 - emitterTypesCount * 5 * GdxMaster.getFontSizeModSquareRoot());
         for (int i = 0; i < GdxMaster.getWidth(); i += gap) {
-            VFX preset_ = preset;
+            GenericEnums.VFX preset_ = preset;
             if (!RandomWizard.chance(chance*2)) {
                 continue;
             }

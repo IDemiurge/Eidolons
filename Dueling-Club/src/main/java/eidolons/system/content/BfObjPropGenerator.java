@@ -1,10 +1,13 @@
 package eidolons.system.content;
 
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.ValuePages;
 import main.content.CONTENT_CONSTS.DIMENSION;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.*;
+import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
@@ -17,9 +20,9 @@ public class BfObjPropGenerator {
     public static void generateBfObjProps(ObjType t) {
 
         BF_OBJECT_TYPE type = new EnumMaster<BF_OBJECT_TYPE>().retrieveEnumConst(
-         BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
+                BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
-         BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
+                BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (type == null) {
             switch (t.getProperty(G_PROPS.BF_OBJECT_TYPE).toUpperCase()) {
                 case "WALL":
@@ -123,7 +126,7 @@ public class BfObjPropGenerator {
         }
         if (group != null) {
             t.setProperty(G_PROPS.BF_OBJECT_GROUP, StringMaster
-             .getWellFormattedString(group.name()));
+                    .getWellFormattedString(group.name()));
         }
 
         if (type != null) {
@@ -135,19 +138,19 @@ public class BfObjPropGenerator {
     public static void generateBfObjStatProps(ObjType t) {
         // TODO theme from group!
         BF_OBJECT_SIZE size = new EnumMaster<BF_OBJECT_SIZE>().retrieveEnumConst(
-         BF_OBJECT_SIZE.class, t.getProperty(PROPS.BF_OBJECT_SIZE));
+                BF_OBJECT_SIZE.class, t.getProperty(PROPS.BF_OBJECT_SIZE));
         BF_OBJ_MATERIAL material = new EnumMaster<BF_OBJ_MATERIAL>().retrieveEnumConst(
-         BF_OBJ_MATERIAL.class, t.getProperty(PROPS.BF_OBJ_MATERIAL));
+                BF_OBJ_MATERIAL.class, t.getProperty(PROPS.BF_OBJ_MATERIAL));
         OBJECT_ARMOR_TYPE armorType = new EnumMaster<OBJECT_ARMOR_TYPE>().retrieveEnumConst(
-         OBJECT_ARMOR_TYPE.class, t.getProperty(PROPS.OBJECT_ARMOR_TYPE));
+                OBJECT_ARMOR_TYPE.class, t.getProperty(PROPS.OBJECT_ARMOR_TYPE));
         DIMENSION dimension = new EnumMaster<DIMENSION>().retrieveEnumConst(DIMENSION.class, t
-         .getProperty(PROPS.DIMENSION));
+                .getProperty(PROPS.DIMENSION));
 
         List<BF_OBJ_QUALITY> qualities = new EnumMaster<BF_OBJ_QUALITY>().getEnumList(
-         BF_OBJ_QUALITY.class, t.getProperty(PROPS.BF_OBJ_QUALITY));
+                BF_OBJ_QUALITY.class, t.getProperty(PROPS.BF_OBJ_QUALITY));
 
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
-         BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
+                BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (group == null) {
             switch (group) {
                 case COLUMNS:
@@ -344,6 +347,7 @@ public class BfObjPropGenerator {
                     }
                     break;
                 case WATER:
+                    qualities.add(BfObjEnums.BF_OBJ_QUALITY.WATER);
                     break;
                 case WINDOWS:
                     break;
@@ -357,14 +361,32 @@ public class BfObjPropGenerator {
         }
         if (material != null) {
             t.setProperty(PROPS.BF_OBJ_MATERIAL, StringMaster.getWellFormattedString(material
-             .name()));
+                    .name()));
         }
         if (dimension != null) {
             t.setProperty(PROPS.DIMENSION, StringMaster.getWellFormattedString(dimension.name()));
         }
         if (armorType != null) {
             t.setProperty(PROPS.OBJECT_ARMOR_TYPE, StringMaster.getWellFormattedString(armorType
-             .name()));
+                    .name()));
+        }
+
+        for (BF_OBJ_QUALITY quality : qualities) {
+            switch (quality) {
+                case WATER:
+                    for (PARAMETER resistance : ValuePages.RESISTANCES) {
+                        if (resistance == PARAMS.FIRE_RESISTANCE)
+                            t.setParam(resistance, 20);
+                        else if (resistance == PARAMS.SONIC_RESISTANCE)
+                            t.setParam(resistance, 30);
+                        else if (resistance == PARAMS.ACID_RESISTANCE)
+                            t.setParam(resistance, 40);
+                        else
+                            t.setParam(resistance, 100);
+                        //TODO freeze to ice?
+                    }
+                    break;
+            }
         }
 
     }

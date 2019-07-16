@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class ExceptionMaster {
 
-    private static  boolean SKIP_WRITE = CoreEngine.isLiteLaunch();
+    private static  boolean SKIP_WRITE =false;// CoreEngine.isLiteLaunch();
     private static  boolean PRINT_ALL =false;// CoreEngine.isLiteLaunch();
     static Set<String> printed = new HashSet<>();
 

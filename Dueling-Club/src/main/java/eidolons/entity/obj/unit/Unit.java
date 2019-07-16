@@ -324,6 +324,7 @@ public class Unit extends DC_UnitModel {
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
+        if (CoreEngine.isAutoFixOn())
         if (isPlayerCharacter()) {
             Integer integer = NumberUtils.getInteger(value);
             if (param.getName().contains("Percentage")) {
@@ -1372,7 +1373,7 @@ public class Unit extends DC_UnitModel {
                     if (game.isStarted())
                         if (!originalCoordinates.equals(coordinates)){
                             LogMaster.log(1,"Teleport bug? " );
-                            return;
+//                            return;
                         }
                 }
             }

@@ -143,7 +143,7 @@ public class BattleGuiStage extends GuiStage {
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             CharSequence text = "";
             CharSequence v= "";
-            if (ScenarioGame.getGame() instanceof ScenarioGame) {
+            if (Eidolons .getGame() instanceof ScenarioGame) {
                 try {
                     ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
                     text = m.getMetaGame().getScenario().getName();

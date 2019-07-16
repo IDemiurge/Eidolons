@@ -58,6 +58,7 @@ import java.io.IOException;
  */
 public class Eidolons {
     public static final boolean DEV_MODE = true;
+    public static   boolean BRIDGE = false;
     private static final Integer WIDTH_WINDOWED = 95;
     private static final Integer HEIGHT_WINDOWED = 90;
     public static final String NAME = "eidolons";
@@ -151,13 +152,13 @@ public class Eidolons {
             try {
                 mainHero = game.getMetaMaster().getPartyManager().getParty().getLeader();
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
             if (mainHero == null) {
                 try {
                     mainHero = (Unit) game.getPlayer(true).getHeroObj();
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+//                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             MAIN_HERO = mainHero;

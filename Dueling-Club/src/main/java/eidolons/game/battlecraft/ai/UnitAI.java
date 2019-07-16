@@ -36,6 +36,7 @@ public class UnitAI {
 
     private List<DC_ActiveObj> usedActions;
     private List<MetaGoal> metaGoals;
+    private boolean engagedOverride;
 
     //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
@@ -98,7 +99,7 @@ public class UnitAI {
         if (new EnumMaster<ENGAGEMENT_LEVEL>().getEnumConstIndex(getEngagementLevel()) < 1) {
             return false;
         }
-        return unit.getAiType() == AiEnums.AI_TYPE.SNEAK;
+        return unit.getAiType() == AI_TYPE.SNEAK;
     }
 
     private boolean checkAmbush() {
@@ -106,10 +107,10 @@ public class UnitAI {
             return false;
         }
         // intelligence preCheck? group preCheck?
-        if (unit.getAiType() == AiEnums.AI_TYPE.ARCHER) {
+        if (unit.getAiType() == AI_TYPE.ARCHER) {
             return true;
         }
-        if (unit.getAiType() == AiEnums.AI_TYPE.CASTER) {
+        if (unit.getAiType() == AI_TYPE.CASTER) {
             return true;
         }
         // if (group.isAmbushing()) return true;
@@ -146,14 +147,14 @@ public class UnitAI {
 
     public void setStandingOrders(ActionSequence standingOrders) {
         if (standingOrders != null) {
-            if (standingOrders.getType() == AiEnums.GOAL_TYPE.MOVE) {
+            if (standingOrders.getType() == GOAL_TYPE.MOVE) {
                 orderType = ORDER_TYPE.MOVE;
-            } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
+            } else if (standingOrders.getType() == GOAL_TYPE.WANDER) {
                 orderType = ORDER_TYPE.WANDER;
-            } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.WANDER) {
+            } else if (standingOrders.getType() == GOAL_TYPE.WANDER) {
                 orderType = ORDER_TYPE.PATROL;
-            } else if (standingOrders.getType() == AiEnums.GOAL_TYPE.STALK
-             || standingOrders.getType() == AiEnums.GOAL_TYPE.AGGRO) {
+            } else if (standingOrders.getType() == GOAL_TYPE.STALK
+             || standingOrders.getType() == GOAL_TYPE.AGGRO) {
                 orderType = ORDER_TYPE.PURSUIT;
             }
         }
@@ -162,10 +163,10 @@ public class UnitAI {
 
     public void checkSetOrders(ActionSequence sequence) {
         orderType = null;
-        if ((sequence.getType() == AiEnums.GOAL_TYPE.WANDER)) {
+        if ((sequence.getType() == GOAL_TYPE.WANDER)) {
             orderType = ORDER_TYPE.WANDER;
         }
-        if ((sequence.getType() == AiEnums.GOAL_TYPE.PATROL)) {
+        if ((sequence.getType() == GOAL_TYPE.PATROL)) {
             orderType = ORDER_TYPE.PATROL;
         }
 
@@ -336,6 +337,14 @@ public class UnitAI {
     public void combatEnded() {
         setEngagementDuration(0);
         setEngaged(false);
+    }
+
+    public void setEngagedOverride(boolean engagedOverride) {
+        this.engagedOverride = engagedOverride;
+    }
+
+    public boolean isEngagedOverride() {
+        return engagedOverride;
     }
 
     public enum AI_BEHAVIOR_MODE {

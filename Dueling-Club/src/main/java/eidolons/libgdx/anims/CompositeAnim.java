@@ -20,6 +20,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -126,7 +127,7 @@ public class CompositeAnim implements Animation {
     public void start(Ref ref) {
         if (isRunning())
             return;
-        main.system.auxiliary.log.LogMaster.log(1, this + " started ");
+        main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, this + " started ");
         setRef(ref);
         start();
     }

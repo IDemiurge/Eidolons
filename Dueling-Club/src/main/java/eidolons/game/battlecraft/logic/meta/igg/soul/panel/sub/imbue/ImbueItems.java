@@ -98,7 +98,8 @@ public class ImbueItems extends TablePanelX {
 
     public void setSelected(DC_HeroItemObj selected) {
         this.selected = selected;
-        imbuePanel.update();
+        imbuePanel.getItemInfo().setUserObject(selected);
+//        imbuePanel.update();
 //        GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
     }
     @Override

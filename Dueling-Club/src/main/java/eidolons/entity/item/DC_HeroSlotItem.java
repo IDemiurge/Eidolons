@@ -3,6 +3,7 @@ package eidolons.entity.item;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
+import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -102,5 +103,9 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
         if (!type.isGenerated())
             return getName();
         return getProperty(G_PROPS.BASE_TYPE);
+    }
+
+    public ItemEnums.QUALITY_LEVEL getQuality() {
+        return new EnumMaster<ItemEnums.QUALITY_LEVEL>().retrieveEnumConst(ItemEnums.QUALITY_LEVEL.class, getProperty(G_PROPS.QUALITY_LEVEL));
     }
 }

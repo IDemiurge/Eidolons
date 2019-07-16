@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.bitfire.utils.ItemsManager;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
@@ -18,6 +19,7 @@ import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -27,6 +29,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SoulsPanel extends SoulTab {
@@ -37,6 +40,7 @@ public class SoulsPanel extends SoulTab {
     TablePanelX infoHeader = new TablePanelX();
     TablePanelX headerButtons = new TablePanelX();
     private ButtonGroup<Button> btnGroup;
+    private List<SoulActor> soulActors=    new ArrayList<>()  ;
 
     public SoulsPanel() {
         imbuePanel = new ImbuePanel();
@@ -58,7 +62,17 @@ public class SoulsPanel extends SoulTab {
         souls = new TablePanelX();
         add(souls).row();
 
-        imbuePanel.setPosition(getPrefWidth() + 300, 100);
+        imbuePanel.setPosition(getPrefWidth() + 250, 20);
+
+        GuiEventManager.bind(GuiEventType.UPDATE_SOULS_PANEL, p -> {
+            imbuePanel.update();
+            soulActors.forEach(a -> a.update());
+        });
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
     }
 
     private void toggleImbuePanel() {
@@ -68,6 +82,9 @@ public class SoulsPanel extends SoulTab {
 
     @Override
     public void updateAct(float delta) {
+        if (getUserObject() == null) {
+            return;
+        }
         souls.clearChildren();
         btnGroup = new ButtonGroup<>();
         int i = 0;
@@ -78,7 +95,7 @@ public class SoulsPanel extends SoulTab {
                 souls.add(actor).row();
             else
                 souls.add(actor);
-
+            soulActors.add(actor);
         }
 
         trapped.setText("Souls Trapped: " +
@@ -88,6 +105,8 @@ public class SoulsPanel extends SoulTab {
     }
 
     public class SoulActor extends TablePanelX {
+        private final TablePanelX<Actor> table;
+        private   SmartButton btn;
         private  ShaderProgram shader;
         Soul soul;
 
@@ -99,10 +118,16 @@ public class SoulsPanel extends SoulTab {
             ShaderDrawer.drawWithCustomShader(this, batch, shader);
         }
 
+        @Override
+        public void update() {
+            shader = soul.isBeingUsed() ? DarkShader.getDarkShader() : null;
+            btn.setDisabled(soul.isBeingUsed());
+        }
+
         public SoulActor(Soul soul) {
             super(240, 128);
             this.soul = soul;
-            TablePanelX<Actor> table = new TablePanelX<>();
+             table = new TablePanelX<>();
             LabelX name = new LabelX(soul.getUnitType().getName(), StyleHolder.getAVQLabelStyle(18));
             table.add(name).center().row();
             String sf = soul.getForce() + "";
@@ -116,30 +141,26 @@ public class SoulsPanel extends SoulTab {
             VerticalValueContainer aspects = new VerticalValueContainer(aspects1, aspects2);
             table.add(aspects).center().row();
 
-            boolean used = soul.isBeingUsed();
-            if (used) {
-                shader = DarkShader.getDarkShader();
-                table.add(new LabelX("Used"));
-            } else {
-                SmartButton btn = new SmartButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
+                  btn = new SmartButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
                     () -> {
 
                         if (imbuePanel.isVisible()) {
                             imbuePanel.addSoul(soul);
                             soul.setBeingUsed(true);
-                            GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
+                            GuiEventManager.trigger(GuiEventType.UPDATE_SOULS_PANEL);
                             return;
                         }
 
                         SoulMaster.consume(soul);
-                        GuiEventManager.trigger(GuiEventType.UPDATE_LORD_PANEL);
+                        GuiEventManager.trigger(GuiEventType.UPDATE_SOULS_PANEL);
                     });
             btnGroup.add(btn);
             table.add(btn);
-            btn.addListener(new ValueTooltip("Destroy this soul to gain " +
-                    sf +
-                    " Soulforce").getController());
-        }
+            btn.addListener(new DynamicTooltip(()->{
+                return soul.isBeingUsed() ? "This Soul is being used" : "Destroy this soul to gain " +
+                        sf +
+                        " Soulforce";
+            }).getController());
 
             add(table);
 

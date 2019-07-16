@@ -1,105 +1,128 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.construction.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
-import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.system.DC_ConditionMaster;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
+import eidolons.system.ConditionsUtils;
 import main.data.XLinkedMap;
 import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
-import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.system.entity.ConditionMaster;
 
 import java.util.Map;
 
 public class PuzzleResolution extends PuzzleElement {
-    Map<Puzzle_Punishment, String> punishments;
-    Map<Puzzle_Resolution, String> resolutions;
 
-    public PuzzleResolution(Puzzle puzzle) {
-        super(puzzle);
-        punishments = new XLinkedMap<>();
-        punishments.put(Puzzle_Punishment.death, "");
-
-        resolutions = new XLinkedMap<>();
-        resolutions.put(Puzzle_Resolution.teleport,
-                "0-0"
-                //puzzle.getExit()
-        );
+    public void addPunishment(PUZZLE_PUNISHMENT punishment, String s) {
+        punishments.put(punishment, s);
+    }
+    public void addResolutions(PUZZLE_RESOLUTION resolution, String s) {
+        resolutions.put(resolution, s);
     }
 
-    public enum Puzzle_Resolution {
+    public enum PUZZLE_RESOLUTION {
         remove_wall,
         unseal_door,
         teleport,
-
-
+        tip,
     }
 
-    public enum Puzzle_Punishment {
+    public enum PUZZLE_PUNISHMENT {
         battle,
         spell,
         teleport,
         death,
+        ANIMATE_ENEMIES,
+        tip,
         ;
     }
-    private Runnable createPunishAction() {
+
+    Map<PUZZLE_PUNISHMENT, String> punishments;
+    Map<PUZZLE_RESOLUTION, String> resolutions;
+
+    PuzzleMaster.PUZZLE_SOLUTION solution;
+
+    public PuzzleResolution(Puzzle puzzle) {
+        super(puzzle);
+        punishments = new XLinkedMap<>();
+        resolutions = new XLinkedMap<>();
+    }
+
+    public PuzzleMaster.PUZZLE_SOLUTION getSolution() {
+        return solution;
+    }
+
+    public void setSolution(PuzzleMaster.PUZZLE_SOLUTION solution) {
+        this.solution = solution;
+    }
+
+        protected Runnable createPunishAction() {
         //battle?
         return () -> {
-
+            for (PUZZLE_PUNISHMENT punishment : punishments.keySet()) {
+                PuzzleActions.punishment(puzzle, punishment, punishments.get(punishment));
+            }
         };
+    }
+    public void started() {
+        createSolveTrigger();
+        createPunishTrigger();
+        createActionTriggers();
+    }
+    protected void createPunishTrigger() {
+        Condition checks = getPunishConditions();
+        if (checks == null) {
+            return;
+        }
+        Event.EVENT_TYPE event = getPunishEvent();
+        Runnable action = createPunishAction();
+
+        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.PUNISH, event, checks, action );
     }
 
 
-    private void createSolveTrigger() {
+    protected void createSolveTrigger() {
         Event.EVENT_TYPE event = getSolveEvent();
         Condition checks = getSolveConditions();
         Runnable action = createSolveAction();
 
-        puzzle.createTrigger(event, checks, action);
+        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.SOLVE, event, checks, action);
     }
 
-    private Event.EVENT_TYPE getSolveEvent() {
-        return Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING;
+    protected Event.EVENT_TYPE getSolveEvent() {
+        return Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE;
     }
 
-    private Condition getSolveConditions() {
+    protected Condition getSolveConditions() {
         return
-                new Conditions(
-                        DC_ConditionMaster.getInstance().getConditionFromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO,
-                                "", ""), new PuzzleCondition(puzzle, false));
+                ConditionsUtils.join(
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        ConditionsUtils.forPuzzleSolution(solution, puzzle));
     }
 
-    private Runnable createSolveAction() {
-        createPunishAction();
+    protected Runnable createSolveAction() {
+//        createPunishAction();
 //        createWinAction();
 //        createRewardAction();
         return () -> {
-            for (Puzzle_Resolution resolution : resolutions.keySet()) {
-                applyResolution(resolution, resolutions.get(resolution));
-
+            for (PUZZLE_RESOLUTION resolution : resolutions.keySet()) {
+              PuzzleActions.resolution(resolution, puzzle, resolutions.get(resolution));
             }
+            puzzle.finished();
         };
     }
 
-    private void applyResolution(Puzzle_Resolution resolution, String s) {
-        switch (resolution) {
-            case remove_wall:
-                break;
-            case unseal_door:
-                break;
-            case teleport:
-                Eidolons.getGame().getBattleMaster().getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.REPOSITION,
-                        Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()), s);
-                break;
-        }
+    protected Event.EVENT_TYPE getPunishEvent() {
+//TODO
+        return Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING;
     }
 
-
-    private void createActionTriggers() {
+    protected Condition getPunishConditions() {
+       return ConditionsUtils.forPuzzlePunishment(puzzle, punishments.keySet());
+    }
+    
+    
+    protected void createActionTriggers() {
 
 //        Event.EVENT_TYPE event = getActionEvent();
 //        Condition checks = getActionConditions();

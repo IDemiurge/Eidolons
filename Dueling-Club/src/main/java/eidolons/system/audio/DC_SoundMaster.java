@@ -112,10 +112,12 @@ public class DC_SoundMaster extends SoundMaster {
         }
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
+        if (unit.isPale()) {
+            getPlayer().playRandomSoundFromFolder(
+                    "std/move pale/");
+        } else
         getPlayer().playRandomSoundFromFolder(
-                "std/move/"
-//          + unit.getSize()
-        );
+                "std/move/");
 
     }
 
@@ -395,6 +397,9 @@ public class DC_SoundMaster extends SoundMaster {
                     playNow(getActionEffectSoundPath((Spell) activeObj, part));
                     return;
             }
+        if (activeObj.isMove()) {
+            return;
+        }
         switch (part) {
             case PRECAST:
                 ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerUnit().getGender() == GENDER.FEMALE);

@@ -59,7 +59,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
             if (!getEntity().getName().equalsIgnoreCase("wait"))
                 if (!getEntity().getName().equalsIgnoreCase("idle")) {
-
+                    return;
                 }
             main.system.auxiliary.log.LogMaster.log(1, ">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
             if (getEntity().isAttackAny()) {

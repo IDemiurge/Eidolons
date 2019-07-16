@@ -160,6 +160,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return getBattleMaster().getPlayerManager();
     }
 
+    public PuzzleMaster getPuzzleMaster() {
+        return puzzleMaster;
+    }
+
     public BattleOptionManager getOptionManager() {
         return getBattleMaster().getOptionManager();
     }

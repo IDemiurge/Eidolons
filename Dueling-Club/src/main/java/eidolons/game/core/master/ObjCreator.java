@@ -59,6 +59,7 @@ public class ObjCreator extends Master {
             return null;
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
+            game.getMaster().clearCache(obj.getCoordinates());
         } else {
             if (EntityCheckMaster.isBoss(type)) {
                 obj = new BossUnit(type, x, y, owner, getGame(), ref);

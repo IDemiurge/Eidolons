@@ -49,7 +49,7 @@ public abstract class HqElement extends TablePanelX implements HqActor{
     public void setUserObject(Object userObject) {
         if (!(userObject instanceof HqHeroDataSource))
         {
-            main.system.auxiliary.log.LogMaster.log(1,getClass().getSimpleName()+ " hq elements can't have this userObject: " +userObject);
+            main.system.auxiliary.log.LogMaster.verbose( getClass().getSimpleName()+ " hq elements can't have this userObject: " +userObject);
             return;
         }
         super.setUserObject(userObject);

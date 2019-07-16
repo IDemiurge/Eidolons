@@ -16,18 +16,16 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.particles.ambi.Ambience;
-import eidolons.libgdx.particles.VFX;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.text.TipMaster;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.TimeMaster;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
@@ -116,10 +114,10 @@ public class LoadingStage extends Stage {
 
                 boolean night = TimeMaster.getTime()% (3600*24*1000) > 3600*12*1000;
 
-                VFX[] vfxes = night ? template.nightly : template.daily;
+                GenericEnums.VFX[] vfxes = night ? template.nightly : template.daily;
 
                 int n = vfxes.length;
-                VFX vfx = vfxes[RandomWizard.getRandomInt(n)];
+                GenericEnums.VFX vfx = vfxes[RandomWizard.getRandomInt(n)];
 
                 Vector2 v = new Vector2(w, h);
                 Ambience fog = ParticleManager.addFogOn(v, vfx);

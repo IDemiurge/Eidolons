@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
@@ -36,11 +37,13 @@ import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -205,18 +208,24 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     //moves all party members to new positions around given origin
     private boolean doReposition(Ref ref, String[] args) {
 //        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_IN, 100);
-        int i = 0;
 //        String group = args[i];
 //        i++;
+        if (PaleAspect.ON) {
+            PaleAspect.shadowLeapToLocation(Coordinates.get(args[0]));
+            return true;
+        }
         List<Unit> members = getMaster().getMetaMaster().getPartyManager().getParty().
                 getMembers();
         List<Coordinates> coordinates =
-                getCoordinatesListForUnits(args[i], getPlayerManager().getPlayer(true),
+                getCoordinatesListForUnits(args[0], getPlayerManager().getPlayer(true),
                         members.stream().map(m -> m.getName()).collect(Collectors.toList()), ref);
-        i = 0;
+        Iterator<Coordinates> i = coordinates.iterator();
         for (Unit unit : members) {
-            unit.setCoordinates(coordinates.get(i));
-            i++;
+            if (i.hasNext()) {
+                unit.setCoordinates(i.next());
+            } else {
+                unit.setCoordinates((Coordinates) RandomWizard.getRandomListObject(coordinates));
+            }
         }
         for (Unit unit : members) {
             GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);

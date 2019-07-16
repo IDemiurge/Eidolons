@@ -185,9 +185,6 @@ public class AnimConstructor {
         }
         if (!checkAnimationSupported((DC_ActiveObj) active))
             return null;
-        if (active instanceof Spell) {
-            main.system.auxiliary.log.LogMaster.log(1, "Construct spell anim for: " + active);
-        }
         CompositeAnim anim = map.get(active);
         if (!isReconstruct()) {
             if (anim != null) {
@@ -245,6 +242,9 @@ public class AnimConstructor {
     }
 
     private static CompositeAnim construct(DC_ActiveObj active) {
+        if (active instanceof Spell) {
+            main.system.auxiliary.log.LogMaster.log(1, "Construct spell anim for: " + active);
+        }
         active.construct(); // in case it was omitted
         //re-construct sometimes?
         CompositeAnim anim = new CompositeAnim(active);

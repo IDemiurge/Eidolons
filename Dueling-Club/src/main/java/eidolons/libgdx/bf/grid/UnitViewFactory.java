@@ -5,10 +5,13 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -19,11 +22,14 @@ import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
+import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.Map;
@@ -36,29 +42,29 @@ public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
-         bfObj.isBoss()&&UnitViewSprite.TEST_MODE  ? new BossView(options) :
-          new GridUnitView(options);
+                bfObj.isBoss() && UnitViewSprite.TEST_MODE ? new BossView(options) :
+                        new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
             if (!bfObj.isPlayerCharacter())
-            if (!bfObj.isBoss())
-                if (!bfObj.isWall()) {
-                    LastSeenView lsv = new LastSeenView(options, view);
-                    view.setLastSeenView(lsv);
-                    new LastSeenTooltipFactory().add(lsv, bfObj);
-                }
+                if (!bfObj.isBoss())
+                    if (!bfObj.isWall()) {
+                        LastSeenView lsv = new LastSeenView(options, view);
+                        view.setLastSeenView(lsv);
+                        new LastSeenTooltipFactory().add(lsv, bfObj);
+                    }
         }
         view.setOutlinePathSupplier(() -> {
-            if (CoreEngine.isCinematicMode()){
+            if (CoreEngine.isCinematicMode()) {
                 return null;
             }
-            if (!CoreEngine.isOutlinesFixed()){
+            if (!CoreEngine.isOutlinesFixed()) {
                 return null;
             }
-            if ( bfObj.isBoss()) {
+            if (bfObj.isBoss()) {
                 return null;
             }
-            if ( bfObj== ShadowMaster.getShadowUnit()) {
+            if (bfObj == ShadowMaster.getShadowUnit()) {
                 return null;
             }
             if (bfObj.isDetectedByPlayer()) {
@@ -68,7 +74,7 @@ public class UnitViewFactory {
             if (type == null)
                 return null;
             String path = Eidolons.game.getVisionMaster().getVisibilityMaster()
-             .getImagePath(type, bfObj);
+                    .getImagePath(type, bfObj);
 
             return (path);
         });
@@ -86,7 +92,18 @@ public class UnitViewFactory {
         ClickListener listener = createListener(bfObj);
         view.addListener(listener);
         view.getInitiativeQueueUnitView().addListener(listener);
+
+        if (isGridObjRequired(bfObj)) {
+            LinkedGridObject obj = new LinkedGridObject(view, new EnumMaster<CUSTOM_OBJECT>().
+                    retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT)),
+                    bfObj.getCoordinates());
+            GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
+        }
         return view;
+    }
+
+    private static boolean isGridObjRequired(BattleFieldObject bfObj) {
+        return bfObj.checkProperty(PROPS.CUSTOM_OBJECT);
     }
 
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
@@ -136,7 +153,7 @@ public class UnitViewFactory {
                                 if (UnitInfoPanelNew.isNewUnitInfoPanelWIP())
                                     if (bfObj instanceof Unit) {
                                         GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                                         ((Unit) bfObj));
+                                                ((Unit) bfObj));
                                         return;
                                     }
                                 DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
@@ -165,9 +182,7 @@ public class UnitViewFactory {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
 
-                if (event.getButton() == Input.Buttons.RIGHT)
-
-                {
+                if (event.getButton() == Input.Buttons.RIGHT) {
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
                     event.handle();
                     event.stop();
@@ -181,7 +196,7 @@ public class UnitViewFactory {
 
         }
 
-         ;
+                ;
     }
 
     public static OverlayView createOverlay(BattleFieldObject bfObj) {

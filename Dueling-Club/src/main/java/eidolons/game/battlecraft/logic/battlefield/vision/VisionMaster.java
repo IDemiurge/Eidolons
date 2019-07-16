@@ -83,7 +83,7 @@ public class VisionMaster implements GenericVisionManager {
 
         if (ExplorationMaster.isExplorationOn() &&
                 getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-            main.system.auxiliary.log.LogMaster.log(1, "Vision reset skipped by period; time left: " +
+            main.system.auxiliary.log.LogMaster.verbose( "Vision reset skipped by period; time left: " +
                     getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
         } else {
             getGame().getRules().getIlluminationRule().resetIllumination();

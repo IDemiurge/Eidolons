@@ -6,8 +6,10 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
+import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.Door;
@@ -130,6 +132,8 @@ public class StackingRule implements ActionRule {
                     continue;
                 if (u.isWall())
                     return false;
+                if (u.isWater())
+                    return WaterRule.checkPassable(u, unit);
                 if (!u.isNeutral() && !u.isMine())
                     if (game.getVisionMaster().checkInvisible(u)) {
                         continue;
@@ -142,6 +146,9 @@ public class StackingRule implements ActionRule {
         if (unit != null)
         if (EntityCheckMaster.isImmaterial(  unit ))
             return true;
+        if (PaleAspect.ON) {
+            return true;
+        }
         //check if '1 unit per cell' is on
         if (maxSpaceTakenPercentage <= 0) {
             if (!units.isEmpty()) {

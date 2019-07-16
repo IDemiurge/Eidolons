@@ -56,7 +56,7 @@ public class TextWrapper {
             return "";
         String newText = "";
         int maxLength = (int) (width / style.font.getSpaceWidth()*2/3);
-        for (String substring : ContainerUtils.openContainer(text, StringMaster.NEW_LINE)) {
+        for (String substring : StringMaster.splitLines(text)) {
             if (substring.length()>maxLength)
                 substring = wrapWithNewLine(substring, maxLength);
             newText += substring+ StringMaster.NEW_LINE;

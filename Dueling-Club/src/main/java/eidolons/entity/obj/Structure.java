@@ -119,7 +119,9 @@ if (isWall()){
         resetFacing();
         return super.getFacing();
     }
-
+    public boolean isWater() {
+        return getBfObjGroup()==BF_OBJECT_GROUP.WATER;
+    }
     @Override
     public boolean isNeutral() {
         return true;

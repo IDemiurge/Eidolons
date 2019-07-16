@@ -3,15 +3,18 @@ package eidolons.game.battlecraft.rules.round;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.properties.G_PROPS;
+import main.entity.Entity;
 import main.entity.obj.ActiveObj;
 import main.system.math.Formula;
 
@@ -27,13 +30,45 @@ public class WaterRule extends RoundRule implements ActionRule {
         super(game);
     }
 
-    public static boolean checkPassable(Unit unit) {
-        if (!canSwim(unit)) {
-            if (!isOnSwimmingDepth(unit)) {
-                return false;
+    public static boolean checkPassable(BattleFieldObject waterObj, Entity unit) {
+        return checkPassable(true, waterObj, unit);
+    }
+
+    public static boolean checkPassable(boolean manualCheck, BattleFieldObject waterObj, Entity obj) {
+
+        boolean bridged = false;
+        int girth = 0;
+        for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinate(waterObj.getCoordinates())) {
+            if (object==waterObj) {
+                continue;
+            }
+            girth += object.getIntParam(PARAMS.GIRTH);
+            if (waterObj.getIntParam(PARAMS.SPACE)<=girth){
+                bridged = true;
             }
         }
-        return true;
+        if (obj instanceof Structure){
+            if (bridged) {
+                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
+                    return false;
+            } else
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                    obj.getName()+ " falls into " + waterObj.getName(), obj);
+            return true;
+        }
+        if (bridged) {
+            return true;
+        }
+//        if (canSwim(unit)) {
+//            if (isOnSwimmingDepth(unit)) {
+//                return true;
+//            }
+//        }
+        if (manualCheck) {
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                "Too deep to cross!", obj);
+        }
+        return false;
     }
 
     private static boolean isForceSwimmingDepth(Unit unit) {
@@ -48,7 +83,7 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     private static float getSubmergedFactor(Unit unit) {
         float heightFactor = Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
-         / unit.getIntParam(PARAMS.HEIGHT);
+                / unit.getIntParam(PARAMS.HEIGHT);
         return heightFactor;
     }
 
@@ -115,14 +150,14 @@ public class WaterRule extends RoundRule implements ActionRule {
         Effects effects = new Effects();
         Formula formula = new Formula("x*50");
         effects.add(new ModifyValueEffect(PARAMS.STEALTH, MOD.MODIFY_BY_PERCENT, formula
-         .substituteVarValue("x", factor + "").toString()));
+                .substituteVarValue("x", factor + "").toString()));
         effects.add(new ModifyValueEffect(PARAMS.NOISE, MOD.MODIFY_BY_PERCENT, formula
-         .substituteVarValue("x", factor + "").toString()));
+                .substituteVarValue("x", factor + "").toString()));
         formula = new Formula("-x*50");
         effects.add(new ModifyValueEffect(PARAMS.DEFENSE, MOD.MODIFY_BY_PERCENT, formula
-         .substituteVarValue("x", factor + "").toString()));
+                .substituteVarValue("x", factor + "").toString()));
         effects.add(new ModifyValueEffect(PARAMS.FIRE_RESISTANCE, MOD.MODIFY_BY_CONST,
-         formula.substituteVarValue("x", factor + "").toString()));
+                formula.substituteVarValue("x", factor + "").toString()));
         return effects;
     }
 

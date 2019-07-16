@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 
@@ -27,21 +28,30 @@ public class AbstractCoordinates extends Coordinates {
         super(custom, s);
     }
 
+    public static AbstractCoordinates createFromVars(String substring) {
+        Integer x = Integer.valueOf(VariableManager.getVarList(substring).get(0).trim());
+        Integer y = Integer.valueOf(VariableManager.getVarList(substring).get(1).trim());
+        return new AbstractCoordinates(true,
+                x, y);
+    }
+
     public Coordinates getOffsetByX(int i) {
         return new AbstractCoordinates(x + i, y);
     }
 
     @Override
     protected Coordinates create(boolean allowInvalid, int x1, int y1) {
-        return new AbstractCoordinates( x1, y1);
+        return new AbstractCoordinates(x1, y1);
     }
 
     public Coordinates getOffsetByY(int i) {
         return new AbstractCoordinates(x, y + i);
     }
+
     @Override
     protected void checkInvalid() {
     }
+
     protected boolean isAllowInvalidAdjacent() {
         return true;
     }
@@ -59,6 +69,6 @@ public class AbstractCoordinates extends Coordinates {
     public double dst_(Coordinates c) {
         int xDiff = c.x - x;
         int yDiff = c.y - y;
-        return  Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 }

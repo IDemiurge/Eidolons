@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.igg.soul.eidola;
 
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.ItemFactory;
@@ -89,11 +90,28 @@ public class EidolonImbuer {
 
     }
 
+    public static  boolean isImbued(DC_HeroItemObj item) {
+        return item.checkProperty(PROPS.ITEM_TRAITS);
+    }
+
+    private ObjType clearTraits(ObjType type) {
+//        type.setName(type.getType().getName()); TODO if loaded game this won't work?
+        //saving custom items will be a separate thing
+        return type.getType();
+    }
     public DC_HeroItemObj imbue(DC_HeroItemObj item, Soul... souls) {
         //basically create a new item?
 
         //copy durability, previous...
-        ObjType newType = new ObjType(item.getType());
+        ObjType baseType = item.getBaseType();
+        if (baseType == null) {
+             baseType = item.getType();
+        }
+//        if (isImbued(item)){
+//            baseType = clearTraits(item);
+//        }
+        ObjType newType = new ObjType(baseType);
+
 
         Set<ItemTrait> traits = getTraits(item, souls);
         //replace old traits? that wouldn't be much fun...
@@ -116,6 +134,7 @@ public class EidolonImbuer {
         EidolonLord.lord.soulsLost(souls);
 
         item.log(item + " imbued with traits: " + traits);
+
         DataManager.addType(newType);
         item = ItemFactory.createItemObj(newType, item.getOriginalUnit(), false);
         if (owner != null) {
@@ -123,8 +142,10 @@ public class EidolonImbuer {
                 //stash
             }
         }
+        item.setBaseType(baseType);
         return item;
     }
+
 
     //DC_HeroSlotItem
     public Set<ItemTrait> getTraits(Entity item, Soul... souls) {

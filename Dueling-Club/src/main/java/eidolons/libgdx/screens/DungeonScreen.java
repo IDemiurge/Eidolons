@@ -390,7 +390,10 @@ public class DungeonScreen extends GameScreenWithTown {
             selectionPanel.draw(batch, 1);
             batch.end();
             if (postProcessing != null)
+            {
+                batch.resetBlending();
                 postProcessing.end();
+            }
         } else {
             if (DC_Game.game != null)
                 if (DC_Game.game.getLoop() instanceof RealTimeGameLoop) {
@@ -402,7 +405,10 @@ public class DungeonScreen extends GameScreenWithTown {
             drawBg(delta);
             gridStage.draw();
             if (postProcessing != null)
+            {
+                batch.resetBlending();
                 postProcessing.end();
+            }
 
             guiStage.draw();
 

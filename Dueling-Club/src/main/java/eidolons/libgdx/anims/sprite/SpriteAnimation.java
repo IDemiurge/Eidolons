@@ -52,6 +52,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private float speed;
     private boolean aDefault;
     private SuperActor.BLENDING blending;
+    private float originX;
+    private float originY;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -150,7 +152,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         boolean resetBlending = false;
         if (blending != null)
             if (batch instanceof CustomSpriteBatch) {
-                if ((((CustomSpriteBatch) batch).getBlending() != blending)) {
+//                if ((((CustomSpriteBatch) batch).getBlending() != blending))
+                {
                     ((CustomSpriteBatch) batch).setBlending(blending);
                     resetBlending = true;
                 }
@@ -243,6 +246,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         if (getScale() != null)
             sprite.setScale(getScale());
         sprite.setRotation(rotation);
+        sprite.setOrigin(originX, originY);
         sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
                 + offsetY
                 - currentFrame.getRegionHeight() / 2);
@@ -252,6 +256,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         if (!batch.isDrawing()) {
             batch.begin();
         }
+//        if (batch instanceof CustomSpriteBatch) {
+//            ((CustomSpriteBatch) batch).setBlending(blending);
+//        }
         sprite.draw(batch);
 
     }
@@ -519,6 +526,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public boolean isDefault() {
         return aDefault;
+    }
+
+    public void setOrigin(float originX, float originY) {
+        this.originX = originX;
+        this.originY = originY;
+
     }
 
 

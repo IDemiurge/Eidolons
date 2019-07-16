@@ -173,6 +173,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally{
+                setSpeed(1);
                 DungeonScreen.getInstance().setSpeed(null);
                 ExplorationMaster.setWaiting(false);
                 WaitMaster.receiveInput(WAIT_OPERATIONS.WAIT_COMPLETE, result);

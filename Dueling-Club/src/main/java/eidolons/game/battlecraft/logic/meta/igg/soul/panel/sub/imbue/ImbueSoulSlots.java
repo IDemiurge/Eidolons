@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.imbue;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
+import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -10,6 +11,8 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
+
+import java.util.Arrays;
 
 public class ImbueSoulSlots extends TablePanelX {
     ImbuePanel imbuePanel;
@@ -23,7 +26,7 @@ public class ImbueSoulSlots extends TablePanelX {
         for (int i = 0; i < 4; i++) {
             add(slots[i] = new SoulSlot(i));
         }
-
+        SoulMaster.resetSouls();
 
     }
 
@@ -41,6 +44,18 @@ public class ImbueSoulSlots extends TablePanelX {
         }
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+    }
+
+    public void resetSouls() {
+        for (SoulSlot slot : slots) {
+            slot.setSoul(null);
+        }
+        souls = new Soul[4];
+//        SoulMaster.resetSouls();
+    }
     public void addSoul(Soul soul) {
         for (int i = 0; i < 4; i++) {
             if (souls[i]==null) {
@@ -48,7 +63,9 @@ public class ImbueSoulSlots extends TablePanelX {
                 return;
             }
         }
-        souls[0].setBeingUsed(false);
+        Soul last = souls[souls.length - 1];
+        last.setBeingUsed(false);
+        System.arraycopy(souls, 0, souls, 1, souls.length-1 );
         souls[0]= soul;
     }
 

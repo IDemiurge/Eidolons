@@ -266,7 +266,7 @@ public class GameLoop {
     }
 
 
-    protected Boolean activateAction(ActionInput input) {
+    public Boolean activateAction(ActionInput input) {
         if (input == null) {
             return true;
         }

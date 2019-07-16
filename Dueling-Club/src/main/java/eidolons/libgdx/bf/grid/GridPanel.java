@@ -17,12 +17,15 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
@@ -42,6 +45,7 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -92,6 +96,8 @@ public class GridPanel extends Group {
 
     private GridUnitView hoverObj;
     private GridUnitView mainHeroView;
+    private GridUnitView mainHeroViewShadow;
+    private GridUnitView mainHeroViewPale;
 
     private float resetTimer;
     private boolean resetVisibleRequired;
@@ -100,6 +106,8 @@ public class GridPanel extends Group {
     private boolean welcomeInfoShown;
     private float autoResetVisibleOnInterval = 0.5f;
 
+    List<Manipulator> manipulators = new ArrayList<>();
+    List<GroupX> customOverlayingObjects = new ArrayList<>();
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -195,6 +203,9 @@ public class GridPanel extends Group {
     }
 
     private boolean isShardsOn() {
+        if (Eidolons.BRIDGE) {
+            return true;
+        }
         if (CoreEngine.isLiteLaunch()) {
             return false;
         }
@@ -387,9 +398,35 @@ public class GridPanel extends Group {
     }
 
 
-    List<Manipulator> manipulators = new ArrayList<>();
-    private void bindEvents() {
+    private void initMaze(boolean hide, MazePuzzle.MazeData data) {
+        Coordinates c = null;
+        for (Coordinates coordinates : data.mazeWalls) {
+            c = data.c.getOffset(coordinates.negativeY());
+            GridCellContainer container = cells[c.getX()][getGdxY(c.getY())];
+            if (container == null) {
+                main.system.auxiliary.log.LogMaster.warn("Void cell in maze puzzle!" + c);
+                continue;
 
+            }
+            container.setOverlayTexture(
+                    hide ? null :
+                            TextureCache.getOrCreateR(data.mazeType.getImagePath()));
+            //TODO VFX or sprite?
+        }
+    }
+
+    private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.ADD_GRID_OBJ, p -> {
+            GridObject veil = (GridObject) p.get();
+            addActor(veil);
+            getCustomOverlayingObjects().add(veil);
+        });
+        GuiEventManager.bind(HIDE_MAZE, p -> {
+            initMaze(true, (MazePuzzle.MazeData) p.get());
+        });
+        GuiEventManager.bind(SHOW_MAZE, p -> {
+            initMaze(false, (MazePuzzle.MazeData) p.get());
+        });
         GuiEventManager.bind(INIT_MANIPULATOR, (obj) -> {
             Manipulator manipulator = (Manipulator) obj.get();
             addActor(manipulator);
@@ -407,7 +444,7 @@ public class GridPanel extends Group {
             Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
             TextureRegion region = new TextureRegion(TextureCache.getOrCreateR(path),
                     c.x * 128, c.y * 128, 128, 128);
-            container.setOverlay(region);
+            container.setOverlayTexture(region);
             container.setOverlayRotation(cell.getOverlayRotation());
 
 
@@ -425,7 +462,7 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(CELL_RESET, obj -> {
             DC_Cell cell = (DC_Cell) obj.get();
-            GridCellContainer container = cells[cell.getX()][cell.getY()];
+            GridCellContainer container = cells[cell.getX()][getGdxY(cell.getY())];
             //overlays
             container.getBackImage().setDrawable(
                     new TextureRegionDrawable(TextureCache.getOrCreateR(cell.getImagePath())));
@@ -592,7 +629,7 @@ public class GridPanel extends Group {
     }
 
 
-    public float getGdxY(int y) {
+    public int getGdxY(int y) {
         return getRows() - 1 - y;
     }
 
@@ -834,10 +871,19 @@ public class GridPanel extends Group {
         GridUnitView view = UnitViewFactory.create(battleFieldObjectbj);
         viewMap.put(battleFieldObjectbj, view);
         if (battleFieldObjectbj.isPlayerCharacter()) {
+            if (PaleAspect.ON) {
+                mainHeroViewPale = view;
+            }
+            if (ShadowMaster.isShadowAlive()) {
+                mainHeroViewShadow = view;
+            }
             mainHeroView = view;
         }
+
         unitMoved(battleFieldObjectbj);
-        if (!isVisibleByDefault(battleFieldObjectbj))
+        if (!
+
+                isVisibleByDefault(battleFieldObjectbj))
             view.setVisible(false);
         GuiEventManager.trigger(GuiEventType.UNIT_VIEW_CREATED, view);
         return view;
@@ -864,7 +910,7 @@ public class GridPanel extends Group {
         addActor(uv);
         uv.setPosition(x, y);
         if (heroObj.isPlayerCharacter())
-            main.system.auxiliary.log.LogMaster.log(1, heroObj + " detached; pos= " + uv.getX() + ":" + uv.getY());
+            main.system.auxiliary.log.LogMaster.verbose(heroObj + " detached; pos= " + uv.getX() + ":" + uv.getY());
 
         return true;
     }
@@ -985,18 +1031,28 @@ public class GridPanel extends Group {
         //        shards.setZIndex(Integer.MAX_VALUE);
         wallMap.setZIndex(Integer.MAX_VALUE);
 
-        manipulators.forEach(manipulator -> {
-            manipulator.setZIndex(Integer.MAX_VALUE);
-
-
-        });
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-
 
         overlayManager.setZIndex(Integer.MAX_VALUE);
 
         shadowMap.setZIndex(Integer.MAX_VALUE);
+        customOverlayingObjects.forEach(obj -> {
+            obj.setZIndex(Integer.MAX_VALUE);
+        });
 
+        if (mainHeroView!=null) {
+            mainHeroView.setZIndex(Integer.MAX_VALUE);
+        }
+        if (mainHeroViewPale!=null) {
+            mainHeroViewPale.setZIndex(Integer.MAX_VALUE);
+        }
+        if (mainHeroViewShadow!=null) {
+            mainHeroViewPale.setZIndex(Integer.MAX_VALUE);
+        }
+
+        manipulators.forEach(manipulator -> {
+            manipulator.setZIndex(Integer.MAX_VALUE);
+        });
         animMaster.setZIndex(Integer.MAX_VALUE);
     }
 
@@ -1031,6 +1087,12 @@ public class GridPanel extends Group {
     }
 
     public GridUnitView getMainHeroView() {
+        if (PaleAspect.ON) {
+            return mainHeroViewPale;
+        }
+        if (ShadowMaster.isShadowAlive()) {
+            return mainHeroViewShadow;
+        }
         return mainHeroView;
     }
 
@@ -1042,7 +1104,10 @@ public class GridPanel extends Group {
 
     public void clearSelection() {
         GuiEventManager.trigger(TARGET_SELECTION, null);
-        ;
+    }
+
+    public List<GroupX> getCustomOverlayingObjects() {
+        return customOverlayingObjects;
     }
 
     public GridManager getGridManager() {

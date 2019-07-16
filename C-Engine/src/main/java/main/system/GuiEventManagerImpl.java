@@ -1,5 +1,7 @@
 package main.system;
 
+import main.system.auxiliary.data.MapMaster;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +11,13 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static main.system.GuiEventType.DISPOSE_TEXTURES;
-import static main.system.GuiEventType.SCREEN_LOADED;
-import static main.system.GuiEventType.SWITCH_SCREEN;
+import static main.system.GuiEventType.*;
 
 public class GuiEventManagerImpl {
     private static final GuiEventType[] savedBindings = new GuiEventType[]{
-     SWITCH_SCREEN,
-     SCREEN_LOADED,
-     DISPOSE_TEXTURES,
+            SWITCH_SCREEN,
+            SCREEN_LOADED,
+            DISPOSE_TEXTURES,
     };
     private static GuiEventManagerImpl instance;
     private static boolean isInitialized;
@@ -28,6 +28,7 @@ public class GuiEventManagerImpl {
     private Condition condition = lock.newCondition();
 
     private Map<EventType, EventCallbackParam> onDemand = new ConcurrentHashMap<>();
+    private Map<EventType, List<EventCallbackParam>> onDemandMap = new ConcurrentHashMap<>();
 
     public static void cleanUp() {
         getInstance()._cleanUp();
@@ -113,9 +114,15 @@ public class GuiEventManagerImpl {
             } else {
                 eventMap.put(type, event);
             }
-            if (onDemand.containsKey(type)) {
-                EventCallbackParam r = onDemand.remove(type);
-                eventQueue.add(() -> event.call(r));
+//            if (onDemand.containsKey(type)) {
+//                EventCallbackParam r = onDemand.remove(type);
+//                eventQueue.add(() -> event.call(r));
+//            }
+            List<EventCallbackParam> callbacks = onDemandMap.get(type);
+            if (callbacks != null) {
+                onDemandMap.remove(type);
+                callbacks.forEach(c -> eventQueue.add(() -> event.call(c)));
+            }
 //                main.system.auxiliary.log.LogMaster.log(1,
 //                 "onDemand triggered for " + type);
 //                r.call(null);
@@ -129,7 +136,6 @@ public class GuiEventManagerImpl {
 //                } finally {
 //                    lock.unlock();
 //                }
-            }
         } else {
             if (eventMap.containsKey(type)) {
                 eventMap.remove(type);
@@ -151,9 +157,18 @@ public class GuiEventManagerImpl {
             }
         } else {
 //            if (obj instanceof OnDemandCallback) {
-            onDemand.put(type, obj);
+//            onDemand.put(type, obj);
+            if (isOnDemandCallback(type))
+                MapMaster.addToListMap(onDemandMap, type, obj);
 //            }
         }
+    }
+
+    protected boolean isOnDemandCallback(EventType type) {
+        if (type == UNIT_CREATED) {
+            return false;
+        }
+        return true;
     }
 
     public void processEvents_() {

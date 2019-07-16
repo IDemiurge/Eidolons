@@ -192,6 +192,9 @@ public class TexturePackerLaunch {
         settings.format = Format.RGBA4444;
         settings.limitMemory = false;
         settings.jpegQuality = 0.7f;
+
+        if (DialogMaster.confirm("Jpg?"))
+            settings.outputFormat = "jpg";
         return settings;
     }
 

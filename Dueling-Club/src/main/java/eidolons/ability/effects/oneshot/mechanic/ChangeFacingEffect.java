@@ -13,16 +13,18 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
+import static main.game.logic.event.Event.STANDARD_EVENT_TYPE.*;
+
 public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
 
     private Boolean clockwise;
-    private Boolean self;
+    private Boolean self ;
 
     /*
      * for forcing the unit to face the target
      */
     public ChangeFacingEffect() {
-
+        self=false;
     }
 
     public ChangeFacingEffect(Boolean clockwise) {
@@ -36,12 +38,13 @@ public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
+        if (self!=null )
         if (!self)
-        if (!(ref.getTargetObj() instanceof BattleFieldObject)) {
-            return false;
-        }
+            if (!(ref.getTargetObj() instanceof BattleFieldObject)) {
+                return false;
+            }
 
-        BattleFieldObject obj =self? (BattleFieldObject) ref.getSourceObj() : (BattleFieldObject) ref.getTargetObj();
+        BattleFieldObject obj = self ? (BattleFieldObject) ref.getSourceObj() : (BattleFieldObject) ref.getTargetObj();
 
         FACING_DIRECTION oldDirection = obj.getFacing();
 
@@ -53,7 +56,7 @@ public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
                     return false;
                 }
                 if (FacingMaster.getSingleFacing(f, obj,
-                 (BfObj) active.getRef().getTargetObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+                        (BfObj) active.getRef().getTargetObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
                     newDirection = f;
                     break;
                 }
@@ -64,16 +67,19 @@ public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
         }
 
         obj.setFacing(newDirection);
-        game.fireEvent(new Event(getEventTypeDone(), ref));
+        if (clockwise != null) {
+            game.fireEvent(new Event(clockwise ? UNIT_HAS_TURNED_CLOCKWISE : UNIT_HAS_TURNED_ANTICLOCKWISE, ref));
+        }
+        game.fireEvent(new Event(UNIT_HAS_CHANGED_FACING, ref));
         return true;
     }
 
     @Override
     public STANDARD_EVENT_TYPE getEventTypeDone() {
         if (clockwise == null) {
-            return STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING;
+            return UNIT_HAS_CHANGED_FACING;
         }
-        return clockwise ? STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE : STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE;
+        return clockwise ? UNIT_HAS_TURNED_CLOCKWISE : UNIT_HAS_TURNED_ANTICLOCKWISE;
     }
 
     public Boolean isClockwise() {

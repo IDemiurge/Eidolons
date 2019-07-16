@@ -189,6 +189,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     protected void selectionPanelClosed() {
+        if (selectionPanel != null)
         try {
             selectionPanel.setStage(null);
             selectionPanel.setVisible(false);

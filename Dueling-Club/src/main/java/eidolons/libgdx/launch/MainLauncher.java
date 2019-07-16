@@ -34,17 +34,18 @@ public class MainLauncher extends GenericLauncher {
         CoreEngine.setSafeMode(true);
         CoreEngine.setIggDemo(true);
         CoreEngine.setMainGame(true);
-        CoreEngine.setDialogueTest(true);
+//        CoreEngine.setDialogueTest(true);
 //        CoreEngine.setGraphicTestMode(args.length > 0);
 //        CoreEngine.setActiveTestMode(args.length > 0);
 //        CoreEngine.setReverseExit(args.length > 0);
         if (args.length > 0) {
             args = args[0].split(";");
             Eidolons.BOSS_FIGHT = args[0].contains("BOSS");
+            Eidolons.BRIDGE = args[0].contains("FULL");
             CoreEngine.setLevelTestMode(false);
         }
         CoreEngine.setSkillTestMode(args.length > 0);
-        CoreEngine.setLiteLaunch(args.length > 0);
+        CoreEngine.setLiteLaunch(args.length > 0 );
 //        CoreEngine.setContentTestMode(args.length > 2);
         if (!Eidolons.BOSS_FIGHT)
             CoreEngine.setLevelTestMode(args.length > 4);

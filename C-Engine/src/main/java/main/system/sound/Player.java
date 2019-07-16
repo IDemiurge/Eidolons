@@ -193,6 +193,9 @@ public class Player {
     }
 
     public void playNow(String sound) {
+        if (StringMaster.isEmpty(sound)) {
+            return;
+        }
         playNow(new SoundFx(sound, 1, 0));
     }
 
@@ -244,6 +247,10 @@ public class Player {
                     }
 
 
+                }
+                if (filtered.isEmpty()) {
+                    main.system.auxiliary.log.LogMaster.log(1,"No sounds found for: " + sound_type + soundSet);
+                    return null ;
                 }
                 return FileManager.getRandomFile(filtered).getPath();
             }

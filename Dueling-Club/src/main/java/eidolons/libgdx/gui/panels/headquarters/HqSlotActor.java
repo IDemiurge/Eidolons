@@ -26,7 +26,7 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX {
         if (background != null) {
             addActor(background);
         }
-        backgroundOverlay = createBackgroundOverlay();
+        backgroundOverlay = createBackgroundOverlay(model);
         if (backgroundOverlay != null) {
             addActor(backgroundOverlay);
         }
@@ -56,7 +56,7 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX {
         setSize(64, 64);
     }
 
-    protected FadeImageContainer createBackgroundOverlay() {
+    protected FadeImageContainer createBackgroundOverlay(T model) {
         return null;
     }
 

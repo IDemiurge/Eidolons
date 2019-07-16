@@ -2,13 +2,12 @@ package eidolons.game.core;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
+import main.content.enums.GenericEnums;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -100,11 +99,11 @@ public class EUtils {
         DC_SoundMaster.playStandardSound(sound);
     }
 
-    public static void showVFX(VFX preset, Vector2 v) {
+    public static void showVFX(GenericEnums.VFX preset, Vector2 v) {
         GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, v);
     }
 
-    public static void showVFX(VFX preset, int x, int y) {
+    public static void showVFX(GenericEnums.VFX preset, int x, int y) {
         GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
     }
 

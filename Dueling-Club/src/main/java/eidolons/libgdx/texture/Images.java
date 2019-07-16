@@ -123,8 +123,15 @@ public class Images {
     public static final String ITEM_BACKGROUND_STEEL = "ui/components/hq/inv/ITEM BACKGROUND STEEL.png";
     public static final String ITEM_BACKGROUND_STONE = "ui/components/hq/inv/ITEM BACKGROUND STONE.png";
     public static final String ITEM_BACKGROUND = "ui/components/hq/inv/ITEM BACKGROUND.png";
-    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "ui/components/hq/inv/slots/overlay light.png";
-    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "ui/components/hq/inv/slots/overlay light2.png";
+
+    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT = "ui/components/hq/inv/overlays/overlay light.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_LIGHT2 = "ui/components/hq/inv/overlays/overlay light2.png";
+
+    public static final String ITEM_BACKGROUND_OVERLAY_NORMAL = "ui/components/hq/inv/overlays/NORMAL.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_CRACKS = "ui/components/hq/inv/overlays/CRACKS.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_BRILLIANT = "ui/components/hq/inv/overlays/BRILLIANT.png";
+    public static final String ITEM_BACKGROUND_OVERLAY_MAGIC = "ui/components/hq/inv/overlays/MAGIC.png";
+
     public static final String PLACEHOLDER = "ui/empty1.jpg";
     public static final String PLACEHOLDER_UNIT = "ui/empty.jpg";
     public static final String PLACEHOLDER_WALL = "main/bf/walls/ancient wall.png";
@@ -137,6 +144,7 @@ public class Images {
 
     public static final String BG_EIDOLONS = IGG_Images.MAIN_ART.HALL2.getPath();
     public static final String CIRCLE_BORDER = "ui/components/generic/borders/border circle.png";
+    public static final String EMPTY_SKULL = "ui/empty1.jpg";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

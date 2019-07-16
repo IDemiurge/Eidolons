@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.Bui
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
@@ -113,12 +114,7 @@ public class Location extends DungeonWrapper {
     }
 
     public void initEntrances() {
-        if (getGame().isBossFight()) { //TODO boss fix
-            entranceData = "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
-        }
-        if (CoreEngine.isLiteLaunch()) { //TODO boss fix
-            entranceData = "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
-        }
+
         if (StringMaster.isEmpty(entranceData)) {
             entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
         }

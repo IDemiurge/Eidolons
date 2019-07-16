@@ -54,7 +54,7 @@ public class FloatingTextMaster {
     public static final float DEFAULT_DISPLACEMENT_X = 40;
     public static final float DEFAULT_DURATION = 8.5f;
     private static FloatingTextMaster instance;
-    public static boolean displacementInvertFlag ;
+    public static boolean displacementInvertFlag;
 
     private FloatingTextMaster() {
 
@@ -100,8 +100,8 @@ public class FloatingTextMaster {
             case PARAM_MOD:
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
                 return (pair.getValue() > 0)
-                 ? GdxColorMaster.PALE_GOLD
-                 : GdxColorMaster.RED;
+                        ? GdxColorMaster.PALE_GOLD
+                        : GdxColorMaster.RED;
 
             case GOLD:
                 return GdxColorMaster.YELLOW;
@@ -126,7 +126,7 @@ public class FloatingTextMaster {
             }
             case BONUS_DAMAGE:
                 return ImageManager.getDamageTypeImagePath(
-                 String.valueOf(((Damage) arg).getDmgType().getName()), true);
+                        String.valueOf(((Damage) arg).getDmgType().getName()), true);
             case ATTACK_CRITICAL:
                 break;
             case ATTACK_SNEAK:
@@ -176,11 +176,11 @@ public class FloatingTextMaster {
         return aCase.getText();
     }
 
-    public static boolean  isEventDisplayable(Event e) {
+    public static boolean isEventDisplayable(Event e) {
         return getCase(e) != null;
     }
 
-    private static  TEXT_CASES getCase(Event e) {
+    private static TEXT_CASES getCase(Event e) {
 //        TEXT_CASES CASE =null ;
 //        new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
 //        if (CASE != null) {
@@ -200,20 +200,19 @@ public class FloatingTextMaster {
 
                 case COSTS_HAVE_BEEN_PAID:
                     if (ExplorationMaster.isExplorationOn())
-                        if (e.getRef().getActive() !=null ){
+                        if (e.getRef().getActive() != null) {
                             if (e.getRef().getActive().isMove())
-                                return null ;
+                                return null;
                             if (e.getRef().getActive().isTurn())
-                                return null ;
+                                return null;
                         }
 
-                    if (!e.getRef().getSourceObj().isMine())
-                    {
-                        if (((DC_Obj)e.getRef().getSourceObj()).getPlayerVisionStatus()!= PLAYER_VISION.DETECTED)
-                            return null ;
+                    if (!e.getRef().getSourceObj().isMine()) {
+                        if (((DC_Obj) e.getRef().getSourceObj()).getPlayerVisionStatus() != PLAYER_VISION.DETECTED)
+                            return null;
                     }
 
-                        return TEXT_CASES.COSTS;
+                    return TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
                     return TEXT_CASES.ATTACK_CRITICAL;
                 case ATTACK_DODGED:
@@ -264,9 +263,9 @@ public class FloatingTextMaster {
     public FloatingText getFloatingText(Entity active, TEXT_CASES CASE, Object arg) {
 
         FloatingText floatingText =
-         new FloatingText(
-          () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
-          , getColor(CASE, arg));
+                new FloatingText(
+                        () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
+                        , getColor(CASE, arg));
 
 
         floatingText.setFontStyle(getFontStyle(CASE, arg));
@@ -281,8 +280,9 @@ public class FloatingTextMaster {
             case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);
-            case LEVEL_UP:return
-             StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 26);
+            case LEVEL_UP:
+                return
+                        StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 26);
             case REQUIREMENT:
                 break;
             case CANNOT_ACTIVATE:
@@ -294,7 +294,7 @@ public class FloatingTextMaster {
 //                  (DC_ActiveObj) arg))
             case BONUS_DAMAGE:
                 int size = 18;
-                size =Math.max(14, Math.min(23, size + ((Damage) arg).getAmount() / 21));
+                size = Math.max(14, Math.min(23, size + ((Damage) arg).getAmount() / 21));
                 return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, size);
             case ATTACK_CRITICAL:
                 break;
@@ -302,7 +302,7 @@ public class FloatingTextMaster {
                 break;
         }
         return StyleHolder.getSizedLabelStyle(
-         StyleHolder.DEFAULT_FONT_FLOAT_TEXT, StyleHolder.DEFAULT_FONT_SIZE_FLOAT_TEXT);
+                StyleHolder.DEFAULT_FONT_FLOAT_TEXT, StyleHolder.DEFAULT_FONT_SIZE_FLOAT_TEXT);
 
     }
 
@@ -344,9 +344,9 @@ public class FloatingTextMaster {
         }
         displacementInvertFlag = !displacementInvertFlag;
         return
-         displacementInvertFlag
-          ? -DEFAULT_DISPLACEMENT_X
-        : DEFAULT_DISPLACEMENT_X;
+                displacementInvertFlag
+                        ? -DEFAULT_DISPLACEMENT_X
+                        : DEFAULT_DISPLACEMENT_X;
     }
 
     private float getDefaultDuration(TEXT_CASES aCase) {
@@ -366,9 +366,9 @@ public class FloatingTextMaster {
             float delay = 0;
             for (Damage bonus : ((MultiDamage) damage).getAdditionalDamage()) {
                 FloatingText floatingText = addFloatingText(
-                 (DC_ActiveObj) damage.getRef()
-                  .getObj(KEYS.ACTIVE),
-                 TEXT_CASES.BONUS_DAMAGE, bonus, anim, delay);
+                        (DC_ActiveObj) damage.getRef()
+                                .getObj(KEYS.ACTIVE),
+                        TEXT_CASES.BONUS_DAMAGE, bonus, anim, delay);
                 delay += floatingText.getDuration() / 2;
             }
         }
@@ -385,13 +385,19 @@ public class FloatingTextMaster {
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
         if (GdxMaster.isLwjglThread()) {
             createFloatingText(CASE, arg, entity, null);
-        }
-        else
-            Gdx.app.postRunnable(()-> createFloatingText(CASE, arg, entity, null));
+        } else
+            Gdx.app.postRunnable(() -> {
+                try {
+                } catch (Exception e) {
+                    createFloatingText(CASE, arg, entity, null);
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            });
+
     }
 
     private void createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
-                                   Stage atCursorStage) {
+                                    Stage atCursorStage) {
         FloatingText text;
         try {
             text = getFloatingText(entity, CASE, arg);
@@ -408,7 +414,7 @@ public class FloatingTextMaster {
         } else {
             if (entity instanceof DC_ActiveObj) {
                 v = GridMaster.getCenteredPos(
-                 ((DC_ActiveObj) entity).getOwnerUnit().getCoordinates());
+                        ((DC_ActiveObj) entity).getOwnerUnit().getCoordinates());
 
             }
         }
@@ -426,8 +432,8 @@ public class FloatingTextMaster {
             return;
         }
         FloatingText text = getFloatingText(active,
-         TEXT_CASES.PARAM_MOD,
-         new ImmutablePair<>(pair.getKey(), amount));
+                TEXT_CASES.PARAM_MOD,
+                new ImmutablePair<>(pair.getKey(), amount));
         Obj obj = active.getRef().getTargetObj();
         if (obj == null)
             obj = active.getRef().getSourceObj();
@@ -471,18 +477,18 @@ public class FloatingTextMaster {
             return costs.toArray();
         }),
         STATUS(
-         false, (e) -> {
+                false, (e) -> {
             ModifyStatusEffect ef = (ModifyStatusEffect)
-             EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
 //                if (ef==null )
             return ef.getValue().split(";");
         }),
         MODE(
-         false, (e) -> {
+                false, (e) -> {
             ModeEffect ef = (ModeEffect)
-             EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
             return new Object[]{
-             ef.getMode()
+                    ef.getMode()
             };
         }),
 
@@ -492,15 +498,13 @@ public class FloatingTextMaster {
             @Override
             public Object[] getArgs(Event e) {
                 return new Object[]{
-                 e.getRef().getAmount()
+                        e.getRef().getAmount()
                 };
             }
-        }, DURABILITY_LOSS
-        , ANNIHILATED,
+        }, DURABILITY_LOSS, ANNIHILATED,
         XP,
         GOLD,
-        LEVEL_UP
-        ;
+        LEVEL_UP;
         public boolean atOrigin;
         String name = StringMaster.getWellFormattedString(name());
         private Producer<Event, Object[]> argProducer;
@@ -521,7 +525,7 @@ public class FloatingTextMaster {
         public Object[] getArgs(Event e) {
             if (argProducer == null) {
                 return new Object[]{
-                 StringMaster.getWellFormattedString(e.getType().toString())
+                        StringMaster.getWellFormattedString(e.getType().toString())
                 };
             }
             return argProducer.produce(e);

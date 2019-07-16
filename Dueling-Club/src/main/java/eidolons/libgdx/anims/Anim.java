@@ -33,6 +33,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
@@ -228,11 +229,11 @@ public class Anim extends Group implements Animation {
 
         emitterList.forEach(e -> {
             e.draw(batch, 1f);
-            //            main.system.auxiliary.log.LogMaster.log(1,
+            //            main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG,
             //             e.getName() +
             //              " drawn at x " + e.getX() + " y " + e.getY());
             //            e.getEffect().getEmitters().forEach(em -> {
-            //                main.system.auxiliary.log.LogMaster.log(1,
+            //                main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG,
             //                 em.getName() +
             //                  " emitter at at x " + em.getX() + " y " + em.getY()
             //                  + " ; activecount == " + em.getActiveCount()
@@ -256,7 +257,7 @@ public class Anim extends Group implements Animation {
         if (!completingVfx.isEmpty()) {
             for (EmitterActor e : completingVfx) {
                 if (!e.isComplete()) {
-                    log(1, this + " vfx has not finished: " + e);
+                    log(LogMaster.ANIM_DEBUG, this + " vfx has not finished: " + e);
                     return false;
                 }
             }
@@ -820,13 +821,13 @@ public class Anim extends Group implements Animation {
 
     public void setRef(Ref ref) {
         this.ref = Ref.getCopy(ref);
-        //        main.system.auxiliary.log.LogMaster.log(1, this + " started with ref: " + ref);
+        //        main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, this + " started with ref: " + ref);
         if (ref.getTargetObj() == null) {
-            log(1, this + " HAS NULL TARGET!");
+            log(LogMaster.ANIM_DEBUG, this + " HAS NULL TARGET!");
             if (ref.getActive() != null) {
                 ref.setTarget(ref.getActive().getRef().getTarget());
                 if (ref.getTargetObj() != null) {
-                    log(1, ref.getActive() + " HAD TARGET! " +
+                    log(LogMaster.ANIM_DEBUG, ref.getActive() + " HAD TARGET! " +
                             ref.getTargetObj());
                 }
             }
@@ -932,7 +933,7 @@ public class Anim extends Group implements Animation {
     }
 
     public void setOffsetX(float offsetX) {
-        //        main.system.auxiliary.log.LogMaster.log(1, this + " setOffsetX " +
+        //        main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, this + " setOffsetX " +
         //         " from " + this.offsetX +
         //         " to " + offsetX);
         this.offsetX = offsetX;

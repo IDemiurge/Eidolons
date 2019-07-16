@@ -2,6 +2,7 @@ package eidolons.libgdx.bf.grid;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
@@ -32,6 +33,8 @@ public class GridManager {
         this.panel = panel;
 
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
+
+
     }
 
     public Map<BattleFieldObject, BaseView> getViewMap() {

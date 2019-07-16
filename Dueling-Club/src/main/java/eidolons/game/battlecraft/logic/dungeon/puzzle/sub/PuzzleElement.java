@@ -8,4 +8,11 @@ public class PuzzleElement {
     public PuzzleElement(Puzzle puzzle) {
         this.puzzle = puzzle;
     }
+
+    public void started() {
+    }
+
+    public Puzzle getPuzzle() {
+        return puzzle;
+    }
 }

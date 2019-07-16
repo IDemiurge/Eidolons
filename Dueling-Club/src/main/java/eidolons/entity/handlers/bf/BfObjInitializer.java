@@ -133,7 +133,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                     idList.add(item.getId() + "");
                     items.add(item);
                 } else {
-                    LogMaster.log(1, getName()
+                    LogMaster.log(0, getName()
                             + " has null item in item container " + prop);
                 }
 

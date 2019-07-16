@@ -12,22 +12,23 @@ public class LabelX extends VisLabel {
 
     private boolean wrapped;
     private float maxWidth;
-    private float wrapCoef=0.72f;
+    private float wrapCoef = 0.72f;
 
     public LabelX(CharSequence text, int fontSize) {
         super(text, StyleHolder.getHqLabelStyle(fontSize));
 
     }
 
-    public LabelX(String text ) {
+    public LabelX(String text) {
         this(text, StyleHolder.getDefaultLabelStyle());
     }
+
     public LabelX(String text, LabelStyle sizedLabelStyle) {
         super(text, sizedLabelStyle);
     }
 
     public LabelX() {
-        this("",  StyleHolder.getDefaultLabelStyle());
+        this("", StyleHolder.getDefaultLabelStyle());
     }
 
     @Override
@@ -52,6 +53,11 @@ public class LabelX extends VisLabel {
         setMaxWidth(width);
     }
 
+    public LabelX width(int width) {
+        setWidth(width);
+        return this;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         float a = getStyle().fontColor.a;
@@ -62,7 +68,7 @@ public class LabelX extends VisLabel {
 
     @Override
     public void setText(CharSequence newText) {
-        if (wrapped){
+        if (wrapped) {
             newText = TextWrapper.processText(Math.round(getMaxWidth() * getWrapCoef()), newText.toString(), getStyle());
         }
         super.setText(newText);

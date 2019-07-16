@@ -142,7 +142,7 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
                 t.setUserObject(getUserObject());
                 ((TablePanel) t).updateAct(0);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+//                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         contentTable.clearChildren();

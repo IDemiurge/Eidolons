@@ -61,6 +61,7 @@ public class ItemTraitParser {
                 }
             }
         }
+        newType.addProperty(PROPS.ITEM_TRAITS, trait.toString());
         // TODO add up boost params !
 
         //        for (String s : ContainerUtils.open(trait.arg)) {

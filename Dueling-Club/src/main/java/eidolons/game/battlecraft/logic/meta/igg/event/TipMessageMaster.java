@@ -12,6 +12,7 @@ import eidolons.system.text.DescriptionTooltips;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
@@ -41,6 +42,20 @@ public class TipMessageMaster {
     public static void death() {
         tip(DEATH);
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE_DEATH);
+    }
+
+    public static void tip(String s) {
+         for(String substring: ContainerUtils.openContainer( s)){
+             TIP_MESSAGE tip  =new EnumMaster<TIP_MESSAGE>().retrieveEnumConst(TIP_MESSAGE.class, substring);
+             if (tip == null) {
+                 String text = DescriptionTooltips.getTipMap().get(s.toLowerCase());
+                 if (text != null) {
+//                     new TipMessageSource()
+                 }
+                 return;
+             }
+             tip(tip);
+         }
     }
 
     public static void tip(String[] args) {
@@ -137,6 +152,10 @@ public class TipMessageMaster {
 // to .txt already?
 
     public enum TIP_MESSAGE {
+
+        //BRIDGE
+        first_maze_before(false, IGG_Images.BRIEF_ART.LEVI_FIGHT.getPath(), ""),
+        first_art_before(false, IGG_Images.BRIEF_ART.LEVI_FIGHT.getPath(), ""),
 
         // PLOT
         Stone_Warden(false, IGG_Images.BRIEF_ART.STONE_WARDEN.getPath(), ""),

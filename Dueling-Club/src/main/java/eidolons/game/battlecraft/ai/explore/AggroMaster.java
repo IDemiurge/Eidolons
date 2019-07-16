@@ -3,8 +3,6 @@ package eidolons.game.battlecraft.ai.explore;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -101,9 +99,11 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
-            if (unit.isNamedUnit() || unit.isBoss()) {
+            if (unit.isNamedUnit() || unit.isBoss() || unit.getAI().isEngagedOverride()) {
                 set.add(unit);
                 newAggro = true;
+                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.THREAT, unit);
+                continue;
 
             }
 

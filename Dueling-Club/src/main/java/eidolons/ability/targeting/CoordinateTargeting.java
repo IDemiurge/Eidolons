@@ -2,7 +2,6 @@ package eidolons.ability.targeting;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
 import main.elements.targeting.TargetingImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -19,32 +18,46 @@ public class CoordinateTargeting extends TargetingImpl {
     private static final KEYS DEFAULT_KEY = KEYS.SOURCE;
     private UNIT_DIRECTION unitDirection;
     private DIRECTION direction;
-    private String key;
+    private String facingKey;
+    private String coordinateKey;
+    boolean flip  ; //TODO igg demo fix
 
+    public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
+        this.unitDirection = unitDirection;
+        this.facingKey = facingKey;
+        this.coordinateKey = coordinateKey;
+    }
     public CoordinateTargeting(DIRECTION d) {
-        this.direction = (d);
+        this(DEFAULT_KEY.toString(), null );
+        this.direction = d;
     }
 
     public CoordinateTargeting() {
-        this(KEYS.SOURCE.toString(), null);
+        this(DEFAULT_KEY.toString(), null);
     }
 
     public CoordinateTargeting(String key, UNIT_DIRECTION d) {
-        this.unitDirection = (d);
-        this.key = (key);
+        this(d, key, key);
     }
+
 
     public CoordinateTargeting(UNIT_DIRECTION d) {
         this(DEFAULT_KEY.toString(), d);
     }
 
     public boolean select(Ref ref) {
-        DC_Obj obj = (DC_Obj) ref.getObj(key);
-        Coordinates coordinate = obj.getCoordinates();
+        DC_Obj obj = (DC_Obj) ref.getObj(facingKey);
+        if (obj == null) {
+            obj = (DC_Obj) ref.getSourceObj();
+        }
+        Coordinates coordinate = ref.getObj(coordinateKey).getCoordinates();
         DIRECTION used_direction = direction;
         if (unitDirection != null) {
-            Unit unit = (Unit) obj;
+            BattleFieldObject unit = (BattleFieldObject) obj;
             used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
+        if (flip){
+            used_direction = used_direction.flip();
+        }
         }
         if (used_direction != null)
             coordinate = coordinate.getAdjacentCoordinate(used_direction);

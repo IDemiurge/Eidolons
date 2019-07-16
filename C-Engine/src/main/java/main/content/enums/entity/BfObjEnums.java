@@ -1,9 +1,44 @@
 package main.content.enums.entity;
 
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.VFX;
+import main.data.filesys.PathFinder;
+
 /**
  * Created by JustMe on 2/14/2017.
  */
 public class BfObjEnums {
+
+//    createEmitter("spell/shape/soul dissipation", -32, 32);
+//    createEmitter("spell/shape/soul dissipation pale", 32, 32);
+//    createEmitter("unit/black soul bleed 3", 64, 64);
+//    createEmitter("unit/black soul bleed 3", -64, 64);
+//    createEmitter("unit/chaotic dark", 32, 32);
+//    createEmitter("unit/chaotic dark", -32, 32);
+
+    public enum CUSTOM_OBJECT {
+        BLACKNESS(15, "", "", "parts/underlay.txt", 5),
+        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
+        GATE_PILLAR(10, "", "", "grid/pillar.txt",10)
+        ;
+
+        CUSTOM_OBJECT(int fps, String vfxUnder, String vfxOver, String spritePath, double range, String... additionalObjects) {
+            this.range = range;
+            this.fps = fps;
+            this.vfxUnder = vfxUnder;
+            this.vfxOver = vfxOver;
+            this.spritePath = PathFinder.getUiSpritePath()+spritePath;
+            this.additionalObjects = additionalObjects;
+        }
+        public boolean screen;
+        //BLENDING
+        public double range;
+        public int fps;
+        public String vfxUnder;
+        public String vfxOver;
+        public String spritePath;
+        public String[] additionalObjects;
+    }
     public enum BF_OBJECT_GROUP {
         WALL, COLUMNS, RUINS, CONSTRUCT, GATEWAY, GRAVES,
 
@@ -109,7 +144,7 @@ public class BfObjEnums {
         DURABLE_III,
         RESISTANT_III,
         ARMORED_III,
-        THICK_III,
+        THICK_III, WATER,
     }
 
     public enum BF_OBJ_TYPES implements OBJ_TYPE_ENUM {

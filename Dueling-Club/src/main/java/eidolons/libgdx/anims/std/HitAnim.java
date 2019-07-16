@@ -16,10 +16,13 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.fullscreen.Screenshake;
+import eidolons.libgdx.anims.fullscreen.ScreenshakeMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.text.FloatingText;
@@ -35,6 +38,7 @@ import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -154,7 +158,7 @@ public class HitAnim extends ActionAnim {
             spriteType = SPRITE_TYPE.SPARKS; //shield!
         }
         hitType = getHitType(spriteType);
-        String spritePath = getSpritePath(spriteType , hitType );
+        String spritePath = getSpritePath(spriteType, hitType);
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
@@ -309,7 +313,8 @@ public class HitAnim extends ActionAnim {
         if (getActive() != null) {
             damage = getActive().getDamageDealt();
 
-        } if (damage==null) {
+        }
+        if (damage == null) {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
@@ -320,12 +325,18 @@ public class HitAnim extends ActionAnim {
         floatingText.setColor(c);
         floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
-        main.system.auxiliary.log.LogMaster.log(1,"dmg ADD_FLOATING_TEXT " +floatingText );
+        main.system.auxiliary.log.LogMaster.log(1, "dmg ADD_FLOATING_TEXT " + floatingText);
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);
         FloatingTextMaster.getInstance().initFloatTextForDamage(damage, this);
-         add();
-        //        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
-    }
+        add();
+
+        try {
+         ScreenshakeMaster.shakeCamera(ref, damage);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+         }
+
 
     @Override
     protected Actor getActionTarget() {
@@ -459,7 +470,7 @@ public class HitAnim extends ActionAnim {
         //        TORRENT("smear 3 3")
         BONE_CRACK("bone");
 
-       public String spritePath;
+        public String spritePath;
 
         HIT(String fileNameNoFormat) {
             spritePath = fileNameNoFormat;

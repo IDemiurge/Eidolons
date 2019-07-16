@@ -9,4 +9,20 @@ public class ActorMaster {
         GDX.top(actor);
         return actor;
     }
+    public static Actor addCenter(Group group, Actor actor) {
+        group.addActor(actor);
+        actor.setY(GDX.centerHeight(actor));
+        actor.setX(GDX.centerWidth(actor));
+        return actor;
+    }
+    public static Actor addCenterX(Group group, Actor actor) {
+        group.addActor(actor);
+        actor.setX(GDX.centerWidth(actor));
+        return actor;
+    }
+    public static Actor addCenterY(Group group, Actor actor) {
+        group.addActor(actor);
+        actor.setY(GDX.centerHeight(actor));
+        return actor;
+    }
 }

@@ -52,6 +52,7 @@ public class IGG_MetaDataManager extends MetaDataManager<IGG_Meta> {
 
     @Override
     public String getMissionPath() {
-        return getMetaGame().getMissionType().getProperty(PROPS.MISSION_FILE_PATH);
+        return getMetaGame().getMission().getXmlLevelName();
+//                getMetaGame().getMissionType().getProperty(PROPS.MISSION_FILE_PATH);
     }
 }

@@ -221,7 +221,7 @@ public class ItemTraitNamer {
         for (ItemTraits.EIDOLON_ASPECT eidolon_aspect : template.styleMap.keySet()) {
 
         }
-        return Color.MAROON;
+        return Color.PURPLE;
     }
 
     //TODO LOCALIZATION?!

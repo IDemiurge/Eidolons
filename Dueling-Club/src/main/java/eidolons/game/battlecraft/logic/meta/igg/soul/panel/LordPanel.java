@@ -4,23 +4,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
-import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.SoulTabs;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GDX;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
-import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.Images;
@@ -33,7 +33,7 @@ import main.system.launch.CoreEngine;
 
 import java.util.List;
 
-public class LordPanel extends TablePanelX implements Blocking {
+public class LordPanel extends GroupX implements Blocking {
 
     private static final String BACKGROUND = Sprites.BG_DEFAULT;
     private static LordPanel instance;
@@ -61,28 +61,10 @@ public class LordPanel extends TablePanelX implements Blocking {
     }
 
     private LordPanel() {
-        super(1920, 1050);
+        super();
+        setSize(1920, 1050);
         instance = this;
-
-        if (CoreEngine.isLiteLaunch()) {
-            addActor(background = new Image(TextureCache.getOrCreate(Images.BG_EIDOLONS)));
-        } else {
-            backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(BACKGROUND);
-            backgroundSprite.setOffsetX(-960);
-            backgroundSprite.setOffsetY(-525);
-        }
-        add(tabsLeft = new SoulTabs(SOUL_TABS.SOULS));
-        add(lordView = new LordView());
-        add(tabsRight = new SoulTabs(SOUL_TABS.CHAIN));
-
-        Texture frame = TiledNinePatchGenerator.getOrCreateNinePatch(TiledNinePatchGenerator.NINE_PATCH.FRAME,
-                TiledNinePatchGenerator.BACKGROUND_NINE_PATCH.TRANSPARENT, 1920, 1050);
-        addActor(new NoHitImage(frame));
-
-        tabsLeft.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.SOULS.name()));
-        tabsRight.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.CHAIN.name()));
-//        backgroundSprite.centerOnParent();
-
+        init();
         GuiEventManager.bind(GuiEventType.UPDATE_LORD_PANEL, p -> {
             update();
         });
@@ -104,12 +86,45 @@ public class LordPanel extends TablePanelX implements Blocking {
 //        debugAll();
     }
 
-    @Override
+    public void init() {
+        clearChildren();
+        if (CoreEngine.isLiteLaunch()) {
+            addActor(background = new Image(TextureCache.getOrCreate(Images.BG_EIDOLONS)));
+        } else {
+            backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(BACKGROUND);
+            backgroundSprite.setOffsetX(-960);
+            backgroundSprite.setOffsetY(-525);
+        }
+        addActor(tabsLeft = new SoulTabs(SOUL_TABS.SOULS));
+        addActor(lordView = new LordView());
+        addActor(tabsRight = new SoulTabs(SOUL_TABS.CHAIN));
+
+        tabsRight.setX(getWidth()-(tabsRight.getPrefWidth()));
+        lordView.setX(GDX.centerWidth(lordView));
+
+        Texture frame = TiledNinePatchGenerator.getOrCreateNinePatch(TiledNinePatchGenerator.NINE_PATCH.FRAME,
+                TiledNinePatchGenerator.BACKGROUND_NINE_PATCH.TRANSPARENT, 1920, 1050);
+        addActor(new NoHitImage(frame));
+
+        tabsLeft.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.SOULS.name()));
+        tabsRight.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.CHAIN.name()));
+//        backgroundSprite.centerOnParent();
+
+    }
+
     public void update() {
         List<Soul> souls = SoulMaster.getSoulList();
         setUserObject(new LordDataSource(lord, souls, ((IGG_PartyManager)
                 Eidolons.getGame().getMetaMaster().getPartyManager()).getChain()));
 
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        tabsRight.setUserObject(userObject);
+        tabsLeft.setUserObject(userObject);
+        lordView.setUserObject(userObject);
     }
 
     public static LordPanel getInstance() {
@@ -122,6 +137,8 @@ public class LordPanel extends TablePanelX implements Blocking {
     @Override
     public void act(float delta) {
         super.act(delta);
+        tabsLeft.setX(350);
+        tabsLeft.setY(600);
         if (CoreEngine.isLiteLaunch()) {
             lordView.setZIndex(1);
         } else {
@@ -130,8 +147,18 @@ public class LordPanel extends TablePanelX implements Blocking {
     }
 
     @Override
-    public void updateAct(float delta) {
-        super.updateAct(delta);
+    public void fadeOut() {
+        super.fadeOut();
+    }
+
+    @Override
+    protected float getFadeOutDuration() {
+        return 1;
+    }
+
+    @Override
+    protected float getFadeInDuration() {
+        return 1;
     }
 
     @Override
@@ -141,8 +168,7 @@ public class LordPanel extends TablePanelX implements Blocking {
         if (backgroundSprite != null) {
             backgroundSprite.draw(batch);
         }
-        tabsLeft.setY(-30);
-        tabsRight.setY(-30);
+//        tabsRight.setY(-30);
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
                 ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);

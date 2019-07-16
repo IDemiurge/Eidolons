@@ -1,18 +1,31 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.imbue;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
+import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.data.ArrayMaster;
+import main.system.graphics.FontMaster;
 
 public class ImbuePanel extends TablePanelX {
+    String tooltip = "Imbue\n" +
+            "Select up to 4 souls to imbue the selected item with special traits. \n" +
+            "Each trait is linked to Eidolon Aspects, so the more value the chosen souls have in its Aspects, the more likely your item is to receive it. \n" +
+            "Experiment to find out how they are linked! \n" +
+            "You can destroy imbued items to gain Soulforce - 80% of that you would gain if you Consumed the souls used in its creation.";
     private  SmartButton imbueBtn;
     private EidolonImbuer imbuer;
     ImbueSoulSlots soulSlots;
@@ -21,17 +34,38 @@ public class ImbuePanel extends TablePanelX {
     ImbueTraitsInfo traitsInfo;
 
     public ImbuePanel() {
-        super(600, 800);
+        super(900, 800);
         imbuer = new EidolonImbuer();
 
-        TablePanelX<Actor> table = new TablePanelX<>();
+        TablePanelX  table = createInnerTable();
+        table.setFixedMaxSize(true);
+        table.setFixedMinSize(true);
+
         table.add( soulSlots = new ImbueSoulSlots(this)).center().row(); ;
         table.add(traitsInfo = new ImbueTraitsInfo()).center().row();
-        table.add( items = new ImbueItems(this));
+        table.add(imbueBtn = new SmartButton("Imbue", ButtonStyled.STD_BUTTON.MENU, () ->
+        {
+             imbuer.imbue(getSelectedItem(), getSouls());
+            GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,
+                    new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATES, 1, FACING_DIRECTION.NORTH, SuperActor.BLENDING.SCREEN));
+            soulSlots.resetSouls();
+            LordPanel.getInstance().update();
+        }
+
+        )).row();
+        table.add( items = new ImbueItems(this)).bottom();
 
         add(table);
         add(itemInfo = new ImbueItemInfo()).row();
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        debug();
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+        items.setY(imbueBtn.getY()-100-items.getHeight());
+        itemInfo.setX(items.getX()+items.getWidth()-100);
     }
 
     private Soul[] getSouls() {
@@ -46,32 +80,6 @@ public class ImbuePanel extends TablePanelX {
         soulSlots.addSoul(soul);
     }
 
-    private class ImbueTraitsInfo extends TablePanelX {
-        LabelX aspectInfo;
-        LabelX traitInfo;
-
-        public ImbueTraitsInfo() {
-            super(600, 200);
-            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
-            Label.LabelStyle style = StyleHolder.getDefaultLabelStyle();
-            add(  new LabelX("Eidolon Aspects", style)).center().row();
-            add(aspectInfo = new LabelX("", style)).center().row();
-            add(traitInfo = new LabelX("", style)).growY().row();
-
-            add(imbueBtn = new SmartButton("Imbue", () -> imbuer.imbue(getSelectedItem(), getSouls())));
-//            addActor(new SmartButton("Imbue", () -> imbuer.imbue(getSelectedItem(), getSouls())));
-        }
-
-        @Override
-        public void updateAct(float delta) {
-            super.updateAct(delta);
-            imbueBtn.setDisabled(getSelectedItem()==null
-            || !ArrayMaster.isNotEmpty(getSouls()));
-
-            aspectInfo.setText(initAspectInfo());
-            traitInfo.setText(initTraitInfo());
-        }
-    }
 
     @Override
     public void update() {
@@ -85,7 +93,7 @@ public class ImbuePanel extends TablePanelX {
     }
 
     private String initTraitInfo() {
-        return "";
+        return tooltip;
     }
 
     private String initAspectInfo() {
@@ -112,6 +120,35 @@ public class ImbuePanel extends TablePanelX {
 
     public ImbueTraitsInfo getTraitsInfo() {
         return traitsInfo;
+    }
+
+
+
+
+
+    private class ImbueTraitsInfo extends TablePanelX {
+        LabelX aspectInfo;
+        LabelX traitInfo;
+
+        public ImbueTraitsInfo() {
+            super(600, 300);
+            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+            Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 19);
+            add(  new LabelX("Eidolon Aspects", StyleHolder.getHqLabelStyle(18))).center().row();
+            add(aspectInfo = new LabelX("", style)).center().row();
+            add(traitInfo = new LabelX(initTraitInfo(), style).width(600)).width(600).growY().row();
+            traitInfo.setWrap(true);
+        }
+
+        @Override
+        public void updateAct(float delta) {
+            super.updateAct(delta);
+            imbueBtn.setDisabled(getSelectedItem()==null
+            || !ArrayMaster.isNotEmpty(getSouls()));
+
+            aspectInfo.setText(initAspectInfo());
+            traitInfo.setText(initTraitInfo());
+        }
     }
 
 }

@@ -455,7 +455,7 @@ public class TextureCache {
                         return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
                 }
                 if (!silent)
-                    main.system.auxiliary.log.LogMaster.log(1, "No texture for " + fullPath);
+                    main.system.auxiliary.log.LogMaster.verbose("No texture for " + fullPath);
                 if (!isReturnEmptyOnFail())
                     return null;
                 if (!cache.containsKey(getEmptyPath())) {

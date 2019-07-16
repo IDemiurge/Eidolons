@@ -8,6 +8,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
@@ -105,6 +106,15 @@ public class LogMaster {
     public static final int AI_TRAINING = -34;
     public static final String ERROR_CRITICAL_PREFIX = "ERROR_CRITICAL: ";
     public static final int ERROR_CRITICAL = -35;
+
+    public static final String VFX_DEBUG_PREFIX = "VFX: ";
+    public static final int VFX_DEBUG = -36;
+    public static final boolean VFX_DEBUG_ON= false;
+
+    public static final String PUZZLE_DEBUG_PREFIX = "PUZZLE: ";
+    public static final int PUZZLE_DEBUG = -37;
+    public static final boolean PUZZLE_DEBUG_ON= true;
+
     public static final LOG_CHANNEL[] specialLogChannels = {
 
     };
@@ -121,7 +131,7 @@ public class LogMaster {
     public static boolean ANIM_DEBUG_ON = false;
     public static boolean EVENT_DEBUG_ON = false;
     public static boolean EFFECT_DEBUG_ON = false;
-    public static boolean TRIGGER_DEBUG_ON = false;
+    public static boolean TRIGGER_DEBUG_ON = true;
     public static boolean PATHING_DEBUG_ON = false;
     public static boolean COMBAT_DEBUG_ON = false;
     public static boolean MAP_GENERATION_DEBUG_ON = false;
@@ -565,9 +575,14 @@ public class LogMaster {
     public static PrintStream getExceptionPrintStream() {
         if (exceptionPrintStream == null) {
             try {
+                String filePath = PathFinder.getRootPath() + PathUtils.getPathSeparator() + getCriticalLogFilePath();
+                FileManager.getFile(PathUtils.cropLastPathSegment(filePath)).mkdir();
+                FileManager.getFile(filePath).createNewFile();
                 exceptionPrintStream = new PrintStream(
-                        new FileOutputStream(PathFinder.getRootPath() + PathUtils.getPathSeparator() + getCriticalLogFilePath(), true));
+                        new FileOutputStream(filePath, true));
             } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

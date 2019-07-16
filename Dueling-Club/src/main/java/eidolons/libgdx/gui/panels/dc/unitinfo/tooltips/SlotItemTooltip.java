@@ -37,14 +37,17 @@ public class SlotItemTooltip extends ValueTooltip {
 
     @Override
     public void updateAct(float delta) {
+        clearChildren();
         final SlotItemToolTipDataSource source =  getUserObject();
 
         ValueContainer container = new ValueContainer(source.getItem().getName());
         container.setStyle(StyleHolder.getHqLabelStyle(13));
         addElement(container);
         row();
-        LabelStyle style = StyleHolder.getHqLabelStyle(12);
-        String text = TextWrapper.processText(GdxMaster.getWidth() / 3,
+        LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 17);
+        String text = TextWrapper.processText(
+                (int) (getWidth()*1.1f),
+//                GdxMaster.getWidth() / 3,
          InventoryFactory.getTooltipsVals(source.getItem()), style);
         container = new ValueContainer(text);
         container.setStyle(style);

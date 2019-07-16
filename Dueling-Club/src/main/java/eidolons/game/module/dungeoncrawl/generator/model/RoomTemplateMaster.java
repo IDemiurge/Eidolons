@@ -26,6 +26,7 @@ import java.util.*;
 import java.util.List;
 
 import static main.system.auxiliary.log.LogMaster.log;
+import static main.system.auxiliary.log.LogMaster.verbose;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -204,7 +205,7 @@ public class RoomTemplateMaster {
             return
              processRoomData(preloadedData.get(group).get(type).get(exitTemplate));
         } catch (Exception e) {
-            log(1, group + " has no " + type
+            verbose( group + " has no " + type
              + exitTemplate);
         }
 

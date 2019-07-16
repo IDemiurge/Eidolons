@@ -175,8 +175,8 @@ public class AnimMaster extends Group {
         String show = "Wait " +
                 action.getAction().getOwnerUnit().getNameIfKnown() +
                 "..";
-        main.system.auxiliary.log.LogMaster.log(1, "Wait for anim to draw; max =" + maxTime);
-        main.system.auxiliary.log.LogMaster.log(1, "Min =" + minTime);
+        main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, "Wait for anim to draw; max =" + maxTime);
+        main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, "Min =" + minTime);
         while ((isMustWaitForAnim(action) && waitTime < maxTime) ||
                 waitTime < minTime) {
             WaitMaster.WAIT(period);
@@ -227,7 +227,7 @@ public class AnimMaster extends Group {
             WaitMaster.WAIT(period);
             //update something? add "." to something?
             waitTime += period;
-            main.system.auxiliary.log.LogMaster.log(1, "Waited for anim to draw: " + waitTime);
+            main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG, "Waited for anim to draw: " + waitTime);
 
         }
     }

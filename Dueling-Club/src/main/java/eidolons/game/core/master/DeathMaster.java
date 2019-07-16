@@ -3,14 +3,15 @@ package eidolons.game.core.master;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
-import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
@@ -177,11 +178,19 @@ public class DeathMaster extends Master {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
+
             try {
                 getGame().getGraveyardManager().unitDies(killed);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+        }
+
+        if (killed instanceof Structure) {
+            game.getMaster().clearCache(killed.getCoordinates());
+        } else
+        if (killer.isPlayerCharacter()) {
+            SoulMaster.slain(killed);
         }
     }
 

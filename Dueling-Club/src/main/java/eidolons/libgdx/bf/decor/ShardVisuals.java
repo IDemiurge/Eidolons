@@ -9,12 +9,12 @@ import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -57,11 +57,11 @@ public class ShardVisuals extends GroupX {
         return Fluctuating.ALPHA_TEMPLATE.SHARD_OVERLAY;
     }
 
-    public static VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
+    public static GenericEnums.VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
         if (!OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SHARD_VFX)) {
-            return new VFX[0];
+            return new GenericEnums.VFX[0];
         }
-        List<VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
+        List<GenericEnums.VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
         int n = 2;
         if (size != null)
         switch (size) {
@@ -74,9 +74,9 @@ public class ShardVisuals extends GroupX {
         }
         n = RandomWizard.getRandomInt(n);
         if (n < 0) {
-            return new VFX[0];
+            return new GenericEnums.VFX[0];
         }
-        VFX[] array = new VFX[n];
+        GenericEnums.VFX[] array = new GenericEnums.VFX[n];
         for (int i = 0; i < n; i++) {
             array[i] = list.remove(
              RandomWizard.getRandomIndex(list));
@@ -84,74 +84,74 @@ public class ShardVisuals extends GroupX {
         return array;
     }
 
-    private static VFX[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
+    private static GenericEnums.VFX[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
         if (overlay == null) {
             overlay = new EnumMaster<SHARD_OVERLAY>().
              getRandomEnumConst(SHARD_OVERLAY.class);
         }
         switch (overlay) {
             case MIST:
-                return new VFX[]{
-                 VFX.MIST_ARCANE,
-                 VFX.DARK_MIST_LITE,
-                 VFX.THUNDER_CLOUDS_CRACKS,
-                 VFX.THUNDER_CLOUDS_CRACKS,
+                return new GenericEnums.VFX[]{
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.DARK_MIST_LITE,
+                 GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
+                 GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
                  //                 EMITTER_PRESET.MIST_TRUE2,
-                 VFX.MIST_WHITE,
-                 VFX.MIST_WIND,
-                 VFX.MIST_BLACK,
-                 VFX.MIST_WIND,
-                 VFX.STARS,
-                 VFX.ASH,
-                 VFX.MOTHS_TIGHT2,
-                 VFX.WISPS,
-                 VFX.SNOW_TIGHT2,
-                 VFX.SNOW,
-                 VFX.MOTHS_TIGHT2,
-                 VFX.STARS
+                 GenericEnums.VFX.MIST_WHITE,
+                 GenericEnums.VFX.MIST_WIND,
+                 GenericEnums.VFX.MIST_BLACK,
+                 GenericEnums.VFX.MIST_WIND,
+                 GenericEnums.VFX.STARS,
+                 GenericEnums.VFX.ASH,
+                 GenericEnums.VFX.MOTHS_TIGHT2,
+                 GenericEnums.VFX.WISPS,
+                 GenericEnums.VFX.SNOW_TIGHT2,
+                 GenericEnums.VFX.SNOW,
+                 GenericEnums.VFX.MOTHS_TIGHT2,
+                 GenericEnums.VFX.STARS
                 };
             case DARKNESS:
-                return new VFX[]{
-                 VFX.DARK_MIST,
-                 VFX.MIST_ARCANE,
-                 VFX.MIST_ARCANE,
-                 VFX.MIST_ARCANE,
-                 VFX.DARK_MIST_LITE,
-                 VFX.MIST_BLACK,
-                 VFX.CINDERS3,
-                 VFX.ASH,
-                 VFX.MIST_WHITE,
-                 VFX.MIST_BLACK,
-                 VFX.MIST_WIND,
-                 VFX.STARS,
-                 VFX.ASH,
-                 VFX.MOTHS_TIGHT2,
-                 VFX.WISPS,
-                 VFX.SNOW_TIGHT2,
-                 VFX.SNOW,
-                 VFX.MOTHS_TIGHT2,
-                 VFX.STARS
+                return new GenericEnums.VFX[]{
+                 GenericEnums.VFX.DARK_MIST,
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.DARK_MIST_LITE,
+                 GenericEnums.VFX.MIST_BLACK,
+                 GenericEnums.VFX.CINDERS3,
+                 GenericEnums.VFX.ASH,
+                 GenericEnums.VFX.MIST_WHITE,
+                 GenericEnums.VFX.MIST_BLACK,
+                 GenericEnums.VFX.MIST_WIND,
+                 GenericEnums.VFX.STARS,
+                 GenericEnums.VFX.ASH,
+                 GenericEnums.VFX.MOTHS_TIGHT2,
+                 GenericEnums.VFX.WISPS,
+                 GenericEnums.VFX.SNOW_TIGHT2,
+                 GenericEnums.VFX.SNOW,
+                 GenericEnums.VFX.MOTHS_TIGHT2,
+                 GenericEnums.VFX.STARS
                 };
             case NETHER:
-                return new VFX[]{
-                 VFX.DARK_MIST,
-                 VFX.DARK_MIST_LITE,
-                 VFX.MIST_ARCANE,
-                 VFX.MIST_ARCANE,
-                 VFX.MIST_ARCANE,
-                 VFX.MIST_BLACK,
-                 VFX.CINDERS3,
-                 VFX.WISPS,
-                 VFX.STARS,
-                 VFX.MIST_BLACK,
-                 VFX.MIST_BLACK,
-                 VFX.MIST_WHITE3,
-                 VFX.MIST_WIND,
-                 VFX.THUNDER_CLOUDS_CRACKS,
-                 VFX.MIST_WIND
+                return new GenericEnums.VFX[]{
+                 GenericEnums.VFX.DARK_MIST,
+                 GenericEnums.VFX.DARK_MIST_LITE,
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.MIST_ARCANE,
+                 GenericEnums.VFX.MIST_BLACK,
+                 GenericEnums.VFX.CINDERS3,
+                 GenericEnums.VFX.WISPS,
+                 GenericEnums.VFX.STARS,
+                 GenericEnums.VFX.MIST_BLACK,
+                 GenericEnums.VFX.MIST_BLACK,
+                 GenericEnums.VFX.MIST_WHITE3,
+                 GenericEnums.VFX.MIST_WIND,
+                 GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
+                 GenericEnums.VFX.MIST_WIND
                 };
         }
-        return new VFX[0];
+        return new GenericEnums.VFX[0];
     }
 
     @Override
@@ -229,8 +229,8 @@ public class ShardVisuals extends GroupX {
                     last.add(shard);
 
 
-                    VFX[] presets = ShardVisuals.getEmitters(overlay, size);
-                    for (VFX preset : presets) {
+                    GenericEnums.VFX[] presets = ShardVisuals.getEmitters(overlay, size);
+                    for (GenericEnums.VFX preset : presets) {
                         EmitterActor actor = new EmitterActor(preset){
                             @Override
                             public void act(float delta) {

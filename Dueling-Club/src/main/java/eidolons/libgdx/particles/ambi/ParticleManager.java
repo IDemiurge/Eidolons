@@ -7,11 +7,11 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.system.GuiEventManager;
@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleManager extends GroupX {
-    private static final VFX FOG_VFX = VFX.SMOKE_TEST;
+    private static final GenericEnums.VFX FOG_VFX = GenericEnums.VFX.SMOKE_TEST;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
      GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;
@@ -77,7 +77,7 @@ public class ParticleManager extends GroupX {
         GuiEventManager.bind(GuiEventType.SHOW_VFX, p -> {
             List<Object> list = (List<Object>) p.get();
             List<Object> newList = new ArrayList<>();
-            VFX preset = (VFX) list.get(0);
+            GenericEnums.VFX preset = (GenericEnums.VFX) list.get(0);
             newList.add(preset.getPath());
             newList.add(list.get(1));
             GuiEventManager.trigger(GuiEventType.SHOW_CUSTOM_VFX,
@@ -155,7 +155,7 @@ public class ParticleManager extends GroupX {
         ParticleManager.ambienceOn = ambienceOn;
     }
 
-    public static Ambience addFogOn(Vector2 at, VFX preset) {
+    public static Ambience addFogOn(Vector2 at, GenericEnums.VFX preset) {
         Ambience fog = new Ambience(preset) {
             @Override
             protected boolean isCullingOn() {

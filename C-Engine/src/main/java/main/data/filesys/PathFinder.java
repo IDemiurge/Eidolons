@@ -265,6 +265,9 @@ public class PathFinder {
          "mini/sprites" + PathUtils.getPathSeparator();
     }
 
+    public static String getUiSpritePath() {
+        return getSpritesPathNew() + "ui/";
+    }
     public static String getSpritesPathNew() {
         init();
         return "sprites" + PathUtils.getPathSeparator();
@@ -492,4 +495,5 @@ public class PathFinder {
     public static String getHqPath() {
         return "ui/components/hq/";
     }
+
 }

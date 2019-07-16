@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 
-public abstract class PuzzleTemplate {
+public interface PuzzleTemplate {
 
-    protected abstract PuzzleMaster.PUZZLE_ACTION_BASE getActionType();
-    protected abstract PuzzleMaster.PUZZLE_SOLUTION getSolution();
+    PuzzleMaster.PUZZLE_ACTION_BASE getActionType();
+    PuzzleMaster.PUZZLE_SOLUTION getSolution();
 }

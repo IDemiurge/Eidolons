@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.anims.Assets;
+import main.content.enums.GenericEnums;
 import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class EmitterPools {
     private static boolean effectPoolingOn = true;
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
 
-    public static EmitterActor getEmitterActor(VFX sfx) {
+    public static EmitterActor getEmitterActor(GenericEnums.VFX sfx) {
         return getEmitterActor(sfx.getPath());
     }
 
@@ -95,7 +96,7 @@ public class EmitterPools {
     public static void preloadDefaultEmitters() {
         if (ParticleEffectX.isEmitterAtlasesOn())
             return ;
-        for (VFX sub : VFX.values()) {
+        for (GenericEnums.VFX sub : GenericEnums.VFX.values()) {
             if (sub.isPreloaded())
                 Assets.get().getManager().load(sub.getPath(), ParticleEffect.class);
         }

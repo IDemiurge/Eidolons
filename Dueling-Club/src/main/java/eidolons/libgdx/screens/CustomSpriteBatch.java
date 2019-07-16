@@ -41,6 +41,8 @@ public class CustomSpriteBatch extends ShaderBatch {
         switch (blending) {
             case SCREEN:
                 setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+
+
                 //                setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
                 //                setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
                 break;
@@ -50,6 +52,7 @@ public class CustomSpriteBatch extends ShaderBatch {
 
     public void resetBlending() {
         setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        blending= null;
     }
 
     @Override

@@ -2,10 +2,10 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.particles.VFX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.utils.GdxTimeMaster;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
 
 /**
@@ -24,7 +24,7 @@ public class Ambience extends EmitterActor {
         super(path);
     }
 
-    public Ambience(VFX fx) {
+    public Ambience(GenericEnums.VFX fx) {
         super(fx);
     }
 

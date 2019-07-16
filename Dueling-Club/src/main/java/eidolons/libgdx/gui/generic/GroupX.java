@@ -128,7 +128,12 @@ public class GroupX extends Group {
         }
         setVisible(true);
         ActionMaster.addFadeOutAction(this, getFadeOutDuration());
-        ActionMaster.addHideAfter(this);
+        if (isHideWhenFade())
+            ActionMaster.addHideAfter(this);
+    }
+
+    protected boolean isHideWhenFade() {
+        return true;
     }
 
     protected float getFadeOutDuration() {
