@@ -24,8 +24,8 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 
@@ -44,13 +44,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected PartyManager<E> partyManager;
     protected MetaInitializer<E> initializer;
     protected MetaDataManager<E> metaDataManager;
-    protected DialogueFactory dialogueFactory;
-    protected IntroFactory introFactory;
 
     protected E metaGame;
     protected DC_Game game;
     protected DialogueManager dialogueManager;
-    protected DialogueActorMaster dialogueActorMaster;
     protected TownMaster townMaster;
     protected DefeatHandler defeatHandler;
     protected LootMaster<E> lootMaster;
@@ -62,13 +59,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         initHandlers();
     }
 
-    protected IntroFactory createIntroFactory() {
-        return new IntroFactory();
-    }
-
-    protected DialogueFactory createDialogueFactory() {
-        return new DialogueFactory();
-    }
 
     protected abstract DC_Game createGame();
 
@@ -77,7 +67,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaDataManager<E> createMetaDataManager();
 
     public DialogueActorMaster getDialogueActorMaster() {
-        return dialogueActorMaster;
+        return dialogueManager.getDialogueActorMaster();
     }
 
     protected abstract MetaInitializer<E> createMetaInitializer();
@@ -90,12 +80,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
 
-        dialogueFactory = createDialogueFactory();
-        introFactory = createIntroFactory();
-        dialogueManager = new DialogueManager(this);
-        dialogueActorMaster = new DialogueActorMaster(this);
 
         townMaster = createTownMaster();
+        dialogueManager = new DialogueManager(this);
+        if (dialogueManager.isPreloadDialogues()){
+            getDialogueFactory().init(this);
+        }
     }
 
     protected TownMaster createTownMaster() {
@@ -203,11 +193,11 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public DialogueFactory getDialogueFactory() {
-        return dialogueFactory;
+        return dialogueManager.getDialogueFactory();
     }
 
     public IntroFactory getIntroFactory() {
-        return introFactory;
+        return dialogueManager.getIntroFactory();
     }
 
     public String getData() {
@@ -260,7 +250,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             }
         Coordinates.clearCaches();
 
-        LogMaster.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());
+        FileLogManager.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());
     }
 
 
@@ -291,62 +281,62 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             }
             return true;
         }
-            //        getMetaGame().isRestarted()
-            return false;
-        }
-
-        public String getDungeonInfo () {
-            if (getDungeonMaster().getDungeonLevel() != null) {
-                StringBuilder info = new StringBuilder(200);
-                DungeonLevel level = getDungeonMaster().getDungeonLevel();
-                info.append("Randomly generated ");
-                info.append(getWellFormattedString(level.getLocationType().toString()) +
-                        " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
-
-                LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
-                LevelZone zone = block.getZone();
-
-                info.append(getWellFormattedString(block.getRoomType().toString())
-                        + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
-
-                // objective?
-                // units left?
-                // secrets uncovered?
-                //level of illumination, time of day,
-                return info.toString();
-            } else {
-                return getScenarioInfo();
-            }
-
-
-        }
-
-        public DefeatHandler getDefeatHandler () {
-            return defeatHandler;
-        }
-
-        protected String getScenarioInfo () {
-            return "No info!";
-        }
-
-        public QuestMaster getQuestMaster () {
-            return townMaster.getQuestMaster();
-        }
-
-        public void reinit () {
-            getQuestMaster().startQuests();
-        }
-
-        public TownMaster getTownMaster () {
-            return townMaster;
-        }
-
-        public GameEventHandler getEventHandler () {
-            return eventHandler;
-        }
-
-        public boolean isAlliesSupported () {
-            return true;
-            //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
-        }
+        //        getMetaGame().isRestarted()
+        return false;
     }
+
+    public String getDungeonInfo() {
+        if (getDungeonMaster().getDungeonLevel() != null) {
+            StringBuilder info = new StringBuilder(200);
+            DungeonLevel level = getDungeonMaster().getDungeonLevel();
+            info.append("Randomly generated ");
+            info.append(getWellFormattedString(level.getLocationType().toString()) +
+                    " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
+
+            LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
+            LevelZone zone = block.getZone();
+
+            info.append(getWellFormattedString(block.getRoomType().toString())
+                    + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
+
+            // objective?
+            // units left?
+            // secrets uncovered?
+            //level of illumination, time of day,
+            return info.toString();
+        } else {
+            return getScenarioInfo();
+        }
+
+
+    }
+
+    public DefeatHandler getDefeatHandler() {
+        return defeatHandler;
+    }
+
+    protected String getScenarioInfo() {
+        return "No info!";
+    }
+
+    public QuestMaster getQuestMaster() {
+        return townMaster.getQuestMaster();
+    }
+
+    public void reinit() {
+        getQuestMaster().startQuests();
+    }
+
+    public TownMaster getTownMaster() {
+        return townMaster;
+    }
+
+    public GameEventHandler getEventHandler() {
+        return eventHandler;
+    }
+
+    public boolean isAlliesSupported() {
+        return true;
+        //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
+    }
+}

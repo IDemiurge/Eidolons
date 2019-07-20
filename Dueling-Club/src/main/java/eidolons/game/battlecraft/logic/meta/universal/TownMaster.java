@@ -10,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
@@ -92,7 +93,7 @@ public class TownMaster extends MetaGameHandler {
 
     protected void updateQuests(Town town) {
         Unit hero = Eidolons.getMainHero();
-        for (DungeonQuest quest : new ArrayList<>(questMaster.getRunningQuests())) {
+        for ( Quest quest : new ArrayList<>(questMaster.getRunningQuests())) {
             if (quest.isComplete()) {
                 EUtils.onConfirm(true, "You have succeeded in our quest " +
                                 quest.getTitle() +

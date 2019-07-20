@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -37,7 +38,9 @@ public class DialogueMessage extends TablePanelX {
             add(actorImage).size(64, 64).pad(20);
         }
         TablePanelX<Actor> textTable = new TablePanelX<>();
-        textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).pad(20) .left().row();
+        Cell<LabelX> cell = textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).left();
+        cell.setActorX(-20);
+        textTable.row();
         textTable.add(this.message = new TextBuilder(getMessageStyle(font)).addString(message).build(w).pad(20));
 //        textTable.add(this.message = new LabelX(message, getMessageStyle(font)));
         add(textTable).pad(20);
@@ -56,7 +59,7 @@ public class DialogueMessage extends TablePanelX {
     }
 
     private LabelStyle getNameStyle(FONT font) {
-        return StyleHolder.getSizedLabelStyle(font, 18);
+        return StyleHolder.getSizedLabelStyle(FONT.SUPER_KNIGHT, 22);
     }
 
     private LabelStyle getMessageStyle(FONT font) {

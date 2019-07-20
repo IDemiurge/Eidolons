@@ -10,8 +10,12 @@ public class AreaCondition extends DC_Condition {
     private final List<Coordinates> coordinates;
 
     public AreaCondition(Coordinates coordinates, int width, int height) {
+        this(coordinates, width, height, true);
+    }
+    public AreaCondition(Coordinates coordinates, int width, int height, boolean bottomToTop) {
         super();
-        this.coordinates = CoordinatesMaster.getCoordinatesBetween(coordinates, new Coordinates(coordinates.x + width, coordinates.y + height));
+        this.coordinates = CoordinatesMaster.getCoordinatesBetween(coordinates,
+                new Coordinates(coordinates.x + width, coordinates.y + height * ((bottomToTop)? -1 : 1)));
 
     }
 

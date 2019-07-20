@@ -37,7 +37,7 @@ public class RemoveBuffEffect extends MicroEffect implements OneshotEffect {
             return buff.kill();
 
 
-        LogMaster.log(1, ref.getTargetObj().getNameAndCoordinate() + " has no buff named " + buffName
+        LogMaster.verbose( ref.getTargetObj().getNameAndCoordinate() + " has no buff named " + buffName
          + ref);
         return false;
     }

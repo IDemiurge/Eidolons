@@ -298,7 +298,18 @@ public class ActionMaster {
 
     public static void addChained(Actor actor, Action... actions) {
         actor.getActions().clear(); //dirty "fix"... refactor add!
-        SequenceAction action = new SequenceAction();
+        SequenceAction action = new SequenceAction() {
+            @Override
+            public boolean act(float delta) {
+                return super.act(delta);
+            }
+
+            @Override
+            public void addAction(Action action) {
+                super.addAction(action);
+                action.setTarget(actor);
+            }
+        };
         for (Action sub : actions) {
             action.addAction(sub);
         }

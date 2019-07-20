@@ -1,11 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -14,9 +10,6 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.InnerScrollContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.texture.Images;
-import main.system.auxiliary.RandomWizard;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -35,14 +28,14 @@ public class DialogueScroll extends TablePanelX {
     public void init() {
         setSize(1200, 500);
 
-        inner= (new TablePanelX());
+        inner = (new TablePanelX());
         inner.setFillParent(true);
         inner.setLayoutEnabled(true);
         inner.pack();
 //        inner.setFixedMinSize(true);
         inner.setFixedSize(true);
         inner.setWidth(1200);
-        inner. setBackground(NinePatchFactory.getHqDrawable());
+        inner.setBackground(NinePatchFactory.getHqDrawable());
 //        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
 
@@ -72,17 +65,21 @@ public class DialogueScroll extends TablePanelX {
     }
 
 
-    public void append(String message, String actorName, String actorImage) {
+    public DialogueMessage append(String message, String actorName, String actorImage) {
         //actually, we'll need to append imgs too, eh?
 
         DialogueMessage dialogueMessage = new DialogueMessage(message, actorName, actorImage,
-                FONT.MAIN, getWidth()*0.85f);
+               getFontType(), getWidth() * 0.85f);
         dialogueMessage.fadeIn();
         inner.add(dialogueMessage).center();
         inner.row();
 //        inner.getRows()
         scrollPane.setScrollY(inner.getPrefHeight());
-//        getStage().setScrollFocus(scrollPane);
+        return dialogueMessage;
+    }
+
+    protected FONT getFontType() {
+        return FONT.METAMORPH;
     }
 
 
@@ -99,6 +96,6 @@ public class DialogueScroll extends TablePanelX {
         inner.setY(0);
         scrollPane.setY(0);
         super.draw(batch, parentAlpha);
-        getStage().setScrollFocus(scrollPane );
+        getStage().setScrollFocus(scrollPane);
     }
 }

@@ -2,12 +2,11 @@ package eidolons.game.battlecraft.logic.meta.igg;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.EidolonsGame;
 import main.content.values.parameters.PARAMETER;
 import main.data.xml.XML_Formatter;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +68,7 @@ public class IGG_Demo {
     };
     public static final String IMAGE_KESERIM = "demo/heroes/keserim.png";
     public static final String HERO_KESERIM = "Anphis Ar Keserim";
+    public static final String HERO_KESERIM_SLEEPLESS = "Sleepless One";
 
     public static IGG_MISSION MISSION;
 
@@ -123,10 +123,10 @@ public class IGG_Demo {
     }
 
     public enum IGG_MISSION {
-        TUTORIAL("levels/Ashen Path.xml", "Gates of Nyrn", 0, 1){
+        TUTORIAL("levels/Ashen Path.xml", "Ashen Path", 0, 1){
             @Override
             public String getMissionName() {
-                    if (!Eidolons.BRIDGE) {
+                    if (!EidolonsGame.BRIDGE) {
                         return "Hall of Lords.xml";
                     }
                 return super.getMissionName();
@@ -134,7 +134,7 @@ public class IGG_Demo {
 
             @Override
             public String getXmlLevelName() {
-                if (!Eidolons.BRIDGE) {
+                if (!EidolonsGame.BRIDGE) {
                         return "Hall of Lords";
                     }
                 return super.getXmlLevelName();

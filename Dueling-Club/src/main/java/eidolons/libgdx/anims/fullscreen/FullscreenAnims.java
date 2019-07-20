@@ -1,5 +1,6 @@
 package eidolons.libgdx.anims.fullscreen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,6 +25,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
@@ -141,13 +143,15 @@ public class FullscreenAnims extends GroupX {
 
 
     private void initAnim(FullscreenAnimDataSource dataSource) {
-        String path = FileManager.getRandomFilePathVariant(
-                PathFinder.getImagePath()+
-                dataSource.type.getSpritePath(), ".txt");
+        String path =
+//                FileManager.getRandomFilePathVariant(
+//                PathFinder.getImagePath()+
+                dataSource.type.getSpritePath()  ;
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
         if (sprite == null) {
             return;
         }
+        sprite.setCustomAct(true);
         sprite.setBlending(dataSource.getBlending());
         float intensity = dataSource.intensity;
         float alpha = RandomWizard.getRandomFloatBetween(intensity * 2, intensity * 3);
@@ -166,10 +170,13 @@ public class FullscreenAnims extends GroupX {
             if (showingTimer <= 0)
                 return; //precaution...
         for (SpriteAnimation animation : new ArrayList<>(spriteList)) {
-            animation.draw(batch);
+            animation.act(Gdx.graphics.getDeltaTime());
             if (animation.isAnimationFinished()) {
                 spriteList.remove(animation);
+                continue;
             }
+            animation.draw(batch);
+
         }
         super.draw(batch, parentAlpha);
     }
@@ -246,6 +253,7 @@ public class FullscreenAnims extends GroupX {
         //        BLACK,
         BLOOD,
         POISON,
+        GATE_FLASH,
         GATES {
             @Override
             public String toString() {
@@ -255,7 +263,7 @@ public class FullscreenAnims extends GroupX {
         //        DAMAGE
 
         public String getSpritePath() {
-            return PathFinder.getSpritesPathNew() + "fullscreen/" + toString() + ".txt";
+            return PathFinder.getSpritesPathNew() + "fullscreen/" +  StringMaster.getWellFormattedString(toString()) + ".txt";
         }
     }
 }

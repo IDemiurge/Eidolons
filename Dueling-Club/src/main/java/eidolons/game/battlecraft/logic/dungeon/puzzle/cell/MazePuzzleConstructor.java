@@ -25,6 +25,9 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
     }
 
 
+    protected boolean isReplayable() {
+        return true;
+    }
     @Override
     protected PuzzleResolution createResolution() {
         PuzzleResolution resolution = new PuzzleResolution(puzzle) {
@@ -56,8 +59,19 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
         };
     }
 
-    protected void puzzleEntered() {
-        super.puzzleEntered();
+    @Override
+    protected boolean isAreaExit() {
+        return true;
+    }
+
+    @Override
+    protected boolean isPointExit() {
+        return true;
+    }
+
+    @Override
+    protected void afterTipAction() {
+        super.afterTipAction();
         Eidolons.onNonGdxThread(()->         puzzle.resetAndGlimpseMaze());
     }
 

@@ -9,12 +9,11 @@ import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
@@ -141,7 +140,7 @@ public class ShadowMap extends GroupX {
         emitters = new List[grid.getCols()][grid.getRows()];
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
             if (type == VOID) {
-                if (Eidolons.BOSS_FIGHT)
+                if (EidolonsGame.BOSS_FIGHT)
                     continue;
             }
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
@@ -269,7 +268,7 @@ public class ShadowMap extends GroupX {
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
                     if (type == VOID) {
-                        if (Eidolons.BOSS_FIGHT)
+                        if (EidolonsGame.BOSS_FIGHT)
                             continue;
                     }
                     ShadeLightCell cell = getCells(type)[x][y];

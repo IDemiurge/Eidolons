@@ -1,7 +1,9 @@
 package eidolons.ability.targeting;
 
+import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import main.ability.effects.continuous.CustomTargetEffect;
 import main.elements.targeting.TargetingImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -20,15 +22,16 @@ public class CoordinateTargeting extends TargetingImpl {
     private DIRECTION direction;
     private String facingKey;
     private String coordinateKey;
-    boolean flip  ; //TODO igg demo fix
+    boolean flip; //TODO igg demo fix
 
     public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
         this.unitDirection = unitDirection;
         this.facingKey = facingKey;
         this.coordinateKey = coordinateKey;
     }
+
     public CoordinateTargeting(DIRECTION d) {
-        this(DEFAULT_KEY.toString(), null );
+        this(DEFAULT_KEY.toString(), null);
         this.direction = d;
     }
 
@@ -55,15 +58,26 @@ public class CoordinateTargeting extends TargetingImpl {
         if (unitDirection != null) {
             BattleFieldObject unit = (BattleFieldObject) obj;
             used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
-        if (flip){
-            used_direction = used_direction.flip();
-        }
+            if (flip) {
+                used_direction = used_direction.flip();
+            }
         }
         if (used_direction != null)
             coordinate = coordinate.getAdjacentCoordinate(used_direction);
 
+        if (ref.getEffect() instanceof CustomTargetEffect) {//TODO EA hack - overlaying!
+            if (((CustomTargetEffect) ref.getEffect()).getEffect() instanceof SummonEffect) {
+                try {
+                    ref.setTarget(obj.getGame().getObjectByCoordinate(null, coordinate,
+                            false, false, true).getId());
+                    return true;
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+        }
         Set<BattleFieldObject> objects = obj.getGame().getMaster().
-                getObjectsOnCoordinate(coordinate, false);
+                getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
         if (objects.size() == 0) {
             ref.setTarget(obj.getGame().getCellByCoordinate(coordinate).getId());
         } else if (objects.size() == 1) {

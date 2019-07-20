@@ -13,10 +13,11 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.ActorMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
@@ -151,7 +152,7 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Eidolons.BOSS_FIGHT) {
+        if (EidolonsGame.BOSS_FIGHT) {
             super.draw(batch, 1);
             return;
         }
@@ -309,6 +310,7 @@ public class GridCell extends Group implements Borderable {
         this.overlayTexture.setDrawable(new TextureRegionDrawable(overlay));
         this.overlayTexture.setWidth(overlay.getRegionWidth());
         this.overlayTexture.setHeight(overlay.getRegionHeight());
+        GdxMaster.center(this.overlayTexture );
 //        debug();
 //        this.overlay = overlay;
     }

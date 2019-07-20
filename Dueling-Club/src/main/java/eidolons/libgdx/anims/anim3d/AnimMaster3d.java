@@ -12,7 +12,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.EidolonsGame;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
@@ -626,10 +626,12 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
+        if ( EidolonsGame.BRIDGE)
+            return true;
         if (CoreEngine.isIDE())
             if (!CoreEngine.isGraphicTestMode())
                 if (CoreEngine.isLiteLaunch()) {
-            if (!Eidolons.BOSS_FIGHT)
+            if (!EidolonsGame.BOSS_FIGHT)
                 return true;
         }
         if (off == null)

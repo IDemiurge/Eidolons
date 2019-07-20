@@ -5,6 +5,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -64,7 +65,7 @@ public class Debugger {
         int count = Thread.enumerate(array);
         String msg = "Current Thread: " + Thread.currentThread().getName();
         msg += "\n" + count +
-         " threads: ";
+                " threads: ";
         for (Thread sub : array) {
             msg += sub.getName() + "\n";
         }
@@ -77,36 +78,11 @@ public class Debugger {
 
     public static boolean isImmortalityOn() {
         return OptionsMaster.getGameplayOptions().
-         getBooleanValue(GAMEPLAY_OPTION.IMMORTALITY);
+                getBooleanValue(GAMEPLAY_OPTION.IMMORTALITY);
     }
 
     public static void validateInvisibleUnitView(BaseView baseView) {
 
     }
 
-    public static void validateVisibleUnitView(BaseView baseView) {
-        if (baseView instanceof GridUnitView) {
-            GridUnitView view = ((GridUnitView) baseView);
-            if (view.getActions().size == 0) {
-                if (view.getColor().a == 0) {
-                    main.system.auxiliary.log.LogMaster.log(2, "Validation was required for " + view +
-                     " - alpha==0");
-                    view.fadeIn();
-                }
-                if (view.getParent() instanceof GridCellContainer) {
-                    GridCellContainer cell = ((GridCellContainer) view.getParent());
-                    if (!cell.isStackView())
-                    if (view.getX() != cell.getViewX(view) ||
-                     view.getY() != cell.getViewY(view)) {
-                        cell.recalcUnitViewBounds();
-                    }
-
-                }
-            }
-            if (view.getArrow() !=  null)
-                if (view.getArrow().getActions().size == 0)
-                    view.validateArrowRotation();
-
-        }
-    }
 }

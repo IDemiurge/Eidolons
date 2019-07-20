@@ -12,6 +12,7 @@ public class TimeMaster {
     private static final String ALT_TIME_DELIMITER = "-";
     private static Integer millisInDay;
     static Calendar calendar = Calendar.getInstance();
+
     public static String getFormattedTime() {
         return getFormattedTime(true);
     }
@@ -130,7 +131,7 @@ public class TimeMaster {
     }
 
     public static String getDateString() {
-        return NumberUtils.getOrdinal(getDay()) +" of " + getMonthName() +" 2019"  ;
+        return NumberUtils.getOrdinal(getDay()) + " of " + getMonthName() + " 2019";
 
     }
 
@@ -213,13 +214,15 @@ public class TimeMaster {
     static {
         timeStamp = getTimeStamp();
     }
+
     public static String getTimeStampForThisSession() {
-        return timeStamp ;
+        return timeStamp;
     }
-        public static String getTimeStamp() {
+
+    public static String getTimeStamp() {
         return TimeMaster.getFormattedDate(false) +
-         " " +
-         TimeMaster.getFormattedTime(false, true);
+                " " +
+                TimeMaster.getFormattedTime(false, true);
 
     }
 }

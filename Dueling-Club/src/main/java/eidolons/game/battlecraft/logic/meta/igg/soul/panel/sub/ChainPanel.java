@@ -18,8 +18,7 @@ public class ChainPanel extends SoulTab {
 
     public ChainPanel() {
         super();
-
-        debugAll();
+//        debugAll();
     }
 
     @Override

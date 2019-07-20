@@ -54,6 +54,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
@@ -336,7 +337,7 @@ public class OptionsMaster {
             case LOGGING:
                 break;
             case LOG_TO_FILE:
-                LogMaster.setLogBufferOn(bool);
+                FileLogManager.setLoggingOn(bool);
                 break;
             case RESET_COSTS:
                 break;

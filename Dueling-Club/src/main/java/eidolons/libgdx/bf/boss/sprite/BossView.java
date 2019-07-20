@@ -1,5 +1,8 @@
 package eidolons.libgdx.bf.boss.sprite;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.UnitViewOptions;
 import eidolons.libgdx.bf.grid.UnitViewSprite;
 import main.system.GuiEventManager;
@@ -26,4 +29,18 @@ public class BossView extends UnitViewSprite {
         GuiEventManager.trigger(GuiEventType.BOSS_VIEW_CREATED, this);
     }
 
+    @Override
+    protected void initSprite(UnitViewOptions o) {
+
+    }
+
+    @Override
+    protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
+        return super.initPortrait(portraitTexture, path);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
 }

@@ -100,6 +100,7 @@ public class CONTENT_CONSTS {
 
     public enum SOUNDSET {
         dark_elf,
+        sorcerer,
         barbarian,
         female,
         brute,
@@ -122,6 +123,7 @@ public class CONTENT_CONSTS {
         garpia,
         gidra,
         ironman,
+        cthulhu,
         manticora,
         troglodit,
         minotaur,

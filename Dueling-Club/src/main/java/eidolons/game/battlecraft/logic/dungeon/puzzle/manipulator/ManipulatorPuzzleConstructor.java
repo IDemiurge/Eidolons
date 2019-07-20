@@ -8,6 +8,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> extends PuzzleConstructor<T> {
@@ -28,13 +29,22 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
     }
 
     protected PuzzleRules createRules(PuzzleData puzzleData) {
-        PuzzleMaster.PUZZLE_ACTION_BASE base= PuzzleMaster.PUZZLE_ACTION_BASE.FACING;
-        int n = Math.round(getBaseCounters(base) * puzzle.getDifficultyCoef());
+        PuzzleMaster.PUZZLE_ACTION_BASE base = puzzleData.getCounterActionBase();
+        int n =getBaseCounters(base);
+        if (isCountDown()) {
+            n= Math.round(n / puzzle.getDifficultyCoef());
+        } else {
+            n= Math.round(n * puzzle.getDifficultyCoef());
+        }
         puzzleData.setValue(PuzzleData.PUZZLE_VALUE.COUNTERS_MAX, n);
         if (!StringMaster.isEmpty(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.COUNTER_TYPE))) {
             //TODO
         }
         return new PuzzleRules(puzzle, PuzzleRules.PUZZLE_RULE_ACTION.COUNT_DOWN, base);
+    }
+
+    protected boolean isCountDown() {
+        return true;
     }
 
     protected abstract int getBaseCounters(PuzzleMaster.PUZZLE_ACTION_BASE base);

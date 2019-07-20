@@ -15,7 +15,7 @@ public class PuzzleTrigger extends Trigger {
     ENTER,
     ACTION,
     PUNISH,
-    SOLVE,
+    SOLVE, EXIT,
 }
 
     public PuzzleTrigger(Puzzle puzzle, PUZZLE_TRIGGER type, Event.EVENT_TYPE event, Condition checks, Runnable action) {

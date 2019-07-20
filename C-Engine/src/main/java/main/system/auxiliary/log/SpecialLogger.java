@@ -33,10 +33,7 @@ public class SpecialLogger implements FileLogger {
     }
 
     private static boolean isOn(SPECIAL_LOG log) {
-        switch (log) {
-
-        }
-        return true;
+        return false;
     }
 
     public static SpecialLogger getInstance() {

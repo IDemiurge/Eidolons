@@ -302,7 +302,10 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     public void clearCaches() {
-        if (!isCacheForStructures()) {
+        clearCaches(true);
+    }
+        public void clearCaches(boolean structures) {
+        if (!isCacheForStructures() || structures) {
             getCache(false).clear();
             getCache(true).clear();
             getCache(null).clear();

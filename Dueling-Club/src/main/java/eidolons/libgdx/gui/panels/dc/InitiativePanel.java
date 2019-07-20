@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -403,7 +404,15 @@ public class InitiativePanel extends GroupX {
 
     @Override
     public void act(float delta) {
-
+        boolean altBg = EidolonsGame.isAltControlPanel();
+        hideButton.setVisible(!altBg);
+        if (altBg) {
+            if (speedControlPanel.getColor().a == 1)
+                speedControlPanel.fadeOut();
+        } else {
+            if (speedControlPanel.getColor().a == 0)
+                speedControlPanel.fadeIn();
+        }
         hideButton.setPosition(160, -100);
         speedControlPanel.setPosition(0, -300);
         super.act(delta);

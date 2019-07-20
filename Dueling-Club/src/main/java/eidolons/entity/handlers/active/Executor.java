@@ -39,6 +39,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
@@ -227,10 +228,13 @@ public class Executor extends ActiveHandler {
 
     @Override
     protected void log(String string, boolean gameLog) {
+        FileLogManager.streamAction(  string);
         if (!ExplorationMaster.isExplorationOn()) {
             super.log(string, gameLog);
             if (!gameLog)
-                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
+            {
+//                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
+            }
         }
     }
 

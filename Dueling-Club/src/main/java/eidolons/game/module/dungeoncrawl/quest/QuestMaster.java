@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefMusic;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -41,9 +42,9 @@ public class QuestMaster extends MetaGameHandler {
     protected QuestResolver resolver;
     protected QuestCreator creator;
     protected QuestSelector selector;
-    protected List<DungeonQuest> quests = new ArrayList<>();
+    protected List<Quest> quests = new ArrayList<>();
     protected boolean started;
-    protected Set<DungeonQuest> questsPool;
+    protected Set<Quest> questsPool;
 
     public QuestMaster(MetaGameMaster master) {
         super(master);
@@ -56,7 +57,11 @@ public class QuestMaster extends MetaGameHandler {
 //        }
         GuiEventManager.bind(GuiEventType.QUEST_TAKEN,
                 p -> {
-                    questTaken(p.get().toString());
+                    if (p.get() instanceof Quest) {
+                        questTaken(((Quest) p.get()), null);
+                    } else {
+                        questTaken(p.get().toString());
+                    }
                     DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_TAKEN);
                 });
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED,
@@ -97,7 +102,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public void questCancelled(String name) {
-        for (DungeonQuest quest : new ArrayList<>(quests)) {
+        for (Quest quest : new ArrayList<>(quests)) {
             if (quest.getTitle().equalsIgnoreCase(name)) {
                 quest.setStarted(false);
                 quests.remove(quest);
@@ -111,9 +116,9 @@ public class QuestMaster extends MetaGameHandler {
 
     public void questTaken(String name, boolean notify) {
         ObjType type = DataManager.getType(name, MACRO_OBJ_TYPES.QUEST);
-        DungeonQuest quest = null;
+        Quest quest = null;
         if (isPrecreatedQuests())
-            for (DungeonQuest q : getQuestsPool()) {
+            for (Quest q : getQuestsPool()) {
                 if (q.getTitle().equals(type.getName())) {
                     quest = q;
                     break;
@@ -122,16 +127,20 @@ public class QuestMaster extends MetaGameHandler {
         if (quest == null) {
             quest = getCreator().create(type);
         }
+        questTaken(quest, type);
+    }
+
+    public void questTaken(Quest quest, ObjType type) {
         quest.setStarted(true);
         quests.add(quest);
         startQuests();
-        if (notify) {
+        if (type != null) {
             String txt = type.getName() + StringMaster.NEW_LINE +
                     StringMaster.NEW_LINE + quest.getProgressText() + StringMaster.NEW_LINE +
                     quest.getDescription();
             MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
 
-            TipMessageMaster.tip(new TipMessageSource(txt,  type.getImagePath(), "Onward!", false, () -> {
+            TipMessageMaster.tip(new TipMessageSource(txt, type.getImagePath(), "Onward!", false, () -> {
             }));
 
         }
@@ -144,7 +153,11 @@ public class QuestMaster extends MetaGameHandler {
 
     public void startQuests() {
         quests.removeIf(quest -> quest.isComplete());
-        quests.forEach(quest -> getResolver().questTaken(quest));
+        quests.forEach(quest -> {
+            if (quest instanceof DungeonQuest) {
+                getResolver().questTaken((DungeonQuest) quest);
+            }
+        });
         startedQuests();
     }
 
@@ -161,7 +174,7 @@ public class QuestMaster extends MetaGameHandler {
         return !quests.isEmpty();
     }
 
-    public List<DungeonQuest> getRunningQuests() {
+    public List<Quest> getRunningQuests() {
         return quests;
     }
 
@@ -211,20 +224,20 @@ public class QuestMaster extends MetaGameHandler {
         return true;
     }
 
-    public Set<DungeonQuest> getQuestsPool() {
+    public Set<Quest> getQuestsPool() {
         if (questsPool != null) {
             return questsPool;
         }
         questsPool = new LinkedHashSet<>();
         Set<ObjType> pool = getQuestTypePool();
         for (ObjType type : pool) {
-            DungeonQuest quest = getCreator().create(type);
+            Quest quest = getCreator().create(type);
             questsPool.add(quest);
         }
         return questsPool;
     }
 
-    public void questComplete(DungeonQuest quest) {
+    public void questComplete(Quest quest) {
         questCancelled(quest.getTitle()); // just in case?..
         GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, quest.getTitle());
         GuiEventManager.trigger(GuiEventType.QUEST_COMPLETED, quest.getTitle());

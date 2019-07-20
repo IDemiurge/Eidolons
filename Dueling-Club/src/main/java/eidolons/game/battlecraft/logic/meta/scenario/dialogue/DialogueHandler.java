@@ -24,6 +24,7 @@ public class DialogueHandler {
     private List<Scene> list;
     private ActorDataSource listenerLast;
     private ActorDataSource myActor;
+    private ActorDataSource speakerLast;
 
     public DialogueHandler(GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
         this.dialogue = dialogue;
@@ -76,6 +77,7 @@ public class DialogueHandler {
         SpeechDataSource data = new SpeechDataSource(displayedSpeech);
         data.getResponses().addAll(displayedOptions);
 
+        setSpeakerLast(new ActorDataSource(speech.getActor()));
         setListenerLast(new ActorDataSource(data.getSpeech().getActor()));
         return data;
     }
@@ -133,5 +135,13 @@ public class DialogueHandler {
 
     public boolean isTutorial() {
         return dialogue.getName().equalsIgnoreCase("tutorial journal");
+    }
+
+    public void setSpeakerLast(ActorDataSource speakerLast) {
+        this.speakerLast = speakerLast;
+    }
+
+    public ActorDataSource getSpeakerLast() {
+        return speakerLast;
     }
 }

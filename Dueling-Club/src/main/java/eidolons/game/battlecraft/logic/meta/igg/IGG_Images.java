@@ -13,6 +13,7 @@ import java.io.File;
 
 public class IGG_Images {
     public static final String SHADOW = PathFinder.getArtFolder() + "Shadow.jpg";
+    public static final String INSCRIPTION =   "sprites/bf/hanging/rune inscription_09.png";
 
     public static String getBackground() {
         return getBackground(IGG_Demo.MISSION);
@@ -21,6 +22,9 @@ public class IGG_Images {
         String path=null ;
         if (!CoreEngine.isLiteLaunch() && !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.NO_BACKGROUND_SPRITES)) {
             switch (mission) {
+                case TUTORIAL:
+                    path = Sprites.BG_GATEWAY;
+                    break;
                 case ACT_I_MISSION_I:
                     path = Sprites.BG_VALLEY;
                     break;
@@ -103,6 +107,9 @@ public class IGG_Images {
         , RITUAL
         , GATE,
         STONE_WARDEN,
+        HARVESTER,
+        BLACK_WATERS,
+        SENTRIES,
         APHOLON_SMALL
         ;
         String path;

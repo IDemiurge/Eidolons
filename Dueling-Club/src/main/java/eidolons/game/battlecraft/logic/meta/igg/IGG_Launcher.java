@@ -5,6 +5,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
+import eidolons.system.text.DescriptionTooltips;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -39,6 +40,9 @@ public class IGG_Launcher {
     }
 
     private static boolean isIntroSkipped() {
+        if (CoreEngine.uploadPackage== CoreEngine.UPLOAD_PACKAGE.Aphotica){
+            return true;
+        }
         if (CoreEngine.isJar()) {
             return OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.INTRO_OFF);
         }
@@ -52,10 +56,11 @@ public class IGG_Launcher {
     }
     public static boolean introBriefing() {
         String txtData =
+                //TODO EA hack
                 "We were six in the end, when we met the faceless fiend. " +
                         "We were only two when it was over.;\n" +
 
-                        "Yet it was enough. I did not have the will to do what was necessary. I let Fiona live, and she betrayed me for it. " +
+                        "Yet it was enough. I did not have the will to do what was necessary. I let Selene live, and she betrayed me for it. " +
                         "Now Apholon is gone, and with it my chance to change my fate.;" +
 
                         "No matter what I do, the Prophecy haunts me, ensnares me in its web. I do not wish to be any world’s savior, least of all this one’s.; \n" +

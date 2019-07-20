@@ -1,22 +1,10 @@
 package main.system.auxiliary.log;
 
-import main.data.filesys.PathFinder;
-import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
-import org.apache.commons.io.filefilter.FalseFileFilter;
-import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.*;
 
 public class LogMaster {
     public static final int PRIORITY_VERBOSE = 0;
@@ -157,21 +145,9 @@ public class LogMaster {
     public static boolean GENERATION_ON = false;
     public static boolean AI_TRAINING_ON = true;
     public static boolean ERROR_CRITICAL_ON = false;
-    static String shout = "\n******************\n";
     private static boolean off = false;
-    private static Map<LOG_CHANNEL, StringBuilder> logBufferMap;
-    private static Set<Exception> exceptions = new LinkedHashSet<>();
-    private static String criticalLogFilePath;
-    private static String fullLogFilePath;
-    private static PrintStream exceptionPrintStream;
-    private static PrintStream fullPrintStream;
-    private static boolean logBufferOn;
 
-    public static Logger getInstance() {
-        String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
-                .getCanonicalName();
-        return Logger.getLogger(callingClassName);
-    }
+    static String shout = "\n******************\n";
 
     public static void log(String s) {
         if (off) {
@@ -184,96 +160,21 @@ public class LogMaster {
         if (APPEND_TIME) {
             s = TimeMaster.getFormattedTime() + " - " + s;
         }
-        if (isFullLogging()) {
-            getFullPrintStream().println(s);
+        if (FileLogManager.isFullLoggingConsole()) {
+            FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
         System.out.println(s);
     }
 
-    private static boolean isFullLogging() {
-        if (!CoreEngine.isIDE())
-            return true;
-        return false;
-    }
-
-    public static void logInNewThread(final String s) {
-        new Thread(new Runnable() {
-            public void run() {
-                log(s);
-            }
-        }, "logger thread").start();
-    }
-
+    //TODO do these categories!
     public static void gameInfo(String mes) {
         log(LOG_CHANNEL.GAME_INFO, mes);
     }
 
     public static void log(LOG_CHANNEL c, String s) {
         if (c.isOn()) {
-            if (isLogInNewThread()) {
-                logInNewThread(c.getPrefix() + s);
-            } else {
                 log(c.getPrefix() + s);
-            }
         }
-        if (c.getLog() != null) {
-            // TODO Game.game.getLogManager().log(c.getLog(), s);
-        }
-        LogFileMaster.checkWriteToFileNewThread(c, s);
-    }
-
-    public static void writeAll() throws IOException {
-        StringBuilder msg = new StringBuilder();
-
-//        for (Exception sub : exceptions) {
-//            sub.printStackTrace(new PrintStream(getLogFilePath()));
-//        }
-        if (isFullLogging()) {
-            getFullPrintStream().flush();
-            getExceptionPrintStream().flush();
-        }
-//        for (LOG_CHANNEL channel : getLogBufferMap().keySet()) {
-//            if (!isChannelLogged(channel))
-//                continue;
-//
-//            StringBuilder s = getLogBufferMap().get(channel);
-//            msg.append(channel.getPrefix() + "\n" + s + "\n");
-//            //email?..
-//        }
-//        FileManager.write(msg.toString(), getLogFilePath());
-    }
-
-    public static void writeStatInfo(String string) {
-        FileManager.write(string, getStatFilePath());
-    }
-
-
-    private static boolean isChannelLogged(LOG_CHANNEL sub) {
-        if (sub == null)
-            return false;
-        switch (sub) {
-
-        }
-        return true;
-    }
-
-    private static String getLogFilePath() {
-        if (fullLogFilePath == null)
-            fullLogFilePath = StrPathBuilder.build(PathFinder.getLogPath(),
-                    CoreEngine.filesVersion + " full " + TimeMaster.getTimeStampForThisSession() + ".txt");
-        return fullLogFilePath;
-    }
-
-    private static String getCriticalLogFilePath() {
-        if (criticalLogFilePath == null)
-            criticalLogFilePath = StrPathBuilder.build(PathFinder.getLogPath(),
-                    CoreEngine.filesVersion + " critical " + TimeMaster.getTimeStampForThisSession() + ".txt");
-        return criticalLogFilePath;
-    }
-
-    private static String getStatFilePath() {
-        return PathFinder.getLogPath() +
-                "/stats/" + CoreEngine.filesVersion + " game stats " + TimeMaster.getTimeStampForThisSession() + ".txt";
     }
 
     public static void log(int priority, String s) {
@@ -434,71 +335,16 @@ public class LogMaster {
             if (switcher) {
                 log(prefix + s);
             }
-            if (isLogBufferOn())
-                addToLogBuffer(c, s);
             return;
         }
         if (priority >= PRIORITY_LEVEL_LOGGED) {
             log(s);
         }
-        if (isLogBufferOn())
-            addToLogBuffer(null, s);
         //        LogFileMaster.checkWriteToFileNewThread(priority, s);
     }
 
 
-    private static Map<LOG_CHANNEL, StringBuilder> getLogBufferMap() {
-        if (logBufferMap == null) {
-            init();
-        }
-        return logBufferMap;
-    }
 
-    private static void init() {
-        logBufferMap = new HashMap<>();
-        for (LOG_CHANNEL sub : LOG_CHANNEL.values()) {
-            logBufferMap.put(sub, new StringBuilder());
-        }
-        logBufferMap.put(null, new StringBuilder());
-
-        logBufferOn = true;
-
-        FileManager.write("game init", getLogFilePath());
-    }
-
-    private static void addToLogBuffer(LOG_CHANNEL c, String s) {
-        getLogBufferMap()
-                .get(c).append(s + "\n");
-    }
-
-    private static boolean isLogInNewThread() {
-        return false;
-    }
-
-    public static void logToFile(String string) {
-        logToFile(string, getLogFileName());
-    }
-
-    private static String getLogFileName() {
-        return "main log.txt";
-    }
-
-    public static void logToFile(String string, String logFileName) {
-        logToFile(string, logFileName, false);
-    }
-
-    public static void logToFile(String string, String logFileName, boolean append) {
-        String content = string;
-        String path = PathFinder.getLogPath();
-        String fileName = logFileName == null ? getLogFileName() : logFileName;
-        // XML_Writer.write(content, path, fileName);
-        if (append) {
-            FileManager.appendToTextFile(content, path, fileName);
-        } else {
-            FileManager.write(content, path + "/" + fileName);
-        }
-
-    }
 
     /**
      * @return the off
@@ -542,7 +388,6 @@ public class LogMaster {
 
     public static void error(String string) {
         log(PRIORITY_ERROR, ERROR_PREFIX + string);
-
     }
 
     public static void header(String string) {
@@ -550,53 +395,6 @@ public class LogMaster {
         log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + StringMaster.wrapInBraces(string));
         log(PRIORITY_IMPORTANT, "");
     }
-
-    public static Set<Exception> getExceptions() {
-        return exceptions;
-    }
-
-    public static void logException(Exception e) {
-        e.printStackTrace(getExceptionPrintStream());
-        e.printStackTrace(getFullPrintStream());
-    }
-
-    public static PrintStream getFullPrintStream() {
-        if (fullPrintStream == null) {
-            try {
-                fullPrintStream = new PrintStream(
-                        new FileOutputStream(PathFinder.getRootPath() + PathUtils.getPathSeparator() + getLogFilePath(), true));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return fullPrintStream;
-    }
-
-    public static PrintStream getExceptionPrintStream() {
-        if (exceptionPrintStream == null) {
-            try {
-                String filePath = PathFinder.getRootPath() + PathUtils.getPathSeparator() + getCriticalLogFilePath();
-                FileManager.getFile(PathUtils.cropLastPathSegment(filePath)).mkdir();
-                FileManager.getFile(filePath).createNewFile();
-                exceptionPrintStream = new PrintStream(
-                        new FileOutputStream(filePath, true));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return exceptionPrintStream;
-    }
-
-    public static boolean isLogBufferOn() {
-        return logBufferOn;
-    }
-
-    public static void setLogBufferOn(boolean logBufferOn) {
-        LogMaster.logBufferOn = logBufferOn;
-    }
-
 
     public enum LOG {
         GAME_INFO, HIDDEN_INFO, SYSTEM_INFO, DEBUG

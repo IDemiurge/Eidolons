@@ -9,8 +9,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
@@ -43,13 +41,12 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
@@ -58,7 +55,6 @@ import java.io.IOException;
  */
 public class Eidolons {
     public static final boolean DEV_MODE = true;
-    public static   boolean BRIDGE = false;
     private static final Integer WIDTH_WINDOWED = 95;
     private static final Integer HEIGHT_WINDOWED = 90;
     public static final String NAME = "eidolons";
@@ -71,9 +67,7 @@ public class Eidolons {
 
     public static EidolonsGame mainGame;
     public static Application gdxApplication;
-    public static boolean BOSS_FIGHT;
-    public static boolean TUTORIAL_MISSION;
-    public static boolean TUTORIAL_PATH;
+
     private static LwjglApplication application;
     private static String selectedMainHero;
     private static Unit mainHero;
@@ -173,6 +167,9 @@ public class Eidolons {
     public static void setFullscreen(boolean b) {
         if (getApplication() == null)
             return;
+        if (CoreEngine.isMyLiteLaunch()) {
+            return;
+        }
         if (resolution != null)
             if (fullscreen == b)
                 return;
@@ -376,7 +373,7 @@ public class Eidolons {
         SpecialLogger.getInstance().writeLogs();
         Debugger.writeLog();
         try {
-            LogMaster.writeAll();
+            FileLogManager.writeAll();
         } catch (IOException e) {
             e.printStackTrace();
         }

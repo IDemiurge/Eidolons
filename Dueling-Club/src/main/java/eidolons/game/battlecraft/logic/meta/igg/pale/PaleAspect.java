@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.igg.pale;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
@@ -52,7 +53,7 @@ public class PaleAspect {
         d = 0;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.PALE_ASPECT);
         getAvatar();
-        if (!Eidolons.BRIDGE)
+        if (!EidolonsGame.BRIDGE)
             for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
                 shadowLeapToLocation(hero.getUnit(), true);
             }
@@ -77,7 +78,7 @@ public class PaleAspect {
     }
 
     private static Unit getAvatar() {
-        return getAvatar(Eidolons.BRIDGE);
+        return getAvatar(EidolonsGame.BRIDGE);
     }
 
     public static Unit getAvatar(boolean shade) {
@@ -130,7 +131,7 @@ public class PaleAspect {
         }
 
         unit.getGame().getLoop().activateAction(new ActionInput(unit.getSpell("Leap into Darkness"),
-                getAvatar().getGame().getCellByCoordinate(c)));
+                unit.getGame().getCellByCoordinate(c)));
 //        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ACTION_INPUT, new ActionInput(unit.getSpell("Leap into Darkness"),
 //                avatar.getGame().getCellByCoordinate(c)));
     }

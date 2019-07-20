@@ -145,6 +145,8 @@ public class Images {
     public static final String BG_EIDOLONS = IGG_Images.MAIN_ART.HALL2.getPath();
     public static final String CIRCLE_BORDER = "ui/components/generic/borders/border circle.png";
     public static final String EMPTY_SKULL = "ui/empty1.jpg";
+    public static final String EMPTY_DEMIURGE = "ui/empty.jpg";
+    public static final String LIGHT_SKULL = "sprites/cells/light skull.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

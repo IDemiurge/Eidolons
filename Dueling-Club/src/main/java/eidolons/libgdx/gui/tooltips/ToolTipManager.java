@@ -51,6 +51,7 @@ public class ToolTipManager extends TablePanel {
     private StackViewMaster stackMaster = new StackViewMaster();
     private static Vector2 presetTooltipPos;
     private static HqTooltipPanel tooltipPanel;
+    private static boolean hoverOff;
 
     public static void setTooltipPanel(HqTooltipPanel tooltipPanel) {
         ToolTipManager.tooltipPanel = tooltipPanel;
@@ -84,6 +85,13 @@ public class ToolTipManager extends TablePanel {
         actorCell = addElement(null);
     }
 
+    public static boolean isHoverOff() {
+        return hoverOff;
+    }
+
+    public static void setHoverOff(boolean hoverOff) {
+        ToolTipManager.hoverOff = hoverOff;
+    }
 
     private void requestedShow(Object object) {
         if (object != null)
@@ -236,10 +244,10 @@ public class ToolTipManager extends TablePanel {
                 if (guiStage.isBlocked() ||
                         originalPosition != null && originalPosition.dst(GdxMaster.getCursorPosition(this))
                                 > 300 * GdxMaster.getFontSizeModSquareRoot()) {
-                    if (guiStage.isBlocked())
-                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
-                    else
-                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
+//                    if (guiStage.isBlocked())
+//                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
+//                    else
+//                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
                     requestedShow(null);
                     //                        TODO ? ? if (isStackHoverOn())
                     //                            waitToHideStack = 2;
@@ -450,7 +458,7 @@ public class ToolTipManager extends TablePanel {
                             , scaleX, scaleY, 0.35f);
         }
         object.setHovered(true);
-
+        hoverOff=false;
         stackMaster.checkShowStack(object);
 
 
@@ -482,7 +490,7 @@ public class ToolTipManager extends TablePanel {
             ActionMaster.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
         }
-
+        hoverOff = true;
         object.setHovered(false);
         stackMaster.checkStackOff(object);
         DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);

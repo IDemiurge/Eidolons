@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
@@ -25,21 +26,21 @@ public class QuestSelector extends QuestHandler {
         super(questMaster);
     }
 
-    public void displayDungeonQuests() {
+    public void displayQuests() {
         //for macro
     }
 
-    public void selectDungeonQuests() {
+    public void selectQuests() {
 
         Collection<ObjType> filtered =master.getQuestTypePool();
 
         GuiEventManager.trigger(GuiEventType.SHOW_QUEST_SELECTION, filtered);
     }
 
-    public List<DungeonQuest> chooseQuests(int n) {
-        List<DungeonQuest> list = new ArrayList<>();
+    public List<Quest> chooseQuests(int n) {
+        List<Quest> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            selectDungeonQuests();
+            selectQuests();
 
             String result =
              (CoreEngine.isFastMode()) ? DataManager.getRandomType(MACRO_OBJ_TYPES.QUEST).getName()
@@ -48,7 +49,7 @@ public class QuestSelector extends QuestHandler {
                 return list;
             }
             ObjType type = DataManager.getType(result.toString(), MACRO_OBJ_TYPES.QUEST);
-            DungeonQuest quest = master.getCreator().create(type);
+            Quest quest = master.getCreator().create(type);
             list.add(quest);
         }
         if (CoreEngine.isFastMode() )

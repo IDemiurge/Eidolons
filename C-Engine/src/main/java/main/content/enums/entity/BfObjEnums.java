@@ -17,10 +17,18 @@ public class BfObjEnums {
 //    createEmitter("unit/chaotic dark", -32, 32);
 
     public enum CUSTOM_OBJECT {
-        BLACKNESS(15, "", "", "parts/underlay.txt", 5),
+        black_waters(15, "", "", "grid/black waters.txt", 5),
+        BLACKNESS(15, "", "", "", 5),
         LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
         GATE_PILLAR(10, "", "", "grid/pillar.txt",10)
         ;
+
+        public boolean vfxUnderMirrorX;
+        public boolean vfxUnderMirrorY;
+        public boolean vfxOverMirrorX;
+        public boolean vfxOverMirrorY;
+
+        public float vfxChance;
 
         CUSTOM_OBJECT(int fps, String vfxUnder, String vfxOver, String spritePath, double range, String... additionalObjects) {
             this.range = range;
@@ -34,6 +42,8 @@ public class BfObjEnums {
         //BLENDING
         public double range;
         public int fps;
+        public String vfxFolderUnder;
+        public String vfxFolderOver;
         public String vfxUnder;
         public String vfxOver;
         public String spritePath;
@@ -66,7 +76,8 @@ public class BfObjEnums {
         WATER,
         ITEM,
         HUGE,
-        LARGE
+        PUSHABLE ,
+        LARGE;
     }
 
     public enum BF_OBJECT_TYPE {

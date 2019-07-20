@@ -10,6 +10,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -23,9 +24,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CoreEngine {
+    public static boolean isMyLiteLaunch() {
+        return isIDE() && isLiteLaunch();
+    }
+
+    public enum UPLOAD_PACKAGE {
+        Aphotica, igg,
+    }
+
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.5";
-    public static final String VERSION_NAME = "IGG demo";//"Backer Demo";
+    public static final String VERSION = "0.9.5d";
+    public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotica;
+    public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean swingOn = true;
@@ -91,20 +101,20 @@ public class CoreEngine {
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
-        System.out.println("Eidolons "+VERSION);
+        System.out.println("Eidolons " + VERSION);
         System.out.println("Core Engine Init... ");
 
 
         windows = System.getProperty("os.name").startsWith("Windows");
         System.out.println("Heap size:  " +
-         (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
+                (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
         System.out.println("CPU's available:  " +
-         (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
+                (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
 //        System.out.println("Total Memory:  " +
 //         (TOTAL_MEMORY =
 //          Runtime.getRuntime().totalMemory()));
 
-        if ( System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustM")){
+        if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustM")) {
             me = true;
         }
 
@@ -124,6 +134,7 @@ public class CoreEngine {
         {
             System.out.println();
             System.getProperties().list(System.out);
+            System.getProperties().list(FileLogManager.getMainPrintStream());
             System.out.println();
         }
     }
@@ -174,16 +185,16 @@ public class CoreEngine {
 
         if (selectivelyReadTypes != null) {
             return ContainerUtils.checkContainer(
-             selectivelyReadTypes,
-             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-             false);
+                    selectivelyReadTypes,
+                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+                    false);
         }
 
         if (exceptionTypes != null) {
             if (ContainerUtils.checkContainer(
-             exceptionTypes,
-             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-             false
+                    exceptionTypes,
+                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+                    false
             )) {
                 return false;
             }
@@ -338,7 +349,7 @@ public class CoreEngine {
         try {
             Chronos.mark("MAPPER INIT");
             Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-             classFolders);
+                    classFolders);
             Chronos.logTimeElapsedForMark("MAPPER INIT");
         } catch (ClassNotFoundException | SecurityException | IOException e) {
             ExceptionMaster.printStackTrace(e);
@@ -375,7 +386,7 @@ public class CoreEngine {
     }
 
     public static boolean isCombatGame() {
-        return !toolIsRunning  &&!isArcaneTower() && !isArcaneVault() && !isLevelEditor() &&!isjUnit();
+        return !toolIsRunning && !isArcaneTower() && !isArcaneVault() && !isLevelEditor() && !isjUnit();
     }
 
     public static boolean isIDE() {

@@ -376,6 +376,11 @@ public class GenericEnums {
         LEAVES_LARGE("woods","leaves large"),
         FALLING_LEAVES_WINDY("woods","falling leaves windy2"),
 
+        BLACK_MIST_white_mist_wind("black mist", StringMaster.getWellFormattedString("white_mist_wind")),
+        BLACK_MIST_clouds_wind("black mist", StringMaster.getWellFormattedString("clouds_wind")),
+        BLACK_MIST_clouds_gravity("black mist", StringMaster.getWellFormattedString("clouds_gravity")),
+        BLACK_MIST_clouds_antigravity("black mist", StringMaster.getWellFormattedString("clouds_antigravity")) ,
+
         MIST_WHITE("mist","conceal west wind"),
         MIST_WHITE2("mist","conceal west wind2"),
         MIST_WHITE3("mist","conceal west wind3"),
@@ -405,7 +410,7 @@ public class GenericEnums {
         CINDERS("ambient", "CINDERS tight"),
         CINDERS2("ambient", "CINDERS tight2"),
         CINDERS3("ambient", "CINDERS tight3"),
-        SMOKE,
+        SMOKE
         ;
         private static final boolean NEW_MIST =false ;
         public String path;

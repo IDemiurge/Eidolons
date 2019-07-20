@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
@@ -34,7 +35,7 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getAggroGroup() {
-        if (getPlayerUnseenMode()) {
+        if (!EidolonsGame.firstBattleStarted || getPlayerUnseenMode()) {
             return new ArrayList<>();
         }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
@@ -58,14 +59,15 @@ public class AggroMaster extends ExplorationHandler {
         if (ListMaster.isNotEmpty(list) || ListMaster.isNotEmpty(lastAggroGroup))
             main.system.auxiliary.log.LogMaster.log(1, "Aggro group: " + list +
                     "; last: " + lastAggroGroup);
-        if (!ExplorationMaster.isExplorationOn()) if (!list.isEmpty()) {
-            logAggro(list);
-        }
         if (lastAggroGroup != null)
             if (lastAggroGroup.size() > list.size()) {
                 main.system.auxiliary.log.LogMaster.log(1, "Aggro group reduced: " + lastAggroGroup + " last vs new: " + list);
             }
         lastAggroGroup = list;
+        if (!ExplorationMaster.isExplorationOn())
+            if (!list.isEmpty()) {
+                logAggro(list);
+            }
         return list;
     }
 
@@ -248,6 +250,13 @@ public class AggroMaster extends ExplorationHandler {
 
     public static int getBattleDifficulty() {
         return getLastAggroGroup().stream().mapToInt(u -> u.getPower()).sum();
+    }
+
+    public static void aggro(Unit unit, Unit mainHero) {
+        unit.getAI().setEngaged(true);
+        unit.getAI().setEngagementDuration(2);
+        unit.getAI().setEngagedOverride(true);
+
     }
 
     private boolean checkEngaged() {

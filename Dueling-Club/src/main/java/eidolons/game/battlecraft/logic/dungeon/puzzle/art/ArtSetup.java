@@ -62,6 +62,8 @@ public class ArtSetup extends PuzzleSetup {
                 if ( RandomWizard.chance(getPuzzle().getRotateChance())) {
                 float rotation = 90 * RandomWizard.getRandomIntBetween(0, 4);
                 cell.setOverlayRotation(rotation);
+                } else {
+                    cell.setOverlayRotation(0);
                 }
                 GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY, cell);
             }

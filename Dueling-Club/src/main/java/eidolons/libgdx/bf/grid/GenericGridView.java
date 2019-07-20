@@ -160,8 +160,7 @@ public class GenericGridView extends UnitView {
     }
 
     public void updateRotation(int val) {
-        if (arrow.getRotation()-ARROW_ROTATION_OFFSET ==  val)
-            if (arrowRotation == val) {
+        if ((arrow.getRotation()-ARROW_ROTATION_OFFSET)%360 ==  val%360 || arrowRotation%360 == val%360) {
                 return;
         }
         updateRotation(val, isVisible());

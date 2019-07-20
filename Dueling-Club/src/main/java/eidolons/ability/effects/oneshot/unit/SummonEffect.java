@@ -20,6 +20,7 @@ import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
+import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.MicroObj;
@@ -102,9 +103,9 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         Coordinates c = ref.getTargetObj().getCoordinates();
 
         if (type == null) {
-            String str = new Property(typeName, true).getStr(ref);
+            String str = typeName.equalsIgnoreCase("[3]") ? "Ruined Column" : "Fallen Column";
+//            String str = new Property(typeName, true).getStr(ref);
             type = DataManager.getType(str);
-
         }
         if (type.getOBJ_TYPE_ENUM() != DC_TYPE.CHARS) {
             type = addXp(type);

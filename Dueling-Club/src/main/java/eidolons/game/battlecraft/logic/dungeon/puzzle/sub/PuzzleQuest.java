@@ -1,56 +1,116 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.QuestReward;
 import eidolons.game.module.dungeoncrawl.quest.advanced.ChainQuest;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 
 public class PuzzleQuest extends ChainQuest {
     private int counter;
+    private int originalCounter;
     Puzzle puzzle;
     PuzzleData data;
-
+    private QuestReward reward;
 
     public PuzzleQuest(Puzzle puzzle, PuzzleData data) {
         this.puzzle = puzzle;
         this.data = data;
-
+        originalCounter = puzzle.getCountersMax();
+        counter = puzzle.getCountersMax();
+        GuiEventManager.trigger(GuiEventType.QUEST_STARTED, this);
         //from type?  sync with rules / resolution
     }
 
     @Override
-    public String getProgressText() {
-       int n = puzzle.getCountersMax();
-
-        return super.getProgressText();
+    public String getDescription()
+    {
+        return  "";
     }
-//    private String getNumberTooltip() {
-//        if (getNumberRequired() == 0) {
-//            return null;
-//        }
-//        return StringMaster.wrapInBraces(
-//                numberAchieved + " / " +
-//                        numberRequired);
-//    }
+
+    private String getFriendlyTooltip(PuzzleMaster.PUZZLE_ACTION_BASE value) {
+        switch (value) {
+            case MOVE:
+            case MOVE_AFTER:
+                return "Moves";
+            case ACTION:
+                break;
+            case FACING:
+                return "Turn Actions";
+        }
+        return "Actions";
+    }
+
+    @Override
+    public String getProgressText() {
+        if (counter==0) {
+            return puzzle.getQuestText();
+        }
+        return  getFriendlyTooltip(puzzle.getData().getCounterActionBase()) + " left: " +
+                StringMaster.wrapInBraces(
+                counter + " / " +
+                        originalCounter);
+    }
+
     @Override
     public String getTitle() {
-        return super.getTitle();
+        return puzzle.getTitle();
     }
 
-    @Override
-    public String getDescription() {
-        return super.getDescription();
-    }
 
     @Override
     public QuestReward getReward() {
-        return super.getReward();
+        if (reward == null) {
+            reward = createReward(puzzle);
+        }
+        return reward;
     }
 
+    private QuestReward createReward(Puzzle puzzle) {
+//        puzzle.getData().getValue()
+        reward= new QuestReward("soulforce=" +puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE. SOULFORCE_REWARD));
+        return reward;
+    }
+
+    public String getVictoryText() {
+        return  "";
+//                "Soulforce gained: " +         getReward().getValue(QuestReward.REWARD_VALUE.soulforceFormula);
+    }
     public boolean decrementCounter() {
         counter--;
-        if (counter<=0)
+
+        GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, this);
+        if (counter <= 0)
             return false;
         return true;
+    }
+
+    public void complete() {
+        GuiEventManager.trigger(GuiEventType.QUEST_COMPLETED, this);
+        GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, this);
+//        getReward().award(Eidolons.getMainHero(), false, false);
+    }
+    @Override
+    public boolean isComplete() {
+        return puzzle.isSolved();
+    }
+    public void failed() {
+        GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, this);
+
+//        getReward().award(Eidolons.getMainHero(), false, true);
+    }
+
+    @Override
+    public boolean isStarted() {
+        return puzzle.isActive();
+    }
+
+    @Override
+    public boolean isRewardTaken() {
+        //TODO
+        return super.isRewardTaken();
     }
 }

@@ -1022,4 +1022,18 @@ public class DataManager {
 //        return  !getTypes(type).isEmpty();
         return XML_Reader.getTypeMaps().get(type.getName()) != null;
     }
+
+    public static String getObjImage(String name) {
+        ObjType type = getType(name, DC_TYPE.BF_OBJ);
+        if (type == null) {
+            type = getType(name, DC_TYPE.UNITS);
+        }
+        if (type == null) {
+            type = getType(name);
+        }
+        if (type == null) {
+            return "";
+        }
+        return type.getImagePath();
+    }
 }

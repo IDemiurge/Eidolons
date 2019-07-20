@@ -3,6 +3,7 @@ package eidolons.system.controls;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
@@ -35,6 +36,7 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -104,15 +106,17 @@ public class GlobalController implements Controller {
             return false;
 
         switch (keyCode) {
-            case Keys.F8:
-                PaleAspect.togglePale();
-                return true;
             case Keys.F2:
+                if (EidolonsGame.BRIDGE)
+                    return false;
                 if (CoreEngine.isIDE())
                     LordPanel.getInstance().init();
                 GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
                 return true;
             case Keys.F1:
+                if (!EidolonsGame.isHqEnabled()) {
+                    return false;
+                }
                 if (ShadowMaster.isShadowAlive()) {
                     EUtils.showInfoText("Cannot do this now");
                     return false;
@@ -153,6 +157,10 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
+            case Keys.F8:
+                PaleAspect.togglePale();
+                EidolonsGame.BRIDGE = !EidolonsGame.BRIDGE;
+                return true;
             case Keys.F6:
                 new Thread(() -> IGG_Launcher.introBriefing(), " thread").start();
 
@@ -258,6 +266,7 @@ public class GlobalController implements Controller {
 
         if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
             DungeonScreen.getInstance().getGuiStage().dialogueDone();
+            FileLogManager.streamMain("Dialogue escaped");
             return true;
         }
         if (DC_Game.game.getManager().isSelecting()

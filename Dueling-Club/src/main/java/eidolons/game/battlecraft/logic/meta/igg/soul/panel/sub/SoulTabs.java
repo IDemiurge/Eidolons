@@ -11,7 +11,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 public class SoulTabs extends TabbedPanel {
-//    private final Image background;
+    private   Image background;
 
     public SoulTabs(LordPanel.SOUL_TABS... tabs) {
 //        addActor(background = new Image(TextureCache.getOrCreate(Images.COLUMNS_AND_TREE_BG)));

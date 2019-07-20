@@ -4,13 +4,13 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
-import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefMusic;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
+import main.content.CONTENT_CONSTS;
+import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -24,6 +24,7 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
+import main.system.sound.SoundMaster.SOUNDS;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -33,6 +34,8 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 
+import static eidolons.system.audio.MusicMaster.MUSIC_TRACK.*;
+import static main.content.CONTENT_CONSTS.SOUNDSET.*;
 import static main.system.auxiliary.log.LogMaster.log;
 //a folder tree per music theme!
 //standard path structure
@@ -82,6 +85,7 @@ public class MusicMaster {
     private int loopPlayed;
     private int maxLoopCount;
     private boolean loopingTrack;
+    private int waited;
 
 
     // IDEA: map music per scope to resume()
@@ -176,6 +180,7 @@ public class MusicMaster {
 
     public static boolean isOn() {
         if (CoreEngine.isjUnit()) return false;
+        if (CoreEngine.isLiteLaunch()) return false;
         if (on == null)
             on = !(OptionsMaster.getSoundOptions().
                     getBooleanValue(SOUND_OPTION.MUSIC_OFF));
@@ -227,7 +232,11 @@ public class MusicMaster {
         else
             playedMusic = null;
         if (playedMusic == null) {
-            checkNewMusicToPlay();
+            try {
+                checkNewMusicToPlay();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         resume();
         //fade? :)
@@ -288,15 +297,15 @@ public class MusicMaster {
     private boolean checkLoop() {
         switch (scope) {
             case BATTLE:
-                if (tracksPlayedInScope>=0) {
-                    shouldLoop= true;
+                if (tracksPlayedInScope >= 0) {
+                    shouldLoop = true;
                 }
         }
 
         if (loopingTrack) {
             if (loopPlayed >= maxLoopCount) {
-                loopingTrack=false;
-                shouldLoop=false;
+                loopingTrack = false;
+                shouldLoop = false;
                 return false;
             }
             loopPlayed++;
@@ -306,60 +315,69 @@ public class MusicMaster {
         }
         return false;
     }
-    MUSIC_TRACK  lastPlayed;
+
+    MUSIC_TRACK lastPlayed;
     int tracksPlayedInScope;
+
     private boolean checkTrackFits(String sub) {
         MUSIC_TRACK track = getTrackFromPath(sub);
 
-        if (shouldLoop!=isTrackLooping(sub))
+        if (shouldLoop != isTrackLooping(sub))
             return false;
-
-        if (scope==MUSIC_SCOPE.BATTLE){
+        if (EidolonsGame.BRIDGE) {
+            if (scope == MUSIC_SCOPE.BATTLE) {
+                return fitTracks(track, 86,
+                        SUFFOCATION_LOOP, NIGHT_OF_DEMON);
+            } else {
+                return fitTracks(track, 86, LOOMING_SHADES, DUNGEONS_OF_DOOM);
+            }
+        }
+        if (scope == MUSIC_SCOPE.BATTLE) {
             //intro vs alt intro vs no intro...
 
-            if (Eidolons.BOSS_FIGHT) {
-                return fitTracks(track, 86, MUSIC_TRACK.SUFFOCATION_LOOP, MUSIC_TRACK.NIGHT_OF_DEMON);
+            if (EidolonsGame.BOSS_FIGHT) {
+                return fitTracks(track, 86, SUFFOCATION_LOOP, NIGHT_OF_DEMON);
             }
-            if (Eidolons.TUTORIAL_PATH) {
-                return fitTracks(track, 70, MUSIC_TRACK.SUFFOCATION_LOOP, MUSIC_TRACK.TOWARDS_THE_UNKNOWN_LOOP);
+            if (EidolonsGame.TUTORIAL_PATH) {
+                return fitTracks(track, 70, SUFFOCATION_LOOP, TOWARDS_THE_UNKNOWN_LOOP);
             }
-            if (tracksPlayedInScope==0){
-                return fitTracks(track, 86, MUSIC_TRACK.BATTLE_INTRO_LOOP );
+            if (tracksPlayedInScope == 0) {
+                return fitTracks(track, 86, BATTLE_INTRO_LOOP);
             }
-            if (tracksPlayedInScope==1){
-                return fitTracks(track, 86, MUSIC_TRACK.BATTLE_LOOP );
+            if (tracksPlayedInScope == 1) {
+                return fitTracks(track, 86, BATTLE_LOOP);
             }
 
-            Boolean intro = null ;
-            if (lastPlayed== MUSIC_TRACK.BATTLE_LOOP)  {
+            Boolean intro = null;
+            if (lastPlayed == BATTLE_LOOP) {
                 intro = false;
             } else
                 intro = true;
 
             int coef = AggroMaster.getBattleDifficulty();
-            if (coef>50){
+            if (coef > 50) {
 
             }
         }
-        if (scope== MUSIC_SCOPE.MENU){
-            if (tracksPlayedInScope==0) {
-                return fitTracks(track, 86, MUSIC_TRACK.THE_END_OR_THE_BEGINNING);
+        if (scope == MUSIC_SCOPE.MENU) {
+            if (tracksPlayedInScope == 0) {
+                return fitTracks(track, 86, THE_END_OR_THE_BEGINNING);
             }
         }
-        if (scope== MUSIC_SCOPE.MAP){
+        if (scope == MUSIC_SCOPE.MAP) {
 //tavern false !
         }
-        if (scope== MUSIC_SCOPE.ATMO){
-            if (tracksPlayedInScope>1) {
+        if (scope == MUSIC_SCOPE.ATMO) {
+            if (tracksPlayedInScope > 1) {
 
             }
         }
-            return true;
+        return true;
     }
 
     private boolean fitTracks(MUSIC_TRACK track, int c, MUSIC_TRACK... tracks) {
         for (MUSIC_TRACK music_track : tracks) {
-            if (music_track==track) {
+            if (music_track == track) {
                 return true;
             }
         }
@@ -416,23 +434,48 @@ public class MusicMaster {
             for (String sub : FileManager.getFilePaths(files)) {
                 if (isMusic(sub)) {
                     if (checkTrackFits(sub))
-                     fitting.add(sub);
+                        fitting.add(sub);
                 }
             } //bind to scope?
+            if (fitting.isEmpty()) {
+                fitting.add(getDefaultTrack(shouldLoop));
+            }
             if (shouldLoop) {
                 String track = RandomWizard.getRandomListObject(fitting).toString();
                 playList.add(track);
                 playList.add(track);
-                shouldLoop=false;
+                shouldLoop = false;
             } else if (shuffle) {
                 playList.addAll(fitting);
             }
-                Collections.shuffle(playList);
+            Collections.shuffle(playList);
             cachedPlayList = new Stack<>();
             cachedPlayList.addAll(playList);
             break;
         }
         //       TODO what was the idea? checkUpdateTypes();
+    }
+
+    //    private String getDefaultTrackPath(boolean shouldLoop) {
+//    }
+    private String getDefaultTrack(boolean shouldLoop) {
+        switch (scope) {
+            case MENU:
+                if (shouldLoop) {
+                    return THERE_WILL_BE_PAIN_LOOP.getPath();
+                }
+                return FRACTURES.getPath();
+            case ATMO:
+                return LOOMING_SHADES.getPath();
+            case MAP:
+                return ENTHRALLING_WOODS.getPath();
+            case BATTLE:
+                if (shouldLoop) {
+                    return SUFFOCATION_LOOP.getPath();
+                }
+                return NIGHT_OF_DEMON.getPath();
+        }
+        return SUFFOCATION_LOOP.getPath();
     }
 
 
@@ -593,7 +636,27 @@ public class MusicMaster {
                 }
             }
         }
-        WaitMaster.WAIT(PERIOD);
+        soundPlayback(PERIOD);
+
+    }
+
+    private void soundPlayback(int period) {
+        waited += period;
+        WaitMaster.WAIT(period);
+        if (CoreEngine.isJar())
+            if (EidolonsGame.BRIDGE)
+                if (waited >= 2000) {
+                    if (RandomWizard.chance(4)) {
+                        DC_SoundMaster.playEffectSound(RandomWizard.random() ? SOUNDS.IDLE :
+                                        RandomWizard.random() ? SOUNDS.DEATH : SOUNDS.ALERT,
+
+                                RandomWizard.random() ?
+                                        wraith : RandomWizard.random() ?
+                                        ironman : RandomWizard.random() ?
+                                        zombie : cthulhu, RandomWizard.getRandomInt(100), 0);
+                    }
+                    waited = 0;
+                }
     }
 
     public void resume() {
@@ -736,6 +799,8 @@ public class MusicMaster {
 
     public enum MUSIC_MOMENT {
         SAD,
+        SELENE,
+        HARVEST,
         SECRET,
         FALL,
         VICTORY,
@@ -749,7 +814,7 @@ public class MusicMaster {
         WELCOME; // VARIANTS?
 
         public String getCorePath() {
-            return PathFinder.getSoundPath()+"moments/"+ name()+".mp3";
+            return PathFinder.getSoundPath() + "moments/" + name() + ".mp3";
         }
     }
 
@@ -779,9 +844,9 @@ public class MusicMaster {
 
         ENTHRALLING_WOODS,
 
-        NIGHT_OF_DEMON,
         TOWARDS_THE_UNKNOWN_LOOP,
         PREPARE_FOR_WAR,
+        NIGHT_OF_DEMON,
         SUFFOCATION_LOOP,
         BATTLE_INTRO_LOOP,
         BATTLE_ALT,

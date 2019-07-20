@@ -23,16 +23,23 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
         ArtPuzzle puzzle = super.create(data, blockData, coordinates, block);
         return puzzle;
     }
-
+    @Override
+    protected boolean isAreaEnter() {
+        return true;
+    }
+    @Override
+    protected boolean isAreaExit() {
+        return true;
+    }
     @Override
     protected int getBaseCounters(PuzzleMaster.PUZZLE_ACTION_BASE base) {
         switch (base) {
             case MOVE:
-                return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()*2;
+                return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()/100 ;
             case ACTION:
-                return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()*5;
+                return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()/100*4;
             case FACING:
-              return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()*3;
+              return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()/100*2;
         }
         return 0;
     }
@@ -72,8 +79,8 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
         return super.getPuzzleEnterConditions();
     }
 
-    protected void puzzleEntered() {
-        super.puzzleEntered();
+    protected void entered() {
+        super.entered();
     }
     /**
      * exit via veil as well

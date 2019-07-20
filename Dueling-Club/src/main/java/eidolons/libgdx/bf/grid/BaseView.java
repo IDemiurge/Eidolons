@@ -35,6 +35,8 @@ public class BaseView extends SuperActor {
 
     public void init(UnitViewOptions o) {
         init(o.getPortraitTexture(), o.getPortraitPath());
+    }
+    protected void initSprite(UnitViewOptions o) {
         if (o.getSpritePath() != null) {
             overlaySprite = new SpriteX(o.getSpritePath());
             addActor(overlaySprite);
@@ -46,7 +48,6 @@ public class BaseView extends SuperActor {
              */
         }
     }
-
     public void init(TextureRegion portraitTexture, String path) {
         portrait = initPortrait(portraitTexture, path);
         addActor(portrait);

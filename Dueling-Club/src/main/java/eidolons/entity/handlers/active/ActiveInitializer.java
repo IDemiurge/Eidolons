@@ -154,10 +154,12 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                     .getIntParam(PARAMS.AOO_STAMINA_PENALTY);
         }
         if (ap != 0)
-            costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
+            if (costs.getCost(PARAMS.AP_COST) != null)
+                costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
         if (sta != 0)
+        if (costs.getCost(PARAMS.STA_COST) != null) {
             costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().applyModifier(sta);
-
+        }
     }
 
 

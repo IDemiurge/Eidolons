@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.boss.anim;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.GdxImageMaster;
@@ -18,6 +19,7 @@ import eidolons.libgdx.bf.boss.sprite.SpriteModel;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
@@ -47,6 +49,13 @@ public class BossAnimator  {
             if (file.getName().endsWith(".txt")){
                 String path = FileManager.formatPath(GdxImageMaster.cropImagePath(file.getPath())
                 ,true);
+                if (EidolonsGame.BRIDGE){
+                    if (!PathUtils.getLastPathSegment(path).equalsIgnoreCase("atlas.txt"))
+                    if (!PathUtils.getLastPathSegment(path).equalsIgnoreCase("atlas2.txt"))
+                    {
+                        continue;
+                    }
+                }
                 SpriteAnimationFactory.getSpriteAnimation(
                       path);
 

@@ -40,7 +40,7 @@ public class ClockActor extends GroupX {
         ;
         addActor(new GearCluster(5, 1f));
         addActor(background = new ImageContainer(BACKGROUND));
-        addActor(centerGears = new GearCluster(3, 0.5f));
+        addActor(centerGears = new GearCluster(3, 0.65f));
         addActor(hand = new ImageContainer(HAND));
         addActor(smallHand = new ImageContainer(SMALL_HAND));
         setSize(background.getWidth(), background.getHeight());

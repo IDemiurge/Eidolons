@@ -1,13 +1,12 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefBackground;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.libgdx.GdxMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -52,7 +51,6 @@ public class DialogueContainer extends TablePanelX {
 
     protected void done() {
         getStage().dialogueDone();
-        hide();
     }
 
     @Override
@@ -62,7 +60,7 @@ public class DialogueContainer extends TablePanelX {
 
     protected void start() {
         //init key listening
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
+//        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
         next();
     }
 
@@ -72,7 +70,7 @@ public class DialogueContainer extends TablePanelX {
 
     public void next() {
         if (!iterator.hasNext()) {
-            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
+//            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
             done();
             return;
         }
@@ -103,8 +101,17 @@ public class DialogueContainer extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        background.draw(batch, parentAlpha);
-        super.draw(batch, parentAlpha);
+        if (background!=null )
+            background.setAlpha(0.7f*getColor().a*parentAlpha);
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+        }
+        else
+        {
+            ShaderDrawer.drawWithCustomShader(background, batch, null, false, false);
+            ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
+        }
     }
 
     @Override
@@ -163,4 +170,7 @@ public class DialogueContainer extends TablePanelX {
         this.onDoneCallback = onDoneCallback;
     }
 
+    public GameDialogue getDialogue() {
+        return dialogueHandler.getDialogue();
+    }
 }

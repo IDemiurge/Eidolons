@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
@@ -150,7 +151,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
     }
 
     private Coordinates getRespawnCoordinates(ObjType type) {
-        if (Eidolons.BOSS_FIGHT || Eidolons.TUTORIAL_MISSION) {
+        if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION) {
             return Positioner.adjustCoordinate(type,
                     getParty().getLastHero().getCoordinates(), getParty().getLastHero().getFacing().flip());
         }
@@ -164,7 +165,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     @Override
     protected String chooseHero(List<String> members) {
-        if (!Eidolons.TUTORIAL_MISSION) {
+        if (!EidolonsGame.TUTORIAL_MISSION) {
             Collections.shuffle(members);
         }
         if (CoreEngine.isLiteLaunch() || getMetaGame().getMissionIndex() == 0) {
@@ -180,7 +181,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     public String chooseNextHero() {
 //        if (!CoreEngine.isIDE())
-        if ( Eidolons.TUTORIAL_PATH || (Eidolons.TUTORIAL_MISSION&& deaths ==0)) {
+        if ( EidolonsGame.TUTORIAL_PATH || (EidolonsGame.TUTORIAL_MISSION&& deaths ==0)) {
             return TutorialManager.nextHero();
         }
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,

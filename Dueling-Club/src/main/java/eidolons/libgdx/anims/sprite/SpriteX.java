@@ -55,6 +55,7 @@ public class SpriteX extends GroupX {
         }
         if (path != null) {
             sprite = SpriteAnimationFactory.getSpriteAnimation(path);
+            sprite.setCustomAct(true);
         }
     }
 
@@ -64,6 +65,9 @@ public class SpriteX extends GroupX {
 
     public void setSprite(SpriteAnimation sprite) {
         this.sprite = sprite;
+        if (sprite != null) {
+            sprite.setCustomAct(true);
+        }
     }
 
     @Override
@@ -85,6 +89,7 @@ public class SpriteX extends GroupX {
             {
 //                sprite.centerOnParent(getParent()); TODO
             }
+        sprite.act(delta);
         super.act(delta);
     }
 
@@ -104,6 +109,7 @@ public class SpriteX extends GroupX {
             return;
         }
         sprite.setFlipX(flipX);
+        sprite.setColor(getColor());
         sprite.draw(batch);
         sprite.setFlipX(true);
 //        debug();
@@ -145,6 +151,7 @@ public class SpriteX extends GroupX {
 
     @Override
     public void setColor(Color color) {
+        super.setColor(color);
         sprite.setColor(color);
     }
 

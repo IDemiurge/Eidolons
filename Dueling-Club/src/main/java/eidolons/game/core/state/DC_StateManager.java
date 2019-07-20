@@ -490,7 +490,8 @@ public class DC_StateManager extends StateManager {
         }
         //        getGameManager().reset();
 
-        getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.GAME_STARTED, game));
+        if (!started)
+             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.GAME_STARTED, game));
         game.getLogManager().doneLogEntryNode();
         // if (!activePlayer.isMe())
     }

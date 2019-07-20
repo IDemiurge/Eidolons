@@ -694,4 +694,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isWater() {
         return false;
     }
+
+    public boolean isImmaterial() {
+        if (checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
+            return true;
+        }
+        return checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName());
+    }
 }

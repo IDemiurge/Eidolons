@@ -73,6 +73,6 @@ public class DialoguePortraitContainer extends TablePanelX {
 
     public void setImage(String appendedImageFile) {
         portrait.setImage(appendedImageFile);
-        pack();
+//        pack();
     }
 }

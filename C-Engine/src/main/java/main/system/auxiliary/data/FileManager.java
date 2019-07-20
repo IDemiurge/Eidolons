@@ -54,7 +54,7 @@ public class FileManager {
                         return readFile(FileManager.getFile(file.getPath().toLowerCase()));
 
                 }
-                System.out.println("Failed to read " + file.getPath());
+                main.system.auxiliary.log.LogMaster.verbose("Failed to read " + file.getPath());
 //              TODO wtf  try {
 //                    throw new RuntimeException();
 //                } catch (Exception e) {
@@ -302,6 +302,7 @@ public class FileManager {
             return null;
         }
         int i = 2;
+        List<String> filesPaths = new ArrayList<>();
         while (file.isFile()) {
 
             String newPath = prefixPath + corePath + ((underslash) ? "_" : "") + i + format;
@@ -311,16 +312,25 @@ public class FileManager {
                 file = FileManager.getFile(newPath);
             }
                 if (!file.isFile()) {
-
                 break;
             }
+            filesPaths.add(newPath);
             i++;
         }
+
         if (i == 2) {
             if (!recursion) {
                 return getRandomFilePathVariant(prefixPath, corePath, format, underslash, true);
             }
+            if (!filesPaths.isEmpty()) {
+                return new RandomWizard<String>().getRandomListItem(filesPaths).replace(
+                        prefixPath, "");
+            }
             return corePath + format;
+        }
+        if (!filesPaths.isEmpty()) {
+            return new RandomWizard<String>().getRandomListItem(filesPaths).replace(
+                    prefixPath, "");
         }
         int number = (new Random().nextInt(i));
         if (number == 1) {

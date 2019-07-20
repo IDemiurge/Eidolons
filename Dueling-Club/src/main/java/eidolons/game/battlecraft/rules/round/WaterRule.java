@@ -42,6 +42,9 @@ public class WaterRule extends RoundRule implements ActionRule {
             if (object==waterObj) {
                 continue;
             }
+            if (object.isDead()) {
+                continue;
+            }
             girth += object.getIntParam(PARAMS.GIRTH);
             if (waterObj.getIntParam(PARAMS.SPACE)<=girth){
                 bridged = true;
@@ -66,7 +69,10 @@ public class WaterRule extends RoundRule implements ActionRule {
 //        }
         if (manualCheck) {
         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                "Too deep to cross!", obj);
+                "Won't touch that"
+//                "Too deep to cross!"
+
+                , obj);
         }
         return false;
     }

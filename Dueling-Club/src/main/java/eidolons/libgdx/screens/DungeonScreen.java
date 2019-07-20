@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -147,7 +148,7 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     private boolean isSpriteBgTest() {
-        return Eidolons.TUTORIAL_MISSION;
+        return EidolonsGame.TUTORIAL_MISSION;
     }
 
     @Override
@@ -167,8 +168,12 @@ public class DungeonScreen extends GameScreenWithTown {
 
     protected void bindEvents() {
 
+        GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
+            Vector2 v = GridMaster.getCenteredPos((Coordinates) param.get());
+            cameraPan(v, true);
+        });
         GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
-            DungeonScreen.getInstance().centerCameraOn((BattleFieldObject) param.get());
+            centerCameraOn((BattleFieldObject) param.get());
         });
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
             DC_Game.game.getLoop().stop(); //cleanup on real exit
@@ -209,7 +214,9 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     private void setBackground(String path) {
-
+        if (path == null) {
+            return;
+        }
         if (!TextureCache.isImage(path)) {
             if (path.endsWith(".txt")) {
                 backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(path, false);

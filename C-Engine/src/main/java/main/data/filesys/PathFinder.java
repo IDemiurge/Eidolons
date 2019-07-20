@@ -137,7 +137,7 @@ public class PathFinder {
 
     public static String getLogPath() {
         init();
-        return getTextPath() + PathUtils.getPathSeparator() + "log" + PathUtils.getPathSeparator()
+        return "logs" + PathUtils.getPathSeparator()+CoreEngine.VERSION+"/"
                 + TimeMaster.getDateString()+ PathUtils.getPathSeparator();
     }
 

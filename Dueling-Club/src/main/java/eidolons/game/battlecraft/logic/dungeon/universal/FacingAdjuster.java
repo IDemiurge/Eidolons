@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMapGenerator.MAP_ZONES;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
@@ -75,6 +76,12 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Unit unit) {
+        if (unit.isPlayerCharacter()) {
+            FACING_DIRECTION presetFacing = EidolonsGame.getPresetFacing(unit);
+            if (presetFacing != null) {
+                return presetFacing;
+            }
+        }
         if (getGame().getGameMode() == GAME_MODES.DUNGEON_CRAWL) {
             return FacingMaster.getOptimalFacingTowardsEmptySpaces(unit);
         }

@@ -2,7 +2,10 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
@@ -103,4 +106,41 @@ public class GridMaster {
         return true;
     }
 
+    public static void validateVisibleUnitView(BaseView baseView) {
+        if (baseView instanceof GridUnitView) {
+            GridUnitView view = ((GridUnitView) baseView);
+            if (view.getActions().size == 0) {
+                if (view.getColor().a == 0) {
+                    main.system.auxiliary.log.LogMaster.warn(  "Validation was required for " + view +
+                            " - alpha==0");
+                    view.fadeIn();
+                }
+                if (view.getParent() instanceof GridCellContainer) {
+                    GridCellContainer cell = ((GridCellContainer) view.getParent());
+                    if (!cell.isStackView())
+                        if (view.getX() != cell.getViewX(view) ||
+                                view.getY() != cell.getViewY(view)) {
+                            cell.recalcUnitViewBounds();
+                        }
+
+                } else {
+                    //TODO detach bug
+                    if (view.getParent() instanceof GridPanel)
+                        if (view.getX() <= 50)
+                        if (view.getY() <= 0) {{
+                                GridPanel grid = ((GridPanel) view.getParent());
+                                grid.getCells()[view.getUserObject().getX()][grid.getGdxY(view.getUserObject().getY())].addActor(view);
+
+                                main.system.auxiliary.log.LogMaster.warn(  "Validation was required for " + view +
+                                        " - re-attached to gridcell!");
+                            }
+                        }
+                }
+            }
+            if (view.getArrow() != null)
+                if (view.getArrow().getActions().size == 0)
+                    view.validateArrowRotation();
+
+        }
+    }
 }

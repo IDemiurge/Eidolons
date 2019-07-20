@@ -6,12 +6,15 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.DataModel;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -40,7 +43,7 @@ public class DC_LogManager extends LogManager {
     public static final String IMAGE_SEPARATOR = "[img==]";
     public static final String UNIT_TURN_PREFIX = "Active: ";
     private int logLevel = 1;
-    private List<String> fullEntryList=    new ArrayList<>() ;
+    private List<String> fullEntryList = new ArrayList<>();
 
     public DC_LogManager(Game game) {
         super(game);
@@ -72,6 +75,7 @@ public class DC_LogManager extends LogManager {
         }
 
     }
+
     public void logOrderFailed(Order order, Unit unit) {
         String entry = unit.getName() + " has failed to obey " + order.toString();
         entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
@@ -79,18 +83,29 @@ public class DC_LogManager extends LogManager {
     }
 
     public void logMovement(DC_Obj obj, Coordinates c) {
-        if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.INVISIBLE) {
-            return;
-        }
         String name = obj.getName();
         // if (obj.getActivePlayerVisionStatus() ==
         // UNIT_TO_PLAYER_VISION.UNKNOWN)
         // name = "A unit";
-
         String entry = name + " has moved to a new position at " + c.toString();
-
         entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
         LogMaster.log(1, entry);
+        if (!obj.isMine())
+            if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.INVISIBLE) {
+                return;
+            }
+        if (obj == Eidolons.getMainHero()) {
+            DIRECTION relative = DirectionMaster.getRelativeDirection(Eidolons.getMainHero().getCoordinates(),
+                    Eidolons.getMainHero().getLastCoordinates());
+            int dst = Eidolons.getMainHero().getCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
+            String gamelog = name + " has moved [" + relative.toString().toLowerCase() + "] "
+                    +StringMaster.wrapInParenthesis(""+dst);
+            log(gamelog);
+        } else {
+            int dst = Eidolons.getMainHero().getCoordinates().dst(obj.getCoordinates());
+            String gamelog = name + " has moved to a new position at [" + dst + "] distance";
+            log(gamelog);
+        }
     }
 
     public boolean logMovement(Ref ref) {
@@ -121,7 +136,7 @@ public class DC_LogManager extends LogManager {
                     if (
                             (!start && unit.isDead()) ||
                                     (start && unit.getPlayerVisionStatus(false) != PLAYER_VISION.INVISIBLE)) {
-                        String name =start?  unit.getNameIfKnown() : unit.getName();
+                        String name = start ? unit.getNameIfKnown() : unit.getName();
                         if (map.containsKey(name))
                             MapMaster.addToIntegerMap(map, name, 1);
                         else {
@@ -193,27 +208,28 @@ public class DC_LogManager extends LogManager {
         }
         return entry;
     }
-public enum LOG_IMAGE_CASE{
-        SNEAK,
-    COUNTER,
-    FORCE,
-    CRITICAL,
-    DODGE,
-    PARRY,
 
-}
+    public enum LOG_IMAGE_CASE {
+        SNEAK,
+        COUNTER,
+        FORCE,
+        CRITICAL,
+        DODGE,
+        PARRY,
+
+    }
 
     private String tryAddImage(String entry) {
-        if (entry.contains("FORCE")){
-            return "gen\\perk\\selected_00082.png"+IMAGE_SEPARATOR+ entry;
+        if (entry.contains("FORCE")) {
+            return "gen\\perk\\selected_00082.png" + IMAGE_SEPARATOR + entry;
 //            return Images.ICONS_FORCE;
         }
 
-        if (entry.contains(IS_DEALING) || entry.contains(DAMAGE_IS_BEING_DEALT_TO)){
-            for (DAMAGE_TYPE damage_type:DAMAGE_TYPE.values()){
+        if (entry.contains(IS_DEALING) || entry.contains(DAMAGE_IS_BEING_DEALT_TO)) {
+            for (DAMAGE_TYPE damage_type : DAMAGE_TYPE.values()) {
                 if (entry.contains(damage_type.getName())) {
                     return ImageManager.getDamageTypeImagePath(
-                            damage_type.getName())+IMAGE_SEPARATOR+ entry;
+                            damage_type.getName()) + IMAGE_SEPARATOR + entry;
                 }
             }
         }
@@ -251,10 +267,10 @@ public enum LOG_IMAGE_CASE{
 
     public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
 //    TODO     fullEntryList.add(entry);
-        main.system.auxiliary.log.LogMaster.log(0,log + " Game log: " +entry);
+        main.system.auxiliary.log.LogMaster.log(0, log + " Game log: " + entry);
         int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
-         if (logLevel < i)
-             return false;
+        if (logLevel < i)
+            return false;
 
         return super.log(LOG.GAME_INFO, entry);
     }
@@ -262,7 +278,7 @@ public enum LOG_IMAGE_CASE{
 
     public void logHide(Unit source, BattleFieldObject object) {
         LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
-        if (source.isPlayerCharacter()){
+        if (source.isPlayerCharacter()) {
             level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
         }
         log(level, source + " loses sight of " + object.getName());
@@ -270,7 +286,7 @@ public enum LOG_IMAGE_CASE{
 
     public void logReveal(Unit source, BattleFieldObject object) {
         LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
-        if (source.isPlayerCharacter()){
+        if (source.isPlayerCharacter()) {
             level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
         }
         log(level, source + " spots " + object.getName());

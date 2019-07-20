@@ -7,6 +7,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import main.content.C_OBJ_TYPE;
+import main.content.enums.meta.QuestEnums;
 import main.content.enums.meta.QuestEnums.QUEST_LEVEL;
 import main.content.enums.meta.QuestEnums.QUEST_REWARD_TYPE;
 import main.content.values.properties.MACRO_PROPS;
@@ -15,30 +16,42 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.data.DataUnit;
 import main.system.math.Formula;
 
 /**
  * Created by JustMe on 10/5/2018.
  */
-public class QuestReward {
+public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
     String xpFormula = "";
     String goldFormula = "";
     String gloryFormula = "";
     String reputationFormula = "";
+    String soulforceFormula = "";
     String rewardItems = "";
-    private QUEST_REWARD_TYPE type;
-    private QUEST_LEVEL level;
+    //    private QUEST_REWARD_TYPE type;
+//    private QUEST_LEVEL level;
     private String title;
 
-    public QuestReward(ObjType objType) {
-        type =
-                new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
-                        objType.getProperty(MACRO_PROPS.QUEST_REWARD_TYPE));
-        level =
-                new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
-                        objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
+    public enum REWARD_VALUE {
+        xpFormula,
+        goldFormula,
+        gloryFormula,
+        reputationFormula,
+        soulforceFormula,
+        rewardItems,
+    }
 
-        rewardItems = objType.getProperty(MACRO_PROPS.QUEST_REWARD_ITEMS);
+    public QuestReward(String text) {
+        super(text);
+    }
+
+    public QuestReward(ObjType objType) {
+        QUEST_REWARD_TYPE type = new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
+                objType.getProperty(MACRO_PROPS.QUEST_REWARD_TYPE));
+        QUEST_LEVEL level = new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
+                objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
+
 
         int gold = 20 * Eidolons.getMainHero().getLevel();
         int xp = 20 * Eidolons.getMainHero().getLevel();
@@ -69,6 +82,7 @@ public class QuestReward {
                     gloryFormula = "-450";
                     break;
                 case GLORY:
+//               TODO      setValue(REWARD_VALUE.gloryFormula, "150");
                     gloryFormula = "150";
                     break;
             }
@@ -88,6 +102,7 @@ public class QuestReward {
         goldFormula = "" + gold;
         xpFormula = "" + xp;
         reputationFormula = "" + reputation;
+        rewardItems = objType.getProperty(MACRO_PROPS.QUEST_REWARD_ITEMS);
     }
 
     @Override
@@ -105,12 +120,15 @@ public class QuestReward {
     }
 
     public void award(Unit hero, boolean inTown) {
+        award(hero, inTown, false);
+    }
+        public void award(Unit hero, boolean inTown, boolean negative) {
 
         //TODO special menu with congrats?
 
         EUtils.showInfoText(title + " is complete!");
 
-        switch (level) {
+//        switch (level) {
 //           TODO  case EASY:
 //                DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOON_SMALL);
 //                break;
@@ -120,10 +138,17 @@ public class QuestReward {
 //            case HARD:
 //                DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOON_LARGE);
 //                break;
-        }
+//        }
         Integer xp = new Formula(xpFormula).getInt(hero.getRef());
         Integer gold = new Formula(goldFormula).getInt(hero.getRef());
-        Integer glory  = new Formula(gloryFormula).getInt(hero.getRef());
+        Integer glory = new Formula(gloryFormula).getInt(hero.getRef());
+
+            if (negative) {
+                xp = -xp;
+                gold = -gold;
+                glory = -glory;
+//             TODO    glory = -glory;
+            }
 
         hero.getGame().getBattleMaster().getStatManager().addGlory(glory);
 
@@ -140,14 +165,6 @@ public class QuestReward {
                 }
             }
         }
-    }
-
-    public QUEST_REWARD_TYPE getType() {
-        return type;
-    }
-
-    public QUEST_LEVEL getLevel() {
-        return level;
     }
 
     public String getTitle() {

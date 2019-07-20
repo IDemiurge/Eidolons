@@ -195,6 +195,11 @@ public class Unit extends DC_UnitModel {
     }
 
     @Override
+    public String getDisplayedName() {
+        return super.getDisplayedName();
+    }
+
+    @Override
     public UnitHandler getHandler() {
         return (UnitHandler) super.getHandler();
     }
@@ -207,114 +212,6 @@ public class Unit extends DC_UnitModel {
         return super.getDescription();
     }
 
-    public void saveRanks(boolean skills) {
-        saveRanks(skills ? getSkills() : getClasses(), skills ? PROPS.SKILLS : PROPS.CLASSES);
-    }
-
-    public void saveRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
-        String value = "";
-        for (DC_FeatObj featObj : container) {
-            value += featObj.getName();
-            if (featObj.getIntParam(PARAMS.RANK) > 0) {
-                value += StringMaster.wrapInParenthesis(featObj.getParam(PARAMS.RANK));
-            }
-            value += ";";
-        }
-        setProperty(property, value, true);
-    }
-
-    public boolean incrementFeatRank(boolean skill, ObjType type) {
-        DC_FeatObj featObj = getFeat(skill, type);
-        return incrementFeatRank(skill, featObj);
-    }
-
-    public boolean incrementFeatRank(boolean skill, DC_FeatObj featObj) {
-        if (featObj.getIntParam(PARAMS.RANK) == featObj.getIntParam(PARAMS.RANK_MAX)) {
-            return false;
-        }
-        featObj.setParam(PARAMS.RANK, featObj.getIntParam(PARAMS.RANK) + 1);
-        return true;
-    }
-
-    public void setFeatRank(boolean skill, int rank, ObjType type) {
-        DC_FeatObj featObj = getFeat(skill, type);
-        featObj.setParam(PARAMS.RANK, rank);
-        // reset
-    }
-
-    public DC_FeatObj getFeat(ObjType type) {
-        return getFeat(type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS, type);
-    }
-
-    public DC_FeatObj getFeat(boolean skill, ObjType type) {
-        for (DC_FeatObj feat : getSkills()) {
-            if (feat.getName().equalsIgnoreCase(type.getName())) {
-                return feat;
-            }
-        }
-        return null;// TODO
-    }
-
-
-    public void setNaturalWeapon(boolean offhand, DC_WeaponObj weapon) {
-        if (offhand) {
-            offhandNaturalWeapon = weapon;
-        } else {
-            naturalWeapon = weapon;
-        }
-    }
-
-    public DC_WeaponObj getNaturalWeapon() {
-        return getNaturalWeapon(false);
-    }
-
-    public DC_WeaponObj getOffhandNaturalWeapon() {
-        return getNaturalWeapon(true);
-    }
-
-    public DC_WeaponObj getNaturalWeapon(boolean offhand) {
-        DC_WeaponObj weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
-        if (weaponObj == null) {
-            initNaturalWeapon(offhand);
-        }
-        weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
-        return weaponObj;
-    }
-
-    public boolean removeJewelryItem(DC_HeroItemObj itemObj) {
-        boolean result = getJewelry().remove(itemObj);
-        if (getJewelry().isEmpty()) {
-            setJewelry(null);
-        }
-        return result;
-    }
-
-    public void addQuickItem(DC_QuickItemObj itemObj) {
-        if (getQuickItems() == null)
-            setQuickItems(new DequeImpl<>());
-        getQuickItems().add(itemObj);
-        itemObj.setRef(ref);
-        getResetter().resetQuickSlotsNumber();
-        itemObj.setContainer(CONTAINER.QUICK_SLOTS);
-    }
-
-    public boolean removeQuickItem(DC_HeroItemObj itemObj) {
-        if (getQuickItems() == null)
-            return false;
-        if (getQuickItems().remove(itemObj)) {
-            getResetter().resetQuickSlotsNumber();
-
-            type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
-
-            removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
-
-            if (getQuickItems().isEmpty()) {
-                setQuickItems(null);
-            }
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public void reset() {
@@ -469,6 +366,114 @@ public class Unit extends DC_UnitModel {
         }
     }
 
+    public void saveRanks(boolean skills) {
+        saveRanks(skills ? getSkills() : getClasses(), skills ? PROPS.SKILLS : PROPS.CLASSES);
+    }
+
+    public void saveRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
+        String value = "";
+        for (DC_FeatObj featObj : container) {
+            value += featObj.getName();
+            if (featObj.getIntParam(PARAMS.RANK) > 0) {
+                value += StringMaster.wrapInParenthesis(featObj.getParam(PARAMS.RANK));
+            }
+            value += ";";
+        }
+        setProperty(property, value, true);
+    }
+
+    public boolean incrementFeatRank(boolean skill, ObjType type) {
+        DC_FeatObj featObj = getFeat(skill, type);
+        return incrementFeatRank(skill, featObj);
+    }
+
+    public boolean incrementFeatRank(boolean skill, DC_FeatObj featObj) {
+        if (featObj.getIntParam(PARAMS.RANK) == featObj.getIntParam(PARAMS.RANK_MAX)) {
+            return false;
+        }
+        featObj.setParam(PARAMS.RANK, featObj.getIntParam(PARAMS.RANK) + 1);
+        return true;
+    }
+
+    public void setFeatRank(boolean skill, int rank, ObjType type) {
+        DC_FeatObj featObj = getFeat(skill, type);
+        featObj.setParam(PARAMS.RANK, rank);
+        // reset
+    }
+
+    public DC_FeatObj getFeat(ObjType type) {
+        return getFeat(type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS, type);
+    }
+
+    public DC_FeatObj getFeat(boolean skill, ObjType type) {
+        for (DC_FeatObj feat : getSkills()) {
+            if (feat.getName().equalsIgnoreCase(type.getName())) {
+                return feat;
+            }
+        }
+        return null;// TODO
+    }
+
+
+    public void setNaturalWeapon(boolean offhand, DC_WeaponObj weapon) {
+        if (offhand) {
+            offhandNaturalWeapon = weapon;
+        } else {
+            naturalWeapon = weapon;
+        }
+    }
+
+    public DC_WeaponObj getNaturalWeapon() {
+        return getNaturalWeapon(false);
+    }
+
+    public DC_WeaponObj getOffhandNaturalWeapon() {
+        return getNaturalWeapon(true);
+    }
+
+    public DC_WeaponObj getNaturalWeapon(boolean offhand) {
+        DC_WeaponObj weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
+        if (weaponObj == null) {
+            initNaturalWeapon(offhand);
+        }
+        weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
+        return weaponObj;
+    }
+
+    public boolean removeJewelryItem(DC_HeroItemObj itemObj) {
+        boolean result = getJewelry().remove(itemObj);
+        if (getJewelry().isEmpty()) {
+            setJewelry(null);
+        }
+        return result;
+    }
+
+    public void addQuickItem(DC_QuickItemObj itemObj) {
+        if (getQuickItems() == null)
+            setQuickItems(new DequeImpl<>());
+        getQuickItems().add(itemObj);
+        itemObj.setRef(ref);
+        getResetter().resetQuickSlotsNumber();
+        itemObj.setContainer(CONTAINER.QUICK_SLOTS);
+    }
+
+    public boolean removeQuickItem(DC_HeroItemObj itemObj) {
+        if (getQuickItems() == null)
+            return false;
+        if (getQuickItems().remove(itemObj)) {
+            getResetter().resetQuickSlotsNumber();
+
+            type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
+
+            removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
+
+            if (getQuickItems().isEmpty()) {
+                setQuickItems(null);
+            }
+            return true;
+        }
+        return false;
+    }
     @Override
     public void newRound() {
         // if (!itemsInitialized)

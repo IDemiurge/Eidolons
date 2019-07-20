@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.battle.mission;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -13,10 +15,12 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
@@ -38,6 +42,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 import main.system.threading.WaitMaster;
@@ -47,6 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static main.system.threading.WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 /**
@@ -121,8 +127,15 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
         switch (function) {
+            case AGGRO:
+                return doAggro(ref, args);
             case SPAWN:
                 return doSpawn(ref, args);
+            case DIALOGUE_TIP:
+                doDialogue(ref, args[0]);
+                DialogueManager.afterDialogue(()->
+                  doCustomTip(ref, args.length == 1 ? args[0] : args[1]));
+                return true;
             case DIALOGUE:
                 return doDialogue(ref, args);
             case TIP_MSG:
@@ -155,6 +168,22 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return doUnitOperation(function, ref, args);
     }
 
+    private boolean doAggro(Ref ref, String[] args) {
+        float dst = 3f;
+        if (args.length > 0) {
+            dst = NumberUtils.getFloat(args[0]);
+        }
+        for (Unit unit : Eidolons.getGame().getUnits()) {
+            if (Eidolons.getMainHero().getCoordinates().dst(unit.getCoordinates()) < dst) {
+                AggroMaster.aggro(unit, Eidolons.getMainHero());
+            }
+
+        }
+        Eidolons.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
+
+        return true;
+    }
+
     private boolean doTipAndMsg(Ref ref, String[] args) {
         TipMessageMaster.tip(args);
         String msg = args[0];
@@ -164,12 +193,12 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
-    private boolean doCustomTip(Ref ref, String[] args) {
+    private boolean doCustomTip(Ref ref, String... args) {
         TipMessageMaster.tip(args);
         return true;
     }
 
-    private boolean doMessage(Ref ref, String[] args) {
+    private boolean doMessage(Ref ref, String... args) {
         String msg = args[0];
         EUtils.onConfirm(msg, false, () -> {
         });
@@ -214,6 +243,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             PaleAspect.shadowLeapToLocation(Coordinates.get(args[0]));
             return true;
         }
+        if (EidolonsGame.BRIDGE) {
+            PaleAspect.shadowLeapToLocation(Eidolons.getMainHero(), false, Coordinates.get(args[0]));
+            return true;
+        }
         List<Unit> members = getMaster().getMetaMaster().getPartyManager().getParty().
                 getMembers();
         List<Coordinates> coordinates =
@@ -240,7 +273,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
-    private boolean doDialogue(Ref ref, String[] args) {
+    private boolean doDialogue(Ref ref, String... args) {
         GuiEventManager.trigger(GuiEventType.INIT_DIALOG, args[0]);
         return true;
     }
@@ -421,7 +454,6 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         REMOVE,
         KILL,
         ABILITY,
-        DIALOGUE,
         COMMENT, //on event, create trigger script on another event...
 
         //        AI_SCRIPT_FUNCTION
@@ -432,7 +464,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         FREEZE,
         UNFREEZE,
         ORDER,
-        ATOMIC, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST,
+        ATOMIC,
+        AGGRO,
+        DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
+        ;
     }
 
 }

@@ -7,6 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
@@ -65,7 +66,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         if (ExplorationMaster.isExplorationOn())
             return false;
         if (!TEST_MODE)
-        if (Eidolons.BOSS_FIGHT ||Eidolons.TUTORIAL_PATH) {
+        if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_PATH) {
             return false;
         }
         return !OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.DEATH_SHADOW_OFF);
@@ -77,7 +78,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
     public static boolean checkCheatDeath(BattleFieldObject object) {
 
-        if (Eidolons.TUTORIAL_PATH){
+        if (EidolonsGame.TUTORIAL_PATH){
             Eidolons.getGame().getLogManager().log(object.getName() +
                     " bribes Death with Tutorial Pleas! The trick can only work so long, learn quickly! ");
             return true;

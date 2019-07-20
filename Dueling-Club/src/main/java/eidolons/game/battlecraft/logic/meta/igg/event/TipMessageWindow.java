@@ -27,7 +27,7 @@ import main.system.threading.WaitMaster;
 
 public class TipMessageWindow extends TablePanelX {
 
-    private   boolean large;
+    private boolean large;
     FadeImageContainer imageContainer;
     LabelX label;
     SmartButton[] btns;
@@ -45,9 +45,13 @@ public class TipMessageWindow extends TablePanelX {
         if (!StringMaster.isEmpty(source.title)) {
 
         }
-          large = false;
+        large = false;
+        boolean medium = false;
         if (!StringMaster.isEmpty(source.image)) {
             add(imageContainer = new FadeImageContainer(source.image));
+            if (imageContainer.getWidth() > 250) {
+                medium = true;
+            }
             if (imageContainer.getWidth() > 500) {
                 large = true;
             }
@@ -62,8 +66,11 @@ public class TipMessageWindow extends TablePanelX {
         }
         add(label)
                 .pad(15);
-        if (large) {
+        if (large || medium) {
             label.setMaxWidth(getPrefWidth());
+            if (!large) {
+                label.setMaxWidth(imageContainer.getWidth());
+            }
             label.setWrap(true);
             label.pack();
             layout();

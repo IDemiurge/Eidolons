@@ -9,6 +9,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
@@ -282,7 +283,7 @@ public class GammaMaster {
         //       TODO  questMaster = master.getGame().getMetaMaster().getQuestMaster();
         //        questMaster .getQuestCoordinates()
         if (master.getGame().getMetaMaster().getQuestMaster() != null) {
-            for (DungeonQuest quest : master.getGame().getMetaMaster().getQuestMaster().getRunningQuests()) {
+            for ( Quest quest : master.getGame().getMetaMaster().getQuestMaster().getRunningQuests()) {
                 if (quest.isComplete()) {
                     continue;
                 }

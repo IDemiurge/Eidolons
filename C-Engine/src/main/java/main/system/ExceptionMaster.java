@@ -1,11 +1,10 @@
 package main.system;
 
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,18 +19,18 @@ public class ExceptionMaster {
     public static void printStackTrace(Exception e) {
         {
             if (!PRINT_ALL) {
-                if (CoreEngine.isJar() || LogMaster.isOff() || CoreEngine.isFastMode())
+                if (CoreEngine.isJar() || LogMaster.isOff() || !CoreEngine.isLiteLaunch()) {
                     if (printed.contains(e.getMessage()))
                         return;
                     else
                         printed.add(e.getMessage());
+                }
             }
             e.printStackTrace();
             if (SKIP_WRITE) {
                 return;
             }
-            LogMaster.getExceptions().add(e);
-            LogMaster.logException(e);
+            FileLogManager.logException(e);
         }
         //        else
         //            try {

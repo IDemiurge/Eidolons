@@ -12,14 +12,14 @@ public class BriefMusic {
      * have multiple tracks in memory - fade between them?
      */
 
-    public enum MUSIC_MOMENT {
-        SAD,
-        DANGER,
-        VICTORY,
-        DISCOVERY,
-        ;
-
-    }
+//    public enum MUSIC_MOMENT {
+//        SAD,
+//        DANGER,
+//        VICTORY,
+//        DISCOVERY,
+//        ;
+//
+//    }
 
     public enum MUSIC_TRACK {
         FAR_BEYOND_FALLEN,

@@ -5,9 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE_STATUS;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.system.options.OptionsMaster;
@@ -88,10 +90,17 @@ public class PostFxUpdater {
             return;
         }
 //        fxMap.clear();
-        if (template != null) {
+        if (template != null   ) {
             applyTemplate(template);
             applyFactors();
             return;
+        }
+        if (EidolonsGame.BRIDGE) {
+//            apply(POST_FX_FACTOR.FADE_COLOR, 0.3f);
+//            apply(POST_FX_FACTOR.LIGHTEN, 0.8f);
+//            apply(POST_FX_FACTOR.BLOOM, 0.2f);
+//            apply(POST_FX_FACTOR.BLUR, 0.1f);
+//            applyFactors();
         }
 
         if (isTestMode()) {
@@ -135,9 +144,18 @@ public class PostFxUpdater {
                 break;
             case INSPIRED:
                 break;
+            case MAZE:
+                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
+                apply(POST_FX_FACTOR.BLUR, 0.1f);
+                break;
+            case MOSAIC:
+//                apply(POST_FX_FACTOR.BLOOM, 0.1f);
+//                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
+//                apply(POST_FX_FACTOR.BLUR, 0.1f);
+                break;
             case PALE_ASPECT:
                 apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
-                apply(POST_FX_FACTOR.BLUR, 0.5f);
+                apply(POST_FX_FACTOR.BLUR, 0.1f);
                 break;
             case UNCONSCIOUS:
                 if (shadowFxOff == true) {
@@ -363,7 +381,7 @@ public class PostFxUpdater {
         FEAR,
         INSPIRED, UNCONSCIOUS(),
 
-        PALE_ASPECT;
+        PALE_ASPECT, MAZE(), MOSAIC();
 
         public final POST_FX_FACTOR[] factors;
 

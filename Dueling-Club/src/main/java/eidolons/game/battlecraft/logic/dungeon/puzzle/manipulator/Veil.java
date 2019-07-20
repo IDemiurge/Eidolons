@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.texture.Sprites;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.game.bf.Coordinates;
 
@@ -11,11 +11,13 @@ public class Veil extends GridObject {
 
     private final boolean pale;
     private final boolean enter;
+    Puzzle puzzle;
 //link to puzzle
-    public Veil(Coordinates c, boolean pale, boolean enter) {
-        super(c,  pale ? Sprites.VEIL : CUSTOM_OBJECT.LIGHT.spritePath);
+    public Veil(Puzzle puzzle, Coordinates c, boolean pale, boolean enter) {
+        super(c, pale ? CUSTOM_OBJECT.LIGHT.spritePath : Sprites.VEIL);
         this.pale = pale;
-        this.enter = pale;
+        this.enter = enter;
+        this.puzzle = puzzle;
     }
 
     @Override
@@ -28,6 +30,18 @@ public class Veil extends GridObject {
     protected int getFps() {
         return pale? 14: 20;
     }
+
+    @Override
+    public boolean checkVisible() {
+        if (puzzle.isActive()) {
+            return !enter;
+        }
+        if (!enter){
+            return  false;
+        }
+        return super.checkVisible();
+    }
+
     @Override
     protected boolean isClearshotRequired() {
         return false;
@@ -41,6 +55,11 @@ public class Veil extends GridObject {
     @Override
     protected void createEmittersUnder() {
         createEmitter("unit/black soul bleed 3", 0, 64);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 
     @Override

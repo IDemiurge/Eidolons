@@ -1,18 +1,29 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.text.DescriptionTooltips;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
+import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.ArrayList;
@@ -42,10 +53,13 @@ public class Puzzle {
     private Veil veil;
     private Veil exitVeil;
     private LevelBlock block;
+    private String title;
 
     public Puzzle() {
         stats = new PuzzleStats(this);
+        title = getDefaultTitle();
     }
+
 
     public void setResolutions(PuzzleResolution... resolutions) {
         this.resolutions = new ArrayList<>(Arrays.asList(resolutions));
@@ -189,6 +203,7 @@ public class Puzzle {
         quest = initQuest(data);
         stats.started();
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle Activated: " + this);
+        glimpse();
     }
 
     protected PuzzleQuest initQuest(PuzzleData data) {
@@ -211,23 +226,78 @@ public class Puzzle {
         return new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)).negativeY().getOffset(getCoordinates());
     }
 
-    public void deactivate() {
+    public void failed() {
+        if (isFailed())
+            return;
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle failed: " + this);
         MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
+
+        EUtils.showInfoText(true, "Mystery fades: " + getTitle());
         stats.failed();
-        finished();
+        quest.failed();
+
         failed = true;
+
+        String text = getFailText();
+        TipMessageSource src = new TipMessageSource(
+                text, "", "Continue", false, () -> {
+            Eidolons.onThisOrNonGdxThread(() -> finished());
+        }
+        );
+        TipMessageMaster.tip(src);
+    }
+
+    public void exited() {
+
+    }
+
+    public void complete() {
+        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle completed: " + this);
+        quest.complete();
+        stats.complete();
+        //TODO  stats.complete();
+        GuiEventManager.trigger(GuiEventType.PUZZLE_COMPLETED, this);
+        solved = true;
+        String text = getCompletionText();
+        TipMessageSource src = new TipMessageSource(
+                text, "", "Onward!", false, () -> {
+            Eidolons.onThisOrNonGdxThread(() -> finished());
+        }
+        );
+        TipMessageMaster.tip(src);
+    }
+
+    private String getFailText() {
+        String key = data.getValue(PuzzleData.PUZZLE_VALUE.TIP_FAIL);
+        if (StringMaster.isEmpty(key)) {
+            key = getTitle() + "_failed";
+        }
+        return DescriptionTooltips.getTipMap().get(
+                key.toLowerCase());
+    }
+    private String getCompletionText() {
+        return getTitle() + " has been completed! \n" +
+                quest.getVictoryText() + "\n" +
+                stats.getVictoryText();
     }
 
     public void finished() {
+        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle finished: " + this);
 //        resolutions.forEach(r -> r.finished());
 //        rules.forEach(r -> r.finished());
+        glimpse();
+
         if (isPale()) {
             PaleAspect.exitPale();
         }
         active = false;
         getMaster().deactivated(this);
-        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle finished: " + this);
+    }
+
+    public void glimpse() {
+        GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,
+                new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH,
+                        1, FACING_DIRECTION.NONE, SuperActor.BLENDING.SCREEN));
     }
 
     public Coordinates getAbsoluteCoordinate(Coordinates wall) {
@@ -244,14 +314,38 @@ public class Puzzle {
 
     public void decrementCounter() {
         if (quest == null) {
-            deactivate();
+            failed();
         } else if (!quest.decrementCounter())
-            deactivate();
+            failed();
 
         //could fire an event of course
     }
 
     public int getCountersMax() {
         return data.getIntValue(PuzzleData.PUZZLE_VALUE.COUNTERS_MAX);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    protected String getDefaultTitle() {
+        return "Mystery";
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getQuestText() {
+        return "Solve" + getTitle();
+    }
+
+    public int getSoulforceBase() {
+        return 100;
+    }
+
+    public Coordinates getCenterCoordinates() {
+        return Coordinates.get(getCoordinates().x + getWidth() / 2, getCoordinates().y - getHeight() / 2);
     }
 }

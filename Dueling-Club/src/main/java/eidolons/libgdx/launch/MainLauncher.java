@@ -1,8 +1,7 @@
 package eidolons.libgdx.launch;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -10,7 +9,6 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
@@ -34,20 +32,20 @@ public class MainLauncher extends GenericLauncher {
         CoreEngine.setSafeMode(true);
         CoreEngine.setIggDemo(true);
         CoreEngine.setMainGame(true);
-//        CoreEngine.setDialogueTest(true);
+        CoreEngine.setDialogueTest(true);
 //        CoreEngine.setGraphicTestMode(args.length > 0);
 //        CoreEngine.setActiveTestMode(args.length > 0);
 //        CoreEngine.setReverseExit(args.length > 0);
         if (args.length > 0) {
             args = args[0].split(";");
-            Eidolons.BOSS_FIGHT = args[0].contains("BOSS");
-            Eidolons.BRIDGE = args[0].contains("FULL");
+            EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
+            EidolonsGame.BRIDGE = args[0].contains("FULL");
             CoreEngine.setLevelTestMode(false);
         }
         CoreEngine.setSkillTestMode(args.length > 0);
         CoreEngine.setLiteLaunch(args.length > 0 );
 //        CoreEngine.setContentTestMode(args.length > 2);
-        if (!Eidolons.BOSS_FIGHT)
+        if (!EidolonsGame.BOSS_FIGHT)
             CoreEngine.setLevelTestMode(args.length > 4);
 
         if (!CoreEngine.isIggDemo()) {
@@ -66,6 +64,9 @@ public class MainLauncher extends GenericLauncher {
             }
         }
 
+        if (CoreEngine.uploadPackage== CoreEngine.UPLOAD_PACKAGE.Aphotica){
+            args = "FULL;DEMO;0;0".split(";");
+        }
         String[] commands = args;
         if (commands.length == 1) {
             if (PathUtils.splitPath(commands[0]).size() > 1)

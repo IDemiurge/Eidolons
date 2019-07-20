@@ -13,6 +13,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
@@ -20,7 +21,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.EUtils;
@@ -55,7 +55,6 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.system.test.Debugger;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.ability.construct.VariableManager;
@@ -203,13 +202,13 @@ public class GridPanel extends Group {
     }
 
     private boolean isShardsOn() {
-        if (Eidolons.BRIDGE) {
+        if (EidolonsGame.BRIDGE) {
             return true;
         }
         if (CoreEngine.isLiteLaunch()) {
             return false;
         }
-        if (Eidolons.BOSS_FIGHT) {
+        if (EidolonsGame.BOSS_FIGHT) {
             return false;
         }
 
@@ -270,7 +269,7 @@ public class GridPanel extends Group {
                         resetTimer = autoResetVisibleOnInterval;
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
                             setVisible(viewMap.get(sub), true);
-                            Debugger.validateVisibleUnitView(viewMap.get(sub));
+                            GridMaster.validateVisibleUnitView(viewMap.get(sub));
                             if (sub.isPlayerCharacter()) {
                                 if (ExplorationMaster.isExplorationOn()) {
                                     GridUnitView view = (GridUnitView) viewMap.get(sub);
@@ -1023,36 +1022,34 @@ public class GridPanel extends Group {
                 //                cell.resetZIndices();
             }
         }
-        for (GridCellContainer cell : topCells) {
-            cell.setZIndex(Integer.MAX_VALUE);
-        }
         wallMap.setVisible(WallMap.isOn());
         //        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
         //        shards.setZIndex(Integer.MAX_VALUE);
         wallMap.setZIndex(Integer.MAX_VALUE);
 
-        overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-
-        overlayManager.setZIndex(Integer.MAX_VALUE);
 
         shadowMap.setZIndex(Integer.MAX_VALUE);
         customOverlayingObjects.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });
 
-        if (mainHeroView!=null) {
-            mainHeroView.setZIndex(Integer.MAX_VALUE);
-        }
-        if (mainHeroViewPale!=null) {
-            mainHeroViewPale.setZIndex(Integer.MAX_VALUE);
-        }
-        if (mainHeroViewShadow!=null) {
-            mainHeroViewPale.setZIndex(Integer.MAX_VALUE);
-        }
-
         manipulators.forEach(manipulator -> {
             manipulator.setZIndex(Integer.MAX_VALUE);
         });
+
+//        if (mainHeroViewPale!=null) {
+//            mainHeroViewPale.getParent().setZIndex(Integer.MAX_VALUE);
+//        }
+//        if (mainHeroViewShadow!=null) {
+//            mainHeroViewPale.getParent().setZIndex(Integer.MAX_VALUE);
+//        }
+        for (GridCellContainer cell : topCells) {
+            cell.setZIndex(Integer.MAX_VALUE);
+        }
+        overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
+
+        overlayManager.setZIndex(Integer.MAX_VALUE);
+
         animMaster.setZIndex(Integer.MAX_VALUE);
     }
 

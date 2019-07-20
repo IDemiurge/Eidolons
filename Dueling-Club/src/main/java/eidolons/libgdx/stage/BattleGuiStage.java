@@ -186,7 +186,7 @@ public class BattleGuiStage extends GuiStage {
 
     public void update() {
         getBottomPanel().setX(
-         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2);
+         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
         locationLabel.setPosition(25,
          GdxMaster.getHeight() - locationLabel.getHeight() - initiativePanel.getHeight()-30);

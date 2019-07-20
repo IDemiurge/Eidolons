@@ -1,6 +1,7 @@
 package eidolons.system.audio;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
@@ -44,6 +45,9 @@ public class AmbientMaster {
 //        if (!ExplorationMaster.isExplorationOn()){
 //            return null;
 //        }
+        if (EidolonsGame.BRIDGE) {
+            return EVIL;
+        }
         Unit hero = Eidolons.getMainHero();
         if (hero == null)
             return DEFAULT_AMBIENCE;

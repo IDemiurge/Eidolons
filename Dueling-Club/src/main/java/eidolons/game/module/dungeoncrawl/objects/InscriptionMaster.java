@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.objects;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
+import eidolons.system.text.DescriptionTooltips;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.system.auxiliary.ContainerUtils;
@@ -27,12 +28,14 @@ public class InscriptionMaster {
         String text = map.get(
                 StringMaster.wrapInParenthesis(
                         obj.getCoordinates().toString()));
+        if (text != null)
+            return text;
+        text = map.get(obj.getCoordinates().toString());
         if (text == null) {
             initCustomData(obj);
+            text = map.get(obj.getCoordinates().toString());
         }
-        text = map.get(
-                StringMaster.wrapInParenthesis(
-                        obj.getCoordinates().toString()));
+        text = DescriptionTooltips.getTutorialMap().get(text.toLowerCase());
         return text;
     }
 

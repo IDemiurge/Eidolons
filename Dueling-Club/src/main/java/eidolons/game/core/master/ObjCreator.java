@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
@@ -82,7 +83,7 @@ public class ObjCreator extends Master {
         }
         obj.setOriginalType(type.getType());
         if (getGame().getMetaMaster().isRngQuestsEnabled())
-            for (DungeonQuest quest : game.getMetaMaster().getQuestMaster().getQuestsPool()) {
+            for (Quest quest : game.getMetaMaster().getQuestMaster().getQuestsPool()) {
                 if (quest.getArg() instanceof ObjAtCoordinate) {
                     if (((ObjAtCoordinate) quest.getArg()).getType().equalsAsBaseType(obj.getType())) {
                         if (((ObjAtCoordinate) quest.getArg()).getCoordinates().equals(obj.getCoordinates())) {

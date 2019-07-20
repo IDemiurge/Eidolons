@@ -32,17 +32,17 @@ public class AdventureMetaMaster extends ScenarioMetaMaster {
         return new AdventurePartyManager(this, loaded);
     }
 
-    @Override
-    protected DialogueFactory createDialogueFactory() {
-        return new DialogueFactory() {
-            protected String getFileRootPath() {
-                return
-                        PathUtils.buildPath(
-                                "adventure",
-                                "dialogue"
-                                , TextMaster.getLocale(),
-                                PathUtils.getPathSeparator());
-            }
-        };
-    }
+//    @Override TODO moved
+//    protected DialogueFactory createDialogueFactory() {
+//        return new DialogueFactory() {
+//            protected String getFileRootPath() {
+//                return
+//                        PathUtils.buildPath(
+//                                "adventure",
+//                                "dialogue"
+//                                , TextMaster.getLocale(),
+//                                PathUtils.getPathSeparator());
+//            }
+//        };
+//    }
 }

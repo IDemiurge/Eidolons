@@ -4,19 +4,23 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
-import eidolons.libgdx.texture.Sprites;
 import main.data.XLinkedMap;
+import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
-import net.miginfocom.layout.Grid;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -93,12 +97,43 @@ public abstract class GridObject extends GroupX {
             setPosition(pos.x, pos.y);
         }
         initialized = true;
+
+        sprite.act(
+                RandomWizard.getRandomFloatBetween(0, 4));
     }
 
     protected void createEmittersUnder() {
     }
 
     protected void createEmittersOver() {
+    }
+
+    protected void createEmittersFromFolder(String paths, float vfxChance) {
+   for(String path: ContainerUtils.openContainer( paths ))
+        for (File file : FileManager.getFilesFromDirectory(PathFinder.getVfxAtlasPath()+ path, false, false)) {
+            if (!RandomWizard.chance((int) (100*vfxChance))){
+                continue;
+            }
+            createEmitter(PathUtils.removePreviousPathSegments(
+                    FileManager.formatPath(file.getPath(), true)
+                    ,FileManager.formatPath(PathFinder.getVfxAtlasPath(), true
+                    ) ), c.x, c.y);
+        }
+    }
+    protected void createEmittersFromString(String data, boolean mirrorX, boolean mirrorY, float vfxChance) {
+        for (String substring : ContainerUtils.openContainer(data)) {
+            if (!RandomWizard.chance((int) (100*vfxChance))){
+                continue;
+            }
+            Coordinates c = AbstractCoordinates.createFromVars(substring);
+            createEmitter(VariableManager.removeVarPart(substring), c.x, c.y);
+            if (mirrorX) {
+                createEmitter(VariableManager.removeVarPart(substring), c.x, c.y).setFlipX(true);
+            }
+            if (mirrorY) {
+                createEmitter(VariableManager.removeVarPart(substring), c.x, c.y).setFlipY(true);
+            }
+        }
     }
 
     protected abstract int getFps();

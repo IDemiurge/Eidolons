@@ -1,12 +1,15 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
+import eidolons.libgdx.shaders.post.PostFxUpdater;
 import main.data.filesys.PathFinder;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class ArtPuzzle extends ManipulatorPuzzle {
-
 
     @Override
     public void setup(PuzzleSetup... setups) {
@@ -18,9 +21,30 @@ public class ArtPuzzle extends ManipulatorPuzzle {
 
     public void init() {
 
-
     }
+
+    @Override
+    public void complete() {
+        super.complete();
+        EidolonsGame.BRIDGE_CROSSED = true;
+    }
+
+    @Override
+    public void activate() {
+        super.activate();
+        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.MOSAIC);
+    }
+
     protected int getRotateChance() {
         return 60;
+    }
+    public int getSoulforceBase() {
+        return 10+ 60
+                //TODO cyclic data!
+                // getHeight()*getWidth()
+                *getRotateChance()/50;
+    }
+    protected String getDefaultTitle() {
+        return "Soul Fracture";
     }
 }

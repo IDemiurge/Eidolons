@@ -9,6 +9,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -22,7 +23,6 @@ import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.data.XList;
 import main.entity.obj.Obj;
@@ -91,7 +91,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
         Boolean unconscious = isTargetingUnconscious(ai);
-        Boolean visionRequired = !Eidolons.BOSS_FIGHT;
+        Boolean visionRequired = !EidolonsGame.BOSS_FIGHT;
         List<Unit> enemies = getUnits(ai, false, true, visionRequired, false, false, unconscious);
         if (enemies.isEmpty())
             if (unconscious != null) {

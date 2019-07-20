@@ -81,7 +81,7 @@ public class DialogueFactory {
 
     @Refactor
     public GameDialogue getDialogue(String name) {
-//       TODO igg demo hack if (map.isEmpty())
+     if (map.isEmpty() || CoreEngine.isDialogueTest())
             init(Eidolons.game.getMetaMaster());
         return map.get(StringMaster.formatMapKey(name));
     }

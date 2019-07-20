@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.LabelX;
@@ -16,10 +17,10 @@ import static eidolons.libgdx.gui.panels.quest.QuestProgressPanel.WIDTH;
 public class QuestElement extends TablePanelX{
     private final LabelX title;
     private final LabelX progress;
-    DungeonQuest quest;
+    Quest quest;
     private boolean done;
 
-    public QuestElement(DungeonQuest quest) {
+    public QuestElement(Quest quest) {
         this.quest = quest;
         pad(5);
         float w = GdxMaster.adjustWidth(WIDTH);
@@ -30,9 +31,8 @@ public class QuestElement extends TablePanelX{
         add(progress = new LabelX(quest.getProgressText(), StyleHolder
          .getSizedLabelStyle(FONT.NYALA, 16))).padLeft(GdxMaster.adjustSize(10)).left().width(w);
 
-        if (quest.getTimeLeft()!=null ){
-
-        }
+//        if (quest.getTimeLeft()!=null ){
+//        }
     }
 
     @Override

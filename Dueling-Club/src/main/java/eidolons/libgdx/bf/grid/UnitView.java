@@ -61,6 +61,11 @@ public class UnitView extends BaseView implements HpBarView{
         init(o.getPortraitTexture(), o.getPortraitPath());
         addActor(this.modeImage = new FadeImageContainer());
 
+        initSprite(o);
+
+    }
+
+    protected void initSprite(UnitViewOptions o) {
         if (o.getSpritePath() != null) {
             overlaySprite = new SpriteX(o.getSpritePath());
             addActor(overlaySprite);

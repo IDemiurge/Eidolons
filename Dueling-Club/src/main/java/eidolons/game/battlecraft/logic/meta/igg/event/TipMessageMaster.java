@@ -1,14 +1,17 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
-import com.bitfire.utils.ItemsManager;
+import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
+import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import eidolons.system.text.DescriptionTooltips;
+import main.data.DataManager;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -34,8 +37,7 @@ public class TipMessageMaster {
 
     };
     public static void welcome() {
-        tip(WELCOME
-        );
+        tip(welcome_1, welcome_2);
     }
 
 
@@ -44,17 +46,20 @@ public class TipMessageMaster {
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE_DEATH);
     }
 
-    public static void tip(String s) {
+    public static void tip(String s, Runnable after) {
          for(String substring: ContainerUtils.openContainer( s)){
              TIP_MESSAGE tip  =new EnumMaster<TIP_MESSAGE>().retrieveEnumConst(TIP_MESSAGE.class, substring);
              if (tip == null) {
                  String text = DescriptionTooltips.getTipMap().get(s.toLowerCase());
                  if (text != null) {
-//                     new TipMessageSource()
+                     tip(new TipMessageSource(text, "", "Continue", false, after));
                  }
                  return;
              }
-             tip(tip);
+             if (after != null) {
+                 tip(new TipMessageSource(tip.message, tip.img, "Continue", false, after));
+             } else
+                tip(tip);
          }
     }
 
@@ -82,6 +87,9 @@ public class TipMessageMaster {
         tip(false, tips);
     }
     public static void tip(boolean manual, TIP_MESSAGE... tips) {
+        for (TIP_MESSAGE tip : tips) {
+
+        }
         if (tips[0].done) {
             return;
         }
@@ -148,14 +156,43 @@ public class TipMessageMaster {
         return null;
     }
 
+    public static void tip(String data) {
+        tip(data, null);
+    }
+
 
 // to .txt already?
-
     public enum TIP_MESSAGE {
 
         //BRIDGE
-        first_maze_before(false, IGG_Images.BRIEF_ART.LEVI_FIGHT.getPath(), ""),
-        first_art_before(false, IGG_Images.BRIEF_ART.LEVI_FIGHT.getPath(), ""),
+    welcome_1(true,  Images.EMPTY_DEMIURGE, ""),
+    welcome_2(true,  DataManager.getObjImage("INSCRIPTION"), ""){
+        @Override
+        public void run() {
+            Eidolons.getGame().getLoop().activateMainHeroAction("Move");
+        }
+    },
+    cols(true,  DataManager.getObjImage("Column"), ""),
+    Container(true,  DataManager.getObjImage("Enchanted Ash Urn"), ""),
+
+        sentries(false, IGG_Images.BRIEF_ART.SENTRIES.getPath(), ""){
+            @Override
+            public void run() {
+                Eidolons.getGame().getBattleMaster()
+                        .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
+                EidolonsGame.firstBattleStarted = true;
+            }
+        },
+        Black_waters(false, IGG_Images.BRIEF_ART.BLACK_WATERS.getPath(), ""),
+
+    fractured_soul_harvester_comment(false, IGG_Images.BRIEF_ART.HARVESTER.getPath(), ""),
+        HARVESTER(false, IGG_Images.BRIEF_ART.HARVESTER.getPath(), ""),
+
+        first_maze_before(false, IGG_Images.BRIEF_ART.HARVESTER.getPath(), ""),
+
+        first_art_befor2(false, IGG_Images.BRIEF_ART.HARVESTER.getPath(), ""),
+        first_art_before(false, IGG_Images.BRIEF_ART.HARVESTER.getPath(), ""),
+//        first_art_before_2(false, IGG_Images.BRIEF_ART.HARVESTER.getPath(), ""),
 
         // PLOT
         Stone_Warden(false, IGG_Images.BRIEF_ART.STONE_WARDEN.getPath(), ""),
@@ -206,13 +243,13 @@ public class TipMessageMaster {
 
         TUTORIAL_PATH(false, "", "Good choice! You will not be able to die on this path, but still get to try each of the 4 heroes. Try to collect all the Rune Inscriptions, and experiment freely!"){
             public void run() {
-                Eidolons.TUTORIAL_PATH=true;
+                EidolonsGame.TUTORIAL_PATH=true;
             }
         },
         TUTORIAL_PATH_DONE(false, "", "Well done! If you wish to revisit the lessons learned, you can do so via Menu->Info->Journal - " +
                 "it will bring up your memory journal in form of a dialogue."){
             public void run() {
-                Eidolons.TUTORIAL_PATH=false;
+                EidolonsGame.TUTORIAL_PATH=false;
             }
         },
         Gateway_Glyphs(true,         Images.GATEWAY_GLYPH,""),
@@ -280,7 +317,7 @@ another trick is to set yourself on fire and gain Rage each time the burning hur
 
         LIBRARY(false, "","" );
         public boolean optional = true;
-        public boolean once ;
+        public boolean once=true ;
         public boolean done ;
         public String img;
         public String message;
@@ -306,6 +343,7 @@ another trick is to set yourself on fire and gain Rage each time the burning hur
         }
 
         public void run() {
+//            runnable!=null
         }
     }
 

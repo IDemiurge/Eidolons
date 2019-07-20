@@ -5,6 +5,7 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.swing.DC_GuiManager;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.DescriptionTooltips;
 import main.system.auxiliary.log.Chronos;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
@@ -67,6 +68,7 @@ public class DC_Engine extends CoreEngine {
     public static void gameInit() {
         ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
+        DescriptionTooltips.init();
     }
 
     public static boolean isAtbMode() {

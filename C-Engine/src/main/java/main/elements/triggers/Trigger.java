@@ -7,6 +7,7 @@ import main.entity.Ref;
 import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 
 public class Trigger {
@@ -54,8 +55,8 @@ public class Trigger {
     }
 
     public boolean trigger() {
-        if (LogMaster.TRIGGER_DEBUG_ON)
-            LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
+//        if (LogMaster.TRIGGER_DEBUG_ON)
+            LogMaster.log( LOG_CHANNEL.TRIGGER_DEBUG, toString()
              + " has been triggered!");
         if (callback!=null )
         {

@@ -16,6 +16,7 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestCreator;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -146,20 +147,22 @@ public class RngMainSpawner {
     }
 
     private void spawnForQuests() {
-        Collection<DungeonQuest> quests = null;
+        Collection<Quest> quests = null;
         try {
             quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuestsPool();
         } catch (Exception e) {
             return;
         }
-        for (DungeonQuest quest : quests) {
-            switch (quest.getType()) {
-                case BOSS:
-                    spawnQuestBoss(quest);
-                    break;
-                case HUNT:
-                    spawnQuestMob(quest);
-                    break;
+        for (Quest quest : quests) {
+            if (quest instanceof DungeonQuest) {
+                switch ( ((DungeonQuest) quest).getType()) {
+                    case BOSS:
+                        spawnQuestBoss( ((DungeonQuest) quest));
+                        break;
+                    case HUNT:
+                        spawnQuestMob( ((DungeonQuest) quest));
+                        break;
+                }
             }
 
         }

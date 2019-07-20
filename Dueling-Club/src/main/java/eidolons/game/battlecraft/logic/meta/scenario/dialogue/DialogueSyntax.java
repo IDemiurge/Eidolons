@@ -58,6 +58,7 @@ public class DialogueSyntax {
     }
 
     public static String getRawText(String text) {
+        text = text.replace("" + Character.toChars(65533)[0], "'");
         if (text.contains(PARAM_MOD)) {
             try {
                 return text.substring(0, text.indexOf(PARAM_MOD));

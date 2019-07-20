@@ -13,11 +13,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
@@ -138,9 +140,13 @@ public class Assets {
     }
 
     public static void preloadUI() {
+        if (EidolonsGame.BRIDGE){
+            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
+            return;
+        }
         SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL, false);
-        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH, false);
-        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON, false);
+//        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH, false);
+//        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON, false);
         SpriteAnimationFactory.getSpriteAnimation(IGG_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), false);
         //locks
         // blood

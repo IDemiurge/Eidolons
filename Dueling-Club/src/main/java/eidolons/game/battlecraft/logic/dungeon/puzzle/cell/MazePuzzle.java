@@ -9,6 +9,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomTemplateMaster;
+import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.audio.MusicMaster;
 import main.data.filesys.PathFinder;
@@ -99,7 +100,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         public String getImagePath() {
             //random variant?
 //            PathFinder.get
-            return Images.EMPTY_SKULL;
+            return Images.LIGHT_SKULL;
         }
 
         public void setImagePath(String imagePath) {
@@ -107,7 +108,9 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         }
     }
 
-
+    protected String getDefaultTitle() {
+        return "Twilit Maze";
+    }
     public void resetAndGlimpseMaze() {
         resetMaze();
         showMaze();
@@ -118,6 +121,13 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
     private int getGlimpseTime() {
         return (int) (2250*getDifficultyCoef());
+    }
+
+    @Override
+    public void activate() {
+        super.activate();
+
+        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.MAZE);
     }
 
     public void resetMaze() {
@@ -165,5 +175,9 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         return GeneratorEnums.EXIT_TEMPLATE.THROUGH;
     }
 
+    public String getQuestText() {
+        return "Reach the Light on the other side";
+//        return "Cross to the other side";
+    }
 
 }

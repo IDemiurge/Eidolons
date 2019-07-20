@@ -108,6 +108,9 @@ public class DialogueLineFormatter {
         for (String dialogueContents : ContainerUtils.open(contents, DIALOGUE_SEPARATOR)) {
             boolean dialogue = true;
             for (String lineText : ContainerUtils.open(dialogueContents, LINE_SEPARATOR)) {
+                if (lineText.isEmpty()) {
+                    continue;
+                }
                 boolean intro = lineText.contains(INTRO_IDENTIFIER);
                 if (dialogue) {
                     //TODO check intro!
@@ -152,7 +155,7 @@ public class DialogueLineFormatter {
     }
 
     public static String getLineFromTextPart(String text) {
-        String lineContents = XML_Converter.wrap(ID + id, text) + StringMaster.NEW_LINE;
+        String lineContents = XML_Converter.wrap(ID + id, text.trim()) + StringMaster.NEW_LINE;
         return lineContents;
     }
 

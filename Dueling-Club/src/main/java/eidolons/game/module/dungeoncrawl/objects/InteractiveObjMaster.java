@@ -176,7 +176,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             text = src.split("|")[1];
         }
 
-        MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.SAD);
+        MusicMaster.playMoment(RandomWizard.random()? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 text, image, "Continue", false, () ->
         {

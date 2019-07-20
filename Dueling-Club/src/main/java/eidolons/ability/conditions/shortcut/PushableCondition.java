@@ -4,6 +4,7 @@ import eidolons.ability.conditions.DC_Condition;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.Structure;
 import main.content.enums.entity.BfObjEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 
@@ -23,6 +24,9 @@ public class PushableCondition extends DC_Condition {
             }
             if (((Structure) ref.getMatchObj()).isLandscape()) {
                 return false;
+            }
+            if (ref.getMatchObj().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.PUSHABLE.toString())) {
+                return true;
             }
             switch (((Structure) ref.getMatchObj()).getBfObjGroup()) {
                 case WALL:

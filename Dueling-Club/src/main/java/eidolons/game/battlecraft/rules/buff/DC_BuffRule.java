@@ -94,7 +94,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             }
         }
 
-        if (getBuffConditions().preCheck(ref)) {
+        if (!getBuffConditions().preCheck(ref))
+            return false;
+
             if (checkBuffLevel(ref)) {
                 if (checkLogged(obj)) {
                     log(obj);
@@ -102,7 +104,6 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
                 apply(ref);
             }
-        }
         // else
         // effectCache.put(obj, new Effect[getMaxLevel()]);
 

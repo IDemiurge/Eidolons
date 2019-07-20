@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
@@ -145,7 +146,7 @@ public class TownPanel extends TabbedPanel {
         if (CoreEngine.isIDE()) {
             return false;
         }
-        for (DungeonQuest quest : getUserObject().getQuests()) {
+        for (Quest quest : getUserObject().getQuests()) {
             if (quest.isStarted()) {
                 return false;
             }

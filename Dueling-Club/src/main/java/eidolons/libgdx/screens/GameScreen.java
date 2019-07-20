@@ -158,7 +158,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
 
                 if (velocityNow.isZero() || velocity.hasOppositeDirection(velocityNow)) {
-                    cameraStop();
+                    cameraStop(velocityNow.isZero() );
                 }
                 cam.update();
                 controller.cameraChanged();
@@ -167,6 +167,8 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     private void checkCameraFix() {
+
+        if (cameraDestination.x!=cam.position.x || cameraDestination.y!=cam.position.y)
         if (lastPos != null)
             if (cam.position.dst(lastPos) > MAX_CAM_DST) {
                 cam.position.set(lastPos);
@@ -177,9 +179,13 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             }
     }
 
-    public void cameraStop() {
+    public void cameraStop( ) {
+        cameraStop(false);
+    }
+    public void cameraStop(boolean fullstop) {
         if (velocity != null) {
-//            velocity.setZero(); TODO abruptly?
+            velocity.setZero();
+            // TODO abruptly?
             cameraDestination.set(cam.position.x, cam.position.y);
         }
     }
@@ -210,7 +216,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                     (DialogueHandler) obj.get();
 
             if (isNewDialogue()) {
-                guiStage.playDialogue(handler);
+                guiStage.afterBlackout(() -> guiStage.playDialogue(handler));
                 return;
             }
 

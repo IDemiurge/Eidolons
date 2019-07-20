@@ -287,11 +287,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
         List<MicroObj> units = DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
 
-        LogMaster.logToFile("spawnCoordinates=" + spawnCoordinates + " ;offset_coordinate="
-         + offset_coordinate + ";height=" + height + "; width=" + width);
-        LogMaster.log(1, "spawnCoordinates=" + spawnCoordinates
-         + " ;offset_coordinate=" + offset_coordinate + ";height=" + height + "; width="
-         + width);
 
         List<Unit> list = new ArrayList<>();
         units.stream().forEach(unit -> list.add((Unit) unit));

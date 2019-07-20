@@ -44,6 +44,11 @@ public class UnitViewSprite extends GridUnitView {
     }
 
     @Override
+    public void init(UnitViewOptions o) {
+        super.init(o);
+    }
+
+    @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         height = getUserObject().getHeight() * GridMaster.CELL_H;
@@ -111,8 +116,8 @@ public class UnitViewSprite extends GridUnitView {
 
     @Override
     public void act(float delta) {
-        spriteModel.setPos(GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
-
+        spriteModel.setPos(
+                GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
 
         glow.setRotation(glow.getRotation() + 5 * delta);
         super.act(delta);

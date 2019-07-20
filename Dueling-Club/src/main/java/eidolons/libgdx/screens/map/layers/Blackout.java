@@ -1,7 +1,9 @@
 package eidolons.libgdx.screens.map.layers;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -39,19 +41,46 @@ public class Blackout extends Group {
             ActionMaster.addFadeOutAction(image.getContent(), dur);
     }
 
-    public void fadeOutAndBack( ) {
-        fadeOutAndBack(null );
+    public void fadeOutAndBack() {
+        fadeOutAndBack(null, null);
     }
-        public void fadeOutAndBack(Number dur) {
+
+    public void fadeOutAndBack(Runnable runnable) {
+        fadeOutAndBack(null, runnable);
+    }
+
+//    public void fadeOutAndBack() {
+//        fadeOutAndBack(null);
+//    }
+
+    public void fadeOutAndBack(Number dur, Runnable runnable) {
         if (dur == null)
             dur = 3f;
 
-            if (dur instanceof Integer) {
-                dur = Float.valueOf((int) dur);
-            }
+        if (dur instanceof Integer) {
+            dur = Float.valueOf((int) dur);
+        }
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
-        ActionMaster.addFadeInAndOutAction(image.getContent(), (Float) dur, false);
+        if (runnable == null) {
+            ActionMaster.addFadeInAndOutAction(image.getContent() , (Float) dur, false);
+        return;
+        }
+        AlphaAction in =
+                ActionMaster.addFadeInAction(image.getContent(), (Float) dur);
+        Action run = new Action() {
+            @Override
+            public boolean act(float delta) {
+                if (runnable != null) {
+                    runnable.run();
+                }
+                return true;
+            }
+        };
+        AlphaAction after = ActionMaster.addFadeOutAction(image.getContent(), (Float) dur);
+
+//        image.getContent().clearActions();
+        ActionMaster.addChained(image.getContent() , in, run, after);
         //controller?
         //vignette?
     }
@@ -70,5 +99,9 @@ public class Blackout extends Group {
 
     public static boolean isOnNewScreen() {
         return false;
+    }
+
+    public void fadeOutAndBack(Number v) {
+        fadeOutAndBack(v, null);
     }
 }

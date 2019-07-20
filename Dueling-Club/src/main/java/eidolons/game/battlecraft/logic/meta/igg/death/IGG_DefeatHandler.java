@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.meta.igg.death;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
@@ -47,7 +47,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
         WaitMaster.WAIT(1000);
         if (!ShadowMaster.isShadowAlive()) {
-            if (!Eidolons.TUTORIAL_PATH ) {
+            if (!EidolonsGame.TUTORIAL_PATH ) {
                 TipMessageMaster.death();
             }
         }
@@ -72,7 +72,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
 
 
     public boolean isNoLivesLeft() {
-        if ( Eidolons.TUTORIAL_PATH ) {
+        if ( EidolonsGame.TUTORIAL_PATH ) {
             return false;
         }
         return getMetaGame().getMaster().getPartyManager().getHeroChain().isFinished();

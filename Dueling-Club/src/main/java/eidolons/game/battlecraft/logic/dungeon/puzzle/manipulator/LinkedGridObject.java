@@ -3,57 +3,76 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
-import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.VFX;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+
+import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.LIGHT;
 
 public class LinkedGridObject extends GridObject {
     static {
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.darkness.path+"(-132, 32);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.darkness.path+"(-132, 32);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.soul_bleed.path+"(-132, 64);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.soul_bleed.path+"(-132, 64);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.darkness.path+"(-132, 82);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.darkness.path+"(-132, 82);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.soul_bleed.path+"(-132, 124);";
-        CUSTOM_OBJECT.BLACKNESS.vfxOver+= VFX.soul_bleed.path+"(-132, 124);";
+        CUSTOM_OBJECT.BLACKNESS.vfxOver  = VFX.darkness.path + "(-132, -32);";
+        CUSTOM_OBJECT.BLACKNESS.vfxOver += VFX.darkness.path + "(-132, -32);";
+        CUSTOM_OBJECT.BLACKNESS.vfxUnder  = VFX.soul_bleed.path + "(-132, -64);";
+        CUSTOM_OBJECT.BLACKNESS.vfxUnder += VFX.soul_bleed.path + "(-132, -64);";
+        CUSTOM_OBJECT.BLACKNESS.vfxOver += VFX.darkness.path + "(-132, -82);";
+        CUSTOM_OBJECT.BLACKNESS.vfxOver += VFX.darkness.path + "(-132, -82);";
+        CUSTOM_OBJECT.BLACKNESS.vfxUnder += VFX.soul_bleed.path + "(-132, -124);";
+        CUSTOM_OBJECT.BLACKNESS.vfxUnder += VFX.soul_bleed.path + "(-132, -124);";
 
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_ARCANE.path+"(32, 128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_ARCANE.path+"(-32, 128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_ARCANE.path+"(32, 0);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_ARCANE.path+"(-32, 0);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_ARCANE.path+"(32, -128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_ARCANE.path+"(-32, -128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver  = VFX.MIST_ARCANE.path + "(32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_ARCANE.path + "(-32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_ARCANE.path + "(32, 0);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_ARCANE.path + "(-32, 0);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_ARCANE.path + "(32, -128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_ARCANE.path + "(-32, -128);";
 
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.MIST_WIND.path+"(-32, 128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.ASH.path+"(-32, 128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.THUNDER_CLOUDS_CRACKS.path+"(-32, 128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.SNOWFALL_THICK.path+"(-32, 128);";
-        CUSTOM_OBJECT.GATE_PILLAR.vfxOver+= VFX.WISPS.path+"(-32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_WIND.path + "(-32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.ASH.path + "(-32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.THUNDER_CLOUDS_CRACKS.path + "(-32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.SNOWFALL_THICK.path + "(-32, 128);";
+        CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.WISPS.path + "(-32, 128);";
 
-        CUSTOM_OBJECT.LIGHT.screen = true;
+        LIGHT.screen = true;
+//        CUSTOM_OBJECT.black_waters.screen = true;
+        CUSTOM_OBJECT.BLACKNESS.vfxUnderMirrorX = true;
+
+
+        CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
+        CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
+//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.MIST_BLACK.path + "(32, 32);";
+//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_white_mist_wind.path + "(32, 64);";
+//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_clouds_wind.path + "(32, 64);";
+//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.BLACK_MIST_clouds_gravity.path + "(-32, -52);";
+//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_clouds_antigravity.path + "(-32, -24);";
+//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.darkness.path + "(32, 32);";
+//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.soul_bleed.path + "(32, 64);";
+//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.darkness.path + "(-32, -52);";
+//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.soul_bleed.path + "(-32, -24);";
     }
+
     private final BaseView linked;
     CUSTOM_OBJECT object;
 
-    public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c ) {
+    public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c) {
         super(c, object.spritePath);
+        if (object== LIGHT) {
+            object = LIGHT;
+        }
         linked = view;
         this.object = object;
         visionRange = getDefaultVisionRange();
-        int i =1;
+        int i = 1;
         for (String additionalObject : object.additionalObjects) {
-            object =  new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, VariableManager.removeVarPart(additionalObject));
+            object = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, VariableManager.removeVarPart(additionalObject));
             LinkedGridObject obj = new LinkedGridObject(view, object, c);
 
-            Coordinates offset =   AbstractCoordinates.createFromVars(additionalObject);
+            Coordinates offset = AbstractCoordinates.createFromVars(additionalObject);
             obj.setPosition(offset.x, offset.y);
-            if (i++%2==0) {
+            if (i++ % 2 == 0) {
                 obj.setFlipX(true);
             }
             addActor(obj);
@@ -88,22 +107,33 @@ public class LinkedGridObject extends GridObject {
 
     @Override
     protected void createEmittersUnder() {
-        for (String substring : ContainerUtils.openContainer(object.vfxUnder)) {
-            Coordinates c =   AbstractCoordinates.createFromVars(substring);
-            createEmitter(VariableManager.removeVarPart(substring), c.x, c.y);
-        }
+        createEmittersFromString(object.vfxUnder, object.vfxUnderMirrorX, object.vfxUnderMirrorY, object.vfxChance);
+        createEmittersFromFolder(object.vfxUnder,  object.vfxChance);
     }
+
 
     @Override
     protected void createEmittersOver() {
-        for (String substring : ContainerUtils.openContainer(object.vfxOver)) {
-            Coordinates c =   AbstractCoordinates.createFromVars(substring);
-            createEmitter(VariableManager.removeVarPart(substring), c.x, c.y);
+        createEmittersFromString(object.vfxOver, object.vfxOverMirrorX, object.vfxOverMirrorY, object.vfxChance);
+        createEmittersFromFolder(object.vfxFolderOver,  object.vfxChance); }
+
+    @Override
+    public void act(float delta) {
+        if (object== CUSTOM_OBJECT.black_waters) {
+            delta = delta / 2;
         }
+        super.act(delta);
     }
 
     @Override
     public boolean checkVisible() {
+        sprite.setFps(getFps());
+        if (object== CUSTOM_OBJECT.black_waters) {
+            sprite.setFps(1);
+        }
+        if (object== LIGHT) {
+            return true;
+        }
         if (!linked.isVisible()) {
             return false;
         }

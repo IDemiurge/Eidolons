@@ -178,7 +178,6 @@ public class AnimDrawMaster extends Group {
             main.system.ExceptionMaster.printStackTrace(e);
             anim.finished();
         }
-
         if (ExplorationMaster.isExplorationOn())
             if (anim.getActive_() != null)
                 if (anim.getActive_().getOwnerObj().isMine())

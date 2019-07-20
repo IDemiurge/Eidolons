@@ -9,6 +9,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
@@ -42,18 +43,19 @@ public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
-                bfObj.isBoss() && UnitViewSprite.TEST_MODE ? new BossView(options) :
+                bfObj.isBoss()  ? new BossView(options) :
                         new GridUnitView(options);
 
-        if (VisionMaster.isLastSeenOn()) {
-            if (!bfObj.isPlayerCharacter())
-                if (!bfObj.isBoss())
-                    if (!bfObj.isWall()) {
-                        LastSeenView lsv = new LastSeenView(options, view);
-                        view.setLastSeenView(lsv);
-                        new LastSeenTooltipFactory().add(lsv, bfObj);
-                    }
-        }
+        if (bfObj instanceof Unit)
+            if (VisionMaster.isLastSeenOn()) {
+                if (!bfObj.isPlayerCharacter())
+                    if (!bfObj.isBoss())
+                        if (!bfObj.isWall()) {
+                            LastSeenView lsv = new LastSeenView(options, view);
+                            view.setLastSeenView(lsv);
+                            new LastSeenTooltipFactory().add(lsv, bfObj);
+                        }
+            }
         view.setOutlinePathSupplier(() -> {
             if (CoreEngine.isCinematicMode()) {
                 return null;
@@ -97,6 +99,7 @@ public class UnitViewFactory {
             LinkedGridObject obj = new LinkedGridObject(view, new EnumMaster<CUSTOM_OBJECT>().
                     retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT)),
                     bfObj.getCoordinates());
+//            view.addActor(obj);
             GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
         }
         return view;
@@ -145,7 +148,9 @@ public class UnitViewFactory {
                 try {
                     if (getTapCount() > 1)
                         if (event.getButton() == 0)
-                            if (bfObj.isPlayerCharacter() && !UnitInfoPanelNew.isNewUnitInfoPanelWIP()) {
+                            if (bfObj.isPlayerCharacter() && !UnitInfoPanelNew.isNewUnitInfoPanelWIP())
+                            if (EidolonsGame.isHqEnabled())
+                            {
                                 HqMaster.openHqPanel();
                                 event.stop();
                                 return;

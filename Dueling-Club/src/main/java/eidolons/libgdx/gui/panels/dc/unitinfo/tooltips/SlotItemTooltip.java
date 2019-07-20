@@ -45,9 +45,12 @@ public class SlotItemTooltip extends ValueTooltip {
         addElement(container);
         row();
         LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 17);
+        float w = getWidth();
+        if (w<=200) {
+            w = GdxMaster.getWidth() / 3;
+        }
         String text = TextWrapper.processText(
-                (int) (getWidth()*1.1f),
-//                GdxMaster.getWidth() / 3,
+                (int) (w*1.1f),
          InventoryFactory.getTooltipsVals(source.getItem()), style);
         container = new ValueContainer(text);
         container.setStyle(style);

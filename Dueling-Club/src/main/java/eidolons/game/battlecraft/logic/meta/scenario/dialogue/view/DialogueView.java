@@ -1,14 +1,21 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
+import main.system.auxiliary.log.FileLogManager;
 
 public class DialogueView extends TablePanelX implements Scene {
+    private DialogueInputProcessor inputProcessor;
     //    private final TablePanelX<T> textArea;
     DialoguePortraitContainer portraitLeft;
     DialoguePortraitContainer portraitRight;  //IDEA zoom into the portrait sometimes!
@@ -23,6 +30,8 @@ public class DialogueView extends TablePanelX implements Scene {
 
     DialogueHandler handler;
     private String backgroundPath;
+    private boolean scrollToBottom;
+    private int timer=0;
 //    boolean lightweight;
 //    boolean upsideDown;
     /*
@@ -36,43 +45,17 @@ public class DialogueView extends TablePanelX implements Scene {
         TablePanelX<Actor> middle = new TablePanelX<>(1200, 500);
         add(middle);
         middle.add(scroll = new DialogueScroll()).row();
-        middle.add(replyBox = new TablePanelX());
+        middle.add(replyBox = new TablePanelX(600, 150));
+        replyBox.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
         add(portraitRight = new DialoguePortraitContainer());
 //        middle.setBackground(NinePatchFactory.getHqDrawable());
 //        setBackground(NinePatchFactory.getHqDrawable());
+        inputProcessor = new DialogueInputProcessor(this);
     }
 
-    public void setContainer(DialogueContainer container) {
-        this.container = container;
-    }
-
-    @Override
-    public float getPrefHeight() {
-        return super.getPrefHeight();
-    }
-
-    public void setHandler(DialogueHandler handler) {
-        this.handler = handler;
-    }
-
-    @Override
-    public float getHeight() {
-        return 500;
-    }
-
-    @Override
-    public float getWidth() {
-        return 1000;
-    }
-
-    @Override
-    public float getMinWidth() {
-        return getWidth();
-    }
-
-    @Override
-    public float getMinHeight() {
-        return getHeight();
+    public DialogueInputProcessor getInputProcessor() {
+        return inputProcessor;
     }
 
     public DialogueView(SpeechDataSource speechDataSource) {
@@ -93,8 +76,10 @@ public class DialogueView extends TablePanelX implements Scene {
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
         scroll.append(data.getMessage(), active.getActorName(), active.getActorImage());
-        scroll.scrollPane.setScrollPercentY(1);
-        scroll.scrollPane.setScrollY(getHeight());
+        scrollToBottom=true;
+//        scroll.scrollPane.setScrollPercentY(1);
+
+        //getHeight());
         //TODO info about fx! "Gain 50 xp"
 
         initResponses(data);
@@ -111,7 +96,7 @@ public class DialogueView extends TablePanelX implements Scene {
 
         ActorDataSource listener = !data.isLeftActive() ? left : right;
         if (listener == null) {
-            listener = handler.getMyActor();
+            listener = handler.getSpeakerLast();
         }
         return listener;
     }
@@ -164,13 +149,32 @@ public class DialogueView extends TablePanelX implements Scene {
 
 
     public void playOut() {
-        while( respond(SpeechDataSource.DEFAULT_RESPONSE, 0, false)){
+        while (tryNext(false)) {
         }
     }
-        private boolean respond(String option, int index) {
-            return   respond(option, index, true);
+
+    protected boolean tryNext() {
+        return tryNext(true);
+    }
+
+    protected boolean tryNext(boolean allowFinish) {
+        //check index?
+        try {
+            return respond(SpeechDataSource.DEFAULT_RESPONSE, 0, allowFinish);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
-        private boolean respond(String option, int index, boolean allowFinish) {
+        return false;
+    }
+
+    private boolean respond(String option, int index) {
+        return respond(option, index, true);
+    }
+
+    private boolean respond(String option, int index, boolean allowFinish) {
+
+        FileLogManager.streamMain("Dialogue continues");
+
         if (container != null) {
 //            container.respond(option);
             ActorDataSource actor = getSpeakerActor();
@@ -180,17 +184,17 @@ public class DialogueView extends TablePanelX implements Scene {
                 } else
                     scroll.append(option, actor.getActorName(), actor.getActorImage());
 
-            scroll.append("", "", Images.SEPARATOR);
 
             SpeechDataSource next =
                     handler.lineSpoken(getUserObject().speech, index);
-            if (next == null) {
+             if (next != null) {
+                scroll.append("", "", Images.SEPARATOR_ALT).center().setX(getWidth()/2);
+                update(next);
+                return true;
+            } else {
                 if (allowFinish)
                     container.next();
                 return false;
-            } else {
-                update(next);
-                return true;
             }
 //            if (actor.isMe()){
 //                getUserObject().
@@ -198,8 +202,8 @@ public class DialogueView extends TablePanelX implements Scene {
 //            }
         }
 
-            return false;
-        }
+        return false;
+    }
 
     public boolean isDone() {
         return done;
@@ -207,7 +211,18 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public void act(float delta) {
-        setVisible(true);
+        if (scrollToBottom) {
+//            scroll.scrollPane.setScrollY(scroll.scrollPane.getActor().getHeight() + 1100);
+            scroll.scrollPane.setScrollPercentY(1);
+        if ( scroll .scrollPane .getVisualScrollY() >=  scroll .scrollPane .getMaxY()){
+            timer++;
+            if (timer>=10){
+                scrollToBottom=false;
+                timer = 0;
+            }
+        }
+        }
+//        setVisible(true);
         setPosition(250, 50);
         super.act(delta);
         if (done) return;
@@ -218,6 +233,45 @@ public class DialogueView extends TablePanelX implements Scene {
                 done = true;
             }
         }
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+        replyBox.setY(30);
+    }
+
+    public void setContainer(DialogueContainer container) {
+        this.container = container;
+    }
+
+    @Override
+    public float getPrefHeight() {
+        return super.getPrefHeight();
+    }
+
+    public void setHandler(DialogueHandler handler) {
+        this.handler = handler;
+    }
+
+    @Override
+    public float getHeight() {
+        return 500;
+    }
+
+    @Override
+    public float getWidth() {
+        return 1000;
+    }
+
+    @Override
+    public float getMinWidth() {
+        return getWidth();
+    }
+
+    @Override
+    public float getMinHeight() {
+        return getHeight();
     }
 
     @Override

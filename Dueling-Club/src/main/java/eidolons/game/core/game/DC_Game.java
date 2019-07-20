@@ -13,6 +13,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.logic.battle.test.TestBattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
@@ -69,7 +70,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.GraveyardManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
-import main.game.core.game.GameObjMaster;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.ExceptionMaster;
@@ -82,7 +82,6 @@ import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.threading.WaitMaster;
 import main.system.util.Refactor;
 
 import java.util.*;
@@ -915,7 +914,7 @@ public class DC_Game extends GenericGame {
     }
 
     public boolean isBossFight() {
-        return Eidolons.BOSS_FIGHT;
+        return EidolonsGame.BOSS_FIGHT;
     }
 
     public void setBossFight(boolean bossFight) {

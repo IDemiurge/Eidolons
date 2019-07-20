@@ -15,6 +15,7 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
@@ -50,7 +51,7 @@ public class GridUnitView extends GenericGridView {
             });
     }
 
-    public void attachObj(OverlayView view){
+    public void attachObj(OverlayView view) {
         view.setDirection(getUserObject().getDirection());
 
         addActor(view);
@@ -69,6 +70,10 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (hovered) {
+            if (ToolTipManager.isHoverOff())
+                setHovered(false);
+        }
         if (debugInfo == null) {
             return;
         }
@@ -244,7 +249,7 @@ public class GridUnitView extends GenericGridView {
     public void validateArrowRotation() {
         int real = getUserObject().getFacing().getDirection().getDegrees() % 360;
         if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
-            main.system.auxiliary.log.LogMaster.verbose( arrow.getRotation()
+            main.system.auxiliary.log.LogMaster.verbose(arrow.getRotation()
                     + " raw rotation val, to real => " + real);
             updateRotation(real);
 

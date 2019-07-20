@@ -108,7 +108,7 @@ public class PuzzleResolution extends PuzzleElement {
             for (PUZZLE_RESOLUTION resolution : resolutions.keySet()) {
               PuzzleActions.resolution(resolution, puzzle, resolutions.get(resolution));
             }
-            puzzle.finished();
+            puzzle.complete();
         };
     }
 

@@ -1,18 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.igg.xml;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.RngLocationBuilder;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
@@ -32,7 +30,6 @@ import main.system.launch.CoreEngine;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -226,6 +223,8 @@ public class IGG_XmlMaster {
     public static String getDoorKeyData(String levelName) {
         levelName = PathUtils.getLastPathSegment(levelName).toLowerCase();
         switch (levelName) {
+            case "ashen path.xml":
+                return "Bone Door Enchanted(Mystery solution);Whispering Door()";
             case "underworld.xml":
                 return "Iron Bars(Iron Key);Iron Door(Iron Key);Dwarven Door(Iron Key);" +
                         "Crimson Door(Bone Key);Bone Door Enchanted(Ghost Key);" +
@@ -241,17 +240,20 @@ public class IGG_XmlMaster {
         return "No door key data for " + levelName;
     }
 
-    public static String getEntrancesData(String levelName) {
-        if (Eidolons.BOSS_FIGHT) { //TODO boss fix
+    public static String getDialogueData(String levelName) {
+        return "sentries=aggro;";
+    }
+        public static String getEntrancesData(String levelName) {
+        if (EidolonsGame.BOSS_FIGHT) { //TODO boss fix
             return "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
         }
 //        if (CoreEngine.isLiteLaunch()) { //TODO boss fix
 //            entranceData = "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
 //        }
-        if (Eidolons.BRIDGE) {
-            return "Blackness(0-15);The Light(12-10)";
+        if (EidolonsGame.BRIDGE) {
+            return "Ash Vault(0-10);The Light(9-1)";
 //            return "Blackness(0-15);The Light(20-1)";
-        } else if (Eidolons.TUTORIAL_MISSION) {
+        } else if (EidolonsGame.TUTORIAL_MISSION) {
             return "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
         }
         switch (PathUtils.getLastPathSegment(levelName.toLowerCase())) {

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -101,12 +102,20 @@ public class OrbsPanel extends TablePanel {
             }
             orb.act(delta);
             i++;
+            if (EidolonsGame.isAltControlPanel()){
+                if (orb.isVisible()) {
+                    orb.fadeOut();
+                }
+                orb.clearListeners();
+                continue;
+            }
             if (!orb.updateValue(source.getParam(param)) &&
             orb.getListeners().size>0)
             {
               continue;
             }
-            addTooltip(orb, param.getName(), source.getParam(param));
+            if (!EidolonsGame.isAltControlPanel())
+                addTooltip(orb, param.getName(), source.getParam(param));
         }
     }
 

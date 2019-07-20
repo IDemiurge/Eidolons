@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai.explore.behavior;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
@@ -205,7 +206,7 @@ public class AiBehaviorManager extends AiHandler {
 //        }
         UNIT_GROUP_TYPE t = null;
 
-        if (Eidolons.BOSS_FIGHT || Eidolons.TUTORIAL_MISSION)
+        if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION)
             t = UNIT_GROUP_TYPE.GUARDS;
         else if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size() == 1) {
             t = UNIT_GROUP_TYPE.IDLERS;

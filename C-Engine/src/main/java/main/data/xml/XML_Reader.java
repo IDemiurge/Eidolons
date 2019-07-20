@@ -14,6 +14,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
@@ -366,8 +367,7 @@ public class XML_Reader {
 
         constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
 
-        getInstance().log(INFO,
-         "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
+      LogMaster.important("" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
     public static void loadMap(String name, String text) {

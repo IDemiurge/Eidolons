@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
+import eidolons.ability.conditions.AreaCondition;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_PUNISHMENT;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_RESOLUTION;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
@@ -13,6 +15,8 @@ import eidolons.system.ConditionsUtils;
 import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
+import main.elements.conditions.NotCondition;
+import main.elements.conditions.standard.LambdaCondition;
 import main.elements.conditions.standard.PositionCondition;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
@@ -49,26 +53,35 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         initSetup();
 
         initEnterTrigger();
+        initExitTrigger();
         boolean pale = puzzleData.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
+        if (EidolonsGame.BRIDGE) {
+            pale = true;
+        }
         {
             Veil veil;
             Coordinates c = new Coordinates(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)).negativeY()
                     .getOffset(puzzle.getCoordinates());
 
-            puzzle.setEnterVeil(veil = new Veil(c, pale, true));
-            GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
-
-            if (!puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT).isEmpty()) {
-                c = new Coordinates(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT)).negativeY()
-                        .getOffset(puzzle.getCoordinates());
-
-                puzzle.setExitVeil(veil = new Veil(c, pale, false));
+            if (!isAreaEnter()) {
+                puzzle.setEnterVeil(veil = new Veil(puzzle, c, pale, true));
                 GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
             }
+
+            if (isPointExit())
+                if (!puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT).isEmpty()) {
+                    c = new Coordinates(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT)).negativeY()
+                            .getOffset(puzzle.getCoordinates());
+
+                    puzzle.setExitVeil(veil = new Veil(puzzle, c, pale, false));
+                    GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
+                }
         }
 
         return puzzle;
     }
+
+
 
     protected PuzzleRules createRules(PuzzleData puzzleData) {
         return new PuzzleRules(puzzle);
@@ -107,19 +120,22 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
     }
 
-    protected PuzzleData createData(String data) {
-        PuzzleData puzzleData = new PuzzleData();
+    protected PuzzleData createData(String text) {
+        PuzzleData data = new PuzzleData();
 
         PuzzleData.PUZZLE_VALUE[] values = getRelevantValues();
         int i = 0;
-        for (String substring : ContainerUtils.openContainer(data, ",")) {
-            puzzleData.setValue(values[i++], substring);
+        for (String substring : ContainerUtils.openContainer(text, ",")) {
+            data.setValue(values[i++], substring);
         }
         int coef = getDifficultyCoef(Eidolons.getGame().getBattleMaster().getOptionManager().getDifficulty());
 //        if () TODO disable by option
 //            coef=100;
-        puzzleData.setValue(PuzzleData.PUZZLE_VALUE. DIFFICULTY_COEF, coef);
-        return puzzleData;
+        data.setValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF, coef);
+
+        int reward = puzzle.getSoulforceBase() * coef / 100;
+        data.setValue(PuzzleData.PUZZLE_VALUE.SOULFORCE_REWARD, reward);
+        return data;
     }
 
     protected int getDifficultyCoef(GenericEnums.DIFFICULTY difficulty) {
@@ -153,38 +169,85 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
     protected abstract T createPuzzle();
 
-    protected void puzzleEntered() {
-        if (!puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
-            TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP));
-        }
+    protected void entered() {
         if (puzzle.isPale()) {
             PaleAspect.enterPale();
+        }
+        if (!puzzle.isFailed() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
+            TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP),
+                    () -> afterTipAction());
+        } else {
+            afterTipAction();
         }
         puzzle.activate();
     }
 
+    protected void afterTipAction() {
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, puzzle.getCenterCoordinates());
+    }
+
+    protected void initExitTrigger() {
+        puzzle.createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
+                ConditionsUtils.join(new LambdaCondition(ref -> puzzle.active),
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        getPuzzleExitConditions()),
+                () -> exited(),
+                Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
+        );
+    }
+
+    private void exited() {
+        //TODO isApplyPunishment()
+        if (isPointExit())
+            if (Eidolons.getMainHero().getCoordinates().equals(puzzle.getExitCoordinates())){
+                return;
+            }
+        puzzle.failed();
+    }
+
     protected void initEnterTrigger() {
         puzzle.createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
-                ConditionsUtils.join(getPuzzleEnterConditions(),
-                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO)),
-                getEnterPuzzleAction(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
+                ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active  && (!puzzle.solved || isReplayable())),
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        getPuzzleEnterConditions()),
+                () -> entered(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
         );
 
     }
 
+    protected boolean isReplayable() {
+        return false;
+    }
+
+    protected Condition getPuzzleExitConditions() {
+        if (isAreaExit()) {
+            return ConditionsUtils.or(new PositionCondition(
+                            puzzle.getExitCoordinates()),
+                    new NotCondition(new AreaCondition(puzzle.getCoordinates(), puzzle.getWidth(), puzzle.getHeight())));
+        }
+        return new PositionCondition(
+                puzzle.getExitCoordinates());
+    }
+
+
     protected Condition getPuzzleEnterConditions() {
+        if (isAreaEnter()) {
+            return ConditionsUtils.or(new PositionCondition(
+                            puzzle.getExitCoordinates()),
+                    new AreaCondition(puzzle.getCoordinates(), puzzle.getWidth(), puzzle.getHeight()));
+        }
         return new PositionCondition(
                 puzzle.getEntranceCoordinates());
     }
-
-    protected Runnable getEnterPuzzleAction() {
-        return () -> {
-            if (puzzle.active) {
-                return;
-            }
-            puzzleEntered();
-        };
+    protected boolean isPointExit() {
+        return false;
+    }
+    protected boolean isAreaEnter() {
+        return false;
     }
 
+    protected boolean isAreaExit() {
+        return false;
+    }
 
 }

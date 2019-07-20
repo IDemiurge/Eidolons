@@ -11,6 +11,8 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
+import eidolons.game.battlecraft.rules.DC_RuleMaster;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
@@ -23,6 +25,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DC_LogManager;
+import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -179,6 +182,7 @@ public class GameLoop {
                 VisionManager.refresh();
                 started = true;
             }
+            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.INTENTS))
             try {
                 getGame().getAiManager().getActionManager().initIntents();
             } catch (Exception e) {
@@ -547,5 +551,9 @@ public class GameLoop {
 
     public ActionInput getLastActionInput() {
         return lastActionInput;
+    }
+
+    public void activateMainHeroAction(String name) {
+        activateAction(new ActionInput(Eidolons.getMainHero().getAction(name), new Context(Eidolons.getMainHero().getRef())));
     }
 }

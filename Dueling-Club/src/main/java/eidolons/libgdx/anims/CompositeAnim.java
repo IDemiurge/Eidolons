@@ -6,6 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EffectAnimCreator;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -99,12 +100,19 @@ public class CompositeAnim implements Animation {
             index++;
             triggerFinishEvents();
             playAttached();
+
             if (map.size() <= index) {
                 if (!checkAfterEffects()) {
                     finished();
+                    if (currentAnim instanceof DeathAnim) {
+                        map.remove(ANIM_PART.AFTEREFFECT);
+                    }
                     return false;
                 }
             }
+            if (currentAnim instanceof DeathAnim) {
+                map.remove(ANIM_PART.AFTEREFFECT);
+            } //TODO EA hack
             initPartAnim();
             if (currentAnim == null)
                 return false;
@@ -190,13 +198,14 @@ public class CompositeAnim implements Animation {
         if (list == null) {
             return;
         }
-        list.forEach(anim -> {
+        for (Animation anim : new ArrayList<>(list)) {
             if (!anim.isRunning()) {
                 anim.start(getRef());
             }
-            anim.tryDraw(batch);
-
-        });
+            if (!anim.tryDraw(batch)) {
+                list.remove(anim);
+            }
+        }
     }
 
     private void playAttached() {
@@ -302,8 +311,7 @@ public class CompositeAnim implements Animation {
         try {
             if (getRef() != null) {
                 currentAnim.start(getRef());
-            } else
-            {
+            } else {
                 currentAnim.start();
                 setRef(currentAnim.getRef());
             }

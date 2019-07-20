@@ -58,7 +58,6 @@ public class ImbuePanel extends TablePanelX {
         add(table);
         add(itemInfo = new ImbueItemInfo()).row();
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
-        debug();
     }
 
     @Override
@@ -132,7 +131,8 @@ public class ImbuePanel extends TablePanelX {
 
         public ImbueTraitsInfo() {
             super(600, 300);
-            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+            setBackground(NinePatchFactory.getHqDrawable());
+
             Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 19);
             add(  new LabelX("Eidolon Aspects", StyleHolder.getHqLabelStyle(18))).center().row();
             add(aspectInfo = new LabelX("", style)).center().row();

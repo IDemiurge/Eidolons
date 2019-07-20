@@ -24,7 +24,9 @@ public class SpellPanel extends BaseSlotPanel {
         clear();
 
         final SpellDataSource source = (SpellDataSource) getUserObject();
-
+        if (source == null) {
+            return;
+        }
         final List<ValueContainer> sources = source.getSpells();
         initContainer(sources, Images.EMPTY_SPELL);
     }

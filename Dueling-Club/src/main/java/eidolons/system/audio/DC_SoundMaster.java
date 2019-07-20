@@ -112,7 +112,10 @@ public class DC_SoundMaster extends SoundMaster {
         }
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
-        if (unit.isPale()) {
+        if (unit.isPale() || unit .isImmaterial()) {
+            if (!unit.isMine()) {
+                getPlayer().playEffectSound(SOUNDS.ALERT, unit);
+            } else
             getPlayer().playRandomSoundFromFolder(
                     "std/move pale/");
         } else

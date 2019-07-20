@@ -68,8 +68,12 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
                 case "tip":
                     return "pos(" + c.toString() + ")>mainHero()>tip(" +
                             arg + ")";
+                case "tip_dialogue ":
+                case "dialogue_tip":
                 case "dialogue":
-                    return "pos(" + c.toString() + ")>mainHero()>dialogue(" +
+                    return "pos(" + c.toString() + ")>mainHero()>" +
+                            type +
+                            "(" +
                             arg + "," + arg + ")";
                 case "quest":
                     return "pos(" + c.toString() + ")>mainHero()>tip_quest(" +

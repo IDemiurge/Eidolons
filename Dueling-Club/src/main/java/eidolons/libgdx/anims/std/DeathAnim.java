@@ -142,9 +142,13 @@ public class DeathAnim extends ActionAnim {
 //        addSfx();
         //skull / grave?
 
-        main.system.auxiliary.log.LogMaster.log(1,"Death Anim started with \n" +getRef());
         unit = (BattleFieldObject) getRef().getTargetObj();
+        if (!unit.isDead()){
+            main.system.auxiliary.log.LogMaster.log(1,"Screw that Death Anim" +getRef());
+            return;
+        }
         super.start();
+        main.system.auxiliary.log.LogMaster.log(1,"Death Anim started with \n" +getRef());
         add();
     }
 

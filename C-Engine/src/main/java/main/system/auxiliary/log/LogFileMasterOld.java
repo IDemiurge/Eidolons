@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LogFileMaster {
+public class LogFileMasterOld {
     private static final long WRITE_ALL_PERIOD = 5000;
     static Map<LOG_CHANNEL, List<String>> channelLogs = new HashMap<>();
     static Map<Integer, List<String>> priorityLogs = new HashMap<>();
@@ -29,7 +29,21 @@ public class LogFileMaster {
         return PathFinder.getXML_PATH() + "logs/" + TimeMaster.getFormattedDate(false);
 
     }
+    public static void logToFile(String string, String logFileName) {
+        logToFile(string, logFileName, false);
+    }
 
+    public static void logToFile(String string, String logFileName, boolean append) {
+        String content = string;
+        String path = PathFinder.getLogPath();
+        // XML_Writer.write(content, path, fileName);
+//        if (append) {
+//            FileManager.appendToTextFile(content, path, fileName);
+//        } else {
+//            FileManager.write(content, path + "/" + fileName);
+//        }
+
+    }
     /*
      * on exit could be an option
      * flush-thread on timer
@@ -57,7 +71,7 @@ public class LogFileMaster {
 
     public static void startWritingThread() {
         writingStarted = true;
-        TimerTaskMaster.newTimer(new LogFileMaster(), "writeAll", null, null, WRITE_ALL_PERIOD);
+        TimerTaskMaster.newTimer(new LogFileMasterOld(), "writeAll", null, null, WRITE_ALL_PERIOD);
 
     }
 
@@ -168,14 +182,14 @@ public class LogFileMaster {
     }
 
     public static void setDirty(boolean dirty) {
-        LogFileMaster.dirty = dirty;
+        LogFileMasterOld.dirty = dirty;
     }
 
     public void writeAll() {
-        if (LogFileMaster.writingPaused) {
+        if (LogFileMasterOld.writingPaused) {
             return;
         }
-        if (!LogFileMaster.isDirty()) {
+        if (!LogFileMasterOld.isDirty()) {
             return;
         }
         for (final Integer priority : priorityLogs.keySet()) {

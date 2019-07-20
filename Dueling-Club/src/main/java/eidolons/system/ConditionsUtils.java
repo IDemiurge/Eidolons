@@ -1,5 +1,6 @@
 package eidolons.system;
 
+import eidolons.ability.conditions.AreaCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
@@ -8,6 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleCondition;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
+import main.elements.conditions.OrConditions;
 import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
 import main.system.entity.ConditionMaster;
@@ -18,6 +20,10 @@ public class ConditionsUtils {
 
     public static Conditions join(Condition... conditions){
         return new Conditions(conditions);
+    }
+
+    public static Condition or(Condition... conditions) {
+        return new OrConditions(conditions);
     }
     public static Condition fromTemplate(ConditionMaster.CONDITION_TEMPLATES template){
         return DC_ConditionMaster.getInstance().getConditionFromTemplate(template);
@@ -57,4 +63,5 @@ public class ConditionsUtils {
         }
         return null ;
     }
+
 }

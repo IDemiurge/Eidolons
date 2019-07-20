@@ -56,7 +56,6 @@ public class QuestPreparer {
 
     public void initArg() {
         int powerLevel= Eidolons.getMainHero().getIntParam(PARAMS.POWER) ;
-        main.system.auxiliary.log.LogMaster.log(1,"powerLevel= " +powerLevel);
         DungeonEnums.DUNGEON_STYLE style = DungeonEnums.DUNGEON_STYLE.Somber; //quest.getMaster().getStyle();
 //        Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()
 // TODO is it useful?

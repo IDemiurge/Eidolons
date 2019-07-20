@@ -216,7 +216,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (postProcessing != null)
             if (isPostProcessingDefault())
             {
-                batch.resetBlending();
+                getBatch().resetBlending();
                 postProcessing.end();
             }
         waited(delta);

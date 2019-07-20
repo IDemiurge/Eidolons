@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
@@ -28,9 +29,9 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class OrbElement extends SuperActor {
     private static final String EMPTY_PATH = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
+            PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
     private static final String OVERLAY_PATH = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
+            PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
     private final PARAMS parameter;
     private Label label;
     private Image background;
@@ -52,12 +53,12 @@ public class OrbElement extends SuperActor {
         this.iconRegion = iconRegion;
         this.parameter = param;
         label = new Label(value, StyleHolder.
-         getSizedLabelStyle(FONT.AVQ, 18));
+                getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
         addActor(background = new Image(getOrCreateR(EMPTY_PATH)));
         //        addActor(icon);
         icon.setPosition(orbRegion.getRegionWidth() / 2 - icon.getWidth() / 2,
-         orbRegion.getRegionHeight() / 2 - icon.getHeight() / 2);
+                orbRegion.getRegionHeight() / 2 - icon.getHeight() / 2);
 
         //        addActor( overlay = new Image(getOrCreateR(OVERLAY_PATH)));
         //        String p = ContentManager.getBaseParameterFromCurrent(param).getName();
@@ -71,14 +72,14 @@ public class OrbElement extends SuperActor {
 
     public OrbElement(PARAMS param, String value) {
         this(getOrCreateR(
-         StringMaster.getAppendedImageFile(
-          ImageManager.getValueIconPath(param), " alpha")),
-         getOrCreateR(getOrbPath(param.getName())), value, param);
+                StringMaster.getAppendedImageFile(
+                        ImageManager.getValueIconPath(param), " alpha")),
+                getOrCreateR(getOrbPath(param.getName())), value, param);
 
         //        lighting = new Image(getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
         //        lighting.sizeBy(0.3f);
         Texture texture = TextureCache.getOrCreate(StringMaster.getAppendedImageFile(
-         getOrbPath(param.getName()), " border"
+                getOrbPath(param.getName()), " border"
         ));
 
         if (texture == TextureCache.getEmptyTexture()) return;
@@ -90,12 +91,12 @@ public class OrbElement extends SuperActor {
 
     private static String getOrbPath(String value) {
         return getPath() + "/orb " + value +
-         ".png";
+                ".png";
     }
 
     private static String getPath() {
         return StrPathBuilder.build(
-         PathFinder.getComponentsPath(), "dc", "orbs");
+                PathFinder.getComponentsPath(), "dc", "orbs");
     }
 
     private String getGemLightPath(String value) {
@@ -104,7 +105,7 @@ public class OrbElement extends SuperActor {
 
     private String getGemPath(String value) {
         return StrPathBuilder.build(getPath(), "gem",
-         value + ".png ");
+                value + ".png ");
     }
 
     @Override
@@ -140,10 +141,10 @@ public class OrbElement extends SuperActor {
         label.setText(value);
 
         label.setStyle(StyleHolder.
-         getSizedLabelStyle(FONT.MAIN, 20 - value.length() / 2));
+                getSizedLabelStyle(FONT.MAIN, 20 - value.length() / 2));
 
         label.setX(orbRegion.getRegionWidth() / 2
-         - label.getWidth() / 2);
+                - label.getWidth() / 2);
         label.setY(orbRegion.getRegionHeight() / 2 - label.getHeight() / 2);
         Vector2 v2 = localToStageCoordinates(new Vector2(label.getX(), label.getY()));
         label.setPosition(v2.x, v2.y);
@@ -160,7 +161,7 @@ public class OrbElement extends SuperActor {
         } else {
             orbFullness = 62;
         }
-        if (orbFullnessPrevious==orbFullness)
+        if (orbFullnessPrevious == orbFullness)
             return false;
 
         if (!isAlphaFluctuationOn()) {
@@ -168,7 +169,7 @@ public class OrbElement extends SuperActor {
                 lighting.setColor(1, 1, 1, 0.5f + new Float(orbFullness) / 100);
         } else
             fluctuation = MathMaster.getMinMax(
-             super.getAlphaFluctuationPerDelta() / (1 + orbFullness) * 30, 0.4f, 0.7f);
+                    super.getAlphaFluctuationPerDelta() / (1 + orbFullness) * 30, 0.4f, 0.7f);
 
         return true;
     }
@@ -176,10 +177,19 @@ public class OrbElement extends SuperActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (EidolonsGame.isAltControlPanel())
+            return;
+        if (getColor().a == 0)
+            return;
         super.draw(batch, parentAlpha);
         batch.flush();
-        if (fluctuatingAlpha != 1)
+        if (fluctuatingAlpha != 1) {
             batch.setColor(new Color(1, 1, 1, 1));
+        } else {
+
+            batch.setColor(new Color(1, 1, 1, getColor().a));
+
+        }
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = new Rectangle(getX(), getY(), 62, Math.max(1, orbFullness));
         getStage().calculateScissors(clipBounds, scissors);

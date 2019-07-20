@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
@@ -26,7 +27,9 @@ public class ImbueItems extends TablePanelX {
     ValueTable<DC_HeroItemObj, ImbueItemActor  > table;
 
     public ImbueItems(ImbuePanel imbuePanel) {
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         this.imbuePanel = imbuePanel;
+
         table = new ValueTable<DC_HeroItemObj, ImbueItemActor>(8, 32) {
             @Override
             protected ImbueItemActor createElement(DC_HeroItemObj item) {
@@ -93,7 +96,6 @@ public class ImbueItems extends TablePanelX {
         }
 
         table.updateAct(delta);
-        debug();
     }
 
     public void setSelected(DC_HeroItemObj selected) {

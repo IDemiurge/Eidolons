@@ -14,6 +14,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
+import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -130,6 +131,16 @@ public class DefaultActionHandler {
         if (!action.getActivator().canBeActivated(context, true)) {
             action.getActivator().cannotActivate();
             return false;
+        }
+        if (context.getTargetObj() instanceof InteractiveObj) {
+            if (action.getName().equalsIgnoreCase("use")) {
+            if (((InteractiveObj) context.getTargetObj()).getTYPE() == InteractiveObjMaster.INTERACTIVE_OBJ_TYPE.INSCRIPTION
+                    || action.getOwnerUnit().getCoordinates().dst(context.getTargetObj().getCoordinates())<=1){
+                Eidolons.onNonGdxThread(() -> Eidolons.getGame().getGameLoop().activateAction(
+                            new ActionInput(action, context)));
+                    return true;
+            }
+            }
         }
         if (context.getTargetObj() != null)
             if (!action.canBeTargeted(context.getTarget(), false))

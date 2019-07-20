@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.macro.MacroGame;
@@ -42,7 +43,7 @@ public class Town extends Place {
 
     FactionObj ownerFaction;
     private boolean readyToInit;
-    private Set<DungeonQuest> quests;
+    private Set<Quest> quests;
     private Set<DC_HeroItemObj> stash;
 
     public Town(MacroGame game, ObjType t, MacroRef ref) {
@@ -56,11 +57,11 @@ public class Town extends Place {
         return true;
     }
 
-    public Set<DungeonQuest> getQuests() {
+    public Set<Quest> getQuests() {
         return quests;
     }
 
-    public void setQuests(Set<DungeonQuest> quests) {
+    public void setQuests(Set<Quest> quests) {
         this.quests = quests;
         quests.forEach(quest -> quest.setTown(this));
     }

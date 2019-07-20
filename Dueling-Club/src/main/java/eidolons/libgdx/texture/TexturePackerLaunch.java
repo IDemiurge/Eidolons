@@ -146,7 +146,8 @@ public class TexturePackerLaunch {
 
     public static Settings getWorstSettings() {
         Settings settings = getSettings();
-        settings.format = Format.RGBA8888;
+//        settings.format = Format.RGBA8888;
+        settings.format = Format.RGBA4444;
         settings.jpegQuality = 0.55f;
         if (DialogMaster.confirm("Jpg?"))
             settings.outputFormat = "jpg";
@@ -189,7 +190,7 @@ public class TexturePackerLaunch {
         settings.stripWhitespaceY = TRIM;
         settings.stripWhitespaceX = TRIM;
         settings.square = false;
-        settings.format = Format.RGBA4444;
+        settings.format = Format.RGBA8888;
         settings.limitMemory = false;
         settings.jpegQuality = 0.7f;
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -24,13 +25,10 @@ import main.game.bf.Coordinates;
 import main.system.SortMaster;
 import main.system.auxiliary.data.MapMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GridCellContainer extends GridCell {
-    Map<Integer, GenericGridView> indexMap = new HashMap<>();
+    Map<Integer, GenericGridView> indexMap = new LinkedHashMap<>();
     ValueContainer info;
     private int unitViewCount = 0;
     private int overlayCount = 0;
@@ -93,7 +91,7 @@ public class GridCellContainer extends GridCell {
     }
 
     private boolean isViewCacheOn() {
-        if (Eidolons.BOSS_FIGHT)  //hasBackground
+        if (EidolonsGame.BOSS_FIGHT)  //hasBackground
             return true;
         //TODO igg demo hack
 
@@ -336,10 +334,10 @@ public class GridCellContainer extends GridCell {
                 }
                 i = Math.max(1, i);
                 actor.setZIndex(Math.max(i - 1,
-                        //                 i / 2 +1
+
                         i * 2 - getUnitViewsVisible().size()
                 )); //over cell at least
-
+                //                 i / 2 +1
             } else if (actor.isHovered() || actor.getUserObject()== ShadowMaster.getShadowUnit())
                 hovered = actor;
             else if (actor.isActive()) {

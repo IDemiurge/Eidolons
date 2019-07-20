@@ -15,6 +15,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
@@ -678,19 +679,23 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String checkSpecialContents(String contents, BattleFieldObject obj) {
-        for (DungeonQuest quest : obj.getGame().getMetaMaster().getQuestMaster().
+        for (Quest q : obj.getGame().getMetaMaster().getQuestMaster().
                 getQuestsPool()) {
-            if (quest.getType() == QUEST_TYPE.SPECIAL_ITEM) {
-                if (quest.getArg() instanceof ObjType) {
-                    Integer n = quest.getNumberPrepared();
-                    if (quest.getNumberRequired() <= n) {
-                        continue;
-                    }
-                    if (checkCanPlaceQuestItem(quest, contents, obj)) {
-                        contents += ((ObjType) quest.getArg()).getName() + ";";
-                        quest.setNumberPrepared(quest.getNumberPrepared() + 1);
-                        quest.setCoordinate(obj.getCoordinates());
-                        //TODO multiple!
+            if (q instanceof DungeonQuest) {
+                DungeonQuest quest = ((DungeonQuest) q);
+
+                if (quest.getType() == QUEST_TYPE.SPECIAL_ITEM) {
+                    if (quest.getArg() instanceof ObjType) {
+                        Integer n = quest.getNumberPrepared();
+                        if (quest.getNumberRequired() <= n) {
+                            continue;
+                        }
+                        if (checkCanPlaceQuestItem(quest, contents, obj)) {
+                            contents += ((ObjType) quest.getArg()).getName() + ";";
+                            quest.setNumberPrepared(quest.getNumberPrepared() + 1);
+                            quest.setCoordinate(obj.getCoordinates());
+                            //TODO multiple!
+                        }
                     }
                 }
             }

@@ -7,8 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.libgdx.shaders.post.PostFxUpdater;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
@@ -65,11 +68,13 @@ public class PuzzleMaster {
     public void activated(Puzzle puzzle) {
         activePuzzles.add(puzzle);
         GuiEventManager.trigger(GuiEventType.PUZZLE_STARTED, puzzle);
+
     }
 
     public void deactivated(Puzzle puzzle) {
         activePuzzles.remove(puzzle);
         GuiEventManager.trigger(GuiEventType.PUZZLE_FINISHED, puzzle);
+        GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
     }
 
 

@@ -1,5 +1,6 @@
 package eidolons.libgdx.stage;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
@@ -61,8 +63,10 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
@@ -267,14 +271,14 @@ public class GuiStage extends StageX implements StageWithClosable {
         menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
                 gameMenu.toggle());
 
-        menuButton.setPosition(0, 13);
+        menuButton.setPosition(-4, 13);
         group.addActor(menuButton);
 
         addActor(group);
         group.setSize(btnBg.getWidth(),
                 btnBg.getHeight());
         group.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
-                GdxMaster.getHeight() - btnBg.getHeight());
+                GdxMaster.getHeight() - btnBg.getHeight() + 16);
 
 
         addActor(locationLabel = new ValueContainer("", "") {
@@ -303,7 +307,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     @Override
     public void draw() {
         //can we just pass if in 'cinematic mode'?
-        if (CoreEngine.isCinematicMode()) {
+        if (CoreEngine.isCinematicMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
             blackout.draw(getBatch(), 1);
             if (gameMenu.isVisible())
@@ -351,6 +355,12 @@ public class GuiStage extends StageX implements StageWithClosable {
                 }
             }
         }
+        if (isFreezeOnBlackout())
+        if (blackout.getChildren().get(0). getColor().a!=0)
+            if (blackout.getChildren().get(0). getColor().a!=1) {
+                blackout.act(delta);
+                return;
+            }
         if (dialogueMode) {
             dialogueContainer.setX(GdxMaster.centerWidth(dialogueContainer));
             for (Actor actor : getRoot().getChildren()) {
@@ -372,6 +382,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         }
         super.act(delta);
         resetZIndices();
+    }
+
+    private boolean isFreezeOnBlackout() {
+        return false;
     }
 
     public List<Actor> getActorsForDialogue() {
@@ -413,6 +427,8 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected boolean checkBlocked() {
+//        if (dialogueMode)
+//            return true;
         if (tipMessageWindow != null)
             if (tipMessageWindow.isVisible())
                 return true;
@@ -762,6 +778,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     public boolean keyUp(int keyCode) {
         String c = Keys.toString(keyCode);
 
+        FileLogManager.streamInput("Key Up: "+c);
         if (!charsUp.contains(c)) {
             charsUp.add(c);
         }
@@ -770,6 +787,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     @Override
     public boolean keyDown(int keyCode) {
+        FileLogManager.streamInput("Key Down: "+Keys.toString(keyCode));
         if (DC_Game.game == null) {
             return false;
         }
@@ -786,6 +804,11 @@ public class GuiStage extends StageX implements StageWithClosable {
     public boolean keyTyped(char character) {
         if ((int) character == 0)
             return false;
+        FileLogManager.streamInput("Key Typed: "+character);
+        if (dialogueMode) {
+            if (dialogueContainer.getCurrent().getInputProcessor().keyTyped(character))
+                return true;
+        }
         String str = String.valueOf(character).toUpperCase();
         if (Character.isAlphabetic(character)) {
             if (character == lastTyped) {
@@ -940,6 +963,23 @@ public class GuiStage extends StageX implements StageWithClosable {
         getScreen().updateInputController();
     }
 
+    public void afterBlackout(Runnable runnable) {
+//TODO         blackout.fadeOutAndBack(runnable);
+        runnable.run();
+//        Eidolons.onNonGdxThread(() -> {
+//            int time=0;
+//            while (time < 3000) {
+//                time += 100;
+//                WaitMaster.WAIT(100);
+//                if (blackout.getChildren().get(0). getColor().a == 0) {
+//                    Gdx.app.postRunnable(runnable);
+//                    break;
+//                }
+//            }
+//        });
+
+    }
+
     public void playDialogue(DialogueHandler handler) {
         if (dialogueMode) {
             if (isDialogueCached())
@@ -967,6 +1007,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         dialogueContainer.fadeOut();
         setDialogueMode(false);
         DialogueManager.setRunning(false);
+        dialogueContainer.hide();
+        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE, dialogueContainer.getDialogue());
+        DialogueManager.dialogueDone();
     }
 
     public boolean isDialogueMode() {
