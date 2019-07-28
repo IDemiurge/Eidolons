@@ -20,6 +20,7 @@ public class FileLogManager {
 
     private static final float WRITE_PERIOD = 5000;
     private static boolean loggingOn;
+    private static PrintStream console;
 
     public static void writeStatInfo(String toString) {
         //TODO
@@ -145,6 +146,18 @@ public class FileLogManager {
 //            }
 //        }
 //        return exceptionPrintStream;
+    }
+
+    public static PrintStream getConsolePrintStream() {
+        if (console==null) {
+            console=createPrintStream(getConsoleLogPath());
+        }
+        return console;
+    }
+
+    private static String getConsoleLogPath() {
+        return PathFinder.getRootPath()+"/logs/"+CoreEngine.VERSION+ " "+
+                TimeMaster.getDateString()+" "+TimeMaster.getTimeStamp()+" console.txt";
     }
 
     public static PrintStream createPrintStream(String path) {

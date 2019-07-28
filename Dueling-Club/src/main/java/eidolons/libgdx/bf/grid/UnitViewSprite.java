@@ -15,32 +15,35 @@ import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import main.data.filesys.PathFinder;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.data.FileManager;
 
 import java.util.*;
 
 /**
  * Created by JustMe on 11/28/2018.
  */
-public class UnitViewSprite extends GridUnitView {
+public abstract class UnitViewSprite extends GridUnitView {
     public static final boolean randomEmitter = true;
     public static final boolean TEST_MODE = false;
     private float height;
     private float width;
     private FadeImageContainer glow;
-    private Map<EmitterActor, Vector2> emitters ;
+    private Map<EmitterActor, Vector2> emitters;
     SpriteModel spriteModel;
 
     public UnitViewSprite(UnitViewOptions o) {
         super(o);
 //        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED , p-> );
 //        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES , p-> );
-        addActor(spriteModel = new SpriteModel(SpriteAnimationFactory.getSpriteAnimation(o.getSpritePath()), o.getSpritePath()));
+
+        addActor(spriteModel = new SpriteModel(
+                SpriteAnimationFactory.getSpriteAnimation(getSpritePath()), getName()));
+//        spriteModel.setBlending(getBlending());
         //queue view
         // on hover?
+    }
+
+    protected String getSpritePath() {
+        return null;
     }
 
     @Override
@@ -68,7 +71,7 @@ public class UnitViewSprite extends GridUnitView {
     protected EmitterActor createEmitter(String path, int offsetX, int offsetY) {
         path = PathFinder.getVfxAtlasPath() + path;
         EmitterActor emitter = EmitterPools.getEmitterActor(path);
-        initEmitter(emitter, offsetX,offsetY);
+        initEmitter(emitter, offsetX, offsetY);
         return emitter;
     }
 
@@ -80,7 +83,7 @@ public class UnitViewSprite extends GridUnitView {
         addActor(emitter);
         emitter.start();
         emitter.setZIndex(1);
-        emitter.setPosition(getWidth() / 2 +offsetX, getHeight() / 2 + offsetY);
+        emitter.setPosition(getWidth() / 2 + offsetX, getHeight() / 2 + offsetY);
 
     }
 
@@ -116,8 +119,10 @@ public class UnitViewSprite extends GridUnitView {
 
     @Override
     public void act(float delta) {
-        spriteModel.setPos(
-                GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
+        if (spriteModel != null) {
+            spriteModel.setPos(
+                    GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
+        }
 
         glow.setRotation(glow.getRotation() + 5 * delta);
         super.act(delta);
@@ -134,7 +139,7 @@ public class UnitViewSprite extends GridUnitView {
         modeImage.setVisible(false);
         emitters.keySet().forEach(emitterActor -> emitterActor
                 .setPosition(getWidth() / 2 + emitters.get(emitterActor).x,
-                        getHeight() / 2+ emitters.get(emitterActor).y));
+                        getHeight() / 2 + emitters.get(emitterActor).y));
     }
 
     @Override
@@ -142,7 +147,7 @@ public class UnitViewSprite extends GridUnitView {
         super.setPosition(x, y);
         emitters.keySet().forEach(emitterActor -> emitterActor
                 .setPosition(getWidth() / 2 + emitters.get(emitterActor).x,
-                        getHeight() / 2+ emitters.get(emitterActor).y));
+                        getHeight() / 2 + emitters.get(emitterActor).y));
     }
 
 

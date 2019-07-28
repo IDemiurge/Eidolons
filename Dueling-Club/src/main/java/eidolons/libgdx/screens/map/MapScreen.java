@@ -79,7 +79,6 @@ public class MapScreen extends GameScreenWithTown {
         mapStage = new MapStage(viewPort, getBatch());
         super.preLoad();
         initGl();
-        initDialogue();
         String saveName = (String) data.getParameter();
         Eidolons.onThisOrNonGdxThread(() -> {
 

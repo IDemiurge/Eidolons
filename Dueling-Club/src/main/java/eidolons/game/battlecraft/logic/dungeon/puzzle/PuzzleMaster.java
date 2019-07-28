@@ -172,6 +172,8 @@ public class PuzzleMaster {
         SHAPE,
         PATH,
 
+        SLOTS,
+
         FIND_SECRET,
         DISCOVER_PATTERN,
 

@@ -16,6 +16,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -26,6 +27,7 @@ import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
@@ -40,9 +42,12 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
+import main.system.threading.WaitMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,7 +79,7 @@ public class AnimMaster3d {
             {"lance", "spear"},
             //     {"pike", "spear"},
             //     {"staff", "spear"},
-                 {"battle spear", "lance"},
+            {"battle spear", "lance"},
             //     {"scythe", "spear"},
             {"sickle", "hand axe"},
 
@@ -534,36 +539,70 @@ public class AnimMaster3d {
     public static TextureAtlas getOrCreateAtlas(String path) {
         return getOrCreateAtlas(path, true);
     }
+
     public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
-        if (!FileManager.isFile(path))
+        if (!FileManager.isFile(path)) {
+            main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + path);
             return null;
+        }
         path = TextureCache.formatTexturePath(path);
 
         TextureAtlas atlas = cache ? atlasMap.get(path) : null;
         if (atlas == null) {
             if (Assets.isOn()) {
+                Chronos.mark("loading "+path);
                 Assets.get().getManager().load(path, TextureAtlas.class);
 //                while (!Assets.get().getManager().isLoaded(path)) {
 //                    if (Assets.get().getManager().update())
 //                        break;
 //                }
-                while (!Assets.get().getManager().update()) {
+                while (!Assets.get().getManager().update(1000)) {
+                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
                 }
 
                 if (!Assets.get().getManager().isLoaded(path))
+                {
                     main.system.auxiliary.log.LogMaster.log(1, "************* Atlas failed to load! " + path);
-//                try {
-//                    Assets.get().getManager().finishLoadingAsset(path);
-//                } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
-//                }
-                atlas = Assets.get().getManager().get(path, TextureAtlas.class);
+                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
+                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
+                    Assets.setON(false);
+                    OptionsMaster.saveOptions();
+                    return getOrCreateAtlas(path, cache);
+                }
+                try {
+                    Assets.get().getManager().finishLoadingAsset(path);
+                    atlas = Assets.get().getManager().get(path, TextureAtlas.class);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    FileLogManager.streamMain("CRITICAL: asset not loaded - " + path);
+
+                    main.system.auxiliary.log.LogMaster.important("ALL assets: \n"
+                            + Assets.get().getManager().getDiagnostics());
+                }
+                if (atlas == null) {
+                    FileLogManager.streamMain("Trying lazy load... - " + path);
+                    int time = 0;
+                    while (time < 10000) {
+                        WaitMaster.WAIT(1000);
+                        time += 1000;
+                        try {
+                            atlas = Assets.get().getManager().get(path, TextureAtlas.class);
+                        } catch (Exception e) {
+//                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                    }
+                }
+                if (atlas == null) {
+                    FileLogManager.streamMain("Lazy load failed! - " + path);
+                } else {
+                    Chronos.logTimeElapsedForMark("loading "+path);
+                }
             } else {
                 atlas = new SmartTextureAtlas(path);
             }
         }
         if (cache) {
-        atlasMap.put(path, atlas);
+            atlasMap.put(path, atlas);
         }
         return atlas;
 
@@ -592,14 +631,14 @@ public class AnimMaster3d {
     public static void hoverOff(DC_UnitAction entity) {
         if (!isReadyAnimSupported(entity))
             return;
-        Anim anim = getReadyAnim(entity);
+        Animation anim = getReadyAnim(entity);
         anim.setDone(true);
     }
 
     public static void initHover(DC_UnitAction entity) {
         if (!isReadyAnimSupported(entity))
             return;
-        Anim anim = getReadyAnim(entity);
+        Animation anim = getReadyAnim(entity);
         if (!anim.isDone())
             return;
         anim.setDone(false);
@@ -614,9 +653,9 @@ public class AnimMaster3d {
         //        return entity.getActiveWeapon().getName().contains("Short Sword");
     }
 
-    private static Anim getReadyAnim(DC_UnitAction entity) {
+    private static Animation getReadyAnim(DC_UnitAction entity) {
         CompositeAnim composite = AnimConstructor.getOrCreate(entity);
-        Anim anim = composite.getContinuous();
+        Animation anim = composite.getContinuous();
         if (anim == null) {
             anim = new Ready3dAnim(entity);
             composite.setContinuous(anim);
@@ -626,14 +665,14 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
-        if ( EidolonsGame.BRIDGE)
+        if (EidolonsGame.BRIDGE)
             return true;
         if (CoreEngine.isIDE())
             if (!CoreEngine.isGraphicTestMode())
                 if (CoreEngine.isLiteLaunch()) {
-            if (!EidolonsGame.BOSS_FIGHT)
-                return true;
-        }
+                    if (!EidolonsGame.BOSS_FIGHT)
+                        return true;
+                }
         if (off == null)
             off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
         return off;

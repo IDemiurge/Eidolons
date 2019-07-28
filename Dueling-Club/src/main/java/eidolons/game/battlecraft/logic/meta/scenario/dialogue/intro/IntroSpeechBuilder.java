@@ -6,14 +6,8 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechBuild
 /**
  * Created by JustMe on 5/31/2017.
  */
-public class IntroSpeechBuilder extends SpeechBuilder {
+public class IntroSpeechBuilder   {
 
-
-    public IntroSpeechBuilder(String linesPath) {
-        super(linesPath);
-    }
-
-    @Override
     protected String processText(String text, Speech speech) {
         return text;
     }

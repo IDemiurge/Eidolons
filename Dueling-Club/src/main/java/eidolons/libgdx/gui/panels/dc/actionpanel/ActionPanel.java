@@ -250,7 +250,7 @@ public class ActionPanel extends GroupX {
         altBg = EidolonsGame.isAltControlPanel();
         background.setImage(altBg ? BACKGROUND_PATH_ALT : BACKGROUND_PATH);
         if (altBg) {
-            if (!CoreEngine.isIDE())
+            if (!EidolonsGame.isSpellsEnabled())
             if (spellPanel.getColor().a == 1)
                 spellPanel.fadeOut();
             if (modeActionsPanel.getColor().a == 1)

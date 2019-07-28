@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CoreEngine {
+    private static boolean dungeonTool;
+
     public static boolean isMyLiteLaunch() {
         return isIDE() && isLiteLaunch();
     }
@@ -33,7 +35,7 @@ public class CoreEngine {
     }
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.5d";
+    public static final String VERSION = "0.9.6";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotica;
     public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
@@ -130,8 +132,7 @@ public class CoreEngine {
         Chronos.logTimeElapsedForMark("SYSTEM INIT");
 
         System.out.println("...Core Engine Init finished");
-//        if (!me)
-        {
+        if (!me) {
             System.out.println();
             System.getProperties().list(System.out);
             System.getProperties().list(FileLogManager.getMainPrintStream());
@@ -386,7 +387,8 @@ public class CoreEngine {
     }
 
     public static boolean isCombatGame() {
-        return !toolIsRunning && !isArcaneTower() && !isArcaneVault() && !isLevelEditor() && !isjUnit();
+        return isMainGame();
+//        return !toolIsRunning && !isArcaneTower() && !isArcaneVault() && !isLevelEditor() && !isjUnit();
     }
 
     public static boolean isIDE() {
@@ -688,4 +690,13 @@ public class CoreEngine {
     public static void setAutoFixOn(boolean autoFixOn) {
         CoreEngine.autoFixOn = autoFixOn;
     }
+
+    public static boolean isDungeonTool() {
+        return dungeonTool;
+    }
+
+    public static void setDungeonTool(boolean dungeonTool) {
+        CoreEngine.dungeonTool = dungeonTool;
+    }
+
 }

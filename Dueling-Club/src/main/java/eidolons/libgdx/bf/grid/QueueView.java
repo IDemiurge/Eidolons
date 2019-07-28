@@ -41,6 +41,10 @@ public class QueueView extends UnitView {
         init(o.getClockTexture(), o.getClockValue());
     }
 
+    @Override
+    protected void initSprite(UnitViewOptions o) {
+        //TODO could do it of course , but..
+    }
 
     protected void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;

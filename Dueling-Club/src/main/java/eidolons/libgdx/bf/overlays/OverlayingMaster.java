@@ -163,6 +163,8 @@ public class OverlayingMaster {
         } else {
             if (obj.getName().equalsIgnoreCase("ALTAR"))
                 return Sprites.ALTAR;
+            if (obj.getName().equalsIgnoreCase("Eldritch Sphere"))
+                return Sprites.ORB;
         }
         return null;
     }

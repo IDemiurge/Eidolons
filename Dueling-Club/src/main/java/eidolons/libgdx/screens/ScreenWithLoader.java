@@ -23,6 +23,7 @@ import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 
@@ -62,7 +63,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                     PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
                 return;
 
-        postProcessing = getPostProcessController();
+        try {
+            postProcessing = getPostProcessController();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            FileLogManager.streamMain("Shader loader failed!");
+            OptionsMaster.getPostProcessingOptions().setValue(PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF, true);
+            OptionsMaster.saveOptions();
+        }
 
 
     }
@@ -214,8 +222,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                     postProcessing.begin();
         renderLoader(delta);
         if (postProcessing != null)
-            if (isPostProcessingDefault())
-            {
+            if (isPostProcessingDefault()) {
                 getBatch().resetBlending();
                 postProcessing.end();
             }

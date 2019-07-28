@@ -367,7 +367,7 @@ public class XML_Reader {
 
         constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
 
-      LogMaster.important("" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
+      LogMaster.verbose("TYPE MAPPING "+ name +" "+ Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
     public static void loadMap(String name, String text) {

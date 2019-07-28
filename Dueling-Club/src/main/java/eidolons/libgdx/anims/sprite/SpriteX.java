@@ -33,6 +33,7 @@ public class SpriteX extends GroupX {
     float scaleRange;
     private int fps;
     private boolean flipX;
+    private boolean done;
 
     public SpriteX() {
     }
@@ -54,13 +55,13 @@ public class SpriteX extends GroupX {
             speedRandomness = template.speedRandomness;
         }
         if (path != null) {
-            sprite = SpriteAnimationFactory.getSpriteAnimation(path);
+            sprite = SpriteAnimationFactory.getSpriteAnimation(path, true, false);
             sprite.setCustomAct(true);
         }
     }
 
     public void setSprite(String path) {
-        sprite = SpriteAnimationFactory.getSpriteAnimation(path);
+        sprite = SpriteAnimationFactory.getSpriteAnimation(path, false, false);
     }
 
     public void setSprite(SpriteAnimation sprite) {
@@ -70,6 +71,10 @@ public class SpriteX extends GroupX {
         }
     }
 
+    public SpriteAnimation getSprite() {
+        return sprite;
+    }
+
     @Override
     public void act(float delta) {
 
@@ -77,18 +82,6 @@ public class SpriteX extends GroupX {
         if (sprite == null) {
             return;
         }
-        if (fps > 0) {
-            sprite.setFps(fps);
-        }
-        sprite.setX(getX());
-        sprite.setY(getY());
-        if (getParent() instanceof BaseView)
-            if (getParent() instanceof OverlayView) {
-                sprite.centerOnParent(this);
-            } else
-            {
-//                sprite.centerOnParent(getParent()); TODO
-            }
         sprite.act(delta);
         super.act(delta);
     }
@@ -108,15 +101,40 @@ public class SpriteX extends GroupX {
         if (sprite == null) {
             return;
         }
+        if (fps > 0) {
+            sprite.setFps(fps);
+        }
+        sprite.setX(getX());
+        sprite.setY(getY());
+        if (getParent() instanceof BaseView) {
+            switch (((BaseView) getParent()).getUserObject().getName()) {
+                case "Eldritch Sphere":
+                    getSprite().setOffsetX( getWidth()-128+32);
+                    getSprite().setOffsetY( getHeight()-128);
+                    break;
+            }
+            if (getParent() instanceof OverlayView) {
+
+                sprite.centerOnParent(this);
+            } else {
+//                sprite.centerOnParent(getParent()); TODO
+            }
+        }
+
         sprite.setFlipX(flipX);
         sprite.setColor(getColor());
-        sprite.draw(batch);
+        done = !sprite.draw(batch);
         sprite.setFlipX(true);
 //        debug();
 //        Gdx.gl20.glDisable(GL_BLEND);
 //        Gdx.gl20.glDisable(GL_LINE_SMOOTH);
 //        Gdx.gl20.glDisable(GL_POINT_SMOOTH);
 //        Gdx.gl20.glDisable(GL_POLYGON_SMOOTH);
+    }
+
+    public boolean draw(Batch batch) {
+        draw(batch, 1f);
+        return !done;
     }
 
     @Override

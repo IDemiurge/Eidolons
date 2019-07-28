@@ -98,6 +98,11 @@ public class DC_AttackMaster {
     private Boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
                            Effect onHit,
                            Effect onKill, boolean offhand, boolean counter) {
+        return attack(attack, ref, free, canCounter, onHit, onKill, offhand, counter, false);
+    }
+        private Boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
+        Effect onHit,
+        Effect onKill, boolean offhand, boolean counter, boolean preview) {
         ENTRY_TYPE type = ENTRY_TYPE.ATTACK;
         boolean extraAttack = true;
         if (attack.getAction().isCounterMode()) {

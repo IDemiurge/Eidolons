@@ -16,83 +16,82 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         return GRAPHIC_OPTION.class;
     }
 
-    public enum PERFORMANCE_BOOST_LEVEL  {
+    public enum PERFORMANCE_BOOST_LEVEL {
         NONE,
         DISABLE_ALL_VISUALS,
         DISABLE_ALL_BACKGROUND_OPERATIONS,
-        DISABLE_ALL,;
+        DISABLE_ALL,
+        ;
     }
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
         LITE_MODE(false),
 
         FULLSCREEN(true),
-//        GAMMA(),
-
+        //        GAMMA(),
+        ALT_ASSET_LOAD(false),
         AMBIENCE_VFX(true),
         AMBIENCE_DENSITY(10, 0, 50),
         VIDEO(true),
-        AMBIENCE_MOVE_SUPPORTED(true){
+        AMBIENCE_MOVE_SUPPORTED(true) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-        FRAMERATE(60, 20, 80){
+        FRAMERATE(60, 20, 80) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()){
+        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-//        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
+        //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
         SHADOW_MAP_OFF(false),
         UI_VFX(false),
-        FONT_SIZE(100, 50, 200){
+        FONT_SIZE(100, 50, 200) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-        UI_SCALE(100, 50, 200){
+        UI_SCALE(100, 50, 200) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-        SPRITE_CACHE_ON(false){
+        SPRITE_CACHE_ON(false) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-        BRIGHTNESS(80, 20, 100){
+        BRIGHTNESS(80, 20, 100) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
-        }
-        , ADDITIVE_LIGHT(false){
+        }, ADDITIVE_LIGHT(false) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
-        }
-        ,
+        },
         LIGHT_OVERLAYS_OFF(false),
-        UI_ATLAS(true){
+        UI_ATLAS(true) {
             @Override
             public boolean isDevOnly() {
                 return true;
             }
         },
-        FULL_ATLAS(false){
+        FULL_ATLAS(false) {
             @Override
             public boolean isDevOnly() {
                 return true;

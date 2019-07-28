@@ -1,26 +1,43 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
+import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
+import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
+import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
+import eidolons.game.battlecraft.rules.perk.RangeRule;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.VerticalValueContainer;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import eidolons.libgdx.gui.panels.dc.unitinfo.old.MultiValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
+import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
+import main.system.math.PositionMaster;
 import main.system.text.TextWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,6 +62,71 @@ public class AttackTooltipFactory {
 
     public static AttackTooltip createAttackTooltip(DC_UnitAction activeObj, DC_Obj target) {
         return createAttackTooltip(activeObj, true, true, true, false, target);
+    }
+
+    public static TablePanelX createCasesTable(Unit source, BattleFieldObject target) {
+        TablePanelX table= new TablePanelX();
+        table.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawableNoMinSize());
+
+        Attack attack = DC_AttackMaster.getAttackFromAction(source.getAttackAction(false));
+        Ref ref = source.getRef().getCopy();
+        ref.setTarget(target.getId());
+        for (AttackDataSource.ATTACK_CASE value : AttackDataSource.ATTACK_CASE.values()) {
+            if (checkCase(value, ref)){
+                ValueContainer  container = createContainer(value);
+                table.add(container).row();
+            }
+
+        }
+
+        return table;
+    }
+
+    private static boolean checkCase(AttackDataSource.ATTACK_CASE value, Ref ref) {
+        switch (value) {
+            case SNEAK:
+               return SneakRule.checkSneak(ref);
+            case CLOSE_QUARTERS:
+                return RangeRule.isCloseQuartersOrLongReach(ref)==true;
+            case LONG_REACH:
+                return RangeRule.isCloseQuartersOrLongReach(ref)==false;
+            case SIDEWAYS:
+                return FacingMaster.getSingleFacing(ref.getSourceObj(), ref.getTargetObj())== UnitEnums.FACING_SINGLE.TO_THE_SIDE;
+            case DIAGONAL:
+                return DirectionMaster.getRelativeDirection(ref.getSourceObj(), ref.getTargetObj()).isDiagonal();
+        }
+        return false;
+    }
+
+    private static ValueContainer createContainer(AttackDataSource.ATTACK_CASE value) {
+        String pic="";
+        String text = StringMaster.getWellFormattedString(value.toString())+ " Attack";
+        String tooltip=text + " modificators will apply";
+        Color color = null;
+        switch (value) {
+            case SNEAK:
+                tooltip="Target may have reduced defense";
+                color = GdxColorMaster.LILAC;
+                break;
+            case CLOSE_QUARTERS:
+                color = GdxColorMaster.RED;
+                break;
+            case LONG_REACH:
+                color = GdxColorMaster.BLUE;
+                break;
+            case SIDEWAYS:
+                color = GdxColorMaster.YELLOW;
+                break;
+            case DIAGONAL:
+                color = GdxColorMaster.GREEN;
+                break;
+        }
+
+        text = TextBuilder.wrapInColor(color, text);
+        ValueContainer container = new ValueContainer(text, pic);
+
+        container.addListener(new ValueTooltip(tooltip).getController());
+        return container;
     }
 
     private static ValueContainer createPrecalcRow(boolean precalc, DC_UnitAction el, DC_Obj target) {
@@ -104,6 +186,8 @@ public class AttackTooltipFactory {
         AttackTooltip toolTip = new AttackTooltip(el);
 
         ValueContainer precalcRow = createPrecalcRow(precalc, el, target);
+
+
         toolTip.setUserObject(new ActionTooltipSource() {
             @Override
             public MultiValueContainer getHead() {

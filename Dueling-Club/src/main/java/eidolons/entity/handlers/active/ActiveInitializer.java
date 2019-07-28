@@ -57,15 +57,12 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                     return;
                 }
             }
-            if (!getEntity().getName().equalsIgnoreCase("wait"))
-                if (!getEntity().getName().equalsIgnoreCase("idle")) {
-                    return;
-                }
-            main.system.auxiliary.log.LogMaster.log(1, ">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
             if (getEntity().isAttackAny()) {
-                main.system.auxiliary.log.LogMaster.log(1, ">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
-
-            }
+                main.system.auxiliary.log.LogMaster.important( ">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
+            } else if (!getEntity().getName().equalsIgnoreCase("wait"))
+                if (!getEntity().getName().equalsIgnoreCase("idle")) {
+                  main.system.auxiliary.log.LogMaster.important(">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
+                }
         }
     }
 
@@ -157,9 +154,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             if (costs.getCost(PARAMS.AP_COST) != null)
                 costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
         if (sta != 0)
-        if (costs.getCost(PARAMS.STA_COST) != null) {
-            costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().applyModifier(sta);
-        }
+            if (costs.getCost(PARAMS.STA_COST) != null) {
+                costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().applyModifier(sta);
+            }
     }
 
 

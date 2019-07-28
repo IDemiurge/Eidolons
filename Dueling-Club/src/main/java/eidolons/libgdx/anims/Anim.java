@@ -963,13 +963,6 @@ public class Anim extends Group implements Animation {
         return speedMod;
     }
 
-    public void startAsSingleAnim( ) {
-        startAsSingleAnim(getRef());
-    }
-    public void startAsSingleAnim(Ref ref) {
-        start(ref);
-        AnimMaster.getInstance().add(new CompositeAnim(this));
-    }
 
     public void setOnDone(EventCallback onDone) {
         this.onDone = onDone;

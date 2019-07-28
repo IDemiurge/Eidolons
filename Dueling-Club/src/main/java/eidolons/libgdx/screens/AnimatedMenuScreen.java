@@ -48,11 +48,11 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         mainMenu.setPosition(
                 GdxMaster.centerWidth(mainMenu)
                 , GdxMaster.centerHeight(mainMenu));
-        if (CoreEngine.isIDE()) {
-            if (Eidolons.getResolution() != RESOLUTION._1920x1080) {
-                mainMenu.setPosition(0, (float) (Eidolons.getResolutionDimensions().getHeight() - mainMenu.getHeight() - 100));
-            }
-        }
+//        if (CoreEngine.isIDE()) {
+//            if (Eidolons.getResolution() != RESOLUTION._1920x1080) {
+//                mainMenu.setPosition(0, (float) (Eidolons.getResolutionDimensions().getHeight() - mainMenu.getHeight() - 100));
+//            }
+//        }
     }
 
     @Override

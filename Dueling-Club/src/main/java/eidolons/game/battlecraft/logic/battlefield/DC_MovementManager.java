@@ -276,7 +276,10 @@ public class DC_MovementManager implements MovementManager {
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
 
         if (obj instanceof Unit)
+        {
             game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
+            game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
+        }
         return game.fireEvent(event);
     }
 

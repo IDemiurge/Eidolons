@@ -139,9 +139,9 @@ public class AggroMaster extends ExplorationHandler {
         int i = set.size();
         set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
                 || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
-        if (i != set.size()) {
-            main.system.auxiliary.log.LogMaster.log(1, "Gotcha aggro! " + i + " " + set);
-        }
+//        if (i != set.size()) {
+//            main.system.auxiliary.log.LogMaster.log(1, "Gotcha aggro! " + i + " " + set);
+//        }
 
         for (Unit unit : set) {
             unit.getAI().setEngaged(false); //TODO better place for it?

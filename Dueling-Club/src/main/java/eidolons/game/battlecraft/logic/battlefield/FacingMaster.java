@@ -52,6 +52,9 @@ public class FacingMaster {
         return getSingleFacing(facing, obj1.getCoordinates(), obj2.getCoordinates());
     }
 
+    public static FACING_SINGLE getSingleFacing (Obj sourceObj, Obj targetObj) {
+        return getSingleFacing((BattleFieldObject) sourceObj, (BfObj) targetObj);
+    }
     public static FACING_SINGLE getSingleFacing(FACING_DIRECTION facing, Coordinates c1,
                                                 Coordinates c2) {
         if (c1.equals(c2)) {
@@ -305,4 +308,5 @@ public class FacingMaster {
     public static FACING_DIRECTION getFacing(String facing) {
         return new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class, facing);
     }
+
 }

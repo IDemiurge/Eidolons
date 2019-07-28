@@ -31,6 +31,17 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         init();
     }
 
+    @Override
+    public void tryDone() {
+        super.tryDone();
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        tryDone();
+    }
+
     protected String getDoneText() {
         return "Next";
     }

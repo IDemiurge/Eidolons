@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
+import com.badlogic.gdx.utils.Logger;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
@@ -28,6 +29,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
@@ -37,11 +39,22 @@ import main.system.launch.CoreEngine;
  * Created by JustMe on 12/1/2017.
  */
 public class Assets {
+    private static   boolean ON = true;
     static Assets assets;
     AssetManager manager;
 
+    public static void setON(boolean ON) {
+        Assets.ON = ON;
+    }
+
     private Assets() {
-        manager = new AssetManager();
+        manager = new AssetManager(){
+            @Override
+            public synchronized boolean update() {
+                return super.update();
+            }
+        };
+        manager.setLogger(new Logger("Atlases", Logger.DEBUG));
         manager.setErrorListener(new AssetErrorListener() {
             @Override
             public void error(AssetDescriptor asset, Throwable throwable) {
@@ -56,7 +69,7 @@ public class Assets {
                                             FileHandle file, ParticleEffectParameter param) {
                      ParticleEffectX fx = createEmitter(file.path());
 //                 ParticleEffect fx=super.load(am, fileName, file, param);
-                     main.system.auxiliary.log.LogMaster.log(1, fileName + file.path() + " loaded!");
+                     main.system.auxiliary.log.LogMaster.important(fileName + file.path() + " loaded!");
                      return fx;
                  }
 
@@ -99,11 +112,12 @@ public class Assets {
     }
 
     public static boolean isOn() {
-        return true;
+        return ON;
     }
 
     public static boolean preloadAll(DequeImpl<BattleFieldObject> objects) {
         boolean result = false;
+        Chronos.mark("isPreconstructAllOnGameInit");
         if (AnimConstructor.isPreconstructAllOnGameInit()) {
             for (BattleFieldObject sub : objects) {
                 if (!checkPreloadUnit(sub)) {
@@ -120,15 +134,22 @@ public class Assets {
             }
             result = true;
         }
+        Chronos.logTimeElapsedForMark("isPreconstructAllOnGameInit");
         EmitterPresetMaster.getInstance().init();
+        Chronos.mark("preload EmitterPools");
         EmitterPools.init(get().getManager());
+        Chronos.logTimeElapsedForMark("preload EmitterPools");
 
         if (isPreloadUI()){
+            Chronos.mark("preload ui");
             preloadUI();
+            Chronos.logTimeElapsedForMark("preload ui");
         }
 
         if (isPreloadHeroes()){
+            Chronos.mark("preload her0es");
             preloadHeroes();
+            Chronos.logTimeElapsedForMark("preload her0es");
         }
 
         return result;
@@ -142,6 +163,7 @@ public class Assets {
     public static void preloadUI() {
         if (EidolonsGame.BRIDGE){
             SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
             return;
         }
         SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL, false);

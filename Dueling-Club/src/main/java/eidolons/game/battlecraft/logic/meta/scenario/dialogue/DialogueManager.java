@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
@@ -34,6 +35,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     private static boolean running;
     private static Runnable afterDialogue;
 
+    protected   SpeechExecutor speechExecutor;
     protected DialogueFactory dialogueFactory;
     protected IntroFactory introFactory;
     protected DialogueActorMaster dialogueActorMaster;
@@ -43,6 +45,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         dialogueFactory = createDialogueFactory();
         introFactory = createIntroFactory();
         dialogueActorMaster = new DialogueActorMaster(master);
+        speechExecutor = new SpeechExecutor(master);
 
         GuiEventManager.bind(INIT_DIALOG, obj -> {
             if (CoreEngine.isIDE())
@@ -102,6 +105,10 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     @Override
     public DialogueFactory getDialogueFactory() {
         return dialogueFactory;
+    }
+
+    public SpeechExecutor getSpeechExecutor() {
+        return speechExecutor;
     }
 
     public  static void createTutorialJournal() {

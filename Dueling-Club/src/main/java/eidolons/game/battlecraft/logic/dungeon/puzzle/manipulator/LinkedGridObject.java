@@ -10,6 +10,7 @@ import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 
+import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.GATE_PILLAR;
 import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.LIGHT;
 
 public class LinkedGridObject extends GridObject {
@@ -37,9 +38,18 @@ public class LinkedGridObject extends GridObject {
         CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.WISPS.path + "(-32, 128);";
 
         LIGHT.screen = true;
+        GATE_PILLAR.screen = true;
 //        CUSTOM_OBJECT.black_waters.screen = true;
         CUSTOM_OBJECT.BLACKNESS.vfxUnderMirrorX = true;
 
+
+        CUSTOM_OBJECT.crematory.vfxOver  =   "advanced/ambi/waters/fire(0, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(-45, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(45, 0);";
+
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire small(-33, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire small(0, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire small(33, 0);";
 
         CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
         CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
@@ -128,9 +138,9 @@ public class LinkedGridObject extends GridObject {
     @Override
     public boolean checkVisible() {
         sprite.setFps(getFps());
-        if (object== CUSTOM_OBJECT.black_waters) {
-            sprite.setFps(1);
-        }
+//        if (object== CUSTOM_OBJECT.black_waters) {
+//            sprite.setFps(15);
+//        }
         if (object== LIGHT) {
             return true;
         }

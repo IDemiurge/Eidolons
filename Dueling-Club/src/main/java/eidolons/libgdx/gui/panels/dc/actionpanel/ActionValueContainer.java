@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
@@ -229,11 +231,11 @@ public class ActionValueContainer extends ValueContainer {
 
         ShaderProgram shader = batch.getShader();
         if (isDarkened()) {
-            shader = batch.getShader();
+//            shader = batch.getShader();
             batch.setShader(DarkShader.getDarkShader());
         }
-        if (!valid) {
-            shader = batch.getShader();
+        if (!isValid()) {
+//            shader = batch.getShader();
             batch.setShader(GrayscaleShader.getGrayscaleShader());
         }
         super.draw(batch, parentAlpha);
@@ -247,6 +249,16 @@ public class ActionValueContainer extends ValueContainer {
 //             overlay.getRegionHeight() * getImageContainer().getActor().getScaleY()
 //            );
 //        }
+    }
+
+    private boolean isValid() {
+        if (isBlocked())
+            return false;
+        return valid;
+    }
+
+    private boolean isBlocked() {
+        return  EidolonsGame.isActionBlocked((DC_ActiveObj) getUserObject());
     }
 
     public void setCustomRadialMenu(RadialMenu customRadialMenu) {

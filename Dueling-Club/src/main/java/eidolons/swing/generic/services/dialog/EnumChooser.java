@@ -2,9 +2,9 @@ package eidolons.swing.generic.services.dialog;
 
 import main.game.bf.directions.FACING_DIRECTION;
 
-public class EnumChooser<E> {
+public class EnumChooser  {
 
-    public FACING_DIRECTION choose(Class<FACING_DIRECTION> clazz) {
+    public <T> T  choose(Class<T> clazz) {
         int i = DialogMaster.optionChoice(clazz.getEnumConstants(), "Choose "
          + clazz.getSimpleName() + " constant");
         if (i == -1) {

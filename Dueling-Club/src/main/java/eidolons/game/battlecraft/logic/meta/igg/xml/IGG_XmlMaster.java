@@ -47,9 +47,9 @@ import java.util.Map;
 public class IGG_XmlMaster {
 
     public static final String FOLDER = "to gen";
-    private static final boolean PREGEN = true;
-    private final UnitEnums.UNIT_GROUP presetUnitGroup = null;
-    private final UnitEnums.UNIT_GROUP[] groups = null;
+    protected static final boolean PREGEN = true;
+    protected final UnitEnums.UNIT_GROUP presetUnitGroup = null;
+    protected final UnitEnums.UNIT_GROUP[] groups = null;
 
     //DWARF
 //    public static final DUNGEON_STYLE mainStyle = DUNGEON_STYLE.DWARF;
@@ -84,18 +84,18 @@ public class IGG_XmlMaster {
     public static final String[] MERGE_LEVEL_NAMES = {
             "Underworld.xml", "Bastion.xml"
     };
-    private String folder;
-    private String name;
-    private int powerLevel = 300;
-    private DungeonEnums.LOCATION_TYPE dungeonType;
-    private boolean syntheticZones = true;
-    private String rngFilePath = "dungeon/overfill dungeon boss - 2.xml"; //into custom property!
-    private String TEMPLATE = "/crawl/Underworld.xml";
-    private int timeToSpawn = 0;
-    private boolean initRequired = true;
-//    private String TEMPLATE="/crawl/Vampire Abode.xml";
+    protected String folder;
+    protected String name;
+    protected int powerLevel = 300;
+    protected DungeonEnums.LOCATION_TYPE dungeonType;
+    protected boolean syntheticZones = true;
+    protected String rngFilePath = "dungeon/overfill dungeon boss - 2.xml"; //into custom property!
+    protected String TEMPLATE = "/crawl/Underworld.xml";
+    protected int timeToSpawn = 0;
+    protected boolean initRequired = true;
+//    protected String TEMPLATE="/crawl/Vampire Abode.xml";
 
-    private String getLE_Path() {
+    protected String getLE_Path() {
 //        return PathFinder.getDungeonLevelFolder() + "/crawl/Underworld.xml";
         return PathFinder.getDungeonLevelFolder() + TEMPLATE;
     }
@@ -137,7 +137,7 @@ public class IGG_XmlMaster {
             }
     }
 
-    private String getMetaPath() {
+    protected String getMetaPath() {
         if (MERGE)
             return PathFinder.getDungeonLevelFolder() +
                     "/meta/" +
@@ -145,17 +145,17 @@ public class IGG_XmlMaster {
         return PathFinder.getDungeonLevelFolder() + "/meta/" + rngFilePath; //getLevelName();
     }
 
-    private String getOutputPath() {
+    protected String getOutputPath() {
         return PathFinder.getDungeonLevelFolder() + "to edit/";
     }
 
     //just the background and some useless data
 
-    private String getLevelName() {
+    protected String getLevelName() {
         return name;
     }
 
-    private String getRngPath() {
+    protected String getRngPath() {
         if (MERGE)
             if (PREGEN)
                 return PathFinder.getRandomLevelPath() +
@@ -167,7 +167,7 @@ public class IGG_XmlMaster {
                 folder + "/" + name;
     }
 
-    private String getMergedPath() {
+    protected String getMergedPath() {
         return PathFinder.getDungeonLevelFolder() + getLevelName();
     }
 
@@ -183,7 +183,7 @@ public class IGG_XmlMaster {
 
     }
 
-    private void clean() {
+    protected void clean() {
 //        Path target;
 //        Path src= Paths.get(path, newFolder);
 //        Path target= Paths.get(path, newFolder);
@@ -201,7 +201,7 @@ public class IGG_XmlMaster {
 //        newFolder = NameMaster.getUniqueVersionedFileName()
     }
 
-    private void initAndWriteLevel(String path, int times) {
+    protected void initAndWriteLevel(String path, int times) {
         for (int i = 0; i < times; i++) {
             DungeonLevel level = RngLocationBuilder.loadLevelFromPath(path);
             //TODO reset lvl
@@ -251,7 +251,8 @@ public class IGG_XmlMaster {
 //            entranceData = "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
 //        }
         if (EidolonsGame.BRIDGE) {
-            return "Ash Vault(0-10);The Light(9-1)";
+//            return "Ash Vault(48-21);The Light(9-1)";
+            return "Ash Vault(23-26);The Light(9-1)";
 //            return "Blackness(0-15);The Light(20-1)";
         } else if (EidolonsGame.TUTORIAL_MISSION) {
             return "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
@@ -268,6 +269,10 @@ public class IGG_XmlMaster {
         return levelName;
     }
 
+    /**
+     * takes an LE-edited level and transforms it
+     * writes out RNG format level
+     */
     public void mergeData(String levelName) {
         this.name = levelName;
         String le_data = FileManager.readFile(getOutputPath() + getLevelName());
@@ -346,7 +351,7 @@ public class IGG_XmlMaster {
 
     }
 
-    private String updateVoid(DungeonLevel level, String xml, List<ObjAtCoordinate> objects) {
+    protected String updateVoid(DungeonLevel level, String xml, List<ObjAtCoordinate> objects) {
 //        level.getBlocks().stream().sorted(new SortMaster< LevelBlock>()
 //                .getSorterByExpression_(b-> b.getCenterCoordinate()))
 
@@ -357,10 +362,9 @@ public class IGG_XmlMaster {
 
 
     /**
-     * @param level TODO VOID
-     *              TODO anti-void
+     * randomizes an RNG template and writes it out as LE format level
      */
-    public void initAndWriteLevel(DungeonLevel level) {
+        public void initAndWriteLevel(DungeonLevel level) {
         if (syntheticZones) {
             int i = 0;
             for (LevelBlock block : level.getBlocks()) {
@@ -419,6 +423,7 @@ public class IGG_XmlMaster {
         String zoneNode = copy_xml.substring(from, to) + XML_Converter.closeXml(LocationBuilder.ZONES_NODE);
         copy_xml = StringMaster.replaceFirst(copy_xml, zoneNode, xml);
 
+
         from = copy_xml.lastIndexOf(XML_Converter.openXml("Custom_Params"));
         to = copy_xml.lastIndexOf(XML_Converter.closeXml("Custom_Params"));
         String props = copy_xml.substring(from, to);
@@ -442,7 +447,7 @@ public class IGG_XmlMaster {
 
     }
 
-    private DUNGEON_STYLE chooseStyleForBlock(LevelBlock block, int i) {
+    protected DUNGEON_STYLE chooseStyleForBlock(LevelBlock block, int i) {
         switch (block.getRoomType()) {
             case THRONE_ROOM:
                 return mainStyle;
@@ -462,11 +467,11 @@ public class IGG_XmlMaster {
 //        return styleMap.getRandomByWeight();
     }
 
-    private int getPowerLevel() {
+    protected int getPowerLevel() {
         return powerLevel;
     }
 
-    private List<ObjAtCoordinate> validateObjects(String objNode) {
+    protected List<ObjAtCoordinate> validateObjects(String objNode) {
         List<ObjAtCoordinate> objects = new ArrayList<>();
         for (String s : objNode.split(",")) {
             ObjAtCoordinate obj = null;
@@ -486,5 +491,21 @@ public class IGG_XmlMaster {
 
     public void setDungeonType(DungeonEnums.LOCATION_TYPE dungeonType) {
         this.dungeonType = dungeonType;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSyntheticZones(boolean syntheticZones) {
+        this.syntheticZones = syntheticZones;
+    }
+
+    public void setInitRequired(boolean initRequired) {
+        this.initRequired = initRequired;
     }
 }

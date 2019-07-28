@@ -175,7 +175,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
-
+        if (!looping) {
+            if (cycles >= loops) {
+                return false;
+            }
+        }
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
         if (currentFrame == null) {
             dispose();
@@ -234,7 +238,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         if (sprite == null) {
             sprite = new Sprite(currentFrame);
-            sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+            sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         } else {
             sprite.setRegion(currentFrame);
             //update orig?
@@ -247,9 +251,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             sprite.setScale(getScale());
         sprite.setRotation(rotation);
         sprite.setOrigin(originX, originY);
-        sprite.setPosition(x + offsetX - currentFrame.getRegionWidth() / 2, y
-                + offsetY
-                - currentFrame.getRegionHeight() / 2);
+        sprite.setPosition((int)(x + offsetX - currentFrame.getRegionWidth() / 2), y
+                + (int)(offsetY
+                - currentFrame.getRegionHeight() / 2));
 
         if (color != null)
             sprite.setColor(color);
@@ -505,7 +509,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         setOffsetX(Math.abs(GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
         setOffsetY(Math.abs(GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
     }
-        public void centerOnParent(Actor actor) {
+
+    public void centerOnParent(Actor actor) {
         Vector2 pos = new Vector2(actor.getX(), actor.getY());
         actor.localToStageCoordinates(pos);
 //        pos2= actor.getStage().stageToScreenCoordinates(pos2);

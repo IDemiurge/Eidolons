@@ -47,6 +47,7 @@ public class PanelActionsDataSource implements
                     , el::invokeClicked);
             cache.put(el, container);
 
+        container.setUserObject(el);
 
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
 

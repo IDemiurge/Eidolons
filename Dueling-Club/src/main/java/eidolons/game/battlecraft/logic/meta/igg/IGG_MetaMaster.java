@@ -1,8 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.igg.story.IGG_TownMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
@@ -37,6 +40,7 @@ defeatHandler...
 public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
     private final boolean boss;
+    private final SoulforceMaster soulforceMaster;
     ShadowMaster shadowMaster = new ShadowMaster(this);
 
     public IGG_MetaMaster(String data) {
@@ -49,10 +53,19 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
                 this.data = mission.getName();
             }
         }
-
-        boss =
-                data.equalsIgnoreCase(IGG_Demo.IGG_MISSION.FINALE.toString()) ||
+        boss = data.equalsIgnoreCase(IGG_Demo.IGG_MISSION.FINALE.toString()) ||
                         data.toLowerCase().contains("boss "); //TODO igg demo fix
+
+        soulforceMaster = new SoulforceMaster(this);
+
+    }
+
+    public boolean isBoss() {
+        return boss;
+    }
+
+    public SoulforceMaster getSoulforceMaster() {
+        return soulforceMaster;
     }
 
     public ShadowMaster getShadowMaster() {

@@ -114,6 +114,11 @@ public class GridPanel extends Group {
         this.square = rows * cols;
     }
 
+    public void reactivateModule() {
+        bindEvents();
+
+    }
+
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
         units.removeIf(unit ->
                 {
@@ -478,6 +483,12 @@ public class GridPanel extends Group {
             unitView.setGreyedOut(true);
             //            unitView.setVisible(true);
         });
+        GuiEventManager.bind(UNIT_FADE_OUT_AND_BACK, obj -> {
+            UnitView unitView = getUnitView((BattleFieldObject) obj.get());
+            if (unitView != null) {
+                unitView.fadeOut();
+            }
+        });
         GuiEventManager.bind(UNIT_GREYED_OUT_OFF, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
@@ -784,6 +795,10 @@ public class GridPanel extends Group {
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
             UnitView view = (UnitView) getViewMap().get(list.get(0));
+            if (view == null) {
+                main.system.auxiliary.log.LogMaster.verbose("show mode icons failed " + obj);
+                return;
+            }
             view.updateModeImage((String) list.get(1));
         });
         if (DC_Engine.isAtbMode()) {
@@ -1046,6 +1061,9 @@ public class GridPanel extends Group {
         for (GridCellContainer cell : topCells) {
             cell.setZIndex(Integer.MAX_VALUE);
         }
+//        if (mainHeroView!=null) {
+//            mainHeroView.getParent().setZIndex(Integer.MAX_VALUE);
+//        }
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
 
         overlayManager.setZIndex(Integer.MAX_VALUE);

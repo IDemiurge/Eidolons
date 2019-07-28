@@ -5,8 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
-import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceRule;
-import javafx.beans.property.SetProperty;
+import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.XLinkedMap;
@@ -68,7 +67,7 @@ public class SoulMaster {
     }
 
     public static void consume(Soul soul) {
-        int force = SoulforceRule.getForce(soul.getUnitType());
+        int force = SoulforceMaster.getForce(soul.getUnitType());
 //        GuiEventManager.trigger(GuiEventType. VFX_PLAY_LAST)
         EidolonLord.lord.addParam(PARAMS.SOULFORCE, force);
         EidolonLord.lord.soulsLost(soul);

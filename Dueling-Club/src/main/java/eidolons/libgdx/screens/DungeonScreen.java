@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -102,6 +103,12 @@ public class DungeonScreen extends GameScreenWithTown {
         centerCameraOnAlliesOnly = b;
     }
 
+    public void moduleEntered(Module module) {
+        int w = module.getWidth();
+        int h =  module.getHeight();
+        gridPanel = new GridPanel(w, h);
+//        grids.put(module, gridPanel);
+    }
     @Override
     protected void preLoad() {
         instance = this;
@@ -127,8 +134,6 @@ public class DungeonScreen extends GameScreenWithTown {
 
         });
 
-        initDialogue();
-
         EmitterPools.preloadDefaultEmitters();
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED, true);
@@ -143,6 +148,11 @@ public class DungeonScreen extends GameScreenWithTown {
                 showTownPanel(null);
                 Eidolons.exitToMenu();
             }
+
+        });
+
+        GuiEventManager.bind(GuiEventType.CAMERA_LAPSE_TO, p -> {
+            cam .position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
 
         });
     }

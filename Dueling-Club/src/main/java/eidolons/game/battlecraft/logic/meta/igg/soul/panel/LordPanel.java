@@ -12,13 +12,11 @@ import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.SoulTabs;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
-import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
@@ -35,6 +33,7 @@ import java.util.List;
 
 public class LordPanel extends GroupX implements Blocking {
 
+    public static final boolean ON = false;
     private static final String BACKGROUND = Sprites.BG_DEFAULT;
     private static LordPanel instance;
     private static LordPanel activeInstance;
@@ -46,6 +45,12 @@ public class LordPanel extends GroupX implements Blocking {
     SpriteAnimation backgroundSprite;
     private EidolonLord lord;
 
+    public static boolean visibleNotNull() {
+        if (activeInstance == null) {
+            return false;
+        }
+        return instance.isVisible();
+    }
     public static LordPanel getActiveInstance() {
         return activeInstance;
     }
@@ -64,6 +69,10 @@ public class LordPanel extends GroupX implements Blocking {
         super();
         setSize(1920, 1050);
         instance = this;
+
+        if (!CoreEngine.isIDE())
+            return;
+
         init();
         GuiEventManager.bind(GuiEventType.UPDATE_LORD_PANEL, p -> {
             update();

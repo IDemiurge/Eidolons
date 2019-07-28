@@ -4,6 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -47,7 +48,7 @@ public class Location extends DungeonWrapper {
     private BuildParameters buildParams;
     private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
 
-    public Location(LocationMaster master, Dungeon dungeon) {
+    public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
         this.master = master;
         this.sublevel = sublevel;

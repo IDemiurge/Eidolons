@@ -145,6 +145,7 @@ public class DataUnit<T extends Enum<T>> {
         for (String entry : entries) {
             String[] pair = entry.split(DataUnitFactory.getPairSeparator(std_alt_map));
             if (pair.length != 2) {
+//                format=
                 LogMaster.log(0, "malformed data:" + entry);
                 continue;
             }

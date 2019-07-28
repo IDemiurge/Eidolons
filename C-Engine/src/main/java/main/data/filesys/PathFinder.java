@@ -83,7 +83,7 @@ public class PathFinder {
 
     }
 
-    private static void init() {
+    public static void init() {
         if (!isInitialized) {
             try {
                 initLock.lock();

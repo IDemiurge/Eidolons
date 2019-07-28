@@ -39,10 +39,6 @@ public class VisionRule {
     public VisionRule(VisionMaster master) {
         this.master = master;
         this.controller = master.getVisionController();
-        if (!getPlayerUnseenMode()) {
-            playerUnseenMode = OptionsMaster.getGameplayOptions().
-                    getBooleanValue(GAMEPLAY_OPTION.GHOST_MODE);
-        }
     }
 
     public static Boolean getPlayerUnseenMode() {

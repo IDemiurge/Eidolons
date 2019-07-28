@@ -19,11 +19,11 @@ public class DialogueSyntax {
     // named scripts?
     // [trust:-5;esteem:10]
     public static final String PARAM_MOD = "[";
-    public static final String REQS = "[[";
-    public static final String SCRIPT = "[[[";
     public static final String PARAM_MOD_CLOSE = "]";
-    public static final String REQS_CLOSE = "]]";
-    public static final String SCRIPT_CLOSE = "]]]";
+//    public static final String REQS = "[[";
+//    public static final String REQS_CLOSE = "]]";
+    public static final String SCRIPT = "[[";
+    public static final String SCRIPT_CLOSE = "]]";
     public static final String item_separator = ";";
     public static final String pair_separator = ":";
 
@@ -76,10 +76,16 @@ public class DialogueSyntax {
         return null;
     }
 
-    public static String getScript(String text) {
-        if (!text.contains(PARAM_MOD))
-            return null;
-        return null;
+    public static String getScriptPart(String text) {
+        int from = text.lastIndexOf(SCRIPT);
+        if (from < 0) {
+            return "";
+        }
+        int to = text.indexOf(SCRIPT_CLOSE);
+        if (to < 1) {
+            return "";
+        }
+        return text.substring(from+1, to-1);
     }
 
 

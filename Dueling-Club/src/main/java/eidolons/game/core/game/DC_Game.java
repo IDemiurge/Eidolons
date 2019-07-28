@@ -86,6 +86,8 @@ import main.system.util.Refactor;
 
 import java.util.*;
 
+import static main.system.launch.CoreEngine.isCombatGame;
+
 /**
  * contains references to everything that may be needed in scope of a single game
  * TODO refactor - put data into GameState!
@@ -165,7 +167,7 @@ public class DC_Game extends GenericGame {
 
     protected void firstInit() {
         initMasters();
-        if (CoreEngine.isCombatGame())
+        if (isCombatGame())
             initGameLoops();
         init();
     }
@@ -201,10 +203,10 @@ public class DC_Game extends GenericGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
 
-        if (CoreEngine.isCombatGame())
+        if (isCombatGame())
             rules = new DC_Rules(this);
 
-        if (!CoreEngine.isCombatGame())
+        if (!isCombatGame() && !CoreEngine.isDungeonTool())
             return;
         if (isSimulation()) {
             return;
@@ -218,7 +220,8 @@ public class DC_Game extends GenericGame {
         //TODO igg demo hack
         if (nextLevel)
             dungeonMaster.setExplorationMaster(master);
-
+        if (!isCombatGame())
+            return;
         battleMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
     }
@@ -247,7 +250,7 @@ public class DC_Game extends GenericGame {
     }
 
     protected boolean isLocation() {
-        return !FAST_DC.TEST_MODE;
+        return CoreEngine.isMainGame();
     }
 
     protected DungeonMaster createDungeonMaster() {
@@ -262,13 +265,16 @@ public class DC_Game extends GenericGame {
 
     public void battleInit() {
         setSimulation(false);
+        if (!isCombatGame()) {
+            dungeonMaster.init();
+            return;
+        }
         ActionGenerator.init();
 
-        getRules().getIlluminationRule().clearCache();
-        inventoryTransactionManager = new InventoryTransactionManager(this);
-        inventoryManager = new DC_InventoryManager();
-
-        battleMaster.init();
+            getRules().getIlluminationRule().clearCache();
+            inventoryTransactionManager = new InventoryTransactionManager(this);
+            inventoryManager = new DC_InventoryManager();
+            battleMaster.init();
         dungeonMaster.init();
         setOffline(true);
 

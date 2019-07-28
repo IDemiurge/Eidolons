@@ -249,7 +249,7 @@ public class Player {
 
                 }
                 if (filtered.isEmpty()) {
-                    main.system.auxiliary.log.LogMaster.log(1,"No sounds found for: " + sound_type + soundSet);
+                    main.system.auxiliary.log.LogMaster.verbose("No sounds found for: " + sound_type + soundSet);
                     return null ;
                 }
                 return FileManager.getRandomFile(filtered).getPath();
@@ -265,7 +265,7 @@ public class Player {
                         corePath = getRandomSound(sound_type, soundSet, false, false);
                 }
                 if (!file.isFile()) {
-                    LogMaster.log(1, "no sound file available for " + sound_type + " - " + soundSet);
+                    LogMaster.verbose( "no sound file available for " + sound_type + " - " + soundSet);
                     return getRandomSound(sound_type, soundSet, false, true);
                 }
             } else {
@@ -655,7 +655,7 @@ public class Player {
 
 
     // VOLUME CONTROL TO BE ADDED TODO
-    // main.system.auxiliary.LogMaster.log(1, "playing - " + sound +
+    // main.system.auxiliary.LogMaster.verbose( "playing - " + sound +
     // " with " + volumePercentage
     // + " volumePercentage ");
     // float gain = new Float(getVolume()) * volumePercentage / 100 - 100;

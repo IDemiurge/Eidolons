@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
@@ -15,10 +16,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 
     public static final boolean TEST_MODE = false;
     public String path;
-    private static List<String> broken=    new ArrayList<>() ;
+    private static List<String> broken = new ArrayList<>();
 
     public ParticleEffectX(String path) {
         this.path = path;
@@ -39,7 +37,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         if (isEmitterAtlasesOn()) {
             FileHandle presetFile = new FileHandle(path);
             if (!presetFile.exists())
-                presetFile=Gdx.files.internal(PathFinder.getVfxPath()+path);
+                presetFile = Gdx.files.internal(PathFinder.getVfxPath() + path);
 
             try {
                 load(presetFile, getEmitterAtlas());
@@ -57,20 +55,22 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
             imagePath = PathUtils.cropLastPathSegment(imagePath);
         }
         load(Gdx.files.internal(
-         PathUtils.addMissingPathSegments(
-          path, PathFinder.getParticlePresetPath())),
-         Gdx.files.internal(imagePath));
+                PathUtils.addMissingPathSegments(
+                        path, PathFinder.getParticlePresetPath())),
+                Gdx.files.internal(imagePath));
 
 //TODO         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
     }
-    protected Texture loadTexture (FileHandle file) {
+
+    protected Texture loadTexture(FileHandle file) {
         return new Texture(file, false);
     }
+
     public ParticleEffectX() {
         super();
     }
 
-    public static  boolean isEmitterAtlasesOn() {
+    public static boolean isEmitterAtlasesOn() {
         return true;//!CoreEngine.isFastMode();
     }
 
@@ -80,7 +80,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 
     public void offset(String value, String offset) {
         offset(Float.valueOf(offset),
-         new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
+                new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
     }
 
     public void offset(float offset, EMITTER_VALS_SCALED value) {
@@ -110,10 +110,10 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //            return true;
 //        }
         String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
-        if (imgPath.contains("sprites")){
-            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );
-            return true;
-        }
+//        if (imgPath.contains("sprites")){
+//            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );
+//            return true;
+//        }
         if (TEST_MODE)
             main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
         return false;
@@ -132,30 +132,31 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         }
         getEmitters().forEach(emitter -> emitter.setCleansUpBlendFunction(false));
     }
+
     public void loadEmitters_(FileHandle effectFile) throws IOException {
 //        if (CoreEngine.isMacro())
-        if (!effectFile.exists()){
+        if (!effectFile.exists()) {
             broken.add(effectFile.path());
-            main.system.auxiliary.log.LogMaster.log(0,"no such emitter preset: " +effectFile.path());
+            main.system.auxiliary.log.LogMaster.log(0, "no such emitter preset: " + effectFile.path());
             return;
         }
         InputStream input = effectFile.read();
         getEmitters().clear();
         BufferedReader reader = null;
 
-            reader = new BufferedReader(new InputStreamReader(input), 512);
-            while (true) {
-                ParticleEmitter emitter = (checkSprite(effectFile)) ? new SpriteEmitter(reader
-                ) : new Emitter(reader);
+        reader = new BufferedReader(new InputStreamReader(input), 512);
+        while (true) {
+            ParticleEmitter emitter = (checkSprite(effectFile)) ? new SpriteEmitter(reader
+            ) : new Emitter(reader);
 
-                getEmitters().add(emitter);
-                if (reader.readLine() == null) {
-                    break;
-                }
-                if (reader.readLine() == null) {
-                    break;
-                }
+            getEmitters().add(emitter);
+            if (reader.readLine() == null) {
+                break;
             }
+            if (reader.readLine() == null) {
+                break;
+            }
+        }
 
     }
 
@@ -181,4 +182,25 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         }
     }
 
+    public void loadEmitterImages(TextureAtlas atlas, String atlasPrefix) {
+        for (int i = 0, n = getEmitters().size; i < n; i++) {
+            ParticleEmitter emitter = getEmitters().get(i);
+            if (emitter.getImagePaths().size == 0) continue;
+            Array<Sprite> sprites = new Array<Sprite>();
+            for (String imagePath : emitter.getImagePaths()) {
+                String imageName = new File(imagePath.replace('\\', '/')).getName();
+                int lastDotIndex = imageName.lastIndexOf('.');
+                if (lastDotIndex != -1) imageName = imageName.substring(0, lastDotIndex);
+                if (atlasPrefix != null) imageName = atlasPrefix + imageName;
+                Sprite sprite = atlas.createSprite(imageName);
+                if (sprite == null)
+                    sprite = atlas.createSprite(StringMaster.cropFormat(imagePath));
+
+                if (sprite == null)
+                    throw new IllegalArgumentException("SpriteSheet missing image: " + imageName);
+                sprites.add(sprite);
+            }
+            emitter.setSprites(sprites);
+        }
+    }
 }

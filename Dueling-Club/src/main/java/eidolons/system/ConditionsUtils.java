@@ -5,8 +5,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.art.PortalSlotsCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.portal.PortalPuzzle;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.OrConditions;
@@ -37,6 +39,16 @@ public class ConditionsUtils {
             case GET_TO_EXIT:
                 return new PositionCondition(
                         Ref.KEYS.MATCH.toString(), puzzle.getExitCoordinates());
+            case SHAPE:
+                break;
+            case PATH:
+                break;
+            case SLOTS:
+                new PortalSlotsCondition((PortalPuzzle) puzzle);
+            case FIND_SECRET:
+                break;
+            case DISCOVER_PATTERN:
+                break;
         }
         return null;
     }
@@ -52,8 +64,6 @@ public class ConditionsUtils {
                 case teleport:
                     break;
                 case death:
-                    break;
-                case ANIMATE_ENEMIES:
                     break;
             }
 

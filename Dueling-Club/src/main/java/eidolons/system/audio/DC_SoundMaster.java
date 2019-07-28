@@ -601,6 +601,21 @@ public class DC_SoundMaster extends SoundMaster {
     public static void playDamageSound(GenericEnums.DAMAGE_TYPE damageType) {
         playRandomSoundVariant(PathFinder.getSoundsetsPath()+"damage/"+damageType.getName(), true);
     }
+public enum KEY_SOUND{
+        scream,
+    ethereal,
+    choire,
+    batman,
+
+
+}
+    public static void playKeySound(String value) {
+//        playEffectSound(type, set);
+        /**
+         *
+         *
+         */
+    }
 
     public void doPlayback(float delta) {
         if (soundPlayer == null)

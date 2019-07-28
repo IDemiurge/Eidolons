@@ -1,5 +1,6 @@
 package eidolons.libgdx.anims.main;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -262,6 +263,15 @@ public class AnimMaster extends Group {
                 }
             }
         }
+    }
+
+    public static void onCustomAnim(String spritePath, boolean centered, int loops, Runnable runnable) {
+        //play mode
+        //blend mode
+
+    }
+        public static void onCustomAnim(String spritePath, Runnable runnable) {
+        Gdx.app.postRunnable(() -> new SimpleAnim(spritePath, runnable).startAsSingleAnim());
     }
 
     public void setOff(boolean off) {

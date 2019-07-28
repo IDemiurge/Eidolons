@@ -15,6 +15,7 @@ import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import main.ability.effects.Effect;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -34,7 +35,7 @@ public class EffectAnimCreator {
 
     public static float getEffectAnimDelay(Effect e, Animation anim, ANIM_PART part) {
 
-        Anim subAnim;
+        Animation subAnim;
         if (anim instanceof CompositeAnim) {
             subAnim = ((CompositeAnim) anim).getMap().get(part);
         } else {
@@ -46,8 +47,8 @@ public class EffectAnimCreator {
             destination = ((Anim) anim).getDestinationCoordinates();
         }
         Float distance =
-         GridMaster.getDistance(destination,
-          e.getActiveObj().getOwnerUnit().getCoordinates()); //TODO from parent anim's origin!
+                GridMaster.getDistance(destination,
+                        e.getActiveObj().getOwnerUnit().getCoordinates()); //TODO from parent anim's origin!
         float delay = distance / subAnim.getPixelsPerSecond();
 
 
@@ -85,26 +86,26 @@ public class EffectAnimCreator {
         switch (clazz.getSimpleName().replace("Effect", "")) {
             case "DealDamage":
                 return new HitAnim(active, getDamageAnimData((DealDamageEffect) e),
-                 ((DealDamageEffect) e).getDamageType());
+                        ((DealDamageEffect) e).getDamageType());
             case "Drain": // missile back?
             case "ModifyValue":
                 ModifyValueEffect modEffect = (ModifyValueEffect) e;
                 return new HitAnim(
 
-                 active, getModValAnimData(modEffect)
-                 , false, GdxColorMaster.getParamColor(modEffect.getParam()),
-                 modEffect.getLastModValue(),
-                 ImageManager.getValueIconPath(modEffect.getParam())
+                        active, getModValAnimData(modEffect)
+                        , false, GdxColorMaster.getParamColor(modEffect.getParam()),
+                        modEffect.getLastModValue(),
+                        ImageManager.getValueIconPath(modEffect.getParam())
                 );
 
             case "Raise":
             case "Resurrect":
             case "Summon":
                 return new ActionAnim(active, new AnimData(),
-                 () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
-                 new ANIM_MOD[]{
-                  OBJ_ANIMS.FADE_IN,
-                 }
+                        () -> active.getRef().getObj(KEYS.SUMMONED).getImagePath(),
+                        new ANIM_MOD[]{
+                                OBJ_ANIMS.FADE_IN,
+                        }
                 );
             case "InstantDeath":
                 //flash
@@ -145,13 +146,17 @@ public class EffectAnimCreator {
         return null;
     }
 
+    public static String getVfx(GenericEnums.DAMAGE_TYPE type) {
+        return PathFinder.getVfxAtlasPath() + "spell/damage/"
+                + type.toString()
+                //                    + "fire"
+                ;
+    }
+
     private static String getVfx(Effect e) {
         if (e instanceof DealDamageEffect) {
+            return getVfx(((DealDamageEffect) e).getDamageType());
 
-            return PathFinder.getVfxAtlasPath() + "spell/damage/"
-             //                    + "fire"
-             + ((DealDamageEffect) e).getDamageType().toString()
-             ;
         }
         return null;
     }
@@ -166,8 +171,8 @@ public class EffectAnimCreator {
                     break;
             }
             return PathFinder.getSpritesPath() + "damage/"
-             + name
-             + ".png";
+                    + name
+                    + ".png";
         }
         return null;
     }

@@ -4,16 +4,19 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
+import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+
+import java.util.List;
 
 import static main.system.GuiEventType.TARGET_SELECTION;
 
@@ -22,8 +25,9 @@ public class BaseView extends SuperActor {
     protected TextureRegion originalTextureAlt;
     protected FadeImageContainer portrait;
     private Image altPortrait;
-
-    SpriteX overlaySprite;
+    protected  List<SpriteX> overlaySprite;
+    protected List<SpriteX> underlaySprite;
+    protected boolean forceTransform;
 
     public BaseView(UnitViewOptions o) {
         init(o);
@@ -36,18 +40,31 @@ public class BaseView extends SuperActor {
     public void init(UnitViewOptions o) {
         init(o.getPortraitTexture(), o.getPortraitPath());
     }
+
     protected void initSprite(UnitViewOptions o) {
-        if (o.getSpritePath() != null) {
-            overlaySprite = new SpriteX(o.getSpritePath());
-            addActor(overlaySprite);
-            overlaySprite.setFps(10);
-            //TODO disable hover?
-            /**
-             * fade?
-             * scale?
-             */
+        overlaySprite = SpriteMaster.getSpriteForUnit(o.getObj(), true);
+        if (overlaySprite != null) {
+            for (SpriteX spriteX : overlaySprite) {
+                addActor(spriteX);
+                forceTransform = true;
+            }
         }
+
+        underlaySprite = SpriteMaster.getSpriteForUnit(o.getObj(), false);
+        if (underlaySprite != null) {
+            for (SpriteX spriteX : underlaySprite) {
+                addActor(spriteX);
+                spriteX.setZIndex(0);
+                forceTransform = true;
+            }
+        }
+        //TODO disable hover?
+        /**
+         * fade?
+         * scale?
+         */
     }
+
     public void init(TextureRegion portraitTexture, String path) {
         portrait = initPortrait(portraitTexture, path);
         addActor(portrait);

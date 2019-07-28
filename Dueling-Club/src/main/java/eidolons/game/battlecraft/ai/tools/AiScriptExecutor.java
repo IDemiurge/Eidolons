@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
+import eidolons.game.core.Eidolons;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
@@ -42,20 +43,22 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         int i = 0;
         Unit unit = (Unit) ref.getObj(args[0]);
         if (unit == null) {
-            String name = args[i];
-            if (DataManager.isTypeName(name))
-                i++;
-            else name = null;
+            AI_ARG arg = new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, args[i]);
+            if (arg != null) {
+                unit = getUnit(arg);
+            }
 
-            AI_ARG arg =
-             new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, args[i]);
-            unit = getUnit(arg);
             if (unit == null) {
+                String name = args[i];
+                if (DataManager.isTypeName(name))
+                    i++;
+                else name = null;
+
                 Boolean power = null;// getPower(arg);
-                Boolean distance = getDistance(arg);
-                Boolean ownership = getOwnership(arg);
+                Boolean distance =true; // getDistance(arg);
+                Boolean ownership =false; // getOwnership(arg);
                 unit = getGame().getMaster().getUnitByName(name, ref,
-                 ownership, distance, power);
+                        ownership, distance, power);
             }
         }
         i++;
@@ -95,21 +98,21 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case MOVE_TO:
                 //via a path!
                 ActionPath path = getPathSequenceConstructor().getOptimalPathSequence(unit.getAI(),
-                 Coordinates.get(arg.toString()));
+                        Coordinates.get(arg.toString()));
                 sequence = new ActionSequence(path.getActions(), task, unit.getAI());
                 break;
             case TURN_TO:
                 //cell id
                 sequence = new ActionSequence(
-                 getTurnSequenceConstructor().
-                  getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                   Coordinates.get(arg.toString())), task, unit.getAI());
+                        getTurnSequenceConstructor().
+                                getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
+                                        Coordinates.get(arg.toString())), task, unit.getAI());
                 break;
             case ACTION:
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
-                 getActionSequenceConstructor().constructSingleActionSequence(action,
-                  new Task(ai, goal, args[0]));
+                        getActionSequenceConstructor().constructSingleActionSequence(action,
+                                new Task(ai, goal, args[0]));
                 break;
             case ATTACK:
 
@@ -120,7 +123,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 break;
             case ORDER:
                 Order a = //OrderFactory.getOrder();
-                 new Order(arg.toString());
+                        new Order(arg.toString());
                 unit.getAI().setCurrentOrder(a);
                 return;
         }
@@ -129,8 +132,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             unit.getAI().setFree(free);
         } else
             sequence.getActions().forEach(
-             //TODO wait?
-             action -> getExecutor().execute(action, free));
+                    //TODO wait?
+                    action -> getExecutor().execute(action, free));
 
     }
 
@@ -171,6 +174,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case AI_LEADER:
             case MAIN_HERO:
 
+            case CLOSEST_ENEMY:
+                return getAnalyzer().getClosestEnemy(Eidolons.getMainHero());
         }
         return null;
     }

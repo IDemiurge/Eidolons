@@ -92,6 +92,22 @@ public class NinePatchFactory {
     public static NinePatchDrawable getLightDecorPanelFilledDrawable() {
         return new NinePatchDrawable(getLightDecorPanelFilled());
     }
+    public static NinePatchDrawable getLightDecorPanelFilledDrawableNoMinSize() {
+        return getDrawableNoMinSize(getLightDecorPanelFilled());
+    }
+        public static NinePatchDrawable getDrawableNoMinSize(NinePatch patch) {
+        return new NinePatchDrawable(patch){
+            @Override
+            public float getMinWidth() {
+                return 0;
+            }
+
+            @Override
+            public float getMinHeight() {
+                return 0;
+            }
+        };
+    }
 
     public static NinePatchDrawable getLightDecorPanelDrawable() {
         return new NinePatchDrawable(getLightDecorPanel());

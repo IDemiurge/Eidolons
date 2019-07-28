@@ -7,11 +7,11 @@ import main.system.launch.CoreEngine;
 import org.apache.log4j.Priority;
 
 public class LogMaster {
-    public static final int PRIORITY_VERBOSE = 0;
-    public static final int PRIORITY_INFO = 1;
-    public static final int PRIORITY_IMPORTANT = 2;
-    public static final int PRIORITY_WARNING = 3;
-    public static final int PRIORITY_ERROR = 4;
+    public static final int PRIORITY_VERBOSE = -1;
+    public static final int PRIORITY_INFO = 0;
+    public static final int PRIORITY_IMPORTANT = 1;
+    public static final int PRIORITY_WARNING = 2;
+    public static final int PRIORITY_ERROR = 3;
 
     public static final String PREFIX_VERBOSE = "VERBOSE: ";
     public static final String PREFIX_INFO = "INFO: ";
@@ -19,7 +19,7 @@ public class LogMaster {
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
-    private static int PRIORITY_LEVEL_LOGGED = CoreEngine.isIDE() ? 1 : 2;
+    private static int PRIORITY_LEVEL_LOGGED = CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;
@@ -153,9 +153,7 @@ public class LogMaster {
         if (off) {
             return;
         }
-        if (CoreEngine.isExe() || CoreEngine.isFullFastMode()) {
-            return;
-        }
+
 
         if (APPEND_TIME) {
             s = TimeMaster.getFormattedTime() + " - " + s;
@@ -163,7 +161,19 @@ public class LogMaster {
         if (FileLogManager.isFullLoggingConsole()) {
             FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
-        System.out.println(s);
+        if (isConsoleLogging()) {
+            System.out.println(s);
+        } else {
+            logToFile(s);
+        }
+    }
+
+    private static void logToFile(String s) {
+        FileLogManager.getConsolePrintStream().println(s);
+    }
+
+    private static boolean isConsoleLogging() {
+        return  !CoreEngine.isExe();
     }
 
     //TODO do these categories!
@@ -372,7 +382,7 @@ public class LogMaster {
     }
 
     public static void verbose(String string) {
-        log(PRIORITY_VERBOSE, PREFIX_INFO + string);
+        log(PRIORITY_VERBOSE, PREFIX_VERBOSE + string);
     }
     public static void info(String string) {
         log(PRIORITY_INFO, PREFIX_INFO + string);

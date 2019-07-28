@@ -163,6 +163,12 @@ public class TipMessageMaster {
 
 // to .txt already?
     public enum TIP_MESSAGE {
+//        eidolon_gorr,
+//        eidolon_gwyn,
+//        eidolon_grimbart,
+//        eidolon_raina,
+//    form_lost,
+
 
         //BRIDGE
     welcome_1(true,  Images.EMPTY_DEMIURGE, ""),

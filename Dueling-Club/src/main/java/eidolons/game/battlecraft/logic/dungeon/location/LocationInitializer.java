@@ -17,20 +17,22 @@ public class LocationInitializer extends DungeonInitializer<Location> {
 
     @Override
     public Location initDungeon() {
-        String data =
-         Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionPath();
-        if (data != null) {
-            setDungeonPath(data);
-        } else
-            setDungeonPath(game.getDataKeeper().getDungeonData()
-             .getContainerValue(DUNGEON_VALUE.PATH, 0));
+        if (getDungeonPath() == null) {
+            String data =
+                    Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionPath();
+            if (data != null) {
+                setDungeonPath(data);
+            } else
+                setDungeonPath(game.getDataKeeper().getDungeonData()
+                        .getContainerValue(DUNGEON_VALUE.PATH, 0));
+        }
         //or take mission directly?
-         return (Location) getBuilder().buildDungeon(getDungeonPath());
+        return (Location) getBuilder().buildDungeon(getDungeonPath());
     }
 
     @Override
     public Location createDungeon(ObjType type) {
-        return new Location((LocationMaster) getMaster(), new Dungeon(type, false));
+        return new Location(getMaster(), new Dungeon(type, false));
     }
 
 }

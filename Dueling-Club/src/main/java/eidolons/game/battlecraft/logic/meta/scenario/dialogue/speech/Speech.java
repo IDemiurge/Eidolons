@@ -9,6 +9,7 @@ import main.data.dialogue.SpeechData;
 import main.data.dialogue.SpeechInterface;
 import main.data.dialogue.Speeches;
 import main.elements.conditions.Condition;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -22,9 +23,10 @@ public class Speech implements SpeechInterface {
     String actorName;
     String actorNames;
     String unformattedText; // [main hero name], [gender], [race] etc (maybe {val_ref} sytanx?)
+
     Condition conditions; //check before addChild()
     Abilities abilities; //TODO NOW VIA SCRIPTS? OR WILL AE BE EASIER?
-    String script;
+
     DialogueActor actor;
     List<DialogueActor> actors;
     String formattedText;
@@ -33,6 +35,7 @@ public class Speech implements SpeechInterface {
     REPLICA_STATUS status;
     private SpeechData data;
     private int id;
+    private SpeechScript script;
 
     //last speech
     public Speech(Integer id) {
@@ -73,10 +76,6 @@ public class Speech implements SpeechInterface {
         this.children = new DequeImpl<Speech>().getAddAllCast(children.getList());
     }
 
-    public SpeechBuilder getSpeechBuilder(String path) {
-        return new SpeechBuilder(path);
-    }
-
     public void addChild(Speech child) {
         getChildren().add(child);
     }
@@ -89,7 +88,7 @@ public class Speech implements SpeechInterface {
             try {
                 actor = DialogueActorMaster.getActor(actorName);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         if (actorNames == null)
             actors = parent.getActors();
@@ -113,13 +112,6 @@ public class Speech implements SpeechInterface {
         this.abilities = abilities;
     }
 
-    public String getScript() {
-        return script;
-    }
-
-    public void setScript(String script) {
-        this.script = script;
-    }
 
     public List<DialogueActor> getActors() {
         return actors;
@@ -180,6 +172,14 @@ public class Speech implements SpeechInterface {
 
     public void setData(SpeechData data) {
         this.data = data;
+    }
+
+    public void setScript(SpeechScript script) {
+        this.script = script;
+    }
+
+    public SpeechScript getScript() {
+        return script;
     }
 
     public enum REPLICA_STATUS {

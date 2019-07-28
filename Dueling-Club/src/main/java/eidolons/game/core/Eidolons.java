@@ -167,9 +167,9 @@ public class Eidolons {
     public static void setFullscreen(boolean b) {
         if (getApplication() == null)
             return;
-        if (CoreEngine.isMyLiteLaunch()) {
-            return;
-        }
+//        if (CoreEngine.isMyLiteLaunch()) {
+//            return;
+//        }
         if (resolution != null)
             if (fullscreen == b)
                 return;

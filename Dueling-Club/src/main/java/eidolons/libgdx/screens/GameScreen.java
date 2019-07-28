@@ -65,6 +65,23 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(GuiEventType.CAMERA_SHAKE, p -> {
             shakes.add((Screenshake) p.get());
         });
+        GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
+            cam.position.set((Vector2) p.get(), 0);
+
+        });
+        GuiEventManager.bind(DIALOG_SHOW, obj -> {
+            DialogueHandler handler =
+                    (DialogueHandler) obj.get();
+            guiStage.afterBlackout(() -> guiStage.playDialogue(handler));
+//            if (dialogsStage == null) {
+//                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
+//
+//            } else {
+//                dialogsStage.play(list);
+//            }
+//            dialogsStage.setDialogueHandler(handler);
+//            updateInputController();
+        });
     }
 
     @Override
@@ -167,9 +184,14 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     private void checkCameraFix() {
+        if (!velocity.isZero())
+            if (!cameraDestination.isZero())
+                return;
 
-        if (cameraDestination.x!=cam.position.x || cameraDestination.y!=cam.position.y)
-        if (lastPos != null)
+        if (cameraDestination.x==cam.position.x || cameraDestination.y==cam.position.y)
+            lastPos = new Vector3(cam.position);
+        else
+         if (lastPos != null)
             if (cam.position.dst(lastPos) > MAX_CAM_DST) {
                 cam.position.set(lastPos);
             }
@@ -183,10 +205,13 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         cameraStop(false);
     }
     public void cameraStop(boolean fullstop) {
-        if (velocity != null) {
+        if (velocity != null || fullstop) {
             velocity.setZero();
             // TODO abruptly?
             cameraDestination.set(cam.position.x, cam.position.y);
+        }
+        if (fullstop) {
+            lastPos = new Vector3(cam.position);
         }
     }
 
@@ -206,33 +231,6 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             gl20.glEnable(GL20.GL_TEXTURE_2D);
             gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         }
-    }
-
-    protected void initDialogue() {
-
-
-        GuiEventManager.bind(DIALOG_SHOW, obj -> {
-            DialogueHandler handler =
-                    (DialogueHandler) obj.get();
-
-            if (isNewDialogue()) {
-                guiStage.afterBlackout(() -> guiStage.playDialogue(handler));
-                return;
-            }
-
-//            if (dialogsStage == null) {
-//                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
-//
-//            } else {
-//                dialogsStage.play(list);
-//            }
-//            dialogsStage.setDialogueHandler(handler);
-//            updateInputController();
-        });
-    }
-
-    private boolean isNewDialogue() {
-        return true;
     }
 
     public RealTimeGameLoop getRealTimeGameLoop() {

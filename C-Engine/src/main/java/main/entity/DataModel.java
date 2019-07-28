@@ -174,7 +174,7 @@ public abstract class DataModel {
             removeCounter(name);
         } else {
             addCounter(name, newValue + "");
-            LogMaster.log(1, name + " value set: " + newValue);
+            LogMaster.verbose(name + " value set: " + newValue);
         }
         return true;
     }
@@ -182,7 +182,7 @@ public abstract class DataModel {
     public void removeCounter(String name) {
         setDirty(true);
         getCustomParamMap().remove(name);
-        LogMaster.log(1, name + " Counter Removed from " + this);
+        LogMaster.verbose(name + " Counter Removed from " + this);
     }
 
     public boolean modifyCounter(String name, int modValue) {
@@ -215,10 +215,10 @@ public abstract class DataModel {
         if (getCustomParamMap().get(name) != null) {
             Integer value = getCounter(name) + modValue;
             setCounter(name, value);
-            LogMaster.log(1, "Counter modified: " + name + value);
+            LogMaster.verbose("Counter modified: " + name + value);
         } else {
             setCounter(name, modValue);
-            LogMaster.log(1, "New Counter: " + "" + name + modValue);
+            LogMaster.verbose("New Counter: " + "" + name + modValue);
         }
         game.getLogManager().logCounterModified(this, name, modValue);
         return true;

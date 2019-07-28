@@ -30,6 +30,7 @@ public class DC_Engine extends CoreEngine {
         systemInit();
         dataInit();
         gameInit();
+
         Chronos.logTimeElapsedForMark("DC INIT");
     }
 

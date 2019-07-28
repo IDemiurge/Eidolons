@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.core.game.DC_Game;
@@ -16,6 +18,9 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
+
+import java.util.Map;
 
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
@@ -23,7 +28,6 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
  *
  */
 public abstract class DungeonMaster<E extends DungeonWrapper> {
-    ;
     protected DC_Game game;
     protected E dungeonWrapper;
     protected DungeonInitializer<E> initializer;
@@ -40,11 +44,12 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private DungeonLevel dungeonLevel;
     private TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
-
+    private PortalMaster portalMaster;
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
         trapMaster = new TrapMaster(this);
+        portalMaster = new PortalMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
         positioner = createPositioner();
@@ -90,8 +95,11 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             dungeonWrapper = initDungeon();
             getBuilder().initLevel();
         }
-        getDungeonLevel().initUnitFacingMap(dungeonWrapper.getDungeon().getCustomDataMap());
-        getDungeonLevel().initCellTypeMap(dungeonWrapper.getDungeon().getCustomDataMap());
+        if (!CoreEngine.isCombatGame()){
+            return;
+        }
+
+        processMetaDataMap(dungeonWrapper.getDungeon().getCustomDataMap());
 
         getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
 
@@ -100,6 +108,22 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
 
+    }
+
+    protected void processMetaDataMap(Map<String, String> dataMap) {
+        getDungeonLevel().initUnitFacingMap(dataMap);
+        getDungeonLevel().initCellTypeMap(dataMap);
+
+
+
+        for (String coordinate : dataMap.keySet()) {
+            String data = dataMap.get(coordinate);
+            data=BridgeMaster.processMetaData(data);
+
+            if (portalMaster.addPortal(coordinate, data)){
+                continue;
+            }
+        }
     }
 
     protected E initDungeon() {
@@ -226,4 +250,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return trapMaster;
     }
 
+    public PortalMaster getPortalMaster() {
+        return portalMaster;
+    }
 }

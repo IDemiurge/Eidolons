@@ -11,6 +11,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.generic.NoHitGroup;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -130,6 +131,9 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
         if (alpha != 1f) {
             parentAlpha = alpha;
         }

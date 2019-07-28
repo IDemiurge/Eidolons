@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class CompositeAnim implements Animation {
 
-    Map<ANIM_PART, Anim> map = new XLinkedMap<>();
+    Map<ANIM_PART, Animation> map = new XLinkedMap<>();
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onStartEventMap;
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onFinishEventMap;
     Map<ANIM_PART, List<Animation>> attached;
@@ -44,23 +44,23 @@ public class CompositeAnim implements Animation {
     int index;
     private boolean finished;
     private boolean running;
-    private Anim currentAnim;
+    private Animation currentAnim;
     private float time = 0;
     private List<Event> textEvents;
     private Ref ref;
-    private Anim continuous;
+    private Animation continuous;
     private boolean hpUpdate = true;
     private boolean waitingForNext;
 //    List<Anim> parallelAnims; what was the idea exactly?
 
 
-    public CompositeAnim(Anim... anims) {
-        this(new MapMaster<ANIM_PART, Anim>().constructMap(new ArrayList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
+    public CompositeAnim(Animation... anims) {
+        this(new MapMaster<ANIM_PART, Animation>().constructMap(new ArrayList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
                 new ArrayList<>(Arrays.asList(anims))));
 
     }
 
-    public CompositeAnim(Map<ANIM_PART, Anim> map) {
+    public CompositeAnim(Map<ANIM_PART, Animation> map) {
         this.map = map;
         resetMaps();
         reset();
@@ -251,21 +251,22 @@ public class CompositeAnim implements Animation {
     }
 
     private void triggerFinishEvents() {
-        if (currentAnim != null)
+        if (currentAnim != null) {
             if (currentAnim.getEventsOnFinish() != null) {
                 currentAnim.getEventsOnFinish().forEach(e -> {
                     GuiEventManager.trigger(e.getKey(), e.getValue());
                 });
             }
+        }
     }
 
-    public void add(ANIM_PART part, Anim anim) {
+    public void add(ANIM_PART part, Animation anim) {
         map.put(part, anim);
         addEvents(part, anim);
 
     }
 
-    private void addEvents(ANIM_PART part, Anim anim) {
+    private void addEvents(ANIM_PART part, Animation anim) {
         MapMaster.addToListMap(onStartEventMap,
                 part, anim.getEventsOnStart());
         MapMaster.addToListMap(onFinishEventMap,
@@ -439,7 +440,7 @@ public class CompositeAnim implements Animation {
         return finished;
     }
 
-    public Map<ANIM_PART, Anim> getMap() {
+    public Map<ANIM_PART, Animation> getMap() {
         return map;
     }
 
@@ -472,7 +473,7 @@ public class CompositeAnim implements Animation {
         return index;
     }
 
-    public Anim getCurrentAnim() {
+    public Animation getCurrentAnim() {
         if (currentAnim == null) {
             initPartAnim();
         }
@@ -537,6 +538,11 @@ public class CompositeAnim implements Animation {
         });
     }
 
+    @Override
+    public void setParentAnim(CompositeAnim compositeAnim) {
+
+    }
+
     public DC_ActiveObj getActive_() {
         return (DC_ActiveObj) getActive();
     }
@@ -547,11 +553,21 @@ public class CompositeAnim implements Animation {
         return getCurrentAnim().getActive();
     }
 
-    public Anim getContinuous() {
+    @Override
+    public boolean isDone() {
+        return finished;
+    }
+
+    @Override
+    public void setDone(boolean b) {
+        finished = b;
+    }
+
+    public Animation getContinuous() {
         return continuous;
     }
 
-    public void setContinuous(Anim continuous) {
+    public void setContinuous(Animation continuous) {
         this.continuous = continuous;
     }
 

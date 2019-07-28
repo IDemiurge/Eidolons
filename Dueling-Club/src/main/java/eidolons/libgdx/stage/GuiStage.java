@@ -1,6 +1,5 @@
 package eidolons.libgdx.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
@@ -206,11 +204,12 @@ public class GuiStage extends StageX implements StageWithClosable {
                 GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
 
-
+        if (LordPanel.ON){
         addActor(lordPanel = LordPanel.getInstance());
         lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
                 GdxMaster.centerHeight(lordPanel));
         lordPanel.setVisible(false);
+        }
 
         addActor(journal = new QuestJournal());
         journal.setPosition(GdxMaster.centerWidth(journal),
@@ -433,7 +432,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (tipMessageWindow.isVisible())
                 return true;
         return
-                LordPanel.getInstance().isVisible() ||
+                LordPanel.visibleNotNull() ||
                         tipMessageWindow.isVisible() || confirmationPanel.isVisible() || textPanel.isVisible() ||
                         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                         || GameMenu.menuOpen;

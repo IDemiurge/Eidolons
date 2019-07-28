@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.universal;
 import eidolons.content.PROPS;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.GameEventHandler;
@@ -53,6 +54,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected LootMaster<E> lootMaster;
 
     protected GameEventHandler eventHandler;
+    protected ModuleMaster moduleMaster;
 
     public MetaGameMaster(String data) {
         this.data = data;
@@ -73,6 +75,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaInitializer<E> createMetaInitializer();
 
     public void initHandlers() {
+        moduleMaster = new ModuleMaster(this);
         eventHandler = new GameEventHandler(this);
         defeatHandler = createDefeatHandler();
         partyManager = createPartyManager();
@@ -83,7 +86,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
         townMaster = createTownMaster();
         dialogueManager = new DialogueManager(this);
-        if (dialogueManager.isPreloadDialogues()){
+        if (dialogueManager.isPreloadDialogues()) {
             getDialogueFactory().init(this);
         }
     }
@@ -100,7 +103,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return new DefeatHandler(this);
     }
 
-    public void init() {
+    public DC_Game init() {
         game = Eidolons.game;
         if (game == null) {
             Simulation.init(false, this);
@@ -119,17 +122,17 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             if (isTownEnabled()) {
                 if (!getTownMaster().initTownPhase()) {
                     Eidolons.getMainGame().setAborted(true);
-                    return;
+                    return game;
                 }
             } else if (isRngQuestsEnabled() || isCustomQuestsEnabled())
                 if (!getQuestMaster().initQuests()) {
                     Eidolons.getMainGame().setAborted(true);
-                    return;
+                    return game;
                 }
             if (!getBattleMaster().getOptionManager().chooseDifficulty(getMetaGame().isDifficultyReset()))
                 Eidolons.getMainGame().setAborted(true);
         }
-
+        return game;
     }
 
     public boolean isCustomQuestsEnabled() {
@@ -338,5 +341,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public boolean isAlliesSupported() {
         return true;
         //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
+    }
+
+    public ModuleMaster getModuleMaster() {
+        return moduleMaster;
     }
 }

@@ -14,6 +14,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAY
 import main.content.CONTENT_CONSTS.FLIP;
 import main.data.xml.XML_Converter;
 import main.entity.obj.MicroObj;
+import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -25,7 +26,7 @@ public class DungeonPlan {
     DUNGEON_TEMPLATES template;
     // Map<MAP_ZONE, DUNGEON_TEMPLATES> subtemplates
     List<MapBlock> blocks;
-    Map<ObjType, Coordinates> objMap;
+    List<ObjAtCoordinate> objMap;
     List<? extends MicroObj> wallObjects;
     private Location location;
     private Dungeon dungeon;
@@ -143,14 +144,11 @@ public class DungeonPlan {
         return null;
     }
 
-    public Map<ObjType, Coordinates> getObjMap() {
-        if (objMap == null) {
-            objMap = new HashMap<>();
-        }
+    public List<ObjAtCoordinate> getObjMap() {
         return objMap;
     }
 
-    public void setObjMap(Map<ObjType, Coordinates> objMap) {
+    public void setObjMap(List<ObjAtCoordinate> objMap) {
         this.objMap = objMap;
     }
 

@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -97,6 +99,7 @@ public class TextureCache {
             if (instance == null) {
                 instance = new TextureCache();
             }
+            SpriteAnimationFactory.init();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
@@ -184,9 +187,9 @@ public class TextureCache {
                     }
                 }
             } else {
-                    if (getInstance().uiAtlas != null) {
-                        region = getInstance().uiAtlas.findRegion(name);
-                    }
+                if (getInstance().uiAtlas != null) {
+                    region = getInstance().uiAtlas.findRegion(name);
+                }
             }
             if (region != null) {
 

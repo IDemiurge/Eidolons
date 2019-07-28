@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
+import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.LabelX;
@@ -21,24 +23,39 @@ import java.util.List;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class AttackTooltip extends ActionTooltip {
+    private final DC_ActiveObj action;
     private TablePanel baseTable;
     private TablePanel rangeTable;
 
     private List<TablePanel> textTables = new ArrayList<>();
 
+
+    private TablePanel caseTable;
+    private TablePanel breakdownTable;
+
     public AttackTooltip(DC_ActiveObj el) {
         super(el);
+        action=el;
     }
 
     @Override
     public void updateAct(float delta) {
         clear();
+        AttackCalculator calc = new AttackCalculator(DC_AttackMaster.getAttackFromAction(action), true);
+
+//        calc.
 
         TablePanel left = new TablePanel();
-
         final ActionTooltipSource source = (ActionTooltipSource) getUserObject();
 
+//        AttackTooltipFactory.createCasesTable(source.g)
+
         /**
+         *
+         * IDEA:
+         * what if we showed Generic Attack tooltip ?
+         * yes, that could be a thing
+         *
          * damage
          * cases
          * damage breakdown - via atk calculator, should be possible?

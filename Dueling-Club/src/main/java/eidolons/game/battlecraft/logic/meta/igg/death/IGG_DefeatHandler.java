@@ -27,6 +27,12 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         if (!isOn()) {
             return true;
         }
+        if (getMaster().getSoulforceMaster().isTrueForm()) {
+            if (!getMaster().getSoulforceMaster().died())
+                return true;
+
+            return false;
+        }
         if (!getMaster().getShadowMaster().death()) { //igg demo TODO
             Eidolons.getMainHero().preventDeath();
 
@@ -47,7 +53,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
         WaitMaster.WAIT(1000);
         if (!ShadowMaster.isShadowAlive()) {
-            if (!EidolonsGame.TUTORIAL_PATH ) {
+            if (!EidolonsGame.TUTORIAL_PATH) {
                 TipMessageMaster.death();
             }
         }
@@ -55,7 +61,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 1.5f);
         WaitMaster.WAIT(1100);
         //use the normal selection events?
-        String newHero =  getPartyManager().chooseNextHero();
+        String newHero = getPartyManager().chooseNextHero();
         if (newHero == null) {
             return true;
         }
@@ -72,7 +78,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
 
 
     public boolean isNoLivesLeft() {
-        if ( EidolonsGame.TUTORIAL_PATH ) {
+        if (EidolonsGame.TUTORIAL_PATH) {
             return false;
         }
         return getMetaGame().getMaster().getPartyManager().getHeroChain().isFinished();

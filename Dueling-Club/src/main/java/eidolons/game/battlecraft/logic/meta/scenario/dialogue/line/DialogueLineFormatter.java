@@ -133,7 +133,7 @@ public class DialogueLineFormatter {
 
                 textData = formatDialogueText(textData);
                 textData = XML_Converter.wrap(TEXT_NODE,
-                 XML_Formatter.formatXmlTextContent(textData, null));
+                 XML_Formatter.formatDialogueLineContent(textData ));
 
                 String miscData = "";
                 String text = actorData;

@@ -32,7 +32,7 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     private boolean result;
 
     private ConfirmationPanel() {
-        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawableNoMinSize());
         setSize(600, 300);
         add(label = new Label("", StyleHolder.getSizedLabelStyle(getFONT(), getFontSize())))
          .center().colspan(2).minWidth(400).top().row();
@@ -107,9 +107,10 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         label.setWrap(true);
         label.setText(wrapped);
         label.pack();
-        setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));
         setFixedSize(false);
         pack();
+        setSize(Math.max(getWidth(), GdxMaster.getWidth()/3), Math.max(getHeight(), GdxMaster.getHeight()/4) );
+        setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));
     }
 
     public void setText(String text) {
@@ -155,14 +156,14 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, result);
     }
 
-    private void ok() {
+    public void ok() {
         result = true;
         close();
         if (onConfirm != null)
             onConfirm.run();
     }
 
-    private void cancel() {
+    public void cancel() {
         result = false;
         close();
         if (onCancel != null)

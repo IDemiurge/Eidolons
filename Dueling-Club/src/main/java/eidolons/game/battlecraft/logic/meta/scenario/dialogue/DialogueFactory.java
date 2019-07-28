@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechBuilder;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.text.TextMaster;
@@ -32,13 +33,14 @@ public class DialogueFactory {
     private static final String FILE_NAME = "linear dialogues.txt";
     public Map<String, GameDialogue> map = new HashMap<>();
     protected MetaGameMaster master;
+    protected SpeechBuilder builder;
 
 
     public void constructDialogues
-     (String path) {
+            (String path) {
         String data = FileManager.readFile(path);
         for (String contents : ContainerUtils.open(
-         data, DIALOGUE_SEPARATOR)) {
+                data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];
             int firstId = NumberUtils.getInteger(array[1]);
@@ -54,25 +56,36 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        constructDialogues(StrPathBuilder.build(  getFileRootPath(), getFileName()));
+        if (CoreEngine.isCombatGame()) {
+            String pathRoot = getFileRootPath();
+//             PathFinder.getRootPath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
+//                 TextMaster.getLocale();
+            String path = DialogueLineFormatter.getLinesFilePath(pathRoot);
+            builder = new SpeechBuilder(path, master);
+            try {
+                constructDialogues(StrPathBuilder.build(getFileRootPath(), getFileName()));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
     }
 
     protected String getFileRootPath() {
-        if (CoreEngine.isIggDemoRunning()){
+        if (CoreEngine.isIggDemoRunning()) {
             return PathFinder.getDialoguesPath(TextMaster.getLocale());
         }
-        if (master.isRngDungeon()){
+        if (master.isRngDungeon()) {
             return getCommonDialoguePath();
         }
         return
-         PathUtils.buildPath(
-          master.getMetaDataManager().getDataPath()
-          , TextMaster.getLocale(),
-          PathUtils.getPathSeparator());
+                PathUtils.buildPath(
+                        master.getMetaDataManager().getDataPath()
+                        , TextMaster.getLocale(),
+                        PathUtils.getPathSeparator());
     }
 
     protected String getCommonDialoguePath() {
-        return  PathFinder.getTextPath()+"/dialogue/"+ TextMaster.getLocale();
+        return PathFinder.getTextPath() + "/dialogue/" + TextMaster.getLocale();
     }
 
     protected String getFileName() {
@@ -81,25 +94,20 @@ public class DialogueFactory {
 
     @Refactor
     public GameDialogue getDialogue(String name) {
-     if (map.isEmpty() || CoreEngine.isDialogueTest())
+        if (map.isEmpty() || CoreEngine.isDialogueTest())
             init(Eidolons.game.getMetaMaster());
         return map.get(StringMaster.formatMapKey(name));
     }
 
 
     public LinearDialogue createDialogue
-     (String name, String idSequence) {
+            (String name, String idSequence) {
         Speech parent = null;
         Speech root = null;
         for (String ID : ContainerUtils.open(idSequence)) {
             Speech speech = getSpeech(NumberUtils.getInteger(ID));
 
-            String pathRoot = getFileRootPath();
-//             PathFinder.getRootPath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
-//                 TextMaster.getLocale();
-            String path =  DialogueLineFormatter.getLinesFilePath(pathRoot);
-
-            speech.getSpeechBuilder(path).buildSpeech(speech);
+            getBuilder().buildSpeech(speech);
 
             if (root == null)
                 root = speech;
@@ -113,6 +121,10 @@ public class DialogueFactory {
         }
 
         return new LinearDialogue(root, name);
+    }
+
+    public SpeechBuilder getBuilder() {
+        return builder;
     }
 
     protected Speech getSpeech(Integer integer) {

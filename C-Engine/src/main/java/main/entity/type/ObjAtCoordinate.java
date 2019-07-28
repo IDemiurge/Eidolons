@@ -15,8 +15,8 @@ public class ObjAtCoordinate {
     }
 
     public ObjAtCoordinate(String s, OBJ_TYPE TYPE) {
-        String typeName = s.split("=")[1];
         String coord = s.split("=")[0];
+        String typeName = s.split("=")[1];
         type = DataManager.getType(typeName, TYPE);
         coordinates = Coordinates.get(true, coord);
     }

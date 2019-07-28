@@ -46,11 +46,26 @@ public class DialogueHandler {
         return dialogue;
     }
 
+    public void lineSpoken(Scene actorObject, String line) {
+//        dialogue.getRoot().getChildren()
+        Ref ref = new Ref(game);
+        ref.setAmount(map.get(actorObject).getId());
+        game.fireEvent(new Event(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN, ref));
+    }
+
     public SpeechDataSource lineSpoken(Speech speech, int index) {
+        if (speech.getScript() != null) {
+            try {
+                speech.getScript().execute();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return null;
+            }
+        }
         ArrayList<String> displayedOptions = new ArrayList<>();
         if (speech.getChildren().size() <= index) {
 
-            if (isLoopDialogueTest() ){
+            if (isLoopDialogueTest()) {
                 return new SpeechDataSource(dialogue.getRoot());
             }
 
@@ -86,12 +101,6 @@ public class DialogueHandler {
         return false;
     }
 
-    public void lineSpoken(Scene actorObject, String line) {
-//        dialogue.getRoot().getChildren()
-        Ref ref = new Ref(game);
-        ref.setAmount(map.get(actorObject).getId());
-        game.fireEvent(new Event(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN, ref));
-    }
 
     public void dialogueDone() {
         Ref ref = new Ref(game);

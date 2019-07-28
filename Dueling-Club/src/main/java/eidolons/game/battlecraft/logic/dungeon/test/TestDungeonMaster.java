@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.test;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
 import eidolons.test.frontend.FAST_DC;
@@ -25,8 +26,14 @@ public class TestDungeonMaster extends DungeonMaster<TestDungeon> {
         return new TestDungeonBuilder<>(this);
     }
 
+    @Override
+    protected DungeonInitializer createInitializer() {
+        if (isLocation())
+            return new LocationInitializer(this);
+        return new TestDungeonInitializer(this);
+    }
     private boolean isLocation() {
-        return !FAST_DC.TEST_MODE;
+        return  !FAST_DC.TEST_MODE;
     }
 
     @Override
@@ -44,8 +51,4 @@ public class TestDungeonMaster extends DungeonMaster<TestDungeon> {
         return new TestSpawner(this);
     }
 
-    @Override
-    protected DungeonInitializer<TestDungeon> createInitializer() {
-        return new TestDungeonInitializer(this);
-    }
 }

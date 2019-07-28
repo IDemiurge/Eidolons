@@ -36,7 +36,7 @@ public class UnitViewOptions {
     private String name;
     private boolean hoverResponsive;
     private String portraitPath;
-    private String spritePath;
+    private BattleFieldObject obj;
 
 
     public UnitViewOptions() {
@@ -90,16 +90,17 @@ public class UnitViewOptions {
         return this.clockValue;
     }
 
+    public BattleFieldObject getObj() {
+        return obj;
+    }
+
     public final void createFromGameObject(BattleFieldObject obj) {
         this.portraitTexture = getOrCreateR(obj.getImagePath());
         this.portraitPath =  (obj.getImagePath());
         this.name = obj.getName();
+        this.obj = obj;
 
-        if (obj.isBoss()) {
-           spritePath= BossAnimator.getSpritePath(obj);
-        } else {
-            spritePath= OverlayingMaster.getSpritePath(obj);
-        }
+
 
         this.mainHero =obj.isMine() && obj.isMainHero();
 
@@ -171,15 +172,5 @@ public class UnitViewOptions {
         return portraitPath;
     }
 
-    public void setPortraitPath(String portraitPath) {
-        this.portraitPath = portraitPath;
-    }
 
-    public String getSpritePath() {
-        return spritePath;
-    }
-
-    public void setSpritePath(String spritePath) {
-        this.spritePath = spritePath;
-    }
 }

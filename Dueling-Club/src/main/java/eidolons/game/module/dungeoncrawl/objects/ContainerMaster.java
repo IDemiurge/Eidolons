@@ -178,13 +178,13 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 break;
             }
         }
-        main.system.auxiliary.log.LogMaster.log(1, "getItem " + c + "; " + rarity + maxCost);
+        main.system.auxiliary.log.LogMaster.verbose( "getItem " + c + "; " + rarity + maxCost);
         ObjType type = preselectBaseType(c, rarity);
-        main.system.auxiliary.log.LogMaster.log(1, "preselectBaseType " + type);
+        main.system.auxiliary.log.LogMaster.verbose( "preselectBaseType " + type);
         if (type == null)
             return null;
         List<ObjType> pool = new ArrayList<>(getItemPool(c, rarity, type)); //base types!
-        main.system.auxiliary.log.LogMaster.log(1, "pool= " + pool);
+        main.system.auxiliary.log.LogMaster.verbose( "pool= " + pool);
         if (pool.isEmpty())
             return null;
         if (isRemoveBase(c, type))
@@ -202,7 +202,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             SortMaster.sortEntitiesByExpression(pool, (item) -> item.getIntParam(PARAMS.GOLD_COST));
             pool.removeIf(item -> pool.indexOf(item) > pool.size() / 2);
         }
-        main.system.auxiliary.log.LogMaster.log(1, "filtered pool= " + pool + " max cost: " + maxCost);
+        main.system.auxiliary.log.LogMaster.verbose( "filtered pool= " + pool + " max cost: " + maxCost);
         if (pool.isEmpty())
             return null;
         ObjType baseType = new RandomWizard<ObjType>().getRandomListItem(pool);
@@ -232,7 +232,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         List<ObjType> pool = rarityMap.get(rarity);
         if (pool == null) {
             pool = initPool(c, rarity, type);
-            main.system.auxiliary.log.LogMaster.log(1, "initPool= " + pool);
+            main.system.auxiliary.log.LogMaster.verbose( "initPool= " + pool);
             rarityMap.put(rarity, pool);
         }
         if (pool == null) {
@@ -252,7 +252,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             String subgroup = getItemGroup(contents, true, TYPE);
             ObjType type = null;
             List<ObjType> types = DataManager.getTypes(TYPE, iterate);
-            main.system.auxiliary.log.LogMaster.log(1, " group= " + group + " subgroup= " + subgroup
+            main.system.auxiliary.log.LogMaster.verbose( " group= " + group + " subgroup= " + subgroup
                     + "; types = " + types);
             Iterator<ObjType> iterator = types.iterator();
             int n = 0;
@@ -313,7 +313,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
             list.addAll(group);
         }
-        main.system.auxiliary.log.LogMaster.log(1, "type list= " + list);
+        main.system.auxiliary.log.LogMaster.verbose( "type list= " + list);
         if (list.isEmpty()) {
             return null;
         }
@@ -635,7 +635,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 if (item == null)
                     if (c == CONTAINER_CONTENTS.FOOD)
                         continue;
-                main.system.auxiliary.log.LogMaster.log(1, c + " rarity  " + rarity + " = " + item
+                main.system.auxiliary.log.LogMaster.verbose( c + " rarity  " + rarity + " = " + item
                         + "; total : " + cost);
                 if (item == null)
                     continue;
@@ -645,9 +645,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             }
         }
         if (contents.isEmpty()) {
-            main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has NO contents!");
+            main.system.auxiliary.log.LogMaster.verbose( ">> " + obj + " has NO contents!");
         } else
-            main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
+            main.system.auxiliary.log.LogMaster.verbose( ">> " + obj + " has contents: " + contents + itemValueList);
 
         if (!CoreEngine.isIggDemo())
             contents = checkSpecialContents(contents, obj);

@@ -249,6 +249,9 @@ public class TextParser {
         String replacement = ref_substring;
         Entity entity = ref.getInfoEntity();
         if (entity == null) {
+            if (ref.getSourceObj()==null) {
+                entity = game.getTypeById(ref.getSource());
+            } else
             if (ref.getSourceObj().isSimulation() && !isBuffParsing() && !isAbilityParsing()) {
                 entity = game.getTypeById(id);
             } else {

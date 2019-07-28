@@ -18,6 +18,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.GridMaster;
@@ -240,7 +241,7 @@ public class FloatingTextMaster {
             return;
         }
         ANIM_PART part = getPart(CASE);
-        Anim anim = compositeAnim.getMap().get(part);
+        Animation anim = compositeAnim.getMap().get(part);
         if (anim == null) {
             if (compositeAnim.getMap().values().iterator().hasNext())
                 return;
@@ -255,7 +256,7 @@ public class FloatingTextMaster {
             delay += floatingText.getDuration() / 2;
 
 
-            LogMaster.log(1, e + "***** adding floating text for " + anim + " : " + floatingText);
+            LogMaster.verbose(e + "***** adding floating text for " + anim + " : " + floatingText);
 
         }
     }
@@ -307,7 +308,15 @@ public class FloatingTextMaster {
     }
 
     private FloatingText addFloatingText(DC_ActiveObj active,
-                                         TEXT_CASES CASE, Object arg, Anim anim, float delay) {
+                                         TEXT_CASES CASE, Object arg, Animation animation, float delay) {
+        Anim anim = null;
+        if (animation instanceof Anim) {
+            anim = ((Anim) animation);
+        }
+        else
+            return null;
+
+
         FloatingText floatingText = getFloatingText(active, CASE, arg);
         floatingText.setDelay(delay);
         floatingText.setDuration(getDefaultDuration(CASE));

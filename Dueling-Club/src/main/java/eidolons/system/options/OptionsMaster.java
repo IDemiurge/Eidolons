@@ -12,6 +12,7 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.FloatingTextLayer;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -75,6 +76,7 @@ public class OptionsMaster {
     private static boolean initialized;
     private static JDialog modalOptionsPanelFrame;
     private static String optionsPath;
+    private static String OPTIONS_MODE;
 
     private static void applyAnimOptions(AnimationOptions animOptions) {
 
@@ -182,6 +184,7 @@ public class OptionsMaster {
     public static void applyAnimOptions() {
         applyAnimOptions(getAnimOptions());
     }
+
     public static void applyGameplayOptions() {
         applyGameplayOptions(getGameplayOptions());
     }
@@ -379,6 +382,9 @@ public class OptionsMaster {
 
     private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
+            case ALT_ASSET_LOAD:
+                Assets.setON(!bool);
+                break;
             case AMBIENCE_DENSITY:
                 EmitterMap.setGlobalShowChanceCoef(Integer.valueOf(value));
                 break;
@@ -386,7 +392,7 @@ public class OptionsMaster {
                 LightLayer.setAdditive(bool);
                 break;
             case PERFORMANCE_BOOST:
-                Fluctuating.fluctuatingAlphaPeriodGlobal=(Integer.valueOf(value))/10;
+                Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.valueOf(value)) / 10;
                 break;
             case UI_VFX:
                 GuiVisualEffects.setOff(!bool);
@@ -510,7 +516,11 @@ public class OptionsMaster {
         applySystemOptions(getSystemOptions());
 
         if (GdxMaster.isLwjglThread()) {
-            PostProcessController.getInstance().update(getPostProcessingOptions());
+            try {
+                PostProcessController.getInstance().update(getPostProcessingOptions());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         if (!GdxMaster.isGuiReady())
             return;
@@ -634,16 +644,13 @@ public class OptionsMaster {
 
     private static boolean isLocalOptionsPreferred() {
         return //CoreEngine.isMe() &&
-                CoreEngine.isJar();
+                !CoreEngine.isJar();
     }
 
     public static void init() {
         if (initialized)
             return;
-        String data = FileManager.readFile(getGlobalOptionsPath());
-        if (data.isEmpty() || isLocalOptionsPreferred()) {
-            data = FileManager.readFile(getLocalOptionsPath());
-        }
+        String data = readOptionsFile();
         if (data.isEmpty()) {
             optionsMap = initDefaults();
         } else {
@@ -669,6 +676,16 @@ public class OptionsMaster {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
+    }
+
+    private static String readOptionsFile() {
+        String path = getOptionsPath();
+        String data = FileManager.readFile(path);
+       if (OPTIONS_MODE==null )
+           if (data.isEmpty() || isLocalOptionsPreferred()) {
+            data = FileManager.readFile(getLocalOptionsPath());
+        }
+        return data;
     }
 
     private static void initFlags() {
@@ -861,8 +878,20 @@ public class OptionsMaster {
         OptionsMaster.optionsPath = optionsPath;
     }
 
+    public static void setOptionsMode(String optionsMode) {
+        OPTIONS_MODE = optionsMode;
+    }
+
     public static String getOptionsPath() {
-        return optionsPath;
+        if (optionsPath != null) {
+            return optionsPath;
+        }
+        if (OPTIONS_MODE != null) {
+            return (PathFinder.getXML_PATH() + "options/" + OPTIONS_MODE + ".xml");
+        } else if (isLocalOptionsPreferred()) {
+            return FileManager.readFile(getLocalOptionsPath());
+        }
+        return FileManager.readFile(getGlobalOptionsPath());
     }
 
     public static PostProcessingOptions getPostProcessingOptions() {

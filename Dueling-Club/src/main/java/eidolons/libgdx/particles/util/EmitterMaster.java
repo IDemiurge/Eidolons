@@ -14,6 +14,7 @@ import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.EnumChooser;
 import eidolons.system.utils.GdxUtil;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -21,12 +22,11 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.ImageChooser;
+import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.PathUtils;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
@@ -84,19 +84,21 @@ public class EmitterMaster extends GdxUtil {
     public static void createVfxAtlas() {
         String imagesPath = null;
         List<File> files = getVfxPresets(true);
-
+        VFX_ATLAS t = new EnumChooser().choose(VFX_ATLAS.class);
         for (VFX_ATLAS type : VFX_ATLAS.values()) {
-
-            switch (type) {
-                //                case UNIT:
-                case UNIT:
-                case AMBIENCE:
-                case SPELL:
-                    break;
-                case MAP:
-                case MISC:
-                    continue;
+            if (t!= type) {
+                continue;
             }
+//            switch (type) {
+//                //                case UNIT:
+//                case UNIT:
+//                case AMBIENCE:
+//                case SPELL:
+//                    break;
+//                case MAP:
+//                case MISC:
+//                    continue;
+//            }
             main:
             for (File sub : files) {
                 String path = sub.getPath().toLowerCase().replace(PathFinder.getVfxPath().toLowerCase(), "");
@@ -279,6 +281,11 @@ public class EmitterMaster extends GdxUtil {
         if (isProcessImageNames()) {
             imageName = processImageNameDeep(imageName);
         }
+        if (imageName.contains("000")){
+            imageName = StringMaster.getAppendedFile(
+                    imageName,StringMaster.getStringXTimes(RandomWizard.getRandomInt(7)+1, ""+ StringMaster.getStringXTimes(3,"qweretyiuipsgsfgh")
+                            .toCharArray()[RandomWizard.getRandomInt(27)]));
+        }
         if (sprite) {
             return "sprites" + "/" + imageName + format;
         }
@@ -321,6 +328,11 @@ public class EmitterMaster extends GdxUtil {
                 return null;
             }
             folder = PathUtils.getPathSegments(path).get(1).toLowerCase();
+        }
+        if (path.contains("waters"))
+        if (!path.contains("black"))
+        {
+            return VFX_ATLAS.AMBIENCE;
         }
         switch (folder) {
             case "mist":

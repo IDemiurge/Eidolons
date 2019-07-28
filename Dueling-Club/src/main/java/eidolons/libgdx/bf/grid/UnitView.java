@@ -2,10 +2,13 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -65,14 +68,7 @@ public class UnitView extends BaseView implements HpBarView{
 
     }
 
-    protected void initSprite(UnitViewOptions o) {
-        if (o.getSpritePath() != null) {
-            overlaySprite = new SpriteX(o.getSpritePath());
-            addActor(overlaySprite);
-            overlaySprite.setFps(10);
-            overlaySprite.setBlending(BLENDING.SCREEN);
-        }
-    }
+
 
 
     public void reset() {
@@ -128,8 +124,20 @@ public class UnitView extends BaseView implements HpBarView{
     }
 
     @Override
-    public void act(float delta) {
+    public float getScaleX() {
+        return super.getScaleX();
+    }
 
+    @Override
+    protected boolean isTransformDisabled() {
+        if (forceTransform) {
+            return false;
+        }
+        return super.isTransformDisabled();
+    }
+
+    @Override
+    public void act(float delta) {
         super.act(delta);
         updateVisible();
         if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {

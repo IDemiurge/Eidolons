@@ -8,6 +8,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
 
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
@@ -69,7 +70,18 @@ public class XML_Formatter {
         return result;
     }
 
-    public static String encodeNonASCII(String v) {
+    public static String replaceNonASCII(String text, String v) {
+        String result = "";
+        for (char c : text.toCharArray()) {
+            if (!asciiEncoder.canEncode(c)) {
+                result += v;
+            } else {
+                result += c;
+            }
+        }
+        return result;
+    }
+        public static String encodeNonASCII(String v) {
         String result = "";
         for (char c : v.toCharArray()) {
             if (!asciiEncoder.canEncode(c)) {
@@ -81,17 +93,21 @@ public class XML_Formatter {
         return result;
     }
 
-    public static String formatXmlTextContent(String string, VALUE value) {
+    public static String formatDialogueLineContent(String string ) {
+        return checkWrapInCDATA(replaceNonASCII(string, ("'"))); //Pattern.quote
+    }
+        public static String formatXmlTextContent(String string, VALUE value) {
         if (string.contains("/s")) {
-            string= string.replace("/s", "\\s");
+            string = string.replace("/s", "\\s");
         }
         String result = string.replace(replacedTextContent, NumberUtils
-         .getCodeFromChar(replacedTextContent));
+                .getCodeFromChar(replacedTextContent));
         result = encodeNonASCII(result);
-        if (isRepairMode())
-            result = repair(result);
         if (isValueWrappedInCDATA(value))
             result = checkWrapInCDATA(result);
+//        else
+        if (isRepairMode())
+            result = repair(result);
         return result;
     }
 
@@ -125,10 +141,10 @@ public class XML_Formatter {
                 break;
             }
             String code = StringMaster.getSubStringBetween(s, ASCII_OPEN,
-             ASCII_CLOSE);
+                    ASCII_CLOSE);
             try {
                 s = s.replace(ASCII_OPEN + code + ASCII_CLOSE, NumberUtils
-                 .getStringFromCode(code));
+                        .getStringFromCode(code));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 return s;
@@ -151,7 +167,7 @@ public class XML_Formatter {
 
     public static String restoreXmlNodeNameOld(String s) {
         return s.replace(COMMA_CODE, ",").replace(COLON_CODE, ":").replace(SEMICOLON_CODE, ";")
-         .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "/");
+                .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "/");
     }
 
     public static String formatStringForXmlNodeName(String s) {
@@ -189,7 +205,7 @@ public class XML_Formatter {
 
     private static String restoreXmlTextContent(String string) {
         return string.replace(NumberUtils.getCodeFromChar(replacedTextContent),
-         replacedTextContent);
+                replacedTextContent);
     }
 
     public static String getValueNode(DataModel obj, VALUE value) {
@@ -199,6 +215,6 @@ public class XML_Formatter {
 //        else {
 //        }
         return XML_Converter.wrap(value.getName(),
-         formatXmlTextContent(obj.getValue(value), value));
+                formatXmlTextContent(obj.getValue(value), value));
     }
 }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.EidolonsGame;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -80,7 +82,7 @@ public class RadialMenu extends Group implements Closable {
     }
 
     protected void initBackground() {
-        if (CoreEngine.isLiteLaunch()) {
+        if (CoreEngine.isLiteLaunch() || EidolonsGame.BRIDGE) {
             return;
         }
         background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath(), false);

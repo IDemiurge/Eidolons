@@ -210,7 +210,7 @@ public class DC_ObjInitializer {
                 last = true;
             }
 
-            if (checkDummyType(typeName, owner)){
+            if (checkDummyType(typeName, owner)) {
                 continue;
             }
 
@@ -218,7 +218,7 @@ public class DC_ObjInitializer {
             if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
                 level = NumberUtils.getInteger(StringMaster.getLastPart(typeName,
                         UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
-                typeName=StringMaster.cropLastSegment(typeName,  UnitGroupMaster.TYPE_LEVEL_SEPARATOR, true);
+                typeName = StringMaster.cropLastSegment(typeName, UnitGroupMaster.TYPE_LEVEL_SEPARATOR, true);
 
             }
             ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.BF_OBJ);
@@ -506,5 +506,13 @@ public class DC_ObjInitializer {
 //            return true;
 //        }
         return false;
+    }
+
+    public static List<ObjAtCoordinate> createObjTypeMap(String textContent) {
+        List<ObjAtCoordinate> list=     new ArrayList<>() ;
+        for (String substring : ContainerUtils.openContainer(textContent, OBJ_SEPARATOR)) {
+            list.add(new ObjAtCoordinate(substring, C_OBJ_TYPE.BF_OBJ));
+        }
+        return list;
     }
 }

@@ -131,7 +131,7 @@ public class EventAnimMaster {
         //        if (leadAnimation!=null )
         //            if (leadAnimation.getActive()!=active)
         //        return leadAnimation;
-main.system.auxiliary.log.LogMaster.log(1,">> New event attach anim for " + active);
+//main.system.auxiliary.log.LogMaster.log(1,">> New event attach anim for " + active);
         return new CompositeAnim();
     }
 

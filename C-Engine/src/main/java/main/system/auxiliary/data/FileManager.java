@@ -298,7 +298,7 @@ public class FileManager {
         corePath = StringMaster.cropFormat(corePath);
         File file = getFile(prefixPath + corePath + format);
         if (!file.isFile()) {
-            LogMaster.log(1, "no  file available for " + file.getPath());
+            LogMaster.verbose(  "no  file available for " + file.getPath());
             return null;
         }
         int i = 2;

@@ -1,4 +1,4 @@
-package eidolons.libgdx.launch;
+package eidolons.libgdx.launch.report;
 
 import sun.net.www.protocol.mailto.MailToURLConnection;
 

@@ -113,6 +113,11 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.11.327</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.python/jython -->
         <!--<dependency>-->
             <!--<groupId>org.python</groupId>-->

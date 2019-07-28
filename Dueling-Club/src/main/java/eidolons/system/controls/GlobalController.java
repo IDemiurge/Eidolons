@@ -26,6 +26,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
@@ -201,6 +202,10 @@ public class GlobalController implements Controller {
             activeButton = null;
             return true;
         }
+        if (ConfirmationPanel.getInstance().isVisible()) {
+            ConfirmationPanel.getInstance().ok();
+            return true;
+        }
         return false;
     }
 
@@ -212,6 +217,10 @@ public class GlobalController implements Controller {
             return true;
         }
 
+        if (ConfirmationPanel.getInstance().isVisible()) {
+            ConfirmationPanel.getInstance().ok();
+            return true;
+        }
         if (TownPanel.getActiveInstance() != null) {
             TownPanel.getActiveInstance().done();
         }
@@ -257,6 +266,8 @@ public class GlobalController implements Controller {
     }
 
     private boolean escape() {
+        DungeonScreen.getInstance().cameraStop(true);
+
         if (activeButton != null) {
             if (!activeButton.isChecked())
                 ActionMaster.click(activeButton);
@@ -264,6 +275,10 @@ public class GlobalController implements Controller {
             return true;
         }
 
+        if (ConfirmationPanel.getInstance().isVisible()) {
+            ConfirmationPanel.getInstance().cancel();
+            return true;
+        }
         if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
             DungeonScreen.getInstance().getGuiStage().dialogueDone();
             FileLogManager.streamMain("Dialogue escaped");

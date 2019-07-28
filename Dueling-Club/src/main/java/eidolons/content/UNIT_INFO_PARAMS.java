@@ -1,5 +1,6 @@
 package eidolons.content;
 
+import eidolons.libgdx.gui.generic.ValueContainer;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

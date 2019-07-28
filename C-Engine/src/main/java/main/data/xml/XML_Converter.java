@@ -496,4 +496,17 @@ public class XML_Converter {
         return builder;
     }
 
+    public static String appendToNode(String nodeName, String xml, String append) {
+        int from = xml.indexOf(XML_Converter.openXml(nodeName));
+        int to = xml.lastIndexOf(XML_Converter.closeXml(nodeName));
+        if ((from==-1 || to == -1)) {
+            return xml;
+        }
+        String nodeText =
+//                (from==-1 || to == -1) ? openXml(nodeName)
+//                        : TODO what if absent??
+                xml.substring(from, to) + XML_Converter.closeXml(nodeName);
+        String newNodeText = xml.substring(from, to) + append + XML_Converter.closeXml(nodeName);
+        return xml.replace(nodeText, newNodeText);
+    }
 }

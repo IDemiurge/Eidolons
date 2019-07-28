@@ -36,6 +36,7 @@ import java.util.List;
 
 import static eidolons.system.audio.MusicMaster.MUSIC_TRACK.*;
 import static main.content.CONTENT_CONSTS.SOUNDSET.*;
+import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
 //a folder tree per music theme!
 //standard path structure
@@ -325,11 +326,16 @@ public class MusicMaster {
         if (shouldLoop != isTrackLooping(sub))
             return false;
         if (EidolonsGame.BRIDGE) {
+            if (scope == MUSIC_SCOPE.MENU) {
+                if (tracksPlayedInScope == 0) {
+                    return fitTracks(track, 86, THE_END_OR_THE_BEGINNING);
+                }
+            }
             if (scope == MUSIC_SCOPE.BATTLE) {
-                return fitTracks(track, 86,
-                        SUFFOCATION_LOOP, NIGHT_OF_DEMON);
+                return fitTracks(track, 100,
+                        SUFFOCATION_LOOP);
             } else {
-                return fitTracks(track, 86, LOOMING_SHADES, DUNGEONS_OF_DOOM);
+                return fitTracks(track, 100, LOOMING_SHADES, DUNGEONS_OF_DOOM);
             }
         }
         if (scope == MUSIC_SCOPE.BATTLE) {
@@ -703,7 +709,7 @@ public class MusicMaster {
                 playedMusic = Gdx.audio.newMusic(file);
             }
             musicCache.put(path, playedMusic);
-            log(1, "Music loaded " + path);
+            important("Music loaded " + path);
         }
         //what if music was disposed?
         return playedMusic;

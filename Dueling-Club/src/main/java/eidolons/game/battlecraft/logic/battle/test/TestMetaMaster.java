@@ -39,4 +39,19 @@ public class TestMetaMaster extends MetaGameMaster {
     protected MetaInitializer createMetaInitializer() {
         return Mockito.mock(ScenarioInitializer.class);
     }
+
+    @Override
+    public boolean isRngQuestsEnabled() {
+        return false;
+    }
+
+    @Override
+    public void gameStarted() {
+//        super.gameStarted();
+    }
+
+    @Override
+    public boolean isRngDungeon() {
+        return false;
+    }
 }

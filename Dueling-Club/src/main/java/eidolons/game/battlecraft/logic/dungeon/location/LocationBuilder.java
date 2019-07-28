@@ -8,11 +8,10 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.FacingAdjuster;
 import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -28,7 +27,6 @@ import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
-import main.system.data.DataUnitFactory;
 import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
@@ -47,13 +45,15 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String ENTRANCE_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ENTRANCE_NODE);
     public static final String EXIT_NODE = "Exits";
     public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
-    public static final String UNIT_FACING_NODE = "Named_Coordinate_Points";
+    public static final String META_DATA_NODE = "Named_Coordinate_Points";
     public static final String AI_GROUPS_NODE = StringMaster
             .getWellFormattedString("ai groups node");
     @Refactor
     private List<Node> nodeList;
     private Location location;
     private Dungeon dungeon;
+
+    private List<Node> lazyInitZones=    new ArrayList<>() ;
 
     public LocationBuilder() {
         super(null);
@@ -67,6 +67,10 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public Location buildDungeon(String path) {
         location = super.buildDungeon(path);
         FauxDungeonLevel level = createFauxDungeonLevel(path, location);
+        if ( CoreEngine.isDungeonTool()) {
+            level.getObjects().addAll(location.getPlan().getObjMap());
+            level.setDirectionMap(location.getPlan().getDirectionMap());
+        }
         master.setDungeonLevel(level);
         level.getVoidCoordinates().addAll(location.getDungeon().getVoidCoordinates());
 //        location.setEntranceData();
@@ -126,9 +130,11 @@ public class LocationBuilder extends DungeonBuilder<Location> {
                 coordinates = CoordinatesMaster.getCoordinatesFromString(subNode.getTextContent());
 
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
-
-                objectMap = // TODO BETTER IN TYPES?
-                        DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
+                if (!CoreEngine.isCombatGame()) {
+                    map.setObjMap(DC_ObjInitializer.createObjTypeMap(subNode.getTextContent()));
+                } else
+                    objectMap = // TODO BETTER IN TYPES?
+                            DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
                 // TODO encounters?
             } else {
                 // BLOCK TYPE
@@ -152,7 +158,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         if (objectMap == null) {
             return b;
         }
-        b.getMap().putAll(objectMap);
         b.getObjects().addAll(objectMap.values());
 
         return b;
@@ -175,9 +180,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
         location.initEntrances();
+        location.setPlan(plan);
         plan.setStringData(data);
         initDynamicObjData(location, plan);
-
 
 
         return location;
@@ -192,7 +197,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     @Override
     protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
-        if (StringMaster.compareByChar(n.getNodeName(), (UNIT_FACING_NODE))) {
+        if (StringMaster.compareByChar(n.getNodeName(), (META_DATA_NODE))) {
             dungeon.setUnitFacingMap(createUnitFacingMap(n.getTextContent()));
         } else if (StringMaster.compareByChar(n.getNodeName(), (ZONES_NODE))) {
             try {
@@ -215,15 +220,26 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         return map;
     }
 
-    private MapZone createZone(DungeonPlan plan, int zoneId, Node zoneNode) {
+    private MapZone createZone(Dungeon  dungeon, String zoneId, Node zoneNode) {
         String name = zoneNode.getNodeName();
         String nodeName = XML_Formatter.restoreXmlNodeName(name);
         if (!nodeName.contains(",")) {
             nodeName = XML_Formatter.restoreXmlNodeNameOld(name);
         }
         int[] c = CoordinatesMaster.getMinMaxCoordinates(nodeName.split(",")[1]);
-        MapZone zone = new MapZone(plan.getDungeon(), zoneId, c[0], c[1], c[2], c[3]);
+        MapZone zone = new MapZone(dungeon , zoneId, c[0], c[1], c[2], c[3]);
         return zone;
+    }
+
+    private void initModuleZoneLazily(Module  module) {
+        for (Node lazyInitZone : lazyInitZones) {
+            if (lazyInitZone.getNodeName().equalsIgnoreCase(module.getName())) {
+                buildZone(dungeon, module.getName(), lazyInitZone);
+                return;
+            }
+
+        }
+
     }
 
     private void initZones(Node zonesNode, DungeonPlan plan) {
@@ -233,24 +249,16 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         //        Node zonesNode = XML_Converter.getChildAt(planNode, (1));
 
         for (Node zoneNode : XML_Converter.getNodeList(zonesNode)) {
-            MapZone zone;
-            try {
-                zone = createZone(plan, zoneId, zoneNode);
-            } catch (Exception e) {
-                //                main.system.ExceptionMaster.printStackTrace(e);
-                zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
-                        plan.getDungeon().getHeight());
-            } // ++ add coord exceptions
+
+
+            if (isZoneModulesLazy())
+            if (!checkZoneModule(zoneNode)){
+                lazyInitZones.add(zoneNode);
+                continue;
+            }
+            MapZone zone=buildZone(plan.getDungeon(), zoneId+"", zoneNode);
             zoneId++;
             zones.add(zone);
-            for (Node node : XML_Converter.getNodeList(XML_Converter.getNodeList(zoneNode).get(0))) {
-                // if (node.getNodeName().equalsIgnoreCase(BLOCKS_NODE))
-                // blocks = initBlocks(XML_Converter.getStringFromXML(node));
-                MapBlock block = constructBlock(node, id, zone, plan, getDungeon().getDungeon());
-                id++;
-                zone.addBlock(block);
-                plan.getBlocks().add(block);
-            }
         }
         if (plan.getBlocks().size() == 1) {
             int w = plan.getBlocks().get(0).getWidth();
@@ -259,6 +267,28 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             dungeon.setParam(PARAMS.BF_HEIGHT, h, true);
         }
         plan.setZones(zones);
+    }
+
+    private MapZone buildZone(Dungeon dungeon, String s, Node zoneNode) {
+        MapZone zone;
+        try {
+            zone = createZone(dungeon, s, zoneNode);
+        } catch (Exception e) {
+            //                main.system.ExceptionMaster.printStackTrace(e);
+            zone = new MapZone(dungeon , s, 0, dungeon .getWidth(), 0,
+                    dungeon.getHeight());
+        } // ++ add coord exceptions
+        int id=0;
+        for (Node node : XML_Converter.getNodeList(XML_Converter.getNodeList(zoneNode).get(0))) {
+            // if (node.getNodeName().equalsIgnoreCase(BLOCKS_NODE))
+            // blocks = initBlocks(XML_Converter.getStringFromXML(node));
+
+            MapBlock block = constructBlock(node, id, zone,null , dungeon );
+            id++;
+            zone.addBlock(block);
+//            plan.getBlocks().add(block);
+        }
+        return zone;
     }
 
 
@@ -357,5 +387,13 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         public int getMaxY() {
             return maxY;
         }
-    }
 }
+
+    protected boolean checkZoneModule(Node zoneNode) {
+        return getMaster().getGame().getMetaMaster().getModuleMaster().isZoneInitRequired(zoneNode);
+    }
+
+    protected boolean isZoneModulesLazy() {
+        return getMaster().getGame().getMetaMaster().getModuleMaster().isModuleInitOn();
+    }
+    }

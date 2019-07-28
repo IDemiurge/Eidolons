@@ -21,6 +21,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
+import eidolons.libgdx.launch.report.CrashManager;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
@@ -236,14 +237,18 @@ public class GenericLauncher extends Game {
     public void render() {
         GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
 
-        if (CoreEngine.isIDE()) {
+//        if (CoreEngine.isIDE()) {
             try {
                 render_();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+                if (!CoreEngine.isIDE()){
+                    CrashManager.crashed();
+                    throw new RuntimeException();
+                }
             }
-        } else
-            render_();
+//        } else
+//            render_();
     }
 
     public void render_() {

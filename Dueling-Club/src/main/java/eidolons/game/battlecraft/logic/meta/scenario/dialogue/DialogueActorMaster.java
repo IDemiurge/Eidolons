@@ -3,6 +3,8 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.libgdx.texture.Images;
+import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -25,7 +27,16 @@ public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta> {
 //        getMetaGame().getScenario().getProperty(PROPS.ACTORS);
         //lightweight entities?
         ObjType type = DataManager.getType(name, DC_TYPE.ACTORS);
-
+        if (type == null) {
+            ObjType unitType = DataManager.getType(name, C_OBJ_TYPE.UNITS_CHARS);
+            if (unitType != null) {
+                type = new ObjType(name, DC_TYPE.ACTORS);
+                type.setImage(unitType.getImagePath());
+            } else {
+                type = new ObjType("", DC_TYPE.ACTORS);
+                type.setImage(Images.EMPTY_DEMIURGE);
+            }
+        }
         return new DialogueActor(type);
     }
 

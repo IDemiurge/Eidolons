@@ -123,22 +123,7 @@ public class IGG_Demo {
     }
 
     public enum IGG_MISSION {
-        TUTORIAL("levels/Ashen Path.xml", "Ashen Path", 0, 1){
-            @Override
-            public String getMissionName() {
-                    if (!EidolonsGame.BRIDGE) {
-                        return "Hall of Lords.xml";
-                    }
-                return super.getMissionName();
-            }
-
-            @Override
-            public String getXmlLevelName() {
-                if (!EidolonsGame.BRIDGE) {
-                        return "Hall of Lords";
-                    }
-                return super.getXmlLevelName();
-            }
+        TUTORIAL("SUBLEVELS/Ashen Path modular.xml", "Ashen Path", 0, 1){
             @Override
             public boolean isTutorial() {
                 return true;

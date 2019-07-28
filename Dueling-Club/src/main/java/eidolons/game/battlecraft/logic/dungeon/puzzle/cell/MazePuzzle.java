@@ -120,7 +120,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     }
 
     private int getGlimpseTime() {
-        return (int) (2250*getDifficultyCoef());
+        return (int) (2550/getDifficultyCoef());
     }
 
     @Override

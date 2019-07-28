@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul;
 
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
@@ -13,6 +14,9 @@ public class EidolonLord extends LightweightEntity {
 
     HeroChain chain;
 
+    public int getSoulforce() {
+        return getIntParam(PARAMS.SOULFORCE );
+    }
     public void soulsLost(Soul... souls) {
 
         for (Soul soul : souls) {
@@ -38,10 +42,17 @@ public class EidolonLord extends LightweightEntity {
         lord = this;
     }
 
+    public void soulforceGained(int amount) {
+        lord.addParam(PARAMS.SOULFORCE, amount);
+    }
+    public void soulforceLost(int amount) {
+        lord.addParam(PARAMS.SOULFORCE, -amount);
+    }
     public void soulsGained(Soul soul) {
         addProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
         getGame().getLogManager().log("A Soul is trapped: "  + soul.getUnitType().getName());
     }
+
 
 
     /**
