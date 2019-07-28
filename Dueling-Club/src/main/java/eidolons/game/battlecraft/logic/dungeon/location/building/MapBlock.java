@@ -70,7 +70,7 @@ public class MapBlock {
 
     public String toString() {
         String string = getShortName();
-        return string + "; Zone # " + zone.getI() + "; "
+        return string + "; Zone: " + zone.getName() + "; "
          + CoordinatesMaster.getBoundsFromCoordinates(coordinates);
     }
 

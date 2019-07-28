@@ -11,6 +11,7 @@ import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import org.junit.Test;
 import org.w3c.dom.Node;
 
@@ -55,11 +56,12 @@ public class ModuleMaster extends MetaGameHandler {
     private void initModules() {
         modules = new ArrayList<>();
         for (String s : scheme.modules) {
-            String name = VariableManager.removeVarPart(s);
+            String path = VariableManager.removeVarPart(s);
+            String name = PathUtils.getLastPathSegment(path);
             Coordinates c = Coordinates.get(VariableManager.getVars(s));
             int w = 15;
             int h = 15;
-            Module module = new Module(c, w, h, name);
+            Module module = new Module(c, w, h, name, path);
             modules.add(module);
         }
     }
@@ -84,12 +86,12 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     public enum MODULE_LEVEL {
-        ASHEN_PATH("sublevels/ashen path modular", false, "sublevels/maze module(0, 0);"),
+        ASHEN_PATH("sublevels/ashen path modular", false, "sublevels/intro(0-0)", "sublevels/maze module(0-0);"),
         ;
         public String initialModule;
 
         MODULE_LEVEL(String path, boolean wtf, String... modules) {
-            this(modules[0], path, wtf, modules);
+            this(VariableManager.removeVarPart(PathUtils.getLastPathSegment(modules[0])), path, wtf, modules);
         }
         MODULE_LEVEL(String initialModule, String path, boolean wtf, String... modules) {
             this.path = path;

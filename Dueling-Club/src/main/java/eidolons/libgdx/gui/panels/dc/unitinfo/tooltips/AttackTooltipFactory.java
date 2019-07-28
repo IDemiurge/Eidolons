@@ -91,7 +91,7 @@ public class AttackTooltipFactory {
             case LONG_REACH:
                 return RangeRule.isCloseQuartersOrLongReach(ref)==false;
             case SIDEWAYS:
-                return FacingMaster.getSingleFacing(ref.getSourceObj(), ref.getTargetObj())== UnitEnums.FACING_SINGLE.TO_THE_SIDE;
+                return FacingMaster.getSingleFacing_(ref.getSourceObj(), ref.getTargetObj())== UnitEnums.FACING_SINGLE.TO_THE_SIDE;
             case DIAGONAL:
                 return DirectionMaster.getRelativeDirection(ref.getSourceObj(), ref.getTargetObj()).isDiagonal();
         }

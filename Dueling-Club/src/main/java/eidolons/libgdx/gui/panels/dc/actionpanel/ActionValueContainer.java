@@ -261,6 +261,16 @@ public class ActionValueContainer extends ValueContainer {
         return  EidolonsGame.isActionBlocked((DC_ActiveObj) getUserObject());
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+    }
+
+    @Override
+    protected Class<?> getUserObjectClass() {
+        return DC_ActiveObj.class;
+    }
+
     public void setCustomRadialMenu(RadialMenu customRadialMenu) {
         this.customRadialMenu = customRadialMenu;
     }

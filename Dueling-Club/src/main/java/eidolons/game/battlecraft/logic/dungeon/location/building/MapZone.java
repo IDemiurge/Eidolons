@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapZone {
-    int x1, x2, y1, y2, i;
+    int x1, x2, y1, y2 ;
     String xml;
     private List<MapBlock> blocks = new ArrayList<>();
     private String fillerType
@@ -21,19 +21,18 @@ public class MapZone {
     private List<Coordinates> exceptions;
     private Dungeon dungeon;
 
-    public MapZone(Dungeon dungeon, int i, int x1, int x2, int y1, int y2) {
-        this.i = i;
+    public MapZone(Dungeon dungeon, String name, int x1, int x2, int y1, int y2) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
         this.dungeon = dungeon;
-        setName("Zone #" + (i));
+        setName(name);
+    }
+    public MapZone(Dungeon dungeon, int i, int x1, int x2, int y1, int y2) {
+        this(dungeon, "Zone #" + (i), x1, x2, y1, y2);
     }
 
-    public int getI() {
-        return i;
-    }
 
     public String getXml() {
         xml = XML_Converter.openXmlFormatted(getName() + ", "

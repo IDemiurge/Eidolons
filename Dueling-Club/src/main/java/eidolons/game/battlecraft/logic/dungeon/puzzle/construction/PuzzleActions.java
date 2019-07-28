@@ -69,7 +69,7 @@ public class PuzzleActions extends PuzzleElement {
                 break;
             case death:
                 break;
-            case ANIMATE_ENEMIES:
+            case animate_enemies:
                 for (BattleFieldObject object : getObjects(puzzle)) {
                     if (object.checkBool(GenericEnums.STD_BOOLS.LIVING_STATUE)) {
                         Unit unit = (Unit) object.getGame().createUnit(DataManager.getType("Living " + object.getName(), DC_TYPE.UNITS),

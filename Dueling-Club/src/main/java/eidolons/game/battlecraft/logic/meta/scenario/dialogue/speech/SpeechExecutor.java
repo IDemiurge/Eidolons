@@ -7,6 +7,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicMaster;
 
 public class SpeechExecutor  {
 
@@ -20,6 +21,9 @@ public class SpeechExecutor  {
 
     public void execute(SpeechScript.SPEECH_ACTION speechAction, String value) {
         switch (speechAction) {
+            case MUSIC:
+                MusicMaster.getInstance().overrideWithTrack(value);
+                break;
             case SOUND:
                 DC_SoundMaster.playKeySound(value);
                 break;

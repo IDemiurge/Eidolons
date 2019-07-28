@@ -12,15 +12,16 @@ public class Module {
     private int height;
 
     private String name;
+    private String path;
 
-    public Module(Coordinates origin, int width, int height, String name) {
+    public Module(Coordinates origin, int width, int height, String name, String path) {
         this.origin = origin;
         this.width = width;
         this.height = height;
         this.name = name;
-        x = origin.x;
-        y = origin.y;
+        this.path = path;
     }
+
 
     public int getX() {
         return x;

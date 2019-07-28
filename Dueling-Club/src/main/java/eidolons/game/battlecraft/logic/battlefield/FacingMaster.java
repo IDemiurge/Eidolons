@@ -52,7 +52,7 @@ public class FacingMaster {
         return getSingleFacing(facing, obj1.getCoordinates(), obj2.getCoordinates());
     }
 
-    public static FACING_SINGLE getSingleFacing (Obj sourceObj, Obj targetObj) {
+    public static FACING_SINGLE getSingleFacing_ (Obj sourceObj, Obj targetObj) {
         return getSingleFacing((BattleFieldObject) sourceObj, (BfObj) targetObj);
     }
     public static FACING_SINGLE getSingleFacing(FACING_DIRECTION facing, Coordinates c1,

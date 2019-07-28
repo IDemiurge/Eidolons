@@ -11,8 +11,7 @@ public class IntroSpeech extends Speech {
         super(id);
     }
 
-    @Override
     public SpeechBuilder getSpeechBuilder(String path) {
-        return new IntroSpeechBuilder(path);
+        return null ;
     }
 }

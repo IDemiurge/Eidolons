@@ -29,7 +29,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
         UNIT_ACTION,
         SCRIPT,
-        timed,
+        timed, MUSIC,
 
         //make templates mapped by name?
     }

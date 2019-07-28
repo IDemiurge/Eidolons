@@ -63,12 +63,15 @@ public class MusicMaster {
     private boolean loopPlaylist = false;
     private Map<String, Music> musicCache = new XLinkedMap<>();
 
+
     private Music playedMusic;
+    private Music mutedMusic;
     private Music playedAmbient;
     private boolean stopped;
     private boolean running;
 
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
+
 
 
 //    static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
@@ -186,6 +189,16 @@ public class MusicMaster {
             on = !(OptionsMaster.getSoundOptions().
                     getBooleanValue(SOUND_OPTION.MUSIC_OFF));
         return on;
+    }
+
+    public   void overrideWithTrack(String value) {
+        MUSIC_TRACK track = getTrackByName(value);
+        playMusic(track.getPath(), true);
+    }
+
+    private MUSIC_TRACK getTrackByName(String value) {
+        return
+                new EnumMaster<MUSIC_TRACK>().retrieveEnumConst(MUSIC_TRACK.class, value);
     }
 
     public void resetVolume() {
@@ -683,11 +696,28 @@ public class MusicMaster {
         stopped = true;
     }
 
-    public void playMusic(String path) {
+    public void restoreMuted( ) {
+        if (mutedMusic == null) {
+            return;
+        }
+        mutedMusic.setVolume(1);
+        mutedMusic=null ;
+    }
+        public void playMusic(String path ) {
+        playMusic(path, false);
+    }
+    public void playMusic(String path, boolean muteCurrent) {
         path = PathUtils.addMissingPathSegments(path, PathFinder.getMusicPath());
         //TODO save!
         if (playedMusic != null)
-            playedMusic.stop();
+        {
+            if (muteCurrent) {
+                playedMusic.setVolume(0);
+                mutedMusic = playedMusic;
+            } else {
+                playedMusic.stop();
+            }
+        }
 
         playedMusic = getMusic(path);
         Float volume =
