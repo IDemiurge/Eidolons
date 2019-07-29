@@ -42,7 +42,10 @@ public class HC_Tab {
         if (image != null) {
             tabComp.setImage(image);
             return tabComp;
+        } else {
+            tabComp.setString(name);
         }
+
         tabComp.setImagePath(imgPath);
         tabComp.resetImage();
         return tabComp;

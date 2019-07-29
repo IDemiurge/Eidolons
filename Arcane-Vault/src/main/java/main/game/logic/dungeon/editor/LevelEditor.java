@@ -1,5 +1,6 @@
 package main.game.logic.dungeon.editor;
 
+import main.data.filesys.PathFinder;
 import main.game.battlecraft.DC_Engine;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.DC_TYPE;
@@ -11,6 +12,7 @@ import main.game.logic.dungeon.editor.gui.LE_MainPanel;
 import main.swing.SwingMaster;
 import main.swing.components.obj.BfGridComp;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
@@ -20,6 +22,7 @@ import main.system.sound.Player;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.*;
 
 public class LevelEditor {
@@ -132,6 +135,20 @@ public class LevelEditor {
             LE_DataMaster.initMissionsCustomWorkspace();
         }
         LE_DataMaster.resetMissionWorkspace();
+
+        if (args.length==0) {
+            return;
+        }
+        args = args[0].split(";");
+
+        for (String arg : args) {
+            if (!arg.contains(".")) {
+            for (File file : FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()+arg, false, false)) {
+                LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder()+ arg+"/"+file.getName());
+            }
+            } else
+                LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder()+ arg.replace("_", " ")+".xml");
+        }
     }
 
     private static void initFullData() {

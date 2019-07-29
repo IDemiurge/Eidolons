@@ -5,6 +5,7 @@ import main.data.xml.XML_Converter;
 import main.game.bf.Coordinates;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.battlecraft.logic.dungeon.Dungeon;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,14 +22,13 @@ public class MapZone {
     private List<Coordinates> exceptions;
     private Dungeon dungeon;
 
-    public MapZone(Dungeon dungeon, int i, int x1, int x2, int y1, int y2) {
-        this.i = i;
+    public MapZone(Dungeon dungeon, String name) {
+        this.name = name;
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
         this.dungeon = dungeon;
-        setName("Zone #" + (i));
     }
 
     public int getI() {
@@ -36,8 +36,8 @@ public class MapZone {
     }
 
     public String getXml() {
-        xml = XML_Converter.openXmlFormatted(getName() + ", "
-                + CoordinatesMaster.getBoundsString(x1, x2, y1, y2));
+        xml = XML_Converter.openXmlFormatted(getName() );
+
         xml += XML_Converter.openXmlFormatted(DungeonBuilder.BLOCKS_NODE);
         String blockData = "";
         for (MapBlock b : blocks) {
@@ -45,8 +45,12 @@ public class MapZone {
         }
         xml += blockData;
         xml += XML_Converter.closeXmlFormatted(DungeonBuilder.BLOCKS_NODE);
-        xml += XML_Converter.closeXmlFormatted(getName() + ", "
-                + CoordinatesMaster.getBoundsString(x1, x2, y1, y2));
+
+        String bounds = CoordinatesMaster.getBoundsString(x1, x2, y1, y2);
+        xml += XML_Converter.openXmlFormatted("bounds");
+        xml += bounds;
+        xml += XML_Converter.closeXmlFormatted("bounds");
+        xml += XML_Converter.closeXmlFormatted(getName() );
         return xml;
 
     }
@@ -150,9 +154,23 @@ public class MapZone {
         }
         return exceptions;
     }
+    public void setBounds(int[] edges) {
+        setBounds(edges[0],edges[1],edges[2],edges[3]);
+    }
+
+    public void setBounds(int edge, int edge1, int edge2, int edge3) {
+        setX1(edge);
+        setX2(edge1);
+        setY1(edge2);
+        setY2(edge3);
+    }
 
     public void setExceptions(List<Coordinates> exceptions) {
         this.exceptions = exceptions;
+    }
+
+    public void setBounds(String textContent) {
+        setBounds(CoordinatesMaster.getMinMaxCoordinates((textContent )));
     }
 
 }

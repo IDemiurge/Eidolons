@@ -4,6 +4,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class C_OBJ_TYPE implements OBJ_TYPE {
@@ -40,7 +41,11 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
 
     @Override
     public String toString() {
-        return "combo type: " + StringMaster.toStringForm(TYPES.toString());
+        String s = "";
+        for (DC_TYPE type : TYPES) {
+            s+=type.getName()+" ";
+        }
+        return "combo type: " + s;
     }
 
     public DC_TYPE[] getTypes() {

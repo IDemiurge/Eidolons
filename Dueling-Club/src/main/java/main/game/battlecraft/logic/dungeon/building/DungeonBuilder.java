@@ -204,7 +204,8 @@ public class DungeonBuilder {
                 } else {
                     dungeon.setParam(PARAMS.BF_HEIGHT, y2);
                 }
-                MapZone zone = new MapZone(dungeon, 0, x1, x2, y1, y2);
+                MapZone zone = new MapZone(dungeon, "main" );
+                zone.setBounds( x1, x1, y1, y2);
                 List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(x1 - 1,
                         x2 - 1, y1 - 1, y2 - 1);
                 new MapBlock(0, BLOCK_TYPE.ROOM, zone, plan, coordinates);
@@ -286,7 +287,8 @@ public class DungeonBuilder {
     private List<MapZone> createMapZones() {
         List<MapZone> list = new LinkedList<>();
         int i = 0;
-        MapZone zone = new MapZone(getDungeon(), i, 0, getDungeon().getCellsX(), 0, getDungeon()
+        MapZone zone = new MapZone(getDungeon(), "main" );
+        zone.setBounds( 0, getDungeon().getCellsX(), 0, getDungeon()
                 .getCellsY());
         list.add(zone);
         // if (plan.getTemplate() == DUNGEON_TEMPLATES.GREAT_ROOM) {
@@ -620,44 +622,18 @@ public class DungeonBuilder {
 
     private void initZones(Node planNode, DungeonPlan plan) {
         int id = 0;
-        int zoneId = 0;
         List<MapZone> zones = new LinkedList<>();
         Node zonesNode = XML_Converter.getChildAt(planNode, (1));
 
         for (Node zoneNode : XML_Converter.getNodeList(zonesNode)) {
-            MapZone zone;
-            try {
-                zone = createZone(plan, zoneId, zoneNode);
-            } catch (Exception e) {
-//                e.printStackTrace();
-                zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
-                        plan.getDungeon().getHeight());
-            } // ++ add coord exceptions
-            zoneId++;
+            MapZone zone =
+                    ZoneBuilder.buildZone(plan, zoneNode);
             zones.add(zone);
-            for (Node node : XML_Converter.getNodeList(XML_Converter.getNodeList(zoneNode).get(0))) {
-                // if (node.getNodeName().equalsIgnoreCase(BLOCKS_NODE))
-                // blocks = initBlocks(XML_Converter.getStringFromXML(node));
-                MapBlock block = constructBlock(node, id, zone, plan, getDungeon());
-                id++;
-                zone.addBlock(block);
-                plan.getBlocks().add(block);
-            }
         }
 
         plan.setZones(zones);
     }
 
-    private MapZone createZone(DungeonPlan plan, int zoneId, Node zoneNode) {
-        String name = zoneNode.getNodeName();
-        String nodeName = XML_Writer.restoreXmlNodeName(name);
-        if (!nodeName.contains(",")) {
-            nodeName = XML_Writer.restoreXmlNodeNameOld(name);
-        }
-        int[] c = CoordinatesMaster.getMinMaxCoordinates(nodeName.split(",")[1]);
-        MapZone zone = new MapZone(plan.getDungeon(), zoneId, c[0], c[1], c[2], c[3]);
-        return zone;
-    }
 
     public DungeonPlan selectDungeonMap(Dungeon dungeon) {
         File file = FileManager.getRandomFile(getMapsPath()

@@ -25,15 +25,13 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.utilities.workspace.Workspace;
 import net.miginfocom.swing.MigLayout;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LE_Palette extends G_Panel implements TabChangeListener {
     static final DC_TYPE[] default_palette = {DC_TYPE.BF_OBJ, DC_TYPE.UNITS,
@@ -102,7 +100,11 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
             paletteTabs.addTab(StringMaster.getWellFormattedString(p.name()), "", upperPalette);
 
         }
-
+        try {
+            refresh();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // TODO subpalettes? use ws ?
         // for (PALETTE p : PALETTE.values())
         // list.add(new Palette(p));
@@ -193,9 +195,21 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     }
 
     public void newPalette() {
+        newPalette(new ArrayList<>());
+    }
+
+    public void newPaletteFull() {
+        newPalette(null);
+    }
+
+    public void newPalette(List<String> initial) {
+
+
+        OBJ_TYPE TYPE= C_OBJ_TYPE.BF_OBJ;
+        List<ObjType> typeList = null;
+        if (initial == null) {
         int optionChoice = DialogMaster.optionChoice("Choose object TYPE...", default_palette);
-        OBJ_TYPE TYPE;
-        List<ObjType> typeList;
+
         if (optionChoice == -1) {
             if (DialogMaster.confirm("Multi-type Palette?")) {
                 optionChoice = DialogMaster
@@ -212,17 +226,29 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
             TYPE = default_palette[optionChoice];
             typeList = DataManager.getTypes(TYPE);
         }
-
+        }
+        if (typeList == null) {
+            typeList=DataManager.getTypes(TYPE);
+        }
         // int index = DialogMaster.optionChoice("Choose object TYPE...",
         // palettes.toArray());
         // PaletteWorkspace ws = palettes.getOrCreate(index);
         List<String> listData = DataManager.toStringList(typeList);
-        List<String> secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<>()
-                : DataManager.toStringList(typeList);
+        List<String> secondListData =     new ArrayList<>() ;
+        if (ListMaster.isNotEmpty(LevelEditor.getCurrentLevel(). getObjCache().keySet())){
+            secondListData = DataManager.toStringList(LevelEditor.getCurrentLevel().getObjCache().keySet());
+        }
+        if (initial != null) {
+            secondListData.addAll(initial);
+        }
+        if (!ListMaster.isNotEmpty(secondListData)) {
+            secondListData = (TYPE instanceof C_OBJ_TYPE) ? new LinkedList<>()
+                    : DataManager.toStringList(typeList);
+        }
         // if (ws != null) {
         // secondListData = DataManager.convertToStringList(ws.getTypeList());
         // }
-        String data = new ListChooser(listData, secondListData, false, TYPE).choose();
+        String data = new ListChooser(listData, secondListData, false, null ).choose();
         if (data == null) {
             return;
         }
@@ -263,7 +289,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         List<String> chosen = StringMaster.openContainer(new ListChooser(list,
                 new LinkedList<>(), false, DC_TYPE.META).choose());
         for (String name : chosen) {
-            for (PaletteWorkspace p : palettes) {
+            for (PaletteWorkspace p :palettes!=null ? palettes: workspaces) {
                 if (p.getName().equals(name)) {
                     chosenPalettes.add(p);
                 }
@@ -328,6 +354,13 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
                     newPalette();
                 }
             };
+            CustomButton clone = new CustomButton("Clone") {
+                public void handleClick() {
+                    List<PaletteWorkspace> list = chooseWorkspaces();
+                    newPalette(DataManager.toStringList(list.get(0).getTypeList()));
+                }
+            };
+            workspaceControlTab.add(clone);
             workspaceControlTab.add(newButton);
             CustomButton addButton = new CustomButton("Add") {
                 public void handleClick() {
@@ -453,16 +486,17 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // DC_ContentManager.getStandardDeitiesString(", ")),
 
         Units(DC_TYPE.UNITS, G_PROPS.ASPECT, "",
-         G_PROPS.UNIT_GROUP,
-         "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
-                + "Light, Constructs, Magi, North, Critters, Dungeon"),
+                G_PROPS.UNIT_GROUP,
+                "Humans, Knights, Bandits, Greenskins, Dwarves, Undead, Dark, Demons, Animals, "
+                        + "Light, Constructs, Magi, North, Critters, Dungeon"),
         Chars(DC_TYPE.CHARS, G_PROPS.GROUP, "Preset",
-         G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
+                G_PROPS.RACE, "Human, Dwarf, Elf, Demon, "
                 + "Goblinoid, Vampire"),
         // ENCOUNTER_SUBGROUP
         All(DC_TYPE.UNITS, DC_TYPE.ENCOUNTERS, DC_TYPE.CHARS),
         // CHARS(OBJ_TYPES.UNITS, OBJ_TYPES.ENCOUNTERS, OBJ_TYPES.CHARS),
-        Items(DC_TYPE.WEAPONS, DC_TYPE.ARMOR, DC_TYPE.ITEMS, DC_TYPE.JEWELRY),;
+        Items(DC_TYPE.WEAPONS, DC_TYPE.ARMOR, DC_TYPE.ITEMS, DC_TYPE.JEWELRY),
+        ;
 
         public PROPERTY groupProp;
         public String subPalettes;
@@ -470,7 +504,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         public String filterValue;
         public OBJ_TYPE[] TYPES;
         public boolean upper;
-        DC_TYPE TYPE ;
+        DC_TYPE TYPE;
 
         UPPER_PALETTE(PROPERTY filterProp, String filterValue, PROPERTY prop, String subPalettes) {
             this(DC_TYPE.BF_OBJ, filterProp, filterValue, prop, subPalettes);

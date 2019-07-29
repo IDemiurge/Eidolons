@@ -103,7 +103,8 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
         if (ENUM != null) {
             sort();
         }
-        tab.setImagePath(imgPath);
+        tab.setString(title);
+//        tab.setImagePath(imgPath);
         tabPanel.setData(tabs);
         refresh();
     }

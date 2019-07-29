@@ -13,6 +13,7 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.Formula;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -836,6 +837,7 @@ public class StringMaster {
         if (obj == null) {
             return "";
         }
+
         if (obj instanceof Entity) {
             Entity entity = (Entity) obj;
             return entity.getName();

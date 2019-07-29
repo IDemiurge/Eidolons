@@ -44,10 +44,10 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
  */
 public class DungeonMaster {
 
-    public static final Integer testWidth = 25;
-    public static final Integer testHeight = 21;
-    public static final int BASE_WIDTH = 25;
-    public static final int BASE_HEIGHT = 21;
+    public static final Integer testWidth = 21;
+    public static final Integer testHeight = 17;
+    public static final int BASE_WIDTH = 21;
+    public static final int BASE_HEIGHT = 17;
     public static final String PRESET_PLAN = "Spire";
     static final VALUE[] encounterDungeonValues = {PROPS.DUNGEON_MAP_MODIFIER,
             PROPS.DUNGEON_MAP_TEMPLATE, PROPS.MAP_PRESET_OBJECTS, PROPS.MAP_OBJECTS,};

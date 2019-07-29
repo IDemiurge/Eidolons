@@ -280,7 +280,8 @@ public class DungeonPlan {
         DungeonPlan plan = new DungeonPlan(template, dungeon);
         int i = 0;
         for (MapZone z : getZones()) {
-            MapZone zone = new MapZone(dungeon, i, z.getX1(), z.getX2(), z.getY1(), z.getY2());
+            MapZone zone = new MapZone(dungeon,z.getName());
+            zone.setBounds(z.getX1(), z.getX2(), z.getY1(), z.getY2());
             plan.getZones().add(zone);
             i++;
             for (MapBlock b : z.getBlocks()) {

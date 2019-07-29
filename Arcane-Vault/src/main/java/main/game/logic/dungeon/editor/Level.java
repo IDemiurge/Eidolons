@@ -59,6 +59,7 @@ public class Level {
     private Map<ObjType, BattleFieldObject> objCache = new HashMap<>();
     private List<AiGroupData> aiGroups;
     private List<DC_Obj> wallObjects = new LinkedList<>();
+    private boolean clearing;
 
     public Level(String baseDungeonType, Mission mission, String data) {
         this(baseDungeonType, mission, null, false);
@@ -238,8 +239,10 @@ public class Level {
         xml += XML_Converter.openXmlFormatted("Custom Props");
         for (PROPERTY prop : dungeon.getPropMap().keySet()) {
             String value = dungeon.getProperty(prop);
-            if (prop == G_PROPS.WORKSPACE_GROUP || prop == PROPS.ENEMY_SPAWN_COORDINATES
-                    || prop == PROPS.PARTY_SPAWN_COORDINATES
+
+            if ( LE_DataMaster.getSavedProps().contains(prop)
+
+                    //TODO probably doesn't work
                     || !value.equals(dungeon.getType().getType().getProperty(prop)))
             // dungeon.getType().getType() - original type
             {
@@ -351,7 +354,7 @@ public class Level {
         for (DC_Obj obj : objects) {
             removeObj(obj);
         }
-        // LevelEditor.getMainPanel().refresh();
+         LevelEditor.getMainPanel().refresh();
     }
 
     public void removeObj(String objNameFilter, Coordinates... c) {
@@ -379,6 +382,10 @@ public class Level {
 
     private List<BattleFieldObject> getObjects(Coordinates coordinates) {
         return LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates, true);
+    }
+
+    public void setClearing(boolean clearing) {
+        this.clearing = clearing;
     }
 
     public void removeObj(DC_Obj obj) {
@@ -442,9 +449,11 @@ public class Level {
                     LevelEditor.getMainPanel().getMiniGrid()
                             .refreshComp(null, obj.getCoordinates());
                 } else {
+                    if (!clearing){
                     LE_MapViewComp comp = LevelEditor.getMainPanel().getMapViewComp();
                     comp.getGrid().getCompForObject(obj).refresh();
                     comp.getGrid().refresh();
+                    }
 //                    comp.getGrid().getCompForObject(obj).refresh();
 //                    comp.getGrid().getPanel().repaint();
                 }
@@ -496,6 +505,7 @@ public class Level {
 
     public void addObj(BattleFieldObject obj, Coordinates c, boolean stack) {
         Chronos.mark("adding " + obj);
+        getObjCache().put(obj.getType(), obj);
         obj.setZ(dungeon.getZ());
         if (stack) {
             if (obj.isLandscape()) {

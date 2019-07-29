@@ -166,7 +166,7 @@ public class ListItem<E> extends JLabel {
             }
         }
 
-        ImageIcon icon = new ImageIcon(img);
+        ImageIcon icon = ImageManager.getIcon(img);
 
         return icon;
     }

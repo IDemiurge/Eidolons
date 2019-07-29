@@ -3,6 +3,7 @@ package main.system.images;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
 import main.content.VALUE;
+import main.content.ValueMap;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.HeroEnums;
@@ -45,7 +46,7 @@ public class ImageManager {
     public final static String[] STD_FORMATS = {"jpg", "png",};
     public static final String DEFAULT_EMBLEM = "UI\\deities.png";
     public static final String DEFAULT_ENTITY_IMAGE_FORMAT = ".jpg";
-    public static final String DEFAULT_BACKGROUND = "big\\dungeon.jpg";
+    public static final String DEFAULT_BACKGROUND = "main/art/gate colored2.jpg";
     public static final BORDER BORDER_BEYOND_SIGHT = BORDER.CONCEALED;
     public static final BORDER BORDER_UNKNOWN = BORDER.HIDDEN;
     public static final BORDER BORDER_TARGET_SELECTION_HIGHLIGHT = BORDER.HIGHLIGHTED;
@@ -96,6 +97,7 @@ public class ImageManager {
     private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<>();
     private static Map<Object, Image> valueImgCacheLocked = new HashMap<>();
     private static Map<Object, Image> valueImgCacheSelected = new HashMap<>();
+    private static Map<Image, ImageIcon> map = new HashMap<>();
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
@@ -114,12 +116,12 @@ public class ImageManager {
 
 
         if (!isValidIcon(icon)) {
-            main.system.auxiliary.log.LogMaster.log(1, "IMG PATH to adjust: " +  imgName);
+//            main.system.auxiliary.log.LogMaster.log(1, "IMG PATH to adjust: " +  imgName);
             imgName = imgName.toLowerCase().replaceFirst("ui", "ui/level_editor");
             icon = getIcon_(imgName);
         }
         if (!isValidIcon(icon)) {
-            main.system.auxiliary.log.LogMaster.log(1, "IMG PATH FAILED: " + imgName);
+//            main.system.auxiliary.log.LogMaster.log(1, "IMG PATH FAILED: " + imgName);
         }
         return icon;
     }
@@ -1230,6 +1232,14 @@ public class ImageManager {
 
     public static String getRadialSpellIconPath() {
         return "UI\\Spellbook.png";
+    }
+
+    public static ImageIcon getIcon(Image img) {
+        ImageIcon icon = map.get(img);
+        if (icon == null) {
+            map.put(img, icon = new ImageIcon(img));
+        }
+        return icon;
     }
 
     public enum ALIGNMENT {

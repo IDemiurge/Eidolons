@@ -25,8 +25,8 @@ import static main.game.logic.dungeon.editor.gui.LE_MainPanel.isInfoPanelOn;
 
 public class LE_MapViewComp extends G_Panel implements TabChangeListener {
     public static final Dimension SIZE = new Dimension((int) (isInfoPanelOn() ?
-                GuiManager.DEF_DIMENSION_HD.getWidth() - 500 :
-        GuiManager.DEF_DIMENSION_HD.getWidth() - 320), 750);
+                GuiManager.DEF_DIMENSION_HD.getWidth() - 50 :
+        GuiManager.DEF_DIMENSION_HD.getWidth() - 32), 980);
     private static boolean minimapMode = false;
     Level currentLevel;
     Minimap map;
@@ -52,7 +52,7 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
             levels = new DequeImpl<>(list);
         }
         tabs = new HC_TabPanel();
-        tabs.setPageSize(5);
+        tabs.setPageSize(10);
 
         infoComp.setWrapText(true);
 
@@ -67,6 +67,17 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
         tabs.setOpaque(false);
         setOpaque(false);
         // new LE_MouseMaster();
+    }
+
+    @Override
+    public void paint(Graphics g) {
+//        pos 960-" +
+//        grid.getCellsX()*grid.getCellWidth() +
+//                tabs.getCurrentComp().
+
+//        grid.getPanel().setBounds(960-grid.getCellsX()*64, 0, grid.getPanel().getWidth(), grid.getPanel().getHeight());
+        tabs.getTabPanel().setLocation(400,0);
+        super.paint(g);
     }
 
     public static boolean isMinimapMode() {
@@ -113,6 +124,8 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
         panel.setPanelSize(SIZE);
         tabs.addTab(level.getName(), level.getDungeon().getImagePath(), panel);
         // TODO support tab sort/swap
+
+
         try {
             tabs.selectLast();
             // tabSelected(tabs.getTabs().size() - 1);
@@ -209,10 +222,12 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
             tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
         } else {
             grid.refresh();
-            tabs.getCurrentComp().add(grid.getPanel(), "pos 0 0");
+            tabs.getCurrentComp().add(grid.getPanel(), "id grid, pos 960-" +
+                    grid.getCellsX()*grid.getCellWidth()/4 +
+                    " 0");
+//            "pos 0 0 1920 1080, w 1920");
         }
     }
-
     private int getZoom() {
         return MathMaster.getMinMax(75 - 3 / 2 * Math.max(getCurrentLevel().getDungeon()
                 .getCellsX(), getCurrentLevel().getDungeon().getCellsY()), 25, 100);

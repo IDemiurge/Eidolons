@@ -6,6 +6,7 @@ import main.swing.generic.misc.BORDER_CHECKER;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.images.ImageManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -98,9 +99,16 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
         item.setBorderChecker(borderChecker);
         if (getEmptyIcon() != null) {
             item.setEmptyIcon(getEmptyIcon());
+            if (value == null) {
+                item.setEmptyIcon(getNullIcon());
+            }
             item.refresh();
         }
         return item;
+    }
+
+    protected String getNullIcon() {
+        return ImageManager.getEmptyItemIconPath(false);
     }
 
     public int getWrap() {

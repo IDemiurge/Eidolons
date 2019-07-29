@@ -49,6 +49,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ),
     NAMED_COORDINATE_POINTS(null, true, "dungeons"
     ),
+
+    ENTRANCE_COORDINATES(null, true , "dungeons" ),
+    EXIT_COORDINATES(null, true , "dungeons" ),
+
     ENEMY_SPAWN_COORDINATES(null, false//, "dungeons"
     ),
     DUNGEON_PLAN(null, false//, "dungeons"
@@ -76,6 +80,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ),
     DUNGEON_MAIN_ENTRANCES(null, true//, "dungeons"
     ),
+
     ENCOUNTER_GROUPS(null, true//, "dungeons", "route", "place", "area"
     ),
 
@@ -406,7 +411,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
             ("", true, "spells", "actions"), ANIM_SFX_IMPACT
             ("", true, "spells", "actions"), ANIM_SFX_AFTEREFFECT
             ("", true, "spells", "actions"), ANIM_MODS_SFX
-            ("", true, "spells", "actions"),;
+            ("", true, "spells", "actions");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

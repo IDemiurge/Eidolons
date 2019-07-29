@@ -17,20 +17,20 @@ import java.util.List;
 
 public class PagedPaletteTab extends G_PagedListPanel<ObjType> {
 
-    public static final int PAGE_SIZE = 60;
+    public static final int PAGE_SIZE = 80;
     XDimension objSize;
     private DC_TYPE type;
     private String[] groups;
     private Workspace ws;
 
     public PagedPaletteTab(DC_TYPE type) {
-        super(PAGE_SIZE, true, 3);
+        super(PAGE_SIZE, true, 4);
         this.type = type;
         // this.groups = groups;
     }
 
     public PagedPaletteTab(Workspace ws) {
-        super(PAGE_SIZE, true, 3);
+        super(PAGE_SIZE, true, 4);
         this.ws = ws;
     }
 

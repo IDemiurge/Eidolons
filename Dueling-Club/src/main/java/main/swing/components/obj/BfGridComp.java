@@ -371,8 +371,8 @@ public class BfGridComp {
         for (   int i = 0; i < getDisplayedCellsX(); i++) {
             for (  int j = 0; j < getDisplayedCellsY(); j++) {
                 if (getOffsetX()<0)
-                    if (i< -getOffsetX())
-                        continue;
+                if (i< -getOffsetX())
+                    continue;
                 if (i + Math.max(0,getOffsetX()) >= cells.length ) {
                     return;
                 }
@@ -452,9 +452,9 @@ public class BfGridComp {
 
     public int getOffsetX() {
         if (holder != null) {
-            return holder.getOffsetX();
+            return holder.getOffsetX() ;
         }
-        return offsetX;
+        return offsetX  ;
     }
 
     private void setOffsetX(int offsetX) {
@@ -530,7 +530,8 @@ public class BfGridComp {
         if (width != null) {
             return width;
         }
-        return GuiManager.getBF_CompDisplayedCellsX() * getCellWidth();
+//        return GuiManager.getBF_CompDisplayedCellsX() * getCellWidth();
+        return 1920;
     }
 
     public int getCellsY() {

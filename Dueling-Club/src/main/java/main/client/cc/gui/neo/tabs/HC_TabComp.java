@@ -49,6 +49,10 @@ public class HC_TabComp extends G_Panel {
         imgSize = getVisuals().getHeight() - OFFSET;
     }
 
+    public void setString(String string) {
+        this.string = string;
+    }
+
     public void resetImage() {
         if (ImageManager.isImage(imagePath)) {
             image = ImageManager.getSizedVersion(imagePath, imgSize).getImage();
@@ -91,6 +95,9 @@ public class HC_TabComp extends G_Panel {
         if (image != null) {
             g.drawImage(image, getImgX(), getImgY(), null);
         } else {
+            if (string == null) {
+                return;
+            }
             g.setFont(getTextFont());
             g.setColor(ColorManager.GOLDEN_WHITE);
             g.drawString(string, getTextX(), getTextY());

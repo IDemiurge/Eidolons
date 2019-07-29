@@ -208,6 +208,9 @@ public class CustomList<E> extends G_List<E> {
         item.setBorderChecker(borderChecker);
         if (getEmptyIcon() != null) {
             item.setEmptyIcon(getEmptyIcon());
+            if (value == null) {
+                item.setEmptyIcon(getNullIcon());
+            }
             item.refresh();
         }
         return item;

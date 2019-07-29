@@ -78,6 +78,11 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         }
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+    }
+
     public void init() {
         // default tab?
         initBackground();
@@ -92,20 +97,20 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
             ip.getPanel().setVisible(true);
 
         }
-        add(missionTabs, "id tabs, pos plan.x2 cp.y2");
-        add(palette, "id palette, pos plan.x2 tabs.y2");
+        add(missionTabs, "id tabs, pos 0 cp.y2");
+        add(palette, "id palette, pos plan.x2 770");
         add(planPanel, "id plan, pos 0 cp.y2");
         add(background);
         int i = 0;
-        setComponentZOrder(missionTabs, i);
+        setComponentZOrder(palette, i);
         i++;
         setComponentZOrder(ip.getPanel(), i);
         i++;
         setComponentZOrder(cp, i);
         i++;
-        setComponentZOrder(palette, i);
-        i++;
         setComponentZOrder(planPanel, i);
+        i++;
+        setComponentZOrder(missionTabs, i);
         i++;
         setComponentZOrder(background, i);
 
@@ -236,12 +241,18 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
     private void initBackground() {
 
-        Icon icon = getDefaultIcon();
+        Icon defaultIcon = getDefaultIcon();
+
         if (getCurrentLevel() != null) {
-            icon = ImageManager.getSizedIcon(getCurrentLevel().getDungeon().getProperty(
-                    PROPS.MAP_BACKGROUND), GuiManager.getScreenSize());
+            if (ImageManager.isImage(getCurrentLevel().getDungeon().getProperty(
+                    PROPS.MAP_BACKGROUND))) {
+                ImageIcon icon = ImageManager.getSizedIcon(getCurrentLevel().getDungeon().getProperty(
+                        PROPS.MAP_BACKGROUND), GuiManager.getScreenSize());
+                background.setIcon(icon);
+            } else {
+                background.setIcon(defaultIcon);
+            }
         }
-        background.setIcon(icon);
 
     }
 
@@ -284,6 +295,10 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         this.planPanel = planPanel;
     }
 
+    public List<Level> getLevels() {
+        return levels;
+    }
+
     public Level getCurrentLevel() {
         return currentLevel;
     }
@@ -295,5 +310,17 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
     public void toggleInfoPanel() {
         ip.getPanel().setVisible(!ip.getPanel().isVisible());
+    }
+
+    public void toggleUI() {
+        Component c = getPalette();
+        c.setVisible(!c.isVisible());
+        c = getPlanPanel();
+        c.setVisible(!c.isVisible());
+        if (ip.getPanel().isVisible()) {
+            ip.getPanel().setVisible(false);
+        }
+//        c = cp;
+//        c.setVisible(!c.isVisible());
     }
 }

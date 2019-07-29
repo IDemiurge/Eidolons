@@ -99,13 +99,16 @@ public class DungeonEnums {
 
     public static enum DUNGEON_SUBFOLDER {
         // ARCADE,
-        BATTLE,
-        DEMO,
-        CAMPAIGN,
-        CRAWL,
-        SKIRMISH,
-        SUBLEVELS,
-        TEST,
+//        BATTLE,
+        demo,
+//        CAMPAIGN,
+//        CRAWL,
+//        SKIRMISH,
+        sublevels,
+        modules,
+        ready,
+        template,
+        test,
     }
 
     public enum DUNGEON_TAGS {

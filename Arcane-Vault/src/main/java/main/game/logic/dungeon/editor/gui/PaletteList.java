@@ -2,13 +2,17 @@ package main.game.logic.dungeon.editor.gui;
 
 import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.LevelEditor;
+import main.swing.generic.components.list.CustomList;
+import main.swing.generic.components.list.G_List;
 import main.swing.generic.components.panels.G_ListPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Collection;
 import java.util.List;
 
 public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionListener,
@@ -16,7 +20,26 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
 
     public PaletteList(List<ObjType> list) {
         super(list);
-        this.list.addMouseListener(this);
+//        this.list.addMouseListener(this);
+    }
+
+    @Override
+    public Collection<ObjType> getEmptyData() {
+        return super.getEmptyData();
+    }
+
+    @Override
+    protected G_List<ObjType> createList() {
+        G_List<ObjType> customList = new G_List<ObjType>(data) {
+            @Override
+            public String getEmptyIcon() {
+                return "ui/empty_list_item.jpg";
+            }
+
+        };
+        customList.addListSelectionListener(this);
+//        customList.addMouseListener(this);
+        return customList;
     }
 
     @Override
@@ -31,8 +54,8 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
     }
 
     public void setInts() {
-        minItems = 60;
-        rowsVisible = vertical ? 12 : 3;
+        minItems = 80;
+        rowsVisible = vertical ? 15 : 4;
     }
 
     @Override
@@ -52,6 +75,11 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
 
         LevelEditor.setMouseAddMode(true);
 
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
     }
 
     @Override

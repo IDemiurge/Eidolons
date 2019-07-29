@@ -236,7 +236,12 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 LE_ObjMaster.removeObj(lastClicked.getCoordinates());
                 SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
                 return;
-            } else if (e.isShiftDown()) {
+            } else {
+                LE_DataMaster.setMetaInfo(coordinates, alt, e.isShiftDown(), e.isControlDown());
+            }
+        }
+        /*
+        if (e.isShiftDown()) {
                 int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
                 i = DialogMaster.inputInt("Set chance for object to be there..."
                         + " (set negative to add '1 object only' rule for this coordinate)", i);
@@ -258,9 +263,8 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 // lastClicked.getCoordinates());
             }
             else {
-             LE_DataMaster.setMetaInfo(coordinates);
-            }
-        } // could use same right click, just try() - if empty=>add, else remove
+         */
+        // could use same right click, just try() - if empty=>add, else remove
         // ++ DIRECTION CHANGE
         if (!empty) {
             if (e.isControlDown() && right) {

@@ -559,7 +559,7 @@ public class G_Panel extends G_Component implements VisualComponent {
             if (img == null) {
                 img = ImageManager.getImage(s);
                 if (img == null) {
-                    img = ImageManager.getNewBufferedImage(0, 0);
+                    img = ImageManager.getNewBufferedImage(1, 1);
                 }
             }
             return img;

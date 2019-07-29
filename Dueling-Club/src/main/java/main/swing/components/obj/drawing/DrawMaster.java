@@ -21,6 +21,7 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.libgdx.bf.mouse.InputController;
 import main.swing.XLine;
 import main.swing.components.obj.BfGridComp;
 import main.swing.components.obj.CellComp;
@@ -122,6 +123,9 @@ public class DrawMaster {
         cellComp.setMouseMap(mouseMap);
         BattleFieldObject topObj = cellComp.getTopObj();
         if (isSingleObj()) {
+            if (topObj.getName().equalsIgnoreCase("void cell")) {
+                return;
+            }
             Image image = cellComp.getGame().getVisionMaster().getVisibilityMaster().getDisplayImageForUnit(topObj);
             if (image != null) {
                 compGraphics.drawImage(image, 0, 0, null);
@@ -250,24 +254,24 @@ public class DrawMaster {
                 checkDrawCenteredImageOnCoordinate(dungeon.getProperty(PROPS.PARTY_SPAWN_COORDINATES), cellComp, g, img);
 
             }
-            img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
-            img = ImageTransformer.flipVertically(ImageManager.getBufferedImage(img));
 
             if (dungeon.checkProperty(PROPS.ENEMY_SPAWN_COORDINATES)) {
+                img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGER.getImage(), zoom2);
+                img = ImageTransformer.flipVertically(ImageManager.getBufferedImage(img));
                 checkDrawCenteredImageOnCoordinate(dungeon.getProperty(PROPS.ENEMY_SPAWN_COORDINATES), cellComp, g, img);
 
             }
 
-            img = ImageManager.getSizedVersion(STD_IMAGES.FLAG.getImage(), zoom2);
             for (String substring : StringMaster.openContainer(dungeon
-             .getProperty(PROPS.ENCOUNTER_SPAWN_POINTS))) {
+             .getProperty(PROPS.ENTRANCE_COORDINATES))) {
+                img = ImageManager.getSizedVersion(STD_IMAGES.FLAG.getImage(), zoom2);
                 checkDrawCenteredImageOnCoordinate(substring, cellComp, g, img);
                 // TODO OR STRING/CHAR
             }
-            img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGEMENT_TARGET.getImage(),
-             zoom2);
             for (String substring : StringMaster.openContainer(dungeon
              .getProperty(PROPS.ENCOUNTER_BOSS_SPAWN_POINTS))) {
+                img = ImageManager.getSizedVersion(STD_IMAGES.ENGAGEMENT_TARGET.getImage(),
+                        zoom2);
                 checkDrawCenteredImageOnCoordinate(substring, cellComp, g, img);
 
                 // TODO OR STRING/CHAR

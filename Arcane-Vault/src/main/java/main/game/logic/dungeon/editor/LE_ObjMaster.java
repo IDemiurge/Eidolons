@@ -79,6 +79,7 @@ public class LE_ObjMaster {
         // LevelEditor.getCurrentLevel().removeObj(c.toArray(new
         // Coordinates[c.size()]));
         cachingOff = true;
+        LevelEditor.getCurrentLevel().setClearing(true);
         try {
             for (Coordinates coordinate : c) {
                 removeObj(coordinate);
@@ -86,6 +87,7 @@ public class LE_ObjMaster {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            LevelEditor.getCurrentLevel().setClearing(false);
             cachingOff = false;
         }
     }
@@ -447,6 +449,7 @@ public class LE_ObjMaster {
         // Chronos.logTimeElapsedForMark("Main Panel refresh");
 
         // preCheck wall ?
+
         return obj;
     }
 
