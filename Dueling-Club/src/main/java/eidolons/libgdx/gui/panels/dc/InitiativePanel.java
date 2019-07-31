@@ -98,12 +98,12 @@ public class InitiativePanel extends GroupX {
 
     private void init() {
 
-        addActor(gears = new GearCluster(3, 1.2f));
+        addActor(gears = new GearCluster(true, 3, 1.2f, true));
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
         addActor(
-                RollDecorator.decorate(
-                        speedControlPanel = new SpeedControlPanel(), FACING_DIRECTION.SOUTH));
+//                RollDecorator.decorate(
+                        speedControlPanel = new SpeedControlPanel()) ;
         addActor(container = new Container<>(queueGroup));
         addActor(hideButton = new HideButton(speedControlPanel));
         speedControlPanel.setPosition(0, -150);
@@ -118,13 +118,15 @@ public class InitiativePanel extends GroupX {
         addActor(panelImage = new ValueContainer(textureRegion));
         panelImage.addListener(tooltip.getController());
 
-        addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
+//        addActor(
+        light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath());
 
         addActor(clock = new ClockActor());
         clock.addListener(getClockListener());
 
-        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
+        timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.AVQ, 20));
         addActor(timeLabel);
+
 
         resetPositions();
 
@@ -241,7 +243,6 @@ public class InitiativePanel extends GroupX {
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
                 imageSize + queueOffsetY);
         queueGroup.setBounds(imageSize * 2, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        timeLabel.setPosition(15, 100);
         light.setPosition(-2, -14);
         clock.setPosition(-5, -31);
         panelImage.setPosition(50, 25 + queueOffsetY);
@@ -260,6 +261,9 @@ public class InitiativePanel extends GroupX {
                 break;
             QueueView actor = (QueueView) sub.getActor();
             String text = (list == null ? sub.initiative : list.get(i++)) + "";
+            if (actor == null) {
+                continue;
+            }
             actor.setInitiativeLabelText(text);
         }
     }
@@ -406,6 +410,9 @@ public class InitiativePanel extends GroupX {
     public void act(float delta) {
         boolean altBg = EidolonsGame.isAltControlPanel();
         hideButton.setVisible(!altBg);
+
+        timeLabel.setPosition(19, 120-timeLabel.getPrefHeight());
+        timeLabel.setZIndex(Integer.MAX_VALUE);
         if (altBg) {
             if (speedControlPanel.getColor().a == 1)
                 speedControlPanel.fadeOut();
@@ -605,7 +612,7 @@ public class InitiativePanel extends GroupX {
                     return "ui/content/intent icons/" + name() + ".txt";
             }
             return "ui/content/intent icons/" +
-                    "prepare.txt";
+                    "attack.txt";
         }
 
     }
@@ -638,7 +645,8 @@ public class InitiativePanel extends GroupX {
             actor.addActor(shadow);
             shadow.setZIndex(0);
             actor.addActor(intentIconSprite = new SpriteX());
-            intentIconSprite.setFps(20);
+            intentIconSprite.setX(getWidth()/2 - 14);
+            intentIconSprite.setFps(15);
 //            shadow.addListener(new DynamicTooltip(() -> getIntentTooltip(actor.getUserObject())));
         }
 
@@ -657,12 +665,16 @@ public class InitiativePanel extends GroupX {
                                         SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
                     }
                 intentIconSprite.setSprite(sprite);
+                intentIconSprite.setY(- 24);
+                intentIconSprite.setX(getPrefWidth()/2  );
+                intentIconSprite.setFps(15);
+                intentIconSprite.setZIndex(Integer.MAX_VALUE);
             }
 
         }
 
         private boolean isIntentIconsOn() {
-            return false;
+            return true;
         }
 
         @Override

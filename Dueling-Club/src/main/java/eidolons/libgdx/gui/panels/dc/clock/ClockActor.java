@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.clock;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GearCluster;
@@ -35,12 +36,14 @@ public class ClockActor extends GroupX {
 
     public ClockActor() {
 //        addActor(
-        underGears = new GearCluster(5, 1f)
-//        )
-        ;
-        addActor(new GearCluster(5, 1f));
+        underGears = new GearCluster(5, 1f, false);
+//        addActor(new GearCluster(5, 1f, true));
+        addActor(centerGears = new GearCluster(5, 0.65f, true));
+
         addActor(background = new ImageContainer(BACKGROUND));
-        addActor(centerGears = new GearCluster(3, 0.65f));
+        GdxMaster.center(centerGears);
+        centerGears.setSize(background.getWidth()/2, background.getHeight()/2);
+
         addActor(hand = new ImageContainer(HAND));
         addActor(smallHand = new ImageContainer(SMALL_HAND));
         setSize(background.getWidth(), background.getHeight());
@@ -57,8 +60,8 @@ public class ClockActor extends GroupX {
         hand.setPosition(background.getWidth() / 2,
          background.getHeight() / 2 - hand.getHeight() / 2);
 
-        centerGears.setPosition(smallHand.getX() - 30,
-         smallHand.getY() - 30);
+//        centerGears.setPosition(smallHand.getX() - 30,
+//         smallHand.getY() - 30);
         underGears.setPosition(smallHand.getX() + 30,
          smallHand.getY() + 30);
 

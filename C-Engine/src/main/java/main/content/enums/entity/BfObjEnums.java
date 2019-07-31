@@ -18,6 +18,7 @@ public class BfObjEnums {
 
     public enum CUSTOM_OBJECT {
         crematory(15, "", "", "", 5),
+        soul_net(15, "", "", "", 5),
         black_waters(15, "", "", "grid/black waters.txt", 5),
         BLACKNESS(15, "", "", "", 5),
         LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),

@@ -114,6 +114,8 @@ public class ButtonStyled extends ImageContainer {
                 "buttons","special", "lord.png")),
         PALE_BTN(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
                 "buttons","special", "pale.png")),
+        SOULS_BTN(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
+                "buttons","special", "souls.png")),
  ;
 
         String path;

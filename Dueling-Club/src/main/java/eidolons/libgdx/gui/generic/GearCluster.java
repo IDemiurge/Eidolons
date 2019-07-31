@@ -20,16 +20,36 @@ import java.util.List;
  */
 public class GearCluster extends GroupX {
     public static final int DEFAULT_SIZE = 100;
-    private final ArrayList<GEAR> gearPool;
+    private   ArrayList<GEAR> gearPool;
     List<GearActor> gears = new ArrayList<>();
     float defaultSpeed = 1;
     Float speed = defaultSpeed;
     float scale = 1;
     AutoFloatAction speedAction;
     private boolean clockwise;
+    static GEAR[] dark_gears = {
+            GEAR.GEAR_1,
+            GEAR.GEAR_6,
+            GEAR.GEAR_7,
+    };
+    static GEAR[] light_gears = {
+            GEAR.GEAR_2,
+            GEAR.GEAR_3,
+            GEAR.GEAR_4,
+            GEAR.GEAR_5,
+    };
+    private boolean allSmall;
 
-    public GearCluster(int gearCount, float scale) {
-        gearPool = new ArrayList<>(Arrays.asList(GEAR.values()));
+    public GearCluster( int gearCount, float scale, Boolean dark_light_both) {
+        this(false, gearCount, scale, dark_light_both);
+    }
+    public GearCluster(boolean allSmall, int gearCount, float scale, Boolean dark_light_both) {
+        this. allSmall = allSmall;
+        if (dark_light_both == null) {
+            gearPool = new ArrayList<>(Arrays.asList(GEAR.values()));
+        } else {
+            gearPool = new ArrayList<>(Arrays.asList(dark_light_both? dark_gears : light_gears));
+        }
         Collections.shuffle(gearPool);
         while (gearPool.size() < gearCount) {
             gearPool.add(new EnumMaster<GEAR>().getRandomEnumConst(GEAR.class));
@@ -42,13 +62,15 @@ public class GearCluster extends GroupX {
     }
 
     public GearCluster(float scale) {
-        this(3, scale);
+        this(3, scale, null );
     }
 
     private void addGear(int i) {
-        float scale = this.scale * (1 - i * 0.2f);
+        boolean small =allSmall|| i%2==0;
         GEAR gear = gearPool.remove(0);
-        GearActor gearActor = new GearActor(gear, scale, speed, RandomWizard.random());
+        GearActor gearActor = new GearActor(gear, small, speed, RandomWizard.random());
+        float scale =small? 0.6f :1;
+//        this.scale * (1 - i * 0.2f);
         addActor(gearActor);
         float y = getGearY(i, scale);
         float x = getGearX(i, scale);
@@ -170,7 +192,7 @@ public class GearCluster extends GroupX {
     }
 
     public enum GEAR {
-        GEAR_1, GEAR_2(125), GEAR_3(85);
+        GEAR_1, GEAR_2,GEAR_3(85),GEAR_4(85),GEAR_5(125), GEAR_6(85), GEAR_7(125);
 
         private float speedBasis = 100;
 
@@ -181,9 +203,13 @@ public class GearCluster extends GroupX {
             this.speedBasis = speedBasis;
         }
 
-        public String getImagePath() {
-            return StrPathBuilder.build(PathFinder.getComponentsPath(),
-             "dc", "clock", StringMaster.getWellFormattedString(toString()) + ".png");
+        public String getImagePath(boolean small) {
+            String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
+                    "dc", "clock", StringMaster.getWellFormattedString(toString()) + ".png");
+            if (small) {
+               return StringMaster.getAppendedFile(path, " small");
+            }
+            return path;
         }
 
         public float getSpeedBasis() {

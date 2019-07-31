@@ -119,8 +119,8 @@ public class GridPanel extends Group {
 
     }
 
-    public GridPanel init(DequeImpl<BattleFieldObject> units) {
-        units.removeIf(unit ->
+    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
+        objects.removeIf(unit ->
                 {
                     if (unit.getCoordinates().x < 0)
                         return true;
@@ -173,7 +173,7 @@ public class GridPanel extends Group {
 
         bindEvents();
 
-        createUnitsViews(units);
+        createUnitsViews(objects);
 
         setHeight(GridMaster.CELL_W * rows);
         setWidth(GridMaster.CELL_H * cols);

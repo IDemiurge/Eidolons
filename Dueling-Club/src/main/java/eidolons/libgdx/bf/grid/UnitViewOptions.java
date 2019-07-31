@@ -124,7 +124,7 @@ public class UnitViewOptions {
 
             this.clockTexture = getOrCreateR(
              StrPathBuilder.build(PathFinder.getComponentsPath(), "dc" ,
-              "queue" ,
+              "atb" ,
               "readiness bg.png")
             );
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);

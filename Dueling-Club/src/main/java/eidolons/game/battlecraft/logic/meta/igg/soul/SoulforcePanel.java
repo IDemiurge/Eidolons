@@ -14,6 +14,7 @@ public class SoulforcePanel extends GroupX {
     private final FadeImageContainer bg;
     private final SmartButton lordBtn;
     private final SmartButton paleBtn;
+    private final SoulCounter soulCounter;
     SoulforceBar bar;
 
     public SoulforcePanel() {
@@ -37,12 +38,16 @@ public class SoulforcePanel extends GroupX {
         GdxMaster.top(bar);
         bar.setY(bar.getY()+17);
 
-        lordBtn.setX(getWidth()/3-36);
+        lordBtn.setX(getWidth()/3-37);
         paleBtn.setX(getWidth()/3*2-1);
-        lordBtn.setY(bar.getY()-bar.getHeight()/2+28);
+        lordBtn.setY(bar.getY()-bar.getHeight()/2+27);
         paleBtn.setY(bar.getY()-bar.getHeight()/2+28);
 
-//        soulCounter= new SoulCounter();
+        addActor(soulCounter = new SoulCounter());
+
+        GdxMaster.center(soulCounter);
+        soulCounter.setY(15);
+        soulCounter.setX(soulCounter.getX()-41);
 
         /**
          *

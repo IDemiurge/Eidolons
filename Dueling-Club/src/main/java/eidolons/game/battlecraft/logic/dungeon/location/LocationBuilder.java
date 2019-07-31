@@ -231,7 +231,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         return zone;
     }
 
-    private void initModuleZoneLazily(Module  module) {
+    public void initModuleZoneLazily(Module  module) {
         for (Node lazyInitZone : lazyInitZones) {
             if (lazyInitZone.getNodeName().equalsIgnoreCase(module.getName())) {
                 buildZone(dungeon, module.getName(), lazyInitZone);

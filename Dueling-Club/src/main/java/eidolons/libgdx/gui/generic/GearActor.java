@@ -14,10 +14,9 @@ public class GearActor extends ImageContainer {
     float speed;
     boolean clockwise;
 
-    public GearActor(GEAR gear, float scale, float speed, boolean clockwise) {
-        super(gear.getImagePath());
+    public GearActor(GEAR gear, boolean small, float speed, boolean clockwise) {
+        super(gear.getImagePath(small));
         this.gear = gear;
-        setScale(scale);
         speed = (float) (speed * Math.PI * 2 / getHeight());
         this.speed = speed;
         this.clockwise = clockwise;

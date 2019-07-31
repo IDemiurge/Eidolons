@@ -42,6 +42,8 @@ public class LinkedGridObject extends GridObject {
 //        CUSTOM_OBJECT.black_waters.screen = true;
         CUSTOM_OBJECT.BLACKNESS.vfxUnderMirrorX = true;
 
+        CUSTOM_OBJECT.soul_net.vfxOver += VFX.dissipation_pale.path + "(-42, 32);";
+        CUSTOM_OBJECT.soul_net.vfxOver += VFX.dissipation_pale.path + "(42, 32);";
 
         CUSTOM_OBJECT.crematory.vfxOver  =   "advanced/ambi/waters/fire(0, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(-45, 0);";

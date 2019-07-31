@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.EUtils;
@@ -96,6 +97,11 @@ public class DungeonScreen extends GameScreenWithTown {
         int w = module.getWidth();
         int h =  module.getHeight();
         gridPanel = new GridPanel(w, h);
+        if (Eidolons.getGame().getDungeonMaster().getBuilder() instanceof LocationBuilder) {
+            ((LocationBuilder) Eidolons.getGame().getDungeonMaster().getBuilder()).initModuleZoneLazily(module);
+
+//            gridPanel.init(units);
+        }
 //        grids.put(module, gridPanel);
     }
     @Override
@@ -338,7 +344,7 @@ public class DungeonScreen extends GameScreenWithTown {
         }
         if (CoreEngine.isDevEnabled())
             if (DC_Game.game != null) {
-                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
+                if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) {
                     if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
                         DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
                     } else {

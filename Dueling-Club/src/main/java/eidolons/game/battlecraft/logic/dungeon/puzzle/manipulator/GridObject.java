@@ -122,6 +122,7 @@ public abstract class GridObject extends GroupX {
     }
     protected void createEmittersFromString(String data, boolean mirrorX, boolean mirrorY, float vfxChance) {
         for (String substring : ContainerUtils.openContainer(data)) {
+            if (vfxChance!=0)
             if (!RandomWizard.chance((int) (100*vfxChance))){
                 continue;
             }

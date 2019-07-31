@@ -36,8 +36,8 @@ public class SpriteMaster {
             s.setY(getY(over, obj, i));
 //            if (over)
             {
-                s.getSprite().setOffsetX(s.getWidth()/2-64);
-                s.getSprite().setOffsetY(s.getHeight()/2-64);
+                s.getSprite().setOffsetX(s.getWidth() / 2 - 64);
+                s.getSprite().setOffsetY(s.getHeight() / 2 - 64);
             }
             s.setOrigin(0, s.getHeight() / 2);
             if (obj.isOverlaying()) {
@@ -72,12 +72,15 @@ public class SpriteMaster {
     private static String getPath(BattleFieldObject obj, boolean over) {
         String spritePath = null;
         if (!over) {
-            if (obj instanceof Unit)
-                switch (obj.getName()) {
-                    case "Mistborn Horror":
+//            if (obj instanceof Unit)
+            switch (obj.getName()) {
+                case "Charger":
+                    return StringMaster.getStringXTimes(4, Sprites.WHITE_TENTACLE + ";");
+
+                case "Mistborn Horror":
 //                    return StringMaster.getStringXTimes(8, Sprites.WHITE_TENTACLE+";");
-                        return StringMaster.getStringXTimes(6, Sprites.TENTACLE + ";");
-                }
+                    return StringMaster.getStringXTimes(6, Sprites.TENTACLE + ";");
+            }
 
         } else if (obj.isBoss()) {
             spritePath = BossAnimator.getSpritePath(obj);
@@ -93,6 +96,10 @@ public class SpriteMaster {
         }
         if (over) {
             return SuperActor.BLENDING.SCREEN;
+        }
+        switch (obj.getName()) {
+            case "Charger":
+                return SuperActor.BLENDING.SCREEN;
         }
         return null;
     }

@@ -436,10 +436,11 @@ public class GuiStage extends StageX implements StageWithClosable {
 //            return true;
         if (tipMessageWindow != null)
             if (tipMessageWindow.isVisible())
-                return true;
+                if (tipMessageWindow.getColor().a!=0) //TODO why are there such cases?!
+                    return true;
         return
                 LordPanel.visibleNotNull() ||
-                        tipMessageWindow.isVisible() || confirmationPanel.isVisible() || textPanel.isVisible() ||
+                        confirmationPanel.isVisible() || textPanel.isVisible() ||
                         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                         || GameMenu.menuOpen;
     }

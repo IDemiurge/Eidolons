@@ -37,7 +37,7 @@ public class ExtendableLogPanel extends LogPanel { //TODO igg demo insight INTO 
                     return;
                 setHeight(Math.min(Math.max(val, min),
                         max));
-                main.system.auxiliary.log.LogMaster.log(1, "dragged to " + getHeight());
+//                main.system.auxiliary.log.LogMaster.log(1, "dragged to " + getHeight());
                 if (top) {
                     GdxMaster.top(ExtendableLogPanel.this);
                 }
