@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Game;
+import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforcePanel;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -47,6 +48,7 @@ public class BattleGuiStage extends GuiStage {
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
 
+    SoulforcePanel soulforcePanel;
 
     @Override
     public void resetZIndices() {
@@ -56,14 +58,14 @@ public class BattleGuiStage extends GuiStage {
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
-          //         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
-          //          GdxMaster.getHeight(), new OrthographicCamera())
-          new FillViewport(GdxMaster.getWidth(),
-           GdxMaster.getHeight(), new OrthographicCamera())
-          //        new ScreenViewport( new OrthographicCamera())
-          : viewport,
-         batch == null ? new CustomSpriteBatch() :
-          batch);
+                        //         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+                        //          GdxMaster.getHeight(), new OrthographicCamera())
+                        new FillViewport(GdxMaster.getWidth(),
+                                GdxMaster.getHeight(), new OrthographicCamera())
+                        //        new ScreenViewport( new OrthographicCamera())
+                        : viewport,
+                batch == null ? new CustomSpriteBatch() :
+                        batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
         initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, GdxMaster.getHeight() - initiativePanel.getHeight());
@@ -74,7 +76,7 @@ public class BattleGuiStage extends GuiStage {
         init();
 
         if (!UnitInfoPanelNew.isNewUnitInfoPanelWIP())
-            addActor( infoPanel = UnitInfoPanelNew.getInstance());
+            addActor(infoPanel = UnitInfoPanelNew.getInstance());
 
         combatInventory = new CombatInventory();
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
@@ -83,30 +85,37 @@ public class BattleGuiStage extends GuiStage {
         outcomePanel = new OutcomePanel();
         addActor(outcomePanel);
         outcomePanel.setVisible(false);
-        addActor( new FullscreenAnims());
+        addActor(new FullscreenAnims());
+
+        addActor(soulforcePanel= new SoulforcePanel());
+        GdxMaster.center(soulforcePanel);
+        soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
+
+        getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
+//        getBottomPanel().setX((GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
     }
 
     @Override
     protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
-        if (ancestors.contains(outcomePanel)){
+        if (ancestors.contains(outcomePanel)) {
             return false;
         }
-        if (ancestors.contains(infoPanel)){
+        if (ancestors.contains(infoPanel)) {
             return false;
         }
-        if (ancestors.contains(infoPanel.outside)){
+        if (ancestors.contains(infoPanel.outside)) {
             return false;
         }
-            return super.checkContainsNoOverlaying(ancestors);
+        return super.checkContainsNoOverlaying(ancestors);
     }
 
     @Override
     protected boolean checkBlocked() {
         if (CoreEngine.isActiveTestMode()) {
-            return super.checkBlocked()  || outcomePanel.isVisible();
+            return super.checkBlocked() || outcomePanel.isVisible();
         }
-        return super.checkBlocked()  || outcomePanel.isVisible() || infoPanel.isVisible();
+        return super.checkBlocked() || outcomePanel.isVisible() || infoPanel.isVisible();
     }
 
     @Override
@@ -127,10 +136,12 @@ public class BattleGuiStage extends GuiStage {
 
     protected void bindEvents() {
         super.bindEvents();
-        GuiEventManager.bind(GuiEventType. SHOW_ACHIEVEMENTS, p-> {
-            String stats = MissionStatManager.getGameStatsText( );
+
+
+        GuiEventManager.bind(GuiEventType.SHOW_ACHIEVEMENTS, p -> {
+            String stats = MissionStatManager.getGameStatsText();
             EUtils.onConfirm(stats +
-             "\n Press the Assault!", false, null );
+                    "\n Press the Assault!", false, null);
         });
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
             Unit unit = (Unit) obj.get();
@@ -142,8 +153,8 @@ public class BattleGuiStage extends GuiStage {
         });
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             CharSequence text = "";
-            CharSequence v= "";
-            if (Eidolons .getGame() instanceof ScenarioGame) {
+            CharSequence v = "";
+            if (Eidolons.getGame() instanceof ScenarioGame) {
                 try {
                     ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
                     text = m.getMetaGame().getScenario().getName();
@@ -175,7 +186,7 @@ public class BattleGuiStage extends GuiStage {
             //            outcomePanel.setColor(new Color(1, 1, 1, 0));
             //            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
             float y = GdxMaster.getHeight() -
-             (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);
+                    (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);
             float x = (GdxMaster.getWidth() - outcomePanel.getWidth()) / 2;
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
             ActionMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
@@ -185,11 +196,9 @@ public class BattleGuiStage extends GuiStage {
 
 
     public void update() {
-        getBottomPanel().setX(
-         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
         locationLabel.setPosition(25,
-         GdxMaster.getHeight() - locationLabel.getHeight() - initiativePanel.getHeight()-30);
+                GdxMaster.getHeight() - locationLabel.getHeight() - initiativePanel.getHeight() - 30);
 
 //        if (outcomePanel != null)
 //            outcomePanel.setZIndex(Integer.MAX_VALUE);

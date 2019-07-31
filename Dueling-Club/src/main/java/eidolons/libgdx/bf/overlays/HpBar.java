@@ -20,7 +20,9 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -336,49 +338,71 @@ public class HpBar extends SuperActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (isIgnored())
-            return;
-        if (label.isVisible()) {
-            label.getWidth();
-        }
-        super.draw(batch, parentAlpha);
-        batch.flush();
-        if (fluctuatingAlpha != 1)
-            batch.setColor(new Color(1, 1, 1, 1));
+//        if (isIgnored())
+//            return;
+//        if (label.isVisible()) {
+//            label.getWidth();
+//        }
+//        super.draw(batch, parentAlpha);
+////        batch.flush();
+//        if (fluctuatingAlpha != 1)
+//            batch.setColor(new Color(1, 1, 1, 1));
 //TODO ownership change? team colors reset...
 
-        Rectangle scissors = new Rectangle();
-        Rectangle clipBounds = null;
 //        if (GridMaster.isHpBarsOnTop() && !queue)
 //        {
 //            Vector2 v = //localToStageCoordinates
 //             (new Vector2(getX(), getY()));
 //            clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
 //        } else
-        clipBounds = new Rectangle(getX(), getY(), innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
-        getStage().calculateScissors(clipBounds, scissors);
-        ScissorStack.pushScissors(scissors);
+//        Rectangle scissors = new Rectangle();
+//        Rectangle clipBounds = null;
+//        clipBounds = new Rectangle(getX(), getY(), innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
+//        getStage().calculateScissors(clipBounds, scissors);
+//        ScissorStack.pushScissors(scissors);
 
-        Color color = enduranceColor;
-        TextureRegion region = enduranceBarRegion;
-        drawBar(region, batch,Math.min(1,  displayedEndurancePerc), color, false);
+//        Color color = enduranceColor;
+//        TextureRegion region = enduranceBarRegion;
+//        drawBar(region, batch,Math.min(1,  displayedEndurancePerc), color, false);
+//
+//        if (toughnessDeath) {
+//            //setShader
+//        }
+//        color = toughnessColor;
+//        region = toughnessBarRegion;
+//        drawBar(region, batch,Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
 
-        if (toughnessDeath) {
-            //setShader
+//        batch.flush();
+//        try {
+//            ScissorStack.popScissors();
+//        } catch (Exception e) {
+//        }
+//        batch.flush();
+
+
+        if (parentAlpha != ShaderDrawer.SUPER_DRAW) {
+            if (isIgnored())
+                return;
+            if (fluctuatingAlpha != 1)
+                batch.setColor(new Color(1, 1, 1, 1));
+            if (label.isVisible()) {
+                label.getWidth();
+            }
+            super.draw(batch, parentAlpha);
+            ScissorMaster.drawInRectangle(this, batch, getX(), getY(), innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
+        } else {
+            Color color = enduranceColor;
+            TextureRegion region = enduranceBarRegion;
+            drawBar(region, batch,Math.min(1,  displayedEndurancePerc), color, false);
+            color = toughnessColor;
+            region = toughnessBarRegion;
+            drawBar(region, batch,Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
+            batch.flush();
         }
-        color = toughnessColor;
-        region = toughnessBarRegion;
+
 //        clipBounds =        new Rectangle(getX(), getY(), innerWidth * displayedToughnessPerc, height);
 //        getStage().calculateScissors(clipBounds, scissors);
 //        ScissorStack.pushScissors(scissors);
-        drawBar(region, batch,Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
-
-        batch.flush();
-        try {
-            ScissorStack.popScissors();
-        } catch (Exception e) {
-        }
-
 
     }
 

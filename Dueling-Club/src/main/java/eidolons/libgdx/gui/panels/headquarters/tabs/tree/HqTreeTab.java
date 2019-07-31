@@ -30,7 +30,7 @@ public abstract class HqTreeTab extends HqElement{
         setSize(GDX.size(HqMaster.TAB_WIDTH) ,
          GDX.size(HqMaster.TAB_HEIGHT) );
         tabsBg.setPosition(
-                GdxMaster.centerWidth(tabsBg), GdxMaster.top(tabsBg));
+                GdxMaster.centerWidth(tabsBg), GdxMaster.getTopY(tabsBg));
 
     }
 
@@ -39,7 +39,7 @@ public abstract class HqTreeTab extends HqElement{
 //        tree.setPosition(  0 ,  0);
         super.act(delta);
         tabsBg.setPosition(
-                GdxMaster.centerWidth(tabsBg)+14, GdxMaster.top(tabsBg));
+                GdxMaster.centerWidth(tabsBg)+14, GdxMaster.getTopY(tabsBg));
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -207,7 +206,7 @@ public class TownPanel extends TabbedPanel {
 
         tabTable.setSize(headerBg.getWidth(), headerBg.getHeight());
         tabTable.setPosition(GdxMaster.centerWidth(tabTable),
-         GdxMaster.top(tabTable));
+         GdxMaster.getTopY(tabTable));
     }
 
     @Override

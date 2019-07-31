@@ -256,7 +256,9 @@ static {
         DOORS(0.325f, 1.25F, 0.5F, 0.5f, 0.0f, 1f),
 
         BLOOM(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
-        POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),;
+        POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
+        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f ,0.2f ,0.8f )
+        ;
         float alphaStep;
         float fluctuatingAlphaPauseDuration;
         float fluctuatingFullAlphaDuration;

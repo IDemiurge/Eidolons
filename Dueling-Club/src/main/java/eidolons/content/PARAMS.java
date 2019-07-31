@@ -805,7 +805,10 @@ public enum PARAMS implements PARAMETER {
 //    HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
 //    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
     ANIM_FRAME_DURATION("", "", false, 0, "spells", "actions"),
-    ANIM_SPEED("", "", false, 0, "spells", "actions"), SOULFORCE(null, "", false, 0, "party"),
+    ANIM_SPEED("", "", false, 0, "spells", "actions"),
+    SOULFORCE(null, "", false, 0,"lord", "party"),
+    C_SOULFORCE(null, "", true, 0, "lord","party"),
+    BASE_SOULFORCE(null, "", false, 350, "lord","party"),
 
     SELF_BUFF_MOD(null , "", false, 60, "chars", "units"),
     DEBT_MOD(null , "", false,  0, "chars", "units"),

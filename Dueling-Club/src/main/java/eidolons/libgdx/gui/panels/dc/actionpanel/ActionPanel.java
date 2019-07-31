@@ -8,6 +8,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -56,10 +57,10 @@ public class ActionPanel extends GroupX {
     QuickWeaponPanel offhand;
     FacingPanel facingPanel;
 
-
     SymbolButton spellbookBtn = new SymbolButton(STD_BUTTON.SPELLBOOK, () -> showSpellbook());
     SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, () -> showInventory());
     private boolean altBg;
+    private Float defaultX;
 
     public ActionPanel() {
         background = new FadeImageContainer((BACKGROUND_PATH));
@@ -126,6 +127,7 @@ public class ActionPanel extends GroupX {
         initListeners();
 
         initResolutionScaling();
+
     }
 
     public ActionPanel(int x, int y) {
@@ -170,7 +172,22 @@ public class ActionPanel extends GroupX {
                 Eidolons.activateMainHeroAction(DC_ActionManager.USE_INVENTORY);
     }
 
+    @Override
+    public void setX(float x) {
+        if (defaultX==null) {
+            defaultX=x;
+        }
+        super.setX(x);
+    }
+
     private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.LOG_ROLLED_IN, p -> {
+            ActionMaster.addMoveToAction(this, GdxMaster.centerWidth(this), getY(), 1.4f);
+        });
+        GuiEventManager.bind(GuiEventType.LOG_ROLLED_OUT, p -> {
+            ActionMaster.addMoveToAction(this, defaultX, getY(), 1.4f);
+        });
+
         GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
             ActionMaster.addMoveToAction(this, getX(), -64, 1.4f);
         });

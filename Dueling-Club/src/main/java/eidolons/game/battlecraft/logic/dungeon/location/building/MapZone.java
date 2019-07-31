@@ -21,6 +21,11 @@ public class MapZone {
     private List<Coordinates> exceptions;
     private Dungeon dungeon;
 
+    public MapZone(String name, Dungeon dungeon) {
+        this.name = name;
+        this.dungeon = dungeon;
+    }
+
     public MapZone(Dungeon dungeon, String name, int x1, int x2, int y1, int y2) {
         this.x1 = x1;
         this.x2 = x2;

@@ -6,6 +6,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.datasource.EntityDataSource;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
@@ -99,22 +100,32 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     public Image getNormalImage() {
-        GdxImageMaster.size(getSpriteImagePath(),96, true);
+        GdxImageMaster.size(getSpriteImagePath(),getDefaultSize(), true);
         if (!isMainHand()){
             return new Image(GdxImageMaster.flip(
-             GdxImageMaster.getSizedImagePath(getSpriteImagePath(), 96),
+             GdxImageMaster.getSizedImagePath(getSpriteImagePath(), getDefaultSize()),
              true, false, true));
         }
         return new Image(GdxImageMaster.size(getSpriteImagePath(),
          96, true));
     }
+
+    protected int getDefaultSize() {
+//        if (getWeapon().isMagical())
+            if (getWeapon().getName().contains("Force")) {
+                return 120;
+            }
+        return 96;
+    }
+
     public Image getLargeImage() {
         if (!isMainHand()){
             return new Image(GdxImageMaster.flip(
              getSpriteImagePath(),
              true, false, true));
         }
-        return new Image(GdxImageMaster.size(getSpriteImagePath(),
-         128, true));
+        return new Image(TextureCache.getOrCreate(getSpriteImagePath()));
+//                GdxImageMaster.size(getSpriteImagePath(),
+//         128, true));
     }
 }

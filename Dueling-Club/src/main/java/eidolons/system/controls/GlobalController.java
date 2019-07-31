@@ -7,6 +7,8 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
+import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
@@ -109,7 +111,12 @@ public class GlobalController implements Controller {
         switch (keyCode) {
             case Keys.F2:
                 if (EidolonsGame.BRIDGE)
+                {
+                    if (CoreEngine.isIDE()){
+                        EidolonLord.lord.soulforceLost(50);
+                    }
                     return false;
+                }
                 if (CoreEngine.isIDE())
                     LordPanel.getInstance().init();
                 GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
@@ -159,6 +166,10 @@ public class GlobalController implements Controller {
     private boolean doTest(int keyCode) {
         switch (keyCode) {
             case Keys.F8:
+
+                if (CoreEngine.isIDE()){
+                    EidolonLord.lord.soulforceGained(110);
+                }
                 PaleAspect.togglePale();
                 EidolonsGame.BRIDGE = !EidolonsGame.BRIDGE;
                 return true;

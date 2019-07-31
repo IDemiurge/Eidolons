@@ -47,9 +47,9 @@ public class LinkedGridObject extends GridObject {
         CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(-45, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(45, 0);";
 
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire small(-33, 0);";
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire small(0, 0);";
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire small(33, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(-33, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(0, 0);";
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(33, 0);";
 
         CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
         CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;

@@ -415,7 +415,19 @@ public class EmitterMaster extends GdxUtil {
     @Override
     protected void execute() {
         //        generateVfx();
+        deleteSpriteImageFolders();
         createVfxAtlas();
+    }
+
+    private void deleteSpriteImageFolders() {
+        for (File file : FileManager.getFilesFromDirectory(PathFinder.getVfxPath()+"atlas images/ambience/", true, false)) {
+            if (file.isDirectory()) {
+                for (File file1 : FileManager.getFilesFromDirectory(file.getPath(), false, false))   {
+                    file1.delete();
+                }
+            }
+
+        }
     }
 
     private void generateVfx() {

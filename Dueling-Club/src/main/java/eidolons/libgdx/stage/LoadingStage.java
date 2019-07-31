@@ -74,7 +74,7 @@ public class LoadingStage extends Stage {
             missionName = new Label(data.getName()
              , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
             missionName.setPosition(GdxMaster.centerWidth(missionName),
-             GdxMaster.top(missionName));
+             GdxMaster.getTopY(missionName));
             addActor(missionName);
         }
     }

@@ -50,7 +50,7 @@ public class HqSpellTab extends HqElement {
         addActor(visBtn = new SmartButton(ButtonStyled.STD_BUTTON.EYE, () -> toggleFilters()));
 
         infoBtn.setY(GdxMaster.centerHeight(infoBtn));
-        visBtn.setY(GdxMaster.top(visBtn));
+        visBtn.setY(GdxMaster.getTopY(visBtn));
     }
 
     private void toggleFilters() {

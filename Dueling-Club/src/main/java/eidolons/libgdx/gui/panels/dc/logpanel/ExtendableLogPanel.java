@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.logpanel;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -10,15 +11,11 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 public class ExtendableLogPanel extends LogPanel { //TODO igg demo insight INTO DECORATOR
     private Actor extendButton;
 
-    public ExtendableLogPanel() {
-        super();
-
+    public ExtendableLogPanel(boolean top) {
         extendButton = new SmartButton(STD_BUTTON.PULL);
         addActor(extendButton);
-        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2,
-         getHeight() + 1);
-        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2-1,
-         getHeight()  );
+        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2 - 1,
+                top ? -11 : getHeight() + 5);
 
         extendButton.addCaptureListener(new InputListener() {
             @Override
@@ -29,15 +26,23 @@ public class ExtendableLogPanel extends LogPanel { //TODO igg demo insight INTO 
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                float max = GdxMaster.adjustHeight(1200);
-                float min = GdxMaster.adjustHeight(150);
-                float val = getHeight() + y;
-                if (val>max)
+                float max = GdxMaster.adjustHeight(GdxMaster.getHeight()-100);
+                float min = GdxMaster.adjustHeight(50);
+                if (y > 100) {
                     return;
-                setHeight(Math.min(Math.max(getHeight() + y, min),
-                 max));
-                extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2-1,
-                 getHeight()  );
+                }
+                float val = getHeight() + (top ? -y : y);
+//                        (top?  -(y - (origY- getY()))  : y);
+                if (val > max)
+                    return;
+                setHeight(Math.min(Math.max(val, min),
+                        max));
+                main.system.auxiliary.log.LogMaster.log(1, "dragged to " + getHeight());
+                if (top) {
+                    GdxMaster.top(ExtendableLogPanel.this);
+                }
+                extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2 - 1,
+                        top ? -11 : getHeight());
                 updatePos = true;
             }
         });

@@ -101,6 +101,8 @@ public class Images {
 
     public static final String COLUMNS = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic/decor/columns.png");
+//    public static final String COLUMNS_CROPPED = StrPathBuilder.build(
+//            PathFinder.getComponentsPath(), "generic/decor/columns cropped.png");
     public static final String SEPARATOR_ALT = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
     public static final String SEPARATOR = StrPathBuilder.build(
@@ -147,6 +149,7 @@ public class Images {
     public static final String EMPTY_SKULL = "ui/empty1.jpg";
     public static final String EMPTY_DEMIURGE = "ui/empty.jpg";
     public static final String LIGHT_SKULL = "sprites/cells/light skull.png";
+    public static final String ROLL_ARROW = "ui/roll arrow.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

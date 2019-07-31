@@ -7,6 +7,8 @@ import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class EidolonLord extends LightweightEntity {
 
@@ -14,9 +16,6 @@ public class EidolonLord extends LightweightEntity {
 
     HeroChain chain;
 
-    public int getSoulforce() {
-        return getIntParam(PARAMS.SOULFORCE );
-    }
     public void soulsLost(Soul... souls) {
 
         for (Soul soul : souls) {
@@ -24,11 +23,14 @@ public class EidolonLord extends LightweightEntity {
                 continue;
             }
             removeProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
-            getGame().getLogManager().log("A Soul is lost: "  + soul.getUnitType().getName());
+            getGame().getLogManager().log("A Soul is lost: " + soul.getUnitType().getName());
         }
         SoulMaster.clear();
 
+        //TODO check warnings?
+
     }
+
     public HeroChain getChain() {
         return chain;
     }
@@ -40,19 +42,32 @@ public class EidolonLord extends LightweightEntity {
     public EidolonLord(ObjType type) {
         super(type);
         lord = this;
+        lord.setParam(PARAMS.C_SOULFORCE, getIntParam(PARAMS.BASE_SOULFORCE));
     }
 
     public void soulforceGained(int amount) {
-        lord.addParam(PARAMS.SOULFORCE, amount);
-    }
-    public void soulforceLost(int amount) {
-        lord.addParam(PARAMS.SOULFORCE, -amount);
-    }
-    public void soulsGained(Soul soul) {
-        addProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
-        getGame().getLogManager().log("A Soul is trapped: "  + soul.getUnitType().getName());
+        lord.addParam(PARAMS.C_SOULFORCE, amount);
+        GuiEventManager.trigger(GuiEventType.SOULFORCE_RESET, this);
     }
 
+    public void soulforceLost(int amount) {
+        lord.addParam(PARAMS.C_SOULFORCE, -amount);
+        GuiEventManager.trigger(GuiEventType.SOULFORCE_RESET, this);
+
+    }
+
+    public Integer getSoulforce() {
+        return super.getIntParam(PARAMS.C_SOULFORCE);
+    }
+
+    public Integer getSoulforceMax() {
+        return super.getIntParam(PARAMS.SOULFORCE);
+    }
+
+    public void soulsGained(Soul soul) {
+        addProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
+        getGame().getLogManager().log("A Soul is trapped: " + soul.getUnitType().getName());
+    }
 
 
     /**

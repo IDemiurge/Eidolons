@@ -2,18 +2,14 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
@@ -96,7 +92,7 @@ public class UnitView extends BaseView implements HpBarView{
         modeImage.setVisible(true);
         modeImage.setImage(pathToImage);
         ActionMaster.addFadeInAction(modeImage, 0.5f);
-        modeImage.setPosition(GdxMaster.top(modeImage), GdxMaster.right(modeImage));
+        modeImage.setPosition(GdxMaster.getTopY(modeImage), GdxMaster.right(modeImage));
     }
 
     @Override

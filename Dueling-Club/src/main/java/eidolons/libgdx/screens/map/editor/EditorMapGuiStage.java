@@ -34,7 +34,7 @@ public class EditorMapGuiStage extends MapGuiStage {
         controlPanel.addListener(listener);
 //        dragPane.setPosition(0, GdxMaster.top(controlPanel)-225);
 //        addActor(dragPane);
-        controlPanel.setPosition(0, GdxMaster.top(controlPanel) - 20);
+        controlPanel.setPosition(0, GdxMaster.getTopY(controlPanel) - 20);
         addActor(controlPanel);
 
         palette = new EditorPalette();

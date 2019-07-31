@@ -123,7 +123,7 @@ public class IGG_Demo {
     }
 
     public enum IGG_MISSION {
-        TUTORIAL("SUBLEVELS/Ashen Path modular.xml", "Ashen Path", 0, 1){
+        TUTORIAL("modules/Ashen Path modular.xml", "Ashen Path", 0, 1){
             @Override
             public boolean isTutorial() {
                 return true;

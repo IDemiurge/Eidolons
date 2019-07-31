@@ -8,6 +8,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.texture.Images;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
 
@@ -23,8 +24,9 @@ public class RollDecorator {
         return decorate(actor, direction, true);
 
     }
-        public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction, boolean manual) {
-        RollableGroup group = new RollableGroup(actor, direction,manual);
+
+    public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction, boolean manual) {
+        RollableGroup group = new RollableGroup(actor, direction, manual);
         return group;
     }
 
@@ -37,9 +39,16 @@ public class RollDecorator {
         private float origX;
         private float origY;
 
+        Runnable onOpen;
+        Runnable onClose;
+        Runnable onEither;
+        private float rollPercentage = 1f;
+        private boolean rollIsLessWhenOpen;
+
         public RollableGroup(Actor contents, FACING_DIRECTION direction) {
             this(contents, direction, true);
         }
+
         public RollableGroup(Actor contents, FACING_DIRECTION direction, boolean manual) {
             super(true);
             this.manual = manual;
@@ -72,7 +81,7 @@ public class RollDecorator {
             }
             addActor(table);
             table.setSize(getWidth(),
-             getHeight());
+                    getHeight());
         }
 
         @Override
@@ -89,7 +98,7 @@ public class RollDecorator {
 //            setSize(contents.getWidth() + STD_IMAGES.DIRECTION_POINTER.getWidth(),
 //             contents.getHeight());
             table.setSize(getWidth(),
-             getHeight());
+                    getHeight());
         }
 
         @Override
@@ -128,8 +137,9 @@ public class RollDecorator {
 //            setDebug(false, true);
         }
 
+
         private ImageContainer initArrow() {
-            ImageContainer arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
+            ImageContainer arrow = new ImageContainer(Images.ROLL_ARROW);
 
             arrow.setRotation(direction.getDirection().getDegrees() + 90);
             arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
@@ -153,37 +163,77 @@ public class RollDecorator {
             float toY = getY();
             float toX = getX();
 //            int toX = open ? 0 : (int) -contents.getWidth();
-
-            switch (direction) {
-                case NORTH:
-                    toY = open ? (int) origY + contents.getHeight() : origY;
-                    break;
-                case WEST:
-                    toX = open ? (int) origX - contents.getWidth() : origX;
-                    break;
-                case EAST:
-                    toX = open ? (int) origX + contents.getWidth() : origX;
-                    break;
-                case SOUTH:
-                    toY = open ? (int) origY - contents.getHeight() : origY;
-                    break;
-            }
+            if (rollIsLessWhenOpen)
+                switch (direction) {
+                    case SOUTH:
+                        toY = open ? (int) origY + contents.getHeight() * rollPercentage : origY;
+                        break;
+                    case NORTH:
+                        toY = open ? (int) origY - contents.getHeight() * rollPercentage : origY;
+                        break;
+                    case WEST:
+                        toX = open ? (int) origX - contents.getWidth() * rollPercentage : origX
+                        ;
+                        break;
+                    case EAST:
+                        toX = open ? (int) origX + contents.getWidth() * rollPercentage : origX
+                        ;
+                        break;
+                }
+            else
+                switch (direction) {
+                    case SOUTH:
+                        toY = open ? (int) origY + contents.getHeight() : origY
+                                - (contents.getHeight() * ( rollPercentage));
+                        break;
+                    case NORTH:
+                        toY = open ? (int) origY - contents.getHeight() * rollPercentage : origY
+                                + (contents.getHeight() * (rollPercentage));
+                        break;
+                    case WEST:
+                        toX = open ? (int) origX - contents.getWidth() : origX
+                                + (contents.getWidth() * ( rollPercentage));
+                        break;
+                    case EAST:
+                        toX = open ? (int) origX + contents.getWidth() : origX
+                                - (contents.getWidth() * ( rollPercentage));
+                        break;
+                }
 
             ActionMaster.addMoveToAction(
-             this, toX, toY, getDuration());
+                    this, toX, toY, getDuration());
 
             ActionMaster.addRotateByAction(
-             arrow.getContent(), 180);
+                    arrow.getContent(), 180);
+
+            if (onEither != null) {
+                onEither.run();
+            }
+            if (open) {
+                if (onOpen != null) {
+                    onOpen.run();
+                }
+            } else {
+                if (onClose != null) {
+                    onClose.run();
+                }
+            }
+        }
+
+        public void setRollIsLessWhenOpen(boolean rollIsLessWhenOpen) {
+            this.rollIsLessWhenOpen = rollIsLessWhenOpen;
         }
 
         private boolean isOpen() {
             switch (direction) {
                 case NORTH:
+                    return getY() < origY;
                 case SOUTH:
-                    return getY() == origY;
+                    return getY() >= origY;
                 case WEST:
+                    return getX() >= origX;
                 case EAST:
-                    return getX() == origX;
+                    return getX() <= origX;
                 case NONE:
                     break;
             }
@@ -192,6 +242,29 @@ public class RollDecorator {
 
         private float getDuration() {
             return 0.5f;
+        }
+
+        public RollableGroup setOnOpen(Runnable onOpen) {
+            this.onOpen = onOpen;
+            return this;
+        }
+
+        public RollableGroup setOnClose(Runnable onClose) {
+            this.onClose = onClose;
+            return this;
+        }
+
+        public RollableGroup setOnEither(Runnable onEither) {
+            this.onEither = onEither;
+            return this;
+        }
+
+        public void setRollPercentage(float rollPercentage) {
+            this.rollPercentage = rollPercentage;
+        }
+
+        public float getRollPercentage() {
+            return rollPercentage;
         }
     }
 

@@ -96,7 +96,7 @@ public class GDX {
     }
 
     public static float top(Actor actor) {
-        return GdxMaster.top(actor);
+        return GdxMaster.getTopY(actor);
     }
 
     public static float right(Actor actor) {

@@ -162,7 +162,7 @@ public class LogPanel extends ScrollTextWrapper {
                 imageOffset = img.getWidth();
             }
             LogMessage message = builder.build(getWidth() - offsetX - imageOffset);
-            message.setFillParent(true);
+            message.setFillParent(false);
             toAdd = message;
             if (image != null) {
                 TablePanelX<Actor> table = new TablePanelX<>(

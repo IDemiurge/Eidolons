@@ -151,7 +151,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void init() {
-        initGameMenu();
+
         //        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
         //         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
         //        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
@@ -171,11 +171,17 @@ public class GuiStage extends StageX implements StageWithClosable {
                 questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
 
 
-        ExtendableLogPanel log = new ExtendableLogPanel();
-        RollableGroup decorated = RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
+        ExtendableLogPanel log = new ExtendableLogPanel(true);
+        Group decorated =log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(decorated);
+//        decorated.setOnClose(()->{
+//            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
+//        });
+//        decorated.setOnOpen(()->{
+//            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_IN);
+//        });
         decorated.
-                setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);
+                setPosition(GdxMaster.getWidth() - decorated.getWidth(), GdxMaster.getTopY(decorated));
         addActor(logPanel = new FullLogPanel(100, 200));
 
         radial = new RadialMenu();
@@ -188,6 +194,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         containerPanel.setVisible(false);
         bindEvents();
 
+        initGameMenu();
         gameMenu.setZIndex(Integer.MAX_VALUE);
 
         addActor(actionTooltipContainer = new SuperContainer(actionTooltip) {
@@ -258,25 +265,24 @@ public class GuiStage extends StageX implements StageWithClosable {
         gameMenu = createGameMenu();
         addActor(gameMenu);
         gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
-        GroupX group = new GroupX();
-
+        GroupX menuButton = new GroupX();
         Image btnBg = new Image(TextureCache.getOrCreateR(
                 StrPathBuilder.build(PathFinder.getUiPath(),
                         "components", "generic",
                         "buttons", "special", "menu bg.png")
         ));
-        group.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
-        group.addActor(btnBg);
-        menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
+        menuButton.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
+        menuButton.addActor(btnBg);
+        this.menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
                 gameMenu.toggle());
 
-        menuButton.setPosition(-4, 13);
-        group.addActor(menuButton);
+        this.menuButton.setPosition(-4, 13);
+        menuButton.addActor(this.menuButton);
 
-        addActor(group);
-        group.setSize(btnBg.getWidth(),
+        addActor(menuButton);
+        menuButton.setSize(btnBg.getWidth(),
                 btnBg.getHeight());
-        group.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
+        menuButton.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
                 GdxMaster.getHeight() - btnBg.getHeight() + 16);
 
 

@@ -16,7 +16,6 @@ import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
-import eidolons.libgdx.stage.UiStage;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
@@ -75,31 +74,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     }
 
-    private PostProcessController getPostProcessController() {
-        PostProcessController postProcessing = new PostProcessController();
-        //         PostProcessController.getInstance();
-        postProcessing.reset();
-        return postProcessing;
-    }
-
-
-    private float getWaitY() {
-        return GdxMaster.getHeight() / 20 + 35;
-    }
-
-    private float getTipY() {
-        return GdxMaster.getHeight() / 20;
-    }
-
-    public CustomSpriteBatch getBatch() {
-        if (batch == null) {
-            batch = CustomSpriteBatch.getMainInstance();
-        }
-        return batch;
-    }
-
     protected void preLoad() {
-
         try {
             MusicMaster.getInstance().startLoop();
         } catch (Exception e) {
@@ -142,6 +117,21 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             updateInputController();
             GdxMaster.setDefaultCursor();
         } else done(this.param);
+    }
+
+    protected void renderMain(float delta) {
+
+    }
+    protected void renderLoader(float delta) {
+        if (introStage != null && !introStage.isDone()) {
+            introStage.act(delta);
+            introStage.draw();
+        } else if (loading) {
+            renderLoaderAndOverlays(delta);
+
+        } else
+            renderMain(delta);
+
     }
 
     protected boolean isWaitForInput() {
@@ -212,7 +202,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
-        checkShader();
+        resetShader();
 
         if (postProcessing != null)
             postProcessing.act(delta);
@@ -246,7 +236,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void checkShaderReset() {
     }
 
-    protected void checkShader() {
+    protected void resetShader() {
 
 
     }
@@ -286,6 +276,30 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         //        batch.end();
     }
 
+
+    private PostProcessController getPostProcessController() {
+        PostProcessController postProcessing = new PostProcessController();
+        //         PostProcessController.getInstance();
+        postProcessing.reset();
+        return postProcessing;
+    }
+
+
+    private float getWaitY() {
+        return GdxMaster.getHeight() / 20 + 35;
+    }
+
+    private float getTipY() {
+        return GdxMaster.getHeight() / 20;
+    }
+
+    public CustomSpriteBatch getBatch() {
+        if (batch == null) {
+            batch = CustomSpriteBatch.getMainInstance();
+        }
+        return batch;
+    }
+
     protected float getTooltipPeriod() {
         return 5;
     }
@@ -300,17 +314,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         return false;
     }
 
-    protected void renderLoader(float delta) {
-        if (introStage != null && !introStage.isDone()) {
-            introStage.act(delta);
-            introStage.draw();
-        } else if (loading) {
-            renderLoaderAndOverlays(delta);
-
-        } else
-            renderMain(delta);
-
-    }
 
     protected boolean isPostProcessingDefault() {
         return true;
@@ -325,9 +328,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         loadingStage.draw();
     }
 
-    protected void renderMain(float delta) {
-
-    }
 
     public void backToLoader() {
         loading = true;

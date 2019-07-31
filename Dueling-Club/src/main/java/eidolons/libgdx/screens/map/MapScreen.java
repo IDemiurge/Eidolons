@@ -204,7 +204,7 @@ public class MapScreen extends GameScreenWithTown {
             batch.setShader(bufferedShader);
     }
 
-    protected void checkShader() {
+    protected void resetShader() {
 
         if (batch.getShader() != DarkShader.getDarkShader()) {
             bufferedShader = batch.getShader();

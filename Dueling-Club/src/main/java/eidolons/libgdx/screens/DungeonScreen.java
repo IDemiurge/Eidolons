@@ -83,24 +83,13 @@ public class DungeonScreen extends GameScreenWithTown {
     private GridCellContainer stackView;
     boolean firstCenteringDone;
 
-    public static void setFramerateDeltaControl(float framerateDeltaControl) {
-        FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
-    }
 
     public static DungeonScreen getInstance() {
         return instance;
     }
 
-    public static boolean isCameraAutoCenteringOn() {
-        return cameraAutoCenteringOn;
-    }
-
-    public static void setCameraAutoCenteringOn(boolean b) {
-        cameraAutoCenteringOn = b;
-    }
-
-    public static void setCenterCameraOnAlliesOnly(boolean b) {
-        centerCameraOnAlliesOnly = b;
+    public DungeonScreen() {
+        super();
     }
 
     public void moduleEntered(Module module) {
@@ -130,8 +119,6 @@ public class DungeonScreen extends GameScreenWithTown {
                 }
             final String path = (String) param.get();
             setBackground(path);
-
-
         });
 
         EmitterPools.preloadDefaultEmitters();
@@ -140,41 +127,8 @@ public class DungeonScreen extends GameScreenWithTown {
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
 
         GdxMaster.setLoadingCursor();
-        GuiEventManager.bind(GuiEventType.SHOW_TOWN_PANEL, p -> {
-            try {
-                showTownPanel(p);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                showTownPanel(null);
-                Eidolons.exitToMenu();
-            }
-
-        });
-
-        GuiEventManager.bind(GuiEventType.CAMERA_LAPSE_TO, p -> {
-            cam .position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
-
-        });
     }
 
-    private boolean isSpriteBgTest() {
-        return EidolonsGame.TUTORIAL_MISSION;
-    }
-
-    @Override
-    protected boolean isTooltipsOn() {
-        if (TownPanel.getActiveInstance() != null) {
-            return false;
-        }
-        return super.isTooltipsOn();
-    }
-
-
-    @Override
-    public void reset() {
-        super.reset();
-        getOverlayStage().setActive(true);
-    }
 
     protected void bindEvents() {
 
@@ -196,7 +150,20 @@ public class DungeonScreen extends GameScreenWithTown {
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
             }
         });
+        GuiEventManager.bind(GuiEventType.SHOW_TOWN_PANEL, p -> {
+            try {
+                showTownPanel(p);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                showTownPanel(null);
+                Eidolons.exitToMenu();
+            }
+        });
 
+        GuiEventManager.bind(GuiEventType.CAMERA_LAPSE_TO, p -> {
+            cam .position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
+
+        });
     }
 
     @Override
@@ -215,12 +182,6 @@ public class DungeonScreen extends GameScreenWithTown {
             }
             setBackground(path);
         }
-        //        TODO Unit obj = DC_Game.game.getManager().getActiveObj();
-        //        if (obj.isMine()) {
-        //            if (guiStage.getBottomPanel().getY()< ){
-        //
-        //            }
-        //        }
     }
 
     private void setBackground(String path) {
@@ -279,22 +240,6 @@ public class DungeonScreen extends GameScreenWithTown {
                         centerCameraOn(Eidolons.getMainHero());
                 }
         });
-//        try {
-//            Unit unit = null;
-//            centerCameraOnMainHero();
-//            if (Eidolons.game.getMetaMaster() == null) {
-//                unit = Eidolons.game.getMetaMaster().
-//                        getPartyManager().getParty().getLeader();
-//            } else
-//                unit = (Unit) Eidolons.game.getPlayer(true).getHeroObj();
-//            Vector2 unitPosition =
-//                    GridMaster.getCenteredPos(
-//                            unit.getCoordinates());
-//
-//            cameraPan(unitPosition);
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
 
         centerCameraOnMainHero();
         selectionPanelClosed();
@@ -309,23 +254,16 @@ public class DungeonScreen extends GameScreenWithTown {
 
     private void initBackground() {
         String path = IGG_Images.getBackground();
-
-//
         setBackground(path);
-
-
     }
 
     private void centerCameraOnMainHero() {
         centerCameraOn(Eidolons.getMainHero(), true);
     }
 
-
     public void updateGui() {
-        //        gridPanel.updateGui();
         getGuiStage().getBottomPanel().update();
         checkGraphicsUpdates();
-
     }
 
     public void cameraStop() {
@@ -361,15 +299,15 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void selectionPanelClosed() {
-        if (TownPanel.getActiveInstance() != null) //TODO fix late events in auto-load
-            return;
+        if (TownPanel.getActiveInstance() != null)
+                return;//TODO fix late events in auto-load
         getOverlayStage().setActive(false);
         super.selectionPanelClosed();
     }
 
     protected void triggerInitialEvents() {
         //        DC_Game.game.getVisionMaster().triggerGuiEvents();
-        GuiEventManager.trigger(UPDATE_LIGHT);
+        GuiEventManager.trigger(UPDATE_SHADOW_MAP);
     }
 
     @Override
@@ -383,6 +321,39 @@ public class DungeonScreen extends GameScreenWithTown {
 //                return false;
 //            }
         return super.canShowScreen();
+    }
+
+    @Override
+    protected void renderLoaderAndOverlays(float delta) {
+        setBlocked(checkBlocked());
+        super.renderLoaderAndOverlays(delta);
+    }
+
+    @Override
+    public void render(float delta) {
+        batch.shaderFluctuation(delta);
+
+        if (speed != null) {
+            delta = delta * speed;
+        }
+        if (CoreEngine.isDevEnabled())
+            if (DC_Game.game != null) {
+                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
+                    if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+                        DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+                    } else {
+                        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+                            CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
+                        }
+                        if (Gdx.input.isKeyPressed(Keys.TAB)) {
+                            DC_Game.game.getVisionMaster().refresh();
+                            GuiEventManager.trigger(UPDATE_GUI);
+                        }
+                    }
+                }
+
+            }
+        super.render(delta);
     }
 
     public void renderMain(float delta) {
@@ -472,6 +443,25 @@ public class DungeonScreen extends GameScreenWithTown {
         backgroundSprite.draw(batch);
     }
 
+    @Override
+    public void resize(int width, int height) {
+        //     animationEffectStage.getViewport().update(width, height);
+
+        //        float aspectRatio = (float) width / (float) height;
+        //        cam = new OrthographicCamera(width * aspectRatio, height) ;
+
+        gridStage.getRoot().setSize(width, height);
+        //        guiStage.getRoot().setSize(width, height);
+        gridStage.getViewport().update(width, height);
+        //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
+        guiStage.getViewport().update(width, height);
+        //        getGuiStage().getGuiVisuals().resized();
+
+        //        BattleGuiStage.camera.viewportWidth=width;
+        //        BattleGuiStage.camera.viewportHeight=height;
+    }
+
+
     private boolean isShowingGrid() {
         if (HqPanel.getActiveInstance() != null) {
             if (HqPanel.getActiveInstance().getColor().a == 1) {
@@ -507,39 +497,6 @@ public class DungeonScreen extends GameScreenWithTown {
         return guiStage;
     }
 
-    @Override
-    public void render(float delta) {
-        batch.shaderFluctuation(delta);
-
-        if (speed != null) {
-            delta = delta * speed;
-        }
-        if (CoreEngine.isDevEnabled())
-            if (DC_Game.game != null) {
-                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_LEFT)) {
-                    if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-                        DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-                    } else {
-                        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-                            CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
-                        }
-                        if (Gdx.input.isKeyPressed(Keys.TAB)) {
-                            DC_Game.game.getVisionMaster().refresh();
-                            GuiEventManager.trigger(UPDATE_GUI);
-                        }
-                    }
-                }
-
-            }
-        super.render(delta);
-    }
-
-    @Override
-    protected void renderLoaderAndOverlays(float delta) {
-        setBlocked(checkBlocked());
-        super.renderLoaderAndOverlays(delta);
-    }
-
     protected void checkShaderReset() {
         if (batch.getShader() == DarkShader.getDarkShader()) {
             batch.shaderReset();
@@ -552,7 +509,26 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
-    protected void checkShader() {
+    private boolean isSpriteBgTest() {
+        return EidolonsGame.TUTORIAL_MISSION;
+    }
+
+    @Override
+    protected boolean isTooltipsOn() {
+        if (TownPanel.getActiveInstance() != null) {
+            return false;
+        }
+        return super.isTooltipsOn();
+    }
+
+
+    @Override
+    public void reset() {
+        super.reset();
+        getOverlayStage().setActive(true);
+    }
+
+    protected void resetShader() {
 
         batch.setShader(null);
 //        guiStage .getCustomSpriteBatch().setShader(null);
@@ -586,24 +562,6 @@ public class DungeonScreen extends GameScreenWithTown {
             if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
                 return true;
         return guiStage.isBlocked();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        //     animationEffectStage.getViewport().update(width, height);
-
-        //        float aspectRatio = (float) width / (float) height;
-        //        cam = new OrthographicCamera(width * aspectRatio, height) ;
-
-        gridStage.getRoot().setSize(width, height);
-        //        guiStage.getRoot().setSize(width, height);
-        gridStage.getViewport().update(width, height);
-        //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
-        guiStage.getViewport().update(width, height);
-        //        getGuiStage().getGuiVisuals().resized();
-
-        //        BattleGuiStage.camera.viewportWidth=width;
-        //        BattleGuiStage.camera.viewportHeight=height;
     }
 
     public GridPanel getGridPanel() {
@@ -648,6 +606,17 @@ public class DungeonScreen extends GameScreenWithTown {
 
 
     }
+    public static boolean isCameraAutoCenteringOn() {
+        return cameraAutoCenteringOn;
+    }
+
+    public static void setCameraAutoCenteringOn(boolean b) {
+        cameraAutoCenteringOn = b;
+    }
+
+    public static void setCenterCameraOnAlliesOnly(boolean b) {
+        centerCameraOnAlliesOnly = b;
+    }
 
     public void setCameraTimer(int intValue) {
         if (cameraTimer == null) {
@@ -655,6 +624,7 @@ public class DungeonScreen extends GameScreenWithTown {
         }
         cameraTimer.setPeriod(intValue);
     }
+
 
     public ParticleManager getParticleManager() {
         return particleManager;

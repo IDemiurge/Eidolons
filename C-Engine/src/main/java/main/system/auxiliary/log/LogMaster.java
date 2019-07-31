@@ -19,7 +19,8 @@ public class LogMaster {
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
-    private static int PRIORITY_LEVEL_LOGGED = CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
+    private static int PRIORITY_LEVEL_LOGGED =
+    CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;

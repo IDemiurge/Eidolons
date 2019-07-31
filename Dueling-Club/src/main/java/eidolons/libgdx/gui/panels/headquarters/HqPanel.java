@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,13 +8,10 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.panels.EmptyDrawable;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -30,12 +26,10 @@ import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
-import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.properties.G_PROPS;
-import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
 
@@ -119,7 +113,7 @@ public class HqPanel extends TablePanel implements Blocking {
         hqTabs = createTabs();
         heroViewPanel = new HqHeroViewPanel();
         addActor(header);
-        header.setPosition(GdxMaster.centerWidth(header), GdxMaster.top(header));
+        header.setPosition(GdxMaster.centerWidth(header), GdxMaster.getTopY(header));
         heroXp = new HqHeroXp();
         heroValues = new HqVerticalValueTable(PARAMS.LEVEL, G_PROPS.RACE, G_PROPS.DEITY);
         dynamicParams = new HqParamPanel(true);
@@ -172,7 +166,7 @@ public class HqPanel extends TablePanel implements Blocking {
             return;
         }
         addActor(header );
-        header.setPosition(130, GdxMaster.top(header)-75);
+        header.setPosition(130, GdxMaster.getTopY(header)-75);
 //        header.setPosition(110, 110); // wtff TODO igg demo fix
         header.setVisible(true);
         super.act(delta);

@@ -589,7 +589,7 @@ public class GridPanel extends Group {
             if (!firstUpdateDone) {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
-                GuiEventManager.trigger(UPDATE_LIGHT);
+                GuiEventManager.trigger(UPDATE_SHADOW_MAP);
             }
             if (HelpMaster.isDefaultTextOn())
                 if (!welcomeInfoShown) {

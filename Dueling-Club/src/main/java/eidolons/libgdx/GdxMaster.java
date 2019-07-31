@@ -149,7 +149,7 @@ public class GdxMaster {
         return GdxMaster.getHeight() - actor.getHeight();
     }
 
-    public static float top(Actor actor) {
+    public static float getTopY(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getHeight() != 0)
                 return actor.getParent().getHeight() - actor.getHeight();
@@ -300,6 +300,9 @@ public class GdxMaster {
         Gdx.input.setInputProcessor(inputController);
     }
 
+    public static void top(Actor actor) {
+        actor.setY(getTopY(actor));
+    }
     public static void center(Actor actor) {
         actor.setPosition(centerWidth(actor), centerHeight(actor));
     }
