@@ -122,7 +122,9 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
         panel.setKeyManager(mainPanel.getKeyManager());
         panel.addKeyListener(mainPanel.getKeyManager());
         panel.setPanelSize(SIZE);
-        tabs.addTab(level.getName(), level.getDungeon().getImagePath(), panel);
+        tabs.addTab(
+                level.getName()==null ? tabs.getTabs().size()+"" :
+                level.getName(), level.getDungeon().getImagePath(), panel);
         // TODO support tab sort/swap
 
 
@@ -222,9 +224,10 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
             tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
         } else {
             grid.refresh();
-            tabs.getCurrentComp().add(grid.getPanel(), "id grid, pos 960-" +
-                    grid.getCellsX()*grid.getCellWidth()/4 +
-                    " 0");
+            tabs.getCurrentComp().add(grid.getPanel());
+//            , "id grid, pos 660-" +
+//                    grid.getCellsX()*grid.getCellWidth()/4 +
+//                    " 0");
 //            "pos 0 0 1920 1080, w 1920");
         }
     }

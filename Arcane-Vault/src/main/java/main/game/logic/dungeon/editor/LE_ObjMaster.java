@@ -358,18 +358,24 @@ public class LE_ObjMaster {
         map.put(obj, d);
     }
 
+    public static Stack<DIRECTION> preselectedDirections = new Stack<>();
+
     public static void setDirection(BattleFieldObject obj, Coordinates c) {
+
         List list = new LinkedList<>(Arrays.asList(DIRECTION.values()));
         list.add(0, "Center");
-        int i = DialogMaster.optionChoice("Set direction (none==center)", list.toArray());
         DIRECTION d = null;
+        if (!preselectedDirections.isEmpty()) {
+            d = preselectedDirections.pop();
+        } else {
+        int i = DialogMaster.optionChoice("Set direction (none==center)", list.toArray());
         if (i == -1) {
             d = DirectionMaster.getRandomDirection();
             // random?
         }
         if (i > 0) {
             d = DIRECTION.values()[i - 1];
-
+        }
         }
 
         Map<BattleFieldObject, DIRECTION> map = obj.getGame().getDirectionMap().get(c);

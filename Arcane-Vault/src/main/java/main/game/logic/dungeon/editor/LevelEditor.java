@@ -142,12 +142,17 @@ public class LevelEditor {
         args = args[0].split(";");
 
         for (String arg : args) {
+            Level level = null;;
             if (!arg.contains(".")) {
             for (File file : FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()+arg, false, false)) {
-                LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder()+ arg+"/"+file.getName());
+                level  =  LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder()+ arg+"/"+file.getName());
             }
             } else
-                LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder()+ arg.replace("_", " ")+".xml");
+            {
+                level  =  LE_DataMaster.loadLevel(PathFinder.getDungeonLevelFolder()+ arg.replace("_", " ")+".xml");
+            }
+            LevelEditor.getMainPanel().setCurrentLevel(level);
+            LevelEditor.getMainPanel().activateLevel(level);
         }
     }
 

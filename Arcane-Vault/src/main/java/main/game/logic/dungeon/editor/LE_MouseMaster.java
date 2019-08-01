@@ -1,7 +1,10 @@
 package main.game.logic.dungeon.editor;
 
+import main.content.DC_TYPE;
 import main.content.values.parameters.G_PARAMS;
+import main.data.DataManager;
 import main.entity.EntityCheckMaster;
+import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
@@ -25,7 +28,11 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import static main.game.logic.dungeon.editor.LE_ObjMaster.preselectedDirections;
 
 public class LE_MouseMaster implements MouseMotionListener, MouseListener, MouseWheelListener {
     // select multiple
@@ -44,6 +51,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
     private Coordinates coordinates;
     private CONTROL_MODE mode;
     private Coordinates previousCoordinate;
+    private List<BattleFieldObject> selectedOverlaying = new ArrayList<>();
 
     public void dragObj() {
         // MOVE! :)
@@ -51,7 +59,6 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 
     public void objClicked(Obj obj) {
     }
-
 
 
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -187,6 +194,7 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         coordinates = cellComp.getCoordinates();
         obj = cellComp.getTopObjOrCell();
         obj.setCoordinates(coordinates);
+
         lastClicked = obj;
         if (!right) {
             selectedObj = obj;
@@ -200,9 +208,47 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         }
         LevelEditor.getGrid().setDirty(true);
         handleClick(e, right);
+        selectedOverlaying = cellComp.getOverlayingObjects();
+
         if (LevelEditor.getGrid().isDirty()) {
             LevelEditor.getGrid().refresh();
         }
+
+    }
+
+    /*
+    if (e.isShiftDown()) {
+            int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
+            i = DialogMaster.inputInt("Set chance for object to be there..."
+                    + " (set negative to add '1 object only' rule for this coordinate)", i);
+            lastClicked.setParam(G_PARAMS.CHANCE, i);
+            SoundMaster.playStandardSound(STD_SOUNDS.NOTE);
+            return;
+        } else if (alt && !empty) {
+
+            LE_ObjMaster.fill(CoordinatesMaster.getCoordinatesBetween(previousCoordinate,
+                    coordinates), ArcaneVault.getSelectedType());
+            return;
+
+            // DC_HeroObj unit = (DC_HeroObj)
+            // LevelEditor.getSimulation().getObjectByCoordinate(
+            // lastClicked.getCoordinates(), false);
+            // if (unit != null)
+            // if (lastClicked instanceof DC_HeroObj)
+            // LE_ObjMaster.setFlip((DC_HeroObj) lastClicked,
+            // lastClicked.getCoordinates());
+        }
+        else {
+     */
+    // could use same right click, just try() - if empty=>add, else remove
+    // ++ DIRECTION CHANGE
+
+    public static String tip() {
+        return "Advanced motions:\n" +
+                "Alt click to set meta-data \n" +
+                "Control click to stack an object \n" +
+                "Double alt R-Click to insert VOID \n" +
+                "Shift+ctrl click to copy overlaying objects or to change overlaying objects direction\n";
 
     }
 
@@ -220,10 +266,9 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         boolean alt = e.isAltDown();
         boolean add = e.isShiftDown() || LevelEditor.isMouseAddMode();
         boolean empty =
+                LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).isEmpty();
+        boolean overlaying = EntityCheckMaster.isOverlaying(selectedType);
 
-         LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).isEmpty();
-         if (EntityCheckMaster.isOverlaying(selectedType))
-             empty = true;
         // LevelEditor.getMapMaster().getActiveZone()
         // how to ignore this if necessary?
         // don't wanna select obj being removed, e.g. ...
@@ -231,42 +276,54 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
 
         if (e.getClickCount() > 1 || (alt && !empty)) {
             if (right) {
-                // choose if stacked?
-                LevelEditor.cache();
-                LE_ObjMaster.removeObj(lastClicked.getCoordinates());
-                SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
+                if (!empty || !alt) {
+                    // choose if stacked?
+                    LevelEditor.cache();
+                    LE_ObjMaster.removeObj(lastClicked.getCoordinates());
+                    SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
+                }
+                if (e.getClickCount() > 1 && alt) {
+//                    addVoid();
+                    LevelEditor.getObjMaster().addObj(DataManager.getType("Void Cell", DC_TYPE.BF_OBJ), coordinates);
+                }
+
                 return;
             } else {
                 LE_DataMaster.setMetaInfo(coordinates, alt, e.isShiftDown(), e.isControlDown());
+                return;
             }
         }
-        /*
-        if (e.isShiftDown()) {
-                int i = lastClicked.getIntParam(G_PARAMS.CHANCE);
-                i = DialogMaster.inputInt("Set chance for object to be there..."
-                        + " (set negative to add '1 object only' rule for this coordinate)", i);
-                lastClicked.setParam(G_PARAMS.CHANCE, i);
-                SoundMaster.playStandardSound(STD_SOUNDS.NOTE);
-                return;
-            } else if (alt && !empty) {
-
-                LE_ObjMaster.fill(CoordinatesMaster.getCoordinatesBetween(previousCoordinate,
-                        coordinates), ArcaneVault.getSelectedType());
-                return;
-
-                // DC_HeroObj unit = (DC_HeroObj)
-                // LevelEditor.getSimulation().getObjectByCoordinate(
-                // lastClicked.getCoordinates(), false);
-                // if (unit != null)
-                // if (lastClicked instanceof DC_HeroObj)
-                // LE_ObjMaster.setFlip((DC_HeroObj) lastClicked,
-                // lastClicked.getCoordinates());
-            }
-            else {
-         */
-        // could use same right click, just try() - if empty=>add, else remove
-        // ++ DIRECTION CHANGE
         if (!empty) {
+            if (e.isShiftDown() && e.isControlDown()) {
+                if (!selectedOverlaying.isEmpty()) {
+                    int i = 0;
+                    for (BattleFieldObject battleFieldObject : selectedOverlaying) {
+                        if (coordinates.equals(battleFieldObject.getCoordinates())) {
+                            if (i==0) {
+                                ObjType t = LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).get(0).getType();
+                                        LE_ObjMaster.removeObj(battleFieldObject.getCoordinates());
+                                LevelEditor.getObjMaster().addObj(   t, coordinates);
+                            }
+                            i++;
+                            LevelEditor.getObjMaster().addObj(battleFieldObject.getType(), coordinates);
+                            continue;
+                        }
+                        DIRECTION d = null;
+                        try {
+                            d = (DIRECTION) battleFieldObject.getGame().getDirectionMap().get(battleFieldObject.getCoordinates()).values().toArray()[i++];
+                        } catch (Exception e1) {
+                        }
+                        if (d != null) {
+                            preselectedDirections.push(d);
+                        }
+                        LevelEditor.getObjMaster().addObj(battleFieldObject.getType(), coordinates);
+                    }
+                }
+                return;
+            }
+            if (e.isShiftDown() && e.isAltDown()) {
+
+            }
             if (e.isControlDown() && right) {
                 LevelEditor.cache();
                 LevelEditor.setMouseAddMode(true);
@@ -275,17 +332,17 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                 return;
             }
         }
-        else
         if (right) {
-            if (selectedType != null) {
-                if ((EntityCheckMaster.isOverlaying(selectedType) && !EntityCheckMaster
-                        .isOverlaying(lastClicked))
-                        || ((empty || add)) && !alt) {
-                    if (lastClicked != null) {
 
+            if (selectedType != null) {
+                if ((overlaying && !EntityCheckMaster
+                        .isOverlaying(lastClicked))
+                        || ((overlaying || empty || add)) && !alt) {
+                    if (lastClicked != null) {
                         if (e.isShiftDown()) {
                             selectedType = LevelEditor.getMainPanel().getInfoPanel()
                                     .getSelectedType();
+
                         }
                         LevelEditor.cache();
                         LevelEditor.getObjMaster().addObj(selectedType, coordinates);
@@ -299,13 +356,15 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                     return;
                 }
             }
+
+
         }
         if (selectedObj != null) {
             try {
                 selectedObj.setInfoSelected(true);
                 LevelEditor.getSimulation().setSelectedEntity(selectedObj);
-                 LevelEditor.highlightsOff();
-                 LevelEditor.highlight(selectedObj.getCoordinates());
+                LevelEditor.highlightsOff();
+                LevelEditor.highlight(selectedObj.getCoordinates());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

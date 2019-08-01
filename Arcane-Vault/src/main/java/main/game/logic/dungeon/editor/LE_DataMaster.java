@@ -235,10 +235,10 @@ public class LE_DataMaster {
         loadLevel(path);
     }
 
-    public static void loadLevel(String path) {
+    public static Level loadLevel(String path) {
         File file = FileManager.getFile(StringMaster.addMissingPathSegments(path, PathFinder.getEnginePath()));
         if (!file.isFile()) {
-            return;
+            return null;
         }
         String data = FileManager.readFile(file);
         String fileName = StringMaster.cropFormat(StringMaster.getLastPathSegment(path)); // TODO
@@ -256,6 +256,7 @@ public class LE_DataMaster {
         path = StringMaster.cropFormat(path.replace(fileName, ""));
         level.getDungeon().setProperty(G_PROPS.DUNGEON_SUBFOLDER,
                 StringMaster.getLastPathSegment(path));
+        return level;
 
     }
 

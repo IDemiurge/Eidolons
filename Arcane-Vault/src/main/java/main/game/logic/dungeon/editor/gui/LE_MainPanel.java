@@ -41,6 +41,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
         ip = new LE_InfoEditPanel();
         palette = new LE_Palette();
         planPanel = new LE_PlanPanel();
+        planPanel.hide();
         background = new JLabel();
         if (LevelEditor.isTestMode()) {
             Level level = new Level(LevelEditor.testLevel, null, null, false);
@@ -98,7 +99,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
         }
         add(missionTabs, "id tabs, pos 0 cp.y2");
-        add(palette, "id palette, pos plan.x2 770");
+        add(palette, "id palette, pos 24 880");
         add(planPanel, "id plan, pos 0 cp.y2");
         add(background);
         int i = 0;

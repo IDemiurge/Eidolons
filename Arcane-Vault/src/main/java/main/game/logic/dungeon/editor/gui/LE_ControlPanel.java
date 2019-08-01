@@ -103,6 +103,15 @@ public class LE_ControlPanel extends G_Panel {
 //
 //                break;
 //
+            case DIAGONAL:
+                LE_ObjMaster.fillArea(true);
+                break;
+            case CLEAR:
+                LevelEditor.getMapMaster().clearArea();
+                break;
+            case FILL:
+                LE_ObjMaster.fillArea(false);
+                break;
             default:
                 break;
 
@@ -135,7 +144,7 @@ public class LE_ControlPanel extends G_Panel {
 TOGGLE_INFO,
         SAVE_LEVEL, LOAD_LEVEL,  NEW_LEVEL,
         REMOVE, SAVE_ALL,
-        CLONE, RENAME, SUBFOLDER, TOGGLE_UI,
+        CLONE, RENAME, SUBFOLDER, TOGGLE_UI, CLEAR, FILL, DIAGONAL,
 //        GENERATE,
 //        SAVE_MISSION, LOAD_MISSION, NEW_MISSION,
 //        UNDO,TRANSFORM,

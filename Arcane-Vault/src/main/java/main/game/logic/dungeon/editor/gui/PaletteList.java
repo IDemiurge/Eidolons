@@ -54,8 +54,8 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
     }
 
     public void setInts() {
-        minItems = 80;
-        rowsVisible = vertical ? 15 : 4;
+        minItems = 50;
+        rowsVisible = vertical ? 10 : 2;
     }
 
     @Override
