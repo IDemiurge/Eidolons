@@ -224,10 +224,10 @@ public class LE_MapViewComp extends G_Panel implements TabChangeListener {
             tabs.getCurrentComp().add(map.getComp(), "pos 0 0");
         } else {
             grid.refresh();
-            tabs.getCurrentComp().add(grid.getPanel());
-//            , "id grid, pos 660-" +
-//                    grid.getCellsX()*grid.getCellWidth()/4 +
-//                    " 0");
+            int x = Math.max(0, 640 - grid.getCellsX() * grid.getCellWidth() / 3);
+            tabs.getCurrentComp().add(grid.getPanel() , "id grid, pos " +
+                    x +
+                    " 0");
 //            "pos 0 0 1920 1080, w 1920");
         }
     }
