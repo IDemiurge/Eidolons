@@ -1145,7 +1145,7 @@ public class Unit extends DC_UnitModel {
 
     public Spell getSpell(String actionName) {
         for (Spell s : getSpells()) {
-            if (s.getName().equalsIgnoreCase(actionName)) {
+            if (StringMaster.compareByChar(s.getName(), actionName, true)) {
                 return s;
             }
         }

@@ -185,6 +185,9 @@ public class UnitView extends BaseView implements HpBarView{
         if (isMainHero()) {
             return;
         }
+        if (getUserObject().isWater()) {
+            return;
+        }
         setPortraitTexture(TextureCache.getOrCreateR(
          OUTLINE_TYPE.UNKNOWN.getImagePath()));
     }

@@ -161,6 +161,12 @@ public class QueueView extends UnitView {
     }
 
     protected void setDefaultTexture() {
+        if (isMainHero()) {
+            return;
+        }
+        if (getUserObject().isWater()) {
+            return;
+        }
         setOutline(TextureCache.getSizedRegion(
          InitiativePanel.imageSize,
          OUTLINE_TYPE.UNKNOWN.getImagePath()));

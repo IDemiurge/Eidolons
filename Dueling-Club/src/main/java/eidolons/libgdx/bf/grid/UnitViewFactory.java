@@ -44,13 +44,14 @@ public class UnitViewFactory {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
                 bfObj.isBoss()  ? new BossView(options) :
-                        new GridUnitView(options);
+                        new GridUnitView(bfObj, options);
 
-        if (bfObj instanceof Unit)
+        if (bfObj instanceof Unit || bfObj.isLandscape() || bfObj.isWall()|| bfObj.isWater())
             if (VisionMaster.isLastSeenOn()) {
                 if (!bfObj.isPlayerCharacter())
                     if (!bfObj.isBoss())
-                        if (!bfObj.isWall()) {
+//                        if (!bfObj.isWall())
+                        {
                             LastSeenView lsv = new LastSeenView(options, view);
                             view.setLastSeenView(lsv);
                             new LastSeenTooltipFactory().add(lsv, bfObj);
@@ -58,6 +59,9 @@ public class UnitViewFactory {
             }
         view.setOutlinePathSupplier(() -> {
             if (CoreEngine.isCinematicMode()) {
+                return null;
+            }
+            if (bfObj.isWater()) {
                 return null;
             }
             if (!CoreEngine.isOutlinesFixed()) {
@@ -81,7 +85,6 @@ public class UnitViewFactory {
             return (path);
         });
 
-        view.setUserObject(bfObj);
         view.createHpBar();
         if (bfObj instanceof Unit) {
             view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());
@@ -96,8 +99,9 @@ public class UnitViewFactory {
         view.getInitiativeQueueUnitView().addListener(listener);
 
         if (isGridObjRequired(bfObj)) {
-            LinkedGridObject obj = new LinkedGridObject(view, new EnumMaster<CUSTOM_OBJECT>().
-                    retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT)),
+            CUSTOM_OBJECT x =  new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
+            LinkedGridObject obj = new LinkedGridObject(view,
+                   x,
                     bfObj.getCoordinates());
 //            view.addActor(obj);
             GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
@@ -217,6 +221,12 @@ public class UnitViewFactory {
         }
 
         view.setUserObject(bfObj);
+        if (isGridObjRequired(bfObj)) {
+            CUSTOM_OBJECT x =  new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
+            LinkedGridObject obj = new LinkedGridObject(view,
+                    x, bfObj.getCoordinates());
+            GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
+        }
         return view;
     }
 }

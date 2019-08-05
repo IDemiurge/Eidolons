@@ -64,4 +64,19 @@ public enum FACING_DIRECTION {
                 }
             return this;
         }
-}
+
+    public FACING_DIRECTION rotate(boolean clockwise) {
+        switch (this){
+            case NORTH:
+                return clockwise ? EAST : WEST;
+            case WEST:
+                return clockwise ? NORTH : SOUTH;
+            case EAST:
+                return clockwise ? SOUTH : NORTH;
+            case SOUTH:
+                return clockwise ? WEST : EAST;
+            case NONE:
+                break;
+        }
+        return NONE;
+    }}

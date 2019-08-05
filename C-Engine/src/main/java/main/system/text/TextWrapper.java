@@ -34,13 +34,13 @@ public class TextWrapper {
             }
             return list;
         }
-
         return new ArrayList<>(Arrays.asList(WordUtils.wrap(text, wrapLength,
          StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
     }
 
     public static String wrapWithNewLine(String text, int wrapLength) {
         List<String> list = wrap(text, wrapLength);
+
         String result = "";
         for (int j = 0; j < list.size(); j++) {
             String sub = list.get(j);
@@ -52,14 +52,28 @@ public class TextWrapper {
     }
 
     public static String processText(int width, String text, LabelStyle style ) {
+        return processText(width, text, style, false);
+    }
+    public static String processText(int width, String text, LabelStyle style, boolean zigZagLines ) {
         if (text.trim().isEmpty())
             return "";
         String newText = "";
         int maxLength = (int) (width / style.font.getSpaceWidth()*2/3);
+
         for (String substring : StringMaster.splitLines(text)) {
+
             if (substring.length()>maxLength)
                 substring = wrapWithNewLine(substring, maxLength);
-            newText += substring+ StringMaster.NEW_LINE;
+            newText+= substring+ StringMaster.NEW_LINE;
+        }
+
+        if (zigZagLines) {
+            String newTextZiggy="";
+            for (String substring : StringMaster.splitLines(newText)) {
+                newTextZiggy +=StringMaster.getWhiteSpaces((maxLength-substring.length())/2)+
+                        substring+StringMaster.NEW_LINE;
+            }
+            return newTextZiggy.substring(0, newText.length()-1);
         }
         return newText.substring(0, newText.length()-1);
     }

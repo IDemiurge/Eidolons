@@ -46,7 +46,7 @@ import java.util.function.Supplier;
  * Created by JustMe on 1/9/2017.
  * Animation does not support ZOOM!
  */
-public class AnimMaster extends Group {
+public class AnimMaster extends Group  {
 
     static private boolean off;
     private static AnimMaster instance;
@@ -85,6 +85,9 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
+        if (anim.getPart()== ANIM_PART.CAST) {
+            return false; //TODO igg demo hack
+        }
         if (anim.getOrigin().equals(anim.getDestination()))
             return true;
         return true;

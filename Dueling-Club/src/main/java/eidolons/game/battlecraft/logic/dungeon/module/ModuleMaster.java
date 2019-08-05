@@ -86,7 +86,7 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     public enum MODULE_LEVEL {
-        ASHEN_PATH("sublevels/ashen path modular", false, "sublevels/intro(0-0)", "sublevels/maze module(0-0);"),
+        ASHEN_PATH("sublevels/ashen path modular", false, "sublevels/main(0-0)", "sublevels/maze module(0-0);"),
         ;
         public String initialModule;
 

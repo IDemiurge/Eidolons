@@ -1,10 +1,8 @@
 package eidolons.libgdx.anims.sprite;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
-import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.texture.Sprites;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
@@ -32,8 +30,8 @@ public class SpriteMaster {
             s.setFps(getFps(over, obj));
             s.setBlending(getBlending(over, obj));
             s.setRotation(getRotation(over, obj, i));
-            s.setX(getX(over, obj, i));
-            s.setY(getY(over, obj, i));
+            s.setX(getX(over, obj, i, n));
+            s.setY(getY(over, obj, i, n));
 //            if (over)
             {
                 s.getSprite().setOffsetX(s.getWidth() / 2 - 64);
@@ -55,15 +53,15 @@ public class SpriteMaster {
         return 360 / n * i;
     }
 
-    private static float getY(boolean over, BattleFieldObject obj, int i) {
-        if (over) {
+    private static float getY(boolean over, BattleFieldObject obj, int i, int n) {
+        if (over && n <= 1) {
             return 0;
         }
         return -i * s.getHeight() / 12 + i * i * s.getHeight() / 54;
     }
 
-    private static float getX(boolean over, BattleFieldObject obj, int i) {
-        if (over) {
+    private static float getX(boolean over, BattleFieldObject obj, int i, int n) {
+        if (over && n <= 1) {
             return 0;
         }
         return -i * s.getWidth() / 12 + i * i * s.getWidth() / 54 + s.getWidth() / 2;
@@ -71,7 +69,28 @@ public class SpriteMaster {
 
     private static String getPath(BattleFieldObject obj, boolean over) {
         String spritePath = null;
-        if (!over) {
+        if (over) {
+            if (obj.isBoss()) {
+                spritePath = BossAnimator.getSpritePath(obj);
+            } else {
+                switch (obj.getName()) {
+                    case "Dream Siphon":
+                        return StringMaster.getStringXTimes(4, Sprites.WHITE_TENTACLE + ";");
+                    case "Mystic Pool":
+                        return StringMaster.getStringXTimes(2, Sprites.FLOAT_WISP + ";");
+                    case ("Ghost Light"):
+                        return Sprites.FLOAT_WISP;
+                    case ("Inscription"):
+                        return Sprites.RUNE_INSCRIPTION;
+                    case ("Torch"):
+                        return Sprites.TORCH;
+                    case ("Altar"):
+                        return Sprites.ALTAR;
+                    case ("Eldritch Sphere"):
+                        return Sprites.ORB;
+                }
+            }
+        } else {
 //            if (obj instanceof Unit)
             switch (obj.getName()) {
                 case "Charger":
@@ -82,24 +101,20 @@ public class SpriteMaster {
                     return StringMaster.getStringXTimes(6, Sprites.TENTACLE + ";");
             }
 
-        } else if (obj.isBoss()) {
-            spritePath = BossAnimator.getSpritePath(obj);
-        } else {
-            spritePath = OverlayingMaster.getSpritePath(obj);
         }
         return spritePath;
     }
 
     private static SuperActor.BLENDING getBlending(boolean over, BattleFieldObject obj) {
+        switch (obj.getName()) {
+            case "Dream Siphon":
+                return SuperActor.BLENDING.INVERT_SCREEN;
+        }
         if (obj.isOverlaying()) {
             return SuperActor.BLENDING.SCREEN;
         }
         if (over) {
             return SuperActor.BLENDING.SCREEN;
-        }
-        switch (obj.getName()) {
-            case "Charger":
-                return SuperActor.BLENDING.SCREEN;
         }
         return null;
     }

@@ -21,7 +21,7 @@ public class LastSeenView extends GenericGridView {
     private GridUnitView parentView;
 
     public LastSeenView(UnitViewOptions o, GridUnitView view) {
-        super(o);
+        super(view.getUserObject(), o);
         greyedOut = true;
         setParentView(view);
     }
@@ -29,6 +29,10 @@ public class LastSeenView extends GenericGridView {
     @Override
     public BattleFieldObject getUserObject() {
         return parentView.getUserObject();
+    }
+
+    @Override
+    protected void setDefaultTexture() {
     }
 
     @Override

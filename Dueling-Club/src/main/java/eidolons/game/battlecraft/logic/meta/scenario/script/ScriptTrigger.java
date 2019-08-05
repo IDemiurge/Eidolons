@@ -28,20 +28,30 @@ public class ScriptTrigger extends Trigger {
         if (ScriptMaster.isScriptsOff())
             return false;
         boolean result = super.trigger();
-        if (result) {
-            remove();
-        }
         return result;
     }
 
     @Override
-    public boolean isRemoveAfterTriggers() {
+    public boolean isRemoveAfterTriggers(boolean result) {
+        if (result)
+        if (isOneshot()) {
+            return true;
+        }
         return false;
+    }
+
+    private boolean isOneshot() {
+        return !ScriptParser.TEST_MODE;
     }
 
     @Override
     public boolean check(Event event) {
         return super.check(event);
+    }
+
+    @Override
+    protected void remove() {
+        super.remove();
     }
 
     @Override

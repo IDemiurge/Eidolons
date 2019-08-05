@@ -32,8 +32,9 @@ public class ConditionsUtils {
     }
 
     public static Condition forPuzzleSolution(PuzzleMaster.PUZZLE_SOLUTION solution, Puzzle puzzle) {
-
-        switch (solution) {
+        Condition condition = puzzle.createSolutionCondition();
+        if (condition == null)
+            switch (solution) {
             case MOSAIC:
                 return            new ArtPuzzleCondition(puzzle, false);
             case GET_TO_EXIT:
@@ -43,14 +44,12 @@ public class ConditionsUtils {
                 break;
             case PATH:
                 break;
-            case SLOTS:
-                new PortalSlotsCondition((PortalPuzzle) puzzle);
             case FIND_SECRET:
                 break;
             case DISCOVER_PATTERN:
                 break;
         }
-        return null;
+        return condition;
     }
 
     public static Condition forPuzzlePunishment(Puzzle puzzle, Set<PuzzleResolution.PUZZLE_PUNISHMENT> punishments) {

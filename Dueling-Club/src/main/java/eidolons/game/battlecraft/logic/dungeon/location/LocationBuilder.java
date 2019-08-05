@@ -176,7 +176,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
         }
         if (CoreEngine.isIggDemo()) {
-            location.setEntranceData(IGG_XmlMaster.getEntrancesData(path));
+//            if (location.getProperty(PROPS.ENTRANCE_COORDINATES).isEmpty()) {
+//            }
+            location.setEntranceData(IGG_XmlMaster.getEntrancesData(location, path));
             location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
         location.initEntrances();

@@ -20,7 +20,7 @@ public class WaitMaster {
 
     public static boolean isComplete(WAIT_OPERATIONS operation) {
         return
-         getCompleteOperations().contains(operation);
+                getCompleteOperations().contains(operation);
     }
 
     public static void markAsComplete(WAIT_OPERATIONS operation) {
@@ -35,6 +35,7 @@ public class WaitMaster {
         }
         return waitForInput(operation);
     }
+
     public static Object waitForInputIfNotWaiting(WAIT_OPERATIONS operation) {
         if (getWaiters().get(operation) != null) {
             return false;
@@ -57,7 +58,7 @@ public class WaitMaster {
             return true;
         }
         LogMaster.log(LOG_CHANNEL.WAIT_DEBUG,
-         " waiting for " + operation.toString());
+                " waiting for " + operation.toString());
         Waiter waiter = waiters.get(operation);
         if (waiter == null) {
             waiter = new Waiter(operation);
@@ -82,17 +83,18 @@ public class WaitMaster {
     public static boolean receiveInputIfWaiting(WAIT_OPERATIONS operation, Object input) {
         return receiveInputIfWaiting(operation, input, true);
     }
+
     public static boolean receiveInputIfWaiting(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
         if (getWaiters().get(operation) == null) {
             return false;
         }
-        return receiveInput(operation, input,removeWaiter);
+        return receiveInput(operation, input, removeWaiter);
     }
 
     public static boolean receiveInput(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
         if (isLogged(operation))
-        LogMaster.log(LOG_CHANNEL.WAIT_DEBUG, " received input for "
-         + operation.toString() + ": " + input);
+            LogMaster.log(LOG_CHANNEL.WAIT_DEBUG, " received input for "
+                    + operation.toString() + ": " + input);
         Waiter waiter = waiters.get(operation);
         if (waiter == null) {
             waiter = new Waiter(operation);
@@ -138,6 +140,13 @@ public class WaitMaster {
 
     public static Map<WAIT_OPERATIONS, Waiter> getWaiters() {
         return waiters;
+    }
+
+    public static void doAfterWait(int i, Runnable o) {
+        new Thread(() -> {
+            WAIT(i);
+            o.run();
+        }, "do after wait").start();
     }
 
 

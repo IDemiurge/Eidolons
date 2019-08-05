@@ -26,6 +26,6 @@ public class AiActionFactory {
     }
 
     public static Action newAction(String string, UnitAI ai) {
-        return newAction(ai.getUnit().getAction(string), ai.getUnit().getRef());
+        return newAction(ai.getUnit().getActionOrSpell(string), ai.getUnit().getRef());
     }
 }

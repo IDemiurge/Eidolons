@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
@@ -33,9 +34,10 @@ public class GridUnitView extends GenericGridView {
 
     OverlayView attachedObj;
 
-    public GridUnitView(UnitViewOptions o) {
-        super(o);
-        initQueueView(o);
+
+    public GridUnitView(BattleFieldObject bfObj, UnitViewOptions options) {
+        super(bfObj, options);
+        initQueueView(options);
         if (AiBehaviorManager.TEST_MODE)
             addActor(debugInfo = new LabelX(
                     "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
@@ -51,6 +53,9 @@ public class GridUnitView extends GenericGridView {
             });
     }
 
+    public GridUnitView(UnitViewOptions o) {
+        this(null, o);
+    }
     public void attachObj(OverlayView view) {
         view.setDirection(getUserObject().getDirection());
 

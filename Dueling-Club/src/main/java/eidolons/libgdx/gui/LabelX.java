@@ -13,6 +13,7 @@ public class LabelX extends VisLabel {
     private boolean wrapped;
     private float maxWidth;
     private float wrapCoef = 0.72f;
+    private boolean zigZagLines;
 
     public LabelX(CharSequence text, int fontSize) {
         super(text, StyleHolder.getHqLabelStyle(fontSize));
@@ -66,10 +67,15 @@ public class LabelX extends VisLabel {
         getStyle().fontColor.a = a;
     }
 
+    public void setZigZagLines(boolean zigZagLines) {
+        this.zigZagLines = zigZagLines;
+    }
+
     @Override
     public void setText(CharSequence newText) {
         if (wrapped) {
-            newText = TextWrapper.processText(Math.round(getMaxWidth() * getWrapCoef()), newText.toString(), getStyle());
+            newText = TextWrapper.processText(Math.round(getMaxWidth() *
+                    getWrapCoef()), newText.toString(), getStyle(), zigZagLines);
         }
         super.setText(newText);
     }

@@ -63,7 +63,7 @@ public class EditorMapView extends MapScreen {
     }
 
     protected InputController initController() {
-        return new EditorInputController(cam);
+        return new EditorInputController(getCam());
     }
 
     @Override

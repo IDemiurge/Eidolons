@@ -38,6 +38,7 @@ import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.StageX;
+import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
@@ -56,9 +57,11 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static eidolons.system.audio.MusicMaster.MUSIC_SCOPE.ATMO;
 import static main.system.GuiEventType.*;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,23 +70,14 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DungeonScreen extends GameScreenWithTown {
-    protected static float FRAMERATE_DELTA_CONTROL =
-            new Float(1) / GenericLauncher.FRAMERATE; //*3 ?
     protected static DungeonScreen instance;
-    protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
-            getBooleanValue(CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
-
-    private static boolean centerCameraOnAlliesOnly = OptionsMaster.getControlOptions().
-            getBooleanValue(CONTROL_OPTION.CENTER_CAMERA_ON_ALLIES_ONLY);
 
     protected ParticleManager particleManager;
     protected StageX gridStage;
     protected GridPanel gridPanel;
     private boolean blocked;
-    private ActTimer cameraTimer;
     private GridCellContainer stackView;
-    boolean firstCenteringDone;
-
+    private boolean firstShow;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -137,14 +131,6 @@ public class DungeonScreen extends GameScreenWithTown {
 
 
     protected void bindEvents() {
-
-        GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
-            Vector2 v = GridMaster.getCenteredPos((Coordinates) param.get());
-            cameraPan(v, true);
-        });
-        GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
-            centerCameraOn((BattleFieldObject) param.get());
-        });
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
             DC_Game.game.getLoop().stop(); //cleanup on real exit
             DC_Game.game.getMetaMaster().gameExited();
@@ -167,7 +153,7 @@ public class DungeonScreen extends GameScreenWithTown {
         });
 
         GuiEventManager.bind(GuiEventType.CAMERA_LAPSE_TO, p -> {
-            cam .position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
+            getCam().position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
 
         });
     }
@@ -212,7 +198,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected void afterLoad() {
-        cam = (OrthographicCamera) viewPort.getCamera();
+        setCam((OrthographicCamera) viewPort.getCamera());
         particleManager = new ParticleManager();
 
         soundMaster = new DC_SoundMaster(this);
@@ -221,7 +207,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH());
-        controller = new DungeonInputController(cam);
+        controller = new DungeonInputController(getCam());
         //do not chain - will fail ...
         gridPanel.init(param.getObjects());
 
@@ -234,20 +220,8 @@ public class DungeonScreen extends GameScreenWithTown {
         }
         bindEvents();
 //TODO use simple float pair to make it dynamic
-        cameraTimer = new ActTimer(OptionsMaster.getControlOptions().
-                getIntValue(CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
-            if (!firstCenteringDone) {
-                centerCameraOn(Eidolons.getMainHero());
-                firstCenteringDone = true;
-            }
-            if (isCameraAutoCenteringOn())
-                if (Eidolons.getGame().getManager().checkAutoCameraCenter()) {
-                    if (!Eidolons.getMainHero().isDead()) //for Shade
-                        centerCameraOn(Eidolons.getMainHero());
-                }
-        });
 
-        centerCameraOnMainHero();
+        cameraMan.centerCameraOnMainHero();
         selectionPanelClosed();
         checkInputController();
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
@@ -263,18 +237,10 @@ public class DungeonScreen extends GameScreenWithTown {
         setBackground(path);
     }
 
-    private void centerCameraOnMainHero() {
-        centerCameraOn(Eidolons.getMainHero(), true);
-    }
 
     public void updateGui() {
         getGuiStage().getBottomPanel().update();
         checkGraphicsUpdates();
-    }
-
-    public void cameraStop() {
-        super.cameraStop();
-        cameraTimer.reset();
     }
 
     @Override
@@ -316,17 +282,20 @@ public class DungeonScreen extends GameScreenWithTown {
         GuiEventManager.trigger(UPDATE_SHADOW_MAP);
     }
 
-    @Override
-    protected float getCameraDistanceFactor() {
-        return 5f;
-    }
 
     protected boolean canShowScreen() {
 //        if (selectionPanel != null) TODO igg demo fix
 //            if (selectionPanel.isVisible()) {
 //                return false;
 //            }
-        return super.canShowScreen();
+        boolean show = super.canShowScreen();
+        if (show) {
+            if (!firstShow){
+                firstShow = true;
+                guiStage.getBlackout().fadeIn(12f);
+            }
+        }
+        return show;
     }
 
     @Override
@@ -338,7 +307,12 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     public void render(float delta) {
         batch.shaderFluctuation(delta);
-
+       Gdx.gl20.glEnable(GL_POINT_SMOOTH);
+        Gdx.gl20. glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20. glEnable(GL_LINE_SMOOTH);
+        Gdx.gl20. glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
+        Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
         if (speed != null) {
             delta = delta * speed;
         }
@@ -370,11 +344,10 @@ public class DungeonScreen extends GameScreenWithTown {
         if (isShowingGrid())
             gridStage.act(delta);
         setBlocked(checkBlocked());
-        cameraTimer.act(delta);
-        cameraShift();
+        cameraMan.act(delta);
         if (!canShowScreen()) {
-            cam.position.x=0;
-            cam.position.y=0;
+            getCam().position.x=0;
+            getCam().position.y=0;
             if (postProcessing != null)
                 postProcessing.begin();
             batch.begin();
@@ -444,8 +417,8 @@ public class DungeonScreen extends GameScreenWithTown {
                 Gdx.graphics.getHeight() / 2);
         backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
         backgroundSprite.setSpeed(0.5f);
-        backgroundSprite.setOffsetY(cam.position.y);
-        backgroundSprite.setOffsetX(cam.position.x);
+        backgroundSprite.setOffsetY(getCam().position.y);
+        backgroundSprite.setOffsetX(getCam().position.x);
         backgroundSprite.draw(batch);
     }
 
@@ -593,44 +566,6 @@ public class DungeonScreen extends GameScreenWithTown {
     public void setSpeed(Float speed) {
         this.speed = speed;
     }
-
-    public void centerCameraOn(BattleFieldObject hero) {
-        centerCameraOn(hero, null);
-    }
-
-    public void centerCameraOn(BattleFieldObject hero, Boolean force) {
-        if (!isCenterAlways())
-            if (!Bools.isTrue(force))
-                if (centerCameraOnAlliesOnly)
-                    if (!hero.isMine())
-                        return;
-
-        Coordinates coordinatesActiveObj =
-                hero.getCoordinates();
-        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
-        cameraPan(unitPosition, force);
-
-
-    }
-    public static boolean isCameraAutoCenteringOn() {
-        return cameraAutoCenteringOn;
-    }
-
-    public static void setCameraAutoCenteringOn(boolean b) {
-        cameraAutoCenteringOn = b;
-    }
-
-    public static void setCenterCameraOnAlliesOnly(boolean b) {
-        centerCameraOnAlliesOnly = b;
-    }
-
-    public void setCameraTimer(int intValue) {
-        if (cameraTimer == null) {
-            return;
-        }
-        cameraTimer.setPeriod(intValue);
-    }
-
 
     public ParticleManager getParticleManager() {
         return particleManager;

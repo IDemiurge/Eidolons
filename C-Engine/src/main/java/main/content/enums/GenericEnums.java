@@ -348,6 +348,7 @@ public class GenericEnums {
 
         dissipation("spell/shape/soul dissipation"),
         dissipation_pale("spell/shape/soul dissipation pale"),
+        soulflux_continuous("ambient/soulflux continuous"),
         soul_bleed("unit/black soul bleed 3"),
         darkness("unit/chaotic dark"),
 

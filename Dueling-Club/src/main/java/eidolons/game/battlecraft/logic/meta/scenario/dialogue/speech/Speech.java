@@ -36,6 +36,7 @@ public class Speech implements SpeechInterface {
     private SpeechData data;
     private int id;
     private SpeechScript script;
+    private Integer time;
 
     //last speech
     public Speech(Integer id) {
@@ -180,6 +181,14 @@ public class Speech implements SpeechInterface {
 
     public SpeechScript getScript() {
         return script;
+    }
+
+    public void setTime(Integer time) {
+        this.time = time;
+    }
+
+    public Integer getTime() {
+        return time;
     }
 
     public enum REPLICA_STATUS {

@@ -156,10 +156,8 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     protected void preLoad() {
         super.preLoad();
 
-        if (CoreEngine.isLiteLaunch())
-            return;
         try {
-            Assets.preloadUI();
+            Assets.preloadMenu();
             setLoadingAtlases(true);
             GdxMaster.setLoadingCursor();
         } catch (Exception e) {

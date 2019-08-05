@@ -19,6 +19,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.data.ArrayMaster;
 
 /**
  * Created by JustMe on 5/21/2017.
@@ -61,27 +62,30 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                         ownership, distance, power);
             }
         }
-        i++;
+//        i++;
         //group?
         //with frozen gameLoop?
 
         String arg = null;
-        boolean free = false;
+        boolean free = true;
         boolean immediate = false;
-        if (args.length > i) {
-            String options = args[i + 1];
-            i++;
-//            if (StringMaster.contains(options, FREE)
-            free = true;
-            immediate = true;
-            arg = options;
-        }
+//        if (args.length > i) {
+//            String options = args[i + 1];
+//            i++;
+////            if (StringMaster.contains(options, FREE)
+//            free = true;
+//            immediate = true;
+//            arg = options;
+//        }
         String[] additionalArgs = null;
-        if (args.length > i) {
-            additionalArgs = new String[args.length - i];
-            for (int j = 0; j < args.length; j++) {
-                additionalArgs[j] = args[i + j];
-            }
+//        if (args.length > i) {
+//            additionalArgs = new String[args.length - i];
+//            for (int j = 0; j < args.length; j++) {
+//                additionalArgs[j] = args[i + j];
+//            }
+//        }
+        if (arg == null) {
+            arg = args[1];
         }
         executeCommand(unit, function, arg, free, immediate, additionalArgs);
 
@@ -112,7 +116,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
                         getActionSequenceConstructor().constructSingleActionSequence(action,
-                                new Task(ai, goal, args[0]));
+                                new Task(ai, goal, !ArrayMaster.isNotEmpty(args) ? null : args[0]));
                 break;
             case ATTACK:
 

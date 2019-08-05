@@ -10,6 +10,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -33,6 +34,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
@@ -268,16 +270,55 @@ public class FloatingTextMaster {
                         () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
                         , getColor(CASE, arg));
 
-
+        floatingText.setStayFullDuration(getStayFull(CASE, arg));
+        floatingText.setFadeInDuration(getFadeIn(CASE, arg));
         floatingText.setFontStyle(getFontStyle(CASE, arg));
         floatingText.setDisplacementX(getDisplacementX(CASE));
         floatingText.setDisplacementY(getDisplacementY(CASE));
-        floatingText.setDuration(getDefaultDuration(CASE));
+
+        floatingText.setOffsetX(getOffsetX(CASE, arg));
+        floatingText.setOffsetY(getOffsetY(CASE, arg));
+        floatingText.setDuration(getDefaultDuration(CASE, arg));
         return floatingText;
     }
 
+    public static  float getOffsetY(TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return -228;
+        }
+        return 0;
+    }
+    public static  float getOffsetX(TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return -228;
+        }
+        return 0;
+    }
+
+    public static  float getFadeIn(TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return 3;
+        }
+        return 0;
+    }
+
+    public static  float getStayFull(TEXT_CASES aCase, Object arg) {
+        switch (aCase) {
+            case BATTLE_COMMENT:
+                return 6+new Float(arg.toString().length())/40;
+        }
+        return 0;
+    }
+
+
     private LabelStyle getFontStyle(TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case BATTLE_COMMENT:
+                return
+                        StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20);
             case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);
@@ -319,7 +360,7 @@ public class FloatingTextMaster {
 
         FloatingText floatingText = getFloatingText(active, CASE, arg);
         floatingText.setDelay(delay);
-        floatingText.setDuration(getDefaultDuration(CASE));
+        floatingText.setDuration(getDefaultDuration(CASE, arg));
         floatingText.setDisplacementX(getDisplacementX(CASE));
         floatingText.setDisplacementY(getDisplacementY(CASE));
 //        anim.initPosition(); // TODO rework this!
@@ -358,14 +399,14 @@ public class FloatingTextMaster {
                         : DEFAULT_DISPLACEMENT_X;
     }
 
-    private float getDefaultDuration(TEXT_CASES aCase) {
+    public static  float getDefaultDuration(TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case REQUIREMENT:
                 return 14;
             case BONUS_DAMAGE:
                 return 10;
             case BATTLE_COMMENT:
-                return 10;
+                return 8;
         }
         return DEFAULT_DURATION * ConfigMaster.getInstance().getInt(ConfigKeys.FLOATING_TEXT_DURATION);
     }
@@ -397,8 +438,8 @@ public class FloatingTextMaster {
         } else
             Gdx.app.postRunnable(() -> {
                 try {
-                } catch (Exception e) {
                     createFloatingText(CASE, arg, entity, null);
+                } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
             });
@@ -428,6 +469,27 @@ public class FloatingTextMaster {
             }
         }
         text.setPosition(v);
+        if (entity instanceof Unit) {
+            float height =629;// text.getHeight();
+            float width =537;// text.getWidth();
+            FACING_DIRECTION f = ((Unit) entity).getFacing().flip();
+            switch (f.rotate(f.isCloserToZero())) {
+                    case NORTH:
+                        text.setY(text.getY() + height / 2);
+                        break;
+                    case WEST:
+                        text.setX(text.getX() - width / 2);
+                        break;
+                    case EAST:
+                        text.setX(text.getX() + width / 2);
+                        break;
+                    case SOUTH:
+                        text.setY(text.getY() - height / 2);
+                        break;
+            }
+        }
+       
+        
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
     }
 

@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.entity.Ref;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 public class KeyMaster {
     private static Map<Dungeon, Map<String, String>> pairMaps = new HashMap<>();
+    private static Map<Coordinates, String> customKeyMap = new HashMap<>();
 
     private static Map<String, String> getPairMap(Dungeon dungeon) {
         Map<String, String> map = pairMaps.get(dungeon);
@@ -59,8 +61,15 @@ public class KeyMaster {
     }
 
     public static String getRequiredKey(Door door) {
+        String type = null;
+        if (type == null) {
+            type = customKeyMap.get(door.getCoordinates());
+        }
+        if (type != null) {
+            return type;
+        }
         Map<String, String> map = getPairMap(door.getGame().getDungeon());
-        String type = map.get(door.getName());
+        type = map.get(door.getName());
         if (type == null) {
             type = door.getProperty(PROPS.KEY_TYPE);
         }
@@ -88,6 +97,23 @@ public class KeyMaster {
         return item;
     }
 
+    public static void initCustomKeyMap(String data) {
+        Map<String, String> map = MapMaster.createStringMap(data);
+        for (String s : map.keySet()) {
+            if (map.get(s).contains("key==")) {
+                customKeyMap.put(Coordinates.get(s), map.get(s).split("key==")[1]);
+            }
+        }
+    }
+
+    public static boolean addCustomKey(String coordinate, String data) {
+        if (coordinate.contains("key==")) {
+            customKeyMap.put(Coordinates.get(coordinate), data.split("key==")[1]);
+            return true;
+        }
+
+        return false;
+    }
 
     public static void initAnimRef(DungeonObj obj, Ref ref) {
     }
@@ -113,4 +139,5 @@ public class KeyMaster {
     public static boolean isKey(BattleFieldObject userObject) {
         return userObject.getName().contains(" Key"); //TODO
     }
+
 }

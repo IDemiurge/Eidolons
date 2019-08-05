@@ -59,16 +59,12 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     public void centerCamera() {
-        Coordinates coordinatesActiveObj =
-         objectStage.getMainParty().getCoordinates();
-        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x, coordinatesActiveObj.y);
-        cameraPan(unitPosition);
+//        Coordinates coordinatesActiveObj =
+//         objectStage.getMainParty().getCoordinates();
+//        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x, coordinatesActiveObj.y);
+//        cameraPan(unitPosition);
     }
 
-    @Override
-    protected void cameraPan(Vector2 unitPosition) {
-        super.cameraPan(unitPosition);
-    }
 
     @Override
     protected void preLoad() {
@@ -102,7 +98,7 @@ public class MapScreen extends GameScreenWithTown {
             return; //fix this!
         }
         GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, defaultPath);
-        cam = (OrthographicCamera) viewPort.getCamera();
+        setCam((OrthographicCamera) viewPort.getCamera());
         controller = initController();
 //        particleManager = new ParticleManager();
         bindEvents();
@@ -112,7 +108,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     protected InputController initController() {
-        return new MapInputController(cam);
+        return new MapInputController(getCam());
     }
 
     protected void bindEvents() {
@@ -170,7 +166,7 @@ public class MapScreen extends GameScreenWithTown {
         if (canShowScreen()) {
             if (!CoreEngine.isMapEditor()) {
                 MacroGame.getGame().getRealtimeLoop().act(delta);
-                cameraShift();
+                cameraMan.act(delta);
             }
             delta =
              delta + 0.1f * delta * (getTimeMaster().getSpeed() - 1);

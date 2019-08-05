@@ -137,11 +137,11 @@ public class GroupX extends Group {
     }
 
     protected float getFadeOutDuration() {
-        return 0;
+        return 2;
     }
 
     protected float getFadeInDuration() {
-        return 0;
+        return 2;
     }
 
     public void fadeIn() {

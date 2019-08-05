@@ -140,8 +140,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                 if (isSpell())
                     return DAMAGE_TYPE.MAGICAL;
                 return null;
-            }
-            getActiveWeapon().getDamageType();
+            } else
+            return  getActiveWeapon().getDamageType();
         }
         return super.getDamageType();
     }

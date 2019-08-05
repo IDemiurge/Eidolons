@@ -138,6 +138,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             }
         });
         getRoot().setStage_(this);
+
     }
 
     @Override
@@ -387,6 +388,12 @@ public class GuiStage extends StageX implements StageWithClosable {
         }
         super.act(delta);
         resetZIndices();
+
+        if (hqPanel.isVisible()){
+            if (!Eidolons.isFullscreen()) {
+                hqPanel.setX(-80);
+            }
+        }
     }
 
     private boolean isFreezeOnBlackout() {

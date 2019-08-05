@@ -6,12 +6,12 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.libgdx.bf.GridMaster;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.filesys.PathFinder;
 import main.entity.Ref;
 import main.entity.obj.Cell;
 import main.entity.type.ObjType;
@@ -20,10 +20,8 @@ import main.game.bf.directions.DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
-import main.system.images.ImageManager;
 
 public class DC_Cell extends DC_Obj implements Cell {
 
@@ -118,28 +116,8 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     private void resetCell() {
-        setImage(getImagePath(getCellType(), getCellVariant()));
+        setImage(GridMaster.getImagePath(getCellType(), getCellVariant()));
         GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
-    }
-
-    public static String getImagePath(DungeonLevel.CELL_IMAGE cellType, int cellVariant) {
-        String suffix =getCellImgSuffix(cellVariant);
-
-        return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix +".png");
-    }
-
-    private static String getCellImgSuffix(int cellVariant) {
-        switch (cellVariant) {
-            case 1:
-                return "hl";
-            case 2:
-                return "lite";
-            case 3:
-                return "dark";
-            case 4:
-                return "rough";
-        }
-        return "";
     }
 
     public void setCellVariant(int cellVariant) {

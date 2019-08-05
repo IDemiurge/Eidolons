@@ -241,7 +241,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected void cameraStop() {
-        getScreen().cameraStop();
+        getScreen().cameraStop(false);
     }
 
     protected abstract GameScreen getScreen();

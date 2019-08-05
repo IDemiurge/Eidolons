@@ -34,6 +34,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
@@ -96,7 +97,7 @@ public class Anim extends Group implements Animation {
     protected Vector2 offsetOrigin;
     protected Vector2 offsetDestination;
     protected CompositeAnim parentAnim;
-    protected Set<EmitterActor> completingVfx = new HashSet();
+    protected  boolean completingVfx ;
     protected float speedMod = 1;
 
     public Anim(Entity active, AnimData params) {
@@ -192,15 +193,20 @@ public class Anim extends Group implements Animation {
         if (duration >= 0 || isContinuous()) //|| finished //  lifecycle duration for continuous?
         {
             if (checkFinished()) {
-                if (!emitterList.isEmpty())
-                    if (!completingVfx.isEmpty() && AnimMaster.isSmoothStop(this)) {
-                        waitForVfx();
-                        return true;
+                boolean waitForVfx = false;
+                if (!emitterList.isEmpty()) {
+                    if (AnimMaster.isSmoothStop(this)) {
+                        if (checkVfxCompletion())
+                            waitForVfx=true;
                     }
-                log(ANIM_DEBUG, this + " finished; duration = " + duration);
-                finished();
-                dispose();
-                return false;
+                }
+                if (!waitForVfx) {
+                    log(ANIM_DEBUG, this + " finished; duration = " + duration);
+                    finished();
+                    dispose();
+                    return false;
+                }
+
             }
         }
         if (currentFrame != null) {
@@ -243,26 +249,28 @@ public class Anim extends Group implements Animation {
         return true;
     }
 
-    protected void waitForVfx() {
-
-        emitterList.forEach(e -> {
+    private boolean checkVfxCompletion() {
+        if (!completingVfx) {
+            waitForVfx();
+            completingVfx=true;
+        }
+        for (EmitterActor e :     emitterList) {
+            e.getEffect().allowCompletion();
+        }
+        for (EmitterActor e :     emitterList) {
             if (!e.isComplete()) {
-                e.getEffect().allowCompletion();
-                completingVfx.add(e);
+               return true ;
             }
-        });
+            }
+        return false;
+    }
+
+    protected void waitForVfx() {
+        emitterList.forEach(e -> e.getEffect().allowCompletion());
     }
 
     protected boolean checkFinished() {
-        if (!completingVfx.isEmpty()) {
-            for (EmitterActor e : completingVfx) {
-                if (!e.isComplete()) {
-                    log(LogMaster.ANIM_DEBUG, this + " vfx has not finished: " + e);
-                    return false;
-                }
-            }
-            completingVfx.clear();
-        }
+
         if (isContinuous())
             return isDone();
         return time >= getDuration();
@@ -366,10 +374,10 @@ public class Anim extends Group implements Animation {
                 }
         );
         if (ListMaster.isNotEmpty(emitterCache))
-            emitterList = new ArrayList<>(emitterCache);
+            setEmitterList(    new ArrayList<>(emitterCache) );
         else {
             if (!ListMaster.isNotEmpty(emitterList))
-                emitterList = new ArrayList<>();
+                setEmitterList(    new ArrayList<>() );
         }
         //        emitterCache.clear();
         //        emitterCache.addAll(emitterList);//= new ArrayList<>(emitterList);

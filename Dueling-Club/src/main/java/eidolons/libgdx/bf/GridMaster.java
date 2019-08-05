@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
@@ -8,6 +9,7 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.DungeonScreen;
+import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -142,5 +144,25 @@ public class GridMaster {
                     view.validateArrowRotation();
 
         }
+    }
+
+    public static String getImagePath(DungeonLevel.CELL_IMAGE cellType, int cellVariant) {
+        String suffix =getCellImgSuffix(cellVariant);
+
+        return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix +".png");
+    }
+
+    private static String getCellImgSuffix(int cellVariant) {
+        switch (cellVariant) {
+            case 1:
+                return "hl";
+            case 2:
+                return "lite";
+            case 3:
+                return "dark";
+            case 4:
+                return "rough";
+        }
+        return "";
     }
 }

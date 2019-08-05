@@ -101,7 +101,7 @@ public class RngLocationBuilder extends LocationBuilder {
         initWidthAndHeight(location);
 
         if (CoreEngine.isIggDemo()){
-            level.setEntranceData(IGG_XmlMaster.getEntrancesData(path));
+            level.setEntranceData(IGG_XmlMaster.getEntrancesData(location, path));
             location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
         location.setEntranceData(level.getEntranceData());

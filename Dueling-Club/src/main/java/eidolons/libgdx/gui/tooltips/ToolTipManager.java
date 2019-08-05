@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
@@ -438,6 +439,11 @@ public class ToolTipManager extends TablePanel {
 
 
     private void hovered(BaseView object) {
+        if (object.getUserObject() instanceof Structure){
+            if (((Structure) object.getUserObject()).isLandscape()) {
+                return;
+            }
+        }
         float scaleX = getDefaultScale(object);
         if (object.getScaleX() == getDefaultScale(object))
             scaleX = getZoomScale(object);
@@ -470,7 +476,11 @@ public class ToolTipManager extends TablePanel {
         if (object instanceof LastSeenView) {
             return;
         }
-
+        if (object.getUserObject() instanceof Structure){
+            if (((Structure) object.getUserObject()).isLandscape()) {
+                return;
+            }
+        }
         float scaleX;
         float scaleY;
 

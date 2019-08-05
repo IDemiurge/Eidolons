@@ -3,8 +3,9 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.OverlayView;
+import eidolons.libgdx.particles.EmitterActor;
 import main.content.enums.GenericEnums.VFX;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
@@ -42,19 +43,28 @@ public class LinkedGridObject extends GridObject {
 //        CUSTOM_OBJECT.black_waters.screen = true;
         CUSTOM_OBJECT.BLACKNESS.vfxUnderMirrorX = true;
 
-        CUSTOM_OBJECT.soul_net.vfxOver += VFX.dissipation_pale.path + "(-42, 32);";
-        CUSTOM_OBJECT.soul_net.vfxOver += VFX.dissipation_pale.path + "(42, 32);";
+        CUSTOM_OBJECT.soul_net.vfxOver += VFX.soulflux_continuous.path + "(-42, 32);";
+        CUSTOM_OBJECT.soul_net.vfxOver += VFX.soulflux_continuous.path + "(42, 32);";
+        CUSTOM_OBJECT.soul_net.setVfxSpeed(0.1f);
 
         CUSTOM_OBJECT.crematory.vfxOver  =   "advanced/ambi/waters/fire(0, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(-45, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(45, 0);";
 
+
+        CUSTOM_OBJECT.wisp_floating.vfxOver  +=   "ambient/sprite/willowisps(0, 0);";
+        CUSTOM_OBJECT.wisp_floating.screen = true;
+
+
         CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(-33, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(0, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(33, 0);";
+        CUSTOM_OBJECT.wisp_floating.invert_screen_vfx = true;
+        CUSTOM_OBJECT.black_waters.vfxOver  +=   "advanced/ambi/black water square small slow(-21, -21);";
+//        CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
+//        CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
 
-        CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
-        CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
+
 //        CUSTOM_OBJECT.black_waters.vfxOver += VFX.MIST_BLACK.path + "(32, 32);";
 //        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_white_mist_wind.path + "(32, 64);";
 //        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_clouds_wind.path + "(32, 64);";
@@ -71,9 +81,6 @@ public class LinkedGridObject extends GridObject {
 
     public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c) {
         super(c, object.spritePath);
-        if (object== LIGHT) {
-            object = LIGHT;
-        }
         linked = view;
         this.object = object;
         visionRange = getDefaultVisionRange();
@@ -91,12 +98,25 @@ public class LinkedGridObject extends GridObject {
         }
     }
 
+    public BaseView getLinked() {
+        return linked;
+    }
+
     @Override
     protected void init() {
         super.init();
         if (object.screen) {
             sprite.setBlending(SuperActor.BLENDING.SCREEN);
+        } else
+        if (object.invert_screen_vfx) {
+            setInvertScreen(true);
         }
+    }
+
+    @Override
+    protected void initEmitter(EmitterActor emitter, int offsetX, int offsetY) {
+        super.initEmitter(emitter, offsetX, offsetY);
+        emitter.setSpeed(object.getVfxSpeed());
     }
 
     @Override
@@ -131,21 +151,21 @@ public class LinkedGridObject extends GridObject {
 
     @Override
     public void act(float delta) {
-        if (object== CUSTOM_OBJECT.black_waters) {
-            delta = delta / 2;
-        }
+//        if (object== CUSTOM_OBJECT.black_waters) {
+//            delta = delta / 2;
+//        }
+//        if (object== CUSTOM_OBJECT.soul_net) {
+//            delta = delta / 10;
+//        }
         super.act(delta);
+        if (getLinked() instanceof OverlayView) {
+            sprite.getSprite().setOffsetX(((OverlayView) getLinked()).getOffsetX());
+            sprite.getSprite().setOffsetY(((OverlayView) getLinked()).getOffsetY());
+        }
     }
 
     @Override
     public boolean checkVisible() {
-        sprite.setFps(getFps());
-//        if (object== CUSTOM_OBJECT.black_waters) {
-//            sprite.setFps(15);
-//        }
-        if (object== LIGHT) {
-            return true;
-        }
         if (!linked.isVisible()) {
             return false;
         }

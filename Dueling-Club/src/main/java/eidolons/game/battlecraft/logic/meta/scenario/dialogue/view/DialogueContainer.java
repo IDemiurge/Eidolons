@@ -18,10 +18,11 @@ public class DialogueContainer extends TablePanelX {
     protected boolean done;
     protected Runnable onDoneCallback;
     protected DialogueHandler dialogueHandler;
-    protected BriefBackground background;
+    protected BriefBackground bgSprite;
     protected DialogueView current;
     protected List<Scene> toPlay;
     protected Iterator<Scene> iterator;
+    private float bgAlpha=0.7f;
 
     public DialogueContainer() {
         GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED, p -> {
@@ -30,6 +31,9 @@ public class DialogueContainer extends TablePanelX {
             if (current.isDone()) {
                 next();
             }
+
+//            background.setAlpha(alpha);
+
         });
     }
 
@@ -61,6 +65,7 @@ public class DialogueContainer extends TablePanelX {
     protected void start() {
         //init key listening
 //        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
+        dialogueHandler.getDialogueManager().setContainer(this);
         next();
     }
 
@@ -79,7 +84,7 @@ public class DialogueContainer extends TablePanelX {
         current = (DialogueView) iterator.next();
         current.setHandler(dialogueHandler);
         current.setContainer(this);
-        addActor(background = new BriefBackground(current.getBackgroundPath()));
+        addActor(bgSprite = new BriefBackground(current.getBackgroundPath()));
         addActor(current);
     }
 
@@ -101,17 +106,24 @@ public class DialogueContainer extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (background!=null )
-            background.setAlpha(0.7f*getColor().a*parentAlpha);
+        if (bgSprite !=null )
+        {
+            if (bgSprite.getColor().a==1)
+                bgSprite.setAlpha(bgAlpha);
+        }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW)
         {
             super.draw(batch, 1);
         }
         else
         {
-            ShaderDrawer.drawWithCustomShader(background, batch, null, false, false);
+            ShaderDrawer.drawWithCustomShader(bgSprite, batch, null, false, false);
             ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
         }
+    }
+
+    public BriefBackground getBgSprite() {
+        return bgSprite;
     }
 
     @Override

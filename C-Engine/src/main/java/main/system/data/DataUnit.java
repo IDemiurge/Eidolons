@@ -140,10 +140,16 @@ public class DataUnit<T extends Enum<T>> {
     }
 
 
-    public void setData(String data, Boolean std_alt_map) {
-        String[] entries = data.split(DataUnitFactory.getSeparator(std_alt_map));
+    protected String getPairSeparator() {
+        return DataUnitFactory.getPairSeparator(getFormat());
+    }
+    protected String getSeparator() {
+        return DataUnitFactory.getSeparator(getFormat());
+    }
+    public void setData(String data) {
+        String[] entries = data.split(getSeparator());
         for (String entry : entries) {
-            String[] pair = entry.split(DataUnitFactory.getPairSeparator(std_alt_map));
+            String[] pair = entry.split( getPairSeparator( ));
             if (pair.length != 2) {
 //                format=
                 LogMaster.log(0, "malformed data:" + entry);
@@ -226,9 +232,7 @@ public class DataUnit<T extends Enum<T>> {
         return getData(values.keySet());
     }
 
-    public void setData(String data) {
-        setData(data, getFormat());
-    }
+
 
     public String getData(Boolean format) {
         return getData(values.keySet(), format);

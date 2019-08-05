@@ -554,6 +554,6 @@ public class GameLoop {
     }
 
     public void activateMainHeroAction(String name) {
-        activateAction(new ActionInput(Eidolons.getMainHero().getAction(name), new Context(Eidolons.getMainHero().getRef())));
+        activateAction(new ActionInput(Eidolons.getMainHero().getActionOrSpell(name), new Context(Eidolons.getMainHero().getRef())));
     }
 }

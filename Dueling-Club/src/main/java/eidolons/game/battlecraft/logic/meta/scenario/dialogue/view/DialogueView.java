@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -24,14 +25,15 @@ public class DialogueView extends TablePanelX implements Scene {
     TablePanelX replyBox; //slots? should we support horizontal layout ?
 
     DialogueContainer container;
-    private int time;
     private long currentTime = 0;
     private boolean done;
 
     DialogueHandler handler;
     private String backgroundPath;
     private boolean scrollToBottom;
-    private int timer=0;
+    private int timer = 0;
+    private Float timeToRespond;
+    private boolean canSkip;
 //    boolean lightweight;
 //    boolean upsideDown;
     /*
@@ -76,14 +78,21 @@ public class DialogueView extends TablePanelX implements Scene {
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
         scroll.append(data.getMessage(), active.getActorName(), active.getActorImage());
-        scrollToBottom=true;
+        scrollToBottom = true;
 //        scroll.scrollPane.setScrollPercentY(1);
 
         //getHeight());
         //TODO info about fx! "Gain 50 xp"
 
+        if (timeToRespond != null)
+            if (!canSkip) {
+                return;
+            }
         initResponses(data);
 
+            if (container.getColor().a == 0) {
+            container.fadeIn();
+        }
         //        updateResponses(dataSource.getSpeech().getChildren())
 
 
@@ -145,6 +154,10 @@ public class DialogueView extends TablePanelX implements Scene {
             replyBox.add(response).left().
                     row();
         }
+        if (data.getTime() != null) {
+            timeToRespond = new Float(data.getTime());
+        }
+        canSkip = data.canSkip;
     }
 
 
@@ -157,18 +170,18 @@ public class DialogueView extends TablePanelX implements Scene {
         return tryNext(true);
     }
 
+
     protected boolean tryNext(boolean allowFinish) {
-        //check index?
-        try {
-            return respond(SpeechDataSource.DEFAULT_RESPONSE, 0, allowFinish);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        return false;
+        Eidolons.onNonGdxThread(() ->
+                respond(SpeechDataSource.DEFAULT_RESPONSE, 0, allowFinish));
+        return true;
     }
 
     private boolean respond(String option, int index) {
-        return respond(option, index, true);
+        Eidolons.onNonGdxThread(() -> {
+            respond(option, index, true);
+        });
+        return true;
     }
 
     private boolean respond(String option, int index, boolean allowFinish) {
@@ -187,8 +200,8 @@ public class DialogueView extends TablePanelX implements Scene {
 
             SpeechDataSource next =
                     handler.lineSpoken(getUserObject().speech, index);
-             if (next != null) {
-                scroll.append("", "", Images.SEPARATOR_ALT).center().setX(getWidth()/2);
+            if (next != null) {
+                scroll.append("", "", Images.SEPARATOR_ALT).center().setX(getWidth() / 2);
                 update(next);
                 return true;
             } else {
@@ -211,28 +224,36 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public void act(float delta) {
+        if (timeToRespond != null) {
+            timeToRespond -= delta * 1000;
+            if (timeToRespond <= 0) {
+                timeToRespond = null;
+                tryNext(false);
+            }
+        }
+
         if (scrollToBottom) {
 //            scroll.scrollPane.setScrollY(scroll.scrollPane.getActor().getHeight() + 1100);
             scroll.scrollPane.setScrollPercentY(1);
-        if ( scroll .scrollPane .getVisualScrollY() >=  scroll .scrollPane .getMaxY()){
-            timer++;
-            if (timer>=10){
-                scrollToBottom=false;
-                timer = 0;
+            if (scroll.scrollPane.getVisualScrollY() >= scroll.scrollPane.getMaxY()) {
+                timer++;
+                if (timer >= 10) {
+                    scrollToBottom = false;
+                    timer = 0;
+                }
             }
-        }
         }
 //        setVisible(true);
         setPosition(250, 50);
         super.act(delta);
-        if (done) return;
-        if (time > 0) {
-            currentTime += (int) (delta * 1000);
-
-            if (time <= currentTime) {
-                done = true;
-            }
-        }
+        if (done)
+            return;
+//        if (timeToRespond > 0) {
+//            currentTime += (int) (delta * 1000);
+//            if (time <= currentTime) {
+//                done = true;
+//            }
+//        }
     }
 
     @Override

@@ -74,7 +74,7 @@ public class Coordinates {
 
     public Coordinates(boolean custom, String s) {
         this(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
-         .getInteger(splitCoordinateString(s)[1].trim()));
+                .getInteger(splitCoordinateString(s)[1].trim()));
     }
 
     public static void resetCaches() {
@@ -119,11 +119,11 @@ public class Coordinates {
 
     public static String[] splitCoordinateString(String s) {
         if (s.contains(StringMaster.COORDINATES_SEPARATOR_ALT)) {
-        return StringMaster.cropParenthesises(s).split(
-                StringMaster.COORDINATES_SEPARATOR_ALT);
+            return StringMaster.cropParenthesises(s).split(
+                    StringMaster.COORDINATES_SEPARATOR_ALT);
         }
         return StringMaster.cropParenthesises(s).split(
-                StringMaster.COORDINATES_SEPARATOR );
+                StringMaster.COORDINATES_SEPARATOR);
     }
 
     public static Coordinates[] getCoordinates(String string) {
@@ -203,7 +203,7 @@ public class Coordinates {
 
     public static Coordinates get(boolean custom, String s) {
         return get(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
-         .getInteger(splitCoordinateString(s)[1].trim()));
+                .getInteger(splitCoordinateString(s)[1].trim()));
     }
 
     public static Coordinates get(boolean allowInvalid, int x, int y) {
@@ -249,33 +249,35 @@ public class Coordinates {
     @Override
     public String toString() {
         return x + StringMaster.getCoordinatesSeparator() + y
-         // + (z != 0 ? "; sublevel (Z): " + z : "")
-         ;
+                // + (z != 0 ? "; sublevel (Z): " + z : "")
+                ;
     }
 
     public Coordinates swap() {
         int n = x;
-        x=y;
+        x = y;
         y = n;
         return this;
     }
+
     public Coordinates negativeY() {
         return new Coordinates(getX(), -getY());
     }
+
     public Coordinates negativeX() {
         return new Coordinates(-getX(), getY());
     }
-        public Coordinates invert() {
-        if (h == 0) {
-            h = GuiManager.getBF_CompDisplayedCellsY();
-        }
-        if (w == 0) {
-            w = GuiManager.getBF_CompDisplayedCellsX();
-        }
-        this.x = w - 1 - x;
-        this.y = h - 1 - y;
-        LogMaster.log(2, "Inverted to " + toString());
-        return this;
+
+    public Coordinates invertY() {
+        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y );
+    }
+
+    public Coordinates invertX() {
+        return get(  GuiManager.getBF_CompDisplayedCellsX() - 1 - x,y  );
+    }
+
+    public Coordinates invert() {
+        return invertX().invertY();
     }
 
     public Coordinates getAdjacentCoordinate(DIRECTION d, int i) {
@@ -418,7 +420,7 @@ public class Coordinates {
     public Coordinates[] getAdjacent() {
         if (adjacent == null) {
             adjacent = getAdjacentCoordinates().toArray(new Coordinates[
-             getAdjacentCoordinates().size()]);
+                    getAdjacentCoordinates().size()]);
         }
         return adjacent;
     }
@@ -426,7 +428,7 @@ public class Coordinates {
     public Coordinates[] getAdjacenctNoDiags() {
         if (adjacenctNoDiags == null) {
             adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[
-             getAdjacentCoordinates(false).size()]);
+                    getAdjacentCoordinates(false).size()]);
         }
         return adjacenctNoDiags;
     }
@@ -434,7 +436,7 @@ public class Coordinates {
     public Coordinates[] getAdjacenctDiagsOnly() {
         if (adjacenctDiagsOnly == null) {
             adjacenctDiagsOnly = getAdjacentCoordinates(null).toArray(new Coordinates[
-             getAdjacentCoordinates(null).size()]);
+                    getAdjacentCoordinates(null).size()]);
         }
         return adjacenctDiagsOnly;
     }
@@ -541,12 +543,12 @@ public class Coordinates {
 
     public int dst(Coordinates c) {
         return PositionMaster.getDistance(
-         this, c);
+                this, c);
     }
 
     public double dst_(Coordinates c) {
         return PositionMaster.getExactDistance(
-         this, c);
+                this, c);
     }
 
     public Coordinates offset(Coordinates coordinates) {
@@ -557,7 +559,7 @@ public class Coordinates {
     }
 
     public Coordinates getOffset(Coordinates coordinates) {
-        return get(getX()+coordinates.x, getY()+coordinates.y);
+        return get(getX() + coordinates.x, getY() + coordinates.y);
     }
 
     public float dist(Coordinates coordinates) {

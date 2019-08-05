@@ -1,5 +1,7 @@
 package eidolons.libgdx.screens.map.layers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -21,7 +23,13 @@ public class Blackout extends Group {
 
     }
 
+    @Override
+    public Color getColor() {
+        return image. getColor();
+    }
+
     public void fadeOut(Float dur) {
+        main.system.auxiliary.log.LogMaster.important("BLACKOUT  IN" + getColor().a);
         if (dur == null)
             dur = 1.5f;
         image.getContent().getColor().a = 0;
@@ -31,6 +39,7 @@ public class Blackout extends Group {
     }
 
     public void fadeIn(Float dur) {
+        main.system.auxiliary.log.LogMaster.important("BLACKOUT  OUT" + getColor().a);
         if (dur == null)
             dur = 1.5f;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
@@ -54,6 +63,10 @@ public class Blackout extends Group {
 //    }
 
     public void fadeOutAndBack(Number dur, Runnable runnable) {
+        main.system.auxiliary.log.LogMaster.important("BLACKOUT  fadeOutAndBack" + getColor().a);
+        if (true){
+            return;
+        }
         if (dur == null)
             dur = 3f;
 
@@ -94,6 +107,9 @@ public class Blackout extends Group {
         } else {
             setZIndex(Integer.MAX_VALUE);
             image.setTouchable(Touchable.enabled);
+        }
+        if (getColor().a!=0) {
+        main.system.auxiliary.log.LogMaster.important("BLACKOUT  act" + getColor().a);
         }
     }
 

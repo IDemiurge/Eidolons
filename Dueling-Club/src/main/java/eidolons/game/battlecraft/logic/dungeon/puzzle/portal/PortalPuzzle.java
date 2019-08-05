@@ -1,10 +1,18 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.portal;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.art.PortalSlotsCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
+import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 
@@ -27,8 +35,8 @@ public class PortalPuzzle extends Puzzle {
         any_self(true, "Eldritch Sphere", "Eldritch Hedron"),
         self(true),
         ;
-       public String[] validObjectNames;
-        public  boolean selfValid;
+        public String[] validObjectNames;
+        public boolean selfValid;
         public boolean allyValid;
 
         POWER_SLOT(boolean selfValid, String... validObjectNames) {
@@ -38,6 +46,46 @@ public class PortalPuzzle extends Puzzle {
 
     public Map<Coordinates, POWER_SLOT> getSlots() {
         return slots;
+    }
+
+    @Override
+    public void setup(PuzzleSetup... setups) {
+        super.setup(setups);
+
+        for (Coordinates coordinates : slots.keySet()) {
+            POWER_SLOT type = slots.get(coordinates);
+
+            DungeonLevel.CELL_IMAGE t = getCellType(type);
+            int v = getCellVariant(type);
+            GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY,
+                    TextureCache.getOrCreateR(GridMaster.getImagePath(t, v)));
+        }
+
+    }
+
+    private int getCellVariant(POWER_SLOT type) {
+        return 1;
+    }
+
+    @Override
+    public Condition createSolutionCondition() {
+        return new PortalSlotsCondition(this);
+    }
+
+    private DungeonLevel.CELL_IMAGE getCellType(POWER_SLOT type) {
+        switch (type) {
+            case sphere:
+                return DungeonLevel.CELL_IMAGE.circle;
+            case diamond:
+                return DungeonLevel.CELL_IMAGE.diamond;
+            case any:
+                return DungeonLevel.CELL_IMAGE.octagonal;
+            case any_self:
+                return DungeonLevel.CELL_IMAGE.star;
+            case self:
+                return DungeonLevel.CELL_IMAGE.cross;
+        }
+        return null;
     }
 
     public void init() {

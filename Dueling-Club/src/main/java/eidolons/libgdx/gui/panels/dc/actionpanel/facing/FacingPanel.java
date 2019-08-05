@@ -59,7 +59,7 @@ public class FacingPanel extends TablePanel {
         background.setOrigin(background.getWidth() / 2, background.getHeight() / 2);
 
         addActor(face = new FadeImageContainer());
-        face.setPosition(18, 8);
+        face.setPosition(24, 8);
         face.setFadeDuration(getAnimationDuration()/1.5f);
         addListener(new SmartClickListener(this){
             @Override
@@ -68,7 +68,7 @@ public class FacingPanel extends TablePanel {
             }
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                DungeonScreen.getInstance().centerCameraOn(DC_Game.game.getManager().getMainHero());
+                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

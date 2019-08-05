@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
@@ -44,6 +45,7 @@ public class LordPanel extends GroupX implements Blocking {
 
     SpriteAnimation backgroundSprite;
     private EidolonLord lord;
+    private boolean initialized;
 
     public static boolean visibleNotNull() {
         if (activeInstance == null) {
@@ -70,10 +72,6 @@ public class LordPanel extends GroupX implements Blocking {
         setSize(1920, 1050);
         instance = this;
 
-        if (!CoreEngine.isIDE())
-            return;
-
-        init();
         GuiEventManager.bind(GuiEventType.UPDATE_LORD_PANEL, p -> {
             update();
         });
@@ -118,7 +116,7 @@ public class LordPanel extends GroupX implements Blocking {
         tabsLeft.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.SOULS.name()));
         tabsRight.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.CHAIN.name()));
 //        backgroundSprite.centerOnParent();
-
+        initialized = true;
     }
 
     public void update() {
@@ -145,6 +143,10 @@ public class LordPanel extends GroupX implements Blocking {
 
     @Override
     public void act(float delta) {
+        if (!initialized){
+            if (EidolonsGame.isLordPanelEnabled())
+                init();
+        }
         super.act(delta);
         tabsLeft.setX(350);
         tabsLeft.setY(600);

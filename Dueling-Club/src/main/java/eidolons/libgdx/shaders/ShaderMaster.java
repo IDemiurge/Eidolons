@@ -75,6 +75,7 @@ public class ShaderMaster {
 
     public enum SHADER{
         DARKEN,
+        INVERT,
         GRAYSCALE,
         FISH_EYE,
         BLUR(),

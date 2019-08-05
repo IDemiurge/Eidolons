@@ -23,6 +23,7 @@ import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.particles.EmitterPools;
+import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -39,7 +40,7 @@ import main.system.launch.CoreEngine;
  * Created by JustMe on 12/1/2017.
  */
 public class Assets {
-    private static   boolean ON = true;
+    private static boolean ON = true;
     static Assets assets;
     AssetManager manager;
 
@@ -48,7 +49,7 @@ public class Assets {
     }
 
     private Assets() {
-        manager = new AssetManager(){
+        manager = new AssetManager() {
             @Override
             public synchronized boolean update() {
                 return super.update();
@@ -63,36 +64,36 @@ public class Assets {
         });
         if (EmitterPools.isPreloaded())
             manager.setLoader(ParticleEffect.class,
-             new ParticleEffectLoader(fileName -> GDX.file(fileName)) {
-                 @Override
-                 public ParticleEffect load(AssetManager am, String fileName,
-                                            FileHandle file, ParticleEffectParameter param) {
-                     ParticleEffectX fx = createEmitter(file.path());
+                    new ParticleEffectLoader(fileName -> GDX.file(fileName)) {
+                        @Override
+                        public ParticleEffect load(AssetManager am, String fileName,
+                                                   FileHandle file, ParticleEffectParameter param) {
+                            ParticleEffectX fx = createEmitter(file.path());
 //                 ParticleEffect fx=super.load(am, fileName, file, param);
-                     main.system.auxiliary.log.LogMaster.important(fileName + file.path() + " loaded!");
-                     return fx;
-                 }
+                            main.system.auxiliary.log.LogMaster.important(fileName + file.path() + " loaded!");
+                            return fx;
+                        }
 
-                 private ParticleEffectX createEmitter(String path) {
-                    return  new ParticleEffectX(path);
-                 }
-             });
+                        private ParticleEffectX createEmitter(String path) {
+                            return new ParticleEffectX(path);
+                        }
+                    });
         manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(
-         fileName -> GDX.file(fileName)
+                fileName -> GDX.file(fileName)
         ) {
             @Override
             public TextureAtlas load(AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
 //               super.load()
 //                return atlas;
                 TextureAtlasData data = new ReflectionMaster<TextureAtlasData>()
-                 .getFieldValue("data", this, TextureAtlasLoader.class);
+                        .getFieldValue("data", this, TextureAtlasLoader.class);
                 for (Page page : data.getPages()) {
                     Texture texture = assetManager.get(page.textureFile.path().replaceAll("//", "/"), Texture.class);
                     page.texture = texture;
                 }
                 TextureAtlas atlas = new SmartTextureAtlas(data);
                 new ReflectionMaster<TextureAtlasData>()
-                 .setValue("data", null, this);
+                        .setValue("data", null, this);
                 main.system.auxiliary.log.LogMaster.log(1, fileName + " loaded!");
                 return atlas;
             }
@@ -125,28 +126,38 @@ public class Assets {
                 }
                 if (sub instanceof Unit)
                     try {
-                         AnimConstructor.preconstruct((Unit) sub);
+                        AnimConstructor.preconstruct((Unit) sub);
                     } catch (Exception e) {
-                         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL,"FAILED TO CONSTRUCT ANIMS FOR " +sub);
+                        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL, "FAILED TO CONSTRUCT ANIMS FOR " + sub);
                         main.system.ExceptionMaster.printStackTrace(e);
                         continue;
                     }
             }
             result = true;
         }
+
         Chronos.logTimeElapsedForMark("isPreconstructAllOnGameInit");
         EmitterPresetMaster.getInstance().init();
-        Chronos.mark("preload EmitterPools");
-        EmitterPools.init(get().getManager());
-        Chronos.logTimeElapsedForMark("preload EmitterPools");
 
-        if (isPreloadUI()){
-            Chronos.mark("preload ui");
-            preloadUI();
-            Chronos.logTimeElapsedForMark("preload ui");
+        EmitterPools.init(get().getManager());
+        if (EmitterPools.isPreloaded()) {
+        Chronos.mark("preload EmitterPools");
+            for (EmitterMaster.VFX_ATLAS value : EmitterMaster.VFX_ATLAS.values()) {
+                switch (value) {
+                    case MAP:
+                    case MISC:
+                        continue;
+                }
+                get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
+            }
+        Chronos.logTimeElapsedForMark("preload EmitterPools");
         }
 
-        if (isPreloadHeroes()){
+        Chronos.mark("preload ui");
+        preloadUI();
+        Chronos.logTimeElapsedForMark("preload ui");
+
+        if (isPreloadHeroes()) {
             Chronos.mark("preload her0es");
             preloadHeroes();
             Chronos.logTimeElapsedForMark("preload her0es");
@@ -155,17 +166,25 @@ public class Assets {
         return result;
     }
 
+    public static void preloadMenu() {
+    }
+
+
     public static void preloadHeroes() {
         SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPathNew()
                 + "unit/" + Eidolons.getMainHero().getName() + ".txt", false);
     }
 
     public static void preloadUI() {
-        if (EidolonsGame.BRIDGE){
-            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+        if (EidolonsGame.BRIDGE) {
+//            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
+//            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+//            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
             return;
         }
+//        if (CoreEngine.isLiteLaunch()) {
+//            return;
+//        }
         SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL, false);
 //        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH, false);
 //        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON, false);
@@ -175,16 +194,16 @@ public class Assets {
         //boss
     }
 
-    private static boolean isPreloadUI() {
-        return !CoreEngine.isLiteLaunch();
-    }
 
     private static boolean isPreloadHeroes() {
         return false;
     }
 
     private static boolean checkPreloadUnit(BattleFieldObject sub) {
-        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates())>30) {
+        if (sub == Eidolons.getMainHero()) {
+            return true;
+        }
+        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) > 30) {
             return false;
         }
         return true;

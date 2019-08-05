@@ -348,4 +348,8 @@ public class Puzzle {
     public Coordinates getCenterCoordinates() {
         return Coordinates.get(getCoordinates().x + getWidth() / 2, getCoordinates().y - getHeight() / 2);
     }
+
+    public Condition createSolutionCondition() {
+        return null;
+    }
 }

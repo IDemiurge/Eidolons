@@ -345,6 +345,9 @@ public class ActionSequenceConstructor extends AiHandler {
     }
 
     public ActionSequence constructSingleActionSequence(Action targetAction, Task task) {
+        return constructSingleActionSequence(targetAction, task, false);
+    }
+    public ActionSequence constructSingleActionSequence(Action targetAction, Task task, boolean free) {
         List<Action> actions = new ArrayList<>();
         UnitAI ai = task.getAI();
         targetAction.getRef().setID(KEYS.ACTIVE, targetAction.getActive().getId());
@@ -377,6 +380,7 @@ public class ActionSequenceConstructor extends AiHandler {
         }
         // not very good
         Action action = actions.get(0);
+        if (!free)
         if (!action.canBeActivated()) {
 
             LogMaster.log(LOG_CHANNEL.AI_DEBUG2, "No sequence for "

@@ -4,10 +4,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.std.SpellAnim;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import eidolons.libgdx.anims.std.SpellAnim.ZONE_ANIM_MODS;
@@ -59,6 +61,12 @@ public class SpellMultiplicator implements Runnable {
     }
 
     private static boolean isMultiplied(Anim anim) {
+        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
+            return true;
+        }
+            if (anim.getPart()!= AnimConstructor.ANIM_PART.MISSILE) {
+            return false;
+        }
         return anim instanceof SpellAnim;
     }
 
@@ -79,8 +87,15 @@ public class SpellMultiplicator implements Runnable {
     }
 
     private void multiply(Anim anim) {
-        applyTemplate();
+        applyTemplate(getMethod(anim));
         adjustAngle();
+    }
+
+    private MULTIPLICATION_METHOD getMethod(Anim anim) {
+        if (anim.getActive().getProperty(PROPS.ANIM_MODS_VFX).contains("angle;")) {
+            return MULTIPLICATION_METHOD.ANGLE;
+        }
+        return MULTIPLICATION_METHOD.COORDINATE;
     }
 
     private void adjustAngle() {
@@ -98,12 +113,20 @@ public class SpellMultiplicator implements Runnable {
     }
 
     public void applyTemplate() {
-        Set<Coordinates> coordinates = null;
+        applyTemplate(defaultMultiplicationMethod);
+    }
+
+    private void applyTemplate(MULTIPLICATION_METHOD multiplicationMethod) {
+        Set<Coordinates> coordinates = getRef().getArea();
         //         getActive().getAnimator().getZoneAnimCoordinates();
+        if (coordinates == null) {
+
         try {
             coordinates = CoordinatesMaster.getZoneCoordinates(getActive());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+        }
+            getRef().setArea(coordinates);
         }
         if (coordinates == null) {
             //            TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!
@@ -111,6 +134,7 @@ public class SpellMultiplicator implements Runnable {
                 Set<Coordinates> set = new LinkedHashSet();
                 getRef().getGroup().getObjects().forEach(o -> set.add(o.getCoordinates()));
                 coordinates = set;
+                getRef().setArea(set);
             }
         }
         if (multiplicationMethod == MULTIPLICATION_METHOD.ANGLE) {
@@ -284,6 +308,11 @@ public class SpellMultiplicator implements Runnable {
         range = getActive().getIntParam(G_PARAMS.RADIUS);
 
         switch (template) {
+            case RAY:
+            case BLAST:
+            case SPRAY:
+            case WAVE:
+            case RING:
             case NOVA:
                 return addRangeAndAngle(angle, range, actor);
 

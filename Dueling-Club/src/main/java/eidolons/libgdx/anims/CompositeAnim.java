@@ -40,6 +40,7 @@ public class CompositeAnim implements Animation {
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onFinishEventMap;
     Map<ANIM_PART, List<Animation>> attached;
     Map<ANIM_PART, List<Animation>> timeAttachedAnims;
+    private List<Animation> parallelAnims=    new ArrayList<>() ;
     ANIM_PART part;
     int index;
     private boolean finished;
@@ -93,8 +94,17 @@ public class CompositeAnim implements Animation {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
+        if (parallelAnims.isEmpty()) {
+            for (Animation parallelAnim : parallelAnims) {
+              if (parallelAnim.tryDraw(batch)){
+
+              }
+
+            }
+        }
 
         checkTimeAttachedAnims();
+        checkParallelAnimsAnims();
         if (!result) {
             time = 0;
             index++;
@@ -129,6 +139,9 @@ public class CompositeAnim implements Animation {
 //            }
 //        }
         return true;
+    }
+
+    private void checkParallelAnimsAnims() {
     }
 
     @Override
@@ -353,6 +366,10 @@ public class CompositeAnim implements Animation {
             if (attached.isEmpty())
                 return;
         }
+        if (!parallelAnims.isEmpty()) {
+            currentAnim= parallelAnims.remove(0);
+
+        } else
         if (map.isEmpty()) {
             part = (ANIM_PART) MapMaster.get(attached, index);
             if (attached.get(part).isEmpty())

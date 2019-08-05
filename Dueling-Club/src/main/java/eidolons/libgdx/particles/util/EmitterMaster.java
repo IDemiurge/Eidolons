@@ -7,6 +7,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.ParticleEffectX;
@@ -71,6 +72,15 @@ public class EmitterMaster extends GdxUtil {
     private static Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
     private static boolean manualFix;
 
+    public static void main(String[] args) {
+        CoreEngine.systemInit();
+        if (args.length>0){
+            writeImage = true;
+            pack = true;
+            test = false;
+        }
+        new EmitterMaster().start();
+    }
 
     public static List<File> getVfxPresets(boolean removeNonAtlas) {
         List<File> files = FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true);
@@ -171,15 +181,16 @@ public class EmitterMaster extends GdxUtil {
                         s = s.trim();
                         if (s.isEmpty())
                             continue;
-                        String imageName = processImageName(s);
-                        imagesData += imageName + "\n";
+                        String newPath = map.get(s);
+                        //same name images will be linked
+                            String imageName = processImageName(s);
 
-                        String newPath = map.get(imageName);
                         if (newPath == null) {
                             newPath = imagesPath + PathUtils.getPathSeparator() +
                                     (imageName);
-                            map.put(imageName, newPath);
+                            map.put(s, newPath);
                         }
+                        imagesData += imageName + "\n";
                         if (writeImage) {
                             Texture texture = (new Texture(s));
                             if (texture.getWidth() > 1000) {
@@ -282,9 +293,10 @@ public class EmitterMaster extends GdxUtil {
             imageName = processImageNameDeep(imageName);
         }
         if (imageName.contains("000")){
-            imageName = StringMaster.getAppendedFile(
-                    imageName,StringMaster.getStringXTimes(RandomWizard.getRandomInt(7)+1, ""+ StringMaster.getStringXTimes(3,"qweretyiuipsgsfgh")
-                            .toCharArray()[RandomWizard.getRandomInt(27)]));
+            imageName=imageName+ imageName.split("_")[0];
+//            imageName = StringMaster.getAppendedFile(
+//                    imageName,StringMaster.getStringXTimes(RandomWizard.getRandomInt(7)+1, ""+ StringMaster.getStringXTimes(3,"qweretyiuipsgsfgh")
+//                            .toCharArray()[RandomWizard.getRandomInt(27)]));
         }
         if (sprite) {
             return "sprites" + "/" + imageName + format;
@@ -303,10 +315,6 @@ public class EmitterMaster extends GdxUtil {
         return imageName;
     }
 
-    public static void main(String[] args) {
-        CoreEngine.systemInit();
-        new EmitterMaster().start();
-    }
 
     private static String getVfxAtlasImagesPath(VFX_ATLAS atlas) {
         String name = atlas.name().toLowerCase();
@@ -374,7 +382,7 @@ public class EmitterMaster extends GdxUtil {
         return VFX_ATLAS.MISC;
     }
 
-    private static String getVfxAtlasPathFull(VFX_ATLAS type) {
+    public static String getVfxAtlasPathFull(VFX_ATLAS type) {
         String name = getVfxAtlasName(type);
         return StrPathBuilder.build(getVfxAtlasPath(getVfxAtlasName(type)), name + TexturePackerLaunch.ATLAS_EXTENSION);
     }
@@ -387,13 +395,21 @@ public class EmitterMaster extends GdxUtil {
         return type.name().toLowerCase();
     }
 
-    public static TextureAtlas getAtlas(String path) {
+        public static TextureAtlas getAtlas(String path) {
         VFX_ATLAS type = getAtlasType(path);
+        return getAtlas(type);
+    }
+
+    public static TextureAtlas getAtlas(VFX_ATLAS type) {
         TextureAtlas atlas = atlasMap.get(type);
-        if (atlas == null) {
-            atlas = new SmartTextureAtlas(getVfxAtlasPathFull(type)); //  Assets.get().getManager().get
-            atlasMap.put(type, atlas);
+        if (atlas == null)
+        if (Assets.get().getManager().isLoaded(getVfxAtlasPathFull(type), TextureAtlas.class)) {
+            atlas = Assets.get().getManager().get(getVfxAtlasPathFull(type));
         }
+        if (atlas == null) {
+            atlas = new SmartTextureAtlas(getVfxAtlasPathFull(type));
+        }
+        atlasMap.put(type, atlas);
         return atlas;
     }
 

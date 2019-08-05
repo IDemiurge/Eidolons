@@ -198,7 +198,20 @@ public class ShardVisuals extends GroupX {
 
                 try {
                     Shard shard = new Shard(x, y, type, size, overlay, direction);
-
+                    if (direction instanceof DIRECTION)
+                    if (y>=grid.getRows()) {
+                        if (x>=grid.getCols()) {
+                            shard.setUserObject(grid.getCell(x+1,y+1));
+                        } else
+                        shard.setUserObject(grid.getCell(x-1,y+1));
+                    } else
+                    if (x>=grid.getCols()) {
+                        if (y>=grid.getRows()) {
+                            shard.setUserObject(grid.getCell(x+1,y+1));
+                        } else
+                        shard.setUserObject(grid.getCell(x+1,y-1));
+                    } else
+                        shard.setUserObject(grid.getCell(x+1,y+1));
                     addActor(shard);
                     float offsetX = -(shard.getWidth() / 2 - 64);
                     float offsetY = -(shard.getHeight() / 2 - 64);

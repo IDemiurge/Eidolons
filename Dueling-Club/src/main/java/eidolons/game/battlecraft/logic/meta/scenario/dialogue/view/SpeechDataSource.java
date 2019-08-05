@@ -12,14 +12,15 @@ import java.util.List;
 public class SpeechDataSource {
 
     public static final String DEFAULT_RESPONSE = "ok";
-
+    public boolean canSkip;
+    private Integer time;
     String message;
     List<String> responses;
     Speech speech;
     ActorDataSource left;
     ActorDataSource right;
     private boolean leftActive = true;
-    private String background= Sprites.BG_DEFAULT;
+    private String background = Sprites.BG_DEFAULT;
     //custom font/style?
 
 
@@ -28,6 +29,8 @@ public class SpeechDataSource {
         this.left = left;
         this.right = right;
         this.message = speech.getFormattedText();
+        time = speech.getTime();
+        canSkip = false;
     }
 
     public SpeechDataSource(Speech speech) {
@@ -71,6 +74,10 @@ public class SpeechDataSource {
         DARKEN,
         FLIP,
         FADE,
+    }
+
+    public Integer getTime() {
+        return time;
     }
 
     public String getMessage() {

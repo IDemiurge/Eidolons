@@ -217,11 +217,11 @@ public class SpellAnim extends ActionAnim {
 //                "breath"
 
                 if (part == AnimConstructor.ANIM_PART.MISSILE) {
-                    if (RandomWizard.chance(66))
-                        return "missile/shadow missile3";
-                    if (RandomWizard.chance(66))
-                        return "missile/dark writhe";
-                    return "missile/shadow missile2";
+//                    if (RandomWizard.chance(66))
+//                        return "missile/shadow missile3";
+//                    if (RandomWizard.chance(66))
+//                        return "missile/dark writhe";
+//                    return "missile/shadow missile2";
                 }
                 if (part == AnimConstructor.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;

@@ -104,7 +104,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ),
     BOSS_ENCOUNTERS(null, true//, "dungeons"
     ),
-    DUNGEON_MAIN_ENTRANCES(null, true//, "dungeons"
+    ENTRANCE_COORDINATES(null, true//, "dungeons"
     ),
     ENCOUNTER_GROUPS(null, true//, "dungeons", "route", "place", "area"
     ),

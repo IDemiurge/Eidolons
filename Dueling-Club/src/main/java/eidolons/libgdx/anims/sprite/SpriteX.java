@@ -1,23 +1,15 @@
 package eidolons.libgdx.anims.sprite;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.shaders.ShaderMaster;
 
-import static com.badlogic.gdx.graphics.GL20.*;
-import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
-import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
-import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
-import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.*;
 
 public class SpriteX extends GroupX {
 
@@ -34,6 +26,7 @@ public class SpriteX extends GroupX {
     private int fps;
     private boolean flipX;
     private boolean done;
+    private ShaderProgram shader;
 
     public SpriteX() {
     }
@@ -88,14 +81,13 @@ public class SpriteX extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//        Gdx.gl20.glEnable(GL_BLEND);
-//        Gdx.gl20.glEnable(GL_POINT_SMOOTH);
-//        Gdx.gl20.glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-//        Gdx.gl20.glEnable(GL_LINE_SMOOTH);
-//        Gdx.gl20.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-//        Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
-//        Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+        if (shader != null)
+        if (parentAlpha!= ShaderDrawer.SUPER_DRAW)
+        {
+            ShaderDrawer.drawWithCustomShader(this, batch,
+                    shader, true);
+            return;
+        }
 
         super.draw(batch, parentAlpha);
         if (sprite == null) {
@@ -112,19 +104,17 @@ public class SpriteX extends GroupX {
                     getSprite().setOffsetX( getWidth()-128+32);
                     getSprite().setOffsetY( getHeight()-128);
                     break;
-            }
-            if (getParent() instanceof OverlayView) {
-
-                sprite.centerOnParent(this);
-            } else {
-//                sprite.centerOnParent(getParent()); TODO
+                case "Ghost Light":
+                    getSprite().setBlending(SuperActor.BLENDING.SCREEN);
+                    break;
             }
         }
 
         sprite.setFlipX(flipX);
         sprite.setColor(getColor());
+        sprite.setAlpha(parentAlpha);
         done = !sprite.draw(batch);
-        sprite.setFlipX(true);
+//        sprite.setFlipX(true);
 //        debug();
 //        Gdx.gl20.glDisable(GL_BLEND);
 //        Gdx.gl20.glDisable(GL_LINE_SMOOTH);
@@ -192,6 +182,11 @@ public class SpriteX extends GroupX {
     public void setFlipX(boolean flipX) {
         this.flipX = flipX;
     }
+
+    public void setShader(ShaderMaster.SHADER shader) {
+        this.shader = ShaderMaster.getShader(shader);
+    }
+
 
 
     public enum SPRITE_TEMPLATE {

@@ -92,7 +92,7 @@ public class EmitterActor extends SuperActor {
 
         super.act(delta);
         effect.setPosition(getX(), getY());
-        effect.setFlip(flipX, flipY);
+//        effect.setFlip(flipX, flipY);
         //        effect.update(delta); TODO now drawing with alpha!
        //effect.getEmitters().first().flipY(); wh isn't there flipx
     }
@@ -145,20 +145,20 @@ public class EmitterActor extends SuperActor {
         super.draw(batch, parentAlpha);
         effect.setPosition(getX(), getY());
         float delta = Gdx.graphics.getDeltaTime() * speed;
-        if (ParticleEffectX.TEST_MODE)
-            try {
-                effect.draw(batch, delta);
-            } catch (IllegalStateException e) {
-                imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
-                brokenPaths.add(imgPath);
-                main.system.auxiliary.log.LogMaster.log(1, "VFX imgPath is broken! " + imgPath);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                main.system.auxiliary.log.LogMaster.log(1, " EMITTER FAILED: "
-                 + path);
-                broken = true;
-            }
-        else
+//        if (ParticleEffectX.TEST_MODE)
+//            try {
+//                effect.draw(batch, delta);
+//            } catch (IllegalStateException e) {
+//                imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
+//                brokenPaths.add(imgPath);
+//                main.system.auxiliary.log.LogMaster.log(1, "VFX imgPath is broken! " + imgPath);
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//                main.system.auxiliary.log.LogMaster.log(1, " EMITTER FAILED: "
+//                 + path);
+//                broken = true;
+//            }
+//        else
             effect.draw(batch, delta);
     }
 

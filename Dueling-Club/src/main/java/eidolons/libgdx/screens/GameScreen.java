@@ -9,24 +9,19 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.PlainDialogueView;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
-import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.GuiStage;
+import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,22 +33,16 @@ import static main.system.GuiEventType.DIALOG_SHOW;
  */
 public abstract class GameScreen extends ScreenWithVideoLoader {
 
-    private static final float MAX_CAM_DST = 500;
-    private static Float cameraPanMod;
     public InputController controller;
     protected ChainedStage dialogsStage = null;
-    protected OrthographicCamera cam;
-    protected Vector2 velocity;
     protected DC_SoundMaster soundMaster;
-    protected Vector2 cameraDestination;
     protected ShaderProgram bufferedShader;
     protected Float speed;
     protected TextureRegion backTexture;
     protected GuiStage guiStage;
     private RealTimeGameLoop realTimeGameLoop;
-    private Boolean centerCameraAlways;
-    private Vector3 lastPos;
     private List<Screenshake> shakes = new ArrayList<>();
+    protected CameraMan cameraMan;
 
     public GameScreen() {
         GuiEventManager.bind(GuiEventType.GAME_PAUSED, d -> {
@@ -66,7 +55,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             shakes.add((Screenshake) p.get());
         });
         GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
-            cam.position.set((Vector2) p.get(), 0);
+            getCam().position.set((Vector2) p.get(), 0);
 
         });
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
@@ -88,131 +77,18 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     public void render(float delta) {
         if (!shakes.isEmpty()) {
             for (Screenshake shake : new ArrayList<>(shakes)) {
-                if (!shake.update(delta, cam, getCameraCenter())) {
+                if (!shake.update(delta, getCam(), cameraMan.getCameraCenter())) {
                     shakes.remove(shake);
                 }
             }
-            cam.update();
+            getCam().update();
         }
         super.render(delta);
     }
 
-    private Vector2 getCameraCenter() {
-        return new Vector2(cam.position.x, cam.position.y);
-    }
 
-    public static float getCameraPanMod() {
-        if (cameraPanMod == null)
-            cameraPanMod = new Float(OptionsMaster.getControlOptions().
-                    getIntValue(CONTROL_OPTION.CENTER_CAMERA_DISTANCE_MOD)) / 100;
-
-        return cameraPanMod;
-    }
-
-    public static void setCameraPanMod(float mod) {
-        cameraPanMod = mod;
-    }
-
-    public TextureRegion getBackTexture() {
-        return backTexture;
-    }
-
-    protected void cameraPan(Vector2 unitPosition) {
-        cameraPan(unitPosition, null);
-    }
-
-    protected boolean isCameraPanningOff() {
-        return false; //TODO
-    }
-
-    protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
-        if (isCameraPanningOff()) {
-            return;
-        }
-        this.cameraDestination = unitPosition;
-        float dst = cam.position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
-
-        if (overrideCheck == null)
-            if (isCenterAlways()) {
-                overrideCheck = !controller.isWithinCamera(unitPosition.x, unitPosition.y, 128, 128);
-            } else overrideCheck = false;
-
-        if (!overrideCheck)
-            if (dst < getCameraMinCameraPanDist())
-                return;
-
-        velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dst));
-//        if (CoreEngine.isGraphicTestMode()) {
-//            //            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
-//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
-//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dst);
-//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
-//        }
-    }
-
-
-    protected float getCameraMinCameraPanDist() {
-        return (GDX.size(1600, 0.1f)) / 3 * getCameraPanMod(); //TODO if too close to the edge also
-    }
-
-    protected float getCameraDistanceFactor() {
-        return 8f;
-    }
-
-    protected void cameraShift() {
-        if (cameraDestination != null)
-            if (cam != null && velocity != null && !velocity.isZero()) {
-                float x = velocity.x > 0
-                        ? Math.min(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime())
-                        : Math.max(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime());
-                float y = velocity.y > 0
-                        ? Math.min(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime())
-                        : Math.max(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime());
-
-//                main.system.auxiliary.log.LogMaster.log(1,"cameraShift to "+ y+ ":" +x + " = "+cam);
-                cam.position.set(x, y, 0f);
-                float dest = Math.min(MAX_CAM_DST, cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor());
-                Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
-
-                if (velocityNow.isZero() || velocity.hasOppositeDirection(velocityNow)) {
-                    cameraStop(velocityNow.isZero() );
-                }
-                cam.update();
-                controller.cameraChanged();
-            }
-        checkCameraFix();
-    }
-
-    private void checkCameraFix() {
-        if (!velocity.isZero())
-            if (!cameraDestination.isZero())
-                return;
-
-        if (cameraDestination.x==cam.position.x || cameraDestination.y==cam.position.y)
-            lastPos = new Vector3(cam.position);
-        else
-         if (lastPos != null)
-            if (cam.position.dst(lastPos) > MAX_CAM_DST) {
-                cam.position.set(lastPos);
-            }
-        if (velocity.isZero())
-            if (!cameraDestination.isZero()) {
-                lastPos = new Vector3(cam.position);
-            }
-    }
-
-    public void cameraStop( ) {
-        cameraStop(false);
-    }
-    public void cameraStop(boolean fullstop) {
-        if (velocity != null || fullstop) {
-            velocity.setZero();
-            // TODO abruptly?
-            cameraDestination.set(cam.position.x, cam.position.y);
-        }
-        if (fullstop) {
-            lastPos = new Vector3(cam.position);
-        }
+    public GuiStage getGuiStage() {
+        return guiStage;
     }
 
     public InputController getController() {
@@ -233,6 +109,10 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         }
     }
 
+    public TextureRegion getBackTexture() {
+        return backTexture;
+    }
+
     public RealTimeGameLoop getRealTimeGameLoop() {
         return realTimeGameLoop;
     }
@@ -242,18 +122,22 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     public OrthographicCamera getCamera() {
-        return cam;
+        return getCam();
     }
 
-    public GuiStage getGuiStage() {
-        return guiStage;
+    public CameraMan getCameraMan() {
+        return cameraMan;
     }
 
-    public Boolean isCenterAlways() {
-        if (centerCameraAlways == null) {
-            centerCameraAlways = OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALWAYS_CAMERA_CENTER_ON_ACTIVE);
-        }
-        return centerCameraAlways;
+    public OrthographicCamera getCam() {
+        return cameraMan.getCam();
     }
 
+    public void setCam(OrthographicCamera cam) {
+        cameraMan = new CameraMan(cam, this );
+    }
+
+    public void cameraStop(boolean full) {
+        cameraMan.cameraStop(full);
+    }
 }

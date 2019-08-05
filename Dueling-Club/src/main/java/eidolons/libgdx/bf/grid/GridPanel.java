@@ -1,9 +1,11 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
@@ -20,6 +23,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
@@ -33,11 +37,13 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.light.ShadowMap;
@@ -45,12 +51,17 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -61,6 +72,7 @@ import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -107,6 +119,10 @@ public class GridPanel extends Group {
 
     List<Manipulator> manipulators = new ArrayList<>();
     List<GroupX> customOverlayingObjects = new ArrayList<>();
+    List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
+    List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
+    private List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
+    private List<GroupX> commentSprites = new ArrayList<>(3);
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -241,11 +257,26 @@ public class GridPanel extends Group {
         if (ShadowMaster.isShadowAlive() && Eidolons.game.getLoop().getActiveUnit() != ShadowMaster.getShadowUnit()) {
             paused = false;
         }
-        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             super.draw(batch, 1);
-        else
+            drawEmitters(batch);
+        } else
             ShaderDrawer.drawWithCustomShader(this, batch,
                     paused ? GrayscaleShader.getGrayscaleShader() : null, true);
+    }
+
+    private void drawEmitters(Batch batch) {
+        for (GroupWithEmitters emitterGroup : emitterGroups) {
+            emitterGroup.draw(batch, 1f, true);
+        }
+    }
+
+    @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+        if (actor instanceof GroupWithEmitters) {
+            emitterGroups.add((GroupWithEmitters) actor);
+        }
     }
 
     @Override
@@ -420,10 +451,93 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.SHOW_COMMENT_PORTRAIT, p -> {
+            List list = (List) p.get();
+            Unit hero = (Unit) list.get(0);
+           String text = (String) list.get(1);
+            SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
+            commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
+            SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH){
+                @Override
+                public boolean remove() {
+                    getParent().remove(); //TODO could be better.
+                    return super.remove();
+                }
+            };
+            SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
+            commentTextBgSprite.setRotation(RandomWizard.random()? 90 : 270);
+            commentTextBgSprite.setScale(0.5f);
+            commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+            commentTextBgSprite.setPosition(0, -commentBgSprite.getHeight()/4);
+
+//            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
+            commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+            //TODO CACHED??
+            GroupX commentGroup = new NoHitGroup();
+            commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
+            commentGroup.addActor(commentBgSprite);
+            commentGroup.addActor(commentTextBgSprite);
+            commentGroup.addActor(commentSprite);
+            addActor(commentGroup);
+
+            Vector2 v = GridMaster.getCenteredPos(hero.getCoordinates());
+            commentGroup.setPosition(v.x, v.y);
+            ActionMaster.addFadeInAction(commentBgSprite, 2);
+            ActionMaster.addFadeInAction(commentTextBgSprite, 2);
+            ActionMaster.addFadeInAction(commentSprite, 3);
+//            commentSprite.setScale(0.5f);
+            //flip?
+            Coordinates panTo = hero.getCoordinates().getOffsetByY(2);
+            switch (hero.getFacing().flip().rotate(hero.getFacing().flip().isCloserToZero())) {
+                case NORTH:
+                    commentGroup.setY(commentGroup.getY() + ((int) commentGroup.getHeight() / 2));
+                    panTo = panTo.getOffsetByY(-3);
+                    break;
+                case WEST:
+                    commentGroup.setX(commentGroup.getX() - ((int) commentGroup.getWidth() / 2));
+                    panTo = panTo.getOffsetByX(-3);
+                    break;
+                case EAST:
+                    commentGroup.setX(commentGroup.getX() + ((int) commentGroup.getWidth() / 2));
+                    panTo = panTo.getOffsetByX(3);
+                    break;
+                case SOUTH:
+                    commentGroup.setY(commentGroup.getY() - ((int) commentGroup.getHeight() / 2));
+                    panTo = panTo.getOffsetByY(3);
+                    break;
+            }
+//            commentSprite.getSprite().centerOnParent(commentGroup);
+            GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo);
+            commentSprite.setX((int) (commentBgSprite.getWidth() / 2 - commentSprite.getWidth()));
+            commentSprite.setY((int) (commentBgSprite.getHeight()/2-commentSprite.getHeight()));
+            WaitMaster.doAfterWait(4000+text.length()*12, () -> {
+                ActionMaster.addFadeOutAction(commentBgSprite, 4);
+                ActionMaster.addRemoveAfter(commentBgSprite);
+                ActionMaster.addFadeOutAction(commentSprite, 3);
+                ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
+
+//                Gdx.app.postRunnable(()->     commentGroup.fadeOut());
+            });
+            this.commentSprites.add(commentGroup);
+//            Eidolons.on
+        });
         GuiEventManager.bind(GuiEventType.ADD_GRID_OBJ, p -> {
-            GridObject veil = (GridObject) p.get();
-            addActor(veil);
-            getCustomOverlayingObjects().add(veil);
+            GridObject object = (GridObject) p.get();
+            addActor(object);
+            if (object instanceof LinkedGridObject) {
+                if (((LinkedGridObject) object).getLinked() instanceof OverlayView) {
+                    customOverlayingObjectsTop.add(object);
+                    return;
+                } else {
+                    if (((LinkedGridObject) object).getLinked().getUserObject() instanceof Structure) {
+                        if (((Structure) ((LinkedGridObject) object).getLinked().getUserObject()).isWater()) {
+                            customOverlayingObjectsUnder.add(object);
+                            return;
+                        }
+                    }
+                }
+            }
+            getCustomOverlayingObjects().add(object);
         });
         GuiEventManager.bind(HIDE_MAZE, p -> {
             initMaze(true, (MazePuzzle.MazeData) p.get());
@@ -563,8 +677,8 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
-            if (DungeonScreen.isCameraAutoCenteringOn())
-                DungeonScreen.getInstance().centerCameraOn(hero);
+            if (CameraMan.isCameraAutoCenteringOn())
+                DungeonScreen.getInstance().getCameraMan().centerCameraOn(hero);
             if (hero instanceof Unit)
                 AnimConstructor.tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
@@ -1037,6 +1151,10 @@ public class GridPanel extends Group {
                 //                cell.resetZIndices();
             }
         }
+        customOverlayingObjectsUnder.forEach(obj -> {
+            obj.setZIndex(Integer.MAX_VALUE);
+        });
+
         wallMap.setVisible(WallMap.isOn());
         //        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
         //        shards.setZIndex(Integer.MAX_VALUE);
@@ -1047,7 +1165,9 @@ public class GridPanel extends Group {
         customOverlayingObjects.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });
-
+        customOverlayingObjectsTop.forEach(obj -> {
+            obj.setZIndex(Integer.MAX_VALUE);
+        });
         manipulators.forEach(manipulator -> {
             manipulator.setZIndex(Integer.MAX_VALUE);
         });
@@ -1068,6 +1188,9 @@ public class GridPanel extends Group {
 
         overlayManager.setZIndex(Integer.MAX_VALUE);
 
+        for (GroupX groupX : commentSprites) {
+            groupX.setZIndex(Integer.MAX_VALUE);
+        }
         animMaster.setZIndex(Integer.MAX_VALUE);
     }
 
@@ -1081,6 +1204,8 @@ public class GridPanel extends Group {
         view.setBounds((float) dimension.getWidth() + calcXOffset
                 , (float) dimension.getHeight() + calcYOffset
                 , width, height);
+        view.setOffsetX(dimension.getWidth());
+        view.setOffsetY(dimension.getHeight());
         addActor(view);
         overlays.add(view);
     }
@@ -1128,5 +1253,13 @@ public class GridPanel extends Group {
     public GridManager getGridManager() {
         return manager;
 
+    }
+
+    public DC_Cell getCell(int i, int i1) {
+        try {
+            return cells[i][i1].getUserObject();
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

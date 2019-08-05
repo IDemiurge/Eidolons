@@ -49,6 +49,10 @@ public class EidolonsGame {
         completionMap.put(stage, true);
     }
 
+    public static boolean isLordPanelEnabled() {
+        return !BRIDGE;
+    }
+
     public enum TUTORIAL_STAGE {
 
         alert,

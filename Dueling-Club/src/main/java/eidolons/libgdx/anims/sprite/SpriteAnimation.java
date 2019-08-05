@@ -26,6 +26,7 @@ import java.util.Arrays;
  */
 public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
+    private   TextureAtlas atlas;
     private float originalFps;
     public float x;
     public float y;
@@ -46,7 +47,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private PlayMode originalPlayMode;
     private boolean flipX;
     private boolean flipY;
-    private Color color;
+    private Color color= new Color(1,1,1,1);
     private Float scale;
     private boolean customAct;
     private float speed;
@@ -70,6 +71,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public SpriteAnimation(float frameDuration, boolean backAndForth, TextureAtlas atlas) {
         this(frameDuration, backAndForth, SpriteAnimationFactory.getSpriteRegions(backAndForth, atlas));
+        this.atlas=atlas;
     }
 
     public SpriteAnimation(float frameDuration, boolean looping, TextureAtlas atlas, String name) {
@@ -151,7 +153,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         boolean resetBlending = false;
         if (blending != null)
-            if (batch instanceof CustomSpriteBatch) {
+//            if (batch instanceof CustomSpriteBatch)
+            {
 //                if ((((CustomSpriteBatch) batch).getBlending() != blending))
                 {
                     ((CustomSpriteBatch) batch).setBlending(blending);
@@ -161,7 +164,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         boolean result = drawThis(batch);
 
         if (resetBlending)
-            if (batch instanceof CustomSpriteBatch) {
+//            if (batch instanceof CustomSpriteBatch)
+            {
                 ((CustomSpriteBatch) batch).resetBlending();
             }
         return result;
@@ -255,7 +259,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                 + (int)(offsetY
                 - currentFrame.getRegionHeight() / 2));
 
-        if (color != null)
+//        if (color != null)
             sprite.setColor(color);
         if (!batch.isDrawing()) {
             batch.begin();
@@ -544,4 +548,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         FREEZE_WHEN_LOOPS_DONE,
     }
 
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
 }

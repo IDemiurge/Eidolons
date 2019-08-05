@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.module.dungeoncrawl.objects.InscriptionMaster;
 import eidolons.game.module.dungeoncrawl.objects.KeyMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
@@ -13,11 +15,16 @@ import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import main.game.bf.directions.DIRECTION;
 
-public class OverlayView extends BaseView implements HpBarView{
+public class OverlayView extends BaseView implements HpBarView {
     public static final float SCALE = 0.5F;
     private DIRECTION direction;
     HpBar hpBar;
-    public void resetHpBar( ) {
+    private double offsetX;
+    private double offsetY;
+    private Float origX;
+    private Float origY;
+
+    public void resetHpBar() {
         if (getHpBar() == null)
             setHpBar(createHpBar());
         getHpBar().reset();
@@ -28,11 +35,6 @@ public class OverlayView extends BaseView implements HpBarView{
         return bar;
     }
 
-    @Override
-    public void init(UnitViewOptions o) {
-        super.init(o);
-
-    }
 
     public HpBar getHpBar() {
         return hpBar;
@@ -58,6 +60,50 @@ public class OverlayView extends BaseView implements HpBarView{
         if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {
             addActor(hpBar);
         }
+        if (origX == null) {
+            origX = getX();
+        }
+        if (origY == null) {
+            origY = getY();
+        }
+        for (SpriteX spriteX : underlaySprites) {
+            spriteX.getSprite().setOffsetX(getOffsetX());
+            spriteX.getSprite().setOffsetY(getOffsetY());
+        }
+        for (SpriteX spriteX : overlaySprites) {
+            spriteX.setScale(1);
+//            if (getWidth() >=128 )
+//                spriteX.getSprite().setOffsetX(getWidth()/ 2);
+//            else
+            switch ((int)getWidth()) {
+                case 64:
+                    spriteX.getSprite().setOffsetX(getWidth());
+                    break;
+                case 128:
+                    spriteX.getSprite().setOffsetX(getWidth()/2);
+                    break;
+                case 84:
+                    spriteX.getSprite().setOffsetX(getWidth()/3*2+6);
+                    break;
+            }
+            spriteX.getSprite().setOffsetY(getHeight() / 2);
+            spriteX.setX(getX() - origX - spriteX.getWidth()/4);
+            spriteX.setY(getY() - origY);
+            spriteX.setZIndex(342354);
+        }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        for (SpriteX spriteX : overlaySprites) {
+            spriteX.setBlending(BLENDING.SCREEN);
+        }
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public void setScale(float scaleXY) {
+        super.setScale(scaleXY);
     }
 
     public OverlayView(UnitViewOptions viewOptions, BattleFieldObject bfObj) {
@@ -66,15 +112,15 @@ public class OverlayView extends BaseView implements HpBarView{
             portrait.remove();
         portrait = new FadeImageContainer(new Image(viewOptions.getPortraitTexture()));
         addActor(portrait);
-
 //        ValueTooltip tooltip = new ValueTooltip();
 //        tooltip.setUserObject(Arrays.asList(new ValueContainer(viewOptions.getName(), "")));
 //         addListener(tooltip.getController());
-
         final UnitViewTooltip tooltip = new UnitViewTooltip(this);
         tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         addListener(tooltip.getController());
         addListener(UnitViewFactory.createListener(bfObj));
+
+        initSprite(viewOptions);
     }
 
     @Override
@@ -95,11 +141,6 @@ public class OverlayView extends BaseView implements HpBarView{
         return super.hit(x, y, touchable) != null ? this : null;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
-
     public DIRECTION getDirection() {
         return direction;
     }
@@ -109,9 +150,28 @@ public class OverlayView extends BaseView implements HpBarView{
     }
 
     public float getScale() {
-      if( KeyMaster.isKey(getUserObject()) ){
+        if (getUserObject().getName().contains("Inscription")) {
+            return 0.66f;
+        }
+        if (KeyMaster.isKey(getUserObject())) {
             return 0.66f;
         }
         return OverlayView.SCALE;
+    }
+
+    public void setOffsetX(double offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public float getOffsetX() {
+        return (float) offsetX;
+    }
+
+    public void setOffsetY(double offsetY) {
+        this.offsetY = offsetY;
+    }
+
+    public float getOffsetY() {
+        return (float) offsetY;
     }
 }

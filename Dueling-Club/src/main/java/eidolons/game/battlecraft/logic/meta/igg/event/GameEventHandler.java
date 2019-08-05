@@ -61,7 +61,7 @@ public class GameEventHandler extends MetaGameHandler {
                     getMaster().getShadowMaster().victory(event);
 //                    getMaster().getDefeatHandler()
                     break;
-                case GAME_STARTED:
+                case INTRO_FINISHED:
 
                     TipMessageMaster.welcome();
                     break;

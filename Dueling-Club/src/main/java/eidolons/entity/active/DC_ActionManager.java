@@ -319,12 +319,20 @@ public class DC_ActionManager implements ActionManager {
 
     public DC_ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
 
-
+        typeName = typeName.trim();
         if (actionsCache.get(entity) == null) {
             actionsCache.put(entity, new HashMap<>());
         }
         ActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {
+
+            if (entity instanceof Unit) {
+                action = ((Unit) entity).getSpell(typeName);
+                if (action != null) {
+                    return (DC_ActiveObj) action;
+                }
+            }
+
             if (onlyIfAlreadyPresent) {
                 if (!StringMaster.contains(entity.getProperty(G_PROPS.ACTIVES), typeName)) {
                     return null;

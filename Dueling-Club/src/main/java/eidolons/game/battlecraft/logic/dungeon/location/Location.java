@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
@@ -117,7 +116,7 @@ public class Location extends DungeonWrapper {
     public void initEntrances() {
 
         if (StringMaster.isEmpty(entranceData)) {
-            entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
+            entranceData = getProperty(PROPS.ENTRANCE_COORDINATES, true);
         }
         if (StringMaster.isEmpty(entranceData)) {
             return;

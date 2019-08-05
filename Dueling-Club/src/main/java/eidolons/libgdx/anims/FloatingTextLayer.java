@@ -81,6 +81,8 @@ public class FloatingTextLayer extends GroupX {
         queued.remove(text);
         displaying.add(text);
 
+        text.added();
+
     }
 
     public static Float getDurationMod() {

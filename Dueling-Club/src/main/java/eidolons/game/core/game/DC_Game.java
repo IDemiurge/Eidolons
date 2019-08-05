@@ -72,6 +72,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
+import main.game.logic.event.Event;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -312,6 +313,10 @@ public class DC_Game extends GenericGame {
 
         }
         visionMaster.refresh();
+        getMetaMaster().getDialogueManager().introDialogue();
+        getMetaMaster().getDialogueManager().afterDialogue(()->{
+            fireEvent(new Event(Event.STANDARD_EVENT_TYPE.INTRO_FINISHED, new Ref()));
+        });
         startGameLoop(first);
         getManager().reset();
 

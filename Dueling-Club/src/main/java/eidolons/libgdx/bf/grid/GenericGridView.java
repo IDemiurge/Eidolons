@@ -1,10 +1,13 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
@@ -32,8 +35,9 @@ public class GenericGridView extends UnitView {
     protected FadeImageContainer torch;
     private boolean stackView;
 
-    public GenericGridView(UnitViewOptions o) {
+    public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
+        setUserObject(obj);
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture(), o.getEmblem());
         cellBackground = o.cellBackground;
         setVisible(false);
@@ -51,7 +55,8 @@ public class GenericGridView extends UnitView {
                 emblemLighting.setColor(getTeamColor());
         }
         if (arrow != null) {
-            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
+            arrow.setPosition(getWidth() / 2 //- arrow.getWidth() / 2
+                    , 0);
 //            arrow.setRotation(arrowRotation);
         }
 
@@ -225,6 +230,12 @@ public class GenericGridView extends UnitView {
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
+        if (((FileTextureData)textureRegion.getTexture().getTextureData()).getFileHandle().name().toLowerCase().
+                contains("unknown")) {
+            if (getUserObject().isWater()) {
+                return;
+            }
+        }
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 

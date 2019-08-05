@@ -8,6 +8,7 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
@@ -22,6 +23,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -61,6 +63,7 @@ public class Ref implements Cloneable, Serializable {
     protected boolean animationDisabled; // outdated phase anim flag...
     private boolean clone;
     private boolean original;
+    private Set<Coordinates> area;
 
     public Ref() {
         this.game = Game.game;
@@ -378,7 +381,7 @@ public class Ref implements Cloneable, Serializable {
     public void setTarget(Integer this_target) {
         setID(KEYS.TARGET, this_target);
         if (original && !isClone() && getSource()!=null ) {
-            main.system.auxiliary.log.LogMaster.log(1,">>>> target set for original ref? => \n " +this);
+            LogMaster.log(1,">>>> target set for original ref? => \n " +this);
         }
     }
 
@@ -617,6 +620,14 @@ public class Ref implements Cloneable, Serializable {
 
     public boolean isClone() {
         return clone;
+    }
+
+    public Set<Coordinates> getArea() {
+        return area;
+    }
+
+    public void setArea(Set<Coordinates> area) {
+        this.area = area;
     }
 
     public enum KEYS {

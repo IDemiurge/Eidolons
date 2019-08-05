@@ -122,6 +122,7 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
                 return true;
             case Keys.F1:
+                if (!CoreEngine.isIDE())
                 if (!EidolonsGame.isHqEnabled()) {
                     return false;
                 }

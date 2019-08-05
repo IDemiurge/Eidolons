@@ -1,8 +1,10 @@
 package eidolons.game.battlecraft.logic.meta.igg.xml;
 
+import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.RngLocationBuilder;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -243,7 +245,7 @@ public class IGG_XmlMaster {
     public static String getDialogueData(String levelName) {
         return "sentries=aggro;";
     }
-        public static String getEntrancesData(String levelName) {
+        public static String getEntrancesData(Location location, String levelName) {
         if (EidolonsGame.BOSS_FIGHT) { //TODO boss fix
             return "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
         }
@@ -252,7 +254,10 @@ public class IGG_XmlMaster {
 //        }
         if (EidolonsGame.BRIDGE) {
 //            return "Ash Vault(48-21);The Light(9-1)";
-            return "Ash Vault(23-26);The Light(9-1)";
+            return "Ash Vault(" +
+                    location.getProperty(PROPS.ENTRANCE_COORDINATES) +
+                    ");The Light(9-1)";
+//            return "Ash Vault(23-26);The Light(9-1)";
 //            return "Blackness(0-15);The Light(20-1)";
         } else if (EidolonsGame.TUTORIAL_MISSION) {
             return "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";

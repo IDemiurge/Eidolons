@@ -39,7 +39,7 @@ import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
-import static eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE.*;
+import static eidolons.game.battlecraft.logic.meta.igg.event.TIP.*;
 
 public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 

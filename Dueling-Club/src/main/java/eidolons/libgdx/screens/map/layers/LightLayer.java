@@ -45,7 +45,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     public static String getPath() {
         return
-         StrPathBuilder.build("global", "map", "layers", "light") + PathUtils.getPathSeparator();
+                StrPathBuilder.build("global", "map", "layers", "light") + PathUtils.getPathSeparator();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
             for (int i = 0; i < sub.maxCount; i++) {
 
                 LightContainer container = new LightContainer(getPath()
-                 + sub.name().replace("_", " ") + ".png", sub);
+                        + sub.name().replace("_", " ") + ".png", sub);
                 container.setAlphaTemplate(sub.alphaTemplate);
                 for (DAY_TIME time : sub.times)
                     MapMaster.addToListMap(map, time, container);
@@ -74,7 +74,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     protected void addLight(LIGHT_LAYER sub) {
         LightContainer container = new LightContainer(getPath()
-         + sub.name().replace("_", " ") + ".png", sub);
+                + sub.name().replace("_", " ") + ".png", sub);
 //        container.setAlphaTemplate(sub.alphaTemplate);
 
         adjust(container);
@@ -105,7 +105,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     @Override
     protected void spawnLayer() {
         setVisible(!OptionsMaster.getGraphicsOptions().
-         getBooleanValue(GRAPHIC_OPTION.LIGHT_OVERLAYS_OFF));
+                getBooleanValue(GRAPHIC_OPTION.LIGHT_OVERLAYS_OFF));
 
         if (uiStage)
             setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
@@ -136,10 +136,10 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         float y, x = 0;
         if (container.lightLayer.vertical) {
             x = getWidth() / 3 +
-             RandomWizard.getRandomInt((int) getWidth() / 3) - container.getWidth() / 2;
+                    RandomWizard.getRandomInt((int) getWidth() / 3) - container.getWidth() / 2;
             y = getHeight() -
-             RandomWizard.getRandomFloatBetween(100,
-              container.getContent().getScaleY() * container.getHeight() - 100);
+                    RandomWizard.getRandomFloatBetween(100,
+                            container.getContent().getScaleY() * container.getHeight() - 100);
             flipX = RandomWizard.random();
         } else {
             flipX = time == DAY_TIME.DUSK;
@@ -147,28 +147,30 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
                 flipX = RandomWizard.random();
             }
             x = flipX ? -container.getWidth() / 3 -
-             RandomWizard.getRandomInt((int) container.getWidth() / 3) :
-             getWidth() - container.getWidth() / 2.25f
-              - RandomWizard.getRandomInt((int) (container.getWidth() / 2));
+                    RandomWizard.getRandomInt((int) container.getWidth() / 3) :
+                    getWidth() - container.getWidth() / 2.25f
+                            - RandomWizard.getRandomInt((int) (container.getWidth() / 2));
             y =
-             RandomWizard.getRandomInt((int) getHeight());
+                    RandomWizard.getRandomInt((int) getHeight());
         }
         container.setFlipX(flipX);
         container.setPosition(x, y);
 
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
-        if (container.lightLayer.emitterPaths != null) {
-            for (String sub : container.lightLayer.emitterPaths) {
-                EmitterActor emitter = new EmitterActor(sub);
-                container.addActor(emitter);
-                emitter.setPosition(container.getWidth() / 2,
-                 GdxMaster.getHeight() - 25);
-                emitter.setSpeed(0.5f);
-                emitter.start();
-                emitter.getEffect().getEmitters().get(0).scaleSize(container.getScaleX() + 0.25f);
+            if (container.lightLayer.emitterPaths != null) {
+                for (String sub : container.lightLayer.emitterPaths) {
+                    EmitterActor emitter = new EmitterActor(sub);
+                    container.addActor(emitter);
+                    emitter.setPosition(container.getWidth() / 2,
+                            GdxMaster.getHeight() - 25);
+                    emitter.setSpeed(0.5f);
+                    emitter.start();
+                    if (emitter.getEffect().getEmitters().size > 0) {
+                        emitter.getEffect().getEmitters().get(0).scaleSize(container.getScaleX() + 0.25f);
+                    }
+                }
+                container.getContent().setZIndex(0);
             }
-            container.getContent().setZIndex(0);
-        }
     }
 
     @Override
@@ -189,13 +191,13 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     public Boolean isAdditive() {
         if (additive == null) {
-            additive=OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADDITIVE_LIGHT);
+            additive = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.ADDITIVE_LIGHT);
         }
         return additive;
     }
 
     public static void setAdditive(Boolean b) {
-         additive = b;
+        additive = b;
     }
 
 
@@ -211,7 +213,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         LIGHT_SPREAD(5, Fluctuating.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
 
         VERTICAL_MOONLIGHT(0.4f, -0.15f, 6, Fluctuating.ALPHA_TEMPLATE.MOONLIGHT, true,
-         DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT),
+                DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT),
 
         VERTICAL_LIGHT(1f, -0.25f, 5, Fluctuating.ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.MIDDAY, DAY_TIME.MORNING),
 //        VERTICAL_LIGHT_LARGE_GOLDEN(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK),
@@ -230,7 +232,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         private float scaleRange = 0.15f;
 
         LIGHT_LAYER(float delay, float scaleRange, int maxCount, ALPHA_TEMPLATE alphaTemplate, boolean vertical, DAY_TIME... times) {
-            this.delay = delay*1.5f;
+            this.delay = delay * 1.5f;
             this.scaleRange = scaleRange;
             this.maxCount = maxCount;
             this.alphaTemplate = alphaTemplate;

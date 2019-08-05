@@ -277,6 +277,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         for (Coordinates c : coordinates) {
             list.add(getCellByCoordinate(c));
         }
+        list.removeIf(c -> c == null);
         return list;
     }
 

@@ -5,7 +5,7 @@ import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster.TIP_MESSAGE;
+import eidolons.game.battlecraft.logic.meta.igg.event.TIP;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
 import main.content.ContentValsManager;
 import main.content.VALUE;
@@ -148,7 +148,7 @@ public class DescriptionTooltips {
                 paramMap.put(val, value);
             } else {
 
-                TIP_MESSAGE tip = new EnumMaster<TIP_MESSAGE>().retrieveEnumConst(TIP_MESSAGE.class, name);
+                TIP tip = new EnumMaster<TIP>().retrieveEnumConst(TIP.class, name);
                 if (map != null) {
                     map.put(name.toLowerCase(), value);
                     continue;

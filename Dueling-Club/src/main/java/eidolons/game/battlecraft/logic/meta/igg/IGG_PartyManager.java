@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
+import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
@@ -151,6 +152,10 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
     }
 
     private Coordinates getRespawnCoordinates(ObjType type) {
+        if (EidolonsGame.BRIDGE){
+            return getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates();
+//            return SoulforceMaster.getLastRespPoint();
+        }
         if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION) {
             return Positioner.adjustCoordinate(type,
                     getParty().getLastHero().getCoordinates(), getParty().getLastHero().getFacing().flip());

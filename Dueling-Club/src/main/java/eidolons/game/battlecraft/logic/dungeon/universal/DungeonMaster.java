@@ -123,6 +123,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             if (portalMaster.addPortal(coordinate, data)){
                 continue;
             }
+            if (KeyMaster.addCustomKey(coordinate, data)){
+                continue;
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.decor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
@@ -11,6 +12,8 @@ import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_TYPE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.DIRECTION;
@@ -156,15 +159,81 @@ public class Shard extends SuperActor {
     public void act(float delta) {
         if (isIgnored())
             return;
-        setDebug(false);
+        if (getUserObject()!=null)
+         resetColor();
+
         super.act(delta);
+    }
+
+    private void resetColor() {
+//        DC_Cell cell = (DC_Cell) getUserObject();
+//        setDebug(cell.isPlayerHasSeen());
+//        if (!cell.isPlayerHasSeen()) {
+//            if (foreground != null) {
+//                foreground. setColor(0.6f,0.6f,0.6f,1f);
+//            }
+//            if (background != null) {
+//            background. setColor(0.6f,0.6f,0.6f,1f);
+//            }
+//        }
+//        else {
+//            setColor(1f,1f,1f,1f);
+//        }
+//        switch (cell.getPlayerVisionStatus()) {
+//            case DETECTED:
+//                break;
+//            case KNOWN:
+//                break;
+//            case UNKNOWN:
+//                break;
+//            case CONCEALED:
+//                break;
+//            case INVISIBLE:
+//                break;
+//            case INVISIBLE_ALLY:
+//                break;
+//        }
+//        switch (cell.getVisibilityLevel()) {
+//
+//            case CLEAR_SIGHT:
+//                break;
+//            case OUTLINE:
+//                break;
+//            case VAGUE_OUTLINE:
+//                break;
+//            case CONCEALED:
+//                break;
+//            case BLOCKED:
+//                break;
+//            case UNSEEN:
+//                break;
+//        }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (isIgnored())
-            return;
-        super.draw(batch, parentAlpha);
+
+        if (getUserObject()==null || parentAlpha == ShaderDrawer.SUPER_DRAW
+//         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
+        ) {
+            super.draw(batch, 1);
+        } else {
+            if (isIgnored())
+                return;
+//            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)
+            ShaderDrawer.drawWithCustomShader(this,
+                    batch,
+                    !getUserObject().isPlayerHasSeen() ?
+                            DarkShader.getDarkShader()
+//             FishEyeShader.getShader()
+                            : null, true);
+        }
+//        super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public DC_Cell getUserObject() {
+        return (DC_Cell) super.getUserObject();
     }
 
     public SHARD_TYPE getType() {

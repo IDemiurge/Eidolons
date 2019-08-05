@@ -18,6 +18,7 @@ public class DialogueSyntax {
     // That's it![mods][[reqs]][[[script]]]
     // named scripts?
     // [trust:-5;esteem:10]
+    public static final String META_DATA_SEPARATOR= "||";
     public static final String PARAM_MOD = "[";
     public static final String PARAM_MOD_CLOSE = "]";
 //    public static final String REQS = "[[";
@@ -26,6 +27,8 @@ public class DialogueSyntax {
     public static final String SCRIPT_CLOSE = "]]";
     public static final String item_separator = ";";
     public static final String pair_separator = ":";
+    private static final String TIME = "time=";
+    private static final String TIME_CLOSE = ".";
 
     public static Abilities getAbilities(String text) {
         if (!text.contains(PARAM_MOD))
@@ -57,18 +60,6 @@ public class DialogueSyntax {
         return e;
     }
 
-    public static String getRawText(String text) {
-        text = text.replace("" + Character.toChars(65533)[0], "'");
-        if (text.contains(PARAM_MOD)) {
-            try {
-                return text.substring(0, text.indexOf(PARAM_MOD));
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-
-        return text;
-    }
 
     public static Condition getConditions(String text) {
         if (!text.contains(PARAM_MOD))
@@ -85,8 +76,19 @@ public class DialogueSyntax {
         if (to < 1) {
             return "";
         }
-        return text.substring(from+1, to-1);
+        return text.substring(from+2, to);
     }
 
 
+    public static Integer getTime(String text) {
+        int from = text.lastIndexOf(TIME);
+        if (from < 0) {
+            return null ;
+        }
+        int to = text.indexOf(TIME_CLOSE);
+        if (to < 1) {
+            return null ;
+        }
+        return Integer.valueOf(text.substring(from +TIME.length() , to ));
+    }
 }

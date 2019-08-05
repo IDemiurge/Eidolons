@@ -31,6 +31,7 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.GuiVisualEffects;
+import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
@@ -160,22 +161,22 @@ public class OptionsMaster {
                 //                        InputController.setDragOff(booleanValue);
                 //                        break;
                 case AUTO_CENTER_CAMERA_ON_HERO:
-                    DungeonScreen.setCameraAutoCenteringOn(booleanValue);
+                    CameraMan.setCameraAutoCenteringOn(booleanValue);
                     break;
                 case ALT_MODE_ON:
                     BattleClickListener.setAltDefault(booleanValue);
                     break;
                 case CENTER_CAMERA_ON_ALLIES_ONLY:
-                    DungeonScreen.setCenterCameraOnAlliesOnly(booleanValue);
+                    CameraMan.setCenterCameraOnAlliesOnly(booleanValue);
                     break;
                 case CENTER_CAMERA_AFTER_TIME:
                     if (DungeonScreen.getInstance() == null) {
                         break;
                     }
-                    DungeonScreen.getInstance().setCameraTimer(intValue);
+                    DungeonScreen.getInstance().getCameraMan(). setCameraTimer(intValue);
                     break;
                 case CENTER_CAMERA_DISTANCE_MOD:
-                    GameScreen.setCameraPanMod(floatValue);
+                    CameraMan.setCameraPanMod(floatValue);
                     break;
             }
         }

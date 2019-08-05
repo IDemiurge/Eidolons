@@ -30,9 +30,9 @@ public class WeaveScreen extends GameScreen {
 
     @Override
     protected void preLoad() {
-        cam =new OrthographicCamera();
+        setCam(new OrthographicCamera());
          background = new FadeImageContainer(Images.WEAVE_BACKGROUND);
-        space = new WeaveSpace(cam);
+        space = new WeaveSpace(getCam());
 //        new FillViewport(GdxMaster.getWidth(),
 //         GdxMaster.getHeight(),  new OrthographicCamera())
         ui = new WeaveUi(new ScreenViewport(), getBatch());
@@ -47,7 +47,7 @@ public class WeaveScreen extends GameScreen {
         if (inputController == null)
             inputController =
              new InputMultiplexer(
-              new WeaveInputController(cam),
+              new WeaveInputController(getCam()),
               ui, space,
               new WeaveKeyController());
         return inputController;

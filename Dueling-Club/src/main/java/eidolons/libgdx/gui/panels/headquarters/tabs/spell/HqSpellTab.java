@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
+import eidolons.game.battlecraft.logic.meta.igg.event.TIP;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
@@ -58,7 +59,7 @@ public class HqSpellTab extends HqElement {
     }
 
     private void showHelpInfo() {
-        TipMessageMaster.tip(true, TipMessageMaster.TIP_MESSAGE.LIBRARY);
+        TipMessageMaster.tip(true, TIP.LIBRARY);
     }
 
     @Override

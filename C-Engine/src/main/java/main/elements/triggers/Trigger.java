@@ -65,16 +65,16 @@ public class Trigger {
         if (abilities==null )
             return true;
         abilities.setForceTargeting(forceTargeting);
-        if (isRemoveAfterTriggers()) {
-            remove();
-        }
-        Ref REF = abilities.getRef().getCopy();
+
+        Ref REF = getRef(event).getCopy();
         REF.setEvent(event);
         boolean result = abilities.activatedOn(REF);
         if (result && game.isStarted()) {
             // if (
             game.getManager().checkForChanges(true);
             // game.getManager().refreshAll();
+        } if (isRemoveAfterTriggers(result)) {
+            remove();
         }
         return result;
 
@@ -175,7 +175,7 @@ public class Trigger {
         game.getState().removeTrigger(this);
     }
 
-    public boolean isRemoveAfterTriggers() {
+    public boolean isRemoveAfterTriggers(boolean result) {
         return removeAfterTriggers;
     }
 

@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
+import main.data.ability.construct.VariableManager;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
@@ -64,10 +65,16 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
         if (val.contains(DUNGEON_SCRIPT_SEPARATOR)) {
             String type = val.split(DUNGEON_SCRIPT_SEPARATOR)[0].toLowerCase();
             String arg = val.split(DUNGEON_SCRIPT_SEPARATOR)[1].toLowerCase();
+            String vars = VariableManager.getVars(arg);
+            arg = VariableManager.removeVarPart(arg);
             switch (type) {
+                case "comment":
+                    return "pos(" + c.toString() + ")>mainHero()>" +
+                            type + "(" + vars + "," + arg +
+                            ")";
                 case "tip":
-                    return "pos(" + c.toString() + ")>mainHero()>tip(" +
-                            arg + ")";
+                    return "pos(" + c.toString() + ")>mainHero()>" +
+                            type + "(" + arg + ")";
                 case "tip_dialogue ":
                 case "dialogue_tip":
                 case "dialogue":

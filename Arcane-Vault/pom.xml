@@ -69,7 +69,7 @@
 
         <dependency>
             <groupId>eidolons</groupId>
-            <artifactId>battlecraft-duelingclub</artifactId>
+            <artifactId>eidolons</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

@@ -153,7 +153,6 @@ public class ActionMaster {
 
         AlphaAction action = (AlphaAction) getAction(
                 alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
-
         action.setAlpha(alpha);
         action.setDuration(dur);
         action.setTarget(actor);
@@ -164,7 +163,8 @@ public class ActionMaster {
 //                return null;
                 if (alpha >= 1f)
                     actor.getColor().a = 0;
-                else actor.getColor().a = 1;
+                else
+                    actor.getColor().a = 1;
 
             }
             actor.addAction(action);

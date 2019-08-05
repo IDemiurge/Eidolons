@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
@@ -46,6 +47,7 @@ public class ActionPanel extends GroupX {
     private static final String BOTTOM_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "bottom overlay.png");
     private final ImageContainer orbOverlay;
     private final ImageContainer bottomOverlay;
+    private final Vector2 spellsPos;
     protected OrbsPanel leftOrbPanel;
     protected OrbsPanel rigthOrbPanel;
     protected QuickSlotPanel quickSlotPanel;
@@ -80,6 +82,7 @@ public class ActionPanel extends GroupX {
         spellPanel = new SpellPanel(IMAGE_SIZE);
         final float spellOffset = SPELL_OFFSET_X + actionOffset + (IMAGE_SIZE * 6) + 5;
         spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
+        spellsPos = new Vector2(spellPanel.getX(), spellPanel.getY());
         addActor(spellPanel);
 
 
@@ -174,8 +177,8 @@ public class ActionPanel extends GroupX {
 
     @Override
     public void setX(float x) {
-        if (defaultX==null) {
-            defaultX=x;
+        if (defaultX == null) {
+            defaultX = x;
         }
         super.setX(x);
     }
@@ -267,9 +270,14 @@ public class ActionPanel extends GroupX {
         altBg = EidolonsGame.isAltControlPanel();
         background.setImage(altBg ? BACKGROUND_PATH_ALT : BACKGROUND_PATH);
         if (altBg) {
-            if (!EidolonsGame.isSpellsEnabled())
-            if (spellPanel.getColor().a == 1)
-                spellPanel.fadeOut();
+            if (!EidolonsGame.isSpellsEnabled()) {
+                if (spellPanel.getColor().a == 1)
+                    spellPanel.fadeOut();
+            } else {
+                spellPanel.setPosition(modeActionsPanel.getX(), modeActionsPanel.getY());
+            }
+
+
             if (modeActionsPanel.getColor().a == 1)
                 modeActionsPanel.fadeOut();
             if (quickSlotPanel.getColor().a == 1)
@@ -278,8 +286,8 @@ public class ActionPanel extends GroupX {
                 orbOverlay.fadeOut();
             spellbookBtn.setVisible(false);
             invBtn.setVisible(false);
-        }
-        else {
+        } else {
+                spellPanel.setPosition(spellsPos.x , spellsPos.y);
             if (spellPanel.getColor().a == 0)
                 spellPanel.fadeIn();
             if (modeActionsPanel.getColor().a == 0)
@@ -292,15 +300,15 @@ public class ActionPanel extends GroupX {
             spellbookBtn.setVisible(true);
             invBtn.setVisible(true);
 
-        if (quickSlotPanel.isHovered() ||
-                spellPanel.isHovered() ||
-                modeActionsPanel.isHovered()
-        ) {
-            //TODO while hovering, don't update!!!
-            BaseSlotPanel.hoveredAny = true;
-        } else {
-            BaseSlotPanel.hoveredAny = false;
-        }
+            if (quickSlotPanel.isHovered() ||
+                    spellPanel.isHovered() ||
+                    modeActionsPanel.isHovered()
+            ) {
+                //TODO while hovering, don't update!!!
+                BaseSlotPanel.hoveredAny = true;
+            } else {
+                BaseSlotPanel.hoveredAny = false;
+            }
         }
         spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
                 2);

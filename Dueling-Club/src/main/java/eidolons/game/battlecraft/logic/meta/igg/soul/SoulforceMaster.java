@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 
 /**
  * Shadow action costs?
@@ -22,8 +23,18 @@ import main.entity.type.ObjType;
  */
 public class SoulforceMaster extends MetaGameHandler {
 
+    private static Coordinates lastRespPoint;
+
     public SoulforceMaster(MetaGameMaster master) {
         super(master);
+    }
+
+    public static Coordinates getLastRespPoint() {
+        return lastRespPoint;
+    }
+
+    public static void setLastRespPoint(Coordinates lastRespPoint) {
+        SoulforceMaster.lastRespPoint = lastRespPoint;
     }
 
     /**

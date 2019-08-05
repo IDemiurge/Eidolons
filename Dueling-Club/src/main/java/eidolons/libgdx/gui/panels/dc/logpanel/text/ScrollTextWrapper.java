@@ -25,6 +25,8 @@ public class ScrollTextWrapper extends TablePanelX {
     private int fontSize;
     private FONT fontStyle;
     private Image bg;
+    private boolean scrollToBottom;
+    private int timer;
 
     public ScrollTextWrapper(float defaultHeight, float defaultWidth) {
         this.defaultHeight = defaultHeight;
@@ -170,10 +172,22 @@ public class ScrollTextWrapper extends TablePanelX {
 
     @Override
     public void act(float delta) {
+        if (scrollToBottom) {
+//            scroll.scrollPane.setScrollY(scroll.scrollPane.getActor().getHeight() + 1100);
+            scrollPanel.getScroll().setScrollPercentY(1);
+            if (scrollPanel.getScroll(). getVisualScrollY() >= scrollPanel.getScroll().getMaxY()) {
+                timer++;
+                if (timer >= 10) {
+                    scrollToBottom = false;
+                    timer = 0;
+                }
+            }
+        }
         super.act(delta);
         if (updatePos) {
             updateAct();
             updatePos = false;
+            scrollToBottom = true;
         }
     }
 

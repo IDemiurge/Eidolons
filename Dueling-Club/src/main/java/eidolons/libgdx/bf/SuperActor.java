@@ -249,6 +249,8 @@ public abstract class SuperActor extends Fluctuating implements Borderable {
     }
 
     public enum BLENDING {
+        INVERT_SCREEN(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        PREMULTIPLIED_ALPHA(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
         SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
         OVERLAY(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
         MULTIPLY(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),

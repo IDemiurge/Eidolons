@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
-import main.ability.Ability;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.logic.event.Event;
@@ -44,7 +43,7 @@ public class PuzzleTrigger extends Trigger {
         return super.check(event);
     }
     @Override
-    public boolean isRemoveAfterTriggers() {
+    public boolean isRemoveAfterTriggers(boolean result) {
         switch (type) {
             case ENTER:
                 break;
@@ -55,7 +54,7 @@ public class PuzzleTrigger extends Trigger {
             case SOLVE:
                 break;
         }
-        return super.isRemoveAfterTriggers();
+        return super.isRemoveAfterTriggers(result);
     }
 
     @Override

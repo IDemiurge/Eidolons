@@ -371,7 +371,7 @@ public class HitAnim extends ActionAnim {
                 break;
 
         }
-        return null;
+        return new Color(1,1,1,1);
     }
 
     private SPRITE_TYPE getSpriteType(BattleFieldObject targetObj) {

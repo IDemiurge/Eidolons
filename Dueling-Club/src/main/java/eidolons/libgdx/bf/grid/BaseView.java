@@ -11,7 +11,6 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
@@ -25,8 +24,8 @@ public class BaseView extends SuperActor {
     protected TextureRegion originalTextureAlt;
     protected FadeImageContainer portrait;
     private Image altPortrait;
-    protected  List<SpriteX> overlaySprite;
-    protected List<SpriteX> underlaySprite;
+    protected  List<SpriteX> overlaySprites;
+    protected List<SpriteX> underlaySprites;
     protected boolean forceTransform;
 
     public BaseView(UnitViewOptions o) {
@@ -42,17 +41,17 @@ public class BaseView extends SuperActor {
     }
 
     protected void initSprite(UnitViewOptions o) {
-        overlaySprite = SpriteMaster.getSpriteForUnit(o.getObj(), true);
-        if (overlaySprite != null) {
-            for (SpriteX spriteX : overlaySprite) {
+        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true);
+        if (overlaySprites != null) {
+            for (SpriteX spriteX : overlaySprites) {
                 addActor(spriteX);
                 forceTransform = true;
             }
         }
 
-        underlaySprite = SpriteMaster.getSpriteForUnit(o.getObj(), false);
-        if (underlaySprite != null) {
-            for (SpriteX spriteX : underlaySprite) {
+        underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false);
+        if (underlaySprites != null) {
+            for (SpriteX spriteX : underlaySprites) {
                 addActor(spriteX);
                 spriteX.setZIndex(0);
                 forceTransform = true;

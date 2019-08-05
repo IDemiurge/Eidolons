@@ -17,6 +17,7 @@ public class BfObjEnums {
 //    createEmitter("unit/chaotic dark", -32, 32);
 
     public enum CUSTOM_OBJECT {
+        wisp_floating(15, "", "", "bf/light wisp float.txt", 5),
         crematory(15, "", "", "", 5),
         soul_net(15, "", "", "", 5),
         black_waters(15, "", "", "grid/black waters.txt", 5),
@@ -31,6 +32,8 @@ public class BfObjEnums {
         public boolean vfxOverMirrorY;
 
         public float vfxChance;
+        public boolean invert_screen_vfx;
+        private float vfxSpeed=1f;
 
         CUSTOM_OBJECT(int fps, String vfxUnder, String vfxOver, String spritePath, double range, String... additionalObjects) {
             this.range = range;
@@ -50,6 +53,14 @@ public class BfObjEnums {
         public String vfxOver;
         public String spritePath;
         public String[] additionalObjects;
+
+        public float getVfxSpeed() {
+            return vfxSpeed;
+        }
+
+        public void setVfxSpeed(float vfxSpeed) {
+            this.vfxSpeed = vfxSpeed;
+        }
     }
     public enum BF_OBJECT_GROUP {
         WALL, COLUMNS, RUINS, CONSTRUCT, GATEWAY, GRAVES,

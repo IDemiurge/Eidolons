@@ -26,6 +26,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.system.text.DescriptionTooltips;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -133,8 +134,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 return doSpawn(ref, args);
             case DIALOGUE_TIP:
                 doDialogue(ref, args[0]);
-                DialogueManager.afterDialogue(()->
-                  doCustomTip(ref, args.length == 1 ? args[0] : args[1]));
+                DialogueManager.afterDialogue(() ->
+                        doCustomTip(ref, args.length == 1 ? args[0] : args[1]));
                 return true;
             case DIALOGUE:
                 return doDialogue(ref, args);
@@ -155,6 +156,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             case REPOSITION:
                 return doReposition(ref, args);
 
+            case COMMENT:
+                return doUnitOperation(function, ref, args);
             case MOVE_TO:
             case TURN_TO:
             case ACTION:
@@ -267,9 +270,16 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
-    private boolean doComment(Unit unit, String text) {
+    private boolean doComment(Unit unit, String key) {
+        String text = DescriptionTooltips.getTipMap().get(key);
+        if (text == null) {
+            text = key;
+        }
         FloatingTextMaster.getInstance().createFloatingText
                 (TEXT_CASES.BATTLE_COMMENT, text, unit);
+
+        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, text);
+        getGame().getLogManager().log(unit.getName()+" :\n" + text);
         return true;
     }
 
@@ -321,18 +331,25 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         Unit unit = (Unit) ref.getObj(args[0]);
         if (unit == null) {
             String name = args[i];
-            if (DataManager.isTypeName(name))
-                i++;
-            else name = null;
+//            if (DataManager.isTypeName(name))
+//                i++;
+//            else name = null;
 
             if (unit == null) {
                 Boolean power = null;
                 Boolean distance = null;
                 Boolean ownership = null;
-                unit = ((DC_Game) ref.getGame()).getMaster().getUnitByName(name, ref,
-                        ownership, distance, power);
+                try {
+                    unit = ((DC_Game) ref.getGame()).getMaster().getUnitByName(name, ref,
+                            ownership, distance, power);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
         }
+        if (unit == null) {
+            unit = Eidolons.getMainHero();
+        } else i++;
         //options - annihilate, ...
         switch (function) {
             case COMMENT:

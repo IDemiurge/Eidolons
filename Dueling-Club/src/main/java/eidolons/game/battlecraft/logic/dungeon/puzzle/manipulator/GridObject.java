@@ -7,6 +7,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
@@ -21,10 +22,11 @@ import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class GridObject extends GroupX {
+public abstract class GridObject extends GroupWithEmitters {
     protected SpriteX sprite;
     protected Map<EmitterActor, Vector2> emitters = new XLinkedMap<>();
     protected Coordinates c;
@@ -46,10 +48,10 @@ public abstract class GridObject extends GroupX {
     protected abstract double getDefaultVisionRange();
 
     public boolean checkVisible() {
-        if (CoreEngine.isIDE()) {
-            if (CoreEngine.isLiteLaunch())
-                return true;
-        }
+//        if (CoreEngine.isIDE()) {
+//            if (CoreEngine.isLiteLaunch())
+//                return true;
+//        }
         if (isClearshotRequired()) {
 
         }
@@ -160,10 +162,6 @@ public abstract class GridObject extends GroupX {
     }
 
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
 
     @Override
     public void fadeOut() {
@@ -198,5 +196,10 @@ public abstract class GridObject extends GroupX {
 
     public boolean getFlipX() {
         return flipX;
+    }
+
+    @Override
+    public Collection getEmitters() {
+        return emitters.keySet();
     }
 }

@@ -53,7 +53,7 @@ public class FullscreenAnimation extends SuperActor {
 //            ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
 //        }
         if (sprite != null) {
-            sprite.setAlpha(alpha);
+            sprite.setAlpha(getColor().a*alpha);
             sprite.draw(batch);
         }
 
@@ -73,6 +73,11 @@ public class FullscreenAnimation extends SuperActor {
         sprite.setCustomAct(true);
         sprite.setFrameDuration(0.07f);
         sprite.setPlayMode(loop? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
+    }
+
+    @Override
+    public Color getColor() {
+        return getSprite().getColor();
     }
 
     @Override

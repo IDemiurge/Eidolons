@@ -17,6 +17,8 @@ import org.w3c.dom.Node;
 import java.util.HashMap;
 import java.util.Map;
 
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.TEST_MODE;
+
 /**
  * Created by JustMe on 5/18/2017.
  */
@@ -44,8 +46,15 @@ public class SpeechBuilder {
     }
 
     protected String processText(String text, Speech speech) {
+
+        text = text.split(DialogueSyntax.META_DATA_SEPARATOR)[0];
+        if (text.split(DialogueSyntax.META_DATA_SEPARATOR).length==1 && !TEST_MODE) {
+            return text;
+        }
+        String metaData = TEST_MODE? SpeechScript.TEST_DATA : text.split(DialogueSyntax.META_DATA_SEPARATOR)[1];
+
         try {
-            Condition reqs = DialogueSyntax.getConditions(text);
+            Condition reqs = DialogueSyntax.getConditions(metaData);
             speech.setConditions(reqs);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -56,18 +65,16 @@ public class SpeechBuilder {
 //        } catch (Exception e) {
 //            main.system.ExceptionMaster.printStackTrace(e);
 //        }
-        try {
-            String part = DialogueSyntax.getScriptPart(text);
+
+            String part = DialogueSyntax.getScriptPart(metaData);
             if (!StringMaster.isEmpty(part)) {
                 SpeechScript script = new SpeechScript(part, master);
                 speech.setScript(script);
             }
+            Integer time = DialogueSyntax.getTime(metaData);
+            speech.setTime(time);
 
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-
-        return DialogueSyntax.getRawText(text);
+        return text;
     }
 
     public Map<Integer, SpeechData> getIdToDataMap() {

@@ -2,13 +2,14 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.*;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * Created by JustMe on 6/3/2017.
  */
 public class DialogueHandler {
+    private final DialogueManager dialogueManager;
     GameDialogue dialogue;
     Map<Scene, Speech> map;
     DC_Game game;
@@ -26,7 +28,8 @@ public class DialogueHandler {
     private ActorDataSource myActor;
     private ActorDataSource speakerLast;
 
-    public DialogueHandler(GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
+    public DialogueHandler(DialogueManager dialogueManager, GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
+        this.dialogueManager = dialogueManager;
         this.dialogue = dialogue;
         this.game = game;
         this.list = scenes;
@@ -56,7 +59,7 @@ public class DialogueHandler {
     public SpeechDataSource lineSpoken(Speech speech, int index) {
         if (speech.getScript() != null) {
             try {
-                speech.getScript().execute();
+                speech.getScript().execute( );
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 return null;
@@ -152,5 +155,9 @@ public class DialogueHandler {
 
     public ActorDataSource getSpeakerLast() {
         return speakerLast;
+    }
+
+    public DialogueManager getDialogueManager() {
+        return dialogueManager;
     }
 }

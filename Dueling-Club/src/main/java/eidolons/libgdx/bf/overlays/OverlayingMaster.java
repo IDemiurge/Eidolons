@@ -155,17 +155,4 @@ public class OverlayingMaster {
         return new Dimension(calcXOffset, calcYOffset);
     }
 
-    public static String getSpritePath(BattleFieldObject obj) {
-        if (obj.isOverlaying()) {
-            if (obj.getName().equalsIgnoreCase("torch")) {
-            return Sprites.TORCH;
-            }
-        } else {
-            if (obj.getName().equalsIgnoreCase("ALTAR"))
-                return Sprites.ALTAR;
-            if (obj.getName().equalsIgnoreCase("Eldritch Sphere"))
-                return Sprites.ORB;
-        }
-        return null;
-    }
 }
