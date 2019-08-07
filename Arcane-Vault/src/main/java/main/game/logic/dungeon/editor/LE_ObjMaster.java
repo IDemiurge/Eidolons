@@ -490,4 +490,10 @@ public class LE_ObjMaster {
     public void fillAreaRandomFromPalette() {
 
     }
+
+    public void removeOverlaying(Coordinates coordinates) {
+        ObjType t = LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).get(0).getType();
+        LE_ObjMaster.removeObj(coordinates);
+        LevelEditor.getObjMaster().addObj(t, coordinates);
+    }
 }

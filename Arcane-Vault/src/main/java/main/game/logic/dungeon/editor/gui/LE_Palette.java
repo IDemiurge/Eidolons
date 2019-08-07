@@ -96,9 +96,12 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
 
     public void initPalettes() {
         for (UPPER_PALETTE p : UPPER_PALETTE.values()) {
-            PaletteTabPanel upperPalette = new PaletteTabPanel(p);
-            paletteTabs.addTab(StringMaster.getWellFormattedString(p.name()), "", upperPalette);
-
+            try {
+                PaletteTabPanel upperPalette = new PaletteTabPanel(p);
+                paletteTabs.addTab(StringMaster.getWellFormattedString(p.name()), "", upperPalette);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         try {
             refresh();
@@ -205,37 +208,37 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
     public void newPalette(List<String> initial) {
 
 
-        OBJ_TYPE TYPE= C_OBJ_TYPE.BF_OBJ;
+        OBJ_TYPE TYPE = C_OBJ_TYPE.BF_OBJ;
         List<ObjType> typeList = null;
         if (initial == null) {
-        int optionChoice = DialogMaster.optionChoice("Choose object TYPE...", default_palette);
+            int optionChoice = DialogMaster.optionChoice("Choose object TYPE...", default_palette);
 
-        if (optionChoice == -1) {
-            if (DialogMaster.confirm("Multi-type Palette?")) {
-                optionChoice = DialogMaster
-                        .optionChoice("Choose object multi TYPE...", multi_types);
-                if (optionChoice == -1) {
+            if (optionChoice == -1) {
+                if (DialogMaster.confirm("Multi-type Palette?")) {
+                    optionChoice = DialogMaster
+                            .optionChoice("Choose object multi TYPE...", multi_types);
+                    if (optionChoice == -1) {
+                        return;
+                    }
+                    TYPE = multi_types[optionChoice];
+                    typeList = DataManager.getTypes(TYPE);
+                } else {
                     return;
                 }
-                TYPE = multi_types[optionChoice];
-                typeList = DataManager.getTypes(TYPE);
             } else {
-                return;
+                TYPE = default_palette[optionChoice];
+                typeList = DataManager.getTypes(TYPE);
             }
-        } else {
-            TYPE = default_palette[optionChoice];
-            typeList = DataManager.getTypes(TYPE);
-        }
         }
         if (typeList == null) {
-            typeList=DataManager.getTypes(TYPE);
+            typeList = DataManager.getTypes(TYPE);
         }
         // int index = DialogMaster.optionChoice("Choose object TYPE...",
         // palettes.toArray());
         // PaletteWorkspace ws = palettes.getOrCreate(index);
         List<String> listData = DataManager.toStringList(typeList);
-        List<String> secondListData =     new ArrayList<>() ;
-        if (ListMaster.isNotEmpty(LevelEditor.getCurrentLevel(). getObjCache().keySet())){
+        List<String> secondListData = new ArrayList<>();
+        if (ListMaster.isNotEmpty(LevelEditor.getCurrentLevel().getObjCache().keySet())) {
             secondListData = DataManager.toStringList(LevelEditor.getCurrentLevel().getObjCache().keySet());
         }
         if (initial != null) {
@@ -248,7 +251,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         // if (ws != null) {
         // secondListData = DataManager.convertToStringList(ws.getTypeList());
         // }
-        String data = new ListChooser(listData, secondListData, false, null ).choose();
+        String data = new ListChooser(listData, secondListData, false, null).choose();
         if (data == null) {
             return;
         }
@@ -289,7 +292,7 @@ public class LE_Palette extends G_Panel implements TabChangeListener {
         List<String> chosen = StringMaster.openContainer(new ListChooser(list,
                 new LinkedList<>(), false, DC_TYPE.META).choose());
         for (String name : chosen) {
-            for (PaletteWorkspace p :palettes!=null ? palettes: workspaces) {
+            for (PaletteWorkspace p : palettes != null ? palettes : workspaces) {
                 if (p.getName().equals(name)) {
                     chosenPalettes.add(p);
                 }

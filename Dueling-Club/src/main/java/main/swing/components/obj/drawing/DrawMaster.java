@@ -285,9 +285,11 @@ public class DrawMaster {
             }
             for (String substring : StringMaster.openContainer(dungeon
              .getProperty(PROPS.NAMED_COORDINATE_POINTS))) {
+                if (substring.split("=").length>1) {
                 checkDrawTextOnCoordinate(substring.split("=")[0], cellComp, g,
-                 new SmartText(substring, ColorManager.PURPLE),
+                 new SmartText(substring.split("=")[1], ColorManager.PURPLE),
                  new Point(6 * zoom2 / 100, 12 * zoom2 / 100));
+                }
             }
             if (dungeon.checkProperty(PROPS.ENCOUNTER_INFO)) {
                 checkDrawTextOnCoordinate(

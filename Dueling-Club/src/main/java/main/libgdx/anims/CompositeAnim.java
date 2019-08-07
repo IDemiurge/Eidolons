@@ -2,7 +2,6 @@ package main.libgdx.anims;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import javafx.util.Pair;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
 import main.entity.active.DC_ActiveObj;
@@ -19,6 +18,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.LinkedList;

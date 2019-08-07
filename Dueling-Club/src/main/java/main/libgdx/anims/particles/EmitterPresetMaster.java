@@ -2,7 +2,6 @@ package main.libgdx.anims.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import javafx.util.Pair;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
@@ -240,30 +239,6 @@ public class EmitterPresetMaster {
         }
         data = data.replace(getGroupText(data, group), text);
         return data;
-    }
-
-    String offsetValue(EMITTER_VALUE_GROUP group, double offset, String data) {
-        String text = getGroupText(data, group);
-        List<Pair<String, String>> entryList = getGroupEntries(text);
-        for (Pair<String, String> p : entryList) {
-            if (lowHighMinMax.contains(p.getKey().toString())) {
-                double newValue = StringMaster.getDouble(p.getValue()) + offset;
-                text = text.replace(p.getKey() + value_separator + p.getValue(),
-                        p.getKey() + value_separator + String.valueOf(
-                                newValue));
-            }
-        }
-        data = data.replace(getGroupText(data, group), text);
-        return data;
-    }
-
-    private List<Pair<String, String>> getGroupEntries(String text) {
-        List<Pair<String, String>> list = new LinkedList<>();
-        for (String substring : StringMaster.openContainer(text, "\n")) {
-            String[] parts = substring.split(value_separator);
-            list.add(new Pair<>(parts[0], parts[1]));
-        }
-        return list;
     }
 
     public void clone(String path, String newName) {

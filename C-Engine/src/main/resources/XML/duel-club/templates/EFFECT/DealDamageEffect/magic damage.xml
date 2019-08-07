@@ -1,2 +1,0 @@
-<DealDamageEffect><FORMULA>^VAR+^VAR*[AV(MASTERY, SPELL)] +^VAR*{SOURCE_SP}</FORMULA>
-</DealDamageEffect>

@@ -15,6 +15,8 @@ import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.List;
 
+import static main.game.logic.dungeon.editor.gui.PagedPaletteTab.PAGE_SIZE;
+
 public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionListener,
         MouseListener {
 
@@ -54,8 +56,8 @@ public class PaletteList extends G_ListPanel<ObjType> implements ListSelectionLi
     }
 
     public void setInts() {
-        minItems = 50;
-        rowsVisible = vertical ? 10 : 2;
+        minItems = PAGE_SIZE;
+        rowsVisible = vertical ? 10 : 3;
     }
 
     @Override

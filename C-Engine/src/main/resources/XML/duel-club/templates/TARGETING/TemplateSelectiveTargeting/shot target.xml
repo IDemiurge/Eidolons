@@ -1,5 +1,0 @@
-<TemplateSelectiveTargeting><SELECTIVE_TARGETING_TEMPLATES>SHOT</SELECTIVE_TARGETING_TEMPLATES>
-<NotCondition><StringComparison><STRING>{MATCH_TYPE}</STRING>
-<STRING>TERRAIN</STRING>
-<BOOLEAN>true</BOOLEAN>
-</StringComparison></NotCondition></TemplateSelectiveTargeting>

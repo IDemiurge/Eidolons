@@ -496,7 +496,7 @@ public class LE_DataMaster {
                 return addCoordinateProp(PROPS.COORDINATE_POINTS, c.toString());
             case META_DATA:
                 String name = DialogMaster.inputText("Metadata for the coordinate");
-                if (name == null)
+                if (StringMaster.isEmpty(name ))
                     break;
                 lastMetaData = name;
                 return addCoordinateProp(PROPS.NAMED_COORDINATE_POINTS, c + "=" + name);

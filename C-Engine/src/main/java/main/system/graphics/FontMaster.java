@@ -2,6 +2,7 @@ package main.system.graphics;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
@@ -68,7 +69,7 @@ public class FontMaster {
 
         for (FONT F: FONT.values()){
             try {
-                F.font=Font.createFont(Font.TRUETYPE_FONT, new File(path +F.path));
+                F.font=Font.createFont(Font.TRUETYPE_FONT, new File( path +F.path));
             } catch (FontFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

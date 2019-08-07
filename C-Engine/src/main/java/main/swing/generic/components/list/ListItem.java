@@ -8,6 +8,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.generic.misc.BORDER_CHECKER;
 import main.system.graphics.GuiManager;
+import main.system.images.CustomImage;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Property;
@@ -165,8 +166,10 @@ public class ListItem<E> extends JLabel {
                         .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
             }
         }
-
-        ImageIcon icon = ImageManager.getIcon(img);
+        ImageIcon icon =null ;
+        if (img instanceof CustomImage) {
+            icon = ImageManager.getIcon((CustomImage) img);
+        } else icon = new ImageIcon(img);
 
         return icon;
     }

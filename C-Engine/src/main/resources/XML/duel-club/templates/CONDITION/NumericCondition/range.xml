@@ -1,4 +1,0 @@
-<NumericCondition><FORMULA>{SPELL_RANGE}</FORMULA>
-<FORMULA>[DISTANCE(SOURCE,MATCH)]</FORMULA>
-<BOOLEAN>false</BOOLEAN>
-</NumericCondition>

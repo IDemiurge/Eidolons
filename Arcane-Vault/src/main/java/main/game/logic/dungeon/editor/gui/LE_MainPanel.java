@@ -99,7 +99,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
 
         }
         add(missionTabs, "id tabs, pos 0 cp.y2");
-        add(palette, "id palette, pos 24 880");
+        add(palette, "id palette, pos 24 810");
         add(planPanel, "id plan, pos 0 cp.y2");
         add(background);
         int i = 0;
@@ -251,6 +251,7 @@ public class LE_MainPanel extends G_Panel implements TabChangeListener {
                         PROPS.MAP_BACKGROUND), GuiManager.getScreenSize());
                 background.setIcon(icon);
             } else {
+                getCurrentLevel().getDungeon().setProperty(PROPS.MAP_BACKGROUND, ImageManager.DEFAULT_BACKGROUND );
                 background.setIcon(defaultIcon);
             }
         }

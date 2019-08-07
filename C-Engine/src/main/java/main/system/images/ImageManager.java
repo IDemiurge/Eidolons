@@ -97,7 +97,7 @@ public class ImageManager {
     private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<>();
     private static Map<Object, Image> valueImgCacheLocked = new HashMap<>();
     private static Map<Object, Image> valueImgCacheSelected = new HashMap<>();
-    private static Map<Image, ImageIcon> map = new HashMap<>();
+    private static Map<String, ImageIcon> map = new HashMap<>();
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
@@ -1234,10 +1234,10 @@ public class ImageManager {
         return "UI\\Spellbook.png";
     }
 
-    public static ImageIcon getIcon(Image img) {
-        ImageIcon icon = map.get(img);
+    public static ImageIcon getIcon(CustomImage img) {
+        ImageIcon icon = map.get(img.getImgPath());
         if (icon == null) {
-            map.put(img, icon = new ImageIcon(img));
+            map.put(img.getImgPath(), icon = new ImageIcon(img));
         }
         return icon;
     }

@@ -127,10 +127,15 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
     }
 
     public Coordinates pickCoordinate() {
+        if (coordinateListeningMode){
+            WaitMaster.receiveInput(WAIT_OPERATIONS.CUSTOM_SELECT, true);
+            coordinateListeningObj = lastClicked;
+            return coordinateListeningObj.getCoordinates();
+        }
         coordinateListeningMode = true;
         // comp.refresh();
         SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
-        Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT, 3000);
+        Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT, 8000);
         coordinateListeningMode = false;
         if (!result) {
             SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
@@ -188,6 +193,19 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
         coordinates = null;
 
         boolean right = SwingUtilities.isRightMouseButton(e);
+
+        if (SwingUtilities.isMiddleMouseButton(e)) {
+            //TODO start clear here?
+            new Thread(new Runnable() {
+                public void run() {
+                    if (e.isShiftDown()) {
+                        LevelEditor.getMapMaster().clearArea();
+                    } else {
+                        LE_ObjMaster.fillArea(false);
+                    }
+                }
+            }, "coord thread").start();
+        }
         CellComp cellComp = getGrid().getCompByPoint(e.getPoint());
 
         previousCoordinate = coordinates;
@@ -243,12 +261,13 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
     // could use same right click, just try() - if empty=>add, else remove
     // ++ DIRECTION CHANGE
 
-    public static String tip() {
-        return "Advanced motions:\n" +
+    public static void tip() {
+        DialogMaster.confirm("Advanced motions:\n" +
                 "Alt click to set meta-data \n" +
                 "Control click to stack an object \n" +
                 "Double alt R-Click to insert VOID \n" +
-                "Shift+ctrl click to copy overlaying objects or to change overlaying objects direction\n";
+                "Double shift R-Click to remove ONLY overlaying \n" +
+                "Shift+ctrl click to copy overlaying objects or to change overlaying objects direction\n");
 
     }
 
@@ -282,7 +301,11 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                     LE_ObjMaster.removeObj(lastClicked.getCoordinates());
                     SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
                 }
-                if (e.getClickCount() > 1 && alt) {
+                if (e.getClickCount() > 1 && e.isShiftDown()) {
+                    LevelEditor.getObjMaster().removeOverlaying(coordinates);
+                    return ;
+                }
+                    if (e.getClickCount() > 1 && alt) {
 //                    addVoid();
                     LevelEditor.getObjMaster().addObj(DataManager.getType("Void Cell", DC_TYPE.BF_OBJ), coordinates);
                 }
@@ -299,10 +322,8 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
                     int i = 0;
                     for (BattleFieldObject battleFieldObject : selectedOverlaying) {
                         if (coordinates.equals(battleFieldObject.getCoordinates())) {
-                            if (i==0) {
-                                ObjType t = LevelEditor.getSimulation().getBfObjectsOnCoordinate(coordinates).get(0).getType();
-                                        LE_ObjMaster.removeObj(battleFieldObject.getCoordinates());
-                                LevelEditor.getObjMaster().addObj(   t, coordinates);
+                            if (i == 0) {
+                                LevelEditor.getObjMaster().removeOverlaying(coordinates);
                             }
                             i++;
                             LevelEditor.getObjMaster().addObj(battleFieldObject.getType(), coordinates);
@@ -333,17 +354,16 @@ public class LE_MouseMaster implements MouseMotionListener, MouseListener, Mouse
             }
         }
         if (right) {
-
+            if (lastClicked != null)
+                if (e.isShiftDown()) {
+                    selectedType = LevelEditor.getMainPanel().getInfoPanel()
+                            .getSelectedType();
+                }
             if (selectedType != null) {
                 if ((overlaying && !EntityCheckMaster
                         .isOverlaying(lastClicked))
                         || ((overlaying || empty || add)) && !alt) {
-                    if (lastClicked != null) {
-                        if (e.isShiftDown()) {
-                            selectedType = LevelEditor.getMainPanel().getInfoPanel()
-                                    .getSelectedType();
-
-                        }
+                    {
                         LevelEditor.cache();
                         LevelEditor.getObjMaster().addObj(selectedType, coordinates);
                         LevelEditor.setMouseAddMode(true);

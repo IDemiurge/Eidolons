@@ -1,4 +1,0 @@
-<ModifyValueEffect><STRING>Undying Counter</STRING>
-<MODVAL_TYPE>SET</MODVAL_TYPE>
-<FORMULA>^VAR+1</FORMULA>
-</ModifyValueEffect>

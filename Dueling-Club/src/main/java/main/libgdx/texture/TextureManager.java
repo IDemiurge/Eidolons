@@ -3,7 +3,6 @@ package main.libgdx.texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import javafx.util.Pair;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
@@ -86,76 +85,11 @@ public class TextureManager {
         if (StringMaster.isNumber(x, true)) {
             return StringMaster.getInteger(x);
         }
-        return xOrY ?
-                getXY(origPath).getKey() :
-                getXY(origPath).getValue();
+        return 0;
     }
 
     public static float getFrameNumber(String path) {
         return getRows(path) * getColumns(path);
     }
 
-    public static Pair<Integer, Integer> getXY(String origPath) {
-        int x = 1;
-        int y = 1;
-        List<Integer> xs = new LinkedList<>();
-        List<Integer> ys = new LinkedList<>();
-        Texture texture = TextureCache.getOrCreate(origPath);
-        for (int i = 7; i >= 1; i--) {
-            if (texture.getWidth() % i == 0) {
-                x = i;
-                xs.add(i);
-            }
-
-            if (texture.getHeight() % i == 0) {
-                y = i;
-                ys.add(i);
-            }
-        }
-        //prefer square
-        {
-            for (int x1 : xs) {
-                if (x1 == 0) {
-                    continue;
-                }
-                final int w = texture.getWidth() / x1;
-                for (int y1 : ys) {
-                    if (y1 == 0) {
-                        continue;
-                    }
-                    int h = texture.getHeight() / y1;
-                    if (w == h) {
-                        return new Pair<>(x1, y1);
-                    }
-                }
-            }
-        }
-
-        if (x == 0) {
-            x = 1;
-        }
-        if (y == 0) {
-            y = 1;
-        }
-        return new Pair<>(x, y);
-
-    }
-
-
-//    public static Texture toTexture(BufferedImage img) throws IOException {
-//
-//        ByteArrayOutputStream baos=new ByteArrayOutputStream(1000);
-//        ImageIO.write(img, "jpg", baos);
-//        baos.flush();
-//
-//        String base64String= Base64.encode(baos.toByteArray());
-//        baos.close();
-//
-//        byte[] bytearray = Base64.decode(base64String);
-//
-//        Gdx2DPixmap gpm = new Gdx2DPixmap(new ByteArrayInputStream(bytearray),
-//         Gdx2DPixmap.GDX2D_FORMAT_RGB888);
-//        Pixmap pixmap = new Pixmap(gpm);
-//        return  new Texture(pixmap);
-//    }
 }

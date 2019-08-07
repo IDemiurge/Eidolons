@@ -1,7 +1,0 @@
-<Conditions><StringComparison><STRING>{MATCH_GROUP}</STRING>
-<STRING>Familiars</STRING>
-<BOOLEAN>true</BOOLEAN>
-</StringComparison><RefCondition><STRING>SOURCE</STRING>
-<STRING>SUMMONER</STRING>
-<BOOLEAN>false</BOOLEAN>
-</RefCondition></Conditions>

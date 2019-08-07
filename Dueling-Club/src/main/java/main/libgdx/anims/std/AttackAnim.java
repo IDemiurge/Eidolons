@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import javafx.util.Pair;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
@@ -193,32 +191,32 @@ size - elongate
         float totalDuration = 0;
         for (ATK_ANIMS anim : anims) {
             for (float angle : anim.targetAngles) {
-                List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
-                float duration =
-                        this.duration;
-                if (duration <= 0) {
-                    duration = 1;
-                }
-                //anim.durations[i];
-                totalDuration += duration;
-                float x = anim.offsetsX[i];
-                float y = anim.offsetsY[i];
-                MoveByAction mainMove = null;
-                try {
-                    mainMove = getMoveAction(x, y, duration);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (mainMove == null) {
-                    return null;
-                }
-                RotateByAction mainRotate = getRotateAction(angle, duration);
-
-                swings.add(new Pair<>(mainMove, mainRotate));
-                swings.forEach(swing -> {
-                    sequence.addAction(new ParallelAction(swing.getKey(), swing.getValue()));
-                });
-                i++;
+//                List<Pair<MoveByAction, RotateByAction>> swings = new LinkedList<>();
+//                float duration =
+//                        this.duration;
+//                if (duration <= 0) {
+//                    duration = 1;
+//                }
+//                //anim.durations[i];
+//                totalDuration += duration;
+//                float x = anim.offsetsX[i];
+//                float y = anim.offsetsY[i];
+//                MoveByAction mainMove = null;
+//                try {
+//                    mainMove = getMoveAction(x, y, duration);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                if (mainMove == null) {
+//                    return null;
+//                }
+//                RotateByAction mainRotate = getRotateAction(angle, duration);
+//
+//                swings.add(new Pair<>(mainMove, mainRotate));
+//                swings.forEach(swing -> {
+//                    sequence.addAction(new ParallelAction(swing.getKey(), swing.getValue()));
+//                });
+//                i++;
             }
 
         }

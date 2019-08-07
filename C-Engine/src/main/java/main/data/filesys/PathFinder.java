@@ -34,7 +34,9 @@ public class PathFinder {
         if (classLoader.getResource("") != null) {
             File temp = new File(classLoader.getResource("").getFile());
             ENGINE_PATH = new File(temp.getParentFile().toURI()) + File.separator;
+            ENGINE_PATH = ENGINE_PATH.replace("%20", " ");
             XML_PATH = new File(temp.getParentFile() + File.separator + "XML") + File.separator;
+            XML_PATH = XML_PATH.replace("%20", " ");
             System.out.println("Engine path: " + ENGINE_PATH);
         } else {
             //FOR JARS
@@ -42,26 +44,26 @@ public class PathFinder {
             URI uri = null;
             try {
                 uri =
-                 CoreEngine.getEngineObject().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+                        CoreEngine.getEngineObject().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            if (jarName==null )
+            if (jarName == null)
                 jarName = StringMaster.getLastPathSegment((uri.toString()));
 
             System.out.println("jarName: " + jarName);
             String path =
-             new File(uri.toString().replace(jarName+StringMaster.getPathSeparator(), "")).getAbsolutePath();
+                    new File(uri.toString().replace(jarName + StringMaster.getPathSeparator(), "")).getAbsolutePath();
             path = path.split("file:")[0];
             System.out.println("Engine path for Jar: " + path);
 
-            ENGINE_PATH = path ;
-            if (!path.endsWith(  File.separator))
-                path+=  File.separator;
-            XML_PATH = path  + "XML" + File.separator;
+            ENGINE_PATH = path;
+            ENGINE_PATH = ENGINE_PATH.replace("%20", " ");
+            if (!path.endsWith(File.separator))
+                path += File.separator;
+            XML_PATH = path + "XML" + File.separator;
 
         }
-
         RES_PATH = "resources" + File.separator;
         IMG_PATH = ENGINE_PATH + RES_PATH + "img\\";
 
@@ -72,7 +74,7 @@ public class PathFinder {
         MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + "\\types\\";
 
         TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "\\types\\"
-         + ((PRESENTATION_MODE) ? PRESENTATION : "");
+                + ((PRESENTATION_MODE) ? PRESENTATION : "");
 
     }
 
@@ -245,6 +247,6 @@ public class PathFinder {
     }
 
     public static String getJarPath() {
-        return getEnginePath()+jarName;
+        return getEnginePath() + jarName;
     }
 }

@@ -127,7 +127,11 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
         requestFocusInWindow();
         add(tabPanel, "id tabs, pos " + getTabsOffsetX() + " " + getTabsOffsetY());
         G_Component component = tabs.get(getIndex()).getComponent();
-        component.refresh();
+        try {
+            component.refresh();
+        } catch (Exception e) {
+          e.printStackTrace( );
+        }
         // component.refreshComponents(); //TODO
         add(component, "pos " + getCompOffsetX() + " tabs.y2+" + getCompOffsetY());
         revalidate();

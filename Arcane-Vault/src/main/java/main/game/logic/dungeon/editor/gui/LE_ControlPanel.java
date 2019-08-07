@@ -33,6 +33,9 @@ public class LE_ControlPanel extends G_Panel {
 
     protected void controlClicked(boolean alt, LE_CONTROLS c) {
         switch (c) {
+            case INFO:
+                LE_MouseMaster.tip();
+                break;
             case REMOVE:
                 LE_DataMaster.removeSelected();
                 break;
@@ -144,7 +147,7 @@ public class LE_ControlPanel extends G_Panel {
 TOGGLE_INFO,
         SAVE_LEVEL, LOAD_LEVEL,  NEW_LEVEL,
         REMOVE, SAVE_ALL,
-        CLONE, RENAME, SUBFOLDER, TOGGLE_UI, CLEAR, FILL, DIAGONAL,
+        CLONE, RENAME, SUBFOLDER, TOGGLE_UI, CLEAR, FILL, DIAGONAL, INFO,
 //        GENERATE,
 //        SAVE_MISSION, LOAD_MISSION, NEW_MISSION,
 //        UNDO,TRANSFORM,
