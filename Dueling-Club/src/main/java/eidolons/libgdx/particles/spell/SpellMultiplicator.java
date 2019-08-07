@@ -61,9 +61,9 @@ public class SpellMultiplicator implements Runnable {
     }
 
     private static boolean isMultiplied(Anim anim) {
-        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
-            return true;
-        }
+//        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
+//            return true;
+//        }
             if (anim.getPart()!= AnimConstructor.ANIM_PART.MISSILE) {
             return false;
         }
@@ -279,24 +279,25 @@ public class SpellMultiplicator implements Runnable {
         Vector2 v = getCenteredPos(c);
         float speed = getPixelsPerSecond();
         if (template != null) {
-            GridMaster.offset(
-             getOrigin(),
-             v,
-             template.getAdditionalDistance(getActive())
+            GridMaster.offset(getOrigin(),
+             v,template.getAdditionalDistance(getActive())
             );
-
             speed = template.speed;
         }
-        MoveByAction action =
-         ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
+        MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
 
+        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
+            duration = 1f / 100;
+            action.setDuration(duration);
+        } else {
+            if (action.getDuration() > this.duration)
+                this.duration = action.getDuration();
 
-        if (action.getDuration() > this.duration) {
-            this.duration = action.getDuration();
+            actor.getEffect().setDuration((int) action.getDuration());
+            anim.setDuration(duration);
         }
         //        ActorMaster.addRemoveAfter(actor);
-        actor.getEffect().setDuration((int) action.getDuration());
-        anim.setDuration(duration);
+
     }
 
     private Action createAndAddEmitterActions(SpellVfx actor, Integer angle, SPELL_ANIMS template) {

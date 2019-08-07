@@ -24,18 +24,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CoreEngine {
-    private static boolean dungeonTool;
-
-    public static boolean isMyLiteLaunch() {
-        return isIDE() && isLiteLaunch();
-    }
 
     public enum UPLOAD_PACKAGE {
         Aphotica, igg,
     }
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.6b";
+    public static final String VERSION = "0.9.6c";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotica;
     public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
@@ -100,6 +95,11 @@ public class CoreEngine {
     private static boolean keyCheat;
     private static boolean mainGame;
     private static boolean autoFixOn;
+    private static boolean dungeonTool;
+
+    public static boolean isMyLiteLaunch() {
+        return isIDE() && isLiteLaunch();
+    }
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");

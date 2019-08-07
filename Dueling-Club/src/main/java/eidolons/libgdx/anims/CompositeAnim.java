@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EffectAnimCreator;
 import eidolons.libgdx.anims.std.EventAnimCreator;
+import eidolons.libgdx.anims.std.SpellAnim;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.ability.effects.Effect;
 import main.data.XLinkedMap;
@@ -22,7 +24,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class CompositeAnim implements Animation {
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onFinishEventMap;
     Map<ANIM_PART, List<Animation>> attached;
     Map<ANIM_PART, List<Animation>> timeAttachedAnims;
-    private List<Animation> parallelAnims=    new ArrayList<>() ;
+    private List<Animation> parallelAnims = new ArrayList<>();
     ANIM_PART part;
     int index;
     private boolean finished;
@@ -73,15 +74,43 @@ public class CompositeAnim implements Animation {
 
     public boolean tryDraw(Batch batch) {
         if (isFinished()) return false;
+        if (!isRunning()) return false;
         try {
             return draw(batch);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            main.system.auxiliary.log.LogMaster.log(1, "Anim error for active: " + getActive());
             setRunning(false);
         }
         return false;
     }
 
+
+    private void checkParallelAnims() {
+        if (isParallel()) {
+            int i = 0;
+            for (ANIM_PART anim_part : map.keySet()) {
+                if (i++ <= index)
+                    continue;
+                if (anim_part != ANIM_PART.MISSILE) {
+                    if (!parallelAnims.contains(map.get(anim_part))) {
+                        parallelAnims.add(map.get(anim_part));
+                    break;
+                    }
+                }
+
+            }
+        }
+    }
+
+    private boolean isParallel() {
+        if (currentAnim instanceof SpellAnim) {
+            if (part == ANIM_PART.MISSILE) {
+                return time <= 2;
+            }
+        }
+        return false;
+    }
 
     public boolean draw(Batch batch) {
 
@@ -96,15 +125,15 @@ public class CompositeAnim implements Animation {
         }
         if (parallelAnims.isEmpty()) {
             for (Animation parallelAnim : parallelAnims) {
-              if (parallelAnim.tryDraw(batch)){
+                if (parallelAnim.tryDraw(batch)) {
 
-              }
+                }
 
             }
         }
 
         checkTimeAttachedAnims();
-        checkParallelAnimsAnims();
+        checkParallelAnims();
         if (!result) {
             time = 0;
             index++;
@@ -141,8 +170,6 @@ public class CompositeAnim implements Animation {
         return true;
     }
 
-    private void checkParallelAnimsAnims() {
-    }
 
     @Override
     public void start(Ref ref) {
@@ -314,6 +341,7 @@ public class CompositeAnim implements Animation {
     public void start() {
 //        if (isFinished()) TODO igg demo fix -  wtf?
 ////            return;
+        parallelAnims.clear();
         hpUpdate = true;
         time = 0;
         index = 0;
@@ -367,10 +395,9 @@ public class CompositeAnim implements Animation {
                 return;
         }
         if (!parallelAnims.isEmpty()) {
-            currentAnim= parallelAnims.remove(0);
+            currentAnim = parallelAnims.remove(0);
 
-        } else
-        if (map.isEmpty()) {
+        } else if (map.isEmpty()) {
             part = (ANIM_PART) MapMaster.get(attached, index);
             if (attached.get(part).isEmpty())
                 return;

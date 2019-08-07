@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battle.universal.ScriptManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
@@ -128,6 +129,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
         switch (function) {
+            case ESOTERICA:
+                return doEsoterica(ref, args);
             case AGGRO:
                 return doAggro(ref, args);
             case SPAWN:
@@ -169,6 +172,25 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         }
 
         return doUnitOperation(function, ref, args);
+    }
+
+    private boolean doEsoterica(Ref ref, String[] args) {
+
+        int n = getGame().getMetaMaster().getQuestMaster().getQuest(BridgeMaster.ESOTERICA_QUEST).getNumberAchieved();
+        int req = Integer.valueOf(args[1]);
+        if (req > n) {
+            String text = BridgeMaster.getEsotericaKey(req);
+            doComment(Eidolons.getMainHero(), text);
+            return false;
+        }
+        String key = args[0];
+        doCustomTip(ref, key); //multiple?
+        //reward?
+
+
+
+
+        return true;
     }
 
     private boolean doAggro(Ref ref, String[] args) {
@@ -279,7 +301,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 (TEXT_CASES.BATTLE_COMMENT, text, unit);
 
         GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, text);
-        getGame().getLogManager().log(unit.getName()+" :\n" + text);
+        getGame().getLogManager().log(unit.getName() + " :\n" + text);
         return true;
     }
 
@@ -484,7 +506,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ;
+        ESOTERICA;
     }
 
 }

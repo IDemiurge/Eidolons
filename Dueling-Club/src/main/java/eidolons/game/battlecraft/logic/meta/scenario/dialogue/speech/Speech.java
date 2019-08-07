@@ -37,6 +37,7 @@ public class Speech implements SpeechInterface {
     private int id;
     private SpeechScript script;
     private Integer time;
+    private boolean autoCamera;
 
     //last speech
     public Speech(Integer id) {
@@ -94,7 +95,7 @@ public class Speech implements SpeechInterface {
         if (actorNames == null)
             actors = parent.getActors();
         actors = master.getDialogueActorMaster().getActors(actorNames);
-        formattedText = unformattedText;// getDialogueFormatter().format(unformattedText, this);
+//    wtf    formattedText = unformattedText;// getDialogueFormatter().format(unformattedText, this);
     }
 
     public Condition getConditions() {
@@ -189,6 +190,14 @@ public class Speech implements SpeechInterface {
 
     public Integer getTime() {
         return time;
+    }
+
+    public boolean isAutoCamera() {
+        return autoCamera;
+    }
+
+    public void setAutoCamera(boolean autoCamera) {
+        this.autoCamera = autoCamera;
     }
 
     public enum REPLICA_STATUS {

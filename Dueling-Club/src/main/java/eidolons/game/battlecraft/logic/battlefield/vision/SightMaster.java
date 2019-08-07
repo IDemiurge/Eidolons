@@ -112,8 +112,13 @@ public class SightMaster {
                 // side_penalty, false);
             }
         }
-        Collection<Coordinates> blocked = getBlockedList(list, source, facing);
-        list.removeAll(blocked);
+        if (VisionManager.isVisionHacked()) {
+            if (!extended)
+                list.addAll(getSpectrumCoordinates(range, 0, back_bonus, source, vision, facing.flip(), true));
+        } else {
+            Collection<Coordinates> blocked = getBlockedList(list, source, facing);
+            list.removeAll(blocked);
+        }
         list.add(source.getCoordinates());
         return list;
     }

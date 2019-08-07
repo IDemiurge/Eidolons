@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.*;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -9,6 +10,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -65,6 +68,8 @@ public class DialogueHandler {
                 return null;
             }
         }
+        executeAutomaticActions(speech);
+
         ArrayList<String> displayedOptions = new ArrayList<>();
         if (speech.getChildren().size() <= index) {
 
@@ -98,6 +103,15 @@ public class DialogueHandler {
         setSpeakerLast(new ActorDataSource(speech.getActor()));
         setListenerLast(new ActorDataSource(data.getSpeech().getActor()));
         return data;
+    }
+
+    private void executeAutomaticActions(Speech speech) {
+        if (speech.isAutoCamera()) {
+            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, speech.getActor().getLinkedUnit());
+
+
+
+        }
     }
 
     private boolean isLoopDialogueTest() {

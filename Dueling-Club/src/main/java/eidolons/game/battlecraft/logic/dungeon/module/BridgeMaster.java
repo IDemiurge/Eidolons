@@ -4,11 +4,15 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.system.text.DescriptionTooltips;
+import eidolons.system.text.TextMaster;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 
 public class BridgeMaster {
+
+    public static final String ESOTERICA_QUEST = "Secret Scripture";
 
     private static void cinematicOn() {
 //        EidolonsGame.CINEMATIC= true;
@@ -31,6 +35,15 @@ public class BridgeMaster {
             return "";
         }
         return output.substring(0, output.length()-1);
+    }
+
+
+    public static String getEsotericaKey(int req) {
+        int n= RandomWizard.getRandomIntBetween(1,3, true);
+//        if (req<=1) {
+//            n=1;
+//        }
+        return "Esoterica comment_"+n;
     }
 
     public enum SCRIPT {

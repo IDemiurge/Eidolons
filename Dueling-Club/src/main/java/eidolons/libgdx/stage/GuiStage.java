@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
@@ -994,6 +996,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     public void playDialogue(DialogueHandler handler) {
+        VisionManager.setCinematicVision(true);
         if (dialogueMode) {
             if (isDialogueCached())
                 dialogueContainer.remove();
@@ -1023,6 +1026,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         dialogueContainer.hide();
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE, dialogueContainer.getDialogue());
         DialogueManager.dialogueDone();
+        VisionManager.setCinematicVision(false);
     }
 
     public boolean isDialogueMode() {

@@ -167,6 +167,7 @@ public class DungeonQuest implements Quest {
         this.numberPrepared = numberPrepared;
     }
 
+    @Override
     public Integer getNumberRequired() {
         if (numberRequired <= 0) {
             numberRequired = QuestCreator.getNumberRequired(this);
@@ -178,6 +179,7 @@ public class DungeonQuest implements Quest {
         this.numberRequired = numberRequired;
     }
 
+    @Override
     public Integer getNumberAchieved() {
         return numberAchieved;
     }

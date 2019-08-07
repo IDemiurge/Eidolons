@@ -28,7 +28,11 @@ public class Action {
     public Action(DC_ActiveObj actives, Ref ref) {
         this.active = actives;
         this.ref = ref;
-        ref.setID(KEYS.ACTIVE, active.getId());
+        try {
+            ref.setID(KEYS.ACTIVE, active.getId());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public Action(DC_ActiveObj action) {
@@ -65,7 +69,7 @@ public class Action {
             String name = ref.getTargetObj().getName();
             if (ref.getTargetObj() instanceof DC_Cell) {
                 name = ref.getTargetObj().getProp("name")
-                 + StringMaster.wrapInBraces(ref.getTargetObj().getCoordinates().toString());
+                        + StringMaster.wrapInBraces(ref.getTargetObj().getCoordinates().toString());
             }
             return active.getName() + " on " + name;
         }
@@ -142,7 +146,7 @@ public class Action {
     public DC_Obj getTarget() {
         if (ref.getTargetObj() == null) {
             if (active.getTargeting() instanceof AutoTargeting
-             || active.getTargeting() instanceof FixedTargeting) {
+                    || active.getTargeting() instanceof FixedTargeting) {
                 active.getTargeting().select(ref);
             }
         }

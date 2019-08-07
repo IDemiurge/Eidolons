@@ -13,12 +13,14 @@ import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.ClassificationCondition;
+import main.elements.conditions.standard.CoordinateCondition;
 import main.elements.conditions.standard.DynamicCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -613,6 +615,10 @@ public class ConditionMaster {
             case STRING_STRICT:
                 c = new StringComparison(str1, str2, true);
                 break;
+            case NAME:
+                return new PropCondition(G_PROPS.NAME, KEYS.TARGET, str1, true);
+            case COORDINATES:
+                return new CoordinateCondition(Coordinates.get(str1));
             case DISTANCE:
                 return new DistanceCondition(2, str1, str2);
             case SPOT:
@@ -666,6 +672,8 @@ public class ConditionMaster {
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
         MAINHERO("pc", "mainHero", "MAIN_HERO"),
+        NAME("name"),
+        COORDINATES("coordinates","coord"),
         CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot");
 
         private String[] names;

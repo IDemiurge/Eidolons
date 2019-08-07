@@ -1,7 +1,10 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.system.text.Texts;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -10,11 +13,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.system.auxiliary.log.LogMaster.important;
+
 public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
     public static final boolean TEST_MODE = false;
     public static final String TEST_DATA =
             "time=2000. [[camera_set=orig;BG_ANIM=out;camera=me;wait=3000;script=action(source, Deathstorm)]]";
+    private   String scriptText;
     List<Pair<SPEECH_ACTION, String>> actions = new ArrayList<>();
     private boolean executed;
 
@@ -23,15 +29,32 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         time_chain,
     }
 
+    //TODO IDEA - use script syntax for conditions?
     public enum SPEECH_ACTION {
         SOUND,
+        MOMENT,
+        MUSIC,
+
         PORTRAIT_ANIM, // do something with it!
         BG_ANIM,
         CUSTOM_ANIM,
+        UI_ANIM,
+
+        SPRITE,
+        FULLSCREEN,
+        BLACKOUT,
+        POSTFX,
 
         ACTION,
+        UNIT,
         SCRIPT,
-        timed, MUSIC, CAMERA, CAMERA_SET, WAIT, UI_ANIM, COMMENT,
+
+        CAMERA,
+        CAMERA_SET,
+
+        DIALOG,
+        WAIT,
+        COMMENT, GRID_OBJ, ANIM, WAIT_EACH, WAIT_OFF, TIME,
 
         //make templates mapped by name?
     }
@@ -40,17 +63,27 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
     public SpeechScript(String data, MetaGameMaster master) {
         data = processData(data);
+        if (StringMaster.isEmpty(data)) {
+            return;
+        }
         super.setData(data);
+        this.scriptText = data;
         this.master = master;
     }
 
     protected String getPairSeparator() {
         return DataUnitFactory.getPairSeparator(false);
     }
+
     protected String getSeparator() {
         return DataUnitFactory.getSeparator(getFormat());
     }
+
     private String processData(String data) {
+        if (data.contains("script_key=")) {
+            String key = data.split("script_key=")[1];
+            data = Texts.getTextMap("scripts").get(key);
+        }
 //        while (data.contains("(")) {
 //            String wrapper = VariableManager.removeVarPart(data);
 //            String inner = VariableManager.getVarPart(data);
@@ -68,11 +101,12 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     }
 
     private void executeAction(SPEECH_ACTION speechAction, String value) {
+        important("Executing action: " +speechAction + " = "+ value);
         master.getDialogueManager().getSpeechExecutor().execute(speechAction, value);
     }
 
     public void execute() {
-        if (executed){
+        if (executed) {
             return;
         }
         //chain - confirm?
@@ -81,10 +115,12 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
         //support user interrupt ?
 //        WaitMaster.executeAfter();
+
+        important("Executing script: " +scriptText + " parsed \n"+ actions);
         for (Pair<SPEECH_ACTION, String> pair : actions) {
             executeAction(pair.getKey(), pair.getValue());
         }
-        executed=true;
+        executed = true;
     }
 
     @Override
@@ -95,12 +131,14 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     @Override
     public void setValue(SPEECH_ACTION name, String value) {
         actions.add(new ImmutablePair<>(name, value));
+        values.put(name.toString(), value);
     }
 
     @Override
     public void setValue(SPEECH_ACTION name, Object val) {
         setValue(name, val.toString());
     }
+
     @Override
     public void setValue(String name, String value) {
         setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);

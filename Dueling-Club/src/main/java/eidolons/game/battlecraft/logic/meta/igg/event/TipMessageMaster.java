@@ -61,7 +61,7 @@ public class TipMessageMaster {
             if (tip == null) {
                 String text = DescriptionTooltips.getTipMap().get(arg.trim());
                 if (StringMaster.isEmpty(text)) {
-                    continue;
+                    text = arg.trim(); //TODO better way?
                 }
                 tip(new TipMessageSource(text, "", "Continue", true, ()->{}));
                 continue;

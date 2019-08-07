@@ -53,7 +53,7 @@ public class DialogueContainer extends TablePanelX {
 
     }
 
-    protected void done() {
+    public void done() {
         getStage().dialogueDone();
     }
 
@@ -86,6 +86,11 @@ public class DialogueContainer extends TablePanelX {
         current.setContainer(this);
         addActor(bgSprite = new BriefBackground(current.getBackgroundPath()));
         addActor(current);
+    }
+
+    @Override
+    public void fadeIn() {
+        super.fadeIn();
     }
 
     @Override

@@ -75,6 +75,9 @@ public abstract class GridObject extends GroupWithEmitters {
         if (emitters == null) {
             emitters = new LinkedHashMap<>();
         }
+        if (emitter == null) {
+            return;
+        }
         emitters.put(emitter, new Vector2(offsetX, offsetY));
         addActor(emitter);
 //        emitter.start();
@@ -87,12 +90,17 @@ public abstract class GridObject extends GroupWithEmitters {
         getColor().a = 0;
         createEmittersUnder();
         sprite = new SpriteX(spritePath);
-        sprite.setFlipX(flipX);
-        addActor(sprite);
+        if (sprite.getSprite() == null) {
+            sprite = null; //TODO igg demo fix
+        }
+        if (sprite != null) {
+            sprite.setFlipX(flipX);
+//        sprite.setBlending(SuperActor.BLENDING.SCREEN);
+            sprite.setFps(getFps());
+            addActor(sprite);
+        }
         createEmittersOver();
 
-//        sprite.setBlending(SuperActor.BLENDING.SCREEN);
-        sprite.setFps(getFps());
         if (!(getParent() instanceof GridObject)) {
             Vector2 pos = GridMaster.getCenteredPos(
                     (c));
@@ -100,8 +108,8 @@ public abstract class GridObject extends GroupWithEmitters {
         }
         initialized = true;
 
-        sprite.act(
-                RandomWizard.getRandomFloatBetween(0, 4));
+        if (sprite != null)
+            sprite.act(RandomWizard.getRandomFloatBetween(0, 4));
     }
 
     protected void createEmittersUnder() {
@@ -111,23 +119,24 @@ public abstract class GridObject extends GroupWithEmitters {
     }
 
     protected void createEmittersFromFolder(String paths, float vfxChance) {
-   for(String path: ContainerUtils.openContainer( paths ))
-        for (File file : FileManager.getFilesFromDirectory(PathFinder.getVfxAtlasPath()+ path, false, false)) {
-            if (!RandomWizard.chance((int) (100*vfxChance))){
-                continue;
+        for (String path : ContainerUtils.openContainer(paths))
+            for (File file : FileManager.getFilesFromDirectory(PathFinder.getVfxAtlasPath() + path, false, false)) {
+                if (!RandomWizard.chance((int) (100 * vfxChance))) {
+                    continue;
+                }
+                createEmitter(PathUtils.removePreviousPathSegments(
+                        FileManager.formatPath(file.getPath(), true)
+                        , FileManager.formatPath(PathFinder.getVfxAtlasPath(), true
+                        )), c.x, c.y);
             }
-            createEmitter(PathUtils.removePreviousPathSegments(
-                    FileManager.formatPath(file.getPath(), true)
-                    ,FileManager.formatPath(PathFinder.getVfxAtlasPath(), true
-                    ) ), c.x, c.y);
-        }
     }
+
     protected void createEmittersFromString(String data, boolean mirrorX, boolean mirrorY, float vfxChance) {
         for (String substring : ContainerUtils.openContainer(data)) {
-            if (vfxChance!=0)
-            if (!RandomWizard.chance((int) (100*vfxChance))){
-                continue;
-            }
+            if (vfxChance != 0)
+                if (!RandomWizard.chance((int) (100 * vfxChance))) {
+                    continue;
+                }
             Coordinates c = AbstractCoordinates.createFromVars(substring);
             createEmitter(VariableManager.removeVarPart(substring), c.x, c.y);
             if (mirrorX) {
@@ -157,10 +166,10 @@ public abstract class GridObject extends GroupWithEmitters {
                 }
             }
         }
-        sprite.setColor(getColor());
+        if (sprite != null)
+            sprite.setColor(getColor());
         super.act(delta);
     }
-
 
 
     @Override

@@ -13,6 +13,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.data.DataUnit;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
@@ -39,6 +40,7 @@ public class DialogueFactory {
     public void constructDialogues
             (String path) {
         String data = FileManager.readFile(path);
+
         for (String contents : ContainerUtils.open(
                 data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
@@ -46,7 +48,10 @@ public class DialogueFactory {
             int firstId = NumberUtils.getInteger(array[1]);
             int lastId = NumberUtils.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-            GameDialogue dialogue = createDialogue(name, ContainerUtils.joinList(ids));
+
+            String metaData = "time_between_script_actions=500;"; //TODO
+
+            GameDialogue dialogue = createDialogue(name, metaData, ContainerUtils.joinList(ids));
             map.put(formatMapKey(name), dialogue);
 
         }
@@ -101,7 +106,7 @@ public class DialogueFactory {
 
 
     public LinearDialogue createDialogue
-            (String name, String idSequence) {
+            (String name, String metaData, String idSequence) {
         Speech parent = null;
         Speech root = null;
         for (String ID : ContainerUtils.open(idSequence)) {
@@ -120,7 +125,23 @@ public class DialogueFactory {
             parent = speech;
         }
 
-        return new LinearDialogue(root, name);
+        LinearDialogue dialogue = new LinearDialogue(root, name);
+
+        DialogueData data = new DialogueData(metaData);
+
+        dialogue.setTimeBetweenLines(data.getIntValue(DIALOGUE_META_DATA.TIME_BETWEEN_SCRIPT_ACTIONS));
+        return dialogue;
+    }
+
+    public class DialogueData extends DataUnit<DIALOGUE_META_DATA> {
+
+        public DialogueData(String metaData) {
+            super(metaData);
+        }
+    }
+
+    public enum DIALOGUE_META_DATA {
+        TIME_BETWEEN_SCRIPT_ACTIONS,
     }
 
     public SpeechBuilder getBuilder() {

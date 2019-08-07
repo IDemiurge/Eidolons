@@ -179,6 +179,8 @@ public class Assets {
         if (EidolonsGame.BRIDGE) {
 //            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
 //            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_CLOSE);
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_OPEN);
 //            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
             return;
         }

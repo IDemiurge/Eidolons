@@ -272,10 +272,10 @@ public class DC_Game extends GenericGame {
         }
         ActionGenerator.init();
 
-            getRules().getIlluminationRule().clearCache();
-            inventoryTransactionManager = new InventoryTransactionManager(this);
-            inventoryManager = new DC_InventoryManager();
-            battleMaster.init();
+        getRules().getIlluminationRule().clearCache();
+        inventoryTransactionManager = new InventoryTransactionManager(this);
+        inventoryManager = new DC_InventoryManager();
+        battleMaster.init();
         dungeonMaster.init();
         setOffline(true);
 
@@ -314,7 +314,7 @@ public class DC_Game extends GenericGame {
         }
         visionMaster.refresh();
         getMetaMaster().getDialogueManager().introDialogue();
-        getMetaMaster().getDialogueManager().afterDialogue(()->{
+        getMetaMaster().getDialogueManager().afterDialogue(() -> {
             fireEvent(new Event(Event.STANDARD_EVENT_TYPE.INTRO_FINISHED, new Ref()));
         });
         startGameLoop(first);

@@ -104,6 +104,8 @@ public class UnitViewFactory {
                    x,
                     bfObj.getCoordinates());
 //            view.addActor(obj);
+            main.system.auxiliary.log.LogMaster.log(1," ADD_GRID_OBJ for " +
+                    view + ": "+x );
             GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
         }
         return view;

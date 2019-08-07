@@ -34,6 +34,16 @@ public class ChainQuest implements Quest{
     }
 
     @Override
+    public Integer getNumberRequired() {
+        return null;
+    }
+
+    @Override
+    public Integer getNumberAchieved() {
+        return null;
+    }
+
+    @Override
     public QuestReward getReward() {
         return null;
     }

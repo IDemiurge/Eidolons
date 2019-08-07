@@ -17,14 +17,15 @@ public class BfObjEnums {
 //    createEmitter("unit/chaotic dark", -32, 32);
 
     public enum CUSTOM_OBJECT {
+        flames(15, "", "", "", 5),
+        nether_flames(15, "", "", "", 5),
         wisp_floating(15, "", "", "bf/light wisp float.txt", 5),
         crematory(15, "", "", "", 5),
         soul_net(15, "", "", "", 5),
         black_waters(15, "", "", "grid/black waters.txt", 5),
         BLACKNESS(15, "", "", "", 5),
         LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
-        GATE_PILLAR(10, "", "", "grid/pillar.txt",10)
-        ;
+        GATE_PILLAR(10, "", "", "grid/pillar.txt", 10);
 
         public boolean vfxUnderMirrorX;
         public boolean vfxUnderMirrorY;
@@ -33,16 +34,19 @@ public class BfObjEnums {
 
         public float vfxChance;
         public boolean invert_screen_vfx;
-        private float vfxSpeed=1f;
+        private float vfxSpeed = 1f;
 
         CUSTOM_OBJECT(int fps, String vfxUnder, String vfxOver, String spritePath, double range, String... additionalObjects) {
             this.range = range;
             this.fps = fps;
             this.vfxUnder = vfxUnder;
             this.vfxOver = vfxOver;
-            this.spritePath = PathFinder.getUiSpritePath()+spritePath;
+            if (!spritePath.isEmpty()) {
+                this.spritePath = PathFinder.getUiSpritePath() + spritePath;
+            }
             this.additionalObjects = additionalObjects;
         }
+
         public boolean screen;
         //BLENDING
         public double range;
@@ -62,14 +66,16 @@ public class BfObjEnums {
             this.vfxSpeed = vfxSpeed;
         }
     }
+
     public enum BF_OBJECT_GROUP {
         WALL, COLUMNS, RUINS, CONSTRUCT, GATEWAY, GRAVES,
 
         WINDOWS, MAGICAL, HANGING, INTERIOR, STATUES,
 
-        LOCK, ENTRANCE, TRAP, DOOR, LIGHT_EMITTER, CONTAINER, TREASURE,
+        KEY, LOCK, ENTRANCE, TRAP, DOOR, LIGHT_EMITTER, CONTAINER, TREASURE,
 
-        DUNGEON, WATER, TREES, ROCKS, VEGETATION, REMAINS, CRYSTAL,;
+        DUNGEON, WATER, TREES, ROCKS, VEGETATION, REMAINS, CRYSTAL,
+        ;
     }
 
     public enum BF_OBJECT_SIZE {
@@ -89,7 +95,7 @@ public class BfObjEnums {
         WATER,
         ITEM,
         HUGE,
-        PUSHABLE ,
+        PUSHABLE,
         LARGE;
     }
 
@@ -607,7 +613,8 @@ public class BfObjEnums {
         FEL_FUNGI,
         YELLOW_LUMINESCENT_FUNGI,
         PURPLE_LUMINESCENT_FUNGI,
-        GREEN_LUMINESCENT_FUNGI,;
+        GREEN_LUMINESCENT_FUNGI,
+        ;
     }
 
     public enum BF_OBJ_TYPES_ implements OBJ_TYPE_ENUM {
@@ -656,7 +663,8 @@ public class BfObjEnums {
         SMOOTH_STONE_WALL,
         CARVED_STONE_WALL,
         ELDRITCH_SPHERE,
-        ELDRITCH_SHRINE,;
+        ELDRITCH_SHRINE,
+        ;
     }
 
     public enum BF_OBJ_TYPES_CONTAINER implements OBJ_TYPE_ENUM {
@@ -665,7 +673,8 @@ public class BfObjEnums {
         BARREL,
         COBWEBBED_CRATE,
         ASH_URN,
-        ENCHANTED_ASH_URN,;
+        ENCHANTED_ASH_URN,
+        ;
     }
 
     public enum BF_OBJ_TYPES_DOOR implements OBJ_TYPE_ENUM {
@@ -697,7 +706,8 @@ public class BfObjEnums {
         TEAL_ENCHANTED_ORNATE_DOOR,
         DWARVEN_RUNE_DOOR,
         BONE_DOOR_ENCHANTED,
-        CRIMSON_DOOR,;
+        CRIMSON_DOOR,
+        ;
     }
 
     public enum BF_OBJ_TYPES_DUNGEON implements OBJ_TYPE_ENUM {
@@ -717,14 +727,16 @@ public class BfObjEnums {
         FEL_FUNGI,
         YELLOW_LUMINESCENT_FUNGI,
         PURPLE_LUMINESCENT_FUNGI,
-        GREEN_LUMINESCENT_FUNGI,;
+        GREEN_LUMINESCENT_FUNGI,
+        ;
     }
 
     public enum BF_OBJ_TYPES_GEM implements OBJ_TYPE_ENUM {
         AMETHYST,
         TOPAZ,
         RUBY,
-        SAPPHIRE,;
+        SAPPHIRE,
+        ;
     }
 
     public enum BF_OBJ_TYPES_GRAVES implements OBJ_TYPE_ENUM {
@@ -740,7 +752,8 @@ public class BfObjEnums {
         NOBLE_GRAVESTONE,
         DESECRATED_SARCOPHAGUS,
         LORDUNICODE39CODEENDS_TOMB,
-        TOMB_NICHE,;
+        TOMB_NICHE,
+        ;
     }
 
     public enum BF_OBJ_TYPES_LIGHT_EMITTERS implements OBJ_TYPE_ENUM {
@@ -778,11 +791,13 @@ public class BfObjEnums {
         GLOWING_SILVER_RUNE,
         GLOWING_ARCANE_RUNE,
         HELLFIRE_BRAZIER,
-        HOLY_FLAME_BRAZIER,;
+        HOLY_FLAME_BRAZIER,
+        ;
     }
 
     public enum BF_OBJ_TYPES_LOCK implements OBJ_TYPE_ENUM {
-        PADLOCK,;
+        PADLOCK,
+        ;
     }
 
     public enum BF_OBJ_TYPES_MAGICAL implements OBJ_TYPE_ENUM {
@@ -799,7 +814,8 @@ public class BfObjEnums {
         WATCHERS_IN_THE_WALLS,
         SNAKE_TRAP,
         BALLISTA_TRAP,
-        CATHEDRAL_CLOCK,;
+        CATHEDRAL_CLOCK,
+        ;
     }
 
     public enum BF_OBJ_TYPES_PROP implements OBJ_TYPE_ENUM {
@@ -926,7 +942,8 @@ public class BfObjEnums {
         HALBERT_RACK,
         GREATSWORD_RACK,
         PRISTINE_GEMSTONE,
-        PRISTINE_AMETHYST,;
+        PRISTINE_AMETHYST,
+        ;
     }
 
     public enum BF_OBJ_TYPES_REMAINS implements OBJ_TYPE_ENUM {
@@ -943,7 +960,8 @@ public class BfObjEnums {
         PUTRID_REMAINS,
         DECOMPOSING_REMAINS,
         ANCIENT_REMAINS,
-        ANCIENT_SKULL,;
+        ANCIENT_SKULL,
+        ;
     }
 
     public enum BF_OBJ_TYPES_ROCKS implements OBJ_TYPE_ENUM {
@@ -953,7 +971,8 @@ public class BfObjEnums {
         ICE_SPIKE,
         MOSSY_ROCKS,
         FOREST_CRAGS,
-        RUNESTONE,;
+        RUNESTONE,
+        ;
     }
 
     public enum BF_OBJ_TYPES_RUINS implements OBJ_TYPE_ENUM {
@@ -962,7 +981,8 @@ public class BfObjEnums {
         RUINED_COLUMN,
         RUINED_GATEWAY,
         RUINED_MASONRY,
-        SNOWCOVERED_RUINS,;
+        SNOWCOVERED_RUINS,
+        ;
     }
 
     public enum BF_OBJ_TYPES_STANDARD implements OBJ_TYPE_ENUM {
@@ -1046,7 +1066,8 @@ public class BfObjEnums {
         SHALLOW_WATER,
         ICY_SPRING,
         WATERFALL,
-        ICY_BROOK,;
+        ICY_BROOK,
+        ;
     }
 
     public enum BF_OBJ_TYPES_STRUCTURES implements OBJ_TYPE_ENUM {
@@ -1058,7 +1079,8 @@ public class BfObjEnums {
         TOWER_OPENING,
         TENT,
         WELL,
-        WAR_TENT,;
+        WAR_TENT,
+        ;
     }
 
     public enum BF_OBJ_TYPES_TREASURE implements OBJ_TYPE_ENUM {
@@ -1072,7 +1094,8 @@ public class BfObjEnums {
         ARMORED_CHEST,
         PRESTINE_CHEST,
         ESSENCE_VAULT,
-        FOCUS_VAULT,;
+        FOCUS_VAULT,
+        ;
     }
 
     public enum BF_OBJ_TYPES_TREES implements OBJ_TYPE_ENUM {
@@ -1094,7 +1117,8 @@ public class BfObjEnums {
         COBWEBBED_TREE,
         COBWEBBED_BRANCHES,
         CHARRED_STUMP,
-        BURNING_STUMP,;
+        BURNING_STUMP,
+        ;
     }
 
     public enum BF_OBJ_WEIGHT {
@@ -1106,8 +1130,7 @@ public class BfObjEnums {
     // SUBTYPES
 
 
-
-    public enum  BF_OBJ_SUB_TYPES_MAGICAL implements OBJ_TYPE_ENUM {
+    public enum BF_OBJ_SUB_TYPES_MAGICAL implements OBJ_TYPE_ENUM {
         AETHER_FONT,
         EYE_OF_THE_WARP,
         AETHER_SPHERE,
@@ -1135,7 +1158,8 @@ public class BfObjEnums {
         CATHEDRAL_CLOCK,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_INTERIOR implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_INTERIOR implements OBJ_TYPE_ENUM {
         WIZARD_TABLE,
         ARMOR_SUIT,
         ARMOR_STAND,
@@ -1164,7 +1188,8 @@ public class BfObjEnums {
         BED,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_CONTAINER implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_CONTAINER implements OBJ_TYPE_ENUM {
         WEAPONS_RACK,
         SWORD_STAND,
         SWORD_RACK,
@@ -1181,7 +1206,8 @@ public class BfObjEnums {
         ENCHANTED_ASH_URN,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_STATUES implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_STATUES implements OBJ_TYPE_ENUM {
         STONE_KNIGHT,
         DEMON_STATUE,
         ANGEL_STATUE,
@@ -1213,7 +1239,8 @@ public class BfObjEnums {
         WITCH_STATUES,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_REMAINS implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_REMAINS implements OBJ_TYPE_ENUM {
         SKULL_PILE,
         BATTLE_REMAINS,
         REMAINS,
@@ -1232,7 +1259,8 @@ public class BfObjEnums {
         ANCIENT_SKULL,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_MECHANICAL implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_MECHANICAL implements OBJ_TYPE_ENUM {
         GEAR_MECHANISM,
         STEAM_ENGINE,
         WALL_GEARS,
@@ -1251,7 +1279,8 @@ public class BfObjEnums {
         GEAR_MACHINE,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_GRAVES implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_GRAVES implements OBJ_TYPE_ENUM {
         HUNG_SKELETON,
         GRAVESTONE,
         FRESH_GRAVE,
@@ -1268,7 +1297,8 @@ public class BfObjEnums {
         TOMB_NICHE,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_ implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_ implements OBJ_TYPE_ENUM {
         IRON_GRID,
         STONE_ARCH,
         IMPALED_SKULL,
@@ -1279,7 +1309,8 @@ public class BfObjEnums {
         MOSSY_ROOTS,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_HANGING implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_HANGING implements OBJ_TYPE_ENUM {
         KNIGHTLY_WEAPONS,
         INSIGNIA,
         TUNNEL_GRID,
@@ -1306,7 +1337,8 @@ public class BfObjEnums {
         PRISTINE_AMETHYST,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_WATER implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_WATER implements OBJ_TYPE_ENUM {
         DRAIN,
         SEWER_BARS,
         SEWER,
@@ -1323,7 +1355,8 @@ public class BfObjEnums {
         ICY_BROOK,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_ENTRANCE implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_ENTRANCE implements OBJ_TYPE_ENUM {
         CROSSBOW_STAND,
         DARK_TUNNEL,
         STAIRS,
@@ -1355,7 +1388,8 @@ public class BfObjEnums {
         CAVE_EXIT,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_DOOR implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_DOOR implements OBJ_TYPE_ENUM {
         DOOR,
         IRON_DOOR,
         STONE_DOOR,
@@ -1383,7 +1417,8 @@ public class BfObjEnums {
         CRIMSON_DOOR,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_GATEWAY implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_GATEWAY implements OBJ_TYPE_ENUM {
         CEMETARY_GATE_OPEN,
         CEMETARY_GATE_BLOCKED,
         PALACE_GATE,
@@ -1399,7 +1434,8 @@ public class BfObjEnums {
         ABYSSAL_GATE,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_TREASURE implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_TREASURE implements OBJ_TYPE_ENUM {
         TREASURE_CHEST,
         RUSTY_CHEST,
         TREASURE_PILE,
@@ -1413,7 +1449,8 @@ public class BfObjEnums {
         FOCUS_VAULT,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_LIGHT_EMITTER implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_LIGHT_EMITTER implements OBJ_TYPE_ENUM {
 
 
         NETHERFLAME_BRAZIER,
@@ -1457,20 +1494,24 @@ public class BfObjEnums {
         TOPAZ_LANTERN,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_TRAP implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_TRAP implements OBJ_TYPE_ENUM {
         DEATH_PIT,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_WINDOWS implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_WINDOWS implements OBJ_TYPE_ENUM {
         CASTLE_WINDOW,
         TEMPLE_WINDOWS,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_LOCK implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_LOCK implements OBJ_TYPE_ENUM {
         PADLOCK,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_COLUMNS implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_COLUMNS implements OBJ_TYPE_ENUM {
         FALLEN_COLUMN,
         MARBLE_COLUMN,
         COLUMN,
@@ -1481,7 +1522,8 @@ public class BfObjEnums {
         DARK_COLUMN,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_WALL implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_WALL implements OBJ_TYPE_ENUM {
         STONE_WALL,
         CAVE_WALL,
         DWARVEN_WALL,
@@ -1528,7 +1570,8 @@ public class BfObjEnums {
         CARVED_STONE_WALL,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_RUINS implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_RUINS implements OBJ_TYPE_ENUM {
         RUINED_WALL,
         RUINED_STRUCTURE,
         RUINED_COLUMN,
@@ -1537,13 +1580,15 @@ public class BfObjEnums {
         SNOWCOVERED_RUINS,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_CONJURATE implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_CONJURATE implements OBJ_TYPE_ENUM {
         FORCE_FIELD,
         ELDRITCH_SPHERE,
         ELDRITCH_SHRINE,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_CONSTRUCT implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_CONSTRUCT implements OBJ_TYPE_ENUM {
         OBELISK,
         TOWER,
         TOWER_OPENING,
@@ -1564,7 +1609,8 @@ public class BfObjEnums {
         SHACK,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_CRYSTAL implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_CRYSTAL implements OBJ_TYPE_ENUM {
         COSMIC_CRYSTAL,
         CHAOS_CRYSTAL,
         ARCANE_CRYSTAL,
@@ -1574,7 +1620,8 @@ public class BfObjEnums {
         LIFE_CRYSTAL,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_ROCKS implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_ROCKS implements OBJ_TYPE_ENUM {
         ROCKS,
         MOSSY_BOULDER,
         SLEEK_ROCK,
@@ -1584,7 +1631,8 @@ public class BfObjEnums {
         RUNESTONE,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_TREES implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_TREES implements OBJ_TYPE_ENUM {
         ANCIENT_OAK,
         TREE_SAPLING,
         DEAD_TREE,
@@ -1606,7 +1654,8 @@ public class BfObjEnums {
         BURNING_STUMP,
         ;
     }
-    public enum  BF_OBJ_SUB_TYPES_DUNGEON implements OBJ_TYPE_ENUM {
+
+    public enum BF_OBJ_SUB_TYPES_DUNGEON implements OBJ_TYPE_ENUM {
         STALAGMITE,
         STALACTITE,
         NATURAL_COLUMN,

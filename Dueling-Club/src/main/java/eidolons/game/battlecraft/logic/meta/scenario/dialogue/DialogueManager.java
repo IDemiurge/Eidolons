@@ -27,7 +27,8 @@ import static main.system.GuiEventType.INIT_DIALOG;
  * Created by JustMe on 5/14/2017.
  */
 public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
-    private static final boolean SKIP_INTRO = true;
+    private static final boolean SKIP_INTRO = false;
+    private static final boolean PARSE_ON_INIT = CoreEngine.isIDE();
     private static boolean running;
     private static Runnable afterDialogue;
 
@@ -39,10 +40,14 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 
     public DialogueManager(MetaGameMaster master) {
         super(master);
+        if (PARSE_ON_INIT)
+            DialogueLineFormatter.fullUpdate();
+
         dialogueFactory = createDialogueFactory();
         introFactory = createIntroFactory();
         dialogueActorMaster = new DialogueActorMaster(master);
         speechExecutor = new SpeechExecutor(master, this);
+
 
         GuiEventManager.bind(INIT_DIALOG, obj -> {
             if (CoreEngine.isIDE())

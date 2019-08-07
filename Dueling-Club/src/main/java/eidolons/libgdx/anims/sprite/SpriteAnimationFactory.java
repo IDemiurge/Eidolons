@@ -9,6 +9,7 @@ import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.SmartTextureAtlas;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -50,11 +51,20 @@ public class SpriteAnimationFactory {
         public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, boolean useCache) {
         key = FileManager.formatPath(key, true);
         key = key.substring(0, key.length() - 1);
-        SpriteAnimation sprite =useCache?  cache.get(key.toLowerCase()) : null ;
-        if (sprite != null) {
-            sprite.reset();
-            return sprite;
-        }
+            if (!key.contains(".")) {
+                key = Sprites.substituteKey(key);
+            }
+            if (!key.contains(".")) {
+                if (!useDefault) {
+                    return null;
+                }
+            } else {
+                SpriteAnimation sprite =useCache?  cache.get(key.toLowerCase()) : null ;
+                if (sprite != null) {
+                    sprite.reset();
+                    return sprite;
+                }
+            }
         String texturePath = key;
         if (texturePath.toLowerCase().endsWith(".atlas")
                 || texturePath.toLowerCase().endsWith(".txt")) {

@@ -8,6 +8,7 @@ public class GameDialogue {
 
     protected Speech root;
     protected String name;
+    private int timeBetweenLines;
 
     public GameDialogue(Speech root, String name) {
         this.root = root;
@@ -33,4 +34,11 @@ public class GameDialogue {
     }
 
 
+    public int getTimeBetweenLines() {
+        return timeBetweenLines;
+    }
+
+    public void setTimeBetweenLines(int timeBetweenLines) {
+        this.timeBetweenLines = timeBetweenLines;
+    }
 }

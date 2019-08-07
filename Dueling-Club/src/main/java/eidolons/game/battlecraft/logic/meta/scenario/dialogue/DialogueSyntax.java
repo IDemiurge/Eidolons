@@ -11,6 +11,8 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.system.auxiliary.ContainerUtils;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by JustMe on 5/30/2017.
  */
@@ -21,9 +23,9 @@ public class DialogueSyntax {
     public static final String META_DATA_SEPARATOR= "||";
     public static final String PARAM_MOD = "[";
     public static final String PARAM_MOD_CLOSE = "]";
-//    public static final String REQS = "[[";
+    //    public static final String REQS = "[[";
 //    public static final String REQS_CLOSE = "]]";
-    public static final String SCRIPT = "[[";
+    public static final String SCRIPT = Pattern.quote("[[");
     public static final String SCRIPT_CLOSE = "]]";
     public static final String item_separator = ";";
     public static final String pair_separator = ":";

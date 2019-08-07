@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.TEST_MODE;
 
@@ -46,13 +47,11 @@ public class SpeechBuilder {
     }
 
     protected String processText(String text, Speech speech) {
-
-        text = text.split(DialogueSyntax.META_DATA_SEPARATOR)[0];
-        if (text.split(DialogueSyntax.META_DATA_SEPARATOR).length==1 && !TEST_MODE) {
+        if (text.split(DialogueSyntax.SCRIPT).length == 1 && !TEST_MODE) {
             return text;
         }
-        String metaData = TEST_MODE? SpeechScript.TEST_DATA : text.split(DialogueSyntax.META_DATA_SEPARATOR)[1];
-
+        String metaData = TEST_MODE ? SpeechScript.TEST_DATA : text.split(DialogueSyntax.SCRIPT)[1];
+        text = text.split(DialogueSyntax.SCRIPT) [0];
         try {
             Condition reqs = DialogueSyntax.getConditions(metaData);
             speech.setConditions(reqs);
@@ -66,13 +65,17 @@ public class SpeechBuilder {
 //            main.system.ExceptionMaster.printStackTrace(e);
 //        }
 
-            String part = DialogueSyntax.getScriptPart(metaData);
-            if (!StringMaster.isEmpty(part)) {
-                SpeechScript script = new SpeechScript(part, master);
-                speech.setScript(script);
+        String part = metaData.substring(0, metaData.indexOf(DialogueSyntax.SCRIPT_CLOSE));// DialogueSyntax.getScriptPart(metaData);
+        if (!StringMaster.isEmpty(part)) {
+            SpeechScript script = new SpeechScript(part, master);
+            speech.setScript(script);
+            Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME);
+            if (time != 0) {
+                speech.setTime(time);
             }
-            Integer time = DialogueSyntax.getTime(metaData);
-            speech.setTime(time);
+        }
+//            Integer time = DialogueSyntax.getTime(metaData);
+//            speech.setTime(time);
 
         return text;
     }
@@ -98,7 +101,7 @@ public class SpeechBuilder {
                     String value = subNode.getTextContent();
                     value = XML_Formatter.restoreXmlNodeText(value);
                     data.setValue(
-                     subNode.getNodeName(), value);
+                            subNode.getNodeName(), value);
 //                    if ()
 //                        idToXmlMap.put(id, node.getTextContent());
                 }

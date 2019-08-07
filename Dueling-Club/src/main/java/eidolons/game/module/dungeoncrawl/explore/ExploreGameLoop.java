@@ -159,7 +159,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (checkActionInputValid(playerAction)) {
             game.getMovementManager().cancelAutomove(activeUnit);
             //TODO igg demo fix
-            Eidolons.onNonGdxThread(() ->
+            Eidolons.onThisOrNonGdxThread(() ->
                     activateAction(playerAction)
             );
             waitForAnimations(playerAction);

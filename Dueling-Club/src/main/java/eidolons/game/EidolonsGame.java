@@ -40,7 +40,7 @@ public class EidolonsGame {
 
     public static FACING_DIRECTION getPresetFacing(Unit unit) {
         if (BRIDGE) {
-            return FACING_DIRECTION.SOUTH;
+            return FACING_DIRECTION.NORTH;
         }
         return null;
     }

@@ -90,13 +90,9 @@ public class DialogueView extends TablePanelX implements Scene {
             }
         initResponses(data);
 
-            if (container.getColor().a == 0) {
-            container.fadeIn();
-        }
-        //        updateResponses(dataSource.getSpeech().getChildren())
-
-
     }
+    //        updateResponses(dataSource.getSpeech().getChildren())
+
 
     private ActorDataSource getListenerActor() {
         SpeechDataSource data = getUserObject();
@@ -166,19 +162,19 @@ public class DialogueView extends TablePanelX implements Scene {
         }
     }
 
-    protected boolean tryNext() {
+    public boolean tryNext() {
         return tryNext(true);
     }
 
 
     protected boolean tryNext(boolean allowFinish) {
-        Eidolons.onNonGdxThread(() ->
+        Eidolons.onThisOrNonGdxThread(() ->
                 respond(SpeechDataSource.DEFAULT_RESPONSE, 0, allowFinish));
         return true;
     }
 
     private boolean respond(String option, int index) {
-        Eidolons.onNonGdxThread(() -> {
+        Eidolons.onThisOrNonGdxThread(() -> {
             respond(option, index, true);
         });
         return true;
@@ -194,15 +190,26 @@ public class DialogueView extends TablePanelX implements Scene {
             if (!option.equalsIgnoreCase(SpeechDataSource.DEFAULT_RESPONSE))
                 if (actor == null) {
                     scroll.append(option, "", "");
-                } else
+                } else {
                     scroll.append(option, actor.getActorName(), actor.getActorImage());
 
+
+                }
+            if (actor == null)
+                if (actor.getActor().getLinkedUnit() == null)
+                    try {
+                        actor.getActor().setupLinkedUnit();
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
 
             SpeechDataSource next =
                     handler.lineSpoken(getUserObject().speech, index);
             if (next != null) {
                 scroll.append("", "", Images.SEPARATOR_ALT).center().setX(getWidth() / 2);
                 update(next);
+                if (container.getColor().a == 0)
+                    container.fadeIn(); //TODO refactor
                 return true;
             } else {
                 if (allowFinish)

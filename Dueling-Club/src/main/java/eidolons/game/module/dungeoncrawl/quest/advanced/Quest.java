@@ -15,6 +15,10 @@ public interface Quest {
 
     String getProgressText();
 
+    Integer getNumberRequired();
+
+    Integer getNumberAchieved();
+
     QuestReward getReward();
 
     String getImage();

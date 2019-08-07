@@ -191,6 +191,11 @@ public class MusicMaster {
         return on;
     }
 
+    public static void playMoment(String value) {
+        MusicMaster.MUSIC_MOMENT moment = new EnumMaster<MUSIC_MOMENT>().retrieveEnumConst(MUSIC_MOMENT.class, value);
+        playMoment(moment);
+    }
+
     public   void overrideWithTrack(String value) {
         MUSIC_TRACK track = getTrackByName(value);
         playMusic(track.getPath(), true);

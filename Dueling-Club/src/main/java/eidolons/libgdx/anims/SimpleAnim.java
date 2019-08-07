@@ -26,8 +26,10 @@ public class SimpleAnim implements Animation {
     Vector2 dest;
     Vector2 pos;
     Float duration;
-    List<SpriteX> sprites = new ArrayList<>();
+    List<SpriteX> sprites;
     private boolean done;
+    private int fps=14;
+    private SuperActor.BLENDING blending= SuperActor.BLENDING.SCREEN;
 
     public SimpleAnim(String spritePath, Runnable onDone, Vector2 origin, Vector2 dest, Float duration) {
         this.spritePath = spritePath;
@@ -35,22 +37,32 @@ public class SimpleAnim implements Animation {
         this.origin = origin;
         this.dest = dest;
         this.duration = duration;
-        for (String substring : ContainerUtils.openContainer(spritePath)) {
-            SpriteX sprite = new SpriteX(substring);
-            //set stuff?
-            sprite.setBlending(SuperActor.BLENDING.SCREEN);
-            sprite.getSprite().setLooping(false);
-            sprite.getSprite().setCustomAct(false);
-            sprite.setFps(14);
-            sprite.getSprite().setLoops(1);
-            sprites.add(sprite);
-        }
     }
 
     public SimpleAnim(String spritePath, Runnable onDone) {
         this(spritePath, onDone, GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates()), null, null);
         this.spritePath = spritePath;
         this.onDone = onDone;
+    }
+
+    @Override
+    public void start(Ref ref) {
+        pos = origin;
+        if (sprites == null) {
+            sprites = new ArrayList<>();
+            for (String substring : ContainerUtils.openContainer(spritePath)) {
+                SpriteX sprite = new SpriteX(substring);
+                //set stuff?
+                sprite.getSprite().setLooping(false);
+                sprite.getSprite().setCustomAct(false);
+                sprite.getSprite().setLoops(1);
+                sprites.add(sprite);
+            }
+        }
+    }
+
+    public void setOrigin(Vector2 origin) {
+        this.origin = origin;
     }
 
     @Override
@@ -69,6 +81,8 @@ public class SimpleAnim implements Animation {
         if (duration == null) {
             done = true;
             for (SpriteX sprite : sprites) {
+                sprite.setBlending(blending);
+                sprite.setFps(fps);
                 sprite.setX(pos.x);
 //                DungeonScreen.getInstance().getCamera().position.x);
                 sprite.setY(pos.y);
@@ -87,15 +101,18 @@ public class SimpleAnim implements Animation {
         return true;
     }
 
+    public void setFps(int fps) {
+        this.fps = fps;
+    }
+
+    public void setBlending(SuperActor.BLENDING blending) {
+        this.blending = blending;
+    }
     @Override
     public boolean draw(Batch batch) {
         return tryDraw(batch);
     }
 
-    @Override
-    public void start(Ref ref) {
-        pos = origin;
-    }
 
     @Override
     public void start() {
@@ -121,6 +138,7 @@ public class SimpleAnim implements Animation {
     public void setDelay(float delay) {
 
     }
+
 
     @Override
     public boolean isRunning() {

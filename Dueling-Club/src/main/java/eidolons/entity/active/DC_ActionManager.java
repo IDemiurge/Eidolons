@@ -33,6 +33,8 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.data.StringMap;
+import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -210,7 +212,7 @@ public class DC_ActionManager implements ActionManager {
 
         Map<String, ActiveObj> map = actionsCache.get(ref.getSourceObj());
         if (map == null) {
-            map = new HashMap<>();
+            map = new StringMap<>();
             actionsCache.put(ref.getSourceObj(), map);
         }
         map.put(action.getName(), action);
@@ -288,7 +290,7 @@ public class DC_ActionManager implements ActionManager {
     public DC_UnitAction newAction(String typeName, Entity entity) {
         Map<String, ActiveObj> map = actionsCache.get(entity);
         if (map == null) {
-            map = new HashMap<>();
+            map = new StringMap<>();
             actionsCache.put(entity, map);
         }
         if (map.get(typeName) != null) {
@@ -321,7 +323,7 @@ public class DC_ActionManager implements ActionManager {
 
         typeName = typeName.trim();
         if (actionsCache.get(entity) == null) {
-            actionsCache.put(entity, new HashMap<>());
+            actionsCache.put(entity, new StringMap<>());
         }
         ActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {

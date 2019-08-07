@@ -184,7 +184,7 @@ public class PortalMaster extends DungeonHandler {
 
         @Override
         protected double getDefaultVisionRange() {
-            return 6;
+            return 8;
         }
 
         @Override

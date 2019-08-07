@@ -1,9 +1,17 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
+import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.core.game.Game;
+import main.system.auxiliary.ContainerUtils;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 5/17/2017.
@@ -26,7 +34,38 @@ public class DialogueActor extends LightweightEntity {
         return linkedUnit;
     }
 
+    public void setupLinkedUnit() {
+        if (getGame() instanceof DC_Game) {
+            Coordinates c = Eidolons.getMainHero().getCoordinates();
+            List<Coordinates> area = CoordinatesMaster.getCoordinatesWithin(
+                    Math.max(0, c.getX() - 10),
+                    Math.min(((DC_Game) getGame()).getDungeon().getCellsX(), c.getX() + 10),
+                    Math.max(0, c.getY() - 10),
+                    Math.min(((DC_Game) getGame()).getDungeon().getCellsY(), c.getY() + 10)
+            );
+            for (Unit unit : ((DC_Game) getGame()).getUnitsForCoordinates(area.toArray(new Coordinates[area.size()]))) {
+                for (String substring : ContainerUtils.openContainer(getProperty(PROPS.ACTOR_UNIT_NAMES))) {
+                    if (unit.getName().equalsIgnoreCase(substring)) {
+                        if (!unit.isActorLinked()) {
+                            setLinkedUnit(unit);
+
+                            break;
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+    }
+
     public void setLinkedUnit(Unit linkedUnit) {
+        if (linkedUnit != null) {
+            linkedUnit.setActorLinked(true);
+        } else {
+//            this.linkedUnit.setActorLinked(fireParamEvent());
+        }
         this.linkedUnit = linkedUnit;
     }
 }

@@ -46,6 +46,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.decor.ShardVisuals;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
@@ -455,8 +456,14 @@ public class GridPanel extends Group {
             List list = (List) p.get();
             Unit hero = (Unit) list.get(0);
            String text = (String) list.get(1);
-            SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
-            commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
+           GroupX portrait = null ;
+           if (hero==Eidolons.getMainHero()){
+               SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
+               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
+               portrait = commentSprite;
+           } else{
+               portrait = new FadeImageContainer(hero.getLargeImagePath());
+           }
             SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH){
                 @Override
                 public boolean remove() {
@@ -465,10 +472,11 @@ public class GridPanel extends Group {
                 }
             };
             SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
-            commentTextBgSprite.setRotation(RandomWizard.random()? 90 : 270);
             commentTextBgSprite.setScale(0.5f);
+            commentTextBgSprite.setOrigin(commentBgSprite.getWidth()/4, commentBgSprite.getHeight()/4);
+            commentTextBgSprite.setRotation( 90);
             commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-            commentTextBgSprite.setPosition(0, -commentBgSprite.getHeight()/4);
+            commentTextBgSprite.setPosition(commentBgSprite.getWidth()/2f, -commentBgSprite.getHeight()/8);
 
 //            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
             commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
@@ -477,14 +485,14 @@ public class GridPanel extends Group {
             commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
             commentGroup.addActor(commentBgSprite);
             commentGroup.addActor(commentTextBgSprite);
-            commentGroup.addActor(commentSprite);
+            commentGroup.addActor(portrait);
             addActor(commentGroup);
 
             Vector2 v = GridMaster.getCenteredPos(hero.getCoordinates());
             commentGroup.setPosition(v.x, v.y);
             ActionMaster.addFadeInAction(commentBgSprite, 2);
             ActionMaster.addFadeInAction(commentTextBgSprite, 2);
-            ActionMaster.addFadeInAction(commentSprite, 3);
+            ActionMaster.addFadeInAction(portrait, 3);
 //            commentSprite.setScale(0.5f);
             //flip?
             Coordinates panTo = hero.getCoordinates().getOffsetByY(2);
@@ -508,12 +516,13 @@ public class GridPanel extends Group {
             }
 //            commentSprite.getSprite().centerOnParent(commentGroup);
             GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo);
-            commentSprite.setX((int) (commentBgSprite.getWidth() / 2 - commentSprite.getWidth()));
-            commentSprite.setY((int) (commentBgSprite.getHeight()/2-commentSprite.getHeight()));
+            portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
+            portrait.setY((int) (commentBgSprite.getHeight()/2-portrait.getHeight()));
+            GroupX finalPortrait = portrait;
             WaitMaster.doAfterWait(4000+text.length()*12, () -> {
                 ActionMaster.addFadeOutAction(commentBgSprite, 4);
                 ActionMaster.addRemoveAfter(commentBgSprite);
-                ActionMaster.addFadeOutAction(commentSprite, 3);
+                ActionMaster.addFadeOutAction(finalPortrait, 3);
                 ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
 
 //                Gdx.app.postRunnable(()->     commentGroup.fadeOut());

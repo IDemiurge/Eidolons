@@ -98,7 +98,7 @@ public class SpriteMaster {
 
                 case "Mistborn Horror":
 //                    return StringMaster.getStringXTimes(8, Sprites.WHITE_TENTACLE+";");
-                    return StringMaster.getStringXTimes(6, Sprites.TENTACLE + ";");
+                    return StringMaster.getStringXTimes(6, Sprites.WHITE_TENTACLE + ";");
             }
 
         }
@@ -107,6 +107,7 @@ public class SpriteMaster {
 
     private static SuperActor.BLENDING getBlending(boolean over, BattleFieldObject obj) {
         switch (obj.getName()) {
+            case "Mistborn Horror":
             case "Dream Siphon":
                 return SuperActor.BLENDING.INVERT_SCREEN;
         }

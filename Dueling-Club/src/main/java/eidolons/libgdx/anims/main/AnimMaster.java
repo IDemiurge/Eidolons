@@ -46,7 +46,7 @@ import java.util.function.Supplier;
  * Created by JustMe on 1/9/2017.
  * Animation does not support ZOOM!
  */
-public class AnimMaster extends Group  {
+public class AnimMaster extends Group {
 
     static private boolean off;
     private static AnimMaster instance;
@@ -85,7 +85,7 @@ public class AnimMaster extends Group  {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-        if (anim.getPart()== ANIM_PART.CAST) {
+        if (anim.getPart() == ANIM_PART.CAST) {
             return false; //TODO igg demo hack
         }
         if (anim.getOrigin().equals(anim.getDestination()))
@@ -273,8 +273,12 @@ public class AnimMaster extends Group  {
         //blend mode
 
     }
-        public static void onCustomAnim(String spritePath, Runnable runnable) {
-        Gdx.app.postRunnable(() -> new SimpleAnim(spritePath, runnable).startAsSingleAnim());
+
+    public static void onCustomAnim(String spritePath, Runnable runnable) {
+        onCustomAnim(new SimpleAnim(spritePath, runnable));
+    }
+    public static void onCustomAnim(SimpleAnim anim) {
+        Gdx.app.postRunnable(() -> anim.startAsSingleAnim());
     }
 
     public void setOff(boolean off) {

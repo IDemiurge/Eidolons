@@ -7,6 +7,7 @@ import eidolons.game.core.game.DC_Game;
 public class VisionManager {
 
     private static boolean visionHacked;
+    private static boolean cinematicVision;
 
     public static boolean isVisionHacked() {
         return visionHacked || DC_Game.game.isDebugMode();
@@ -48,5 +49,13 @@ public class VisionManager {
 
     public static boolean checkKnownForPlayer(DC_Obj dc_obj) {
         return getMaster().getDetectionMaster().checkKnownForPlayer(dc_obj);
+    }
+
+    public static void setCinematicVision(boolean cinematicVision) {
+        VisionManager.cinematicVision = cinematicVision;
+    }
+
+    public static boolean getCinematicVision() {
+        return cinematicVision;
     }
 }

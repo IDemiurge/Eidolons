@@ -16,6 +16,7 @@ import eidolons.game.core.Eidolons;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
+import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -36,24 +37,17 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         return null;
     }
 
-    @Override
-    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
-        if (args[0].equalsIgnoreCase("group")) {
-
-        }
-        int i = 0;
-        Unit unit = (Unit) ref.getObj(args[0]);
+    public Unit findUnit(Ref ref, String unitData) {
+        Unit unit = (Unit) ref.getObj(unitData);
         if (unit == null) {
-            AI_ARG arg = new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, args[i]);
+            AI_ARG arg = new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, unitData);
             if (arg != null) {
                 unit = getUnit(arg);
             }
-
             if (unit == null) {
-                String name = args[i];
-                if (DataManager.isTypeName(name))
-                    i++;
-                else name = null;
+                String name = unitData;
+                if (!DataManager.isTypeName(name))
+                    name = null;
 
                 Boolean power = null;// getPower(arg);
                 Boolean distance =true; // getDistance(arg);
@@ -62,6 +56,17 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                         ownership, distance, power);
             }
         }
+        return unit;
+    }
+
+    @Override
+    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
+        if (args[0].equalsIgnoreCase("group")) {
+
+        }
+        int i = 0;
+        String unitData = args[0];
+        Unit unit = findUnit(ref, unitData);
 //        i++;
         //group?
         //with frozen gameLoop?
@@ -96,6 +101,9 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                                 boolean free, boolean immediate, String... args) {
         ActionSequence sequence = null;
         GOAL_TYPE goal = getGoalType(function);
+        if (unit == null) {
+            unit = findUnit(Eidolons.getMainHero().getRef(), arg);
+        }
         Task task = new Task(true, unit.getAI(), goal, arg);
         UnitAI ai = unit.getAI();
         switch (function) {
@@ -134,11 +142,29 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         if (immediate) {
             unit.getAI().setStandingOrders(sequence);
             unit.getAI().setFree(free);
-        } else
+        } else {
+            if (sequence == null) {
+                return;
+            }
+
+            Unit finalUnit = unit;
             sequence.getActions().forEach(
                     //TODO wait?
-                    action -> getExecutor().execute(action, free));
+                    action -> {
+                        if (action.getTargeting() instanceof SelectiveTargeting) {
+                            if (action.getTarget()==null) {
+                                action.getRef().setTarget(selectTarget(finalUnit,function, action, args));
+                            }
+                        }
+                        getExecutor().execute(action, free);
+                    });
+        }
 
+    }
+
+    private Integer selectTarget(Unit unit, COMBAT_SCRIPT_FUNCTION function, Action action, String[] args) {
+//        TODO other cases?
+        return getAnalyzer().getClosestEnemy(unit).getId();
     }
 
     private GOAL_TYPE getGoalType(COMBAT_SCRIPT_FUNCTION function) {

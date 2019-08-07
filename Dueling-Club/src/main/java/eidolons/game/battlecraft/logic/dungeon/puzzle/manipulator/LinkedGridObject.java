@@ -55,6 +55,13 @@ public class LinkedGridObject extends GridObject {
         CUSTOM_OBJECT.wisp_floating.vfxOver  +=   "ambient/sprite/willowisps(0, 0);";
         CUSTOM_OBJECT.wisp_floating.screen = true;
 
+        CUSTOM_OBJECT.flames.vfxOver  +=   "ambient/sprite/fires/real fire2(0, 0);";
+        CUSTOM_OBJECT.flames.screen = true;
+
+        CUSTOM_OBJECT.nether_flames.vfxUnder  +=   "ambient/sprite/fires/nether flame(0, 0);";
+        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.62f);
+        CUSTOM_OBJECT.nether_flames.screen = true;
+
 
         CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(-33, 0);";
         CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(0, 0);";
@@ -105,8 +112,10 @@ public class LinkedGridObject extends GridObject {
     @Override
     protected void init() {
         super.init();
+
         if (object.screen) {
-            sprite.setBlending(SuperActor.BLENDING.SCREEN);
+            if (sprite != null)
+                sprite.setBlending(SuperActor.BLENDING.SCREEN);
         } else
         if (object.invert_screen_vfx) {
             setInvertScreen(true);
@@ -158,7 +167,9 @@ public class LinkedGridObject extends GridObject {
 //            delta = delta / 10;
 //        }
         super.act(delta);
-        if (getLinked() instanceof OverlayView) {
+
+        if (sprite != null)
+            if (getLinked() instanceof OverlayView) {
             sprite.getSprite().setOffsetX(((OverlayView) getLinked()).getOffsetX());
             sprite.getSprite().setOffsetY(((OverlayView) getLinked()).getOffsetY());
         }

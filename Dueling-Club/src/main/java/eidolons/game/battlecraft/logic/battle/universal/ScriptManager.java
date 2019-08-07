@@ -68,11 +68,13 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
             String vars = VariableManager.getVars(arg);
             arg = VariableManager.removeVarPart(arg);
             switch (type) {
+
                 case "comment":
                     return "pos(" + c.toString() + ")>mainHero()>" +
                             type + "(" + vars + "," + arg +
                             ")";
                 case "tip":
+                case "esoterica":
                     return "pos(" + c.toString() + ")>mainHero()>" +
                             type + "(" + arg + ")";
                 case "tip_dialogue ":

@@ -22,6 +22,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -247,5 +248,13 @@ public class QuestMaster extends MetaGameHandler {
         quest.getReward().award(Eidolons.getMainHero(), true);
         quest.setRewardTaken(true);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_COMPLETED);
+    }
+
+    public Quest getQuest(String string) {
+        for (Quest quest : getRunningQuests()) {
+            if (quest.getTitle().equalsIgnoreCase(string))
+                return quest;
+        }
+        return null;
     }
 }

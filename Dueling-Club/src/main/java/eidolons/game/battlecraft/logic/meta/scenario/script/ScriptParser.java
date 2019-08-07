@@ -25,7 +25,7 @@ import java.util.List;
  * Created by JustMe on 5/19/2017.
  */
 public class ScriptParser {
-    public static final boolean TEST_MODE = true;//CoreEngine.isLiteLaunch() ;
+    public static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch() ;
 
     public static Conditions parseConditions(String conditionPart) {
         Conditions c = DC_ConditionMaster.toConditions(conditionPart);
@@ -52,7 +52,14 @@ public class ScriptParser {
 
     public static CONDITION_TEMPLATES getDefaultConditionForEvent(STANDARD_EVENT_TYPE event_type) {
         switch (event_type) {
-            case UNIT_FINISHED_MOVING:
+            case UNIT_HAS_BEEN_KILLED:
+                return CONDITION_TEMPLATES.NAME;
+            case DOOR_OPENS:
+            case INTERACTIVE_OBJ_USED:
+                return CONDITION_TEMPLATES.NAME; //TODO could do cord and name with 2 args..
+//                return CONDITION_TEMPLATES.COORDINATES; //TODO could do cord and name with 2 args..
+
+            case UNIT_FINISHED_MOVING: //for POS(10-10), will check that source is in 2 or less dist
                 return CONDITION_TEMPLATES.DISTANCE;
 
             case DIALOGUE_FINISHED:
@@ -182,12 +189,18 @@ public class ScriptParser {
 
 
     public enum SCRIPT_EVENT_SHORTCUT {
+        KILL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
+        INTERACT(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED),
+        INTERACT_NAME(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED),
+        DOOR(STANDARD_EVENT_TYPE.DOOR_OPENS),
         POS(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING),
         LINE(STANDARD_EVENT_TYPE.DIALOGUE_LINE_SPOKEN),
         DIALOGUE(STANDARD_EVENT_TYPE.DIALOGUE_FINISHED),
         CLEARED(STANDARD_EVENT_TYPE.ENEMIES_CLEARED),
-        ROUND(STANDARD_EVENT_TYPE.NEW_ROUND), DIES(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
-        ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT), ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),
+        ROUND(STANDARD_EVENT_TYPE.NEW_ROUND),
+        DIES(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
+        ENTERS(STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT),
+        ENGAGED(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ENGAGED),
         ;
         STANDARD_EVENT_TYPE event_type;
 

@@ -133,6 +133,7 @@ public class Unit extends DC_UnitModel {
     protected boolean usingStealth;
     private boolean scion;
     private DC_ActiveObj lastAction;
+    private boolean actorLinked;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -1800,5 +1801,11 @@ public class Unit extends DC_UnitModel {
                 retrieveEnumConst(UnitEnums.UNIT_GROUPS.class, getProperty(G_PROPS.UNIT_GROUP));
     }
 
+    public boolean isActorLinked() {
+        return actorLinked;
+    }
 
+    public void setActorLinked(boolean actorLinked) {
+        this.actorLinked = actorLinked;
+    }
 }

@@ -479,6 +479,13 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     private CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
         switch (style) {
+            case Somber:
+                if (RandomWizard.chance(36))
+                    return CELL_IMAGE.star;
+                if (RandomWizard.chance(46))
+                    return CELL_IMAGE.octagonal;
+                if (RandomWizard.chance(56))
+                    return CELL_IMAGE.natural;
             case DWARF:
                 if (RandomWizard.chance(66))
                     return CELL_IMAGE.diamond;
@@ -500,9 +507,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             case Pagan:
                 return CELL_IMAGE.natural;
             case DarkElegance:
-            case Somber:
-                if (RandomWizard.chance(66))
-                    return CELL_IMAGE.diamond;
             case PureEvil:
                 if (RandomWizard.chance(66))
                     return CELL_IMAGE.octagonal;
@@ -628,9 +632,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             if (type == null) {
                 continue;
             }
-            map.put(new Coordinates(s),type);
+            map.put(new Coordinates(s), type);
         }
-       cellTypeSpecialMap = (map);
+        cellTypeSpecialMap = (map);
     }
 
 

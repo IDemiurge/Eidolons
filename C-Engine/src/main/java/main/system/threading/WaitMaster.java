@@ -1,5 +1,6 @@
 package main.system.threading;
 
+import com.badlogic.gdx.Gdx;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;

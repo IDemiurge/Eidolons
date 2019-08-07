@@ -47,7 +47,8 @@ public class ImbuePanel extends TablePanelX {
         {
              imbuer.imbue(getSelectedItem(), getSouls());
             GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,
-                    new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATES, 1, FACING_DIRECTION.NORTH, SuperActor.BLENDING.SCREEN));
+                    new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATES, 1,
+                            FACING_DIRECTION.NORTH, SuperActor.BLENDING.SCREEN));
             soulSlots.resetSouls();
             LordPanel.getInstance().update();
         }
