@@ -3,6 +3,8 @@ package eidolons.game;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.launch.CoreEngine;
@@ -40,6 +42,10 @@ public class EidolonsGame {
 
     public static FACING_DIRECTION getPresetFacing(Unit unit) {
         if (BRIDGE) {
+
+            if (OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION)) {
+                return FACING_DIRECTION.EAST;
+            }
             return FACING_DIRECTION.NORTH;
         }
         return null;

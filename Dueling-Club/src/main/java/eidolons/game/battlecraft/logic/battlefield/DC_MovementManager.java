@@ -222,6 +222,12 @@ public class DC_MovementManager implements MovementManager {
         return move((BattleFieldObject) obj, getGrid().getCell(c), false, MOVE_MODIFIER.NONE, obj.getRef());
     }
 
+    public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c){
+
+
+        return false;
+
+    }
     public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
         Ref REF = new Ref(obj.getGame());

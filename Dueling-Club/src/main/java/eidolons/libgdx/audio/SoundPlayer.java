@@ -26,6 +26,7 @@ public class SoundPlayer extends Player {
 
     DungeonScreen dungeonScreen;
     private Vector2 position;
+    private float waitTime=0;
 
     public SoundPlayer(DungeonScreen dungeonScreen) {
         this.dungeonScreen = dungeonScreen;
@@ -105,7 +106,16 @@ public class SoundPlayer extends Player {
     }
 
     public void doPlayback(float delta) {
-        if (!playQueue.isEmpty()) {
+        if (playQueue.isEmpty()) {
+            return;
+        }
+        else {
+            if (waitTime>=0)
+            {
+                waitTime-=delta;
+                return ;
+            }
+
             SoundFx soundFx = playQueue.pop();
 //                playing.add(sound);
 //                if (sound.getDelay()!=0)
@@ -123,10 +133,15 @@ public class SoundPlayer extends Player {
                         return;
                 }
             playNow(soundFx);
+            waitTime = getWaitTime(soundFx);
             setVolume(OptionsMaster.getSoundOptions().getIntValue(SOUND_OPTION.MASTER_VOLUME));
         }
         //fade in or out?
         //pause sounds
+    }
+
+    private float getWaitTime(SoundFx soundFx) {
+        return 0.51f;
     }
 
     @Override

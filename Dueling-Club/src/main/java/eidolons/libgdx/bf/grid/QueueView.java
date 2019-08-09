@@ -161,6 +161,9 @@ public class QueueView extends UnitView {
     }
 
     protected void setDefaultTexture() {
+        if (getUserObject()== null ) {
+            return ;
+        }
         if (isMainHero()) {
             return;
         }

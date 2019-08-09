@@ -318,7 +318,7 @@ public class FloatingTextMaster {
         switch (aCase) {
             case BATTLE_COMMENT:
                 return
-                        StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20);
+                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, 20);
             case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);

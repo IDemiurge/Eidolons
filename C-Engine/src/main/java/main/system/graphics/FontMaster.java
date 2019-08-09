@@ -250,6 +250,7 @@ public class FontMaster {
         MAGIC("/magicmedieval.ttf"),
         MANORLY_("/manorly_.ttf"),
         FERTIGO("/fertigo_pro.otf"),
+        CHANCERY("/BLKCHCRY.ttf"),
         SUPER_KNIGHT("/supernatural_knight.ttf");
         public Font font;
         public String path;

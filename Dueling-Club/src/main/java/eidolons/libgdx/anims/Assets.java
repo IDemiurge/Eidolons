@@ -181,7 +181,7 @@ public class Assets {
 //            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
             SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_CLOSE);
             SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_OPEN);
-//            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
+            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
             return;
         }
 //        if (CoreEngine.isLiteLaunch()) {

@@ -15,6 +15,7 @@ public class MazePuzzleCondition extends DC_Condition {
 
     @Override
     public boolean check(Ref ref) {
+        if (puzzle.getMazeWalls() != null)
         for (Coordinates wall : puzzle.getMazeWalls()) {
             if (ref.getSourceObj().getCoordinates().equals(puzzle.getAbsoluteCoordinate(wall))) {
                 return true;

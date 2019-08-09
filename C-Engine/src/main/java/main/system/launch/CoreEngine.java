@@ -96,6 +96,8 @@ public class CoreEngine {
     private static boolean mainGame;
     private static boolean autoFixOn;
     private static boolean dungeonTool;
+    private static boolean testerVersion;
+
 
     public static boolean isMyLiteLaunch() {
         return isIDE() && isLiteLaunch();
@@ -699,4 +701,11 @@ public class CoreEngine {
         CoreEngine.dungeonTool = dungeonTool;
     }
 
+    public static boolean isTesterVersion() {
+        return testerVersion;
+    }
+
+    public static void setTesterVersion(boolean testerVersion) {
+        CoreEngine.testerVersion = testerVersion;
+    }
 }

@@ -7,6 +7,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.xml.XML_Formatter;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,6 +125,14 @@ public class IGG_Demo {
 
     public enum IGG_MISSION {
         TUTORIAL("modules/mortuary.xml", "Ashen Path", 0, 1){
+            @Override
+            public String getXmlLevelName() {
+                if (CoreEngine.isTesterVersion()){
+                    return "levels/ashen path.xml";
+                }
+                return super.getXmlLevelName();
+            }
+
             @Override
             public boolean isTutorial() {
                 return true;

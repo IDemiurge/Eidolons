@@ -34,6 +34,7 @@ public class SystemOptions
 
         CACHE,
         PRECONSTRUCT,
+        TESTER_VERSION(false),
 
         LAZY,
 

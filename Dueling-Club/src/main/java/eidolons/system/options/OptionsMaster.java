@@ -357,6 +357,9 @@ public class OptionsMaster {
                 break;
             case PRECONSTRUCT:
                 break;
+            case TESTER_VERSION:
+                CoreEngine.setTesterVersion(bool);
+                break;
             case LAZY:
                 break;
             case ActiveTestMode:

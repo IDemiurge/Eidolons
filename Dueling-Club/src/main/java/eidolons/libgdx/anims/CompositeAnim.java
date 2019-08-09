@@ -249,7 +249,8 @@ public class CompositeAnim implements Animation {
     }
 
     private void playAttached() {
-        List<Animation> list = attached.get(part == null ? ANIM_PART.AFTEREFFECT : part);
+        List<Animation> list = attached.get( part);
+//        List<Animation> list = attached.get(part == null ? ANIM_PART.AFTEREFFECT : part);
         if (list != null) {
             list.forEach(anim -> {
                 anim.start(getRef());
@@ -263,6 +264,10 @@ public class CompositeAnim implements Animation {
         part = null;
         finished = true;
         setRunning(false);
+        resetMaps();
+        if (getRef() == null) {
+            return ;
+        }
         if (hpUpdate) {
             if (getRef().getTargetObj() instanceof BattleFieldObject)
                 GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE, getRef().getTargetObj());
@@ -270,7 +275,6 @@ public class CompositeAnim implements Animation {
                 GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE, getRef().getSourceObj());
         }
 
-        resetMaps();
     }
 
     private void resetMaps() {

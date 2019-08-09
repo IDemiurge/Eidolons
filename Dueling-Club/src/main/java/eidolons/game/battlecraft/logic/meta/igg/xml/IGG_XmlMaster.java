@@ -245,15 +245,13 @@ public class IGG_XmlMaster {
     public static String getDialogueData(String levelName) {
         return "sentries=aggro;";
     }
-        public static String getEntrancesData(Location location, String levelName) {
+
+    public static String getEntrancesData(Location location, String levelName) {
         if (EidolonsGame.BOSS_FIGHT) { //TODO boss fix
             return "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
         }
-//        if (CoreEngine.isLiteLaunch()) { //TODO boss fix
-//            entranceData = "Dark Winding Upward Stairs(15-12);Dark Winding Upward Stairs(0-0)";
-//        }
+
         if (EidolonsGame.BRIDGE) {
-//            return "Ash Vault(48-21);The Light(9-1)";
             return "Ash Vault(" +
                     location.getProperty(PROPS.ENTRANCE_COORDINATES) +
                     ");The Light(9-1)";
@@ -369,7 +367,7 @@ public class IGG_XmlMaster {
     /**
      * randomizes an RNG template and writes it out as LE format level
      */
-        public void initAndWriteLevel(DungeonLevel level) {
+    public void initAndWriteLevel(DungeonLevel level) {
         if (syntheticZones) {
             int i = 0;
             for (LevelBlock block : level.getBlocks()) {

@@ -639,7 +639,9 @@ public class GuiStage extends StageX implements StageWithClosable {
             return;
         }
         if (tipMessageWindow != null)
-            if (tipMessageWindow.isVisible()) {
+            if (tipMessageWindow.isVisible())
+            if (tipMessageWindow.getColor().a>0)
+            {
 //            ActorMaster.addRemoveAfter(tipMessageWindow);
                 tipMessageWindow.setOnClose(() -> tip(o));
                 return;
