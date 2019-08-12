@@ -221,7 +221,7 @@ public class FullscreenAnims extends GroupX {
     }
 
     private String getCorePath() {
-        return PathFinder.getSpritesPathNew() + "fullscreen/";
+        return PathFinder.getSpritesPath() + "fullscreen/";
     }
 
     private void show(FullscreenAnimDataSource data) {
@@ -263,7 +263,7 @@ public class FullscreenAnims extends GroupX {
         //        DAMAGE
 
         public String getSpritePath() {
-            return PathFinder.getSpritesPathNew() + "fullscreen/" +  StringMaster.getWellFormattedString(toString()) + ".txt";
+            return PathFinder.getSpritesPath() + "fullscreen/" +  StringMaster.getWellFormattedString(toString()) + ".txt";
         }
     }
 }

@@ -334,7 +334,7 @@ public class VisionRule {
             master.getGame().getLogManager().logReveal(source, object);
         if (isDetectionSoundOn(source, object)) {
             if (source.getGame().isStarted())
-            if (!VisionManager.getCinematicVision())
+            if (!VisionManager.isCinematicVision())
 //            if (!source.getGame().isCinematicMode())
             DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
         }

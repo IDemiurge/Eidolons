@@ -1,5 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
@@ -61,6 +64,7 @@ public class LinkedGridObject extends GridObject {
         CUSTOM_OBJECT.nether_flames.vfxUnder  +=   "ambient/sprite/fires/nether flame(0, 0);";
         CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.62f);
         CUSTOM_OBJECT.nether_flames.screen = true;
+        CUSTOM_OBJECT.nether_flames.movable = true;
 
 
         CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(-33, 0);";
@@ -85,6 +89,9 @@ public class LinkedGridObject extends GridObject {
 
     private final BaseView linked;
     CUSTOM_OBJECT object;
+
+    float origX;
+    float origY;
 
     public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c) {
         super(c, object.spritePath);
@@ -112,6 +119,9 @@ public class LinkedGridObject extends GridObject {
     @Override
     protected void init() {
         super.init();
+
+        origX = linked.localToStageCoordinates(new Vector2(0, 0)).x;
+        origY = linked.localToStageCoordinates(new Vector2(0, 0)).y;
 
         if (object.screen) {
             if (sprite != null)
@@ -167,11 +177,30 @@ public class LinkedGridObject extends GridObject {
 //            delta = delta / 10;
 //        }
         super.act(delta);
+//        for (Action action : getLinked().getActionsOfClass(MoveByAction.class)) {
+//            if (action instanceof MoveByAction) {
+//                ((MoveByAction) action).getAmountX();
+//                ((MoveByAction) action).getAmountY();
+//                ((MoveByAction) action).getDuration()
+//            }
+//        }
 
-        if (sprite != null)
+        if (object.movable){
+            for (EmitterActor emitterActor : emitters.keySet()) {
+                emitterActor.setX(-origX + linked.localToStageCoordinates(new Vector2(0, 0)).x);
+                emitterActor.setY(-origY + linked.localToStageCoordinates(new Vector2(0, 0)).y);
+            }
+        }
+        if (sprite != null) {
+            if (object.movable){
+                sprite.setX(-origX + linked.localToStageCoordinates(new Vector2(0, 0)).x);
+                sprite.setY(-origY+linked.localToStageCoordinates(new Vector2(0, 0)).y);
+
+            }
             if (getLinked() instanceof OverlayView) {
-            sprite.getSprite().setOffsetX(((OverlayView) getLinked()).getOffsetX());
-            sprite.getSprite().setOffsetY(((OverlayView) getLinked()).getOffsetY());
+                sprite.getSprite().setOffsetX(((OverlayView) getLinked()).getOffsetX());
+                sprite.getSprite().setOffsetY(((OverlayView) getLinked()).getOffsetY());
+            }
         }
     }
 
@@ -180,6 +209,14 @@ public class LinkedGridObject extends GridObject {
         if (!linked.isVisible()) {
             return false;
         }
+//        if (isOverlapHiding()) TODO
+        {
+//            if (linked.getUserObject().getGame().getObjectsOnCoordinate(linked.getUserObject().getCoordinates()).size()>1){
+//                linked.setZIndex(0);
+//                return false;
+//            }
+        }
+
         return super.checkVisible();
     }
 

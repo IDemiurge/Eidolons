@@ -55,7 +55,7 @@ public class VisionManager {
         VisionManager.cinematicVision = cinematicVision;
     }
 
-    public static boolean getCinematicVision() {
+    public static boolean isCinematicVision() {
         return cinematicVision;
     }
 }

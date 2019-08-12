@@ -259,16 +259,16 @@ public class PathFinder {
          "mini/sprites" + PathUtils.getPathSeparator();
     }
 
-    public static String getSpritesPath() {
+    public static String getSpellSpritesPath() {
         init();
         return
-         "mini/sprites" + PathUtils.getPathSeparator();
+         "sprites/spells/";
     }
 
     public static String getUiSpritePath() {
-        return getSpritesPathNew() + "ui/";
+        return getSpritesPath() + "ui/";
     }
-    public static String getSpritesPathNew() {
+    public static String getSpritesPath() {
         init();
         return "sprites" + PathUtils.getPathSeparator();
     }
@@ -444,7 +444,7 @@ public class PathFinder {
 
     public static String getHitSpritesPath() {
         if (spritesPath == null)
-            spritesPath = StrPathBuilder.build(getSpritesPathNew(),
+            spritesPath = StrPathBuilder.build(getSpritesPath(),
              "hit");
         return spritesPath;
     }

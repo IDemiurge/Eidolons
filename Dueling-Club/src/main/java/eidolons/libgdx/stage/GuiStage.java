@@ -1013,6 +1013,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         dialogueContainer.fadeIn();
         dialogueContainer.play(handler);
         setDialogueMode(true);
+        DialogueManager.setRunning(true);
 
         cache.put(handler.getDialogue(), dialogueContainer);
     }

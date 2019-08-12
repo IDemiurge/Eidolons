@@ -47,10 +47,10 @@ public class SpeechBuilder {
     }
 
     protected String processText(String text, Speech speech) {
-        if (text.split(DialogueSyntax.SCRIPT).length == 1 && !TEST_MODE) {
+        if (text.split(DialogueSyntax.SCRIPT).length == 1 ) {
             return text;
         }
-        String metaData = TEST_MODE ? SpeechScript.TEST_DATA : text.split(DialogueSyntax.SCRIPT)[1];
+        String metaData =  text.split(DialogueSyntax.SCRIPT)[1];
         text = text.split(DialogueSyntax.SCRIPT) [0];
         try {
             Condition reqs = DialogueSyntax.getConditions(metaData);
@@ -69,7 +69,7 @@ public class SpeechBuilder {
         if (!StringMaster.isEmpty(part)) {
             SpeechScript script = new SpeechScript(part, master);
             speech.setScript(script);
-            Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME);
+            Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME_THIS);
             if (time != 0) {
                 speech.setTime(time);
             }

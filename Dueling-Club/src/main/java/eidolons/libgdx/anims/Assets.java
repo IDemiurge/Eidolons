@@ -26,15 +26,14 @@ import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -53,6 +52,30 @@ public class Assets {
             @Override
             public synchronized boolean update() {
                 return super.update();
+            }
+
+            @Override
+            public synchronized boolean isLoaded(String fileName) {
+                fileName = FileManager.formatPath(fileName, true, true);
+                return super.isLoaded(fileName);
+            }
+
+            @Override
+            public synchronized boolean isLoaded(String fileName, Class type) {
+                fileName = FileManager.formatPath(fileName, true, true);
+                return super.isLoaded(fileName, type);
+            }
+
+            @Override
+            public synchronized <T> T get(String fileName, Class<T> type) {
+                fileName = FileManager.formatPath(fileName, true, true);
+                return super.get(fileName, type);
+            }
+
+            @Override
+            public synchronized <T> T get(String fileName) {
+                fileName = FileManager.formatPath(fileName, true, true);
+                return super.get(fileName);
             }
         };
         manager.setLogger(new Logger("Atlases", Logger.DEBUG));
@@ -171,14 +194,15 @@ public class Assets {
 
 
     public static void preloadHeroes() {
-        SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPathNew()
-                + "unit/" + Eidolons.getMainHero().getName() + ".txt", false);
+        SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPath()
+                + "hero/" + Eidolons.getMainHero().getName() + ".txt", false);
     }
 
     public static void preloadUI() {
         if (EidolonsGame.BRIDGE) {
 //            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
 //            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+            SpriteAnimationFactory.getSpriteAnimation(Sprites.INK_BLOTCH);
             SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_CLOSE);
             SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_OPEN);
             SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);

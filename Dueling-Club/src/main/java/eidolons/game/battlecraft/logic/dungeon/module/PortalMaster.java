@@ -21,20 +21,13 @@ import java.util.Map;
 
 public class PortalMaster extends DungeonHandler {
     private static final String PORTAL_KEY = "portal";
-    /**
-     * tp map
-     * <p>
-     * rules for changing it
-     * <p>
-     * puzzles actions
-     * <p>
-     * open/close tp
-     * <p>
-     * execute with cam, fx, ...
-     * > use good old Saber?
-     */
     Map<Portal, Portal> portalMap = new LinkedHashMap<>();
 
+    /**
+     * support for multi-directional?
+
+
+     */
     public PortalMaster(DungeonMaster master) {
         super(master);
 
@@ -42,6 +35,10 @@ public class PortalMaster extends DungeonHandler {
 
     public void entered(Portal portal) {
         Unit unit = Eidolons.getMainHero();
+        entered(unit, portal);
+    }
+        public void entered(  Unit unit, Portal portal) {
+
         Portal to = portalMap.get(portal);
         portal.open = false;
         GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
@@ -56,7 +53,9 @@ public class PortalMaster extends DungeonHandler {
 //                GuiEventManager.trigger(GuiEventType.FADE_IN, 2.0f);
 //                GuiEventManager.trigger(GuiEventType.FADE_OUT, 1.4f);
 //                GuiEventManager.trigger(GuiEventType.CAMERA_LAPSE_TO,  unit.getCoordinates());
-                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
+
+                if (unit.isPlayerCharacter())
+                    GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
 
             });
         });
@@ -141,6 +140,7 @@ public class PortalMaster extends DungeonHandler {
 
         boolean open = false;
         boolean used;
+        boolean facingDependent;
 
         public Portal(FACING_DIRECTION exitFacing, Coordinates coordinates, PORTAL_TYPE type) {
             super(coordinates, Sprites.PORTAL);

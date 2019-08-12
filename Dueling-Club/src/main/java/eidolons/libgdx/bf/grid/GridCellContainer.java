@@ -28,7 +28,7 @@ import main.system.auxiliary.data.MapMaster;
 import java.util.*;
 
 public class GridCellContainer extends GridCell {
-    Map<Integer, GenericGridView> indexMap = new LinkedHashMap<>();
+    Map<GenericGridView, Integer  > indexMap = new LinkedHashMap<>();
     ValueContainer info;
     private int unitViewCount = 0;
     private int overlayCount = 0;
@@ -136,8 +136,9 @@ public class GridCellContainer extends GridCell {
                 }
             }
         }
+        if (!list.isEmpty())
         list.sort(getSorter().getSorterByExpression_(
-         v -> indexMap.containsKey(v) ? -(Integer) MapMaster.getKeyForValue_(indexMap, v) : -Integer.MAX_VALUE
+         v -> indexMap.containsKey(v) ? -indexMap.get( v) : -Integer.MAX_VALUE
         ));
         if (visibleOnly) {
             visibleViews = list;
@@ -284,14 +285,15 @@ public class GridCellContainer extends GridCell {
             return true;
 
         return !DungeonScreen.getInstance().
-         controller.isWithinCamera(
-         this
-        );
+         controller.isWithinCamera(this);
     }
 
     private Integer getZIndexForView(GenericGridView actor) {
         if (actor.isCellBackground())
             return 1;
+        if (indexMap.containsKey(actor)) {
+            return indexMap.get(actor);
+        }
         if (actor.getUserObject() instanceof Structure || !actor.isHpBarVisible()) {
             return Z++;
         } else
@@ -315,7 +317,6 @@ public class GridCellContainer extends GridCell {
         graveyard.setZIndex(Integer.MAX_VALUE);
         backImage.setZIndex(0);
     }
-
     private GenericGridView resetZIndices(List<GenericGridView> filtered, boolean units) {
         GenericGridView hovered = null;
 
@@ -327,13 +328,13 @@ public class GridCellContainer extends GridCell {
                 n++;
             if (!actor.isVisible())
                 continue;
-            if (actor.isCellBackground() || !units) {
-                Integer i = (Integer) MapMaster.getKeyForValue_(indexMap, actor);
+            if (actor.isCellBackground() ) {
+                Integer i = indexMap.get( actor);
                 if (i == null) {
                     i = 0;
                 }
-                i = Math.max(1, i);
-                actor.setZIndex(Math.max(i - 1,
+                i = Math.max(2, i);
+                actor.setZIndex(Math.max(i - 2,
 
                         i * 2 - getUnitViewsVisible().size()
                 )); //over cell at least
@@ -344,8 +345,11 @@ public class GridCellContainer extends GridCell {
                 if (hovered == null) hovered = actor;
             } else {
                 if (isStaticZindex() && !units) { //useless?
-                    Integer z = (Integer) MapMaster.getKeyForValue_(indexMap, actor);
+                    Integer z = indexMap.get( actor);
                     if (z != null) {
+                        if (!units) {
+                        actor.setZIndex(z-1);
+                        } else
                         actor.setZIndex(z);
 //                        n++; why here
                         continue;
@@ -356,7 +360,7 @@ public class GridCellContainer extends GridCell {
                 } else
                     actor.setZIndex(666);
 
-                indexMap.put(n, actor);
+                indexMap.put(actor, n);
             }
 
         }
@@ -415,7 +419,7 @@ public class GridCellContainer extends GridCell {
                 ActionMaster.addFadeInAction(actor, getFadeDuration()/1.5f); //igg demo hack
             }
             //recalc all
-            indexMap.put(getZIndexForView(view), view);
+            indexMap.put(view, getZIndexForView(view));
             if (actor instanceof LastSeenView) {
                 return;
             }

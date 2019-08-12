@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -14,6 +15,7 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
 import main.system.auxiliary.log.FileLogManager;
+import main.system.launch.CoreEngine;
 
 public class DialogueView extends TablePanelX implements Scene {
     private DialogueInputProcessor inputProcessor;
@@ -34,6 +36,9 @@ public class DialogueView extends TablePanelX implements Scene {
     private int timer = 0;
     private Float timeToRespond;
     private boolean canSkip;
+
+    public static final float HEIGHT=400;
+    public static final float WIDTH=1800;
 //    boolean lightweight;
 //    boolean upsideDown;
     /*
@@ -41,13 +46,13 @@ public class DialogueView extends TablePanelX implements Scene {
      */
 
     public DialogueView() {
-        super(1800, 550);
+        super(WIDTH, HEIGHT);
         add(portraitLeft = new DialoguePortraitContainer());
 //        add(textArea = new TablePanelX<>());
-        TablePanelX<Actor> middle = new TablePanelX<>(1200, 500);
+        TablePanelX<Actor> middle = new TablePanelX<>(WIDTH/3*2, HEIGHT);
         add(middle);
         middle.add(scroll = new DialogueScroll()).row();
-        middle.add(replyBox = new TablePanelX(600, 150));
+        middle.add(replyBox = new TablePanelX(WIDTH/3, HEIGHT/3));
         replyBox.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
         add(portraitRight = new DialoguePortraitContainer());
@@ -77,7 +82,15 @@ public class DialogueView extends TablePanelX implements Scene {
 
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
-        scroll.append(data.getMessage(), active.getActorName(), active.getActorImage());
+        String text = data.getMessage();
+        if (CoreEngine.isIDE()) {
+            if (SpeechScript.TEST_MODE) {
+                if (data.getSpeech().getScript() != null) {
+                    text += "\n" + data.getSpeech().getScript().getScriptText();
+                }
+            }
+        }
+        scroll.append(text, active.getActorName(), active.getActorImage());
         scrollToBottom = true;
 //        scroll.scrollPane.setScrollPercentY(1);
 
@@ -208,8 +221,8 @@ public class DialogueView extends TablePanelX implements Scene {
             if (next != null) {
                 scroll.append("", "", Images.SEPARATOR_ALT).center().setX(getWidth() / 2);
                 update(next);
-                if (container.getColor().a == 0)
-                    container.fadeIn(); //TODO refactor
+//                if (container.getColor().a == 0)
+//                    container.fadeIn(); //TODO refactor
                 return true;
             } else {
                 if (allowFinish)
@@ -231,10 +244,14 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public void act(float delta) {
-        if (timeToRespond != null) {
+        if (timeToRespond != null)
+            if (timeToRespond >0) {
             timeToRespond -= delta * 1000;
+            main.system.auxiliary.log.LogMaster.log(1,"Time to respond: " +timeToRespond +" " + getUserObject().getMessage());
             if (timeToRespond <= 0) {
                 timeToRespond = null;
+                main.system.auxiliary.log.LogMaster.important(" " +"Auto-respond: "  +" " + getUserObject().getMessage()
+                );
                 tryNext(false);
             }
         }
@@ -251,7 +268,7 @@ public class DialogueView extends TablePanelX implements Scene {
             }
         }
 //        setVisible(true);
-        setPosition(250, 50);
+        setPosition(-150, 0);
         super.act(delta);
         if (done)
             return;
@@ -284,12 +301,12 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public float getHeight() {
-        return 500;
+        return HEIGHT;
     }
 
     @Override
     public float getWidth() {
-        return 1000;
+        return WIDTH;
     }
 
     @Override
@@ -323,5 +340,12 @@ public class DialogueView extends TablePanelX implements Scene {
 
     public void setBackgroundPath(String backgroundPath) {
         this.backgroundPath = backgroundPath;
+    }
+
+    public void setTime(Float valueOf) {
+        main.system.auxiliary.log.LogMaster.important(
+                " from " +timeToRespond +
+                        " to " +valueOf);
+        timeToRespond = valueOf;
     }
 }

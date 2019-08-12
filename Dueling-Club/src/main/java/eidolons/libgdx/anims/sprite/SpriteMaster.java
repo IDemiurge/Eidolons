@@ -95,7 +95,9 @@ public class SpriteMaster {
             switch (obj.getName()) {
                 case "Charger":
                     return StringMaster.getStringXTimes(4, Sprites.WHITE_TENTACLE + ";");
-
+                case "Pale Wing":
+                case "Black Wing":
+                    return StringMaster.getStringXTimes(2, Sprites.BONE_WINGS + ";");
                 case "Mistborn Horror":
 //                    return StringMaster.getStringXTimes(8, Sprites.WHITE_TENTACLE+";");
                     return StringMaster.getStringXTimes(6, Sprites.WHITE_TENTACLE + ";");
@@ -107,6 +109,7 @@ public class SpriteMaster {
 
     private static SuperActor.BLENDING getBlending(boolean over, BattleFieldObject obj) {
         switch (obj.getName()) {
+            case "Black Wing":
             case "Mistborn Horror":
             case "Dream Siphon":
                 return SuperActor.BLENDING.INVERT_SCREEN;

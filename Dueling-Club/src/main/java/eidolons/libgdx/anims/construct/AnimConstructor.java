@@ -28,6 +28,7 @@ import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import eidolons.libgdx.anims.std.custom.ForceAnim;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.spell.SpellMultiplicator;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -255,6 +256,14 @@ public class AnimConstructor {
             if (!isPartIgnored(part)) {
                 Anim animPart = getPartAnim(active, part, anim);
                 if (animPart != null) {
+                    if (part== ANIM_PART.IMPACT) {
+                        if (SpellMultiplicator.isMultiAnimRequired(anim.getActive_())) {
+//                            anim.getMap().get(ANIM_PART.MISSILE).get
+                            animPart.setDelay(2.2f);
+                            anim.attach(animPart, part);
+                            return;
+                        }
+                    }
                     anim.add(part, animPart);
                 }
             }
@@ -368,7 +377,21 @@ public class AnimConstructor {
         }
         return new ActionAnim(active, data);
     }
+    public static SPELL_ANIMS getTemplateForSpell(DC_ActiveObj active ) {
+        return getTemplateFromTargetMode(active.getTargetingMode());
+    }
+    public static SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
+        switch (targetingMode) {
+            case NOVA:
+            case RAY:
+            case WAVE:
+            case BLAST:
+            case SPRAY:
+                return new EnumMaster<SPELL_ANIMS>().retrieveEnumConst(SPELL_ANIMS.class, targetingMode.name());
+        }
+        return null;
 
+    }
     private static boolean isForceAnim(DC_ActiveObj active, ANIM_PART part) {
         if (active.getActiveWeapon().getWeaponGroup()== ItemEnums.WEAPON_GROUP.FORCE) {
             return true;
@@ -381,18 +404,7 @@ public class AnimConstructor {
         return false;
     }
 
-    private static SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
-        switch (targetingMode) {
-            case NOVA:
-            case RAY:
-            case WAVE:
-            case BLAST:
-            case SPRAY:
-                return new EnumMaster<SPELL_ANIMS>().retrieveEnumConst(SPELL_ANIMS.class, targetingMode.name());
-        }
-        return null;
 
-    }
 
     private static boolean initAnim(AnimData data,
                                     DC_ActiveObj active, ANIM_PART part, Anim anim) {
@@ -404,7 +416,7 @@ public class AnimConstructor {
                 continue;
             }
             path = path.toLowerCase();
-            path = PathUtils.addMissingPathSegments(path, PathFinder.getSpritesPath());
+            path = PathUtils.addMissingPathSegments(path, PathFinder.getSpellSpritesPath());
             //            Chronos.mark("sprite " + path);
             sprites.add(SpriteAnimationFactory.getSpriteAnimation(path));
             //            Chronos.logTimeElapsedForMark("sprite " + path);
@@ -599,6 +611,10 @@ public class AnimConstructor {
 
 
         return data;
+    }
+
+    public static void removeCache(Anim anim) {
+        map.remove(anim.getActive());
     }
 
     private boolean isPartIgnored(String partPath) {

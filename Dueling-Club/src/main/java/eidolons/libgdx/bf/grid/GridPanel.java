@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -455,16 +456,17 @@ public class GridPanel extends Group {
         GuiEventManager.bind(GuiEventType.SHOW_COMMENT_PORTRAIT, p -> {
             List list = (List) p.get();
             Unit hero = (Unit) list.get(0);
-           String text = (String) list.get(1);
-           GroupX portrait = null ;
-           if (hero==Eidolons.getMainHero()){
-               SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
-               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
-               portrait = commentSprite;
-           } else{
-               portrait = new FadeImageContainer(hero.getLargeImagePath());
-           }
-            SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH){
+            String text = (String) list.get(1);
+            main.system.auxiliary.log.LogMaster.dev(text + "\n - Comment by " + hero.getNameAndCoordinate());
+            GroupX portrait = null;
+            if (hero == Eidolons.getMainHero()) {
+                SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
+//               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
+                portrait = commentSprite;
+            } else {
+                portrait = new FadeImageContainer(hero.getLargeImagePath());
+            }
+            SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
                 @Override
                 public boolean remove() {
                     getParent().remove(); //TODO could be better.
@@ -473,10 +475,10 @@ public class GridPanel extends Group {
             };
             SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
             commentTextBgSprite.setScale(0.5f);
-            commentTextBgSprite.setOrigin(commentBgSprite.getWidth()/4, commentBgSprite.getHeight()/4);
-            commentTextBgSprite.setRotation( 90);
+            commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
+            commentTextBgSprite.setRotation(90);
             commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-            commentTextBgSprite.setPosition(commentBgSprite.getWidth()/2f, -commentBgSprite.getHeight()/8);
+            commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -commentBgSprite.getHeight() / 8);
 
 //            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
             commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
@@ -515,11 +517,15 @@ public class GridPanel extends Group {
                     break;
             }
 //            commentSprite.getSprite().centerOnParent(commentGroup);
+            main.system.auxiliary.log.LogMaster.dev("- CAMERA_PAN_TO_COORDINATE " + panTo);
             GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo);
             portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
-            portrait.setY((int) (commentBgSprite.getHeight()/2-portrait.getHeight()));
+            portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
             GroupX finalPortrait = portrait;
-            WaitMaster.doAfterWait(4000+text.length()*12, () -> {
+
+            commentTextBgSprite.debug();
+
+            WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
                 ActionMaster.addFadeOutAction(commentBgSprite, 4);
                 ActionMaster.addRemoveAfter(commentBgSprite);
                 ActionMaster.addFadeOutAction(finalPortrait, 3);
@@ -818,6 +824,10 @@ public class GridPanel extends Group {
                 view.setVisible(true);
                 ActionMaster.addFadeInAction(view, 0.25f);
             } else {
+//                ActionMaster.checkHasAction(view, AlphaAction.class).if
+                if (view.getActionsOfClass(AlphaAction.class).size > 0) {
+                    return;
+                }
                 ActionMaster.addFadeOutAction(view, 0.25f);
                 ActionMaster.addSetVisibleAfter(view, false);
 

@@ -32,7 +32,7 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     protected boolean editable;
 
     public String getSpritePath() {
-        return PathFinder.getSpritesPathNew()+"/unit/"+getName()+".txt";
+        return PathFinder.getSpritesPath()+"/unit/"+getName()+".txt";
     }
     public HqHeroDataSource(HeroDataModel entity) {
         super(entity);

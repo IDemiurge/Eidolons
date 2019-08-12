@@ -1,8 +1,10 @@
 package eidolons.libgdx.particles.spell;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -64,16 +66,19 @@ public class SpellMultiplicator implements Runnable {
 //        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
 //            return true;
 //        }
-            if (anim.getPart()!= AnimConstructor.ANIM_PART.MISSILE) {
+        if (anim.getPart() != AnimConstructor.ANIM_PART.MISSILE) {
             return false;
         }
-        return anim instanceof SpellAnim;
+        if (anim instanceof SpellAnim) {
+            return ((SpellAnim) anim).getTemplate() != null;
+        }
+        return false;
     }
 
     @Override
     public void run() {
         main.system.auxiliary.log.LogMaster.log(1, getClass().getSimpleName() + " works on " + anim);
-        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, "getEmitterList= " + anim.getEmitterList());
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, anim.getEmitterList().size() + " EmitterList= " + anim.getEmitterList());
         emitterList = anim.getEmitterList();
         duration = anim.getDuration();
         active = anim.getActive();
@@ -83,16 +88,25 @@ public class SpellMultiplicator implements Runnable {
         }
         multiply(anim);
         main.system.auxiliary.log.LogMaster.log(1, getClass().getSimpleName() + " finished with " + anim);
-        main.system.auxiliary.log.LogMaster.log(1, "getEmitterList= " + anim.getEmitterList());
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, anim.getEmitterList().size() + " EmitterList= " + anim.getEmitterList());
     }
 
     private void multiply(Anim anim) {
+        AnimConstructor.removeCache(anim);
         applyTemplate(getMethod(anim));
         adjustAngle();
     }
 
-    private MULTIPLICATION_METHOD getMethod(Anim anim) {
-        if (anim.getActive().getProperty(PROPS.ANIM_MODS_VFX).contains("angle;")) {
+    public static boolean isMultiAnimRequired(DC_ActiveObj active_) {
+        return AnimConstructor.getTemplateForSpell(active_) != null;
+    }
+
+    public static MULTIPLICATION_METHOD getMethod(Anim anim) {
+        return getMethod((DC_ActiveObj) anim.getActive());
+    }
+
+    public static MULTIPLICATION_METHOD getMethod(DC_ActiveObj active) {
+        if (active.getProperty(PROPS.ANIM_MODS_VFX).contains("angle;")) {
             return MULTIPLICATION_METHOD.ANGLE;
         }
         return MULTIPLICATION_METHOD.COORDINATE;
@@ -102,9 +116,9 @@ public class SpellMultiplicator implements Runnable {
         emitterList.forEach(e -> {
             if (e.getTarget() != null) {
                 float offset = 1 * (float) GeometryMaster.getAngle(
-                 getActive().getOwnerObj().getCoordinates(),
-                 //             getRef().getTargetObj().getCoordinates()
-                 e.getTarget());
+                        getActive().getOwnerObj().getCoordinates(),
+                        //             getRef().getTargetObj().getCoordinates()
+                        e.getTarget());
                 offset += 90;
                 LogMaster.log(1, getActive() + " is offset by " + offset);
                 e.getEffect().offsetAngle(offset);
@@ -121,11 +135,11 @@ public class SpellMultiplicator implements Runnable {
         //         getActive().getAnimator().getZoneAnimCoordinates();
         if (coordinates == null) {
 
-        try {
-            coordinates = CoordinatesMaster.getZoneCoordinates(getActive());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                coordinates = CoordinatesMaster.getZoneCoordinates(getActive());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             getRef().setArea(coordinates);
         }
         if (coordinates == null) {
@@ -158,15 +172,15 @@ public class SpellMultiplicator implements Runnable {
         List<SpellVfx> list = new ArrayList<>();
 
         filterCoordinates(template, coordinates).forEach(c ->
-         {
-             for (SpellVfx e : emitterList) {
-                 if (e.isGenerated()) {
-                     continue;
-                 }
-                 SpellVfx actor = multiplicateEmitter(null, c, e);
-                 list.add(actor);
-             }
-         }
+                {
+                    for (SpellVfx e : emitterList) {
+                        if (e.isGenerated()) {
+                            continue;
+                        }
+                        SpellVfx actor = multiplicateEmitter(null, c, e);
+                        list.add(actor);
+                    }
+                }
         );
 
         list.forEach(a -> emitterList.add(a));
@@ -179,8 +193,8 @@ public class SpellMultiplicator implements Runnable {
             FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
             List<Coordinates> filtered = new ArrayList<>(coordinates);
             Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
-             (facing.getDirection(),
-              new ArrayList<>(coordinates), null);
+                    (facing.getDirection(),
+                            new ArrayList<>(coordinates), null);
             switch (template) {
                 //                template.getNumberOfEmitters(getActive())
                 case RAY:
@@ -194,20 +208,20 @@ public class SpellMultiplicator implements Runnable {
                 case SPRAY: {
                     boolean xOrY = !facing.isVertical();
                     filtered.removeIf(c ->
-                      farthest.getXorY(xOrY) != c.getXorY(xOrY)
-                     //                     PositionMaster.getDistance(farthest, anim.getOriginCoordinates())
-                     //                         > PositionMaster.getDistance(c, anim.getOriginCoordinates())
+                                    farthest.getXorY(xOrY) != c.getXorY(xOrY)
+                            //                     PositionMaster.getDistance(farthest, anim.getOriginCoordinates())
+                            //                         > PositionMaster.getDistance(c, anim.getOriginCoordinates())
                     );
                     while (filtered.size() <
-                     template.getNumberOfEmitters(getActive())) {
+                            template.getNumberOfEmitters(getActive())) {
                         List<Coordinates> list = new ArrayList<>(coordinates);
                         list.removeAll(filtered);
                         list.removeIf(c ->
-                         farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
+                                farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
                         );
                         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
-                         facing.getDirection(),
-                         list, null);
+                                facing.getDirection(),
+                                list, null);
                         if (c != null)
                             filtered.add(c);
                     }
@@ -231,8 +245,7 @@ public class SpellMultiplicator implements Runnable {
         actor.setPosition(getX(), getY());
         actor.setAttached(false);
         actor.setGenerated(true);
-        ActionMaster.addRemoveAfter(actor);
-        anim.getMaster().addActor(actor);
+//        anim.getMaster().addActor(actor);
 
         if (angle != null) {
             createAndAddEmitterActions(actor, angle, template);
@@ -240,6 +253,7 @@ public class SpellMultiplicator implements Runnable {
             createAndAddEmitterActions(actor, c);
         }
 
+        ActionMaster.addRemoveAfter(actor);
         return actor;
     }
 
@@ -280,7 +294,7 @@ public class SpellMultiplicator implements Runnable {
         float speed = getPixelsPerSecond();
         if (template != null) {
             GridMaster.offset(getOrigin(),
-             v,template.getAdditionalDistance(getActive())
+                    v, template.getAdditionalDistance(getActive())
             );
             speed = template.speed;
         }
@@ -301,9 +315,9 @@ public class SpellMultiplicator implements Runnable {
     }
 
     private Action createAndAddEmitterActions(SpellVfx actor, Integer angle, SPELL_ANIMS template) {
-        Action action = new SequenceAction();
-        actor.addAction(action);
-        action.setTarget(actor);
+//        Action action = new SequenceAction();
+//        actor.addAction(action);
+//        action.setTarget(actor);
         int range = getActive().getRange();
         //        if ()
         range = getActive().getIntParam(G_PARAMS.RADIUS);
@@ -319,25 +333,31 @@ public class SpellMultiplicator implements Runnable {
 
         }
 
-        return action;
+        return null;
     }
 
     private Action addRangeAndAngle(int angle, int range, SpellVfx actor) {
         MoveByAction action = new MoveByAction();
+//        MoveToAction action = new MoveToAction();
+
+//        MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
         float x = (float) (132 * Math.sin(angle) * range);
         float y = (float) (132 * Math.cos(angle) * range);
         action.setAmount(x, y);
+//        action.setPosition(actor.getX()+ x, actor.getY()+y);
+//        main.system.auxiliary.log.LogMaster.dev(angle+" angle gives destination: " +(int)action.getX() + "-"+(int)action.getY());
         actor.setRotation(-angle);
         actor.addAction(action);
         action.setTarget(actor);
         Float duration = (float) (Math.sqrt(x * x + y * y) / getPixelsPerSecond());
         action.setDuration(
-         duration);
+                duration);
         if (duration > this.duration) {
             this.duration = duration;
         }
+        action.setInterpolation(Interpolation.swing);
 
-        ActionMaster.addRemoveAfter(actor);
+//        ActionMaster.addRemoveAfter(actor);
 
         //TRY ALPHA/ROTATE ACTION
         return action;
@@ -357,7 +377,7 @@ public class SpellMultiplicator implements Runnable {
 
     public float getPixelsPerSecond() {
         return
-         anim.getPixelsPerSecond();
+                anim.getPixelsPerSecond();
     }
 
     public Vector2 getOrigin() {

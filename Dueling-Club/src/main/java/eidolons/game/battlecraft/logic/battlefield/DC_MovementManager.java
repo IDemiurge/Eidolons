@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.ability.conditions.req.CellCondition;
+import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
@@ -9,6 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
@@ -32,6 +34,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.MovementManager;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.UNIT_DIRECTION;
@@ -223,11 +226,34 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c){
+        for (BattleFieldObject object : game.getObjectsOnCoordinate(c)) {
+            if (object instanceof Structure) {
+                if (PushableCondition.isPushable((Structure) object)) {
+//                    if (obj.getIntParam(PARAMS.WEIGHT)>=object.getIntParam(PARAMS.WEIGHT))
+                    {
+                        push(obj, object);
+                    }
+                    //only one?
+                    return true;
+                }
+            }
+        }
+
 
 
         return false;
 
     }
+
+    private void push(BattleFieldObject obj, BattleFieldObject object) {
+        DIRECTION d = DirectionMaster.getRelativeDirection(obj, object) ;
+        Coordinates c=object.getCoordinates().getAdjacentCoordinate(d);
+        if (c != null) {
+        move(object, c);
+        }
+
+    }
+
     public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
         Ref REF = new Ref(obj.getGame());
@@ -263,13 +289,19 @@ public class DC_MovementManager implements MovementManager {
         if (!game.getRules().getStackingRule().canBeMovedOnto(obj, c)) {
             return false;
         }
-        if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
-            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
-            if (!bfObj.isDead())
-                if (bfObj.isWall()) {
-                    return false;
-                }
+
+        if (checkPushByMovement(obj, c)) {
+            //what then?
         }
+//  TODO shouldn't be necessary
+//
+//   if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
+//            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
+//            if (!bfObj.isDead())
+//                if (bfObj.isWall()) {
+//                    return false;
+//                }
+//        }
         if (obj instanceof Unit) {
             if (!game.getRules().getEngagedRule().unitMoved((Unit) obj, c.x, c.y)) {
                 return false;
@@ -277,6 +309,7 @@ public class DC_MovementManager implements MovementManager {
         }
 
         obj.setCoordinates(c);
+
 //        if (IGG_HACK_MOVE)
 //            DungeonScreen.getInstance().getGridPanel().unitMoved(obj); //igg demo hack
         event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);

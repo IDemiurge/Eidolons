@@ -10,6 +10,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
@@ -31,6 +33,7 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import static main.system.GuiEventType.*;
@@ -212,7 +215,7 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void act(float delta) {
-        setVisible(true);
+        setVisible(!DialogueManager.isRunning());
         super.act(delta);
         stackMaster.act(delta);
         if (tooltip != null) {

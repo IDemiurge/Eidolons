@@ -249,7 +249,11 @@ public class FileManager {
         return formatPath(path, false);
     }
 
-    public static String formatPath(String path, boolean force) {
+    public static String formatPath(String path, boolean force, boolean removeLastSlash) {
+        String v = formatPath(path, force);
+        return v.substring(0, v.length() - 1);
+    }
+        public static String formatPath(String path, boolean force) {
         StringBuilder formatted = new StringBuilder();
         int index = path.lastIndexOf(PathFinder.getRootPath(), PathFinder.getRootPath().length() - 1);
         if (index == -1 && !force) {

@@ -2,15 +2,11 @@ package eidolons.libgdx.bf.boss.anim;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor;
-import eidolons.libgdx.anims.main.AnimDrawMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.boss.entity.BossActionMaster;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
@@ -23,12 +19,11 @@ import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 
 import java.io.File;
 
 public class BossAnimator  {
-    public static final String SPRITE_PATH = PathFinder.getSpritesPathNew()+ "boss/reaper/";
+    public static final String SPRITE_PATH = PathFinder.getSpritesPath()+ "boss/reaper/";
     private static boolean fastMode ;
     BossView view;
     SpriteModel sprite;

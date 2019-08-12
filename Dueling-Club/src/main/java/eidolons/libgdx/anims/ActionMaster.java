@@ -7,11 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
@@ -346,4 +348,8 @@ public class ActionMaster {
             }
         }
     }
+
+//    public static boolean checkHasAction(BaseView view, Class<AlphaAction> alphaActionClass) {
+//        return false;
+//    }
 }

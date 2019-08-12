@@ -470,6 +470,7 @@ public class FloatingTextMaster {
         }
         text.setPosition(v);
         if (entity instanceof Unit) {
+            text.debugAll();
             float height =629;// text.getHeight();
             float width =537;// text.getWidth();
             FACING_DIRECTION f = ((Unit) entity).getFacing().flip();

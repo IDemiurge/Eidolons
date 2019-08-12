@@ -112,7 +112,7 @@ public class SightMaster {
                 // side_penalty, false);
             }
         }
-        if (VisionManager.isVisionHacked()) {
+        if (VisionManager.isCinematicVision()) {
             if (!extended)
                 list.addAll(getSpectrumCoordinates(range, 0, back_bonus, source, vision, facing.flip(), true));
         } else {

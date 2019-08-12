@@ -225,7 +225,7 @@ public class Ref implements Cloneable, Serializable {
             if (id != null) {
                 Obj obj = game.getObjectById(id);
                 if (obj != null) {
-                    result += key + " = " + obj;
+                    result += key + " = " + obj.getNameAndCoordinate();
                 } else {
                     result += key + " = " + value;
                 }

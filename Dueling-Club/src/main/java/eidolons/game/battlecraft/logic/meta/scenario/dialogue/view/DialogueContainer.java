@@ -113,17 +113,19 @@ public class DialogueContainer extends TablePanelX {
     public void draw(Batch batch, float parentAlpha) {
         if (bgSprite !=null )
         {
-            if (bgSprite.getColor().a==1)
-                bgSprite.setAlpha(bgAlpha);
+//            if (bgSprite.getColor().a==1)
+                bgSprite.setAlpha(bgAlpha*getColor().a);
         }
+        bgSprite.draw(batch, parentAlpha);
+        super.draw(batch, parentAlpha);
         if (parentAlpha == ShaderDrawer.SUPER_DRAW)
         {
             super.draw(batch, 1);
         }
         else
         {
-            ShaderDrawer.drawWithCustomShader(bgSprite, batch, null, false, false);
-            ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
+//            ShaderDrawer.drawWithCustomShader(bgSprite, batch, null, false, false);
+//            ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
         }
     }
 

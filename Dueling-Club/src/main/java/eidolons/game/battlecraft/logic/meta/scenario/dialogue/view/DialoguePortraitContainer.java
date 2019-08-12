@@ -30,6 +30,7 @@ public class DialoguePortraitContainer extends TablePanelX {
     LabelX nameLabel;
 
     public DialoguePortraitContainer() {
+        super(250, DialogueView.HEIGHT);
 //        TablePanelX teaInfo = new TablePanelX();
 //        TextureRegion region = TextureCache.getOrCreateR(
 //         ImageManager.getValueIconPath(MACRO_PARAMS.TREPIDATION));
@@ -57,6 +58,7 @@ public class DialoguePortraitContainer extends TablePanelX {
 
     @Override
     public void updateAct(float delta) {
+//        debugAll();
         super.updateAct(delta);
         ActorDataSource dataSource= (ActorDataSource) getUserObject();
         if (dataSource == null) {
@@ -73,6 +75,11 @@ public class DialoguePortraitContainer extends TablePanelX {
 
     public void setImage(String appendedImageFile) {
         portrait.setImage(appendedImageFile);
-//        pack();
+        pack();
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 }

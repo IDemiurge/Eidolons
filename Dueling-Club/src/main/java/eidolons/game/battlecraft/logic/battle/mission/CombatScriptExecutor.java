@@ -28,6 +28,7 @@ import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.system.text.DescriptionTooltips;
+import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -292,8 +293,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
-    private boolean doComment(Unit unit, String key) {
-        String text = DescriptionTooltips.getTipMap().get(key);
+    public boolean doComment(Unit unit, String key) {
+        String text = Texts.getComments().get(key);
         if (text == null) {
             text = key;
         }
@@ -349,10 +350,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     }
 
     private boolean doUnitOperation(COMBAT_SCRIPT_FUNCTION function, Ref ref, String[] args) {
-        int i = 0;
+//        int i = 0;
         Unit unit = (Unit) ref.getObj(args[0]);
         if (unit == null) {
-            String name = args[i];
+            String name = args[0];
 //            if (DataManager.isTypeName(name))
 //                i++;
 //            else name = null;
@@ -371,11 +372,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         }
         if (unit == null) {
             unit = Eidolons.getMainHero();
-        } else i++;
+        } //else i++;
         //options - annihilate, ...
         switch (function) {
             case COMMENT:
-                return doComment(unit, args[i]);
+                return doComment(unit, args[0]);
             case REMOVE:
                 return doRemove(unit);
             case KILL:

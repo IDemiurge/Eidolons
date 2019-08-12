@@ -253,7 +253,7 @@ public abstract class InputController implements InputProcessor {
                 halfHeight - getMargin(),
                 getHeight() - halfHeight + getMargin());
         yTouchPos = screenY;
-        cameraChanged();
+        cameraPosChanged();
     }
 
     protected void tryPullCameraX(int screenX) {
@@ -263,7 +263,7 @@ public abstract class InputController implements InputProcessor {
                 halfWidth - getMargin(),
                 getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
-        cameraChanged();
+        cameraPosChanged();
     }
 
 
@@ -283,7 +283,7 @@ public abstract class InputController implements InputProcessor {
         float x = coordinates.x * GridMaster.CELL_W * camera.zoom;
         float y = coordinates.x * GridMaster.CELL_W * camera.zoom;
         camera.position.set(x, y, 0);
-        cameraChanged();
+        cameraPosChanged();
     }
 
     @Override
@@ -317,15 +317,19 @@ public abstract class InputController implements InputProcessor {
         }
         if (camera.zoom < 0)
             camera.zoom = defaultZoom;
+
+        cameraZoomChanged();
+        cameraPosChanged();
+    }
+
+    public void cameraZoomChanged() {
         width = GdxMaster.getWidth() * camera.zoom;
         height = GdxMaster.getHeight() * camera.zoom;
         halfWidth = width / 2;
         halfHeight = height / 2;
-
-        cameraChanged();
     }
 
-    public void cameraChanged() {
+    public void cameraPosChanged() {
         for (SuperActor sub : cachedPosActors) {
             sub.cameraMoved();
         }

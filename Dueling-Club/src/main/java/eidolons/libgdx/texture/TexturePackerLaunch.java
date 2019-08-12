@@ -3,13 +3,11 @@ package eidolons.libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.PathUtils;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
@@ -231,7 +229,7 @@ public class TexturePackerLaunch {
     }
 
     private static void customPack() {
-        String inputDir = DialogMaster.inputText("Folder path to pack?", PathFinder.getSpritesPathNew());
+        String inputDir = DialogMaster.inputText("Folder path to pack?", PathFinder.getSpritesPath());
         String outputDir = DialogMaster.inputText("Output to? (cancel if same path)", inputDir);
         if (outputDir == null) {
             outputDir = inputDir;

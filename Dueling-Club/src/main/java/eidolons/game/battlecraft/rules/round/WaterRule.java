@@ -24,7 +24,7 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     private static final float SWIM_FACTOR = 0.25f;
     private static final float SWIM_FORCE_FACTOR = 0.9f;
-    private static Unit waterObj;
+    private static Unit waterObj; //TODO remove this!
 
     public WaterRule(DC_Game game) {
         super(game);
@@ -34,10 +34,9 @@ public class WaterRule extends RoundRule implements ActionRule {
         return checkPassable(true, waterObj, unit);
     }
 
-    public static boolean checkPassable(boolean manualCheck, BattleFieldObject waterObj, Entity obj) {
-
+    public static boolean isBridged(BattleFieldObject waterObj) {
         boolean bridged = false;
-        int girth = 0;
+        Integer girth = 0;
         for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinate(waterObj.getCoordinates())) {
             if (object==waterObj) {
                 continue;
@@ -50,9 +49,15 @@ public class WaterRule extends RoundRule implements ActionRule {
                 bridged = true;
             }
         }
+        return bridged;
+    }
+
+    public static boolean checkPassable(boolean manualCheck, BattleFieldObject waterObj, Entity obj) {
+
+        boolean bridged = isBridged(waterObj);
         if (obj instanceof Structure){
             if (bridged) {
-                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
+//                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
                     return false;
             } else
             FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,

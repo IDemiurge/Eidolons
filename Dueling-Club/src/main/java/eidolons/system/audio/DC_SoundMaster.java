@@ -20,7 +20,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
-import main.content.CONTENT_CONSTS;
+import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
@@ -32,9 +32,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -112,15 +110,15 @@ public class DC_SoundMaster extends SoundMaster {
         }
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
-        if (unit.isPale() || unit .isImmaterial()) {
+        if (unit.isPale() || unit.isImmaterial()) {
             if (!unit.isMine()) {
                 getPlayer().playEffectSound(SOUNDS.ALERT, unit);
             } else
-            getPlayer().playRandomSoundFromFolder(
-                    "std/move pale/");
+                getPlayer().playRandomSoundFromFolder(
+                        "std/move pale/");
         } else
-        getPlayer().playRandomSoundFromFolder(
-                "std/move/");
+            getPlayer().playRandomSoundFromFolder(
+                    "std/move/");
 
     }
 
@@ -130,9 +128,9 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static CONTENT_CONSTS.SOUNDSET getSoundset(Obj obj) {
+    public static SOUNDSET getSoundset(Obj obj) {
 
-        CONTENT_CONSTS.SOUNDSET soundset = new EnumMaster<CONTENT_CONSTS.SOUNDSET>().retrieveEnumConst(CONTENT_CONSTS.SOUNDSET.class,
+        SOUNDSET soundset = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class,
                 obj.getProperty(G_PROPS.SOUNDSET));
         if (soundset != null) {
             return soundset;
@@ -150,7 +148,7 @@ public class DC_SoundMaster extends SoundMaster {
 //        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
 //            return CONTENT_CONSTS.SOUNDSET.WRAITH;
 //        }
-        for (CONTENT_CONSTS.SOUNDSET value : CONTENT_CONSTS.SOUNDSET.values()) {
+        for (SOUNDSET value : SOUNDSET.values()) {
             switch (value) {
                 case dark_elf:
                     break;
@@ -173,9 +171,9 @@ public class DC_SoundMaster extends SoundMaster {
                 case skeleton_archer:
                     break;
                 case thug:
-                        if (unit.getUnitGroup() == UnitEnums.UNIT_GROUPS.BANDITS)
-                            return value;
-                            break;
+                    if (unit.getUnitGroup() == UnitEnums.UNIT_GROUPS.BANDITS)
+                        return value;
+                    break;
                 case wraith:
                     if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH))
                         return value;
@@ -186,7 +184,7 @@ public class DC_SoundMaster extends SoundMaster {
 
         }
 
-        return CONTENT_CONSTS.SOUNDSET.dwarf;
+        return SOUNDSET.dwarf;
     }
 
     public static String getSoundsetPath(Unit unit) {
@@ -364,7 +362,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static void bindEvents() {
         //TODO ON SEPARATE THREAD!!!!
-          GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
+        GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
             Anim anim = (Anim) p.get();
             DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
             try {
@@ -466,7 +464,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     private static GenericEnums.DAMAGE_TYPE getDmgType(Spell spell) {
         GenericEnums.DAMAGE_TYPE dmg_type = spell.getDamageType();
-        if (dmg_type!=null) {
+        if (dmg_type != null) {
             return dmg_type;
         }
         switch (spell.getSpellGroup()) {
@@ -513,18 +511,18 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String getSpellSound(Spell spell, ANIM_PART part) {
-        if (part !=IMPACT) {
+        if (part != IMPACT) {
             return "";
         }
         GenericEnums.DAMAGE_TYPE dmg_type =
                 getDmgType(spell);
 
         return FileManager.getRandomFile(PathFinder.getSoundsetsPath() + "damage/" +
-                dmg_type ).getPath();
+                dmg_type).getPath();
     }
 
     private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
-        if (CoreEngine.isIggDemo()){
+        if (CoreEngine.isIggDemo()) {
             return getSpellSound(spell, part);
         }
 
@@ -599,18 +597,33 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public static void playDamageSound(GenericEnums.DAMAGE_TYPE damageType) {
-        playRandomSoundVariant(PathFinder.getSoundsetsPath()+"damage/"+damageType.getName(), true);
+        playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
     }
-public enum KEY_SOUND{
+
+    public enum SOUND_CUE {
         scream,
-    ethereal,
-    choire,
-    batman,
+        ethereal,
+        choire,
+        batman,
+        ;
 
+        String getPath() {
+            return PathFinder.getSoundPath() + "cues/" + name() + ".mp3";
+        }
 
-}
+    }
+
     public static void playKeySound(String value) {
-//        playEffectSound(type, set);
+        if (value.contains(".")) {
+            String[] parts = value.split(".");
+            SOUNDS type = new EnumMaster<SOUNDS>().retrieveEnumConst(SOUNDS.class, parts[0]);
+            SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[1]);
+            playEffectSound(type, set);
+
+        } else {
+            new EnumMaster<SOUND_CUE>().retrieveEnumConst(SOUND_CUE.class, value);
+
+        }
         /**
          *
          *

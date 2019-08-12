@@ -16,6 +16,7 @@ public class LogMaster {
     public static final String PREFIX_VERBOSE = "VERBOSE: ";
     public static final String PREFIX_INFO = "INFO: ";
     public static final String PREFIX_IMPORTANT = "                         ";
+    public static final String PREFIX_DEV = "DEV INFO:                ";
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
@@ -393,6 +394,11 @@ public class LogMaster {
         log(PRIORITY_WARNING, PREFIX_WARNING + string);
     }
 
+    public static void dev(String string) {
+        if (CoreEngine.isIDE()) {
+            log(PRIORITY_IMPORTANT, PREFIX_DEV + string);
+        }
+    }
     public static void important(String string) {
         log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + string);
     }

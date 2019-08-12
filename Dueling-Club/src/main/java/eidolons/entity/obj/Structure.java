@@ -5,6 +5,7 @@ import eidolons.entity.handlers.bf.structure.StructureMaster;
 import eidolons.entity.handlers.bf.structure.StructureResetter;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
+import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -25,9 +26,9 @@ import main.system.images.ImageManager;
  */
 public class Structure extends BattleFieldObject {
 
-
     private Boolean wall;
     private Boolean landscape;
+    private Boolean water;
     private BF_OBJECT_GROUP bfObjGroup;
 
     public Structure(ObjType type, Player owner, Game game, Ref ref) {
@@ -42,23 +43,33 @@ public class Structure extends BattleFieldObject {
     @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
         boolean results = super.kill(killer, leaveCorpse, quietly);
-    if (!overlaying)
-        for (BattleFieldObject overlayingObject : getGame().getOverlayingObjects(getCoordinates())) {
-            overlayingObject.kill(killer, leaveCorpse, quietly);
+        if (!overlaying)
+            for (BattleFieldObject overlayingObject : getGame().getOverlayingObjects(getCoordinates())) {
+                overlayingObject.kill(killer, leaveCorpse, quietly);
+            }
+        if (isWall()) {
+            getVisionController().getWallObstructionMapper().wallDestroyed(this);
         }
-if (isWall()){
-    getVisionController().getWallObstructionMapper().wallDestroyed(this);
-}
         return results;
+    }
+
+    @Override
+    public String getToolTip() {
+        if (isWater()) {
+            if (WaterRule.isBridged(this)){
+                return getName() + "(bridged)";
+            }
+        }
+        return super.getToolTip();
     }
 
     @Override
     public String getImagePath() {
         //     this is insanity...
-           if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
-                    return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
-                     .getDungeonMaster().getDungeonWrapper().getColorTheme());
-                }
+        if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
+            return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
+                    .getDungeonMaster().getDungeonWrapper().getColorTheme());
+        }
         return super.getImagePath();
     }
 
@@ -82,6 +93,8 @@ if (isWall()){
 
     @Override
     public Boolean isLandscape() {
+        if (isWater())
+            return true;
         if (landscape == null)
             landscape = getType().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.LANDSCAPE.toString());
         return landscape;
@@ -119,9 +132,14 @@ if (isWall()){
         resetFacing();
         return super.getFacing();
     }
+
     public boolean isWater() {
-        return getBfObjGroup()==BF_OBJECT_GROUP.WATER;
+        if (water != null) {
+            return water;
+        }
+        return water = getBfObjGroup() == BF_OBJECT_GROUP.WATER;
     }
+
     @Override
     public boolean isNeutral() {
         return true;

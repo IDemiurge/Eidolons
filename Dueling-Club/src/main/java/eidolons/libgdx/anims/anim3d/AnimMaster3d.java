@@ -15,7 +15,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.CompositeAnim;
@@ -359,7 +358,7 @@ public class AnimMaster3d {
         DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
         String name = action.getItem().getName();
         String level = name.split(" ")[0];
-        return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPathNew(),
+        return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPath(),
                 "potions", "atlas", level, name + ".txt").replace(" ", "_");
 
     }

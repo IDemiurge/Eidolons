@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.InnerScrollContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -20,13 +21,17 @@ public class DialogueScroll extends TablePanelX {
     ScrollPane scrollPane;
     private TablePanelX<Actor> inner;
     LabelStyle currentStyle;
+    public static final float WIDTH = 1200;
+    public static final String BG = "ui/components/generic/dialogue/grunge bg full.png";
+    private ImageContainer bg;
 
     public DialogueScroll() {
         init();
     }
 
     public void init() {
-        setSize(1200, 500);
+        setSize(WIDTH, DialogueView.HEIGHT - 50);
+        addActor(bg = new ImageContainer(BG));
 
         inner = (new TablePanelX());
         inner.setFillParent(true);
@@ -34,8 +39,8 @@ public class DialogueScroll extends TablePanelX {
         inner.pack();
 //        inner.setFixedMinSize(true);
         inner.setFixedSize(true);
-        inner.setWidth(1200);
-        inner.setBackground(NinePatchFactory.getHqDrawable());
+        inner.setWidth(WIDTH);
+//        inner.setBackground(NinePatchFactory.getHqDrawable());
 //        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
 
@@ -51,7 +56,8 @@ public class DialogueScroll extends TablePanelX {
         scrollPane.setFadeScrollBars(true);
         setFixedMinSize(true);
         scrollPane.setFillParent(true);
-        scrollPane.setFlingTime(2);
+        scrollPane.setFlingTime(4);
+        scrollPane.setupOverscroll( 50, 30, 100);
         scrollPane.setVariableSizeKnobs(false);
         scrollPane.setScrollY(-500);
 //        this.setTouchable(Touchable.enabled);
@@ -69,7 +75,7 @@ public class DialogueScroll extends TablePanelX {
         //actually, we'll need to append imgs too, eh?
 
         DialogueMessage dialogueMessage = new DialogueMessage(message, actorName, actorImage,
-               getFontType(), getWidth() * 0.85f);
+                getFontType(), getWidth() * 0.85f);
         dialogueMessage.fadeIn();
         inner.add(dialogueMessage).center();
         inner.row();
@@ -94,6 +100,7 @@ public class DialogueScroll extends TablePanelX {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         inner.setY(0);
+        bg.setPosition(-50, -100);
         scrollPane.setY(0);
         super.draw(batch, parentAlpha);
         getStage().setScrollFocus(scrollPane);

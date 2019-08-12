@@ -170,7 +170,7 @@ public class EffectAnimCreator {
                     name = "fire 5 5";
                     break;
             }
-            return PathFinder.getSpritesPath() + "damage/"
+            return PathFinder.getSpellSpritesPath() + "damage/"
                     + name
                     + ".png";
         }

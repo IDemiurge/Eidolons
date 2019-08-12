@@ -19,46 +19,53 @@ public class PushableCondition extends DC_Condition {
         }
 
         if (ref.getMatchObj() instanceof Structure) {
-            if (((Structure) ref.getMatchObj()).isWall()) {
+            Structure structure = (Structure) ref.getMatchObj();
+            return isPushable(structure);
+
+        }
+        return false;
+    }
+
+    public static boolean isPushable(Structure structure) {
+        if (structure.isWall()) {
+            return false;
+        }
+        if (structure.isLandscape()) {
+            return false;
+        }
+        if (structure.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.PUSHABLE.toString())) {
+            return true;
+        }
+        switch (structure.getBfObjGroup()) {
+            case WALL:
+            case COLUMNS:
+            case CONSTRUCT:
+            case GATEWAY:
+            case WINDOWS:
+            case INTERIOR:
+            case STATUES:
+            case LOCK:
+            case ENTRANCE:
+            case TRAP:
+            case DOOR:
+            case WATER:
+            case TREES:
+            case RUINS:
+            case GRAVES:
                 return false;
-            }
-            if (((Structure) ref.getMatchObj()).isLandscape()) {
-                return false;
-            }
-            if (ref.getMatchObj().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.PUSHABLE.toString())) {
+
+            case MAGICAL:
+            case HANGING:
+            case LIGHT_EMITTER:
+            case CONTAINER:
+            case TREASURE:
+            case DUNGEON:
+            case ROCKS:
+            case VEGETATION:
+            case REMAINS:
+            case CRYSTAL:
+            case CONJURATE:
                 return true;
-            }
-            switch (((Structure) ref.getMatchObj()).getBfObjGroup()) {
-                case WALL:
-                case COLUMNS:
-                case CONSTRUCT:
-                case GATEWAY:
-                case WINDOWS:
-                case INTERIOR:
-                case STATUES:
-                case LOCK:
-                case ENTRANCE:
-                case TRAP:
-                case DOOR:
-                case WATER:
-                case TREES:
-                case RUINS:
-                case GRAVES:
-                    return false;
-
-                case MAGICAL:
-                case HANGING:
-                case LIGHT_EMITTER:
-                case CONTAINER:
-                case TREASURE:
-                case DUNGEON:
-                case ROCKS:
-                case VEGETATION:
-                case REMAINS:
-                case CRYSTAL:
-                    return true;
-            }
-
         }
         return false;
     }

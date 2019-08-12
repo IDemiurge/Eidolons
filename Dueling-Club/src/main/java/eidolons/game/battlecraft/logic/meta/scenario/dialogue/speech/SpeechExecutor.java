@@ -1,13 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
+import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.SimpleAnim;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
@@ -16,6 +19,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
+import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import main.data.ability.construct.VariableManager;
@@ -29,6 +33,8 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.List;
+
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION.CAMERA_SET;
 
 public class SpeechExecutor {
 
@@ -53,7 +59,7 @@ public class SpeechExecutor {
         List<String> vars = VariableManager.getVarList(value);
         value = VariableManager.removeVarPart(value);
         boolean ui = false;
-
+        Vector2 v=null ;
 //        if (WAIT)
 //        if (dialogue.getTimeBetweenLines()!=0) {
 //            WaitMaster.WAIT(dialogue.getTimeBetweenLines());
@@ -73,13 +79,16 @@ public class SpeechExecutor {
                 } else
                     waitOnEachLine = Integer.valueOf(value);
                 break;
+            case TIME:
+                container.getCurrent().setTime(new Float( Integer.valueOf(value)));
+                break;
             case WAIT:
                 WAIT(Integer.valueOf(value));
                 break;
             case SPRITE:
                 SimpleAnim simpleAnim = new SimpleAnim(value, () -> {
                 });
-                Vector2 v = GridMaster.getCenteredPos(Coordinates.get(vars.get(0)));
+                  v = GridMaster.getCenteredPos(Coordinates.get(vars.get(0)));
                 simpleAnim.setOrigin(v);
 //                simpleAnim.setBlending(b);
 //                simpleAnim.setFps(f);
@@ -96,7 +105,7 @@ public class SpeechExecutor {
                 GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 3);
                 break;
             case POSTFX:
-                POST_FX_TEMPLATE template = new EnumMaster<POST_FX_TEMPLATE>().retrieveEnumConst(POST_FX_TEMPLATE.class, vars.get(0));
+                POST_FX_TEMPLATE template = new EnumMaster<POST_FX_TEMPLATE>().retrieveEnumConst(POST_FX_TEMPLATE.class, value);
                 if (template != null) {
                     GuiEventManager.trigger(GuiEventType.POST_PROCESSING, template);
                 } else GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
@@ -111,8 +120,6 @@ public class SpeechExecutor {
                         retrieveEnumConst(COMBAT_SCRIPT_FUNCTION.class, VariableManager.removeVarPart(value));
                 master.getBattleMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(), vars.toArray(new String[vars.size()]));
                 break;
-
-
             case MOMENT:
                 MusicMaster.playMoment(value);
                 break;
@@ -128,26 +135,43 @@ public class SpeechExecutor {
 //                    handler.continues();
                 });
                 break;
-
+            case REVEAL_AREA:
+                break;
+            case PORTAL:
+                switch (value) {
+                    case "loop":
+                    case "open":
+                    case "close":
+//                        PortalMaster
+                        break;
+                }
             case COMMENT:
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.COMMENT,
                         Eidolons.getMainHero().getRef(), vars.toArray(new String[vars.size()]));
                 break;
 
+            case ZOOM:
+                CameraMan.MotionData motion = new CameraMan.MotionData(Float.valueOf(value)/100, Float.valueOf(vars.get(0))/1000, Interpolation.swing);
+                GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, motion);
+                break;
             case CAMERA_SET:
-                v = null;
+            case CAMERA:
                 switch (value) {
+                    case "me":
+                        v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
+                        break;
                     case "orig":
                         v = new Vector2(0, 0);
                         break;
                 }
-                GuiEventManager.trigger(GuiEventType.CAMERA_SET_TO, v);
-                break;
-            case CAMERA:
-                switch (value) {
-                    case "me":
-                        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
-                        break;
+                if (v == null) {
+                    v = GridMaster.getCenteredPos(Coordinates.get(value));
+                }
+                //TODO offset considering the UI...?
+                if(speechAction==CAMERA_SET){
+                    GuiEventManager.trigger(GuiEventType.CAMERA_SET_TO, v);
+                } else {
+                    GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO, v);
                 }
                 break;
             case ANIM:
@@ -158,6 +182,9 @@ public class SpeechExecutor {
                 switch (value) {
                     case "out":
                         alpha = 0f;
+                        break;
+                    case "in":
+                        alpha =1f;
                         break;
                 }
                 if (alpha != null) {
@@ -207,8 +234,15 @@ public class SpeechExecutor {
     }
 
     private void WAIT(int millis) {
-        if (!CoreEngine.isIDE())
+//        if (!CoreEngine.isIDE())
+        GdxMaster.setLoadingCursor();
         WaitMaster.WAIT(millis);
+        GdxMaster.setDefaultCursor();
+    }
+
+    public void execute(String text) {
+        SpeechScript script = new SpeechScript(text, master);
+        script.execute();
     }
 }
 //                Sprites.getSprite(value);

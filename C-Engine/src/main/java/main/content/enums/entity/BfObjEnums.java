@@ -1,7 +1,5 @@
 package main.content.enums.entity;
 
-import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.VFX;
 import main.data.filesys.PathFinder;
 
 /**
@@ -19,13 +17,14 @@ public class BfObjEnums {
     public enum CUSTOM_OBJECT {
         flames(15, "", "", "", 5),
         nether_flames(15, "", "", "", 5),
-        wisp_floating(15, "", "", "bf/light wisp float.txt", 5),
+        wisp_floating(15, "", "", "cells/bf/light wisp float.txt", 5),
         crematory(15, "", "", "", 5),
         soul_net(15, "", "", "", 5),
-        black_waters(15, "", "", "grid/black waters.txt", 5),
+        black_waters(15, "", "", "cells/ambi/black waters.txt", 5),
         BLACKNESS(15, "", "", "", 5),
-        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
-        GATE_PILLAR(10, "", "", "grid/pillar.txt", 10);
+        LIGHT(15, "", "", "", 5),
+//        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
+        GATE_PILLAR(10, "", "", "cells/grid/pillar.txt", 10);
 
         public boolean vfxUnderMirrorX;
         public boolean vfxUnderMirrorY;
@@ -34,6 +33,7 @@ public class BfObjEnums {
 
         public float vfxChance;
         public boolean invert_screen_vfx;
+        public boolean movable;
         private float vfxSpeed = 1f;
 
         CUSTOM_OBJECT(int fps, String vfxUnder, String vfxOver, String spritePath, double range, String... additionalObjects) {
@@ -42,7 +42,7 @@ public class BfObjEnums {
             this.vfxUnder = vfxUnder;
             this.vfxOver = vfxOver;
             if (!spritePath.isEmpty()) {
-                this.spritePath = PathFinder.getUiSpritePath() + spritePath;
+                this.spritePath = PathFinder.getSpritesPath() + spritePath;
             }
             this.additionalObjects = additionalObjects;
         }
@@ -70,7 +70,7 @@ public class BfObjEnums {
     public enum BF_OBJECT_GROUP {
         WALL, COLUMNS, RUINS, CONSTRUCT, GATEWAY, GRAVES,
 
-        WINDOWS, MAGICAL, HANGING, INTERIOR, STATUES,
+        WINDOWS, MAGICAL, HANGING, INTERIOR, STATUES, CONJURATE,
 
         KEY, LOCK, ENTRANCE, TRAP, DOOR, LIGHT_EMITTER, CONTAINER, TREASURE,
 

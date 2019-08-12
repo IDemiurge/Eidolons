@@ -88,6 +88,15 @@ public class ImageContainer extends SuperContainer {
         }
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (sprite != null)
+        if (sprite.getY()!=0){
+            return;
+        }
+    }
+
     protected boolean isResetImageAlways() {
         return false;
     }

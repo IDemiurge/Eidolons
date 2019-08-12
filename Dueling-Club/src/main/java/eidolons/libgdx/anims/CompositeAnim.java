@@ -124,9 +124,11 @@ public class CompositeAnim implements Animation {
             }
         }
         if (parallelAnims.isEmpty()) {
-            for (Animation parallelAnim : parallelAnims) {
-                if (parallelAnim.tryDraw(batch)) {
-
+            for (Animation parallelAnim :     new ArrayList<>(parallelAnims))  {
+                if (!parallelAnim.tryDraw(batch)) {
+//                    parallelAnim.finished();
+                    parallelAnims.remove(parallelAnim);
+                    main.system.auxiliary.log.LogMaster.dev("Finished parallel: " +parallelAnim);
                 }
 
             }

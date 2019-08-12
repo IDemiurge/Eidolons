@@ -174,7 +174,7 @@ public class XML_Formatter {
         if (StringMaster.isEmpty(s)) {
             return "";
         }
-
+        s = s.trim();
         String name = cache.get(s);
         if (name != null)
             return name;

@@ -2,7 +2,6 @@ package eidolons.system.text;
 
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
-import main.system.EventCallbackParam;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -53,6 +52,10 @@ public class Texts {
 
     public static Map<String, String> getTextMap(String key) {
         return maps.get(key);
+    }
+
+    public static Map<String, String> getComments() {
+        return getTextMap("comments");
     }
     /**
      * keep the maps of all relevant texts!

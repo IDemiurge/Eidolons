@@ -13,29 +13,31 @@ public class Sprites {
     public static final String BG_VALLEY = "sprites/ui/backgrounds/valley.txt";
     public static final String BG_BASTION = "sprites/ui/backgrounds/valley.txt";
     public static final String BG_DEFAULT = "sprites/ui/backgrounds/atlas.txt";
-
     public static final String BG_GATEWAY = BG_DEFAULT; //TODO
 
     public static final String SHADOW_DEATH = "boss/reaper/attack/sever";
     public static final String SHADOW_SUMMON = "boss/reaper/attack/soul rip";
 
+    public static final String ROTATING_ARROW = "sprites/cells/parts/blade hand.txt";
+    public static final String TORCH = "sprites/cells/light/torch.txt";
+    public static final String ALTAR = "sprites/cells/bf/altar.txt";
+    public static final String FLOAT_WISP = "sprites/cells/bf/light wisp float.txt";
+    public static final String RUNE_INSCRIPTION = "sprites/cells/bf/rune.txt";
+    public static final String ORB = "sprites/cells/bf/orb.txt";
 
-    public static final String HERO_KESERIM = "sprites/unit/keserim2.txt";
-    public static final String ROTATING_ARROW = "sprites/ui/parts/blade hand.txt";
-    public static final String TORCH = "sprites/ui/light/torch.txt";
-    public static final String ALTAR = "sprites/ui/bf/altar.txt";
-    public static final String FLOAT_WISP = "sprites/ui/bf/light wisp float.txt";
-    public static final String RUNE_INSCRIPTION = "sprites/ui/bf/rune.txt";
-    public static final String ORB = "sprites/ui/bf/orb.txt";
-    public static final String VEIL = "sprites/ui/veil.txt";
-    public static final String HELL_WHEEL = "sprites/ui/parts/underlay.txt";
-    public static final String TENTACLE = "sprites/ui/grid/tent loop.txt";
-    public static final String WHITE_TENTACLE = "sprites/ui/grid/white tent.txt";
-    public static final String PORTAL = "sprites/cells/portal/Portal Loop.txt";
-    public static final String PORTAL_OPEN = "sprites/cells/portal/PORTAL OPEN.txt";
-    public static final String PORTAL_CLOSE = "sprites/cells/portal/PORTAL CLOSE.txt";
-    public static final String INK_BLOTCH = "sprites/ui/misc/INK BLOTCH.txt";
-    public static final String COMMENT_KESERIM = "sprites/unit/comment/Keserim comment.txt";
+    public static final String VEIL = "sprites/cells/gate/veil.txt";
+    public static final String HELL_WHEEL = "sprites/cells/parts/underlay.txt";
+    public static final String TENTACLE = "sprites/cells/grid/tent loop.txt";
+    public static final String WHITE_TENTACLE = "sprites/unit/white tent.txt";
+    public static final String BONE_WINGS = "sprites/unit/wings.txt";
+
+    public static final String PORTAL = "sprites/cells/portal/portal loop.txt";
+    public static final String PORTAL_OPEN = "sprites/cells/portal/portal open.txt";
+    public static final String PORTAL_CLOSE = "sprites/cells/portal/portal close.txt";
+    public static final String INK_BLOTCH = "sprites/ui/misc/ink blotch.txt";
+
+    public static final String COMMENT_KESERIM = "sprites/hero/comment/keserim comment.txt";
+    public static final String HERO_KESERIM = "sprites/hero/keserim2.txt";
 
     private static final Map<String, String> spriteMap;
 

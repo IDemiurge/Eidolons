@@ -17,7 +17,7 @@ import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = true;
     public static final String TEST_DATA =
             "time=2000. [[camera_set=orig;BG_ANIM=out;camera=me;wait=3000;script=action(source, Deathstorm)]]";
     private   String scriptText;
@@ -27,6 +27,10 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     public enum SCRIPT_WRAPPER {
         chain,
         time_chain,
+    }
+
+    public String getScriptText() {
+        return scriptText;
     }
 
     //TODO IDEA - use script syntax for conditions?
@@ -49,12 +53,17 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         UNIT,
         SCRIPT,
 
+        GRID_OBJ, ANIM,
+
         CAMERA,
         CAMERA_SET,
 
+        COMMENT,
         DIALOG,
-        WAIT,
-        COMMENT, GRID_OBJ, ANIM, WAIT_EACH, WAIT_OFF, TIME,
+
+        WAIT,TIME, TIME_THIS,
+        WAIT_EACH, WAIT_OFF,
+        ZOOM, REVEAL_AREA, PORTAL,
 
         //make templates mapped by name?
     }
@@ -141,7 +150,8 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
     @Override
     public void setValue(String name, String value) {
-        setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);
+        setValue(SPEECH_ACTION.valueOf(StringMaster.toEnumFormat(name)), value);
+//        setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);
     }
 
 //TODO chain

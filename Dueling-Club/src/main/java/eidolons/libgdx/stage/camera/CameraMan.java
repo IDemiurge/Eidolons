@@ -2,16 +2,17 @@ package eidolons.libgdx.stage.camera;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.GameScreen;
-import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.utils.ActTimer;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
@@ -21,8 +22,7 @@ import main.system.auxiliary.secondary.Bools;
 
 import java.util.List;
 
-import static main.system.GuiEventType.CAMERA_PAN_TO_COORDINATE;
-import static main.system.GuiEventType.CAMERA_PAN_TO_UNIT;
+import static main.system.GuiEventType.*;
 
 /**
  * smooth camera movement
@@ -41,21 +41,55 @@ public class CameraMan {
     protected Vector2 cameraDestination;
     protected Vector2 velocity;
     private Vector3 lastPos;
+    Interpolation interpolation = Interpolation.elastic;
 
     private ActTimer cameraTimer;
     OrthographicCamera cam;
     private Float cameraSpeedFactor;
+    private float origDist;
 
 //    List<CameraMove> moves;
 
+    public static class MotionData {
+
+        Vector2 dest;
+        float duration;
+        Interpolation interpolation;
+
+        public MotionData(float f, float duration, Interpolation interpolation) {
+            this(new Vector2(f, 0), duration, interpolation);
+        }
+
+        public MotionData(Vector2 dest, float duration, Interpolation interpolation) {
+            this.dest = dest;
+            this.duration = duration;
+            this.interpolation = interpolation;
+        }
+
+        public MotionData(Object param) {
+
+        }
+    }
 
     public CameraMan(OrthographicCamera cam, GameScreen screen) {
         this.cam = cam;
         this.screen = screen;
 
+        GuiEventManager.bind(CAMERA_PAN_TO, param -> {
+            cameraSpeedFactor = null;
+            Vector2 c = null;
+
+            if (param.get() instanceof List) {
+                c = (Vector2) ((List) param.get()).get(0);
+                cameraSpeedFactor = (Float) ((List) param.get()).get(1);
+            } else {
+                c = (Vector2) param.get();
+            }
+            cameraPan(c, true);
+        });
         GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
-            cameraSpeedFactor=null;
-            Coordinates c=null ;
+            cameraSpeedFactor = null;
+            Coordinates c = null;
             if (param.get() instanceof List) {
                 c = (Coordinates) ((List) param.get()).get(0);
                 cameraSpeedFactor = (Float) ((List) param.get()).get(1);
@@ -67,8 +101,8 @@ public class CameraMan {
 
         });
         GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
-            cameraSpeedFactor=null;
-            BattleFieldObject c=null ;
+            cameraSpeedFactor = null;
+            BattleFieldObject c = null;
             if (param.get() instanceof List) {
                 c = (BattleFieldObject) ((List) param.get()).get(0);
                 cameraSpeedFactor = (Float) ((List) param.get()).get(1);
@@ -91,11 +125,35 @@ public class CameraMan {
                         centerCameraOn(Eidolons.getMainHero());
                 }
         });
+        GuiEventManager.bind(CAMERA_ZOOM, param -> {
+            MotionData data = (MotionData) param.get();
+
+            zoomAction = (FloatAction) ActionMaster.getAction(FloatAction.class);
+
+            zoomAction.setStart(getCam().zoom);
+            zoomAction.setEnd(data.dest.x);
+            zoomAction.setDuration(data.duration);
+            zoomAction.setInterpolation(data.interpolation);
+            main.system.auxiliary.log.LogMaster.dev("Zooming to " + data.dest.x);
+//            main.system.auxiliary.log.LogMaster.dev("Zooming to " +data.dest.x);
+        });
     }
+
+    FloatAction zoomAction;
 
     public void act(float delta) {
         cameraTimer.act(delta);
         cameraShift();
+        if (zoomAction != null)
+            if (zoomAction.getValue() != zoomAction.getEnd()) {
+                zoomAction.act(delta);
+                main.system.auxiliary.log.LogMaster.dev("Zoom from " +
+                        getCam().zoom + " to " + zoomAction.getValue());
+                getCam().zoom = zoomAction.getValue();
+
+                getController().cameraZoomChanged();
+                getCam().update();
+            }
     }
 
     public void cameraStop() {
@@ -103,7 +161,7 @@ public class CameraMan {
 
 
     protected float getCameraDistanceFactor() {
-        if (cameraSpeedFactor==null) {
+        if (cameraSpeedFactor == null) {
 
         }
         return 6.25f;
@@ -143,17 +201,23 @@ public class CameraMan {
         if (!overrideCheck)
             if (dst < getCameraMinCameraPanDist())
                 return;
-
-        velocity =getPanVelocity(dst, getCameraDistanceFactor());
+        origDist = getCam().position.dst(cameraDestination.x, cameraDestination.y, 0f);
+        velocity = getPanVelocity(dst, getCameraDistanceFactor());
 
     }
+
     private Vector2 getPanVelocity(float max, float factor) {
         float dist = getCam().position.dst(cameraDestination.x, cameraDestination.y, 0f);
+
+        if (interpolation != null) {
+            factor = factor / interpolation.apply(dist / origDist);
+        }
         float dest = Math.min(max,
-                dist/ factor);
+                dist / factor);
+
         return new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
                 - getCam().position.y).
-                nor().scl( dest);
+                nor().scl(dest);
 //        return new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
 //                - getCam().position.y).
 //                nor().scl(Math.min(getCam().position.
@@ -183,7 +247,7 @@ public class CameraMan {
                     cameraStop(velocityNow.isZero());
                 }
                 getCam().update();
-                getController().cameraChanged();
+                getController().cameraPosChanged();
             }
         checkCameraFix();
     }

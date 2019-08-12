@@ -30,6 +30,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import eidolons.system.test.TestDialogMaster;
@@ -39,6 +40,7 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
@@ -55,6 +57,7 @@ public class GlobalController implements Controller {
     private static final boolean TEST_MODE = true;
     private static boolean controlPause;
     private boolean active;
+    private String lastScript;
 
     public static void setControlPause(boolean controlPause) {
         GlobalController.controlPause = controlPause;
@@ -110,9 +113,8 @@ public class GlobalController implements Controller {
 
         switch (keyCode) {
             case Keys.F2:
-                if (EidolonsGame.BRIDGE)
-                {
-                    if (CoreEngine.isIDE()){
+                if (EidolonsGame.BRIDGE) {
+                    if (CoreEngine.isIDE()) {
                         EidolonLord.lord.soulforceLost(50);
                     }
                     return false;
@@ -123,9 +125,9 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F1:
                 if (!CoreEngine.isIDE())
-                if (!EidolonsGame.isHqEnabled()) {
-                    return false;
-                }
+                    if (!EidolonsGame.isHqEnabled()) {
+                        return false;
+                    }
                 if (ShadowMaster.isShadowAlive()) {
                     EUtils.showInfoText("Cannot do this now");
                     return false;
@@ -166,9 +168,26 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
+            case Keys.F10:
+                GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, Eidolons.getMainHero(), "TEEEEST!");
+                break;
+            case Keys.F9:
+                Eidolons.onNonGdxThread(()-> {
+                String text = DialogMaster.inputText("Your script...", lastScript);
+                if (!StringMaster.isEmpty(text)) {
+                    lastScript = text;
+//                    DialogueManager.afterDialogue();
+                    try {
+                        Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                }
+                });
+                return true;
             case Keys.F8:
 
-                if (CoreEngine.isIDE()){
+                if (CoreEngine.isIDE()) {
                     EidolonLord.lord.soulforceGained(110);
                 }
                 PaleAspect.togglePale();
@@ -326,7 +345,7 @@ public class GlobalController implements Controller {
             active = true;
             return true;
         }
-        if (CoreEngine.isContentTestMode()  ) {
+        if (CoreEngine.isContentTestMode()) {
             if (TestDialogMaster.key(c))
                 return false;
         }
