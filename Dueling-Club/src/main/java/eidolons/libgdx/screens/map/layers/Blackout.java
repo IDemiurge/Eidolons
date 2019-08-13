@@ -108,9 +108,6 @@ public class Blackout extends Group {
             setZIndex(Integer.MAX_VALUE);
             image.setTouchable(Touchable.enabled);
         }
-        if (getColor().a!=0) {
-        main.system.auxiliary.log.LogMaster.important("BLACKOUT  act" + getColor().a);
-        }
     }
 
     public static boolean isOnNewScreen() {

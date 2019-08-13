@@ -50,6 +50,8 @@ public class SpriteX extends GroupX {
         if (path != null) {
             sprite = SpriteAnimationFactory.getSpriteAnimation(path, true, false);
             sprite.setCustomAct(true);
+            sprite.setLoops(0);
+            sprite.setLooping(true);
         }
     }
 
@@ -129,6 +131,9 @@ public class SpriteX extends GroupX {
 
     @Override
     public float getWidth() {
+        if (sprite == null) {
+            return 0;
+        }
         return sprite.getWidth();
     }
 

@@ -224,7 +224,7 @@ public class TownPanel extends TabbedPanel {
         ShopClickHandler.stashOpen = false;
         WaitMaster.receiveInput(DONE_OPERATION, true);
         GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null);
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         //        HqDataMasterDirect.applyModifications();
 
     }

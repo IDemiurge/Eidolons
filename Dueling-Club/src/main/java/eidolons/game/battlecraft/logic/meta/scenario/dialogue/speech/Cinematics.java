@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 public class Cinematics {
+    public static boolean ON;
+
     /**
      * what does it work with?
      *

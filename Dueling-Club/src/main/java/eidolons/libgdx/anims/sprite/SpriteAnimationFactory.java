@@ -49,8 +49,7 @@ public class SpriteAnimationFactory {
         return getSpriteAnimation(key, useDefault, true);
     }
         public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, boolean useCache) {
-        key = FileManager.formatPath(key, true);
-        key = key.substring(0, key.length() - 1);
+        key = FileManager.formatPath(key, true, true);
             if (!key.contains(".")) {
                 key = Sprites.substituteKey(key);
             }
@@ -102,7 +101,7 @@ public class SpriteAnimationFactory {
                 return null;
             }
         }
-        SpriteAnimation a = new SpriteAnimation(texturePath);
+        SpriteAnimation a = new SpriteAnimation(texturePath, true);
         if (texturePath.equalsIgnoreCase(defaultSpritePath)) {
             a.setDefault(true);
         }

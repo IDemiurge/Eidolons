@@ -315,10 +315,12 @@ public class FloatingTextMaster {
 
 
     private LabelStyle getFontStyle(TEXT_CASES aCase, Object arg) {
+        int size=21;
         switch (aCase) {
             case BATTLE_COMMENT:
+                size -= Math.min(4, arg.toString().length() / 100);
                 return
-                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, 20);
+                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, size);
             case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);
@@ -335,7 +337,7 @@ public class FloatingTextMaster {
 //                 DC_AttackMaster.getAttackFromAction(
 //                  (DC_ActiveObj) arg))
             case BONUS_DAMAGE:
-                int size = 18;
+                  size = 18;
                 size = Math.max(14, Math.min(23, size + ((Damage) arg).getAmount() / 21));
                 return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, size);
             case ATTACK_CRITICAL:

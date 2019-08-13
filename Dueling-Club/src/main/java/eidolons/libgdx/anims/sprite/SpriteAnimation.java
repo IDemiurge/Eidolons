@@ -496,17 +496,23 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public float getHeight() {
-        if (!ListMaster.isNotEmpty(getRegions())) {
-            return 0;
+        if ( ListMaster.isNotEmpty(getRegions())) {
+            return getRegions().get(getCurrentFrameNumber()).packedHeight;
         }
-        return getRegions().get(getCurrentFrameNumber()).packedHeight;
+        if (getKeyFrames().length>0) {
+            return getKeyFrames()[(getCurrentFrameNumber())].getRegionHeight();
+        }
+        return 0;
     }
 
     public float getWidth() {
-        if (!ListMaster.isNotEmpty(getRegions())) {
-            return 0;
+        if ( ListMaster.isNotEmpty(getRegions())) {
+            return getRegions().get(getCurrentFrameNumber()).packedWidth;
         }
-        return getRegions().get(getCurrentFrameNumber()).packedWidth;
+        if (getKeyFrames().length>0) {
+            return getKeyFrames()[(getCurrentFrameNumber())].getRegionWidth();
+        }
+        return 0;
     }
 
     public void centerOnScreen() {

@@ -1,5 +1,6 @@
 package eidolons.system.text;
 
+import main.data.StringMap;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
@@ -33,7 +34,7 @@ public class Texts {
     }
 
     private static Map<String, String> parseText(String text) {
-        Map<String, String> map = new XLinkedMap<>();
+        Map<String, String> map = new StringMap<>();
         for (String chunk : text.split(TEXT_HEADER_SEPARATOR)) {
             chunk=chunk.trim();
             if (chunk.isEmpty()) {
@@ -56,6 +57,10 @@ public class Texts {
 
     public static Map<String, String> getComments() {
         return getTextMap("comments");
+    }
+
+    public static Map<String, String> getScriptsMap() {
+        return getTextMap("scripts");
     }
     /**
      * keep the maps of all relevant texts!

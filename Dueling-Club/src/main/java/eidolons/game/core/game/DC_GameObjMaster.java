@@ -10,12 +10,12 @@ import main.data.XList;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.core.game.Game;
 import main.game.core.game.GameObjMaster;
 import main.game.logic.battle.player.Player;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -40,6 +40,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     private Structure[] structuresArray;
 
     boolean paleAspect;
+    private Boolean unitFindSequential = true;
 
     public DC_GameObjMaster(DC_Game game, boolean paleAspect) {
         this(game);
@@ -122,7 +123,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     //    }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getObjectsOnCoordinate(null, c, null , true, false);
+        return getObjectsOnCoordinate(null, c, null, true, false);
 
     }
 
@@ -130,10 +131,11 @@ public class DC_GameObjMaster extends GameObjMaster {
                                                          Boolean overlayingIncluded) {
         return getObjectsOnCoordinate(null, c, overlayingIncluded, true, false);
     }
-    public void clearCache(Coordinates c){
+
+    public void clearCache(Coordinates c) {
         getCache(true).remove(c);
         getCache(false).remove(c);
-        getCache(null ).remove(c);
+        getCache(null).remove(c);
         //TODO also remove if dead
     }
 
@@ -158,7 +160,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
             for (BattleFieldObject object : getGame().getStructures()) {
-                if (object.isPale()!=paleAspect) {
+                if (object.isPale() != paleAspect) {
                     continue;
                 }
                 if (overlayingIncluded_Not_Only != null) {
@@ -305,7 +307,8 @@ public class DC_GameObjMaster extends GameObjMaster {
     public void clearCaches() {
         clearCaches(true);
     }
-        public void clearCaches(boolean structures) {
+
+    public void clearCaches(boolean structures) {
         if (!isCacheForStructures() || structures) {
             getCache(false).clear();
             getCache(true).clear();
@@ -364,22 +367,26 @@ public class DC_GameObjMaster extends GameObjMaster {
         }
     }
 
-    public Unit getUnitByName(String name, Ref ref) {
-        return getUnitByName(name, ref, null, null, null);
+    public BattleFieldObject getByName(String name, Ref ref) {
+        return getByName(name, ref, null, null, null);
     }
 
-    public Unit getUnitByName(String name, Ref ref
+    public BattleFieldObject getByName(String name, Ref ref
             , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
     ) {
-        return getUnitByName(name, ally_or_enemy_only, distanceSort, powerSort,
+        return getByName(null, name, ally_or_enemy_only, distanceSort, powerSort,
                 ref.getSourceObj().getOwner(), ref.getSourceObj());
     }
 
-    public Unit getUnitByName(String name
+    public BattleFieldObject getByName(Boolean unit_struct_both, String name
             , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
             , Player owner, Obj source) {
-        List<Unit> matched = new XList<>();
-        for (Unit unit : getUnits()) {
+        List<BattleFieldObject> matched = new XList<>();
+        DequeImpl<BattleFieldObject> all = getBfObjects();
+        if (unit_struct_both!=null) {
+            //TODO
+        }
+        for (BattleFieldObject unit : all) {
             if (ally_or_enemy_only != null) {
                 if (unit.getOwner() == owner)
                     if (!ally_or_enemy_only)
@@ -398,22 +405,29 @@ public class DC_GameObjMaster extends GameObjMaster {
             return null;
         if (matched.size() == 1)
             return matched.get(0);
-        if (distanceSort != null)
-            if (distanceSort) {
-                SortMaster.sortEntitiesByExpression(matched,
-                        unit1 -> -PositionMaster.getDistance((Obj) unit1, source));
-                return matched.get(0);
-            }
-        if (powerSort != null)
-            if (powerSort) {
-                SortMaster.sortEntitiesByExpression(matched,
-                        unit1 -> unit1.getIntParam(PARAMS.POWER));
-                return matched.get(0);
-            }
-
-        return new RandomWizard<Unit>().getRandomListItem(matched);
+        if (distanceSort != null) {
+            SortMaster.sortEntitiesByExpression(matched,
+                    unit1 -> (distanceSort ? -1 : 1) * PositionMaster.getDistance((Obj) unit1, source));
+        }
+        if (powerSort != null) {
+            SortMaster.sortEntitiesByExpression(matched,
+                    unit1 -> (powerSort ? 1 : -1) * unit1.getIntParam(PARAMS.POWER));
+        }
+        return getUnitSequentially(matched);
 
     }
+
+    private BattleFieldObject getUnitSequentially(List<BattleFieldObject> matched) {
+        if (unitFindSequential != null) {
+            unitFindSequential = !unitFindSequential;
+            if (unitFindSequential) {
+                return matched.get(matched.size() - 1); //TODO try to iterate instead
+            }
+            return matched.get(0);
+        }
+        return new RandomWizard<BattleFieldObject>().getRandomListItem(matched);
+    }
+
 
     public Map<Coordinates, Set<BattleFieldObject>> getCache(Boolean overlaying) {
         if (overlaying == null)
@@ -472,6 +486,12 @@ public class DC_GameObjMaster extends GameObjMaster {
     public Set<Structure> getWalls() {
         HashSet<Structure> list = new HashSet<>(getStructures());
         list.removeIf(obj -> !obj.isWall());
+        return list;
+    }
+
+    public DequeImpl<BattleFieldObject> getBfObjects() {
+        DequeImpl<BattleFieldObject> list = new DequeImpl(getUnits());
+        list.addAll(getStructures());
         return list;
     }
 }

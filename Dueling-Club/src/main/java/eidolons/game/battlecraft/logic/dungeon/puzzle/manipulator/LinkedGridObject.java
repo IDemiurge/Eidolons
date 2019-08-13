@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
@@ -17,7 +18,7 @@ import main.system.auxiliary.EnumMaster;
 import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.GATE_PILLAR;
 import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.LIGHT;
 
-public class LinkedGridObject extends GridObject {
+public class LinkedGridObject extends CinematicGridObject {
     static {
         CUSTOM_OBJECT.BLACKNESS.vfxOver  = VFX.darkness.path + "(-132, -32);";
         CUSTOM_OBJECT.BLACKNESS.vfxOver += VFX.darkness.path + "(-132, -32);";
@@ -50,9 +51,6 @@ public class LinkedGridObject extends GridObject {
         CUSTOM_OBJECT.soul_net.vfxOver += VFX.soulflux_continuous.path + "(42, 32);";
         CUSTOM_OBJECT.soul_net.setVfxSpeed(0.1f);
 
-        CUSTOM_OBJECT.crematory.vfxOver  =   "advanced/ambi/waters/fire(0, 0);";
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(-45, 0);";
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "advanced/ambi/waters/fire(45, 0);";
 
 
         CUSTOM_OBJECT.wisp_floating.vfxOver  +=   "ambient/sprite/willowisps(0, 0);";
@@ -62,46 +60,41 @@ public class LinkedGridObject extends GridObject {
         CUSTOM_OBJECT.flames.screen = true;
 
         CUSTOM_OBJECT.nether_flames.vfxUnder  +=   "ambient/sprite/fires/nether flame(0, 0);";
-        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.62f);
+        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.32f);
         CUSTOM_OBJECT.nether_flames.screen = true;
         CUSTOM_OBJECT.nether_flames.movable = true;
+        CUSTOM_OBJECT.nether_flames.spriteColor = new Color(0.57f,0.99f,0.78f,0.78f);
 
+        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fires/real fire2(0, -40);";
+        CUSTOM_OBJECT.crematory.screen = true;
+        CUSTOM_OBJECT.crematory.setVfxSpeed(0.14f);
 
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(-33, 0);";
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(0, 0);";
-        CUSTOM_OBJECT.crematory.vfxOver  +=   "ambient/sprite/fire small(33, 0);";
         CUSTOM_OBJECT.wisp_floating.invert_screen_vfx = true;
         CUSTOM_OBJECT.black_waters.vfxOver  +=   "advanced/ambi/black water square small slow(-21, -21);";
 //        CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
 //        CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
-
-
-//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.MIST_BLACK.path + "(32, 32);";
-//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_white_mist_wind.path + "(32, 64);";
-//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_clouds_wind.path + "(32, 64);";
-//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.BLACK_MIST_clouds_gravity.path + "(-32, -52);";
-//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.BLACK_MIST_clouds_antigravity.path + "(-32, -24);";
-//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.darkness.path + "(32, 32);";
-//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.soul_bleed.path + "(32, 64);";
-//        CUSTOM_OBJECT.black_waters.vfxOver += VFX.darkness.path + "(-32, -52);";
-//        CUSTOM_OBJECT.black_waters.vfxUnder += VFX.soul_bleed.path + "(-32, -24);";
     }
 
-    private final BaseView linked;
-    CUSTOM_OBJECT object;
+    protected final BaseView linked;
 
-    float origX;
-    float origY;
 
     public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c) {
-        super(c, object.spritePath);
+        super(c, object);
         linked = view;
         this.object = object;
         visionRange = getDefaultVisionRange();
+        createAdditionalObjects(object.additionalObjects);
+
+    }
+
+    protected void createAdditionalObjects(String[] additionalObjects) {
+        if (linked == null) {
+            return;
+        }
         int i = 1;
-        for (String additionalObject : object.additionalObjects) {
+        for (String additionalObject : additionalObjects) {
             object = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, VariableManager.removeVarPart(additionalObject));
-            LinkedGridObject obj = new LinkedGridObject(view, object, c);
+            LinkedGridObject obj = new LinkedGridObject(linked, object, c);
 
             Coordinates offset = AbstractCoordinates.createFromVars(additionalObject);
             obj.setPosition(offset.x, offset.y);

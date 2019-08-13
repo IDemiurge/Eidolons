@@ -49,7 +49,7 @@ public class DialogueFactory {
             int lastId = NumberUtils.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
 
-            String metaData = "time_between_script_actions=500;"; //TODO
+            String metaData ="";// "time_between_script_actions=500;"; //TODO
 
             GameDialogue dialogue = createDialogue(name, metaData, ContainerUtils.joinList(ids));
             map.put(formatMapKey(name), dialogue);
@@ -130,6 +130,7 @@ public class DialogueFactory {
         DialogueData data = new DialogueData(metaData);
 
         dialogue.setTimeBetweenLines(data.getIntValue(DIALOGUE_META_DATA.TIME_BETWEEN_SCRIPT_ACTIONS));
+        dialogue.setTimeBetweenScripts(data.getIntValue(DIALOGUE_META_DATA.TIME_BETWEEN_SCRIPTS));
         return dialogue;
     }
 
@@ -141,7 +142,7 @@ public class DialogueFactory {
     }
 
     public enum DIALOGUE_META_DATA {
-        TIME_BETWEEN_SCRIPT_ACTIONS,
+        TIME_BETWEEN_SCRIPT_ACTIONS, TIME_BETWEEN_SCRIPTS,
     }
 
     public SpeechBuilder getBuilder() {

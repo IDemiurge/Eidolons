@@ -19,6 +19,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
+import main.system.threading.WaitMaster;
 
 import java.util.List;
 
@@ -93,7 +94,8 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         if (SKIP_INTRO){
             return ;
         }
-        GuiEventManager.trigger(INIT_DIALOG, "Intro");
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 3);
+        WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG, "Intro"));
     }
     public void startDialogue(GameDialogue dialogue) {
     }

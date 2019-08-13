@@ -298,7 +298,9 @@ public class UnitView extends BaseView implements HpBarView{
 
     public void resetHpBar( ) {
         if (getHpBar() == null)
-            hpBar = new HpBar(getUserObject());
+        {
+          setHpBar(  new HpBar(getUserObject()));
+        }
         getHpBar().reset();
     }
     public HpBar getHpBar() {

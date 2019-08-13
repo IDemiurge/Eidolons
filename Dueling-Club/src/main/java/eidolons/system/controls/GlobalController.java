@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
@@ -168,6 +169,9 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
+            case Keys.F11:
+                GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
+                break;
             case Keys.F10:
                 GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, Eidolons.getMainHero(), "TEEEEST!");
                 break;
@@ -297,6 +301,11 @@ public class GlobalController implements Controller {
     }
 
     private boolean escape() {
+
+        if (Cinematics.ON){
+            return false;
+        }
+
         DungeonScreen.getInstance().cameraStop(true);
 
         if (activeButton != null) {

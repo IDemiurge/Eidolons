@@ -208,7 +208,7 @@ public class FloatingText extends Group {
             if (textSupplier.get() != null)
                 text = textSupplier.get();
         }
-        return text;
+        return   text ;
     }
 
     public void setStayFullDuration(float stayFullDuration) {

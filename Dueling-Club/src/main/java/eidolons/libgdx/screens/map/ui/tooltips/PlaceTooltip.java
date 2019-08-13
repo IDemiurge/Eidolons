@@ -197,9 +197,6 @@ public class PlaceTooltip extends Tooltip {
             return false;
         if (MapScreen.getInstance().getGuiStage().getVignette().getContent().equals(toActor))
             return false;
-        if (MapScreen.getInstance().getGuiStage().getBlackout().equals(toActor.getParent())) {
-            return false;
-        }
         return super.checkActorExitRemoves(toActor);
     }
 }

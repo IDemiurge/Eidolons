@@ -50,7 +50,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
             ((CombatLoop) getGame().getLoop()).endCombat();
         }
 
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2f);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 2f);
         WaitMaster.WAIT(1000);
         if (!ShadowMaster.isShadowAlive()) {
             if (!EidolonsGame.TUTORIAL_PATH) {
@@ -58,7 +58,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
             }
         }
         //play sound
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 1.5f);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 1.5f);
         WaitMaster.WAIT(1100);
         //use the normal selection events?
         String newHero = getPartyManager().chooseNextHero();

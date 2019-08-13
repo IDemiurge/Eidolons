@@ -9,6 +9,8 @@ public class GameDialogue {
     protected Speech root;
     protected String name;
     private int timeBetweenLines;
+    private int timeBetweenScripts;
+    private Integer timeBetweenScriptsLengthMultiplier;
 
     public GameDialogue(Speech root, String name) {
         this.root = root;
@@ -40,5 +42,21 @@ public class GameDialogue {
 
     public void setTimeBetweenLines(int timeBetweenLines) {
         this.timeBetweenLines = timeBetweenLines;
+    }
+
+    public void setTimeBetweenScripts(int timeBetweenScripts) {
+        this.timeBetweenScripts = timeBetweenScripts;
+    }
+
+    public int getTimeBetweenScripts() {
+        return timeBetweenScripts;
+    }
+
+    public void setTimeBetweenScriptsLengthMultiplier(Integer timeBetweenScriptsLengthMultiplier) {
+        this.timeBetweenScriptsLengthMultiplier = timeBetweenScriptsLengthMultiplier;
+    }
+
+    public Integer getTimeBetweenScriptsLengthMultiplier() {
+        return timeBetweenScriptsLengthMultiplier;
     }
 }

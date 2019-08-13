@@ -64,7 +64,7 @@ public class DialogueContainer extends TablePanelX {
 
     protected void start() {
         //init key listening
-//        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
+//        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 2);
         dialogueHandler.getDialogueManager().setContainer(this);
         next();
     }
@@ -75,7 +75,7 @@ public class DialogueContainer extends TablePanelX {
 
     public void next() {
         if (!iterator.hasNext()) {
-//            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
+//            GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 2);
             done();
             return;
         }
@@ -191,5 +191,9 @@ public class DialogueContainer extends TablePanelX {
 
     public GameDialogue getDialogue() {
         return dialogueHandler.getDialogue();
+    }
+
+    public DialogueHandler getHandler() {
+        return dialogueHandler;
     }
 }

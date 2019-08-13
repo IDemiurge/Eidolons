@@ -10,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.*;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -31,8 +31,6 @@ import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.RollDecorator;
-import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -337,11 +335,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     @Override
     public void act(float delta) {
         blocked = checkBlocked();
-        if (!Blackout.isOnNewScreen())
-            if (isBlackoutIn()) {
-                blackout.fadeOutAndBack(2f);
-                setBlackoutIn(false);
-            }
+
         if (actionTooltipContainer != null)
             if (actionTooltipContainer.getActions().size == 0) {
                 actionTooltipContainer.setFluctuateAlpha(true);
@@ -363,12 +357,6 @@ public class GuiStage extends StageX implements StageWithClosable {
                 }
             }
         }
-        if (isFreezeOnBlackout())
-        if (blackout.getChildren().get(0). getColor().a!=0)
-            if (blackout.getChildren().get(0). getColor().a!=1) {
-                blackout.act(delta);
-                return;
-            }
         if (dialogueMode) {
             dialogueContainer.setX(GdxMaster.centerWidth(dialogueContainer));
             for (Actor actor : getRoot().getChildren()) {
@@ -529,15 +517,6 @@ public class GuiStage extends StageX implements StageWithClosable {
             journal.setStage(this);
             journal.fadeIn();
             journal.open();
-        });
-        GuiEventManager.bind(GuiEventType.FADE_OUT, p -> {
-            blackout.fadeOut((Float) p.get());
-        });
-        GuiEventManager.bind(GuiEventType.FADE_IN, p -> {
-            blackout.fadeIn((Float) p.get());
-        });
-        GuiEventManager.bind(GuiEventType.FADE_OUT_AND_BACK, p -> {
-            blackout.fadeOutAndBack((Number) p.get());
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_HQ_SCREEN, p -> {
@@ -777,10 +756,6 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     }
 
-    public void blackout(float dur) {
-
-        blackout.fadeOutAndBack(dur);
-    }
 
     protected void showText(String s) {
         if (s == null) {
@@ -997,8 +972,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     }
 
-    public void playDialogue(DialogueHandler handler) {
-        VisionManager.setCinematicVision(true);
+    public void dialogueStarted(DialogueHandler handler) {
         if (dialogueMode) {
             if (isDialogueCached())
                 dialogueContainer.remove();
@@ -1010,12 +984,22 @@ public class GuiStage extends StageX implements StageWithClosable {
                 addActor(dialogueContainer = new DialogueContainer());
             }
         }
+
+        dialogueToggle(true);
         dialogueContainer.fadeIn();
         dialogueContainer.play(handler);
-        setDialogueMode(true);
-        DialogueManager.setRunning(true);
 
         cache.put(handler.getDialogue(), dialogueContainer);
+
+//        Eidolons.getScreen().toBlack();
+//        Eidolons.getScreen().blackout(5, 0);
+    }
+
+    private void dialogueToggle(boolean on) {
+        VisionManager.setCinematicVision(on);
+        setDialogueMode(on);
+        DialogueManager.setRunning(on);
+        Cinematics.ON = on;
     }
 
     private boolean isDialogueCached() {
@@ -1024,8 +1008,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     public void dialogueDone() {
         dialogueContainer.fadeOut();
-        setDialogueMode(false);
-        DialogueManager.setRunning(false);
+        dialogueToggle(false);
         dialogueContainer.hide();
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE, dialogueContainer.getDialogue());
         DialogueManager.dialogueDone();

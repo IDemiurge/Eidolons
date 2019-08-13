@@ -14,11 +14,13 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.utils.ActTimer;
+import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.secondary.Bools;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
 
@@ -142,13 +144,20 @@ public class CameraMan {
     FloatAction zoomAction;
 
     public void act(float delta) {
+        if (
+                Float.isNaN(cam.position.y)||
+                Float.isNaN(cam.position.x)||
+                Float.isNaN(cam.zoom)
+        ) {
+            fixCamera();
+        }
         cameraTimer.act(delta);
         cameraShift();
         if (zoomAction != null)
             if (zoomAction.getValue() != zoomAction.getEnd()) {
                 zoomAction.act(delta);
-                main.system.auxiliary.log.LogMaster.dev("Zoom from " +
-                        getCam().zoom + " to " + zoomAction.getValue());
+//                main.system.auxiliary.log.LogMaster.dev("Zoom from " +
+//                        getCam().zoom + " to " + zoomAction.getValue());
                 getCam().zoom = zoomAction.getValue();
 
                 getController().cameraZoomChanged();
@@ -156,15 +165,27 @@ public class CameraMan {
             }
     }
 
+    private void fixCamera() {
+        main.system.auxiliary.log.LogMaster.important("Camera was broken with NaN's! " +cam);
+        Vector2 v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
+        cam.position.y=v.y;
+        cam.position.x =v.x;
+        cam.zoom=1f;
+        main.system.auxiliary.log.LogMaster.important("Fix applied... " +cam);
+    }
+
     public void cameraStop() {
     }
 
 
     protected float getCameraDistanceFactor() {
-        if (cameraSpeedFactor == null) {
-
+        if (cameraSpeedFactor != null) {
+            if (cameraSpeedFactor==0){
+                return 1;
+            }
+            return cameraSpeedFactor;
         }
-        return 6.25f;
+        return 7.75f;
     }
 
     //    protected float getCameraDistanceFactor() {
@@ -210,14 +231,17 @@ public class CameraMan {
         float dist = getCam().position.dst(cameraDestination.x, cameraDestination.y, 0f);
 
         if (interpolation != null) {
-            factor = factor / interpolation.apply(dist / origDist);
+            factor = factor / interpolation.apply(dist / (1+origDist));
         }
         float dest = Math.min(max,
                 dist / factor);
-
-        return new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
+        Vector2 v = new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
                 - getCam().position.y).
                 nor().scl(dest);
+        if (Float.isNaN(v.x)) {
+            return v;
+        }
+        return v;
 //        return new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
 //                - getCam().position.y).
 //                nor().scl(Math.min(getCam().position.
@@ -237,7 +261,15 @@ public class CameraMan {
                 float y = velocity.y > 0
                         ? Math.min(cameraDestination.y, getCam().position.y + velocity.y * Gdx.graphics.getDeltaTime())
                         : Math.max(cameraDestination.y, getCam().position.y + velocity.y * Gdx.graphics.getDeltaTime());
-
+                if (Float.isNaN(x)) {
+                   x=0;
+                   main.system.auxiliary.log.LogMaster.important("X is NaN for destination " +cameraDestination +
+                           " delta = " + Gdx.graphics.getDeltaTime());
+                }
+                if (Float.isNaN(y)) {
+                    y=0;
+                    main.system.auxiliary.log.LogMaster.important("Y is NaN for destination " +cameraDestination);
+                }
 //                main.system.auxiliary.log.LogMaster.log(1,"cameraShift to "+ y+ ":" +x + " = "+cam);
                 getCam().position.set(x, y, 0f);
 
@@ -291,7 +323,7 @@ public class CameraMan {
     }
 
     public void centerCameraOn(BattleFieldObject hero, Boolean force) {
-        if (!isCenterAlways())
+        if (!isCenterAlways()) //TODO refactor this shit
             if (!Bools.isTrue(force))
                 if (centerCameraOnAlliesOnly)
                     if (!hero.isMine())
@@ -299,9 +331,11 @@ public class CameraMan {
 
         Coordinates coordinatesActiveObj =
                 hero.getCoordinates();
-        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W +
-                GridMaster.CELL_W / 2,
-                (coordinatesActiveObj.invertY().y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
+
+        Vector2 unitPosition =   GridMaster.getCenteredPos(hero.getCoordinates());
+//        new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W +
+//                GridMaster.CELL_W / 2,
+//                (coordinatesActiveObj.invertY().y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
         cameraPan(unitPosition, force);
 
 

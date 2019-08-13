@@ -139,7 +139,10 @@ public class VariableManager {
 
     public static List<String> getVarList(String vars) {
         vars = getVarPart(vars);
-        vars = StringMaster.cropParenthesises(vars);
+        vars = StringMaster.cropParenthesises(vars).trim();
+        if (vars.isEmpty()) {
+            return new ArrayList<>();
+        }
         List<String> varList = new ArrayList<>();
 
         for (String var : vars.split(StringMaster.getVarSeparator())) {

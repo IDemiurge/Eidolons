@@ -73,7 +73,7 @@ public class TextWrapper {
                 newTextZiggy +=StringMaster.getWhiteSpaces((maxLength-substring.length())/2)+
                         substring+StringMaster.NEW_LINE;
             }
-            return newTextZiggy.substring(0, newText.length()-1);
+            return newTextZiggy.substring(0, newTextZiggy.length()-1);
         }
         return newText.substring(0, newText.length()-1);
     }

@@ -68,7 +68,9 @@ public class FacingPanel extends TablePanel {
             }
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
+//                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
+
+                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero() , 2f);
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

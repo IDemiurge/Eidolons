@@ -7,6 +7,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -118,6 +119,9 @@ public class AnimMaster extends Group {
     }
 
     public static float getAnimationSpeedFactor() {
+        if (Cinematics.ON){
+            return 1f;
+        }
         if (animationSpeedFactor == null) {
             animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;
         }

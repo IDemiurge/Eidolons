@@ -25,7 +25,8 @@ public class DialogueSyntax {
     public static final String PARAM_MOD_CLOSE = "]";
     //    public static final String REQS = "[[";
 //    public static final String REQS_CLOSE = "]]";
-    public static final String SCRIPT = Pattern.quote("[[");
+    public static final String SCRIPT_QUOTE = Pattern.quote("[[");
+    public static final String SCRIPT=("[[");
     public static final String SCRIPT_CLOSE = "]]";
     public static final String item_separator = ";";
     public static final String pair_separator = ":";
@@ -70,7 +71,7 @@ public class DialogueSyntax {
     }
 
     public static String getScriptPart(String text) {
-        int from = text.lastIndexOf(SCRIPT);
+        int from = text.lastIndexOf(SCRIPT_QUOTE);
         if (from < 0) {
             return "";
         }

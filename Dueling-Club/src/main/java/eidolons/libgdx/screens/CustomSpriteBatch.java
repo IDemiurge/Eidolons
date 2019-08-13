@@ -3,10 +3,14 @@ package eidolons.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.bf.SuperActor.BLENDING;
 import eidolons.libgdx.shaders.FluctuatingShader;
 import eidolons.libgdx.shaders.post.PostProcessController;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.ShaderBatch;
 
 import java.util.HashSet;
@@ -32,6 +36,49 @@ public class CustomSpriteBatch extends ShaderBatch {
             instance = new CustomSpriteBatch();
         }
         return instance;
+    }
+    BlackSprite blackSprite= new BlackSprite();
+
+    public void  drawBlack(float alpha, boolean whiteout) {
+//        draw();
+        begin();
+        blackSprite.resetColor(alpha);
+        if (whiteout)
+            setBlending(BLENDING.SCREEN);
+        else
+            setBlending(BLENDING.INVERT_SCREEN);
+        blackSprite.draw(this);
+        resetBlending();
+        end();
+
+    }
+
+    public class BlackSprite extends Sprite {
+        public BlackSprite() {
+            setRegion(TextureCache.getOrCreateR("ui/white.png"));
+        }
+
+        public void resetColor(float alpha) {
+            setColor(1,1,1, alpha);
+        }
+    }
+
+
+        public class GradientSprite extends Sprite {
+
+        public GradientSprite(TextureRegion white) {
+            setRegion(white);
+        }
+
+        public void setGradientColor(Color a, Color b, boolean horizontal) {
+            float[] vertices = getVertices();
+            float ca = a.toFloatBits();
+            float cb = b.toFloatBits();
+            vertices[SpriteBatch.C1] = horizontal ? ca : cb; //bottom left
+            vertices[SpriteBatch.C2] = ca; //top left
+            vertices[SpriteBatch.C3] = horizontal ? cb : ca; //top right
+            vertices[SpriteBatch.C4] = cb; //bottom right
+        }
     }
 
     public BLENDING getBlending() {
@@ -75,7 +122,7 @@ public class CustomSpriteBatch extends ShaderBatch {
     public void resetBlending() {
         setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
-        blending= null;
+        blending = null;
     }
 
     @Override
@@ -86,7 +133,7 @@ public class CustomSpriteBatch extends ShaderBatch {
 
     @Override
     public void setShader(ShaderProgram shader) {
-        if (  shader != getShader()) {
+        if (shader != getShader()) {
             bufferedShader = getShader();
         }
         super.setShader(shader);

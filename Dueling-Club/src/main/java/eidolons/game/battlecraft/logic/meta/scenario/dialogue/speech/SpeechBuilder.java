@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueSyntax;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.system.text.Texts;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.data.xml.XML_Converter;
@@ -16,9 +17,8 @@ import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.TEST_MODE;
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT_KEY;
 
 /**
  * Created by JustMe on 5/18/2017.
@@ -47,11 +47,11 @@ public class SpeechBuilder {
     }
 
     protected String processText(String text, Speech speech) {
-        if (text.split(DialogueSyntax.SCRIPT).length == 1 ) {
+        if (text.split(DialogueSyntax.SCRIPT_QUOTE).length == 1 ) {
             return text;
         }
-        String metaData =  text.split(DialogueSyntax.SCRIPT)[1];
-        text = text.split(DialogueSyntax.SCRIPT) [0];
+        String metaData =  text.split(DialogueSyntax.SCRIPT_QUOTE)[1];
+        text = text.split(DialogueSyntax.SCRIPT_QUOTE) [0];
         try {
             Condition reqs = DialogueSyntax.getConditions(metaData);
             speech.setConditions(reqs);
@@ -66,12 +66,16 @@ public class SpeechBuilder {
 //        }
 
         String part = metaData.substring(0, metaData.indexOf(DialogueSyntax.SCRIPT_CLOSE));// DialogueSyntax.getScriptPart(metaData);
+        part = part.trim();
         if (!StringMaster.isEmpty(part)) {
+            part = processData(part);
+            if (!StringMaster.isEmpty(part)) {
             SpeechScript script = new SpeechScript(part, master);
             speech.setScript(script);
             Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME_THIS);
             if (time != 0) {
                 speech.setTime(time);
+            }
             }
         }
 //            Integer time = DialogueSyntax.getTime(metaData);
@@ -79,7 +83,14 @@ public class SpeechBuilder {
 
         return text;
     }
+    private static String processData(String data) {
+        if (data.contains(SCRIPT_KEY)) {
+            String key = data.split(SCRIPT_KEY)[1];
+            data = Texts.getTextMap("scripts").get(key);
+        }
 
+        return data;
+    }
     public Map<Integer, SpeechData> getIdToDataMap() {
         if (idToDataMap == null)
             construct();

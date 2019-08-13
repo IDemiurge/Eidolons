@@ -106,6 +106,7 @@ public class DialogueHandler {
     }
 
     private void executeAutomaticActions(Speech speech) {
+
         if (speech.isAutoCamera()) {
             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, speech.getActor().getLinkedUnit());
 
@@ -173,5 +174,9 @@ public class DialogueHandler {
 
     public DialogueManager getDialogueManager() {
         return dialogueManager;
+    }
+
+    public boolean isScriptRunning() {
+        return getDialogueManager().getSpeechExecutor().isRunning();
     }
 }

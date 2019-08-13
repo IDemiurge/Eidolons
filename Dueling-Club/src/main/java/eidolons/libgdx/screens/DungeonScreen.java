@@ -198,6 +198,13 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected void afterLoad() {
+        Gdx.gl20.glEnable(GL_POINT_SMOOTH);
+        Gdx.gl20. glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20. glEnable(GL_LINE_SMOOTH);
+        Gdx.gl20. glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
+        Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+
         setCam((OrthographicCamera) viewPort.getCamera());
         particleManager = new ParticleManager();
 
@@ -292,11 +299,24 @@ public class DungeonScreen extends GameScreenWithTown {
         if (show) {
             if (!firstShow){
                 firstShow = true;
-                guiStage.getBlackout().fadeIn(12f);
+//                toBlack();
+//                blackout(5, 0);
+                blackout(5, 1, true);
             }
         }
         return show;
     }
+
+    @Override
+    protected void doBlackout() {
+        if (getCamera() != null) {
+            float h = Gdx.graphics.getHeight() * getCam().zoom;
+            float w = Gdx.graphics.getWidth() * getCam().zoom;
+            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
+                    getCam().position.y - h/ 2,w , h); //center?}
+        }
+            super.doBlackout();
+        }
 
     @Override
     protected void renderLoaderAndOverlays(float delta) {
@@ -307,12 +327,6 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     public void render(float delta) {
         batch.shaderFluctuation(delta);
-       Gdx.gl20.glEnable(GL_POINT_SMOOTH);
-        Gdx.gl20. glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-        Gdx.gl20. glEnable(GL_LINE_SMOOTH);
-        Gdx.gl20. glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
-        Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
         if (speed != null) {
             delta = delta * speed;
         }

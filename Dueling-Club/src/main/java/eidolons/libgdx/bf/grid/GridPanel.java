@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -47,7 +46,6 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.decor.ShardVisuals;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
@@ -61,7 +59,6 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
-import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
@@ -74,7 +71,6 @@ import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -458,14 +454,7 @@ public class GridPanel extends Group {
             Unit hero = (Unit) list.get(0);
             String text = (String) list.get(1);
             main.system.auxiliary.log.LogMaster.dev(text + "\n - Comment by " + hero.getNameAndCoordinate());
-            GroupX portrait = null;
-            if (hero == Eidolons.getMainHero()) {
-                SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
-//               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
-                portrait = commentSprite;
-            } else {
-                portrait = new FadeImageContainer(hero.getLargeImagePath());
-            }
+
             SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
                 @Override
                 public boolean remove() {
@@ -473,12 +462,42 @@ public class GridPanel extends Group {
                     return super.remove();
                 }
             };
+            boolean textTop = false;
+            GroupX portrait = null;
+            if (hero == Eidolons.getMainHero()) {
+                SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
+//               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
+                portrait = commentSprite;
+                portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
+                portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
+            } else {
+                textTop = true;
+                portrait = new SpriteX
+//                        new FadeImageContainer
+                        (hero.getLargeImagePath()) {
+                    @Override
+                    public void draw(Batch batch, float parentAlpha) {
+                        setScale(1f);
+                        setRotation(0);
+//                        getSprite().setLoops(0);
+//                        getSprite().setLooping(true);
+//                        act(1f);
+                        super.draw(batch, parentAlpha);
+                    }
+                };
+                portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
+                portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
+//                portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()*2));
+//                portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()/1.7 ));
+                portrait.debugAll();
+            }
+
             SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
-            commentTextBgSprite.setScale(0.5f);
+            commentTextBgSprite.setScale(0.75f);
             commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
             commentTextBgSprite.setRotation(90);
             commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-            commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -commentBgSprite.getHeight() / 8);
+            commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
 
 //            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
             commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
@@ -486,8 +505,14 @@ public class GridPanel extends Group {
             GroupX commentGroup = new NoHitGroup();
             commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
             commentGroup.addActor(commentBgSprite);
-            commentGroup.addActor(commentTextBgSprite);
-            commentGroup.addActor(portrait);
+
+            if (!textTop) {
+                commentGroup.addActor(commentTextBgSprite);
+                commentGroup.addActor(portrait);
+            } else {
+                commentGroup.addActor(portrait);
+                commentGroup.addActor(commentTextBgSprite);
+            }
             addActor(commentGroup);
 
             Vector2 v = GridMaster.getCenteredPos(hero.getCoordinates());
@@ -519,20 +544,15 @@ public class GridPanel extends Group {
 //            commentSprite.getSprite().centerOnParent(commentGroup);
             main.system.auxiliary.log.LogMaster.dev("- CAMERA_PAN_TO_COORDINATE " + panTo);
             GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo);
-            portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
-            portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
             GroupX finalPortrait = portrait;
 
-            commentTextBgSprite.debug();
 
-            WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
-                ActionMaster.addFadeOutAction(commentBgSprite, 4);
-                ActionMaster.addRemoveAfter(commentBgSprite);
-                ActionMaster.addFadeOutAction(finalPortrait, 3);
-                ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
-
-//                Gdx.app.postRunnable(()->     commentGroup.fadeOut());
-            });
+//            WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
+//                ActionMaster.addFadeOutAction(commentBgSprite, 4);
+//                ActionMaster.addRemoveAfter(commentBgSprite);
+//                ActionMaster.addFadeOutAction(finalPortrait, 3);
+//                ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
+//            });
             this.commentSprites.add(commentGroup);
 //            Eidolons.on
         });
@@ -719,6 +739,7 @@ public class GridPanel extends Group {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
                 GuiEventManager.trigger(UPDATE_SHADOW_MAP);
+//                GuiEventManager.trigger(BLACKOUT_OUT, 5f);
             }
             if (HelpMaster.isDefaultTextOn())
                 if (!welcomeInfoShown) {

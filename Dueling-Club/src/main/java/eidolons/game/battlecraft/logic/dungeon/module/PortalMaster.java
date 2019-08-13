@@ -50,8 +50,8 @@ public class PortalMaster extends DungeonHandler {
             to.open = true;
             GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
             AnimMaster.onCustomAnim(getOpenAnim(portal, to), () -> {
-//                GuiEventManager.trigger(GuiEventType.FADE_IN, 2.0f);
-//                GuiEventManager.trigger(GuiEventType.FADE_OUT, 1.4f);
+//                GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 2.0f);
+//                GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1.4f);
 //                GuiEventManager.trigger(GuiEventType.CAMERA_LAPSE_TO,  unit.getCoordinates());
 
                 if (unit.isPlayerCharacter())

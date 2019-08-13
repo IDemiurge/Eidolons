@@ -7,19 +7,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.options.ControlOptions.CONTROL_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -61,7 +57,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =
                     (DialogueHandler) obj.get();
-            guiStage.afterBlackout(() -> guiStage.playDialogue(handler));
+            guiStage.afterBlackout(() -> guiStage.dialogueStarted(handler));
 //            if (dialogsStage == null) {
 //                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
 //
@@ -130,7 +126,10 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     public OrthographicCamera getCam() {
-        return cameraMan.getCam();
+        if (cameraMan != null) {
+            return cameraMan.getCam();
+        }
+        return null;
     }
 
     public void setCam(OrthographicCamera cam) {

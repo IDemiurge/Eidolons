@@ -141,7 +141,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
 
     private void afterFall(Event event) {
         DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_PRE_SUMMON);
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK, 2);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 2);
         WaitMaster.WAIT(1200);
         if (Eidolons.getMainHero().isDead()) {
 //    dialogueFailed(event, true);

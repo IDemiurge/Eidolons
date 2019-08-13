@@ -3,11 +3,8 @@ package eidolons.game.battlecraft.logic.battle.universal;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_MOMENT;
-import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
@@ -18,7 +15,6 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -49,7 +45,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         // battle.setOutcome(outcome);
         game.stop();
         if (Bools.isFalse(outcome)) {
-            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+            GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
 
             getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.DEFEAT, new Ref()));
 //            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__DEFEAT);

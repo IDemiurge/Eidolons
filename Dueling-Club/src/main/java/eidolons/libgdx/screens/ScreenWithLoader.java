@@ -6,6 +6,9 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.libgdx.GdxMaster;
@@ -21,6 +24,8 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
@@ -49,6 +54,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected SpriteAnimation backgroundSprite;
 
+    FloatAction blackoutAction = new FloatAction();
+    private float blackout;
+    private boolean blackoutBack;
+    private boolean whiteout;
+
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
                 StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22));
@@ -57,6 +67,59 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
+        GuiEventManager.bind(GuiEventType.BLACKOUT_IN, p -> {
+            Float dur = 5f;
+            if (p.get() instanceof Float) {
+                dur = ((Float) p.get());
+            }
+            whiteout=false;
+            blackout(dur, 1);
+        });
+        GuiEventManager.bind(GuiEventType.BLACKOUT_OUT, p -> {
+            Float dur = 5f;
+            if (p.get() instanceof Float) {
+                dur = ((Float) p.get());
+            }
+            whiteout=false;
+            blackout(dur, 0);
+        });
+        GuiEventManager.bind(GuiEventType.BLACKOUT_AND_BACK, p -> {
+            Float dur = 5f;
+            if (p.get() instanceof Float) {
+                dur = ((Float) p.get());
+            }
+            whiteout=false;
+            blackoutBack = true;
+            blackout(dur, 1);
+        });
+
+        GuiEventManager.bind(GuiEventType.WHITEOUT_IN, p -> {
+            Float dur = 5f;
+            if (p.get() instanceof Float) {
+                dur = ((Float) p.get());
+            }
+            whiteout=true;
+            blackout(dur, 1);
+        });
+        GuiEventManager.bind(GuiEventType.WHITEOUT_OUT, p -> {
+            Float dur = 5f;
+            if (p.get() instanceof Float) {
+                dur = ((Float) p.get());
+            }
+            whiteout=true;
+            blackout(dur, 0);
+        });
+        GuiEventManager.bind(GuiEventType.WHITEOUT_AND_BACK, p -> {
+            Float dur = 5f;
+            if (p.get() instanceof Float) {
+                dur = ((Float) p.get());
+            }
+            whiteout=true;
+            blackoutBack = true;
+            blackout(dur, 1);
+        });
+
+        initBlackout();
         if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
             if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
                     PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
@@ -72,6 +135,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         }
 
 
+    }
+
+    protected void initBlackout() {
+        blackout = 1;
+        blackout(4, 0);
     }
 
     protected void preLoad() {
@@ -122,6 +190,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void renderMain(float delta) {
 
     }
+
     protected void renderLoader(float delta) {
         if (introStage != null && !introStage.isDone()) {
             introStage.act(delta);
@@ -197,10 +266,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         loadingStage.getViewport().update(width, height);
     }
 
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+
 
         resetShader();
 
@@ -222,11 +293,64 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             if (assetLoadTimer <= 0 || Assets.get().getManager().update()) {
                 setLoadingAtlases(false);
                 loadingAssetsDone(param);
-                return;
-            }
-            if (isAssetLoadTimerOn())
+            } else if (isAssetLoadTimerOn())
                 assetLoadTimer -= delta;
         }
+
+        doBlackout();
+    }
+
+    public void removeBlack() {
+        blackout = 0f;
+        blackoutAction.setEnd(0);
+        blackoutAction.setDuration(0);
+    }
+
+    public void toBlack() {
+        blackout = 1f;
+        blackoutAction.setEnd(1);
+        blackoutAction.setDuration(0);
+    }
+
+    public void blackout(float dur, float to) {
+        blackout(dur, to, false);
+    }
+
+    public void blackout(float dur, float to, boolean back) {
+        if (back)
+            blackoutBack = back;
+        main.system.auxiliary.log.LogMaster.dev(toString() + " Blackout to " + to);
+        blackoutAction.setDuration(dur);
+        if (!whiteout)
+            blackoutAction.setInterpolation(Interpolation.fade);
+        else
+            blackoutAction.setInterpolation(Interpolation.bounce);
+        blackoutAction.setStart(blackout);
+        blackoutAction.setEnd(to);
+    }
+
+    protected void doBlackout() {
+//       TODO  if (!Blackout.isOnNewScreen())
+//            if (isBlackoutIn()) {
+//                blackout.fadeOutAndBack(2f);
+//                setBlackoutIn(false);
+//            }
+
+        blackoutAction.act(Gdx.graphics.getDeltaTime());
+        if (blackout == blackoutAction.getValue()) {
+            if (blackoutBack) {
+                blackoutAction.setStart(blackout);
+                blackoutAction.setEnd(1 - blackout);
+                blackoutAction.restart();
+                blackoutBack = false;
+            }
+        }
+        blackout = blackoutAction.getValue();
+        if (blackout > 0) {
+            main.system.auxiliary.log.LogMaster.dev("Blackout drawn" + blackout);
+            getBatch().drawBlack(blackout, whiteout);
+        }
+
     }
 
     private boolean isAssetLoadTimerOn() {

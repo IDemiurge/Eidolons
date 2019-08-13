@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.line;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.system.text.DescriptionTooltips;
 import eidolons.system.text.TextMaster;
+import eidolons.system.text.Texts;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -14,6 +15,10 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
+
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueSyntax.SCRIPT;
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueSyntax.SCRIPT_QUOTE;
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT_KEY;
 
 /**
  * Created by JustMe on 5/18/2017.
@@ -32,9 +37,12 @@ public class DialogueLineFormatter {
     private static final String TEXT_NODE = SPEECH_VALUE.MESSAGE.name();
     private static final String INTRO_IDENTIFIER = "Intro:";
     private static String newLinesFileContents = "";
+    private static String scriptsFileContents = "";
+    private static String autoScriptsFileContents= "";
     private static String linearDialogueFileContents = "";
     private static String introsFileContents = "";
     private static int id;
+
 
     public static void main(String[] args) {
         createTutorialJournal();
@@ -49,11 +57,11 @@ public class DialogueLineFormatter {
     public static void fullUpdate() {
         //TODO TUTORIAL?
         for (File scenarioFolder : FileManager.getFilesFromDirectory(
-         PathFinder.getRootPath() + PathFinder.getScenariosPath()
-         , false, true)) {
+                PathFinder.getRootPath() + PathFinder.getScenariosPath()
+                , false, true)) {
             //TODO scenario intro?
             for (File missionFolder : FileManager.getFilesFromDirectory(scenarioFolder.getPath()
-             , false, true)) {
+                    , false, true)) {
                 if (missionFolder.isDirectory()) {
                     String path = getDialogueTextPath(missionFolder.getName() + dialogueTextPath);
                     parseDocs(path);
@@ -62,16 +70,16 @@ public class DialogueLineFormatter {
             }
         }
         //   global !
-        String path =PathFinder.getDialoguesPath(TextMaster.getLocale())
-         + dialogueTextPath;
+        String path = PathFinder.getDialoguesPath(TextMaster.getLocale())
+                + dialogueTextPath;
         parseDocs(path);
     }
 
     public static String getDialogueTextPath(String fileName) {
         return PathFinder.getRootPath() + PathFinder.getScenariosPath()
-         + fileName + PathUtils.getPathSeparator()
-         + TextMaster.getLocale()
-         ;
+                + fileName + PathUtils.getPathSeparator()
+                + TextMaster.getLocale()
+                ;
     }
 
     public static void parseDocs(String path) {
@@ -83,6 +91,9 @@ public class DialogueLineFormatter {
                 getDialoguesPath()));
         XML_Writer.write(linearDialogueFileContents, getLinearDialoguesFilePath());
         XML_Writer.write(introsFileContents, getIntrosFilePath());
+
+        XML_Writer.write(autoScriptsFileContents, getAutoScriptsFilePath());
+        XML_Writer.write(scriptsFileContents, getScriptsFilePath());
 //        new DialogueFactory().constructScenarioLinearDialogues(getLinearDialoguesFilePath(), new ScenarioMetaMaster(""));
     }
 
@@ -92,7 +103,7 @@ public class DialogueLineFormatter {
 
     public static String formatDialogueText(String result) {
         return result.replaceAll("…", "...")
-         .replaceAll("’", "'");
+                .replaceAll("’", "'");
     }
 
     //odt from textMaster!
@@ -111,6 +122,21 @@ public class DialogueLineFormatter {
                 if (lineText.isEmpty()) {
                     continue;
                 }
+                if (lineText.contains(SCRIPT )) {
+                    String part = lineText.split(SCRIPT_QUOTE)[1];
+                    if (part.contains(SCRIPT_KEY)) {
+                        String scriptName = lineText.split(SCRIPT_KEY)[1].replace("]]", "").trim();
+                        autoScriptsFileContents += "\n"+"***" + scriptName  ;
+                        String text = Texts.getScriptsMap().get(scriptName );
+                        if (text != null) {
+                            autoScriptsFileContents += text+ "\n";
+                        } else {
+                            scriptsFileContents += "\n"+"***" + scriptName  ;
+                        }
+                    }
+                }
+//                DialogueSyntax.SCRIPT
+
                 boolean intro = lineText.contains(INTRO_IDENTIFIER);
                 if (dialogue) {
                     //TODO check intro!
@@ -126,14 +152,14 @@ public class DialogueLineFormatter {
                     continue;
                 }
                 String actorData =
-                 StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 0);
+                        StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 0);
                 if (!actorData.isEmpty())
                     actorData = XML_Converter.wrap(ACTOR_NODE, actorData.trim());
                 String textData = StringMaster.tryGetSplit(lineText, ACTOR_SEPARATOR, 1);
 
                 textData = formatDialogueText(textData);
                 textData = XML_Converter.wrap(TEXT_NODE,
-                 XML_Formatter.formatDialogueLineContent(textData ));
+                        XML_Formatter.formatDialogueLineContent(textData));
 
                 String miscData = "";
                 String text = actorData;
@@ -166,9 +192,18 @@ public class DialogueLineFormatter {
 
     public static String getIntrosFilePath() {
         return PathFinder.getRootPath() + PathFinder.getTextPath()
-         + TextMaster.getLocale() + introsPath;
+                + TextMaster.getLocale() + introsPath;
     }
 
+    public static String getAutoScriptsFilePath() {
+        return PathFinder.getRootPath() + PathFinder.getTextPath()
+                + TextMaster.getLocale() + "/main/scripts auto.txt";
+    }
+
+    public static String getScriptsFilePath() {
+        return PathFinder.getRootPath() + PathFinder.getTextPath()
+                + TextMaster.getLocale() + "/main/scripts new.txt";
+    }
 
     public static String getLinesFilePath(String root) {
         return root + linesFilePath;
@@ -177,22 +212,22 @@ public class DialogueLineFormatter {
 
     public static void createTutorialJournal() {
         DescriptionTooltips.initTutorialMap();
-        String contents=DIALOGUE_SEPARATOR+"tutorial journal\n";
-            String actor= "Memories"+ACTOR_SEPARATOR;
+        String contents = DIALOGUE_SEPARATOR + "tutorial journal\n";
+        String actor = "Memories" + ACTOR_SEPARATOR;
         for (String key : DescriptionTooltips.getTutorialMap().keySet()) {
 //              actor=  (key)+ACTOR_SEPARATOR;
             if (DescriptionTooltips.getTutorialMap().get(key).isEmpty()) {
                 continue;
             }
-            contents+= LINE_SEPARATOR + actor + "              "+key+ "\n"+
+            contents += LINE_SEPARATOR + actor + "              " + key + "\n" +
                     DescriptionTooltips.getTutorialMap().get(key) + "\n";
         }
 
 //        for (String message : TutorialManager.messages) {
 //            contents+= LINE_SEPARATOR + actor + message + "\n";
 //        }
-        FileManager.write(contents,PathFinder.getDialoguesPath(TextMaster.getLocale())
-                + dialogueTextPath+ "tutorial.txt");
+        FileManager.write(contents, PathFinder.getDialoguesPath(TextMaster.getLocale())
+                + dialogueTextPath + "tutorial.txt");
 
     }
 }

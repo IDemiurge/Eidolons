@@ -27,7 +27,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.system.text.DescriptionTooltips;
 import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -45,7 +44,6 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 import main.system.threading.WaitMaster;
@@ -55,7 +53,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static main.system.threading.WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 /**
@@ -360,10 +357,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
             if (unit == null) {
                 Boolean power = null;
-                Boolean distance = null;
+                Boolean distance = true;
                 Boolean ownership = null;
                 try {
-                    unit = ((DC_Game) ref.getGame()).getMaster().getUnitByName(name, ref,
+                    unit = ((DC_Game) ref.getGame()).getMaster().getByName(name, ref,
                             ownership, distance, power);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);

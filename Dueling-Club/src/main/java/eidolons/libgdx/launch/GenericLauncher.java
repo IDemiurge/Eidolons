@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
-import eidolons.game.battlecraft.logic.meta.igg.story.IggIntroScreen;
-import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreen;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreenOld;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -290,7 +288,7 @@ public class GenericLauncher extends Game {
     protected void triggerLoaded(ScreenData data) {
         main.system.auxiliary.log.LogMaster.log(1, "triggerLoaded " + data.getName());
         if (Blackout.isOnNewScreen())
-            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+            GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         switch (data.getType()) {
             case BATTLE:
                 if (!CoreEngine.isMacro()) {
@@ -362,7 +360,7 @@ public class GenericLauncher extends Game {
 
     protected void screenSwitcher(EventCallbackParam param) {
         if (Blackout.isOnNewScreen())
-            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+            GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
             switch (newMeta.getType()) {
