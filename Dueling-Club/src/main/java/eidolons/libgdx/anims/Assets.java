@@ -17,6 +17,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -202,10 +203,16 @@ public class Assets {
         if (EidolonsGame.BRIDGE) {
 //            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
 //            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
+
+            if (DialogueManager.TEST)
+                return;
             SpriteAnimationFactory.getSpriteAnimation(Sprites.INK_BLOTCH);
             SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_CLOSE);
             SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_OPEN);
-            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
+            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), false);
+            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), false);
+            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), false);
+//            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
             return;
         }
 //        if (CoreEngine.isLiteLaunch()) {

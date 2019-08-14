@@ -736,9 +736,7 @@ public class DC_Game extends GenericGame {
     }
 
     public DequeImpl<BattleFieldObject> getBfObjects() {
-        DequeImpl<BattleFieldObject> list = new DequeImpl(getUnits());
-        list.addAll(getStructures());
-        return list;
+        return getMaster().getBfObjects();
     }
 
     public Set<BattleFieldObject> getObjectsAt(Coordinates c) {

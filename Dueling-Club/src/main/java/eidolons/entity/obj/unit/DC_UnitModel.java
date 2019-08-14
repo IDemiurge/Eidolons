@@ -68,7 +68,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     protected Deity deity;
     protected UnitAI unitAI;
-    private boolean hidden;
     private ImageIcon emblem;
     private DC_ActiveObj preferredInstantAttack;
     private DC_ActiveObj preferredCounterAttack;
@@ -593,13 +592,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return (UnitChecker) super.getChecker();
     }
 
-    public boolean isHidden() {
-        return hidden;
-    }
 
-    public void setHidden(boolean b) {
-        hidden = b;
-    }
 
     public MODE getModeFinal() {
         return mode;

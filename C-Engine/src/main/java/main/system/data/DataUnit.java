@@ -157,7 +157,7 @@ public class DataUnit<T extends Enum<T>> {
             }
 
             String name = pair[0];
-
+            name = name.trim();
             setValue(name, pair[1]);
         }
     }

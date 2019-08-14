@@ -28,6 +28,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
@@ -146,6 +147,9 @@ public class EmitterMaster extends GdxUtil {
                 if (writeImage)
                     try {
                         for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
+                            if (!ImageManager.isImage(s)) {
+
+                            }
                             Texture texture = new Texture(s);
                             if (sizeImages)
                                 if (texture.getHeight() > MAX_IMAGE_SIZE || texture.getWidth() > MAX_IMAGE_SIZE) {

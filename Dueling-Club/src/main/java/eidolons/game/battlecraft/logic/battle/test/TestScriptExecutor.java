@@ -65,7 +65,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
     }
 
     private void doSetMainHero(Ref ref, String[] args) {
-        Unit hero = getGame().getMaster().getUnitByName(args[0], ref, true, null, null);
+        Unit hero = (Unit) getGame().getMaster().getByName(args[0], ref, true, null, null);
         hero.getOwner().setHeroObj(hero);
     }
 
@@ -150,7 +150,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
             case UNITS:
             case CHARS:
             case BF_OBJ:
-                getGame().getMaster().getUnitByName(entityName, ref);
+                getGame().getMaster().getByName(entityName, ref);
         }
         return null;
     }

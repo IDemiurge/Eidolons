@@ -34,7 +34,7 @@ public class AiTrainingResult implements Comparator<AiTrainingResult>, Comparabl
 
     public void construct() {
         DC_Game game = DC_Game.game;
-        Unit unit = game.getMaster().getUnitByName(parameters.getTraineeType().getName(), new Ref());
+        Unit unit = (Unit) game.getMaster().getByName(parameters.getTraineeType().getName(), new Ref());
         unitStats = game.getBattleMaster().getStatManager().getStats().getUnitStatMap().get(unit);
         allyStats = game.getBattleMaster().getStatManager().getStats().
          getPlayerStats(unit.getOwner());

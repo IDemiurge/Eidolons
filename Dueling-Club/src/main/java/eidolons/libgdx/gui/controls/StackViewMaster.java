@@ -163,7 +163,7 @@ public class StackViewMaster {
     }
 
     private boolean isStackHoverOn(GridCellContainer cell) {
-        if (CoreEngine.isCinematicMode())
+        if (CoreEngine.isFootageMode())
             return false;
         if (isOff())
             return false;

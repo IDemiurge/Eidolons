@@ -47,11 +47,11 @@ public class SpeechBuilder {
     }
 
     protected String processText(String text, Speech speech) {
-        if (text.split(DialogueSyntax.SCRIPT_QUOTE).length == 1 ) {
+        if (text.split(DialogueSyntax.SCRIPT_QUOTE).length == 1) {
             return text;
         }
-        String metaData =  text.split(DialogueSyntax.SCRIPT_QUOTE)[1];
-        text = text.split(DialogueSyntax.SCRIPT_QUOTE) [0];
+        String metaData = text.split(DialogueSyntax.SCRIPT_QUOTE)[1];
+        text = text.split(DialogueSyntax.SCRIPT_QUOTE)[0];
         try {
             Condition reqs = DialogueSyntax.getConditions(metaData);
             speech.setConditions(reqs);
@@ -70,12 +70,13 @@ public class SpeechBuilder {
         if (!StringMaster.isEmpty(part)) {
             part = processData(part);
             if (!StringMaster.isEmpty(part)) {
-            SpeechScript script = new SpeechScript(part, master);
-            speech.setScript(script);
-            Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME_THIS);
-            if (time != 0) {
-                speech.setTime(time);
-            }
+                part = part.trim();
+                SpeechScript script = new SpeechScript(part, master);
+                speech.setScript(script);
+                Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME_THIS);
+                if (time != 0) {
+                    speech.setTime(time);
+                }
             }
         }
 //            Integer time = DialogueSyntax.getTime(metaData);
@@ -83,6 +84,7 @@ public class SpeechBuilder {
 
         return text;
     }
+
     private static String processData(String data) {
         if (data.contains(SCRIPT_KEY)) {
             String key = data.split(SCRIPT_KEY)[1];
@@ -91,6 +93,7 @@ public class SpeechBuilder {
 
         return data;
     }
+
     public Map<Integer, SpeechData> getIdToDataMap() {
         if (idToDataMap == null)
             construct();

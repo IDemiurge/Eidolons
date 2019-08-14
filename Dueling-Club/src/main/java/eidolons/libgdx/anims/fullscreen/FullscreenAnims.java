@@ -39,7 +39,7 @@ import java.util.Map;
 public class FullscreenAnims extends GroupX {
     public static final boolean randomFacingMode = true;
     private static final float DELAY = 0.5f;
-    private static final boolean SPRITE_MODE = true;
+    private static final boolean SPRITE_MODE = true; //TODO just make 2 instances
     Map<FULLSCREEN_ANIM, Map<FACING_DIRECTION, Actor>> groupCache = new HashMap<>();
     private FullscreenAnimDataSource data;
     private float delayTimer;
@@ -72,14 +72,8 @@ public class FullscreenAnims extends GroupX {
                                 facing, blending);
                         initAnim(data);
                     }
-                    if (showingTimer > 0) {
-                        data.intensity += intensity;
-                        return;
-                    }
-                    data = new FullscreenAnimDataSource(type, intensity,
-                            facing, blending);
-                    delayTimer = DELAY;
-                    showingTimer = getDuration() + delayTimer;
+//                    data = new FullscreenAnimDataSource(type, intensity,
+//                            facing, blending);
                 }
             }
         });
@@ -162,6 +156,13 @@ public class FullscreenAnims extends GroupX {
         sprite.setX(GdxMaster.getWidth() / 2);
         sprite.setY(GdxMaster.getHeight() / 2);
         spriteList.add(sprite);
+
+//        if (showingTimer > 0) {
+//            data.intensity += intensity;
+//            return;
+//        }
+//        delayTimer = DELAY;
+//        showingTimer = getDuration() + delayTimer;
     }
 
     @Override
@@ -253,17 +254,30 @@ public class FullscreenAnims extends GroupX {
         //        BLACK,
         BLOOD,
         POISON,
+
+        EXPLOSION{
+            public String getSpritePath() {
+                return PathFinder.getSpritesPath() + "fullscreen/explode bright.txt";
+            }
+        },
+        WAVE,
+        TUNNEL,
+
+        FLAMES,
+        DARKNESS,
+        THUNDER,
+        MIST,
+
         GATE_FLASH,
         GATES {
-            @Override
-            public String toString() {
-                return "short2";
+            public String getSpritePath() {
+                return PathFinder.getSpritesPath() + "fullscreen/short2.txt";
             }
         };
         //        DAMAGE
 
         public String getSpritePath() {
-            return PathFinder.getSpritesPath() + "fullscreen/" +  StringMaster.getWellFormattedString(toString()) + ".txt";
+            return PathFinder.getSpritesPath() + "fullscreen/" +   (toString().replace("_", " ")) + ".txt";
         }
     }
 }

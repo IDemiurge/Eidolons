@@ -5,7 +5,7 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 /**
  * Created by JustMe on 12/7/2018.
 
- on top of a video? with overlays
+ on top of a loadVideo? with overlays
  */
 public class EinUI {
     TablePanelX craftTable;

@@ -224,7 +224,7 @@ public class Weapon3dAnim extends ActionAnim {
 //        if (batch instanceof CustomSpriteBatch) {
 //           post=  ((CustomSpriteBatch) batch);
 //        }
-        if (CoreEngine.isCinematicMode())
+        if (CoreEngine.isFootageMode())
             return;
         super.draw(batch, parentAlpha);
     }

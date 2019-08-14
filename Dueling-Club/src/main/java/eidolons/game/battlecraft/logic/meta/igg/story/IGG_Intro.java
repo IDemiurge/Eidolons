@@ -5,7 +5,7 @@ public class IGG_Intro {
     public void start(){
 
         /**
-         * new screen with video, text, ...
+         * new screen with loadVideo, text, ...
          */
     }
 }

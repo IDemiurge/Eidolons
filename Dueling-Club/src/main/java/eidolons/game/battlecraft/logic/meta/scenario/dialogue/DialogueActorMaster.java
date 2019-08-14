@@ -7,6 +7,7 @@ import eidolons.libgdx.texture.Images;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
+import main.data.StringMap;
 import main.entity.type.ObjType;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
  * Created by JustMe on 5/17/2017.
  */
 public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta> {
-    static Map<String, DialogueActor> map = new HashMap<>();
+    static Map<String, DialogueActor> map = new StringMap<>();
 
     public DialogueActorMaster(MetaGameMaster master) {
         super(master);
@@ -49,7 +50,5 @@ public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta> {
         return actor;
     }
 
-    public List<DialogueActor> getActors(String actorNames) {
-        return null;
-    }
+
 }

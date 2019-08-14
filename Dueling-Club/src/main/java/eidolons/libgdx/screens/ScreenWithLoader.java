@@ -67,57 +67,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
-        GuiEventManager.bind(GuiEventType.BLACKOUT_IN, p -> {
-            Float dur = 5f;
-            if (p.get() instanceof Float) {
-                dur = ((Float) p.get());
-            }
-            whiteout=false;
-            blackout(dur, 1);
-        });
-        GuiEventManager.bind(GuiEventType.BLACKOUT_OUT, p -> {
-            Float dur = 5f;
-            if (p.get() instanceof Float) {
-                dur = ((Float) p.get());
-            }
-            whiteout=false;
-            blackout(dur, 0);
-        });
-        GuiEventManager.bind(GuiEventType.BLACKOUT_AND_BACK, p -> {
-            Float dur = 5f;
-            if (p.get() instanceof Float) {
-                dur = ((Float) p.get());
-            }
-            whiteout=false;
-            blackoutBack = true;
-            blackout(dur, 1);
-        });
 
-        GuiEventManager.bind(GuiEventType.WHITEOUT_IN, p -> {
-            Float dur = 5f;
-            if (p.get() instanceof Float) {
-                dur = ((Float) p.get());
-            }
-            whiteout=true;
-            blackout(dur, 1);
-        });
-        GuiEventManager.bind(GuiEventType.WHITEOUT_OUT, p -> {
-            Float dur = 5f;
-            if (p.get() instanceof Float) {
-                dur = ((Float) p.get());
-            }
-            whiteout=true;
-            blackout(dur, 0);
-        });
-        GuiEventManager.bind(GuiEventType.WHITEOUT_AND_BACK, p -> {
-            Float dur = 5f;
-            if (p.get() instanceof Float) {
-                dur = ((Float) p.get());
-            }
-            whiteout=true;
-            blackoutBack = true;
-            blackout(dur, 1);
-        });
 
         initBlackout();
         if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
@@ -319,35 +269,37 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void blackout(float dur, float to, boolean back) {
         if (back)
             blackoutBack = back;
-        main.system.auxiliary.log.LogMaster.dev(toString() + " Blackout to " + to);
+        main.system.auxiliary.log.LogMaster.dev(toString() + " BlackoutOld to " + to);
         blackoutAction.setDuration(dur);
         if (!whiteout)
             blackoutAction.setInterpolation(Interpolation.fade);
         else
-            blackoutAction.setInterpolation(Interpolation.bounce);
+            blackoutAction.setInterpolation(Interpolation.elastic);
         blackoutAction.setStart(blackout);
         blackoutAction.setEnd(to);
+        blackoutAction.restart();
     }
 
     protected void doBlackout() {
-//       TODO  if (!Blackout.isOnNewScreen())
+//       TODO  if (!BlackoutOld.isOnNewScreen())
 //            if (isBlackoutIn()) {
 //                blackout.fadeOutAndBack(2f);
 //                setBlackoutIn(false);
 //            }
 
-        blackoutAction.act(Gdx.graphics.getDeltaTime());
-        if (blackout == blackoutAction.getValue()) {
+        if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-                blackoutAction.setStart(blackout);
-                blackoutAction.setEnd(1 - blackout);
+                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;"  + " blackout=="+blackout);
+                blackoutAction.setStart( (blackout));
+                blackoutAction.setEnd(0);
                 blackoutAction.restart();
                 blackoutBack = false;
             }
         }
+        blackoutAction.act(Gdx.graphics.getDeltaTime());
         blackout = blackoutAction.getValue();
         if (blackout > 0) {
-            main.system.auxiliary.log.LogMaster.dev("Blackout drawn" + blackout);
+            main.system.auxiliary.log.LogMaster.dev("BlackoutOld drawn" + blackout + " whiteout=="+whiteout);
             getBatch().drawBlack(blackout, whiteout);
         }
 

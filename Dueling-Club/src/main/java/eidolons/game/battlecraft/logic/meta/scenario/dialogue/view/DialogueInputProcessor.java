@@ -22,7 +22,7 @@ public class DialogueInputProcessor implements InputProcessor {
     @Override
     public boolean keyTyped(char character) {
         if (character == ' ') {
-            if (dialogueView.tryNext()){
+            if (dialogueView.space()){
                 return true;
             }
         }

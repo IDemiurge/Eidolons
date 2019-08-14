@@ -16,6 +16,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor;
@@ -112,12 +113,12 @@ public class GridOverlaysManager extends SuperActor {
                 Tooltip tooltip = getTooltip(x, y);
                 if (tooltip != null) {
                     GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
-                     tooltip);
+                            tooltip);
                     showing = true;
                 } else {
                     if (showing) {
                         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
-                         null);
+                                null);
                         showing = false;
                     }
                 }
@@ -177,7 +178,9 @@ public class GridOverlaysManager extends SuperActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
+        if (Cinematics.ON) {
+            return;
+        }
         setSightInfoDisplayed(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT));
         if (sightInfoDisplayed) {
             observer = gridPanel.getObjectForView(gridPanel.getHoverObj());
@@ -200,7 +203,7 @@ public class GridOverlaysManager extends SuperActor {
         if (gridPanel.getHoverObj() != null) {
             Vector2 pointer = screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             Vector2 pos = new Vector2(gridPanel.getHoverObj().getX() + 64,
-             gridPanel.getHoverObj().getY() + 64);
+                    gridPanel.getHoverObj().getY() + 64);
 
             Vector2 stagePos = gridPanel.getHoverObj().localToStageCoordinates(new Vector2(pos));
 
@@ -307,7 +310,7 @@ public class GridOverlaysManager extends SuperActor {
         float xPos = 0, yPos = 0;
         if (overlay.alignment != null) {
             Vector2 v = GdxMaster.getAlignedPos(parent, overlay.alignment,
-             getOverlayWidth(overlay, parent), getOverlayHeight(overlay, parent));
+                    getOverlayWidth(overlay, parent), getOverlayHeight(overlay, parent));
             xPos = v.x;
             yPos = v.y;
         } else
@@ -320,7 +323,7 @@ public class GridOverlaysManager extends SuperActor {
             }
         Vector2 v = parent.localToStageCoordinates(new Vector2(xPos, yPos));
         drawOverlay(parent, overlay, batch, v);
-        if (parent.getActions().size==0) {
+        if (parent.getActions().size == 0) {
             addTooltip(obj, parent, overlay, v, x, y);
         }
 //        if (ActorMaster.getActionsOfClass(parent, MoveByActionLimited.class).size() == 0)
@@ -343,7 +346,7 @@ public class GridOverlaysManager extends SuperActor {
             rect = getOverlayMap(obj).get(overlay);
             if (rect == null) {
                 rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
-                 , getOverlayHeight(overlay, parent));
+                        , getOverlayHeight(overlay, parent));
             }
             Tooltip tooltip = map.get(rect);
             if (tooltip == null) {
@@ -362,7 +365,7 @@ public class GridOverlaysManager extends SuperActor {
             rect = map2.get(overlay);
             if (rect == null) {
                 rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
-                 , getOverlayHeight(overlay, parent));
+                        , getOverlayHeight(overlay, parent));
             }
             map2.put(overlay, rect);
         }
@@ -427,9 +430,9 @@ public class GridOverlaysManager extends SuperActor {
                     break;
                 BattleFieldObject data = (BattleFieldObject) parent.getUserObject();
                 String text = data.getName() + " has " +
-                 data.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) / MathMaster.MULTIPLIER + "% Toughness and " +
-                 data.getIntParam(PARAMS.ENDURANCE_PERCENTAGE) / MathMaster.MULTIPLIER +
-                 "% Endurance left";
+                        data.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) / MathMaster.MULTIPLIER + "% Toughness and " +
+                        data.getIntParam(PARAMS.ENDURANCE_PERCENTAGE) / MathMaster.MULTIPLIER +
+                        "% Endurance left";
                 return new ValueTooltip(text);
 
 
@@ -449,7 +452,7 @@ public class GridOverlaysManager extends SuperActor {
                 return null;
         }
         return new ValueTooltip(StringMaster.
-         getWellFormattedString(overlay.name()));
+                getWellFormattedString(overlay.name()));
     }
 
     private boolean isHpTooltipOn() {
@@ -506,7 +509,7 @@ public class GridOverlaysManager extends SuperActor {
                 return null;
         }
         return TextureCache.getOrCreateR(
-         overlay.path);
+                overlay.path);
     }
 
     public Object getOverlayDataForCell(OVERLAY overlay, Coordinates coordinates) {
@@ -514,12 +517,12 @@ public class GridOverlaysManager extends SuperActor {
             case BAG:
                 //TODO kill this shit
                 List<DC_HeroItemObj> items = Eidolons.game.getDroppedItemManager().
-                 getDroppedItems(coordinates);
+                        getDroppedItems(coordinates);
                 if (items == null) {
                     Eidolons.game.getDroppedItemManager().reset(coordinates.x, coordinates.y);
                     main.system.auxiliary.log.LogMaster.log(1, "dropped item forced reset " + coordinates);
                     items = Eidolons.game.getDroppedItemManager().
-                     getDroppedItems(coordinates);
+                            getDroppedItems(coordinates);
                 }
                 if (!items.isEmpty())
                     return items;
@@ -538,7 +541,7 @@ public class GridOverlaysManager extends SuperActor {
                 return object.isSpotted();
             case BAG:
                 return !object.getGame().getDroppedItemManager().
-                 getDroppedItems(object.getCoordinates()).isEmpty();
+                        getDroppedItems(object.getCoordinates()).isEmpty();
             case HP_BAR:
                 if (!actor.isHovered()) {
                     GridCellContainer container = (GridCellContainer) actor.getParent();
@@ -584,11 +587,12 @@ public class GridOverlaysManager extends SuperActor {
         IN_SIGHT,
         FOG_OF_WAR,
         WATCH,
-        BLOCKED,;
+        BLOCKED,
+        ;
 
         public Alignment alignment;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
-         "dc", "overlays", toString() + ".png");
+                "dc", "overlays", toString() + ".png");
 
         OVERLAY() {
 

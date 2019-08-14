@@ -85,7 +85,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
     @Override
     public void setValue(String name, String value) {
-        setValue(SPEECH_ACTION.valueOf(StringMaster.toEnumFormat(name)), value);
+        setValue(SPEECH_ACTION.valueOf(StringMaster.toEnumFormat(name.trim())), value);
 //        setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);
     }
 
@@ -125,7 +125,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         ZOOM,
         NEXT, NEXT_OFF, NEXT_ALL,
         SHAKE, WHITEOUT,
-        REVEAL_AREA, PORTAL,
+        REVEAL_AREA, PORTAL, AUTOCAMERA,
 
         //make templates mapped by name?
     }

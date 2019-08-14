@@ -7,9 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.GameScreen;
@@ -19,9 +21,11 @@ import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.*;
@@ -30,33 +34,27 @@ import static main.system.GuiEventType.*;
  * smooth camera movement
  */
 public class CameraMan {
-    public static final float MAX_CAM_DST = 500;
     protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
             getBooleanValue(ControlOptions.CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
 
     private static boolean centerCameraOnAlliesOnly = OptionsMaster.getControlOptions().
             getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_ALLIES_ONLY);
+    private boolean firstCenteringDone;
+    private Boolean centerCameraAlways;
     private static Float cameraPanMod;
     private final GameScreen screen;
-    private Boolean centerCameraAlways;
-    boolean firstCenteringDone;
-    protected Vector2 cameraDestination;
-    protected Vector2 velocity;
-    private Vector3 lastPos;
-    Interpolation interpolation = Interpolation.elastic;
-
-    private ActTimer cameraTimer;
     OrthographicCamera cam;
-    private Float cameraSpeedFactor;
-    private float origDist;
 
-//    List<CameraMove> moves;
+    private FloatAction zoomAction;
+    private List<CameraMotion> motions = new ArrayList<>();
+    private ActTimer cameraTimer;
 
     public static class MotionData {
 
         Vector2 dest;
         float duration;
-        Interpolation interpolation;
+        Interpolation interpolation = Interpolation.fade;
+        Boolean exclusive= false;
 
         public MotionData(float f, float duration, Interpolation interpolation) {
             this(new Vector2(f, 0), duration, interpolation);
@@ -69,51 +67,41 @@ public class CameraMan {
         }
 
         public MotionData(Object param) {
-
+            duration = 0;
+            if (param instanceof List) {
+                List list = ((List) param);
+                for (Object o : list) {
+                    initParam(o);
+                }
+            } else {
+                initParam(param);
+            }
+        }
+        private void initParam(Object o) {
+            if (o instanceof Boolean) {
+                exclusive = (Boolean) o;
+            }
+            if (o instanceof Vector2) {
+                dest = (Vector2) o;
+            }
+            if (o instanceof Coordinates) {
+                dest = GridMaster.getCenteredPos((Coordinates) o);
+            }
+            if (o instanceof BattleFieldObject) {
+                dest = GridMaster.getCenteredPos(((BattleFieldObject) o).getCoordinates());
+            }
+            if (o instanceof Interpolation) {
+                interpolation = ((Interpolation) o);
+            }
+            if (o instanceof Float) {
+                duration = (float) o;
+            }
         }
     }
 
     public CameraMan(OrthographicCamera cam, GameScreen screen) {
         this.cam = cam;
         this.screen = screen;
-
-        GuiEventManager.bind(CAMERA_PAN_TO, param -> {
-            cameraSpeedFactor = null;
-            Vector2 c = null;
-
-            if (param.get() instanceof List) {
-                c = (Vector2) ((List) param.get()).get(0);
-                cameraSpeedFactor = (Float) ((List) param.get()).get(1);
-            } else {
-                c = (Vector2) param.get();
-            }
-            cameraPan(c, true);
-        });
-        GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
-            cameraSpeedFactor = null;
-            Coordinates c = null;
-            if (param.get() instanceof List) {
-                c = (Coordinates) ((List) param.get()).get(0);
-                cameraSpeedFactor = (Float) ((List) param.get()).get(1);
-            } else {
-                c = (Coordinates) param.get();
-            }
-            Vector2 v = GridMaster.getCenteredPos(c);
-            cameraPan(v, true);
-
-        });
-        GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
-            cameraSpeedFactor = null;
-            BattleFieldObject c = null;
-            if (param.get() instanceof List) {
-                c = (BattleFieldObject) ((List) param.get()).get(0);
-                cameraSpeedFactor = (Float) ((List) param.get()).get(1);
-            } else {
-                c = (BattleFieldObject) param.get();
-            }
-            centerCameraOn(c);
-        });
-
 
         cameraTimer = new ActTimer(OptionsMaster.getControlOptions().
                 getIntValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
@@ -127,11 +115,26 @@ public class CameraMan {
                         centerCameraOn(Eidolons.getMainHero());
                 }
         });
+
+
+        GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
+            getCam().position.set((Vector2) p.get(), 0);
+
+        });
+        GuiEventManager.bind(CAMERA_PAN_TO, param -> {
+            cameraPan(new MotionData(param.get()));
+        });
+        GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
+            cameraPan(new MotionData(param.get()));
+        });
+        GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
+            cameraPan(new MotionData(param.get()));
+        });
+
+
         GuiEventManager.bind(CAMERA_ZOOM, param -> {
             MotionData data = (MotionData) param.get();
-
             zoomAction = (FloatAction) ActionMaster.getAction(FloatAction.class);
-
             zoomAction.setStart(getCam().zoom);
             zoomAction.setEnd(data.dest.x);
             zoomAction.setDuration(data.duration);
@@ -141,56 +144,38 @@ public class CameraMan {
         });
     }
 
-    FloatAction zoomAction;
 
     public void act(float delta) {
-        if (
-                Float.isNaN(cam.position.y)||
-                Float.isNaN(cam.position.x)||
-                Float.isNaN(cam.zoom)
-        ) {
-            fixCamera();
-        }
+        if (Eidolons.getGame().isPaused())
+            return;
         cameraTimer.act(delta);
-        cameraShift();
-        if (zoomAction != null)
+            doMotions(delta);
+        if (zoomAction != null) {
             if (zoomAction.getValue() != zoomAction.getEnd()) {
                 zoomAction.act(delta);
 //                main.system.auxiliary.log.LogMaster.dev("Zoom from " +
 //                        getCam().zoom + " to " + zoomAction.getValue());
                 getCam().zoom = zoomAction.getValue();
-
                 getController().cameraZoomChanged();
                 getCam().update();
             }
-    }
-
-    private void fixCamera() {
-        main.system.auxiliary.log.LogMaster.important("Camera was broken with NaN's! " +cam);
-        Vector2 v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
-        cam.position.y=v.y;
-        cam.position.x =v.x;
-        cam.zoom=1f;
-        main.system.auxiliary.log.LogMaster.important("Fix applied... " +cam);
-    }
-
-    public void cameraStop() {
-    }
-
-
-    protected float getCameraDistanceFactor() {
-        if (cameraSpeedFactor != null) {
-            if (cameraSpeedFactor==0){
-                return 1;
-            }
-            return cameraSpeedFactor;
         }
-        return 7.75f;
     }
 
-    //    protected float getCameraDistanceFactor() {
-//        return 8f;
-//    }
+    private void doMotions(float delta) {
+        for (CameraMotion motion : new ArrayList<>(motions)) {
+            if (!motion.act(delta)) {
+                motions.remove(motion);
+            } else {
+                getController().cameraPosChanged();
+            }
+        }
+    }
+
+    private boolean isOldCamera() {
+        return false;
+    }
+
     public void centerCameraOnMainHero() {
         centerCameraOn(Eidolons.getMainHero(), true);
     }
@@ -199,122 +184,68 @@ public class CameraMan {
         cameraPanMod = mod;
     }
 
-    protected void cameraPan(Vector2 unitPosition) {
-        cameraPan(unitPosition, null);
-    }
-
     protected boolean isCameraPanningOff() {
         return false; //TODO
     }
 
-    protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
-        if (isCameraPanningOff()) {
-            return;
-        }
-        this.cameraDestination = unitPosition;
-        float dst = getCam().position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
-
-        if (overrideCheck == null)
-            if (isCenterAlways()) {
-                overrideCheck = !getController().isWithinCamera(unitPosition.x, unitPosition.y, 128, 128);
-            } else overrideCheck = false;
-
-        if (!overrideCheck)
-            if (dst < getCameraMinCameraPanDist())
+    private void cameraPan(MotionData motionData) {
+        if (motionData.exclusive){
+            if (!motions.isEmpty()) {
                 return;
-        origDist = getCam().position.dst(cameraDestination.x, cameraDestination.y, 0f);
-        velocity = getPanVelocity(dst, getCameraDistanceFactor());
+            }
+        }
+        cameraPan(motionData.dest, motionData.duration, motionData.interpolation, null);
 
     }
 
-    private Vector2 getPanVelocity(float max, float factor) {
-        float dist = getCam().position.dst(cameraDestination.x, cameraDestination.y, 0f);
+    protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
+        cameraPan(unitPosition, 0, Interpolation.bounce, overrideCheck);
+    }
 
-        if (interpolation != null) {
-            factor = factor / interpolation.apply(dist / (1+origDist));
+    protected void cameraPan(Vector2 destination, float duration, Interpolation interpolation, Boolean overrideCheck) {
+        if (isCameraPanningOff()) {
+            return;
         }
-        float dest = Math.min(max,
-                dist / factor);
-        Vector2 v = new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
-                - getCam().position.y).
-                nor().scl(dest);
-        if (Float.isNaN(v.x)) {
-            return v;
+        if (destination == null) {
+            return;
         }
-        return v;
-//        return new Vector2(cameraDestination.x - getCam().position.x, cameraDestination.y
-//                - getCam().position.y).
-//                nor().scl(Math.min(getCam().position.
-//                dst(cameraDestination.x, cameraDestination.y, 0f), dest));
+        float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();
+
+        if (overrideCheck == null)
+            if (isCenterAlways()) {
+                overrideCheck = !getController().isWithinCamera(destination.x, destination.y, 128, 128);
+            } else
+                overrideCheck = false;
+
+        if (!overrideCheck && !Cinematics.ON)
+            if (dst < getCameraMinCameraPanDist())
+                return;
+
+
+        if (duration == 0) {
+            duration = 1 + dst / getPanSpeed();
+        }
+        motions.add(new CameraMotion(this, duration, destination, interpolation));
+
+    }
+
+    private float getPanSpeed() {
+        return 450;
     }
 
     protected float getCameraMinCameraPanDist() {
         return (GDX.size(1600, 0.1f)) / 3 * getCameraPanMod(); //TODO if too close to the edge also
     }
 
-    protected void cameraShift() {
-        if (cameraDestination != null)
-            if (getCam() != null && velocity != null && !velocity.isZero()) {
-                float x = velocity.x > 0
-                        ? Math.min(cameraDestination.x, getCam().position.x + velocity.x * Gdx.graphics.getDeltaTime())
-                        : Math.max(cameraDestination.x, getCam().position.x + velocity.x * Gdx.graphics.getDeltaTime());
-                float y = velocity.y > 0
-                        ? Math.min(cameraDestination.y, getCam().position.y + velocity.y * Gdx.graphics.getDeltaTime())
-                        : Math.max(cameraDestination.y, getCam().position.y + velocity.y * Gdx.graphics.getDeltaTime());
-                if (Float.isNaN(x)) {
-                   x=0;
-                   main.system.auxiliary.log.LogMaster.important("X is NaN for destination " +cameraDestination +
-                           " delta = " + Gdx.graphics.getDeltaTime());
-                }
-                if (Float.isNaN(y)) {
-                    y=0;
-                    main.system.auxiliary.log.LogMaster.important("Y is NaN for destination " +cameraDestination);
-                }
-//                main.system.auxiliary.log.LogMaster.log(1,"cameraShift to "+ y+ ":" +x + " = "+cam);
-                getCam().position.set(x, y, 0f);
-
-                Vector2 velocityNow = getPanVelocity(MAX_CAM_DST, getCameraDistanceFactor());
-
-                if (velocityNow.isZero() || velocity.hasOppositeDirection(velocityNow)) {
-                    cameraStop(velocityNow.isZero());
-                }
-                getCam().update();
-                getController().cameraPosChanged();
-            }
-        checkCameraFix();
-    }
-
     public InputController getController() {
         return screen.getController();
     }
 
-    private void checkCameraFix() {
-        if (!velocity.isZero())
-            if (!cameraDestination.isZero())
-                return;
-
-        if (cameraDestination.x == getCam().position.x || cameraDestination.y == getCam().position.y)
-            lastPos = new Vector3(getCam().position);
-        else if (lastPos != null)
-            if (getCam().position.dst(lastPos) > MAX_CAM_DST) {
-                getCam().position.set(lastPos);
-            }
-        if (velocity.isZero())
-            if (!cameraDestination.isZero()) {
-                lastPos = new Vector3(getCam().position);
-            }
-    }
-
     public void cameraStop(boolean fullstop) {
-        if (velocity != null || fullstop) {
-            velocity.setZero();
-            // TODO abruptly?
-            cameraDestination.set(getCam().position.x, getCam().position.y);
-        }
         if (fullstop) {
-            lastPos = new Vector3(getCam().position);
+//            lastPos = new Vector3(getCam().position);
         }
-
+        motions.clear();
         cameraTimer.reset();
     }
 
@@ -329,13 +260,7 @@ public class CameraMan {
                     if (!hero.isMine())
                         return;
 
-        Coordinates coordinatesActiveObj =
-                hero.getCoordinates();
-
-        Vector2 unitPosition =   GridMaster.getCenteredPos(hero.getCoordinates());
-//        new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W +
-//                GridMaster.CELL_W / 2,
-//                (coordinatesActiveObj.invertY().y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
+        Vector2 unitPosition = GridMaster.getCenteredPos(hero.getCoordinates());
         cameraPan(unitPosition, force);
 
 

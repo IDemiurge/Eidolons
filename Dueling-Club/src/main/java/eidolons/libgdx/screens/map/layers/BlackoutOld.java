@@ -14,11 +14,11 @@ import main.data.filesys.PathFinder;
 /**
  * Created by JustMe on 3/1/2018.
  */
-public class Blackout extends Group {
+public class BlackoutOld extends Group {
     public static final String path = PathFinder.getMacroUiPath() + "blackout.jpg";
     private final ImageContainer image;
 
-    public Blackout() {
+    public BlackoutOld() {
         image = new ImageContainer(path);
 
     }

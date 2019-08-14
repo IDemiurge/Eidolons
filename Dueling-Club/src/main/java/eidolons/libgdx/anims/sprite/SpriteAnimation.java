@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
@@ -142,7 +140,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public boolean draw(Batch batch) {
 
-        if (CoreEngine.isCinematicMode())
+        if (CoreEngine.isFootageMode())
             return false;
 
         if (!isCustomAct()) {

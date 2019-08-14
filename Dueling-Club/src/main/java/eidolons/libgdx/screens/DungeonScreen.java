@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -31,28 +30,23 @@ import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.StageX;
-import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
-import eidolons.libgdx.utils.ActTimer;
 import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -310,10 +304,13 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected void doBlackout() {
         if (getCamera() != null) {
-            float h = Gdx.graphics.getHeight() * getCam().zoom;
-            float w = Gdx.graphics.getWidth() * getCam().zoom;
-            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
-                    getCam().position.y - h/ 2,w , h); //center?}
+//            float h = Gdx.graphics.getHeight() * getCam().zoom;
+//            float w = Gdx.graphics.getWidth() * getCam().zoom;
+//            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
+//                    getCam().position.y - h/ 2, 1920 , 1050); //center?}
+            Camera camera =guiStage.getViewport().getCamera();
+            camera.update();
+            batch.setProjectionMatrix(camera.combined);
         }
             super.doBlackout();
         }
@@ -337,7 +334,7 @@ public class DungeonScreen extends GameScreenWithTown {
                         DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
                     } else {
                         if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-                            CoreEngine.setCinematicMode(!CoreEngine.isCinematicMode());
+                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
                         }
                         if (Gdx.input.isKeyPressed(Keys.TAB)) {
                             DC_Game.game.getVisionMaster().refresh();

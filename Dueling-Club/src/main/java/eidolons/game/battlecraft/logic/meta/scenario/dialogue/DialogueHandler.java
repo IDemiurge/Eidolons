@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
+import com.badlogic.gdx.math.Interpolation;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.*;
@@ -10,6 +12,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -30,6 +33,7 @@ public class DialogueHandler {
     private ActorDataSource listenerLast;
     private ActorDataSource myActor;
     private ActorDataSource speakerLast;
+    private boolean autoCamera;
 
     public DialogueHandler(DialogueManager dialogueManager, GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
         this.dialogueManager = dialogueManager;
@@ -64,7 +68,7 @@ public class DialogueHandler {
             try {
                 speech.getScript().execute( );
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
                 return null;
             }
         }
@@ -106,13 +110,6 @@ public class DialogueHandler {
     }
 
     private void executeAutomaticActions(Speech speech) {
-
-        if (speech.isAutoCamera()) {
-            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, speech.getActor().getLinkedUnit());
-
-
-
-        }
     }
 
     private boolean isLoopDialogueTest() {
@@ -178,5 +175,21 @@ public class DialogueHandler {
 
     public boolean isScriptRunning() {
         return getDialogueManager().getSpeechExecutor().isRunning();
+    }
+
+    public boolean isAutoCamera() {
+        return autoCamera;
+    }
+
+    public void setAutoCamera(boolean autoCamera) {
+        this.autoCamera = autoCamera;
+    }
+
+    public void checkAutoCamera(Unit linkedUnit) {
+        if (autoCamera) {
+            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT,
+                    linkedUnit, 2, true, Interpolation.fade);
+
+        }
     }
 }

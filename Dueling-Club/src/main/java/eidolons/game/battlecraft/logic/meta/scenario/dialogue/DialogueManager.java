@@ -23,6 +23,7 @@ import main.system.threading.WaitMaster;
 
 import java.util.List;
 
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.TEST_MODE;
 import static main.system.GuiEventType.DIALOG_SHOW;
 import static main.system.GuiEventType.INIT_DIALOG;
 
@@ -30,6 +31,7 @@ import static main.system.GuiEventType.INIT_DIALOG;
  * Created by JustMe on 5/14/2017.
  */
 public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
+    public static final boolean TEST = false;
     private static   boolean SKIP_INTRO = false;
     private static   boolean PARSE_ON_INIT = CoreEngine.isIDE();
     private static boolean running;
@@ -95,7 +97,8 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
             return ;
         }
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 3);
-        WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG, "Intro"));
+        WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG,
+                TEST  ? "Awakening": "Intro"));
     }
     public void startDialogue(GameDialogue dialogue) {
     }

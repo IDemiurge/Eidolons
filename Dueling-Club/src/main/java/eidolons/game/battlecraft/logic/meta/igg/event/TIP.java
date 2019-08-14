@@ -30,6 +30,14 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 //            Eidolons.getGame().getLoop().activateMainHeroAction("Deathstorm");
         }
     },
+    first_battle(false, IGG_Images.BRIEF_ART.SENTRIES.getPath(), ""){
+        @Override
+        public void run() {
+            Eidolons.getGame().getBattleMaster()
+                    .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
+            EidolonsGame.firstBattleStarted = true;
+        }
+    },
     cols(true,  DataManager.getObjImage("Column"), ""),
     Container(true,  DataManager.getObjImage("Enchanted Ash Urn"), ""),
 

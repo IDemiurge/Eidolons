@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 
 public class BriefingData implements Scene {
 
-//    String video;
+//    String loadVideo;
 //    float videoDur;
 //    boolean loopVideo;
 //    float[] imgDur;

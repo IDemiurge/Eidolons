@@ -190,6 +190,7 @@ public class ActivesConstructor {
             case SINGLE:
                 targeting = getSingleTargeting(obj);
                 break;
+
             case RAY:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.RAY);
                 break;
@@ -235,6 +236,7 @@ public class ActivesConstructor {
             case ALL:
                 targeting = new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ALL);
                 break;
+            case RAY_AUTO:
             case NOVA:
                 targeting = new FixedTargeting(KEYS.SOURCE);
                 break;
@@ -447,6 +449,7 @@ public class ActivesConstructor {
                 // modifier?
                 break;
             case RAY:
+            case RAY_AUTO:
                 effects = new RayEffect(effects);
                 // ++ special conditions for allyOrEnemyOnly
                 break;

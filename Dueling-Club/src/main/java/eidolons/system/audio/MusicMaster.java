@@ -574,7 +574,7 @@ public class MusicMaster {
             if (playedAmbient.isPlaying()) {
                 log(1, "WTF  " + ambience.getPath());
             } else {
-                log(1, "playing Ambient: " + ambience.getPath());
+//                log(1, "playing Ambient: " + ambience.getPath());
                 playedAmbient.play();
             }
 

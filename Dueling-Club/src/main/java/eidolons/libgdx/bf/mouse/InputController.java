@@ -327,6 +327,7 @@ public abstract class InputController implements InputProcessor {
         height = GdxMaster.getHeight() * camera.zoom;
         halfWidth = width / 2;
         halfHeight = height / 2;
+        cameraPosChanged();
     }
 
     public void cameraPosChanged() {

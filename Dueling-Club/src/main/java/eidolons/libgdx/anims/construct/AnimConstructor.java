@@ -384,6 +384,9 @@ public class AnimConstructor {
         switch (targetingMode) {
             case NOVA:
             case RAY:
+            case THREE_RAY_AUTO:
+            case RAY_AUTO:
+
             case WAVE:
             case BLAST:
             case SPRAY:

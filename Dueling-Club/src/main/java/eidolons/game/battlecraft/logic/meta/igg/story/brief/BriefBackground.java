@@ -14,7 +14,7 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.video.VideoMaster;
 
 /**
- * video!
+ * loadVideo!
  */
 public class BriefBackground extends FullscreenAnimation {
 

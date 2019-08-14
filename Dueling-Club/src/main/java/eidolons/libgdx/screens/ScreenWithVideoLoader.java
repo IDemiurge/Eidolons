@@ -38,7 +38,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
     private static final Object QUEST_PANEL_ARG = 2;
     private static Boolean videoEnabled;
-    protected VideoMaster video;
+    protected VideoMaster loadVideo;
     protected boolean looped;
     protected Label underText;
     protected HeroCreationPanel hcPanel;
@@ -224,11 +224,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         super.hideLoader();
         if (!isLoadingWithVideo()) {
             initVideo();
-        } else if (video != null) {
+        } else if (loadVideo != null) {
             try {
-                video.stop();
-                video.getPlayer().dispose();
-                video = null;
+                loadVideo.stop();
+                loadVideo.getPlayer().dispose();
+                loadVideo = null;
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -238,7 +238,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     protected void initVideo() {
         if (isVideoEnabled())
             try {
-                video = new VideoMaster();
+                loadVideo = new VideoMaster();
             } catch (Exception e) {
                 main.system.auxiliary.log.LogMaster.log(1, "VIDEO INIT FAILED!");
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -250,11 +250,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     private void playVideo() {
         try {
-            video.playTestVideo();
+            loadVideo.playTestVideo();
         } catch (Exception e) {
             main.system.auxiliary.log.LogMaster.log(1, "VIDEO PLAY FAILED!");
             main.system.ExceptionMaster.printStackTrace(e);
-            video = null;
+            loadVideo = null;
             videoEnabled = false;
         }
     }
@@ -276,7 +276,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     protected void renderLoader(float delta) {
         super.renderLoader(delta);
 
-        if (video != null) {
+        if (loadVideo != null) {
             renderVideo(delta);
             overlayStage.act(delta);
             overlayStage.draw();
@@ -318,15 +318,15 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     protected void renderVideo(float delta) {
-        if (!video.isAvailable()) return;
-        if (video.getPlayer() == null)
+        if (!loadVideo.isAvailable()) return;
+        if (loadVideo.getPlayer() == null)
             playVideo();
-        else if (!video.getPlayer().isPlaying())
+        else if (!loadVideo.getPlayer().isPlaying())
             playVideo();
         Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         if (isClearForVideo())
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        if (!video.getPlayer().render())
+        if (!loadVideo.getPlayer().render())
             if (isLooped())
                 playVideo();
 

@@ -348,29 +348,24 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
     private boolean doUnitOperation(COMBAT_SCRIPT_FUNCTION function, Ref ref, String[] args) {
 //        int i = 0;
-        Unit unit = (Unit) ref.getObj(args[0]);
-        if (unit == null) {
-            String name = args[0];
-//            if (DataManager.isTypeName(name))
-//                i++;
-//            else name = null;
-
+        String name =args.length==0? "source" :args[0];
+        Unit unit = (Unit) ref.getObj(name);
             if (unit == null) {
                 Boolean power = null;
                 Boolean distance = true;
                 Boolean ownership = null;
                 try {
-                    unit = ((DC_Game) ref.getGame()).getMaster().getByName(name, ref,
+                    unit = (Unit) ((DC_Game) ref.getGame()).getMaster().getByName(name, ref,
                             ownership, distance, power);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
-            }
         }
         if (unit == null) {
             unit = Eidolons.getMainHero();
-        } //else i++;
-        //options - annihilate, ...
+        }
+
+
         switch (function) {
             case COMMENT:
                 return doComment(unit, args[0]);

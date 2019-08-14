@@ -16,12 +16,10 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
-import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.fullscreen.ScreenshakeMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -38,7 +36,6 @@ import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
-import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -429,7 +426,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (CoreEngine.isCinematicMode())
+        if (CoreEngine.isFootageMode())
             return;
         super.draw(batch, parentAlpha);
 

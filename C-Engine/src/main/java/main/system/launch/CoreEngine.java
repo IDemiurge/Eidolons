@@ -521,7 +521,7 @@ public class CoreEngine {
         CoreEngine.me = me;
     }
 
-    public static boolean isCinematicMode() {
+    public static boolean isFootageMode() {
         return cinematicMode;
     }
 

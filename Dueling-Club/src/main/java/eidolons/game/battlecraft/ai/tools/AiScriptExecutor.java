@@ -52,7 +52,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 Boolean power = null;// getPower(arg);
                 Boolean distance =true; // getDistance(arg);
                 Boolean ownership =false; // getOwnership(arg);
-                unit = getGame().getMaster().getUnitByName(name, ref,
+                unit = (Unit) //TODO
+                        getGame().getMaster().getByName(name, ref,
                         ownership, distance, power);
             }
         }
@@ -91,6 +92,9 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
 //        }
         if (arg == null) {
             arg = args[1];
+        }
+        if (unit == null) {
+            unit = (Unit) ref.getSourceObj();
         }
         executeCommand(unit, function, arg, free, immediate, additionalArgs);
 

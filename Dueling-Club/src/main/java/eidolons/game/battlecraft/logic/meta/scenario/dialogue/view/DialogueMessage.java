@@ -24,6 +24,7 @@ public class DialogueMessage extends TablePanelX {
     Image actorImage;
 
     public DialogueMessage(String message, String actorName, String img, FONT font, float w) {
+        w=w/3*2;
         if (actorName == null || message == null) {
             actorName = "Error";
             message = "Report me!..";

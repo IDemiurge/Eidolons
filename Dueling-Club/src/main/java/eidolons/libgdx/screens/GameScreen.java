@@ -50,10 +50,6 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(GuiEventType.CAMERA_SHAKE, p -> {
             shakes.add((Screenshake) p.get());
         });
-        GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
-            getCam().position.set((Vector2) p.get(), 0);
-
-        });
         GuiEventManager.bind(DIALOG_SHOW, obj -> {
             DialogueHandler handler =
                     (DialogueHandler) obj.get();
@@ -73,7 +69,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     public void render(float delta) {
         if (!shakes.isEmpty()) {
             for (Screenshake shake : new ArrayList<>(shakes)) {
-                if (!shake.update(delta, getCam(), cameraMan.getCameraCenter())) {
+                if (!shake.update(delta, getCam(), getCameraMan().getCameraCenter())) {
                     shakes.remove(shake);
                 }
             }

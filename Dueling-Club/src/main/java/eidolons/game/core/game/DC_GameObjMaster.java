@@ -413,7 +413,14 @@ public class DC_GameObjMaster extends GameObjMaster {
             SortMaster.sortEntitiesByExpression(matched,
                     unit1 -> (powerSort ? 1 : -1) * unit1.getIntParam(PARAMS.POWER));
         }
-        return getUnitSequentially(matched);
+        if (matched.size()==2){
+            if (Math.abs( PositionMaster.getDistance(source,  matched.get(0))- PositionMaster.getDistance(source,  matched.get(1)))
+            <=1
+            ){
+                return getUnitSequentially(matched);
+            }
+        }
+        return matched.get(0);
 
     }
 

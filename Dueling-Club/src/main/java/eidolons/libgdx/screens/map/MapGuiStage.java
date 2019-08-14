@@ -57,8 +57,8 @@ public class MapGuiStage extends GuiStage {
         });
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
 
-            if (!CoreEngine.isMapEditor())
-                blackout.fadeOut(1.25f);
+//            if (!CoreEngine.isMapEditor())
+//                blackout.fadeOut(1.25f);
             new Thread(new Runnable() {
                 public void run() {
                     WaitMaster.WAIT(1500);
@@ -86,8 +86,8 @@ public class MapGuiStage extends GuiStage {
         super.bindEvents();
         GuiEventManager.bind(MapEvent.TIME_UPDATED, p -> {
 
-            if (!CoreEngine.isMapEditor())
-                blackout.fadeIn(1.25f);
+//            if (!CoreEngine.isMapEditor())
+//                blackout.fadeIn(1.25f);
         });
         GuiEventManager.bind(CREATE_PARTY, param -> {
             MacroParty party = (MacroParty) param.get();

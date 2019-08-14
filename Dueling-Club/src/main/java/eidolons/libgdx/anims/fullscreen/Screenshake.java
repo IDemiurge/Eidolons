@@ -16,12 +16,13 @@ public class Screenshake {
     float amplitude = 20; // how much you want to shake
     boolean falloff = true; // if the shake should decay as it expires
 
-    float coefY;
-    float coefX;
+    float coefY=1f;
+    float coefX=1f;
 
     int sampleCount;
+    private Vector2 center;
 
-public enum ScreenShakeTemplate {
+    public enum ScreenShakeTemplate {
     SLIGHT(25, 15),
     MEDIUM(30, 25),
     HARD(35, 35),
@@ -43,13 +44,16 @@ public enum ScreenShakeTemplate {
 
     public Screenshake(float shakeDuration, Boolean vertical, ScreenShakeTemplate template) {
         this.shakeDuration = shakeDuration;
-
-        duration = template.duration;
+        duration =  template.duration;
+//        duration =fullDuration!=0 ? fullDuration: template.duration;
         frequency = template.frequency;
         amplitude = template.amplitude;
         if (vertical != null) {
             coefX = vertical ? 0.66f : 1.33f;
             coefY = !vertical ? 0.66f : 1.33f;
+        } else {
+             coefY=1f;
+             coefX=1f;
         }
         falloff = template.falloff;
         init();
@@ -72,6 +76,7 @@ public enum ScreenShakeTemplate {
         for (int i = 0; i < sampleCount; i++) {
             samples[i] = rand.nextFloat() * 2f - 1f;
         }
+
     }
 
     /**
@@ -87,9 +92,12 @@ public enum ScreenShakeTemplate {
      * Called every frame will shake the camera if it has a shake duration
      *  @param dt     Gdx.graphics.getDeltaTime() or your dt in seconds
      * @param camera your camera
-     * @param center Where the camera should stay centered on
+     * @param c Where the camera should stay centered on
      */
-    public boolean update(float dt, Camera camera, Vector2 center) {
+    public boolean update(float dt, Camera camera, Vector2 c) {
+        if (this.center==null ){
+           this.center = c;
+        }
         internalTimer += dt;
         if (internalTimer > duration) internalTimer -= duration;
         if (shakeDuration > 0) {

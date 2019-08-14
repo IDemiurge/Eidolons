@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
@@ -13,18 +12,16 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
-import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqTraitsPanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqVerticalValueTable;
-import eidolons.libgdx.screens.map.layers.Blackout;
+import eidolons.libgdx.screens.map.layers.BlackoutOld;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.DungeonEnums;
-import main.content.enums.entity.HeroEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
@@ -106,7 +103,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         addActor(btn =new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, ()->{
             close(); }));
         btn.setPosition(getWidth()-64, getHeight()-64);
-        black = new ImageContainer(Blackout.path);
+        black = new ImageContainer(BlackoutOld.path);
 
         center = new AdjustingVerticalGroup(WIDTH/3, 0.75f);
           left = new AdjustingVerticalGroup(WIDTH/3, 0.25f);

@@ -40,7 +40,7 @@ public class Texts {
             if (chunk.isEmpty()) {
                 continue;
             }
-            String key = StringMaster.splitLines(chunk, false)[0];
+            String key = StringMaster.splitLines(chunk, false)[0].trim();
             chunk= chunk.replaceFirst(key, "");
             map.put(key, chunk );
         }

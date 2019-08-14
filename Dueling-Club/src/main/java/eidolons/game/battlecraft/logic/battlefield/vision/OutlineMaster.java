@@ -37,7 +37,7 @@ public class OutlineMaster {
             if (activeUnit.isMine())
                 return null;
         }
-        if (CoreEngine.isCinematicMode()){
+        if (CoreEngine.isFootageMode()){
             return null;
         }
         if (unit.getGame().isSimulation()) {

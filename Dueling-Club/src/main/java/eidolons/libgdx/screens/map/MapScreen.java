@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -22,7 +21,6 @@ import eidolons.macro.AdventureInitializer;
 import eidolons.macro.MacroGame;
 import eidolons.macro.global.time.MacroTimeMaster;
 import main.data.xml.XML_Reader;
-import main.game.bf.Coordinates;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
@@ -178,7 +176,7 @@ public class MapScreen extends GameScreenWithTown {
             if (Gdx.input.isKeyPressed(Keys.O) || CoreEngine.isMapEditor()) {
                 objectStage.draw();
             }
-            if (!CoreEngine.isCinematicMode())
+            if (!CoreEngine.isFootageMode())
             if (Gdx.input.isKeyPressed(Keys.G)|| CoreEngine.isMapEditor() ) {
                 guiStage.draw();
             } else {

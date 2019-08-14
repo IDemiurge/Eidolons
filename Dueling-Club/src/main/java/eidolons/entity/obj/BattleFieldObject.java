@@ -64,6 +64,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     protected FACING_DIRECTION facing;
     protected int maxVisionDistance;
+    protected boolean hidden;
     private DIRECTION direction;
     private Coordinates bufferedCoordinates;
     private boolean sneaking;
@@ -73,6 +74,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private OUTLINE_TYPE lastSeenOutline;
     private ObjType originalType;
     private boolean summoned;
+    private boolean revealed;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -700,5 +702,19 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             return true;
         }
         return checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName());
+    }
+    public void setHidden(boolean b) {
+        hidden = b;
+    }
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
     }
 }

@@ -480,12 +480,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
         switch (style) {
             case Somber:
-                if (RandomWizard.chance(36))
-                    return CELL_IMAGE.star;
-                if (RandomWizard.chance(46))
-                    return CELL_IMAGE.octagonal;
                 if (RandomWizard.chance(56))
-                    return CELL_IMAGE.natural;
+                    return CELL_IMAGE.star;
+                if (RandomWizard.chance(66))
+                    return CELL_IMAGE.octagonal;
             case DWARF:
                 if (RandomWizard.chance(66))
                     return CELL_IMAGE.diamond;

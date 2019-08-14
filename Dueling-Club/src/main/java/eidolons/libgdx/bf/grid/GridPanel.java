@@ -293,7 +293,7 @@ public class GridPanel extends Group {
         }
 //     moving units will be hidden!
 //     if (animMaster != null) {
-//            animMaster.setVisible(!CoreEngine.isCinematicMode());
+//            animMaster.setVisible(!CoreEngine.isFootageMode());
 //        }
 
         if (isAutoResetVisibleOn())
@@ -453,108 +453,7 @@ public class GridPanel extends Group {
             List list = (List) p.get();
             Unit hero = (Unit) list.get(0);
             String text = (String) list.get(1);
-            main.system.auxiliary.log.LogMaster.dev(text + "\n - Comment by " + hero.getNameAndCoordinate());
-
-            SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
-                @Override
-                public boolean remove() {
-                    getParent().remove(); //TODO could be better.
-                    return super.remove();
-                }
-            };
-            boolean textTop = false;
-            GroupX portrait = null;
-            if (hero == Eidolons.getMainHero()) {
-                SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
-//               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
-                portrait = commentSprite;
-                portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
-                portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
-            } else {
-                textTop = true;
-                portrait = new SpriteX
-//                        new FadeImageContainer
-                        (hero.getLargeImagePath()) {
-                    @Override
-                    public void draw(Batch batch, float parentAlpha) {
-                        setScale(1f);
-                        setRotation(0);
-//                        getSprite().setLoops(0);
-//                        getSprite().setLooping(true);
-//                        act(1f);
-                        super.draw(batch, parentAlpha);
-                    }
-                };
-                portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
-                portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
-//                portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()*2));
-//                portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()/1.7 ));
-                portrait.debugAll();
-            }
-
-            SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
-            commentTextBgSprite.setScale(0.75f);
-            commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
-            commentTextBgSprite.setRotation(90);
-            commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-            commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
-
-//            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
-            commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-            //TODO CACHED??
-            GroupX commentGroup = new NoHitGroup();
-            commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
-            commentGroup.addActor(commentBgSprite);
-
-            if (!textTop) {
-                commentGroup.addActor(commentTextBgSprite);
-                commentGroup.addActor(portrait);
-            } else {
-                commentGroup.addActor(portrait);
-                commentGroup.addActor(commentTextBgSprite);
-            }
-            addActor(commentGroup);
-
-            Vector2 v = GridMaster.getCenteredPos(hero.getCoordinates());
-            commentGroup.setPosition(v.x, v.y);
-            ActionMaster.addFadeInAction(commentBgSprite, 2);
-            ActionMaster.addFadeInAction(commentTextBgSprite, 2);
-            ActionMaster.addFadeInAction(portrait, 3);
-//            commentSprite.setScale(0.5f);
-            //flip?
-            Coordinates panTo = hero.getCoordinates().getOffsetByY(2);
-            switch (hero.getFacing().flip().rotate(hero.getFacing().flip().isCloserToZero())) {
-                case NORTH:
-                    commentGroup.setY(commentGroup.getY() + ((int) commentGroup.getHeight() / 2));
-                    panTo = panTo.getOffsetByY(-3);
-                    break;
-                case WEST:
-                    commentGroup.setX(commentGroup.getX() - ((int) commentGroup.getWidth() / 2));
-                    panTo = panTo.getOffsetByX(-3);
-                    break;
-                case EAST:
-                    commentGroup.setX(commentGroup.getX() + ((int) commentGroup.getWidth() / 2));
-                    panTo = panTo.getOffsetByX(3);
-                    break;
-                case SOUTH:
-                    commentGroup.setY(commentGroup.getY() - ((int) commentGroup.getHeight() / 2));
-                    panTo = panTo.getOffsetByY(3);
-                    break;
-            }
-//            commentSprite.getSprite().centerOnParent(commentGroup);
-            main.system.auxiliary.log.LogMaster.dev("- CAMERA_PAN_TO_COORDINATE " + panTo);
-            GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo);
-            GroupX finalPortrait = portrait;
-
-
-//            WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
-//                ActionMaster.addFadeOutAction(commentBgSprite, 4);
-//                ActionMaster.addRemoveAfter(commentBgSprite);
-//                ActionMaster.addFadeOutAction(finalPortrait, 3);
-//                ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
-//            });
-            this.commentSprites.add(commentGroup);
-//            Eidolons.on
+            comment(hero, text);
         });
         GuiEventManager.bind(GuiEventType.ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
@@ -1301,5 +1200,89 @@ public class GridPanel extends Group {
         } catch (Exception e) {
         }
         return null;
+    }
+
+
+    private void comment(Unit hero, String text) {
+        main.system.auxiliary.log.LogMaster.dev(text + "\n - Comment by " + hero.getNameAndCoordinate());
+        SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
+            @Override
+            public boolean remove() {
+                getParent().remove(); //TODO could be better.
+                return super.remove();
+            }
+        };
+        boolean textTop = false;
+        GroupX portrait = null;
+        if (hero == Eidolons.getMainHero()) {
+            SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
+//               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
+            portrait = commentSprite;
+        } else {
+            textTop = true;
+            portrait = new SpriteX(hero.getLargeImagePath());
+        }
+        portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
+        portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
+
+        SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
+        commentTextBgSprite.setScale(0.75f);
+        commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
+        commentTextBgSprite.setRotation(90);
+        commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+        commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
+
+//            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
+        commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+        //TODO CACHED??
+        GroupX commentGroup = new NoHitGroup();
+        commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
+        commentGroup.addActor(commentBgSprite);
+
+        if (!textTop) {
+            commentGroup.addActor(commentTextBgSprite);
+            commentGroup.addActor(portrait);
+        } else {
+            commentGroup.addActor(portrait);
+            commentGroup.addActor(commentTextBgSprite);
+        }
+        addActor(commentGroup);
+
+        Vector2 v = GridMaster.getCenteredPos(hero.getCoordinates());
+        commentGroup.setPosition(v.x, v.y);
+        ActionMaster.addFadeInAction(commentBgSprite, 2);
+        ActionMaster.addFadeInAction(commentTextBgSprite, 2);
+        ActionMaster.addFadeInAction(portrait, 3);
+//            commentSprite.setScale(0.5f);
+        //flip?
+        Coordinates panTo = hero.getCoordinates().getOffsetByY(2);
+        switch (hero.getFacing().flip().rotate(hero.getFacing().flip().isCloserToZero())) {
+            case NORTH:
+                commentGroup.setY(commentGroup.getY() + ((int) commentGroup.getHeight() / 2));
+                panTo = panTo.getOffsetByY(-3);
+                break;
+            case WEST:
+                commentGroup.setX(commentGroup.getX() - ((int) commentGroup.getWidth() / 2));
+                panTo = panTo.getOffsetByX(-3);
+                break;
+            case EAST:
+                commentGroup.setX(commentGroup.getX() + ((int) commentGroup.getWidth() / 2));
+                panTo = panTo.getOffsetByX(3);
+                break;
+            case SOUTH:
+                commentGroup.setY(commentGroup.getY() - ((int) commentGroup.getHeight() / 2));
+                panTo = panTo.getOffsetByY(3);
+                break;
+        }
+        GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo);
+        GroupX finalPortrait = portrait;
+
+        WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
+            ActionMaster.addFadeOutAction(commentBgSprite, 4);
+            ActionMaster.addRemoveAfter(commentBgSprite);
+            ActionMaster.addFadeOutAction(finalPortrait, 3);
+            ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
+        });
+        this.commentSprites.add(commentGroup);
     }
 }

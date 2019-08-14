@@ -29,7 +29,10 @@ public class AbilityEnums {
 
         DOUBLE, TRIPPLE, CELL,
 
-        RAY, // TODO ARGS - N_OF_JUMPS ETC???
+        RAY,
+        RAY_AUTO,
+        THREE_RAY_AUTO,
+        // TODO ARGS - N_OF_JUMPS ETC???
         WAVE,
         NOVA,
         BLAST,

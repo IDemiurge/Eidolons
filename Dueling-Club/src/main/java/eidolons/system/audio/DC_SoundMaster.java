@@ -616,8 +616,8 @@ public class DC_SoundMaster extends SoundMaster {
     public static void playKeySound(String value) {
         if (value.contains(".")) {
             String[] parts = value.split(".");
-            SOUNDS type = new EnumMaster<SOUNDS>().retrieveEnumConst(SOUNDS.class, parts[0]);
-            SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[1]);
+            SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[0]);
+            SOUNDS type = new EnumMaster<SOUNDS>().retrieveEnumConst(SOUNDS.class, parts[1]);
             playEffectSound(type, set);
 
         } else {

@@ -22,7 +22,7 @@ import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import eidolons.libgdx.launch.report.CrashManager;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
-import eidolons.libgdx.screens.map.layers.Blackout;
+import eidolons.libgdx.screens.map.layers.BlackoutOld;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.macro.AdventureInitializer;
@@ -287,7 +287,7 @@ public class GenericLauncher extends Game {
 
     protected void triggerLoaded(ScreenData data) {
         main.system.auxiliary.log.LogMaster.log(1, "triggerLoaded " + data.getName());
-        if (Blackout.isOnNewScreen())
+        if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         switch (data.getType()) {
             case BATTLE:
@@ -359,7 +359,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void screenSwitcher(EventCallbackParam param) {
-        if (Blackout.isOnNewScreen())
+        if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {

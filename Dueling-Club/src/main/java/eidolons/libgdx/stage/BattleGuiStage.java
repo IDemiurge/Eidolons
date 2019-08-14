@@ -1,5 +1,6 @@
 package eidolons.libgdx.stage;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -45,6 +46,7 @@ public class BattleGuiStage extends GuiStage {
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
+    private final FullscreenAnims fullscreenAnims;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
 
@@ -85,14 +87,35 @@ public class BattleGuiStage extends GuiStage {
         outcomePanel = new OutcomePanel();
         addActor(outcomePanel);
         outcomePanel.setVisible(false);
-        addActor(new FullscreenAnims());
+        addActor(fullscreenAnims = new FullscreenAnims());
 
-        addActor(soulforcePanel= new SoulforcePanel());
+        addActor(soulforcePanel = new SoulforcePanel());
         GdxMaster.center(soulforcePanel);
         soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
 //        getBottomPanel().setX((GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
+
+    }
+
+    @Override
+    public List<Actor> getActorsForDialogue() {
+        return super.getActorsForDialogue();
+    }
+
+    @Override
+    protected void drawCinematicMode(Batch batch) {
+        Camera camera = getViewport().getCamera();
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        dialogueContainer.draw(batch, 1f);
+        if (confirmationPanel.isVisible()) {
+            confirmationPanel.draw(batch, 1f);
+        }
+        if (tipMessageWindow.isVisible()) {
+            tipMessageWindow.draw(batch, 1f);
+        }
+        fullscreenAnims.draw(batch, 1f);
 
     }
 

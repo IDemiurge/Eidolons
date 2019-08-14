@@ -81,7 +81,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         return getParty().getLeader();
         //        Unit hero = Eidolons.getMainHero();
         //        if (hero == null || getMetaGame().isRestarted()) {
-        //            hero = getGame().getMaster().getUnitByName(
+        //            hero = getGame().getMaster().getByName(
         //             PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
         //             null);
         //            if (hero == null) {

@@ -11,6 +11,7 @@ import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.system.auxiliary.ContainerUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class DialogueActor extends LightweightEntity {
 
     @Override
     public Game getGame() {
-        return null;
+        return Eidolons.getGame();
     }
 
     public Unit getLinkedUnit() {
@@ -35,26 +36,26 @@ public class DialogueActor extends LightweightEntity {
     }
 
     public void setupLinkedUnit() {
-        if (getGame() instanceof DC_Game) {
-            Coordinates c = Eidolons.getMainHero().getCoordinates();
-            List<Coordinates> area = CoordinatesMaster.getCoordinatesWithin(
-                    Math.max(0, c.getX() - 10),
-                    Math.min(((DC_Game) getGame()).getDungeon().getCellsX(), c.getX() + 10),
-                    Math.max(0, c.getY() - 10),
-                    Math.min(((DC_Game) getGame()).getDungeon().getCellsY(), c.getY() + 10)
-            );
-            for (Unit unit : ((DC_Game) getGame()).getUnitsForCoordinates(area.toArray(new Coordinates[area.size()]))) {
-                for (String substring : ContainerUtils.openContainer(getProperty(PROPS.ACTOR_UNIT_NAMES))) {
-                    if (unit.getName().equalsIgnoreCase(substring)) {
-                        if (!unit.isActorLinked()) {
-                            setLinkedUnit(unit);
+        Coordinates c = Eidolons.getMainHero().getCoordinates();
+        List<Coordinates> area = CoordinatesMaster.getCoordinatesWithin(
+                Math.max(0, c.getX() - 10),
+                Math.min(((DC_Game) getGame()).getDungeon().getCellsX(), c.getX() + 10),
+                Math.max(0, c.getY() - 10),
+                Math.min(((DC_Game) getGame()).getDungeon().getCellsY(), c.getY() + 10)
+        );
+        List<String> names = new ArrayList<>(ContainerUtils.openContainer(getProperty(PROPS.ACTOR_UNIT_NAMES)));
+        names.add(0, getName());
+        for (Unit unit : ((DC_Game) getGame()).getUnitsForCoordinates(area.toArray(new Coordinates[area.size()]))) {
+            for (String substring : names) {
+                if (unit.getName().equalsIgnoreCase(substring)) {
+                    if (!unit.isActorLinked()) {
+                        setLinkedUnit(unit);
 
-                            break;
-                        }
-
+                        break;
                     }
 
                 }
+
             }
         }
 

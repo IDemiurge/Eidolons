@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.libgdx.texture.Sprites;
 import main.system.auxiliary.data.ListMaster;
@@ -21,6 +22,7 @@ public class SpeechDataSource {
     ActorDataSource right;
     private boolean leftActive = true;
     private String background = Sprites.BG_DEFAULT;
+    private DialogueHandler handler;
     //custom font/style?
 
 
@@ -36,6 +38,34 @@ public class SpeechDataSource {
     public SpeechDataSource(Speech speech) {
         this(speech, new ActorDataSource(speech.getActor()), null);
 
+    }
+
+
+    public ActorDataSource getListenerActor() {
+        ActorDataSource left =  getLeft();
+        ActorDataSource right =  getRight();
+
+        ActorDataSource listener = ! isLeftActive() ? left : right;
+        if (listener == null) {
+            listener = handler.getSpeakerLast();
+        }
+        return listener;
+    }
+
+    public ActorDataSource getSpeakerActor() {
+        ActorDataSource left = getLeft();
+        ActorDataSource right = getRight();
+
+        ActorDataSource listener = !isLeftActive() ? left : right;
+        ActorDataSource active = isLeftActive() ? left : right;
+        if (active == null) {
+            if (handler.isMe(listener)) {
+                active = handler.getListenerLast();
+            } else {
+                active = handler.getMyActor();
+            }
+        }
+        return active;
     }
 
     public List<String> getResponses() {
@@ -67,6 +97,14 @@ public class SpeechDataSource {
 
     public void setBackground(String background) {
         this.background = background;
+    }
+
+    public void setHandler(DialogueHandler handler) {
+        this.handler = handler;
+    }
+
+    public DialogueHandler getHandler() {
+        return handler;
     }
 
     public enum SPEECH_EFFECT {

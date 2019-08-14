@@ -7,6 +7,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowVisionMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
@@ -212,6 +213,14 @@ public class VisionRule {
     }
 
     public VISIBILITY_LEVEL visibility(Unit source, BattleFieldObject object) {
+        if (Cinematics.ON) {
+            if (object.isRevealed()) {
+                return VISIBILITY_LEVEL.CLEAR_SIGHT;
+            }
+        }
+        if (object.isHidden()) {
+            return VISIBILITY_LEVEL.UNSEEN;
+        }
         UNIT_VISION sight = controller.getUnitVisionMapper().get(source, object);
         boolean landmark = object instanceof Structure;
         //        if (object instanceof BattleFieldObject) {
@@ -335,7 +344,7 @@ public class VisionRule {
         if (isDetectionSoundOn(source, object)) {
             if (source.getGame().isStarted())
             if (!VisionManager.isCinematicVision())
-//            if (!source.getGame().isCinematicMode())
+//            if (!source.getGame().isFootageMode())
             DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
         }
     }

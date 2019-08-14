@@ -1,5 +1,6 @@
 package main.content.enums.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import main.data.filesys.PathFinder;
 
 /**
@@ -16,7 +17,8 @@ public class BfObjEnums {
 
     public enum CUSTOM_OBJECT {
         flames(15, "", "", "", 5),
-        nether_flames(15, "", "", "", 5),
+        firelight(15, "", "",  "cells/bf/fire light.txt", 5),
+        nether_flames(15, "", "", "cells/bf/fire light.txt", 5),
         wisp_floating(15, "", "", "cells/bf/light wisp float.txt", 5),
         crematory(15, "", "", "", 5),
         soul_net(15, "", "", "", 5),
@@ -31,6 +33,7 @@ public class BfObjEnums {
         public boolean vfxOverMirrorX;
         public boolean vfxOverMirrorY;
 
+        public  Color spriteColor;
         public float vfxChance;
         public boolean invert_screen_vfx;
         public boolean movable;

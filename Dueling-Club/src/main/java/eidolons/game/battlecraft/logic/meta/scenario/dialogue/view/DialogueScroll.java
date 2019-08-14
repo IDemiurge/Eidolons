@@ -11,7 +11,9 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.InnerScrollContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.texture.TextureCache;
 import main.system.graphics.FontMaster.FONT;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 11/16/2018.
@@ -31,13 +33,13 @@ public class DialogueScroll extends TablePanelX {
 
     public void init() {
         setSize(WIDTH, DialogueView.HEIGHT - 50);
-        addActor(bg = new ImageContainer(BG));
+        addActor(bg = new ImageContainer( BG));
 
         inner = (new TablePanelX());
         inner.setFillParent(true);
         inner.setLayoutEnabled(true);
         inner.pack();
-//        inner.setFixedMinSize(true);
+        inner.setFixedMinSize(true);
         inner.setFixedSize(true);
         inner.setWidth(WIDTH);
 //        inner.setBackground(NinePatchFactory.getHqDrawable());
@@ -49,7 +51,13 @@ public class DialogueScroll extends TablePanelX {
         innerScrollContainer.setX(0);
         innerScrollContainer.setY(0);
 
-        add(scrollPane = new ScrollPane(innerScrollContainer));
+        add(scrollPane = new ScrollPane(innerScrollContainer){
+            @Override
+            public void fling(float flingTime, float velocityX, float velocityY) {
+                super.fling(flingTime*5, velocityX/5, velocityY/5);
+            }
+
+        });
         scrollPane.setStyle(StyleHolder.getScrollStyle());
         scrollPane.setClamp(true);
         scrollPane.setScrollingDisabled(true, false);
@@ -60,6 +68,7 @@ public class DialogueScroll extends TablePanelX {
         scrollPane.setupOverscroll( 50, 30, 100);
         scrollPane.setVariableSizeKnobs(false);
         scrollPane.setScrollY(-500);
+
 //        this.setTouchable(Touchable.enabled);
 //        setClip(true);
 

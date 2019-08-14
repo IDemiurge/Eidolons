@@ -11,9 +11,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.boss.sprite.BossView;
@@ -23,7 +23,6 @@ import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
@@ -58,7 +57,10 @@ public class UnitViewFactory {
                         }
             }
         view.setOutlinePathSupplier(() -> {
-            if (CoreEngine.isCinematicMode()) {
+            if (CoreEngine.isFootageMode()) {
+                return null;
+            }
+            if (Cinematics.ON) {
                 return null;
             }
             if (bfObj.isWater()) {
