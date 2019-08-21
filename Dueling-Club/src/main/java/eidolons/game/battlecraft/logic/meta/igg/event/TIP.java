@@ -22,13 +22,17 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 
         //BRIDGE
-    welcome_1(true,  Images.EMPTY_DEMIURGE, ""),
+    welcome_1(true,  Images.DEMIURGE, ""),
     welcome_2(true,  DataManager.getObjImage("INSCRIPTION"), ""){
         @Override
         public void run() {
             Eidolons.getGame().getLoop().activateMainHeroAction("Move");
 //            Eidolons.getGame().getLoop().activateMainHeroAction("Deathstorm");
         }
+    },
+
+    first_battle_over(false, IGG_Images.BRIEF_ART.SENTRIES.getPath(), "") {
+
     },
     first_battle(false, IGG_Images.BRIEF_ART.SENTRIES.getPath(), ""){
         @Override

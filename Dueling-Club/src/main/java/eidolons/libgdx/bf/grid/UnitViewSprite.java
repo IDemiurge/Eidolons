@@ -88,16 +88,15 @@ public abstract class UnitViewSprite extends GridUnitView {
     }
 
 
-    @Override
     protected void init(TextureRegion arrowTexture, int arrowRotation,
-                        Texture iconTexture, TextureRegion emblem) {
+                        TextureRegion emblem) {
 
 
         initEmitters();
 
         addActor(glow = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
         glow.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
-        super.init(arrowTexture, arrowRotation, iconTexture, emblem);
+        super.init(arrowTexture, arrowRotation,  emblem);
         glow.setScale(getWidth() / glow.getWidth());
         glow.setOrigin(glow.getWidth() / 2, glow.getHeight() / 2);
     }

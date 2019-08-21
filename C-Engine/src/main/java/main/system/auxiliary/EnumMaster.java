@@ -197,6 +197,9 @@ public class EnumMaster<T> {
         return enumConst;
     }
 
+    public static Object get(Class<?> c, String s) {
+        return getEnumConst(c, s);
+    }
     public static int getEnumConstIndex(Class<?> enumClass, Object CONST) {
         if (CONST == null) {
             return -1;
@@ -303,6 +306,7 @@ public class EnumMaster<T> {
         }
         return cache;
     }
+
 
     public T retrieveEnumConst(Class<? extends T> class1, String name) {
         return retrieveEnumConst(class1, name, false);

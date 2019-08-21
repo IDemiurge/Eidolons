@@ -14,7 +14,7 @@ import java.util.List;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public static final String SCRIPT_KEY = "script_key=";
     List<Pair<SPEECH_ACTION, String>> actions = new ArrayList<>();
     MetaGameMaster master;
@@ -93,6 +93,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         SOUND,
         MOMENT,
         MUSIC,
+        PARALLEL_MUSIC,
 
         ANIM,
         PORTRAIT_ANIM, // do something with it!
@@ -117,7 +118,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         CAMERA_SET,
 
         COMMENT,
-        DIALOG,
+        DIALOGUE,
 
         WAIT, TIME, TIME_THIS,
         WAIT_EACH, WAIT_OFF,
@@ -125,7 +126,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         ZOOM,
         NEXT, NEXT_OFF, NEXT_ALL,
         SHAKE, WHITEOUT,
-        REVEAL_AREA, PORTAL, AUTOCAMERA,
+        REVEAL_AREA, PORTAL, AUTOCAMERA, PARTICLES, SOUNDSCAPE, OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM, LOOP_TRACK, STOP_LOOP, SPEED, GLOBAL, ABS, CAMERA_OFFSET, DIALOGUE_AFTER,
 
         //make templates mapped by name?
     }

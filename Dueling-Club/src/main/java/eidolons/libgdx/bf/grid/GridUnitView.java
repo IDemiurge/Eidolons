@@ -13,9 +13,8 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -56,6 +55,7 @@ public class GridUnitView extends GenericGridView {
     public GridUnitView(UnitViewOptions o) {
         this(null, o);
     }
+
     public void attachObj(OverlayView view) {
         view.setDirection(getUserObject().getDirection());
 
@@ -109,6 +109,12 @@ public class GridUnitView extends GenericGridView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+//        if (isMainHero()) {
+            if (getUserObject().isPlayerCharacter()) {
+            if (getUserObject().isHidden()) {
+                return;
+            }
+        }
         super.draw(batch, parentAlpha);
     }
 
@@ -143,7 +149,7 @@ public class GridUnitView extends GenericGridView {
         setHoverResponsive(o.isHoverResponsive());
         initiativeQueueUnitView = new QueueView(o, curId);
         initiativeQueueUnitView.setParentView(this);
-        initiativeQueueUnitView.setSize(InitiativePanel.imageSize, InitiativePanel.imageSize);
+        initiativeQueueUnitView.setSize(AtbPanel.imageSize, AtbPanel.imageSize);
         initiativeQueueUnitView.setHoverResponsive(isHoverResponsive());
         initiativeQueueUnitView.setMainHero(isMainHero());
     }
@@ -185,7 +191,7 @@ public class GridUnitView extends GenericGridView {
 
         initiativeQueueUnitView.
                 setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-                        TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
+                        TextureCache.getSizedRegion(AtbPanel.imageSize, pathSupplier.get()));
     }
 
 

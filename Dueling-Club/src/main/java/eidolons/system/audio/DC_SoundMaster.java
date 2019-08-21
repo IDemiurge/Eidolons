@@ -8,6 +8,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.Anim;
@@ -53,6 +54,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.IMPACT;
 
@@ -108,6 +110,8 @@ public class DC_SoundMaster extends SoundMaster {
         if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF)) {
             return;
         }
+        if (Cinematics.ON)
+            return;
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
         if (unit.isPale() || unit.isImmaterial()) {
@@ -601,28 +605,57 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public enum SOUND_CUE {
-        scream,
-        ethereal,
-        choire,
-        batman,
-        ;
+        wimper,
 
-        String getPath() {
-            return PathFinder.getSoundPath() + "cues/" + name() + ".mp3";
+        //missing
+
+        //awakening?
+        mute_scream,
+        fire_burst,
+        breathing,
+        heartbeat,
+        dark_knight,
+        dream,
+        demon_growl,
+        laughter,
+        dark_laughter,
+        slam,
+        whispers,
+        dark_tension,
+        aether_thunder,
+
+        portal_open,
+        portal_close,
+
+        gong,
+        ghost,
+        inferno_atmo,
+        windy;
+
+        public String getPath() {
+            return PathFinder.getSoundCuesPath() +
+                    name().replace("_", " ").toLowerCase()
+                    + ".mp3"
+                    ;
         }
 
     }
 
-    public static void playKeySound(String value) {
+    public static void playKeySound(String value, float volume) {
         if (value.contains(".")) {
-            String[] parts = value.split(".");
+            String[] parts = value.split(Pattern.quote("."));
             SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[0]);
             SOUNDS type = new EnumMaster<SOUNDS>().retrieveEnumConst(SOUNDS.class, parts[1]);
-            playEffectSound(type, set);
-
+            playEffectSound(type, set, (int) (volume * 100), 0);
         } else {
-            new EnumMaster<SOUND_CUE>().retrieveEnumConst(SOUND_CUE.class, value);
-
+            if (value.contains("/")) {
+                play(PathFinder.getSoundPath() + value + ".mp3", (int) (volume * 100), 0);
+            } else
+//            new EnumMaster<SOUND_CUE>().retrieveEnumConst(SOUND_CUE.class, value);
+            {
+                main.system.auxiliary.log.LogMaster.dev("Sound cue played: " + PathFinder.getSoundCuesPath() + value + ".mp3");
+                play(PathFinder.getSoundCuesPath() + value + ".mp3", (int) (volume * 100), 0);
+            }
         }
         /**
          *

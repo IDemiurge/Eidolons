@@ -418,6 +418,9 @@ public class OptionsMaster {
                 if (Eidolons.getScope() == SCOPE.MENU)
                     Eidolons.setFullscreen(bool);
                 break;
+            case SUPERLITE_MODE:
+                CoreEngine.setSuperLite(bool);
+                break;
             case VIDEO:
                 break;
             case AMBIENCE_MOVE_SUPPORTED:

@@ -1,6 +1,7 @@
 package eidolons.libgdx.anims.fullscreen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -63,8 +64,7 @@ public class FullscreenAnims extends GroupX {
                 obj = e.getRef().getSourceObj();
             }
             {
-                if (obj == Eidolons.getMainHero())
-                {
+                if (obj == Eidolons.getMainHero()) {
                     SuperActor.BLENDING blending = getBlending(e.getType());
 
                     if (SPRITE_MODE) {
@@ -90,10 +90,9 @@ public class FullscreenAnims extends GroupX {
         FULLSCREEN_ANIM type = null;
 
         if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS)
-        if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED)
-        {
-            return FULLSCREEN_ANIM.GATES;
-        }
+            if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
+                return FULLSCREEN_ANIM.GATES;
+            }
         if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
             type = FULLSCREEN_ANIM.BLOOD;
             if (e.getRef().getDamageType() == GenericEnums.DAMAGE_TYPE.POISON) {
@@ -140,7 +139,7 @@ public class FullscreenAnims extends GroupX {
         String path =
 //                FileManager.getRandomFilePathVariant(
 //                PathFinder.getImagePath()+
-                dataSource.type.getSpritePath()  ;
+                dataSource.type.getSpritePath();
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
         if (sprite == null) {
             return;
@@ -153,9 +152,17 @@ public class FullscreenAnims extends GroupX {
         sprite.setFps(fps);
         sprite.setAlpha(1);
         //TODO
+
+        sprite.setFlipX(dataSource.flipX);
+        sprite.setFlipY(dataSource.flipY);
+
         sprite.setX(GdxMaster.getWidth() / 2);
         sprite.setY(GdxMaster.getHeight() / 2);
         spriteList.add(sprite);
+
+        if (dataSource.type.color != null) {
+            sprite.setColor(dataSource.type.color);
+        }
 
 //        if (showingTimer > 0) {
 //            data.intensity += intensity;
@@ -199,6 +206,49 @@ public class FullscreenAnims extends GroupX {
             show(data);
         super.act(delta);
     }
+
+
+    public enum FULLSCREEN_ANIM {
+        //        BLACK,
+        BLOOD,
+        HELLFIRE,
+        GREEN_HELLFIRE(new Color(0.6f, 1f, 0.7f, 1f)),
+        POISON,
+
+        EXPLOSION {
+            public String getSpritePath() {
+                return PathFinder.getSpritesPath() + "fullscreen/explode bright.txt";
+            }
+        },
+        WAVE,
+        TUNNEL,
+
+        FLAMES,
+        DARKNESS,
+        THUNDER,
+        MIST,
+
+        GATE_FLASH,
+        GATES {
+            public String getSpritePath() {
+                return PathFinder.getSpritesPath() + "fullscreen/short2.txt";
+            }
+        };
+
+        FULLSCREEN_ANIM() {
+        }
+
+        FULLSCREEN_ANIM(Color color) {
+            this.color = color;
+        }
+
+        Color color;
+
+        public String getSpritePath() {
+            return PathFinder.getSpritesPath() + "fullscreen/" + (toString().replace("_", " ")) + ".txt";
+        }
+    }
+
 
     private void init() {
         for (FULLSCREEN_ANIM type : FULLSCREEN_ANIM.values()) {
@@ -249,35 +299,4 @@ public class FullscreenAnims extends GroupX {
         return 1.5f;
     }
 
-
-    public enum FULLSCREEN_ANIM {
-        //        BLACK,
-        BLOOD,
-        POISON,
-
-        EXPLOSION{
-            public String getSpritePath() {
-                return PathFinder.getSpritesPath() + "fullscreen/explode bright.txt";
-            }
-        },
-        WAVE,
-        TUNNEL,
-
-        FLAMES,
-        DARKNESS,
-        THUNDER,
-        MIST,
-
-        GATE_FLASH,
-        GATES {
-            public String getSpritePath() {
-                return PathFinder.getSpritesPath() + "fullscreen/short2.txt";
-            }
-        };
-        //        DAMAGE
-
-        public String getSpritePath() {
-            return PathFinder.getSpritesPath() + "fullscreen/" +   (toString().replace("_", " ")) + ".txt";
-        }
-    }
 }

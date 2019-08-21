@@ -4,25 +4,28 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
 
+import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 /**
@@ -30,15 +33,14 @@ import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
  */
 public class QueueView extends UnitView {
     protected int initiativeIntVal;
-    protected TextureRegion clockTexture;
     protected Label initiativeLabel;
-    protected Image clockImage;
+    protected ImageContainer clockImage;
     protected boolean queueMoving = true;//queueMoving, temporary. 
     protected GridUnitView parentView;
 
     protected QueueView(UnitViewOptions o, int curId) {
         super(o, curId);
-        init(o.getClockTexture(), o.getClockValue());
+        init(o.getClockValue());
     }
 
     @Override
@@ -46,18 +48,22 @@ public class QueueView extends UnitView {
         //TODO could do it of course , but..
     }
 
-    protected void init(TextureRegion clockTexture, int clockVal) {
+    @Override
+    public BattleFieldObject getUserObject() {
+        return parentView.getUserObject();
+    }
+
+    protected void init(int clockVal) {
         this.initiativeIntVal = clockVal;
-        if (clockTexture != null) {
-            this.clockTexture = clockTexture;
-            initiativeLabel = new Label(
-             String.valueOf(clockVal),
-             getInitiativeFontStyle());
-            clockImage = new Image(clockTexture);
-            addActor(clockImage);
-            addActor(initiativeLabel);
-        }
-        addListener(new SmartClickListener(this){
+        initiativeLabel = new Label(
+                String.valueOf(clockVal),
+                getInitiativeFontStyle());
+        clockImage = new ImageContainer(PathFinder.getComponentsPath()
+                + "dc/atb/readiness bg.png");
+        addActor(clockImage);
+        addActor(initiativeLabel);
+
+        addListener(new SmartClickListener(this) {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (getUserObject().isDetectedByPlayer()) {
@@ -72,7 +78,7 @@ public class QueueView extends UnitView {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                getUserObject().getGame().getManager().setHighlightedObj(null );
+                getUserObject().getGame().getManager().setHighlightedObj(null);
                 super.exit(event, x, y, pointer, toActor);
             }
         });
@@ -94,11 +100,13 @@ public class QueueView extends UnitView {
         super.sizeChanged();
 
         if (initiativeLabel != null) {
-            if (InitiativePanel.isLeftToRight())
-                clockImage.setPosition(GdxMaster.right(clockImage), 0);
+            if (AtbPanel.isLeftToRight())
+                clockImage.setPosition(GdxMaster.right(clockImage) + 6, -5);
             initiativeLabel.setPosition(
-           -5+  clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
-             clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
+                    clockImage.getX() +
+                            (clockImage.getWidth() / 2 - initiativeLabel.getWidth() * 1.23f),
+                    clockImage.getY() +
+                            (clockImage.getHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
         if (!GridMaster.isHpBarsOnTop())
             if (hpBar != null)
@@ -127,29 +135,26 @@ public class QueueView extends UnitView {
     }
 
     public void updateInitiative(Integer val) {
-        if (clockTexture != null) {
-            initiativeIntVal = val;
-            if (getOutline() == null)
-                initiativeLabel.setText(String.valueOf(val));
-            else
-                initiativeLabel.setText("?");
+        initiativeIntVal = val;
+        if (getOutline() == null)
+            initiativeLabel.setText(String.valueOf(val));
+        else
+            initiativeLabel.setText("?");
 
-            initiativeLabel.setStyle(
-             getInitiativeFontStyle());
-            initiativeLabel.setPosition(
-             clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth() / 2),
-             clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
-        } else {
-            LogMaster.error("Initiative set to wrong object type != OBJ_TYPES.UNITS");
-        }
+        initiativeLabel.setStyle(
+                getInitiativeFontStyle());
+        initiativeLabel.setPosition(
+                clockImage.getX() + (clockImage.getWidth() / 2 - initiativeLabel.getWidth() / 2),
+                clockImage.getY() + (clockImage.getHeight() / 2 - initiativeLabel.getHeight() / 2));
+
         GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, this);
     }
 
     public LabelStyle getInitiativeFontStyle() {
         return StyleHolder.getSizedColoredLabelStyle(
-         0.3f,
-         StyleHolder.ALT_FONT, 16,
-         getTeamColor());
+                0.3f,
+                StyleHolder.ALT_FONT, 16,
+                getTeamColor());
     }
 
     protected void checkResetOutline(float delta) {
@@ -161,8 +166,8 @@ public class QueueView extends UnitView {
     }
 
     protected void setDefaultTexture() {
-        if (getUserObject()== null ) {
-            return ;
+        if (getUserObject() == null) {
+            return;
         }
         if (isMainHero()) {
             return;
@@ -171,8 +176,8 @@ public class QueueView extends UnitView {
             return;
         }
         setOutline(TextureCache.getSizedRegion(
-         InitiativePanel.imageSize,
-         OUTLINE_TYPE.UNKNOWN.getImagePath()));
+                AtbPanel.imageSize,
+                OUTLINE_TYPE.UNKNOWN.getImagePath()));
         setPortraitTexture(getOutline());
     }
 
@@ -194,7 +199,7 @@ public class QueueView extends UnitView {
     }
 
     protected TextureRegion processPortraitTexture(TextureRegion region, String path) {
-        Texture texture = GdxImageMaster.size(path, InitiativePanel.imageSize, true);
+        Texture texture = GdxImageMaster.size(path, AtbPanel.imageSize, true);
         if (texture == null)
             return region;
         return new TextureRegion(texture);

@@ -51,10 +51,10 @@ public class CameraMan {
 
     public static class MotionData {
 
-        Vector2 dest;
-        float duration;
-        Interpolation interpolation = Interpolation.fade;
-        Boolean exclusive= false;
+        public Vector2 dest;
+        public float duration;
+        public Interpolation interpolation = Interpolation.fade;
+        public Boolean exclusive = false;
 
         public MotionData(float f, float duration, Interpolation interpolation) {
             this(new Vector2(f, 0), duration, interpolation);
@@ -77,6 +77,7 @@ public class CameraMan {
                 initParam(param);
             }
         }
+
         private void initParam(Object o) {
             if (o instanceof Boolean) {
                 exclusive = (Boolean) o;
@@ -117,17 +118,37 @@ public class CameraMan {
         });
 
 
-        GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
-            getCam().position.set((Vector2) p.get(), 0);
+        GuiEventManager.bind(GuiEventType.CAMERA_OFFSET, p -> {
+            Vector2 v;
+            if (p.get() instanceof Coordinates) {
+                v = GridMaster.getCenteredPos((Coordinates) p.get());
+            } else {
+                v= (Vector2) p.get();
+            }
+            float x=getCam().position.x;
+            float y =getCam().position.y;
+            getCam().position.set(x+v.x , y+v.y, 0);
 
         });
+        GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
+            getCam().position.set((Vector2) p.get(), 0);
+        });
         GuiEventManager.bind(CAMERA_PAN_TO, param -> {
-            cameraPan(new MotionData(param.get()));
+            if (param.get() instanceof MotionData) {
+                cameraPan((MotionData) param.get());
+            } else
+                cameraPan(new MotionData(param.get()));
         });
         GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
+            if (param.get() instanceof MotionData) {
+                cameraPan((MotionData) param.get());
+            } else
             cameraPan(new MotionData(param.get()));
         });
         GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
+            if (param.get() instanceof MotionData) {
+                cameraPan((MotionData) param.get());
+            } else
             cameraPan(new MotionData(param.get()));
         });
 
@@ -149,7 +170,7 @@ public class CameraMan {
         if (Eidolons.getGame().isPaused())
             return;
         cameraTimer.act(delta);
-            doMotions(delta);
+        doMotions(delta);
         if (zoomAction != null) {
             if (zoomAction.getValue() != zoomAction.getEnd()) {
                 zoomAction.act(delta);
@@ -189,7 +210,7 @@ public class CameraMan {
     }
 
     private void cameraPan(MotionData motionData) {
-        if (motionData.exclusive){
+        if (motionData.exclusive) {
             if (!motions.isEmpty()) {
                 return;
             }

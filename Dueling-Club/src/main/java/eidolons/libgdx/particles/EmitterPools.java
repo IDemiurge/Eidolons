@@ -19,6 +19,7 @@ public class EmitterPools {
     private static Map<String, Pool<ParticleEffectX>> effectPoolMap = new HashMap<>();
     private static boolean effectPoolingOn = true;
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
+    private static String dummy="advanced/smoke sphere";
 
     public static EmitterActor getEmitterActor(GenericEnums.VFX sfx) {
         return getEmitterActor(sfx.getPath());
@@ -53,6 +54,10 @@ public class EmitterPools {
     public static ParticleEffectX getEffect(String path) {
 //        if (CoreEngine.isJar())
 //            System.out.println("getEffect " + path);
+
+        if ( CoreEngine.isSuperLite())
+            return new ParticleEffectX(dummy);
+
         if (!effectPoolingOn) {
             return new ParticleEffectX(path);
         }

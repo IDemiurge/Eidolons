@@ -35,6 +35,10 @@ public class PreloadedMusic implements Music {
         return path+ ":  " + super.toString();
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public void play() {
         if (playing)
             return;

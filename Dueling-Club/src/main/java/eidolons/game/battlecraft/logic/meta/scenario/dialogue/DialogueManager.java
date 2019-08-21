@@ -96,7 +96,10 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         if (SKIP_INTRO){
             return ;
         }
-        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 3);
+//        GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 8);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 1);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1);
+        GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 8);
         WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG,
                 TEST  ? "Awakening": "Intro"));
     }

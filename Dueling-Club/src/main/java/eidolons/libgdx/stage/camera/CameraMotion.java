@@ -3,7 +3,12 @@ package eidolons.libgdx.stage.camera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
+import eidolons.libgdx.bf.GridMaster;
+import main.system.auxiliary.StringMaster;
+
+import java.util.List;
 
 public class CameraMotion {
 
@@ -22,6 +27,8 @@ public class CameraMotion {
         speedActionX =initAction(duration, dest, true);
         speedActionY =initAction(duration, dest, false);
     }
+
+
 
     private FloatAction initAction(float duration, Vector2 dest, boolean x) {
         FloatAction action=new FloatActionLimited();

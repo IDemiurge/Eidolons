@@ -73,7 +73,11 @@ public class BatchRenamer {
             }
         }
 
-        if (DialogMaster.confirm("Move into subfolders?")) {
+        if (DialogMaster.confirm("process AE Directory?")) {
+            processAE_Dir();
+            return ;
+        }
+            if (DialogMaster.confirm("Move into subfolders?")) {
             moveFilesToPartFolders(DialogMaster.inputText("Root?"), 5000);
             return;
         }
@@ -81,7 +85,6 @@ public class BatchRenamer {
             appendFrameNumbersToFiles(DialogMaster.inputText("Root?"));
             return;
         }
-        processAE_Dir();
 
         if (!DialogMaster.confirm("Anims?")) {
             return;
@@ -112,6 +115,7 @@ public class BatchRenamer {
         List<File> rawFiles = FileManager.getFilesFromDirectory(rawFolder, false);
         List<File> processFiles = FileManager.getFilesFromDirectory(outputFolder, false);
 
+        //preserve FULL folder structure!
         for (File file : processFiles) {
             File newFile = new File(outputFolder + "/renamed/" + rawFiles.get(i++).getName());
             if (!file.renameTo(newFile)) {
@@ -138,7 +142,10 @@ public class BatchRenamer {
 
     }
 
-    private static void renameAnimsInFolder(File folder) throws IOException {
+    private static void syncNamesForProcessedFiles(File folder)   {
+
+    }
+        private static void renameAnimsInFolder(File folder) throws IOException {
         for (File proj : FileManager.getFilesFromDirectory(folder.getPath(), true))
         {
             int i=0;

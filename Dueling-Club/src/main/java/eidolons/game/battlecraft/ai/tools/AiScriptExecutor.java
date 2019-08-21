@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.tools;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
@@ -37,8 +38,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         return null;
     }
 
-    public Unit findUnit(Ref ref, String unitData) {
-        Unit unit = (Unit) ref.getObj(unitData);
+    public BattleFieldObject findUnit(Ref ref, String unitData) {
+        BattleFieldObject unit = (BattleFieldObject) ref.getObj(unitData);
         if (unit == null) {
             AI_ARG arg = new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, unitData);
             if (arg != null) {
@@ -50,10 +51,9 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                     name = null;
 
                 Boolean power = null;// getPower(arg);
-                Boolean distance =true; // getDistance(arg);
-                Boolean ownership =false; // getOwnership(arg);
-                unit = (Unit) //TODO
-                        getGame().getMaster().getByName(name, ref,
+                Boolean distance = true; // getDistance(arg);
+                Boolean ownership = false; // getOwnership(arg);
+                unit = getGame().getMaster().getByName(name, ref,
                         ownership, distance, power);
             }
         }
@@ -62,42 +62,22 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
 
     @Override
     public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
-        if (args[0].equalsIgnoreCase("group")) {
-
-        }
-        int i = 0;
         String unitData = args[0];
-        Unit unit = findUnit(ref, unitData);
-//        i++;
-        //group?
-        //with frozen gameLoop?
+        BattleFieldObject unit = findUnit(ref, unitData);
 
         String arg = null;
         boolean free = true;
         boolean immediate = false;
-//        if (args.length > i) {
-//            String options = args[i + 1];
-//            i++;
-////            if (StringMaster.contains(options, FREE)
-//            free = true;
-//            immediate = true;
-//            arg = options;
-//        }
         String[] additionalArgs = null;
-//        if (args.length > i) {
-//            additionalArgs = new String[args.length - i];
-//            for (int j = 0; j < args.length; j++) {
-//                additionalArgs[j] = args[i + j];
-//            }
-//        }
         if (arg == null) {
-            arg = args[1];
+            arg = args[0];
         }
         if (unit == null) {
-            unit = (Unit) ref.getSourceObj();
+            unit = (BattleFieldObject) ref.getSourceObj();
         }
-        executeCommand(unit, function, arg, free, immediate, additionalArgs);
-
+        if (unit instanceof Unit) {
+            executeCommand((Unit) unit, function, arg, free, immediate, additionalArgs);
+        }
         return true;
     }
 
@@ -106,7 +86,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         ActionSequence sequence = null;
         GOAL_TYPE goal = getGoalType(function);
         if (unit == null) {
-            unit = findUnit(Eidolons.getMainHero().getRef(), arg);
+            unit = (Unit) findUnit(Eidolons.getMainHero().getRef(), arg);
         }
         Task task = new Task(true, unit.getAI(), goal, arg);
         UnitAI ai = unit.getAI();
@@ -156,8 +136,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                     //TODO wait?
                     action -> {
                         if (action.getTargeting() instanceof SelectiveTargeting) {
-                            if (action.getTarget()==null) {
-                                action.getRef().setTarget(selectTarget(finalUnit,function, action, args));
+                            if (action.getTarget() == null) {
+                                action.getRef().setTarget(selectTarget(finalUnit, function, action, args));
                             }
                         }
                         getExecutor().execute(action, free);

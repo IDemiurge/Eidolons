@@ -182,7 +182,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     @Override
     protected boolean isLoadingWithVideo() {
-        return false;
+        return true;
     }
 
 

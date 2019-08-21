@@ -3,11 +3,9 @@ package eidolons.libgdx.gui.tooltips;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageX;
@@ -205,7 +203,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
             list.add((Group) actor);
         }
         for (Group sub : list) {
-            if (sub instanceof InitiativePanel)
+            if (sub instanceof AtbPanel)
                 return false;
         }
         return true;

@@ -26,6 +26,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
         LITE_MODE(false),
+        SUPERLITE_MODE(false),
 
         FULLSCREEN(true),
         //        GAMMA(),

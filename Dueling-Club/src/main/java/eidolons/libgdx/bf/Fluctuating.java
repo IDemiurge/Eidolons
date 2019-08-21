@@ -31,13 +31,15 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaMax;
     ALPHA_TEMPLATE alphaTemplate;
     private int fluctuatingAlphaPeriod;
-    public  static int fluctuatingAlphaPeriodGlobal = 1;
-static {
-    if (CoreEngine.isMainGame()) {
-        fluctuatingAlphaPeriodGlobal = OptionsMaster.getGraphicsOptions().
-                getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 +1;
+    public static int fluctuatingAlphaPeriodGlobal = 1;
+
+    static {
+        if (CoreEngine.isMainGame()) {
+            fluctuatingAlphaPeriodGlobal = OptionsMaster.getGraphicsOptions().
+                    getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 + 1;
+        }
     }
-}
+
     public Fluctuating() {
     }
 
@@ -54,7 +56,7 @@ static {
         this.fluctuatingAlphaPauseDuration = alphaTemplate.fluctuatingAlphaPauseDuration;
         this.fluctuatingFullAlphaDuration = alphaTemplate.fluctuatingFullAlphaDuration;
         this.fluctuatingAlphaRandomness = alphaTemplate.fluctuatingAlphaRandomness;
-        alphaFluctuationOn= true;
+        alphaFluctuationOn = true;
     }
 
     public void fluctuate(float delta) {
@@ -88,19 +90,19 @@ static {
             if (delta <= 0)
                 return;
         }
-        int period = getFluctuatingAlphaPeriod()+1;
-        if (period!=1) {
+        int period = getFluctuatingAlphaPeriod() + 1;
+        if (period != 1) {
             if (!GdxTimeMaster.isPeriodNow(period)) {
                 return;
             }
         }
         Color color = getDefaultColor(image);
 
-        fluctuatingAlpha = fluctuatingAlpha + randomizeAlpha(getAlphaFluctuation(period*delta));
+        fluctuatingAlpha = fluctuatingAlpha + randomizeAlpha(getAlphaFluctuation(period * delta));
 
         fluctuatingAlpha = MathMaster.getMinMax(
-         fluctuatingAlpha, getAlphaFluctuationMin(),
-         getAlphaFluctuationMax());
+                fluctuatingAlpha, getAlphaFluctuationMin(),
+                getAlphaFluctuationMax());
         if (image != null) //TODO control access!
             image.setColor(color.r, color.g, color.b, fluctuatingAlpha);
 
@@ -117,7 +119,7 @@ static {
         if (fluctuatingAlphaRandomness > 0) {
             //            if (RandomWizard.chance())
             return fluctuatingAlpha * (1 + RandomWizard.getRandomFloatBetween(
-             -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness));
+                    -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness));
         }
         return fluctuatingAlpha;
     }
@@ -127,13 +129,13 @@ static {
         if (getFluctuatingAlpha() <= getAlphaFluctuationMin()) {
             alphaGrowing = true;
             alphaPause = getFluctuatingAlphaPauseDuration() * (
-             1 + (RandomWizard.getRandomFloatBetween(
-              -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness)) / 2);
+                    1 + (RandomWizard.getRandomFloatBetween(
+                            -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness)) / 2);
         } else if (fluctuatingAlpha >= getAlphaFluctuationMax()) {
             alphaGrowing = false;
             alphaPause = getFluctuatingFullAlphaDuration() * (
-             1 + (RandomWizard.getRandomFloatBetween(
-              -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness)) / 2);
+                    1 + (RandomWizard.getRandomFloatBetween(
+                            -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness)) / 2);
         }
 
         if (!alphaGrowing)
@@ -257,13 +259,12 @@ static {
 
         BLOOM(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
         POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
-        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f ,0.2f ,0.8f )
-        ;
-        float alphaStep;
-        float fluctuatingAlphaPauseDuration;
-        float fluctuatingFullAlphaDuration;
-        float fluctuatingAlphaRandomness;
-        float min, max;
+        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f);
+        public float alphaStep;
+        public float fluctuatingAlphaPauseDuration;
+        public float fluctuatingFullAlphaDuration;
+        public float fluctuatingAlphaRandomness;
+        public float min, max;
 
         ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration, float fluctuatingFullAlphaDuration, float fluctuatingAlphaRandomness, float min, float max) {
             this.alphaStep = alphaStep;

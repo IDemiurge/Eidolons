@@ -438,7 +438,7 @@ public class StyleHolder {
 
     public static TextButtonStyle getDialogueReplyStyle() {
         if (dialogueReplyStyle == null)
-            dialogueReplyStyle =getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT, FONT.MAIN, GdxColorMaster.PALE_GOLD, 20);
+            dialogueReplyStyle =getTextButtonStyle(STD_BUTTON.HIGHLIGHT_ALT, FONT.MAIN, GdxColorMaster.PALE_GOLD, 20);
 
         //TODO old... anything useful?
         if (dialogueReplyStyle == null) {

@@ -16,17 +16,28 @@ public class BfObjEnums {
 //    createEmitter("unit/chaotic dark", -32, 32);
 
     public enum CUSTOM_OBJECT {
+        dark_chrysalis(15, "", "", "cells/bf/light wisp float.txt", 5,
+                "gate(0, 20)","light( 0,  0)",
+                "black wings(-50, 50)",                "black wings(50, 50)"
+                , "black tendrils(50, -50)", "black tendrils(-50, -50)"){
+        },
+        black_tendrils(12, "", "", "unit/white tent.txt", 5),
+        black_wings(13, "", "", "unit/wings.txt", 5),
         flames(15, "", "", "", 5),
         firelight(15, "", "",  "cells/bf/fire light.txt", 5),
         nether_flames(15, "", "", "cells/bf/fire light.txt", 5),
+        burning_rubble(15, "", "", "cells/bf/fire light.txt", 5),
+
+
         wisp_floating(15, "", "", "cells/bf/light wisp float.txt", 5),
         crematory(15, "", "", "", 5),
         soul_net(15, "", "", "", 5),
         black_waters(15, "", "", "cells/ambi/black waters.txt", 5),
         BLACKNESS(15, "", "", "", 5),
-        LIGHT(15, "", "", "", 5),
+        LIGHT(15, "", "", "cells/bf/fire light.txt", 5),
+        GATE(15, "", "", "cells/gate/gate.txt", 5),
 //        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
-        GATE_PILLAR(10, "", "", "cells/grid/pillar.txt", 10);
+        GATE_PILLAR(10, "", "", "cells/gate/pillar.txt", 10);
 
         public boolean vfxUnderMirrorX;
         public boolean vfxUnderMirrorY;
@@ -34,10 +45,25 @@ public class BfObjEnums {
         public boolean vfxOverMirrorY;
 
         public  Color spriteColor;
-        public float vfxChance;
-        public boolean invert_screen_vfx;
+        public float vfxChance=100;
         public boolean movable;
+
+        public boolean invert_screen_vfx;
+        //BLENDING
+        public boolean invert_screen;
+        public boolean screen;
+        public boolean ignore_linked_visible;
+        public boolean always_visible;
         private float vfxSpeed = 1f;
+        public double range;
+        public int fps;
+        public int maxEmitters;
+        public String vfxFolderUnder;
+        public String vfxFolderOver;
+        public String vfxUnder="";
+        public String vfxOver="";
+        public String spritePath;
+        public String[] additionalObjects;
 
         CUSTOM_OBJECT(int fps, String vfxUnder, String vfxOver, String spritePath, double range, String... additionalObjects) {
             this.range = range;
@@ -49,17 +75,6 @@ public class BfObjEnums {
             }
             this.additionalObjects = additionalObjects;
         }
-
-        public boolean screen;
-        //BLENDING
-        public double range;
-        public int fps;
-        public String vfxFolderUnder;
-        public String vfxFolderOver;
-        public String vfxUnder;
-        public String vfxOver;
-        public String spritePath;
-        public String[] additionalObjects;
 
         public float getVfxSpeed() {
             return vfxSpeed;

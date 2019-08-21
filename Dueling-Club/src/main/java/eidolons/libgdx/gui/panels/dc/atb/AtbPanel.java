@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc;
+package eidolons.libgdx.gui.panels.dc.atb;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -37,6 +37,7 @@ import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.dc.SpeedControlPanel;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -60,7 +61,7 @@ import java.util.Map;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
-public class InitiativePanel extends GroupX {
+public class AtbPanel extends GroupX {
     public final static int imageSize = 104;
     private final int maxSize = 25;
     private final int visualSize = 10;
@@ -76,6 +77,8 @@ public class InitiativePanel extends GroupX {
     private float timePassedSincePosCheck = Integer.MAX_VALUE;
     private ImageContainer previewActor;
 
+    AtbViewManager manager;
+
     private GearCluster gears;
     private ClockActor clock;
     private FadeImageContainer light;
@@ -83,7 +86,8 @@ public class InitiativePanel extends GroupX {
     SpeedControlPanel speedControlPanel;
     private HideButton hideButton;
 
-    public InitiativePanel() {
+    public AtbPanel() {
+        manager = new AtbViewManager(this);
         init();
         bindEvents();
         resetZIndices();
@@ -103,7 +107,7 @@ public class InitiativePanel extends GroupX {
         queueGroup = new WidgetGroup();
         addActor(
 //                RollDecorator.decorate(
-                        speedControlPanel = new SpeedControlPanel()) ;
+                speedControlPanel = new SpeedControlPanel());
         addActor(container = new Container<>(queueGroup));
         addActor(hideButton = new HideButton(speedControlPanel));
         speedControlPanel.setPosition(0, -150);
@@ -381,6 +385,10 @@ public class InitiativePanel extends GroupX {
         sort();
     }
 
+    private void updateTimedEvents() {
+
+    }
+
     private int getLastEmptySlot() {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] == null) {
@@ -411,7 +419,7 @@ public class InitiativePanel extends GroupX {
         boolean altBg = EidolonsGame.isAltControlPanel();
         hideButton.setVisible(!altBg);
 
-        timeLabel.setPosition(19, 120-timeLabel.getPrefHeight());
+        timeLabel.setPosition(19, 120 - timeLabel.getPrefHeight());
         timeLabel.setZIndex(Integer.MAX_VALUE);
         if (altBg) {
             if (speedControlPanel.getColor().a == 1)
@@ -601,14 +609,22 @@ public class InitiativePanel extends GroupX {
         UNKNOWN,
 
         PREPARE,
-
-        DEFEND;
+        WAIT,
+        DEFEND, SEARCH;
 
         public String getPath() {
             switch (this) {
+                case SPELL:
+                case BUFF:
+                case DEBUFF:
+                case HOSTILE_SPELL:
+                    return "ui/content/intent icons/" +
+                            "eye.txt";
                 case ATTACK:
                 case MOVE:
                 case PREPARE:
+                case WAIT:
+                case SEARCH:
                     return "ui/content/intent icons/" + name() + ".txt";
             }
             return "ui/content/intent icons/" +
@@ -645,7 +661,7 @@ public class InitiativePanel extends GroupX {
             actor.addActor(shadow);
             shadow.setZIndex(0);
             actor.addActor(intentIconSprite = new SpriteX());
-            intentIconSprite.setX(getWidth()/2 - 14);
+            intentIconSprite.setX(getWidth() / 2 - 14);
             intentIconSprite.setFps(15);
 //            shadow.addListener(new DynamicTooltip(() -> getIntentTooltip(actor.getUserObject())));
         }
@@ -655,21 +671,21 @@ public class InitiativePanel extends GroupX {
             super.act(delta);
 //            IntentIconMaster
             if (isIntentIconsOn())
-            if (getActor().getUserObject() instanceof Unit) {
-                intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
-                SpriteAnimation sprite = iconMap.get(intentIcon);
-                if (intentIcon != null)
-                    if (sprite == null) {
-                        iconMap.put(intentIcon,
-                                sprite =
-                                        SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
-                    }
-                intentIconSprite.setSprite(sprite);
-                intentIconSprite.setY(- 24);
-                intentIconSprite.setX(getPrefWidth()/2  );
-                intentIconSprite.setFps(15);
-                intentIconSprite.setZIndex(Integer.MAX_VALUE);
-            }
+                if (getActor().getUserObject() instanceof Unit) {
+                    intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
+                    SpriteAnimation sprite = iconMap.get(intentIcon);
+                    if (intentIcon != null)
+                        if (sprite == null) {
+                            iconMap.put(intentIcon,
+                                    sprite =
+                                            SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
+                        }
+                    intentIconSprite.setSprite(sprite);
+                    intentIconSprite.setY(-24);
+                    intentIconSprite.setX(getPrefWidth() / 2);
+                    intentIconSprite.setFps(15);
+                    intentIconSprite.setZIndex(Integer.MAX_VALUE);
+                }
 
         }
 

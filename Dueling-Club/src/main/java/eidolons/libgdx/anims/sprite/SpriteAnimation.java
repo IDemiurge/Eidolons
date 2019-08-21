@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 public class SpriteAnimation extends Animation<TextureRegion> {
     final static float defaultFrameDuration = 0.025f;
-    private   TextureAtlas atlas;
+    private TextureAtlas atlas;
     private float originalFps;
     public float x;
     public float y;
@@ -45,7 +45,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private PlayMode originalPlayMode;
     private boolean flipX;
     private boolean flipY;
-    private Color color= new Color(1,1,1,1);
+    private Color color = new Color(1, 1, 1, 1);
     private Float scale;
     private boolean customAct;
     private float speed;
@@ -69,7 +69,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public SpriteAnimation(float frameDuration, boolean backAndForth, TextureAtlas atlas) {
         this(frameDuration, backAndForth, SpriteAnimationFactory.getSpriteRegions(backAndForth, atlas));
-        this.atlas=atlas;
+        this.atlas = atlas;
     }
 
     public SpriteAnimation(float frameDuration, boolean looping, TextureAtlas atlas, String name) {
@@ -86,7 +86,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         stateTime = 0;
         this.looping = looping;
         this.loops = loops;
-        originalFps = frameDuration;
+        if (frameDuration > 0) {
+            setFps(1f / frameDuration);
+        }
     }
 
     public SpriteAnimation(Texture texture) {
@@ -100,7 +102,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         regions = re;
         this.looping = looping;
         this.frameNumber = re.size;
-        originalFps = frameDuration;
+        if (frameDuration > 0) {
+            setFps(1f / frameDuration);
+        }
     }
 
 
@@ -152,20 +156,20 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         boolean resetBlending = false;
         if (blending != null)
 //            if (batch instanceof CustomSpriteBatch)
-            {
+        {
 //                if ((((CustomSpriteBatch) batch).getBlending() != blending))
-                {
-                    ((CustomSpriteBatch) batch).setBlending(blending);
-                    resetBlending = true;
-                }
+            {
+                ((CustomSpriteBatch) batch).setBlending(blending);
+                resetBlending = true;
             }
+        }
         boolean result = drawThis(batch);
 
         if (resetBlending)
 //            if (batch instanceof CustomSpriteBatch)
-            {
-                ((CustomSpriteBatch) batch).resetBlending();
-            }
+        {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
         return result;
     }
 
@@ -253,12 +257,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             sprite.setScale(getScale());
         sprite.setRotation(rotation);
         sprite.setOrigin(originX, originY);
-        sprite.setPosition((int)(x + offsetX - currentFrame.getRegionWidth() / 2), y
-                + (int)(offsetY
+        sprite.setPosition((int) (x + offsetX - currentFrame.getRegionWidth() / 2), y
+                + (int) (offsetY
                 - currentFrame.getRegionHeight() / 2));
 
 //        if (color != null)
-            sprite.setColor(color);
+        sprite.setColor(color);
         if (!batch.isDrawing()) {
             batch.begin();
         }
@@ -433,6 +437,10 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return frameNumber;
     }
 
+    public float getOriginalFps() {
+        return originalFps;
+    }
+
     public int getCycles() {
         return cycles;
     }
@@ -484,7 +492,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public void setSpeed(float speed) {
-        setFrameDuration(originalFps / speed);
+        setFps(Math.round(originalFps / speed));
         this.speed = speed;
     }
 
@@ -494,28 +502,28 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public float getHeight() {
-        if ( ListMaster.isNotEmpty(getRegions())) {
+        if (ListMaster.isNotEmpty(getRegions())) {
             return getRegions().get(getCurrentFrameNumber()).packedHeight;
         }
-        if (getKeyFrames().length>0) {
+        if (getKeyFrames().length > 0) {
             return getKeyFrames()[(getCurrentFrameNumber())].getRegionHeight();
         }
         return 0;
     }
 
     public float getWidth() {
-        if ( ListMaster.isNotEmpty(getRegions())) {
+        if (ListMaster.isNotEmpty(getRegions())) {
             return getRegions().get(getCurrentFrameNumber()).packedWidth;
         }
-        if (getKeyFrames().length>0) {
+        if (getKeyFrames().length > 0) {
             return getKeyFrames()[(getCurrentFrameNumber())].getRegionWidth();
         }
         return 0;
     }
 
     public void centerOnScreen() {
-        setOffsetX(Math.abs(GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
-        setOffsetY(Math.abs(GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
+        setOffsetX( (GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
+        setOffsetY( (GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
     }
 
     public void centerOnParent(Actor actor) {
@@ -529,7 +537,10 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     }
 
-    public void setFps(int i) {
+    public void setFps(float i) {
+        if (originalFps == 0) {
+            originalFps = i;
+        }
         setFrameDuration(1f / i);
     }
 

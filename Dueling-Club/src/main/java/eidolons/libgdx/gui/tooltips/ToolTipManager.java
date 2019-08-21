@@ -12,6 +12,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
@@ -446,6 +447,9 @@ public class ToolTipManager extends TablePanel {
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
             }
+        }
+        if (Cinematics.ON) {
+            return;
         }
         float scaleX = getDefaultScale(object);
         if (object.getScaleX() == getDefaultScale(object))

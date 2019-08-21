@@ -22,6 +22,19 @@ public class EidolonsGame {
     public static boolean BRIDGE_CROSSED;
     public static boolean firstBattleStarted;
 
+    public static boolean INTRO_STARTED;
+
+    public static final void set(String field, boolean val) {
+        try {
+            EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private MetaGameMaster metaMaster;
     private boolean aborted;
 
@@ -75,7 +88,8 @@ public class EidolonsGame {
     public static boolean isParamBlocked(PARAMETER parameter) {
         return false;
     }
-        public static boolean isActionBlocked(DC_ActiveObj activeObj) {
+
+    public static boolean isActionBlocked(DC_ActiveObj activeObj) {
         /**
          * boolean map?
          *

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.LabelX;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
@@ -35,9 +36,15 @@ public class TextBuilder {
     }
 
     public Message build(float w) {
-        Label l = new Label(sb.toString(), style);
+        Label  l = new Label ("", style);
         l.setWrap(true);
         l.setAlignment(Align.left);
+        l.setWidth(w);
+        l.setText(sb.toString());
+//        if (isZigZag()){
+//            l.setZigZagLines(true);
+//            l.setText(sb.toString());
+//        }
         message = newMessage();
         message.setFillParent(true);
         message.align(Align.bottomLeft);
@@ -53,6 +60,10 @@ public class TextBuilder {
         pad(message);
         addHoverObjects();
         return message;
+    }
+
+    protected boolean isZigZag() {
+        return false;
     }
 
     protected void pad(Message message) {

@@ -512,13 +512,12 @@ public class Analyzer extends AiHandler {
             }
         }
         cells.removeIf(cell -> {
-            boolean result = true;
+            boolean result = false;
             if (ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof
                     BattleFieldObject) {
-                if (
-                        ((BattleFieldObject)
+                if (((BattleFieldObject)
                                 ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
-                    result = false;
+                    result = true;
             }
             return result;
         });

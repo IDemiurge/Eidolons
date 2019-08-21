@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -24,8 +23,6 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
@@ -66,7 +63,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
                 getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
-
 
 
         initBlackout();
@@ -116,7 +112,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (param.get() instanceof BFDataCreatedEvent)
             if (Assets.isOn()) {
                 Chronos.mark(ASSET_LOADING);
-                if (Assets.preloadAll(((BFDataCreatedEvent) param.get()).getObjects())) {
+                if (Assets.preloadMain(((BFDataCreatedEvent) param.get()).getObjects())) {
                     setLoadingAtlases(true);
                     return;
                 }
@@ -135,6 +131,10 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             updateInputController();
             GdxMaster.setDefaultCursor();
         } else done(this.param);
+
+        if (param.get() instanceof BFDataCreatedEvent) {
+            Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
+        }
     }
 
     protected void renderMain(float delta) {
@@ -289,8 +289,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;"  + " blackout=="+blackout);
-                blackoutAction.setStart( (blackout));
+                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
+                blackoutAction.setStart((blackout));
                 blackoutAction.setEnd(0);
                 blackoutAction.restart();
                 blackoutBack = false;
@@ -299,7 +299,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         blackoutAction.act(Gdx.graphics.getDeltaTime());
         blackout = blackoutAction.getValue();
         if (blackout > 0) {
-            main.system.auxiliary.log.LogMaster.dev("BlackoutOld drawn" + blackout + " whiteout=="+whiteout);
+            main.system.auxiliary.log.LogMaster.dev("BlackoutOld drawn" + blackout + " whiteout==" + whiteout);
             getBatch().drawBlack(blackout, whiteout);
         }
 

@@ -25,12 +25,13 @@ import java.util.List;
 
 public class CoreEngine {
 
+
     public enum UPLOAD_PACKAGE {
         Aphotica, igg,
     }
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.6e";
+    public static final String VERSION = "0.9.7";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotica;
     public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
@@ -97,7 +98,7 @@ public class CoreEngine {
     private static boolean autoFixOn;
     private static boolean dungeonTool;
     private static boolean testerVersion;
-
+    private static boolean superLite;
 
     public static boolean isMyLiteLaunch() {
         return isIDE() && isLiteLaunch();
@@ -582,6 +583,8 @@ public class CoreEngine {
     }
 
     public static boolean isLiteLaunch() {
+        if (isSuperLite())
+            return true;
         return liteLaunch;
     }
 
@@ -707,5 +710,13 @@ public class CoreEngine {
 
     public static void setTesterVersion(boolean testerVersion) {
         CoreEngine.testerVersion = testerVersion;
+    }
+
+    public static boolean isSuperLite() {
+        return superLite;
+    }
+
+    public static void setSuperLite(boolean superLite) {
+        CoreEngine.superLite = superLite;
     }
 }

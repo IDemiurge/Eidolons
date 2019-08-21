@@ -9,6 +9,7 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 public class Blackout {
     FloatAction blackoutAction = new FloatAction();
@@ -72,6 +73,8 @@ public class Blackout {
     }
 
     public void  draw(CustomSpriteBatch batch ) {
+        if (CoreEngine.isSuperLite())
+            return;
         batch.begin();
         blackSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         blackSprite.resetColor(blackout);
@@ -104,7 +107,10 @@ public class Blackout {
     public void blackout(float dur, float to, boolean back) {
         if (back)
             blackoutBack = back;
-        main.system.auxiliary.log.LogMaster.dev(toString() + " BlackoutOld to " + to);
+        if (dur>=1000) {
+            dur = dur/1000;
+        }
+        main.system.auxiliary.log.LogMaster.dev(toString() + " Blackout NEW to " + to);
         blackoutAction.setDuration(dur);
         if (!whiteout)
             blackoutAction.setInterpolation(Interpolation.fade);
@@ -124,19 +130,20 @@ public class Blackout {
 
         if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;"  + " blackout=="+blackout);
+                main.system.auxiliary.log.LogMaster.dev("Blackout new BACK;"  + " blackout=="+blackout);
                 blackoutAction.setStart( (blackout));
                 blackoutAction.setEnd(0);
                 blackoutAction.restart();
                 blackoutBack = false;
             }
+        } else {
+            blackoutAction.act(delta);
+            blackout = blackoutAction.getValue();
+            if (blackout > 0) {
+//                main.system.auxiliary.log.LogMaster.dev("Blackout new drawn" + blackout + " whiteout=="+whiteout);
+            }
         }
-        blackoutAction.act(delta);
-        blackout = blackoutAction.getValue();
-//        if (blackout > 0) {
-//            main.system.auxiliary.log.LogMaster.dev("BlackoutOld drawn" + blackout + " whiteout=="+whiteout);
-//            getBatch().drawBlack(blackout, whiteout);
-//        }
+
 
     }
 }

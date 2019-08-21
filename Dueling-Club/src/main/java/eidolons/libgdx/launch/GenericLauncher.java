@@ -25,6 +25,7 @@ import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.BlackoutOld;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.utils.GdxTimeMaster;
+import eidolons.libgdx.video.VideoMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
@@ -68,7 +69,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void create() {
-        instance= this;
+        instance = this;
         GdxMaster.setLoadingCursor();
         MusicMaster.preload(MUSIC_SCOPE.MENU);
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
@@ -88,7 +89,7 @@ public class GenericLauncher extends Game {
         if (CoreEngine.isGraphicsOff())
             return;
         Eidolons.setApplication(new LwjglApplication(this,
-         getConf()));
+                getConf()));
 
         Eidolons.setLauncher(this);
         Eidolons.setFullscreen(fullscreen);
@@ -189,14 +190,14 @@ public class GenericLauncher extends Game {
             conf.height = 900;
             try {
                 RESOLUTION resolution =
-                 new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
-                  OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
+                        new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
+                                OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
                 if (resolution != null) {
                     Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
                     Integer w = (int)
-                     dimension.getWidth();
+                            dimension.getWidth();
                     Integer h = (int)
-                     dimension.getHeight();
+                            dimension.getHeight();
                     conf.width = w;
                     conf.height = h;
                     if (w < 1500)
@@ -229,22 +230,33 @@ public class GenericLauncher extends Game {
 
         if (gameScreen != null) gameScreen.resize(width, height);
         else getScreen().resize(width, height);
+
+        if (VideoMaster.player != null) {
+            VideoMaster.player.resize(width, height);
+        }
     }
 
     @Override
     public void render() {
+        Assets.get().getManager().update();
         GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
-
-//        if (CoreEngine.isIDE()) {
-            try {
-                render_();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                if (!CoreEngine.isIDE()){
-                    CrashManager.crashed();
-                    throw new RuntimeException();
-                }
+        if (VideoMaster.player != null) {
+            if (getScreen() instanceof DungeonScreen) {
+                VideoMaster.player.stop();
+            } else {
+                VideoMaster.player.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
+        }
+//        if (CoreEngine.isIDE()) {
+        try {
+            render_();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            if (!CoreEngine.isIDE()) {
+                CrashManager.crashed();
+                throw new RuntimeException();
+            }
+        }
 //        } else
 //            render_();
     }
@@ -289,6 +301,7 @@ public class GenericLauncher extends Game {
         main.system.auxiliary.log.LogMaster.log(1, "triggerLoaded " + data.getName());
         if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
+
         switch (data.getType()) {
             case BATTLE:
                 if (!CoreEngine.isMacro()) {
@@ -297,29 +310,29 @@ public class GenericLauncher extends Game {
                     if (initRunning)
                         return;
                 }
-                if (DC_Game.game !=null ){
+                if (DC_Game.game != null) {
                     return;
                 }
-                initRunning=true;
+                initRunning = true;
                 Eidolons.onThisOrNonGdxThread(() -> {
-                        if (Eidolons.getMainHero() != null) {
-                            main.system.auxiliary.log.LogMaster.log(1,"*************** Second init attempted, fuck it!" );
-                           return;
-                        }
+                    if (Eidolons.getMainHero() != null) {
+                        main.system.auxiliary.log.LogMaster.log(1, "*************** Second init attempted, fuck it!");
+                        return;
+                    }
                     initScenarioBattle(data, data.getName());
 
                     firstInitDone = true;
-                    initRunning=false;
+                    initRunning = false;
                 });
                 break;
             case MAIN_MENU:
-                initRunning=false;
+                initRunning = false;
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(SCREEN_TYPE.MAIN_MENU ));
+                        new ScreenData(SCREEN_TYPE.MAIN_MENU));
                 break;
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(data.getType( ) ));
+                        new ScreenData(data.getType()));
         }
     }
 
@@ -328,9 +341,8 @@ public class GenericLauncher extends Game {
         main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + name);
         DC_Engine.gameStartInit();
         //how to prevent this from being called twice?
-        if (!Eidolons.initScenario(createMetaForScenario(data)))
-        {
-            initRunning=false;
+        if (!Eidolons.initScenario(createMetaForScenario(data))) {
+            initRunning = false;
             return; // INIT FAILED or EXITED
         }
         MusicMaster.preload(MUSIC_SCOPE.ATMO);
@@ -351,7 +363,7 @@ public class GenericLauncher extends Game {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 screenSwitcher(new EventCallbackParam(new ScreenData(
-                 Eidolons.getPreviousScreenType(), "")));
+                        Eidolons.getPreviousScreenType(), "")));
             }
         } else {
             screenSwitcher(param);

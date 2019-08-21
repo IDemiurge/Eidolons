@@ -35,7 +35,9 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getAggroGroup() {
-        if (!EidolonsGame.firstBattleStarted || getPlayerUnseenMode()) {
+        if (
+                !EidolonsGame.firstBattleStarted ||
+                getPlayerUnseenMode()) {
             return new ArrayList<>();
         }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();

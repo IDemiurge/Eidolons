@@ -128,7 +128,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
         //don't want invisible stuff to act...
-        blackout= new Blackout( );
+        blackout = new Blackout();
         setRoot(new GroupX() {
             @Override
             public void act(float delta) {
@@ -323,14 +323,14 @@ public class GuiStage extends StageX implements StageWithClosable {
     public void draw() {
         //can we just pass if in 'cinematic mode'?
 
-        if (Cinematics.ON) {
-
-            getBatch().begin();
-            drawCinematicMode(getBatch());
-            blackout.draw(getCustomSpriteBatch() );
-            getBatch().end();
-            return;
-        }
+//        if (Cinematics.ON) TODO could it be useful?
+//            if (dialogueContainer.getCurrent().getColor().a == 0) {
+//                getBatch().begin();
+//                drawCinematicMode(getBatch());
+//                blackout.draw(getCustomSpriteBatch());
+//                getBatch().end();
+//                return;
+//            }
 
         if (CoreEngine.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
@@ -347,7 +347,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             return;
         }
         super.draw();
-        blackout.draw(getCustomSpriteBatch() );
+        blackout.draw(getCustomSpriteBatch());
     }
 
     protected void drawCinematicMode(Batch batch) {
@@ -359,22 +359,25 @@ public class GuiStage extends StageX implements StageWithClosable {
         blackout.act(delta);
         if (dialogueMode) {
             dialogueContainer.setX(GdxMaster.centerWidth(dialogueContainer));
-            for (Actor actor : getActorsForDialogue()) {
-                actor.act(delta);
+            for (Actor actor : getRoot().getChildren()) {
+                if (getActorsForDialogue().contains(actor)) {
+                    continue;
+                }
+                if (actor.isVisible()) {
+                    actor.setVisible(false);
+                    hiddenActors.add(actor);
+                }
             }
-            if (tipMessageWindow != null) {
-                tipMessageWindow.act(delta);
+            if (dialogueContainer.getCurrent().getColor().a == 0) {
+
+                for (Actor actor : getActorsForDialogue()) {
+                    actor.act(delta);
+                }
+                if (tipMessageWindow != null) {
+                    tipMessageWindow.act(delta);
+                }
+                return;
             }
-//            for (Actor actor : getRoot().getChildren()) {
-//                if (getActorsForDialogue().contains(actor)) {
-//                    continue;
-//                }
-//                if (actor.isVisible()) {
-//                    actor.setVisible(false);
-//                    hiddenActors.add(actor);
-//                }
-//            }
-            return;
         } else {
             dialogueContainer.setVisible(false);
         }
@@ -422,12 +425,19 @@ public class GuiStage extends StageX implements StageWithClosable {
     public List<Actor> getActorsForDialogue() {
         if (dialogueActors == null) {
             dialogueActors =
-                    new ArrayList<>(Arrays.asList(new Actor[]{
-                            dialogueContainer,
-                            confirmationPanel,
-                    }));
+                    new ArrayList<>(Arrays.asList(getDialogueActors()));
+        }
+        if (!dialogueActors.contains(tipMessageWindow)) {
+            dialogueActors.add(tipMessageWindow);
         }
         return dialogueActors;
+    }
+
+    protected Actor[] getDialogueActors() {
+        return new Actor[]{
+                dialogueContainer,
+                confirmationPanel,
+        };
     }
 
     public List<Actor> getActorsForTown() {

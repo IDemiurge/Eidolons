@@ -207,7 +207,6 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
-        cordsText.setVisible(DC_Game.game.isDebugMode());
         if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
          ) {
             return;
@@ -224,9 +223,6 @@ public class GridCell extends Group implements Borderable {
                 );
                 cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
 
-            } else {
-                cordsText = new Label(getGridX() + ":" + getGridY(), StyleHolder.getDefaultLabelStyle());
-                cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
             }
         } else {
             if (cordsText.isVisible()) {

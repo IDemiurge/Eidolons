@@ -10,6 +10,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.hero.IggHeroSelectionPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
@@ -64,9 +65,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     public static Boolean isVideoEnabled() {
-        if (CoreEngine.isIggDemo()){
-            return false;
-        }
+//        if (CoreEngine.isIggDemo()){
+//            return false;
+//        }
         if (videoEnabled == null)
             videoEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
         return videoEnabled;
@@ -225,13 +226,13 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         if (!isLoadingWithVideo()) {
             initVideo();
         } else if (loadVideo != null) {
-            try {
-                loadVideo.stop();
-                loadVideo.getPlayer().dispose();
-                loadVideo = null;
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+//            try {
+//                loadVideo.stop();
+//                loadVideo.getPlayer().dispose();
+//                loadVideo = null;
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
         }
     }
 
@@ -314,7 +315,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     protected boolean isLoadingWithVideo() {
-        return true;
+        return false;
     }
 
     protected void renderVideo(float delta) {
@@ -323,13 +324,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
             playVideo();
         else if (!loadVideo.getPlayer().isPlaying())
             playVideo();
-        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+//        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         if (isClearForVideo())
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         if (!loadVideo.getPlayer().render())
             if (isLooped())
                 playVideo();
-
 
     }
 

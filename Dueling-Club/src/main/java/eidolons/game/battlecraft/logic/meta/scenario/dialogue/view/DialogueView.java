@@ -2,24 +2,19 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
-import main.system.auxiliary.log.FileLogManager;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
@@ -52,17 +47,19 @@ public class DialogueView extends TablePanelX implements Scene {
     public DialogueView() {
         super(WIDTH, HEIGHT);
         add(portraitLeft = new DialoguePortraitContainer());
-        TablePanelX<Actor> middle = new TablePanelX<>(WIDTH   / 3 * 2
+        TablePanelX<Actor> middle = new TablePanelX<>(WIDTH / 3 * 2
                 , HEIGHT);
         add(middle);
         middle.add(scroll = new DialogueScroll()).row();
         middle.add(replyBox = new TablePanelX(WIDTH / 3, HEIGHT / 3));
-        replyBox.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+//        replyBox.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
         add(portraitRight = new DialoguePortraitContainer());
 //        middle.setBackground(NinePatchFactory.getHqDrawable());
 //        setBackground(NinePatchFactory.getHqDrawable());
         inputProcessor = new DialogueInputProcessor(this);
+
+        StyleHolder.getDialogueReplyStyle(); //have init it!
     }
 
     public DialogueInputProcessor getInputProcessor() {
@@ -77,6 +74,15 @@ public class DialogueView extends TablePanelX implements Scene {
     public void update(SpeechDataSource data) {
         //        prev = portrait.getPrevious();
 //        history.add(data);
+
+        boolean appendedMessage = false;
+        if (getUserObject() != null) {
+            if (getUserObject().getSpeakerActor() == data.getSpeakerActor()) {
+                appendedMessage = data.isAppendedMessage();
+            }
+        } else {
+            setTime(1f);
+        }
         setUserObject(data);
         data.setHandler(handler);
         ActorDataSource active = data.getSpeakerActor();
@@ -94,7 +100,7 @@ public class DialogueView extends TablePanelX implements Scene {
                 }
             }
         }
-        scroll.append(text, active.getActorName(), active.getActorImage());
+        scroll.append(text, active.getActorName(), active.getActorImage(), appendedMessage);
         scrollToBottom = true;
 
         if (timeToRespond != null)
@@ -121,11 +127,11 @@ public class DialogueView extends TablePanelX implements Scene {
             final int i_ = i++;
             if (option.equals(SpeechDataSource.DEFAULT_RESPONSE)) {
                 response = new SmartButton("Continue", StyleHolder.getDialogueReplyStyle(),
-                        () -> respond(option, i_), STD_BUTTON.TAB_HIGHLIGHT);
+                        () -> respond(option, i_), STD_BUTTON.HIGHLIGHT_ALT);
 //                response = new SmartButton(STD_BUTTON.OK, () -> respond(option, i_));
             } else
                 response = new SmartButton(option, StyleHolder.getDialogueReplyStyle(),
-                        () -> respond(option, i_), STD_BUTTON.TAB_HIGHLIGHT);
+                        () -> respond(option, i_), STD_BUTTON.HIGHLIGHT_ALT);
 
             replyBox.add(response).left().row();
         }
@@ -186,13 +192,15 @@ public class DialogueView extends TablePanelX implements Scene {
         if (container != null) {
 //            container.respond(option);
             ActorDataSource actor = getUserObject().getSpeakerActor();
+            boolean appendedMessage = false;
+            if (handler.getSpeakerLast() == actor) {
+                appendedMessage = getUserObject().isAppendedMessage();
+            }
             if (!option.equalsIgnoreCase(SpeechDataSource.DEFAULT_RESPONSE))
                 if (actor == null) {
-                    scroll.append(option, "", "");
+                    scroll.append(option, "", "", appendedMessage);
                 } else {
-                    scroll.append(option, actor.getActorName(), actor.getActorImage());
-
-
+                    scroll.append(option, actor.getActorName(), actor.getActorImage(), appendedMessage);
                 }
             if (actor != null) {
                 if (actor.getActor().getLinkedUnit() == null)
@@ -201,23 +209,32 @@ public class DialogueView extends TablePanelX implements Scene {
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
-                handler.checkAutoCamera(actor.getActor().getLinkedUnit());
             }
             timerDisabled = false;
             SpeechDataSource next =
                     handler.lineSpoken(getUserObject().speech, index);
             if (next != null) {
-                scroll.append("", "", Images.SEPARATOR_ALT).center().setX(getWidth() / 2);
+
+                if (!appendedMessage)
+                    scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2);
                 update(next);
+
+                if (!appendedMessage)
+                    try { //TODO refactor!
+                        handler.checkAutoCamera(getUserObject().getSpeakerActor().getActor().getLinkedUnit());
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+
                 int time = handler.getDialogue().getTimeBetweenScripts() + next.getMessage().length() *
                         handler.getDialogue().getTimeBetweenScriptsLengthMultiplier();
                 if (time > 0) {
                     disableReplies();
                     main.system.auxiliary.log.LogMaster.dev("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
-                    WaitMaster.doAfterWait(time, () ->{
-                                autoRespond = true;
-                                main.system.auxiliary.log.LogMaster.dev("autoRespond = true; ");
-                            });
+                    WaitMaster.doAfterWait(time, () -> {
+                        autoRespond = true;
+                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true; ");
+                    });
                 } else {
                     if (!isRepliesEnabled()) {
                         enableReplies();
@@ -310,6 +327,7 @@ public class DialogueView extends TablePanelX implements Scene {
     public void disableTimer() {
         timerDisabled = true;
     }
+
     private boolean isDoubleSpeedFade() {
         return true;
     }
@@ -317,7 +335,8 @@ public class DialogueView extends TablePanelX implements Scene {
     @Override
     public void layout() {
         super.layout();
-        replyBox.setY(30);
+//        scroll.setY(-20);
+//        replyBox.setY(30);
     }
 
     public void setContainer(DialogueContainer container) {

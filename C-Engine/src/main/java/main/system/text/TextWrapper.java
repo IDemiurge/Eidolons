@@ -69,8 +69,13 @@ public class TextWrapper {
 
         if (zigZagLines) {
             String newTextZiggy="";
+            int i =0;
             for (String substring : StringMaster.splitLines(newText)) {
-                newTextZiggy +=StringMaster.getWhiteSpaces((maxLength-substring.length())/2)+
+                int n = (maxLength - substring.length()) * 2 / 3;
+//                if (i++%2==1){
+//                    n = n / 2;
+//                }
+                newTextZiggy +=StringMaster.getWhiteSpaces(n)+
                         substring+StringMaster.NEW_LINE;
             }
             return newTextZiggy.substring(0, newTextZiggy.length()-1);

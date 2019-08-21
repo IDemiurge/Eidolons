@@ -16,7 +16,8 @@ import eidolons.libgdx.bf.mouse.InputController;
 /**
  * Created by JustMe on 8/17/2017.
  */
-public abstract class SuperActor extends Fluctuating implements Borderable {
+public abstract class SuperActor extends Fluctuating implements
+       CachedIgnoreActor, Borderable {
     protected Image border = null;
     protected TextureRegion borderTexture;
     protected boolean teamColorBorder;
@@ -107,6 +108,7 @@ public abstract class SuperActor extends Fluctuating implements Borderable {
     }
 
     public boolean isWithinCamera() {
+
         if (withinCamera != null)
             return withinCamera;
         if (isCachedPosition()) {
@@ -116,11 +118,12 @@ public abstract class SuperActor extends Fluctuating implements Borderable {
         }
         return getController().isWithinCamera(this);
     }
-
+    @Override
     public void cameraMoved() {
         this.withinCamera = null;
     }
 
+    @Override
     public boolean isCachedPosition() {
         return false;
     }

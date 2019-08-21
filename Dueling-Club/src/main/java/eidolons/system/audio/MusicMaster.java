@@ -9,8 +9,6 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
-import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -63,6 +61,7 @@ public class MusicMaster {
     private boolean loopPlaylist = false;
     private Map<String, Music> musicCache = new XLinkedMap<>();
 
+    Soundscape soundscape = new Soundscape();
 
     private Music playedMusic;
     private Music mutedMusic;
@@ -71,8 +70,7 @@ public class MusicMaster {
     private boolean running;
 
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
-
-
+    List<PreloadedMusic> looping = new ArrayList<>();
 
 //    static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
 //    static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
@@ -126,6 +124,22 @@ public class MusicMaster {
                 musicReset();
             }
 
+        });
+        GuiEventManager.bind(GuiEventType.ADD_LOOPING_TRACK, p -> {
+            List list = (List) p.get();
+            String path = list.get(0).toString();
+            PreloadedMusic preloadedMusic = new PreloadedMusic(path);
+            preloadedMusic.setVolume((Float) list.get(1));
+            looping.add(preloadedMusic);
+        });
+        GuiEventManager.bind(GuiEventType.STOP_LOOPING_TRACK, p -> {
+            String path = p.get().toString();
+            for (PreloadedMusic preloadedMusic : new ArrayList<>(looping)) {
+                if (StringMaster.compare(preloadedMusic.getPath(), path, false)) {
+                    looping.remove(preloadedMusic);
+                    break;
+                }
+            }
         });
 
     }
@@ -196,9 +210,14 @@ public class MusicMaster {
         playMoment(moment);
     }
 
-    public   void overrideWithTrack(String value) {
+    public void playParallel(String value) {
         MUSIC_TRACK track = getTrackByName(value);
-        playMusic(track.getPath(), true);
+        playMusic(track.getPath(), true, false);
+    }
+
+    public void overrideWithTrack(String value) {
+        MUSIC_TRACK track = getTrackByName(value);
+        playMusic(track.getPath(), false, true);
     }
 
     private MUSIC_TRACK getTrackByName(String value) {
@@ -414,7 +433,7 @@ public class MusicMaster {
 
     private MUSIC_TRACK getTrackFromPath(String sub) {
         for (MUSIC_TRACK track : MUSIC_TRACK.values()) {
-            if (sub.contains(track.getPath())) {
+            if (sub.contains(track.getName())) {
                 return track;
             }
         }
@@ -486,20 +505,20 @@ public class MusicMaster {
         switch (scope) {
             case MENU:
                 if (shouldLoop) {
-                    return THERE_WILL_BE_PAIN_LOOP.getPath();
+                    return THERE_WILL_BE_PAIN_LOOP.getName();
                 }
-                return FRACTURES.getPath();
+                return FRACTURES.getName();
             case ATMO:
-                return LOOMING_SHADES.getPath();
+                return LOOMING_SHADES.getName();
             case MAP:
-                return ENTHRALLING_WOODS.getPath();
+                return ENTHRALLING_WOODS.getName();
             case BATTLE:
                 if (shouldLoop) {
-                    return SUFFOCATION_LOOP.getPath();
+                    return SUFFOCATION_LOOP.getName();
                 }
-                return NIGHT_OF_DEMON.getPath();
+                return NIGHT_OF_DEMON.getName();
         }
-        return SUFFOCATION_LOOP.getPath();
+        return SUFFOCATION_LOOP.getName();
     }
 
 
@@ -660,28 +679,22 @@ public class MusicMaster {
                 }
             }
         }
-        soundPlayback(PERIOD);
+        checkLoopedTracks(); //breathing, heartbeat, ..
+        soundscape.act(new Float(PERIOD)/1000);
+        WaitMaster.WAIT(PERIOD);
+//        soundPlayback(PERIOD);
 
     }
 
-    private void soundPlayback(int period) {
-        waited += period;
-        WaitMaster.WAIT(period);
-        if (CoreEngine.isJar())
-            if (EidolonsGame.BRIDGE)
-                if (waited >= 2000) {
-                    if (RandomWizard.chance(4)) {
-                        DC_SoundMaster.playEffectSound(RandomWizard.random() ? SOUNDS.IDLE :
-                                        RandomWizard.random() ? SOUNDS.DEATH : SOUNDS.ALERT,
+    private void checkLoopedTracks() {
+        for (PreloadedMusic preloadedMusic : looping) {
+            if (!preloadedMusic.isPlaying()) {
+                preloadedMusic.play();
+            }
 
-                                RandomWizard.random() ?
-                                        wraith : RandomWizard.random() ?
-                                        ironman : RandomWizard.random() ?
-                                        zombie : cthulhu, RandomWizard.getRandomInt(100), 0);
-                    }
-                    waited = 0;
-                }
+        }
     }
+
 
     public void resume() {
         if (playedMusic != null)
@@ -701,35 +714,41 @@ public class MusicMaster {
         stopped = true;
     }
 
-    public void restoreMuted( ) {
+    public void restoreMuted() {
         if (mutedMusic == null) {
             return;
         }
         mutedMusic.setVolume(1);
-        mutedMusic=null ;
+        mutedMusic = null;
     }
-        public void playMusic(String path ) {
-        playMusic(path, false);
+
+    public void playMusic(String path) {
+        playMusic(path, false, false);
     }
-    public void playMusic(String path, boolean muteCurrent) {
+
+    public void playMusic(String path, boolean parallel, boolean muteCurrent) {
         path = PathUtils.addMissingPathSegments(path, PathFinder.getMusicPath());
         //TODO save!
-        if (playedMusic != null)
-        {
-            if (muteCurrent) {
-                playedMusic.setVolume(0);
-                mutedMusic = playedMusic;
-            } else {
-                playedMusic.stop();
-            }
-        }
-
-        playedMusic = getMusic(path);
+        Music music = getMusic(path);
         Float volume =
                 getVolume();
-        playedMusic.setVolume(volume);
-        playedMusic.play();
-        trackCache.put(this.scope, playedMusic);
+        music.setVolume(volume);
+        music.play();
+        trackCache.put(this.scope, music);
+        if (!parallel) {
+            if (playedMusic != null) {
+                if (muteCurrent) {
+                    playedMusic.setVolume(0);
+                    mutedMusic = playedMusic;
+                } else {
+                    playedMusic.stop();
+                }
+                playedMusic = music;
+            }
+        } else {
+            //add to list? otherwise, how to mute it?
+        }
+
         log(1, "Music playing: " + path);
     }
 
@@ -870,31 +889,45 @@ public class MusicMaster {
     }
 
     public enum MUSIC_TRACK {
-        FAR_BEYOND_FALLEN,
-        FRACTURES,
-        THERE_WILL_BE_PAIN_LOOP,
-        THE_END_OR_THE_BEGINNING,
+        FRACTURES(MUSIC_SCOPE.MENU),
+        THERE_WILL_BE_PAIN_LOOP(MUSIC_SCOPE.MENU),
+        THE_END_OR_THE_BEGINNING(MUSIC_SCOPE.MENU),
+        FAR_BEYOND_FALLEN(MUSIC_SCOPE.MENU),
+
         OBSCURE_PATHS_LOOP,
         FALLEN_REALMS,
-
-
         FROM_DUSK_TILL_DAWN,
         DARK_SECRETS,
         DUNGEONS_OF_DOOM,
         LOOMING_SHADES,
 
-        ENTHRALLING_WOODS,
+        ENTHRALLING_WOODS(MUSIC_SCOPE.MAP),
 
-        TOWARDS_THE_UNKNOWN_LOOP,
-        PREPARE_FOR_WAR,
-        NIGHT_OF_DEMON,
-        SUFFOCATION_LOOP,
-        BATTLE_INTRO_LOOP,
-        BATTLE_ALT,
-        BATTLE_LOOP,
+        TOWARDS_THE_UNKNOWN_LOOP(MUSIC_SCOPE.BATTLE),
+        PREPARE_FOR_WAR(MUSIC_SCOPE.BATTLE),
+        NIGHT_OF_DEMON(MUSIC_SCOPE.BATTLE),
+        SUFFOCATION_LOOP(MUSIC_SCOPE.BATTLE),
+        BATTLE_INTRO_LOOP(MUSIC_SCOPE.BATTLE),
+        BATTLE_ALT(MUSIC_SCOPE.BATTLE),
+        BATTLE_LOOP(MUSIC_SCOPE.BATTLE),
         ;
+        MUSIC_SCOPE scope;
+
+        MUSIC_TRACK() {
+        }
+
+        MUSIC_TRACK(MUSIC_SCOPE scope) {
+            this.scope = scope;
+        }
 
         public String getPath() {
+            if (scope == MUSIC_SCOPE.ATMO) {
+                return "main/" + getName() + ".mp3";
+            }
+            return "main/" + scope + "/" + getName() + ".mp3";
+        }
+
+        public String getName() {
             return StringMaster.getWellFormattedString(name());
         }
     }

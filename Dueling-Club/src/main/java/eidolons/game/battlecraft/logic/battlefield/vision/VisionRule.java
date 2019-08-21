@@ -315,6 +315,8 @@ public class VisionRule {
     }
 
     public boolean isDisplayedOnGrid(Unit source, BattleFieldObject object) {
+        if (object.isHidden())
+            return false;
         if (object.isMine())
             return true;
         if (object.isOverlaying()) {

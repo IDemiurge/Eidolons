@@ -10,6 +10,7 @@ import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class EmitterActor extends SuperActor {
     public EmitterActor(String path) {
         //        path =PathFinder.getVfxPath() + "templates/sprite test";
         this.path = path;
-        effect = EmitterPools.getEffect(path);
+            effect = EmitterPools.getEffect(path);
         //TODO not very safe...
         //        if (EmitterMaster.getAtlasType(path)!= VFX_ATLAS.UNIT) {
         //            effect.getEmitters().forEach(emitter -> emitter.setAdditive(true));
@@ -94,7 +95,7 @@ public class EmitterActor extends SuperActor {
         effect.setPosition(getX(), getY());
 //        effect.setFlip(flipX, flipY);
         //        effect.update(delta); TODO now drawing with alpha!
-       //effect.getEmitters().first().flipY(); wh isn't there flipx
+        //effect.getEmitters().first().flipY(); wh isn't there flipx
     }
 
     public void setFlipX(boolean flipX) {
@@ -107,10 +108,10 @@ public class EmitterActor extends SuperActor {
 
     public void updatePosition(float x, float y) {
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VERBOSE_CHECK, this + " from " +
-         getX() +
-         " " +
-         getY() +
-         " pos set to " + x + " " + y);
+                getX() +
+                " " +
+                getY() +
+                " pos set to " + x + " " + y);
         setPosition(x, y);
     }
 
@@ -119,11 +120,11 @@ public class EmitterActor extends SuperActor {
             hide();
         if (lastAlpha != null)
             effect.getEmitters().forEach(e ->
-             e.getTransparency().scale(1 / lastAlpha));
+                    e.getTransparency().scale(1 / lastAlpha));
 
         lastAlpha = alpha;
         effect.getEmitters().forEach(e -> //e.getTransparency().setScaling()
-         e.getTransparency().scale(alpha));
+                e.getTransparency().scale(alpha));
     }
 
     public GenericEnums.VFX getTemplate() {
@@ -159,7 +160,7 @@ public class EmitterActor extends SuperActor {
 //                broken = true;
 //            }
 //        else
-            effect.draw(batch, delta);
+        effect.draw(batch, delta);
     }
 
     public ParticleEffectX getEffect() {

@@ -2,6 +2,7 @@ package eidolons.libgdx.anims;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
@@ -35,6 +36,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -43,6 +45,7 @@ public class Assets {
     private static boolean ON = true;
     static Assets assets;
     AssetManager manager;
+    private TextureAtlas dummyAtlas = new TextureAtlas(PathFinder.getImagePath() + "sprites/ui/dummy.txt");
 
     public static void setON(boolean ON) {
         Assets.ON = ON;
@@ -57,24 +60,57 @@ public class Assets {
 
             @Override
             public synchronized boolean isLoaded(String fileName) {
+                if (fileName.contains(".txt"))
+                    if (!fileName.contains("vfx")) {
+                        if (CoreEngine.isSuperLite()) {
+                            return true;
+                        }
+                    }
                 fileName = FileManager.formatPath(fileName, true, true);
                 return super.isLoaded(fileName);
             }
 
             @Override
             public synchronized boolean isLoaded(String fileName, Class type) {
+                if (type.getName().contains("TextureAtlas")) {
+                    if (CoreEngine.isSuperLite()) {
+                        return true;
+                    }
+                }
                 fileName = FileManager.formatPath(fileName, true, true);
                 return super.isLoaded(fileName, type);
             }
 
             @Override
+            public synchronized <T> void load(String fileName, Class<T> type, AssetLoaderParameters<T> parameter) {
+                if (type.getName().contains("TextureAtlas")) {
+                    if (CoreEngine.isSuperLite()) {
+                        return;
+                    }
+                }
+                fileName = FileManager.formatPath(fileName, true, true);
+                super.load(fileName, type, parameter);
+            }
+
+            @Override
             public synchronized <T> T get(String fileName, Class<T> type) {
+                if (type.getName().contains("TextureAtlas")) {
+                    if (CoreEngine.isSuperLite()) {
+                        return (T) dummyAtlas;
+                    }
+                }
                 fileName = FileManager.formatPath(fileName, true, true);
                 return super.get(fileName, type);
             }
 
             @Override
             public synchronized <T> T get(String fileName) {
+                if (fileName.contains(".txt"))
+                    if (!fileName.contains("vfx")) {
+                        if (CoreEngine.isSuperLite()) {
+                            return (T) dummyAtlas;
+                        }
+                    }
                 fileName = FileManager.formatPath(fileName, true, true);
                 return super.get(fileName);
             }
@@ -140,12 +176,51 @@ public class Assets {
         return ON;
     }
 
+    public static void preloadMenu() {
+        //TODO ?
+    }
     public static boolean preloadAll(DequeImpl<BattleFieldObject> objects) {
+        return preload(objects, true, true, true, true);
+    }
+
+    public static boolean preloadAdditional(DequeImpl<BattleFieldObject> objects) {
+        return preload(objects, true, true, true, true);
+    }
+
+    public static boolean preloadMain(DequeImpl<BattleFieldObject> objects) {
+        return preload(objects, false, true, false, true);
+    }
+
+    public static boolean preload(DequeImpl<BattleFieldObject> objects,
+                                  boolean full, boolean ui, boolean her0es, boolean emitters) {
+        boolean result = preloadObjects(objects, full);
+
+        if (emitters) {
+            preloadEmitters();
+        }
+
+        if (ui) {
+            Chronos.mark("preload ui");
+            preloadUI(full);
+            Chronos.logTimeElapsedForMark("preload ui");
+            result = true;
+        }
+
+        if (her0es) {
+            Chronos.mark("preload her0es");
+            preloadHeroes(full);
+            Chronos.logTimeElapsedForMark("preload her0es");
+        }
+
+        return result;
+    }
+
+    private static boolean preloadObjects(DequeImpl<BattleFieldObject> objects, boolean full) {
+        Chronos.mark("preloadObjects");
         boolean result = false;
-        Chronos.mark("isPreconstructAllOnGameInit");
         if (AnimConstructor.isPreconstructAllOnGameInit()) {
             for (BattleFieldObject sub : objects) {
-                if (!checkPreloadUnit(sub)) {
+                if (!checkPreloadUnit(sub, full)) {
                     continue;
                 }
                 if (sub instanceof Unit)
@@ -160,12 +235,16 @@ public class Assets {
             result = true;
         }
 
-        Chronos.logTimeElapsedForMark("isPreconstructAllOnGameInit");
+        Chronos.logTimeElapsedForMark("preloadObjects");
+        return result;
+    }
+
+    private static void preloadEmitters() {
         EmitterPresetMaster.getInstance().init();
 
         EmitterPools.init(get().getManager());
         if (EmitterPools.isPreloaded()) {
-        Chronos.mark("preload EmitterPools");
+            Chronos.mark("preload EmitterPools");
             for (EmitterMaster.VFX_ATLAS value : EmitterMaster.VFX_ATLAS.values()) {
                 switch (value) {
                     case MAP:
@@ -174,73 +253,67 @@ public class Assets {
                 }
                 get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
             }
-        Chronos.logTimeElapsedForMark("preload EmitterPools");
+            Chronos.logTimeElapsedForMark("preload EmitterPools");
+        }
+    }
+
+
+    public static void preloadHeroes(boolean full) {
+        loadSprite(PathFinder.getSpritesPath()
+                + "hero/" + Eidolons.getMainHero().getName() + ".txt", full);
+    }
+
+    public static void preloadUI(boolean full) {
+        loadSprite(Sprites.BG_DEFAULT, full);
+        loadSprite(Sprites.INK_BLOTCH, full);
+        loadSprite(Sprites.PORTAL_OPEN, full);
+        loadSprite(Sprites.PORTAL, full);
+        loadSprite(FullscreenAnims.FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), full);
+
+        if (DialogueManager.TEST)
+            return;
+        if (full) {
+            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
+            loadSprite(Sprites.SNOW, full);
+            loadSprite(Sprites.MIST, full);
+            loadSprite(Sprites.PORTAL_CLOSE, full);
+            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), full);
+            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), full);
+            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
+            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
+
         }
 
-        Chronos.mark("preload ui");
-        preloadUI();
-        Chronos.logTimeElapsedForMark("preload ui");
-
-        if (isPreloadHeroes()) {
-            Chronos.mark("preload her0es");
-            preloadHeroes();
-            Chronos.logTimeElapsedForMark("preload her0es");
-        }
-
-        return result;
-    }
-
-    public static void preloadMenu() {
-    }
-
-
-    public static void preloadHeroes() {
-        SpriteAnimationFactory.getSpriteAnimation(PathFinder.getSpritesPath()
-                + "hero/" + Eidolons.getMainHero().getName() + ".txt", false);
-    }
-
-    public static void preloadUI() {
         if (EidolonsGame.BRIDGE) {
-//            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), false);
-//            SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT);
-
-            if (DialogueManager.TEST)
-                return;
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.INK_BLOTCH);
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_CLOSE);
-            SpriteAnimationFactory.getSpriteAnimation(Sprites.PORTAL_OPEN);
-            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), false);
-            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), false);
-            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), false);
-//            SpriteAnimationFactory.getSpriteAnimation(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), false);
             return;
         }
-//        if (CoreEngine.isLiteLaunch()) {
-//            return;
-//        }
-        SpriteAnimationFactory.getSpriteAnimation(Sprites.RADIAL, false);
-//        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_DEATH, false);
-//        SpriteAnimationFactory.getSpriteAnimation(Sprites.SHADOW_SUMMON, false);
-        SpriteAnimationFactory.getSpriteAnimation(IGG_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), false);
+        loadSprite(Sprites.RADIAL, full);
+        loadSprite(IGG_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), full);
         //locks
         // blood
         //boss
     }
 
-
-    private static boolean isPreloadHeroes() {
-        return false;
+    private static void loadSprite(String path, boolean full) {
+        if (full) {
+            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
+        } else {
+            SpriteAnimationFactory.getSpriteAnimation(path, false);
+        }
     }
 
-    private static boolean checkPreloadUnit(BattleFieldObject sub) {
+
+    private static boolean checkPreloadUnit(BattleFieldObject sub, boolean full) {
         if (sub == Eidolons.getMainHero()) {
             return true;
         }
-        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) > 30) {
+        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) > (full ? 30 : 10)) {
             return false;
         }
         return true;
     }
+
+
 
     public AssetManager getManager() {
         return manager;

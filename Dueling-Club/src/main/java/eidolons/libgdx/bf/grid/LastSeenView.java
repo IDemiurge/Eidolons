@@ -72,9 +72,8 @@ public class LastSeenView extends GenericGridView {
             getHpBar().setVisible(false);
     }
 
-    @Override
-    protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
-        super.init(arrowTexture, arrowRotation, iconTexture, emblem);
+    protected void init(TextureRegion arrowTexture, int arrowRotation,  TextureRegion emblem) {
+        super.init(arrowTexture, arrowRotation,   emblem);
         if (arrow != null)
             arrow.setVisible(false);
     }

@@ -95,6 +95,8 @@ public class ButtonStyled extends ImageContainer {
 
         STAT(StrPathBuilder.build(PathFinder.getUiPath(),
          "components", "hq" ,"stats" ,"cross.png")),
+        HIGHLIGHT_ALT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "alt" ,
+                "highlight.png")),
         TAB_HIGHLIGHT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "highlight.png")),
         TAB_HIGHLIGHT_COLUMN(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs/opaque", "highlight.png")),
         SPELLBOOK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
@@ -116,7 +118,8 @@ public class ButtonStyled extends ImageContainer {
                 "buttons","special", "pale.png")),
         SOULS_BTN(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
                 "buttons","special", "souls.png")),
- ;
+
+        ;
 
         String path;
         private Drawable texture;

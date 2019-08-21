@@ -8,7 +8,6 @@ import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
 import main.data.XLinkedMap;
@@ -19,7 +18,6 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.Collection;
@@ -118,7 +116,8 @@ public abstract class GridObject extends GroupWithEmitters {
     protected void createEmittersOver() {
     }
 
-    protected void createEmittersFromFolder(String paths, float vfxChance) {
+    protected void createEmittersFromFolder(String paths, float vfxChance, int max) {
+        int i = 0;
         for (String path : ContainerUtils.openContainer(paths))
             for (File file : FileManager.getFilesFromDirectory(PathFinder.getVfxAtlasPath() + path, false, false)) {
                 if (!RandomWizard.chance((int) (100 * vfxChance))) {
@@ -128,6 +127,10 @@ public abstract class GridObject extends GroupWithEmitters {
                         FileManager.formatPath(file.getPath(), true)
                         , FileManager.formatPath(PathFinder.getVfxAtlasPath(), true
                         )), c.x, c.y);
+                i++;
+                if (i >= max) {
+                    return;
+                }
             }
     }
 
@@ -151,9 +154,25 @@ public abstract class GridObject extends GroupWithEmitters {
     protected abstract int getFps();
 
     @Override
-    public void act(float delta) {
+    public void draw(Batch batch, float parentAlpha) {
+        if (isIgnored()) {
+            return;
+        }
         if (!initialized) {
             init();
+            act(RandomWizard.getRandomFloat());
+        }
+        super.draw(batch, parentAlpha);
+    }
+
+    protected boolean isIgnored() {
+        return false;
+    }
+
+    @Override
+    public void act(float delta) {
+        if (isIgnored()) {
+            return;
         }
         if (getColor().a == 1) {
             if (!checkVisible()) {

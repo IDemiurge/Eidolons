@@ -401,6 +401,9 @@ public class LogMaster {
     }
     public static void important(String string) {
         log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + string);
+        if (!CoreEngine.isIDE()){
+            FileLogManager.streamMain(string);
+        }
     }
 
     public static void error(String string) {

@@ -386,6 +386,11 @@ public class Eidolons {
             onNonGdxThread(o);
         } else o.run();
     }
+    public static void onThisOrGdxThread(Runnable o) {
+        if (!GdxMaster.isLwjglThread()) {
+           Gdx.app.postRunnable(o);
+        } else o.run();
+    }
 
     public static void onNonGdxThread(Runnable o) {
 //        if (!logicThreadBusy) {

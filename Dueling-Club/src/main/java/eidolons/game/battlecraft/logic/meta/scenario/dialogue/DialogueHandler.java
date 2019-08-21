@@ -34,6 +34,7 @@ public class DialogueHandler {
     private ActorDataSource myActor;
     private ActorDataSource speakerLast;
     private boolean autoCamera;
+    private float speed=1f;
 
     public DialogueHandler(DialogueManager dialogueManager, GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
         this.dialogueManager = dialogueManager;
@@ -191,5 +192,13 @@ public class DialogueHandler {
                     linkedUnit, 2, true, Interpolation.fade);
 
         }
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }

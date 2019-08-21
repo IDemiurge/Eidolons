@@ -26,8 +26,6 @@ public class UnitViewOptions {
     private Runnable runnable;
     private TextureRegion portraitTexture;
     private TextureRegion directionPointerTexture;
-    private Texture iconTexture;
-    private TextureRegion clockTexture;
     private TextureRegion emblem;
     private int directionValue;
     private int clockValue;
@@ -67,19 +65,9 @@ public class UnitViewOptions {
         return this.directionPointerTexture;
     }
 
-
-    public final Texture getIconTexture() {
-        return this.iconTexture;
-    }
-
     public TextureRegion getEmblem() {
         return emblem;
     }
-
-    public final TextureRegion getClockTexture() {
-        return this.clockTexture;
-    }
-
 
     public final int getDirectionValue() {
         return this.directionValue;
@@ -122,11 +110,7 @@ public class UnitViewOptions {
              StrPathBuilder.build(PathFinder.getUiPath(),
               "DIRECTION POINTER.png"));
 
-            this.clockTexture = getOrCreateR(
-             StrPathBuilder.build(PathFinder.getComponentsPath(), "dc" ,
-              "atb" ,
-              "readiness bg.png")
-            );
+
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
 
             if (ImageManager.isImage(emblem)) {

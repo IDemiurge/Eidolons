@@ -301,7 +301,7 @@ public class GlobalController implements Controller {
     }
 
     private boolean escape() {
-
+        if (!CoreEngine.isIDE())
         if (Cinematics.ON){
             return false;
         }

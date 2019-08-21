@@ -38,7 +38,7 @@ public class GenericGridView extends UnitView {
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
         setUserObject(obj);
-        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getIconTexture(), o.getEmblem());
+        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getEmblem());
         cellBackground = o.cellBackground;
         setVisible(false);
     }
@@ -62,7 +62,8 @@ public class GenericGridView extends UnitView {
 
     }
 
-    protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
+    protected void init(TextureRegion arrowTexture, int arrowRotation,
+                        TextureRegion emblem) {
 
         if (arrowTexture != null) {
             arrow = new NoHitGroup();
@@ -95,11 +96,11 @@ public class GenericGridView extends UnitView {
             updateRotation();
         }
 
-        if (iconTexture != null) {
-            icon = new Image(iconTexture);
-            addActor(icon);
-            icon.setPosition(0, getHeight() - icon.getImageHeight());
-        }
+//        if (iconTexture != null) {
+//            icon = new Image(iconTexture);
+//            addActor(icon);
+//            icon.setPosition(0, getHeight() - icon.getImageHeight());
+//        }
 
         if (emblem != null) {
             emblemLighting = new Image(TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));

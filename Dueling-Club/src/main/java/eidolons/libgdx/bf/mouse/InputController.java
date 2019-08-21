@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
@@ -14,6 +15,7 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.ArrayList;
@@ -231,12 +233,22 @@ public abstract class InputController implements InputProcessor {
             return false;
         if (isBlocked())
             return true;
+        if (isManualCameraDisabled())
+            return true;
         if (mouseButtonPresed == LEFT) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
             cameraStop();
         }
 
+        return false;
+    }
+
+    private boolean isManualCameraDisabled() {
+        if (!CoreEngine.isIDE())
+            if (Cinematics.ON){
+                return true;
+            }
         return false;
     }
 
@@ -257,6 +269,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected void tryPullCameraX(int screenX) {
+        //TODO custom bounds
         float diffX = (xTouchPos - screenX) * camera.zoom;
         camera.position.x = MathMaster.getMinMax(
                 camera.position.x + diffX,//-getMargin(),

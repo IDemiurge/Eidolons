@@ -323,6 +323,14 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     public void render(float delta) {
+
+        Gdx.gl20.glEnable(GL_POINT_SMOOTH);
+        Gdx.gl20. glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20. glEnable(GL_LINE_SMOOTH);
+        Gdx.gl20. glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
+        Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+
         batch.shaderFluctuation(delta);
         if (speed != null) {
             delta = delta * speed;

@@ -629,7 +629,10 @@ public class Anim extends Group implements Animation {
 
     public void setForcedDestinationForAll(Coordinates forcedDestination) {
         this.forcedDestination = forcedDestination;
-        AnimMaster.getInstance().getParentAnim(getRef()).setForcedDestination(forcedDestination);
+        CompositeAnim parent = AnimMaster.getInstance().getParentAnim(getRef());
+        if (parent != null) {
+            AnimMaster.getInstance().getParentAnim(getRef()).setForcedDestination(forcedDestination);
+        }
     }
 
     protected Vector2 getDefaultPosition() {

@@ -10,8 +10,6 @@ import main.data.DataManager;
 import main.data.StringMap;
 import main.entity.type.ObjType;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +33,7 @@ public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta> {
                 type.setImage(unitType.getImagePath());
             } else {
                 type = new ObjType("", DC_TYPE.ACTORS);
-                type.setImage(Images.EMPTY_DEMIURGE);
+                type.setImage(Images.DEMIURGE);
             }
         }
         return new DialogueActor(type);

@@ -1,19 +1,19 @@
-package eidolons.libgdx.gui.panels.dc;
+package eidolons.libgdx.gui.panels.dc.atb;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class InitiativePanelParam {
+public class AtbParam {
     private TextureRegion textureRegion;
     private int id;
     private int val;
 
-    public InitiativePanelParam(TextureRegion textureRegion, int id, int val) {
+    public AtbParam(TextureRegion textureRegion, int id, int val) {
         this.textureRegion = textureRegion;
         this.id = id;
         this.val = val;
     }
 
-    public InitiativePanelParam(int curId) {
+    public AtbParam(int curId) {
         id = curId;
     }
 

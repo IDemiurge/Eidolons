@@ -55,6 +55,7 @@ public class SmartButton extends TextButton implements EventListener {
         super(text, style);
         this.runnable = runnable;
         addListener(this);
+//        getStyle(). TODO this won't affect  *** !
         this.style = btnStyle;
     }
 

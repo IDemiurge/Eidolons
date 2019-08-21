@@ -1,6 +1,5 @@
 package eidolons.libgdx.stage;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,7 +19,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
@@ -28,6 +27,8 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.particles.ParticlesSprite;
+import eidolons.libgdx.particles.ParticlesSprites;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
@@ -42,13 +43,14 @@ import java.util.List;
 public class BattleGuiStage extends GuiStage {
 
     public static OrthographicCamera camera;
-    private final InitiativePanel initiativePanel;
+    private final AtbPanel atbPanel;
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private final FullscreenAnims fullscreenAnims;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
+    ParticlesSprites particlesSprites;
 
     SoulforcePanel soulforcePanel;
 
@@ -56,6 +58,7 @@ public class BattleGuiStage extends GuiStage {
     public void resetZIndices() {
         super.resetZIndices();
         guiVisualEffects.setZIndex(Integer.MAX_VALUE);
+        particlesSprites.setZIndex(Integer.MAX_VALUE);
     }
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
@@ -69,9 +72,10 @@ public class BattleGuiStage extends GuiStage {
                 batch == null ? new CustomSpriteBatch() :
                         batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
-        initiativePanel = new InitiativePanel();
-        initiativePanel.setPosition(0, GdxMaster.getHeight() - initiativePanel.getHeight());
-        addActor(initiativePanel);
+        addActor(particlesSprites = new ParticlesSprites());
+        atbPanel = new AtbPanel();
+        atbPanel.setPosition(0, GdxMaster.getHeight() - atbPanel.getHeight());
+        addActor(atbPanel);
         bottomPanel = new ActionPanel(0, 0);
         addActor(bottomPanel);
 
@@ -99,23 +103,28 @@ public class BattleGuiStage extends GuiStage {
     }
 
     @Override
-    public List<Actor> getActorsForDialogue() {
-        return super.getActorsForDialogue();
+    protected Actor[] getDialogueActors() {
+        return new Actor[]{
+                dialogueContainer,
+                confirmationPanel,
+                fullscreenAnims,
+                particlesSprites,
+        };
     }
 
     @Override
     protected void drawCinematicMode(Batch batch) {
-        Camera camera = getViewport().getCamera();
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        dialogueContainer.draw(batch, 1f);
-        if (confirmationPanel.isVisible()) {
-            confirmationPanel.draw(batch, 1f);
-        }
-        if (tipMessageWindow.isVisible()) {
-            tipMessageWindow.draw(batch, 1f);
-        }
-        fullscreenAnims.draw(batch, 1f);
+//        Camera camera = getViewport().getCamera();
+//        camera.update();
+//        batch.setProjectionMatrix(camera.combined);
+//        dialogueContainer.draw(batch, 1f);
+//        if (confirmationPanel.isVisible()) {
+//            confirmationPanel.draw(batch, 1f);
+//        }
+//        if (tipMessageWindow.isVisible()) {
+//            tipMessageWindow.draw(batch, 1f);
+//        }
+//        fullscreenAnims.draw(batch, 1f);
 
     }
 
@@ -221,7 +230,7 @@ public class BattleGuiStage extends GuiStage {
     public void update() {
 
         locationLabel.setPosition(25,
-                GdxMaster.getHeight() - locationLabel.getHeight() - initiativePanel.getHeight() - 30);
+                GdxMaster.getHeight() - locationLabel.getHeight() - atbPanel.getHeight() - 30);
 
 //        if (outcomePanel != null)
 //            outcomePanel.setZIndex(Integer.MAX_VALUE);
@@ -240,8 +249,8 @@ public class BattleGuiStage extends GuiStage {
         update();
     }
 
-    public InitiativePanel getInitiativePanel() {
-        return initiativePanel;
+    public AtbPanel getAtbPanel() {
+        return atbPanel;
     }
 
     public ActionPanel getBottomPanel() {

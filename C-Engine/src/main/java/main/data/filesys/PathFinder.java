@@ -496,4 +496,7 @@ public class PathFinder {
         return "ui/components/hq/";
     }
 
+    public static String getSoundCuesPath() {
+        return  getSoundPath() + "moments/cues/";
+    }
 }

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -9,11 +10,15 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.system.auxiliary.StringMaster;
@@ -23,7 +28,9 @@ import main.system.images.ImageManager;
  * Created by JustMe on 11/30/2018.
  */
 public class DialoguePortraitContainer extends TablePanelX {
-//    private final ValueContainer trepidation;
+    private   SpriteX bgSprite;
+    private   SpriteX overlaySprite;
+    //    private final ValueContainer trepidation;
 //    private final ValueContainer esteem;
 //    private final ValueContainer affection;
     FadeImageContainer portrait;
@@ -42,19 +49,39 @@ public class DialoguePortraitContainer extends TablePanelX {
 //        region = TextureCache.getOrCreateR(
 //         ImageManager.getValueIconPath(MACRO_PARAMS.AFFECTION));
 //        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
+        addActor(bgSprite = new SpriteX(Sprites.INK_BLOTCH));
+        bgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
         add(nameLabel = new LabelX()).row();
         nameLabel.setStyle(StyleHolder.getHqLabelStyle(20));
 //        add(teaInfo ).row();
         add(portrait = new FadeImageContainer()).row();
 
+//        addActor(overlaySprite = new SpriteX(Sprites.INK_BLOTCH));
+//        bgSprite.setBlending(SuperActor.BLENDING.SCREEN);
+
 //        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN,
 //        ImageManager.LARGE_ICON_WIDTH,  ImageManager.LARGE_ICON_HEIGHT);
 //        setBackground(new TextureRegionDrawable(new TextureRegion(background)));
 
-        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+//        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+//        getCell(nameLabel).setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        bgSprite.setFps(8);
+        bgSprite.getSprite().centerOnParent(this);
+        bgSprite.setY(-220);
+        bgSprite.setX(-275);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        bgSprite.getColor().a = parentAlpha;
+        super.draw(batch, parentAlpha);
+    }
 
     @Override
     public void updateAct(float delta) {
@@ -67,6 +94,9 @@ public class DialoguePortraitContainer extends TablePanelX {
         }
         DialogueActor actor = dataSource.getActor();
 
+//        actor.isSpeaker().if
+        //animate
+
         setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
          dataSource.getImageSuffix()));
         nameLabel.setText(dataSource.actorName);
@@ -76,10 +106,5 @@ public class DialoguePortraitContainer extends TablePanelX {
     public void setImage(String appendedImageFile) {
         portrait.setImage(appendedImageFile);
         pack();
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
     }
 }

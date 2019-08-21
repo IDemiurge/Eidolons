@@ -6,6 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.texture.Images;
@@ -262,6 +263,9 @@ public class DC_LogManager extends LogManager {
 
     @Override
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
+        if (Cinematics.ON) {
+            return false;
+        }
         return super.log(log, entry, enclosingEntryType);
     }
 
@@ -272,7 +276,7 @@ public class DC_LogManager extends LogManager {
         if (logLevel < i)
             return false;
 
-        return super.log(LOG.GAME_INFO, entry);
+        return log(LOG.GAME_INFO, entry, null);
     }
 
 

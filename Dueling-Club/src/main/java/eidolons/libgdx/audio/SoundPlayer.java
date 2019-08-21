@@ -1,6 +1,7 @@
 package eidolons.libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
@@ -26,7 +27,8 @@ public class SoundPlayer extends Player {
 
     DungeonScreen dungeonScreen;
     private Vector2 position;
-    private float waitTime=0;
+    private float waitTime = 0;
+    public static boolean cinematicSoundOverride; //TODO refactor
 
     public SoundPlayer(DungeonScreen dungeonScreen) {
         this.dungeonScreen = dungeonScreen;
@@ -35,6 +37,14 @@ public class SoundPlayer extends Player {
 
     public enum SOUND_TYPE {
         VOICE,
+    }
+
+    public void playEffectSound(final SOUNDS sound_type, final Obj obj, int volumePercentage) {
+        if (Cinematics.ON) {
+            if (!cinematicSoundOverride)
+                return;
+        }
+        super.playEffectSound(sound_type, obj, volumePercentage);
     }
 
     protected SOUND_TYPE getSoundType(SOUNDS sound_type) {
@@ -89,7 +99,7 @@ public class SoundPlayer extends Player {
 
     public void playSoundOnCurrentThread(SOUNDS sound_type, Obj obj) {
         CONTENT_CONSTS.SOUNDSET soundSet = DC_SoundMaster.getSoundset(obj);
-         playEffectSound(sound_type, soundSet);
+        playEffectSound(sound_type, soundSet);
     }
 
     @Override
@@ -108,12 +118,10 @@ public class SoundPlayer extends Player {
     public void doPlayback(float delta) {
         if (playQueue.isEmpty()) {
             return;
-        }
-        else {
-            if (waitTime>=0)
-            {
-                waitTime-=delta;
-                return ;
+        } else {
+            if (waitTime >= 0) {
+                waitTime -= delta;
+                return;
             }
 
             SoundFx soundFx = playQueue.pop();
@@ -127,9 +135,9 @@ public class SoundPlayer extends Player {
                     float distance = soundFx.getOrigin().dst(x, y);
                     distance *= dungeonScreen.controller.getZoom();
                     float volume =
-                     Math.max(10, getVolume() / Math.max(1, (distance) / 200)) / 100;
+                            Math.max(10, getVolume() / Math.max(1, (distance) / 200)) / 100;
                     soundFx.setVolume(volume);
-                    if (volume<=0.1f)
+                    if (volume <= 0.1f)
                         return;
                 }
             playNow(soundFx);

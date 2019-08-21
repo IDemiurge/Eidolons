@@ -13,6 +13,8 @@ public class FullscreenAnimDataSource {
     float intensity;
     FACING_DIRECTION from;
     private SuperActor.BLENDING blending;
+    public boolean flipX;
+    public boolean flipY;
 
     public FullscreenAnimDataSource(FULLSCREEN_ANIM type, float intensity, FACING_DIRECTION from, SuperActor.BLENDING blending) {
         this.type = type;

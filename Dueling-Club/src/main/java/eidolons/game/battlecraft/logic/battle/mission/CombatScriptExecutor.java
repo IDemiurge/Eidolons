@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.battle.mission;
 
+import com.badlogic.gdx.math.Vector2;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
@@ -127,6 +128,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
         switch (function) {
+            case CINEMATIC:
+                return doCinematicScript(ref, args);
             case ESOTERICA:
                 return doEsoterica(ref, args);
             case AGGRO:
@@ -172,6 +175,15 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return doUnitOperation(function, ref, args);
     }
 
+    private boolean doCinematicScript(Ref ref, String[] args) {
+        //TODO enter cinematic mode?
+        if (args.length > 1) {
+            getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(args[0], args[1]);
+        } else
+            getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(args[0]);
+        return true;
+    }
+
     private boolean doEsoterica(Ref ref, String[] args) {
 
         int n = getGame().getMetaMaster().getQuestMaster().getQuest(BridgeMaster.ESOTERICA_QUEST).getNumberAchieved();
@@ -184,8 +196,6 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         String key = args[0];
         doCustomTip(ref, key); //multiple?
         //reward?
-
-
 
 
         return true;
@@ -290,16 +300,20 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
-    public boolean doComment(Unit unit, String key) {
+    public static boolean doComment(Unit unit, String key) {
+        return doComment(unit, key, null);
+    }
+
+    public static boolean doComment(Unit unit, String key, Vector2 at) {
         String text = Texts.getComments().get(key);
         if (text == null) {
             text = key;
         }
         FloatingTextMaster.getInstance().createFloatingText
-                (TEXT_CASES.BATTLE_COMMENT, text, unit);
+                (TEXT_CASES.BATTLE_COMMENT, text, unit, null, at);
 
-        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, text);
-        getGame().getLogManager().log(unit.getName() + " :\n" + text);
+        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, text, at);
+        Eidolons.getGame().getLogManager().log(unit.getName() + " :\n" + text);
         return true;
     }
 
@@ -348,18 +362,18 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
     private boolean doUnitOperation(COMBAT_SCRIPT_FUNCTION function, Ref ref, String[] args) {
 //        int i = 0;
-        String name =args.length==0? "source" :args[0];
+        String name = args.length == 0 ? "source" : args[0];
         Unit unit = (Unit) ref.getObj(name);
-            if (unit == null) {
-                Boolean power = null;
-                Boolean distance = true;
-                Boolean ownership = null;
-                try {
-                    unit = (Unit) ((DC_Game) ref.getGame()).getMaster().getByName(name, ref,
-                            ownership, distance, power);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+        if (unit == null) {
+            Boolean power = null;
+            Boolean distance = true;
+            Boolean ownership = null;
+            try {
+                unit = (Unit) ((DC_Game) ref.getGame()).getMaster().getByName(name, ref,
+                        ownership, distance, power);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         if (unit == null) {
             unit = Eidolons.getMainHero();
@@ -499,7 +513,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ESOTERICA;
+        ESOTERICA, CINEMATIC;
     }
 
 }

@@ -107,6 +107,10 @@ public class SpeechDataSource {
         return handler;
     }
 
+    public boolean isAppendedMessage() {
+        return message.length()<=150;
+    }
+
     public enum SPEECH_EFFECT {
         ZOOM_IN,
         DARKEN,

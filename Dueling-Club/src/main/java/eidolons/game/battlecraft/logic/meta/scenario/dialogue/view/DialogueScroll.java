@@ -11,9 +11,7 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.InnerScrollContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.graphics.FontMaster.FONT;
-import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 11/16/2018.
@@ -39,8 +37,8 @@ public class DialogueScroll extends TablePanelX {
         inner.setFillParent(true);
         inner.setLayoutEnabled(true);
         inner.pack();
-        inner.setFixedMinSize(true);
-        inner.setFixedSize(true);
+//        inner.setFixedMinSize(true);
+//        inner.setFixedSize(true);
         inner.setWidth(WIDTH);
 //        inner.setBackground(NinePatchFactory.getHqDrawable());
 //        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
@@ -80,11 +78,11 @@ public class DialogueScroll extends TablePanelX {
     }
 
 
-    public DialogueMessage append(String message, String actorName, String actorImage) {
+    public DialogueMessage append(String message, String actorName, String actorImage, boolean appendedMessage) {
         //actually, we'll need to append imgs too, eh?
 
         DialogueMessage dialogueMessage = new DialogueMessage(message, actorName, actorImage,
-                getFontType(), getWidth() * 0.85f);
+                getFontType(), getWidth() * 0.85f,appendedMessage);
         dialogueMessage.fadeIn();
         inner.add(dialogueMessage).center();
         inner.row();

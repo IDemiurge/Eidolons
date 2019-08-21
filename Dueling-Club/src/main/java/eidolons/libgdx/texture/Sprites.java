@@ -38,6 +38,8 @@ public class Sprites {
 
     public static final String COMMENT_KESERIM = "sprites/hero/comment/keserim comment.txt";
     public static final String HERO_KESERIM = "sprites/hero/keserim2.txt";
+    public static final String SNOW = "sprites/particles/snow.txt";
+    public static final String MIST= "sprites/particles/mist.txt";
 
     private static final Map<String, String> spriteMap;
 

@@ -22,6 +22,11 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
     }
 
     @Override
+    public CombatScriptExecutor getScriptManager() {
+        return (CombatScriptExecutor) super.getScriptManager();
+    }
+
+    @Override
     public MetaGameMaster getMetaMaster() {
         return  super.getMetaMaster();
     }

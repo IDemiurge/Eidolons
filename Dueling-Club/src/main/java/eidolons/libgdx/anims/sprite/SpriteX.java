@@ -178,6 +178,9 @@ public class SpriteX extends GroupX {
     }
 
     public void setFps(int i) {
+        if (i==0){
+            return;
+        }
         this.fps = i;
         if (sprite != null) {
             sprite.setFps(i);

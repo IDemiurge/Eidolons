@@ -1,5 +1,6 @@
 package eidolons.libgdx.video;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
+import com.badlogic.gdx.video.VideoPlayerDesktop;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import main.data.filesys.PathFinder;
@@ -20,7 +22,7 @@ import java.io.FileNotFoundException;
  */
 public class VideoMaster {
 
-    private VideoPlayer player;
+    public static VideoPlayer player;
     private CameraInputController inputController;
     private Music audio;
     private boolean videoAvailable = true;
@@ -44,26 +46,31 @@ public class VideoMaster {
     public VideoPlayer play(String path, int w, int h) throws FileNotFoundException {
         if (!videoAvailable) return null;
         OrthographicCamera cam = new OrthographicCamera(GdxMaster.getWidth(), GdxMaster.getHeight());
-        cam.position.set(10f, 10f, 0);
-        cam.lookAt(0, 0, 0);
-        cam.near = 0.1f;
-        cam.far = 300f;
-        cam.update();
+//        cam.position.set(10f, 10f, 0);
+//        cam.lookAt(0, 0, 0);
+//        cam.near = 0.1f;
+//        cam.far = 300f;
+//        cam.update();
 
-        MeshBuilder meshBuilder = new MeshBuilder();
-        meshBuilder.begin(Usage.Position | Usage.TextureCoordinates, GL20.GL_POINTS);
-        // @formatter:off
-        try {
-            meshBuilder.rect((short) 0, (short) 0, (short) GdxMaster.getWidth(), (short) GdxMaster.getHeight());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+//        MeshBuilder meshBuilder = new MeshBuilder();
+//        meshBuilder.begin(Usage.Position | Usage.TextureCoordinates, GL20.GL_POINTS);
+//        // @formatter:off
+//        try {
+//            meshBuilder.rect((short) 0, (short) 0, (short) GdxMaster.getWidth(), (short) GdxMaster.getHeight());
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//        }
         if (player != null) {
             player.dispose();
         }
-        player = VideoPlayerCreator.createVideoPlayer();
+        player =VideoPlayerCreator.createVideoPlayer();
+//                new VideoPlayerDesktop(cam, meshBuilder.end(), 0);
+
+//        Gdx.gl.glEnable(GL20.GL_CULL_FACE);
+//        Gdx.gl.glCullFace(GL20.GL_BACK);
 //        player.resize((int)GDX.size(w), (int)GDX.size(h));
-        player.resize(w, h);
+//        player.resize(100, 50);
+//        player.resize(player.getVideoWidth(), player.getVideoHeight());
         FileHandle file = GDX.file((path));
         try {
             player.play(file);
@@ -72,7 +79,7 @@ public class VideoMaster {
             // TODO it probably should work, but release we are using doesnt include binaries for oses other then windows
             e.printStackTrace();
             // use dummy player so nothing explodes if it expects non null object with some luck
-            player = new DummyVideoPlayer();
+            player = new VideoPlayerDesktop();
             videoAvailable = false;
         }
 //            Gdx.input.setInputProcessor(new InputMultiplexer(
@@ -89,7 +96,7 @@ public class VideoMaster {
 
     public String getTestPath() {
         return PathFinder.getVideoPath() +
-                "title.ogv";
+                "intro test.ogv";
 //                "Main_Menu_slow_original_size.ogv"; //moneda.ogg
     }
 
@@ -120,7 +127,13 @@ public class VideoMaster {
 
         @Override
         public void resize(int width, int height) {
-
+//            public void resize (int width, int height) {
+//                if(stage.getWidth() != width || stage.getHeight() != height)
+//                    stage.getViewport().update(width, height, true);
+//
+//                if(videoPlayer != null)
+//                    videoPlayer.resize(width, height);
+//            }
         }
 
         @Override
@@ -150,12 +163,12 @@ public class VideoMaster {
 
         @Override
         public int getVideoWidth() {
-            return 0;
+            return 1920;
         }
 
         @Override
         public int getVideoHeight() {
-            return 0;
+            return 1050;
         }
 
         @Override

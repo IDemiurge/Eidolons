@@ -34,6 +34,10 @@ public class CoordinateTargeting extends TargetingImpl {
         this(DEFAULT_KEY.toString(), null);
         this.direction = d;
     }
+    public CoordinateTargeting(DIRECTION d,String key  ) {
+        this(key, null);
+        this.direction = d;
+    }
 
     public CoordinateTargeting() {
         this(DEFAULT_KEY.toString(), null);

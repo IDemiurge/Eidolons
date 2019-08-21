@@ -45,7 +45,10 @@ public class AmbientMaster {
 //        if (!ExplorationMaster.isExplorationOn()){
 //            return null;
 //        }
-        if (EidolonsGame.BRIDGE) {
+            if (EidolonsGame.BRIDGE) {
+                if (!EidolonsGame.INTRO_STARTED) {
+                    return null ;
+                }
             return EVIL;
         }
         Unit hero = Eidolons.getMainHero();

@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
-import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -39,7 +39,7 @@ public class UnitCombatAI {
     private Map<ObjType, Integer> actionPriorityBonuses;
     private boolean ordered;
     private boolean free;
-    private InitiativePanel.INTENT_ICON intentIcon;
+    private AtbPanel.INTENT_ICON intentIcon;
     private ActionSequence lastSequence;
 
     public UnitCombatAI(Unit unit) {
@@ -156,11 +156,11 @@ public class UnitCombatAI {
         this.free = free;
     }
 
-    public InitiativePanel.INTENT_ICON getIntentIcon() {
+    public AtbPanel.INTENT_ICON getIntentIcon() {
         return intentIcon;
     }
 
-    public void setIntentIcon(InitiativePanel.INTENT_ICON intentIcon) {
+    public void setIntentIcon(AtbPanel.INTENT_ICON intentIcon) {
         this.intentIcon = intentIcon;
     }
 
@@ -172,13 +172,11 @@ public class UnitCombatAI {
         this.lastSequence = lastSequence;
     }
 
-    private InitiativePanel.INTENT_ICON initIntent(Action currentAction) {
+    private AtbPanel.INTENT_ICON initIntent(Action currentAction) {
         if (currentAction.getTask().getType() != null)
             switch (currentAction.getTask().getType()) {
                 case ATTACK:
-                    return InitiativePanel.INTENT_ICON.ATTACK;
-                case APPROACH:
-                    break;
+                    return AtbPanel.INTENT_ICON.ATTACK;
                 case BUFF:
                 case SELF:
                 case DEBUFF:
@@ -189,23 +187,23 @@ public class UnitCombatAI {
                 case CUSTOM_HOSTILE:
                 case CUSTOM_SUPPORT:
                 case ZONE_SPECIAL:
-                    return InitiativePanel.INTENT_ICON.SPELL;
+                    return AtbPanel.INTENT_ICON.SPELL;
+                case RETREAT:
                 case MOVE:
-                    return InitiativePanel.INTENT_ICON.MOVE;
+                case APPROACH:
+                    return AtbPanel.INTENT_ICON.MOVE;
                 case WAIT:
-                    break;
+                    return AtbPanel.INTENT_ICON.WAIT;
                 case PREPARE:
-                    return InitiativePanel.INTENT_ICON.PREPARE;
+                    return AtbPanel.INTENT_ICON.PREPARE;
                 case DEFEND:
-                    return InitiativePanel.INTENT_ICON.DEFEND;
+                    return AtbPanel.INTENT_ICON.DEFEND;
                 case PROTECT:
                     break;
-                case RETREAT:
-                    break;
                 case SEARCH:
-                    break;
+                    return AtbPanel.INTENT_ICON.SEARCH;
             }
-        return InitiativePanel.INTENT_ICON.OTHER;
+        return AtbPanel.INTENT_ICON.OTHER;
     }
 
     public ActionSequence getLastSequence() {

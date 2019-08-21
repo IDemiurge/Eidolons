@@ -5,7 +5,7 @@ package main.content.enums.entity;
  */
 public class AbilityEnums {
     public enum ABILITY_GROUP {
-        DAMAGE, BUFF, STD_ACTION, MOVE, ONESHOT,
+        DAMAGE, BUFF, STD_ACTION, MOVE, ONESHOT,TEMPLATE_ACTIVE,
 
         VALUE_MOD, TRIGGER, PASSIVE, STD_PASSIVE, TEMPLATE_PASSIVE, CUSTOM_PASSIVE
 

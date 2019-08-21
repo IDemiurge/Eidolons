@@ -11,6 +11,7 @@ import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.particles.ParticlesSprite;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.EmitterActor;
