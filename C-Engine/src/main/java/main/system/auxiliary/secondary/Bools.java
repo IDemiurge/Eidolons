@@ -55,4 +55,13 @@ public class Bools {
         return new Boolean[][]{FALSE_FALSE, TRUE_TRUE, TRUE_FALSE, TRUE_FALSE};
     }
 
+    public static Boolean getBool(String var) {
+        if (var.equalsIgnoreCase("true")) {
+            return true;
+        }
+        if (var.equalsIgnoreCase("false")) {
+            return false;
+        }
+        return null;
+    }
 }

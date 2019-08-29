@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -17,6 +19,7 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
@@ -50,7 +53,7 @@ public class UnitView extends BaseView implements HpBarView{
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
-        setAlphaTemplate(ALPHA_TEMPLATE.UNIT_VIEW);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.UNIT_VIEW);
     }
 
     public void init(UnitViewOptions o) {
@@ -201,6 +204,11 @@ public class UnitView extends BaseView implements HpBarView{
     }
 
     protected TextureRegion getDefaultTexture() {
+        if (getUserObject() instanceof Unit){
+            if (EidolonsGame.BRIDGE){
+                return originalTexture;
+            }
+        }
         return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 

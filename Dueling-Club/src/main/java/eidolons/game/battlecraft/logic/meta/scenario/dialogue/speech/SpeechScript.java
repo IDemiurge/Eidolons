@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.system.text.Texts;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.Chronos;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -20,6 +21,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     MetaGameMaster master;
     private String scriptText;
     private boolean executed;
+    private boolean executing;
 
     public String getScriptText() {
         return scriptText;
@@ -51,6 +53,9 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     }
 
     public void execute() {
+        if (executing) {
+            return;
+        }
         if (executed) {
             return;
         }
@@ -61,10 +66,13 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         //support user interrupt ?
 //        WaitMaster.executeAfter();
 
+        executing=true;
 
+        Chronos.mark("script " + scriptText);
         master.getDialogueManager().getSpeechExecutor().execute(this);
-
+        Chronos.logTimeElapsedForMark("script " + scriptText);
         executed = true;
+        executing = false;
     }
 
     @Override
@@ -126,7 +134,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         ZOOM,
         NEXT, NEXT_OFF, NEXT_ALL,
         SHAKE, WHITEOUT,
-        REVEAL_AREA, PORTAL, AUTOCAMERA, PARTICLES, SOUNDSCAPE, OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM, LOOP_TRACK, STOP_LOOP, SPEED, GLOBAL, ABS, CAMERA_OFFSET, DIALOGUE_AFTER,
+        REVEAL_AREA, PORTAL, AUTOCAMERA, PARTICLES, SOUNDSCAPE, OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM, LOOP_TRACK, STOP_LOOP, SPEED, GLOBAL, ABS, CAMERA_OFFSET, DIALOGUE_AFTER, COORDINATE, MOVE, TURN, VAR, SOUND_VARIANT, DISPLACE, SCREEN, VAR_FLOAT, VAR_INTEGER, WAIT_FOR, COLOR, GRID_OBJ_ANIM, PORTAL_CLOSE, PORTAL_OPEN, ATTACHED, TURN_AUTO,
 
         //make templates mapped by name?
     }

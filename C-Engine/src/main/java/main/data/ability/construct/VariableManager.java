@@ -146,7 +146,7 @@ public class VariableManager {
         List<String> varList = new ArrayList<>();
 
         for (String var : vars.split(StringMaster.getVarSeparator())) {
-            varList.add(var);
+            varList.add(var.trim());
         }
         return varList;
     }

@@ -2,6 +2,7 @@ package eidolons.libgdx.launch;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -47,7 +48,8 @@ public class MainLauncher extends GenericLauncher {
                 main.system.auxiliary.log.LogMaster.important(" Options Mode set" + parts[0]);
             }
                 EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
-                EidolonsGame.BRIDGE = args[0].contains("bridge");
+            EidolonsGame.BRIDGE = args[0].contains("bridge");
+            DialogueManager.TEST = args[0].contains("duel");
                 CoreEngine.setLevelTestMode(false);
                  args = args[0].split(";");
         }

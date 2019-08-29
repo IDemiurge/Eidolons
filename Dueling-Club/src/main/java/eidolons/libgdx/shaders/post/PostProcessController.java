@@ -8,21 +8,20 @@ import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
 import eidolons.libgdx.shaders.post.fx.BloomFx;
 import eidolons.libgdx.shaders.post.fx.BlurFx;
 import eidolons.libgdx.shaders.post.fx.SaturateFx;
 import eidolons.libgdx.shaders.post.spec.LocalFxProcessor;
-import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
+import main.content.enums.GenericEnums;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -299,12 +298,12 @@ public class PostProcessController {
 
     private ALPHA_TEMPLATE getAlphaTemplate(PostProcessorEffect effect) {
         if (effect instanceof Bloom) {
-            return ALPHA_TEMPLATE.BLOOM;
+            return GenericEnums.ALPHA_TEMPLATE.BLOOM;
         }
         if (effect instanceof Vignette) {
-            return ALPHA_TEMPLATE.VIGNETTE;
+            return GenericEnums.ALPHA_TEMPLATE.VIGNETTE;
         }
-        return ALPHA_TEMPLATE.POST_PROCESS;
+        return GenericEnums.ALPHA_TEMPLATE.POST_PROCESS;
     }
 
     public SaturateFx getSaturate() {

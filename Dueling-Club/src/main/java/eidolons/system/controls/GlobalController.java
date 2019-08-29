@@ -172,9 +172,6 @@ public class GlobalController implements Controller {
             case Keys.F11:
                 GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
                 break;
-            case Keys.F10:
-                GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, Eidolons.getMainHero(), "TEEEEST!");
-                break;
             case Keys.F9:
                 Eidolons.onNonGdxThread(()-> {
                 String text = DialogMaster.inputText("Your script...", lastScript);

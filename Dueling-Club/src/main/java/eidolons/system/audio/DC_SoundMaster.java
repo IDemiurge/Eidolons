@@ -40,10 +40,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
@@ -515,6 +512,12 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String getSpellSound(Spell spell, ANIM_PART part) {
+        if (!spell.getProperty("anim_sound_"+part.getPartPath()).isEmpty()) {
+            return parseSound(spell.getProperty("anim_sound_" + part.getPartPath()));
+        }
+        if (Cinematics.ON) {
+            return "";
+        }
         if (part != IMPACT) {
             return "";
         }
@@ -523,6 +526,21 @@ public class DC_SoundMaster extends SoundMaster {
 
         return FileManager.getRandomFile(PathFinder.getSoundsetsPath() + "damage/" +
                 dmg_type).getPath();
+    }
+
+    private static String parseSound(String property) {
+        String parsed = "";
+        for(String substring: ContainerUtils.openContainer( property)){
+        GenericEnums.SOUND_CUE cue = new EnumMaster<GenericEnums.SOUND_CUE>().
+                retrieveEnumConst(GenericEnums.SOUND_CUE.class, substring);
+        if (cue!=null) {
+            parsed+=cue.getPath() + ";";
+        }
+        }
+        if (parsed.isEmpty()) {
+            return property;
+        }
+        return parsed;
     }
 
     private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
@@ -604,44 +622,7 @@ public class DC_SoundMaster extends SoundMaster {
         playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
     }
 
-    public enum SOUND_CUE {
-        wimper,
-
-        //missing
-
-        //awakening?
-        mute_scream,
-        fire_burst,
-        breathing,
-        heartbeat,
-        dark_knight,
-        dream,
-        demon_growl,
-        laughter,
-        dark_laughter,
-        slam,
-        whispers,
-        dark_tension,
-        aether_thunder,
-
-        portal_open,
-        portal_close,
-
-        gong,
-        ghost,
-        inferno_atmo,
-        windy;
-
-        public String getPath() {
-            return PathFinder.getSoundCuesPath() +
-                    name().replace("_", " ").toLowerCase()
-                    + ".mp3"
-                    ;
-        }
-
-    }
-
-    public static void playKeySound(String value, float volume) {
+    public static void playKeySound(String value, float volume, boolean random) {
         if (value.contains(".")) {
             String[] parts = value.split(Pattern.quote("."));
             SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[0]);
@@ -654,7 +635,12 @@ public class DC_SoundMaster extends SoundMaster {
 //            new EnumMaster<SOUND_CUE>().retrieveEnumConst(SOUND_CUE.class, value);
             {
                 main.system.auxiliary.log.LogMaster.dev("Sound cue played: " + PathFinder.getSoundCuesPath() + value + ".mp3");
-                play(PathFinder.getSoundCuesPath() + value + ".mp3", (int) (volume * 100), 0);
+                String path = PathFinder.getSoundCuesPath() + value + ".mp3";
+             if (random){
+                 DC_SoundMaster.playRandomSoundVariant(path, true, (int) (volume * 100), 0);
+             } else {
+                 play(path, (int) (volume * 100), 0);
+             }
             }
         }
         /**

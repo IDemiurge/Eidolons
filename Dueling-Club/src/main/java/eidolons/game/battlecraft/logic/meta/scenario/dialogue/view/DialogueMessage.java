@@ -19,6 +19,7 @@ import main.system.graphics.FontMaster.FONT;
  * Created by JustMe on 11/16/2018.
  */
 public class DialogueMessage extends TablePanelX {
+    private final boolean append;
     Actor message;
     LabelX actorName;
     Image actorImage;
@@ -29,28 +30,29 @@ public class DialogueMessage extends TablePanelX {
             actorName = "Error";
             message = "Report me!..";
         }
+        message = message.trim();
+        this.append = append;
         this.actorImage = new Image(TextureCache.getOrCreateR(img));
 
         if (actorName.isEmpty() && message.isEmpty()) {
             add(this.actorImage = new Image(TextureCache.getOrCreateR(img))).
                     size(actorImage.getPrefWidth(), actorImage.getPrefHeight()).center().padLeft(24);
             return;
-        } else {
-            if (!append)
-                add(actorImage).size(64, 64).top().padLeft(20).padTop(12);
         }
-        message = message.trim();
         TablePanelX<Actor> textTable = new TablePanelX<>();
-        Cell<LabelX> cell = textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).left();
-        cell.setActorX(-20);
-        textTable.row();
+        if (!append) {
+            add(actorImage).size(64, 64).top().padLeft(20).padTop(12);
+            Cell<LabelX> cell = textTable.add(this.actorName = new LabelX(actorName, getNameStyle(font))).left();
+            cell.setActorX(-20);
+            textTable.row();
+        }
         textTable.add(this.message = new TextBuilder(getMessageStyle(font)).addString(message).build(w).pad(20));
 //        textTable.add(this.message = new LabelX(message, getMessageStyle(font)));
 
         if (!append)
-            add(textTable).pad(20);
+            add(textTable).padTop(25).padLeft(20).padBottom(5);
         else
-            add(textTable).pad(10);
+            add(textTable).padLeft(5);
         //on hover remove shader
         //could be different!
         align(Align.topLeft);
@@ -76,16 +78,22 @@ public class DialogueMessage extends TablePanelX {
     @Override
     public void layout() {
         super.layout();
+        if (append) {
+            setY(20);
+        }
     }
 
     @Override
     public float getPrefHeight() {
+        if (append) {
+            return super.getPrefHeight() - (20);
+        }
         return super.getPrefHeight();
     }
 
     @Override
     public float getHeight() {
-        return super.getHeight();
+        return super.getPrefHeight();
     }
 
     @Override

@@ -338,4 +338,50 @@
 </SummonEffect></CustomTargetEffect><EmptyEffect></EmptyEffect></Effects></AddSpecialEffects></Effects></PassiveAbility></Abilities></Abilities><Image>gen\perk\abil\selected_00343.png</Image><Name>SpawnOnDeath</Name><Description>When destroyed will spawn {1}</Description><Ability_Group>Std Passive</Ability_Group><Version>0.9.6b</Version><Ability_Type>Passives</Ability_Type><Unique_Id>abils Collapse-138857907884563150</Unique_Id><Displayed_Name>SpawnOnDeath</Displayed_Name></props></SpawnOnDeath><CreateOnDeath><params></params><props><Variables>amount;</Variables><Type>abils</Type><Abilities><Abilities><PassiveAbility><FixedTargeting><STRING>SOURCE</STRING>
 </FixedTargeting><Effects><AddSpecialEffects><SPECIAL_EFFECTS_CASE>ON_DEATH</SPECIAL_EFFECTS_CASE>
 <Effects><CustomTargetEffect><CoordinateTargeting></CoordinateTargeting><CreateObjectEffect><STRING>^VAR</STRING>
-</CreateObjectEffect></CustomTargetEffect><EmptyEffect></EmptyEffect></Effects></AddSpecialEffects></Effects></PassiveAbility></Abilities></Abilities><Image>gen\perk\abil\selected_00343.png</Image><Name>CreateOnDeath</Name><Description>When destroyed will spawn {1}</Description><Ability_Group>Std Passive</Ability_Group><Version>0.9.6b</Version><Ability_Type>Passives</Ability_Type><Unique_Id>abils Collapse-138857907884563150</Unique_Id><Displayed_Name>CreateOnDeath</Displayed_Name></props></CreateOnDeath></Passives></XML>
+</CreateObjectEffect></CustomTargetEffect><EmptyEffect></EmptyEffect></Effects></AddSpecialEffects></Effects></PassiveAbility></Abilities></Abilities><Image>gen\perk\abil\selected_00343.png</Image><Name>CreateOnDeath</Name><Description>When destroyed will spawn {1}</Description><Ability_Group>Std Passive</Ability_Group><Version>0.9.6b</Version><Ability_Type>Passives</Ability_Type><Unique_Id>abils Collapse-138857907884563150</Unique_Id><Displayed_Name>CreateOnDeath</Displayed_Name></props></CreateOnDeath><Collapse_Straight><params></params><props><Variables>amount;</Variables><Type>abils</Type><Abilities><Abilities><PassiveAbility><FixedTargeting><STRING>SOURCE</STRING>
+</FixedTargeting><Effects><AddSpecialEffects><SPECIAL_EFFECTS_CASE>ON_DEATH</SPECIAL_EFFECTS_CASE>
+<Effects><IfElseEffect><CustomTargetEffect><CoordinateTargeting><UNIT_DIRECTION>AHEAD</UNIT_DIRECTION>
+<STRING>TARGET</STRING>
+<STRING>SOURCE</STRING>
+</CoordinateTargeting><Effects><CreateObjectEffect><STRING>[2]</STRING>
+</CreateObjectEffect><DealDamageEffect><FORMULA>[1]</FORMULA>
+<DAMAGE_TYPE>BLUDGEONING</DAMAGE_TYPE>
+</DealDamageEffect></Effects></CustomTargetEffect><Conditions><ChanceCondition><FORMULA>100</FORMULA>
+</ChanceCondition><CellCondition><STRING>SOURCE</STRING>
+<STRING>TARGET</STRING>
+<UNIT_DIRECTION>AHEAD</UNIT_DIRECTION>
+</CellCondition></Conditions><RandomEffect><Effects><CustomTargetEffect><CoordinateTargeting><UNIT_DIRECTION>AHEAD_RIGHT</UNIT_DIRECTION>
+<STRING>TARGET</STRING>
+<STRING>SOURCE</STRING>
+</CoordinateTargeting><Effects><CreateObjectEffect><STRING>[2]</STRING>
+</CreateObjectEffect><DealDamageEffect><FORMULA>[1]</FORMULA>
+<DAMAGE_TYPE>BLUDGEONING</DAMAGE_TYPE>
+</DealDamageEffect></Effects></CustomTargetEffect><CustomTargetEffect><CoordinateTargeting><UNIT_DIRECTION>AHEAD_LEFT</UNIT_DIRECTION>
+<STRING>TARGET</STRING>
+<STRING>SOURCE</STRING>
+</CoordinateTargeting><Effects><CreateObjectEffect><STRING>[2]</STRING>
+</CreateObjectEffect><DealDamageEffect><FORMULA>[1]</FORMULA>
+<DAMAGE_TYPE>BLUDGEONING</DAMAGE_TYPE>
+</DealDamageEffect></Effects></CustomTargetEffect></Effects></RandomEffect></IfElseEffect><CustomTargetEffect><CoordinateTargeting></CoordinateTargeting><CreateObjectEffect><STRING>[3]</STRING>
+</CreateObjectEffect></CustomTargetEffect></Effects></AddSpecialEffects></Effects></PassiveAbility></Abilities></Abilities><Image>gen\perk\abil\selected_00343.png</Image><Name>Collapse Straight</Name><Description><![CDATA[When destroyed will collapse in a heap of rubble opposite the source of damage, possibly dealing damage to objects it hits. ]]></Description><Ability_Group>Std Passive</Ability_Group><Base_Type>Collapse</Base_Type><Version>0.9.2d</Version><Ability_Type>Passives</Ability_Type><Unique_Id>abils Collapse-138857907884563150</Unique_Id><Displayed_Name>Collapse Straight</Displayed_Name></props></Collapse_Straight><Collapse_Triple><params></params><props><Variables>amount;</Variables><Type>abils</Type><Abilities><Abilities><PassiveAbility><FixedTargeting><STRING>SOURCE</STRING>
+</FixedTargeting><Effects><AddSpecialEffects><SPECIAL_EFFECTS_CASE>ON_DEATH</SPECIAL_EFFECTS_CASE>
+<Effects><CustomTargetEffect><CoordinateTargeting><UNIT_DIRECTION>AHEAD_RIGHT</UNIT_DIRECTION>
+<STRING>TARGET</STRING>
+<STRING>SOURCE</STRING>
+</CoordinateTargeting><Effects><CreateObjectEffect><STRING>[2]</STRING>
+</CreateObjectEffect><DealDamageEffect><FORMULA>[1]</FORMULA>
+<DAMAGE_TYPE>BLUDGEONING</DAMAGE_TYPE>
+</DealDamageEffect></Effects></CustomTargetEffect><CustomTargetEffect><CoordinateTargeting></CoordinateTargeting><CreateObjectEffect><STRING>[3]</STRING>
+</CreateObjectEffect></CustomTargetEffect><CustomTargetEffect><CoordinateTargeting><UNIT_DIRECTION>AHEAD_LEFT</UNIT_DIRECTION>
+<STRING>TARGET</STRING>
+<STRING>SOURCE</STRING>
+</CoordinateTargeting><Effects><CreateObjectEffect><STRING>[2]</STRING>
+</CreateObjectEffect><DealDamageEffect><FORMULA>[1]</FORMULA>
+<DAMAGE_TYPE>BLUDGEONING</DAMAGE_TYPE>
+</DealDamageEffect></Effects></CustomTargetEffect><CustomTargetEffect><CoordinateTargeting><UNIT_DIRECTION>AHEAD</UNIT_DIRECTION>
+<STRING>TARGET</STRING>
+<STRING>SOURCE</STRING>
+</CoordinateTargeting><Effects><CreateObjectEffect><STRING>[2]</STRING>
+</CreateObjectEffect><DealDamageEffect><FORMULA>[1]</FORMULA>
+<DAMAGE_TYPE>BLUDGEONING</DAMAGE_TYPE>
+</DealDamageEffect></Effects></CustomTargetEffect></Effects></AddSpecialEffects></Effects></PassiveAbility></Abilities></Abilities><Image>gen\perk\abil\selected_00343.png</Image><Name>Collapse Triple</Name><Description><![CDATA[When destroyed will collapse in a heap of rubble opposite the source of damage, possibly dealing damage to objects it hits. ]]></Description><Ability_Group>Std Passive</Ability_Group><Base_Type>Collapse</Base_Type><Version>0.9.2d</Version><Ability_Type>Passives</Ability_Type><Unique_Id>abils Collapse-138857907884563150</Unique_Id><Displayed_Name>Collapse Triple</Displayed_Name></props></Collapse_Triple></Passives></XML>

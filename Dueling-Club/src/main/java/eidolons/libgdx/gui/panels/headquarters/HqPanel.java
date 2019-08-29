@@ -29,6 +29,7 @@ import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
@@ -62,7 +63,7 @@ public class HqPanel extends TablePanel implements Blocking {
     HqParamPanel staticParams;
     private List<HqHeroDataSource> heroes;
     private boolean initialized;
-    Fluctuating fluctuating = new Fluctuating(Fluctuating.ALPHA_TEMPLATE.HQ_SPRITE);
+    Fluctuating fluctuating = new Fluctuating(GenericEnums.ALPHA_TEMPLATE.HQ_SPRITE);
 
     SpriteAnimation bgSprite;
     Image bg = new Image(TextureCache.getOrCreateR(
@@ -158,7 +159,7 @@ public class HqPanel extends TablePanel implements Blocking {
     @Override
     public void act(float delta) {
         if (bgSprite != null) {
-            fluctuating.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.HQ_SPRITE);
+            fluctuating.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HQ_SPRITE);
             fluctuating.fluctuate(delta);
             bgSprite.setAlpha(fluctuating.getColor().a);
         }

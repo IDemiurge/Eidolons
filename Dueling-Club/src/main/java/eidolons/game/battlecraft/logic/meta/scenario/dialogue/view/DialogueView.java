@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -15,6 +16,8 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
@@ -72,15 +75,13 @@ public class DialogueView extends TablePanelX implements Scene {
     }
 
     public void update(SpeechDataSource data) {
+        update(data, false);
+    }
+    public void update(SpeechDataSource data, boolean appendedMessage) {
         //        prev = portrait.getPrevious();
 //        history.add(data);
 
-        boolean appendedMessage = false;
-        if (getUserObject() != null) {
-            if (getUserObject().getSpeakerActor() == data.getSpeakerActor()) {
-                appendedMessage = data.isAppendedMessage();
-            }
-        } else {
+        if (getUserObject() == null) {
             setTime(1f);
         }
         setUserObject(data);
@@ -112,10 +113,6 @@ public class DialogueView extends TablePanelX implements Scene {
 
     }
 
-    @Override
-    public SpeechDataSource getUserObject() {
-        return (SpeechDataSource) super.getUserObject();
-    }
 
     private void initResponses(SpeechDataSource data) {
         replyBox.clearChildren();
@@ -153,16 +150,10 @@ public class DialogueView extends TablePanelX implements Scene {
                 paused = !paused;
                 return true;
             }
+        disableTimer();
         return tryNext();
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
-            super.draw(batch, 1);
-        } else
-            ShaderDrawer.drawWithCustomShader(this, batch, paused ? GrayscaleShader.getGrayscaleShader() : null);
-    }
 
     public boolean tryNext() {
         return tryNext(true);
@@ -188,12 +179,16 @@ public class DialogueView extends TablePanelX implements Scene {
 
     private boolean respond(String option, int index, boolean allowFinish) {
         autoRespond = false;
-
         if (container != null) {
 //            container.respond(option);
             ActorDataSource actor = getUserObject().getSpeakerActor();
+            SpeechDataSource next =
+                    handler.lineSpoken(getUserObject().speech, index);
+
             boolean appendedMessage = false;
-            if (handler.getSpeakerLast() == actor) {
+            if (next!=null)
+            if (next.getSpeakerActor().getActorName().equalsIgnoreCase(
+                    actor.getActorName())) {
                 appendedMessage = getUserObject().isAppendedMessage();
             }
             if (!option.equalsIgnoreCase(SpeechDataSource.DEFAULT_RESPONSE))
@@ -210,14 +205,12 @@ public class DialogueView extends TablePanelX implements Scene {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
             }
-            timerDisabled = false;
-            SpeechDataSource next =
-                    handler.lineSpoken(getUserObject().speech, index);
-            if (next != null) {
+//            timerDisabled = false; ???
 
+            if (next != null) {
                 if (!appendedMessage)
                     scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2);
-                update(next);
+                update(next, appendedMessage);
 
                 if (!appendedMessage)
                     try { //TODO refactor!
@@ -225,16 +218,19 @@ public class DialogueView extends TablePanelX implements Scene {
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
+                GuiEventManager.trigger(GuiEventType.ACTOR_SPEAKS, getUserObject().getSpeakerActor().getActor().getLinkedUnit());
 
                 int time = handler.getDialogue().getTimeBetweenScripts() + next.getMessage().length() *
                         handler.getDialogue().getTimeBetweenScriptsLengthMultiplier();
                 if (time > 0) {
-                    disableReplies();
+//                    disableReplies();
                     main.system.auxiliary.log.LogMaster.dev("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
-                    WaitMaster.doAfterWait(time, () -> {
-                        autoRespond = true;
-                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true; ");
-                    });
+                    setTime(new Float(time));
+//                    WaitMaster.doAfterWait(time, () -> {
+//                        autoRespond = true;
+//                        timerDisabled=false;
+//                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true; ");
+//                    });
                 } else {
                     if (!isRepliesEnabled()) {
                         enableReplies();
@@ -250,18 +246,27 @@ public class DialogueView extends TablePanelX implements Scene {
         return false;
     }
 
-    private void enableReplies() {
-        replyBox.fadeIn();
-        replyBox.setTouchable(Touchable.enabled);
+    public void setTime(Float valueOf) {
+        main.system.auxiliary.log.LogMaster.important(
+                " from " + timeToRespond +
+                        " to " + valueOf);
+        timeToRespond = valueOf;
+
+        if (timeToRespond != null) {
+            disableReplies();
+            timerDisabled = false;
+        } else {
+            enableReplies();
+        }
     }
 
-    private void disableReplies() {
-        replyBox.fadeOut();
-        replyBox.setTouchable(Touchable.disabled);
+    public void disableTimer() {
+        timeToRespond=null;
+        timerDisabled = true;
     }
 
-    public boolean isDone() {
-        return false;
+    private boolean isDoubleSpeedFade() {
+        return true;
     }
 
     @Override
@@ -274,7 +279,7 @@ public class DialogueView extends TablePanelX implements Scene {
                         tryNext(true);
                     }
         } else if (timeToRespond != null)
-            if (timeToRespond > 0)
+            if (timeToRespond !=null  )
                 if (!timerDisabled)
                     if (!paused) {
                         timeToRespond -= delta * 1000;
@@ -311,32 +316,39 @@ public class DialogueView extends TablePanelX implements Scene {
         }
     }
 
-    public void setTime(Float valueOf) {
-        main.system.auxiliary.log.LogMaster.important(
-                " from " + timeToRespond +
-                        " to " + valueOf);
-        timeToRespond = valueOf;
-
-        if (timeToRespond == null) {
-            disableReplies();
-        } else {
-            enableReplies();
-        }
+    @Override
+    public SpeechDataSource getUserObject() {
+        return (SpeechDataSource) super.getUserObject();
     }
 
-    public void disableTimer() {
-        timerDisabled = true;
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
+            super.draw(batch, 1);
+        } else
+            ShaderDrawer.drawWithCustomShader(this, batch, paused ? GrayscaleShader.getGrayscaleShader() : null);
     }
-
-    private boolean isDoubleSpeedFade() {
-        return true;
-    }
-
     @Override
     public void layout() {
         super.layout();
 //        scroll.setY(-20);
 //        replyBox.setY(30);
+    }
+
+    private void enableReplies() {
+        replyBox.fadeIn();
+        replyBox.setTouchable(Touchable.enabled);
+        GdxMaster.setDefaultCursor();
+    }
+
+    private void disableReplies() {
+        replyBox.fadeOut();
+        replyBox.setTouchable(Touchable.disabled);
+        GdxMaster.setEmptyCursor();
+    }
+
+    public boolean isDone() {
+        return false;
     }
 
     public void setContainer(DialogueContainer container) {
@@ -395,4 +407,10 @@ public class DialogueView extends TablePanelX implements Scene {
         this.backgroundPath = backgroundPath;
     }
 
+    public void resume() {
+        paused=false;
+    }
+    public void pause() {
+        paused=true;
+    }
 }

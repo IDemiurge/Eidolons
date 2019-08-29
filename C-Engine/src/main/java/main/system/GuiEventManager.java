@@ -2,6 +2,7 @@ package main.system;
 
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
@@ -52,6 +53,9 @@ public class GuiEventManager {
         trigger(type, null);
     }
 
+    public static void trigger(final String type, Object... params) {
+        trigger(GuiEventManager.getEvent(type) ,params );
+    }
     public static void trigger(final EventType type, Object... params) {
         if (CoreEngine.isGraphicsOff())
             return;
@@ -96,6 +100,9 @@ public class GuiEventManager {
 
         return false;
     }
+    public static EventType getEvent(String s ) {
+        return new EnumMaster<GuiEventType>().retrieveEnumConst(GuiEventType.class, s);
+    }
 
     public static boolean isParamEventAlwaysFired(String param) {
         switch (param) {
@@ -108,5 +115,6 @@ public class GuiEventManager {
         }
         return false;
     }
+
 }
 

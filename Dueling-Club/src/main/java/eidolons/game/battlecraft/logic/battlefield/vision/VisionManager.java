@@ -10,6 +10,8 @@ public class VisionManager {
     private static boolean cinematicVision;
 
     public static boolean isVisionHacked() {
+        if (isCinematicVision())
+            return false;
         return visionHacked || DC_Game.game.isDebugMode();
     }
 

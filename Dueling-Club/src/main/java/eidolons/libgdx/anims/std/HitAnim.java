@@ -240,18 +240,16 @@ public class HitAnim extends ActionAnim {
         float x = originalActorX;
         float y = originalActorY;
 
-        MoveByAction move = (MoveByAction) ActionMaster.getAction(MoveByAction.class);
-        move.setAmount(dx, dy);
-        move.setDuration(getDuration() / 2);
-        MoveToAction moveBack = (MoveToAction) ActionMaster.getAction(MoveToAction.class);
+        boolean overlaying=false;
         if (getRef().getSourceObj() instanceof DC_Obj) {
             if (((DC_Obj) getRef().getSourceObj()).isOverlaying()) {
-                moveBack.setPosition(x, y);
+                overlaying = true;
             }
         }
-        moveBack.setPosition(x, y);
-        moveBack.setDuration(getDuration() / 2);
-        SequenceAction sequence = new SequenceAction(move, moveBack);
+
+        SequenceAction sequence =
+                ActionMaster.getDisplaceSequence(x,y, dx, dy, getDuration()/2, overlaying);
+
         if (isDelayed()) {
             DelayAction delayed = new DelayAction(getDuration() / 3);
             delayed.setAction(sequence);

@@ -212,8 +212,8 @@ public class DefaultActionHandler {
             return doDebugStuff(source, target);
         }
 
-        if (target.isMine())
-            return false;
+//        if (target.isMine())
+//            return false;
         DC_ActiveObj action = null;
         String msg = null;
         if (target instanceof DungeonObj) {

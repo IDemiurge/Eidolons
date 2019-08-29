@@ -90,7 +90,7 @@ public class GenericLauncher extends Game {
             return;
         Eidolons.setApplication(new LwjglApplication(this,
                 getConf()));
-
+        OptionsMaster.applyGraphicsOptions();
         Eidolons.setLauncher(this);
         Eidolons.setFullscreen(fullscreen);
     }
@@ -238,7 +238,9 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
-        Assets.get().getManager().update();
+        if (!Assets.get().getManager().update()){
+            main.system.auxiliary.log.LogMaster.dev("Assets being loaded..." );
+        }
         GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
         if (VideoMaster.player != null) {
             if (getScreen() instanceof DungeonScreen) {
@@ -264,7 +266,9 @@ public class GenericLauncher extends Game {
     public void render_() {
         GuiEventManager.processEvents();
         super.render();
-        Assets.get().getManager().update();
+        if (!Assets.get().getManager().update()){
+            main.system.auxiliary.log.LogMaster.dev("Assets being loaded after..." );
+        }
 
     }
 

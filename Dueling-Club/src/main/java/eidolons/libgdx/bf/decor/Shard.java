@@ -15,6 +15,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.StrPathBuilder;
@@ -146,7 +147,7 @@ public class Shard extends SuperActor {
         }
 
         addActor(foreground = new ImageContainer(getRandomForegroundTexturePath(arg)));
-        ALPHA_TEMPLATE template = ShardVisuals.getTemplateForOverlay(overlay);
+        GenericEnums.ALPHA_TEMPLATE template = ShardVisuals.getTemplateForOverlay(overlay);
         foreground.setAlphaTemplate(template);
 
     }

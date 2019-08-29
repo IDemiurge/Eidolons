@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
 import eidolons.libgdx.shaders.post.Processor;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 12/2/2018.
@@ -42,7 +42,7 @@ ShaderProgram shader;
         shader.end();
 
         fluctuate = new FadeImageContainer();
-        fluctuate.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
+        fluctuate.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
     }
 
     @Override

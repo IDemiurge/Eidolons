@@ -7,6 +7,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
@@ -29,7 +30,7 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaRandomness;
     protected float fluctuatingAlphaMin;
     protected float fluctuatingAlphaMax;
-    ALPHA_TEMPLATE alphaTemplate;
+    GenericEnums.ALPHA_TEMPLATE alphaTemplate;
     private int fluctuatingAlphaPeriod;
     public static int fluctuatingAlphaPeriodGlobal = 1;
 
@@ -43,11 +44,11 @@ public class Fluctuating extends GroupX {
     public Fluctuating() {
     }
 
-    public Fluctuating(ALPHA_TEMPLATE alphaTemplate) {
+    public Fluctuating(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
         setAlphaTemplate(alphaTemplate);
     }
 
-    public void setAlphaTemplate(ALPHA_TEMPLATE alphaTemplate) {
+    public void setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
 
         this.alphaTemplate = alphaTemplate;
         this.alphaStep = alphaTemplate.alphaStep;
@@ -226,63 +227,4 @@ public class Fluctuating extends GroupX {
         this.fluctuatingAlphaPeriod = fluctuatingAlphaPeriod;
     }
 
-    public enum ALPHA_TEMPLATE {
-
-        HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
-        HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),
-
-        MOON(0.1f, 0, 1, 0.5f),
-        SUN(0.1f, 0, 5, 0.5f, 0.7f, 1f),
-        TOP_LAYER(0.2f, 1, 2, 0.6f, 0.15f, 0.5f),
-        LIGHT(0.28f, 4, 0.8f, 2.6f, 0.1f, 0.4f),
-
-        MOONLIGHT(0.4f, 5, 0.5F, 0.6f, 0.1f, 0.9f),
-        CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
-        HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
-        HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
-
-        SHARD_OVERLAY(0.325f, 0.25F, 0.5F, 0.5f, 0.75f, 1f),
-        ITEM_BACKGROUND_OVERLAY(0.15f, 0, 1.25f, 0.6f, 0.70f, 1f),
-
-        VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
-        ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
-        OVERLAYS(0.15f, 0, 1, 0.1f, 0.75f, 1f),
-        UNIT_VIEW(0.23f, 0, 1, 0.0f, 0.80f, 1f), //EMBLEM COLOR & UNCONSCIOUS
-
-        SHADE_CELL_GAMMA_SHADOW(0.05f, 0.5f, 0.2f, 0, 0.5f, 0.8f),
-        SHADE_CELL_GAMMA_LIGHT(0.08f, 1.5f, 2.55f, 0.2f, 0.4f, 0.85f),
-        SHADE_CELL_LIGHT_EMITTER(0.10f, 1.5f, 2.5f, 0.2f, 0.85f, 1),
-        LIGHT_EMITTER_RAYS(0.25f, 1.0f, 0.5f, 0.4f, 0.25f, 1.0f),
-
-        SHADE_CELL_HIGHLIGHT(0.4f, 1.5f, 0.3f, 0.4f, 0.15f, 1),
-        DOORS(0.325f, 1.25F, 0.5F, 0.5f, 0.0f, 1f),
-
-        BLOOM(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
-        POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
-        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f);
-        public float alphaStep;
-        public float fluctuatingAlphaPauseDuration;
-        public float fluctuatingFullAlphaDuration;
-        public float fluctuatingAlphaRandomness;
-        public float min, max;
-
-        ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration, float fluctuatingFullAlphaDuration, float fluctuatingAlphaRandomness, float min, float max) {
-            this.alphaStep = alphaStep;
-            this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
-            this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
-            this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
-            this.min = min;
-            this.max = max;
-        }
-
-        ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration,
-                       float fluctuatingFullAlphaDuration,
-                       float fluctuatingAlphaRandomness) {
-            this.alphaStep = alphaStep;
-            this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
-            this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
-            this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
-        }
-
-    }
 }

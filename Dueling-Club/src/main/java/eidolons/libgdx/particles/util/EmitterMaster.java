@@ -1,6 +1,7 @@
 package eidolons.libgdx.particles.util;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
@@ -202,6 +203,10 @@ public class EmitterMaster extends GdxUtil {
                             }
                             FileHandle handle = GDX.file(newPath);
                             if (!handle.exists() || overwriteImage) {
+//                                if (type==VFX_ATLAS.INVERT){
+//                                nice try!
+//                                    texture = new Texture(GdxImageMaster.invert(new Pixmap(GDX.file(s))));
+//                                }
                                 GdxImageMaster.writeImage(handle, texture);
                                 log(1,
                                         path + " vfx image written: " + newPath);
@@ -382,6 +387,8 @@ public class EmitterMaster extends GdxUtil {
             case "custom":
             case "junk":
                 return VFX_ATLAS.MISC;
+            case "invert":
+                return VFX_ATLAS.INVERT;
         }
         return VFX_ATLAS.MISC;
     }
@@ -515,7 +522,7 @@ public class EmitterMaster extends GdxUtil {
         SPELL,
         MAP,
         MISC,
-        UNIT
+        INVERT, UNIT
     }
 
     public enum VFX_TEMPLATE {

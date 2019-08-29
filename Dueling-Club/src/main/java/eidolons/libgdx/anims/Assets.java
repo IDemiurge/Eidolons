@@ -30,6 +30,8 @@ import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
+import eidolons.system.audio.MusicMaster;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
@@ -179,6 +181,7 @@ public class Assets {
     public static void preloadMenu() {
         //TODO ?
     }
+
     public static boolean preloadAll(DequeImpl<BattleFieldObject> objects) {
         return preload(objects, true, true, true, true);
     }
@@ -194,6 +197,10 @@ public class Assets {
     public static boolean preload(DequeImpl<BattleFieldObject> objects,
                                   boolean full, boolean ui, boolean her0es, boolean emitters) {
         boolean result = preloadObjects(objects, full);
+
+        Chronos.mark("preload Audio");
+        preloadAudio(full);
+        Chronos.logTimeElapsedForMark("preload Audio");
 
         if (emitters) {
             preloadEmitters();
@@ -247,11 +254,12 @@ public class Assets {
             Chronos.mark("preload EmitterPools");
             for (EmitterMaster.VFX_ATLAS value : EmitterMaster.VFX_ATLAS.values()) {
                 switch (value) {
-                    case MAP:
-                    case MISC:
-                        continue;
+                    case SPELL:
+                    case AMBIENCE:
+                    case INVERT:
+                        get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
+                        break;
                 }
-                get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
             }
             Chronos.logTimeElapsedForMark("preload EmitterPools");
         }
@@ -263,24 +271,54 @@ public class Assets {
                 + "hero/" + Eidolons.getMainHero().getName() + ".txt", full);
     }
 
+    public static void preloadAudio(boolean full) {
+        for (GenericEnums.SOUND_CUE value : GenericEnums.SOUND_CUE.values()) {
+            try {
+                MusicMaster.getInstance().getMusic(value.getPath(), true);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
+    }
+
     public static void preloadUI(boolean full) {
+        if (CoreEngine.isSuperLite())
+            return;
         loadSprite(Sprites.BG_DEFAULT, full);
         loadSprite(Sprites.INK_BLOTCH, full);
         loadSprite(Sprites.PORTAL_OPEN, full);
         loadSprite(Sprites.PORTAL, full);
+        loadSprite(Sprites.SNOW, full);
         loadSprite(FullscreenAnims.FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), full);
 
+        loadSprite(Sprites.ACID_BLADE, full);
+        loadSprite(Sprites.AX_FIRE, full);
         if (DialogueManager.TEST)
             return;
         if (full) {
-            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
-            loadSprite(Sprites.SNOW, full);
+            loadSprite(Sprites.ORB, full);
+            loadSprite(Sprites.RUNE_INSCRIPTION, full);
+            loadSprite(Sprites.WATER, full);
+            loadSprite(Sprites.FIRE_LIGHT, full);
+            loadSprite(Sprites.FLOAT_WISP, full);
+            loadSprite(Sprites.WHITE_TENTACLE, full);
+            loadSprite(Sprites.BONE_WINGS, full);
+            loadSprite(Sprites.LIGHT_VEIL, full);
+            loadSprite(Sprites.COMMENT_KESERIM, full);
+
             loadSprite(Sprites.MIST, full);
             loadSprite(Sprites.PORTAL_CLOSE, full);
-            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), full);
-            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), full);
-            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
-            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
+                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), full);
+                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), full);
+                if (!CoreEngine.isMyLiteLaunch())
+                {
+                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
+                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
+                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
+                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
+            }
+
 
         }
 
@@ -295,9 +333,10 @@ public class Assets {
     }
 
     private static void loadSprite(String path, boolean full) {
-        if (full) {
-            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
-        } else {
+//        if (full) {
+//            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
+//        } else
+        {
             SpriteAnimationFactory.getSpriteAnimation(path, false);
         }
     }
@@ -312,7 +351,6 @@ public class Assets {
         }
         return true;
     }
-
 
 
     public AssetManager getManager() {

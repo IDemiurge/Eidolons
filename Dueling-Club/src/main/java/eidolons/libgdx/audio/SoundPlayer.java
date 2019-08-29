@@ -39,6 +39,13 @@ public class SoundPlayer extends Player {
         VOICE,
     }
 
+    public void playEffectSound(final SOUNDS sound_type, final Obj obj ) {
+        if (Cinematics.ON) {
+            if (!cinematicSoundOverride)
+                return;
+        }
+        super.playEffectSound(sound_type, obj );
+    }
     public void playEffectSound(final SOUNDS sound_type, final Obj obj, int volumePercentage) {
         if (Cinematics.ON) {
             if (!cinematicSoundOverride)
@@ -46,6 +53,8 @@ public class SoundPlayer extends Player {
         }
         super.playEffectSound(sound_type, obj, volumePercentage);
     }
+
+
 
     protected SOUND_TYPE getSoundType(SOUNDS sound_type) {
         switch (sound_type) {
@@ -119,6 +128,7 @@ public class SoundPlayer extends Player {
         if (playQueue.isEmpty()) {
             return;
         } else {
+            if (isWaitBetweenSounds())
             if (waitTime >= 0) {
                 waitTime -= delta;
                 return;
@@ -146,6 +156,10 @@ public class SoundPlayer extends Player {
         }
         //fade in or out?
         //pause sounds
+    }
+
+    private boolean isWaitBetweenSounds() {
+        return false;
     }
 
     private float getWaitTime(SoundFx soundFx) {

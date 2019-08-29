@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
@@ -17,12 +18,11 @@ import main.game.bf.Coordinates;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class GridObject extends GroupWithEmitters {
     protected SpriteX sprite;
@@ -32,13 +32,17 @@ public abstract class GridObject extends GroupWithEmitters {
     private String spritePath;
     protected boolean initialized;
     private boolean flipX;
+    String key;
+    private boolean hidden;
 
     public GridObject(Coordinates c, String spritePath) {
         this.c = c;
         this.spritePath = spritePath;
         //black underlay?
         visionRange = getDefaultVisionRange();
-
+        if (spritePath != null) {
+            setKey(StringMaster.cropFormat(PathUtils.getLastPathSegment(spritePath)));
+        }
     }
 
     protected abstract boolean isClearshotRequired();
@@ -60,6 +64,14 @@ public abstract class GridObject extends GroupWithEmitters {
             return false;
         }
         return true;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     protected EmitterActor createEmitter(String path, int offsetX, int offsetY) {
@@ -118,8 +130,10 @@ public abstract class GridObject extends GroupWithEmitters {
 
     protected void createEmittersFromFolder(String paths, float vfxChance, int max) {
         int i = 0;
-        for (String path : ContainerUtils.openContainer(paths))
-            for (File file : FileManager.getFilesFromDirectory(PathFinder.getVfxAtlasPath() + path, false, false)) {
+        for (String path : ContainerUtils.openContainer(paths)) {
+            List<File> files = FileManager.getFilesFromDirectory(PathFinder.getVfxAtlasPath() + path, false, false);
+            Collections.shuffle(files);
+            for (File file : files) {
                 if (!RandomWizard.chance((int) (100 * vfxChance))) {
                     continue;
                 }
@@ -132,6 +146,7 @@ public abstract class GridObject extends GroupWithEmitters {
                     return;
                 }
             }
+        }
     }
 
     protected void createEmittersFromString(String data, boolean mirrorX, boolean mirrorY, float vfxChance) {
@@ -155,6 +170,8 @@ public abstract class GridObject extends GroupWithEmitters {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (!EidolonsGame.INTRO_STARTED)
+            return;
         if (isIgnored()) {
             return;
         }
@@ -174,10 +191,9 @@ public abstract class GridObject extends GroupWithEmitters {
         if (isIgnored()) {
             return;
         }
-        if (getColor().a == 1) {
-            if (!checkVisible()) {
-                fadeOut();
-            }
+        if (getColor().a == 1 &&
+                ((hidden || !checkVisible()))) {
+            fadeOut();
         } else {
             if (getColor().a == 0) {
                 if (checkVisible()) {
@@ -229,5 +245,10 @@ public abstract class GridObject extends GroupWithEmitters {
     @Override
     public Collection getEmitters() {
         return emitters.keySet();
+    }
+
+    public void fadeOut(boolean manual) {
+        fadeOut();
+        hidden = true;
     }
 }

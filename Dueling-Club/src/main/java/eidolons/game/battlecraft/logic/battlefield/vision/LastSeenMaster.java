@@ -22,7 +22,7 @@ public class LastSeenMaster {
         if (obj instanceof Unit){
             obj.isPlayerCharacter();
         }
-        if (obj.isDead())
+        if (obj.isDead() || obj.isHidden())
             view.getLastSeenView().fadeOut();
         else
         if (visible  )

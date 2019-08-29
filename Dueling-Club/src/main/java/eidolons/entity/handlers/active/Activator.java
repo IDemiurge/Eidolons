@@ -4,20 +4,15 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
-import eidolons.game.core.ActionInput;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
-import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
-import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -218,7 +213,7 @@ public class Activator extends ActiveHandler {
         getHandler().setExtraAttackMode(instant_counter_opportunity, true);
         try {
             if (canBeActivated(getRef(), true)) {
-                getHandler().activateOn(triggeringAction.getOwnerUnit());
+                getHandler().activateOnGameLoopThread(triggeringAction.getOwnerUnit());
                 return true;
             }
 

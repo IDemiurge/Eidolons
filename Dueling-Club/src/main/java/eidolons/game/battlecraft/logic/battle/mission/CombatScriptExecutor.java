@@ -126,7 +126,18 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
 
     @Override
-    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
+    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, Object... objects) {
+        String[] args = new String[0];
+        if (!isAbstractArgs(function))
+        {
+            args = new  String[objects.length] ;
+            int i = 0;
+            for (Object object : objects) {
+                args[i++] = object.toString();
+
+            }
+        }
+
         switch (function) {
             case CINEMATIC:
                 return doCinematicScript(ref, args);
@@ -138,8 +149,9 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 return doSpawn(ref, args);
             case DIALOGUE_TIP:
                 doDialogue(ref, args[0]);
+                String[] finalArgs = args;
                 DialogueManager.afterDialogue(() ->
-                        doCustomTip(ref, args.length == 1 ? args[0] : args[1]));
+                        doCustomTip(ref, finalArgs.length == 1 ? finalArgs[0] : finalArgs[1]));
                 return true;
             case DIALOGUE:
                 return doDialogue(ref, args);
@@ -169,10 +181,24 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             case FREEZE:
             case UNFREEZE:
             case ORDER:
-                return getScriptExecutor().execute(function, ref, args);
+                return getScriptExecutor().execute(function, ref, objects);
         }
 
         return doUnitOperation(function, ref, args);
+    }
+
+    private boolean isAbstractArgs(COMBAT_SCRIPT_FUNCTION function) {
+        switch (function) {
+            case MOVE_TO:
+            case TURN_TO:
+            case ACTION:
+            case ATTACK:
+            case FREEZE:
+            case UNFREEZE:
+            case ORDER:
+                return true;
+        }
+        return false;
     }
 
     private boolean doCinematicScript(Ref ref, String[] args) {

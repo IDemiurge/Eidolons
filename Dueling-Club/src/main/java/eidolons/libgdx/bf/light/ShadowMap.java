@@ -15,12 +15,12 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.CONTENT_CONSTS;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -85,19 +85,19 @@ public class ShadowMap extends GroupX {
             case VOID:
                 return null;
             case GAMMA_SHADOW:
-                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_SHADOW;
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_SHADOW;
             case GAMMA_LIGHT:
-                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_LIGHT;
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_LIGHT;
             case LIGHT_EMITTER:
-                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
             case CONCEALMENT:
                 break;
             case BLACKOUT:
                 break;
             case HIGLIGHT:
-                return Fluctuating.ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
         }
-        return Fluctuating.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
+        return GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
     }
 
     public static Color getLightColor(BattleFieldObject userObject) {

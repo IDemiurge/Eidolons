@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.bf.SuperActor;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 8/17/2017.
@@ -22,7 +23,7 @@ public class SuperContainer extends SuperActor {
         addActor(content);
     }
 
-    public SuperContainer(ALPHA_TEMPLATE alphaTemplate) {
+    public SuperContainer(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
         super(alphaTemplate);
         this.fluctuateAlpha = true;
     }
@@ -33,7 +34,7 @@ public class SuperContainer extends SuperActor {
     }
 
     @Override
-    public void setAlphaTemplate(ALPHA_TEMPLATE alphaTemplate) {
+    public void setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
         setFluctuateAlpha(true);
         super.setAlphaTemplate(alphaTemplate);
     }

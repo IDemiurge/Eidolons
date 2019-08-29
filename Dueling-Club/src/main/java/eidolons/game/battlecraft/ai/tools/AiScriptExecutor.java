@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
@@ -12,6 +13,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.core.Eidolons;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -22,6 +24,8 @@ import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ArrayMaster;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 5/21/2017.
@@ -48,7 +52,9 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             if (unit == null) {
                 String name = unitData;
                 if (!DataManager.isTypeName(name))
-                    name = null;
+                {
+                    return null ;
+                }
 
                 Boolean power = null;// getPower(arg);
                 Boolean distance = true; // getDistance(arg);
@@ -61,28 +67,30 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
     }
 
     @Override
-    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, String... args) {
-        String unitData = args[0];
+    public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, Object... args) {
+        String unitData = args[0].toString();
         BattleFieldObject unit = findUnit(ref, unitData);
 
         String arg = null;
         boolean free = true;
         boolean immediate = false;
-        String[] additionalArgs = null;
+//        String[] additionalArgs = new String[]{
+//                args[0].toString() //TODO fix this
+//        };
         if (arg == null) {
-            arg = args[0];
+            arg = args[0].toString();
         }
         if (unit == null) {
             unit = (BattleFieldObject) ref.getSourceObj();
         }
         if (unit instanceof Unit) {
-            executeCommand((Unit) unit, function, arg, free, immediate, additionalArgs);
+            executeCommand((Unit) unit, function, arg, free, immediate, args);
         }
         return true;
     }
 
     private void executeCommand(Unit unit, COMBAT_SCRIPT_FUNCTION function, String arg,
-                                boolean free, boolean immediate, String... args) {
+                                boolean free, boolean immediate, Object... args) {
         ActionSequence sequence = null;
         GOAL_TYPE goal = getGoalType(function);
         if (unit == null) {
@@ -99,16 +107,23 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 break;
             case TURN_TO:
                 //cell id
+                List<Action> turnSequence = null ;
+                if (FacingMaster.getFacing(args[1].toString()) == null) {
+                    turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
+                                    Coordinates.get(args[1].toString()));
+                } else {
+                    turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
+                            FacingMaster.getFacing(args[1].toString()));
+                }
                 sequence = new ActionSequence(
-                        getTurnSequenceConstructor().
-                                getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                                        Coordinates.get(arg.toString())), task, unit.getAI());
+                        turnSequence, task, unit.getAI());
                 break;
             case ACTION:
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
                         getActionSequenceConstructor().constructSingleActionSequence(action,
                                 new Task(ai, goal, !ArrayMaster.isNotEmpty(args) ? null : args[0]));
+
                 break;
             case ATTACK:
 
@@ -137,7 +152,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                     action -> {
                         if (action.getTargeting() instanceof SelectiveTargeting) {
                             if (action.getTarget() == null) {
-                                action.getRef().setTarget(selectTarget(finalUnit, function, action, args));
+                                action.getRef().setTarget(selectTarget(
+                                        finalUnit, function, action, args));
                             }
                         }
                         getExecutor().execute(action, free);
@@ -146,8 +162,20 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
 
     }
 
-    private Integer selectTarget(Unit unit, COMBAT_SCRIPT_FUNCTION function, Action action, String[] args) {
+    private Integer selectTarget(Unit unit, COMBAT_SCRIPT_FUNCTION function, Action action, Object[] args) {
 //        TODO other cases?
+        if (action.getActive().isMove()) {
+            //string >> find unit
+            for (Object arg : args) {
+                if (arg instanceof DC_Obj) {
+                    return ((DC_Obj) arg).getId();
+                }
+                if (arg instanceof Coordinates) {
+                    return getGame().getCellByCoordinate((Coordinates) arg).getId();
+                }
+
+            }
+        }
         return getAnalyzer().getClosestEnemy(unit).getId();
     }
 

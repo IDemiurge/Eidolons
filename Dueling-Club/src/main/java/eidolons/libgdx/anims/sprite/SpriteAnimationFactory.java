@@ -48,7 +48,7 @@ public class SpriteAnimationFactory {
     public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault  ) {
         return getSpriteAnimation(key, useDefault, true);
     }
-        public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, boolean useCache) {
+        public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, Boolean useCache_orNullIfOnlyCached) {
         key = FileManager.formatPath(key, true, true);
             if (!key.contains(".")) {
                 key = Sprites.substituteKey(key);
@@ -58,7 +58,13 @@ public class SpriteAnimationFactory {
                     return null;
                 }
             } else {
-                SpriteAnimation sprite =useCache?  cache.get(key.toLowerCase()) : null ;
+                if (useCache_orNullIfOnlyCached == null) {
+                    if (cache.get(key.toLowerCase()) == null) {
+                        return null;
+                    }
+                    useCache_orNullIfOnlyCached=true;
+                }
+                SpriteAnimation sprite =useCache_orNullIfOnlyCached?  cache.get(key.toLowerCase()) : null ;
                 if (sprite != null) {
                     sprite.reset();
                     return sprite;
@@ -92,11 +98,11 @@ public class SpriteAnimationFactory {
         } else if (!ImageManager.isImage(texturePath)) {
 
             if (useDefault) {
-                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
+                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITES FOUND "
                         + texturePath + ", replacing with default: " + defaultSpritePath);
                 texturePath = defaultSpritePath;
             } else {
-                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
+                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITES FOUND "
                         + texturePath);
                 return null;
             }
@@ -147,7 +153,7 @@ public class SpriteAnimationFactory {
         } catch (Exception e) {
             //TODO don't try, check!
             main.system.auxiliary.log.LogMaster.log(1,
-                    "*********NO SPRITE FOUND getSpriteAnimation " + path);
+                    "*********NO SPRITES FOUND getSpriteAnimation " + path);
             return null;
 //                    TODO what should be default?
 //                     getSpriteAnimation(ImageManager.getEmptyItemIconPath(false), false);

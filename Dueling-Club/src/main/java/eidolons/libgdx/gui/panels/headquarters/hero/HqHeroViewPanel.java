@@ -3,15 +3,12 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
-import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.launch.CoreEngine;
 
@@ -86,7 +83,7 @@ public class HqHeroViewPanel extends HqElement {
         }
         sprite.centerOnParent(this);
         preview.setVisible(false);
-        preview.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.HQ_HERO_SPRITE);
+        preview.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HQ_HERO_SPRITE);
         sprite.setFrameDuration(0.06f);
     }
 

@@ -114,6 +114,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 Chronos.mark(ASSET_LOADING);
                 if (Assets.preloadMain(((BFDataCreatedEvent) param.get()).getObjects())) {
                     setLoadingAtlases(true);
+                    GdxMaster.setEmptyCursor();
                     return;
                 }
 
@@ -129,7 +130,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             setWaitingForInput(true);
             this.param = param;
             updateInputController();
-            GdxMaster.setDefaultCursor();
         } else done(this.param);
 
         if (param.get() instanceof BFDataCreatedEvent) {
@@ -154,7 +154,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isWaitForInput() {
-        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
+//        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
+        return true;
     }
 
     protected InputMultiplexer getWaitForInputController(EventCallbackParam param) {
@@ -417,6 +418,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         main.system.auxiliary.log.LogMaster.log(1, "waitingForInput from " +
                 this.waitingForInput +
                 " to " + waitingForInput);
+        if (waitingForInput) {
+            GdxMaster.setDefaultCursor();
+        }
         this.waitingForInput = waitingForInput;
 
     }
@@ -449,8 +453,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (isWaitingForInput())
             return getWaitForInputController(param);
         return introStage != null ?
-                new InputMultiplexer(loadingStage, introStage) :
-                new InputMultiplexer(loadingStage);
+                GdxMaster.getMultiplexer(loadingStage, introStage) :
+                GdxMaster.getMultiplexer(loadingStage);
     }
 
     public void updateInputController() {

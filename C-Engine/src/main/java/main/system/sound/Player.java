@@ -111,7 +111,7 @@ public class Player {
             sound = FileManager.getRandomFilePathVariant(basePath, format, alt);
         }
         if (sound == null) {
-            format = (!alt) ? ALT_FORMAT : FORMAT;
+            format = (format.equalsIgnoreCase(FORMAT)) ? ALT_FORMAT : FORMAT;
             sound = FileManager.getRandomFilePathVariant(basePath, format, !alt);
         }
         if (sound == null) {
@@ -172,10 +172,10 @@ public class Player {
             if (!sound.contains(".")) {
                 return play(sound + FORMAT, delay);
             } else if (sound.endsWith(FORMAT)) {
-                return  play(sound.replace(FORMAT, "") + ALT_FORMAT, delay);
-            } else if(sound.contains(" ")) {
-                return  play(sound.replace(" ", "_"), delay);
-            } else{
+                return play(sound.replace(FORMAT, "") + ALT_FORMAT, delay);
+            } else if (sound.contains(" ")) {
+                return play(sound.replace(" ", "_"), delay);
+            } else {
                 LogMaster.log(0, "Sound not found: " + sound);
             }
             return false;
@@ -197,7 +197,9 @@ public class Player {
         if (StringMaster.isEmpty(sound)) {
             return;
         }
-        playNow(new SoundFx(sound, 1, 0));
+        for (String s : ContainerUtils.openContainer(sound)) {
+            playNow(new SoundFx(s, 1, 0));
+        }
     }
 
     public void playNow(SoundFx sound) {
@@ -210,9 +212,17 @@ public class Player {
         try {
             Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
                     FileType.Absolute));
+            long id = soundFile.play(sound.getVolume());
+            float v = sound.getVolume();
+            if (v >= 5) {
+                v = v / 100;
+            }
+            soundFile.setVolume(id, v);
+//            main.system.auxiliary.log.LogMaster.dev(sound.getSound() + " Playing, sound id: " + id + " volume: "
+//                    + v);
 
-            soundFile.setVolume(0, sound.getVolume());
-            soundFile.play();
+//            soundFile.setPitch(id, sound.getPitch());
+//            soundFile.setPan(id, sound.getPan(), sound.getVolume());
             if (neverRepeat)
                 lastplayed.push(sound.getSound());
 

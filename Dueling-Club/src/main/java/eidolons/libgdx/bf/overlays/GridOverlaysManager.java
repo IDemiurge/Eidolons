@@ -28,13 +28,12 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -65,7 +64,7 @@ public class GridOverlaysManager extends SuperActor {
     public GridOverlaysManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
         cells = gridPanel.getCells();
-        setAlphaTemplate(ALPHA_TEMPLATE.OVERLAYS);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.OVERLAYS);
         for (OVERLAY sub : OVERLAY.values()) {
             if (isTooltipRequired(sub)) {
                 listenerCaches.put(sub, new HashMap<>());

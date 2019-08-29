@@ -2,10 +2,10 @@ package eidolons.libgdx.screens.map.ui.time;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.bf.Fluctuating;
 import eidolons.macro.MacroGame;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
+import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -30,8 +30,8 @@ public class SunActor extends GroupX {
         addActor(underlay = new ImageContainer(getPath() + getNameRoot() + " underlay.png"));
         addActor(overlay = new ImageContainer(getDefaultOverlayPath()));
         addActor(overlay2 = new ImageContainer(getDefaultOverlayPath()));
-        overlay.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.SUN);
-        overlay2.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.SUN);
+        overlay.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
+        overlay2.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
         if (undersun) {
             setX(-90);
             setY(0);

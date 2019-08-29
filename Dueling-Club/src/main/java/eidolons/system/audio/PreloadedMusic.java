@@ -26,13 +26,13 @@ public class PreloadedMusic implements Music {
         FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
         this.sound = Gdx.audio.newSound(file);
         if (sound instanceof OpenALSound) {
-            duration=   ((OpenALSound) sound).duration()*1000;
+            duration = ((OpenALSound) sound).duration() * 1000;
         }
     }
 
     @Override
     public String toString() {
-        return path+ ":  " + super.toString();
+        return path + ":  " + super.toString();
     }
 
     public String getPath() {
@@ -42,23 +42,25 @@ public class PreloadedMusic implements Music {
     public void play() {
         if (playing)
             return;
-        id= sound.play();
-        sound.setVolume(id, volume);
+        id = sound.play(volume);
+//        main.system.auxiliary.log.LogMaster.dev(path+" music Playing, sound id: " +id + " volume: " +  volume);
+//        sound.setVolume(id, volume);
         done = false;
         playing = true;
-        timeStarted= TimeMaster.getTime();
+        timeStarted = TimeMaster.getTime();
     }
 
 
     public long play(float volume) {
         setVolume(volume);
-         play();
-         return  id;
+        play( );
+        return id;
     }
+
     public long play(float volume, float pitch, float pan) {
         setVolume(volume);
         play();
-        return  id;
+        return id;
     }
 
     public long loop() {
@@ -108,8 +110,8 @@ public class PreloadedMusic implements Music {
 
     @Override
     public boolean isPlaying() {
-        done=main.system.auxiliary.TimeMaster.getTime()-timeStarted > duration;
-        if (done){
+        done = main.system.auxiliary.TimeMaster.getTime() - timeStarted > duration;
+        if (done) {
             stop();
         }
 //        playing = AL10.alGetSourcei((int) id, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
@@ -153,7 +155,7 @@ public class PreloadedMusic implements Music {
     }
 
     public void pause() {
-        playing = false; 
+        playing = false;
         sound.pause();
     }
 

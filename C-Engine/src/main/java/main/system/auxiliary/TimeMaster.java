@@ -30,7 +30,7 @@ public class TimeMaster {
     }
 
     public static String getFormattedTime(boolean secondsIn, boolean alt) {
-        return getFormattedTime(calendar.getTime(), secondsIn, alt);
+        return getFormattedTime(Calendar.getInstance().getTime(), secondsIn, alt);
     }
 
     public static String getFormattedTime(Date time, boolean secondsIn, boolean alt) {

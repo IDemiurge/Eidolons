@@ -14,6 +14,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -83,7 +84,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     public void moduleEntered(Module module) {
         int w = module.getWidth();
-        int h =  module.getHeight();
+        int h = module.getHeight();
         gridPanel = new GridPanel(w, h);
         if (Eidolons.getGame().getDungeonMaster().getBuilder() instanceof LocationBuilder) {
             ((LocationBuilder) Eidolons.getGame().getDungeonMaster().getBuilder()).initModuleZoneLazily(module);
@@ -92,6 +93,7 @@ public class DungeonScreen extends GameScreenWithTown {
         }
 //        grids.put(module, gridPanel);
     }
+
     @Override
     protected void preLoad() {
         instance = this;
@@ -193,9 +195,9 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected void afterLoad() {
         Gdx.gl20.glEnable(GL_POINT_SMOOTH);
-        Gdx.gl20. glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-        Gdx.gl20. glEnable(GL_LINE_SMOOTH);
-        Gdx.gl20. glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glEnable(GL_LINE_SMOOTH);
+        Gdx.gl20.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
         Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
         Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
@@ -248,17 +250,19 @@ public class DungeonScreen extends GameScreenWithTown {
     protected InputProcessor createInputController() {
 //        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
 //                if (selectionPanel.getStage()==guiStage) {
-//            return new InputMultiplexer(guiStage, controller);
+//            return GdxMaster.getMultiplexer(guiStage, controller);
 //            }
 //        }
+        if (isWaitingForInput())
+            return getWaitForInputController(param);
         if (guiStage.isDialogueMode()) {
-            return new InputMultiplexer(guiStage, controller);
+            return GdxMaster.getMultiplexer(guiStage, controller);
         }
         if (canShowScreen()) {  //town is considered 'loading phase' still
-            return new InputMultiplexer(guiStage, controller, gridStage);
+            return GdxMaster.getMultiplexer(guiStage, controller, gridStage);
         } else {
             if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning()) {
-                return new InputMultiplexer(guiStage, super.createInputController());
+                return GdxMaster.getMultiplexer(guiStage, super.createInputController());
             } else {
                 return super.createInputController();
             }
@@ -266,14 +270,14 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void checkInputController() {
-        if (!GdxMaster.hasController(Gdx.input.getInputProcessor(), gridStage)) {
+        if (guiStage.isDialogueMode() != GdxMaster.hasController(Gdx.input.getInputProcessor(), gridStage)) {
             updateInputController();
         }
     }
 
     protected void selectionPanelClosed() {
         if (TownPanel.getActiveInstance() != null)
-                return;//TODO fix late events in auto-load
+            return;//TODO fix late events in auto-load
         getOverlayStage().setActive(false);
         super.selectionPanelClosed();
     }
@@ -291,7 +295,7 @@ public class DungeonScreen extends GameScreenWithTown {
 //            }
         boolean show = super.canShowScreen();
         if (show) {
-            if (!firstShow){
+            if (!firstShow) {
                 firstShow = true;
 //                toBlack();
 //                blackout(5, 0);
@@ -308,12 +312,12 @@ public class DungeonScreen extends GameScreenWithTown {
 //            float w = Gdx.graphics.getWidth() * getCam().zoom;
 //            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
 //                    getCam().position.y - h/ 2, 1920 , 1050); //center?}
-            Camera camera =guiStage.getViewport().getCamera();
+            Camera camera = guiStage.getViewport().getCamera();
             camera.update();
             batch.setProjectionMatrix(camera.combined);
         }
-            super.doBlackout();
-        }
+        super.doBlackout();
+    }
 
     @Override
     protected void renderLoaderAndOverlays(float delta) {
@@ -325,9 +329,9 @@ public class DungeonScreen extends GameScreenWithTown {
     public void render(float delta) {
 
         Gdx.gl20.glEnable(GL_POINT_SMOOTH);
-        Gdx.gl20. glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-        Gdx.gl20. glEnable(GL_LINE_SMOOTH);
-        Gdx.gl20. glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+        Gdx.gl20.glEnable(GL_LINE_SMOOTH);
+        Gdx.gl20.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
         Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
         Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
@@ -335,7 +339,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (speed != null) {
             delta = delta * speed;
         }
-        if (CoreEngine.isDevEnabled())
+        if (CoreEngine.isDevEnabled() && !Cinematics.ON)
             if (DC_Game.game != null) {
                 if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) {
                     if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
@@ -365,18 +369,17 @@ public class DungeonScreen extends GameScreenWithTown {
         setBlocked(checkBlocked());
         cameraMan.act(delta);
         if (!canShowScreen()) {
-            getCam().position.x=0;
-            getCam().position.y=0;
+            getCam().position.x = 0;
+            getCam().position.y = 0;
             if (postProcessing != null)
                 postProcessing.begin();
             batch.begin();
             drawBg(delta);
 //            selectionPanel.setPosition(0, 0);
-            selectionPanel.setPosition( selectionPanel.getWidth()/2, selectionPanel.getY());
+            selectionPanel.setPosition(selectionPanel.getWidth() / 2, selectionPanel.getY());
             selectionPanel.draw(batch, 1);
             batch.end();
-            if (postProcessing != null)
-            {
+            if (postProcessing != null) {
                 batch.resetBlending();
                 postProcessing.end();
             }
@@ -390,8 +393,7 @@ public class DungeonScreen extends GameScreenWithTown {
                 postProcessing.begin();
             drawBg(delta);
             gridStage.draw();
-            if (postProcessing != null)
-            {
+            if (postProcessing != null) {
                 batch.resetBlending();
                 postProcessing.end();
             }

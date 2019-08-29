@@ -6,6 +6,7 @@ import eidolons.ability.effects.containers.customtarget.RayEffect;
 import eidolons.ability.effects.containers.customtarget.WaveEffect;
 import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
+import eidolons.ability.targeting.CoordinateTargeting;
 import eidolons.ability.targeting.TemplateAutoTargeting;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.content.PARAMS;
@@ -31,16 +32,14 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
+import main.elements.targeting.*;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
-import main.elements.targeting.FixedTargeting;
-import main.elements.targeting.MultiTargeting;
-import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
-import main.elements.targeting.Targeting;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
+import main.game.bf.directions.UNIT_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -169,6 +168,8 @@ public class ActivesConstructor {
     public static Targeting getTargeting(TARGETING_MODE mode, DC_ActiveObj obj) {
         Targeting targeting = null;
         switch (mode) {
+            case FRONT:
+                return new CoordinateTargeting(UNIT_DIRECTION.AHEAD);
             case BF_OBJ:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.BF_OBJ);
                 break;

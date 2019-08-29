@@ -7,6 +7,7 @@ import eidolons.macro.map.Place;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 2/9/2018.
@@ -43,7 +44,7 @@ public class PlaceActor extends MapActor {
     public void hover() {
         ActionMaster.addScaleAction(this, getHoveredScale(), 0.5f);
         ActionMaster.addFadeInAction(border, 0.5f);
-        setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT);
     }
 
     private float getHoveredScale() {
@@ -74,7 +75,7 @@ public class PlaceActor extends MapActor {
 
     public void minimize() {
         ActionMaster.addScaleAction(this, getDefaultScale(), 0.5f);
-        setAlphaTemplate(ALPHA_TEMPLATE.TOP_LAYER);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.TOP_LAYER);
     }
 
     private void init(PlaceActorParameters parameters) {

@@ -295,7 +295,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     @Override
     protected InputProcessor createInputController() {
         if (overlayStage.isActive())
-            return new InputMultiplexer(overlayStage);
+            return GdxMaster.getMultiplexer(overlayStage);
         return super.createInputController();
     }
 

@@ -24,6 +24,7 @@ public class AbilityEnums {
     }
 
     public enum TARGETING_MODE {
+        FRONT,
 
         SELF, SINGLE, MULTI,
 

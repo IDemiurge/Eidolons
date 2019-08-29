@@ -1,6 +1,7 @@
 package main.system.threading;
 
 import com.badlogic.gdx.Gdx;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -150,6 +151,10 @@ public class WaitMaster {
         }, "do after wait").start();
     }
 
+    public static WAIT_OPERATIONS getOperation(String value) {
+        return new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(WAIT_OPERATIONS.class, value);
+    }
+
 
     // additional identifying for batch operations?
     public enum WAIT_OPERATIONS {
@@ -173,7 +178,8 @@ public class WaitMaster {
         AUTO_TEST_INPUT,
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
-        GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, PLAYER_ACTION_FINISHED, BRIEFING_COMPLETE, MESSAGE_RESPONSE, MESSAGE_RESPONSE_DEATH, WAIT_COMPLETE
+        GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, PLAYER_ACTION_FINISHED, BRIEFING_COMPLETE, MESSAGE_RESPONSE, MESSAGE_RESPONSE_DEATH,
+        FULLSCREEN_DONE, COMMENT_DONE, WAIT_COMPLETE
     }
 
 }

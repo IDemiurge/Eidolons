@@ -2,10 +2,8 @@ package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -28,8 +26,6 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
@@ -57,6 +53,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
@@ -72,7 +69,6 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
-import static com.bladecoder.ink.runtime.ControlCommand.end;
 import static eidolons.game.core.Eidolons.getScreen;
 import static main.system.GuiEventType.SHOW_QUESTS_INFO;
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
@@ -215,7 +211,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 return 0;
             }
         });
-        actionTooltipContainer.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.ATB_POS);
+        actionTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
         actionTooltipContainer.setAlphaFluctuationOn(true);
 
         addActor(hqPanel = new HqPanel());
@@ -264,7 +260,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                     ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
             }
         });
-        infoTooltipContainer.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
+        infoTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
         infoTooltipContainer.setAlphaFluctuationOn(true);
 
         addActor(confirmationPanel = ConfirmationPanel.getInstance());

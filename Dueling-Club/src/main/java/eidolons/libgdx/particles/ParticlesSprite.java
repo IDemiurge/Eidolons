@@ -6,23 +6,28 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GroupX;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
+import main.system.auxiliary.RandomWizard;
+
 import java.util.Map;
 
 public class ParticlesSprite extends GroupX {
     public enum PARTICLES_SPRITE {
-        ASH("sprites/particles/snow.txt", SuperActor.BLENDING.INVERT_SCREEN,
-                13, 2, Fluctuating.ALPHA_TEMPLATE.OVERLAYS),
-        ASH_THICK("sprites/particles/snow.txt", SuperActor.BLENDING.INVERT_SCREEN,
-                12, 3, Fluctuating.ALPHA_TEMPLATE.OVERLAYS),
-        MIST("sprites/particles/mist.txt", SuperActor.BLENDING.SCREEN,
-                10, 2, null ),
-        BLACK_MIST("sprites/particles/mist.txt", SuperActor.BLENDING.INVERT_SCREEN,
-                10, 2, Fluctuating.ALPHA_TEMPLATE.OVERLAYS),
+        ASH(false,"sprites/particles/snow.txt", SuperActor.BLENDING.INVERT_SCREEN,
+                13, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        ASH_THICK(false,"sprites/particles/snow.txt", SuperActor.BLENDING.INVERT_SCREEN,
+                12, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        MIST(true,"sprites/particles/mist.txt", SuperActor.BLENDING.SCREEN,
+                10, 2, null),
+        BLACK_MIST(true,"sprites/particles/mist.txt", SuperActor.BLENDING.INVERT_SCREEN,
+                10, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
 //        SNOW,
         ;
 
-        PARTICLES_SPRITE(String path, SuperActor.BLENDING blending, int fps, int overlap, Fluctuating.ALPHA_TEMPLATE fluctuation) {
+
+        PARTICLES_SPRITE(boolean flipping,String path, SuperActor.BLENDING blending, int fps, int overlap, GenericEnums.ALPHA_TEMPLATE fluctuation) {
+            this.flipping = flipping;
             this.path = path;
             this.blending = blending;
             this.fps = fps;
@@ -30,13 +35,14 @@ public class ParticlesSprite extends GroupX {
             this.fluctuation = fluctuation;
         }
 
+        public boolean flipping;
         public String path;
         public SuperActor.BLENDING blending;
         int fps;
         int overlap;
         boolean changeFps;
 
-        Fluctuating.ALPHA_TEMPLATE fluctuation;
+        GenericEnums.ALPHA_TEMPLATE fluctuation;
         int eachNisFlipX = 0;
         public int duration;
     }
@@ -53,6 +59,15 @@ public class ParticlesSprite extends GroupX {
 
         for (int i = 0; i < type.overlap; i++) {
             SpriteX sprite = new SpriteX(type.path);
+            if (type.flipping)
+            sprite.setOnCycle(() ->
+                    {
+                        if (RandomWizard.random()) {
+                            sprite.setFlipX(!sprite.getSprite().isFlipX());
+                        } else
+                            sprite.setFlipY(!sprite.getSprite().isFlipY());
+                    }
+            );
             sprite.setFps(type.fps);
 //            sprite.setFlipX();
 //            sprite.setFlipY();
@@ -87,7 +102,7 @@ public class ParticlesSprite extends GroupX {
                             Math.abs(1 / type.overlap - perc));
                     spriteX.getColor().a =
 //                            getSprite().setAlpha
-                                    (fluctuating.getColor().a * coef * getColor().a);
+                            (fluctuating.getColor().a * coef * getColor().a);
                 }
             } else {
                 spriteX.getColor().a = getColor().a;

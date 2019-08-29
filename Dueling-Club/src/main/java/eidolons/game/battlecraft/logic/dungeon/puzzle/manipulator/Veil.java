@@ -14,7 +14,7 @@ public class Veil extends GridObject {
     Puzzle puzzle;
 //link to puzzle
     public Veil(Puzzle puzzle, Coordinates c, boolean pale, boolean enter) {
-        super(c, pale ? CUSTOM_OBJECT.LIGHT.spritePath : Sprites.VEIL);
+        super(c, pale ? CUSTOM_OBJECT.LIGHT.spritePath : Sprites.LIGHT_VEIL);
         this.pale = pale;
         this.enter = enter;
         this.puzzle = puzzle;

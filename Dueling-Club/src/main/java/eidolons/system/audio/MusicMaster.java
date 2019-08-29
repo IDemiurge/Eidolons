@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
@@ -128,7 +129,7 @@ public class MusicMaster {
         GuiEventManager.bind(GuiEventType.ADD_LOOPING_TRACK, p -> {
             List list = (List) p.get();
             String path = list.get(0).toString();
-            PreloadedMusic preloadedMusic = new PreloadedMusic(path);
+            PreloadedMusic preloadedMusic = (PreloadedMusic) getMusic(path, true);
             preloadedMusic.setVolume((Float) list.get(1));
             looping.add(preloadedMusic);
         });
@@ -220,7 +221,7 @@ public class MusicMaster {
         playMusic(track.getPath(), false, true);
     }
 
-    private MUSIC_TRACK getTrackByName(String value) {
+    public static MUSIC_TRACK getTrackByName(String value) {
         return
                 new EnumMaster<MUSIC_TRACK>().retrieveEnumConst(MUSIC_TRACK.class, value);
     }
@@ -585,7 +586,7 @@ public class MusicMaster {
                 }
             }
             if (playedAmbient == null) {
-                playedAmbient = new PreloadedMusic(ambience.getPath());
+                playedAmbient =getMusic(ambience.getPath(), true);
                 log(1, "loaded Ambient: " + ambience.getPath());
                 Float volume = getAmbientVolume();
                 playedAmbient.setVolume(volume);
@@ -680,7 +681,7 @@ public class MusicMaster {
             }
         }
         checkLoopedTracks(); //breathing, heartbeat, ..
-        soundscape.act(new Float(PERIOD)/1000);
+        soundscape.act(new Float(PERIOD));
         WaitMaster.WAIT(PERIOD);
 //        soundPlayback(PERIOD);
 
@@ -752,11 +753,15 @@ public class MusicMaster {
         log(1, "Music playing: " + path);
     }
 
-    private Music getMusic(String path) {
+    public Music getMusic(String path) {
+        return getMusic(path, isMusicPreloadOn());
+    }
+
+    public Music getMusic(String path, boolean preloaded) {
         path = path.toLowerCase();
         Music playedMusic = musicCache.get(path);
         if (playedMusic == null) {
-            if (isMusicPreloadOn()) {
+            if (preloaded) {
                 playedMusic = new PreloadedMusic(path);
             } else {
                 FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
@@ -772,10 +777,16 @@ public class MusicMaster {
     public Float getAmbientVolume() {
         ambientVolume = OptionsMaster.getSoundOptions().
                 getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
+        if (Cinematics.ON) {
+            return Cinematics.VOLUME_AMBIENCE;
+        }
         return ambientVolume * SoundMaster.getMasterVolume() / 100;
     }
 
     private Float getVolume() {
+        if (Cinematics.ON) {
+            return Cinematics.VOLUME_MUSIC;
+        }
         musicVolume = OptionsMaster.getSoundOptions().
                 getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
         return musicVolume * SoundMaster.getMasterVolume() / 100;
@@ -879,7 +890,7 @@ public class MusicMaster {
     }
 
     public enum MUSIC_SCOPE {
-        MENU, ATMO, MAP, BATTLE
+        MENU, ATMO, MAP, CINEMATIC, BATTLE
     }
 
     public enum MUSIC_THEME {
@@ -889,6 +900,8 @@ public class MusicMaster {
     }
 
     public enum MUSIC_TRACK {
+        ATMO(MUSIC_SCOPE.CINEMATIC),
+        ATMO_FIRE(MUSIC_SCOPE.CINEMATIC),
         FRACTURES(MUSIC_SCOPE.MENU),
         THERE_WILL_BE_PAIN_LOOP(MUSIC_SCOPE.MENU),
         THE_END_OR_THE_BEGINNING(MUSIC_SCOPE.MENU),
@@ -924,7 +937,7 @@ public class MusicMaster {
             if (scope == MUSIC_SCOPE.ATMO) {
                 return "main/" + getName() + ".mp3";
             }
-            return "main/" + scope + "/" + getName() + ".mp3";
+            return "main/" + scope.toString().toLowerCase() + "/" + getName() + ".mp3";
         }
 
         public String getName() {

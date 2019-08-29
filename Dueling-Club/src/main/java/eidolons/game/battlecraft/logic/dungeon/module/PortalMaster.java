@@ -30,7 +30,22 @@ public class PortalMaster extends DungeonHandler {
      */
     public PortalMaster(DungeonMaster master) {
         super(master);
-
+        GuiEventManager.bind(GuiEventType.PORTAL_OPEN , p-> {
+            Coordinates c = (Coordinates) p.get();
+            for (Portal portal : portalMap.keySet()) {
+                if (portal.getCoordinates().equals(c)) {
+                    portal.open=true;
+                }
+            }
+        });
+        GuiEventManager.bind(GuiEventType.PORTAL_CLOSE , p-> {
+            Coordinates c = (Coordinates) p.get();
+            for (Portal portal : portalMap.keySet()) {
+                if (portal.getCoordinates().equals(c)) {
+                    portal.open=false;
+                }
+            }
+        });
     }
 
     public void entered(Portal portal) {

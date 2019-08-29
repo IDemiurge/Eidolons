@@ -9,6 +9,7 @@ import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.shaders.ShaderMaster;
+import main.content.enums.GenericEnums;
 
 
 public class SpriteX extends GroupX {
@@ -25,6 +26,7 @@ public class SpriteX extends GroupX {
     float scaleRange;
     private int fps;
     private boolean flipX;
+    private boolean flipY;
     private boolean done;
     private ShaderProgram shader;
 
@@ -35,7 +37,7 @@ public class SpriteX extends GroupX {
         this(path, null, null);
     }
 
-    public SpriteX(String path, SPRITE_TEMPLATE template, Fluctuating.ALPHA_TEMPLATE alphaTemplate) {
+    public SpriteX(String path, SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
         if (alphaTemplate != null) {
             f = new Fluctuating(alphaTemplate);
         }
@@ -100,6 +102,7 @@ public class SpriteX extends GroupX {
         }
         sprite.setX(getX());
         sprite.setY(getY());
+        sprite.setRotation(getRotation());
         if (getParent() instanceof BaseView) {
             switch (((BaseView) getParent()).getUserObject().getName()) {
                 case "Eldritch Sphere":
@@ -113,6 +116,7 @@ public class SpriteX extends GroupX {
         }
 
         sprite.setFlipX(flipX);
+        sprite.setFlipY(flipY);
         sprite.setColor(getColor());
         sprite.setAlpha(parentAlpha);
         done = !sprite.draw(batch);
@@ -148,9 +152,13 @@ public class SpriteX extends GroupX {
 
     @Override
     public void setRotation(float rotation) {
-        sprite.setRotation(rotation);
+        super.setRotation(rotation);
     }
 
+    @Override
+    public void rotateBy(float amountInDegrees) {
+        super.rotateBy(amountInDegrees);
+    }
 
     @Override
     public void setOrigin(float originX, float originY) {
@@ -159,7 +167,7 @@ public class SpriteX extends GroupX {
 
     @Override
     public float getRotation() {
-        return sprite.getRotation();
+        return super.getRotation();
     }
 
     @Override
@@ -190,11 +198,17 @@ public class SpriteX extends GroupX {
     public void setFlipX(boolean flipX) {
         this.flipX = flipX;
     }
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
+    }
 
     public void setShader(ShaderMaster.SHADER shader) {
         this.shader = ShaderMaster.getShader(shader);
     }
 
+    public void setOnCycle(Runnable o) {
+        getSprite().setOnCycle(o);
+    }
 
 
     public enum SPRITE_TEMPLATE {

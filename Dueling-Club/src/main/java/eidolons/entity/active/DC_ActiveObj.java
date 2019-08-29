@@ -129,7 +129,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     // for radial and easy custom activation
     public void activateOn(Obj t) {
-        getMaster().getHandler().activateOn((DC_Obj) t);
+        getMaster().getHandler().activateOnGameLoopThread((DC_Obj) t);
     }
 
     public DAMAGE_TYPE getDamageType() {

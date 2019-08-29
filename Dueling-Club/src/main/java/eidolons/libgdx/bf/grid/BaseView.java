@@ -11,8 +11,10 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class BaseView extends SuperActor {
     protected  List<SpriteX> overlaySprites;
     protected List<SpriteX> underlaySprites;
     protected boolean forceTransform;
+    protected GroupX spritesContainers;
+    protected FadeImageContainer highlight;
 
     public BaseView(UnitViewOptions o) {
         init(o);
@@ -41,10 +45,11 @@ public class BaseView extends SuperActor {
     }
 
     protected void initSprite(UnitViewOptions o) {
+        addActor( spritesContainers = new GroupX());
         overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true);
         if (overlaySprites != null) {
             for (SpriteX spriteX : overlaySprites) {
-                addActor(spriteX);
+                spritesContainers.addActor(spriteX);
                 forceTransform = true;
             }
         }
@@ -52,7 +57,7 @@ public class BaseView extends SuperActor {
         underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false);
         if (underlaySprites != null) {
             for (SpriteX spriteX : underlaySprites) {
-                addActor(spriteX);
+              spritesContainers.addActor(spriteX);
                 spriteX.setZIndex(0);
                 forceTransform = true;
             }
@@ -67,6 +72,10 @@ public class BaseView extends SuperActor {
     public void init(TextureRegion portraitTexture, String path) {
         portrait = initPortrait(portraitTexture, path);
         addActor(portrait);
+
+        addActor(highlight = new FadeImageContainer(Images.COLORLESS_BORDER));
+        highlight.setVisible(false);
+        highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
 
         addListener(new BattleClickListener() {
             @Override
@@ -151,4 +160,32 @@ public class BaseView extends SuperActor {
     public void setAltPortrait(Image altPortrait) {
         this.altPortrait = altPortrait;
     }
+
+    public List<SpriteX> getOverlaySprites() {
+        return overlaySprites;
+    }
+
+    public List<SpriteX> getUnderlaySprites() {
+        return underlaySprites;
+    }
+
+    public void highlight() {
+        highlight.fadeIn();
+        highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, 0);
+//        firelight.fadeIn();
+
+        //screen anim
+
+        main.system.auxiliary.log.LogMaster.dev("highlight " );
+    }
+    public void highlightOff() {
+        highlight.fadeOut();
+    }
 }
+
+
+
+
+
+
+

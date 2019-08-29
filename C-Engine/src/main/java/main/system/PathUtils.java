@@ -23,6 +23,9 @@ public class PathUtils {
     }
 
     public static List<String> splitPath(String path) {
+        if (path.isEmpty()) {
+            return new ArrayList<>();
+        }
         if (path.charAt(0) == '/') {
             path = path.substring(1);
         }

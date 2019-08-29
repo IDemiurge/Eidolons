@@ -4,11 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
@@ -257,6 +254,18 @@ public class GdxImageMaster extends LwjglApplication {
         return roundPixmap(texture.getTextureData().consumePixmap());
     }
 
+    public static Pixmap invert(Pixmap pixmap) {
+        int width = pixmap.getWidth();
+        int height = pixmap.getHeight();
+        Pixmap inverted = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                inverted.drawPixel(x, y, Color.rgba8888(Color.WHITE)-pixmap.getPixel(x, y));
+            }
+        }
+        Gdx.app.log("info", "pixmal rounded!");
+        return inverted;
+    }
     public static Pixmap roundPixmap(Pixmap pixmap) {
         int width = pixmap.getWidth();
         int height = pixmap.getHeight();

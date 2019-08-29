@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
@@ -12,6 +13,7 @@ import main.system.data.PlayerData;
 import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.data.PlayerData.PLAYER_VALUE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
+import main.system.launch.CoreEngine;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,6 +27,15 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 //            FLAG_COLOR.BLUE, FLAG_COLOR.RED,
 //     FLAG_COLOR.CYAN,
             FLAG_COLOR.PURPLE};
+    public final FLAG_COLOR defaultPlayerColor =
+            FLAG_COLOR.PURPLE;
+    public final FLAG_COLOR defaultPlayerColorAlt =
+            FLAG_COLOR.CYAN;
+    public final FLAG_COLOR defaultEnemyColor =
+            FLAG_COLOR.RED;
+    public final FLAG_COLOR defaultEnemyColorAlt=
+            FLAG_COLOR.PEARL;
+
     public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED, FLAG_COLOR.ORANGE, FLAG_COLOR.CRIMSON,};
     public final FLAG_COLOR[] allyColors = {FLAG_COLOR.BLUE,
      FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
@@ -68,8 +79,10 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
                 player.setAi(true);
             initUnitData(player, i);
 
-            FLAG_COLOR color = getRandomColorFlag(player.isEnemy());
+            FLAG_COLOR color = getColorFlag(player.isEnemy());
             player.setFlagColor(color);
+            FLAG_COLOR colorAlt = getColorFlag(player.isEnemy(), true);
+            player.setFlagColorAlt(colorAlt);
 
             i++;
         }
@@ -78,6 +91,30 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             DC_Player.NEUTRAL = (DC_Player) Player.NEUTRAL;
             players.add(DC_Player.NEUTRAL);
         }
+    }
+
+    public DC_Player initPlayerFromString(String data) {
+        PlayerData dataUnit = new PlayerData(data);
+        ALLEGIENCE allegience =
+                new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
+                        dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
+        if (allegience == null) {
+            allegience = ALLEGIENCE.NEUTRAL;
+        }
+        FLAG_COLOR color = new EnumMaster<FLAG_COLOR>().retrieveEnumConst(FLAG_COLOR.class,
+                dataUnit.getValue(PLAYER_VALUE.COLOR));
+        if (color == null) {
+            color = getColorFlag();
+        }
+        DC_Player player = new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
+                dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
+
+        FLAG_COLOR colorAlt = getColorFlag(player.isEnemy(), true);
+        player.setFlagColorAlt(colorAlt);
+
+        player.setMainHeroName(dataUnit.getValue(PLAYER_VALUE.MAIN_HERO));
+
+        return player;
     }
 
     protected void initUnitData(DC_Player player, int i) {
@@ -107,41 +144,28 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
         return data;
     }
 
-    public DC_Player initPlayerFromString(String data) {
-        PlayerData dataUnit = new PlayerData(data);
-        ALLEGIENCE allegience =
-         new EnumMaster<ALLEGIENCE>().retrieveEnumConst(ALLEGIENCE.class,
-          dataUnit.getValue(PLAYER_VALUE.ALLEGIENCE));
-        if (allegience == null) {
-            allegience = ALLEGIENCE.NEUTRAL;
-        }
-        FLAG_COLOR color = new EnumMaster<FLAG_COLOR>().retrieveEnumConst(FLAG_COLOR.class,
-         dataUnit.getValue(PLAYER_VALUE.COLOR));
-        if (color == null) {
-            color = getRandomColorFlag();
-        }
-        DC_Player player = new DC_Player(dataUnit.getValue(PLAYER_VALUE.NAME), color,
-         dataUnit.getValue(PLAYER_VALUE.EMBLEM), dataUnit.getValue(PLAYER_VALUE.PORTRAIT), allegience);
-
-
-        player.setMainHeroName(dataUnit.getValue(PLAYER_VALUE.MAIN_HERO));
-
-        return player;
-    }
-
 
     public void setData(String data) {
         this.data = data;
     }
 
-    private FLAG_COLOR getRandomColorFlag(boolean enemy) {
+    private FLAG_COLOR getColorFlag(boolean enemy ) {
+        return getColorFlag(enemy, false);
+    }
+    private FLAG_COLOR getColorFlag(boolean enemy, boolean alt) {
+        if (CoreEngine.isIggDemo()){
+            if (enemy) {
+                return alt ? defaultEnemyColorAlt : defaultEnemyColor;
+            }
+            return alt ? defaultPlayerColorAlt : defaultPlayerColor;
+        }
         List<FLAG_COLOR> list = new ArrayList<>(Arrays.asList(enemy ? enemyColors : allyColors));
         int index = RandomWizard.getRandomIndex(list);
         return list.get(index);
     }
 
 
-    private FLAG_COLOR getRandomColorFlag() {
+    private FLAG_COLOR getColorFlag() {
         int index = RandomWizard.getRandomIndex(unusedPlayerColorsList);
         return unusedPlayerColorsList.remove(index);
     }

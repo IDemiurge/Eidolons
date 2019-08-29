@@ -1,9 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
-import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.SimpleAnim;
@@ -15,6 +12,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -105,7 +103,7 @@ public class SoulforceBar extends GroupX {
         barBgSprite.setFps(12);
 //        anim = new SimpleAnim("sprites/ui/soulforce bar anim.txt", () -> {
 //        });
-        addActor(f = new Fluctuating(Fluctuating.ALPHA_TEMPLATE.SOULFORCE));
+        addActor(f = new Fluctuating(GenericEnums.ALPHA_TEMPLATE.SOULFORCE));
         innerWidth = barSprite.getWidth();
         height = barSprite.getHeight();
 

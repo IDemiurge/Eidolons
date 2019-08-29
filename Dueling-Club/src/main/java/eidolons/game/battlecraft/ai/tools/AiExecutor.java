@@ -1,9 +1,11 @@
 package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
+import main.game.logic.action.context.Context;
 
 public class AiExecutor {
 
@@ -17,23 +19,25 @@ public class AiExecutor {
 
     public boolean execute(Action action, boolean free) {
         boolean result = false;
-        Ref ref = action.getRef();
-        if (free) {
+        Context ref = new Context(action.getRef());
+        if (Cinematics.ON|| free) {
             action.getActive().setFree(true);
         }
+        boolean gameThread = false;
         try {
-
+            if (!Cinematics.ON)
             if (!action.getActive().isChanneling()) {
                 if (ref.getTargetObj() == null) {
                     if (!(action.getActive().getTargeting()
                      instanceof SelectiveTargeting)) {
-                        result = true;
-                        action.getActive().getHandler().activateOnGameLoopThread();
-
+                        gameThread=true;
                     }
                 }
             }
-            if (!result) {
+            if (!gameThread) {
+                action.getActive().getHandler().activateOnGameLoopThread();
+                result = true;
+            } else {
                 action.getActive().getHandler().activateOn(ref);
                 result = true;
             }

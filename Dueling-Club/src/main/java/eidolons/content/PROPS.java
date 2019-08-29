@@ -447,16 +447,25 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ANIM_MISSILE_SPRITE
             ("", true, "spells", "actions"),
     ANIM_MODS_SPRITE("", true, "spells", "actions"),
+
     ANIM_MISSILE_VFX("", true, "spells", "actions"),
-    ANIM_VFX_PRECAST
-            ("", true, "spells", "actions"),
-    ANIM_VFX_CAST
-            ("", true, "spells", "actions"), ANIM_VFX_RESOLVE
-            ("", true, "spells", "actions"), ANIM_VFX_MAIN
-            ("", true, "spells", "actions"), ANIM_VFX_IMPACT
-            ("", true, "spells", "actions"), ANIM_VFX_AFTEREFFECT
-            ("", true, "spells", "actions"), ANIM_MODS_VFX
-            ("", true, "spells", "actions"),
+    ANIM_VFX_PRECAST("", true, "spells", "actions"),
+    ANIM_VFX_CAST("", true, "spells", "actions"),
+    ANIM_VFX_RESOLVE("", true, "spells", "actions"),
+    ANIM_VFX_MAIN("", true, "spells", "actions"),
+    ANIM_VFX_IMPACT("", true, "spells", "actions"),
+    ANIM_VFX_AFTEREFFECT("", true, "spells", "actions"),
+
+
+    ANIM_SOUND_MISSILE("", true, "spells", "actions"),
+    ANIM_SOUND_PRECAST("", true, "spells", "actions"),
+    ANIM_SOUND_CAST("", true, "spells", "actions"),
+    ANIM_SOUND_RESOLVE("", true, "spells", "actions"),
+    ANIM_SOUND_MAIN("", true, "spells", "actions"),
+    ANIM_SOUND_IMPACT("", true, "spells", "actions"),
+    ANIM_SOUND_AFTEREFFECT("", true, "spells", "actions"),
+    
+    ANIM_MODS_VFX("", true, "spells", "actions"),
 
     SPRITE_PATH("weapons", null), UNLOCKED_MASTERIES(null, true, "chars", "units"),
     MASTERY_RANKS_1(null, true, "chars"),
@@ -477,7 +486,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     EIDOLON_ASPECTS(null, true, "chars", "units"),
     ITEM_TRAITS(null, true, "weapons", "armor", "jewelry"),
-    CUSTOM_OBJECT(null, false, "bf obj"), ;
+    OVERLAY_SPRITES(null, false, "units", "chars"),
+    UNDERLAY_SPRITES(null, false, "units", "chars"),
+    CUSTOM_OBJECT(null, false, "bf obj"),
+
+    ;
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

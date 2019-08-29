@@ -9,6 +9,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import main.content.enums.GenericEnums;
 
 import java.util.Arrays;
 
@@ -31,7 +32,7 @@ public class SelectableImageItem extends FadeImageContainer{
          GdxMaster.centerWidth(highlight),
          //dirty hack
          GdxMaster.centerHeight(highlight));
-        setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
         this.data = data;
         if (data.isSelectionUnderneath())
         highlight.setZIndex(0);

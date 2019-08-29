@@ -3,6 +3,7 @@ package eidolons.libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -147,13 +148,19 @@ public class TexturePackerLaunch {
 //        settings.format = Format.RGBA8888;
         settings.format = Format.RGBA4444;
         settings.jpegQuality = 0.55f;
-        if (DialogMaster.confirm("Jpg?"))
+        if (DialogMaster.confirm("Jpg?")) {
+            Integer i = DialogMaster.inputInt("Quality?", (int) (settings.jpegQuality*100));
+            if (i != null) {
+                settings.jpegQuality = new Float(i) / 100;
+            }
             settings.outputFormat = "jpg";
+        }
 
         settings.maxHeight = (int) Math.pow(2, 14);
         settings.maxWidth = (int) Math.pow(2, 14);
         return settings;
     }
+
     public static Settings getBestSettings() {
         Settings settings = getSettings();
         settings.format = Format.RGBA8888;
@@ -163,7 +170,8 @@ public class TexturePackerLaunch {
         settings.maxWidth = (int) Math.pow(2, 13);
         return settings;
     }
-        public static Settings getAtlasSettings() {
+
+    public static Settings getAtlasSettings() {
         Settings settings = getSettings();
         settings.format = Format.RGBA8888;
         settings.jpegQuality = 0.8f;
@@ -239,9 +247,9 @@ public class TexturePackerLaunch {
                 "");
         if (StringMaster.isEmpty(name)) {
             name = PathUtils.getLastPathSegment(inputDir);
-       if (name.endsWith("0")){
-           name = StringMaster.cropLastSegment(name, "_", true);
-       }
+            if (name.endsWith("0")) {
+                name = StringMaster.cropLastSegment(name, "_", true);
+            }
         }
         String packFileName = FileManager.getUniqueFileVersion(name, outputDir);
         pack(inputDir, outputDir, packFileName); //+"/"+suffix

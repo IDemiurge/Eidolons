@@ -8,6 +8,7 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -29,7 +30,7 @@ public class MapActor extends SuperActor {
         highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
          StrPathBuilder.build(PathFinder.getShadeCellsPath(), "a new light.png"))), true);
         highlight.setTouchable(Touchable.disabled);
-        highlight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
+        highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT);
         highlight.setColor(getTeamColor());
 //        highlight.setPosition(highlight.getWidth()/2, highlight.getHeight()/2);
         addActor(highlight);

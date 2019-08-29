@@ -12,6 +12,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.mouse.InputController;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 8/17/2017.
@@ -34,7 +35,7 @@ public abstract class SuperActor extends Fluctuating implements
     public SuperActor() {
     }
 
-    public SuperActor(ALPHA_TEMPLATE alphaTemplate) {
+    public SuperActor(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
         setAlphaTemplate(alphaTemplate);
     }
 

@@ -9,6 +9,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -36,7 +37,7 @@ public class WallMap extends SuperActor {
 
     public WallMap() {
         bindEvents();
-        setAlphaTemplate(ALPHA_TEMPLATE.DOORS);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.DOORS);
     }
 
     public static boolean isOn() {

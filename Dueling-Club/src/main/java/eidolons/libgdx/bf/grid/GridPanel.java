@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -27,6 +26,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObje
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -46,6 +46,7 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.TargetRunnable;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.decor.Pillars;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.light.ShadowMap;
@@ -119,11 +120,14 @@ public class GridPanel extends Group {
     private float autoResetVisibleOnInterval = 0.5f;
 
     List<Manipulator> manipulators = new ArrayList<>();
+    List<GridObject> gridObjects = new ArrayList<>();
     List<GroupX> customOverlayingObjects = new ArrayList<>();
     List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
     List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
     private List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
     private List<GroupX> commentSprites = new ArrayList<>(3);
+    GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
+
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -228,6 +232,7 @@ public class GridPanel extends Group {
     private boolean isPillarsOn() {
         return true;
     }
+
     private boolean isShardsOn() {
         if (EidolonsGame.BRIDGE) {
             return true;
@@ -472,6 +477,14 @@ public class GridPanel extends Group {
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(ACTOR_SPEAKS, p -> {
+            for (BaseView value : viewMap.values()) {
+                value.highlightOff();
+            }
+            UnitView view = getUnitView((BattleFieldObject) p.get());
+            view.highlight();
+
+        });
         GuiEventManager.bind(GuiEventType.SHOW_COMMENT_PORTRAIT, p -> {
             List list = (List) p.get();
             Unit hero = (Unit) list.get(0);
@@ -482,9 +495,31 @@ public class GridPanel extends Group {
             }
             comment(hero, text, offset);
         });
+        GuiEventManager.bind(REMOVE_GRID_OBJ, p -> {
+            List list = (List) p.get();
+            String key = (String) list.get(0);
+            Coordinates c = (Coordinates) list.get(1);
+            GridObject gridObj = findGridObj(key, c);
+            gridObj.fadeOut(true);
+            customOverlayingObjectsUnder.remove(gridObj);
+            customOverlayingObjects.remove(gridObj);
+            customOverlayingObjectsTop.remove(gridObj);
+            gridObjects.remove(gridObj);
+        });
+        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
+            List list = (List) p.get();
+            String key = (String) list.get(0);
+            Coordinates c = (Coordinates) list.get(1);
+            GraphicData data = (GraphicData) list.get(2);
+            GridObject gridObj = findGridObj(key, c);
+            gridViewAnimator.animate(gridObj, data);
+        });
+
         GuiEventManager.bind(GuiEventType.ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
             addActor(object);
+
+            gridObjects.add(object);
             if (object instanceof LinkedGridObject) {
                 if (((LinkedGridObject) object).getLinked() instanceof OverlayView) {
                     customOverlayingObjectsTop.add(object);
@@ -714,6 +749,17 @@ public class GridPanel extends Group {
 
     }
 
+    private GridObject findGridObj(String key, Coordinates c) {
+        for (GridObject gridObject : gridObjects) {
+            if (gridObject.getKey().equalsIgnoreCase(key)) {
+            if (c==null || gridObject.getCoordinates().equals(c)) {
+                return gridObject;
+            }
+            }
+        }
+        return null;
+    }
+
 
     public int getGdxY(int y) {
         return getRows() - 1 - y;
@@ -765,18 +811,20 @@ public class GridPanel extends Group {
             if (view.getColor().a > 0 && view.getColor().a < 1)//            if (view.getActionsOfClass(FadeOutAction.class, false).size > 0)
                 return;
         }
-        if (isFadeAnimForUnitsOn()) {
+        if (!isFadeAnimForUnitsOn()) {
+            view.setVisible(visible);
+        } else {
             if (visible) {
                 view.getColor().a = 0;
                 view.setVisible(true);
-                ActionMaster.addFadeInAction(view, 0.25f);
+                ActionMaster.addFadeInAction(view, getFadeDuration(view) );
             } else {
 //                ActionMaster.checkHasAction(view, AlphaAction.class).if
                 if (view.getActionsOfClass(FadeOutAction.class).size > 0) {
                     return;
                 }
                 view.clearActions();
-                ActionMaster.addFadeOutAction(view, 0.25f);
+                ActionMaster.addFadeOutAction(view, getFadeDuration(view));
                 ActionMaster.addSetVisibleAfter(view, false);
 
                 if (overlayManager != null)
@@ -797,8 +845,14 @@ public class GridPanel extends Group {
                         );
 
                 }
-        } else
-            view.setVisible(visible);
+        }
+    }
+
+    private float getFadeDuration(BaseView view) {
+        if (Cinematics.ON) {
+            return 2f;
+        }
+        return 0.33f;
     }
 
     private boolean isFadeAnimForUnitsOn() {
@@ -1235,6 +1289,7 @@ public class GridPanel extends Group {
             @Override
             public boolean remove() {
                 getParent().remove(); //TODO could be better.
+                WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, text);
                 return super.remove();
             }
         };
@@ -1308,18 +1363,20 @@ public class GridPanel extends Group {
                     break;
             }
 
-        if (at != null)
+        if (at == null)
+            at = GridMaster.getCenteredPos(panTo);
+        if (Cinematics.ON) {
+//            at.y= at.y-100;
+        }
             GuiEventManager.trigger(CAMERA_PAN_TO, at, true);
-        else
-            GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, panTo, true);
-        GroupX finalPortrait = portrait;
 
-        WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
-            ActionMaster.addFadeOutAction(commentBgSprite, 4);
-            ActionMaster.addRemoveAfter(commentBgSprite);
-            ActionMaster.addFadeOutAction(finalPortrait, 3);
-            ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
-        });
-        this.commentSprites.add(commentGroup);
+            GroupX finalPortrait = portrait;
+            WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
+                ActionMaster.addFadeOutAction(commentBgSprite, 4);
+                ActionMaster.addRemoveAfter(commentBgSprite);
+                ActionMaster.addFadeOutAction(finalPortrait, 3);
+                ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
+            });
+            this.commentSprites.add(commentGroup);
+        }
     }
-}

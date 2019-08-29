@@ -307,7 +307,7 @@ public class DC_GameManager extends GameManager {
         Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
             if (ref.getActive() instanceof DC_ActiveObj) {
                 //TODO CLICK ON ANY OTHER OBJ MUST RESULT IN SELECTION STOP!
-                //                    ((DC_ActiveObj) ref.getActive()).activateOn(t);
+                //                    ((DC_ActiveObj) ref.getActive()).activateOnGameLoopThread(t);
                 //                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
                 t.invokeClicked();
             }

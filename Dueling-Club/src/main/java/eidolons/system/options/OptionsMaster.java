@@ -283,6 +283,9 @@ public class OptionsMaster {
         }
     }
 
+    public static void applyGraphicsOptions(   ) {
+        applyGraphicsOptions(getGraphicsOptions());
+    }
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
         if (Gdx.app == null) {
             return;

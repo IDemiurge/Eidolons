@@ -33,7 +33,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
     }
 
     @Override
-    public boolean execute(TEST_SCRIPT function, Ref ref, String... args) {
+    public boolean execute(TEST_SCRIPT function, Ref ref, Object... args) {
         switch (function) {
             case GUI_EVENT:
                 doGuiEvent(ref, args);
@@ -53,19 +53,19 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
         return true;
     }
 
-    private void doGuiEvent(Ref ref, String[] args) {
-        String name = args[0];
+    private void doGuiEvent(Ref ref, Object[] args) {
+        String name = args[0].toString();
         GuiEventType type = new EnumMaster<GuiEventType>().retrieveEnumConst(GuiEventType.class, name);
         Object arg = getGuiEventArg(ref, type, args);
         GuiEventManager.trigger(type, arg);
     }
 
-    private Object getGuiEventArg(Ref ref, GuiEventType type, String[] args) {
+    private Object getGuiEventArg(Ref ref, GuiEventType type, Object[] args) {
         return null;
     }
 
-    private void doSetMainHero(Ref ref, String[] args) {
-        Unit hero = (Unit) getGame().getMaster().getByName(args[0], ref, true, null, null);
+    private void doSetMainHero(Ref ref, Object[] args) {
+        Unit hero = (Unit) getGame().getMaster().getByName(args[0].toString(), ref, true, null, null);
         hero.getOwner().setHeroObj(hero);
     }
 
@@ -117,14 +117,14 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
         return (TestGame) super.getGame();
     }
 
-    private void doEnableAction(Ref ref, String[] args) {
+    private void doEnableAction(Ref ref, Object[] args) {
 //        DC_Obj action = (DC_Obj) findEntity(args[1], ref, DC_TYPE.ACTIONS);
-        getGame().getCombatMaster().setBlockActionExceptions(args[0]);
+        getGame().getCombatMaster().setBlockActionExceptions(args[0].toString());
     }
 
-    private void doHighlight(Ref ref, String[] args) {
+    private void doHighlight(Ref ref, Object[] args) {
 //        GuiEventManager.trigger(GuiEventType.HIGHLIGHT_OFF);
-        String nameOrKey = args[0];
+        String nameOrKey = args[0].toString();
         ObjType type = DataManager.getType(nameOrKey);
         Entity entity = null;
         if (type != null) {

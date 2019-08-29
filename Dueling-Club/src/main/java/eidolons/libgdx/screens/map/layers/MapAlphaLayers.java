@@ -2,7 +2,7 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.texture.TextureCache;

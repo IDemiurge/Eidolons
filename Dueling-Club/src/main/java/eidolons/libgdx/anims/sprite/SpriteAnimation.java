@@ -53,6 +53,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private SuperActor.BLENDING blending;
     private float originX;
     private float originY;
+    private Runnable onCycle;
+    private int lastCycle;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -174,10 +176,18 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean drawThis(Batch batch) {
-        if (getLifecycleDuration() != 0) {
+        float lifecycleDuration = getLifecycleDuration();
+        if (lifecycleDuration != 0) {
             checkReverse();
-            cycles = (int) (stateTime / getLifecycleDuration());
-            lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
+            lastCycle = cycles;
+            cycles = (int) (stateTime / lifecycleDuration);
+            if (cycles > lastCycle) {
+                if (onCycle != null) {
+                    onCycle.run();
+                }
+            }
+            lifecycle = stateTime % lifecycleDuration / lifecycleDuration;
+
         }
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
@@ -470,8 +480,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean isAnimationFinished() {
-        if (looping)
+        if (looping) {
+            if (loops > 0) {
+                return loops <= cycles;
+            }
             return false;
+        }
         if (getPlayMode() == PlayMode.LOOP)
             return false;
         if (getPlayMode() == PlayMode.LOOP_PINGPONG)
@@ -522,8 +536,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public void centerOnScreen() {
-        setOffsetX( (GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
-        setOffsetY( (GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
+        setOffsetX((GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
+        setOffsetY((GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
     }
 
     public void centerOnParent(Actor actor) {
@@ -556,6 +570,22 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this.originX = originX;
         this.originY = originY;
 
+    }
+
+    public boolean isFlipY() {
+        return flipY;
+    }
+
+    public boolean isFlipX() {
+        return flipX;
+    }
+
+    public void setOnCycle(Runnable onCycle) {
+        this.onCycle = onCycle;
+    }
+
+    public Runnable getOnCycle() {
+        return onCycle;
     }
 
 

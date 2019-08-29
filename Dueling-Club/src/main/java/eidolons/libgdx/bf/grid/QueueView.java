@@ -53,6 +53,11 @@ public class QueueView extends UnitView {
         return parentView.getUserObject();
     }
 
+    @Override
+    protected TextureRegion getDefaultTexture() {
+        return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
+    }
+
     protected void init(int clockVal) {
         this.initiativeIntVal = clockVal;
         initiativeLabel = new Label(

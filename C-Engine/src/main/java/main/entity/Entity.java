@@ -457,6 +457,9 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public boolean isOwnedBy(Player player) {
+        if (getOwner()==player) {
+            return true;
+        }
         return getChecker().isOwnedBy(player);
     }
 

@@ -102,8 +102,17 @@ public class TurnSequenceConstructor extends AiHandler {
         return getTurnSequence(FACING_SINGLE.IN_FRONT, source, target);
     }
 
+    public List<Action> getTurnSequence( Unit source,
+                                         FACING_DIRECTION direction) {
+        return getTurnSequence(FACING_SINGLE.IN_FRONT, source, direction);
+    }
     public List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
-                                        Coordinates target) {
+                                         FACING_DIRECTION direction) {
+        return getTurnSequence(template, source, source.getCoordinates().getAdjacentCoordinate(direction.getDirection()));
+    }
+
+        public List<Action> getTurnSequence(FACING_SINGLE template, Unit source,
+                Coordinates target) {
 
         FACING_DIRECTION original_facing = source.getFacing();
         FACING_DIRECTION facing = original_facing;

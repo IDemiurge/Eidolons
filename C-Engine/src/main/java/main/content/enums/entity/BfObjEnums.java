@@ -1,7 +1,9 @@
 package main.content.enums.entity;
 
 import com.badlogic.gdx.graphics.Color;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
 
 /**
  * Created by JustMe on 2/14/2017.
@@ -16,15 +18,35 @@ public class BfObjEnums {
 //    createEmitter("unit/chaotic dark", -32, 32);
 
     public enum CUSTOM_OBJECT {
+        blade(15, "", "", PathUtils.cropFirstPathSegment(SPRITES.BLADE.path), 6),
+        clock(15, "", "", PathUtils.cropFirstPathSegment(SPRITES.HELL_WHEEL.path), 6,
+                "blade(50, 80)",
+                "blade(-50, 80)"),
+        keserim(15, "", "", PathUtils.cropFirstPathSegment(SPRITES.COMMENT_KESERIM.path), 5),
+        chrysalis(15, "", "", "", 5,
+                "gate(0, 130)", "light( 0,  0)"),
+
+        darkness(15, "", "", "cells/bf/light wisp float.txt", 5,
+                "black wing(-60, -30)", "black wing(60, -30)"
+                , "black tendrils(50, -80)", "black tendrils(-50, -80)"
+                , "keserim(0, -90)"),
+
         dark_chrysalis(15, "", "", "cells/bf/light wisp float.txt", 5,
-                "gate(0, 20)","light( 0,  0)",
-                "black wings(-50, 50)",                "black wings(50, 50)"
-                , "black tendrils(50, -50)", "black tendrils(-50, -50)"){
-        },
+                "gate(0, -10)", "light( 0,  0)",
+                "black wing(-50, 30)", "black wing(50, 30)"
+                , "black tendrils(50, -60)", "black tendrils(-50, -60)"),
+
         black_tendrils(12, "", "", "unit/white tent.txt", 5),
-        black_wings(13, "", "", "unit/wings.txt", 5),
+        black_wing(13, "", "", "unit/wings.txt", 5),
+        bone_wing(13, "", "", "unit/wings.txt", 5),
+
+        black_wings(13, "", "", "unit/wings.txt", 5,
+                "black wing(-70, 30)", "black wing(70, 30)"),
+        bone_wings(13, "", "", "unit/wings.txt", 5,
+                "bone wing(-70, 30)", "bone wing(70, 30)"),
+
         flames(15, "", "", "", 5),
-        firelight(15, "", "",  "cells/bf/fire light.txt", 5),
+        firelight(15, "", "", "cells/bf/fire light.txt", 5),
         nether_flames(15, "", "", "cells/bf/fire light.txt", 5),
         burning_rubble(15, "", "", "cells/bf/fire light.txt", 5),
 
@@ -36,7 +58,7 @@ public class BfObjEnums {
         BLACKNESS(15, "", "", "", 5),
         LIGHT(15, "", "", "cells/bf/fire light.txt", 5),
         GATE(15, "", "", "cells/gate/gate.txt", 5),
-//        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
+        //        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
         GATE_PILLAR(10, "", "", "cells/gate/pillar.txt", 10);
 
         public boolean vfxUnderMirrorX;
@@ -44,8 +66,8 @@ public class BfObjEnums {
         public boolean vfxOverMirrorX;
         public boolean vfxOverMirrorY;
 
-        public  Color spriteColor;
-        public float vfxChance=100;
+        public Color spriteColor;
+        public float vfxChance = 100;
         public boolean movable;
 
         public boolean invert_screen_vfx;
@@ -54,14 +76,15 @@ public class BfObjEnums {
         public boolean screen;
         public boolean ignore_linked_visible;
         public boolean always_visible;
+        public GenericEnums.ALPHA_TEMPLATE alpha_template;
         private float vfxSpeed = 1f;
         public double range;
         public int fps;
         public int maxEmitters;
         public String vfxFolderUnder;
         public String vfxFolderOver;
-        public String vfxUnder="";
-        public String vfxOver="";
+        public String vfxUnder = "";
+        public String vfxOver = "";
         public String spritePath;
         public String[] additionalObjects;
 
@@ -1696,5 +1719,32 @@ public class BfObjEnums {
         PURPLE_LUMINESCENT_FUNGI,
         GREEN_LUMINESCENT_FUNGI,
         ;
+    }
+
+    public enum SPRITES {
+
+        HERO_KESERIM("sprites/hero/keserim2.txt"),
+        COMMENT_KESERIM("sprites/hero/comment/keserim comment.txt"),
+        ALTAR("sprites/cells/bf/altar.txt"),
+        FLOAT_WISP("sprites/cells/bf/light wisp float.txt"),
+        FIRE_LIGHT("sprites/cells/bf/fire light.txt"),
+        RUNE_INSCRIPTION("sprites/cells/bf/rune.txt"),
+        ORB("sprites/cells/bf/orb.txt"),
+        WATER("sprites/cells/ambi/black waters.txt"),
+        VEIL("sprites/cells/gate/veil.txt"),
+        HELL_WHEEL("sprites/cells/parts/underlay.txt"),
+        BLADE("sprites/cells/parts/blade hand.txt"),
+        TENTACLE("sprites/cells/grid/tent loop.txt"),
+        WHITE_TENTACLE("sprites/unit/white tent.txt"),
+        BONE_WINGS("sprites/unit/wings.txt"),
+        PORTAL("sprites/cells/portal/portal loop.txt"),
+        PORTAL_OPEN("sprites/cells/portal/portal open.txt"),
+        PORTAL_CLOSE("sprites/cells/portal/portal close.txt"),
+        EMPTY("");
+        public String path;
+
+        SPRITES(String path) {
+            this.path = path;
+        }
     }
 }

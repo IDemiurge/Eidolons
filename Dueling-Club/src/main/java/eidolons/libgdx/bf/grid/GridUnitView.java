@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
@@ -17,6 +18,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.gui.tooltips.Tooltip;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
@@ -32,7 +34,7 @@ public class GridUnitView extends GenericGridView {
     private float scaleResetTimer = scaleResetPeriod;
 
     OverlayView attachedObj;
-
+    private float screenOverlay;
 
     public GridUnitView(BattleFieldObject bfObj, UnitViewOptions options) {
         super(bfObj, options);
@@ -110,12 +112,44 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        if (isMainHero()) {
+        if (getUserObject().isHidden()) {
             if (getUserObject().isPlayerCharacter()) {
-            if (getUserObject().isHidden()) {
                 return;
             }
         }
+        if (!getColor().equals(GdxColorMaster.WHITE))
+            portrait.setColor(getColor());
+
+        if (screenOverlay > 0.01f) { //TODO need a flag instead
+            emblemLighting.setVisible(false);
+            if (emblemImage.getColor().a == 1) {
+                emblemImage.fadeOut();
+            }
+            if (arrow.getColor().a == 1) {
+                arrow.fadeOut();
+            }
+        }
         super.draw(batch, parentAlpha);
+        if (screenOverlay > 0) {
+            portrait.setZIndex(999999);
+            super.draw(batch, parentAlpha);
+            ((CustomSpriteBatch) batch).setBlending(BLENDING.SCREEN); //could do other blends too
+            float a = getColor().a; // hue?
+            getColor().a = screenOverlay;
+            //setVisible(false); for all nonportrait
+            super.draw(batch, parentAlpha);
+            portrait.setZIndex(1);
+            getColor().a = a;
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+    }
+
+    public float getScreenOverlay() {
+        return screenOverlay;
+    }
+
+    public void setScreenOverlay(float screenOverlay) {
+        this.screenOverlay = screenOverlay;
     }
 
     @Override

@@ -15,6 +15,7 @@ public class FullscreenAnimDataSource {
     private SuperActor.BLENDING blending;
     public boolean flipX;
     public boolean flipY;
+    private int loops;
 
     public FullscreenAnimDataSource(FULLSCREEN_ANIM type, float intensity, FACING_DIRECTION from, SuperActor.BLENDING blending) {
         this.type = type;
@@ -47,5 +48,17 @@ public class FullscreenAnimDataSource {
 
     public void setBlending(SuperActor.BLENDING blending) {
         this.blending = blending;
+    }
+
+    public int getLoops() {
+        return loops;
+    }
+
+    public void setLoops(int loops) {
+        this.loops = loops;
+    }
+
+    public void setIntensity(Float valueOf) {
+        intensity = valueOf;
     }
 }

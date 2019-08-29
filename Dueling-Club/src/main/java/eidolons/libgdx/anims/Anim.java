@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
@@ -184,7 +185,6 @@ public class Anim extends Group implements Animation {
             return true; //delay
         }
         checkAddFloatingText();
-        Texture currentFrame = textureSupplier.get();
         if (lifecycleDuration != 0) {
             cycles = (int) (time / lifecycleDuration);
             lifecycle = time % lifecycleDuration / lifecycleDuration;
@@ -208,10 +208,7 @@ public class Anim extends Group implements Animation {
 
             }
         }
-        if (currentFrame != null) {
-            setWidth(currentFrame.getWidth());
-            setHeight(currentFrame.getHeight());
-        }
+
         updatePosition(delta);
         emitterList.forEach(e -> {
             e.setFlipX(flipX);
@@ -306,7 +303,11 @@ public class Anim extends Group implements Animation {
         if (!isDrawTexture()) {
             return;
         }
-
+//        Texture currentFrame = textureSupplier.get();
+//        if (currentFrame != null) {
+//            setWidth(currentFrame.getWidth());
+//            setHeight(currentFrame.getHeight());
+//        }
         Texture texture = getTexture();
 
         if (texture == null) {
@@ -462,7 +463,7 @@ public class Anim extends Group implements Animation {
     }
 
     public String getTexturePath() {
-        if (active == null)
+        if (active == null || Cinematics.ON)
             return "";
         return active.getImagePath();
     }
@@ -533,6 +534,9 @@ public class Anim extends Group implements Animation {
     }
 
     protected boolean isDrawTexture() {
+        if (Cinematics.ON) {
+            return false;
+        }
         return true;
     }
 

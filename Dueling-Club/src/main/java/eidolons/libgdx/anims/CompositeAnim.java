@@ -53,6 +53,7 @@ public class CompositeAnim implements Animation {
     private Animation continuous;
     private boolean hpUpdate = true;
     private boolean waitingForNext;
+    private boolean parallel;
 //    List<Anim> parallelAnims; what was the idea exactly?
 
 
@@ -74,7 +75,12 @@ public class CompositeAnim implements Animation {
 
     public boolean tryDraw(Batch batch) {
         if (isFinished()) return false;
-        if (!isRunning()) return false;
+        if (!isRunning()) {
+            if (isParallel()){
+                start();
+            } else
+            return false;
+        }
         try {
             return draw(batch);
         } catch (Exception e) {
@@ -109,7 +115,10 @@ public class CompositeAnim implements Animation {
                 return time <= 2;
             }
         }
-        return false;
+        if (currentAnim instanceof SimpleAnim) {
+            return ((SimpleAnim) currentAnim).isParallel();
+        }
+        return parallel;
     }
 
     public boolean draw(Batch batch) {

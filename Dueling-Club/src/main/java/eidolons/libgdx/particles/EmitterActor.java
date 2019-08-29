@@ -1,14 +1,18 @@
 package eidolons.libgdx.particles;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
+import main.system.PathUtils;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.launch.CoreEngine;
 
@@ -20,10 +24,6 @@ import java.util.List;
  */
 public class EmitterActor extends SuperActor {
 
-    static public boolean spriteEmitterTest = false;
-    private static List<String> brokenPaths = new ArrayList<>();
-    protected final int defaultCapacity = 12;
-    protected final int defaultMaxCapacity = 24;
     public String path;
     protected ParticleEffectX effect;
     protected ParticleEffectPool pool;
@@ -35,11 +35,20 @@ public class EmitterActor extends SuperActor {
     protected boolean test;
     protected float speed = 1;
     protected Float lastAlpha;
+
     protected boolean broken;
     boolean flipX;
     boolean flipY;
-    private String imgPath;
 
+    private ShaderProgram shader;
+    private boolean invert;
+
+    public void init() {
+        if (PathUtils.getLastPathSegment(PathUtils.cropLastPathSegment(path)).contains("invert")) {
+            invert=true;
+//        shader
+        }
+    }
     public EmitterActor(GenericEnums.VFX fx) {
         this(fx.getPath());
         this.sfx = fx;
@@ -51,14 +60,81 @@ public class EmitterActor extends SuperActor {
     }
 
     public EmitterActor(String path) {
-        //        path =PathFinder.getVfxPath() + "templates/sprite test";
         this.path = path;
-            effect = EmitterPools.getEffect(path);
-        //TODO not very safe...
-        //        if (EmitterMaster.getAtlasType(path)!= VFX_ATLAS.UNIT) {
-        //            effect.getEmitters().forEach(emitter -> emitter.setAdditive(true));
-        //        }
-        imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
+        effect = EmitterPools.getEffect(path);
+        init();
+    }
+
+    public void updatePosition(float x, float y) {
+//        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VERBOSE_CHECK, this + " from " +
+//                getX() +" " +getY() +" pos set to " + x + " " + y);
+        setPosition(x, y);
+    }
+
+    public void offsetAlpha(float alpha) {
+        if (alpha == 0)
+            hide();
+        if (lastAlpha != null)
+            effect.getEmitters().forEach(e ->
+                    e.getTransparency().scale(1 / lastAlpha));
+
+        lastAlpha = alpha;
+        effect.getEmitters().forEach(e -> //e.getTransparency().setScaling()
+                e.getTransparency().scale(alpha));
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (broken) {
+            return;
+        }
+        super.draw(batch, parentAlpha);
+        effect.setPosition(getX(), getY());
+        float delta = Gdx.graphics.getDeltaTime() * speed;
+
+        boolean reset = false;
+        if (shader != null) {
+            batch.setShader(shader);
+            reset = true;
+        }
+        if (invert) {
+            Gdx.gl.glBlendEquation(GL20.GL_FUNC_REVERSE_SUBTRACT);
+            reset = true;
+        }
+        if (reset) {
+            if (batch instanceof CustomSpriteBatch) {
+                ((CustomSpriteBatch) batch).resetBlending();
+            }
+        }
+
+        effect.draw(batch, delta);
+    }
+
+    public ParticleEffectX getEffect() {
+        return effect;
+    }
+
+    public void start() {
+        effect.start();
+    }
+
+    public GenericEnums.VFX getTemplate() {
+        return sfx;
+    }
+
+    public void hide() {
+        effect.getEmitters().forEach(e ->
+        {
+            e.allowCompletion();
+        });
+    }
+
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
     }
 
     @Override
@@ -84,99 +160,17 @@ public class EmitterActor extends SuperActor {
         return super.equals(obj);
     }
 
+    public ShaderProgram getShader() {
+        return shader;
+    }
+
+    public boolean isInvert() {
+        return invert;
+    }
+
     @Override
     public boolean isIgnored() {
         return super.isIgnored();
-    }
-
-    public void act(float delta) {
-
-        super.act(delta);
-        effect.setPosition(getX(), getY());
-//        effect.setFlip(flipX, flipY);
-        //        effect.update(delta); TODO now drawing with alpha!
-        //effect.getEmitters().first().flipY(); wh isn't there flipx
-    }
-
-    public void setFlipX(boolean flipX) {
-        this.flipX = flipX;
-    }
-
-    public void setFlipY(boolean flipY) {
-        this.flipY = flipY;
-    }
-
-    public void updatePosition(float x, float y) {
-        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VERBOSE_CHECK, this + " from " +
-                getX() +
-                " " +
-                getY() +
-                " pos set to " + x + " " + y);
-        setPosition(x, y);
-    }
-
-    public void offsetAlpha(float alpha) {
-        if (alpha == 0)
-            hide();
-        if (lastAlpha != null)
-            effect.getEmitters().forEach(e ->
-                    e.getTransparency().scale(1 / lastAlpha));
-
-        lastAlpha = alpha;
-        effect.getEmitters().forEach(e -> //e.getTransparency().setScaling()
-                e.getTransparency().scale(alpha));
-    }
-
-    public GenericEnums.VFX getTemplate() {
-        return sfx;
-    }
-
-    public void hide() {
-        effect.getEmitters().forEach(e ->
-        {
-            e.allowCompletion();
-        });
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (broken) {
-            return;
-        }
-        super.draw(batch, parentAlpha);
-        effect.setPosition(getX(), getY());
-        float delta = Gdx.graphics.getDeltaTime() * speed;
-//        if (ParticleEffectX.TEST_MODE)
-//            try {
-//                effect.draw(batch, delta);
-//            } catch (IllegalStateException e) {
-//                imgPath = EmitterPresetMaster.getInstance().getImagePath(path);
-//                brokenPaths.add(imgPath);
-//                main.system.auxiliary.log.LogMaster.log(1, "VFX imgPath is broken! " + imgPath);
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//                main.system.auxiliary.log.LogMaster.log(1, " EMITTER FAILED: "
-//                 + path);
-//                broken = true;
-//            }
-//        else
-        effect.draw(batch, delta);
-    }
-
-    public ParticleEffectX getEffect() {
-        return effect;
-    }
-
-    public void start() {
-        effect.start();
-    }
-
-    public GenericEnums.VFX getSfx() {
-        return sfx;
-    }
-
-    public void setSfx(GenericEnums.VFX sfx) {
-        this.sfx = sfx;
     }
 
     public boolean isAttached() {

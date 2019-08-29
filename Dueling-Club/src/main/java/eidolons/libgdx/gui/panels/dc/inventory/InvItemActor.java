@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
@@ -20,7 +19,6 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.UiMaster;
@@ -38,10 +36,9 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.DragManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
-import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -129,7 +126,7 @@ public class InvItemActor extends ItemActor {
         FadeImageContainer overlay = new FadeImageContainer(
                 path
          );
-        overlay.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.ITEM_BACKGROUND_OVERLAY);
+        overlay.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ITEM_BACKGROUND_OVERLAY);
         return overlay;
     }
 

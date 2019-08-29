@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,6 +13,7 @@ import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 
 import java.util.*;
@@ -95,7 +95,7 @@ public abstract class UnitViewSprite extends GridUnitView {
         initEmitters();
 
         addActor(glow = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
-        glow.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
+        glow.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT);
         super.init(arrowTexture, arrowRotation,  emblem);
         glow.setScale(getWidth() / glow.getWidth());
         glow.setOrigin(glow.getWidth() / 2, glow.getHeight() / 2);

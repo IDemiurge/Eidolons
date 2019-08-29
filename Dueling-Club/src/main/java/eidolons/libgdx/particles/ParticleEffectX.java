@@ -111,7 +111,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //        }
         String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
 //        if (imgPath.contains("sprites")){
-//            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITE!.. " );
+//            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITES!.. " );
 //            return true;
 //        }
         if (TEST_MODE)

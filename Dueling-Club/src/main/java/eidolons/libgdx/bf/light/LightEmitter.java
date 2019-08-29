@@ -2,10 +2,12 @@ package eidolons.libgdx.bf.light;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
@@ -17,6 +19,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
@@ -81,7 +84,7 @@ public class LightEmitter extends SuperActor {
         setSize(128, 128);
         if (isAddCenterLight()) {
             addActor(center);
-            ALPHA_TEMPLATE template = ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
+            GenericEnums.ALPHA_TEMPLATE template = GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
             center.setAlphaTemplate(template);
             center.setPosition(GdxMaster.centerWidth(center),
                     GdxMaster.centerHeight(center) + OFFSET_Y);
@@ -110,6 +113,13 @@ public class LightEmitter extends SuperActor {
 
     private boolean isAddOverlayObj() {
         return false;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (Cinematics.ON)
+            return;
+        super.draw(batch, parentAlpha);
     }
 
     @Override
@@ -312,7 +322,7 @@ public class LightEmitter extends SuperActor {
         }
         Image image = new Image(texture);
         FadeImageContainer ray = new LightRay(image);
-        ALPHA_TEMPLATE template = ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS;
+        GenericEnums.ALPHA_TEMPLATE template = GenericEnums.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS;
         ray.setAlphaTemplate(template);
 
         ray.setTransform(false);

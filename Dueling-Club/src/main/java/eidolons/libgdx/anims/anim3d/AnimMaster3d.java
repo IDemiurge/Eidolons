@@ -556,6 +556,8 @@ public class AnimMaster3d {
 //                        break;
 //                }
                 while (!Assets.get().getManager().update(1000)) {
+                    if (Assets.get().getManager().isLoaded(path))
+                        break;
                     main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
                 }
 

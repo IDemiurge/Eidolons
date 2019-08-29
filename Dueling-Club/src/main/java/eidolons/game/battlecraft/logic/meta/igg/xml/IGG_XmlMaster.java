@@ -254,7 +254,7 @@ public class IGG_XmlMaster {
         if (EidolonsGame.BRIDGE) {
             return "Ash Vault(" +
                     location.getProperty(PROPS.ENTRANCE_COORDINATES) +
-                    ");The Light(9-1)";
+                    ");Ash Vault(9-1)";
 //            return "Ash Vault(23-26);The Light(9-1)";
 //            return "Blackness(0-15);The Light(20-1)";
         } else if (EidolonsGame.TUTORIAL_MISSION) {

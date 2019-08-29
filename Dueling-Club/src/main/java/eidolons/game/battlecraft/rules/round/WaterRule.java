@@ -10,6 +10,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -53,7 +54,10 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     public static boolean checkPassable(boolean manualCheck, BattleFieldObject waterObj, Entity obj) {
-
+        if (obj != null)
+        if (isSwimming(obj)) {
+            return true;
+        }
         boolean bridged = isBridged(waterObj);
         if (obj instanceof Structure){
             if (bridged) {
@@ -80,6 +84,10 @@ public class WaterRule extends RoundRule implements ActionRule {
                 , obj);
         }
         return false;
+    }
+
+    private static boolean isSwimming(Entity obj) {
+        return obj.checkBool(GenericEnums.STD_BOOLS.SWIMMING);
     }
 
     private static boolean isForceSwimmingDepth(Unit unit) {

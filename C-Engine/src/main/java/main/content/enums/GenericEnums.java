@@ -1,6 +1,7 @@
 package main.content.enums;
 
 import main.data.ability.construct.VarHolder;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
@@ -159,13 +160,14 @@ public class GenericEnums {
         }
 
     }
+
     public enum DIFFICULTY {
-        NEOPHYTE(33, 25 ),
-        NOVICE(50, 35 ),
-        DISCIPLE(65, 50,true ),
-        ADEPT(80, 75,true),
-        CHAMPION(100, 100,true),
-        AVATAR(125, 150,true);
+        NEOPHYTE(33, 25),
+        NOVICE(50, 35),
+        DISCIPLE(65, 50, true),
+        ADEPT(80, 75, true),
+        CHAMPION(100, 100, true),
+        AVATAR(125, 150, true);
 
 //        public int glory_coef;
 
@@ -216,8 +218,8 @@ public class GenericEnums {
     }
 
     /*
-         * 24th of April, Hour of Magic
-         */
+     * 24th of April, Hour of Magic
+     */
     public enum ROLL_TYPES implements VarHolder {
         MIND_AFFECTING("Willpower"),
         FAITH("Faith"),
@@ -317,7 +319,7 @@ public class GenericEnums {
         BUCKLER_THROWER,
         LEFT_RIGHT_REACH,
         FAUX,
-        NO_GOLD, NAMED, BUFFING, OFF_DEFAULT, LIVING_STATUE;
+        NO_GOLD, NAMED, BUFFING, OFF_DEFAULT, LIVING_STATUE, SWIMMING;
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.
@@ -327,33 +329,64 @@ public class GenericEnums {
      * Created by JustMe on 6/28/2018.
      */
     public enum VFX {
-    //    IMPACT_demonology,
-    //    IMPACT_scare,
-    //    IMPACT_psychic,
-    //    CAST_darkness,
-    //    CAST_black_hand,
-    //    CAST_black_hand2,
-    //    CAST_black_hand3,
-    //    CAST_blindness,
-    //
-    //    CAST_dark_shapes,
-    //
-    //    CAST_drain_focus,
-    //    CAST_drain_focus2,
-    //    CAST_drain_focus3,
-    //
-    //    CAST_celestial1,
-    //    CAST_celestial2,
-    //    CAST_celestial3,
+        //    IMPACT_demonology,
+        //    IMPACT_scare,
+        //    IMPACT_psychic,
+        //    CAST_darkness,
+        //    CAST_black_hand,
+        //    CAST_black_hand2,
+        //    CAST_black_hand3,
+        //    CAST_blindness,
+        //
+        //    CAST_dark_shapes,
+        //
+        //    CAST_drain_focus,
+        //    CAST_drain_focus2,
+        //    CAST_drain_focus3,
+        //
+        //    CAST_celestial1,
+        //    CAST_celestial2,
+        //    CAST_celestial3,
+        /*
+
+
+         */
+
+        invert_abyss("invert/black abyss"),
+        invert_missile("invert/black missile cone 3"),
+        invert_pillar("invert/black pillar high"),
+        invert_bleed("invert/black soul bleed 3"),
+        invert_ring("invert/black water ring max2"),
+        invert_bloody_bleed2("invert/bloody bleed2"),
+        invert_breath("invert/breath"),
+        invert_darkness("invert/chaotic dark"),
+
+        spell_chaos_flames("spell/nether/chaos flames"),
+        spell_demonfire("spell/nether/demon missile2"),
+        spell_firewave("spell/nether/fire wave chaos"),
+        spell_volcano("spell/nether/volcano"),
+        spell_hollow_flames("spell/nether/hollow flames"),
+        spell_wraiths("spell/nether/wraiths 2"),
+
+        spell_poison_veil("spell/nether/poison"),
+        spell_teleport_fade("spell/nether/wind fade swirl chaos 2"),
+        spell_fireball("spell/nether/chaos fireball"),
+        spell_cold("spell/nether/cold 3"),
+        spell_pale_ward("spell/nether/pale ward"),
+        spell_ghostly_teleport("spell/nether/ghostly teleport"),
+        spell_ghostly_teleport_small("spell/nether/ghostly teleport small wraith"),
+
+
 
         dissipation("spell/shape/soul dissipation"),
         dissipation_pale("spell/shape/soul dissipation pale"),
         soulflux_continuous("ambient/soulflux continuous"),
-        soul_bleed("unit/black soul bleed 3"),
-        darkness("unit/chaotic dark"),
+        soul_bleed("invert/black soul bleed 3"),
+        soul_bleed_red("invert/bloody bleed2"),
+        darkness("invert/chaotic dark"),
 
-        DARK_MIST("mist","dark mist2"),
-        DARK_MIST_LITE("mist","dark mist2 light"),
+        DARK_MIST("mist", "dark mist2"),
+        DARK_MIST_LITE("mist", "dark mist2 light"),
         SMOKE_TEST("Smoke_Test1.pt"),
         DARK_SOULS("dark souls"),
         DARK_SOULS2("dark souls2"),
@@ -364,35 +397,35 @@ public class GenericEnums {
 
         //TODO sub-emitters
 
-        SNOW("snow","snow"),
-        SNOW_TIGHT("snow","snow tight"),
-        SNOW_TIGHT2("snow","snow tight2"),
-        SNOWFALL_SMALL("snow","snowfall small"),
-        SNOWFALL("snow","snowfall"),
-        SNOWFALL_THICK("snow","snowfall thick"),
-        WISPS("woods","wisps"),
-        LEAVES("woods","leaves"),
-        STARS("woods","stars"),
-        FALLING_LEAVES("woods","falling leaves"),
-        LEAVES_LARGE("woods","leaves large"),
-        FALLING_LEAVES_WINDY("woods","falling leaves windy2"),
+        SNOW("snow", "snow"),
+        SNOW_TIGHT("snow", "snow tight"),
+        SNOW_TIGHT2("snow", "snow tight2"),
+        SNOWFALL_SMALL("snow", "snowfall small"),
+        SNOWFALL("snow", "snowfall"),
+        SNOWFALL_THICK("snow", "snowfall thick"),
+        WISPS("woods", "wisps"),
+        LEAVES("woods", "leaves"),
+        STARS("woods", "stars"),
+        FALLING_LEAVES("woods", "falling leaves"),
+        LEAVES_LARGE("woods", "leaves large"),
+        FALLING_LEAVES_WINDY("woods", "falling leaves windy2"),
 
         BLACK_MIST_white_mist_wind("black mist", StringMaster.getWellFormattedString("white_mist_wind")),
         BLACK_MIST_clouds_wind("black mist", StringMaster.getWellFormattedString("clouds_wind")),
         BLACK_MIST_clouds_gravity("black mist", StringMaster.getWellFormattedString("clouds_gravity")),
-        BLACK_MIST_clouds_antigravity("black mist", StringMaster.getWellFormattedString("clouds_antigravity")) ,
+        BLACK_MIST_clouds_antigravity("black mist", StringMaster.getWellFormattedString("clouds_antigravity")),
 
-        MIST_WHITE("mist","conceal west wind"),
-        MIST_WHITE2("mist","conceal west wind2"),
-        MIST_WHITE3("mist","conceal west wind3"),
-        MIST_WIND("mist","white mist wind"),
-        MIST_COLD("mist","cold wind"),
-        MIST_CYAN("mist","cyan mist2"),
-        MIST_SAND_WIND("mist","sand wind"),
+        MIST_WHITE("mist", "conceal west wind"),
+        MIST_WHITE2("mist", "conceal west wind2"),
+        MIST_WHITE3("mist", "conceal west wind3"),
+        MIST_WIND("mist", "white mist wind"),
+        MIST_COLD("mist", "cold wind"),
+        MIST_CYAN("mist", "cyan mist2"),
+        MIST_SAND_WIND("mist", "sand wind"),
 
         MIST_BLACK("ambient", "MIST ARCANE"), //"black mist","clouds wind light2"),
-        MIST_TRUE("mist","MIST TRUE"),
-        MIST_TRUE2("mist","MIST TRUE2"),
+        MIST_TRUE("mist", "MIST TRUE"),
+        MIST_TRUE2("mist", "MIST TRUE2"),
         MIST_ARCANE("ambient", "MIST ARCANE"),
         MIST_NEW("ambient", "MIST NEW2"),
         THUNDER_CLOUDS("ambient", "THUNDER CLOUDS"),
@@ -411,21 +444,20 @@ public class GenericEnums {
         CINDERS("ambient", "CINDERS tight"),
         CINDERS2("ambient", "CINDERS tight2"),
         CINDERS3("ambient", "CINDERS tight3"),
-        SMOKE
-        ;
-        private static final boolean NEW_MIST =false ;
+        SMOKE;
+        private static final boolean NEW_MIST = false;
         public String path;
 
         VFX() {
             String[] parts = name().split("_");
             String realName = name().replace(parts[0], "").replace("_", " ").trim();
             this.setPath(StrPathBuilder.build(
-             parts[0], realName));
+                    parts[0], realName));
         }
 
         VFX(String... pathParts) {
             this.setPath(StrPathBuilder.build(pathParts));
-            if (NEW_MIST){
+            if (NEW_MIST) {
                 if (pathParts[0].equalsIgnoreCase("mist")) {
                     setPath("mist/a new subtle mist 2");
                 }
@@ -451,5 +483,103 @@ public class GenericEnums {
         public void setPath(String path) {
             this.path = path;
         }
+    }
+
+    public enum SOUND_CUE {
+        wimper,
+
+        //missing
+        chant_atmo,
+        //awakening?
+        mute_scream,
+        fire_burst,
+        breathing,
+        heartbeat,
+        dark_knight,
+        dream,
+        demon_growl,
+        laughter,
+        dark_laughter,
+        slam,
+        whispers,
+        dark_tension,
+        aether_thunder,
+
+        portal_open,
+        portal_close,
+        screams,
+        gong,
+        ghost,
+        inferno_atmo,
+        windy;
+
+        public String getPath() {
+            return PathFinder.getSoundCuesPath() +
+                    name().replace("_", " ").toLowerCase()
+                    + ".mp3"
+                    ;
+        }
+
+    }
+
+    public enum ALPHA_TEMPLATE {
+
+        HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
+        HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),
+
+        MOON(0.1f, 0, 1, 0.5f),
+        SUN(0.1f, 0, 5, 0.5f, 0.7f, 1f),
+        TOP_LAYER(0.2f, 1, 2, 0.6f, 0.15f, 0.5f),
+        LIGHT(0.28f, 4, 0.8f, 2.6f, 0.1f, 0.4f),
+
+        MOONLIGHT(0.4f, 5, 0.5F, 0.6f, 0.1f, 0.9f),
+        CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
+        HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
+        HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
+        HIGHLIGHT_SPEAKER(0.25f, 0, 1, 0.1f, 0.535f, 1f),
+
+        SHARD_OVERLAY(0.325f, 0.25F, 0.5F, 0.5f, 0.75f, 1f),
+        ITEM_BACKGROUND_OVERLAY(0.15f, 0, 1.25f, 0.6f, 0.70f, 1f),
+
+        VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
+        ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
+        OVERLAYS(0.15f, 0, 1, 0.1f, 0.75f, 1f),
+        UNIT_VIEW(0.23f, 0, 1, 0.0f, 0.80f, 1f), //EMBLEM COLOR & UNCONSCIOUS
+
+        SHADE_CELL_GAMMA_SHADOW(0.05f, 0.5f, 0.2f, 0, 0.5f, 0.8f),
+        SHADE_CELL_GAMMA_LIGHT(0.08f, 1.5f, 2.55f, 0.2f, 0.4f, 0.85f),
+        SHADE_CELL_LIGHT_EMITTER(0.10f, 1.5f, 2.5f, 0.2f, 0.85f, 1),
+        LIGHT_EMITTER_RAYS(0.25f, 1.0f, 0.5f, 0.4f, 0.25f, 1.0f),
+
+        SHADE_CELL_HIGHLIGHT(0.4f, 1.5f, 0.3f, 0.4f, 0.15f, 1),
+        DOORS(0.325f, 1.25F, 0.5F, 0.5f, 0.0f, 1f),
+
+        BLOOM(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
+        POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
+        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f);
+        public float alphaStep;
+        public float fluctuatingAlphaPauseDuration;
+        public float fluctuatingFullAlphaDuration;
+        public float fluctuatingAlphaRandomness;
+        public float min, max;
+
+        ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration, float fluctuatingFullAlphaDuration, float fluctuatingAlphaRandomness, float min, float max) {
+            this.alphaStep = alphaStep;
+            this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
+            this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
+            this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
+            this.min = min;
+            this.max = max;
+        }
+
+        ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration,
+                       float fluctuatingFullAlphaDuration,
+                       float fluctuatingAlphaRandomness) {
+            this.alphaStep = alphaStep;
+            this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
+            this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
+            this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
+        }
+
     }
 }

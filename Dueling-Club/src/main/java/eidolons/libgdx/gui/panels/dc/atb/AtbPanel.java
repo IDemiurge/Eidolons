@@ -26,14 +26,12 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.QueueView;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.gui.HideButton;
-import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -43,11 +41,10 @@ import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
-import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
@@ -567,7 +564,7 @@ public class AtbPanel extends GroupX {
         }
         if (previewActor == null) {
             addActor(previewActor = new ImageContainer(getPreviewPath()));
-            previewActor.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
+            previewActor.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
         }
         previewActor.setVisible(true);
         previewActor.setScale(1.25f);

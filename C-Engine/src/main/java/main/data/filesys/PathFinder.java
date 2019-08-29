@@ -459,6 +459,10 @@ public class PathFinder {
          "cursor loading.png");
     }
 
+    public static String getEmptyCursorPath() {
+        return StrPathBuilder.build(getImagePath(), getUiPath(),
+                "cursor empty.png");
+    }
     public static String getCursorPath() {
         return StrPathBuilder.build(getImagePath(), getUiPath(),
          "cursor.png");

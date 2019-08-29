@@ -404,6 +404,7 @@ public class SpellAnim extends ActionAnim {
 
     public enum SPELL_ANIMS {
         RAY(activeObj -> 1),
+        RAY_AUTO(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
                 active.getRef().getTargetObj().getCoordinates().
                         getAdjacentCoordinates().size()),

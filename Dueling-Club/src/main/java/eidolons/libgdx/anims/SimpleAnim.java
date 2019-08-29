@@ -30,6 +30,7 @@ public class SimpleAnim implements Animation {
     private boolean done;
     private int fps=14;
     private SuperActor.BLENDING blending= SuperActor.BLENDING.SCREEN;
+    private boolean parallel;
 
     public SimpleAnim(String spritePath, Runnable onDone, Vector2 origin, Vector2 dest, Float duration) {
         this.spritePath = spritePath;
@@ -72,7 +73,9 @@ public class SimpleAnim implements Animation {
 
     @Override
     public void finished() {
-        onDone.run();
+        if (onDone != null) {
+            onDone.run();
+        }
     }
 
     @Override
@@ -162,7 +165,11 @@ public class SimpleAnim implements Animation {
 
     @Override
     public void setForcedDestination(Coordinates forcedDestination) {
+        dest = GridMaster.getCenteredPos(forcedDestination);
+    }
 
+    public void setDest(Vector2 dest) {
+        this.dest = dest;
     }
 
     @Override
@@ -174,5 +181,13 @@ public class SimpleAnim implements Animation {
     @Override
     public void setDone(boolean b) {
 
+    }
+
+    public boolean isParallel() {
+        return parallel;
+    }
+
+    public void setParallel(boolean parallel) {
+        this.parallel = parallel;
     }
 }

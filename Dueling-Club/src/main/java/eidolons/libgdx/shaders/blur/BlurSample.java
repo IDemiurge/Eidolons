@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
@@ -81,7 +81,7 @@ public class BlurSample extends Game {
         shader.end();
 
         fluctuate = new FadeImageContainer();
-        fluctuate.setAlphaTemplate(Fluctuating.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
+        fluctuate.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
     }
 
     public void dispose() {

@@ -2,7 +2,7 @@ package eidolons.libgdx.shaders;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
 
 /**

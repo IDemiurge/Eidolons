@@ -5,8 +5,10 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.swing.generic.services.dialog.EnumChooser;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.*;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
@@ -28,6 +30,7 @@ import main.gui.builders.EditViewPanel;
 import main.gui.components.editors.AV_ImgChooser;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.*;
+import main.swing.generic.components.editors.lists.EnumListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.misc.G_Table;
 import main.system.auxiliary.EnumMaster;
@@ -66,6 +69,14 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     public static final String SPRITE_PATH =
      PathFinder.getSpritesPathFull();
 
+    public static final VALUE[] SOUND_IDS = {
+            PROPS.ANIM_SOUND_AFTEREFFECT,
+            PROPS.ANIM_SOUND_RESOLVE,
+            PROPS.ANIM_SOUND_MAIN,
+            PROPS.ANIM_SOUND_IMPACT,
+            PROPS.ANIM_SOUND_AFTEREFFECT,
+            PROPS.ANIM_SOUND_MISSILE,
+    };
     public static final VALUE[] VFX_IDS = {
      PROPS.ANIM_VFX_CAST,
      PROPS.ANIM_VFX_RESOLVE,
@@ -88,6 +99,8 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      // DungeonMaster.getDungeonBackgroundFolder()
     };
     public static final String[] VAR_MULTI_ENUM_LIST_IDS = {
+            PROPS.OVERLAY_SPRITES.name(),
+            PROPS.UNDERLAY_SPRITES.name(),
      PROPS.CONTAINER_CONTENT_VALUE.name(),
      PROPS.CONTAINER_CONTENTS.name(),
      G_PROPS.PRINCIPLES.name(),
@@ -424,14 +437,20 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
             });
         }
+        for (VALUE val : SOUND_IDS) {
+            String id = StringMaster.getWellFormattedString(val.name());
+            editorMap.put(id,
+                    new ListEditor(SELECTION_MODE.MULTIPLE,
+                            true, GenericEnums.SOUND_CUE.class));
+        }
         for (VALUE val : VFX_IDS) {
             String id = StringMaster.getWellFormattedString(val.name());
-            editorMap.put(id, new FileChooser(false, true) {
-                protected String getDefaultFileLocation() {
-                    return PathFinder.getResPath() + VFX_PATH;
-                }
-
-            });
+            editorMap.put(id, new ListEditor(SELECTION_MODE.MULTIPLE, true, GenericEnums.VFX.class));
+//            editorMap.put(id, new FileChooser(false, true) {
+//                protected String getDefaultFileLocation() {
+//                    return PathFinder.getResPath() + VFX_PATH;
+//                }
+//            });
         }
 
 

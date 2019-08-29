@@ -2,17 +2,19 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.particles.EmitterActor;
+import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.VFX;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,10 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.black_waters.setVfxSpeed(0.6f);
 
 
+        CUSTOM_OBJECT.keserim.screen = true;
+//        CUSTOM_OBJECT.keserim.alpha = 0.6f;
+        CUSTOM_OBJECT.keserim.alpha_template = GenericEnums.ALPHA_TEMPLATE.BLOOM;
+
         CUSTOM_OBJECT.dark_chrysalis.invert_screen_vfx = true;
         CUSTOM_OBJECT.dark_chrysalis.invert_screen = true;
 //        CUSTOM_OBJECT.dark_chrysalis.always_visible = true;
@@ -90,6 +96,9 @@ public class LinkedGridObject extends CinematicGridObject {
 
         CUSTOM_OBJECT.black_tendrils.invert_screen = true;
         CUSTOM_OBJECT.black_wings.invert_screen = true;
+        CUSTOM_OBJECT.bone_wings.screen = true;
+        CUSTOM_OBJECT.black_wing.invert_screen = true;
+        CUSTOM_OBJECT.bone_wing.screen = true;
 
         CUSTOM_OBJECT.GATE.screen = true;
         LIGHT.screen = true;
@@ -99,6 +108,7 @@ public class LinkedGridObject extends CinematicGridObject {
 
     protected final BaseView linked;
     private List<LinkedGridObject> additional;
+    private Fluctuating fluctuating;
 
 
     public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c) {
@@ -110,6 +120,7 @@ public class LinkedGridObject extends CinematicGridObject {
             createAdditionalObjects(object.additionalObjects);
         }
 
+        setKey( StringMaster.getWellFormattedString(object.toString()));
     }
 
     protected void createAdditionalObjects(String[] additionalObjects) {
@@ -151,6 +162,9 @@ public class LinkedGridObject extends CinematicGridObject {
         origX = linked.localToStageCoordinates(new Vector2(0, 0)).x;
         origY = linked.localToStageCoordinates(new Vector2(0, 0)).y;
 
+        if (object.alpha_template != null) {
+            addActor(fluctuating = new Fluctuating(object.alpha_template));
+        }
         if (sprite != null) {
             if (object.screen) {
                 sprite.setBlending(SuperActor.BLENDING.SCREEN);
@@ -217,6 +231,7 @@ public class LinkedGridObject extends CinematicGridObject {
 //            delta = delta / 10;
 //        }
         super.act(delta);
+
 //        for (Action action : getLinked().getActionsOfClass(MoveByAction.class)) {
 //            if (action instanceof MoveByAction) {
 //                ((MoveByAction) action).getAmountX();
@@ -240,6 +255,11 @@ public class LinkedGridObject extends CinematicGridObject {
             if (getLinked() instanceof OverlayView) {
                 sprite.getSprite().setOffsetX(((OverlayView) getLinked()).getOffsetX());
                 sprite.getSprite().setOffsetY(((OverlayView) getLinked()).getOffsetY());
+            }
+
+            if (fluctuating != null) {
+                fluctuating.fluctuate(delta);
+                sprite.getColor().a = fluctuating.getColor().a;
             }
         }
     }

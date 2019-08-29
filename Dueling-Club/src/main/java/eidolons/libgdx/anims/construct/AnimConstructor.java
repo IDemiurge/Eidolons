@@ -73,8 +73,8 @@ public class AnimConstructor {
             PROPS.ANIM_SPRITE_AFTEREFFECT,
             PROPS.ANIM_MISSILE_SPRITE,
             PROPS.ANIM_MODS_SPRITE,
+
             PROPS.ANIM_MISSILE_VFX,
-            //
             PROPS.ANIM_VFX_PRECAST,
             PROPS.ANIM_VFX_CAST,
             PROPS.ANIM_VFX_RESOLVE,
@@ -121,7 +121,7 @@ public class AnimConstructor {
                                         " for " + type);
                                 break;
                             case SPRITES:
-                                identifier = "SPRITE";
+                                identifier = "SPRITES";
                                 break;
                             default:
                                 continue;
@@ -281,18 +281,13 @@ public class AnimConstructor {
                     StringMaster.contains(val.name(), part.toString())) {
                 String name = active.getValue(val);
                 if (!name.isEmpty())
-                    data.add(val, getPath(val, active) + name);
+                    data.add(val,   name);
             }
         }
         return getPartAnim(data, active, part, anim);
     }
 
-    private static String getPath(VALUE val, DC_ActiveObj active) {
-        if (val.getName().toLowerCase().contains("vfx")) {
-            return getPath(ANIM_VALUES.PARTICLE_EFFECTS);
-        }
-        return "";
-    }
+
 
     private static Anim getPartAnim(AnimData data, DC_ActiveObj active,
                                     ANIM_PART part, CompositeAnim composite) {
@@ -644,7 +639,7 @@ public class AnimConstructor {
         return false;
     }
 
-    private static String getPath(ANIM_VALUES s) {
+    public static String getPath(ANIM_VALUES s) {
         String path = null;
         switch (s) {
             case PARTICLE_EFFECTS:

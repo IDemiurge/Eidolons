@@ -108,7 +108,9 @@ public class SpeechDataSource {
     }
 
     public boolean isAppendedMessage() {
-        return message.length()<=150;
+//        main.system.auxiliary.log.LogMaster.dev("Checked appended message: (<=150)" +message.length());
+//        return message.length()<=150;
+        return true;
     }
 
     public enum SPEECH_EFFECT {

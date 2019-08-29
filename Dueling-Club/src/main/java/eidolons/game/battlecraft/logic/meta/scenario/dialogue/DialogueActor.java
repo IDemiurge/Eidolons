@@ -36,6 +36,10 @@ public class DialogueActor extends LightweightEntity {
     }
 
     public void setupLinkedUnit() {
+        if (getName().equalsIgnoreCase("you")) {
+            setLinkedUnit(Eidolons.getMainHero());
+            return;
+        }
         Coordinates c = Eidolons.getMainHero().getCoordinates();
         List<Coordinates> area = CoordinatesMaster.getCoordinatesWithin(
                 Math.max(0, c.getX() - 10),

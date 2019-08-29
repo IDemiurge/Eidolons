@@ -187,9 +187,16 @@ public class DialogueHandler {
     }
 
     public void checkAutoCamera(Unit linkedUnit) {
+        if (linkedUnit == null) {
+            main.system.auxiliary.log.LogMaster.dev("Null unit for autocamera! "+getSpeakerLast() );
+            return;
+        }
+        if (linkedUnit.isMainHero()) {
+            main.system.auxiliary.log.LogMaster.dev("PC for autocamera! "+getSpeakerLast() );
+        }
         if (autoCamera) {
             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT,
-                    linkedUnit, 2, true, Interpolation.fade);
+                    linkedUnit, 3.4f, true, Interpolation.fade);
 
         }
     }

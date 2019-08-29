@@ -1,21 +1,21 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.generic.NoHitGroup;
-import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.images.ImageManager.STD_IMAGES;
 
@@ -87,7 +87,7 @@ public class GenericGridView extends UnitView {
             });
             torch.setPosition(GdxMaster.centerWidth(torch) - 3, arrow.getHeight() - torch.getHeight());
             torch.getColor().a = 0;
-            torch.setAlphaTemplate(ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
+            torch.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
 
             addActor(arrow);
 //            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
@@ -137,9 +137,9 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).resetBlending();
-        }
+//        if (batch instanceof CustomSpriteBatch) {
+//            ((CustomSpriteBatch) batch).resetBlending();
+//        }
         if (alpha != 1f) {
             parentAlpha = alpha;
         }
@@ -170,8 +170,8 @@ public class GenericGridView extends UnitView {
     }
 
     public void updateRotation(int val) {
-        if ((arrow.getRotation()-ARROW_ROTATION_OFFSET)%360 ==  val%360 || arrowRotation%360 == val%360) {
-                return;
+        if ((arrow.getRotation() - ARROW_ROTATION_OFFSET) % 360 == val % 360 || arrowRotation % 360 == val % 360) {
+            return;
         }
         updateRotation(val, isVisible());
     }
@@ -188,6 +188,14 @@ public class GenericGridView extends UnitView {
             arrowRotation = val;
 
         }
+        if (isRotateSprites()){
+            ActionMaster.addRotateByAction(spritesContainers, arrowRotation + ARROW_ROTATION_OFFSET,
+                    val + ARROW_ROTATION_OFFSET);
+        }
+    }
+
+    protected boolean isRotateSprites() {
+        return true;
     }
 
     public boolean isHpBarVisible() {
@@ -208,6 +216,15 @@ public class GenericGridView extends UnitView {
     protected void updateVisible() {
 //        if (isIgnored()) //TODO [quick fix] this should actually be on for speed, but somehow in-camera views get ignored
 //            return;
+        if (border != null) {
+            border.setVisible(true);
+            if (Cinematics.ON) {
+                border.setVisible(false);
+            }
+        }
+        if (torch != null) {
+            torch.setVisible(Cinematics.ON);
+        }
         if (getOutline() != null) {
             if (emblemImage != null)
                 emblemImage.setVisible(false);
@@ -231,7 +248,7 @@ public class GenericGridView extends UnitView {
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
-        if (((FileTextureData)textureRegion.getTexture().getTextureData()).getFileHandle().name().toLowerCase().
+        if (((FileTextureData) textureRegion.getTexture().getTextureData()).getFileHandle().name().toLowerCase().
                 contains("unknown")) {
             if (getUserObject().isWater()) {
                 return;

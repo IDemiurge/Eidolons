@@ -19,6 +19,7 @@ import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
@@ -62,7 +63,7 @@ public class ShadeLightCell extends SuperContainer {
         height = getContent().getHeight();
         getContent().setOrigin(getContent().getWidth() / 2, getContent().getHeight() / 2);
 
-        ALPHA_TEMPLATE template = ShadowMap.getTemplateForShadeLight(type);
+        GenericEnums.ALPHA_TEMPLATE template = ShadowMap.getTemplateForShadeLight(type);
         if (template != null)
             setAlphaTemplate(template);
         if (isTransformDisabled())

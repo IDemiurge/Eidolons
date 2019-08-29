@@ -1,8 +1,9 @@
 package eidolons.libgdx.shaders;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import eidolons.libgdx.bf.Fluctuating.ALPHA_TEMPLATE;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 11/17/2017.
@@ -25,7 +26,7 @@ public class DarkShader extends FluctuatingShader{
 
     @Override
     protected ALPHA_TEMPLATE getAlphaTemplate() {
-        return ALPHA_TEMPLATE.BLOOM;
+        return GenericEnums.ALPHA_TEMPLATE.BLOOM;
     }
 
     @Override

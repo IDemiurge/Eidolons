@@ -7,17 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
 import main.system.auxiliary.ClassMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -207,7 +207,7 @@ public class ActionMaster {
     }
 
     public static MoveToAction addMoveByAction(Actor actor, float x, float y, float v) {
-       return  addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
+        return addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
     }
 
     public static MoveToAction addMoveToAction(Actor actor, float x, float y, float v) {
@@ -348,6 +348,86 @@ public class ActionMaster {
             }
         }
     }
+
+    public static SequenceAction getDisplaceSequence(int dx, int dy, float dur) {
+        return getDisplaceSequence(0, 0, dx, dy, dur, false);
+    }
+    public static SequenceAction getDisplaceSequence(float x, float y, int dx, int dy, float dur, boolean overlaying) {
+        MoveByAction move = (MoveByAction) ActionMaster.getAction(MoveByAction.class);
+        move.setAmount(dx, dy);
+        move.setDuration(dur);
+        MoveToAction moveBack = (MoveToAction) ActionMaster.getAction(MoveToAction.class);
+        moveBack.setPosition(x, y);
+        moveBack.setDuration(dur);
+        if (overlaying) {
+            moveBack.setPosition(x, y);
+        }
+        return new SequenceAction(move, moveBack);
+    }
+
+    public static Interpolation getInterpolation(String s) {
+        try {
+            return (Interpolation) Interpolation.class.getField(
+                    StringMaster.getCamelCase(s)).get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static SequenceAction getBackSequence(TemporalAction a) {
+        SequenceAction sequenceAction = new SequenceAction();
+        sequenceAction.addAction(a);
+        Action back = getBackwardAction(a);
+        sequenceAction.addAction(back);
+        return sequenceAction;
+    }
+
+    private static FloatAction getBackFloatAction(FloatAction action) {
+        FloatAction back = new FloatAction();
+        back.setInterpolation(action.getInterpolation());
+        back.setDuration(action.getDuration());
+        back.setEnd(action.getStart());
+        back.setStart(action.getEnd());
+        return back;
+    }
+    private static Action getBackColorAction(ColorAction action) {
+        ColorAction back = new ColorAction();
+        back.setInterpolation(action.getInterpolation());
+        back.setDuration(action.getDuration());
+        back.setEndColor(action.getColor());
+        back.setColor(action.getEndColor());
+        return back;
+    }
+
+    private static AlphaAction getBackAlphaAction(AlphaAction action) {
+        AlphaAction back = new AlphaAction();
+        back.setInterpolation(action.getInterpolation());
+        back.setDuration(action.getDuration());
+        Float  start = new ReflectionMaster<Float>().
+                getFieldValue("start", action, AlphaAction.class);
+        back.setAlpha(start);
+        return back;
+    }
+
+    public static Action getBackwardAction(TemporalAction action) {
+        if (action instanceof ColorAction) {
+            return getBackColorAction((ColorAction) action);
+        }
+        if (action instanceof FloatAction) {
+            return getBackFloatAction((FloatAction) action);
+        }
+        if (action instanceof AlphaAction) {
+            return getBackAlphaAction((AlphaAction) action);
+        }
+//        if (action instanceof MoveToAction || action instanceof MoveByAction) {
+//            return getBackMoveByAction(action);
+//        }
+        TemporalAction back = (TemporalAction) getAction(action.getClass());
+        back.setInterpolation(action.getInterpolation());
+        back.setDuration(action.getDuration());
+        return back;
+    }
+
 
 //    public static boolean checkHasAction(BaseView view, Class<AlphaAction> alphaActionClass) {
 //        return false;

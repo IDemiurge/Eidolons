@@ -114,15 +114,13 @@ public class Executor extends ActiveHandler {
         return !Bools.isTrue(isCancelled());
     }
 
-    public void activateOn(Ref ref) {
+    public void activateOnGameLoopThread(Ref ref) {
         targeter.setForcePresetTarget(true);
-
-
         Eidolons.getGame().getGameLoop().actionInput(
                 new ActionInput(getAction(), new Context(ref)));
     }
 
-    public void activateOn(DC_Obj t) {
+    public void activateOnGameLoopThread(DC_Obj t) {
         if (Thread.currentThread() == getGame().getGameLoopThread()) {
             // for triggered activation, e.g. Extra Attacks
             targeter.setPresetTarget(t);
@@ -134,7 +132,6 @@ public class Executor extends ActiveHandler {
     }
 
     public void activateOnGameLoopThread() {
-
         Eidolons.getGame().getGameLoop().actionInput(
                 new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.rules.VisionEnums;
 
 /**
  * Created by JustMe on 4/1/2018.
@@ -29,6 +31,11 @@ public class LastSeenView extends GenericGridView {
     @Override
     public BattleFieldObject getUserObject() {
         return parentView.getUserObject();
+    }
+
+    @Override
+    protected TextureRegion getDefaultTexture() {
+        return TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 
     @Override

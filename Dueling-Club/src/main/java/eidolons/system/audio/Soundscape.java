@@ -1,5 +1,6 @@
 package eidolons.system.audio;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.XLinkedMap;
@@ -25,8 +26,11 @@ public class Soundscape {
 
     static{
         SOUNDSCAPE.NETHER.weightMapCustom
-                .chain(thunder, 10)
+                .chain(thunder, 20)
                 .chain(whispers, 10)
+                .chain(rocks, 10)
+                .chain(crack, 10)
+                .chain(growl, 10)
 //                .chain(scream, 10)
 //                .chain(splash, 10)
 //                .chain(mythic_beast, 10)
@@ -34,11 +38,11 @@ public class Soundscape {
         SOUNDSCAPE.NETHER.weightMapUnit
                 .putChain(wraith, 10)
                 .putChain(ironman, 10)
-                .putChain(zombie, 10)
-                .putChain(cthulhu, 10)
+//                .putChain(zombie, 10)
+//                .putChain(cthulhu, 10)
         ;
         SOUNDSCAPE.NETHER.weightMapSoundType
-                .putChain(IDLE, 10)
+//                .putChain(IDLE, 10)
                 .putChain(ALERT, 6)
                 .putChain(SPOT, 3)
                 .putChain(DEATH, 3)
@@ -49,6 +53,9 @@ public class Soundscape {
     Map<SOUNDSCAPE, Float> periodMap;
 
     public enum SOUNDSCAPE_SOUND {
+        rocks,
+        crack,
+        growl,
         whispers,
         thunder,
         woosh,
@@ -67,12 +74,12 @@ public class Soundscape {
         HORROR,
         ASTRAL,
         ;
-        int customChance=33;
+        int customChance=75;
         WeightMap<String> weightMapCustom=new WeightMap<>();
         WeightMap<SOUNDSET> weightMapUnit=new WeightMap<>(SOUNDSET.class);
         WeightMap<SOUNDS> weightMapSoundType=new WeightMap<>(SOUNDS.class);
-        int minPause=9000;
-        float chancePerSecond=0.005f;
+        int minPause=20000;
+        float chancePerSecond=0.003f;
     }
 
     public Soundscape() {
@@ -91,6 +98,9 @@ public class Soundscape {
     }
 
     public void act(float delta) {
+        if (Cinematics.ON) {
+            return;
+        }
         for (SOUNDSCAPE soundscape : map.keySet()) {
             float coef= map.get(soundscape);
             if (coef<=0) {
@@ -114,8 +124,8 @@ public class Soundscape {
         if (RandomWizard.chance(soundscape.customChance)) {
             String sound = soundscape.weightMapCustom.getRandomByWeight();
             String path = PathFinder.getSoundPath() + "soundscape/" + sound + ".mp3";
-            SoundMaster.playRandomSoundVariant(path, true);
-            DC_SoundMaster.play(path, volume, 0);
+            SoundMaster.playRandomSoundVariant(path, true, volume, 0);
+//            DC_SoundMaster.play(path, volume, 0);
         } else {
             SOUNDSET soundset = soundscape.weightMapUnit.getRandomByWeight();
             SOUNDS type = soundscape.weightMapSoundType.getRandomByWeight();

@@ -1,7 +1,6 @@
 package eidolons.libgdx.texture;
 
 import main.system.auxiliary.StringMaster;
-import sun.reflect.Reflection;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -22,10 +21,13 @@ public class Sprites {
     public static final String TORCH = "sprites/cells/light/torch.txt";
     public static final String ALTAR = "sprites/cells/bf/altar.txt";
     public static final String FLOAT_WISP = "sprites/cells/bf/light wisp float.txt";
+    public static final String FIRE_LIGHT = "sprites/cells/bf/fire light.txt";
+
     public static final String RUNE_INSCRIPTION = "sprites/cells/bf/rune.txt";
     public static final String ORB = "sprites/cells/bf/orb.txt";
+    public static final String WATER = "sprites/cells/ambi/black waters.txt";
 
-    public static final String VEIL = "sprites/cells/gate/veil.txt";
+    public static final String LIGHT_VEIL = "sprites/cells/gate/veil.txt";
     public static final String HELL_WHEEL = "sprites/cells/parts/underlay.txt";
     public static final String TENTACLE = "sprites/cells/grid/tent loop.txt";
     public static final String WHITE_TENTACLE = "sprites/unit/white tent.txt";
@@ -39,7 +41,17 @@ public class Sprites {
     public static final String COMMENT_KESERIM = "sprites/hero/comment/keserim comment.txt";
     public static final String HERO_KESERIM = "sprites/hero/keserim2.txt";
     public static final String SNOW = "sprites/particles/snow.txt";
-    public static final String MIST= "sprites/particles/mist.txt";
+    public static final String MIST = "sprites/particles/mist.txt";
+
+    public static final String AX_FIRE = "sprites/weapons3d/special/ax fire.txt";
+    public static final String ACID_BLADE = "sprites/weapons3d/special/acid blade.txt";
+
+    public static final String BLOOD_SHOWER = "sprites/hit/blood/shower.txt";
+    public static final String BLOOD_SLICE = "sprites/hit/blood/slice.txt";
+    public static final String BLOOD_SQUIRT = "sprites/hit/blood/squirt.txt";
+
+    public static final String GATE_LIGHTNING = "sprites/spell/nether/lightning gate.txt";
+
 
     private static final Map<String, String> spriteMap;
 

@@ -131,9 +131,27 @@ public class UnitViewOptions {
 
             this.clockValue = obj.getIntParam(PARAMS.C_INITIATIVE);
         }
+        boolean altColor=false;
+
+        if (obj.isMine()) {
+            altColor = !obj.isPlayerCharacter();
+        } else {
+            altColor= true;
+            if (obj.getName().contains("Carnifex"))
+                altColor=false;
+            if (obj.getName().contains("Igor"))
+                altColor=false;
+            if (obj.getName().contains("Hollow Reaper"))
+                altColor=false;
+            if (obj.getName().contains("Hollow Defiler"))
+                altColor=false;
+        }
+
         if (obj.getOwner() != null)
-            this.teamColor =
-             GdxColorMaster.getColor(obj.getOwner().getFlagColor());
+            this.teamColor = GdxColorMaster.getColor(
+                    altColor ?
+                            obj.getOwner().getFlagColorAlt() :
+                    obj.getOwner().getFlagColor());
         if (this.teamColor == null) {
             this.teamColor = GdxColorMaster.NEUTRAL;
         }

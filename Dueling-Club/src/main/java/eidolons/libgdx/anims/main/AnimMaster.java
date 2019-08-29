@@ -120,7 +120,7 @@ public class AnimMaster extends Group {
 
     public static float getAnimationSpeedFactor() {
         if (Cinematics.ON){
-            return 1f;
+            return Cinematics.ANIM_SPEED;
         }
         if (animationSpeedFactor == null) {
             animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;

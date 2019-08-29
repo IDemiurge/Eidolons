@@ -31,7 +31,9 @@ import static main.system.GuiEventType.INIT_DIALOG;
  * Created by JustMe on 5/14/2017.
  */
 public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
-    public static final boolean TEST = false;
+    public static   boolean TEST = false;
+    private static final String DUEL = "Duel";
+    private static final String INTRO = "Intro";
     private static   boolean SKIP_INTRO = false;
     private static   boolean PARSE_ON_INIT = CoreEngine.isIDE();
     private static boolean running;
@@ -101,7 +103,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 8);
         WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG,
-                TEST  ? "Awakening": "Intro"));
+                TEST  ? DUEL: INTRO));
     }
     public void startDialogue(GameDialogue dialogue) {
     }

@@ -26,8 +26,8 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class FullscreenAnims extends GroupX {
             }
             {
                 if (obj == Eidolons.getMainHero()) {
-                    SuperActor.BLENDING blending = getBlending(e.getType());
+                    SuperActor.BLENDING blending = getBlending(type);
 
                     if (SPRITE_MODE) {
                         data = new FullscreenAnimDataSource(type, intensity,
@@ -94,7 +94,9 @@ public class FullscreenAnims extends GroupX {
                 return FULLSCREEN_ANIM.GATES;
             }
         if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
-            type = FULLSCREEN_ANIM.BLOOD;
+            type = RandomWizard.chance(33) ?
+                    FULLSCREEN_ANIM.BLOOD_SCREEN :
+                    FULLSCREEN_ANIM.BLOOD;
             if (e.getRef().getDamageType() == GenericEnums.DAMAGE_TYPE.POISON) {
                 type = FULLSCREEN_ANIM.POISON;
             }
@@ -127,11 +129,18 @@ public class FullscreenAnims extends GroupX {
         return facing;
     }
 
-    private SuperActor.BLENDING getBlending(Event.EVENT_TYPE type) {
-        if (type == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS) {
-            return SuperActor.BLENDING.SCREEN;
+    private SuperActor.BLENDING getBlending(FULLSCREEN_ANIM type) {
+        switch (type) {
+
+            case BLOOD:
+            case BLOOD_SCREEN:
+                return SuperActor.BLENDING.INVERT_SCREEN;
+            case POISON:
+                return null;
+            case DARKNESS:
+                break;
         }
-        return null;
+        return SuperActor.BLENDING.SCREEN;
     }
 
 
@@ -142,15 +151,16 @@ public class FullscreenAnims extends GroupX {
                 dataSource.type.getSpritePath();
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
         if (sprite == null) {
+            main.system.auxiliary.log.LogMaster.dev("No fullscreen anim for " +path);
             return;
         }
         sprite.setCustomAct(true);
         sprite.setBlending(dataSource.getBlending());
         float intensity = dataSource.intensity;
-        float alpha = RandomWizard.getRandomFloatBetween(intensity * 2, intensity * 3);
-        int fps = RandomWizard.getRandomIntBetween(10, 15);
+        float alpha = Math.min(1, RandomWizard.getRandomFloatBetween(intensity * 2, intensity * 3));
+        int fps = RandomWizard.getRandomIntBetween(11, 14);
         sprite.setFps(fps);
-        sprite.setAlpha(1);
+        sprite.setAlpha(alpha);
         //TODO
 
         sprite.setFlipX(dataSource.flipX);
@@ -160,9 +170,12 @@ public class FullscreenAnims extends GroupX {
         sprite.setY(GdxMaster.getHeight() / 2);
         spriteList.add(sprite);
 
+        main.system.auxiliary.log.LogMaster.dev("Fullscreen anim added: " +path);
         if (dataSource.type.color != null) {
             sprite.setColor(dataSource.type.color);
         }
+
+        sprite.setLoops(dataSource.getLoops());
 
 //        if (showingTimer > 0) {
 //            data.intensity += intensity;
@@ -180,6 +193,7 @@ public class FullscreenAnims extends GroupX {
         for (SpriteAnimation animation : new ArrayList<>(spriteList)) {
             animation.act(Gdx.graphics.getDeltaTime());
             if (animation.isAnimationFinished()) {
+                WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.FULLSCREEN_DONE, animation);
                 spriteList.remove(animation);
                 continue;
             }
@@ -211,8 +225,13 @@ public class FullscreenAnims extends GroupX {
     public enum FULLSCREEN_ANIM {
         //        BLACK,
         BLOOD,
+        BLOOD_SCREEN,
         HELLFIRE,
-        GREEN_HELLFIRE(new Color(0.6f, 1f, 0.7f, 1f)),
+        GREEN_HELLFIRE(new Color(0.69f, 0.9f, 0.6f, 1f)) {
+            public String getSpritePath() {
+                return PathFinder.getSpritesPath() + "fullscreen/hellfire.txt";
+            }
+        },
         POISON,
 
         EXPLOSION {

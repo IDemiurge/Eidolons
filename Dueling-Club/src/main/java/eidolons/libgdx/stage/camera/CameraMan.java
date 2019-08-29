@@ -149,7 +149,7 @@ public class CameraMan {
             if (param.get() instanceof MotionData) {
                 cameraPan((MotionData) param.get());
             } else
-            cameraPan(new MotionData(param.get()));
+                cameraPan(new MotionData(param.get()));
         });
 
 
@@ -210,10 +210,10 @@ public class CameraMan {
     }
 
     private void cameraPan(MotionData motionData) {
-        if (motionData.exclusive) {
+//        if (motionData.exclusive)
             if (!motions.isEmpty()) {
-                return;
-            }
+                motions.clear();
+//                return;
         }
         cameraPan(motionData.dest, motionData.duration, motionData.interpolation, null);
 
@@ -230,6 +230,10 @@ public class CameraMan {
         if (destination == null) {
             return;
         }
+        if (Cinematics.ON) {
+            destination.y= destination.y-210;
+        }
+        main.system.auxiliary.log.LogMaster.dev("cameraPan to " +destination);
         float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();
 
         if (overrideCheck == null)

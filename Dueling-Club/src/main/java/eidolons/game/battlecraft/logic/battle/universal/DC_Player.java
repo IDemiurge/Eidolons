@@ -12,6 +12,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.system.data.PlayerData.ALLEGIENCE;
+import main.system.graphics.ColorManager;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;
@@ -33,6 +34,7 @@ public class DC_Player extends Player {
     private String partyDataString;
     private UnitData unitData;
     private Faction faction;
+    private FLAG_COLOR flagColorAlt;
 
     public DC_Player() {
         this("neutral", Color.red, false);
@@ -134,5 +136,13 @@ public class DC_Player extends Player {
 
     public void setFaction(Faction faction) {
         this.faction = faction;
+    }
+
+    public void setFlagColorAlt(FLAG_COLOR flagColorAlt) {
+        this.flagColorAlt = flagColorAlt;
+    }
+
+    public FLAG_COLOR getFlagColorAlt() {
+        return flagColorAlt;
     }
 }

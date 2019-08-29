@@ -78,12 +78,12 @@ public class ForceAnim extends Weapon3dAnim {
         }
         try {
             String path =// SpellVfxMaster.getRandomVfx
-                    PhaseVfx.isRandom() ? PathFinder.getVfxAtlasPath() + "spell/" :
-                            "nether";
+                    PhaseVfx.isRandom() ? PathFinder.getVfxAtlasPath() + "invert/" :
+                            "breath";
             //         );  //damage/fire
-            if (type != null) {
-                path = EffectAnimCreator.getVfx(type);
-            }
+//            if (type != null) {
+//                path = EffectAnimCreator.getVfx(type);
+//            }
 
             shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
             emitterList.clear();

@@ -18,8 +18,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.StageX;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -67,14 +69,14 @@ public class GdxMaster {
             return pos;
         if (x)
             return pos
-             - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
+                    - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
         return pos
-         + (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
+                + (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
     }
 
     public static int adjustFontSize(float size) {
         return Math.round(adjustSize(size, fontSizeAdjustCoef) + size
-         * (GdxMaster.getFontSizeModSquareRoot() - 1) * fontSizeAdjustCoef);
+                * (GdxMaster.getFontSizeModSquareRoot() - 1) * fontSizeAdjustCoef);
     }
 
     public static float adjustSize(float size) {
@@ -83,20 +85,20 @@ public class GdxMaster {
 
     public static float adjustSize(float size, float coef) {
         return size
-         + size
-         * (GdxMaster.getFontSizeMod() - 1) * coef;
+                + size
+                * (GdxMaster.getFontSizeMod() - 1) * coef;
     }
 
     public static float adjustHeight(float size) {
         return size
-         + size
-         * (GdxMaster.getHeightMod() - 1) * sizeAdjustCoef;
+                + size
+                * (GdxMaster.getHeightMod() - 1) * sizeAdjustCoef;
     }
 
     public static float adjustWidth(float size) {
         return size
-         + size
-         * (GdxMaster.getWidthMod() - 1) * sizeAdjustCoef;
+                + size
+                * (GdxMaster.getWidthMod() - 1) * sizeAdjustCoef;
     }
 
     public static float adjustSizeBySquareRoot(float size) {
@@ -105,8 +107,8 @@ public class GdxMaster {
 
     public static float adjustSizeBySquareRoot(float size, float coef) {
         return size
-         + size
-         * (GdxMaster.getFontSizeModSquareRoot() - 1) * coef;
+                + size
+                * (GdxMaster.getFontSizeModSquareRoot() - 1) * coef;
     }
 
     public static float adjustSizePlain(float size) {
@@ -158,7 +160,7 @@ public class GdxMaster {
 
     public static Vector3 getCursorPosition() {
         return DungeonScreen.getInstance().getGridStage().getCamera().
-         unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
     public static Vector2 getCursorPosition(Actor actor) {
@@ -205,9 +207,9 @@ public class GdxMaster {
             fontSizeMod = new Float(getWidth() * getHeight()) / getDefaultWidth() / getDefaultHeight();
             fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
 
-            if (isFixedSize()){
-                fontSizeMod=1f;
-                fontSizeModSquareRoot=1f;
+            if (isFixedSize()) {
+                fontSizeMod = 1f;
+                fontSizeModSquareRoot = 1f;
             }
         }
         if (fontSizeMod < 0) {
@@ -222,19 +224,19 @@ public class GdxMaster {
 
     private static int getDefaultWidth() {
         return Eidolons.isFullscreen() ? GdxMaster.DEFAULT_WIDTH
-         : GdxMaster.DEFAULT_WIDTH_FULLSCREEN;
+                : GdxMaster.DEFAULT_WIDTH_FULLSCREEN;
     }
 
     private static int getDefaultHeight() {
         return Eidolons.isFullscreen() ? GdxMaster.DEFAULT_HEIGHT
-         : GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
+                : GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
     }
 
     public static Float getWidthMod() {
         if (widthMod == null) {
             widthMod = new Float(getWidth()) / getDefaultWidth();
-            if (isFixedSize()){
-                widthMod=1f;
+            if (isFixedSize()) {
+                widthMod = 1f;
             }
         }
         return widthMod;
@@ -243,8 +245,8 @@ public class GdxMaster {
     public static Float getHeightMod() {
         if (heightMod == null) {
             heightMod = new Float(getHeight()) / getDefaultHeight();
-            if (isFixedSize()){
-                heightMod=1f;
+            if (isFixedSize()) {
+                heightMod = 1f;
             }
         }
         return heightMod;
@@ -276,33 +278,33 @@ public class GdxMaster {
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(),
-         Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+                Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(
-         GDX.file(PathFinder.getImagePath() + "big/screenshots/" +
-          main.system.auxiliary.TimeMaster.getTimeStamp() + (".png")), pixmap);
+                GDX.file(PathFinder.getImagePath() + "big/screenshots/" +
+                        main.system.auxiliary.TimeMaster.getTimeStamp() + (".png")), pixmap);
         pixmap.dispose();
     }
 
 
     public static void setInputProcessor(InputProcessor inputController) {
-        if (inputController instanceof InputMultiplexer) {
-            main.system.auxiliary.log.LogMaster.log(0, ">>>>> setInputProcessor InputMultiplexer: " + inputController);
-
-            for (InputProcessor sub : ((InputMultiplexer) inputController).getProcessors()) {
-                main.system.auxiliary.log.LogMaster.log(0, "Processor: " + sub);
-            }
-        } else
-            main.system.auxiliary.log.LogMaster.log(0, ">>>>> setInputProcessor: " + inputController);
-
+//        if (inputController instanceof InputMultiplexer) {
+//            main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor InputMultiplexer: " + inputController);
+//
+//            for (InputProcessor sub : ((InputMultiplexer) inputController).getProcessors()) {
+//                main.system.auxiliary.log.LogMaster.log(1, "Processor: " + sub);
+//            }
+//        } else
+//            main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor: " + inputController);
         inputController = new InputMultiplexer(inputController,
-         GlobalInputController.getInstance());
+                GlobalInputController.getInstance());
         Gdx.input.setInputProcessor(inputController);
     }
 
     public static void top(Actor actor) {
         actor.setY(getTopY(actor));
     }
+
     public static void center(Actor actor) {
         actor.setPosition(centerWidth(actor), centerHeight(actor));
     }
@@ -410,22 +412,22 @@ public class GdxMaster {
         GdxMaster.brightness = brightness;
     }
 
-    public static boolean hasController(InputProcessor inputProcessor, Stage  gridStage) {
+    public static boolean hasController(InputProcessor inputProcessor, InputProcessor stage) {
         if (inputProcessor instanceof InputMultiplexer) {
             for (InputProcessor processor : ((InputMultiplexer) inputProcessor).getProcessors()) {
-                if (hasController(processor, gridStage)) {
+                if (hasController(processor, stage)) {
                     return true;
                 }
             }
 
         }
-        return inputProcessor.equals(gridStage);
+        return inputProcessor.equals(stage);
     }
 
     public static boolean isWithin(Actor target, Vector2 vector2, boolean stage) {
         Vector2 v = stage
-         ? target.getParent().localToStageCoordinates(new Vector2(target.getX(), target.getY()))
-         : new Vector2(target.getX(), target.getY());
+                ? target.getParent().localToStageCoordinates(new Vector2(target.getX(), target.getY()))
+                : new Vector2(target.getX(), target.getY());
 
         if (vector2.x < v.x)
             return false;
@@ -446,7 +448,7 @@ public class GdxMaster {
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         Gdx.graphics.setCursor(cursor);
-        Gdx.input.setCursorPosition(x  ,y );
+        Gdx.input.setCursorPosition(x, y);
     }
 
     public static void setDefaultCursor() {
@@ -459,18 +461,22 @@ public class GdxMaster {
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
 
+    public static void setEmptyCursor() {
+        Pixmap pm = new Pixmap(GDX.file(PathFinder.getEmptyCursorPath()));
+        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+    }
     public static void setTargetingCursor() {
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
 
-    public static   boolean isVisibleEffectively(Group a) {
+    public static boolean isVisibleEffectively(Group a) {
         if (a == null) {
             return false;
         }
         if (!a.isVisible())
             return false;
-        for (Group group : GdxMaster.getAncestors(a )) {
+        for (Group group : GdxMaster.getAncestors(a)) {
             if (group == null) {
                 continue;
             }
@@ -479,6 +485,17 @@ public class GdxMaster {
             }
         }
         return true;
+    }
+
+    public static InputMultiplexer getMultiplexer(InputProcessor... processors) {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        for (InputProcessor processor : processors) {
+            if (processor != null) {
+                multiplexer.addProcessor(processor);
+            }
+        }
+
+        return multiplexer;
     }
 
     public enum CURSOR {

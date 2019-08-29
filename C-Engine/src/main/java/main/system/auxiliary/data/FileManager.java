@@ -64,7 +64,7 @@ public class FileManager {
             }
             if (!file.getPath().contains(PathFinder.getRootPath()))
                 return readFile(FileManager.getFile(PathFinder.getRootPath() + file.getPath()),
-                 lineSeparator);
+                        lineSeparator);
             return "";
         }
 
@@ -216,7 +216,8 @@ public class FileManager {
     public static File getFile(String path, boolean first) {
         return getFile(path, first, true);
     }
-        public static File getFile(String path, boolean first, boolean allowInvalid) {
+
+    public static File getFile(String path, boolean first, boolean allowInvalid) {
         File file = new File(path);
         if (file.isFile() || file.isDirectory()) {
             return file;
@@ -235,11 +236,11 @@ public class FileManager {
 //            file = new File(path);
             if (!CoreEngine.isActiveTestMode())
                 if (!CoreEngine.isFullFastMode()) {
-                if (!missing.contains(file.getPath())) {
-                    main.system.auxiliary.log.LogMaster.verbose("FILE NOT FOUND: " + file);
-                    missing.add(file.getPath());
+                    if (!missing.contains(file.getPath())) {
+                        main.system.auxiliary.log.LogMaster.verbose("FILE NOT FOUND: " + file);
+                        missing.add(file.getPath());
+                    }
                 }
-            }
         }
 
         return file;
@@ -253,7 +254,8 @@ public class FileManager {
         String v = formatPath(path, force);
         return v.substring(0, v.length() - 1);
     }
-        public static String formatPath(String path, boolean force) {
+
+    public static String formatPath(String path, boolean force) {
         StringBuilder formatted = new StringBuilder();
         int index = path.lastIndexOf(PathFinder.getRootPath(), PathFinder.getRootPath().length() - 1);
         if (index == -1 && !force) {
@@ -263,11 +265,13 @@ public class FileManager {
             index += PathFinder.getRootPath().length() - 1;
         }
         String afterClass = force ? path : path.substring(
-         index, path.length());
+                index, path.length());
 
         //fix slashes
-        for (String sub : PathUtils.splitPath(afterClass)) {
-            formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
+        if (!afterClass.isEmpty()) {
+            for (String sub : PathUtils.splitPath(afterClass)) {
+                formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
+            }
         }
         if (force) {
             return formatted.toString().toLowerCase();
@@ -275,7 +279,7 @@ public class FileManager {
         if (!CoreEngine.isWindows()) {
 
             return (PathFinder.getRootPath() + formatted.toString().toLowerCase())
-             .replace("%20", " ");
+                    .replace("%20", " ");
         }
         //fix case
         return PathFinder.getRootPath() + formatted.toString().toLowerCase();
@@ -302,7 +306,7 @@ public class FileManager {
         corePath = StringMaster.cropFormat(corePath);
         File file = getFile(prefixPath + corePath + format);
         if (!file.isFile()) {
-            LogMaster.verbose(  "no  file available for " + file.getPath());
+            LogMaster.verbose("no  file available for " + file.getPath());
             return null;
         }
         int i = 2;
@@ -312,10 +316,10 @@ public class FileManager {
             String newPath = prefixPath + corePath + ((underslash) ? "_" : "") + i + format;
             file = FileManager.getFile(newPath);
             if (!file.isFile()) {
-                newPath = prefixPath + corePath + (  " ") + i + format;
+                newPath = prefixPath + corePath + (" ") + i + format;
                 file = FileManager.getFile(newPath);
             }
-                if (!file.isFile()) {
+            if (!file.isFile()) {
                 break;
             }
             filesPaths.add(newPath);
@@ -381,7 +385,7 @@ public class FileManager {
         String name = StringMaster.cropFormat(fileName);
         if (name.lastIndexOf(getFileVersionSeparator()) > 0) {
             if (NumberUtils.isInteger(name.substring(
-             name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
+                    name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
             ))) {
                 name = name.substring(0, name.lastIndexOf(getFileVersionSeparator()));
             }
@@ -433,16 +437,16 @@ public class FileManager {
                     files.add(file);
                 } else {
                     String fileName = cropFormat ? StringMaster.cropFormat(file.getName()) : file
-                     .getName();
+                            .getName();
                     if (strict) {
                         if (StringMaster.compareByChar(StringMaster.cropFileVariant(fileName),
-                         StringMaster.cropFormat(regex), false)) {
+                                StringMaster.cropFormat(regex), false)) {
                             files.add(file);
                         }
                     } else {
                         if (StringMaster.compare(StringMaster.cropFileVariant(fileName),
-                         // StringMaster.cropFormat
-                         (regex), false)) {
+                                // StringMaster.cropFormat
+                                (regex), false)) {
                             files.add(file);
                         }
                     }
@@ -490,7 +494,7 @@ public class FileManager {
                 if (content.length() == 0) {
                     if (FileManager.readFile(file).length() > content.length()) {
                         LogMaster.log(1, "*Not writing empty file! "
-                         + filepath);
+                                + filepath);
                         return false;
                     }
                 }
