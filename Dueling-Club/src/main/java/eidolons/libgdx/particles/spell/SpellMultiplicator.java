@@ -242,6 +242,7 @@ public class SpellMultiplicator implements Runnable {
 
     private SpellVfx multiplicateEmitter(Integer angle, Coordinates c, SpellVfx e) {
         SpellVfx actor = SpellVfxPool.getEmitterActor(e.path);
+        actor.setSpeed(e.getSpeed());
         actor.setPosition(getX(), getY());
         actor.setAttached(false);
         actor.setGenerated(true);

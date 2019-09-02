@@ -319,7 +319,7 @@ public class GenericEnums {
         BUCKLER_THROWER,
         LEFT_RIGHT_REACH,
         FAUX,
-        NO_GOLD, NAMED, BUFFING, OFF_DEFAULT, LIVING_STATUE, SWIMMING;
+        NO_GOLD, NAMED, BUFFING, OFF_DEFAULT, LIVING_STATUE, SWIMMING, INVISIBLE;
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.
@@ -352,8 +352,29 @@ public class GenericEnums {
 
          */
 
+        nether_impact3("spell/impact/nether impact3"),
+        nether_impact2("spell/impact/nether impact2"),
+        nether_impact("spell/impact/nether impact"),
+        chaos_impact("spell/impact/chaos impact"),
+        cold_impact("spell/impact/cold impact"),
+        pale_impact("spell/impact/pale impact"),
+        warp_impact("spell/impact/warp impact"),
+        necro_impact("spell/impact/necro impact"),
+        death_impact("spell/impact/death impact"),
+        frost_impact("spell/impact/frost impact"),
+        acid_impact("spell/impact/acid impact"),
+        arcane_impact("spell/impact/arcane impact"),
+
+        invert_fountain("invert/black fountain"),
+        invert_storm("invert/shadow storm"),
+        invert_storm_green("invert/shadow storm nether"),
+        invert_storm_brewing("invert/shadow storm brewing"),
+        invert_storm_ambi ("invert/shadow storm nether ambi2"),
+        invert_vortex("invert/shadow vortex2"),
+
         invert_abyss("invert/black abyss"),
         invert_missile("invert/black missile cone 3"),
+        invert_impact("invert/shadow impact"),
         invert_pillar("invert/black pillar high"),
         invert_bleed("invert/black soul bleed 3"),
         invert_ring("invert/black water ring max2"),
@@ -361,11 +382,18 @@ public class GenericEnums {
         invert_breath("invert/breath"),
         invert_darkness("invert/chaotic dark"),
 
-        spell_chaos_flames("spell/nether/chaos flames"),
-        spell_demonfire("spell/nether/demon missile2"),
-        spell_firewave("spell/nether/fire wave chaos"),
-        spell_volcano("spell/nether/volcano"),
-        spell_hollow_flames("spell/nether/hollow flames"),
+        spell_chaos_flames("ambient/sprite/fires/chaos flames"),
+        spell_demonfire("spell/missile/demon missile2"),
+        spell_firewave("ambient/sprite/fires/fire wave chaos"),
+        spell_volcano("ambient/sprite/fires/volcano"),
+        spell_hollow_flames("ambient/sprite/fires/hollow flames"),
+
+//        spell_chaos_flames("spell/nether/chaos flames"),
+//        spell_demonfire("spell/nether/demon missile2"),
+//        spell_firewave("spell/nether/fire wave chaos"),
+//        spell_volcano("spell/nether/volcano"),
+//        spell_hollow_flames("spell/nether/hollow flames"),
+
         spell_wraiths("spell/nether/wraiths 2"),
 
         spell_poison_veil("spell/nether/poison"),
@@ -375,8 +403,6 @@ public class GenericEnums {
         spell_pale_ward("spell/nether/pale ward"),
         spell_ghostly_teleport("spell/nether/ghostly teleport"),
         spell_ghostly_teleport_small("spell/nether/ghostly teleport small wraith"),
-
-
 
         dissipation("spell/shape/soul dissipation"),
         dissipation_pale("spell/shape/soul dissipation pale"),
@@ -544,7 +570,7 @@ public class GenericEnums {
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
         ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
         OVERLAYS(0.15f, 0, 1, 0.1f, 0.75f, 1f),
-        UNIT_VIEW(0.23f, 0, 1, 0.0f, 0.80f, 1f), //EMBLEM COLOR & UNCONSCIOUS
+        UNIT_BORDER(0.1f, 1, 2, 0.0f, 0.50f, 1f), // + EMBLEM COLOR & UNCONSCIOUS
 
         SHADE_CELL_GAMMA_SHADOW(0.05f, 0.5f, 0.2f, 0, 0.5f, 0.8f),
         SHADE_CELL_GAMMA_LIGHT(0.08f, 1.5f, 2.55f, 0.2f, 0.4f, 0.85f),

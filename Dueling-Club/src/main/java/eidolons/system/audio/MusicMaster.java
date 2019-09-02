@@ -134,9 +134,9 @@ public class MusicMaster {
             looping.add(preloadedMusic);
         });
         GuiEventManager.bind(GuiEventType.STOP_LOOPING_TRACK, p -> {
-            String path = p.get().toString();
+            String path = (String) p.get();
             for (PreloadedMusic preloadedMusic : new ArrayList<>(looping)) {
-                if (StringMaster.compare(preloadedMusic.getPath(), path, false)) {
+                if (path==null || StringMaster.compare(preloadedMusic.getPath(), path, false)) {
                     looping.remove(preloadedMusic);
                     break;
                 }

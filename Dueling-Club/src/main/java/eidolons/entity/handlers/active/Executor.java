@@ -269,7 +269,7 @@ public class Executor extends ActiveHandler {
     }
 
     private void beingActivated() {
-//        fireEvent(STANDARD_EVENT_TYPE.ACTION_BEING_ACTIVATED, true);
+        fireEvent(STANDARD_EVENT_TYPE.ACTION_BEING_ACTIVATED, true);
         timeCost = getCalculator().calculateTimeCost();
         if (getChecker().isCancellable()) {
 //            activated(ref); TODO ???

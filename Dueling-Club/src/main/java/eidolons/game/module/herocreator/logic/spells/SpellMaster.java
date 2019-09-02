@@ -16,6 +16,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -240,6 +241,18 @@ public class SpellMaster {
         hero.getType(). addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
         hero.addProperty(PROPS.VERBATIM_SPELLS, type.getName(), true);
         hero.addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
+        hero.initSpells(true);
     }
 
+    public static void removeSpell(Unit unit, ObjType type ) {
+        removeSpell(unit, type, true);
+//                !CoreEngine.isIDE());
+    }
+
+    public static void removeSpell(Unit unit, ObjType type, boolean forever) {
+        unit.removeProperty(forever, PROPS.VERBATIM_SPELLS, type.getName() );
+        unit.removeProperty(forever, PROPS.MEMORIZED_SPELLS, type.getName() );
+        unit.initSpellbook();
+        unit.initSpells(true);
+    }
 }

@@ -486,9 +486,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     EIDOLON_ASPECTS(null, true, "chars", "units"),
     ITEM_TRAITS(null, true, "weapons", "armor", "jewelry"),
-    OVERLAY_SPRITES(null, false, "units", "chars"),
-    UNDERLAY_SPRITES(null, false, "units", "chars"),
-    CUSTOM_OBJECT(null, false, "bf obj"),
+    OVERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
+    UNDERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
+    CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
 
     ;
 

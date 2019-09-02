@@ -65,8 +65,8 @@ public class Chronos {
             return;
         }
         timeMap.remove(string);
-//        if (timeElapsedForMark > 500 ||
-//                forced)
+        if (timeElapsedForMark > 100 ||
+                forced)
         {
             LogMaster.log(LogMaster.PERFORMANCE_DEBUG, string
              + " FINISHED AFTER " + timeElapsedForMark);

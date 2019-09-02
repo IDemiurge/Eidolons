@@ -45,6 +45,7 @@ import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -81,6 +82,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private Obj targetObj;
     private GroupImpl targetGroup;
     private boolean targetingCachingOff;
+    private boolean disabled;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -154,7 +156,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (energyType == null) {
             energyType = DC_ContentValsManager.getDamageForAspect(getAspect());
             if (energyType == null) {
-                return GenericEnums.DAMAGE_TYPE.MAGICAL;
+                return DAMAGE_TYPE.MAGICAL;
             }
         }
         return energyType;
@@ -252,7 +254,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public void setRef(Ref REF) {
-        REF.setID(Ref.KEYS.ACTIVE, getId());
+        REF.setID(KEYS.ACTIVE, getId());
         super.setRef(REF);
         ref.setObj(KEYS.TARGET, targetObj);
         ref.setGroup(targetGroup);
@@ -350,7 +352,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             activate();
         } catch (Exception e) {
             getGame().getManager().setActivatingAction(null);
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, "Action failed: " + toString());
             // actionComplete();
         }
@@ -634,6 +636,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getChecker().isTurn();
     }
 
+    public boolean isMode() {
+        return getChecker().isMode();
+    }
     @Override
     public boolean isMelee() {
         return getChecker().isMelee();
@@ -797,7 +802,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getMaster().getHandler().getTargeter();
     }
 
-    public eidolons.entity.handlers.active.Activator getActivator() {
+    public Activator getActivator() {
         return getMaster().getHandler().getActivator();
     }
 
@@ -933,6 +938,17 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             }
         }
         return subActions;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        if (disabled) {
+            getCosts().setReason("Disabled");
+        }
     }
 }
 

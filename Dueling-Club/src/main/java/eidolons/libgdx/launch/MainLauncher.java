@@ -50,6 +50,9 @@ public class MainLauncher extends GenericLauncher {
                 EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
             EidolonsGame.BRIDGE = args[0].contains("bridge");
             DialogueManager.TEST = args[0].contains("duel");
+            if (DialogueManager.TEST) {
+                EidolonsGame.BRIDGE =true;
+            }
                 CoreEngine.setLevelTestMode(false);
                  args = args[0].split(";");
         }
@@ -75,7 +78,7 @@ public class MainLauncher extends GenericLauncher {
             }
         }
 //        if (!CoreEngine.isJar())
-//                if (CoreEngine.uploadPackage == CoreEngine.UPLOAD_PACKAGE.Aphotica) {
+//                if (CoreEngine.uploadPackage == CoreEngine.UPLOAD_PACKAGE.Aphotic) {
 //                    args = "FULL;DEMO;0;0".split(";");
 //                }
 

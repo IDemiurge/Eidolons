@@ -42,7 +42,6 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     }
 
 
-
     @Override
     public Boolean getFormat() {
         return true;
@@ -66,7 +65,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         //support user interrupt ?
 //        WaitMaster.executeAfter();
 
-        executing=true;
+        executing = true;
 
         Chronos.mark("script " + scriptText);
         master.getDialogueManager().getSpeechExecutor().execute(this);
@@ -134,7 +133,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
         ZOOM,
         NEXT, NEXT_OFF, NEXT_ALL,
         SHAKE, WHITEOUT,
-        REVEAL_AREA, PORTAL, AUTOCAMERA, PARTICLES, SOUNDSCAPE, OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM, LOOP_TRACK, STOP_LOOP, SPEED, GLOBAL, ABS, CAMERA_OFFSET, DIALOGUE_AFTER, COORDINATE, MOVE, TURN, VAR, SOUND_VARIANT, DISPLACE, SCREEN, VAR_FLOAT, VAR_INTEGER, WAIT_FOR, COLOR, GRID_OBJ_ANIM, PORTAL_CLOSE, PORTAL_OPEN, ATTACHED, TURN_AUTO,
+        REVEAL_AREA, PORTAL, AUTOCAMERA, PARTICLES, SOUNDSCAPE, OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM, LOOP_TRACK, STOP_LOOP, SPEED, GLOBAL, ABS, CAMERA_OFFSET, DIALOGUE_AFTER, COORDINATE, MOVE, TURN, VAR, SOUND_VARIANT, DISPLACE, SCREEN, VAR_FLOAT, VAR_INTEGER, WAIT_FOR, COLOR, GRID_OBJ_ANIM, PORTAL_CLOSE, PORTAL_OPEN, ATTACHED, TURN_AUTO, ADD_SPELL, REMOVE_SPELL, WAIT_INPUT, VAR_MAP, ACTION_MAP, BF_OBJ, ADD, PARAM, PROP, BLOCK_ACTION, ORDER, LINKED_OBJ, DEBUG, CHEAT, DEV, OFFSET, TRIGGER, AREA, VFX, CINEMATICS, SCRIPT_PARALLEL,
 
         //make templates mapped by name?
     }
@@ -143,6 +142,6 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     @Override
     public String toString() {
 
-        return scriptText+" parsed \n" + actions;
+        return scriptText + " parsed \n" + actions;
     }
 }

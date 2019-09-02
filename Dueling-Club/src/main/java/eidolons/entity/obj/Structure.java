@@ -145,9 +145,6 @@ public class Structure extends BattleFieldObject {
         return true;
     }
 
-    public boolean isLightEmitter() {
-        return checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
-    }
 
     public BF_OBJECT_GROUP getBfObjGroup() {
         if (bfObjGroup == null) {

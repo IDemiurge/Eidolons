@@ -36,7 +36,7 @@ public class AggroMaster extends ExplorationHandler {
 
     public static List<Unit> getAggroGroup() {
         if (
-                !EidolonsGame.firstBattleStarted ||
+                !EidolonsGame.FIRST_BATTLE_STARTED ||
                 getPlayerUnseenMode()) {
             return new ArrayList<>();
         }
@@ -110,7 +110,6 @@ public class AggroMaster extends ExplorationHandler {
                 continue;
 
             }
-
             if (isCriticalBreak(unit, hero))
                 continue;
             if (PositionMaster.getExactDistance(hero, unit) >=
@@ -125,6 +124,7 @@ public class AggroMaster extends ExplorationHandler {
             if (unit.getAI().getEngagementDuration() > 0) {
                 set.add(unit);
             }
+            if (!EidolonsGame.DUEL)
             if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
                 continue;
             //TODO these units will instead 'surprise attack' you or stalk
@@ -134,16 +134,9 @@ public class AggroMaster extends ExplorationHandler {
             set.add(unit);
             //            }
         }
-        //TODO add whole group of each unit
-//        for (Unit unit : set) {
-//        }
-        //recheck, 'cause there is a bug there somewhere
-        int i = set.size();
+        if (!EidolonsGame.DUEL)
         set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
                 || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
-//        if (i != set.size()) {
-//            main.system.auxiliary.log.LogMaster.log(1, "Gotcha aggro! " + i + " " + set);
-//        }
 
         for (Unit unit : set) {
             unit.getAI().setEngaged(false); //TODO better place for it?
@@ -265,9 +258,9 @@ public class AggroMaster extends ExplorationHandler {
         List<Unit> aggroGroup = AggroMaster.getAggroGroup();
 
         if (!aggroGroup.isEmpty()) {
-            for (Unit sub : aggroGroup) {
-                sub.getAI().setStandingOrders(null);
-            }
+//            for (Unit sub : aggroGroup) {
+//           wtf???     sub.getAI().setStandingOrders(null);
+//            }
             for (Unit sub : master.getGame().getUnits()) {
                 sub.getAI().setOutsideCombat(false);
                 if (!aggroGroup.contains(sub))

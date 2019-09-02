@@ -260,6 +260,10 @@ public class AtbPanel extends GroupX {
             QueueViewContainer sub = queue[j];
             if (sub == null)
                 break;
+            if (list != null)
+                if (list.size() <= i) {
+                    break;
+                }
             QueueView actor = (QueueView) sub.getActor();
             String text = (list == null ? sub.initiative : list.get(i++)) + "";
             if (actor == null) {
@@ -625,7 +629,7 @@ public class AtbPanel extends GroupX {
                     return "ui/content/intent icons/" + name() + ".txt";
             }
             return "ui/content/intent icons/" +
-                    "attack.txt";
+                    "unknown.txt";
         }
 
     }
@@ -668,21 +672,34 @@ public class AtbPanel extends GroupX {
             super.act(delta);
 //            IntentIconMaster
             if (isIntentIconsOn())
-                if (getActor().getUserObject() instanceof Unit) {
-                    intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
-                    SpriteAnimation sprite = iconMap.get(intentIcon);
-                    if (intentIcon != null)
-                        if (sprite == null) {
-                            iconMap.put(intentIcon,
-                                    sprite =
-                                            SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
+                if (getActor() != null)
+                    if (getActor().getUserObject() instanceof Unit) {
+                        if (getActor().getUserObject().isPlayerCharacter()) {
+                            intentIcon = INTENT_ICON.WAIT;
+                        } else {
+
+                            intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
+                            if (intentIcon == null) {
+                                intentIcon = INTENT_ICON.UNKNOWN;
+                            }
                         }
-                    intentIconSprite.setSprite(sprite);
-                    intentIconSprite.setY(-24);
-                    intentIconSprite.setX(getPrefWidth() / 2);
-                    intentIconSprite.setFps(15);
-                    intentIconSprite.setZIndex(Integer.MAX_VALUE);
-                }
+                        SpriteAnimation sprite = iconMap.get(intentIcon);
+                        if (intentIcon != null)
+                            if (sprite == null) {
+                                iconMap.put(intentIcon,
+                                        sprite =
+                                                SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
+                            }
+                        intentIconSprite.setSprite(sprite);
+                        intentIconSprite.setY(-24);
+                        intentIconSprite.setX(getPrefWidth() / 2);
+                        if (intentIcon == INTENT_ICON.UNKNOWN) {
+                            intentIconSprite.setFps(11);
+                        } else
+                            intentIconSprite.setFps(15);
+
+                        intentIconSprite.setZIndex(Integer.MAX_VALUE);
+                    }
 
         }
 

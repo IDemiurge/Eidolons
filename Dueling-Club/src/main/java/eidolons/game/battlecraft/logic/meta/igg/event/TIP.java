@@ -26,7 +26,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
     welcome_2(true,  DataManager.getObjImage("INSCRIPTION"), ""){
         @Override
         public void run() {
-            Eidolons.getGame().getLoop().activateMainHeroAction("Move");
+//            Eidolons.getGame().getLoop().activateMainHeroAction("Move");
 //            Eidolons.getGame().getLoop().activateMainHeroAction("Deathstorm");
         }
     },
@@ -39,7 +39,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
         public void run() {
             Eidolons.getGame().getBattleMaster()
                     .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
-            EidolonsGame.firstBattleStarted = true;
+            EidolonsGame.FIRST_BATTLE_STARTED = true;
         }
     },
     cols(true,  DataManager.getObjImage("Column"), ""),
@@ -50,7 +50,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
             public void run() {
                 Eidolons.getGame().getBattleMaster()
                         .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
-                EidolonsGame.firstBattleStarted = true;
+                EidolonsGame.FIRST_BATTLE_STARTED = true;
             }
         },
         Black_waters(false, IGG_Images.BRIEF_ART.BLACK_WATERS.getPath(), ""),

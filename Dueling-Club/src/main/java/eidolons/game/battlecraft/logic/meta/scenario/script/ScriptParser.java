@@ -14,9 +14,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.entity.ConditionMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
-import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 
 import java.util.List;
@@ -25,7 +23,7 @@ import java.util.List;
  * Created by JustMe on 5/19/2017.
  */
 public class ScriptParser {
-    public static final boolean TEST_MODE = true;//CoreEngine.isLiteLaunch() ;
+    public static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch() ;
 
     public static Conditions parseConditions(String conditionPart) {
         Conditions c = DC_ConditionMaster.toConditions(conditionPart);
@@ -38,6 +36,9 @@ public class ScriptParser {
         SCRIPT_EVENT_SHORTCUT shortcut =
                 new EnumMaster<SCRIPT_EVENT_SHORTCUT>().
                         retrieveEnumConst(SCRIPT_EVENT_SHORTCUT.class, text);
+        if (shortcut == null) {
+            return null;
+        }
         return shortcut.event_type;
     }
 
@@ -52,11 +53,26 @@ public class ScriptParser {
 
     public static CONDITION_TEMPLATES getDefaultConditionForEvent(STANDARD_EVENT_TYPE event_type) {
         switch (event_type) {
+            case UNIT_ACTION_COMPLETE:
+            case ACTION_BEING_ACTIVATED:
+            case ACTION_ACTIVATED:
+                return CONDITION_TEMPLATES.NAME_ACTIVE;
+            case COMBAT_STARTS:
+            case COMBAT_ENDS:
+                break;
+            case UNIT_TURN_READY:
+                return CONDITION_TEMPLATES.NAME_SOURCE;
+            case UNIT_BEING_SUMMONED:
+            case UNIT_SUMMONED:
+                return CONDITION_TEMPLATES.NAME_SUMMONED;
+
+
             case UNIT_HAS_BEEN_KILLED:
-                return CONDITION_TEMPLATES.NAME;
+                return CONDITION_TEMPLATES.
+                        NAME_TARGET;
             case DOOR_OPENS:
             case INTERACTIVE_OBJ_USED:
-                return CONDITION_TEMPLATES.NAME; //TODO could do cord and name with 2 args..
+                return CONDITION_TEMPLATES.NAME_TARGET; //TODO could do cord and name with 2 args..
 //                return CONDITION_TEMPLATES.COORDINATES; //TODO could do cord and name with 2 args..
 
             case UNIT_FINISHED_MOVING: //for POS(10-10), will check that source is in 2 or less dist
@@ -73,10 +89,18 @@ public class ScriptParser {
     }
 
     public static Condition getDefaultCondition(STANDARD_EVENT_TYPE event_type, String vars) {
+        CONDITION_TEMPLATES template = getDefaultConditionForEvent(event_type);
+        if (template == null) {
+            return null;
+        }
         String var1 = getVarOne(event_type, vars);
         String var2 = getVarTwo(event_type, vars);
+        if (var1.isEmpty())
+            if (var2.isEmpty()) {
+                return null;
+            }
         return DC_ConditionMaster.getInstance().getConditionFromTemplate(
-                getDefaultConditionForEvent(event_type), var1, var2);
+                template, var1, var2);
     }
 
     private static String getVarTwo(STANDARD_EVENT_TYPE event_type, String vars) {
@@ -130,19 +154,24 @@ public class ScriptParser {
             conditions.add(defaultCondition);
         }
         String conditionPart = StringMaster.getFirstItem(script,
-                ScriptSyntax.PART_SEPARATOR);
-        Conditions customCondition = parseConditions(conditionPart);
-        {
-            String var1 = getVarOne(event_type, VariableManager.getVars(conditionPart));
-            String var2 = getVarTwo(event_type, VariableManager.getVars(conditionPart));
-            CONDITION_TEMPLATES template = new EnumMaster<CONDITION_TEMPLATES>().retrieveEnumConst(CONDITION_TEMPLATES.class,
-                    VariableManager.removeVarPart(conditionPart));
-            customCondition.add(DC_ConditionMaster.getInstance().getConditionFromTemplate(template, var1, var2));
+                ScriptSyntax.PART_SEPARATOR).trim();
+        if (!conditionPart.isEmpty()) {
+            Conditions customCondition = parseConditions(conditionPart);
 
-        }
-        if (customCondition != null) {
-            customCondition.setXml(conditionPart);
-            conditions.add(customCondition);
+            {
+                String var1 = getVarOne(event_type, VariableManager.getVars(conditionPart));
+                String var2 = getVarTwo(event_type, VariableManager.getVars(conditionPart));
+                CONDITION_TEMPLATES template = new EnumMaster<CONDITION_TEMPLATES>().retrieveEnumConst(CONDITION_TEMPLATES.class,
+                        VariableManager.removeVarPart(conditionPart));
+                if (template != null) {
+                    customCondition.add(DC_ConditionMaster.getInstance().getConditionFromTemplate(template, var1, var2));
+                }
+
+            }
+            if (customCondition != null) {
+                customCondition.setXml(conditionPart);
+                conditions.add(customCondition);
+            }
         }
 
 
@@ -189,6 +218,17 @@ public class ScriptParser {
 
 
     public enum SCRIPT_EVENT_SHORTCUT {
+        ACTION(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE),
+        BEFORE_ACTION(STANDARD_EVENT_TYPE.ACTION_BEING_ACTIVATED),
+        MID_ACTION(STANDARD_EVENT_TYPE.ACTION_ACTIVATED),
+
+        HAS_TURN(STANDARD_EVENT_TYPE.UNIT_TURN_READY),
+        COMBAT(STANDARD_EVENT_TYPE.COMBAT_STARTS),
+        COMBAT_ENDS(STANDARD_EVENT_TYPE.COMBAT_ENDS),
+
+        BEFORE_SUMMONED(STANDARD_EVENT_TYPE.UNIT_BEING_SUMMONED),
+        SUMMONED(STANDARD_EVENT_TYPE.UNIT_SUMMONED),
+
         KILL(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED),
         INTERACT(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED),
         INTERACT_NAME(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_USED),

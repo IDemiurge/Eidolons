@@ -25,24 +25,30 @@ public class PortalMaster extends DungeonHandler {
 
     /**
      * support for multi-directional?
-
-
      */
     public PortalMaster(DungeonMaster master) {
         super(master);
-        GuiEventManager.bind(GuiEventType.PORTAL_OPEN , p-> {
+        GuiEventManager.bind(GuiEventType.PORTAL_OPEN, p -> {
             Coordinates c = (Coordinates) p.get();
+            boolean done = false;
             for (Portal portal : portalMap.keySet()) {
                 if (portal.getCoordinates().equals(c)) {
-                    portal.open=true;
+                    portal.open = true;
+                    done = true;
+                    break;
                 }
             }
+            if (!done) {
+                Portal portal = new Portal(FACING_DIRECTION.NORTH, c, PORTAL_TYPE.DARK);
+                portalMap.put(portal, portal);
+                portal.open = true;
+            }
         });
-        GuiEventManager.bind(GuiEventType.PORTAL_CLOSE , p-> {
+        GuiEventManager.bind(GuiEventType.PORTAL_CLOSE, p -> {
             Coordinates c = (Coordinates) p.get();
             for (Portal portal : portalMap.keySet()) {
                 if (portal.getCoordinates().equals(c)) {
-                    portal.open=false;
+                    portal.open = false;
                 }
             }
         });
@@ -52,9 +58,13 @@ public class PortalMaster extends DungeonHandler {
         Unit unit = Eidolons.getMainHero();
         entered(unit, portal);
     }
-        public void entered(  Unit unit, Portal portal) {
+
+    public void entered(Unit unit, Portal portal) {
 
         Portal to = portalMap.get(portal);
+        if (to == null) {
+            return;
+        }
         portal.open = false;
         GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
         AnimMaster.onCustomAnim(getCloseAnim(portal, to), () -> {
@@ -96,18 +106,21 @@ public class PortalMaster extends DungeonHandler {
 
     public boolean addPortal(String coordinate, String data) {
         if (VariableManager.removeVarPart(data.toLowerCase()).equals(PORTAL_KEY)) {
-            FACING_DIRECTION facing =null ;
-            Coordinates to = null ;
+            FACING_DIRECTION facing = null;
+            Coordinates to = null;
             FACING_DIRECTION facing2 = null;
+            Coordinates from = Coordinates.get(coordinate);
             if (data.contains(",")) {
                 to = Coordinates.get(VariableManager.getVar(data, 0));
                 facing = FacingMaster.getFacing(VariableManager.getVar(data, 1));
                 facing2 = FacingMaster.getFacing(VariableManager.getVar(data, 2));
             } else {
-                to = Coordinates.get(VariableManager.getVars(data));
+                if (VariableManager.getVars(data).isEmpty()) {
+                    to = from;
+                } else
+                    to = Coordinates.get(VariableManager.getVars(data));
             }
-            Coordinates from = Coordinates.get(coordinate);
-            addPortal(from, to,facing, facing2);
+            addPortal(from, to, facing, facing2);
             return true;
         }
 

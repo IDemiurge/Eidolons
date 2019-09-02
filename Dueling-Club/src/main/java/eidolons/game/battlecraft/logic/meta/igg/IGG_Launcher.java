@@ -1,11 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingData;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
-import eidolons.system.text.DescriptionTooltips;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -40,7 +38,7 @@ public class IGG_Launcher {
     }
 
     private static boolean isIntroSkipped() {
-        if (CoreEngine.uploadPackage== CoreEngine.UPLOAD_PACKAGE.Aphotica){
+        if (CoreEngine.uploadPackage== CoreEngine.UPLOAD_PACKAGE.Aphotic){
             return true;
         }
         if (CoreEngine.isJar()) {

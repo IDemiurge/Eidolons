@@ -168,6 +168,8 @@ public class ActivesConstructor {
     public static Targeting getTargeting(TARGETING_MODE mode, DC_ActiveObj obj) {
         Targeting targeting = null;
         switch (mode) {
+            case FRONT_RANGE:
+                return new CoordinateTargeting(UNIT_DIRECTION.AHEAD, true);
             case FRONT:
                 return new CoordinateTargeting(UNIT_DIRECTION.AHEAD);
             case BF_OBJ:

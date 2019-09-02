@@ -430,7 +430,13 @@ public class DC_GameManager extends GameManager {
     }
 
     public void activateMyAction(int index, ACTION_TYPE group) {
-        getActiveObj().getActionMap().get(group).get(index).invokeClicked();
+        try {
+            getActiveObj().getActionMap().get(group).get(index).invokeClicked();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                    "Disabled!", getMainHero());
+        }
     }
 
 
@@ -534,7 +540,7 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean handleEvent(Event event) {
-        if (!getGame().getMetaMaster().getEventHandler().handle(event)){
+        if (!getGame().getMetaMaster().getEventHandler().handle(event)) {
             return false;
         }
         if (getGame().getDebugMaster() != null) {

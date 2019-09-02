@@ -94,7 +94,7 @@ import java.util.stream.Collectors;
 
 import static eidolons.game.battlecraft.logic.meta.universal.PartyManager.PRESET_POWER;
 
-public class Unit extends DC_UnitModel {
+public class Unit extends DC_UnitModel implements FacingEntity{
     protected DC_WeaponObj offhandNaturalWeapon;
     protected DC_WeaponObj naturalWeapon;
     protected DC_WeaponObj weapon;

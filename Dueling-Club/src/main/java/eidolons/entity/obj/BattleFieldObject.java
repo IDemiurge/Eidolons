@@ -23,6 +23,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.STD_BOOLS;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -692,6 +693,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         this.summoned = summoned;
     }
 
+    public boolean isLightEmitter() {
+        return checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
+    }
 
     public boolean isWater() {
         return false;

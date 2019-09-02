@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.unit.DummyUnit;
+import eidolons.entity.obj.unit.FacingEntity;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -49,6 +49,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by JustMe on 2/7/2017.
@@ -322,7 +323,7 @@ public class FloatingTextMaster {
         int size = 21;
         switch (aCase) {
             case BATTLE_COMMENT:
-                size -= Math.min(4, arg.toString().length() / 100);
+                size -= Math.min(2, arg.toString().length() / 200);
                 return
                         StyleHolder.getSizedLabelStyle(FONT.CHANCERY, size);
             case GOLD:
@@ -451,26 +452,29 @@ public class FloatingTextMaster {
 
     }
 
-    private void createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
-                                    Stage atCursorStage) {
-        createFloatingText(CASE, arg, entity, atCursorStage, null);
+    private FloatingText createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
+                                            Stage atCursorStage) {
+        return createFloatingText(CASE, arg, entity, atCursorStage, null, null, null);
     }
 
-    public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
-                                   Stage atCursorStage, Vector2 at) {
-        FloatingText text;
+    public FloatingText createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
+                                           Stage atCursorStage, Vector2 at, LabelStyle overrideFont, AtomicBoolean flag) {
+        FloatingText text = null;
         try {
             text = getFloatingText(entity, CASE, arg);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            return;
+            return text;
+        }
+        if (flag != null) {
+            text.setStayFullCondition(time -> flag.get());
         }
         Vector2 v = at;
         if (v == null) {
             if (atCursorStage != null)
                 v = GdxMaster.getCursorPosition(atCursorStage);
-            else if (entity instanceof BattleFieldObject) {
-                v = GridMaster.getCenteredPos(((BattleFieldObject) entity).getCoordinates());
+            else if (entity instanceof FacingEntity) {
+                v = GridMaster.getCenteredPos(((FacingEntity) entity).getCoordinates());
                 text.setPosition(v);
             } else {
                 if (entity instanceof DC_ActiveObj) {
@@ -487,11 +491,13 @@ public class FloatingTextMaster {
 //        }
         text.setPosition(v);
         if (at == null)
-            if (entity instanceof Unit) {
-                text.debugAll();
+            if (entity instanceof FacingEntity) {
                 float height = 629;// text.getHeight();
                 float width = 537;// text.getWidth();
-                FACING_DIRECTION f = ((Unit) entity).getFacing().flip();
+                if (overrideFont != null) {
+                    width = 620;
+                }
+                FACING_DIRECTION f = ((FacingEntity) entity).getFacing().flip();
                 switch (f.rotate(f.isCloserToZero())) {
                     case NORTH:
                         text.setY(text.getY() + height / 2);
@@ -508,8 +514,12 @@ public class FloatingTextMaster {
                 }
             }
 
-
+        text.setCase(CASE);
+        if (overrideFont != null) {
+            text.setFontStyle(overrideFont);
+        }
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
+        return text;
     }
 
     public void createAndShowParamModText(Object o) {

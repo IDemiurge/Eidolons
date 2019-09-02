@@ -148,6 +148,7 @@ public interface PriorityManager {
     enum PRIORITY_FUNCS {
         NO_ALLIES,
         NEVER,
+        ALWAYS,
 
         DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
     }

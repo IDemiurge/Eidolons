@@ -314,12 +314,15 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public enum TOTAL_PRIORITY {
         no_allies,
         never,
+        always,
     }
 
     boolean checkTotalPriority(TOTAL_PRIORITY total_priority) {
         switch (total_priority) {
             case no_allies:
                 return getAnalyzer().getAllies(getUnitAi()).size() <= 1;
+            case always:
+                return true;
             case never:
                 return false;
         }

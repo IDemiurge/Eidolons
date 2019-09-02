@@ -2,10 +2,14 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
@@ -30,6 +34,7 @@ public class BaseView extends SuperActor {
     protected List<SpriteX> underlaySprites;
     protected boolean forceTransform;
     protected GroupX spritesContainers;
+    protected GroupX spritesContainersUnder;
     protected FadeImageContainer highlight;
 
     public BaseView(UnitViewOptions o) {
@@ -45,28 +50,73 @@ public class BaseView extends SuperActor {
     }
 
     protected void initSprite(UnitViewOptions o) {
-        addActor( spritesContainers = new GroupX());
-        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true);
-        if (overlaySprites != null) {
-            for (SpriteX spriteX : overlaySprites) {
-                spritesContainers.addActor(spriteX);
-                forceTransform = true;
-            }
+        if (isUseSpriteContainer(o.getObj())) {
+            addActor(spritesContainersUnder = new GroupX() {
+                        @Override
+                        public void rotateBy(float amountInDegrees) {
+                            super.rotateBy(amountInDegrees);
+                            for (Actor child : getChildren()) {
+                                child.rotateBy(amountInDegrees );
+                            }
+                        }
+                    }
+
+            );
+            spritesContainersUnder.setZIndex(0);
         }
 
         underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false);
         if (underlaySprites != null) {
             for (SpriteX spriteX : underlaySprites) {
-              spritesContainers.addActor(spriteX);
-                spriteX.setZIndex(0);
+                if (isUseSpriteContainer(o.getObj()))
+                    spritesContainersUnder.addActor(spriteX);
+                else {
+                    addActor(spriteX);
+                    spriteX.setZIndex(0);
+                }
                 forceTransform = true;
             }
         }
+
+        if (isUseSpriteContainer(o.getObj()))
+            addActor( spritesContainers = new GroupX(){
+                @Override
+                public void act(float delta) {
+                    super.act(delta);
+                    for (Actor child : getChildren()) {
+                        child.setRotation(getRotation());
+                    }
+                }
+            });
+        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true);
+        if (overlaySprites != null) {
+            for (SpriteX spriteX : overlaySprites) {
+                if (isUseSpriteContainer(o.getObj()))
+                spritesContainers.addActor(spriteX);
+                else {
+                    addActor(spriteX);
+                }
+                forceTransform = true;
+            }
+        }
+
         //TODO disable hover?
         /**
          * fade?
          * scale?
          */
+    }
+
+    private boolean isUseSpriteContainer(BattleFieldObject obj) {
+        switch (  obj.getName()) {
+            case "Ash Vault":
+            case "Eldritch Vault":
+                return true;
+        }
+        if (obj instanceof Unit) {
+            return true;
+        }
+        return false;
     }
 
     public void init(TextureRegion portraitTexture, String path) {
@@ -75,6 +125,7 @@ public class BaseView extends SuperActor {
 
         addActor(highlight = new FadeImageContainer(Images.COLORLESS_BORDER));
         highlight.setVisible(false);
+        GdxMaster.center(highlight);
         highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
 
         addListener(new BattleClickListener() {
@@ -170,16 +221,18 @@ public class BaseView extends SuperActor {
     }
 
     public void highlight() {
-        highlight.fadeIn();
         highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, 0);
-//        firelight.fadeIn();
+        highlight.fadeIn();
+//        fire_light.fadeIn();
 
         //screen anim
 
         main.system.auxiliary.log.LogMaster.dev("highlight " );
     }
     public void highlightOff() {
-        highlight.fadeOut();
+        if (highlight.isVisible()) {
+            highlight.fadeOut();
+        }
     }
 }
 

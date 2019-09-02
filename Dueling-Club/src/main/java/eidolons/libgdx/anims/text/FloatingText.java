@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.MoveByActionLimited;
+import eidolons.libgdx.anims.actions.WaitAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.texture.TextureCache;
@@ -20,6 +22,7 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -46,9 +49,11 @@ public class FloatingText extends Group {
     private LabelX label;
     Coordinates coordinates;
     private float stayFullDuration;
-    private float fadeInDuration=0;
+    private float fadeInDuration = 0;
     private float offsetX;
     private float offsetY;
+    private Predicate stayFullCondition;
+    private FloatingTextMaster.TEXT_CASES aCase;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -78,8 +83,8 @@ public class FloatingText extends Group {
         label.setX(offsetX);
         label.setY(offsetY + DEFAULT_TEXT_Y);
         if (image != null) {
-        image.setX(offsetX);
-        image.setY(offsetY);
+            image.setX(offsetX);
+            image.setY(offsetY);
         }
         super.draw(batch, parentAlpha);
     }
@@ -114,18 +119,11 @@ public class FloatingText extends Group {
 
     public FloatingText init(Vector2 origin, float x, float y, float duration) {
         SequenceAction alphaActionSequence = new SequenceAction();
-        if (stayFullDuration!=0) {
-            Action a= new TemporalAction() {
-                @Override
-                public boolean act(float delta) {
-                    return super.act(delta);
-                }
-                @Override
-                protected void update(float percent) {
-                }
-            };
-            ((TemporalAction) a).setDuration(stayFullDuration);
-            alphaActionSequence.addAction(a);
+        if (stayFullCondition != null) {
+            alphaActionSequence.addAction(new WaitAction(stayFullCondition));
+        }
+        if (stayFullDuration != 0) {
+            alphaActionSequence.addAction(new WaitAction(stayFullDuration));
         }
         for (int i = alphaLoops; i > 0; i--) {
             AlphaAction fadeOutAction = new AlphaAction();
@@ -208,11 +206,15 @@ public class FloatingText extends Group {
             if (textSupplier.get() != null)
                 text = textSupplier.get();
         }
-        return   text ;
+        return text;
     }
 
     public void setStayFullDuration(float stayFullDuration) {
         this.stayFullDuration = stayFullDuration;
+    }
+
+    public void setStayFullCondition(Predicate stayFullCondition) {
+        this.stayFullCondition = stayFullCondition;
     }
 
     public void setText(String text) {
@@ -296,9 +298,9 @@ public class FloatingText extends Group {
     }
 
     public void added() {
-    if (fadeInDuration!=0){
-        ActionMaster.addFadeInAction(this, fadeInDuration);
-    }
+        if (fadeInDuration != 0) {
+            ActionMaster.addFadeInAction(this, fadeInDuration);
+        }
     }
 
     public void setFadeInDuration(float fadeInDuration) {
@@ -311,5 +313,13 @@ public class FloatingText extends Group {
 
     public void setOffsetY(float offsetY) {
         this.offsetY = offsetY;
+    }
+
+    public void setCase(FloatingTextMaster.TEXT_CASES aCase) {
+        this.aCase = aCase;
+    }
+
+    public FloatingTextMaster.TEXT_CASES getCase() {
+        return aCase;
     }
 }

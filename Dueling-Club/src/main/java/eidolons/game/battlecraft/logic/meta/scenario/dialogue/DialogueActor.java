@@ -52,11 +52,9 @@ public class DialogueActor extends LightweightEntity {
         for (Unit unit : ((DC_Game) getGame()).getUnitsForCoordinates(area.toArray(new Coordinates[area.size()]))) {
             for (String substring : names) {
                 if (unit.getName().equalsIgnoreCase(substring)) {
-                    if (!unit.isActorLinked()) {
+//                    if (!unit.isActorLinked()) {
                         setLinkedUnit(unit);
-
                         break;
-                    }
 
                 }
 

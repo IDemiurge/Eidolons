@@ -34,6 +34,7 @@ public class GenericGridView extends UnitView {
     protected LastSeenView lastSeenView;
     protected FadeImageContainer torch;
     private boolean stackView;
+    private boolean invisible;
 
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
@@ -126,6 +127,9 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void setVisible(boolean visible) {
+        if (invisible){
+            visible=false;
+        }
         if (this.isVisible() != visible) {
             super.setVisible(visible);
             if (getParent() instanceof GridCellContainer) {
@@ -184,14 +188,14 @@ public class GenericGridView extends UnitView {
                         val + ARROW_ROTATION_OFFSET);
             else
                 arrow.setRotation(val + ARROW_ROTATION_OFFSET);
-
-            arrowRotation = val;
-
         }
         if (isRotateSprites()){
+            ActionMaster.addRotateByAction(spritesContainersUnder, arrowRotation + ARROW_ROTATION_OFFSET,
+                    val + ARROW_ROTATION_OFFSET);
             ActionMaster.addRotateByAction(spritesContainers, arrowRotation + ARROW_ROTATION_OFFSET,
                     val + ARROW_ROTATION_OFFSET);
         }
+        arrowRotation = val;
     }
 
     protected boolean isRotateSprites() {
@@ -337,6 +341,14 @@ public class GenericGridView extends UnitView {
 
     public boolean isStackView() {
         return stackView;
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+    }
+
+    public boolean getInvisible() {
+        return invisible;
     }
 }
 

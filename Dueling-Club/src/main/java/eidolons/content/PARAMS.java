@@ -139,6 +139,10 @@ public enum PARAMS implements PARAMETER {
     INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "perks", "bf obj"),
     C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
     C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
+
+    ATB_START_MOD("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
+    ATB_START_PRESET("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
+
     C_INITIATIVE("Current Initiative", "", true, 0, "units", "chars", "perks", "bf obj"){
         @Override
         public String getDisplayedName() {

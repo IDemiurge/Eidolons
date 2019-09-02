@@ -29,10 +29,9 @@ public class BfObjEnums {
         darkness(15, "", "", "cells/bf/light wisp float.txt", 5,
                 "black wing(-60, -30)", "black wing(60, -30)"
                 , "black tendrils(50, -80)", "black tendrils(-50, -80)"
-                , "keserim(0, -90)"),
+                , "keserim(10, -90)"),
 
-        dark_chrysalis(15, "", "", "cells/bf/light wisp float.txt", 5,
-                "gate(0, -10)", "light( 0,  0)",
+        dark_chrysalis(15, "", "", "", 5,
                 "black wing(-50, 30)", "black wing(50, 30)"
                 , "black tendrils(50, -60)", "black tendrils(-50, -60)"),
 
@@ -46,7 +45,7 @@ public class BfObjEnums {
                 "bone wing(-70, 30)", "bone wing(70, 30)"),
 
         flames(15, "", "", "", 5),
-        firelight(15, "", "", "cells/bf/fire light.txt", 5),
+        fire_light(15, "", "", "cells/bf/fire light.txt", 5),
         nether_flames(15, "", "", "cells/bf/fire light.txt", 5),
         burning_rubble(15, "", "", "cells/bf/fire light.txt", 5),
 

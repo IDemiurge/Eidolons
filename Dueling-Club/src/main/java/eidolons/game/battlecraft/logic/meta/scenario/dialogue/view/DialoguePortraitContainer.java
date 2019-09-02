@@ -18,6 +18,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -28,8 +29,8 @@ import main.system.images.ImageManager;
  * Created by JustMe on 11/30/2018.
  */
 public class DialoguePortraitContainer extends TablePanelX {
-    private   SpriteX bgSprite;
-    private   SpriteX overlaySprite;
+    private SpriteX bgSprite;
+    private SpriteX overlaySprite;
     //    private final ValueContainer trepidation;
 //    private final ValueContainer esteem;
 //    private final ValueContainer affection;
@@ -49,13 +50,25 @@ public class DialoguePortraitContainer extends TablePanelX {
 //        region = TextureCache.getOrCreateR(
 //         ImageManager.getValueIconPath(MACRO_PARAMS.AFFECTION));
 //        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
-        addActor(bgSprite = new SpriteX(Sprites.INK_BLOTCH));
-        bgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+        if (isBlotch()) {
+            addActor(bgSprite = new SpriteX(Sprites.INK_BLOTCH));
+            bgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+        }
         add(nameLabel = new LabelX()).row();
         nameLabel.setStyle(StyleHolder.getHqLabelStyle(20));
 //        add(teaInfo ).row();
-        add(portrait = new FadeImageContainer()).row();
-
+        add(portrait = new FadeImageContainer(){
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                if (batch instanceof CustomSpriteBatch) {
+                    ((CustomSpriteBatch) batch).setBlending(BLENDING.SCREEN);
+                }
+                super.draw(batch, parentAlpha);
+                if (batch instanceof CustomSpriteBatch) {
+                    ((CustomSpriteBatch) batch).resetBlending( );
+                }
+            }
+        }).row();
 //        addActor(overlaySprite = new SpriteX(Sprites.INK_BLOTCH));
 //        bgSprite.setBlending(SuperActor.BLENDING.SCREEN);
 
@@ -68,9 +81,14 @@ public class DialoguePortraitContainer extends TablePanelX {
 
     }
 
+    public static boolean isBlotch() {
+        return true;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        //TODO notnull
         bgSprite.setFps(8);
         bgSprite.getSprite().centerOnParent(this);
         bgSprite.setY(-220);
@@ -87,7 +105,7 @@ public class DialoguePortraitContainer extends TablePanelX {
     public void updateAct(float delta) {
 //        debugAll();
         super.updateAct(delta);
-        ActorDataSource dataSource= (ActorDataSource) getUserObject();
+        ActorDataSource dataSource = (ActorDataSource) getUserObject();
         if (dataSource == null) {
             fadeOut();
             return;
@@ -98,7 +116,7 @@ public class DialoguePortraitContainer extends TablePanelX {
         //animate
 
         setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
-         dataSource.getImageSuffix()));
+                dataSource.getImageSuffix()));
         nameLabel.setText(dataSource.actorName);
 //        esteem.setValueText(actor.getEsteem());
     }

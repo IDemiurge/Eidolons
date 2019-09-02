@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -112,8 +113,11 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        if (isMainHero()) {
-        if (getUserObject().isHidden()) {
-            if (getUserObject().isPlayerCharacter()) {
+        if (getUserObject().isPlayerCharacter()) {
+            if (getPortrait().getColor().a == 0) {
+                getPortrait().fadeIn();
+            }
+            if (getUserObject().isHidden()) {
                 return;
             }
         }

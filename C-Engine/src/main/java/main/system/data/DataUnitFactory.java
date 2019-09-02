@@ -62,8 +62,12 @@ public class DataUnitFactory<E extends DataUnit> {
     public Map<String, String> deconstructDataString(String dataString) {
         Map<String, String> map = new XLinkedMap<>();
         for (String substring : ContainerUtils.openContainer(dataString)) {
-            String key = substring.split("=")[0];
-            String value = substring.split("=")[1];
+            String[] s = substring.split("=");
+            if (s.length<2){
+                continue;
+            }
+            String key = s[0];
+            String value = s[1];
             map.put(key, value);
         }
         return map;

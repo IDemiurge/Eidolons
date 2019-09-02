@@ -10,8 +10,6 @@ import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
-import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -22,10 +20,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
-import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DC_LogManager;
-import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -216,7 +211,7 @@ public class GameLoop {
         if (exited)
             return true;
 //TODO refactor - extract
-        if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, getActiveUnit().getRef()))) {
+        if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_READY, getActiveUnit().getRef()))) {
             return false;
         }
         Boolean result = null;

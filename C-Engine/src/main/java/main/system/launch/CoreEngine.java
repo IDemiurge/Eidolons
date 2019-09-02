@@ -26,13 +26,14 @@ import java.util.List;
 public class CoreEngine {
 
 
+
     public enum UPLOAD_PACKAGE {
-        Aphotica, igg,
+        Aphotic, igg,
     }
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.7";
-    public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotica;
+    public static final String VERSION = "0.9.7d";
+    public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotic;
     public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
@@ -718,5 +719,22 @@ public class CoreEngine {
 
     public static void setSuperLite(boolean superLite) {
         CoreEngine.superLite = superLite;
+    }
+
+    public static void setFlag(String field, Boolean val) {
+        try {
+            CoreEngine.class.getField(field).set(null, val);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            try {
+                CoreEngine.class.getField(field.toUpperCase()).set(null, val);
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchFieldException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
     }
 }

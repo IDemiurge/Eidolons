@@ -1008,7 +1008,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void dialogueToggle(boolean on) {
-        VisionManager.setCinematicVision(on);
+//        if (!DialogueManager.TEST) {
+//            VisionManager.setCinematicVision(on);
+//        }
         setDialogueMode(on);
         DialogueManager.setRunning(on);
         Cinematics.ON = on;
@@ -1022,6 +1024,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         dialogueContainer.fadeOut();
         dialogueToggle(false);
         dialogueContainer.hide();
+        GdxMaster.setDefaultCursor();
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE, dialogueContainer.getDialogue());
         DialogueManager.dialogueDone();
         VisionManager.setCinematicVision(false);

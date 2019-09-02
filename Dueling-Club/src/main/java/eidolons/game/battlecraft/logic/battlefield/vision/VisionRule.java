@@ -319,6 +319,12 @@ public class VisionRule {
             return false;
         if (object.isMine())
             return true;
+        if (Cinematics.ON) {
+            if (!object.isLightEmitter())
+                if (object.isOverlaying()) {
+                return false;
+            }
+        }
         if (object.isOverlaying()) {
             return controller.getPlayerVisionMapper().get(source.getOwner(), object) ==
                     PLAYER_VISION.DETECTED;

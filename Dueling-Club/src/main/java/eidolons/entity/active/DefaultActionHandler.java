@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManagerImpl;
@@ -63,6 +64,9 @@ public class DefaultActionHandler {
     }
 
     private static boolean turnToMotion(Unit source, Coordinates coordinates) {
+        if (EidolonsGame.TURNS_DISABLED) {
+            return false;
+        }
         DC_ActiveObj action = getTurnToAction(source, coordinates);
         if (action == null) {
             return false;
@@ -104,6 +108,10 @@ public class DefaultActionHandler {
         }
         if (source.getGame().isDebugMode()) {
             return doDebugStuffCell(source, c);
+        }
+
+        if (EidolonsGame.MOVES_DISABLED) {
+            return false;
         }
         if (c.x - source.getX() > 1) {
             return false;

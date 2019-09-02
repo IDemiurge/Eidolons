@@ -102,11 +102,11 @@ public class ActionSequenceConstructor extends AiHandler {
                         break;
                     }
                 }
-                String string = task.toString();
-                Obj obj = action.getGame().getObjectById((Integer) task.getArg());
-                if (obj != null) {
-                    string = obj.getName();
-                }
+//                String string = task.toString();
+//                Obj obj = action.getGame().getObjectById((Integer) task.getArg());
+//                if (obj != null) {
+//                    string = obj.getName();
+//                }
                 try {
 //                    Chronos.mark(getChronosPrefix() + string);
                     actionSequences.addAll(getSequences(task, action));

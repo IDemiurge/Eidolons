@@ -1,21 +1,14 @@
 package eidolons.libgdx.anims;
 
-import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.particles.spell.SpellVfxMaster;
 import main.content.VALUE;
-import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.VFX;
 import main.system.PathUtils;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
-
-import java.awt.*;
 
 /**
  * Created by JustMe on 1/12/2017.
@@ -101,25 +94,12 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
             case ANIM_VFX_IMPACT:
             case ANIM_VFX_RESOLVE:
             case ANIM_VFX_AFTEREFFECT:
-                value = checkAlias(value);
+                value = SpellVfxMaster.checkAlias(value);
 
                 value = PathUtils.cropLastPathSegment(getPath(val)) + value;
                 setValue(ANIM_VALUES.PARTICLE_EFFECTS, value);
                 break;
         }
-    }
-
-    private String checkAlias(String value) {
-        String res = "";
-        for (String substring : ContainerUtils.openContainer(value)) {
-            if (!substring.contains("/")) {
-                VFX vfx = new EnumMaster<VFX>().retrieveEnumConst(VFX.class, substring);
-                if (vfx != null) {
-                    res += vfx.getPath() + ";";
-                }
-            } else res += substring + ";";
-        }
-        return res;
     }
 
     private static String getPath(VALUE val) {

@@ -57,6 +57,7 @@ public class OverlayView extends BaseView implements HpBarView {
     @Override
     public void act(float delta) {
         super.act(delta);
+
         if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {
             addActor(hpBar);
         }

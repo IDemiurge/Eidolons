@@ -27,6 +27,7 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -46,6 +47,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
     boolean summoningSickness;
     private Formula summonedUnitXp;
     private Player owner;
+    private Boolean facingSummoner;
 
     /*
      * 1) weight string 2) @ -> extends/shrink
@@ -113,8 +115,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         if (owner == null) {
             if (ref.getObj(KEYS.THIS) != null) {
                 owner = ref.getObj(KEYS.THIS).getOwner();
-            }
-            else
+            } else
                 owner = ref.getSourceObj().getOwner();
         }
         Ref REF2 = ref.getCopy();
@@ -148,11 +149,23 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         if (unit instanceof Unit) {
             SummoningSicknessRule.apply((Unit) unit);
         }
-
+        if (ref.getObj(KEYS.SUMMONER) instanceof Unit) {
+            if (facingSummoner == null) {
+                facingSummoner = ref.getActive().checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.FACE_SUMMONER.toString());
+            }
+            Unit summoner = (Unit) ref.getObj(KEYS.SUMMONER);
+            FACING_DIRECTION f = summoner.getFacing();
+            if (facingSummoner) {
+                f = f.flip();
+            }
+            unit.setFacing(f);
+        }
         if (effects != null) {
             REF.setTarget(getUnit().getId());
             return effects.apply(REF);
         }
+
+
         DC_SoundMaster.playEffectSound(SOUNDS.READY, unit);
         EUtils.showInfoText(true, unit.getName() + " is summoned");
         return true;

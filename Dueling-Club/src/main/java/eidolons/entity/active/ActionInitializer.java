@@ -3,11 +3,13 @@ package eidolons.entity.active;
 import eidolons.ability.ActionGenerator;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.mechanics.FleeRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -31,7 +33,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-public class ActionInitializer extends DC_ActionManager{
+public class ActionInitializer extends DC_ActionManager {
     public ActionInitializer(GenericGame game) {
         super(game);
     }
@@ -60,7 +62,7 @@ public class ActionInitializer extends DC_ActionManager{
         if (!unit.isBfObj()) {
             actives.addAll(getStandardActions(unit));
         }
-        if (unit.isBoss() ) {
+        if (unit.isBoss()) {
 
         } else {
             addSpecialActions(unit, actives);
@@ -95,7 +97,32 @@ public class ActionInitializer extends DC_ActionManager{
         return subActions;
     }
 
-    public boolean isActionAvailable(ActiveObj activeObj, boolean exploreMode) {
+    public static boolean isActionNotBlocked(DC_ActiveObj activeObj, boolean exploreMode) {
+        if (activeObj.getOwnerUnit() == Eidolons.getMainHero())
+            if (EidolonsGame.DUEL) {
+                if (EidolonsGame.TURNS_DISABLED)
+                    if (activeObj.isTurn())
+                        return false;
+                if (activeObj.isMove())
+                    if (EidolonsGame.MOVES_DISABLED)
+                        return false;
+
+                if (activeObj.isMode()) {
+                    return EidolonsGame.getActionSwitch(activeObj.getName());
+                }
+                if (!activeObj.isSpell()) {
+                    return EidolonsGame.getActionSwitch(activeObj.getName());
+                }
+//                switch (activeObj.getName()) {
+//                    case "Wait":
+//                        return EidolonsGame.getActionSwitch(activeObj.getName());
+//                }
+
+            }
+        return true;
+    }
+        public boolean isActionAvailable(DC_ActiveObj activeObj, boolean exploreMode) {
+
         switch (activeObj.getName()) {
             case "Defend":
                 return !exploreMode;
@@ -126,8 +153,6 @@ public class ActionInitializer extends DC_ActionManager{
             actives.add(action);
         }
         // list = new DequeImpl<>(items);
-        actives.removeIf(activeObj -> !isActionAvailable(activeObj, ExplorationMaster.isExplorationOn()));
-
 
         if (ExplorationMaster.isExplorationOn())
             try {
@@ -147,6 +172,8 @@ public class ActionInitializer extends DC_ActionManager{
         if (!unit.isBfObj()) {
             addHiddenActions(unit, actives);
         }
+
+        actives.removeIf(activeObj -> !isActionAvailable((DC_ActiveObj) activeObj, ExplorationMaster.isExplorationOn()));
 
         for (ActiveObj a : actives) {
             if (activesProp.contains(a.getName())) {
@@ -202,8 +229,8 @@ public class ActionInitializer extends DC_ActionManager{
         }
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.TOGGLE_WEAPON_SET)) {
-            if (unit.getReserveOffhandWeapon()!=null ||
-                    unit.getReserveMainWeapon()!=null) {
+            if (unit.getReserveOffhandWeapon() != null ||
+                    unit.getReserveMainWeapon() != null) {
                 actives.add(getOrCreateAction(TOGGLE_WEAPON_SET, unit));
             }
         }
@@ -312,7 +339,7 @@ public class ActionInitializer extends DC_ActionManager{
                 }
             }
 
-            if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ORDERS))
+        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ORDERS))
             actives.addAll(getOrderActions(unit));
         // checkDual(unit);
         // checkInv(unit);

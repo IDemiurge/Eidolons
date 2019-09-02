@@ -1,6 +1,6 @@
 Ability Construction Reflection API
 Mapper class makes a map of all public constructors without @ommittedConstructor in elements/* and ability/* folders of C-Engine and DC-Engine.
-[known to fail if full path contains Russian letters!]
+[known to fail if full spritePaths contains Russian letters!]
 
 From XML, e.g.
 <Abilities>

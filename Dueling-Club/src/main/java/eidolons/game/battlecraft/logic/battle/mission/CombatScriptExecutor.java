@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.battle.mission;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
@@ -18,6 +19,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
@@ -28,6 +30,8 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.GridManager;
 import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -54,6 +58,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static eidolons.libgdx.bf.grid.GridManager.removeSequentialKey;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 /**
@@ -128,9 +133,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public boolean execute(COMBAT_SCRIPT_FUNCTION function, Ref ref, Object... objects) {
         String[] args = new String[0];
-        if (!isAbstractArgs(function))
-        {
-            args = new  String[objects.length] ;
+        if (!isAbstractArgs(function)) {
+            args = new String[objects.length];
             int i = 0;
             for (Object object : objects) {
                 args[i++] = object.toString();
@@ -167,7 +171,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             case QUEST:
                 return doQuest(false, ref, args);
             case SCRIPT:
-                return doScript(ref, args);
+                getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
+                        execute(SpeechScript.SPEECH_ACTION.SCRIPT,
+                                args[0]);
+                return true;
+//                return doScript(ref, args);
 
             case REPOSITION:
                 return doReposition(ref, args);
@@ -228,17 +236,30 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     }
 
     private boolean doAggro(Ref ref, String[] args) {
-        float dst = 3f;
-        if (args.length > 0) {
-            dst = NumberUtils.getFloat(args[0]);
+        float dst = 6f;
+        boolean hasAggro = false;
+        for (String arg : args) {
+            if (NumberUtils.isNumber(arg, false)) {
+                dst = NumberUtils.getFloat(arg);
+            }
+            BattleFieldObject a = getGame().getMaster().getByName(arg, ref);
+            if (a != null) {
+                AggroMaster.aggro((Unit) a, Eidolons.getMainHero());
+                hasAggro=true;
+            }
         }
+        if (!hasAggro)
         for (Unit unit : Eidolons.getGame().getUnits()) {
             if (Eidolons.getMainHero().getCoordinates().dst(unit.getCoordinates()) < dst) {
                 AggroMaster.aggro(unit, Eidolons.getMainHero());
+                hasAggro = true;
             }
+        }
+        if (hasAggro) {
+            Eidolons.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
+        } else {
 
         }
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
 
         return true;
     }
@@ -330,16 +351,21 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return doComment(unit, key, null);
     }
 
-    public static boolean doComment(Unit unit, String key, Vector2 at) {
+    public static boolean doComment(String name, String img, Coordinates c, String key) {
         String text = Texts.getComments().get(key);
         if (text == null) {
             text = key;
         }
-        FloatingTextMaster.getInstance().createFloatingText
-                (TEXT_CASES.BATTLE_COMMENT, text, unit, null, at);
+//        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
 
-        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, text, at);
-        Eidolons.getGame().getLogManager().log(unit.getName() + " :\n" + text);
+        GridManager.instance.comment_(img, text, c);
+        Eidolons.getGame().getLogManager().log(name + " :\n" + removeSequentialKey(text));
+        return true;
+    }
+
+    public static boolean doComment(Unit unit, String key, Vector2 at) {
+//        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, key, at);
+        GridManager.instance.comment_( unit, key, at);
         return true;
     }
 

@@ -2,6 +2,7 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import eidolons.content.ContentMaster;
 import eidolons.content.PARAMS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
@@ -102,19 +103,24 @@ public class OrbsPanel extends TablePanel {
             }
             orb.act(delta);
             i++;
-            if (EidolonsGame.isAltControlPanel()){
-                if (orb.isVisible()) {
-                    orb.fadeOut();
+            boolean disabled = EidolonsGame.isAltControlPanel() && !EidolonsGame.get(ContentValsManager.getBaseParameterFromCurrent(param).getName());
+
+            if (disabled) {
+                    if (orb.isVisible()) {
+                        orb.fadeOut();
+                    }
+                    orb.clearListeners();
+                    continue;
+            } else {
+                if (orb.getColor().a==0) {
+                    orb.fadeIn();
                 }
-                orb.clearListeners();
-                continue;
             }
             if (!orb.updateValue(source.getParam(param)) &&
-            orb.getListeners().size>0)
-            {
-              continue;
+                    orb.getListeners().size > 0) {
+                continue;
             }
-            if (!EidolonsGame.isAltControlPanel())
+            if (!disabled)
                 addTooltip(orb, param.getName(), source.getParam(param));
         }
     }

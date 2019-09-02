@@ -62,15 +62,19 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.flames.vfxOver += "ambient/sprite/fires/real fire2(0, 0);";
         CUSTOM_OBJECT.flames.screen = true;
 
-        CUSTOM_OBJECT.nether_flames.vfxUnder += "ambient/sprite/fires/nether flame(0, 0);";
+//        CUSTOM_OBJECT.nether_flames.vfxUnder += "ambient/sprite/fires/nether flame(0, 0);";
+        CUSTOM_OBJECT.nether_flames.vfxFolderOver = "ambient/sprite/fires/nether flames";
+        CUSTOM_OBJECT.nether_flames.maxEmitters = 1;
         CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.32f);
-        CUSTOM_OBJECT.nether_flames.screen = true;
+//        CUSTOM_OBJECT.nether_flames.screen = true;
+        CUSTOM_OBJECT.nether_flames.invert_screen = true;
         CUSTOM_OBJECT.nether_flames.movable = true;
         CUSTOM_OBJECT.nether_flames.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
 
+
         CUSTOM_OBJECT.burning_rubble.movable = true;
         CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.32f);
-        CUSTOM_OBJECT.burning_rubble.screen = true;
+//        CUSTOM_OBJECT.burning_rubble.screen = true;
         CUSTOM_OBJECT.burning_rubble.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
         CUSTOM_OBJECT.burning_rubble.vfxFolderOver = "ambient/sprite/fires/rubble";
         CUSTOM_OBJECT.burning_rubble.maxEmitters = 1;

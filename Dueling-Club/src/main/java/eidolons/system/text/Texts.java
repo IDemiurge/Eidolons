@@ -25,8 +25,16 @@ public class Texts {
         for (File file : FileManager.getFilesFromDirectory(PathFinder.getRootPath()+getTextsPath(), true, true)) {
             if (file.isFile()) {
                 String text = FileManager.readFile(file);
-                Map<String, String> map = parseText(text);
+                Map<String, String> map =
+                        parseText(text);
                 String name = StringMaster.cropFormat(file.getName());
+                if (name.contains("scripts")) {
+                    name="scripts";
+                }
+                Map<String, String> prev = maps.get(name);
+                if (prev != null) {
+                    prev.putAll(map);
+                } else
                 maps.put(name, map);
             }
         }

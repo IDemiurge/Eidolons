@@ -1,19 +1,66 @@
 package main.system.threading;
 
 import com.badlogic.gdx.Gdx;
+import com.graphbuilder.math.FuncNode;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class WaitMaster {
     // Sync map?
     private static Map<WAIT_OPERATIONS, Waiter> waiters = new HashMap<>();
     // private static List<Waiter> activeWaiters = new ArrayList<>() ;
     private static DequeImpl<WAIT_OPERATIONS> completeOperations;
+
+    private static Map<Object, Lock> locks = new HashMap<>();
+    private static List<Object> unlocked=    new ArrayList<>() ;
+
+    public static void unlock(Object o) {
+        unlocked.add(o);
+        Lock lock = locks.get(o);
+        if (lock == null) {
+            main.system.auxiliary.log.LogMaster.dev("NO LOCK " + o);
+            return;
+        }
+        lock.lock();
+        lock.newCondition().signal();
+        lock.unlock();
+        main.system.auxiliary.log.LogMaster.dev("UNLOCKED " + o);
+    }
+
+    public static void waitLock(Object o ) {
+        waitLock(o, 0);
+    }
+    public static void waitLock(Object o, int maxMillis) {
+        if (unlocked.contains(o)) {
+            main.system.auxiliary.log.LogMaster.dev("ALREDY UNLOCKED " + o);
+            return;
+        }
+        Lock lock = new ReentrantLock();
+        locks.put(o, lock);
+        Condition waiting = lock.newCondition();
+        main.system.auxiliary.log.LogMaster.dev("LOCKED " + o);
+        lock.lock();
+        try {
+            if (maxMillis>0) {
+            waiting.await(maxMillis, TimeUnit.MILLISECONDS);
+            } else
+            waiting.await(  );
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
 
     public static void unmarkAsComplete(WAIT_OPERATIONS operation) {
         getCompleteOperations().remove(operation);
@@ -179,7 +226,7 @@ public class WaitMaster {
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
         GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, PLAYER_ACTION_FINISHED, BRIEFING_COMPLETE, MESSAGE_RESPONSE, MESSAGE_RESPONSE_DEATH,
-        FULLSCREEN_DONE, COMMENT_DONE, WAIT_COMPLETE
+        FULLSCREEN_DONE, COMMENT_DONE, INPUT, WAIT_COMPLETE
     }
 
 }

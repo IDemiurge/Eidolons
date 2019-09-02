@@ -86,8 +86,8 @@ public enum STD_MODES implements MODE {
         STEALTH.setBuffName("Stealth Mode");
         HIDE.setBuffName("Hide Mode");
         SEARCH.setBuffName("Search Mode");
-        // DEFENDING.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
-        // ALERT.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
+        // DEFENDING.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_READY);
+        // ALERT.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_READY);
 
         MEDITATION.period = DEFAULT_ATB_PERIOD;
         CONCENTRATION.period = DEFAULT_ATB_PERIOD;

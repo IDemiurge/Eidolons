@@ -23,6 +23,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
@@ -66,6 +67,9 @@ public class UnitViewFactory {
             if (bfObj.isWater()) {
                 return null;
             }
+            if (EidolonsGame.BRIDGE) {
+                return null;
+            }
             if (!CoreEngine.isOutlinesFixed()) {
                 return null;
             }
@@ -86,7 +90,6 @@ public class UnitViewFactory {
 
             return (path);
         });
-
         view.createHpBar();
         if (bfObj instanceof Unit) {
             view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());
@@ -109,6 +112,10 @@ public class UnitViewFactory {
 //            main.system.auxiliary.log.LogMaster.dev(" ADD_GRID_OBJ for " +
 //                    view + ": "+x );
             GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
+        }
+
+        if (bfObj.checkBool(GenericEnums.STD_BOOLS.INVISIBLE)) {
+            view.setInvisible(true);
         }
         return view;
     }

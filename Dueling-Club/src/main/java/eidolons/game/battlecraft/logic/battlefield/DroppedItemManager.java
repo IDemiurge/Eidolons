@@ -45,6 +45,8 @@ public class DroppedItemManager {
     }
 
     public void dropDead(Unit unit) {
+        if (unit.isSummoned())
+            return ;
         if (!unit.isRevenant()) {
             unit.unequip(ItemEnums.ITEM_SLOT.ARMOR);
             unit.unequip(ItemEnums.ITEM_SLOT.MAIN_HAND);

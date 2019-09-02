@@ -48,6 +48,12 @@ public class DeathAnim extends ActionAnim {
         template = getTemplate(getActive(), unit);
         setDuration(2);
     }
+    public DeathAnim(BattleFieldObject obj) {
+        super(null, new AnimData());
+        unit = obj;
+        template = getTemplate(getActive(), unit);
+        setDuration(2);
+    }
 
     private static AnimData getDeathAnimData(Event e) {
         AnimData data = new AnimData();

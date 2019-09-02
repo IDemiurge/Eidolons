@@ -12,16 +12,21 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
+import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
+import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
+import main.game.logic.action.context.Context;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ArrayMaster;
 
@@ -51,9 +56,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             }
             if (unit == null) {
                 String name = unitData;
-                if (!DataManager.isTypeName(name))
-                {
-                    return null ;
+                if (!DataManager.isTypeName(name)) {
+                    return null;
                 }
 
                 Boolean power = null;// getPower(arg);
@@ -72,7 +76,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         BattleFieldObject unit = findUnit(ref, unitData);
 
         String arg = null;
-        boolean free = true;
+        boolean free = Cinematics.ON;
         boolean immediate = false;
 //        String[] additionalArgs = new String[]{
 //                args[0].toString() //TODO fix this
@@ -107,10 +111,10 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 break;
             case TURN_TO:
                 //cell id
-                List<Action> turnSequence = null ;
+                List<Action> turnSequence = null;
                 if (FacingMaster.getFacing(args[1].toString()) == null) {
                     turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                                    Coordinates.get(args[1].toString()));
+                            Coordinates.get(args[1].toString()));
                 } else {
                     turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
                             FacingMaster.getFacing(args[1].toString()));
@@ -119,12 +123,24 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                         turnSequence, task, unit.getAI());
                 break;
             case ACTION:
+            case ORDER:
+                if (args.length > 1) {
+                    if (args[1] != null) {
+                        arg = args[1].toString();
+                    }
+                }
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
                         getActionSequenceConstructor().constructSingleActionSequence(action,
-                                new Task(ai, goal, !ArrayMaster.isNotEmpty(args) ? null : args[0]));
-
-                break;
+                                new Task(ai, goal, null)); //TODO target?
+                if (function != COMBAT_SCRIPT_FUNCTION.ORDER) {
+                    break;
+                }
+                Order a = //OrderFactory.getOrder();
+                        new Order(arg.toString());
+                unit.getAI().setCurrentOrder(a);
+                unit.getAI().setStandingOrders(sequence);
+                return;
             case ATTACK:
 
                 break;
@@ -132,11 +148,6 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 break;
             case UNFREEZE:
                 break;
-            case ORDER:
-                Order a = //OrderFactory.getOrder();
-                        new Order(arg.toString());
-                unit.getAI().setCurrentOrder(a);
-                return;
         }
         if (immediate) {
             unit.getAI().setStandingOrders(sequence);
@@ -156,7 +167,11 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                                         finalUnit, function, action, args));
                             }
                         }
-                        getExecutor().execute(action, free);
+                        if (!ExplorationMaster.isExplorationOn()){
+                            getGame().getLoop().actionInput(new ActionInput(action.getActive(),
+                                    new Context(action.getRef())));
+                        } else
+                         getExecutor().execute(action, free);
                     });
         }
 
@@ -186,7 +201,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case ATTACK:
                 return GOAL_TYPE.ATTACK;
         }
-        return GOAL_TYPE.MOVE;
+        return GOAL_TYPE.SUMMONING;
     }
 
     private Boolean getOwnership(AI_ARG arg) {

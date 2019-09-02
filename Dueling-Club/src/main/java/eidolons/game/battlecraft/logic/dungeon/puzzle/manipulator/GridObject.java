@@ -34,6 +34,7 @@ public abstract class GridObject extends GroupWithEmitters {
     private boolean flipX;
     String key;
     private boolean hidden;
+    private Boolean under;
 
     public GridObject(Coordinates c, String spritePath) {
         this.c = c;
@@ -171,7 +172,9 @@ public abstract class GridObject extends GroupWithEmitters {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (!EidolonsGame.INTRO_STARTED)
-            return;
+        {
+//            return;
+        }
         if (isIgnored()) {
             return;
         }
@@ -250,5 +253,13 @@ public abstract class GridObject extends GroupWithEmitters {
     public void fadeOut(boolean manual) {
         fadeOut();
         hidden = true;
+    }
+
+    public void setUnder(Boolean under) {
+        this.under = under;
+    }
+
+    public Boolean getUnder() {
+        return under;
     }
 }

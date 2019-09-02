@@ -9,7 +9,7 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
     public static final C_OBJ_TYPE ALL = new C_OBJ_TYPE(DC_TYPE.values());
     public static final C_OBJ_TYPE ITEMS = new C_OBJ_TYPE(DC_TYPE.WEAPONS, DC_TYPE.ARMOR,
      DC_TYPE.JEWELRY, DC_TYPE.ITEMS);
-    public static final C_OBJ_TYPE UNITS_CHARS = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.CHARS);
+    public static final C_OBJ_TYPE UNITS_CHARS = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.CHARS, DC_TYPE.ACTORS);
 
     public static final C_OBJ_TYPE HERO_SKILLS = new C_OBJ_TYPE(DC_TYPE.SKILLS, DC_TYPE.CLASSES);
     public static final C_OBJ_TYPE XP_ITEMS = new C_OBJ_TYPE(DC_TYPE.SKILLS, DC_TYPE.ACTIONS,

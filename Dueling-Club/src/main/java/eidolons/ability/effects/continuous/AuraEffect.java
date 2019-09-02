@@ -144,7 +144,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
     private void init() {
 
         event_type = (continuous) ? STANDARD_EVENT_TYPE.UNIT_MOVED
-         : STANDARD_EVENT_TYPE.UNIT_TURN_STARTED;
+         : STANDARD_EVENT_TYPE.UNIT_TURN_READY;
 
         Targeting t = new FixedTargeting(KEYS.SOURCE);
 

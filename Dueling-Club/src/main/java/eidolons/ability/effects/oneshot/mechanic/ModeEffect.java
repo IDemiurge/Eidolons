@@ -259,7 +259,7 @@ divination?
             return;
         }
         Condition c = null;
-        if (REMOVE_EVENT == STANDARD_EVENT_TYPE.UNIT_TURN_STARTED) {
+        if (REMOVE_EVENT == STANDARD_EVENT_TYPE.UNIT_TURN_READY) {
             c = new RefCondition(KEYS.EVENT_SOURCE, KEYS.MATCH);
             // ++ remove disable actions?!
         }

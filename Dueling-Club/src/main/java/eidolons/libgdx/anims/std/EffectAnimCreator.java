@@ -147,9 +147,21 @@ public class EffectAnimCreator {
     }
 
     public static String getVfx(GenericEnums.DAMAGE_TYPE type) {
-        return PathFinder.getVfxAtlasPath() + "spell/damage/"
-                + type.toString()
-                //                    + "fire"
+        switch (type) {
+            case DEATH:
+                return PathFinder.getVfxPath() + GenericEnums.VFX.necro_impact.getPath();
+            case MAGICAL:
+                return PathFinder.getVfxPath() + GenericEnums.VFX.pale_impact.getPath();
+            case PSIONIC:
+                return PathFinder.getVfxPath() + GenericEnums.VFX.warp_impact.getPath();
+            case CHAOS:
+//                return PathFinder.getVfxPath() +GenericEnums.VFX.chaos_impact.getPath();
+                return PathFinder.getVfxPath() + GenericEnums.VFX.nether_impact3.getPath();
+            case SHADOW:
+                return PathFinder.getVfxPath() + GenericEnums.VFX.invert_impact.getPath();
+        }
+        return PathFinder.getVfxAtlasPath() + "spell/impact/"
+                + type.toString() + " impact"
                 ;
     }
 
@@ -162,18 +174,18 @@ public class EffectAnimCreator {
     }
 
     private static String getSprites(Effect e) {
-        if (e instanceof DealDamageEffect) {
-            String name = "";
-            switch (((DealDamageEffect) e).getDamageType()) {
-                case FIRE:
-                default:
-                    name = "fire 5 5";
-                    break;
-            }
-            return PathFinder.getSpellSpritesPath() + "damage/"
-                    + name
-                    + ".png";
-        }
+//        if (e instanceof DealDamageEffect) {
+//            String name = "";
+//            switch (((DealDamageEffect) e).getDamageType()) {
+//                case FIRE:
+//                default:
+//                    name = "fire 5 5";
+//                    break;
+//            }
+//            return PathFinder.getSpellSpritesPath() + "damage/"
+//                    + name
+//                    + ".png";
+//        }
         return null;
     }
 

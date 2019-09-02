@@ -80,6 +80,9 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     public boolean isTurn() {
         return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN;
     }
+    public boolean isMode() {
+        return getActionGroup() == ACTION_TYPE_GROUPS.MODE;
+    }
 
     public boolean isMelee() {
         if (!isAttackAny())

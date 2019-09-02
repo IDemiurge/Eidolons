@@ -3,7 +3,6 @@ package eidolons.libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
@@ -18,16 +17,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
-import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.stage.GuiStage;
-import eidolons.libgdx.stage.StageX;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.ClassMaster;
 import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,7 +193,7 @@ public class GdxMaster {
     }
 
     public static boolean isGuiReady() {
-        return DungeonScreen.getInstance() != null;
+        return Eidolons.getScreen() != null;
     }
 
     public static float getFontSizeMod() {
@@ -462,6 +457,9 @@ public class GdxMaster {
     }
 
     public static void setEmptyCursor() {
+        if (CoreEngine.isMyLiteLaunch()) {
+            return;
+        }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getEmptyCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
@@ -496,6 +494,22 @@ public class GdxMaster {
         }
 
         return multiplexer;
+    }
+
+    public static void onInputGdx(Runnable r) {
+        onInput(r, true);
+    }
+        public static void onInput(Runnable r, boolean gdx) {
+        Runnable finalR = r;
+        Runnable onInputGdx = Eidolons.getScreen().getController().getOnInput(gdx);
+        if (onInputGdx != null) {
+            r = () ->  {
+                onInputGdx.run();
+//                WaitMaster.WAIT(3000);
+                finalR.run();
+            };
+        }
+        Eidolons.getScreen().getController().onInputGdx(gdx,r);
     }
 
     public enum CURSOR {

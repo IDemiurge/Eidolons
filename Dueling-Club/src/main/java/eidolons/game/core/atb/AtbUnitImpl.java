@@ -30,9 +30,13 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public float getInitialInitiative() {
-        return RandomWizard.getRandomFloat()
-
-         * AtbController.TIME_TO_READY * 0.25f;
+        float mod =RandomWizard.getRandomFloat()*
+                (0.25f+ new Float(unit.getIntParam(PARAMS.ATB_START_MOD)) / 100);
+        Float preset = new Float( unit.getIntParam(PARAMS.ATB_START_PRESET)) / 100;
+        if (preset!=0){
+            mod = Math.min(1, preset);
+        }
+        return  AtbController.TIME_TO_READY * (mod);
     }
 
     @Override

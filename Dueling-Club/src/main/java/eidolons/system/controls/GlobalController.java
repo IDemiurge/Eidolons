@@ -1,5 +1,7 @@
 package eidolons.system.controls;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
@@ -173,6 +175,26 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
                 break;
             case Keys.F9:
+//                Input.TextInputListener listener= new Input.TextInputListener() {
+//                    @Override
+//                    public void input(String text) {
+//                        if (!StringMaster.isEmpty(text)) {
+//                            lastScript = text;
+//                            try {
+//                                Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
+//                            } catch (Exception e) {
+//                                main.system.ExceptionMaster.printStackTrace(e);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void canceled() {
+//
+//                    }
+//                };
+//                Gdx.input.getTextInput(listener, "Tadan",lastScript,"your script...");
+
                 Eidolons.onNonGdxThread(()-> {
                 String text = DialogMaster.inputText("Your script...", lastScript);
                 if (!StringMaster.isEmpty(text)) {
@@ -187,7 +209,9 @@ public class GlobalController implements Controller {
                 });
                 return true;
             case Keys.F8:
-
+                if (EidolonsGame.DUEL) {
+                    return false;
+                }
                 if (CoreEngine.isIDE()) {
                     EidolonLord.lord.soulforceGained(110);
                 }
@@ -195,10 +219,16 @@ public class GlobalController implements Controller {
                 EidolonsGame.BRIDGE = !EidolonsGame.BRIDGE;
                 return true;
             case Keys.F6:
+                if (EidolonsGame.DUEL) {
+                    return false;
+                }
                 new Thread(() -> IGG_Launcher.introBriefing(), " thread").start();
 
                 return true;
             case Keys.F7:
+                if (EidolonsGame.DUEL) {
+                    return false;
+                }
                 DC_Game.game.getMetaMaster().getDialogueManager().test();
 
                 return true;

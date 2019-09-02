@@ -58,7 +58,7 @@ public class Event implements Referred {
             switch (stdType) {
                 case ROUND_ENDS:
                 case NEW_ROUND:
-                case UNIT_TURN_STARTED:
+                case UNIT_TURN_READY:
                 case UNIT_NEW_ROUND_STARTED:
                 case UNIT_NEW_ROUND_BEING_STARTED:
                     return false;
@@ -155,6 +155,7 @@ public class Event implements Referred {
         COSTS_HAVE_BEEN_PAID,
         COSTS_ARE_BEING_PAID,
         ACTION_ACTIVATED,
+        ACTION_BEING_ACTIVATED,
         UNIT_ACTION_COMPLETE,
         HOSTILE_ACTION,
         ABILITY_BEING_RESOLVED,
@@ -207,7 +208,7 @@ public class Event implements Referred {
         ROUND_ENDS,
 
         //UNIT MAIN
-        UNIT_TURN_STARTED,
+        UNIT_TURN_READY,
         UNIT_NEW_ROUND_STARTED,
         UNIT_NEW_ROUND_BEING_STARTED,
 

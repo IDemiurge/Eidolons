@@ -94,8 +94,9 @@ public class FullscreenAnims extends GroupX {
                 return FULLSCREEN_ANIM.GATES;
             }
         if (e.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
-            type = RandomWizard.chance(33) ?
-                    FULLSCREEN_ANIM.BLOOD_SCREEN :
+            type =
+//                    RandomWizard.chance(33) ?
+//                    FULLSCREEN_ANIM.BLOOD_SCREEN :
                     FULLSCREEN_ANIM.BLOOD;
             if (e.getRef().getDamageType() == GenericEnums.DAMAGE_TYPE.POISON) {
                 type = FULLSCREEN_ANIM.POISON;

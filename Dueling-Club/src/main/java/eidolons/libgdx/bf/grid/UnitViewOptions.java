@@ -7,6 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
@@ -136,6 +137,9 @@ public class UnitViewOptions {
         if (obj.isMine()) {
             altColor = !obj.isPlayerCharacter();
         } else {
+            if (EidolonsGame.DUEL) {
+                altColor = false;
+            } else {
             altColor= true;
             if (obj.getName().contains("Carnifex"))
                 altColor=false;
@@ -145,6 +149,7 @@ public class UnitViewOptions {
                 altColor=false;
             if (obj.getName().contains("Hollow Defiler"))
                 altColor=false;
+        }
         }
 
         if (obj.getOwner() != null)

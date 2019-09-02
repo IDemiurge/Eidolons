@@ -615,8 +615,14 @@ public class ConditionMaster {
             case STRING_STRICT:
                 c = new StringComparison(str1, str2, true);
                 break;
-            case NAME:
+            case NAME_TARGET:
                 return new PropCondition(G_PROPS.NAME, KEYS.TARGET, str1, true);
+            case NAME_SOURCE:
+                return new PropCondition(G_PROPS.NAME, KEYS.SOURCE, str1, true);
+            case NAME_ACTIVE:
+                return new PropCondition(G_PROPS.NAME, KEYS.ACTIVE, str1, true);
+            case NAME_SUMMONED:
+                return new PropCondition(G_PROPS.NAME, KEYS.SUMMONED , str1, true);
             case COORDINATES:
                 return new CoordinateCondition(Coordinates.get(str1));
             case DISTANCE:
@@ -672,7 +678,11 @@ public class ConditionMaster {
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
         MAINHERO("pc", "mainHero", "MAIN_HERO"),
-        NAME("name"),
+        NAME_SOURCE("name"),
+        NAME_TARGET("target"),
+        NAME_ACTIVE("active"),
+        NAME_SUMMONED("active"),
+
         COORDINATES("coordinates","coord"),
         CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot");
 

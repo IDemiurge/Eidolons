@@ -221,4 +221,8 @@ public class EmitterActor extends SuperActor {
         }
         return true;
     }
+
+    public void allowFinish() {
+        getEffect().allowCompletion();
+    }
 }

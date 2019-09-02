@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
@@ -46,12 +47,14 @@ public abstract class InputController implements InputProcessor {
     protected int mouseButtonPresed;
     protected float xTouchPos;
     protected float yTouchPos;
-    protected static  float halfWidth;
+    protected static float halfWidth;
     protected static float halfHeight;
     protected Set<SuperActor> cachedPosActors = new HashSet<>();
     protected static boolean unlimitedZoom;
     protected static boolean dragOff;
     protected float defaultZoom = 1;
+    private Runnable onInput;
+    private Runnable onInputGdx;
 
 
     public InputController(OrthographicCamera camera) {
@@ -173,10 +176,25 @@ public abstract class InputController implements InputProcessor {
 
     public void keyInput() {
         ExplorationMaster.setWaiting(false);
+        input();
+
+    }
+
+    private void input() {
+        if (onInputGdx != null) {
+            main.system.auxiliary.log.LogMaster.dev("onInputGdx.run() ");
+            onInputGdx.run();
+            onInputGdx = null;
+        }
+        if (onInput != null) {
+            main.system.auxiliary.log.LogMaster.dev("onInput.run() ");
+            Eidolons.onNonGdxThread(onInput);
+            onInput = null;
+        }
     }
 
     public void mouseInput() {
-
+        input();
     }
 
     @Override
@@ -228,7 +246,7 @@ public abstract class InputController implements InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-        mouseInput();
+//        mouseInput();
         if (isDragOff())
             return false;
         if (isBlocked())
@@ -246,7 +264,7 @@ public abstract class InputController implements InputProcessor {
 
     private boolean isManualCameraDisabled() {
         if (!CoreEngine.isIDE())
-            if (Cinematics.ON){
+            if (Cinematics.ON) {
                 return true;
             }
         return false;
@@ -398,5 +416,38 @@ public abstract class InputController implements InputProcessor {
 
     public void addCachedPositionActor(SuperActor superActor) {
         cachedPosActors.add(superActor);
+    }
+
+    public void onInput(Runnable runnable) {
+        onInput = runnable;
+        main.system.auxiliary.log.LogMaster.dev("onInput set ");
+    }
+
+    public void onInputGdx(Runnable runnable) {
+        onInputGdx = runnable;
+        main.system.auxiliary.log.LogMaster.dev("onInputGdx set ");
+    }
+
+    public Runnable getOnInput() {
+        return onInput;
+    }
+
+    public Runnable getOnInputGdx() {
+        return onInputGdx;
+    }
+
+    public void onInputGdx(boolean gdx, Runnable runnable) {
+        main.system.auxiliary.log.LogMaster.dev(gdx + "onInput set ");
+        if (gdx) {
+            onInputGdx = runnable;
+        } else
+            onInput = runnable;
+    }
+
+    public Runnable getOnInput(boolean gdx) {
+        if (gdx) {
+            return onInputGdx;
+        }
+        return onInput;
     }
 }

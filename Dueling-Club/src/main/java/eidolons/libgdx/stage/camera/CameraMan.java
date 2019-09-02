@@ -53,11 +53,12 @@ public class CameraMan {
 
         public Vector2 dest;
         public float duration;
+        public float zoom;
         public Interpolation interpolation = Interpolation.fade;
         public Boolean exclusive = false;
 
-        public MotionData(float f, float duration, Interpolation interpolation) {
-            this(new Vector2(f, 0), duration, interpolation);
+        public MotionData(float zoom, float duration, Interpolation interpolation) {
+            this(  duration, interpolation, zoom);
         }
 
         public MotionData(Vector2 dest, float duration, Interpolation interpolation) {
@@ -66,8 +67,9 @@ public class CameraMan {
             this.interpolation = interpolation;
         }
 
-        public MotionData(Object param) {
+        public MotionData(Object... params) {
             duration = 0;
+            for (Object param : params) {
             if (param instanceof List) {
                 List list = ((List) param);
                 for (Object o : list) {
@@ -75,6 +77,7 @@ public class CameraMan {
                 }
             } else {
                 initParam(param);
+            }
             }
         }
 
@@ -95,7 +98,9 @@ public class CameraMan {
                 interpolation = ((Interpolation) o);
             }
             if (o instanceof Float) {
+                if (duration==0) {
                 duration = (float) o;
+                } else zoom = (float) o;
             }
         }
     }
@@ -157,11 +162,13 @@ public class CameraMan {
             MotionData data = (MotionData) param.get();
             zoomAction = (FloatAction) ActionMaster.getAction(FloatAction.class);
             zoomAction.setStart(getCam().zoom);
-            zoomAction.setEnd(data.dest.x);
+            zoomAction.setEnd(data.zoom);
+            if (data.duration<=0) {
+                data.duration= Math.abs(cam.zoom - data.zoom)*15;
+            }
             zoomAction.setDuration(data.duration);
             zoomAction.setInterpolation(data.interpolation);
-            main.system.auxiliary.log.LogMaster.dev("Zooming to " + data.dest.x);
-//            main.system.auxiliary.log.LogMaster.dev("Zooming to " +data.dest.x);
+            main.system.auxiliary.log.LogMaster.dev("Zooming to " + data.zoom);
         });
     }
 
@@ -232,6 +239,8 @@ public class CameraMan {
         }
         if (Cinematics.ON) {
             destination.y= destination.y-210;
+        } else {
+            destination.y= destination.y+100;
         }
         main.system.auxiliary.log.LogMaster.dev("cameraPan to " +destination);
         float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();

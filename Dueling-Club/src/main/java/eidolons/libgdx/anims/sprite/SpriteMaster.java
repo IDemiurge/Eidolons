@@ -131,7 +131,7 @@ public class SpriteMaster {
             return parsed;
         }
         if (over) {
-            if (obj.getName().contains("Brazier")) {
+            if (obj.isLightEmitter() ) {
                 return Sprites.FIRE_LIGHT;
             }
             if (obj.isBoss()) {
@@ -180,6 +180,7 @@ public class SpriteMaster {
     private static SuperActor.BLENDING getBlending(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
         switch (obj.getName()) {
             case "Adeptus Carnifex":
+            case "Netherbound Horror":
                 return SuperActor.BLENDING.INVERT_SCREEN;
             case "Hollow Adept":
                 return SuperActor.BLENDING.SCREEN;
@@ -187,6 +188,13 @@ public class SpriteMaster {
             case "Mistborn Horror":
             case "Dream Siphon":
                 return SuperActor.BLENDING.INVERT_SCREEN;
+        }
+        switch (sprite) {
+            case VEIL:
+            case FLOAT_WISP:
+            case FIRE_LIGHT:
+            case WHITE_TENTACLE:
+                return SuperActor.BLENDING.SCREEN;
         }
         if (obj.isOverlaying()) {
             return SuperActor.BLENDING.SCREEN;

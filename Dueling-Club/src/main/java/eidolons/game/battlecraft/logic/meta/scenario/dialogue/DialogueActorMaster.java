@@ -42,6 +42,10 @@ public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta> {
     public static DialogueActor getActor(String name) {
         DialogueActor actor = map.get(name);
         if (actor == null) {
+//            if (name.contains(""))
+            if (!DataManager.isTypeName(name)) {
+                return null;
+            }
             actor = createActor(name);
             map.put(name, actor);
         }

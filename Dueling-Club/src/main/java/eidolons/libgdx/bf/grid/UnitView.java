@@ -27,7 +27,7 @@ import main.system.images.ImageManager;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-public class UnitView extends BaseView implements HpBarView{
+public class UnitView extends BaseView implements HpBarView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
     protected int curId;
     protected String name;
@@ -53,7 +53,7 @@ public class UnitView extends BaseView implements HpBarView{
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
-        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.UNIT_VIEW);
+        setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.UNIT_BORDER);
     }
 
     public void init(UnitViewOptions o) {
@@ -63,11 +63,13 @@ public class UnitView extends BaseView implements HpBarView{
         init(o.getPortraitTexture(), o.getPortraitPath());
         addActor(this.modeImage = new FadeImageContainer());
 
-        initSprite(o);
+        try {
+            initSprite(o);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
     }
-
-
 
 
     public void reset() {
@@ -83,8 +85,7 @@ public class UnitView extends BaseView implements HpBarView{
         if (StringMaster.isEmpty(pathToImage)) {
 
             modeImage.setImage("ui/really empty 32.png");
-            if (modeImage.getContent() != null)
-            {
+            if (modeImage.getContent() != null) {
 //                ActorMaster.addFadeOutAction(modeImage, 0.5f);
             }
             return;
@@ -108,9 +109,9 @@ public class UnitView extends BaseView implements HpBarView{
 
     public LabelStyle getInitiativeFontStyle() {
         return StyleHolder.getSizedColoredLabelStyle(
-         0.3f,
-         StyleHolder.ALT_FONT, 16,
-         getTeamColor());
+                0.3f,
+                StyleHolder.ALT_FONT, 16,
+                getTeamColor());
     }
 
     @Override
@@ -192,7 +193,7 @@ public class UnitView extends BaseView implements HpBarView{
             return;
         }
         setPortraitTexture(TextureCache.getOrCreateR(
-         OUTLINE_TYPE.UNKNOWN.getImagePath()));
+                OUTLINE_TYPE.UNKNOWN.getImagePath()));
     }
 
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
@@ -204,8 +205,8 @@ public class UnitView extends BaseView implements HpBarView{
     }
 
     protected TextureRegion getDefaultTexture() {
-        if (getUserObject() instanceof Unit){
-            if (EidolonsGame.BRIDGE){
+        if (getUserObject() instanceof Unit) {
+            if (EidolonsGame.BRIDGE) {
                 return originalTexture;
             }
         }
@@ -220,16 +221,15 @@ public class UnitView extends BaseView implements HpBarView{
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha== ShaderDrawer.SUPER_DRAW)
-        {
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             super.draw(batch, 1);
             return;
         }
         ShaderDrawer.drawWithCustomShader(this, batch,
-         greyedOut ?
-          GrayscaleShader.getGrayscaleShader()
+                greyedOut ?
+                        GrayscaleShader.getGrayscaleShader()
 //          GrayscaleShader.getGrayscaleShader()
-          : null, true);
+                        : null, true);
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
@@ -246,8 +246,8 @@ public class UnitView extends BaseView implements HpBarView{
 
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
-        this.outlinePathSupplier =pathSupplier;
-        if (pathSupplier.get()!=null )
+        this.outlinePathSupplier = pathSupplier;
+        if (pathSupplier.get() != null)
             if (!ImageManager.isImage(pathSupplier.get())) {
                 return;
             }
@@ -271,6 +271,7 @@ public class UnitView extends BaseView implements HpBarView{
     public BattleFieldObject getUserObject() {
         return (BattleFieldObject) super.getUserObject();
     }
+
     public int getCurId() {
         return curId;
     }
@@ -304,13 +305,13 @@ public class UnitView extends BaseView implements HpBarView{
         return getClass().getSimpleName() + " for " + name;
     }
 
-    public void resetHpBar( ) {
-        if (getHpBar() == null)
-        {
-          setHpBar(  new HpBar(getUserObject()));
+    public void resetHpBar() {
+        if (getHpBar() == null) {
+            setHpBar(new HpBar(getUserObject()));
         }
         getHpBar().reset();
     }
+
     public HpBar getHpBar() {
         return hpBar;
     }
@@ -341,7 +342,6 @@ public class UnitView extends BaseView implements HpBarView{
     public boolean isMainHero() {
         return mainHero;
     }
-
 
 
     public TextureRegion getOutline() {

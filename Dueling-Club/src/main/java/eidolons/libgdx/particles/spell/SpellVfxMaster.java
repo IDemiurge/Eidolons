@@ -1,6 +1,10 @@
 package eidolons.libgdx.particles.spell;
 
+import main.content.enums.GenericEnums;
+import main.data.ability.construct.VariableManager;
 import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.data.FileManager;
 
@@ -32,4 +36,22 @@ public class SpellVfxMaster {
         return false;
     }
 
+    public static  String checkAlias(String value) {
+        String res = "";
+        for (String substring : ContainerUtils.openContainer(value)) {
+            if (PathUtils.getPathSegments(substring).size() == 1) {
+                String speed = VariableManager.getVar(substring);
+                substring = VariableManager.removeVarPart(substring);
+                GenericEnums.VFX vfx = new EnumMaster<GenericEnums.VFX>().retrieveEnumConst(GenericEnums.VFX.class, substring);
+                if (vfx != null) {
+                    if (!speed.isEmpty()) {
+                        res += vfx.getPath() + "(" +speed +");";
+                    } else
+                        res += vfx.getPath() + ";";
+                }
+            } else
+                res += substring + ";";
+        }
+        return res;
+    }
 }

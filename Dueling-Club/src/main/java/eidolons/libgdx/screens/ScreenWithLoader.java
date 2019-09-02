@@ -300,7 +300,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         blackoutAction.act(Gdx.graphics.getDeltaTime());
         blackout = blackoutAction.getValue();
         if (blackout > 0) {
-            main.system.auxiliary.log.LogMaster.dev("BlackoutOld drawn" + blackout + " whiteout==" + whiteout);
             getBatch().drawBlack(blackout, whiteout);
         }
 

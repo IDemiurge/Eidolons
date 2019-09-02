@@ -272,6 +272,9 @@ public class Assets {
     }
 
     public static void preloadAudio(boolean full) {
+        if (DialogueManager.TEST) {
+            return;
+        }
         for (GenericEnums.SOUND_CUE value : GenericEnums.SOUND_CUE.values()) {
             try {
                 MusicMaster.getInstance().getMusic(value.getPath(), true);
@@ -285,17 +288,11 @@ public class Assets {
     public static void preloadUI(boolean full) {
         if (CoreEngine.isSuperLite())
             return;
-        loadSprite(Sprites.BG_DEFAULT, full);
         loadSprite(Sprites.INK_BLOTCH, full);
-        loadSprite(Sprites.PORTAL_OPEN, full);
-        loadSprite(Sprites.PORTAL, full);
         loadSprite(Sprites.SNOW, full);
         loadSprite(FullscreenAnims.FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), full);
-
-        loadSprite(Sprites.ACID_BLADE, full);
-        loadSprite(Sprites.AX_FIRE, full);
-        if (DialogueManager.TEST)
-            return;
+//        if (DialogueManager.TEST)
+//            return;
         if (full) {
             loadSprite(Sprites.ORB, full);
             loadSprite(Sprites.RUNE_INSCRIPTION, full);
@@ -307,16 +304,26 @@ public class Assets {
             loadSprite(Sprites.LIGHT_VEIL, full);
             loadSprite(Sprites.COMMENT_KESERIM, full);
 
-            loadSprite(Sprites.MIST, full);
-            loadSprite(Sprites.PORTAL_CLOSE, full);
+            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
+//            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
+
+            if (!DialogueManager.TEST){
+                loadSprite(Sprites.BG_DEFAULT, full);
+                loadSprite(Sprites.PORTAL_OPEN, full);
+                loadSprite(Sprites.PORTAL, full);
+                loadSprite(Sprites.PORTAL_CLOSE, full);
+
+                loadSprite(Sprites.MIST, full);
                 loadSprite(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), full);
                 loadSprite(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), full);
+
+                loadSprite(Sprites.ACID_BLADE, full);
+                loadSprite(Sprites.AX_FIRE, full);
+            }
                 if (!CoreEngine.isMyLiteLaunch())
                 {
                 loadSprite(FullscreenAnims.FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
                 loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
-                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
-                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
             }
 
 
@@ -334,7 +341,7 @@ public class Assets {
 
     private static void loadSprite(String path, boolean full) {
 //        if (full) {
-//            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
+//            assets.getManager().load(PathFinder.getImagePath() + spritePaths, TextureAtlas.class);
 //        } else
         {
             SpriteAnimationFactory.getSpriteAnimation(path, false);

@@ -50,12 +50,12 @@ public class ImageManager {
     public static final String DEFAULT_ENTITY_IMAGE_FORMAT = ".jpg";
     public static final String PNG = ".PNG";
     public static final int CENTERED = -999;
-    public static final String VALUE_ICONS_PATH = "ui/content/value icons/" ;
+    public static final String VALUE_ICONS_PATH = "ui/content/value icons/";
     public static final String DEAD_ICON = "ui/dead.png";
     public static final int LARGE_ICON_HEIGHT = 350;
-    public static final int LARGE_ICON_WIDTH= 250;
+    public static final int LARGE_ICON_WIDTH = 250;
     public static final int FULL_ICON_HEIGHT = 700;
-    public static final int FULL_ICON_WIDTH=  500;
+    public static final int FULL_ICON_WIDTH = 500;
     private static final String EMPTY_LIST_ITEM = "ui/empty_item.jpg";
     private static final String EMPTY_LIST_ITEM_ALT = "ui/empty_item_alt.jpg";
     private static final String EMPTY_LIST_ITEM_SMALL = "ui/empty_item_small.jpg";
@@ -67,10 +67,11 @@ public class ImageManager {
     private static final int MAX_TYPE_ICON_SIZE = 256;
     public static final int LARGE_ICON = MAX_TYPE_ICON_SIZE;
     private static final String DEFAULT_CURSOR = "ui/cursor.png";
-    private static final String PORTRAIT_ROOT_PATH = separator+"mini/char/std"+separator;
-    private static final String EMBLEM_PATH = "ui/emblems/std"+separator;
+    private static final String PORTRAIT_ROOT_PATH = separator + "mini/char/std" + separator;
+    private static final String EMBLEM_PATH = "ui/emblems/std" + separator;
     public static final String FULL = " full";
     public static final String LARGE = " large";
+    public static final String BLOTCH = " blotch";
     private static String PATH;
     private static String DEFAULT;
     private static ImageObserver observer = new ImageObserver() {
@@ -91,7 +92,7 @@ public class ImageManager {
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
-        DEFAULT = "chars"+separator;
+        DEFAULT = "chars" + separator;
         colorImgCache = new HashMap<>();
         COLOR_THEME[] values = COLOR_THEME.values();
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
@@ -165,6 +166,7 @@ public class ImageManager {
     public static String getEmptyUnitIconFullSizePath() {
         return "ui/Empty Full.jpg";
     }
+
     public static String getReallyEmptyUnitIconFullSizePath() {
         return "ui/Really Empty Full.png";
     }
@@ -250,11 +252,11 @@ public class ImageManager {
 
         if (x == CENTERED) {
             x = MigMaster
-             .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
+                    .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
         }
         if (y == CENTERED) {
             y = MigMaster.getCenteredPosition(applied.getHeight(observer), target
-             .getHeight(observer));
+                    .getHeight(observer));
         }
         // return applied;
         if (target == null || applied == null) {
@@ -264,20 +266,20 @@ public class ImageManager {
             BufferedImage IMG;
             if (resize == null && size != null) {
                 IMG = new BufferedImage((int) size.getWidth(), (int) size.getHeight(),
-                 BufferedImage.TYPE_INT_ARGB);
+                        BufferedImage.TYPE_INT_ARGB);
                 IMG.getGraphics().drawImage(target, 0, 0, (int) size.getWidth(),
-                 (int) size.getHeight(), observer);
+                        (int) size.getHeight(), observer);
                 IMG.getGraphics().drawImage(applied, x, y, (int) size.getHeight(),
-                 (int) size.getWidth(), observer);
+                        (int) size.getWidth(), observer);
                 return IMG;
             }
             IMG = new BufferedImage(target.getWidth(observer), target.getHeight(observer),
-             BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage.TYPE_INT_ARGB);
             IMG.getGraphics().drawImage(target, 0, 0, observer);
             if (resize) {
                 if (target.getHeight(observer) != applied.getHeight(observer)) {
                     IMG.getGraphics().drawImage(applied, x, y, target.getWidth(observer),
-                     target.getHeight(observer), observer);
+                            target.getHeight(observer), observer);
                     return IMG;
                 }
             }
@@ -286,7 +288,7 @@ public class ImageManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, " failed " + target.getWidth(observer) + " and "
-             + applied.getWidth(observer));
+                    + applied.getWidth(observer));
             // if (retry)
             // return applyImage(target, applied, x, y, resize, false);
             return target;
@@ -309,7 +311,7 @@ public class ImageManager {
                 throw new Exception();
             }
             if (icon.getImage().getHeight(null) == size.getHeight()
-             && icon.getImage().getWidth(null) == size.getWidth()) {
+                    && icon.getImage().getWidth(null) == size.getWidth()) {
                 return icon;
             }
 
@@ -337,7 +339,7 @@ public class ImageManager {
         }
         if (img.getWidth(null) != tsize.width || img.getHeight(null) != tsize.height) {
             image = img.getScaledInstance((int) tsize.getWidth(), (int) tsize.getHeight(),
-             Image.SCALE_SMOOTH);
+                    Image.SCALE_SMOOTH);
             if (checkMemoryForSizedCache() || forceCache) {
                 sizedImageCache.put(img.hashCode() + tsize.toString(), image);
             }
@@ -393,7 +395,7 @@ public class ImageManager {
 
     public static String getArrowImagePath(boolean vertical, boolean forward, int version) {
         String compVersion = (version == 1) ? "" : "" + version;
-        String path = "ui/components"+separator;
+        String path = "ui/components" + separator;
         if (forward) {
             path += vertical ? "up" : "right";
         } else
@@ -409,10 +411,10 @@ public class ImageManager {
                                                   UNIT_VISION visibility) {
         String suffix = (!huge) ? "96" : "HUGE";
         if (detection == PLAYER_VISION.UNKNOWN
-         || detection == PLAYER_VISION.CONCEALED) {
+                || detection == PLAYER_VISION.CONCEALED) {
             suffix += " unknown";
         } else if (detection == PLAYER_VISION.KNOWN
-         || visibility == UNIT_VISION.BEYOND_SIGHT) {
+                || visibility == UNIT_VISION.BEYOND_SIGHT) {
             suffix += " hidden";
         }
         return getIcon("ui//CELL for " + suffix + ".png");
@@ -493,8 +495,8 @@ public class ImageManager {
             return label;
         }
         ImageIcon image = new ImageIcon(ImageManager.getSizedVersion(
-         ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
-          : getDefaultImage()), new Dimension(w, h)));
+                ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
+                        : getDefaultImage()), new Dimension(w, h)));
         label = new JLabel(image);
         labelCache.put(img + w + h, label);
         return label;
@@ -534,7 +536,7 @@ public class ImageManager {
         if (icon != null) {
             if (CoreEngine.isSwingOn()) {
                 return
-                 icon.getImage();
+                        icon.getImage();
             }
 
             return new CustomImage(icon.imgPath, icon.getImage());
@@ -556,7 +558,7 @@ public class ImageManager {
         String imgPath = colorImgCache.get(colorTheme).get(imagePath);
         if (imgPath == null) {
             imgPath = StringMaster.cropFormat(imagePath) + colorTheme.getSuffix()
-             + DEFAULT_ENTITY_IMAGE_FORMAT;
+                    + DEFAULT_ENTITY_IMAGE_FORMAT;
         }
         if (isImage(imgPath)) {
             colorImgCache.get(colorTheme).put(imagePath, imgPath);
@@ -613,16 +615,17 @@ public class ImageManager {
         if (principle == null) {
             return getImage(VALUE_ICONS_PATH + "Principles/principles.jpg");
         }
-        return getImage(VALUE_ICONS_PATH + "Principles"+separator + principle.toString() + ".jpg");
+        return getImage(VALUE_ICONS_PATH + "Principles" + separator + principle.toString() + ".jpg");
     }
 
     public static String getMasteryGroupPath(String title) {
-        return VALUE_ICONS_PATH + "masteries/groups"+separator + title + ".png";
+        return VALUE_ICONS_PATH + "masteries/groups" + separator + title + ".png";
     }
 
     public static String getClassGroupPath(String title) {
-        return VALUE_ICONS_PATH + "Class groups"+separator + title + ".png";
+        return VALUE_ICONS_PATH + "Class groups" + separator + title + ".png";
     }
+
     public static ImageIcon getMasteryGroupIcon(String title) {
         String imgPath = getMasteryGroupPath(title);
         Image image = getNewBufferedImage(32, 32);
@@ -659,7 +662,7 @@ public class ImageManager {
 
         boolean mastery = false;
         if (value instanceof MACRO_PARAMS) {
-            imgPath = VALUE_ICONS_PATH + "macro"+separator;
+            imgPath = VALUE_ICONS_PATH + "macro" + separator;
         } else if (value instanceof PARAMETER) {
             PARAMETER parameter = (PARAMETER) value;
             if (parameter.getName().contains(" Durability Mod")) {
@@ -671,10 +674,10 @@ public class ImageManager {
 
             if (parameter.isMastery()) {
                 mastery = true;
-                imgPath += "masteries"+separator;
+                imgPath += "masteries" + separator;
                 name = name.replace(" mastery", "");
             } else if (parameter.isAttribute()) {
-                imgPath += "attributes"+separator;
+                imgPath += "attributes" + separator;
             }
 
         }
@@ -696,7 +699,7 @@ public class ImageManager {
 
         boolean mastery = false;
         if (value instanceof MACRO_PARAMS) {
-            imgPath = VALUE_ICONS_PATH + "macro"+separator;
+            imgPath = VALUE_ICONS_PATH + "macro" + separator;
         } else if (value instanceof PARAMETER) {
             PARAMETER parameter = (PARAMETER) value;
             if (parameter.getName().contains(" Durability Mod")) {
@@ -708,10 +711,10 @@ public class ImageManager {
 
             if (parameter.isMastery()) {
                 mastery = true;
-                imgPath += "masteries"+separator;
+                imgPath += "masteries" + separator;
                 name = name.replace(" mastery", "");
             } else if (parameter.isAttribute()) {
-                imgPath += "attributes"+separator;
+                imgPath += "attributes" + separator;
             }
             if (glowIconForDynamicIfAvailable) {
                 if (parameter.isDynamic()) {
@@ -747,12 +750,12 @@ public class ImageManager {
 
     public static String getDamageTypeImagePath(String enumConstName, boolean alpha) {
         if (alpha)
-            return (VALUE_ICONS_PATH + "damage types"+separator + enumConstName + " alpha.png");
-        return (VALUE_ICONS_PATH + "damage types"+separator + enumConstName + ".png");
+            return (VALUE_ICONS_PATH + "damage types" + separator + enumConstName + " alpha.png");
+        return (VALUE_ICONS_PATH + "damage types" + separator + enumConstName + ".png");
     }
 
     public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {
-        Image image = getImage("ui/actions/modes"+separator + mode + ".png");
+        Image image = getImage("ui/actions/modes" + separator + mode + ".png");
         if (image == null) {
             ObjType type = DataManager.getType(mode, DC_TYPE.ACTIONS);
             if (type != null) {
@@ -781,7 +784,7 @@ public class ImageManager {
 
     public static Image getFacingImage(FACING_DIRECTION facing) {
         return new EnumMaster<STD_IMAGES>().retrieveEnumConst(STD_IMAGES.class, facing.name())
-         .getImage();
+                .getImage();
     }
 
     public static boolean isImageFile(String name) {
@@ -841,7 +844,7 @@ public class ImageManager {
         while (loop.continues()) {
             try {
                 String bg = HeroEnums.BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, HeroEnums.BACKGROUND
-                 .values().length - 1)].toString();
+                        .values().length - 1)].toString();
                 List<String> portraitsForBackground = ImageManager.getPortraitsForBackground(bg);
                 int index = RandomWizard.getRandomIndex(portraitsForBackground);
                 String image = portraitsForBackground.get(index);
@@ -858,8 +861,8 @@ public class ImageManager {
         return getPortraitsForBackground(bg, extended);
     }
 
-        public static List<String> getPortraitsForBackground(       BACKGROUND bg  , Boolean extended) {
-       List<String> list = getPortraitMap(extended).get(bg);
+    public static List<String> getPortraitsForBackground(BACKGROUND bg, Boolean extended) {
+        List<String> list = getPortraitMap(extended).get(bg);
         if (ListMaster.isNotEmpty(list)) {
             return list;
         }
@@ -905,10 +908,10 @@ public class ImageManager {
                 break;
 
             case ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator);
+                paths.add(PORTRAIT_ROOT_PATH + "elf" + separator);
                 break;
             case VAMPIRE:
-                paths.add(PORTRAIT_ROOT_PATH + "vampire"+separator);
+                paths.add(PORTRAIT_ROOT_PATH + "vampire" + separator);
                 break;
 
             case INFERI_WARPBORN:
@@ -996,7 +999,7 @@ public class ImageManager {
             case FROSTBEARD_DWARF:
             case WOLFSBANE_DWARF:
             case MOONSILVER_DWARF:
-                paths.add(PORTRAIT_ROOT_PATH + "dwarf"+separator);
+                paths.add(PORTRAIT_ROOT_PATH + "dwarf" + separator);
                 break;
             case RED_ORC:
                 paths.add(PORTRAIT_ROOT_PATH + "orc/red");
@@ -1022,7 +1025,7 @@ public class ImageManager {
 
         for (String path : paths) {
             folder = FileManager.getFile(getImageFolderPath() + path);
-            path += ""+separator;
+            path += "" + separator;
             for (String file : FileManager.listFiles(folder)) {
                 if (FileManager.getFile(getImageFolderPath() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
@@ -1031,7 +1034,7 @@ public class ImageManager {
                 } else if (FileManager.getFile(getImageFolderPath() + path + file).isDirectory()) {
                     for (String subfile : FileManager.getFile(getImageFolderPath() + path + file).list()) {
                         if (!ListMaster.contains(list, subfile, false)) {
-                            list.add(path + file + ""+separator + subfile);
+                            list.add(path + file + "" + separator + subfile);
                         } else {
                             continue;
                         }
@@ -1055,7 +1058,7 @@ public class ImageManager {
         ASPECT[] aspects = new ASPECT[]{A};
         if (A == GenericEnums.ASPECT.NEUTRAL) {
             aspects = new ASPECT[]{GenericEnums.ASPECT.NEUTRAL, GenericEnums.ASPECT.LIGHT, GenericEnums.ASPECT.ARCANUM, GenericEnums.ASPECT.LIFE,
-             GenericEnums.ASPECT.DARKNESS, GenericEnums.ASPECT.CHAOS, GenericEnums.ASPECT.DEATH,
+                    GenericEnums.ASPECT.DARKNESS, GenericEnums.ASPECT.CHAOS, GenericEnums.ASPECT.DEATH,
 
             };
         }
@@ -1066,7 +1069,7 @@ public class ImageManager {
             path = EMBLEM_PATH + (a.toString().toLowerCase());
             File folder = FileManager.getFile(PATH + path);
 
-            path += ""+separator;
+            path += "" + separator;
             for (String file : FileManager.listFiles(folder)) {
                 list.add(path + file);
             }
@@ -1129,7 +1132,7 @@ public class ImageManager {
     }
 
     public static Image getGlowFrame(FLAG_COLOR flagColor, int size) {
-        return getImage("ui/Borders/neo/color flag"+separator + flagColor.toString() + " " + size);
+        return getImage("ui/Borders/neo/color flag" + separator + flagColor.toString() + " " + size);
     }
 
     public static Image applyGlowFrame(Image image, Image frameImage) {
@@ -1170,9 +1173,9 @@ public class ImageManager {
         icm.getBlues(blues);
         IndexColorModel icm2 = new IndexColorModel(8, size, reds, greens, blues, pixel);
         return new BufferedImage(icm2, raster,
-         image.isAlphaPremultiplied(),
+                image.isAlphaPremultiplied(),
 
-         null);
+                null);
     }
 
     public static BufferedImage getBufferedImage(Image image) {
@@ -1184,12 +1187,12 @@ public class ImageManager {
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         }
         BufferedImage buf = new BufferedImage(image.getWidth(null), image.getHeight(null),
-         BufferedImage.TYPE_INT_ARGB);
+                BufferedImage.TYPE_INT_ARGB);
         if (alpha != 100) {
             Graphics2D g2d = (Graphics2D) buf.getGraphics();
 
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-             new Float(alpha) / 100));
+                    new Float(alpha) / 100));
         }
         buf.getGraphics().drawImage(image, 0, 0, null);
         return buf;
@@ -1257,6 +1260,21 @@ public class ImageManager {
         return null;
 
     }
+
+    public static String getBlotch(Entity e) {
+        String path = e.getImagePath();
+        if (isImage(getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path))))) {
+            return getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path)));
+        }
+        main.system.auxiliary.log.LogMaster.dev(" no blotch: " + getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path))));
+        return e.getLargeImagePath();
+
+    }
+
+    public static String getBlotchPath(String name) {
+        return "main/heroes/blotch/" + name + ".png";
+    }
+
     public enum ALIGNMENT {
         NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST, NORTH_EAST, SOUTH_WEST
     }
@@ -1393,7 +1411,8 @@ public class ImageManager {
 
         DESTINATION_AVAILABLE(BORDER.CIRCLE_HIGHLIGHT_GREEN),
         INFO(BORDER.CIRCLE_HIGHLIGHT),
-        DEFAULT(BORDER.HIGHLIGHTED),;
+        DEFAULT(BORDER.HIGHLIGHTED),
+        ;
         private BORDER border;
 
         HIGHLIGHT() {
@@ -1414,7 +1433,7 @@ public class ImageManager {
     }
 
     public enum STD_IMAGES {
-        LIGHT(PathFinder.getShadeCellsPath()+separator+"light emitter.png"),
+        LIGHT(PathFinder.getShadeCellsPath() + separator + "light emitter.png"),
         SCROLL_ATTACK_CHOICE("ui/components/neo/attack choice scroll.png"),
         SCROLL_ATTACK_TEXT("ui/components/neo/choose attack.png"),
         SCROLL_END_HORIZONTAL_DOUBLE("ui/components/neo/scroll.png"),
@@ -1510,7 +1529,8 @@ public class ImageManager {
         WALL_CORNER_ALMOND_H("ui/cells/bf/CORNER ALMOND h.png"),
         WALL_CORNER_ALMOND_V("ui/cells/bf/CORNER ALMOND v.png"),
         WALL_CORNER_MESH("ui/cells/bf/CORNER MESH.png"),
-        WALL_CORNER_DIAMOND("ui/cells/bf/CORNER diamond.png"),;
+        WALL_CORNER_DIAMOND("ui/cells/bf/CORNER diamond.png"),
+        ;
 
         private String path;
         private Image image;
@@ -1538,7 +1558,7 @@ public class ImageManager {
                 return getImage();
             }
             String name = PathUtils.getLastPathSegment(path);
-            return ImageManager.getImage(path.replace(name, "") + pathPrefix + ""+separator + name);
+            return ImageManager.getImage(path.replace(name, "") + pathPrefix + "" + separator + name);
         }
 
         public Image getSuffixedImage(String suffix) {

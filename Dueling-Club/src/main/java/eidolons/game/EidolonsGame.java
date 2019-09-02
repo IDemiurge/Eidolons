@@ -3,9 +3,11 @@ package eidolons.game;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
+import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.launch.CoreEngine;
 
@@ -20,9 +22,14 @@ public class EidolonsGame {
     public static boolean TUTORIAL_MISSION;
     public static boolean TUTORIAL_PATH;
     public static boolean BRIDGE_CROSSED;
-    public static boolean firstBattleStarted;
+    public static boolean FIRST_BATTLE_STARTED;
+    public static boolean DUEL = false;
 
     public static boolean INTRO_STARTED;
+    public static boolean TURNS_DISABLED;
+    public static boolean MOVES_DISABLED;
+    private static Map<String, Boolean> varMap = new StringMap<>();
+    private static Map<String, Boolean> actionMap = new StringMap<>();
 
     public static final void set(String field, boolean val) {
         try {
@@ -30,9 +37,38 @@ public class EidolonsGame {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
+            try {
+                EidolonsGame.class.getField(field).set(null, val);
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchFieldException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
 
+    }
+
+    public static boolean get(String field) {
+        if (varMap.get(field) == null) {
+            return false;
+        }
+        return varMap.get(field);
+    }
+
+    public static void setVarMap(String value, Boolean valueOf) {
+        varMap.put(value, valueOf);
+    }
+
+    public static boolean getActionSwitch(String field) {
+        if (actionMap.get(field) == null) {
+            return false;
+        }
+        return actionMap.get(field);
+    }
+
+    public static void setActionSwitch(String value, Boolean valueOf) {
+        actionMap.put(value, valueOf);
     }
 
     private MetaGameMaster metaMaster;
@@ -72,6 +108,7 @@ public class EidolonsGame {
         return !BRIDGE;
     }
 
+
     public enum TUTORIAL_STAGE {
 
         alert,
@@ -82,7 +119,7 @@ public class EidolonsGame {
     }
 
     public static boolean isSpellsEnabled() {
-        return CoreEngine.isIDE();
+        return CoreEngine.isIDE() && !EidolonsGame.DUEL;
     }
 
     public static boolean isParamBlocked(PARAMETER parameter) {
@@ -94,6 +131,19 @@ public class EidolonsGame {
          * boolean map?
          *
          */
+        if (activeObj == null) {
+            return false;
+        }
+        if (activeObj.isDisabled()) {
+            return true;
+        }
+        if (activeObj.isMove()) {
+            return MOVES_DISABLED;
+        }
+        if (activeObj.isTurn()) {
+            return TURNS_DISABLED;
+        }
+
         return false;
     }
 

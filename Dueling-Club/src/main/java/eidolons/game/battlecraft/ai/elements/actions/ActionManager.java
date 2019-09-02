@@ -106,7 +106,10 @@ public class ActionManager extends AiHandler {
     public Action chooseAction(boolean intent) {
         UnitAI ai = getMaster().getUnitAI();
         if (ai.checkStandingOrders()) {
-            return ai.getStandingOrders().get(0);
+            Action ordered = ai.getStandingOrders().get(0);
+            getUnitAi().getCombatAI().setLastSequence(ai.getStandingOrders());
+            main.system.auxiliary.log.LogMaster.dev(getUnit()+"'s next order: " + ordered );
+            return ordered;
         }
         if (!intent) {
             getUnitAi().getCombatAI().setLastSequence(null);

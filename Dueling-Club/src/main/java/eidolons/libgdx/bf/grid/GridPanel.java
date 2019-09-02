@@ -72,11 +72,13 @@ import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -119,13 +121,13 @@ public class GridPanel extends Group {
     private boolean welcomeInfoShown;
     private float autoResetVisibleOnInterval = 0.5f;
 
-    List<Manipulator> manipulators = new ArrayList<>();
-    List<GridObject> gridObjects = new ArrayList<>();
-    List<GroupX> customOverlayingObjects = new ArrayList<>();
-    List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
-    List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
-    private List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
-    private List<GroupX> commentSprites = new ArrayList<>(3);
+    protected List<Manipulator> manipulators = new ArrayList<>();
+    protected List<GridObject> gridObjects = new ArrayList<>();
+    protected List<GroupX> customOverlayingObjects = new ArrayList<>();
+    protected List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
+    protected List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
+    protected List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
+    protected List<GroupX> commentSprites = new ArrayList<>(3);
     GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
 
 
@@ -478,22 +480,15 @@ public class GridPanel extends Group {
 
     private void bindEvents() {
         GuiEventManager.bind(ACTOR_SPEAKS, p -> {
+            if (p.get() == null) {
+                return;
+            }
             for (BaseView value : viewMap.values()) {
                 value.highlightOff();
             }
             UnitView view = getUnitView((BattleFieldObject) p.get());
             view.highlight();
 
-        });
-        GuiEventManager.bind(GuiEventType.SHOW_COMMENT_PORTRAIT, p -> {
-            List list = (List) p.get();
-            Unit hero = (Unit) list.get(0);
-            String text = (String) list.get(1);
-            Vector2 offset = null;
-            if (list.size() > 2) {
-                offset = (Vector2) list.get(2);
-            }
-            comment(hero, text, offset);
         });
         GuiEventManager.bind(REMOVE_GRID_OBJ, p -> {
             List list = (List) p.get();
@@ -520,6 +515,11 @@ public class GridPanel extends Group {
             addActor(object);
 
             gridObjects.add(object);
+            Boolean under = object.getUnder();
+            if (under != null) {
+                (under ? customOverlayingObjectsUnder : customOverlayingObjectsTop).add(object);
+                return;
+            }
             if (object instanceof LinkedGridObject) {
                 if (((LinkedGridObject) object).getLinked() instanceof OverlayView) {
                     customOverlayingObjectsTop.add(object);
@@ -752,9 +752,9 @@ public class GridPanel extends Group {
     private GridObject findGridObj(String key, Coordinates c) {
         for (GridObject gridObject : gridObjects) {
             if (gridObject.getKey().equalsIgnoreCase(key)) {
-            if (c==null || gridObject.getCoordinates().equals(c)) {
-                return gridObject;
-            }
+                if (c == null || gridObject.getCoordinates().equals(c)) {
+                    return gridObject;
+                }
             }
         }
         return null;
@@ -817,7 +817,7 @@ public class GridPanel extends Group {
             if (visible) {
                 view.getColor().a = 0;
                 view.setVisible(true);
-                ActionMaster.addFadeInAction(view, getFadeDuration(view) );
+                ActionMaster.addFadeInAction(view, getFadeDuration(view));
             } else {
 //                ActionMaster.checkHasAction(view, AlphaAction.class).if
                 if (view.getActionsOfClass(FadeOutAction.class).size > 0) {
@@ -1283,100 +1283,4 @@ public class GridPanel extends Group {
     }
 
 
-    private void comment(Unit hero, String text, Vector2 at) {
-        main.system.auxiliary.log.LogMaster.dev(text + "\n - Comment by " + hero.getNameAndCoordinate());
-        SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
-            @Override
-            public boolean remove() {
-                getParent().remove(); //TODO could be better.
-                WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, text);
-                return super.remove();
-            }
-        };
-        boolean textTop = false;
-        GroupX portrait = null;
-        if (hero == Eidolons.getMainHero()) {
-            SpriteX commentSprite = new SpriteX(Sprites.COMMENT_KESERIM);
-//               commentSprite.setBlending(SuperActor.BLENDING.SCREEN);
-            portrait = commentSprite;
-        } else {
-            textTop = true;
-            portrait = new SpriteX(hero.getLargeImagePath());
-        }
-        portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
-        portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
-
-        SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
-        commentTextBgSprite.setScale(0.75f);
-        commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
-        commentTextBgSprite.setRotation(90);
-        commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-        commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
-
-//            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
-        commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-        //TODO CACHED??
-        GroupX commentGroup = new NoHitGroup();
-        commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
-        commentGroup.addActor(commentBgSprite);
-
-        if (!textTop) {
-            commentGroup.addActor(commentTextBgSprite);
-            commentGroup.addActor(portrait);
-        } else {
-            commentGroup.addActor(portrait);
-            commentGroup.addActor(commentTextBgSprite);
-        }
-        addActor(commentGroup);
-
-        Vector2 v = GridMaster.getCenteredPos(hero.getCoordinates());
-        commentGroup.setPosition(v.x, v.y);
-
-        ActionMaster.addFadeInAction(commentBgSprite, 2);
-        ActionMaster.addFadeInAction(commentTextBgSprite, 2);
-        ActionMaster.addFadeInAction(portrait, 3);
-//            commentSprite.setScale(0.5f);
-        //flip?
-        Coordinates panTo = hero.getCoordinates().getOffsetByY(2);
-        if (at != null) {
-            commentGroup.setX(at.x);
-            commentGroup.setY(at.y);
-//            commentGroup.setX(commentGroup.getX()+at.x); TODO is it better
-//            commentGroup.setY(commentGroup.getY()+at.y);
-        } else
-            switch (hero.getFacing().flip().rotate(hero.getFacing().flip().isCloserToZero())) {
-                case NORTH:
-                    commentGroup.setY(commentGroup.getY() + ((int) commentGroup.getHeight() / 2));
-                    panTo = panTo.getOffsetByY(-3);
-                    break;
-                case WEST:
-                    commentGroup.setX(commentGroup.getX() - ((int) commentGroup.getWidth() / 2));
-                    panTo = panTo.getOffsetByX(-3);
-                    break;
-                case EAST:
-                    commentGroup.setX(commentGroup.getX() + ((int) commentGroup.getWidth() / 2));
-                    panTo = panTo.getOffsetByX(3);
-                    break;
-                case SOUTH:
-                    commentGroup.setY(commentGroup.getY() - ((int) commentGroup.getHeight() / 2));
-                    panTo = panTo.getOffsetByY(3);
-                    break;
-            }
-
-        if (at == null)
-            at = GridMaster.getCenteredPos(panTo);
-        if (Cinematics.ON) {
-//            at.y= at.y-100;
-        }
-            GuiEventManager.trigger(CAMERA_PAN_TO, at, true);
-
-            GroupX finalPortrait = portrait;
-            WaitMaster.doAfterWait(4000 + text.length() * 12, () -> {
-                ActionMaster.addFadeOutAction(commentBgSprite, 4);
-                ActionMaster.addRemoveAfter(commentBgSprite);
-                ActionMaster.addFadeOutAction(finalPortrait, 3);
-                ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
-            });
-            this.commentSprites.add(commentGroup);
-        }
-    }
+}

@@ -3,13 +3,12 @@ package eidolons.libgdx.anims;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.Anim;
-import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.particles.spell.SpellVfx;
+import eidolons.libgdx.particles.spell.SpellVfxPool;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.EventCallback;
@@ -20,38 +19,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleAnim implements Animation {
-    String spritePath;
+
+    List<SpriteX> sprites;
+    List<SpellVfx> vfx;
+    private boolean done;
+    private int fps = 14;
+    private SuperActor.BLENDING blending = SuperActor.BLENDING.SCREEN;
+    private boolean parallel;
+
+    String spritePaths;
+    String vfxPaths;
     Runnable onDone;
+
     Vector2 origin;
     Vector2 dest;
     Vector2 pos;
     Float duration;
-    List<SpriteX> sprites;
-    private boolean done;
-    private int fps=14;
-    private SuperActor.BLENDING blending= SuperActor.BLENDING.SCREEN;
-    private boolean parallel;
 
-    public SimpleAnim(String spritePath, Runnable onDone, Vector2 origin, Vector2 dest, Float duration) {
-        this.spritePath = spritePath;
+
+    public SimpleAnim(String vfx, String spritePaths, Runnable onDone, Vector2 origin, Vector2 dest, Float duration) {
+        this.vfxPaths = vfx;
+        this.spritePaths = spritePaths;
         this.onDone = onDone;
         this.origin = origin;
         this.dest = dest;
         this.duration = duration;
     }
 
-    public SimpleAnim(String spritePath, Runnable onDone) {
-        this(spritePath, onDone, GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates()), null, null);
-        this.spritePath = spritePath;
+    public SimpleAnim(String spritePaths, Runnable onDone) {
+        this(null, spritePaths, onDone);
+    }
+
+    public SimpleAnim(String vfx, String spritePaths, Runnable onDone) {
+        this(vfx, spritePaths, onDone, GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates()), null, null);
+        this.spritePaths = spritePaths;
         this.onDone = onDone;
     }
 
     @Override
     public void start(Ref ref) {
         pos = origin;
+        vfx = SpellVfxPool.getEmitters(vfxPaths);
+        for (SpellVfx spellVfx : vfx) {
+            spellVfx.start();
+            spellVfx.allowFinish();
+
+        }
         if (sprites == null) {
             sprites = new ArrayList<>();
-            for (String substring : ContainerUtils.openContainer(spritePath)) {
+
+            for (String substring : ContainerUtils.openContainer(spritePaths)) {
                 SpriteX sprite = new SpriteX(substring);
                 //set stuff?
                 sprite.getSprite().setLooping(false);
@@ -81,13 +98,23 @@ public class SimpleAnim implements Animation {
     @Override
     public boolean tryDraw(Batch batch) {
         //TODO dest
-        if (duration == null) {
+//        if (duration == null) what's that?
+        {
             done = true;
+
+            for (SpellVfx spellVfx : vfx) {
+                spellVfx.updatePosition(pos.x,pos.y);
+                spellVfx.draw(batch, 1f);
+                main.system.auxiliary.log.LogMaster.dev(" " );
+                if (!spellVfx.isComplete()) {
+                    done = false;
+                }
+            }
+
             for (SpriteX sprite : sprites) {
                 sprite.setBlending(blending);
                 sprite.setFps(fps);
                 sprite.setX(pos.x);
-//                DungeonScreen.getInstance().getCamera().position.x);
                 sprite.setY(pos.y);
 
                 if (sprite.draw(batch)) {
@@ -95,8 +122,7 @@ public class SimpleAnim implements Animation {
                 }
 
             }
-            if (done)
-            {
+            if (done) {
                 finished();
                 return false;
             }
@@ -111,6 +137,7 @@ public class SimpleAnim implements Animation {
     public void setBlending(SuperActor.BLENDING blending) {
         this.blending = blending;
     }
+
     @Override
     public boolean draw(Batch batch) {
         return tryDraw(batch);

@@ -1,7 +1,10 @@
 package eidolons.libgdx.anims;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingText;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -10,6 +13,7 @@ import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static eidolons.libgdx.anims.text.FloatingTextMaster.DEFAULT_DISPLACEMENT_X;
 import static eidolons.libgdx.anims.text.FloatingTextMaster.displacementInvertFlag;
@@ -32,10 +36,24 @@ public class FloatingTextLayer extends GroupX {
                 return;
             if (displaying.contains(floatingText))
                 return;
+            if (isWaitForInput(floatingText.getCase())) {
+                AtomicBoolean flag = new AtomicBoolean(false);
+                GdxMaster.onInputGdx(() -> flag.set(true));
+                floatingText.setStayFullCondition(time -> flag.get());
+            }
             floatingText.setDuration(floatingText.getDuration() * getDurationMod());
             floatingText.init();
             addToQueue(floatingText);
         });
+    }
+
+    private boolean isWaitForInput(FloatingTextMaster.TEXT_CASES aCase) {
+//        if (aCase != null)
+//            switch (aCase) {
+//                case BATTLE_COMMENT:
+//                    return !Cinematics.ON;
+//            }
+        return false;
     }
 
     private void addToQueue(FloatingText floatingText) {
@@ -50,8 +68,8 @@ public class FloatingTextLayer extends GroupX {
         for (FloatingText sub : new ArrayList<>(queued)) {
             show(sub);
         }
-        for (FloatingText sub :     new ArrayList<>(displaying) ) {
-            if (sub.getActions().size<=0 ||sub.getColor().a<=0 || sub.getParent()==null || !sub.isVisible())
+        for (FloatingText sub : new ArrayList<>(displaying)) {
+            if (sub.getActions().size <= 0 || sub.getColor().a <= 0 || sub.getParent() == null || !sub.isVisible())
                 displaying.remove(sub);
         }
 
@@ -61,9 +79,9 @@ public class FloatingTextLayer extends GroupX {
         float offsetX = 0;
         float offsetY = 0;
         offsetX =
-         displacementInvertFlag
-          ? -DEFAULT_DISPLACEMENT_X
-          : DEFAULT_DISPLACEMENT_X;
+                displacementInvertFlag
+                        ? -DEFAULT_DISPLACEMENT_X
+                        : DEFAULT_DISPLACEMENT_X;
 
 //        for (FloatingText text : displaying) {
 //            float dst = new Vector2(text.getX(), text.getY())
@@ -87,8 +105,8 @@ public class FloatingTextLayer extends GroupX {
 
     public static Float getDurationMod() {
         if (durationMod == null) {
-            durationMod=new Float(
-             OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.FLOAT_TEXT_DURATION_MOD))/100;
+            durationMod = new Float(
+                    OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.FLOAT_TEXT_DURATION_MOD)) / 100;
         }
         return durationMod;
     }

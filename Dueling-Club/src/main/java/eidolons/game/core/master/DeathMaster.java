@@ -166,6 +166,9 @@ public class DeathMaster extends Master {
         } else {
             GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, killed);
         }
+        if (killed.isSummoned()){
+            leaveCorpse=false;
+        }
         if (!leaveCorpse) {
             // leave a *ghost*?
             // destroy items?

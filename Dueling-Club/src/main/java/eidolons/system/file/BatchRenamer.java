@@ -109,15 +109,14 @@ public class BatchRenamer {
         processAE_Dir(rawFolder, outputFolder); //String... frameNames
 
     }
-
     private static void processAE_Dir(String rawFolder, String outputFolder) {
         int i = 0;
         List<File> rawFiles = FileManager.getFilesFromDirectory(rawFolder, false);
         List<File> processFiles = FileManager.getFilesFromDirectory(outputFolder, false);
 
         //preserve FULL folder structure!
-        for (File file : processFiles) {
-            File newFile = new File(outputFolder + "/renamed/" + rawFiles.get(i++).getName());
+        for (File file : processFiles) { //renamed
+            File newFile = new File(outputFolder + "/" + rawFiles.get(i++).getName());
             if (!file.renameTo(newFile)) {
                 break;
             }

@@ -107,7 +107,7 @@ public class ChannelingRule {
 //        castEffect.setForceTargeting(true);
 
 //        AddTriggerEffect triggerEffect = new AddTriggerEffect(
-//         STANDARD_EVENT_TYPE.UNIT_TURN_STARTED, conditions,
+//         STANDARD_EVENT_TYPE.UNIT_TURN_READY, conditions,
 //         new ActiveAbility(null, new Effects(
 //          new RemoveBuffEffect(string), castEffect)));
         modeEffect.setReinit(false);

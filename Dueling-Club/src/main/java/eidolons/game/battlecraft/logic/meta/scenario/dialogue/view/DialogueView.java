@@ -219,19 +219,17 @@ public class DialogueView extends TablePanelX implements Scene {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 GuiEventManager.trigger(GuiEventType.ACTOR_SPEAKS, getUserObject().getSpeakerActor().getActor().getLinkedUnit());
-
-                int time = handler.getDialogue().getTimeBetweenScripts() + next.getMessage().length() *
-                        handler.getDialogue().getTimeBetweenScriptsLengthMultiplier();
-                if (time > 0) {
+                if (timeToRespond == null) {
+                    int time = handler.getDialogue().getTimeBetweenScripts() + next.getMessage().length() *
+                            handler.getDialogue().getTimeBetweenScriptsLengthMultiplier();
+                    if (time > 0) {
 //                    disableReplies();
-                    main.system.auxiliary.log.LogMaster.dev("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
-                    setTime(new Float(time));
-//                    WaitMaster.doAfterWait(time, () -> {
-//                        autoRespond = true;
-//                        timerDisabled=false;
-//                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true; ");
-//                    });
-                } else {
+                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
+                        setTime(new Float(time));
+                    }
+                }
+                if (timeToRespond != null)
+                {
                     if (!isRepliesEnabled()) {
                         enableReplies();
                     }
