@@ -97,12 +97,13 @@ public class Anim extends Group implements Animation {
     protected Vector2 offsetOrigin;
     protected Vector2 offsetDestination;
     protected CompositeAnim parentAnim;
-    protected  boolean completingVfx ;
+    protected boolean completingVfx;
     protected float speedMod = 1;
 
     public Anim(Entity active, AnimData params) {
         this(active, params, null);
     }
+
     public Anim(Entity active, AnimData params, ANIM_PART part) {
         data = params;
         this.part = part;
@@ -196,7 +197,7 @@ public class Anim extends Group implements Animation {
                 if (!emitterList.isEmpty()) {
                     if (AnimMaster.isSmoothStop(this)) {
                         if (checkVfxCompletion())
-                            waitForVfx=true;
+                            waitForVfx = true;
                     }
                 }
                 if (!waitForVfx) {
@@ -248,16 +249,16 @@ public class Anim extends Group implements Animation {
     private boolean checkVfxCompletion() {
         if (!completingVfx) {
             waitForVfx();
-            completingVfx=true;
+            completingVfx = true;
         }
-        for (EmitterActor e :     emitterList) {
+        for (EmitterActor e : emitterList) {
             e.getEffect().allowCompletion();
         }
-        for (EmitterActor e :     emitterList) {
+        for (EmitterActor e : emitterList) {
             if (!e.isComplete()) {
-               return true ;
+                return true;
             }
-            }
+        }
         return false;
     }
 
@@ -374,10 +375,10 @@ public class Anim extends Group implements Animation {
                 }
         );
         if (ListMaster.isNotEmpty(emitterCache))
-            setEmitterList(    new ArrayList<>(emitterCache) );
+            setEmitterList(new ArrayList<>(emitterCache));
         else {
             if (!ListMaster.isNotEmpty(emitterList))
-                setEmitterList(    new ArrayList<>() );
+                setEmitterList(new ArrayList<>());
         }
         //        emitterCache.clear();
         //        emitterCache.addAll(emitterList);//= new ArrayList<>(emitterList);
@@ -391,8 +392,15 @@ public class Anim extends Group implements Animation {
 
         getEmitterList().forEach(e -> {
             e.reset();
-
+            if (isContinuous(part)) {
+            e.getEffect().getEmitters().forEach(t ->
+                    t.setContinuous(true));
+            }
         });
+    }
+
+    private boolean isContinuous(ANIM_PART part) {
+        return part==ANIM_PART.MISSILE;
     }
 
     protected void initDuration() {
@@ -985,6 +993,7 @@ public class Anim extends Group implements Animation {
     public EventCallback getOnDone() {
         return onDone;
     }
+
     public EventCallbackParam getCallbackParam() {
         return callbackParam;
     }

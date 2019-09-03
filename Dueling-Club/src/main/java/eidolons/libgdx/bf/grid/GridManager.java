@@ -94,7 +94,11 @@ public class GridManager {
         } else {
             String img = list.get(0).toString();
             c = (Coordinates) list.get(2);
-            f = f.rotate(true);
+            if (Cinematics.ON) {
+                f = f.rotate(true);
+            } else {
+                f = FACING_DIRECTION.NORTH;
+            }
             comment(img, f, c, true, text, null);
         }
     }
@@ -182,16 +186,16 @@ public class GridManager {
     private void comment(Unit unit, String text, Vector2 at) {
         boolean textTop = false;
         String portrait = null;
-        if (unit == Eidolons.getMainHero()) {
-            portrait = (Sprites.COMMENT_KESERIM);
-        } else {
-            textTop = true;
+//        if (unit == Eidolons.getMainHero()) {
+//            portrait = (Sprites.COMMENT_KESERIM);
+//        } else {
+//            textTop = true;
             portrait = ImageManager.getBlotch(unit);
-        }
+//        }
 
         comment(portrait, unit.getFacing(), unit.getCoordinates(), textTop, text, at);
         LogMaster.dev(text + "\n - Comment by " + unit.getNameAndCoordinate());
-        Eidolons.getGame().getLogManager().log(unit.getName() + " :\n" + text);
+        Eidolons.getGame().getLogManager().log(unit.getName() + " :" + text);
     }
 
     private void commentGdx(String image, FACING_DIRECTION f, Coordinates c, boolean textTop, String text,
@@ -212,11 +216,17 @@ public class GridManager {
         portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
 
         SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
-        commentTextBgSprite.setScale(0.75f);
-        commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
-        commentTextBgSprite.setRotation(90);
         commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-        commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
+        if (textTop){
+            commentTextBgSprite.setScale(0.75f);
+            commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
+            commentTextBgSprite.setRotation(90);
+            commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
+        } else {
+            commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 2, commentBgSprite.getHeight() / 2);
+            commentTextBgSprite.setRotation(90);
+            commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2f, -100 - commentBgSprite.getHeight() / 8);
+        }
 
 //            commentBgSprite.setShader(ShaderMaster.SHADER.INVERT);
         commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
@@ -278,16 +288,19 @@ public class GridManager {
         GroupX finalPortrait = portrait;
         Runnable r = () -> {
             main.system.auxiliary.log.LogMaster.dev(key + " key; fade comment   " + text);
-            ActionMaster.addFadeOutAction(commentBgSprite, 4);
-            ActionMaster.addRemoveAfter(commentBgSprite);
-            ActionMaster.addFadeOutAction(finalPortrait, 3);
-            ActionMaster.addFadeOutAction(commentTextBgSprite, 2);
+            boolean seq=false;
             if (key != null) {
                 if (flag != null) {
                     flag.set(true);
+                    seq=true;
                 }
                 WaitMaster.doAfterWait(5000, () -> WaitMaster.unlock(key));
             }
+            ActionMaster.addFadeOutAction(commentBgSprite,seq? 6: 4);
+            ActionMaster.addRemoveAfter(commentBgSprite);
+            ActionMaster.addFadeOutAction(finalPortrait, seq? 4:3);
+            ActionMaster.addFadeOutAction(commentTextBgSprite, seq? 5:4);
+
         };
         boolean onInput = !Cinematics.ON;
         if (onInput) {

@@ -17,6 +17,7 @@ import main.entity.obj.BfObj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
 
 import java.util.Arrays;
 
@@ -24,6 +25,11 @@ public class FacingCondition extends ConditionImpl {
 
     private FACING_SINGLE[] templates;
     private Boolean left_right;
+    FACING_DIRECTION facing;
+
+    public FacingCondition(FACING_DIRECTION facing) {
+        this.facing = facing;
+    }
 
     public FacingCondition(Boolean left_right, FACING_SINGLE... template) {
         this.left_right = left_right;
@@ -34,6 +40,7 @@ public class FacingCondition extends ConditionImpl {
         this(null, templates);
     }
 
+
     @Override
     public boolean check(Ref ref) {
         if (!(ref.getSourceObj() instanceof DC_UnitModel)) {
@@ -42,6 +49,9 @@ public class FacingCondition extends ConditionImpl {
         BattleFieldObject obj1 = (BattleFieldObject) ref.getSourceObj();
         if (obj1 instanceof BossUnit){
             return true;
+        }
+        if (facing != null) {
+            return obj1.getFacing() == facing;
         }
         DC_Obj obj2;
 

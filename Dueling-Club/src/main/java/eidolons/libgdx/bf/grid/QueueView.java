@@ -155,6 +155,10 @@ public class QueueView extends UnitView {
         GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, this);
     }
 
+    public void setInitiative(int initiative) {
+        //TODO need it due to some glitch in updates..
+        initiativeLabel.setText(String.valueOf(initiative));
+    }
     public LabelStyle getInitiativeFontStyle() {
         return StyleHolder.getSizedColoredLabelStyle(
                 0.3f,
@@ -249,5 +253,6 @@ public class QueueView extends UnitView {
     public void setInitiativeLabelText(String text) {
         initiativeLabel.setText(text);
     }
+
 }
 

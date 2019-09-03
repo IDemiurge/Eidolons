@@ -170,6 +170,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 return doQuest(true, ref, args);
             case QUEST:
                 return doQuest(false, ref, args);
+            case SCRIPT_PARALLEL:
+                getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
+                        execute(SpeechScript.SPEECH_ACTION.SCRIPT_PARALLEL,
+                                args[0]);
+                return true;
             case SCRIPT:
                 getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
                         execute(SpeechScript.SPEECH_ACTION.SCRIPT,
@@ -359,7 +364,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
 
         GridManager.instance.comment_(img, text, c);
-        Eidolons.getGame().getLogManager().log(name + " :\n" + removeSequentialKey(text));
+        Eidolons.getGame().getLogManager().log(name + " :" + removeSequentialKey(text));
         return true;
     }
 
@@ -565,7 +570,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ESOTERICA, CINEMATIC;
+        ESOTERICA, CINEMATIC, SCRIPT_PARALLEL;
     }
 
 }

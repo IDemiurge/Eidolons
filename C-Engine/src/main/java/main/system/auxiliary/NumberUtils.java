@@ -63,7 +63,7 @@ public class NumberUtils {
 
             i++;
         }
-        return true;
+        return i>0;
     }
 
     public static Boolean isIntegerOrNumber(String value) {

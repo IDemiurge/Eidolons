@@ -72,6 +72,7 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -123,8 +124,9 @@ public class SpeechExecutor {
         Vector2 v = null;
         CUSTOM_OBJECT obj = null;
         Coordinates c = null;
+        Coordinates c1 = null;
         BattleFieldObject unit = Eidolons.getMainHero();
-
+        List<Coordinates> coordinatesList = null;
 
         if (waitOnEachLine != 0) {
             WAIT(waitOnEachLine);
@@ -164,6 +166,9 @@ public class SpeechExecutor {
             case REMOVE_SPELL:
                 unit = getUnit(value);
                 ObjType t = DataManager.getType(vars.get(0), DC_TYPE.SPELLS);
+                if (t == null) {
+                    SpellMaster.removeSpells((Unit) unit);
+                } else
                 if (speechAction == ADD_SPELL) {
                     SpellMaster.addVerbatimSpell((Unit) unit, t);
                 } else {
@@ -234,14 +239,76 @@ public class SpeechExecutor {
                 getUnit(value).setProperty(vars.get(0), (vars.get(1)));
                 master.getGame().getManager().reset();
                 break;
+
+            case REPLACE:
+                break;
+            case CLEAR:
+                if (vars.size()>0) {
+                 c1 = getCoordinate(vars.get(1), true);
+                coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+                }
+                for (BattleFieldObject bfObject : master.getGame().getBfObjects()) {
+                    if (bfObject.getName().equalsIgnoreCase(value)) {
+                        if (coordinatesList == null) {
+                            doUnit(bfObject, "remove");
+                        } else
+                        if (coordinatesList.contains(bfObject.getCoordinates())) {
+                            doUnit(bfObject, "remove");
+                        }
+                    }
+
+                }
+
+                break;
+            case BUFF_REMOVE:
+                getUnit(value).removeBuff(vars.get(0));
+                break;
+            case BUFF_ADD:
+                unit=getUnit(value);
+                unit.addBuff(master.getGame().getManager().getBuffMaster().createCustomBuff(vars.get(0), unit));
+                break;
+            case FILL:
+                  c1 = getCoordinate(vars.get(1), true);
+                coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+
             case ADD:
             case BF_OBJ:
+                c = getCoordinate(vars.get(0));
+            case NAMED_COORDINATES_ADD:
+                if (speechAction == NAMED_COORDINATES_ADD) {
+                    coordinatesList = new ArrayList<>();
+                    for (String s : master.getGame().getDungeon().getCustomDataMap().keySet()) {
+                        if (master.getGame().getDungeon().getCustomDataMap().get(s).equalsIgnoreCase(value)) {
+                            coordinatesList.add(Coordinates.get(s));
+                        }
+                    }
+                }
                 ObjType bfType = DataManager.getType(value,
                         C_OBJ_TYPE.BF_OBJ);
-                c = getCoordinate(vars.get(0));
-                MicroObj u = master.getGame().createUnit(bfType, c,
+                if (coordinatesList != null) {
+                    int chance = 100;
+                    if (vars.size() > 2) {
+                        chance = Integer.valueOf(vars.get(2));
+                    }
+                    for (Coordinates coordinates : coordinatesList) {
+                        if (!RandomWizard.chance(chance)) {
+                            continue;
+                        }
+                        master.getGame().createUnit(bfType, coordinates,
+                                speechAction == ADD ? master.getGame().getPlayer(false)
+                                        : DC_Player.NEUTRAL);
+                    }
+                    break;
+                }
+
+                master.getGame().createUnit(bfType, c,
                         speechAction == ADD ? master.getGame().getPlayer(false)
                                 : DC_Player.NEUTRAL);
+                break;
+
+            case TIP:
+                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TIP, new Ref(), value);
+                //TODO after?
                 break;
 
             case TURN:
@@ -267,7 +334,10 @@ public class SpeechExecutor {
 //                });
 //                //set max from value ?
 //                value = "INPUT";
-                if (vars.size()>0) {
+                if (NumberUtils.isInteger(value)) {
+                    vars.add(value);
+                }
+                if (vars.size() > 0) {
                     execute(WAIT, vars.get(0));
                 }
                 Lock lock = new ReentrantLock();
@@ -289,10 +359,10 @@ public class SpeechExecutor {
                 }
                 main.system.auxiliary.log.LogMaster.dev("Scripts Unlocked!");
 
-                if (vars.size()>1) {
+                if (vars.size() > 1) {
                     execute(WAIT, vars.get(1));
                 } else {
-                    if (vars.size()>0) {
+                    if (vars.size() > 0) {
                         execute(WAIT, vars.get(0));
                     }
                 }
@@ -404,12 +474,12 @@ public class SpeechExecutor {
                 break;
 
             case SCRIPT_PARALLEL:
-                bool=true;
+                bool = true;
             case SCRIPT:
                 String d = Texts.getScriptsMap().get(value);
                 if (d != null) {
                     main.system.auxiliary.log.LogMaster.important("Nested script: " + d);
-                    if (!vars.isEmpty()||bool) {
+                    if (!vars.isEmpty() || bool) {
                         Eidolons.onNonGdxThread(() ->
                                 new SpeechScript(d, master).execute());
                     } else
@@ -559,7 +629,11 @@ public class SpeechExecutor {
                 } else {
                     Vector2 offset = null;
                     if (vars.size() > 1) {
-                        offset = GridMaster.getCenteredPos(getCoordinate(vars.get(1)));
+                        offset = GridMaster.getCenteredPos(getCoordinate(vars.get(1), true));
+                        if (getCoordinate(vars.get(1), true).dst(unit.getCoordinates()) > 10) {
+                            offset = GridMaster.getCenteredPos(getCoordinate(vars.get(1), true)
+                                    .getOffset(unit.getCoordinates()));
+                        }
                     }
                     CombatScriptExecutor.doComment((Unit) unit, value, offset);
                 }
@@ -658,7 +732,7 @@ public class SpeechExecutor {
                 break;
             case AREA:
                 c = getCoordinate(vars.get(0), true);
-                Coordinates c1 = getCoordinate(vars.get(1), true);
+                c1 = getCoordinate(vars.get(1), true);
                 for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetween(c, c1)) {
                     for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(coordinates)) {
                         doUnit(object, value);
@@ -739,6 +813,14 @@ public class SpeechExecutor {
                 }
 //                container.setOnDoneCallback();
                 break;
+            case VIDEO:
+               Runnable r=null;
+                if(vars.size()>0){
+                    r = () -> Eidolons.onNonGdxThread(() -> execute(SCRIPT, vars.get(0)));
+                }
+                GuiEventManager.trigger(GuiEventType.PLAY_VIDEO, value, r);
+                break;
+
         }
     }
 

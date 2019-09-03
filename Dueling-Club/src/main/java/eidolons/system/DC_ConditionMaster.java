@@ -11,6 +11,7 @@ import eidolons.ability.conditions.shortcut.StdPassiveCondition;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
@@ -536,6 +537,8 @@ public class DC_ConditionMaster extends ConditionMaster {
         Condition result = null;
         {
             switch (template) {
+                case FACING:
+                    return new FacingCondition(FacingMaster.getFacing(str1));
                 case ITEM: {
                     String slot = str1;
                     String prop = VariableManager.removeVarPart(str2);

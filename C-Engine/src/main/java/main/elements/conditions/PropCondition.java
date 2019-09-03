@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.content.values.properties.PROPERTY;
+import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
 
@@ -18,8 +19,14 @@ public class PropCondition extends StringComparison {
         super(StringMaster.getValueRef(key, prop), str2, strict);
     }
 
+    @OmittedConstructor
     public PropCondition(PROPERTY prop, Object str2) {
         super(StringMaster.getValueRef(KEYS.MATCH, prop), str2.toString(),
-         false);
+                false);
+    }
+
+    public PropCondition(PROPERTY prop, String str2) {
+        super(StringMaster.getValueRef(KEYS.MATCH, prop), str2,
+                false);
     }
 }

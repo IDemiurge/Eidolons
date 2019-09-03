@@ -76,9 +76,10 @@ public class AnimMaster3d {
             {"paws", "claws"},
             {"tentacle", "insect claws"},
             {"lance", "spear"},
+            {"glaive", "battle spear"},
             //     {"pike", "spear"},
             //     {"staff", "spear"},
-            {"battle spear", "lance"},
+//            {"battle spear", "lance"},
             //     {"scythe", "spear"},
             {"sickle", "hand axe"},
 
@@ -102,6 +103,7 @@ public class AnimMaster3d {
             {"fist swing", "punch"},
             {"aimed shot", "quick shot"}
     };
+    public static boolean JPG_WEAPONS=EidolonsGame.BRIDGE;
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
@@ -319,8 +321,12 @@ public class AnimMaster3d {
                 PathFinder.getWeaponAnimPath(), "atlas",
                 weapon.getWeaponType().toString().replace("_", " ")
                 , groupName, name
-                + TexturePackerLaunch.ATLAS_EXTENSION);
+                + getAtlasSuffix()+ TexturePackerLaunch.ATLAS_EXTENSION);
         return s.toString();
+    }
+
+    private static String getAtlasSuffix() {
+        return JPG_WEAPONS? " jpg": "";
     }
 
     private static boolean isAssymetric(String activeWeapon) {

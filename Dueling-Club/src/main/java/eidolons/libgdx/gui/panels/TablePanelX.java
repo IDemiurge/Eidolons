@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import eidolons.libgdx.GdxMaster;
+import main.system.auxiliary.ClassMaster;
 
 /**
  * Created by JustMe on 2/11/2018.
@@ -34,7 +35,7 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
     public void setUserObject(Object userObject) {
         if (userObject != null)
             if (getUserObjectClass() != null)
-                if (userObject.getClass() != getUserObjectClass())
+                if (!ClassMaster.isInstanceOf(userObject, getUserObjectClass()))
                     return;
         super.setUserObject(userObject);
     }

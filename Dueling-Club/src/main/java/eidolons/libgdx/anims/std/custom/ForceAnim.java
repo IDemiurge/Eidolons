@@ -19,7 +19,12 @@ import eidolons.libgdx.particles.spell.VfxShaper;
 import eidolons.libgdx.particles.spell.VfxShaper.VFX_SHAPE;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JustMe on 11/28/2018.
@@ -29,7 +34,13 @@ public class ForceAnim extends Weapon3dAnim {
     private VfxContainer<PhaseVfx> shaped;
     private GenericEnums.DAMAGE_TYPE type;
 
-    Weapon3dAnim weapon3dAnim;
+    public static final List vfxList = Arrays.asList(new GenericEnums.VFX[]{
+            GenericEnums.VFX.dark_blood, GenericEnums.VFX.dark_impact,
+            GenericEnums.VFX.invert_impact,
+            GenericEnums.VFX.invert_missile,
+            GenericEnums.VFX.invert_breath,
+    });
+
 
     public ForceAnim(DC_ActiveObj active, ANIM_PART part) {
         super(active);
@@ -46,6 +57,7 @@ public class ForceAnim extends Weapon3dAnim {
         Array<TextureAtlas.AtlasRegion> regions = SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
                 .findRegions("armored fist punch " + projection.toString().toLowerCase() +
                         "/armored fist punch " + projection.toString().toLowerCase());
+
         sprite = SpriteAnimationFactory.getSpriteAnimation(regions, 15f / 100, 1);
         sprite.setBlending(SuperActor.BLENDING.SCREEN);
         switch (projection) {
@@ -77,9 +89,9 @@ public class ForceAnim extends Weapon3dAnim {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
-            String path =// SpellVfxMaster.getRandomVfx
-                    PhaseVfx.isRandom() ? PathFinder.getVfxAtlasPath() + "invert/" :
-                            "breath";
+            String path =PathFinder.getVfxPath()+ getVfxPath();// SpellVfxMaster.getRandomVfx
+//                    PhaseVfx.isRandom() ? PathFinder.getVfxAtlasPath() + "invert/" :
+//                            "breath";
             //         );  //damage/fire
 //            if (type != null) {
 //                path = EffectAnimCreator.getVfx(type);
@@ -98,6 +110,11 @@ public class ForceAnim extends Weapon3dAnim {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    private String getVfxPath() {
+        GenericEnums.VFX vfx = (GenericEnums.VFX) RandomWizard.getRandomListObject(vfxList);
+        return vfx.getPath();
     }
 
     @Override

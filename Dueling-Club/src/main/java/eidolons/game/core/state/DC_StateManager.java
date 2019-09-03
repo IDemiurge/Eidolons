@@ -7,6 +7,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -58,7 +59,7 @@ public class DC_StateManager extends StateManager {
     private StatesKeeper keeper;
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
     private boolean savingOn = ConfigMaster.getInstance()
-     .getBoolean("SAVING_ON_DEFAULT");
+            .getBoolean("SAVING_ON_DEFAULT");
 
     private Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
@@ -109,9 +110,9 @@ public class DC_StateManager extends StateManager {
                     for (BattleFieldObject obj : getGame().getBfObjects()) {
 
                         if ((ExplorationMaster.isExplorationOn() && obj.isOutsideCombat()) ||
-                         getGame().getVisionMaster().getVisionRule().
-                          isResetRequiredSafe(Eidolons.getMainHero(), obj)
-                        || isAlwaysReset(obj)
+                                getGame().getVisionMaster().getVisionRule().
+                                        isResetRequiredSafe(Eidolons.getMainHero(), obj)
+                                || isAlwaysReset(obj)
 
                         ) {
                             objectsToReset.add(obj);
@@ -135,10 +136,10 @@ public class DC_StateManager extends StateManager {
                     //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
                 }
 
-                log(1, objectsToReset.size() + " objects To Reset   "  );
+                log(1, objectsToReset.size() + " objects To Reset   ");
 
                 log(1, unitsToReset.size() + " Units to reset = " +
-                 unitsToReset);
+                        unitsToReset);
 
                 resetAll();
                 resetting = false;
@@ -168,11 +169,18 @@ public class DC_StateManager extends StateManager {
     }
 
     private void resetAll() {
+        Ref ref = new Ref(game);
+        if (getGame().getLoop().getLastActionInput() != null) {
+            ref.setObj(KEYS.ACTIVE, getGame().getLoop().getLastActionInput().getAction());
+        }
+
+        game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_STARTS, ref));
+
         if (getGame().getDungeonMaster().getExplorationMaster() != null)
             if (!getGame().getDungeonMaster().getExplorationMaster().isToggling()) {
-            getGame().getDungeonMaster().getExplorationMaster()
-             .getAggroMaster().checkStatusUpdate();
-        }
+                getGame().getDungeonMaster().getExplorationMaster()
+                        .getAggroMaster().checkStatusUpdate();
+            }
 
         getGame().getDroppedItemManager().reset();
 
@@ -182,7 +190,7 @@ public class DC_StateManager extends StateManager {
 
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
             if (getGame().getDungeonMaster().getExplorationMaster().
-             getResetter().isResetNotRequired()) {
+                    getResetter().isResetNotRequired()) {
                 objectsToReset.forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
                 triggerOnResetGuiEvents();
                 return;
@@ -191,7 +199,7 @@ public class DC_StateManager extends StateManager {
 
         }
         getGame().getRules().getBuffRules().forEach(
-         buffRule -> buffRule.clearCache());
+                buffRule -> buffRule.clearCache());
 
         super.resetAllSynchronized();
         if (getGame().isStarted()) {
@@ -203,6 +211,7 @@ public class DC_StateManager extends StateManager {
         if (savingOn) {
             keeper.save();
         }
+        game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_DONE, ref));
     }
 
 
@@ -462,8 +471,8 @@ public class DC_StateManager extends StateManager {
 
         getGame().getLogManager().addImageToLog(Images.SEPARATOR_ALT);
 
-                game.getLogManager().log(
-                        DC_LogManager.ALIGN_CENTER +
+        game.getLogManager().log(
+                DC_LogManager.ALIGN_CENTER +
                         "                                        [Round #" + (state.getRound() + 1) + "]"
         );
         newTurnTick();
@@ -491,7 +500,7 @@ public class DC_StateManager extends StateManager {
         //        getGameManager().reset();
 
         if (!started)
-             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.GAME_STARTED, game));
+            getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.GAME_STARTED, game));
         game.getLogManager().doneLogEntryNode();
         // if (!activePlayer.isMe())
     }

@@ -77,6 +77,7 @@ public class SpellEnums {
     }
 
     public enum SPELL_TAGS {
+        RANDOM_FACING,
         FACE_SUMMONER,
         EXCLUSIVE_SUMMON,
         MIND_AFFECTING,

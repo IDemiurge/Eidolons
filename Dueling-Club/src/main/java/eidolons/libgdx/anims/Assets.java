@@ -302,7 +302,8 @@ public class Assets {
             loadSprite(Sprites.WHITE_TENTACLE, full);
             loadSprite(Sprites.BONE_WINGS, full);
             loadSprite(Sprites.LIGHT_VEIL, full);
-            loadSprite(Sprites.COMMENT_KESERIM, full);
+            loadSprite("sprites/weapons3d/atlas/screen/ghost/ghost fist.txt", full);
+//            loadSprite(Sprites.COMMENT_KESERIM, full);
 
             loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
 //            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);

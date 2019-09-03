@@ -6,6 +6,7 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -92,7 +93,7 @@ public class ActionManager extends AiHandler {
                 //check no side fx ?
 
                 //don't pop the action?
-                main.system.auxiliary.log.LogMaster.log(1,unit + " has Intent action: " +action);
+                main.system.auxiliary.log.LogMaster.log(1, unit + " has Intent action: " + action);
             }
 
         }
@@ -105,10 +106,15 @@ public class ActionManager extends AiHandler {
 
     public Action chooseAction(boolean intent) {
         UnitAI ai = getMaster().getUnitAI();
-        if (ai.checkStandingOrders()) {
-            Action ordered = ai.getStandingOrders().get(0);
+        if (ai.checkStandingOrders(EidolonsGame.DUEL)) {
             getUnitAi().getCombatAI().setLastSequence(ai.getStandingOrders());
-            main.system.auxiliary.log.LogMaster.dev(getUnit()+"'s next order: " + ordered );
+            Action ordered = ai.getStandingOrders().popNextAction();
+            if (ordered == ai.getStandingOrders().getLastAction()) {
+                ai.setStandingOrders(null);
+                main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s last order: " + ordered);
+            } else {
+                main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s next order: " + ordered);
+            }
             return ordered;
         }
         if (!intent) {

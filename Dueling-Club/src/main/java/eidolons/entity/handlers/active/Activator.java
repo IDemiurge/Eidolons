@@ -5,6 +5,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -13,6 +14,7 @@ import eidolons.libgdx.bf.GridMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -47,7 +49,14 @@ public class Activator extends ActiveHandler {
             return false;
         if (getGame().getTestMaster().isActionFree(getEntity().getName())) {
             return true;
-        }  if (!getEntity().isMine()) //TODO igg demo hack
+        }
+
+        if (EidolonsGame.isActionBlocked(getEntity())) {
+            return false;
+        }
+
+
+        if (!getEntity().isMine()) //TODO igg demo hack
         if (!first ) {//|| broken) {
             if (canActivate != null) {
 
@@ -124,19 +133,22 @@ public class Activator extends ActiveHandler {
         return canBeActivated(getRef(), true);
     }
 
-    public void cannotActivate() {
+    public  void cannotActivate() {
+        cannotActivate_(getEntity(), getEntity().getCosts().getReasonsString());
+    }
+        public static void cannotActivate_(DC_ActiveObj e, String reason) {
         LogMaster.log(1, "Cannot Activate " +
-                getEntity().getName() +
-                ": " + getEntity().getCosts().getReasonsString());
-        if (!getEntity().getOwnerUnit().isMine())
-            if (getEntity().getOwnerUnit().isAiControlled())
+                e.getName() +
+                ": " + reason);
+        if (!e.getOwnerUnit().isMine())
+            if (e.getOwnerUnit().isAiControlled())
                 return;
-        FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
+        FloatingText f = FloatingTextMaster.getInstance().getFloatingText(e,
                 TEXT_CASES.REQUIREMENT,
-                getEntity().getCosts().getReasonsString());
+                e.getCosts().getReasonsString());
         f.setDisplacementY(100);
         f.setDuration(3);
-        Vector2 c = GridMaster.getCenteredPos(getEntity()
+        Vector2 c = GridMaster.getCenteredPos(e
                 .getOwnerUnit().getCoordinates());
         f.setX(c.x);
         f.setY(c.y);

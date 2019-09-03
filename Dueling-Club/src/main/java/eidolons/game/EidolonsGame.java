@@ -1,14 +1,17 @@
 package eidolons.game;
 
+import eidolons.entity.active.ActionInitializer;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 
 import java.util.Map;
@@ -26,8 +29,10 @@ public class EidolonsGame {
     public static boolean DUEL = false;
 
     public static boolean INTRO_STARTED;
+    public static boolean ATTACKS_DISABLED;
     public static boolean TURNS_DISABLED;
     public static boolean MOVES_DISABLED;
+    public static boolean TUTORIAL;
     private static Map<String, Boolean> varMap = new StringMap<>();
     private static Map<String, Boolean> actionMap = new StringMap<>();
 
@@ -137,14 +142,31 @@ public class EidolonsGame {
         if (activeObj.isDisabled()) {
             return true;
         }
+        if (!activeObj.getOwnerUnit().isPlayerCharacter()) {
+            return false;
+        }
         if (activeObj.isMove()) {
             return MOVES_DISABLED;
         }
         if (activeObj.isTurn()) {
             return TURNS_DISABLED;
         }
-
-        return false;
+        if (!EidolonsGame.DUEL) {
+            return false;
+        }
+        if (!EidolonsGame.TUTORIAL) {
+            return false;
+        }
+        if (!ActionInitializer.isActionNotBlocked(activeObj, ExplorationMaster.isExplorationOn())) {
+            return true;
+        }
+        if (activeObj.isSpell()) {
+            return false;
+        }
+        if (!actionMap.containsKey(activeObj.getName().toLowerCase())) {
+            return false;
+        }
+        return !actionMap.get(activeObj.getName().toLowerCase());
     }
 
     public MetaGameMaster getMetaMaster() {

@@ -169,6 +169,9 @@ public class Targeter extends ActiveHandler {
     public boolean canBeTargeted(Integer id, boolean caching, boolean recursion) {
 
         Targeting targeting = getTargeting();
+        if (!(targeting instanceof SelectiveTargeting)) {
+            return true;
+        }
         Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
                 getOwnerObj().getCoordinates());
 

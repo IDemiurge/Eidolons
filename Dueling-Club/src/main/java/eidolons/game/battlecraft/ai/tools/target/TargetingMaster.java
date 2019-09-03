@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai.tools.target;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -9,6 +10,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
+import eidolons.game.core.Eidolons;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
@@ -161,7 +163,9 @@ public class TargetingMaster extends AiHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
+        if (a.getOwnerUnit().getAI().getStandingOrders() != null) {
+            return Eidolons.getMainHero().getId();
+        } else
         for (Obj obj : objects) {
             ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
             sequence.setAi(a.getOwnerUnit().getUnitAI());

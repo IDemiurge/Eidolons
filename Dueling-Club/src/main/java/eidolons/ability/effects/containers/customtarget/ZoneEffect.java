@@ -70,6 +70,8 @@ public class ZoneEffect extends SpecialTargetingEffect
             conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
              .getEnemyCondition());
         }
+
+        conditions.add(ConditionMaster.getValidZoneTargetCondition());
         // legacy?
         // if (allyOrEnemyOnly==null)
         // conditions.add(ConditionMaster.getEnemyCondition());

@@ -25,14 +25,12 @@ import java.util.List;
 
 public class CoreEngine {
 
-
-
     public enum UPLOAD_PACKAGE {
         Aphotic, igg,
     }
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.7d";
+    public static final String VERSION = "0.9.7e";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotic;
     public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;

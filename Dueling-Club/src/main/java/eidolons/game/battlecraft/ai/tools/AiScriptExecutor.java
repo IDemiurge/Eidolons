@@ -133,6 +133,14 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 sequence = //new ActionSequence();
                         getActionSequenceConstructor().constructSingleActionSequence(action,
                                 new Task(ai, goal, null)); //TODO target?
+
+                if (action.getTargeting() instanceof SelectiveTargeting) {
+                    if (action.getTarget() == null) {
+                        action.getRef().setTarget(selectTarget(
+                                unit, function, action, args));
+                    }
+                }
+
                 if (function != COMBAT_SCRIPT_FUNCTION.ORDER) {
                     break;
                 }
@@ -157,21 +165,20 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 return;
             }
 
-            Unit finalUnit = unit;
             sequence.getActions().forEach(
                     //TODO wait?
                     action -> {
-                        if (action.getTargeting() instanceof SelectiveTargeting) {
-                            if (action.getTarget() == null) {
-                                action.getRef().setTarget(selectTarget(
-                                        finalUnit, function, action, args));
-                            }
-                        }
-                        if (!ExplorationMaster.isExplorationOn()){
+//                        if (action.getTargeting() instanceof SelectiveTargeting) {
+//                            if (action.getTarget() == null) {
+//                                action.getRef().setTarget(selectTarget(
+//                                        finalUnit, function, action, args));
+//                            }
+//                        }
+                        if (!ExplorationMaster.isExplorationOn()) {
                             getGame().getLoop().actionInput(new ActionInput(action.getActive(),
                                     new Context(action.getRef())));
                         } else
-                         getExecutor().execute(action, free);
+                            getExecutor().execute(action, free);
                     });
         }
 
@@ -189,6 +196,16 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                     return getGame().getCellByCoordinate((Coordinates) arg).getId();
                 }
 
+            }
+        }
+        if (args.length > 2) {
+            BattleFieldObject target = null;
+            if (args[2] instanceof BattleFieldObject) {
+                target = (BattleFieldObject) args[2];
+            } else
+                target =  findUnit(unit.getRef(), args[2].toString());
+            if (target != null) {
+                return target.getId();
             }
         }
         return getAnalyzer().getClosestEnemy(unit).getId();

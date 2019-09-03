@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.handlers.active.Activator;
 import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
@@ -309,6 +310,10 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public Runnable getClickAction() {
+        if (isBlocked()){
+            Activator.cannotActivate_((DC_ActiveObj) getUserObject(), "Blocked");
+            return null;
+        }
         return clickAction;
     }
 
@@ -320,7 +325,10 @@ public class ActionValueContainer extends ValueContainer {
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clickAction.run();
+                if (getClickAction() == null) {
+                    return;
+                }
+                getClickAction().run();
             }
         });
     }

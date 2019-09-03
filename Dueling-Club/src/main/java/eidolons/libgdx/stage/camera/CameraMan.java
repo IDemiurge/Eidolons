@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
@@ -240,7 +241,7 @@ public class CameraMan {
         if (Cinematics.ON) {
             destination.y= destination.y-210;
         } else {
-            destination.y= destination.y+100;
+//            destination.y= destination.y+100;
         }
         main.system.auxiliary.log.LogMaster.dev("cameraPan to " +destination);
         float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();
@@ -251,7 +252,7 @@ public class CameraMan {
             } else
                 overrideCheck = false;
 
-        if (!overrideCheck && !Cinematics.ON)
+        if (!overrideCheck && !Cinematics.ON&& !EidolonsGame.DUEL)
             if (dst < getCameraMinCameraPanDist())
                 return;
 
@@ -268,7 +269,7 @@ public class CameraMan {
     }
 
     protected float getCameraMinCameraPanDist() {
-        return (GDX.size(1600, 0.1f)) / 3 * getCameraPanMod(); //TODO if too close to the edge also
+        return 200 * getCameraPanMod(); //TODO if too close to the edge also
     }
 
     public InputController getController() {

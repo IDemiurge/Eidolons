@@ -128,14 +128,21 @@ public class UnitAI {
     }
 
     public boolean checkStandingOrders() {
+        return checkStandingOrders(false);
+    }
+    public boolean checkStandingOrders(boolean force) {
         // change orders
         if (getStandingOrders() != null) {
             if (ListMaster.isNotEmpty(getStandingOrders().getActions())) {
-                if (getStandingOrders().get(0).canBeActivated()) {
+                if (!getStandingOrders().get(0).canBeActivated()) {
+                if (!force)
+                    return false;
+                    getStandingOrders().get(0).getActive().setFree(true);
+                }
                     if (getStandingOrders().get(0).canBeTargeted()) {
                         return true;
                     }
-                }
+
             }
         }
         return false;

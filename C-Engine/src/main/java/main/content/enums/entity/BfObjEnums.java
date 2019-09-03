@@ -45,6 +45,14 @@ public class BfObjEnums {
                 "bone wing(-70, 30)", "bone wing(70, 30)"),
 
         flames(15, "", "", "", 5),
+        hypnotic_flames_mass(15, "", "", "", 5),
+        hypnotic_flames_mass_narrow(15, "", "", "", 5),
+        hypnotic_flames_slow_up(15, "", "", "", 5),
+        hypnotic_flames_green(15, "", "", "", 5),
+        hypnotic_flames_pale(15, "", "", "", 5),
+        hypnotic_flames(15, "", "", "", 5),
+
+
         fire_light(15, "", "", "cells/bf/fire light.txt", 5),
         nether_flames(15, "", "", "cells/bf/fire light.txt", 5),
         burning_rubble(15, "", "", "cells/bf/fire light.txt", 5),

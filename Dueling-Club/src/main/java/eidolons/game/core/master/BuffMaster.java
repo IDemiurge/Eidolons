@@ -1,14 +1,17 @@
 package eidolons.game.core.master;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
+import main.ability.effects.Effects;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
@@ -76,7 +79,7 @@ public class BuffMaster extends Master {
     public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
         List<ObjType> buffTypes = new ArrayList<>();
         for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
-         AddBuffEffect.class)) {
+                AddBuffEffect.class)) {
             ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
 
             if (buffType != null) {
@@ -194,7 +197,7 @@ public class BuffMaster extends Master {
                         LogMaster.error("APPLY THRU ERROR: " + effect + " HAS NO CONSTRUCT");
                     } else {
                         createBuff(type, active, player, REF, copy, duration, retainCondition)
-                         .setAppliedThrough(true);
+                                .setAppliedThrough(true);
                     }
                 }
             }
@@ -209,13 +212,35 @@ public class BuffMaster extends Master {
         GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
+    public BuffObj createCustomBuff(String s, BattleFieldObject unit) {
+        return createCustomBuff(s, unit, null);
+    }
+
+    public BuffObj createCustomBuff(String s, BattleFieldObject unit, Effect effects) {
+        BuffType type = new BuffType(DataManager.getType(s, DC_TYPE.BUFFS));
+        if (effects == null) {
+            Effects e = new Effects();
+            if (type.checkProperty(G_PROPS.STD_BOOLS))
+                e.add(new ModifyPropertyEffect(G_PROPS.STD_BOOLS, Effect.MOD_PROP_TYPE.ADD,
+                        type.getProperty(G_PROPS.STD_BOOLS)));
+            if (type.checkProperty(G_PROPS.PASSIVES))
+                e.add(new ModifyPropertyEffect(G_PROPS.PASSIVES, Effect.MOD_PROP_TYPE.ADD,
+                        type.getProperty(G_PROPS.PASSIVES)));
+            if (type.checkProperty(G_PROPS.STANDARD_PASSIVES))
+                e.add(new ModifyPropertyEffect(G_PROPS.STANDARD_PASSIVES, Effect.MOD_PROP_TYPE.ADD,
+                        type.getProperty(G_PROPS.STANDARD_PASSIVES)));
+            effects = e;
+        }
+        return   createBuff(type, null, unit.getOwner(), unit.getRef(), effects, 0, null);
+
+    }
+
     public void copyBuff(BuffObj buff, Obj obj, Condition retainCondition) {
         Ref REF = buff.getRef().getCopy();
         REF.setBasis(obj.getId());
         REF.setTarget(obj.getId());
         createBuff(buff.getType(), buff.getActive(), buff.getOwner(), REF, buff.getEffect(), buff
-         .getDuration(), Conditions.join(buff.getRetainConditions(), retainCondition));
-
+                .getDuration(), Conditions.join(buff.getRetainConditions(), retainCondition));
     }
 
 }

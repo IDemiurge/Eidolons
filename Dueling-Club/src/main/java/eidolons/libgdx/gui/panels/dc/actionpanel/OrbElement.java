@@ -177,8 +177,8 @@ public class OrbElement extends SuperActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (EidolonsGame.isAltControlPanel())
-            return;
+//        if (EidolonsGame.isAltControlPanel())
+//            return;
         if (getColor().a == 0)
             return;
         super.draw(batch, parentAlpha);

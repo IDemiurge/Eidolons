@@ -604,6 +604,7 @@ public class AtbPanel extends GroupX {
         MOVE,
         OTHER,
         SPELL,
+        CHANNELING,
         DEBUFF,
         BUFF,
         HOSTILE_SPELL,
@@ -676,6 +677,7 @@ public class AtbPanel extends GroupX {
                     if (getActor().getUserObject() instanceof Unit) {
                         if (getActor().getUserObject().isPlayerCharacter()) {
                             intentIcon = INTENT_ICON.WAIT;
+                            getActor().setInitiative(initiative);
                         } else {
 
                             intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
@@ -688,13 +690,13 @@ public class AtbPanel extends GroupX {
                             if (sprite == null) {
                                 iconMap.put(intentIcon,
                                         sprite =
-                                                SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath()));
+                                                SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath(), false, false));
                             }
                         intentIconSprite.setSprite(sprite);
                         intentIconSprite.setY(-24);
                         intentIconSprite.setX(getPrefWidth() / 2);
                         if (intentIcon == INTENT_ICON.UNKNOWN) {
-                            intentIconSprite.setFps(11);
+                            intentIconSprite.setFps(10);
                         } else
                             intentIconSprite.setFps(15);
 

@@ -394,6 +394,10 @@ public class GenericEnums {
 //        spell_volcano("spell/nether/volcano"),
 //        spell_hollow_flames("spell/nether/hollow flames"),
 
+        dark_blood("invert/dark_blood"),
+        dark_impact("invert/dark_impact"),
+
+
         spell_wraiths("spell/nether/wraiths 2"),
 
         spell_poison_veil("spell/nether/poison"),

@@ -96,6 +96,9 @@ public class DeathMaster extends Master {
     }
 
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+        unitDies(activeObj, _killed, _killer, leaveCorpse, quietly, false);
+    }
+    public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly, boolean annihilate) {
         if (_killed.isDead())
             return;
         if (!quietly)
@@ -172,6 +175,9 @@ public class DeathMaster extends Master {
         if (!leaveCorpse) {
             // leave a *ghost*?
             // destroy items?
+            if (annihilate) {
+                unitAnnihilated(killed, killer);
+            }
         } else {
 
             if (killed instanceof Unit) {

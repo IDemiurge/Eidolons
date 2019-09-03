@@ -4,6 +4,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.G_PARAMS;
@@ -585,6 +586,10 @@ public class ConditionMaster {
         return c;
     }
 
+    public static Condition getValidZoneTargetCondition() {
+      return   new NotCondition(new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INVISIBLE));
+    }
+
 
     public Condition getConditionFromTemplate(CONDITION_TEMPLATES template, String str1, String str2) {
         Condition c = null;
@@ -617,6 +622,8 @@ public class ConditionMaster {
                 break;
             case NAME_TARGET:
                 return new PropCondition(G_PROPS.NAME, KEYS.TARGET, str1, true);
+            case MAINHERO:
+                break;
             case NAME_SOURCE:
                 return new PropCondition(G_PROPS.NAME, KEYS.SOURCE, str1, true);
             case NAME_ACTIVE:
@@ -633,6 +640,7 @@ public class ConditionMaster {
                 c = new DynamicCondition("CostCondition;" + str1 + "");
             case ITEM:
                 break;
+
         }
         return c;
     }
@@ -684,7 +692,7 @@ public class ConditionMaster {
         NAME_SUMMONED("active"),
 
         COORDINATES("coordinates","coord"),
-        CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot");
+        CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot"), FACING();
 
         private String[] names;
 

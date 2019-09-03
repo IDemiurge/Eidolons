@@ -18,6 +18,7 @@ import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
+import eidolons.libgdx.bf.SuperActor;
 import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
@@ -93,7 +94,12 @@ public class Weapon3dAnim extends ActionAnim {
         sprite.setSpeed(speedMod);
         sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
-
+        if (isScreen()){
+            sprite.setBlending(SuperActor.BLENDING.SCREEN);
+        }
+        if (isInvertScreen()){
+            sprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+        }
         if (!isRandomized()) {
             getSprites().clear();
             sprites.add(sprite);
@@ -104,6 +110,15 @@ public class Weapon3dAnim extends ActionAnim {
             return;
         getSprites().clear();
         getSprites().add(randomized);
+    }
+
+    private boolean isInvertScreen() {
+//        getActive().getActiveWeapon().checkSingleProp()
+        return !getActive().getOwnerUnit().isMine();
+    }
+
+    private boolean isScreen() {
+        return AnimMaster3d.JPG_WEAPONS;
     }
 
     protected String getDefaultTexturePath() {

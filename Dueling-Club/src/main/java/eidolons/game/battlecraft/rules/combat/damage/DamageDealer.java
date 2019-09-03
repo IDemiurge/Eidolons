@@ -1,25 +1,31 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
+import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.screens.DungeonScreen;
+import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.ActionEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -137,8 +143,9 @@ public class DamageDealer {
         }
         // VITAL!
         amount = ref.getAmount();
-        if (isLogOn()) {
-            ref.getGame().getLogManager().logDamageBeingDealt(amount, attacker, targetObj, damage_type);
+        if (isLogOn())
+            if (isLogged(attacker, targetObj, ref.getActive())) {
+                ref.getGame().getLogManager().logDamageBeingDealt(amount, attacker, targetObj, damage_type);
         }
 
         if (!processDamageEvent(damage_type, ref, amount, new EventType(
@@ -165,6 +172,15 @@ public class DamageDealer {
         addDamageDealt(active, damage_type, damageDealt, !bonus);
         return damageDealt;
 
+    }
+
+    private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
+        if (EffectFinder.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class)!=null) {
+            if (targetObj instanceof Structure) {
+            return false;
+            }
+        }
+        return true;
     }
 
     //proceeds to deal the damage - to toughness and endurance separately and with appropriate events

@@ -255,4 +255,13 @@ public class SpellMaster {
         unit.initSpellbook();
         unit.initSpells(true);
     }
+
+    public static void removeSpells(Unit unit) {
+        unit.removeProperty( PROPS.VERBATIM_SPELLS  );
+        unit.removeProperty(  PROPS.MEMORIZED_SPELLS  );
+        unit.getType().removeProperty( PROPS.VERBATIM_SPELLS  );
+        unit.getType().removeProperty(  PROPS.MEMORIZED_SPELLS  );
+        unit.initSpellbook();
+        unit.initSpells(true);
+    }
 }

@@ -4,6 +4,7 @@ import eidolons.ability.UnitTrainingMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.EUtils;
@@ -23,6 +24,7 @@ import main.data.ability.OmittedConstructor;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.ActiveObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -130,7 +132,11 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
 
         getUnit().getRef().setID(KEYS.SUMMONER, ref.getSource());
 
-        if (ref.getActive().checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.EXCLUSIVE_SUMMON.toString())) {
+        ActiveObj active = ref.getActive();
+        if (active == null) {
+            active = unit.getGame().getLoop().getLastActionInput().getAction();
+        }
+        if (active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.EXCLUSIVE_SUMMON.toString())) {
             Obj prev = ref.getSourceObj().getRef().getObj(KEYS.SUMMONED);
             if (prev != null) {
                 unit.getGame().getLogManager().log(ref.getSourceObj().getNameIfKnown() + " unsummons " + prev.getNameIfKnown());
@@ -149,12 +155,16 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         if (unit instanceof Unit) {
             SummoningSicknessRule.apply((Unit) unit);
         }
-        if (ref.getObj(KEYS.SUMMONER) instanceof Unit) {
-            if (facingSummoner == null) {
-                facingSummoner = ref.getActive().checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.FACE_SUMMONER.toString());
-            }
+        if (unit.getRef().getObj(KEYS.SUMMONER) instanceof Unit) {
             Unit summoner = (Unit) ref.getObj(KEYS.SUMMONER);
             FACING_DIRECTION f = summoner.getFacing();
+            if (facingSummoner == null) {
+                facingSummoner = active
+            .checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.FACE_SUMMONER.toString());
+            }
+            if (active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.RANDOM_FACING.toString())) {
+                f = FacingMaster.getRandomFacing();
+            }
             if (facingSummoner) {
                 f = f.flip();
             }

@@ -3,6 +3,8 @@ package eidolons.game.battlecraft.rules.combat.damage;
 import eidolons.ability.effects.continuous.BonusDamageEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
@@ -28,6 +30,10 @@ public class DamageFactory {
     }
 
     public static Damage getDamageFromEffect(DealDamageEffect effect, int amount) {
+        Ref ref = Ref.getCopy(effect.getRef());
+        if (ref.getSourceObj() instanceof DC_HeroAttachedObj) {
+            ref.setSource(((DC_HeroAttachedObj) ref.getSourceObj()).getOwnerObj().getId());
+        }
         Damage damageObject;
         List<Damage> list =
          DamageCalculator.getBonusDamageList(effect.getRef(), effect.isMagical()
