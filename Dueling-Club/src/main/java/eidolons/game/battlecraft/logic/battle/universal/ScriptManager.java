@@ -17,6 +17,7 @@ import java.util.List;
  */
 public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T> implements ScriptExecutor<E> {
     private static final String DUNGEON_SCRIPT_SEPARATOR = "::";
+    private Trigger lastTrigger;
 
     public ScriptManager(BattleMaster<T> master) {
         super(master);
@@ -98,7 +99,14 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
     protected void addTrigger(Trigger trigger) {
         if (trigger == null)
             return;
+        lastTrigger = trigger;
         getMaster().getGame().getManager().addTrigger(trigger);
+//        map.put(name, trigger);
 //        scriptTriggers.add(trigger);
+    }
+
+    public void removeLast() {
+        lastTrigger.remove();
+//        lastTrigger = null;
     }
 }

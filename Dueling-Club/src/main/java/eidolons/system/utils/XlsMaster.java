@@ -24,7 +24,7 @@ import static eidolons.content.PARAMS.*;
  * Created by JustMe on 5/31/2017.
  */
 public class XlsMaster {
-    private static final String TYPE_KEY = "active"; //TODO get for TYPE!
+    private static final String TYPE_KEY = "active"; //TODO getVar for TYPE!
     static DC_TYPE[] TYPES = {
      DC_TYPE.ACTIONS,
 //     DC_TYPE.WEAPONS,

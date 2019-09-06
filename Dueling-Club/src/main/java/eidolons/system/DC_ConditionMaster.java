@@ -11,6 +11,7 @@ import eidolons.ability.conditions.shortcut.StdPassiveCondition;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -545,6 +546,14 @@ public class DC_ConditionMaster extends ConditionMaster {
                     String val = VariableManager.getVarPart(str2);
                     return new ItemCondition(KEYS.SOURCE.toString(), slot, prop, val);
                 }
+                case ENEMIES_LEFT:
+                    Integer n = Integer.valueOf(str1);
+                    return new CustomCondition() {
+                        @Override
+                        public boolean check(Ref ref) {
+                            return AggroMaster.getAggroGroup().size()<=n;
+                        }
+                    };
 
                 case MAINHERO:
                     return new CustomCondition() {

@@ -108,16 +108,20 @@ public abstract class SuperActor extends Fluctuating implements
         return !isWithinCamera();
     }
 
-    public boolean isWithinCamera() {
+    public boolean isWithinCameraCheck() {
+        return getController().isWithinCamera(this);
+    }
+        public boolean isWithinCamera() {
 
         if (withinCamera != null)
             return withinCamera;
         if (isCachedPosition()) {
-            withinCamera = getController().isWithinCamera(this);
+            withinCamera = isWithinCameraCheck();
             getController().addCachedPositionActor(this);
             return withinCamera;
         }
-        return getController().isWithinCamera(this);
+        return isWithinCameraCheck();
+
     }
     @Override
     public void cameraMoved() {

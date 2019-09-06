@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.Fluctuating;
@@ -106,6 +107,22 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.black_waters.vfxOver += "advanced/ambi/black water square small slow(-21, -21);";
         CUSTOM_OBJECT.black_waters.setVfxSpeed(0.6f);
 
+        CUSTOM_OBJECT.force_field.setVfxSpeed(0.14f);
+//        CUSTOM_OBJECT.force_field.maxEmitters=1;
+//        CUSTOM_OBJECT.force_field.vfxChance=0.12f;
+//        CUSTOM_OBJECT.force_field.vfxFolderOver ="spell/weave";
+//        CUSTOM_OBJECT.force_field.screen=true;
+
+        CUSTOM_OBJECT.force_field.invert_screen=true;
+
+        CUSTOM_OBJECT.power_field.vfxOver ="spell/weave/nether weave(0, -0)";
+
+        CUSTOM_OBJECT.LEVIATHAN.attach=true;
+        CUSTOM_OBJECT.LEVIATHAN.invert_screen=true;
+        CUSTOM_OBJECT.BIG_CLAW.invert_screen=true;
+        CUSTOM_OBJECT.BIG_CLAW.backAndForth=true;
+
+        CUSTOM_OBJECT.LEVIATHAN.vfxOver += "advanced/ambi/black water square small slow(-21, -21);";
 
         CUSTOM_OBJECT.keserim.screen = true;
 //        CUSTOM_OBJECT.keserim.alpha = 0.6f;
@@ -189,6 +206,10 @@ public class LinkedGridObject extends CinematicGridObject {
             addActor(fluctuating = new Fluctuating(object.alpha_template));
         }
         if (sprite != null) {
+
+            if (object.backAndForth) {
+                sprite.getSprite().setBackAndForth(true);
+            }
             if (object.screen) {
                 sprite.setBlending(SuperActor.BLENDING.SCREEN);
             }

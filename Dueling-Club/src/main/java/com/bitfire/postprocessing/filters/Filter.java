@@ -243,7 +243,7 @@ public abstract class Filter<T extends Filter> {
 		}
 	}
 
-	/** This method will get called just before a rendering operation occurs. */
+	/** This method will getVar called just before a rendering operation occurs. */
 	protected abstract void onBeforeRender ();
 
 	public final void render () {

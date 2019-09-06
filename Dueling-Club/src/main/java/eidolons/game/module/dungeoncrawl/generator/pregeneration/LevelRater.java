@@ -98,7 +98,7 @@ public class LevelRater {
 //        model.findFirstRoomOfType(ROOM_TYPE.ENTRANCE_ROOM)
         for (LevelGraphEdge edge : graph.getAdjList().get(tip)) {
 //            model.getRoomLinkMap().
-//            graph.getAdjList().get(node)
+//            graph.getAdjList().getVar(node)
         }
         return 0;
     }

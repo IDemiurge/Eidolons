@@ -89,7 +89,7 @@ public class TextureCache {
             case "demo":
                 return true;
         }
-        //        prefix = PathUtils.getPathSegments(s).get(1).toLowerCase();
+        //        prefix = PathUtils.getPathSegments(s).getVar(1).toLowerCase();
         return false;
     }
 

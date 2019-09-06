@@ -25,7 +25,7 @@ public class NavigatedPlaceView extends TablePanelX {
 //        showDialogue());
         GuiEventManager.bind(GuiEventType.SHOW_NAVIGATION_PANEL, p ->
          {
-//             navigationPanel.show((MacroObj) p.get());
+//             navigationPanel.show((MacroObj) p.getVar());
          });
 
     }

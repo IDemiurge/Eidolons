@@ -14,27 +14,27 @@ public class AiExecutor {
     }
 
     public boolean execute(Action action) {
-        return execute(action, false);
+        return execute(action, false, true);
     }
 
-    public boolean execute(Action action, boolean free) {
+    public boolean execute(Action action, boolean free, boolean gameThread) {
         boolean result = false;
         Context ref = new Context(action.getRef());
-        if (Cinematics.ON|| free) {
+        if (Cinematics.ON || free) {
             action.getActive().setFree(true);
         }
-        boolean gameThread = false;
         try {
-            if (!Cinematics.ON)
-            if (!action.getActive().isChanneling()) {
-                if (ref.getTargetObj() == null) {
-                    if (!(action.getActive().getTargeting()
-                     instanceof SelectiveTargeting)) {
-                        gameThread=true;
+                if (action.getSource().isAiControlled())
+                if (!action.getActive().isChanneling()) {
+                    if (ref.getTargetObj() == null) {
+                        if ((action.getActive().getTargeting()
+                                instanceof SelectiveTargeting)) {
+                            return false;
+                        }
                     }
+
                 }
-            }
-            if (!gameThread) {
+            if (gameThread) {
                 action.getActive().getHandler().activateOnGameLoopThread();
                 result = true;
             } else {

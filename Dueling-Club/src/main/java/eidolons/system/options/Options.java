@@ -14,11 +14,11 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
 
 //    @Override
 //    public boolean getBooleanValue(E e) {
-//        boolean bool = getBoolMap().get(t);
+//        boolean bool = getBoolMap().getVar(t);
 //        if (bool==null )
 //        {
 //            bool=super.getBooleanValue(e);
-//            get
+//            getVar
 //        }
 //        return bool;
 //    }

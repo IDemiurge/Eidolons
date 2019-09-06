@@ -35,7 +35,7 @@ public class Dijkstra {
     static <V> DijkstraResult<V> runDijkstra(V source, UndirectedGraph<V, ?, ?> G) {
         // shortest distances between source and other nodes in graph
         HashMap<V, Integer> dist = new HashMap<V, Integer>();
-        // stores all prev nodes that each node can backtrack to to get to the source
+        // stores all prev nodes that each node can backtrack to to getVar to the source
         HashMap<V, V> prev = new HashMap<V, V>();
         // keep track of visited nodes
         HashSet<V> unvisited = new HashSet<V>();

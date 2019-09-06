@@ -105,8 +105,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public Effects getEffects() {
-        if (effect==null )
-            effect= new Effects();
+        if (effect == null)
+            effect = new Effects();
         if (!(effect instanceof Effects)) {
             effect = new Effects(effect);
         }
@@ -126,7 +126,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         setRef(ref);
 
         LogMaster.log(0, "BUFF EFFECT (" + toString() + ") applied to "
-         + ref.getTargetObj());
+                + ref.getTargetObj());
         return effect.apply(ref);
     }
 
@@ -171,7 +171,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         game.getManager().buffRemoved(this);
         if (dispelEffects != null) {
             dispelEffects.apply(ref
-             // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
+                    // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
             );
         }
         // game.fireEvent(new Event(STANDARD_EVENT_TYPE.BUFF_REMOVED, REF));
@@ -292,11 +292,16 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     public boolean checkDuration() {
 //        if (permanent)
 //            return true; //TODO sure?
-        if (duration <= 0) {
-            if (!isTransient && !permanent)
-                LogMaster.log(1, this + " duration elapsed " + duration);
+        if (isTransient) {
             kill();
             return false;
+        }
+        if (duration <= 0) {
+            if (!permanent) {
+                LogMaster.log(1, this + " duration elapsed " + duration);
+                kill();
+                return false;
+            }
         }
         return true;
     }
@@ -319,7 +324,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         if (retainConditions != null) {
             if (!retainConditions.preCheck(ref)) {
                 LogMaster.log(LOG_CHANNEL.BUFF_DEBUG,
-                 "Retain conditions preCheck false for " + getName());
+                        "Retain conditions preCheck false for " + getName());
                 kill();
 
                 return false;
@@ -410,19 +415,19 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     public BUFF_TYPE getBuffType() {
         if (buffType == null) {
             buffType = new EnumMaster<BUFF_TYPE>().retrieveEnumConst(BUFF_TYPE.class,
-             getProperty(G_PROPS.BUFF_TYPE));
+                    getProperty(G_PROPS.BUFF_TYPE));
         }
         return buffType;
     }
 
     public boolean isDisplayed() {
-        if (getBuffType()== BUFF_TYPE.SPELL) {
+        if (getBuffType() == BUFF_TYPE.SPELL) {
             return true;
         }
         if (getType().getType() != null)
             if (getType().getType().getName().equals(DUMMY_BUFF_TYPE))
                 if (!isTransient())
-                return false;
+                    return false;
 
         return true;
     }

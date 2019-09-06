@@ -68,7 +68,7 @@ public class PostFxUpdater {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>  Post processing template reset! ");
         });
         GuiEventManager.bind(GuiEventType.POST_PROCESSING, p -> {
-//            PostProcessingOptions options = (PostProcessingOptions) p.get();
+//            PostProcessingOptions options = (PostProcessingOptions) p.getVar();
 //            update(options);
             fxMap.clear();
             template = (POST_FX_TEMPLATE) p.get();

@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
+import eidolons.game.EidolonsGame;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import eidolons.system.text.DescriptionTooltips;
@@ -139,7 +140,8 @@ public class TipMessageMaster {
         if (type instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) type)) {
                 case HERO_LEVEL_UP:
-                    return HERO_LEVEL_UP;
+                    if (!EidolonsGame.BRIDGE)
+                        return HERO_LEVEL_UP;
             }
         }
 

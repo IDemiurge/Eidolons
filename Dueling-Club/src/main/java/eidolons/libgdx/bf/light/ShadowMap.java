@@ -255,7 +255,7 @@ public class ShadowMap extends GroupX {
         });
         GuiEventManager.bind(GuiEventType.UPDATE_SHADOW_MAP, p -> {
             update();
-            main.system.auxiliary.log.LogMaster.log(1, "MANUAL SHADOW MAP UPDATE ");
+//            main.system.auxiliary.log.LogMaster.log(1, "MANUAL SHADOW MAP UPDATE ");
         });
 
     }

@@ -97,7 +97,7 @@ public class LightEmitter extends SuperActor {
             Dimension dim = OverlayingMaster.getOffsetsForOverlaying(direction,
                     (int) 64,
                     (int) 64);
-            //get grid?
+            //getVar grid?
             overlay.setPosition((float) dim.getWidth(),
                     (float) dim.getHeight());
             //                overlay.setPosition(GdxMaster.centerWidth(overlay),

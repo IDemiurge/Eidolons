@@ -106,6 +106,8 @@ public class ActionInitializer extends DC_ActionManager {
                 if (activeObj.isMove())
                     if (EidolonsGame.MOVES_DISABLED)
                         return false;
+                if (activeObj.isAttackAny())
+                    return !EidolonsGame.ATTACKS_DISABLED;
 
                 if (activeObj.isMode()) {
                     return EidolonsGame.getActionSwitch(activeObj.getName());

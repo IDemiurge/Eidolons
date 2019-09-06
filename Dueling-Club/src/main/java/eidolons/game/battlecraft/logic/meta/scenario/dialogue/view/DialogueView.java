@@ -75,7 +75,7 @@ public class DialogueView extends TablePanelX implements Scene {
     }
 
     public void update(SpeechDataSource data) {
-        update(data, false);
+        Eidolons.onGdxThread(() -> update(data, false));
     }
     public void update(SpeechDataSource data, boolean appendedMessage) {
         //        prev = portrait.getPrevious();
@@ -210,7 +210,9 @@ public class DialogueView extends TablePanelX implements Scene {
             if (next != null) {
                 if (!appendedMessage)
                     scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2);
-                update(next, appendedMessage);
+
+                boolean finalAppendedMessage = appendedMessage;
+                Eidolons.onGdxThread(()-> update(next, finalAppendedMessage));
 
                 if (!appendedMessage)
                     try { //TODO refactor!

@@ -73,7 +73,6 @@ public class SpellExecutor extends Executor {
             // Channeling rules!
             addCooldown();
             getSpell().getChannelingResolveCosts().pay(getRef());
-            channeling = false;
             return;
         }
         super.payCosts();
@@ -163,10 +162,22 @@ public class SpellExecutor extends Executor {
         if (!result) {
             if (channeling) {
                 DC_SoundMaster.playEffectSound(SOUNDS.FAIL, getSpell());
+                if (!getRef().isQuiet()) {
+                    new Event(STANDARD_EVENT_TYPE.CHANNELING_FAIL, getRef()).fire();
+                }
             } else
             // try fail sound?
             {
+                if (!getRef().isQuiet()) {
+                    new Event(STANDARD_EVENT_TYPE.SPELL_RESISTED, getRef()).fire();
+                }
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_RESISTED);
+            }
+        } else {
+
+            if (!getRef().isQuiet()) {
+                if (getAction().isChanneling())
+                    new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, getRef()).fire();
             }
         }
 

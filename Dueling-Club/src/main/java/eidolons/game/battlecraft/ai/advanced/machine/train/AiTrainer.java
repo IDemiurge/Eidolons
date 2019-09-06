@@ -70,7 +70,7 @@ public class AiTrainer {
     }
 
     private void initTrainingParameters(AiTrainingParameters parameters) {
-//        loadGame(parameters.get)
+//        loadGame(parameters.getVar)
         parameters.getRoundsMax();
         parameters.getTraineeType();
     }

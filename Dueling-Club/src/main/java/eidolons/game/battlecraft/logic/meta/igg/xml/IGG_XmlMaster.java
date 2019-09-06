@@ -187,8 +187,8 @@ public class IGG_XmlMaster {
 
     protected void clean() {
 //        Path target;
-//        Path src= Paths.get(path, newFolder);
-//        Path target= Paths.get(path, newFolder);
+//        Path src= Paths.getVar(path, newFolder);
+//        Path target= Paths.getVar(path, newFolder);
 //        Files.move(src, target);
         List<File> files = FileManager.getFilesFromDirectory(getOutputPath(), false);
         for (File file : files) {

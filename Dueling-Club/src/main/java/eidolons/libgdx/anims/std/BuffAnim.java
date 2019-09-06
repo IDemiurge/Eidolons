@@ -44,7 +44,7 @@ public class BuffAnim extends ActionAnim {
 
     private static AnimData getBuffAnimData(BuffObj buff) {
         AnimData data = new AnimData();
-//    buff.get
+//    buff.getVar
         if (buff.getName().equals("Channeling")) {
 //rotating!
         }

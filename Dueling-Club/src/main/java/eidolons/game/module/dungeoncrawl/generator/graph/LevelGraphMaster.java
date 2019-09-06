@@ -184,7 +184,7 @@ public class LevelGraphMaster {
     private void checkNodesZoneIndices(List<LevelZone> zones) {
         for (LevelGraphNode node : graph.getNodes()) {
             if (node.getZoneIndex() == -1) {
-                //                graph.getAdjList().get(node)
+                //                graph.getAdjList().getVar(node)
                 if (isLeastAssignedZoneForMissing()){
                   node.setZoneIndex(zones.stream().sorted(new SortMaster<LevelZone>().getSorterByExpression_(
                      z -> -z.getNodeCount()

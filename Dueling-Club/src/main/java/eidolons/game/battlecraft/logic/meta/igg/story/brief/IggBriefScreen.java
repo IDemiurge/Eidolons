@@ -7,7 +7,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 /**
- * get data
+ * getVar data
  */
 public class IggBriefScreen extends UiStage {
 

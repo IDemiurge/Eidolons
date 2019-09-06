@@ -178,7 +178,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
                     return new ActionSequence(GOAL_TYPE.MOVE, move);
                 }
             }
-        //get orders?
+        //getVar orders?
         AiBehavior behavior = getAiBehavior(ai);
         ActionSequence orders = behavior.getOrders();
         if (orders == null) {

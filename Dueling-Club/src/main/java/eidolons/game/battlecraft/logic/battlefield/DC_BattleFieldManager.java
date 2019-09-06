@@ -177,7 +177,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                 if (s.isDiagonal()) {
                     // for (Coordinates c :
                     // o.getCoordinates().getAdjacentCoordinates(null)) {
-                    // if (wallObjects.get(c) != null) {
+                    // if (wallObjects.getVar(c) != null) {
                     // if (containsAdjacentDiagonal in X direction
                     // }
                     // }

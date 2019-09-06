@@ -97,7 +97,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     protected void add() {
-        main.system.auxiliary.log.LogMaster.log(1,"Death Anim adds with \n" +getRef());
+//        main.system.auxiliary.log.LogMaster.log(1,"Death Anim adds with \n" +getRef());
         if (getActor() == null) {
             main.system.auxiliary.log.LogMaster.log(1,"Death Anim no actor for \n" +getRef());
             return;

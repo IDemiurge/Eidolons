@@ -512,7 +512,7 @@ public class EmitterMaster extends GdxUtil {
         String base = processImageNameDeep(imgName);
         if (image.getName().toLowerCase().contains(base.toLowerCase()))
             return true;
-        //so we'll get all the images... isn't it much?
+        //so we'll getVar all the images... isn't it much?
 
         return false;
     }

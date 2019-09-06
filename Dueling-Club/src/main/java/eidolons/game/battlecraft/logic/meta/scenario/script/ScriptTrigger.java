@@ -49,10 +49,6 @@ public class ScriptTrigger extends Trigger {
         return super.check(event);
     }
 
-    @Override
-    protected void remove() {
-        super.remove();
-    }
 
     @Override
     protected Ref getRef(Event event) {

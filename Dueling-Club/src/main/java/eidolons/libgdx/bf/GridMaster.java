@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.BaseView;
@@ -25,7 +26,7 @@ public class GridMaster {
     public static final String emptyCellPathFloor = StrPathBuilder.build(
             "ui", "cells", "Floor.png");
     public static final String gridCornerElementPath = StrPathBuilder.build(
-            "ui", "cells","bf", "gridCorner.png");
+            "ui", "cells", "bf", "gridCorner.png");
 
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 = getCenteredPos(coordinates);
@@ -57,8 +58,9 @@ public class GridMaster {
     }
 
     public static Coordinates invertGdxY(Coordinates c) {
-        return new Coordinates(c.x,  DungeonScreen.getInstance().getGridPanel().getRows()-1-c.getY());
+        return new Coordinates(c.x, DungeonScreen.getInstance().getGridPanel().getRows() - 1 - c.getY());
     }
+
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
                                                  boolean center,
                                                  boolean camera, boolean gdxY, GridPanel gridPanel) {
@@ -112,57 +114,67 @@ public class GridMaster {
         if (baseView instanceof GridUnitView) {
             GridUnitView view = ((GridUnitView) baseView);
             if (view.getActions().size == 0) {
-                if (view.getColor().a == 0) {
-                    main.system.auxiliary.log.LogMaster.warn(  "Validation was required for " + view +
-                            " - alpha==0");
-                    view.fadeIn();
-                }
-                if (view.getParent() instanceof GridCellContainer) {
-                    GridCellContainer cell = ((GridCellContainer) view.getParent());
-                    if (!cell.isStackView())
-                        if (view.getX() != cell.getViewX(view) ||
-                                view.getY() != cell.getViewY(view)) {
-                            cell.recalcUnitViewBounds();
+
+                if (view.getUserObject() instanceof Unit)
+                    if (view.getPortrait().getColor().a == 0)
+                        if (view.getPortrait().getActions().size == 0) {
+                            view.getPortrait().fadeIn();
+                            main.system.auxiliary.log.LogMaster.warn("Validation was required for Portrait" + view +
+                                    " - alpha==0");
                         }
 
-                } else {
-                    //TODO detach bug
-                    if (view.getParent() instanceof GridPanel)
-                        if (view.getX() <= 50)
-                        if (view.getY() <= 0) {{
-                                GridPanel grid = ((GridPanel) view.getParent());
-                                grid.getCells()[view.getUserObject().getX()][grid.getGdxY(view.getUserObject().getY())].addActor(view);
-
-                                main.system.auxiliary.log.LogMaster.warn(  "Validation was required for " + view +
-                                        " - re-attached to gridcell!");
+                    if (view.getColor().a == 0) {
+                        main.system.auxiliary.log.LogMaster.warn("Validation was required for " + view +
+                                " - alpha==0");
+                        view.fadeIn();
+                    }
+                    if (view.getParent() instanceof GridCellContainer) {
+                        GridCellContainer cell = ((GridCellContainer) view.getParent());
+                        if (!cell.isStackView())
+                            if (view.getX() != cell.getViewX(view) ||
+                                    view.getY() != cell.getViewY(view)) {
+                                cell.recalcUnitViewBounds();
                             }
-                        }
+
+                    } else {
+                        //TODO detach bug
+                        if (view.getParent() instanceof GridPanel)
+                            if (view.getX() <= 50)
+                                if (view.getY() <= 0) {
+                                    {
+                                        GridPanel grid = ((GridPanel) view.getParent());
+                                        grid.getCells()[view.getUserObject().getX()][grid.getGdxY(view.getUserObject().getY())].addActor(view);
+
+                                        main.system.auxiliary.log.LogMaster.warn("Validation was required for " + view +
+                                                " - re-attached to gridcell!");
+                                    }
+                                }
+                    }
                 }
+                if (view.getArrow() != null)
+                    if (view.getArrow().getActions().size == 0)
+                        view.validateArrowRotation();
+
             }
-            if (view.getArrow() != null)
-                if (view.getArrow().getActions().size == 0)
-                    view.validateArrowRotation();
+        }
 
+        public static String getImagePath (DungeonLevel.CELL_IMAGE cellType,int cellVariant){
+            String suffix = getCellImgSuffix(cellVariant);
+
+            return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix + ".png");
+        }
+
+        private static String getCellImgSuffix ( int cellVariant){
+            switch (cellVariant) {
+                case 1:
+                    return "hl";
+                case 2:
+                    return "lite";
+                case 3:
+                    return "dark";
+                case 4:
+                    return "rough";
+            }
+            return "";
         }
     }
-
-    public static String getImagePath(DungeonLevel.CELL_IMAGE cellType, int cellVariant) {
-        String suffix =getCellImgSuffix(cellVariant);
-
-        return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix +".png");
-    }
-
-    private static String getCellImgSuffix(int cellVariant) {
-        switch (cellVariant) {
-            case 1:
-                return "hl";
-            case 2:
-                return "lite";
-            case 3:
-                return "dark";
-            case 4:
-                return "rough";
-        }
-        return "";
-    }
-}

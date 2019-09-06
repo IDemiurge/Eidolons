@@ -168,9 +168,14 @@ public class ActivesConstructor {
     public static Targeting getTargeting(TARGETING_MODE mode, DC_ActiveObj obj) {
         Targeting targeting = null;
         switch (mode) {
+            case UNOBSTRUCTED_SHOT:
+                // bolt-targeting?
+                targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.UNOBSTRUCTED_SHOT);
+                break;
             case FRONT_RANGE:
                 return new CoordinateTargeting(UNIT_DIRECTION.AHEAD, true);
             case FRONT:
+            case RAY_AUTO:
                 return new CoordinateTargeting(UNIT_DIRECTION.AHEAD);
             case BF_OBJ:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.BF_OBJ);
@@ -239,7 +244,6 @@ public class ActivesConstructor {
             case ALL:
                 targeting = new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ALL);
                 break;
-            case RAY_AUTO:
             case NOVA:
                 targeting = new FixedTargeting(KEYS.SOURCE);
                 break;

@@ -190,7 +190,7 @@ public class TravelAction extends MoveToAction {
 //         getFieldValue("endY", this, MoveToAction.class);
 //        Vector2 pos = new Vector2(getActor().getX(), getActor().getY());
 //        float dur = getActor().getParty().getCoordinates().dst(
-//         Coordinates.get(true,(int) x,(int) y)) / getActor().getSpeed();
+//         Coordinates.getVar(true,(int) x,(int) y)) / getActor().getSpeed();
         //TODO adjust for terrain speed!
 
         float remaining = getDuration() - getTime();

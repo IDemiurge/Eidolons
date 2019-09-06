@@ -77,7 +77,7 @@ public class ItemTraitNamer {
 
                 break;
             case 3:
-                //sort by level? ; no random - so we can get by type name always!
+                //sort by level? ; no random - so we can getVar by type name always!
 
                 int n1 = (0);
                 int n2 = (1);

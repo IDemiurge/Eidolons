@@ -390,7 +390,7 @@ public class RadialMenu extends Group implements Closable {
 /*
     final int length = childs.size() * (step+1);
         for (int i = 90, c = 0; i <= length; i += step, c++) {
-        final RadialValueContainer valueContainer = childs.get(c);
+        final RadialValueContainer valueContainer = childs.getVar(c);
         int r = radius;
         if (makeSecondRing && c % 2 == 0) {
             r = (int) (72 * (coefficient - 1));

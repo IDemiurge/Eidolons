@@ -6,7 +6,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.building;
 public class DungeonGeneratorOld {
 
 //    public static final DIRECTION DEFAULT_BUILD_DIRECTION = DIRECTION.DOWN_RIGHT;
-//    public static final Coordinates BASE_COORDINATE = Coordinates.get(1, 1);
+//    public static final Coordinates BASE_COORDINATE = Coordinates.getVar(1, 1);
 //    public static final boolean testMode = true;
 //    public static final DUNGEON_TEMPLATES testTemplate = DUNGEON_TEMPLATES.GREAT_ROOM;
 //    public static final ROOM_TYPE[] std_room_types = {ROOM_TYPE.ENTRANCE_ROOM,

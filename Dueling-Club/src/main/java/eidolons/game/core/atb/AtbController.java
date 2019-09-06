@@ -24,6 +24,7 @@ public class AtbController implements Comparator<Unit> {
     public static final float SECONDS_IN_ROUND = 12; //seconds; to sync with clock
     public static final float TIME_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 10f;
+    private static final Float ATB_PER_INITIATIVE_MOD =0.2f ;
     private AtbTurnManager manager;
     private Array<AtbUnit> unitsInAtb;
     private float time = 0f; //passed in this round
@@ -150,10 +151,14 @@ public class AtbController implements Comparator<Unit> {
         }
 
         for (AtbUnit unit : this.unitsInAtb) {
-            unit.setAtbReadiness(unit.getAtbReadiness() + time * unit.getInitiative());
+            unit.setAtbReadiness(unit.getAtbReadiness() + getTimeForUnit(time, unit));
         }
         if (!isPrecalc())
             manager.getGame().getManager().atbTimeElapsed(time);
+    }
+
+    private float getTimeForUnit(Float time, AtbUnit unit) {
+        return time * unit.getInitiative() * ATB_PER_INITIATIVE_MOD;
     }
 
     private void addTime(Float time) {
@@ -187,7 +192,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     private float calculateTimeTillTurn(AtbUnit unit) {
-        float time = (TIME_TO_READY - unit.getAtbReadiness()) / unit.getInitiative();
+        float time =getTimeForUnit((TIME_TO_READY - unit.getAtbReadiness()) , unit);
         if (unit.isImmobilized()) {
             float duration = AtbMaster.getImmobilizingBuffsMaxDuration(unit.getUnit());
             if (duration == 0)

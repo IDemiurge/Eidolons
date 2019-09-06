@@ -291,7 +291,7 @@ public class UnitShop {
         Collections.shuffle(list);
         List<MATERIAL> materials = new ArrayList<>();
         for (MATERIAL sub : list) {
-            ObjType type = DataManager.getItem(qualityLevel, sub, baseType);// map .get(sub).get(baseType);
+            ObjType type = DataManager.getItem(qualityLevel, sub, baseType);// map .getVar(sub).getVar(baseType);
             if (type.getIntParam(PARAMS.GOLD_COST) <= costLimit)
                 return sub;
             else if (canExceed)

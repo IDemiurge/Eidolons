@@ -42,7 +42,7 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
             remove(p.get());
             //pack tab
 
-//            tabsToNamesMap.get(type).
+//            tabsToNamesMap.getVar(type).
         });
         setSize(300, 800);
         debugAll();

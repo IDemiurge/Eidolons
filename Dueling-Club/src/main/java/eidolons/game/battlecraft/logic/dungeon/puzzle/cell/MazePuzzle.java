@@ -99,7 +99,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
         public String getImagePath() {
             //random variant?
-//            PathFinder.get
+//            PathFinder.getVar
             return Images.LIGHT_SKULL;
         }
 

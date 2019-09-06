@@ -18,7 +18,10 @@ public class BfObjEnums {
 //    createEmitter("unit/chaotic dark", -32, 32);
 
     public enum CUSTOM_OBJECT {
+        power_field(15, "", "", "", 6),
+        force_field(15, "", "", "cells/gate/gate.txt", 6),
         blade(15, "", "", PathUtils.cropFirstPathSegment(SPRITES.BLADE.path), 6),
+
         clock(15, "", "", PathUtils.cropFirstPathSegment(SPRITES.HELL_WHEEL.path), 6,
                 "blade(50, 80)",
                 "blade(-50, 80)"),
@@ -66,7 +69,18 @@ public class BfObjEnums {
         LIGHT(15, "", "", "cells/bf/fire light.txt", 5),
         GATE(15, "", "", "cells/gate/gate.txt", 5),
         //        LIGHT(13, "", "", "grid/gate.txt", 5, "gate pillar(-150, -100)", "gate pillar(150, -100)"),
-        GATE_PILLAR(10, "", "", "cells/gate/pillar.txt", 10);
+        GATE_PILLAR(10, "", "", "cells/gate/pillar.txt", 10),
+
+        BIG_CLAW(15, "", "", "unit/claw big.txt", 10),
+
+        LEVIATHAN(15, "", "", "", 10,
+                "BIG_CLAW(100, -30)",
+                "BIG_CLAW(50, -30)",
+                "BIG_CLAW(100, 90)",
+                        "BIG_CLAW(50, 90)"),
+
+
+        ;
 
         public boolean vfxUnderMirrorX;
         public boolean vfxUnderMirrorY;
@@ -84,6 +98,8 @@ public class BfObjEnums {
         public boolean ignore_linked_visible;
         public boolean always_visible;
         public GenericEnums.ALPHA_TEMPLATE alpha_template;
+        public boolean attach;
+        public boolean backAndForth;
         private float vfxSpeed = 1f;
         public double range;
         public int fps;

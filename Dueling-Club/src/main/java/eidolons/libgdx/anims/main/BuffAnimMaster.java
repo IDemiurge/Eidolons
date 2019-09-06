@@ -80,7 +80,7 @@ public class BuffAnimMaster {
     //            if (!isOn()) {
     //                return;
     //            }
-    //            Ability ability = (Ability) p.get();
+    //            Ability ability = (Ability) p.getVar();
     //what about triggers?
     //            getParentAnim(ability.getRef().getActive()).addAbilityAnims(ability);
     //        });

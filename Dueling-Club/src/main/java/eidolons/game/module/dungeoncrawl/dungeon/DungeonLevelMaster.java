@@ -143,7 +143,7 @@ public class DungeonLevelMaster {
         int x = sublevel.getCellsX();
         int y = sublevel.getCellsY();
         // if (isSublevelTestOn())
-        // return Coordinates.get(x / 2, y / 2);
+        // return Coordinates.getVar(x / 2, y / 2);
         if (t == null) {
             t = ENTRANCE_POINT_TEMPLATE.ZONE_RANDOM;
         }
@@ -308,13 +308,13 @@ public class DungeonLevelMaster {
                 break;
 
         }
-        // return Coordinates.get(x - 1, y - 1);
+        // return Coordinates.getVar(x - 1, y - 1);
         // case NORTH:
-        // return Coordinates.get(x - 1, 0);
+        // return Coordinates.getVar(x - 1, 0);
         // case SOUTH:
-        // return Coordinates.get(0, y - 1);
+        // return Coordinates.getVar(0, y - 1);
         // case WEST:
-        // return Coordinates.get(0, 0);
+        // return Coordinates.getVar(0, 0);
         side = main.game.bf.directions.FACING_DIRECTION.SOUTH;
         return getEntranceCoordinates(side, template, dungeon);
     }

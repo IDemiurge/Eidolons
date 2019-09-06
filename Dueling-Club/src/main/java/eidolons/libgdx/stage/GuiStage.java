@@ -975,7 +975,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 //            while (time < 3000) {
 //                time += 100;
 //                WaitMaster.WAIT(100);
-//                if (blackout.getChildren().get(0). getColor().a == 0) {
+//                if (blackout.getChildren().getVar(0). getColor().a == 0) {
 //                    Gdx.app.postRunnable(runnable);
 //                    break;
 //                }

@@ -286,7 +286,7 @@ public abstract class SelectionPanel extends TablePanelX {
         if (listPanel.getCurrentItem() != null)
             closed(listPanel.getCurrentItem().name);
         //        else
-        //            closed(listPanel.getItems().get(0).name);
+        //            closed(listPanel.getItems().getVar(0).name);
 
     }
 

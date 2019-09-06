@@ -16,7 +16,7 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 public class KnockdownRule {
 
     private static final String DEFENSE_FORMULA = "-50";
-    //to get up
+    //to getVar up
     String STA_COST = "4*weight-Strength*3";
     String AP_COST = "4*weight-Strength*3 *dex";
 

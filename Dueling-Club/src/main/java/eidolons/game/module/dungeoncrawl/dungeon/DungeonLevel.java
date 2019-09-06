@@ -151,7 +151,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         xml += getAiData();
 
         //        List<Coordinates> exits =
-        //         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
+        //         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().getVar(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
         //        xml +="\n"+ XML_Converter.wrap(LocationBuilder.EXIT_NODE, ContainerUtils.constructStringContainer(exits));
 
         String z = "";
@@ -428,7 +428,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
         }
         return mainStyle = map.firstKey();
-        //        return new ArrayList<>(map.values()).get(0);
+        //        return new ArrayList<>(map.values()).getVar(0);
         //        return map.values().iterator().next();
     }
 

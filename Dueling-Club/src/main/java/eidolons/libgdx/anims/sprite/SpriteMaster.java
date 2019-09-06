@@ -45,7 +45,7 @@ public class SpriteMaster {
             }
             list.add(s);
             s.setFlipX(isFlipX(sprite, n, i));
-//            s.setFlipyX(isFlipX( paths.get(i), n , i ));
+//            s.setFlipyX(isFlipX( paths.getVar(i), n , i ));
             s.setFps(getFps(sprite, over, obj));
             s.setBlending(getBlending(sprite, over, obj));
             s.setRotation(getRotation(sprite, over, obj, i));
@@ -126,7 +126,9 @@ public class SpriteMaster {
             for (String s : ContainerUtils.openContainer(toParse)) {
                 BfObjEnums.SPRITES c = new EnumMaster<BfObjEnums.SPRITES>().
                         retrieveEnumConst(BfObjEnums.SPRITES.class, s);
-                parsed += c.path + ";";
+                if (c != null) {
+                    parsed += c.path + ";";
+                }
             }
             return parsed;
         }

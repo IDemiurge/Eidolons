@@ -7,7 +7,7 @@ public class ScriptEffect extends DC_Effect {
 
     public ScriptEffect(String script) {
         this.script = script;
-        //alt - get script from property of the spell/... ?
+        //alt - getVar script from property of the spell/... ?
     }
 
     @Override

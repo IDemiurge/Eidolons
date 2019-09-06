@@ -183,10 +183,10 @@ public class RadialSlot {
 //        if (visible) {
 //            if (infoTextSupplier != null) {
 //                if (infoLabel == null) {
-//                    infoLabel = new Label(infoTextSupplier.get(), StyleHolder.getSizedLabelStyle(FONT.RU, 18));
+//                    infoLabel = new Label(infoTextSupplier.getVar(), StyleHolder.getSizedLabelStyle(FONT.RU, 18));
 //                    addActor(infoLabel);
 //                } else {
-//                    infoLabel.setText(infoTextSupplier.get());
+//                    infoLabel.setText(infoTextSupplier.getVar());
 //                }
 //                infoLabel.setColor(valid ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
 //
@@ -197,7 +197,7 @@ public class RadialSlot {
 //            if (tooltip == null)
 //                if (getTooltipSupplier() != null) {
 //                    try {
-//                        tooltip = tooltipSupplier.get();
+//                        tooltip = tooltipSupplier.getVar();
 //                    } catch (Exception e) {
 //                        main.system.ExceptionMaster.printStackTrace(e);
 //                    }

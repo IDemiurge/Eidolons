@@ -171,7 +171,7 @@ public class Trigger {
         saving = s;
     }
 
-    protected void remove() {
+    public void remove() {
         game.getState().removeTrigger(this);
     }
 

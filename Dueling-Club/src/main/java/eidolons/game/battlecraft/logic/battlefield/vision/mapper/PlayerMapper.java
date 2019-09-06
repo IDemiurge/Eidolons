@@ -21,7 +21,7 @@ public class PlayerMapper<T> extends  GenericMapper<DC_Player, T> {
         set(obj.getGame().getPlayer(true), obj, t);
     }
 //    public void log(O unit) {
-//        log(unit, map.get(unit).keySet().toArray(new DC_Obj[map.get(unit).size()]));
+//        log(unit, map.getVar(unit).keySet().toArray(new DC_Obj[map.getVar(unit).size()]));
 //    }
 }
 

@@ -47,7 +47,7 @@ public class InventoryQuickSlotPanel extends InventorySlotsPanel {
 //        int maxLength = Math.min(8, quickSlots.size());
 //
 //        for (int i = 0; i < maxLength; i++) {
-//            Actor actor = quickSlots.get(i);
+//            Actor actor = quickSlots.getVar(i);
 //            if (actor == null) {
 //                actor = new ValueContainer(TextureCache.getOrCreateR(
 //                 Images.EMPTY_QUICK_ITEM ));

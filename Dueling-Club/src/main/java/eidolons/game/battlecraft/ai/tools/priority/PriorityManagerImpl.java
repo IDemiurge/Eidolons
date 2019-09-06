@@ -220,7 +220,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 LogMaster.log(1, priority + " priority for " + as);
             return priority;
         }
-//        Integer bonus = unit_ai.getActionPriorityBonuses().get(action.getActive().getName());
+//        Integer bonus = unit_ai.getActionPriorityBonuses().getVar(action.getActive().getName());
 //        if (bonus != null) {
 //            priority += bonus;
 //        }

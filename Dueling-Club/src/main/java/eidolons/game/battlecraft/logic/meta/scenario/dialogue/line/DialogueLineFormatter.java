@@ -127,7 +127,7 @@ public class DialogueLineFormatter {
                     if (part.contains(SCRIPT_KEY)) {
                         String scriptName = lineText.split(SCRIPT_KEY)[1].replace("]]", "").trim();
                         autoScriptsFileContents += "\n"+"***" + scriptName  ;
-                        String text = Texts.getScriptsMap().get(scriptName );
+                        String text = Texts.getScript(scriptName );
                         if (text != null) {
                             autoScriptsFileContents += text+ "\n";
                         } else {

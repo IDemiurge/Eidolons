@@ -87,7 +87,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //            if (hero == null) {
         //                List<Unit> list = getGame().getUnits().stream().
         //                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
-        //                hero = list.get(0);
+        //                hero = list.getVar(0);
         //            }
         //        }
         //        return hero;

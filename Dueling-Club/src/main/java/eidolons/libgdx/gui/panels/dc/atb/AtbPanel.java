@@ -26,6 +26,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -43,6 +44,8 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
+import main.content.mode.MODE;
+import main.content.mode.STD_MODES;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -604,15 +607,54 @@ public class AtbPanel extends GroupX {
         MOVE,
         OTHER,
         SPELL,
-        CHANNELING,
+        CHANNELING(SuperActor.BLENDING.SCREEN),
         DEBUFF,
         BUFF,
         HOSTILE_SPELL,
         UNKNOWN,
 
-        PREPARE,
+        PREPARE(SuperActor.BLENDING.SCREEN),
         WAIT,
-        DEFEND, SEARCH;
+        DEFEND,
+        SEARCH,
+
+        WHEEL,
+
+        ;
+        boolean screen;
+        SuperActor.BLENDING blending;
+
+        INTENT_ICON() {
+        }
+
+        INTENT_ICON(SuperActor.BLENDING blending) {
+            this.blending = blending;
+        }
+
+        public static INTENT_ICON getModeIcon(MODE mode) {
+            if (mode instanceof STD_MODES) {
+                switch (((STD_MODES) mode)) {
+                    case CHANNELING:
+                        return  CHANNELING;
+                    case STEALTH:
+                        break;
+                    case ALERT:
+                    case SEARCH:
+                        return SEARCH;
+                    case CONCENTRATION:
+                    case RESTING:
+                    case MEDITATION:
+                        return PREPARE;
+                    case DEFENDING:
+                        return  DEFEND;
+                    case WAITING:
+                        return  WAIT;
+                        default:
+                            return WHEEL;
+                }
+            }
+            return null;
+        }
 
         public String getPath() {
             switch (this) {
@@ -627,6 +669,7 @@ public class AtbPanel extends GroupX {
                 case PREPARE:
                 case WAIT:
                 case SEARCH:
+                case CHANNELING:
                     return "ui/content/intent icons/" + name() + ".txt";
             }
             return "ui/content/intent icons/" +
@@ -673,25 +716,23 @@ public class AtbPanel extends GroupX {
             super.act(delta);
 //            IntentIconMaster
             if (isIntentIconsOn())
-                if (getActor() != null)
-                    if (getActor().getUserObject() instanceof Unit) {
-                        if (getActor().getUserObject().isPlayerCharacter()) {
-                            intentIcon = INTENT_ICON.WAIT;
-                            getActor().setInitiative(initiative);
-                        } else {
+                if (getActor() != null) {
 
-                            intentIcon = ((Unit) getActor().getUserObject()).getAI().getCombatAI().getIntentIcon();
-                            if (intentIcon == null) {
-                                intentIcon = INTENT_ICON.UNKNOWN;
-                            }
+                    if (getActor().getUserObject() instanceof Unit) {
+                        Unit unit = (Unit) getActor().getUserObject();
+                        intentIcon =unit.getIntentIcon();
+                        if (intentIcon == null) {
+                            intentIcon = unit.getAI().getCombatAI().getIntentIcon();
+                        }
+                        if (intentIcon == null) {
+                            intentIcon = INTENT_ICON.UNKNOWN;
                         }
                         SpriteAnimation sprite = iconMap.get(intentIcon);
-                        if (intentIcon != null)
                             if (sprite == null) {
                                 iconMap.put(intentIcon,
-                                        sprite =
-                                                SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath(), false, false));
+                                        sprite =SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath(), false, false));
                             }
+                        sprite.setBlending(intentIcon.blending);
                         intentIconSprite.setSprite(sprite);
                         intentIconSprite.setY(-24);
                         intentIconSprite.setX(getPrefWidth() / 2);
@@ -702,6 +743,7 @@ public class AtbPanel extends GroupX {
 
                         intentIconSprite.setZIndex(Integer.MAX_VALUE);
                     }
+                }
 
         }
 

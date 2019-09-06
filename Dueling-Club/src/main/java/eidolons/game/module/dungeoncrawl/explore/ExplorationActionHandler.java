@@ -42,7 +42,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
         );
 //        for (PARAMETER p :     modifiedCosts) {
 //            Cost sub = costs.getCost(p);
-//            String modifier=  modifiedCosts.get(p);
+//            String modifier=  modifiedCosts.getVar(p);
 //            sub.getPayment().getAmountFormula().append("*"+modifier);
 //        }
 

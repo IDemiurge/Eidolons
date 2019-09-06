@@ -29,6 +29,9 @@ public class AbstractCoordinates extends Coordinates {
     }
 
     public static AbstractCoordinates createFromVars(String substring) {
+        if (!substring.contains("(")) {
+            return new AbstractCoordinates(0, 0);
+        }
         Integer x = Integer.valueOf(VariableManager.getVarList(substring).get(0).trim());
         Integer y = Integer.valueOf(VariableManager.getVarList(substring).get(1).trim());
         return new AbstractCoordinates(true,

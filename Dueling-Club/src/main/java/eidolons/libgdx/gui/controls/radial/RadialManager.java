@@ -559,7 +559,7 @@ public class RadialManager {
     }
 
     protected static Runnable getRunnable(DC_Obj target, DC_ActiveObj activeObj) {
-//        Runnable runnable=        runnableCaches.get(target).get(activeObj);
+//        Runnable runnable=        runnableCaches.getVar(target).getVar(activeObj);
 
         if (activeObj instanceof DC_ActiveObj) {
             DC_ActiveObj active = activeObj;

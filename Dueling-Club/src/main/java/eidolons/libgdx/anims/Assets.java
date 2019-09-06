@@ -24,6 +24,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
@@ -308,7 +309,7 @@ public class Assets {
             loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
 //            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
 
-            if (!DialogueManager.TEST){
+            if (!DialogueManager.TEST) {
                 loadSprite(Sprites.BG_DEFAULT, full);
                 loadSprite(Sprites.PORTAL_OPEN, full);
                 loadSprite(Sprites.PORTAL, full);
@@ -321,14 +322,17 @@ public class Assets {
                 loadSprite(Sprites.ACID_BLADE, full);
                 loadSprite(Sprites.AX_FIRE, full);
             }
-                if (!CoreEngine.isMyLiteLaunch())
-                {
+            if (!CoreEngine.isMyLiteLaunch()) {
+                for (AtbPanel.INTENT_ICON value : AtbPanel.INTENT_ICON.values()) {
+                    loadSprite(value.getPath(), full);
+                }
                 loadSprite(FullscreenAnims.FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
                 loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
             }
 
 
         }
+
 
         if (EidolonsGame.BRIDGE) {
             return;

@@ -75,7 +75,7 @@ public class GridOverlaysManager extends SuperActor {
 
     public void clearTooltip(Entity e) {
         //        main.system.auxiliary.log.LogMaster.log(1, "Removing mapping for " + e
-        //         + ":\n " + tooltipMap.get(e) + ";\n " + overlayMap.get(e));
+        //         + ":\n " + tooltipMap.getVar(e) + ";\n " + overlayMap.getVar(e));
         tooltipMap.remove(e);
         overlayMap.remove(e);
     }
@@ -182,7 +182,9 @@ public class GridOverlaysManager extends SuperActor {
         }
         setSightInfoDisplayed(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT));
         if (sightInfoDisplayed) {
-            observer = gridPanel.getObjectForView(gridPanel.getHoverObj());
+            if (gridPanel.getHoverObj() != null) {
+                observer = gridPanel.getObjectForView(gridPanel.getHoverObj());
+            }
             if (!(observer instanceof Unit)) {
                 observer = gridPanel.getObjectForView(gridPanel.getMainHeroView());
             } else {
@@ -404,10 +406,10 @@ public class GridOverlaysManager extends SuperActor {
         }
 
 
-        //        ClickListener listener = listenerCaches.get(overlay).get(parent);
+        //        ClickListener listener = listenerCaches.getVar(overlay).getVar(parent);
         //        if (listener == null) {
         //            listener = getOverlayListener(overlay, parent, v.x, v.y);
-        //            listenerCaches.get(overlay).put(parent, listener);
+        //            listenerCaches.getVar(overlay).put(parent, listener);
         //        }
         //        if (!parent.getListeners().contains(listener, true)) {
         //            parent.addListener(listener);

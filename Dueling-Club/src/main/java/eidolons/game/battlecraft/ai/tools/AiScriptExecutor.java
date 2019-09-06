@@ -164,7 +164,6 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             if (sequence == null) {
                 return;
             }
-
             sequence.getActions().forEach(
                     //TODO wait?
                     action -> {
@@ -174,11 +173,11 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
 //                                        finalUnit, function, action, args));
 //                            }
 //                        }
-                        if (!ExplorationMaster.isExplorationOn()) {
-                            getGame().getLoop().actionInput(new ActionInput(action.getActive(),
-                                    new Context(action.getRef())));
-                        } else
-                            getExecutor().execute(action, free);
+//                        if (!ExplorationMaster.isExplorationOn()) {
+//                            getGame().getLoop().actionInput(new ActionInput(action.getActive(),
+//                                    new Context(action.getRef())));
+//                        } else
+                            getExecutor().execute(action, free, false);
                     });
         }
 

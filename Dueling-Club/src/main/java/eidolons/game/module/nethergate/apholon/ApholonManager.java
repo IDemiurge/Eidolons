@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 public class ApholonManager {
 
     public void sacrifice(Soul eidolon) {
-//Curse.get(eidolon.getAmount());
+//Curse.getVar(eidolon.getAmount());
 
     }
 

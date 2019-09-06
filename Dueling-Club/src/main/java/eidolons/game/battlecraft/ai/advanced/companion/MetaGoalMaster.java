@@ -107,7 +107,7 @@ public class MetaGoalMaster extends AiHandler {
         switch (type) {
             case PROTECT:
                 if (sequence.getTask().getType() == GOAL_TYPE.ATTACK) {
-                    //get threat
+                    //getVar threat
                     float threat = getThreatAnalyzer().getRelativeThreat(target.getAI(), unit);
                     int mod = getThreatProtectionMod(sequence.getAi(), target);
                     return (int) (threat * mod);

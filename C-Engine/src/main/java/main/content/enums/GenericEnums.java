@@ -308,6 +308,7 @@ public class GenericEnums {
         BROAD_REACH,
         LEAVES_NO_CORPSE,
         PASSABLE,
+        IMPASSABLE,
         NON_DISPELABLE,
         DIVINATION_SPELL_GROUPS_INVERTED,
         WRAPPED_ITEM,
@@ -351,6 +352,33 @@ public class GenericEnums {
 
 
          */
+
+        weave_nether("spell/weave/nether weave"),
+        missile_nether("spell/missile/nether missile"),
+        missile_nether_nox("spell/missile/nether missile nox"),
+        missile_electric("spell/missile/electric missile"),
+        missile_electric_intense("spell/missile/electric missile intense2"),
+
+        weave_arcane("spell/weave/arcane weave"),
+        missile_arcane("spell/missile/arcane missile"),
+        weave_arcane_pink("spell/weave/arcane weave pink"),
+        missile_arcane_pink("spell/missile/arcane missile pink"),
+        weave_arcane_pink2("spell/weave/arcane weave pink2"),
+        missile_arcane_intense("spell/missile/arcane missile intense"),
+
+        weave_death("spell/weave/death weave"),
+        missile_death("spell/missile/death missile"),
+
+        weave_warp("spell/weave/warp weave"),
+        missile_warp("spell/missile/warp missile"),
+
+        weave_chaos("spell/weave/holy weave red"),
+        missile_chaos("spell/missile/chaos missile"),
+
+        weave_pale("spell/weave/pale weave"),
+        missile_pale("spell/missile/pale missile"),
+
+
 
         nether_impact3("spell/impact/nether impact3"),
         nether_impact2("spell/impact/nether impact2"),

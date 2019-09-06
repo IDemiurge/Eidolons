@@ -184,7 +184,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             //
             //              n = Math.round(RandomWizard.getRandomFloat()* timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
             //            for (int i = 0; i < n; i++) {
-            //                itemType= pool.get(i);
+            //                itemType= pool.getVar(i);
             //                DC_HeroItemObj item = createItem(itemType);
             //                itemBought(item , 0);
             //            }

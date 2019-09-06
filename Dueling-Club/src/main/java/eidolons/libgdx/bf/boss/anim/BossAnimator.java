@@ -68,7 +68,7 @@ public class BossAnimator  {
             animate((ActionInput) p.get());
         });
         GuiEventManager.bind(GuiEventType.ANIMATION_DONE, p -> {
-//            animate((ActionInput) p.get());
+//            animate((ActionInput) p.getVar());
         });
         if (!fastMode)
             preloadBoss();

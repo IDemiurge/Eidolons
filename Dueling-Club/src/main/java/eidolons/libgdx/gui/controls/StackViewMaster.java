@@ -37,7 +37,7 @@ import java.util.Map;
  * <p>
  * <p>
  * if showing:
- * don't let other things get in the way of tooltips/hover
+ * don't let other things getVar in the way of tooltips/hover
  */
 public class StackViewMaster {
     private static final float WAIT_AFTER_HOVER_OFF = 2;

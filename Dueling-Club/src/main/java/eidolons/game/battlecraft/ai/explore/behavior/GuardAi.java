@@ -121,7 +121,7 @@ public class GuardAi extends AiBehavior {
         return super.getOrders();
         //check mode
         /*
-        get random cell and go there without ever getting farther than X from origin
+        getVar random cell and go there without ever getting farther than X from origin
 
         checkOnTheGuarded - just face it and queue waiting
          */

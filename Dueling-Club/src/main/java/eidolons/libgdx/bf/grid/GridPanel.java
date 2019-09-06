@@ -343,7 +343,7 @@ public class GridPanel extends Group {
                         }
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
                             setVisible(viewMap.get(sub), false);
-                            //                            Debugger.validateInvisibleUnitView(viewMap.get(sub));
+                            //                            Debugger.validateInvisibleUnitView(viewMap.getVar(sub));
                         }
                         //                        for (int x = 0; x < cols; x++) {
                         //                            for (int y = 0; y < rows; y++) {
@@ -495,6 +495,9 @@ public class GridPanel extends Group {
             String key = (String) list.get(0);
             Coordinates c = (Coordinates) list.get(1);
             GridObject gridObj = findGridObj(key, c);
+            if (gridObj == null) {
+                main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key +c);
+            }
             gridObj.fadeOut(true);
             customOverlayingObjectsUnder.remove(gridObj);
             customOverlayingObjects.remove(gridObj);
@@ -1005,7 +1008,7 @@ public class GridPanel extends Group {
                     cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
             }
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            main.system.auxiliary.log.LogMaster.dev("No cell for view: " + object.getNameAndCoordinate());
         }
         setUpdateRequired(true);
         if (overlayManager != null)

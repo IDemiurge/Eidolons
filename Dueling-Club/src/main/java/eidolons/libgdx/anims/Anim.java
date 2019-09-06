@@ -304,7 +304,7 @@ public class Anim extends Group implements Animation {
         if (!isDrawTexture()) {
             return;
         }
-//        Texture currentFrame = textureSupplier.get();
+//        Texture currentFrame = textureSupplier.getVar();
 //        if (currentFrame != null) {
 //            setWidth(currentFrame.getWidth());
 //            setHeight(currentFrame.getHeight());

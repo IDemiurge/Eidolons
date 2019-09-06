@@ -303,7 +303,7 @@ public abstract class DC_CounterRule {
 //        }
 //        AddBuffEffect effect = null;
 //        if (isUseBuffCache()) {
-//            effect = getEffectCache().get(unit); // buff effect cache!
+//            effect = getEffectCache().getVar(unit); // buff effect cache!
 //        }
 //        if (effect == null) {
 //            // Ref REF = new Ref(unit.getGame(), unit.getId());

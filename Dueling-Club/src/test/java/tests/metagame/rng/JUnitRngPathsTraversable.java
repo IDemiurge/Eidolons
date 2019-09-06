@@ -32,12 +32,12 @@ public class JUnitRngPathsTraversable extends JUnitRng{
 
         }
         for (LevelGraphEdge edge : graph.getEdges()) {
-//            checkCanPass(edge.getNodeOne(), edge.getNodeTwo(), edgeMap.get(edge));
+//            checkCanPass(edge.getNodeOne(), edge.getNodeTwo(), edgeMap.getVar(edge));
         }
     }
 
     private void checkCanPass(LevelGraphNode nodeOne, LevelGraphNode nodeTwo) {
-//        canPass(map.get(nodeOne), map.get(nodeTwo));
+//        canPass(map.getVar(nodeOne), map.getVar(nodeTwo));
 
     }
 

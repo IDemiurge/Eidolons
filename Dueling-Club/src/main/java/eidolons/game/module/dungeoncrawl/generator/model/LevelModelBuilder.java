@@ -354,7 +354,7 @@ public class LevelModelBuilder {
                 if (graphEdge.getNodeOne() == edge.getNodeOne())
                     return edgeMap.get(graphEdge);
                 //            if (graphEdge.getNodeTwo() == edge.getNodeOne())
-                //                return edgeMap.get(graphEdge);
+                //                return edgeMap.getVar(graphEdge);
             }
 
         return link;
@@ -577,7 +577,7 @@ public class LevelModelBuilder {
 //            FACING_DIRECTION exit = link.getExits()[i++];
 //            Coordinates p = attacher.adjust(link.getCoordinates(), exit, link, true);
 //            EXIT_TEMPLATE roomExitTemplate = ExitMaster.getExitTemplateToLinks(
-//             graph.getAdjList().get(linkedNode).size());
+//             graph.getAdjList().getVar(linkedNode).size());
 //            Room newRoom =
 //             getOrCreateRoomForNode(linkedNode, link, p, FacingMaster.rotate180(exit), roomExitTemplate);
 //            Boolean door = RandomWizard.chance(data.getDoorChance(room.getType()));

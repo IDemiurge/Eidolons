@@ -105,7 +105,6 @@ public class SimpleAnim implements Animation {
             for (SpellVfx spellVfx : vfx) {
                 spellVfx.updatePosition(pos.x,pos.y);
                 spellVfx.draw(batch, 1f);
-                main.system.auxiliary.log.LogMaster.dev(" " );
                 if (!spellVfx.isComplete()) {
                     done = false;
                 }

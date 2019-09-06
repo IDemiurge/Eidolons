@@ -389,7 +389,7 @@ public class AtomicAi extends AiHandler {
                     result = true;
             } else
                 result = false;
-            //if we need to get to a cell that is not 'facing' the target?!
+            //if we need to getVar to a cell that is not 'facing' the target?!
             if (!result)
                 return false;
             if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), enemy))
@@ -439,9 +439,9 @@ public class AtomicAi extends AiHandler {
             dst *= 1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
             if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst) {
-//           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().get(ai.getUnit().getOwner(),
+//           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().getVar(ai.getUnit().getOwner(),
 //                        Eidolons.getMainHero());
-//                game.getVisionMaster().getVisionController().getDetectionMapper().get(ai.getUnit().getOwner(),
+//                game.getVisionMaster().getVisionController().getDetectionMapper().getVar(ai.getUnit().getOwner(),
 //                        Eidolons.getMainHero());
                 return true;
             }
@@ -476,7 +476,7 @@ public class AtomicAi extends AiHandler {
 //if only one enemy
         // if unit is weak
 
-//        if (!ai.getUnit().getActionMap().get(ACTION_TYPE.SPECIAL_MOVE).isEmpty()) {
+//        if (!ai.getUnit().getActionMap().getVar(ACTION_TYPE.SPECIAL_MOVE).isEmpty()) {
 //            maxDistance--;
 //        }
 //

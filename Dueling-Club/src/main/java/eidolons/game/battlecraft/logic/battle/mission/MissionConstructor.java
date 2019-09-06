@@ -25,7 +25,7 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
 //        ScenarioMeta meta = (ScenarioMeta) getMaster().getMetaMaster().getMetaGame();
         String name = getMaster().getMetaMaster().getMetaDataManager(). getMissionName();
 //         StringMaster.openContainer(
-//         meta.getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).get(index);
+//         meta.getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).getVar(index);
         ObjType type = DataManager.getType(name, DC_TYPE.MISSIONS);
         if (type == null) {
             if (!StringMaster.getFormat(name).equalsIgnoreCase(".xml")) {

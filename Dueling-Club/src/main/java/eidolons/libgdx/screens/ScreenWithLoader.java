@@ -290,7 +290,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
+//                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
                 blackoutAction.setStart((blackout));
                 blackoutAction.setEnd(0);
                 blackoutAction.restart();

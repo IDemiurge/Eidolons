@@ -199,7 +199,7 @@ public class HqDataMaster {
     }
 
     public static void modelChanged(HeroDataModel entity) {
-//        getMap().get(entity.getHero()).reset(); TODO causes double reset; why? and what is it for?
+//        getMap().getVar(entity.getHero()).reset(); TODO causes double reset; why? and what is it for?
     }
 
     public static HqDataMaster createInstance(Unit unit) {

@@ -816,9 +816,9 @@ public enum PARAMS implements PARAMETER {
 
     SELF_BUFF_MOD(null , "", false, 60, "chars", "units"),
     DEBT_MOD(null , "", false,  0, "chars", "units"),
-    INTEREST_MOD(null , "", false,  0, "chars", "units")
+    INTEREST_MOD(null , "", false,  0, "chars", "units"),
 
-    ;
+    SUMMON_ATB(null , "", false,  0, "spells");
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);

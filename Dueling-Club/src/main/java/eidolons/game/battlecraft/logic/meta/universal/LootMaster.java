@@ -159,7 +159,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 
     private String generatePrefs(Unit hero) {
         String prefs = "";
-        //get highest masteries?
+        //getVar highest masteries?
         List<PARAMETER> highest = hero.getMasteries().getHighest(10);
         for (PARAMETER mastery : highest) {
 

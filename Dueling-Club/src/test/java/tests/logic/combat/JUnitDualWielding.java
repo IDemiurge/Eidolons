@@ -18,7 +18,7 @@ public class JUnitDualWielding extends AttackTest {
         atbHelper.startCombat();
         super.testAttack();
         assertTrue(unit.getBuff(DualWieldingRule.buffTypeNameMainHand)!=null );
-//        unit.getAttacks(false).get(0).getCosts().getCost(PARAMS.N_OF_ACTIONS);
+//        unit.getAttacks(false).getVar(0).getCosts().getCost(PARAMS.N_OF_ACTIONS);
 
 
     }

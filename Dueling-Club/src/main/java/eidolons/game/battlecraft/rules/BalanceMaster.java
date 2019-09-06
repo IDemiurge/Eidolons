@@ -64,7 +64,7 @@ public class BalanceMaster {
 //        DC_ActiveObj best = entity.getActives().stream().filter(activeObj ->
 //         ActionManager.isWeaponAttack(activeObj))
 //         .sorted(SortMaster.getObjSorterByExpression(a-> FutureBuilder.getDamage(a, dummy)))
-//         .findFirst().get();
+//         .findFirst().getVar();
 //        Double initiative = entity.getParamDouble(PARAMS.N_OF_ACTIONS);
 //        val =FutureBuilder.getDamage(best, dummy) / best.getIntParam(PARAMS.AP_COST) * initiative
 //         / AtbController.SECONDS_IN_ROUND / AtbController.ATB_READINESS_PER_AP;

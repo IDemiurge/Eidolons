@@ -196,10 +196,10 @@ public class AV_Tree extends G_Panel {
             List<String> upgrades = new ArrayList<>();
             List<String> list;
             if (workspace == null) {
-//                Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).get(
+//                Set<String> c = XML_Reader.getTreeSubGroupedTypeMap(XML_Reader.isMacro()).getVar(
 //                 subGroup);
 //                if (!ListMaster.isNotEmpty(c)) {
-//                    c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).get(subGroup);
+//                    c = XML_Reader.getTreeSubGroupedTypeMap(!XML_Reader.isMacro()).getVar(subGroup);
 //                }
 //                list = new ArrayList<>(c);
 //                list.removeIf(t-> t==null );

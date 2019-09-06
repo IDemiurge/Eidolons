@@ -102,7 +102,7 @@ public class SoundPlayer extends Player {
 
     @Override
     public int getVolume() {
-//        OptionsMaster.get
+//        OptionsMaster.getVar
         return super.getVolume();
     }
 

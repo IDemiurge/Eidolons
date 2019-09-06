@@ -12,7 +12,7 @@ public class QuestListPanel extends TownPlaceListPanel {
 
     public QuestListPanel() {
 //        GuiEventManager.bind(GuiEventType.QUEST_TAKEN, p -> {
-//            chosen=  buttons.get(getIndex());
+//            chosen=  buttons.getVar(getIndex());
 //            setDisabled(true);
 //        });
 //        GuiEventManager.bind(GuiEventType.QUEST_CANCELLED, p -> {

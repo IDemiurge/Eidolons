@@ -43,19 +43,19 @@ public class UnitViewFactory {
     public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
-                bfObj.isBoss()  ? new BossView(options) :
+                bfObj.isBoss() ? new BossView(options) :
                         new GridUnitView(bfObj, options);
 
-        if (bfObj instanceof Unit || bfObj.isLandscape() || bfObj.isWall()|| bfObj.isWater())
+        if (bfObj instanceof Unit || bfObj.isLandscape() || bfObj.isWall() || bfObj.isWater())
             if (VisionMaster.isLastSeenOn()) {
                 if (!bfObj.isPlayerCharacter())
                     if (!bfObj.isBoss())
 //                        if (!bfObj.isWall())
-                        {
-                            LastSeenView lsv = new LastSeenView(options, view);
-                            view.setLastSeenView(lsv);
-                            new LastSeenTooltipFactory().add(lsv, bfObj);
-                        }
+                    {
+                        LastSeenView lsv = new LastSeenView(options, view);
+                        view.setLastSeenView(lsv);
+                        new LastSeenTooltipFactory().add(lsv, bfObj);
+                    }
             }
         view.setOutlinePathSupplier(() -> {
             if (CoreEngine.isFootageMode()) {
@@ -104,14 +104,15 @@ public class UnitViewFactory {
         view.getInitiativeQueueUnitView().addListener(listener);
 
         if (isGridObjRequired(bfObj)) {
-            CUSTOM_OBJECT x =  new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
+            CUSTOM_OBJECT x = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
             LinkedGridObject obj = new LinkedGridObject(view,
-                   x,
+                    x,
                     bfObj.getCoordinates());
-//            view.addActor(obj);
-//            main.system.auxiliary.log.LogMaster.dev(" ADD_GRID_OBJ for " +
-//                    view + ": "+x );
-            GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
+            if (x.attach) {
+                view.addActor(obj);
+                obj.setZIndex(0);
+            } else
+                GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
         }
 
         if (bfObj.checkBool(GenericEnums.STD_BOOLS.INVISIBLE)) {
@@ -164,23 +165,22 @@ public class UnitViewFactory {
                     if (getTapCount() > 1)
                         if (event.getButton() == 0)
                             if (bfObj.isPlayerCharacter() && !UnitInfoPanelNew.isNewUnitInfoPanelWIP())
-                            if (EidolonsGame.isHqEnabled())
-                            {
-                                HqMaster.openHqPanel();
-                                event.stop();
-                                return;
-                            } else {
-                                if (UnitInfoPanelNew.isNewUnitInfoPanelWIP())
-                                    if (bfObj instanceof Unit) {
-                                        GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                                                ((Unit) bfObj));
-                                        return;
-                                    }
-                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                                event.cancel();
-                                return;
+                                if (EidolonsGame.isHqEnabled()) {
+                                    HqMaster.openHqPanel();
+                                    event.stop();
+                                    return;
+                                } else {
+                                    if (UnitInfoPanelNew.isNewUnitInfoPanelWIP())
+                                        if (bfObj instanceof Unit) {
+                                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+                                                    ((Unit) bfObj));
+                                            return;
+                                        }
+                                    DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                                    event.cancel();
+                                    return;
 
-                            }
+                                }
                     //TODO control options
 
                     if (event.getButton() == Buttons.LEFT) {
@@ -233,7 +233,7 @@ public class UnitViewFactory {
 
         view.setUserObject(bfObj);
         if (isGridObjRequired(bfObj)) {
-            CUSTOM_OBJECT x =  new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
+            CUSTOM_OBJECT x = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
             LinkedGridObject obj = new LinkedGridObject(view,
                     x, bfObj.getCoordinates());
             GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);

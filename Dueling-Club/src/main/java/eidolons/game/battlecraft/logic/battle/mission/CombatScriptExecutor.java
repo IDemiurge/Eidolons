@@ -49,6 +49,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 import main.system.threading.WaitMaster;
@@ -80,7 +81,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     public void checkTriggers(Event e) {
         scriptTriggers.forEach(trigger -> trigger.check(e));
 
-        //get ref from where? {vars} - global?
+        //getVar ref from where? {vars} - global?
         //GlobalRef - {party}, {main_hero}, {party_group}, ...
     }
 
@@ -170,6 +171,12 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 return doQuest(true, ref, args);
             case QUEST:
                 return doQuest(false, ref, args);
+            case SCRIPT_IF:
+                args[0]=args[1]+ StringMaster.wrapInParenthesis(args[0]      );
+                getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
+                        execute(SpeechScript.SPEECH_ACTION.SCRIPT_IF,
+                                args[0]);
+                return true;
             case SCRIPT_PARALLEL:
                 getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
                         execute(SpeechScript.SPEECH_ACTION.SCRIPT_PARALLEL,
@@ -551,6 +558,8 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     public enum COMBAT_SCRIPT_FUNCTION {
 
         SCRIPT,
+        SCRIPT_IF,
+        SCRIPT_PARALLEL,
         SPAWN,
         MOVE,
         REPOSITION,
@@ -570,7 +579,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ESOTERICA, CINEMATIC, SCRIPT_PARALLEL;
+        ESOTERICA, CINEMATIC;
     }
 
 }

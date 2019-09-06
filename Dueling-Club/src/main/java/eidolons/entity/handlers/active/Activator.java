@@ -7,6 +7,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.action.WatchRule;
+import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -42,7 +43,7 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
-        if (CoreEngine.isActiveTestMode()){
+        if (CoreEngine.isActiveTestMode()) {
             return true;
         }
         if (getGame().getCombatMaster().isActionBlocked(getAction()))
@@ -52,17 +53,18 @@ public class Activator extends ActiveHandler {
         }
 
         if (EidolonsGame.isActionBlocked(getEntity())) {
+            getEntity().getCosts().setReason("Blocked");
             return false;
         }
 
 
         if (!getEntity().isMine()) //TODO igg demo hack
-        if (!first ) {//|| broken) {
-            if (canActivate != null) {
+            if (!first) {//|| broken) {
+                if (canActivate != null) {
 
-                return canActivate;
+                    return canActivate;
+                }
             }
-        }
 //     TODO req string   if (ExplorationMaster.isExplorationOn()) {
 //            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
 //                return false;
@@ -133,16 +135,19 @@ public class Activator extends ActiveHandler {
         return canBeActivated(getRef(), true);
     }
 
-    public  void cannotActivate() {
+    public void cannotActivate() {
         cannotActivate_(getEntity(), getEntity().getCosts().getReasonsString());
     }
-        public static void cannotActivate_(DC_ActiveObj e, String reason) {
+
+    public static void cannotActivate_(DC_ActiveObj e, String reason) {
         LogMaster.log(1, "Cannot Activate " +
                 e.getName() +
                 ": " + reason);
         if (!e.getOwnerUnit().isMine())
             if (e.getOwnerUnit().isAiControlled())
                 return;
+        EUtils.showInfoText(e.getCosts().getReasonsString());
+
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(e,
                 TEXT_CASES.REQUIREMENT,
                 e.getCosts().getReasonsString());

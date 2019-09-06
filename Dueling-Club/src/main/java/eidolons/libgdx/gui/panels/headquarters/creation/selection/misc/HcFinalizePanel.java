@@ -28,7 +28,7 @@ public class HcFinalizePanel extends HcElement{
     private final DescriptionScroll description;
 
     public HcFinalizePanel() {
-        // get sketches relevant to the hero
+        // getVar sketches relevant to the hero
         // buy items?
         // TRANSIT TO HQ?!
         HcHeroModel model = HeroCreationMaster.getModel();

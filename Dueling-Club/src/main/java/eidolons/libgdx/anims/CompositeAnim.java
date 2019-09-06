@@ -24,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -132,7 +133,7 @@ public class CompositeAnim implements Animation {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        if (parallelAnims.isEmpty()) {
+        if (!parallelAnims.isEmpty()) {
             for (Animation parallelAnim :     new ArrayList<>(parallelAnims))  {
                 if (!parallelAnim.tryDraw(batch)) {
 //                    parallelAnim.finished();
@@ -202,8 +203,8 @@ public class CompositeAnim implements Animation {
                     AnimMaster.getInstance().addAttached(a);
                 });
             }
-//            if (attached.get(ANIM_PART.AFTEREFFECT) != null) {
-//                attached.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
+//            if (attached.getVar(ANIM_PART.AFTEREFFECT) != null) {
+//                attached.getVar(ANIM_PART.AFTEREFFECT).forEach(a -> {
 //                    a.start(getRef());
 //                    AnimMaster.getInstance().addAttached(a);
 //                });
@@ -261,7 +262,7 @@ public class CompositeAnim implements Animation {
 
     private void playAttached() {
         List<Animation> list = attached.get( part);
-//        List<Animation> list = attached.get(part == null ? ANIM_PART.AFTEREFFECT : part);
+//        List<Animation> list = attached.getVar(part == null ? ANIM_PART.AFTEREFFECT : part);
         if (list != null) {
             list.forEach(anim -> {
                 anim.start(getRef());
@@ -285,7 +286,7 @@ public class CompositeAnim implements Animation {
             else if (getRef().getSourceObj() instanceof BattleFieldObject)
                 GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE, getRef().getSourceObj());
         }
-
+        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED, this);
     }
 
     private void resetMaps() {

@@ -59,7 +59,7 @@ public class AbilityEnums {
         ENEMY_ITEM,
         ANY_ITEM,
         ANY_WEAPON,
-        ANY_ARMOR, FRONT_RANGE,
+        ANY_ARMOR, FRONT_RANGE, UNOBSTRUCTED_SHOT,
 
     }
 

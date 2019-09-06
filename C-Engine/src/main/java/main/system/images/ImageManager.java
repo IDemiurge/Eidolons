@@ -1253,8 +1253,11 @@ public class ImageManager {
     }
 
     public static String getLargeImage(Entity entity) {
-        String format = StringMaster.getFormat(entity.getImagePath());
-        String path = StringMaster.cropFormat(entity.getImagePath()) + LARGE + format;
+        return getLargeImage(entity.getImagePath());
+    }
+    public static String getLargeImage(String x) {
+        String format = StringMaster.getFormat(x);
+        String path = StringMaster.cropFormat(x) + LARGE + format;
         if (isImage(path))
             return path;
         return null;

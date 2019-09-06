@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -42,7 +41,6 @@ import eidolons.libgdx.particles.spell.SpellVfxMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
 import eidolons.libgdx.stage.camera.CameraMan;
-import eidolons.macro.entity.library.LibraryManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -56,7 +54,6 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.entity.Ref;
-import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -65,7 +62,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.log.Chronos;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -77,6 +74,8 @@ import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION.*;
 import static main.system.auxiliary.log.LogMaster.important;
@@ -125,6 +124,7 @@ public class SpeechExecutor {
         CUSTOM_OBJECT obj = null;
         Coordinates c = null;
         Coordinates c1 = null;
+        String string = null;
         BattleFieldObject unit = Eidolons.getMainHero();
         List<Coordinates> coordinatesList = null;
 
@@ -168,8 +168,7 @@ public class SpeechExecutor {
                 ObjType t = DataManager.getType(vars.get(0), DC_TYPE.SPELLS);
                 if (t == null) {
                     SpellMaster.removeSpells((Unit) unit);
-                } else
-                if (speechAction == ADD_SPELL) {
+                } else if (speechAction == ADD_SPELL) {
                     SpellMaster.addVerbatimSpell((Unit) unit, t);
                 } else {
                     SpellMaster.removeSpell((Unit) unit, t);
@@ -228,7 +227,7 @@ public class SpeechExecutor {
                 }
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ACTION,
                         unit.getRef(), new Object[]{
-                                value, arg
+                             unit, value, arg
                         });
                 break;
             case PARAM:
@@ -243,17 +242,22 @@ public class SpeechExecutor {
             case REPLACE:
                 break;
             case CLEAR:
-                if (vars.size()>0) {
-                 c1 = getCoordinate(vars.get(1), true);
-                coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+                string = "remove";
+//            case DECIMATE:
+            case ALL:
+//                if (vars.size() > 0) {
+//                    c1 = getCoordinate(vars.get(1), true);
+//                    coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+//                }
+                if (vars.size() > 0) {
+                    string = vars.get(0);
                 }
                 for (BattleFieldObject bfObject : master.getGame().getBfObjects()) {
                     if (bfObject.getName().equalsIgnoreCase(value)) {
                         if (coordinatesList == null) {
-                            doUnit(bfObject, "remove");
-                        } else
-                        if (coordinatesList.contains(bfObject.getCoordinates())) {
-                            doUnit(bfObject, "remove");
+                            doUnit(bfObject, string);
+                        } else if (coordinatesList.contains(bfObject.getCoordinates())) {
+                            doUnit(bfObject, string);
                         }
                     }
 
@@ -264,11 +268,11 @@ public class SpeechExecutor {
                 getUnit(value).removeBuff(vars.get(0));
                 break;
             case BUFF_ADD:
-                unit=getUnit(value);
-                unit.addBuff(master.getGame().getManager().getBuffMaster().createCustomBuff(vars.get(0), unit));
+                unit = getUnit(value);
+                master.getGame().getManager().getBuffMaster().createCustomBuff(vars.get(0), unit);
                 break;
             case FILL:
-                  c1 = getCoordinate(vars.get(1), true);
+                c1 = getCoordinate(vars.get(1), true);
                 coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
 
             case ADD:
@@ -323,10 +327,40 @@ public class SpeechExecutor {
                                 unit.getName(), value
                         });
                 break;
+
+            case TRIGGER_REMOVE:
+                if (value == "last") {
+                    master.getBattleMaster().getScriptManager().removeLast();
+                } else {
+//                    TODO master.getBattleMaster().getScriptManager().remove(vars.getVar(0));
+                }
+                break;
+
             case TRIGGER:
                 master.getBattleMaster().getScriptManager().parseScripts(full);
                 break;
 
+            case WAIT_ANIMS:
+//                Predicate<Float> p= delta->{
+//                    if (!AnimMaster.getInstance().isDrawing()) {
+//                    main.system.auxiliary.log.LogMaster.dev("Anims waiting unlocked! " );
+//                        return true;
+//                    }
+//                    main.system.auxiliary.log.LogMaster.dev("Anims waiting... " );
+//                    return false;
+//                };
+//                main.system.auxiliary.log.LogMaster.dev("Anims wait locked! " );
+//                if (NumberUtils.isInteger(value)) {
+//                    WaitMaster.waitForCondition(p, Integer.valueOf(value));
+//                } else
+//                    WaitMaster.waitForCondition(p, 0);
+
+                if (NumberUtils.isInteger(value)) {
+                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString()
+                            + StringMaster.wrapInParenthesis(value));
+                } else
+                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString());
+                break;
             case WAIT_INPUT:
 //                DungeonScreen.getInstance().getController().onInput(() -> {
 //                    WaitMaster.WAIT_OPERATIONS operation = WaitMaster.WAIT_OPERATIONS.INPUT;
@@ -398,7 +432,7 @@ public class SpeechExecutor {
                 boolean flipX;//TODO
                 for (String var : vars) {
                     //spriteData
-                    if (Texts.getScriptsMap().get(var) != null) {
+                    if (Texts.getScript(var) != null) {
                         script = var;
                         continue;
                     }
@@ -473,10 +507,24 @@ public class SpeechExecutor {
                 } else GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
                 break;
 
-            case SCRIPT_PARALLEL:
+            case SCRIPT_CHANCE:
+                if (!RandomWizard.chance(Integer.valueOf(vars.get(0)))) {
+                    break;
+                }
+            case SCRIPT_PARALLEL: //TODO separate if / parallel
                 bool = true;
+            case TUT_SCRIPT:
+                if (speechAction == TUT_SCRIPT)
+                    if (!EidolonsGame.getVar("tutorial")) {
+                        break;
+                    }
+            case SCRIPT_IF:
+                if (speechAction == SCRIPT_IF)
+                    if (!EidolonsGame.getVar(vars.get(0))) {
+                        break;
+                    }
             case SCRIPT:
-                String d = Texts.getScriptsMap().get(value);
+                String d = Texts.getScript(value);
                 if (d != null) {
                     main.system.auxiliary.log.LogMaster.important("Nested script: " + d);
                     if (!vars.isEmpty() || bool) {
@@ -488,10 +536,14 @@ public class SpeechExecutor {
                 }
                 COMBAT_SCRIPT_FUNCTION func = new EnumMaster<COMBAT_SCRIPT_FUNCTION>().
                         retrieveEnumConst(COMBAT_SCRIPT_FUNCTION.class, VariableManager.removeVarPart(value));
-
+                if (func == null) {
+                    main.system.auxiliary.log.LogMaster.dev("NO SUCH SCRIPT or function: " + value);
+                }
                 master.getBattleMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
                         vars.toArray(new String[vars.size()]));
                 break;
+
+
             case MOMENT:
                 MusicMaster.playMoment(value);
                 break;
@@ -568,7 +620,7 @@ public class SpeechExecutor {
                 master.getGame().getManager().reset();
                 break;
             case VAR_MAP:
-                EidolonsGame.setVarMap(value, Boolean.valueOf(vars.get(0)));
+                EidolonsGame.setVar(value, Boolean.valueOf(vars.get(0)));
                 break;
             case CINEMATICS:
             case VAR:
@@ -612,6 +664,9 @@ public class SpeechExecutor {
                         break;
                 }
             case COMMENT:
+                if (vars.size() > 2) {
+                    execute(WAIT_ANIMS, vars.get(2));
+                }
                 if (vars.size() > 0) {
                     unit = getUnit(vars.get(0));
                 }
@@ -814,8 +869,8 @@ public class SpeechExecutor {
 //                container.setOnDoneCallback();
                 break;
             case VIDEO:
-               Runnable r=null;
-                if(vars.size()>0){
+                Runnable r = null;
+                if (vars.size() > 0) {
                     r = () -> Eidolons.onNonGdxThread(() -> execute(SCRIPT, vars.get(0)));
                 }
                 GuiEventManager.trigger(GuiEventType.PLAY_VIDEO, value, r);
@@ -985,7 +1040,7 @@ public class SpeechExecutor {
             interpolation = ActionMaster.getInterpolation(vars.get(1));
         }
         if (zoom) {
-//        new CameraMan.MotionData(Float.valueOf(value) / 100, Float.valueOf(vars.get(0)) / 1000, Interpolation.swing);
+//        new CameraMan.MotionData(Float.valueOf(value) / 100, Float.valueOf(vars.getVar(0)) / 1000, Interpolation.swing);
             if (duration >= 500) {
                 duration = duration / 1000;
             }
@@ -1022,16 +1077,26 @@ public class SpeechExecutor {
 
     private Coordinates getCoordinate(String value, boolean abstract_) {
         value = value.trim();
-        if (!value.contains("-")) {
-            if (!value.contains(":")) {
-                BattleFieldObject unit = getUnit(value);
-                if (unit != null) {
-                    return unit.getCoordinates();
-                }
-            }
+        if (value.contains("+")) {
+            Coordinates c = getCoordinate(value.split("[+]" )[0], true);
+            Coordinates c1 = getCoordinate(value.split(("[+]"))[1], true);
+            return c.getOffset(c1);
         }
-        Coordinates c = abstract_ ? new AbstractCoordinates(value)
-                : Coordinates.get(value);
+        Coordinates c = null;
+        if (!value.contains("-") && !value.contains(":")) {
+            BattleFieldObject unit = getUnit(value);
+            if (unit != null) {
+                return unit.getCoordinates();
+            }
+            return master.getGame().getDungeon().getCoordinateByName(value);
+        }
+        if (c == null)
+            try {
+                c = abstract_ ? new AbstractCoordinates(value)
+                        : Coordinates.get(value);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         if (c.isInvalid()) {
             return null;
         }

@@ -56,12 +56,16 @@ public class PhaseVfx extends SpellVfx {
                     memoryMap.put(part,  fileName);
                     continue;
                 }
+                SpellVfx vfx = SpellVfxPool.getEmitterActor(
+                        PathFinder.getVfxAtlasPath() + "spell/" + part.getPartPath() + "/" + path_);
+                map.put(part, vfx);
+            } else {
+                SpellVfx vfx = SpellVfxPool.getEmitterActor( path_);
+                map.put(part, vfx);
             }
 
                 //                AnimConstructor.getStandardData()
-                SpellVfx vfx = SpellVfxPool.getEmitterActor(
-                 PathFinder.getVfxAtlasPath() + "spell/" + part.getPartPath() + "/" + path_);
-                map.put(part, vfx);
+
 
 
         }
@@ -72,7 +76,7 @@ public class PhaseVfx extends SpellVfx {
     }
 
     public static boolean isRandom() {
-        return true;
+        return false;
     }
 
     public void next() {

@@ -16,6 +16,7 @@ import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.actions.WaitAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.TextureCache;
 import main.game.bf.Coordinates;
 import main.swing.generic.components.G_Panel.VISUALS;
@@ -28,7 +29,7 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 1/20/2017.
  */
-public class FloatingText extends Group {
+public class FloatingText extends GroupX {
 
     private static final boolean DEBUG_MODE = false;
     private static final Integer DEFAULT_FONT_SIZE = 18;
@@ -54,6 +55,7 @@ public class FloatingText extends Group {
     private float offsetY;
     private Predicate stayFullCondition;
     private FloatingTextMaster.TEXT_CASES aCase;
+    private float maxWidth=700;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -176,7 +178,7 @@ public class FloatingText extends Group {
         if (label == null) {
             label =
                     new LabelX(getText(), getFontStyle());
-            label.setMaxWidth(626);
+            label.setMaxWidth(getMaxWidth());
             label.setZigZagLines(true);
             label.setText(getText());
             label.setColor(c);
@@ -199,6 +201,18 @@ public class FloatingText extends Group {
         afterAction.setTarget(this);
         setInitialized(true);
         return this;
+    }
+
+    public float getMaxWidth() {
+        return maxWidth;
+    }
+
+    public void setMaxWidth(float maxWidth) {
+        this.maxWidth = maxWidth;
+    }
+
+    public LabelX getLabel() {
+        return label;
     }
 
     public String getText() {
@@ -305,6 +319,16 @@ public class FloatingText extends Group {
 
     public void setFadeInDuration(float fadeInDuration) {
         this.fadeInDuration = fadeInDuration;
+    }
+
+    @Override
+    public float getFadeInDuration() {
+        return fadeInDuration;
+    }
+
+    @Override
+    protected float getFadeOutDuration() {
+        return fadeInDuration;
     }
 
     public void setOffsetX(float offsetX) {

@@ -32,7 +32,7 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
             text += "\n" + s + ": " + map.get(s);
         }
         //        for (String s : stats.getHeroStats().getStatMap()) {
-        //            stats+="\n" + s + ": " + stats.getMainStats().get(s);
+        //            stats+="\n" + s + ": " + stats.getMainStats().getVar(s);
         //        }
         //class outcome!
         return text;

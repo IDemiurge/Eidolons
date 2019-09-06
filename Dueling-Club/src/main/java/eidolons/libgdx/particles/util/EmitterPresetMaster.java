@@ -195,7 +195,7 @@ public class EmitterPresetMaster {
     public String getImagePath(String path) {
         String imgPath = null;
         //        if (imagePathMap != null) {
-        //            imgPath = imagePathMap.get(path.toLowerCase());
+        //            imgPath = imagePathMap.getVar(path.toLowerCase());
         //            if (imgPath != null)
         //                return imgPath;
         //        }

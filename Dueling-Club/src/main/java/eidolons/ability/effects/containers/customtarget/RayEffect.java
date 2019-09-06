@@ -25,36 +25,34 @@ public class RayEffect extends SpecialTargetingEffect {
     }
 
     public void initTargeting() {
-        Conditions conditions = new Conditions();
+
+        Conditions conditions =ZoneTargeter.initConditions(this, allyOrEnemyOnly, ref  );
         if (distance != null) {
             conditions.add(ConditionMaster.getDistanceFilterCondition(
              KEYS.SOURCE.toString(), distance));
         }
-
-        if (PositionMaster.inLine(ref.getTargetObj().getCoordinates(), ref
-         .getSourceObj().getCoordinates())) {
-            conditions.add(ConditionMaster.getLineCondition(ref.getSourceObj(),
-             ref.getTargetObj(), false));
-        } else {
-            conditions.add(ConditionMaster.getDiagonalLineCondition(
-             ref.getSourceObj(), ref.getTargetObj(), false));
-
-        }
-        // conditions.add(ConditionMaster.getUnitTypeCondition());
-        conditions.add(ConditionMaster.getNotDeadCondition());
-
-        if (allyOrEnemyOnly != null) {
-            if (allyOrEnemyOnly) {
-                conditions.add(ConditionMaster.getAllyCondition());
-            } else {
-                conditions.add(ConditionMaster.getEnemyCondition());
-            }
-        }
-        if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.BLOCKED)) {
-            conditions.add(DC_ConditionMaster.getClearShotFilterCondition());
-        }
         this.targeting = new AutoTargeting(conditions, DataManager.BF_TYPES);
         setFilteringConditions(conditions);
+//        if (PositionMaster.inLine(ref.getTargetObj().getCoordinates(), ref
+//         .getSourceObj().getCoordinates())) {
+//            conditions.add(ConditionMaster.getLineCondition(ref.getSourceObj(),
+//             ref.getTargetObj(), false));
+//        } else {
+//            conditions.add(ConditionMaster.getDiagonalLineCondition(
+//             ref.getSourceObj(), ref.getTargetObj(), false));
+//        }
+//        // conditions.add(ConditionMaster.getUnitTypeCondition());
+//        conditions.add(ConditionMaster.getNotDeadCondition());
+//        if (allyOrEnemyOnly != null) {
+//            if (allyOrEnemyOnly) {
+//                conditions.add(ConditionMaster.getAllyCondition());
+//            } else {
+//                conditions.add(ConditionMaster.getEnemyCondition());
+//            }
+//        }
+//        if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.BLOCKED)) {
+//            conditions.add(DC_ConditionMaster.getClearShotFilterCondition());
+//        }
 
     }
 

@@ -67,7 +67,7 @@ public class EmitterPools {
             pool = new Pool<ParticleEffectX>() {
                 @Override
                 protected ParticleEffectX newObject() {
-//                  TODO   Assets.get().getManager().load();
+//                  TODO   Assets.getVar().getManager().load();
                     return new ParticleEffectX(finalPath);
                 }
             };

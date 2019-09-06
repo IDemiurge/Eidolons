@@ -352,7 +352,7 @@ public class WanderAiMaster extends AiBehavior {
         //         getSequencesFromPaths(paths, task, action);
         //        if (sequences.isEmpty())
         //            return null;
-        //        return sequences.get(0);
+        //        return sequences.getVar(0);
     }
 
     @Override

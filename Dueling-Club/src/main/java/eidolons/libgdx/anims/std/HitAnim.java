@@ -302,7 +302,7 @@ public class HitAnim extends ActionAnim {
         getActions().clear();
         addFadeAnim();
         //        if (textSupplier != null)
-        //            floatingText.setText(textSupplier.get());
+        //            floatingText.setText(textSupplier.getVar());
 
         Damage damage = null;
         if (getActive() != null) {
@@ -340,7 +340,7 @@ public class HitAnim extends ActionAnim {
         //         MoveEffect.class)))
         //            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
         //        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
-        //         .get(BattleFieldObject);
+        //         .getVar(BattleFieldObject);
         //        return actor;
         return getActor();
     }
@@ -441,7 +441,7 @@ public class HitAnim extends ActionAnim {
                     if (damageType == DAMAGE_TYPE.BLUDGEONING)
                         return HIT.SMASH;
                 }
-        //        active.get
+        //        active.getVar
         return HIT.SHOWER;
     }
 

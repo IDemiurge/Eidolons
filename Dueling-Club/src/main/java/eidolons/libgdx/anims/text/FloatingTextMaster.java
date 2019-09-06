@@ -305,7 +305,7 @@ public class FloatingTextMaster {
     public static float getFadeIn(TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BATTLE_COMMENT:
-                return 3;
+                return 3.7f;
         }
         return 0;
     }
@@ -323,9 +323,12 @@ public class FloatingTextMaster {
         int size = 21;
         switch (aCase) {
             case BATTLE_COMMENT:
+                size++;
                 size -= Math.min(2, arg.toString().length() / 200);
-                return
-                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, size);
+//                return
+//                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, size);
+            return
+                    StyleHolder.getSizedLabelStyle(FONT.DARK, size);
             case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);
@@ -439,6 +442,10 @@ public class FloatingTextMaster {
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
+        if (DungeonScreen.getInstance().getGridPanel() == null) {
+            main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " +arg);
+            return;
+        }
         if (GdxMaster.isLwjglThread()) {
             createFloatingText(CASE, arg, entity, null);
         } else
@@ -454,11 +461,11 @@ public class FloatingTextMaster {
 
     private FloatingText createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
                                             Stage atCursorStage) {
-        return createFloatingText(CASE, arg, entity, atCursorStage, null, null, null);
+        return createFloatingText(CASE, arg, entity, atCursorStage, null, null, null, true);
     }
 
     public FloatingText createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
-                                           Stage atCursorStage, Vector2 at, LabelStyle overrideFont, AtomicBoolean flag) {
+                                           Stage atCursorStage, Vector2 at, LabelStyle overrideFont, AtomicBoolean waiterFlag, boolean autoShow) {
         FloatingText text = null;
         try {
             text = getFloatingText(entity, CASE, arg);
@@ -466,8 +473,8 @@ public class FloatingTextMaster {
             main.system.ExceptionMaster.printStackTrace(e);
             return text;
         }
-        if (flag != null) {
-            text.setStayFullCondition(time -> flag.get());
+        if (waiterFlag != null) {
+            text.setStayFullCondition(time -> waiterFlag.get());
         }
         Vector2 v = at;
         if (v == null) {
@@ -518,7 +525,9 @@ public class FloatingTextMaster {
         if (overrideFont != null) {
             text.setFontStyle(overrideFont);
         }
-        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
+        if (autoShow) {
+            GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
+        }
         return text;
     }
 

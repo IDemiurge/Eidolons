@@ -282,7 +282,7 @@ public class PostProcessController {
         //        main.bloom.setEnabled(false);
         //        main.bloom.applyCoef(0);
         //        GuiEventManager.bind(GuiEventType.POST_EFFECT_UPDATE, p-> {
-        //            PostEffectDataSource dataSource = (PostEffectDataSource) p.get();
+        //            PostEffectDataSource dataSource = (PostEffectDataSource) p.getVar();
         //            update(dataSource);
         //        });
     }

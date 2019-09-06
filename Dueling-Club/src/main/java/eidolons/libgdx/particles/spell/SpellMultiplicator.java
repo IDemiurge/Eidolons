@@ -198,6 +198,7 @@ public class SpellMultiplicator implements Runnable {
             switch (template) {
                 //                template.getNumberOfEmitters(getActive())
                 case RAY:
+                case RAY_AUTO:
                     anim.setForcedDestinationForAll(farthest);
 
                     return Arrays.asList(farthest);

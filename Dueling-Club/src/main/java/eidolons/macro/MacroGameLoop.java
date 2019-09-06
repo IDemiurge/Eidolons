@@ -192,7 +192,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         }
 
         if (entered instanceof Town) {
-            //            entered.getGame().get
+            //            entered.getGame().getVar
             DC_Game.game.getMetaMaster().getTownMaster().enterTown((Town) entered, false);
             return;
         }

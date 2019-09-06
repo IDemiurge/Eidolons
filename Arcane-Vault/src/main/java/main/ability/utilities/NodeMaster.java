@@ -371,12 +371,12 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
              arg.name()  );
             DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(arg.getEmptyName());
 //                    if (!Mapper.getItemList(arg).isEmpty()) {
-//                        newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).get(0));
+//                        newChild = new DefaultMutableTreeNode(Mapper.getItemList(arg).getVar(0));
 //                    }
 
             newChild.add(subNode);
 //                if (!Mapper.getItemList(arg).isEmpty()) {
-//                    createEmptyNodes(newChild, Mapper.getItemList(arg).get(0));
+//                    createEmptyNodes(newChild, Mapper.getItemList(arg).getVar(0));
 //                }
                 node.add(newChild);
 

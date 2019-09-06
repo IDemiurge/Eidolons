@@ -62,7 +62,7 @@ public class GuiVisualEffects extends GroupX {
             //set current block?
         });
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
-            //                getEmitterData((DAY_TIME) p.get());
+            //                getEmitterData((DAY_TIME) p.getVar());
             if (!isCustomEmitters())
                 return;
             LevelBlock block = level.getBlockForCoordinate(

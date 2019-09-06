@@ -163,7 +163,7 @@ public class BaseSlotPanel extends TablePanel {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-//        Actor actor = modTableMap.get(activePage).hit(x, y, touchable);
+//        Actor actor = modTableMap.getVar(activePage).hit(x, y, touchable);
 //        if (actor!=null )
 //            return actor;
         return super.hit(x, y, touchable);

@@ -258,7 +258,7 @@ public class AnimConstructor {
                 if (animPart != null) {
                     if (part== ANIM_PART.IMPACT) {
                         if (SpellMultiplicator.isMultiAnimRequired(anim.getActive_())) {
-//                            anim.getMap().get(ANIM_PART.MISSILE).get
+//                            anim.getMap().getVar(ANIM_PART.MISSILE).getVar
                             animPart.setDelay(2.2f);
                             anim.attach(animPart, part);
                             return;

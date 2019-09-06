@@ -46,7 +46,7 @@ public class TimeMaster {
             int seconds = time.getSeconds();
             secStr = timeDelimiter + seconds;
             if (seconds / 10 == 0) {
-                secStr = "0" + seconds;
+                secStr = timeDelimiter +"0" + seconds;
             }
         }
 

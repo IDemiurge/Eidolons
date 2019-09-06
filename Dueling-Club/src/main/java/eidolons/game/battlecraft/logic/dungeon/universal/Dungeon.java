@@ -314,6 +314,15 @@ public class Dungeon extends LightweightEntity {
         return customDataMap;
     }
 
+    public Coordinates getCoordinateByName(String value) {
+        for (String s : getCustomDataMap().keySet()) {
+            if (getCustomDataMap().get(s).trim().equalsIgnoreCase(value)) {
+                return Coordinates.get(s);
+            }
+        }
+        return null;
+    }
+
 
     public enum POINTS {
         CENTER_SPAWN,

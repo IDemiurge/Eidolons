@@ -37,6 +37,19 @@ public class GridUnitView extends GenericGridView {
     OverlayView attachedObj;
     private float screenOverlay;
 
+    @Override
+    protected boolean isIgnored() {
+        if (getUserObject() instanceof Unit) {
+
+        }
+        return super.isIgnored();
+    }
+
+    @Override
+    public boolean isWithinCamera() {
+        return super.isWithinCamera();
+    }
+
     public GridUnitView(BattleFieldObject bfObj, UnitViewOptions options) {
         super(bfObj, options);
         initQueueView(options);
@@ -63,7 +76,7 @@ public class GridUnitView extends GenericGridView {
         view.setDirection(getUserObject().getDirection());
 
         addActor(view);
-//        arrow.get
+//        arrow.getVar
 
         //TODO  will we keep it as normal overlaying obj?
         // So basically maybe all we do really is change its position dynamically?
@@ -114,9 +127,9 @@ public class GridUnitView extends GenericGridView {
     public void draw(Batch batch, float parentAlpha) {
 //        if (isMainHero()) {
         if (getUserObject().isPlayerCharacter()) {
-            if (getPortrait().getColor().a == 0) {
-                getPortrait().fadeIn();
-            }
+//            if (getPortrait().getColor().a == 0) {
+//                getPortrait().fadeIn();
+//            }
             if (getUserObject().isHidden()) {
                 return;
             }

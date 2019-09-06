@@ -100,7 +100,11 @@ public class DialogueMessage extends TablePanelX {
     public void draw(Batch batch, float parentAlpha) {
         //        ShaderMaster.drawWithCustomShader(this, DarkGrayscaleShader.getGrayscaleShader());
         setX(0);
-        super.draw(batch, parentAlpha);
+        try {
+            super.draw(batch, parentAlpha);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 }
 

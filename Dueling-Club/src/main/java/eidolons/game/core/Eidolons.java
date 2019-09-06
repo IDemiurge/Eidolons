@@ -178,13 +178,11 @@ public class Eidolons {
         if (fullscreen) {
             int width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
             int height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
-            if (width>1920)
-            {
+            if (width > 1920) {
                 cannotFullscreen();
                 return;
             }
-            if (height>1080)
-            {
+            if (height > 1080) {
                 cannotFullscreen();
                 return;
             }
@@ -213,7 +211,8 @@ public class Eidolons {
     private static void cannotFullscreen() {
         EUtils.onConfirm(
                 "Sorry, cannot go fullscreen on your monitor, only 1920x1080 supported yet. ",
-                false, ()->{});
+                false, () -> {
+                });
 
 //        TipMessageMaster.tip(new TipMessageSource("", "", "Carry On", false, ()->{}));
 
@@ -306,6 +305,9 @@ public class Eidolons {
     }
 
     public static GameScreen getScreen() {
+        if (launcher == null) {
+            return null;
+        }
         return launcher.gameScreen;
     }
 
@@ -381,14 +383,19 @@ public class Eidolons {
         System.exit(0);
     }
 
+    public static void onGdxThread(Runnable p) {
+        Gdx.app.postRunnable(p);
+    }
+
     public static void onThisOrNonGdxThread(Runnable o) {
         if (GdxMaster.isLwjglThread()) {
             onNonGdxThread(o);
         } else o.run();
     }
+
     public static void onThisOrGdxThread(Runnable o) {
         if (!GdxMaster.isLwjglThread()) {
-           Gdx.app.postRunnable(o);
+            Gdx.app.postRunnable(o);
         } else o.run();
     }
 
@@ -403,7 +410,7 @@ public class Eidolons {
 //                }
 //            });
 //        } else
-            new Thread(o, "single task thread " + customThreadsUsed++).start();
+        new Thread(o, "single task thread " + customThreadsUsed++).start();
 
 
     }
@@ -487,7 +494,7 @@ public class Eidolons {
             return;
         }
         setMainHero(bufferedMainHero);
-        bufferedMainHero=null;
+        bufferedMainHero = null;
     }
 
 

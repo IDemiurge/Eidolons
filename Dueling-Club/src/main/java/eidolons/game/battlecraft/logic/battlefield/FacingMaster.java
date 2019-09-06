@@ -194,8 +194,8 @@ public class FacingMaster {
         return null;
 
 //        List<Coordinates> list = c.getAdjacent(false);
-//       return getRelativeFacing( list.get(RandomWizard.getRandomIndex(list)), c2);
-//        Coordinates.get(c.x, c.y+(RandomWizard.random() ? 1 : -1))
+//       return getRelativeFacing( list.getVar(RandomWizard.getRandomIndex(list)), c2);
+//        Coordinates.getVar(c.x, c.y+(RandomWizard.random() ? 1 : -1))
     }
 
     public static FACING_DIRECTION getRandomFacing() {

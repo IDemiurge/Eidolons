@@ -317,7 +317,7 @@ public class EmitterController implements Controller {
         CompositeAnim anim = AnimConstructor.getOrCreate(active);
 //        ANIM_PART part = ANIM_PART.IMPACT;
         anim.getMap().keySet().forEach(part -> {
-//            anim.getMap().get(part).getData().setValue();
+//            anim.getMap().getVar(part).getData().setValue();
             List<SpellVfx> list = SpellVfxPool.getEmitters(presetPath);
             anim.getMap().get(part).setEmitterList(list);
         });

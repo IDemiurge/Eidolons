@@ -9,7 +9,6 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
 import main.data.filesys.PathFinder;
-import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
@@ -17,7 +16,6 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.io.OutputStream;
 import java.util.Stack;
 
 /**
@@ -30,6 +28,9 @@ public class MainLauncher extends GenericLauncher {
     public static boolean presetNumbersOn;
 
     public static void main(String[] args) {
+        EidolonsGame.setVar("non_test", true);
+        EidolonsGame.setVar("tutorial", true);
+
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
         CoreEngine.setSafeMode(true);
@@ -50,6 +51,8 @@ public class MainLauncher extends GenericLauncher {
                 EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
             EidolonsGame.BRIDGE = args[0].contains("bridge");
             DialogueManager.TEST = args[0].contains("duel");
+
+
             if (DialogueManager.TEST) {
                 EidolonsGame.BRIDGE =true;
             }
@@ -123,6 +126,10 @@ public class MainLauncher extends GenericLauncher {
                 try {
                     item = MAIN_MENU_ITEM.valueOf(command.toUpperCase());
                 } catch (Exception e) {
+                    String[] p = command.split("=");
+                    if (p.length>1) {
+                        EidolonsGame.set(command.split("=")[0], Boolean.valueOf(command.split("=")[1]));
+                    }
                 }
                 if (item != null) {
                     MainMenu.getInstance().getHandler().handle(item);

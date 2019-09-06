@@ -62,10 +62,10 @@ public class BuildHelper {
         boolean corner = false;
 //        switch (type) {
 //            case BATTLEFIELD:
-//                return Coordinates.get(0, 0);
+//                return Coordinates.getVar(0, 0);
 //            case ENTRANCE_ROOM:
 //                if (location.getMainEntrance() == null) {
-//                    return Coordinates.get(1, 1);
+//                    return Coordinates.getVar(1, 1);
 //                }
 //                return location.getMainEntrance().getCoordinates();
 //            case EXIT_ROOM:
@@ -384,7 +384,7 @@ public class BuildHelper {
     }
 
     public boolean checkCoordinateValid(MapZone zone, int x, int y) {
-        // map Coordinates.get(x, y) to block - if not null...
+        // map Coordinates.getVar(x, y) to block - if not null...
         Coordinates coordinates = Coordinates.get(x, y);
         if (coordinates.isInvalid()) {
             return false;
@@ -623,7 +623,7 @@ public class BuildHelper {
     // horizontal = directionPrefX; // (Boolean) args[0]
     // int corridorWidth = 1;
     // // (Integer) args[1];
-    // // Coordinates dest = Coordinates.get(x2, y2);
+    // // Coordinates dest = Coordinates.getVar(x2, y2);
     // length = (horizontal) ? maxX : maxY;
     // // continue up to next block!
     // coordinates = DC_PositionMaster.getRectangle(

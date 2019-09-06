@@ -127,8 +127,8 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void setVisible(boolean visible) {
-        if (invisible){
-            visible=false;
+        if (invisible) {
+            visible = false;
         }
         if (this.isVisible() != visible) {
             super.setVisible(visible);
@@ -148,9 +148,9 @@ public class GenericGridView extends UnitView {
             parentAlpha = alpha;
         }
         super.draw(batch, parentAlpha);
-        if (getUserObject().isPlayerCharacter()) {
-            return;
-        }
+//        if (getUserObject().isPlayerCharacter()) {
+//            return;
+//        }
     }
 
     @Override
@@ -189,18 +189,17 @@ public class GenericGridView extends UnitView {
             else
                 arrow.setRotation(val + ARROW_ROTATION_OFFSET);
         }
-        if (isRotateSprites()){
+        if (spritesContainersUnder != null) {
             ActionMaster.addRotateByAction(spritesContainersUnder, arrowRotation + ARROW_ROTATION_OFFSET,
                     val + ARROW_ROTATION_OFFSET);
+        }
+        if (spritesContainers != null) {
             ActionMaster.addRotateByAction(spritesContainers, arrowRotation + ARROW_ROTATION_OFFSET,
                     val + ARROW_ROTATION_OFFSET);
         }
         arrowRotation = val;
     }
 
-    protected boolean isRotateSprites() {
-        return true;
-    }
 
     public boolean isHpBarVisible() {
         if (!isVisible())
@@ -218,7 +217,7 @@ public class GenericGridView extends UnitView {
     }
 
     protected void updateVisible() {
-//        if (isIgnored()) //TODO [quick fix] this should actually be on for speed, but somehow in-camera views get ignored
+//        if (isIgnored()) //TODO [quick fix] this should actually be on for speed, but somehow in-camera views getVar ignored
 //            return;
         if (border != null) {
             border.setVisible(true);

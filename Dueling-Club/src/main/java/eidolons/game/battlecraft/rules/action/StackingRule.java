@@ -124,13 +124,15 @@ public class StackingRule implements ActionRule {
             }
         }
 
-        //get all units on the cell
+        //getVar all units on the cell
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
                 if (u.isDead())
                     continue;
                 if (u.isWall())
+                    return false;
+                if (u.isImpassable())
                     return false;
                 if (u.isWater())
                     return WaterRule.checkPassable(u, unit);

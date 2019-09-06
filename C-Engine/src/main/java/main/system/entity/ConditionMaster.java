@@ -690,6 +690,7 @@ public class ConditionMaster {
         NAME_TARGET("target"),
         NAME_ACTIVE("active"),
         NAME_SUMMONED("active"),
+        ENEMIES_LEFT("enemies left"),
 
         COORDINATES("coordinates","coord"),
         CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot"), FACING();

@@ -557,8 +557,8 @@ public class AnimMaster3d {
             if (Assets.isOn()) {
                 Chronos.mark("loading "+path);
                 Assets.get().getManager().load(path, TextureAtlas.class);
-//                while (!Assets.get().getManager().isLoaded(path)) {
-//                    if (Assets.get().getManager().update())
+//                while (!Assets.getVar().getManager().isLoaded(path)) {
+//                    if (Assets.getVar().getManager().update())
 //                        break;
 //                }
                 while (!Assets.get().getManager().update(1000)) {

@@ -63,7 +63,7 @@ public class MapPointMaster {
 
     public Place getPlaceForPoint(String point) {
         //        Map<String, Place> map = new HashMap<>();
-        //get closest?
+        //getVar closest?
         float minDistance = Float.MAX_VALUE;
         Coordinates c = MacroGame.getGame().getPointMaster().getCoordinates(point);
         Place place = null;

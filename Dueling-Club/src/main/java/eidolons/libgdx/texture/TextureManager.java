@@ -99,7 +99,7 @@ public class TextureManager {
                                                             int FRAME_COLS,
                                                             int FRAME_ROWS, Texture texture) {
 //if (FRAME_COLS==1 && FRAME_ROWS==1){
-//    Pair<Integer, Integer> xy = get
+//    Pair<Integer, Integer> xy = getVar
 //}
         if (FRAME_COLS == 0) {
             FRAME_COLS = 1;

@@ -5,6 +5,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.C_OBJ_TYPE;
+import main.content.OBJ_TYPE;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
@@ -26,7 +27,7 @@ public class ZoneEffect extends SpecialTargetingEffect
     // private AutoTargeting targeting;
 
     @AE_ConstrArgs(argNames = {"effects", "radius", "allyOrEnemyOnly", "notSelf",
-     "reductionFormula"})
+            "reductionFormula"})
     public ZoneEffect(Effect effects, Formula radius, Boolean allyOrEnemyOnly, Boolean notSelf,
                       String reductionFormula) {
         this.effects = effects;
@@ -49,42 +50,29 @@ public class ZoneEffect extends SpecialTargetingEffect
     }
 
     public void initTargeting() {
-        Conditions conditions = new Conditions();
+        Conditions conditions = ZoneTargeter.initConditions(this, allyOrEnemyOnly, ref);
         int spell_radius = radius.getInt(ref);
-//        if (spell_radius == 0) {
-//            spell_radius = ref.getObj(KEYS.ACTIVE.name()).getIntParam(G_PARAMS.RADIUS);
-//        }
         NumericCondition condition = ConditionMaster.getDistanceFilterCondition(KEYS.TARGET.name(), spell_radius);
-        conditions
-         .add(condition);
+        conditions.add(condition);
         if (spell_radius == 0)   //just on same cell
             condition.setStrict(false);
-        conditions.add(ConditionMaster.getNotDeadCondition()); // TODO really???
-
         if (notSelf) {
             conditions.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
         }
-        if (allyOrEnemyOnly != null) // TODO target filtering - targeting
-        // modifiers?
-        {
-            conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
-             .getEnemyCondition());
-        }
+//        conditions.add(ConditionMaster.getNotDeadCondition()); // TODO really???
+//        if (allyOrEnemyOnly != null) // TODO target filtering - targeting
+//        {
+//            conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
+//                    .getEnemyCondition());
+//        }
+//        conditions.add(ConditionMaster.getValidZoneTargetCondition());
 
-        conditions.add(ConditionMaster.getValidZoneTargetCondition());
-        // legacy?
-        // if (allyOrEnemyOnly==null)
-        // conditions.add(ConditionMaster.getEnemyCondition());
-        // else if (!allyOrEnemyOnly) {
-        // conditions.add(allyOrEnemyOnly? ConditionMaster.getAllyCondition() :
-        // ConditionMaster.getEnemyCondition());
-        // }
-//        if (effects.getSpell() != null)
-//            if (effects.getSpell().checkBool(STD_BOOLS.APPLY_THRU))
+
+         OBJ_TYPE type =ZoneTargeter.getTargetsObjType(effects, ref);
         this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF);
 
         if (targeting == null) {
-            this.targeting = new AutoTargeting(conditions, C_OBJ_TYPE.BF_OBJ);
+            this.targeting = new AutoTargeting(conditions, type);
         }
         if (ref.getActive() instanceof DC_ActiveObj) {
             ActivesConstructor.addTargetingMods(targeting, (DC_ActiveObj) ref.getActive());

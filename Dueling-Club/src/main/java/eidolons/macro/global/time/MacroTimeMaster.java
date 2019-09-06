@@ -181,7 +181,7 @@ public class MacroTimeMaster {
         lastTimeChecked = time;
         minuteCounter += delta;
         //perhaps create new Date each time instead?
-//        Calendar.getInstance().getTime().get
+//        Calendar.getInstance().getTime().getVar
 
         updateDate();
         processMapObjects();

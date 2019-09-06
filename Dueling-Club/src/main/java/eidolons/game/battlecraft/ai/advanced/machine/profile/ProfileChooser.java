@@ -40,10 +40,10 @@ public class ProfileChooser extends AiHandler {
 //            return ai.getCurrentOrder(). getType().toString();
 //        }
 //        if (ai.getMetaGoals()!=null ){
-//            return ai.getMetaGoals().get(0). getType().toString();
+//            return ai.getMetaGoals().getVar(0). getType().toString();
 //        }
 //        if (ai.getInclinations()!=null ){
-//            return ai.getInclinations().get(0).toString();
+//            return ai.getInclinations().getVar(0).toString();
 //        }
 //        if (ai.getImpulse()!=null ){
 //            return ai.getImpulse().toString();

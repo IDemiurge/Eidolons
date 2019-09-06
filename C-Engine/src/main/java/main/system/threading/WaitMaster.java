@@ -1,20 +1,16 @@
 package main.system.threading;
 
-import com.badlogic.gdx.Gdx;
-import com.graphbuilder.math.FuncNode;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 public class WaitMaster {
     // Sync map?
@@ -23,7 +19,8 @@ public class WaitMaster {
     private static DequeImpl<WAIT_OPERATIONS> completeOperations;
 
     private static Map<Object, Lock> locks = new HashMap<>();
-    private static List<Object> unlocked=    new ArrayList<>() ;
+    private static List<Object> unlocked = new ArrayList<>();
+    private static int conditionCounter = 0;
 
     public static void unlock(Object o) {
         unlocked.add(o);
@@ -38,9 +35,10 @@ public class WaitMaster {
         main.system.auxiliary.log.LogMaster.dev("UNLOCKED " + o);
     }
 
-    public static void waitLock(Object o ) {
+    public static void waitLock(Object o) {
         waitLock(o, 0);
     }
+
     public static void waitLock(Object o, int maxMillis) {
         if (unlocked.contains(o)) {
             main.system.auxiliary.log.LogMaster.dev("ALREDY UNLOCKED " + o);
@@ -52,10 +50,10 @@ public class WaitMaster {
         main.system.auxiliary.log.LogMaster.dev("LOCKED " + o);
         lock.lock();
         try {
-            if (maxMillis>0) {
-            waiting.await(maxMillis, TimeUnit.MILLISECONDS);
+            if (maxMillis > 0) {
+                waiting.await(maxMillis, TimeUnit.MILLISECONDS);
             } else
-            waiting.await(  );
+                waiting.await();
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -200,6 +198,22 @@ public class WaitMaster {
 
     public static WAIT_OPERATIONS getOperation(String value) {
         return new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(WAIT_OPERATIONS.class, value);
+    }
+
+    public static void waitForCondition(Predicate<Float> p, int max) {
+        Object o = conditionCounter++;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (p.test(0f)) {
+                    unlock(o);
+                }
+            }
+        };
+
+        Timer timer = TimerTaskMaster.newTimer(task, 100);
+        waitLock(o, max);
+        timer.cancel();
     }
 
 

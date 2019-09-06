@@ -408,7 +408,7 @@ public class SightMaster {
                     master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
                 status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
             } else {
-//            status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+//            status = master.getVisionController().getUnitVisionMapper().getVar(observer, unit);
                 if (status == null) {
                     //final hack
                     status = getUnitVisionStatusPrivate(unit, observer);

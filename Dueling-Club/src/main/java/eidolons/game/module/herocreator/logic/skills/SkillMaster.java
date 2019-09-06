@@ -212,7 +212,7 @@ public class SkillMaster {
 
         //max rank req? Well, it is kind of determined by slot number ... but then, how does the rank scale?
         //        featObj.getRank()
-        //        arg.get(PARAMS.CIRCLE);
+        //        arg.getVar(PARAMS.CIRCLE);
         PROPERTY tierProp = getTierProp(prop, tier);
 
         hero.addProperty(tierProp, getSlotString(slot, arg.getName()), false);

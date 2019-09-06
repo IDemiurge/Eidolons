@@ -460,7 +460,7 @@ public class VisionRule {
             case CONCEALED:
                 break;
         }
-//        VISIBILITY_LEVEL visibility =    controller.getVisibilityLevelMapper().get(unit, hero);
+//        VISIBILITY_LEVEL visibility =    controller.getVisibilityLevelMapper().getVar(unit, hero);
 //        switch (visibility) {
 //            case CLEAR_SIGHT:
 //                break;
@@ -477,9 +477,9 @@ public class VisionRule {
 //            case BLOCKED:
 //                return false;
 //        }
-//        if (controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT
+//        if (controller.getVisibilityLevelMapper().getVar(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT
 //         || !ExplorationMaster.isExplorationOn()
-//         &&  controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.BLOCKED
+//         &&  controller.getVisibilityLevelMapper().getVar(unit, hero) == VISIBILITY_LEVEL.BLOCKED
 //         ) {
 
         if (hero.isSneaking()) {

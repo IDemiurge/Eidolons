@@ -56,10 +56,10 @@ public class SkillsDataSource extends HeroTreeDataSource {
         List<DC_FeatObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
 
 //        for (int j = 0; j < skills.size(); j++) {
-//            if (skills.get(j) == null)
+//            if (skills.getVar(j) == null)
 //                list.add(getEmptySkill()); //empty slot
-//            list.add(new ImmutableTriple<>(skills.get(j), ranks.get(j), ranks.get(j + 1)));
-//            list.add(new ImmutableTriple<>(skills.get(j), ranks.get(j), ranks.get(j + 1)));
+//            list.add(new ImmutableTriple<>(skills.getVar(j), ranks.getVar(j), ranks.getVar(j + 1)));
+//            list.add(new ImmutableTriple<>(skills.getVar(j), ranks.getVar(j), ranks.getVar(j + 1)));
 //        }
         int i = 0;
         while (true) {

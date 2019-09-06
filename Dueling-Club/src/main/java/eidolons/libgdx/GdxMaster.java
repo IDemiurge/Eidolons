@@ -499,9 +499,9 @@ public class GdxMaster {
     public static void onInputGdx(Runnable r) {
         onInput(r, true);
     }
-        public static void onInput(Runnable r, boolean gdx) {
+        public static void onInput(Runnable r, Boolean gdx_any_pass) {
         Runnable finalR = r;
-        Runnable onInputGdx = Eidolons.getScreen().getController().getOnInput(gdx);
+        Runnable onInputGdx = Eidolons.getScreen().getController().getOnInput(gdx_any_pass);
         if (onInputGdx != null) {
             r = () ->  {
                 onInputGdx.run();
@@ -509,7 +509,11 @@ public class GdxMaster {
                 finalR.run();
             };
         }
-        Eidolons.getScreen().getController().onInputGdx(gdx,r);
+        Eidolons.getScreen().getController().onInputGdx(gdx_any_pass,r);
+    }
+
+    public static void onPassInput(Runnable finalR) {
+        onInput(finalR, null);
     }
 
     public enum CURSOR {

@@ -257,7 +257,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getAiCheckPeriod() {
-        return 4;//* OptionsMaster.get
+        return 4;//* OptionsMaster.getVar
     }
 
     private float getRoundEffectPeriod() {

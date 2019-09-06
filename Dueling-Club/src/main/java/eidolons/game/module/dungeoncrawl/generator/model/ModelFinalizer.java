@@ -144,7 +144,7 @@ public class ModelFinalizer {
         //ensure graph paths
         //        for (GraphPath path : builder.graph.getPaths()) {
         //            Room room = getLastBuiltRoom(path);
-        //            if (room == builder.nodeModelMap.get(path.getEndNode())) {
+        //            if (room == builder.nodeModelMap.getVar(path.getEndNode())) {
         //                continue;
         //            }
         //            Room room2 = chooseAltRoom(path, room, model); //closest?
@@ -255,7 +255,7 @@ public class ModelFinalizer {
     }
 
     private Set<Integer> getAligned(Room room, Room room2, boolean onXorY) {
-        //from the smaller room, get the farthest aligned line -1 and see if it is close enough to center
+        //from the smaller room, getVar the farthest aligned line -1 and see if it is close enough to center
         Map<Coordinates, ROOM_CELL> map = TileMapper.createTileMap(room).getMap();
         Map<Coordinates, ROOM_CELL> map2 = TileMapper.createTileMap(room2).getMap();
         List<Integer> coordinates = map.keySet().stream().map(c -> c.getXorY(onXorY)).collect(Collectors.toList());

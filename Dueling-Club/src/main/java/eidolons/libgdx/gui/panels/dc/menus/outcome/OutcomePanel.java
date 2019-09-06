@@ -259,7 +259,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
             stats += "\n" + s + ": " + map.get(s);
         }
         //        for (String s : datasource.getHeroStats().getStatMap()) {
-        //            stats+="\n" + s + ": " + datasource.getMainStats().get(s);
+        //            stats+="\n" + s + ": " + datasource.getMainStats().getVar(s);
         //        }
         //class outcome!
         return stats;

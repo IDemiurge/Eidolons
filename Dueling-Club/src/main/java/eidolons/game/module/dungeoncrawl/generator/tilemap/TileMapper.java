@@ -244,7 +244,7 @@ public class TileMapper {
         //        int offsetX = -(model.getLeftMost());
         //        int offsetY = -(model.getTopMost());
         //        for (Coordinates point : model.getRoomMap().keySet()) {
-        //            RoomModel room = model.getRoomMap().get(point); //block/zone
+        //            RoomModel room = model.getRoomMap().getVar(point); //block/zone
         //            int x = point.x;
         //            int y = point.y;
         //            for (String[] column : room.getCells()) {

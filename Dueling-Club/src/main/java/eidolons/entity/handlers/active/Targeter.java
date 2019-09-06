@@ -42,7 +42,7 @@ public class Targeter extends ActiveHandler {
 
     public void initTarget() {
 
-        if (getPresetTarget() != null) { //TODO figure out when to get source's ref and when not!!!
+        if (getPresetTarget() != null) { //TODO figure out when to getVar source's ref and when not!!!
             getRef().setTarget(getPresetTarget().getId());
             setPresetTarget(null);
         } else {

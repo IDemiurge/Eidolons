@@ -111,7 +111,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 
 
-        TUTORIAL_PATH(false, "", "Good choice! You will not be able to die on this path, but still get to try each of the 4 heroes. Try to collect all the Rune Inscriptions, and experiment freely!"){
+        TUTORIAL_PATH(false, "", "Good choice! You will not be able to die on this path, but still getVar to try each of the 4 heroes. Try to collect all the Rune Inscriptions, and experiment freely!"){
             public void run() {
                 EidolonsGame.TUTORIAL_PATH=true;
             }

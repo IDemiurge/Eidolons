@@ -58,7 +58,7 @@ public class TrapMaster extends DungeonHandler {
         //how does death work with items?
         /**
          * Tutorial deaths should be special?
-         * Option to get back to lvl+1 heroes
+         * Option to getVar back to lvl+1 heroes
          */
     }
 
@@ -114,13 +114,13 @@ public class TrapMaster extends DungeonHandler {
 //    }
 
 //    public static Set<Trap> getTraps(Unit unit) {
-//        return trapMap.get(new ZCoordinates(unit.getCoordinates().x, unit.getCoordinates().y, unit
+//        return trapMap.getVar(new ZCoordinates(unit.getCoordinates().x, unit.getCoordinates().y, unit
 //                .getZ()));
 //    }
 //
 //    public static List<Trap> getTrapsToDisarm(Unit unit) {
 //        List<Trap> list = new ArrayList<>();
-//        Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
+//        Set<Trap> set = trapMap.getVar(new ZCoordinates(unit.getCoordinates().x,
 //                unit.getCoordinates().y, unit.getZ()));
 //        if (set == null) {
 //            return list;

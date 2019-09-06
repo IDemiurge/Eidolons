@@ -1188,6 +1188,9 @@ public class StringMaster {
         return getStringXTimes(i, " ");
     }
 
+    public static String removeNewLines(String text) {
+      return ContainerUtils.construct("", StringMaster.splitLines(text));
+    }
 
 
     public enum STD_DEITY_TYPE_NAMES {

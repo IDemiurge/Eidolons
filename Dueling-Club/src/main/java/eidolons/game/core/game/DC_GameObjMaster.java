@@ -105,7 +105,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     //    @Deprecated
     //    public Set<Unit> getObjectsOnCoordinate(Coordinates c) {
     //        // [QUICK FIX] - consider no-reset coordinate changes for AI etc
-    //        //        Set<Unit> units = getUnitCache().get(c);
+    //        //        Set<Unit> units = getUnitCache().getVar(c);
     //        //        if (units != null) {
     //        //            return units;
     //        //        }

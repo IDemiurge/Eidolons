@@ -851,7 +851,7 @@ public class OptionsMaster {
 
     public static int getAnimPhasePeriod() {
         return 1000;
-        //        return optionsMap.get(OPTIONS_GROUP.ANIMATION).getIntValue(ANIMATION_OPTION.PHASE_TIME);
+        //        return optionsMap.getVar(OPTIONS_GROUP.ANIMATION).getIntValue(ANIMATION_OPTION.PHASE_TIME);
     }
 
     public static void cacheOptions() {

@@ -145,7 +145,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //            try {
 //                ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
 //                        DC_TYPE.BF_OBJ);
-//                Coordinates coordinates = Coordinates.get(VariableManager.getVarPart(s));
+//                Coordinates coordinates = Coordinates.getVar(VariableManager.getVarPart(s));
 //                if (objType != null) {
 //                    objMap.put(coordinates, objType);
 //                }
@@ -167,7 +167,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //        // StringMaster.AND_SEPARATOR)
 //        // .getOrCreate(index)
 //        // for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
-//        // c = Coordinates.get(s);TODO
+//        // c = Coordinates.getVar(s);TODO
 //        //
 //        // }
 //        // objMap.put(c, obj);

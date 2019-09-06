@@ -36,14 +36,14 @@ public class AudioMaster {
         logWithBadFiles.writeString(badFiles.toString().replaceAll(", ", "\n"), false);
 //        Sound sound = audio.newSound(GDX.file(FileManager.getFile("")));
 //        sound.setVolume(id, volume);
-//        String soundPath = sounds.keys().toArray().get(1);
-//        Sound firstSound = sounds.get(soundPath);
+//        String soundPath = sounds.keys().toArray().getVar(1);
+//        Sound firstSound = sounds.getVar(soundPath);
 //        Gdx.app.log("AudioMaster::AudioMaster()", "-- Play sound:" + soundPath);
 //        long soundid = firstSound.play(1f);
 //        firstSound.setLooping;
 //        firstSound.setLooping(firstSound.play(), true);
 //        for (String soundPath: sounds.keys()) {
-//            Sound sound = sounds.get(soundPath);
+//            Sound sound = sounds.getVar(soundPath);
 //            sound.play();
 //            Gdx.app.log("AudioMaster::AudioMaster()", "-- Play sound:" + soundPath);
 //        }

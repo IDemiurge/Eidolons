@@ -100,7 +100,7 @@ public class GammaMaster {
             return 0;
         }
         float gamma = getGammaForCell(cell);
-        //        if (Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
+        //        if (Eidolons.game.getCellByCoordinate(Coordinates.getVar(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
         //            gamma = 0;
         //        }
 
@@ -143,7 +143,7 @@ public class GammaMaster {
             case CONCEALMENT:
                 alpha =
                  //             Eidolons.game.getCellByCoordinate(
-                 //              Coordinates.get(x, y)).getIntParam(
+                 //              Coordinates.getVar(x, y)).getIntParam(
                  //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
                  master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
@@ -249,8 +249,8 @@ public class GammaMaster {
         }
         float dst = (float) c.dst_(cell.getCoordinates());
         //         (float) master.getGame().getCells().stream().sorted(new SortMaster<Obj>().getSorterByExpression_(
-        //          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.get(x, y))
-        //          ))).findFirst().get().getCoordinates().dst_(c); too performance heavy!
+        //          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.getVar(x, y))
+        //          ))).findFirst().getVar().getCoordinates().dst_(c); too performance heavy!
         dst = (float) Math.sqrt(dst * 2);
         alpha = alpha / (Math.max(1, dst));
         voidAlphaCache[x][y] = alpha;

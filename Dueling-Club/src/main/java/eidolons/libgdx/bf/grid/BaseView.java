@@ -36,6 +36,8 @@ public class BaseView extends SuperActor {
     protected GroupX spritesContainers;
     protected GroupX spritesContainersUnder;
     protected FadeImageContainer highlight;
+    private float expandWidth;
+    private float expandHeight;
 
     public BaseView(UnitViewOptions o) {
         init(o);
@@ -69,10 +71,22 @@ public class BaseView extends SuperActor {
         if (underlaySprites != null) {
             for (SpriteX spriteX : underlaySprites) {
                 if (isUseSpriteContainer(o.getObj()))
+                {
                     spritesContainersUnder.addActor(spriteX);
+//                    float maxX;
+//                    float maxY;
+//                    spritesContainersUnder.setSize(maxX-minX, maxY);
+//                    spriteX.setOrigin(x, y);
+                }
                 else {
                     addActor(spriteX);
                     spriteX.setZIndex(0);
+                }
+                if (expandWidth<spriteX.getWidth()){
+                    expandWidth= spriteX.getWidth();
+                }
+                if (expandHeight<spriteX.getHeight()){
+                    expandHeight= spriteX.getHeight();
                 }
                 forceTransform = true;
             }
@@ -92,9 +106,15 @@ public class BaseView extends SuperActor {
         if (overlaySprites != null) {
             for (SpriteX spriteX : overlaySprites) {
                 if (isUseSpriteContainer(o.getObj()))
-                spritesContainers.addActor(spriteX);
+                    spritesContainers.addActor(spriteX);
                 else {
                     addActor(spriteX);
+                }
+                if (expandWidth<spriteX.getWidth()){
+                    expandWidth= spriteX.getWidth();
+                }
+                if (expandHeight<spriteX.getHeight()){
+                    expandHeight= spriteX.getHeight();
                 }
                 forceTransform = true;
             }
@@ -106,15 +126,17 @@ public class BaseView extends SuperActor {
          * scale?
          */
     }
-
-    private boolean isUseSpriteContainer(BattleFieldObject obj) {
+    public boolean isWithinCameraCheck() {
+        return getController().isWithinCamera(getX() + getWidth(), getY() + getHeight(), expandWidth+getWidth(),expandHeight+ getHeight());
+    }
+    protected boolean isUseSpriteContainer(BattleFieldObject obj) {
         switch (  obj.getName()) {
             case "Ash Vault":
             case "Eldritch Vault":
                 return true;
         }
         if (obj instanceof Unit) {
-            return true;
+            return false;
         }
         return false;
     }

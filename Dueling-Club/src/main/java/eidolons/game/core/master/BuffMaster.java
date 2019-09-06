@@ -164,6 +164,7 @@ public class BuffMaster extends Master {
         }
         DC_BuffObj buff = (DC_BuffObj) basis.getBuff(type.getName());
         if (buff != null) {
+            if (active != null)
             if (!type.checkBool(GenericEnums.STD_BOOLS.STACKING) && !active.checkBool(GenericEnums.STD_BOOLS.STACKING)) {
                 basis.removeBuff(type.getName());
                 // TODO duration or do nothing
@@ -183,7 +184,8 @@ public class BuffMaster extends Master {
         buff.applyEffect(); // be careful!
 
         buffCreated(buff, basis);
-        if (type.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) || active.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU)) {
+        if (active != null)
+            if (type.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) || active.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU)) {
             buff.setAppliedThrough(true);
             if (basis instanceof Unit) {
                 Ref REF = ref.getCopy();
@@ -231,7 +233,11 @@ public class BuffMaster extends Master {
                         type.getProperty(G_PROPS.STANDARD_PASSIVES)));
             effects = e;
         }
-        return   createBuff(type, null, unit.getOwner(), unit.getRef(), effects, 0, null);
+        Ref ref = Ref.getCopy(unit.getRef());
+        ref.setBasis(unit.getId());
+        ref.setTarget(unit.getId());
+
+        return   createBuff(type, null, unit.getOwner(), ref, effects, 0, null);
 
     }
 

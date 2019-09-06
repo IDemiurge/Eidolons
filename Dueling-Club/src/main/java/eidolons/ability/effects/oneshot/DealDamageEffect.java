@@ -88,6 +88,9 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
         initDamageType();
         if (!checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE)) {
+            if (!new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_HIT, ref).fire()) {
+                return false;
+            }
             amount = ArmorMaster.getShieldReducedAmountForDealDamageEffect(this, targetObj, amount, active);
         }
 

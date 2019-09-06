@@ -230,7 +230,7 @@ public class DC_Builder {
 //                }
 //            }
 //            if (minimapDisplayed) {
-//                minimap = getMinimaps().get(dungeon);
+//                minimap = getMinimaps().getVar(dungeon);
 //                if (minimap == null) {
 //                    minimap = new Minimap(dungeon);
 //                    minimap.init();
@@ -244,7 +244,7 @@ public class DC_Builder {
 //                    state.getGame().getManager().resetWallMap();
 //                }
 //                lastGrid = grid;
-//                grid = levelGrids.get(dungeon);
+//                grid = levelGrids.getVar(dungeon);
 //
 //                getComp().add(grid.getComp(), getGridPos());
 //                // if (grid.isDirty())
@@ -285,7 +285,7 @@ public class DC_Builder {
 //        }
 //        for (Dungeon d : levelGrids.keySet()) {
 //            if (d.getZ() == zLevel) {
-//                return levelGrids.get(d);
+//                return levelGrids.getVar(d);
 //            }
 //        }
 //        return null;
@@ -354,7 +354,7 @@ public class DC_Builder {
 //        int column = -1;
 //        DC_PagedUnitActionPanel actionPanel = null;
 //        for (ACTION_DISPLAY_GROUP group : getUap().getUapMap().keySet()) {
-//            actionPanel = getUap().getUapMap().get(group);
+//            actionPanel = getUap().getUapMap().getVar(group);
 //            DC_UnitActionPanel panel = (DC_UnitActionPanel) actionPanel.getCurrentComponent();
 //            List<DC_UnitAction> data = panel.getData();
 //            if (data != null) {

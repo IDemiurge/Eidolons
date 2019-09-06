@@ -37,6 +37,7 @@ public class EidolonsGame {
     private static Map<String, Boolean> actionMap = new StringMap<>();
 
     public static final void set(String field, boolean val) {
+        setVar(field, val);
         try {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
         } catch (IllegalAccessException e) {
@@ -54,14 +55,14 @@ public class EidolonsGame {
 
     }
 
-    public static boolean get(String field) {
+    public static boolean getVar(String field) {
         if (varMap.get(field) == null) {
             return false;
         }
         return varMap.get(field);
     }
 
-    public static void setVarMap(String value, Boolean valueOf) {
+    public static void setVar(String value, Boolean valueOf) {
         varMap.put(value, valueOf);
     }
 

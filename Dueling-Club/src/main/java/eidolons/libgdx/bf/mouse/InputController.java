@@ -55,6 +55,7 @@ public abstract class InputController implements InputProcessor {
     protected float defaultZoom = 1;
     private Runnable onInput;
     private Runnable onInputGdx;
+    private Runnable onPassInput;
 
 
     public InputController(OrthographicCamera camera) {
@@ -180,7 +181,16 @@ public abstract class InputController implements InputProcessor {
 
     }
 
-    private void input() {
+    public boolean inputPass() {
+        if (onPassInput != null) {
+            main.system.auxiliary.log.LogMaster.dev("onPassInput.run() ");
+            onPassInput.run();
+            onPassInput = null;
+            return true;
+        }
+        return false;
+    }
+        private void input() {
         if (onInputGdx != null) {
             main.system.auxiliary.log.LogMaster.dev("onInputGdx.run() ");
             onInputGdx.run();
@@ -202,7 +212,7 @@ public abstract class InputController implements InputProcessor {
         keyInput();
         if (isBlocked())
             return true;
-//        if (keyMap.get(c))
+//        if (keyMap.getVar(c))
         String str = String.valueOf(c).toUpperCase();
         if (c == lastTyped) {
             if (!charsUp.contains(str)) {
@@ -436,18 +446,34 @@ public abstract class InputController implements InputProcessor {
         return onInputGdx;
     }
 
-    public void onInputGdx(boolean gdx, Runnable runnable) {
-        main.system.auxiliary.log.LogMaster.dev(gdx + "onInput set ");
-        if (gdx) {
+    public void onInputGdx(Boolean gdx_any_pass, Runnable runnable) {
+        main.system.auxiliary.log.LogMaster.dev(gdx_any_pass + "onInput set ");
+        if (gdx_any_pass == null) {
+            onPassInput = runnable;
+        } else
+        if (gdx_any_pass) {
             onInputGdx = runnable;
         } else
             onInput = runnable;
     }
 
-    public Runnable getOnInput(boolean gdx) {
-        if (gdx) {
+    public Runnable getOnInput(Boolean gdx_any_pass) {
+        if (gdx_any_pass == null) {
+            return onPassInput;
+        }
+        if (gdx_any_pass) {
             return onInputGdx;
         }
         return onInput;
+    }
+
+    public boolean space() {
+        return inputPass();
+    }
+    public boolean enter() {
+        return inputPass();
+    }
+    public boolean escape() {
+        return inputPass();
     }
 }

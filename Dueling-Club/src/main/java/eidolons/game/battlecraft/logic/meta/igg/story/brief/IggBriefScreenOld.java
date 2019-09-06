@@ -11,7 +11,7 @@ import eidolons.libgdx.stage.UiStage;
 import main.system.EventCallbackParam;
 
 /**
- * get data
+ * getVar data
  */
 public class IggBriefScreenOld extends ScreenWithLoader {
 

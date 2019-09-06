@@ -1,7 +1,5 @@
 package eidolons.system.controls;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
@@ -10,7 +8,6 @@ import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
-import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
@@ -115,6 +112,11 @@ public class GlobalController implements Controller {
             return false;
 
         switch (keyCode) {
+            case Keys.F11:
+                boolean bool = !EidolonsGame.getVar("tutorial");
+                EidolonsGame.setVar("tutorial", bool);
+                EUtils.showInfoText("... Tutorial " + (bool ? "on" : "off"));
+                break;
             case Keys.F2:
                 if (EidolonsGame.BRIDGE) {
                     if (CoreEngine.isIDE()) {
@@ -195,17 +197,17 @@ public class GlobalController implements Controller {
 //                };
 //                Gdx.input.getTextInput(listener, "Tadan",lastScript,"your script...");
 
-                Eidolons.onNonGdxThread(()-> {
-                String text = DialogMaster.inputText("Your script...", lastScript);
-                if (!StringMaster.isEmpty(text)) {
-                    lastScript = text;
+                Eidolons.onNonGdxThread(() -> {
+                    String text = DialogMaster.inputText("Your script...", lastScript);
+                    if (!StringMaster.isEmpty(text)) {
+                        lastScript = text;
 //                    DialogueManager.afterDialogue();
-                    try {
-                        Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        try {
+                            Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
                     }
-                }
                 });
                 return true;
             case Keys.F8:
@@ -268,7 +270,19 @@ public class GlobalController implements Controller {
             ConfirmationPanel.getInstance().ok();
             return true;
         }
-        return false;
+        if (Eidolons.getScreen().getController().space())
+            return true;
+        if (DungeonScreen.getInstance().isBlocked())
+            return false;
+        if (DungeonScreen.getInstance() == null)
+            return false;
+        if (DungeonScreen.getInstance().isWaitingForInput())
+            return true;
+        if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
+                instanceof Blocking)
+            return false;
+        Eidolons.game.getLoop().togglePaused();
+        return true;
     }
 
     private boolean enter() {
@@ -290,6 +304,8 @@ public class GlobalController implements Controller {
             MainMenu.getInstance().getHandler().handle(MAIN_MENU_ITEM.PLAY);
             return true;
         }
+        if (Eidolons.getScreen().getController().enter())
+            return true;
         return false;
     }
 
@@ -329,9 +345,9 @@ public class GlobalController implements Controller {
 
     private boolean escape() {
         if (!CoreEngine.isIDE())
-        if (Cinematics.ON){
-            return false;
-        }
+            if (Cinematics.ON) {
+                return false;
+            }
 
         DungeonScreen.getInstance().cameraStop(true);
 
@@ -368,9 +384,10 @@ public class GlobalController implements Controller {
         }
         if (guiStage.closeDisplayed())
             return true;
+        if (Eidolons.getScreen().getController().escape())
+            return true;
 
         guiStage.getTooltips().getStackMaster().stackOff();
-
         guiStage.getGameMenu().open();
         return true;
     }
@@ -395,17 +412,19 @@ public class GlobalController implements Controller {
                             new InventoryDataSource(DC_Game.game.getLoop().getActiveUnit()));
                 }
                 break;
-            case ' ':
-                if (DungeonScreen.getInstance() == null)
-                    return false;
-                if (DungeonScreen.getInstance().isWaitingForInput())
-                    return true;
-                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
-                        instanceof Blocking)
-                    return false;
-                Eidolons.game.getLoop().togglePaused();
-                //                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
-                return true;
+//            case ' ':  now in space()
+//                if (DungeonScreen.getInstance().isBlocked())
+//                    return false;
+//                if (DungeonScreen.getInstance() == null)
+//                    return false;
+//                if (DungeonScreen.getInstance().isWaitingForInput())
+//                    return true;
+//                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
+//                        instanceof Blocking)
+//                    return false;
+//                Eidolons.game.getLoop().togglePaused();
+            //                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+//                return true;
             case 'D':
                 Eidolons.game.getDebugMaster().showDebugWindow();
                 return true;

@@ -27,7 +27,7 @@ public class BridgeMaster {
                 output += substring + ";";
             } else
             {
-//                DescriptionTooltips.getTutorialMap().get(preset)
+//                DescriptionTooltips.getTutorialMap().getVar(preset)
                 output += preset.text + ";";
             }
         }

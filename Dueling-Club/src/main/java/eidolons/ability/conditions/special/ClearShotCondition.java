@@ -151,7 +151,7 @@ public class ClearShotCondition extends MicroCondition {
         boolean result = true;
         if (PositionMaster.inLine(c1, c2)) {
             //            result = source.getGame().getVisionMaster().getVisionController().getDiagObstructMapper().
-            //             get(source, target);
+            //             getVar(source, target);
 
             result = PositionMaster.noObstaclesInLine(source, target, game
                     .getGrid());
@@ -326,7 +326,7 @@ public class ClearShotCondition extends MicroCondition {
             }
             boolean left = false;
             if (source.getY() != c.y) {
-                //                PositionMaster.isToTheLeft(Coordinates.get())
+                //                PositionMaster.isToTheLeft(Coordinates.getVar())
                 left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) <
                         getAngle(source.getCoordinates(), target.getCoordinates());
 

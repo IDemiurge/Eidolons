@@ -219,7 +219,7 @@ public class TownMaster extends MetaGameHandler {
             EUtils.onConfirm("Traveling back to " +
                     town.getName() +
                     " will require " + finalN +
-                    "Food. Shall we get underway?", true, () -> {
+                    "Food. Shall we getVar underway?", true, () -> {
                 reenter(finalN, entrance);
             }, true);
         else reenter(finalN, entrance);

@@ -1,6 +1,7 @@
 package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.math.MathUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -52,7 +53,7 @@ public class SpellAnim extends ActionAnim {
             if (StringMaster.isEmpty(vfx) || isVfxOverridden(getActive(), getPart())) {
                 vfx = //SpellAnimMaster.
                         getOverriddenVfx(getActive(), getPart());
-                main.system.auxiliary.log.LogMaster.verbose( getActive() + " gets an OVERRIDE VFX: " +vfx);
+                main.system.auxiliary.log.LogMaster.verbose(getActive() + " gets an OVERRIDE VFX: " + vfx);
             }
             setEmitterList(SpellVfxPool.getEmitters(vfx));
         }
@@ -66,6 +67,7 @@ public class SpellAnim extends ActionAnim {
         }
 
     }
+
     public static final String getOverriddenVfx(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
         //could be a bit randomized too!
         // enum for vfx after all?
@@ -276,8 +278,8 @@ public class SpellAnim extends ActionAnim {
                     case CAST:
                     case MISSILE:
                         if (RandomWizard.chance(66))
-                        return "missile/new soul burn";
-                    return "missile/new chaos bolt";
+                            return "missile/new soul burn";
+                        return "missile/new chaos bolt";
                     case IMPACT:
                         return "flow/afflict flow up";
                     case AFTEREFFECT:
@@ -304,7 +306,7 @@ public class SpellAnim extends ActionAnim {
                     case CAST:
                         if (RandomWizard.chance(66))
                             return "flow/vampire";
-                            return "flow/blood flow pain";
+                        return "flow/blood flow pain";
                     case MISSILE:
                     case IMPACT:
                         if (RandomWizard.chance(66))
@@ -324,8 +326,8 @@ public class SpellAnim extends ActionAnim {
                 break;
             case CONJURATION:
                 if (RandomWizard.chance(66))
-                return "sand flow2";
-            return "subtle light3";
+                    return "sand flow2";
+                return "subtle light3";
             case DEMONOLOGY:
                 break;
             case DESTRUCTION:
@@ -371,25 +373,33 @@ public class SpellAnim extends ActionAnim {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 if (max < emitter.duration)
                     max = emitter.duration;
-
-                e.setSpeed(AnimMaster.getAnimationSpeedFactor());
+                if (e.getSpeed() == 1f)
+                    e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.getAnimationSpeedFactor(),
+                            0.3f));
             }
         }
-        for (SpellVfx e : getEmitterList()) {
-            for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
-                if (max < emitter.duration)
-                    max = emitter.duration;
-
-                e.setSpeed(AnimMaster.getAnimationSpeedFactor());
-            }
-        }
+//        for (SpellVfx e : getEmitterList()) {
+//            for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
+//                if (max < emitter.duration)
+//                    max = emitter.duration;
+//                e.setSpeed(AnimMaster.getAnimationSpeedFactor());
+//            }
+//        }
         for (SpriteAnimation e : getSprites()) {
-            if (max <  e.getFrameDuration()*e.getFrameNumber())
-                max =  e.getFrameDuration()*e.getFrameNumber();
+            if (max < e.getFrameDuration() * e.getFrameNumber())
+                max = e.getFrameDuration() * e.getFrameNumber();
 //            e.setSpeed(AnimMaster.getAnimationSpeedFactor());
         }
         setDuration(
                 Math.min(DEFAULT_MAX_ANIM_DURATION, max));
+    }
+
+    private float getDefaultVfxSpeed(AnimConstructor.ANIM_PART part) {
+        switch (part) {
+            case CAST:
+                return 0.68f;
+        }
+        return 1f;
     }
 
     @Override

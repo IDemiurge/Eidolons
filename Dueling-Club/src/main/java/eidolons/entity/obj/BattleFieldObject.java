@@ -721,4 +721,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void setRevealed(boolean revealed) {
         this.revealed = revealed;
     }
+
+    public boolean isImpassable() {
+        return checkBool(STD_BOOLS.IMPASSABLE);
+    }
 }
