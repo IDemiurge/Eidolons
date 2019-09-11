@@ -30,6 +30,15 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
     private MOD code;
     private Conditions conditions;
 
+    public VampirismEffect(Formula formula, Boolean restoreEndurance, Boolean restoreToughness, Boolean physical, Boolean magical, Boolean spell) {
+        this(formula);
+        this.restoreEndurance = restoreEndurance;
+        this.restoreToughness = restoreToughness;
+        this.physical = physical;
+        this.magical = magical;
+        this.spell = spell;
+    }
+
     public VampirismEffect(Formula formula) {
         this.formula = new Formula("{EVENT_AMOUNT}*(" + formula + ")/100");
         this.code = MOD.MODIFY_BY_CONST;

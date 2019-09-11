@@ -85,6 +85,7 @@ public class SpellExecutor extends Executor {
         boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
         if (result) {
             this.channeling = true;
+            getAction().setChannelingNow(channeling);
             ChannelingRule.playChannelingSound(getSpell(), HeroAnalyzer.isFemale(getAction().getOwnerObj()));
             result = ChannelingRule.activateChanneing(getSpell());
 
@@ -130,6 +131,7 @@ public class SpellExecutor extends Executor {
                     return activateChanneling();
                 }
         channeling = false;
+        getAction().setChannelingNow(channeling);
         return super.activate();
 
     }
@@ -176,8 +178,8 @@ public class SpellExecutor extends Executor {
         } else {
 
             if (!getRef().isQuiet()) {
-                if (getAction().isChanneling())
-                    new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, getRef()).fire();
+                if (getAction().isChannelingNow())
+                    new Event(STANDARD_EVENT_TYPE.CHANNELING_STARTED, getRef()).fire();
             }
         }
 

@@ -357,7 +357,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             super.putParameter(param, value);
         } else if (param == PARAMS.C_INITIATIVE) {
             Integer val = NumberUtils.getInteger(value);
-            val = MathMaster.getMinMax(val, 0, 100);
+            float max = AtbController.TIME_LOGIC_MODIFIER * AtbController.TIME_TO_READY;
+            val = MathMaster.getMinMax(val, 0, (int) max);
             super.putParameter(param, val + "");
         } else
             super.putParameter(param, value);

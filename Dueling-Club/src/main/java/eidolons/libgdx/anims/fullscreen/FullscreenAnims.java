@@ -11,9 +11,11 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.texture.TextureCache;
@@ -150,10 +152,14 @@ public class FullscreenAnims extends GroupX {
 //                FileManager.getRandomFilePathVariant(
 //                PathFinder.getImagePath()+
                 dataSource.type.getSpritePath();
-        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
-        if (sprite == null) {
-            main.system.auxiliary.log.LogMaster.dev("No fullscreen anim for " +path);
+        if (Assets.get().getManager().isLoaded(path)){
+            main.system.auxiliary.log.LogMaster.dev("No fullscreen anim preloaded for " +path);
             return;
+        }
+        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false, false);
+        SpriteData spriteData= dataSource.getSpriteData();
+        if (spriteData != null) {
+            sprite.setData(spriteData);
         }
         sprite.setCustomAct(true);
         sprite.setBlending(dataSource.getBlending());
@@ -230,7 +236,7 @@ public class FullscreenAnims extends GroupX {
         HELLFIRE,
         GREEN_HELLFIRE(new Color(0.69f, 0.9f, 0.6f, 1f)) {
             public String getSpritePath() {
-                return PathFinder.getSpritesPath() + "fullscreen/hellfire.txt";
+                return HELLFIRE.getSpritePath();
             }
         },
         POISON,

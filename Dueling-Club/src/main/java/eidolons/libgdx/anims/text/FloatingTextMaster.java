@@ -323,12 +323,17 @@ public class FloatingTextMaster {
         int size = 21;
         switch (aCase) {
             case BATTLE_COMMENT:
+//                if (arg.toString().contains("(psychic)")) {
+//                    size=20;
+//                    return
+//                            StyleHolder.getSizedLabelStyle(FONT.SUPER_KNIGHT, size);
+//                }
                 size++;
                 size -= Math.min(2, arg.toString().length() / 200);
-//                return
-//                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, size);
-            return
-                    StyleHolder.getSizedLabelStyle(FONT.DARK, size);
+                return
+                        StyleHolder.getSizedLabelStyle(FONT.CHANCERY, size);
+//            return
+//                    StyleHolder.getSizedLabelStyle(FONT.IMMORTAL, size);
             case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);

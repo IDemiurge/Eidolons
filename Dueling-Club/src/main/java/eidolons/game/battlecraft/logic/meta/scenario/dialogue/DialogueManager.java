@@ -103,7 +103,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 8);
         WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG,
-                TEST  ? DUEL: INTRO));
+                EidolonsGame.DUEL_TEST  ? DUEL: INTRO));
     }
     public void startDialogue(GameDialogue dialogue) {
     }

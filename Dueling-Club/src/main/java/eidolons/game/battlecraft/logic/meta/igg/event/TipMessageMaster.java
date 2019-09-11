@@ -28,7 +28,8 @@ public class TipMessageMaster {
 
     };
     public static void welcome() {
-        tip(welcome_1, welcome_2);
+//        TODO
+//        tip(welcome_1, welcome_2);
     }
 
 

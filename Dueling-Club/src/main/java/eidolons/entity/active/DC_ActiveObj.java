@@ -13,6 +13,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.ModMaster;
 import main.ability.Abilities;
@@ -286,6 +287,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             return;
         }
         getHandler().activateOnGameLoopThread();
+        DungeonScreen.getInstance().getController().inputPass();
         //        activate();
         //     TODO is any of it useful?
         //   boolean dont = ownerObj.checkUncontrollable();

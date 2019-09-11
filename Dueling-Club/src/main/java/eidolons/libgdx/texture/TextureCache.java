@@ -44,6 +44,7 @@ public class TextureCache {
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
     private static Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
     private static boolean returnEmptyOnFail = true;
+
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
@@ -78,6 +79,15 @@ public class TextureCache {
         GuiEventManager.bind(GuiEventType.DISPOSE_TEXTURES, p -> {
             dispose();
         });
+    }
+
+    public void logDiagnostics() {
+        main.system.auxiliary.log.LogMaster.important(
+                "cache.size " + cache.size() +
+                        "regionCache.size " + regionCache.size() +
+                        "drawableMap.size " + drawableMap.size() +
+                        "greyscaleCache.size " + greyscaleCache.size()
+        );
     }
 
     private static boolean checkRetainTexture(String s) {

@@ -146,7 +146,7 @@ public class GroupX extends Group {
 
     public void fadeIn() {
         setVisible(true);
-        getColor().a = 0;
+//        getColor().a = 0;
         for (Action sub : getActionsOfClass(AlphaAction.class)) {
             removeAction(sub);
         }

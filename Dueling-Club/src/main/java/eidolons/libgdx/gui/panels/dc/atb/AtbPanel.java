@@ -604,13 +604,13 @@ public class AtbPanel extends GroupX {
 
     public enum INTENT_ICON {
         ATTACK,
-        MOVE,
-        OTHER,
-        SPELL,
+        MOVE("attack"),
+        OTHER("wheel"),
+        SPELL("eye"),
+        DEBUFF("eye"),
+        BUFF("eye"),
+        HOSTILE_SPELL("eye"),
         CHANNELING(SuperActor.BLENDING.SCREEN),
-        DEBUFF,
-        BUFF,
-        HOSTILE_SPELL,
         UNKNOWN,
 
         PREPARE(SuperActor.BLENDING.SCREEN),
@@ -621,13 +621,19 @@ public class AtbPanel extends GroupX {
         WHEEL,
 
         ;
-        boolean screen;
         SuperActor.BLENDING blending;
+        private String path;
 
         INTENT_ICON() {
+            path = toString().toLowerCase();
+        }
+
+        INTENT_ICON(String path) {
+            this.path = path;
         }
 
         INTENT_ICON(SuperActor.BLENDING blending) {
+            this();
             this.blending = blending;
         }
 
@@ -657,25 +663,9 @@ public class AtbPanel extends GroupX {
         }
 
         public String getPath() {
-            switch (this) {
-                case SPELL:
-                case BUFF:
-                case DEBUFF:
-                case HOSTILE_SPELL:
-                    return "ui/content/intent icons/" +
-                            "eye.txt";
-                case ATTACK:
-                case MOVE:
-                case PREPARE:
-                case WAIT:
-                case SEARCH:
-                case CHANNELING:
-                    return "ui/content/intent icons/" + name() + ".txt";
-            }
-            return "ui/content/intent icons/" +
-                    "unknown.txt";
-        }
+            return "ui/content/intent icons/" + path + ".txt";
 
+        }
     }
 
     private class QueueViewContainer extends Container<QueueView> {

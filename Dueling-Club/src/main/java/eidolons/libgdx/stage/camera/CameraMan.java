@@ -11,6 +11,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.GridMaster;
@@ -24,6 +25,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
+import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
@@ -38,8 +40,6 @@ public class CameraMan {
     protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
             getBooleanValue(ControlOptions.CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
 
-    private static boolean centerCameraOnAlliesOnly = OptionsMaster.getControlOptions().
-            getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_ALLIES_ONLY);
     private boolean firstCenteringDone;
     private Boolean centerCameraAlways;
     private static Float cameraPanMod;
@@ -49,6 +49,9 @@ public class CameraMan {
     private FloatAction zoomAction;
     private List<CameraMotion> motions = new ArrayList<>();
     private ActTimer cameraTimer;
+    private boolean mustFinish;
+    private BattleFieldObject pendingPanTarget;
+
 
     public static class MotionData {
 
@@ -177,7 +180,8 @@ public class CameraMan {
     public void act(float delta) {
         if (Eidolons.getGame().isPaused())
             return;
-        cameraTimer.act(delta);
+        // TODO is there a use for it?
+//        cameraTimer.act(delta);
         doMotions(delta);
         if (zoomAction != null) {
             if (zoomAction.getValue() != zoomAction.getEnd()) {
@@ -219,8 +223,19 @@ public class CameraMan {
 
     private void cameraPan(MotionData motionData) {
 //        if (motionData.exclusive)
+        if (motions.isEmpty()) {
+            mustFinish=false;
+        }
             if (!motions.isEmpty()) {
-                motions.clear();
+                if (!mustFinish || motionData.exclusive)
+                {
+                    main.system.auxiliary.log.LogMaster.dev("cleared pan motions! " );
+                    motions.clear();
+                }
+                else {
+                    main.system.auxiliary.log.LogMaster.dev("mustFinish pan motions! " );
+                    return;
+                }
 //                return;
         }
         cameraPan(motionData.dest, motionData.duration, motionData.interpolation, null);
@@ -228,7 +243,7 @@ public class CameraMan {
     }
 
     protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
-        cameraPan(unitPosition, 0, Interpolation.bounce, overrideCheck);
+        cameraPan(unitPosition, 0, Interpolation.fade, overrideCheck);
     }
 
     protected void cameraPan(Vector2 destination, float duration, Interpolation interpolation, Boolean overrideCheck) {
@@ -284,6 +299,22 @@ public class CameraMan {
         cameraTimer.reset();
     }
 
+    public void unitActive(BattleFieldObject hero) {
+        main.system.auxiliary.log.LogMaster.dev("Request pan camera to active unit" +hero);
+        if (pendingPanTarget==hero){
+            return ;
+        }
+        pendingPanTarget = hero;
+        WaitMaster.doAfterWait(1000, ()->{
+            if (hero.getGame().getManager().getActiveObj()==hero) {
+                motions.clear();
+                centerCameraOn(hero);
+//                mustFinish=true;
+                main.system.auxiliary.log.LogMaster.dev("Panning camera to active unit" +hero);
+
+            }
+        });
+    }
     public void centerCameraOn(BattleFieldObject hero) {
         centerCameraOn(hero, null);
     }
@@ -291,7 +322,6 @@ public class CameraMan {
     public void centerCameraOn(BattleFieldObject hero, Boolean force) {
         if (!isCenterAlways()) //TODO refactor this shit
             if (!Bools.isTrue(force))
-                if (centerCameraOnAlliesOnly)
                     if (!hero.isMine())
                         return;
 
@@ -307,10 +337,6 @@ public class CameraMan {
 
     public static void setCameraAutoCenteringOn(boolean b) {
         cameraAutoCenteringOn = b;
-    }
-
-    public static void setCenterCameraOnAlliesOnly(boolean b) {
-        centerCameraOnAlliesOnly = b;
     }
 
     public void setCameraTimer(int intValue) {

@@ -17,8 +17,8 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
         AUTO_CENTER_CAMERA_ON_HERO(false),
         CENTER_CAMERA_AFTER_TIME(5, 1, 10),
         CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),
-        CENTER_CAMERA_ON_ALLIES_ONLY(true),
-        ALWAYS_CAMERA_CENTER_ON_ACTIVE(false),
+        ALWAYS_CAMERA_CENTER_ON_ACTIVE(true),
+
         //        NUMPAD_CONTROLS_ON(false),
         UNLIMITED_ZOOM(false),
         ZOOM_STEP( 5, 1, 20),

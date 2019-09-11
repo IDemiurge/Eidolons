@@ -1039,4 +1039,12 @@ public class GuiStage extends StageX implements StageWithClosable {
         dialogueActors = null;
         townActors = null;
     }
+
+    public DialogueContainer getDialogueContainer() {
+        return dialogueContainer;
+    }
+
+    public Blackout getBlackout() {
+        return blackout;
+    }
 }

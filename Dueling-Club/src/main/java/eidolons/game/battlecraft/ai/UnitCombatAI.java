@@ -11,6 +11,7 @@ import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
+import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -173,8 +174,17 @@ public class UnitCombatAI {
     }
 
     private AtbPanel.INTENT_ICON initIntent(Action currentAction) {
-        if (currentAction.getTask().getType() != null)
-            switch (currentAction.getTask().getType()) {
+        AiEnums.GOAL_TYPE type = currentAction.getTask().getType();
+        if (type == null) {
+            if (currentAction.getActive().isMove()) {
+                return AtbPanel.INTENT_ICON.ATTACK;
+            }
+//            if (currentAction.getActive().isTurn()) {
+//                return AtbPanel.INTENT_ICON.ATTACK;
+//            }
+        }
+        if (type != null)
+            switch (type) {
                 case ATTACK:
                     return AtbPanel.INTENT_ICON.ATTACK;
                 case BUFF:
@@ -203,7 +213,7 @@ public class UnitCombatAI {
                 case SEARCH:
                     return AtbPanel.INTENT_ICON.SEARCH;
             }
-        return AtbPanel.INTENT_ICON.OTHER;
+        return AtbPanel.INTENT_ICON.UNKNOWN;
     }
 
     public ActionSequence getLastSequence() {

@@ -55,7 +55,7 @@ public class EmitterPools {
 //        if (CoreEngine.isJar())
 //            System.out.println("getEffect " + path);
 
-        if ( CoreEngine.isSuperLite())
+        if ( CoreEngine.isVfxOff())
             return new ParticleEffectX(dummy);
 
         if (!effectPoolingOn) {
@@ -103,7 +103,10 @@ public class EmitterPools {
             return ;
         for (GenericEnums.VFX sub : GenericEnums.VFX.values()) {
             if (sub.isPreloaded())
+            {
                 Assets.get().getManager().load(sub.getPath(), ParticleEffect.class);
+                getEmitterActor(sub);
+            }
         }
     }
 

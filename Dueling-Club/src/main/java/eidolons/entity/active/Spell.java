@@ -26,13 +26,14 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class Spell extends DC_ActiveObj {
 
-    private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SpellEnums.SPELL_TYPE.SORCERY;
+    private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SPELL_TYPE.SORCERY;
     protected Costs channelingActivateCosts;
     protected Costs channelingResolveCosts;
     private SPELL_TYPE spellType;
     private SPELL_POOL spellPool;
     private SPELL_GROUP spellGroup;
     private ObjType rawType;
+    private boolean channelingNow;
 
     public Spell(ObjType type, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -292,17 +293,17 @@ public class Spell extends DC_ActiveObj {
 
     public boolean isSorcery() {
 
-        return getSpellType() == SpellEnums.SPELL_TYPE.SORCERY;
+        return getSpellType() == SPELL_TYPE.SORCERY;
     }
 
     public boolean isEnchantment() {
 
-        return checkSingleProp(G_PROPS.SPELL_TYPE, SpellEnums.SPELL_TYPE.ENCHANTMENT.name());
+        return checkSingleProp(G_PROPS.SPELL_TYPE, SPELL_TYPE.ENCHANTMENT.name());
     }
 
     public boolean isSummoning() {
 
-        return checkSingleProp(G_PROPS.SPELL_TYPE, SpellEnums.SPELL_TYPE.SUMMONING.name());
+        return checkSingleProp(G_PROPS.SPELL_TYPE, SPELL_TYPE.SUMMONING.name());
     }
 
     @Override
@@ -317,6 +318,14 @@ public class Spell extends DC_ActiveObj {
 
     public void setSpellPool(SPELL_POOL spellPool) {
         this.spellPool = spellPool;
+    }
+
+    public void setChannelingNow(boolean channelingNow) {
+        this.channelingNow = channelingNow;
+    }
+
+    public boolean isChannelingNow() {
+        return channelingNow;
     }
 
 

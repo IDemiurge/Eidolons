@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import main.system.PathUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 
@@ -16,14 +17,16 @@ import java.util.Map;
  */
 public class SmartTextureAtlas extends TextureAtlas {
     private static Map<String, SmartTextureAtlas> cache = new HashMap<>();
+    private String path;
 
     @Override
     public Sprite createSprite(String name, int index) {
         return super.createSprite(name, index);
     }
 
-    public SmartTextureAtlas(String s) {
-        super(s);
+    public SmartTextureAtlas(String path) {
+        super(path);
+        this.path=path;
     }
 
     public SmartTextureAtlas(TextureAtlasData data) {
@@ -38,6 +41,10 @@ public class SmartTextureAtlas extends TextureAtlas {
         atlas = new SmartTextureAtlas(path);
         cache.put(path.toLowerCase(), atlas);
         return atlas;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public static void clearCache() {
@@ -91,5 +98,9 @@ public class SmartTextureAtlas extends TextureAtlas {
     @Override
     public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
         return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
+    }
+
+    public AtlasRegion findRegionFromFullPath(String texturePath) {
+        return findRegion(StringMaster.cropFormat(PathUtils.getLastPathSegment(texturePath)));
     }
 }

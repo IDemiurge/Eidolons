@@ -19,7 +19,6 @@ import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
 
 //IDEA zoom into the portrait sometimes! perhaps we can have a Full sprite + scissors? even custom border overlay
 // or flash it with a shader to signify some emotion ... use dif borders
@@ -179,6 +178,10 @@ public class DialogueView extends TablePanelX implements Scene {
 
     private boolean respond(String option, int index, boolean allowFinish) {
         autoRespond = false;
+        if (getUserObject().speech.isSpoken()) {
+            main.system.auxiliary.log.LogMaster.dev("Already spoken!  " +getUserObject().speech.getFormattedText());
+            return false;
+        }
         if (container != null) {
 //            container.respond(option);
             ActorDataSource actor = getUserObject().getSpeakerActor();
@@ -209,7 +212,7 @@ public class DialogueView extends TablePanelX implements Scene {
 
             if (next != null) {
                 if (!appendedMessage)
-                    scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2);
+                    Eidolons.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2));
 
                 boolean finalAppendedMessage = appendedMessage;
                 Eidolons.onGdxThread(()-> update(next, finalAppendedMessage));
@@ -271,6 +274,9 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public void act(float delta) {
+        if (container.getHandler().isSkipping()) {
+            tryNext(true);
+        } else
         if (autoRespond) {
             if (!paused)
                 if (!timerDisabled)

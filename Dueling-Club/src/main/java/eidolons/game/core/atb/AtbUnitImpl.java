@@ -30,26 +30,30 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public float getInitialInitiative() {
-        float mod =RandomWizard.getRandomFloat()*
-                (0.25f+ new Float(unit.getIntParam(PARAMS.ATB_START_MOD)) / 100);
+        float mod =0.25f+RandomWizard.getRandomFloat()*
+                (0.5f+ new Float(unit.getIntParam(PARAMS.ATB_START_MOD)) / 100);
         Float preset = new Float( unit.getIntParam(PARAMS.ATB_START_PRESET)) / 100;
         if (preset!=0){
             mod = Math.min(1, preset);
         }
         return  AtbController.TIME_TO_READY * (mod);
+//        return   (mod)
+//                * AtbController.TIME_LOGIC_MODIFIER / AtbController.TIME_TO_READY ;
+//        return  AtbController.TIME_TO_READY * (mod)
+//                / AtbController.TIME_LOGIC_MODIFIER * AtbController.TIME_TO_READY ;
     }
 
     @Override
     public float getAtbReadiness() {
 
         return NumberUtils.getFloat(unit.getParam(PARAMS.C_INITIATIVE))
-         /AtbController.TIME_LOGIC_MODIFIER;
+                /AtbController.TIME_LOGIC_MODIFIER;
     }
 
     @Override
     public void setAtbReadiness(float i) {
 
-        if (i > 1.01f * AtbController.TIME_TO_READY) {
+        if (i >  AtbController.TIME_TO_READY) {  //1.01f *
             main.system.auxiliary.log.LogMaster.log(1, " Bad ATB status:" +
              getUnit().getName() + " has " +
              i + " readiness value");
@@ -59,7 +63,7 @@ public class AtbUnitImpl implements AtbUnit {
         double value = (i) * AtbController.TIME_LOGIC_MODIFIER;
 
         atbController.getManager().getGame().getLogManager().
-         log(LogManager.LOGGING_DETAIL_LEVEL.FULL,
+         log(LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL,
          getUnit().getName() + " has " +
           (getDisplayedAtbReadiness()) + "%" + " readiness");
 
@@ -104,7 +108,7 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public int getDisplayedAtbReadiness() {
-        return Math.round(getAtbReadiness() * 100 / AtbController.TIME_TO_READY);
+        return Math.round(getAtbReadiness()/ AtbController.TIME_TO_READY * 100 );
     }
 
 

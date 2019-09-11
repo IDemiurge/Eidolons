@@ -61,6 +61,7 @@ import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.MetaEnums;
+import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
@@ -1818,7 +1819,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (isPlayerCharacter()) {
             return  AtbPanel.INTENT_ICON.WAIT;
         }
-        if (getMode()!=null ){
+        if (getMode()!=null && getMode()!= STD_MODES.NORMAL){
             return AtbPanel.INTENT_ICON.getModeIcon(getMode());
         }
 

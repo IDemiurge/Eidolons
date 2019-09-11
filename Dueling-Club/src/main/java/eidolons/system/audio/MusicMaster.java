@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.system.options.OptionsMaster;
@@ -193,11 +194,21 @@ public class MusicMaster {
         return format.contains("mp3") || format.contains("wav");
     }
 
+    private boolean isStreaming() {
+        return false;// !CoreEngine.isIDE();
+    }
+
     public static boolean isMusicPreloadOn() {
-        return true;//!mainThemePlayed;
+        return !CoreEngine.isIDE();//!mainThemePlayed;
     }
 
     public static boolean isOn() {
+        if (EidolonsGame.DUEL) {
+            return false;
+        }
+        if (getInstance().scope!=MUSIC_SCOPE.MENU && DialogueManager.isRunning()) {
+            return false;
+        }
         if (CoreEngine.isjUnit()) return false;
         if (CoreEngine.isLiteLaunch()) return false;
         if (on == null)
@@ -280,10 +291,6 @@ public class MusicMaster {
         resume();
         //fade? :)
         //
-    }
-
-    private boolean isStreaming() {
-        return false;
     }
 
     public Stack<String> getPlayList() {
@@ -744,12 +751,11 @@ public class MusicMaster {
                 } else {
                     playedMusic.stop();
                 }
-                playedMusic = music;
             }
         } else {
             //add to list? otherwise, how to mute it?
         }
-
+        playedMusic = music;
         log(1, "Music playing: " + path);
     }
 

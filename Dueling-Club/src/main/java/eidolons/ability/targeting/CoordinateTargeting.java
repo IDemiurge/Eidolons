@@ -65,7 +65,10 @@ public class CoordinateTargeting extends TargetingImpl {
         if (obj == null) {
             obj = (DC_Obj) ref.getSourceObj();
         }
-        Coordinates coordinate = ref.getObj(coordinateKey).getCoordinates();
+        Coordinates coordinate = (ref.getObj(coordinateKey) == null)
+                ? ref.getSourceObj().getCoordinates()
+                : ref.getObj(coordinateKey).getCoordinates();
+
         DIRECTION used_direction = direction;
         if (unitDirection != null) {
             BattleFieldObject unit = (BattleFieldObject) obj;

@@ -129,7 +129,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                     Eidolons.getMainGame().setAborted(true);
                     return game;
                 }
-            if (!getBattleMaster().getOptionManager().chooseDifficulty(getMetaGame().isDifficultyReset()))
+            if (!getBattleMaster().getOptionManager().chooseDifficulty(
+                    getMetaGame().isDifficultyReset()))
                 Eidolons.getMainGame().setAborted(true);
         }
         return game;

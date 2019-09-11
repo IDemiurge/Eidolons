@@ -53,6 +53,21 @@ public class CustomSpriteBatch extends ShaderBatch {
 
     }
 
+    @Override
+    public void setColor(float r, float g, float b, float a) {
+        super.setColor(r, g, b, a);
+    }
+
+    @Override
+    public void setColor(Color tint) {
+        super.setColor(tint);
+    }
+
+    @Override
+    public void setColor(float color) {
+        super.setColor(color);
+    }
+
     public class BlackSprite extends Sprite {
         public BlackSprite() {
             setRegion(TextureCache.getOrCreateR("ui/white.png"));

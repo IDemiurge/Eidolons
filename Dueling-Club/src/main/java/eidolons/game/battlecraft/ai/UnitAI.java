@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UnitAI {
- 
+
     public static final Integer DEFAULT_VERBATIM_MOD = null;
     Unit unit;
     UnitCombatAI combatAI;
@@ -46,8 +46,8 @@ public class UnitAI {
     public UnitAI(Unit unit) {
         this.unit = unit;
         //can we avoid this dependency?
-        exploreAI= new UnitExploreAI(unit);
-        combatAI= new UnitCombatAI(unit);
+        exploreAI = new UnitExploreAI(unit);
+        combatAI = new UnitCombatAI(unit);
 //        initType();
 
     }
@@ -73,13 +73,14 @@ public class UnitAI {
         return 0;
 
     }
+
     @Override
     public String toString() {
         return "AI: " + getUnit();
     }
 
 
-    public  Unit getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 
@@ -130,20 +131,23 @@ public class UnitAI {
     public boolean checkStandingOrders() {
         return checkStandingOrders(false);
     }
+
     public boolean checkStandingOrders(boolean force) {
         // change orders
         if (getStandingOrders() != null) {
             if (ListMaster.isNotEmpty(getStandingOrders().getActions())) {
                 if (!getStandingOrders().get(0).canBeActivated()) {
-                if (!force)
-                    return false;
+                    if (!force)
+                        return false;
                     getStandingOrders().get(0).getActive().setFree(true);
                 }
-                    if (getStandingOrders().get(0).canBeTargeted()) {
-                        return true;
+                if (!force)
+                    if (!getStandingOrders().get(0).canBeTargeted()) {
+                        return false;
                     }
 
             }
+            return true;
         }
         return false;
     }
@@ -161,11 +165,11 @@ public class UnitAI {
             } else if (standingOrders.getType() == GOAL_TYPE.WANDER) {
                 orderType = ORDER_TYPE.PATROL;
             } else if (standingOrders.getType() == GOAL_TYPE.STALK
-             || standingOrders.getType() == GOAL_TYPE.AGGRO) {
+                    || standingOrders.getType() == GOAL_TYPE.AGGRO) {
                 orderType = ORDER_TYPE.PURSUIT;
             }
         }
-        main.system.auxiliary.log.LogMaster.dev(unit+ " received orders: " +standingOrders);
+        main.system.auxiliary.log.LogMaster.dev(unit + " received orders: " + standingOrders);
         this.standingOrders = standingOrders;
     }
 
@@ -190,12 +194,12 @@ public class UnitAI {
 
     public GroupAI getGroupAI() {
         if (getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
-        if (groupAI == null) {
-            groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
-            if (groupAI != null) {
-                groupAI.add(getUnit());
+            if (groupAI == null) {
+                groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
+                if (groupAI != null) {
+                    groupAI.add(getUnit());
+                }
             }
-        }
         return groupAI;
     }
 
@@ -216,8 +220,8 @@ public class UnitAI {
 
         if (currentOrder.getStrictPriority() != null) {
             return Arrays.stream(currentOrder.getStrictPriority().getGoalTypes()).
-             collect(Collectors.toList()).contains(goalType)
-             ? 1000 : 0;
+                    collect(Collectors.toList()).contains(goalType)
+                    ? 1000 : 0;
         }
 
         return currentOrder.getPriorityModsMap().get(goalType);

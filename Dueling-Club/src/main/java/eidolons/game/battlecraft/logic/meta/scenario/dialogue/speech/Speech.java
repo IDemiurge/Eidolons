@@ -37,6 +37,7 @@ public class Speech implements SpeechInterface {
     private int id;
     private SpeechScript script;
     private Integer time;
+    private boolean spoken;
 
     //last speech
     public Speech(Integer id) {
@@ -189,6 +190,14 @@ public class Speech implements SpeechInterface {
 
     public Integer getTime() {
         return time;
+    }
+
+    public void setSpoken(boolean spoken) {
+        this.spoken = spoken;
+    }
+
+    public boolean isSpoken() {
+        return spoken;
     }
 
     public enum REPLICA_STATUS {

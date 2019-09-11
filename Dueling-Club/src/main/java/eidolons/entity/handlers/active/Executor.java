@@ -419,7 +419,7 @@ if (getAction().isStandardAttack()
 
         getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
                 -initiativeCost +
-                "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
+                "%, now at " +AtbMaster.getDisplayedAtb( getOwnerObj())+
                 "%");
 
     }

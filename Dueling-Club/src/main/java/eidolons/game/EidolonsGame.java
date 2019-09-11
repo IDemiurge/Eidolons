@@ -20,6 +20,9 @@ import java.util.Map;
  * Created by JustMe on 5/13/2017.
  */
 public class EidolonsGame {
+    public static   boolean DUEL_TEST  ;
+    public static   boolean TRANSIT_TEST  ;
+
     public static boolean BRIDGE = false;
     public static boolean BOSS_FIGHT;
     public static boolean TUTORIAL_MISSION;
@@ -40,6 +43,7 @@ public class EidolonsGame {
         setVar(field, val);
         try {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
+            main.system.auxiliary.log.LogMaster.important(field + ": global var set to " +val);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
@@ -63,6 +67,7 @@ public class EidolonsGame {
     }
 
     public static void setVar(String value, Boolean valueOf) {
+        main.system.auxiliary.log.LogMaster.important(value + ": setting var to " +valueOf);
         varMap.put(value, valueOf);
     }
 

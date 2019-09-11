@@ -15,6 +15,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StringMaster;
 
 public class Action {
@@ -24,6 +25,7 @@ public class Action {
     boolean complete;
     private Task task;
     private String taskDescription;
+    private boolean order;
 
     public Action(DC_ActiveObj actives, Ref ref) {
         this.active = actives;
@@ -31,7 +33,7 @@ public class Action {
         try {
             ref.setID(KEYS.ACTIVE, active.getId());
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -93,7 +95,7 @@ public class Action {
                 // preCheck
                 // both?
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         }
         return targeting;
@@ -187,5 +189,13 @@ public class Action {
 
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
+    }
+
+    public boolean isOrder() {
+        return order;
+    }
+
+    public void setOrder(boolean order) {
+        this.order = order;
     }
 }

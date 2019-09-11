@@ -109,6 +109,7 @@ public class ActionManager extends AiHandler {
         if (ai.checkStandingOrders(EidolonsGame.DUEL)) {
             getUnitAi().getCombatAI().setLastSequence(ai.getStandingOrders());
             Action ordered = ai.getStandingOrders().popNextAction();
+            ordered.setOrder(true);
             if (ordered == ai.getStandingOrders().getLastAction()) {
                 ai.setStandingOrders(null);
                 main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s last order: " + ordered);

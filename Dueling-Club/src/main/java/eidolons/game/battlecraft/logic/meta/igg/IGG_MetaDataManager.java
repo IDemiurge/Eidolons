@@ -4,6 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.libgdx.launch.MainLauncher;
 
 public class IGG_MetaDataManager extends MetaDataManager<IGG_Meta> {
     private String scenarioName;
@@ -52,6 +53,11 @@ public class IGG_MetaDataManager extends MetaDataManager<IGG_Meta> {
 
     @Override
     public String getMissionPath() {
+        if (MainLauncher.getCustomLaunch()!=null ){
+            main.system.auxiliary.log.LogMaster.important("*******Custom Launch xml path: " +
+                    MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path));
+            return MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path);
+        }
         return getMetaGame().getMission().getXmlLevelName();
 //                getMetaGame().getMissionType().getProperty(PROPS.MISSION_FILE_PATH);
     }

@@ -48,6 +48,7 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -73,6 +74,7 @@ public class DungeonScreen extends GameScreenWithTown {
     private boolean blocked;
     private GridCellContainer stackView;
     private boolean firstShow;
+    private boolean gridFirstDraw;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -168,7 +170,10 @@ public class DungeonScreen extends GameScreenWithTown {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+            main.system.auxiliary.log.LogMaster.dev("Setting dc background " + path);
+            Chronos.mark("bg");
             setBackground(path);
+            Chronos.logTimeElapsedForMark("bg");
         }
     }
 
@@ -364,7 +369,7 @@ public class DungeonScreen extends GameScreenWithTown {
         checkInputController();
 //        stages.for
         guiStage.act(delta);
-        if (isShowingGrid())
+        if (isShowingGrid())            if (isDrawGrid())
             gridStage.act(delta);
         setBlocked(checkBlocked());
         cameraMan.act(delta);
@@ -392,7 +397,9 @@ public class DungeonScreen extends GameScreenWithTown {
             if (postProcessing != null)
                 postProcessing.begin();
             drawBg(delta);
-            gridStage.draw();
+            if (isDrawGrid()) {
+                gridStage.draw();
+            }
             if (postProcessing != null) {
                 batch.resetBlending();
                 postProcessing.end();
@@ -407,6 +414,14 @@ public class DungeonScreen extends GameScreenWithTown {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
+    }
+
+    private boolean isDrawGrid() {
+        if (!gridFirstDraw){
+            gridFirstDraw=true;
+            return true;
+        }
+        return !isOpaque();
     }
 
     private void drawBg(float delta) {

@@ -22,7 +22,7 @@ public class DialogueContainer extends TablePanelX {
     protected DialogueView current;
     protected List<Scene> toPlay;
     protected Iterator<Scene> iterator;
-    private float bgAlpha=0.7f;
+    private float bgAlpha = 0.7f;
 
     public DialogueContainer() {
         GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED, p -> {
@@ -111,19 +111,15 @@ public class DialogueContainer extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (bgSprite !=null )
-        {
+        if (bgSprite != null) {
 //            if (bgSprite.getColor().a==1)
-                bgSprite.setAlpha(bgAlpha*getColor().a);
+            bgSprite.setAlpha(bgAlpha * getColor().a);
         }
         bgSprite.draw(batch, parentAlpha);
         super.draw(batch, parentAlpha);
-        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
-        {
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             super.draw(batch, 1);
-        }
-        else
-        {
+        } else {
 //            ShaderDrawer.drawWithCustomShader(bgSprite, batch, null, false, false);
 //            ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
         }
@@ -131,6 +127,16 @@ public class DialogueContainer extends TablePanelX {
 
     public BriefBackground getBgSprite() {
         return bgSprite;
+    }
+
+    public boolean isOpaque() {
+        if (getStage().getBlackout().isOpaque()) {
+            return true;
+        }
+        if (bgSprite != null) {
+            return bgSprite.getColor().a == 1f;
+        }
+        return false;
     }
 
     @Override

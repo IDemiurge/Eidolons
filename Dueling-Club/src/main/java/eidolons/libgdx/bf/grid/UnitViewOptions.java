@@ -8,6 +8,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.core.atb.AtbController;
+import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
@@ -130,7 +132,7 @@ public class UnitViewOptions {
             if (this.emblem == null)
                 this.emblem = getOrCreateR(ImageManager.getEmptyEmblemPath());
 
-            this.clockValue = obj.getIntParam(PARAMS.C_INITIATIVE);
+            this.clockValue = AtbMaster.getDisplayedAtb(obj);
         }
         boolean altColor=false;
 

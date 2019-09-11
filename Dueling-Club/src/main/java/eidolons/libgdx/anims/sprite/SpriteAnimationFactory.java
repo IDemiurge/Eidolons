@@ -30,6 +30,7 @@ public class SpriteAnimationFactory {
     static Map<String, SpriteAnimation> cache = new HashMap<>();
     private static String defaultSpritePath = Images.DEFAULT_SPRITE;
     private static Array dummySpriteRegions;
+    private static boolean singleFrameSpriteMode=false;
 
     public static void init() {
         dummySpriteRegions = new Array();
@@ -45,31 +46,40 @@ public class SpriteAnimationFactory {
         return getSpriteAnimation(key, true, true);
     }
 
-    public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault  ) {
+    public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault) {
         return getSpriteAnimation(key, useDefault, true);
     }
-        public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, Boolean useCache_orNullIfOnlyCached) {
+
+    private static String getSingleFrameSpritePath(String key) {
+        return SingleSpriteGenerator.getPath(key);
+    }
+    public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, Boolean useCache_orNullIfOnlyCached) {
         key = FileManager.formatPath(key, true, true);
-            if (!key.contains(".")) {
-                key = Sprites.substituteKey(key);
+        if (!key.contains(".")) {
+            key = Sprites.substituteKey(key);
+        }
+
+        if (singleFrameSpriteMode){
+            key = getSingleFrameSpritePath(key);
+        }
+
+        if (!key.contains(".")) {
+            if (!useDefault) {
+                return null;
             }
-            if (!key.contains(".")) {
-                if (!useDefault) {
+        } else {
+            if (useCache_orNullIfOnlyCached == null) {
+                if (cache.get(key.toLowerCase()) == null) {
                     return null;
                 }
-            } else {
-                if (useCache_orNullIfOnlyCached == null) {
-                    if (cache.get(key.toLowerCase()) == null) {
-                        return null;
-                    }
-                    useCache_orNullIfOnlyCached=true;
-                }
-                SpriteAnimation sprite =useCache_orNullIfOnlyCached?  cache.get(key.toLowerCase()) : null ;
-                if (sprite != null) {
-                    sprite.reset();
-                    return sprite;
-                }
+                useCache_orNullIfOnlyCached = true;
             }
+            SpriteAnimation sprite = useCache_orNullIfOnlyCached ? cache.get(key.toLowerCase()) : null;
+            if (sprite != null) {
+                sprite.reset();
+                return sprite;
+            }
+        }
         String texturePath = key;
         if (texturePath.toLowerCase().endsWith(".atlas")
                 || texturePath.toLowerCase().endsWith(".txt")) {
@@ -114,6 +124,7 @@ public class SpriteAnimationFactory {
         cache.put(key.toLowerCase(), a);
         return a;
     }
+
 
     public static SpriteAnimation createSpriteVariant(String name, BossAnimator.BossSpriteVariant variant) {
         String path = StringMaster.getAppendedFile(name, " " + variant.toString());
@@ -186,5 +197,9 @@ public class SpriteAnimationFactory {
 
     public static boolean isDefault(SpriteAnimation sprite) {
         return sprite.isDefault();
+    }
+
+    public static void disposed(String path) {
+        cache.remove(path);
     }
 }

@@ -36,24 +36,10 @@ public class FloatingTextLayer extends GroupX {
                 return;
             if (displaying.contains(floatingText))
                 return;
-            if (isWaitForInput(floatingText.getCase())) {
-                AtomicBoolean flag = new AtomicBoolean(false);
-                GdxMaster.onInputGdx(() -> flag.set(true));
-                floatingText.setStayFullCondition(time -> flag.get());
-            }
             floatingText.setDuration(floatingText.getDuration() * getDurationMod());
             floatingText.init();
             addToQueue(floatingText);
         });
-    }
-
-    private boolean isWaitForInput(FloatingTextMaster.TEXT_CASES aCase) {
-//        if (aCase != null)
-//            switch (aCase) {
-//                case BATTLE_COMMENT:
-//                    return !Cinematics.ON;
-//            }
-        return false;
     }
 
     private void addToQueue(FloatingText floatingText) {

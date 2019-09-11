@@ -3,6 +3,8 @@ package eidolons.libgdx.bf.light;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.ability.effects.common.LightEmittingEffect;
@@ -72,14 +74,16 @@ public class LightEmitter extends SuperActor {
         this.type = LIGHT_RAY.WHITE;
         this.effect = effect;
         String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
-                "rays", type.name(), "center" + (overlaying ? " overlaying.png"
+//                "rays", type.name(),
+                "center" + (overlaying ? " overlaying.png"
                         : ".png"));
         if (isSpriteCenterLight()) {
             imagePath= StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                     "light",  "atlas.txt");
             center = new FadeSprite(imagePath);
         } else {
-            center = new FadeImageContainer(imagePath);
+            TextureAtlas.AtlasRegion region = ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
+            center = new FadeImageContainer(new Image(region));
         }
         setSize(128, 128);
         if (isAddCenterLight()) {
@@ -301,26 +305,29 @@ public class LightEmitter extends SuperActor {
         String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                 "rays", rayType.name(), direction + (overlaying ? " overlaying.png"
                         : ".png"));
-        Texture texture = TextureCache.getOrCreate(imagePath);
-        if (texture.getWidth() == 64) {
-            DIRECTION d = DIRECTION.DOWN;
-            if (direction.isDiagonal()) {
-                d = DIRECTION.DOWN_LEFT;
-            }
-            if (!direction.isVertical()) {
-                d = DIRECTION.RIGHT;
-            }
-            String existing = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
-                    "rays", rayType.name(), d + (overlaying ? " overlaying.png"
-                            : ".png"));
+        TextureRegion texture =  ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
+//        if (texture.getRegionWidth() == 64) {
+//            DIRECTION d = DIRECTION.DOWN;
+//            if (direction.isDiagonal()) {
+//                d = DIRECTION.DOWN_LEFT;
+//            }
+//            if (!direction.isVertical()) {
+//                d = DIRECTION.RIGHT;
+//            }
+//            String existing = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
+//                    "rays", rayType.name(),
+//                    d + (overlaying ? " overlaying.png"
+//                            : ".png"));
+//            texture = ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
 
-            if (direction.isDiagonal()) {
-                GdxImageMaster.flip(existing, !d.isVertical(), d.isVertical(), true, imagePath);
-            }
-            texture = GdxImageMaster.flip(existing, d.isGrowX() == direction.isGrowX(),
-                    d.isGrowY() == direction.isGrowY(), true, imagePath);
-        }
+//            if (direction.isDiagonal()) {
+//                GdxImageMaster.flip(existing, !d.isVertical(), d.isVertical(), true, imagePath);
+//            }
+//            texture = GdxImageMaster.flip(existing, d.isGrowX() == direction.isGrowX(),
+//                    d.isGrowY() == direction.isGrowY(), true, imagePath);
+//        }
         Image image = new Image(texture);
+
         FadeImageContainer ray = new LightRay(image);
         GenericEnums.ALPHA_TEMPLATE template = GenericEnums.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS;
         ray.setAlphaTemplate(template);

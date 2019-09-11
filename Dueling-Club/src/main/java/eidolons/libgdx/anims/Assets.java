@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -23,7 +24,10 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.audio.SoundPlayer;
+import eidolons.libgdx.bf.light.ShadeLightCell;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterMaster;
@@ -34,12 +38,19 @@ import eidolons.libgdx.texture.Sprites;
 import eidolons.system.audio.MusicMaster;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -55,6 +66,7 @@ public class Assets {
     }
 
     private Assets() {
+
         manager = new AssetManager() {
             @Override
             public synchronized boolean update() {
@@ -63,12 +75,12 @@ public class Assets {
 
             @Override
             public synchronized boolean isLoaded(String fileName) {
-                if (fileName.contains(".txt"))
-                    if (!fileName.contains("vfx")) {
-                        if (CoreEngine.isSuperLite()) {
+                if (CoreEngine.isVfxOff()) {
+                    if (fileName.contains(".txt"))
+                        if (!fileName.contains("vfx")) {
                             return true;
                         }
-                    }
+                }
                 fileName = FileManager.formatPath(fileName, true, true);
                 return super.isLoaded(fileName);
             }
@@ -108,12 +120,12 @@ public class Assets {
 
             @Override
             public synchronized <T> T get(String fileName) {
-                if (fileName.contains(".txt"))
-                    if (!fileName.contains("vfx")) {
-                        if (CoreEngine.isSuperLite()) {
+                if (CoreEngine.isVfxOff()) {
+                    if (fileName.contains(".txt"))
+                        if (!fileName.contains("vfx")) {
                             return (T) dummyAtlas;
                         }
-                    }
+                }
                 fileName = FileManager.formatPath(fileName, true, true);
                 return super.get(fileName);
             }
@@ -248,7 +260,6 @@ public class Assets {
     }
 
     private static void preloadEmitters() {
-        EmitterPresetMaster.getInstance().init();
 
         EmitterPools.init(get().getManager());
         if (EmitterPools.isPreloaded()) {
@@ -273,27 +284,75 @@ public class Assets {
     }
 
     public static void preloadAudio(boolean full) {
-        if (DialogueManager.TEST) {
+        if (CoreEngine.isIDE()) {
             return;
         }
         for (GenericEnums.SOUND_CUE value : GenericEnums.SOUND_CUE.values()) {
             try {
-                MusicMaster.getInstance().getMusic(value.getPath(), true);
+                SoundPlayer.preload(value.getPath());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
+
+        GuiEventManager.bind(GuiEventType.DISPOSE_SCOPE, p -> {
+            try {
+                dispose(new EnumMaster<GAME_SCOPE>().retrieveEnumConst(GAME_SCOPE.class, p.get().toString()));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        });
+    }
+
+    public enum GAME_SCOPE {
+        DUEL,
+        INTRO, DIALOGUE,
+
+
+    }
+
+    public static void dispose(GAME_SCOPE scope) {
+        String[] paths = null;
+        main.system.auxiliary.log.LogMaster.important("*********** Dispose Called for: " + scope);
+        switch (scope) {
+            case DIALOGUE:
+                paths = new String[]{
+                        Sprites.AX_FIRE, Sprites.ACID_BLADE,
+                        FULLSCREEN_ANIM.HELLFIRE.getSpritePath(),
+                        FULLSCREEN_ANIM.TUNNEL.getSpritePath(),
+                        FULLSCREEN_ANIM.WAVE.getSpritePath(),
+                        FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(),
+                        Sprites.BG_DEFAULT,
+                };
+                break;
+            case DUEL:
+                break;
+            case INTRO:
+                break;
+        }
+        List<String> toClear = new ArrayList<>(Arrays.asList(paths));
+        main.system.auxiliary.log.LogMaster.important("*********** To Dispose: " + toClear);
+        Array<TextureAtlas> array = new Array<>();
+        for (TextureAtlas textureAtlas : get().getManager().getAll(TextureAtlas.class, array)) {
+            String path = ((SmartTextureAtlas) textureAtlas).getPath();
+            if (textureAtlas instanceof SmartTextureAtlas)
+                if (toClear.contains(path))
+                {
+                    SpriteAnimationFactory.disposed(path);
+                    textureAtlas.dispose();
+                }
+            main.system.auxiliary.log.LogMaster.important("*********** Atlas disposed: " + path);
+        }
     }
 
     public static void preloadUI(boolean full) {
+        ShadeLightCell.getShadowMapAtlas();
         if (CoreEngine.isSuperLite())
             return;
         loadSprite(Sprites.INK_BLOTCH, full);
         loadSprite(Sprites.SNOW, full);
-        loadSprite(FullscreenAnims.FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), full);
-//        if (DialogueManager.TEST)
-//            return;
+        loadSprite(FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), full);
         if (full) {
             loadSprite(Sprites.ORB, full);
             loadSprite(Sprites.RUNE_INSCRIPTION, full);
@@ -304,30 +363,34 @@ public class Assets {
             loadSprite(Sprites.BONE_WINGS, full);
             loadSprite(Sprites.LIGHT_VEIL, full);
             loadSprite("sprites/weapons3d/atlas/screen/ghost/ghost fist.txt", full);
-//            loadSprite(Sprites.COMMENT_KESERIM, full);
+            loadSprite(Sprites.COMMENT_KESERIM, full);
 
-            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
 //            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
 
-            if (!DialogueManager.TEST) {
-                loadSprite(Sprites.BG_DEFAULT, full);
+            loadSprite(Sprites.BG_DEFAULT, full);
+            loadSprite(Sprites.MIST, full);
+
+            if (EidolonsGame.DUEL_TEST) {
+                loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full);
+            } else if (EidolonsGame.TRANSIT_TEST) {
+                loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
+            } else {
                 loadSprite(Sprites.PORTAL_OPEN, full);
                 loadSprite(Sprites.PORTAL, full);
                 loadSprite(Sprites.PORTAL_CLOSE, full);
 
-                loadSprite(Sprites.MIST, full);
-                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.TUNNEL.getSpritePath(), full);
-                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.WAVE.getSpritePath(), full);
+                loadSprite(FULLSCREEN_ANIM.TUNNEL.getSpritePath(), full);
+                loadSprite(FULLSCREEN_ANIM.WAVE.getSpritePath(), full);
 
                 loadSprite(Sprites.ACID_BLADE, full);
                 loadSprite(Sprites.AX_FIRE, full);
-            }
-            if (!CoreEngine.isMyLiteLaunch()) {
-                for (AtbPanel.INTENT_ICON value : AtbPanel.INTENT_ICON.values()) {
-                    loadSprite(value.getPath(), full);
+                if (!CoreEngine.isMyLiteLaunch()) {
+                    for (AtbPanel.INTENT_ICON value : AtbPanel.INTENT_ICON.values()) {
+                        loadSprite(value.getPath(), full);
+                    }
+                    loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
+                    loadSprite(FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
                 }
-                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full);
-                loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(), full);
             }
 
 

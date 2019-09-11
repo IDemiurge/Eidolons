@@ -26,6 +26,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObje
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -38,13 +39,11 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.decor.Pillars;
@@ -56,14 +55,11 @@ import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
-import eidolons.libgdx.stage.camera.CameraMan;
-import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -72,13 +68,11 @@ import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -127,7 +121,8 @@ public class GridPanel extends Group {
     protected List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
     protected List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
     protected List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
-    protected List<GroupX> commentSprites = new ArrayList<>(3);
+    private List<GroupX> commentSprites = new ArrayList<>(5);
+    private List<GroupX> activeCommentSprites = new ArrayList<>(3);
     GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
 
 
@@ -271,13 +266,14 @@ public class GridPanel extends Group {
             paused = false;
         }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
-            for (GroupX groupX : commentSprites) {
+            for (GroupX groupX : getCommentSprites()) {
                 groupX.setVisible(false);
             }
             animMaster.setVisible(false);
 
             super.draw(batch, 1);
-            drawEmitters(batch);
+            if (isDrawEmitters())
+                drawEmitters(batch);
             drawComments(batch);
             animMaster.setVisible(true);
             animMaster.draw(batch, 1f);
@@ -286,8 +282,18 @@ public class GridPanel extends Group {
                     paused ? GrayscaleShader.getGrayscaleShader() : null, true);
     }
 
+    private boolean isDrawEmitters() {
+        if (CoreEngine.isSuperLite()) {
+            return false;
+        }
+//        return  !DialogueManager.isRunning() ||
+//                EidolonsGame.INTRO_STARTED||
+//                EidolonsGame.DUEL_TEST ;
+        return true;
+    }
+
     private void drawComments(Batch batch) {
-        for (GroupX commentSprite : commentSprites) {
+        for (GroupX commentSprite : getCommentSprites()) {
             commentSprite.setVisible(true);
             commentSprite.draw(batch, 1f);
         }
@@ -483,11 +489,13 @@ public class GridPanel extends Group {
             if (p.get() == null) {
                 return;
             }
-            for (BaseView value : viewMap.values()) {
-                value.highlightOff();
-            }
             UnitView view = getUnitView((BattleFieldObject) p.get());
-            view.highlight();
+            for (BaseView value : viewMap.values()) {
+                if (value==view) {
+                    view.highlight();
+                } else
+                     value.highlightOff();
+            }
 
         });
         GuiEventManager.bind(REMOVE_GRID_OBJ, p -> {
@@ -496,7 +504,7 @@ public class GridPanel extends Group {
             Coordinates c = (Coordinates) list.get(1);
             GridObject gridObj = findGridObj(key, c);
             if (gridObj == null) {
-                main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key +c);
+                main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key + c);
             }
             gridObj.fadeOut(true);
             customOverlayingObjectsUnder.remove(gridObj);
@@ -676,10 +684,8 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
-            if (CameraMan.isCameraAutoCenteringOn())
-                DungeonScreen.getInstance().getCameraMan().centerCameraOn(hero);
-            if (hero instanceof Unit)
-                AnimConstructor.tryPreconstruct((Unit) hero);
+            DungeonScreen.getInstance().getCameraMan().unitActive(hero);
+            AnimConstructor.tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
             if (view == null) {
                 System.out.println("viewMap not initiatilized at ACTIVE_UNIT_SELECTED!");
@@ -1285,5 +1291,15 @@ public class GridPanel extends Group {
         return null;
     }
 
+    public List<GroupX> getActiveCommentSprites() {
+        return activeCommentSprites;
+    }
 
+    public List<GroupX> getCommentSprites() {
+        return commentSprites;
+    }
+
+    public void setCommentSprites(List<GroupX> commentSprites) {
+        this.commentSprites = commentSprites;
+    }
 }

@@ -166,9 +166,6 @@ public class OptionsMaster {
                 case ALT_MODE_ON:
                     BattleClickListener.setAltDefault(booleanValue);
                     break;
-                case CENTER_CAMERA_ON_ALLIES_ONLY:
-                    CameraMan.setCenterCameraOnAlliesOnly(booleanValue);
-                    break;
                 case CENTER_CAMERA_AFTER_TIME:
                     if (DungeonScreen.getInstance() == null) {
                         break;

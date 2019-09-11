@@ -17,7 +17,9 @@ import eidolons.libgdx.particles.PhaseVfx;
 import eidolons.libgdx.particles.VfxContainer;
 import eidolons.libgdx.particles.spell.VfxShaper;
 import eidolons.libgdx.particles.spell.VfxShaper.VFX_SHAPE;
+import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.BfObjEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
@@ -49,15 +51,29 @@ public class ForceAnim extends Weapon3dAnim {
     }
 
     private String getSpritePath() {
-        return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
+        if (getActive().getOwnerUnit().isMine()) {
+            return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
+        }
+        return Sprites.BIG_CLAW_ATTACK;
+//        switch (getActive().getOwnerUnit().getName()) {
+//            case "Mistborn Leviathan":
+//                return Sprites.BIG_CLAW_ATTACK;
+//        }
+//        return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
     }
 
     @Override
     protected SpriteAnimation createSprite(AnimMaster3d.PROJECTION projection) {
-        Array<TextureAtlas.AtlasRegion> regions = SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
+        SpriteAnimation atlas = SpriteAnimationFactory.getSpriteAnimation(getSpritePath());
+
+        Array<TextureAtlas.AtlasRegion> regions = null ;
+        if (getActive().getOwnerUnit().isMine()) {
+            regions =  SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
                 .findRegions("armored fist punch " + projection.toString().toLowerCase() +
                         "/armored fist punch " + projection.toString().toLowerCase());
-
+        } else {
+            regions = atlas.getRegions();
+        }
         sprite = SpriteAnimationFactory.getSpriteAnimation(regions, 15f / 100, 1);
         sprite.setBlending(SuperActor.BLENDING.SCREEN);
         switch (projection) {
@@ -96,7 +112,7 @@ public class ForceAnim extends Weapon3dAnim {
 //            if (type != null) {
 //                path = EffectAnimCreator.getVfx(type);
 //            }
-
+main.system.auxiliary.log.LogMaster.dev("force anim destination: " +destination);
             shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
             emitterList.clear();
             emitterList.add(shaped);

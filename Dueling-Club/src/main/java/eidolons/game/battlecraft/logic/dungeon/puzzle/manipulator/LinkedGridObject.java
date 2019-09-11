@@ -63,27 +63,33 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.flames.vfxOver += "ambient/sprite/fires/real fire2(0, 0);";
         CUSTOM_OBJECT.flames.screen = true;
 
-        CUSTOM_OBJECT.nether_flames.vfxUnder += "ambient/sprite/fires/nether flame green(0, 0);";
-        CUSTOM_OBJECT.nether_flames.vfxFolderOver = "ambient/sprite/fires/nether flames";
+
+//        CUSTOM_OBJECT.nether_flames.vfxUnder += "ambient/sprite/fires/nether flame green(0, 0);";
+//        CUSTOM_OBJECT.nether_flames.vfxFolderOver = "ambient/sprite/fires/nether flames";
+
+
 //        CUSTOM_OBJECT.nether_flames.vfxFolderUnder = "ambient/sprite/fires/hypno";
-        CUSTOM_OBJECT.nether_flames.maxEmitters = 1;
-        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.32f);
-//        CUSTOM_OBJECT.nether_flames.screen = true;
-        CUSTOM_OBJECT.nether_flames.invert_screen = true;
-        CUSTOM_OBJECT.nether_flames.movable = true;
-        CUSTOM_OBJECT.nether_flames.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
-        CUSTOM_OBJECT.nether_flames.vfxChance = 44;
+//        CUSTOM_OBJECT.nether_flames.maxEmitters = 1;
 
-        CUSTOM_OBJECT.burning_rubble.movable = true;
-        CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.22f);
-//        CUSTOM_OBJECT.burning_rubble.screen = true;
-        CUSTOM_OBJECT.burning_rubble.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
-        CUSTOM_OBJECT.burning_rubble.vfxFolderOver = "ambient/sprite/fires/rubble";
+//        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.32f);
 
-        CUSTOM_OBJECT.burning_rubble.maxEmitters = 1;
-        CUSTOM_OBJECT.burning_rubble.vfxChance = 44;
-
+        CUSTOM_OBJECT.nether_flames.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
+        CUSTOM_OBJECT.burning_rubble.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
         CUSTOM_OBJECT.hypnotic_flames_mass_narrow.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
+
+//        CUSTOM_OBJECT.nether_flames.movable = true;
+//        CUSTOM_OBJECT.nether_flames.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
+//        CUSTOM_OBJECT.nether_flames.vfxChance = 44;
+
+//        CUSTOM_OBJECT.burning_rubble.movable = true;
+//        CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.22f);
+//        CUSTOM_OBJECT.burning_rubble.screen = true;
+//        CUSTOM_OBJECT.burning_rubble.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
+//        CUSTOM_OBJECT.burning_rubble.vfxFolderOver = "ambient/sprite/fires/rubble";
+//        CUSTOM_OBJECT.burning_rubble.maxEmitters = 1;
+//        CUSTOM_OBJECT.burning_rubble.vfxChance = 44;
+
+
         CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire slow up fine(0, 0);";
         CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire green slow up fine(0, 0);";
         CUSTOM_OBJECT.hypnotic_flames_green.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire green2(0, 0);";
@@ -108,6 +114,7 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.black_waters.setVfxSpeed(0.6f);
 
         CUSTOM_OBJECT.force_field.setVfxSpeed(0.14f);
+        CUSTOM_OBJECT.force_field.always_visible=true;
 //        CUSTOM_OBJECT.force_field.maxEmitters=1;
 //        CUSTOM_OBJECT.force_field.vfxChance=0.12f;
 //        CUSTOM_OBJECT.force_field.vfxFolderOver ="spell/weave";
@@ -306,12 +313,20 @@ public class LinkedGridObject extends CinematicGridObject {
                 sprite.getColor().a = fluctuating.getColor().a;
             }
         }
+        for (EmitterActor emitterActor : emitters.keySet()) {
+            emitterActor.setSpeed(object.getVfxSpeed());
+
+        }
     }
 
     @Override
     public boolean checkVisible() {
         if (object.always_visible) {
             return true;
+        }
+        if (linked != null)
+        if (linked.getParent() == null) {
+            return false;
         }
         if (!object.ignore_linked_visible)
             if (!linked.isVisible()) {

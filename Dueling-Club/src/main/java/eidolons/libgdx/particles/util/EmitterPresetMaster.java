@@ -35,7 +35,6 @@ public class EmitterPresetMaster {
     private static EmitterPresetMaster instance;
     private static boolean spriteEmitterTest;
     private static Map<EmitterActor, String> mods = new HashMap<>();
-    Map<String, String> imagePathMap;
     private Map<String, String> map = new HashMap<>();
     private String lowHighMinMax = "lowMin lowMax highMin highMax";
 
@@ -375,17 +374,17 @@ public class EmitterPresetMaster {
     }
 
     public void init() {
-        imagePathMap = new HashMap<>();
-        for (GenericEnums.VFX sub : GenericEnums.VFX.values()) {
-            String path = null;
-            try {
-                path = findImagePath(sub.getPath());
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                continue;
-            }
-            imagePathMap.put(sub.getPath().toLowerCase(), path);
-        }
+//        imagePathMap = new HashMap<>();
+//        for (GenericEnums.VFX sub : GenericEnums.VFX.values()) {
+//            String path = null;
+//            try {
+//                path = findImagePath(sub.getPath());
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//                continue;
+//            }
+//            imagePathMap.put(sub.getPath().toLowerCase(), path);
+//        }
     }
 
     private void saveLastAs() {

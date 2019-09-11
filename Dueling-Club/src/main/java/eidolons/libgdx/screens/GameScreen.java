@@ -69,7 +69,12 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     public void render(float delta) {
         if (!shakes.isEmpty()) {
             for (Screenshake shake : new ArrayList<>(shakes)) {
-                if (!shake.update(delta, getCam(), getCameraMan().getCameraCenter())) {
+                try {
+                    if (!shake.update(delta, getCam(), getCameraMan().getCameraCenter())) {
+                        shakes.remove(shake);
+                    }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
                     shakes.remove(shake);
                 }
             }
@@ -78,6 +83,17 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         super.render(delta);
     }
 
+
+    public boolean isOpaque() {
+        if (blackoutAction != null)
+            if (blackoutAction.getValue() >= 1) {
+                return true;
+            }
+        if (guiStage.getDialogueContainer() != null) {
+            return guiStage.getDialogueContainer().isOpaque();
+        }
+        return false;
+    }
 
     public GuiStage getGuiStage() {
         return guiStage;
@@ -129,7 +145,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     public void setCam(OrthographicCamera cam) {
-        cameraMan = new CameraMan(cam, this );
+        cameraMan = new CameraMan(cam, this);
     }
 
     public void cameraStop(boolean full) {

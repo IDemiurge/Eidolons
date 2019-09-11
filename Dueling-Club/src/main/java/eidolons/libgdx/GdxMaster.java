@@ -49,6 +49,9 @@ public class GdxMaster {
     private static Float userFontScale;
     private static Float userUiScale;
     private static Float brightness;
+    private static boolean cursorSet;
+    private static boolean stackRunnables;
+    private static Runnable stackRunnable;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -437,7 +440,7 @@ public class GdxMaster {
     }
 
     private static void setCursor(Cursor cursor) {
-        if (CoreEngine.isFastMode()) {
+        if (CoreEngine.isSuperLite()) {
             return;
         }
         int x = Gdx.input.getX();
@@ -447,22 +450,32 @@ public class GdxMaster {
     }
 
     public static void setDefaultCursor() {
+
+        if (CoreEngine.isIDE()) {
+            if (cursorSet)
+                return;
+            cursorSet = true;
+        }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 0, 0));
     }
 
     public static void setLoadingCursor() {
+        if (CoreEngine.isIDE()) {
+            return;
+        }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getLoadingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
 
     public static void setEmptyCursor() {
-        if (CoreEngine.isMyLiteLaunch()) {
+        if (CoreEngine.isIDE()) {
             return;
         }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getEmptyCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
     }
+
     public static void setTargetingCursor() {
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
@@ -497,23 +510,36 @@ public class GdxMaster {
     }
 
     public static void onInputGdx(Runnable r) {
-        onInput(r, true);
+        onInput(r, true, false);
     }
-        public static void onInput(Runnable r, Boolean gdx_any_pass) {
+
+    public static void onInput(Runnable r, Boolean gdx_any_pass, boolean stack) {
         Runnable finalR = r;
-        Runnable onInputGdx = Eidolons.getScreen().getController().getOnInput(gdx_any_pass);
-        if (onInputGdx != null) {
-            r = () ->  {
-                onInputGdx.run();
+        if (!Eidolons.getScreen().getController().isStackInput()
+                || stack) {
+            stackRunnable = r;
+            return;
+        }
+        if (stackRunnable != null) {
+            Runnable runnable = stackRunnable;
+//        Runnable onInputGdx = Eidolons.getScreen().getController().getOnInput(gdx_any_pass);
+//        if (onInputGdx != null) {
+            r = () -> {
 //                WaitMaster.WAIT(3000);
                 finalR.run();
+                runnable.run();
             };
+            stackRunnable = null;
         }
-        Eidolons.getScreen().getController().onInputGdx(gdx_any_pass,r);
+        Eidolons.getScreen().getController().onInputGdx(gdx_any_pass, r);
     }
 
     public static void onPassInput(Runnable finalR) {
-        onInput(finalR, null);
+        onInput(finalR, null, false);
+    }
+
+    public static void inputPass() {
+        Eidolons.getScreen().getController().inputPass();
     }
 
     public enum CURSOR {

@@ -15,6 +15,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class DialogueHandler {
     private ActorDataSource speakerLast;
     private boolean autoCamera;
     private float speed=1f;
+    private boolean skipping;
 
     public DialogueHandler(DialogueManager dialogueManager, GameDialogue dialogue, DC_Game game, List<Scene> scenes) {
         this.dialogueManager = dialogueManager;
@@ -65,6 +67,7 @@ public class DialogueHandler {
     }
 
     public SpeechDataSource lineSpoken(Speech speech, int index) {
+        speech.setSpoken(true);
         if (speech.getScript() != null) {
             try {
                 speech.getScript().execute( );
@@ -188,11 +191,11 @@ public class DialogueHandler {
 
     public void checkAutoCamera(Unit linkedUnit) {
         if (linkedUnit == null) {
-            main.system.auxiliary.log.LogMaster.dev("Null unit for autocamera! "+getSpeakerLast() );
+            LogMaster.dev("Null unit for autocamera! "+getSpeakerLast() );
             return;
         }
         if (linkedUnit.isMainHero()) {
-            main.system.auxiliary.log.LogMaster.dev("PC for autocamera! "+getSpeakerLast() );
+            LogMaster.dev("PC for autocamera! "+getSpeakerLast() );
         }
         if (autoCamera) {
             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT,
@@ -207,5 +210,13 @@ public class DialogueHandler {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public void setSkipping(boolean skipping) {
+        this.skipping = skipping;
+    }
+
+    public boolean isSkipping() {
+        return skipping;
     }
 }

@@ -3,6 +3,7 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
@@ -55,6 +56,11 @@ public class SpriteX extends GroupX {
             sprite.setLoops(0);
             sprite.setLooping(true);
         }
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return null;
     }
 
     public void setSprite(String path) {

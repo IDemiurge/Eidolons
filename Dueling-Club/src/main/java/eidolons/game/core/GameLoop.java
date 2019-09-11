@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
@@ -24,6 +25,7 @@ import eidolons.system.text.DC_LogManager;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
@@ -68,6 +70,7 @@ public class GameLoop {
     protected boolean stopped;
     protected ActionInput lastActionInput;
     private boolean firstActionDone;
+    private DC_ActiveObj lastAction;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -97,7 +100,7 @@ public class GameLoop {
                 if (!roundLoop())
                     break;
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
 
         }
@@ -112,7 +115,7 @@ public class GameLoop {
         }
 
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-        main.system.auxiliary.log.LogMaster.log(1, this + " exited!");
+        LogMaster.log(1, this + " exited!");
         setExited(false);
 
         if (game.getLoop() == this)
@@ -126,7 +129,7 @@ public class GameLoop {
             try {
                 thread.interrupt();
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         }
         thread = new Thread(() -> {
@@ -153,7 +156,7 @@ public class GameLoop {
             if (exited)
                 return false;
             if (ExplorationMaster.isExplorationOn()) {
-                main.system.auxiliary.log.LogMaster.log(1, "COMBAT LOOP EXITS FROM EXPLORE!");
+                LogMaster.log(1, "COMBAT LOOP EXITS FROM EXPLORE!");
                 lock();
             }
             Boolean result = game.getTurnManager().nextAction();
@@ -181,7 +184,7 @@ public class GameLoop {
             try {
                 getGame().getAiManager().getActionManager().initIntents();
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
             result = makeAction();
             if (!aftermath)
@@ -255,7 +258,7 @@ public class GameLoop {
 
     protected void waitForPause() {
         if (paused) {
-            WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE);
+            WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_RESUMED);
             //      not very smart      paused = false;
         }
     }
@@ -274,11 +277,12 @@ public class GameLoop {
         boolean result;
         try {
             activatingAction = input.getAction();
+            setLastAction(activatingAction);
             activatingAction.setTargetObj(input.getContext().getTargetObj());
             activatingAction.setTargetGroup(input.getContext().getGroup());
             result = input.getAction().getHandler().activateOn(input.getContext());
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             return null;
         } finally {
             activatingAction = null;
@@ -330,10 +334,10 @@ public class GameLoop {
         if (aiAction == null)
             failed = true;
         else if (!aiAction.getActive().isChanneling())
-            if (!aiAction.getSource().isBoss()) //TODO boss fix
+            if (!aiAction.getSource().isBoss() || EidolonsGame.DUEL || aiAction.isOrder()) //TODO boss fix
                 if (!aiAction.canBeTargeted()) {
                     {
-                        main.system.auxiliary.log.LogMaster.log(1, "**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
+                        LogMaster.log(1, "**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
                         AI_Manager.getBrokenActions().add(aiAction.getActive());
                         failed = true;
                     }
@@ -384,7 +388,7 @@ public class GameLoop {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__PAUSE, vol, 0);
         } else {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__RESUME, vol, 0);
-            WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
+            WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_RESUMED, true);
         }
     }
 
@@ -468,14 +472,14 @@ public class GameLoop {
     public void setExited(boolean exited) {
         this.exited = exited;
         if (exited) {
-            main.system.auxiliary.log.LogMaster.log(1, this + " interrupting thread... ");
+            LogMaster.log(1, this + " interrupting thread... ");
             WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
             if (thread != null)
                 try {
                     thread.interrupt();
-                    main.system.auxiliary.log.LogMaster.log(1, this + " interrupted thread!");
+                    LogMaster.log(1, this + " interrupted thread!");
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
 
             if (this instanceof ExploreGameLoop) {
@@ -544,11 +548,23 @@ public class GameLoop {
         return false;
     }
 
+    public void setLastActionInput(ActionInput lastActionInput) {
+        this.lastActionInput = lastActionInput;
+    }
+
     public ActionInput getLastActionInput() {
         return lastActionInput;
     }
 
     public void activateMainHeroAction(String name) {
         activateAction(new ActionInput(Eidolons.getMainHero().getActionOrSpell(name), new Context(Eidolons.getMainHero().getRef())));
+    }
+
+    public DC_ActiveObj getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(DC_ActiveObj lastAction) {
+        this.lastAction = lastAction;
     }
 }

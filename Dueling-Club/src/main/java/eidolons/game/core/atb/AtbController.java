@@ -20,10 +20,10 @@ import java.util.Comparator;
  * Created by JustMe on 3/24/2018.
  */
 public class AtbController implements Comparator<Unit> {
-    public static final int ATB_READINESS_PER_AP = 20; //20% readiness per Action Point
+    public static final int ATB_READINESS_PER_AP = 2000; //20% readiness per Action Point
     public static final float SECONDS_IN_ROUND = 12; //seconds; to sync with clock
     public static final float TIME_TO_READY = 10;
-    public static final Float TIME_LOGIC_MODIFIER = 10f;
+    public static final Float TIME_LOGIC_MODIFIER = 1000f;
     private static final Float ATB_PER_INITIATIVE_MOD =0.2f ;
     private AtbTurnManager manager;
     private Array<AtbUnit> unitsInAtb;
@@ -86,7 +86,7 @@ public class AtbController implements Comparator<Unit> {
 //            manager.getGame().getManager().endRound();
 //            newRound();
         }
-        if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_TO_READY) {
+        if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_TO_READY*0.99f) {
             return this.unitsInAtb.get(0);
         } else {
             return null; //this.step();
@@ -145,19 +145,19 @@ public class AtbController implements Comparator<Unit> {
         }
         if (!isPrecalc()) {
             if (time > 0)
-                manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
+                manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL, getTimeString(time) + " passed, " +
                         getTimeString(SECONDS_IN_ROUND - this.time) +
                         " until end of round");
         }
 
         for (AtbUnit unit : this.unitsInAtb) {
-            unit.setAtbReadiness(unit.getAtbReadiness() + getTimeForUnit(time, unit));
+            unit.setAtbReadiness(unit.getAtbReadiness() + getAtbGainForUnit(time, unit));
         }
         if (!isPrecalc())
             manager.getGame().getManager().atbTimeElapsed(time);
     }
 
-    private float getTimeForUnit(Float time, AtbUnit unit) {
+    private float getAtbGainForUnit(Float time, AtbUnit unit) {
         return time * unit.getInitiative() * ATB_PER_INITIATIVE_MOD;
     }
 
@@ -192,11 +192,17 @@ public class AtbController implements Comparator<Unit> {
     }
 
     private float calculateTimeTillTurn(AtbUnit unit) {
-        float time =getTimeForUnit((TIME_TO_READY - unit.getAtbReadiness()) , unit);
+        float time = getAtbGainForUnit((TIME_TO_READY - unit.getAtbReadiness()) , unit);
         if (unit.isImmobilized()) {
             float duration = AtbMaster.getImmobilizingBuffsMaxDuration(unit.getUnit());
-            if (duration == 0)
+            if (duration == 0){
+            if (unit.getUnit().getBuff("channeling") != null) {
+                if (unit.getAtbReadiness()>=9.99f) {
+                    return 0;
+                }
+            }
                 return Float.MAX_VALUE;
+        }
             return (time + duration);
         }
         return time;

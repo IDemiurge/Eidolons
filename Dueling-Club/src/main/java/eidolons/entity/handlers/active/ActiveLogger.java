@@ -122,6 +122,9 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
 
     public boolean isTargetLogged() {
+        if (getName().equalsIgnoreCase("wait")){
+            return false;
+        }
         if (entity.getActionGroup() == ACTION_TYPE_GROUPS.MODE)
             return false;
         if (entity.getActionGroup() == ACTION_TYPE_GROUPS.TURN)

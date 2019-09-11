@@ -77,8 +77,13 @@ public abstract class GenericTurnManager implements TurnManager {
         if (result==null )
             return null;
         resetDisplayedQueue();
+
         if (getActiveUnit() !=null )
-            result &= getActiveUnit().turnStarted();
+        {
+            if (getActiveUnit().getBuff("channeling")==null) {
+             result &= getActiveUnit().turnStarted();
+            }
+        }
         return result;
     }
 

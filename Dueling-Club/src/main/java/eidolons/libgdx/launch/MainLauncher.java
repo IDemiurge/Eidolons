@@ -2,6 +2,7 @@ package eidolons.libgdx.launch;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
@@ -12,6 +13,7 @@ import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -24,8 +26,13 @@ import java.util.Stack;
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
+    private static final String FOOTAGE_SEQUENCE = "levels/.xml;" +
+            ""
+
+            ;
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
+    private static CustomLaunch customLaunch;
 
     public static void main(String[] args) {
         EidolonsGame.setVar("non_test", true);
@@ -46,21 +53,21 @@ public class MainLauncher extends GenericLauncher {
             String[] parts = args[0].split(";");
             if (!parts[0].isEmpty()) {
                 OptionsMaster.setOptionsMode(parts[0]);
-                main.system.auxiliary.log.LogMaster.important(" Options Mode set" + parts[0]);
+                LogMaster.important(" Options Mode set: " + parts[0]);
             }
-                EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
+            EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
             EidolonsGame.BRIDGE = args[0].contains("bridge");
-            DialogueManager.TEST = args[0].contains("duel");
+            EidolonsGame.DUEL_TEST = args[0].contains("duel");
+            EidolonsGame.TRANSIT_TEST = args[0].contains("transit");
 
-
-            if (DialogueManager.TEST) {
-                EidolonsGame.BRIDGE =true;
+            if (EidolonsGame.DUEL_TEST) {
+                EidolonsGame.BRIDGE = true;
             }
-                CoreEngine.setLevelTestMode(false);
-                 args = args[0].split(";");
+            CoreEngine.setLevelTestMode(false);
+            args = args[0].split(";");
         }
         CoreEngine.setSkillTestMode(args.length > 0);
-        CoreEngine.setLiteLaunch(args.length > 0);
+//        CoreEngine.setLiteLaunch(args.length > 0);
 //        CoreEngine.setContentTestMode(args.length > 2);
         if (!EidolonsGame.BOSS_FIGHT)
             CoreEngine.setLevelTestMode(args.length > 4);
@@ -126,10 +133,6 @@ public class MainLauncher extends GenericLauncher {
                 try {
                     item = MAIN_MENU_ITEM.valueOf(command.toUpperCase());
                 } catch (Exception e) {
-                    String[] p = command.split("=");
-                    if (p.length>1) {
-                        EidolonsGame.set(command.split("=")[0], Boolean.valueOf(command.split("=")[1]));
-                    }
                 }
                 if (item != null) {
                     MainMenu.getInstance().getHandler().handle(item);
@@ -141,8 +144,17 @@ public class MainLauncher extends GenericLauncher {
                         }
                         presetNumbersOn = true;
                         presetNumbers.add(0, i);
-                    }
+                    } else {
 
+                    String[] p = command.split("=");
+                    if (p.length > 1) {
+                        EidolonsGame.setVar(p[0], Boolean.valueOf(p[1]));
+                    } else {
+                        if (command.contains(".") || command.contains("::")) {
+                            setCustomLaunch(new CustomLaunch(command));
+                        }
+                    }
+                }
                 }
             }
         }
@@ -155,6 +167,15 @@ public class MainLauncher extends GenericLauncher {
                     FileManager.readFile(LAST_CHOICE_FILE)));
         }
         return NumberUtils.getInteger(lastChoiceStack.remove(0));
+    }
+
+    public static CustomLaunch getCustomLaunch() {
+        return customLaunch;
+    }
+
+    public static void setCustomLaunch(CustomLaunch customLaunch) {
+        main.system.auxiliary.log.LogMaster.important("customLaunch set: " +customLaunch);
+        MainLauncher.customLaunch = customLaunch;
     }
 
     @Override

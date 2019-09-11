@@ -129,6 +129,7 @@ public class BaseView extends SuperActor {
     public boolean isWithinCameraCheck() {
         return getController().isWithinCamera(getX() + getWidth(), getY() + getHeight(), expandWidth+getWidth(),expandHeight+ getHeight());
     }
+
     protected boolean isUseSpriteContainer(BattleFieldObject obj) {
         switch (  obj.getName()) {
             case "Ash Vault":
@@ -242,8 +243,17 @@ public class BaseView extends SuperActor {
         return underlaySprites;
     }
 
+    public float getExpandWidth() {
+        return expandWidth;
+    }
+
+    public float getExpandHeight() {
+        return expandHeight;
+    }
+
     public void highlight() {
-        highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, 0);
+
+        highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, highlight.getColor().a);
         highlight.fadeIn();
 //        fire_light.fadeIn();
 

@@ -1,5 +1,7 @@
 package eidolons.libgdx.audio;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -34,6 +36,8 @@ public class SoundPlayer extends Player {
         this.dungeonScreen = dungeonScreen;
 
     }
+
+
 
     public enum SOUND_TYPE {
         VOICE,

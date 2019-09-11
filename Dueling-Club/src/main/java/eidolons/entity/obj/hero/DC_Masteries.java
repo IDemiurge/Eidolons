@@ -70,6 +70,7 @@ public class DC_Masteries {
                  MOD.MODIFY_BY_CONST);
                 break;
             }
+
             case DEFENSE_MASTERY:
                 boostParameter(
                  DC_Formulas.getDefenseFromDefenseMastery(amount),
@@ -106,6 +107,10 @@ public class DC_Masteries {
             case ATHLETICS_MASTERY:
                 hero.modifyParamByPercent(PARAMS.VITALITY, amount);
                 hero.modifyParamByPercent(PARAMS.STRENGTH, amount);
+                break;
+            case MEDITATION_BONUS:
+                boostParameter(amount/5, PARAMS.MEDITATION_BONUS,
+                        MOD.MODIFY_BY_CONST);
                 break;
             case DISCIPLINE_MASTERY:
                 hero.modifyParamByPercent(PARAMS.WILLPOWER, 2 * amount);

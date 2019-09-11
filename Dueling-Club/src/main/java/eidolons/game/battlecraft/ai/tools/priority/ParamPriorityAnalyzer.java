@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
+import eidolons.game.core.atb.AtbController;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
@@ -61,7 +62,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case CONCEALMENT:
                 return 3;
             case C_INITIATIVE:
-                return 2;
+                return 2f * AtbController.TIME_TO_READY/ AtbController.TIME_LOGIC_MODIFIER;
             case C_INITIATIVE_BONUS:
                 return 2;
             case ARMOR:

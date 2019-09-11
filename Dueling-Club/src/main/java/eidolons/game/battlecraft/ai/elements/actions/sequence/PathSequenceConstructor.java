@@ -65,7 +65,7 @@ public class PathSequenceConstructor extends AiHandler {
     private List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action,
                                               List<Coordinates> targetCells) {
         List<ActionPath> paths = pathCache.get(targetCells);
-        if (ListMaster.isNotEmpty(paths)) {
+        if (isPathCacheOn() && ListMaster.isNotEmpty(paths)) {
             LogMaster.log(LOG_CHANNEL.PATHING_DEBUG, "path cache success: "
              + paths);
             return paths;
@@ -88,6 +88,10 @@ public class PathSequenceConstructor extends AiHandler {
         pathCache.put(targetCells, paths);
 
         return paths;
+    }
+
+    private boolean isPathCacheOn() {
+        return true;
     }
 
     public List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action) {

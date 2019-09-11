@@ -3,6 +3,8 @@ package eidolons.game.battlecraft.logic.meta.igg;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.game.EidolonsGame;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
 import main.data.xml.XML_Formatter;
 import main.system.auxiliary.EnumMaster;
@@ -127,8 +129,10 @@ public class IGG_Demo {
         TUTORIAL("modules/mortuary.xml", "Ashen Path", 0, 1){
             @Override
             public String getXmlLevelName() {
+
                 if (CoreEngine.isTesterVersion()){
-                    return "levels/ashen path.xml";
+//                    OptionsMaster.getSystemOptions().getValue(SystemOptions.SYSTEM_OPTION.Custom_level)
+//                    return "levels/ashen path.xml";
                 }
                 return super.getXmlLevelName();
             }

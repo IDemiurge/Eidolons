@@ -371,11 +371,12 @@ public class SpellAnim extends ActionAnim {
         float max = DEFAULT_ANIM_DURATION;
         for (SpellVfx e : getEmitterList()) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
-                if (max < emitter.duration)
-                    max = emitter.duration;
                 if (e.getSpeed() == 1f)
                     e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.getAnimationSpeedFactor(),
-                            0.3f));
+                        0.3f));
+                if (max < emitter.duration / e.getSpeed())
+                    max = emitter.duration/ e.getSpeed();
+
             }
         }
 //        for (SpellVfx e : getEmitterList()) {
@@ -390,6 +391,7 @@ public class SpellAnim extends ActionAnim {
                 max = e.getFrameDuration() * e.getFrameNumber();
 //            e.setSpeed(AnimMaster.getAnimationSpeedFactor());
         }
+        main.system.auxiliary.log.LogMaster.dev("Spell anim duration set: " +max);
         setDuration(
                 Math.min(DEFAULT_MAX_ANIM_DURATION, max));
     }
@@ -397,7 +399,7 @@ public class SpellAnim extends ActionAnim {
     private float getDefaultVfxSpeed(AnimConstructor.ANIM_PART part) {
         switch (part) {
             case CAST:
-                return 0.68f;
+                return 0.88f;
         }
         return 1f;
     }

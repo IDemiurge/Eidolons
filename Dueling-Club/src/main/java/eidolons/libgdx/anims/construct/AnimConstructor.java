@@ -343,7 +343,11 @@ public class AnimConstructor {
                         return new Missile3dAnim(active);
                 }
                 if (part == ANIM_PART.MISSILE)
+                {
+                    if (EidolonsGame.DUEL)
+                        return new ForceAnim(active, ANIM_PART.MISSILE);
                     return new Weapon3dAnim(active);
+                }
 
             } else if (part == ANIM_PART.MISSILE) {
 

@@ -16,13 +16,11 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
+import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
@@ -56,6 +54,10 @@ public abstract class InputController implements InputProcessor {
     private Runnable onInput;
     private Runnable onInputGdx;
     private Runnable onPassInput;
+
+    private DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
+    private DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
+    private DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
 
 
     public InputController(OrthographicCamera camera) {
@@ -182,6 +184,12 @@ public abstract class InputController implements InputProcessor {
     }
 
     public boolean inputPass() {
+        if (isStackInput()) {
+            if (!onPassInputQueue.isEmpty()) {
+                onPassInput = onPassInputQueue.removeFirst();
+            } else
+                return false;
+        }
         if (onPassInput != null) {
             main.system.auxiliary.log.LogMaster.dev("onPassInput.run() ");
             onPassInput.run();
@@ -190,7 +198,16 @@ public abstract class InputController implements InputProcessor {
         }
         return false;
     }
-        private void input() {
+
+    private void input() {
+        if (isStackInput()) {
+            if (!onInputGdxQueue.isEmpty()) {
+                onInputGdx = onInputGdxQueue.removeFirst();
+            }
+            if (!onInputQueue.isEmpty()) {
+                onInput = onInputQueue.removeFirst();
+            }
+        }
         if (onInputGdx != null) {
             main.system.auxiliary.log.LogMaster.dev("onInputGdx.run() ");
             onInputGdx.run();
@@ -447,17 +464,28 @@ public abstract class InputController implements InputProcessor {
     }
 
     public void onInputGdx(Boolean gdx_any_pass, Runnable runnable) {
-        main.system.auxiliary.log.LogMaster.dev(gdx_any_pass + "onInput set ");
+        main.system.auxiliary.log.LogMaster.dev(gdx_any_pass + " onInput set ");
+
+        if (isStackInput()) {
+            if (gdx_any_pass == null) {
+                onPassInputQueue.add(runnable);
+            } else if (gdx_any_pass) {
+                onInputGdxQueue.add(runnable);
+            } else
+                onInputQueue.add(runnable);
+        } else
         if (gdx_any_pass == null) {
             onPassInput = runnable;
-        } else
-        if (gdx_any_pass) {
+        } else if (gdx_any_pass) {
             onInputGdx = runnable;
         } else
             onInput = runnable;
     }
 
     public Runnable getOnInput(Boolean gdx_any_pass) {
+        if (isStackInput()) {
+            //TODO
+        }
         if (gdx_any_pass == null) {
             return onPassInput;
         }
@@ -470,10 +498,16 @@ public abstract class InputController implements InputProcessor {
     public boolean space() {
         return inputPass();
     }
+
     public boolean enter() {
         return inputPass();
     }
+
     public boolean escape() {
         return inputPass();
+    }
+
+    public boolean isStackInput() {
+        return true;
     }
 }

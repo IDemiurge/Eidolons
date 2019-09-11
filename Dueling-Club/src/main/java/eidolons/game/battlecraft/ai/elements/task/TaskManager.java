@@ -43,6 +43,7 @@ public class TaskManager extends AiHandler {
                     .getProperty(G_PROPS.TARGETING_MODE));
         }
         if (mode != null) {
+            if (task.getArg() instanceof Integer)
             if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
                 Unit target = (Unit) action.getGame().getObjectById(
                         (Integer) task.getArg());

@@ -45,6 +45,7 @@ public class Sprites {
 
     public static final String AX_FIRE = "sprites/weapons3d/special/ax fire.txt";
     public static final String ACID_BLADE = "sprites/weapons3d/special/acid blade.txt";
+    public static final String BIG_CLAW_ATTACK = "sprites/weapons3d/special/big claw slash.txt";
 
     public static final String BLOOD_SHOWER = "sprites/hit/blood/shower.txt";
     public static final String BLOOD_SLICE = "sprites/hit/blood/slice.txt";

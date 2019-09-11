@@ -2,6 +2,7 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,6 +15,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.WaitAction;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.anims.std.DeathAnim;
@@ -27,6 +29,7 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.HpBarManager;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
@@ -43,7 +46,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
@@ -121,7 +123,7 @@ public class GridManager {
 //            createFloatText(c, at, facingDirection, text, false);
             String finalText1 = text;
             Gdx.app.postRunnable(() ->
-                    commentGdx(img, facingDirection, c, b, finalText1, at, null, false ));
+                    commentGdx(img, facingDirection, c, b, finalText1, at, null, false));
         } else {
             text = removeSequentialKey(text);
             String finalText = text;
@@ -132,9 +134,9 @@ public class GridManager {
             key = COMMENT_WAIT_KEY + (getWaitCounter());
             String finalKey = key;
 
-            main.system.auxiliary.log.LogMaster.dev(key+ "Sequential comment: " + text);
+            main.system.auxiliary.log.LogMaster.dev(key + "Sequential comment: " + text);
 
-            Gdx.app.postRunnable(() -> commentGdx(img, facingDirection, c, b, finalText, at, finalKey , true ));
+            Gdx.app.postRunnable(() -> commentGdx(img, facingDirection, c, b, finalText, at, finalKey, true));
         }
     }
 
@@ -176,7 +178,7 @@ public class GridManager {
 //            portrait = (Sprites.COMMENT_KESERIM);
 //        } else {
 //            textTop = true;
-            portrait = ImageManager.getBlotch(unit);
+        portrait = ImageManager.getBlotch(unit);
 //        }
 
         comment(portrait, unit.getFacing(), unit.getCoordinates(), textTop, text, at);
@@ -186,52 +188,64 @@ public class GridManager {
     }
 
     private void commentGdx(String image, FACING_DIRECTION f, Coordinates c, boolean textTop, String text,
-                            Vector2 at, String key , boolean seq) {
+                            Vector2 at, String key, boolean seq) {
+        boolean uiStage = seq;
+        AtomicBoolean flag = new AtomicBoolean();
+        FloatingText floatingText = createFloatText(c, at, f, text, flag, seq);
 
-            AtomicBoolean flag = new AtomicBoolean();
-        FloatingText floatingText= createFloatText(c, at, f, text,flag, seq);
-
-        if (!Cinematics.ON)
+        if (!Cinematics.ON && !uiStage)
             GuiEventManager.trigger(CAMERA_ZOOM, new CameraMan.MotionData(-10f, 1f));
 
         SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
             @Override
             public boolean remove() {
                 getParent().remove(); //TODO could be better.
-                WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, text);
+//                WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, text);
                 return super.remove();
             }
         };
-        GroupX portrait =createPortrait(image);
+        GroupX portrait = createPortrait(image);
         portrait.setX((int) (commentBgSprite.getWidth() / 2 - portrait.getWidth()));
         portrait.setY((int) (commentBgSprite.getHeight() / 2 - portrait.getHeight()));
         commentBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-
 
 
         SpriteX commentTextBgSprite = new SpriteX(Sprites.INK_BLOTCH);
         commentTextBgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
 
 
-        floatingText.setStayFullCondition(delta-> flag.get());
-        floatingText.setMaxWidth(seq? 700:600);
+        floatingText.setStayFullCondition(delta -> flag.get());
+        floatingText.setMaxWidth(seq ? 700 : 600);
         floatingText.init();
 
         Vector2 finalAt = at;
-        GroupX commentGroup = new  GroupX(){
+        GroupX commentGroup = new GroupX() {
+            @Override
+            public Actor hit(float x, float y, boolean touchable) {
+
+                if (flag == null) {
+                    return null;
+                } else {
+                    if (!flag.get()) {
+                        return null;
+                    }
+                }
+                return super.hit(x, y, touchable);
+            }
+
             @Override
             public void act(float delta) {
-                DIRECTION textPlacement =textTop? DIRECTION.DOWN
-                        : (c.dst(Eidolons.getMainHero().getCoordinates())>4)? DIRECTION.LEFT : DIRECTION.RIGHT;
+                DIRECTION textPlacement = textTop ? DIRECTION.DOWN
+                        : (c.dst(Eidolons.getMainHero().getCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
                 if (finalAt != null) {
                     Vector2 v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
                     if (v.x < finalAt.x) {
-                        textPlacement=DIRECTION.LEFT;
+                        textPlacement = DIRECTION.LEFT;
                     } else {
-                        textPlacement=DIRECTION.RIGHT;
+                        textPlacement = DIRECTION.RIGHT;
                     }
                 }
-                if (textTop){
+                if (textTop) {
                     commentTextBgSprite.setScale(0.85f);
                     commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 4, commentBgSprite.getHeight() / 4);
                     commentTextBgSprite.setRotation(90);
@@ -239,11 +253,11 @@ public class GridManager {
                 } else {
                     commentTextBgSprite.setOrigin(commentBgSprite.getWidth() / 2, commentBgSprite.getHeight() / 2);
                     commentTextBgSprite.setRotation(90);
-                    if (textPlacement== DIRECTION.RIGHT) {
-                    commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2.5f , -100 - commentBgSprite.getHeight() / 7);
-                    } else if (textPlacement== DIRECTION.LEFT) {
+                    if (textPlacement == DIRECTION.RIGHT) {
+                        commentTextBgSprite.setPosition(commentBgSprite.getWidth() / 2.5f, -100 - commentBgSprite.getHeight() / 7);
+                    } else if (textPlacement == DIRECTION.LEFT) {
 
-                        commentTextBgSprite.setPosition(-commentBgSprite.getWidth() / 2.5f , -100 - commentBgSprite.getHeight() / 7);
+                        commentTextBgSprite.setPosition(-commentBgSprite.getWidth() / 2.5f, -100 - commentBgSprite.getHeight() / 7);
                     }
                 }
 
@@ -252,21 +266,21 @@ public class GridManager {
 
                 float w = Math.min(floatingText.getLabel().getPrefWidth(), 626);
                 float h = Math.min(floatingText.getLabel().getPrefHeight(), 626);
-                float x=commentTextBgSprite.getX();
-                float y=commentTextBgSprite.getY();
+                float x = commentTextBgSprite.getX();
+                float y = commentTextBgSprite.getY();
 
                 switch (textPlacement) {
                     case LEFT:
-                        x=x-bgHeight/4+w/2-50;
-                        y= y +(h-y)/2+h+48;
+                        x = x - bgHeight / 4 + w*0.8f / 2 - 30;
+                        y = y + (h - y) / 2 + h*0.57f + 38;
                         break;
                     case RIGHT:
-                        x=x-bgWidth/2+bgHeight-w-20;
-                        y= y +(h-y)/2+h+21;
+                        x = x - bgWidth / 2 + bgHeight - w - 20;
+                        y = y + (h - y) / 2 + h + 21;
                         break;
                     case DOWN:
-                        x=x-w/2-bgWidth+bgHeight/2+180;
-                        y= y +(h-y)/2-25;
+                        x = x - w / 2 - bgWidth + bgHeight / 2 + 180;
+                        y = y + (h - y) / 2 - 25 - h / 8;
                         break;
 
                 }
@@ -279,7 +293,6 @@ public class GridManager {
             }
         };
 
-        panel.addActor(commentGroup);
         commentGroup.act(0); //TODO remove
 
         commentGroup.setSize(commentBgSprite.getWidth(), commentBgSprite.getHeight());
@@ -295,7 +308,7 @@ public class GridManager {
         commentGroup.addActor(floatingText);//        floatingText.getFontStyle().font.getSpaceWidth()*floatingText.getText() there gotta be max width!
 
 
-        floatingText.setFadeInDuration(textTop ? 5: 4);
+        floatingText.setFadeInDuration(textTop ? 5 : 4);
 
         floatingText.fadeIn();
         ActionMaster.addFadeInAction(commentBgSprite, 2);
@@ -340,16 +353,18 @@ public class GridManager {
         if (Cinematics.ON) {
 //            at.y= at.y-100;
         }
-        GuiEventManager.trigger(CAMERA_PAN_TO, at, true);
+        if (!uiStage) {
+            GuiEventManager.trigger(CAMERA_PAN_TO, at, true);
+        }
 
 
         GroupX finalPortrait = portrait;
         final boolean[] faded = {false};
         Runnable r = () -> {
-            if (faded[0]){
+            if (faded[0]) {
                 return;
             }
-            faded[0] =true;
+            faded[0] = true;
             main.system.auxiliary.log.LogMaster.dev(key + " key; fade comment   " + text);
             if (key != null) {
                 if (flag != null) {
@@ -359,36 +374,73 @@ public class GridManager {
             }
             floatingText.fadeOut();
 
-            ActionMaster.addFadeOutAction(commentBgSprite,seq ? 6: 4);
+            panel.getActiveCommentSprites().remove(commentGroup);
+            GdxMaster.inputPass();
+
+            ActionMaster.addAction(commentBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMaster.addAction(finalPortrait, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMaster.addAction(commentTextBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+
+            ActionMaster.addFadeOutAction(commentBgSprite, seq ? 6 : 4);
             ActionMaster.addRemoveAfter(commentBgSprite);
-            ActionMaster.addFadeOutAction(finalPortrait, seq? 4:3);
-            ActionMaster.addFadeOutAction(commentTextBgSprite, seq? 5:4);
+            ActionMaster.addFadeOutAction(finalPortrait, seq ? 4 : 3);
+            ActionMaster.addFadeOutAction(commentTextBgSprite, seq ? 5 : 4);
 
+            WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, true);
         };
-        boolean onInput = !Cinematics.ON;
-        if (onInput) {
-            Runnable finalR = r;
-            r = () -> GdxMaster.onPassInput(finalR  );
-        }
 
-        commentGroup.addListener(getCommentMouseListener(commentGroup, r, key));
-        WaitMaster.doAfterWait(4000 + text.length() * 12, r);
-        panel.commentSprites.add(commentGroup);
+        Runnable finalFade = r;
+        WaitMaster.doAfterWait(1000 + text.length() * 3, () ->
+                commentGroup.addListener(getCommentMouseListener(commentGroup, finalFade, key)));
+
+        boolean onInput = !Cinematics.ON && (seq || textTop);
+//        if (onInput)
+        {
+             GdxMaster.onPassInput(r);
+        }
+//        else
+        float time = 2500 + text.length() * 25;
+        if (onInput)
+            time=time*2f;
+
+            WaitMaster.doAfterWait((int) time,()-> {
+                r.run();
+            }  );
+
+//      TODO is it useful?
+//       if (uiStage) {
+//            commentGroup.setX(commentGroup.getX() - DungeonScreen.getInstance().getController().getXCamPos()
+//                    + GdxMaster.getWidth() / 2);
+//            commentGroup.setY(commentGroup.getY() - DungeonScreen.getInstance().getController().getYCamPos()
+//                    + GdxMaster.getHeight() / 2);
+//            DungeonScreen.getInstance().getGuiStage().addActor(commentGroup);
+//        } else
+            {
+            panel.addActor(commentGroup);
+            panel.getCommentSprites().add(commentGroup);
+            panel.getActiveCommentSprites().add(commentGroup);
+        }
     }
 
     private GroupX createPortrait(String image) {
         if (TextureCache.isImage(image)) {
-            return  new SpriteX(image);
+            return new SpriteX(image);
         }
         return new ImageContainer(ImageManager.getLargeImage(Images.DEMIURGE));
     }
 
     private EventListener getCommentMouseListener(GroupX commentGroup, Runnable fadeRunnable, String key) {
-        return new SmartClickListener(commentGroup){
+        return new SmartClickListener(commentGroup) {
+            private boolean done;
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.system.auxiliary.log.LogMaster.dev(    " manual fade   " + key);
+                if (done)
+                    return;
+                main.system.auxiliary.log.LogMaster.dev(" manual fade   " + key);
                 fadeRunnable.run();
+                done = true;
+//                GdxMaster.clearPassInput();
                 super.clicked(event, x, y);
             }
         };

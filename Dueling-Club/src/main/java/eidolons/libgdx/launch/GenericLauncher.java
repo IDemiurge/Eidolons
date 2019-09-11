@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
@@ -24,6 +25,7 @@ import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.BlackoutOld;
 import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.macro.AdventureInitializer;
@@ -62,6 +64,8 @@ public class GenericLauncher extends Game {
     private LwjglApplicationConfiguration conf;
     public boolean initRunning;
     public static GenericLauncher instance;
+    private GLProfiler profiler;
+    private boolean logProfiler;
 
     public static void setFirstInitDone(boolean firstInitDone) {
         GenericLauncher.firstInitDone = firstInitDone;
@@ -82,6 +86,26 @@ public class GenericLauncher extends Game {
         //            engineInit();
         //        }
         screenInit();
+          profiler = new GLProfiler(Gdx.graphics);
+          profiler.enable();
+         GuiEventManager.bind(GuiEventType.TOGGLE_LOG_GL_PROFILER, p-> {
+             logProfiler=!logProfiler;
+         });
+        GuiEventManager.bind(GuiEventType.LOG_DIAGNOSTICS, p-> {
+            logProfiler();
+            TextureCache.getInstance().logDiagnostics();
+        });
+    }
+
+    private void logProfiler() {
+        System.out.println(
+            "  Drawcalls: " + profiler.getDrawCalls() +
+                    ", Calls: " + profiler.getCalls() +
+                    ", TextureBindings: " + profiler.getTextureBindings() +
+                    ", ShaderSwitches:  " + profiler.getShaderSwitches() +
+                    "vertexCount: " + profiler.getVertexCount().value
+    );
+        profiler.reset();
     }
 
     public void start() {
@@ -133,7 +157,7 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return CoreEngine.isLiteLaunch();
+        return false;//CoreEngine.isLiteLaunch();
     }
 
     public LwjglApplicationConfiguration getConf() {
@@ -238,13 +262,17 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
-        if (!Assets.get().getManager().update()){
-            main.system.auxiliary.log.LogMaster.dev("Assets being loaded..." );
+
+        if (!Assets.get().getManager().update()) {
+            main.system.auxiliary.log.LogMaster.dev("Assets being loaded...");
         }
         GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
         if (VideoMaster.player != null) {
             if (getScreen() instanceof DungeonScreen) {
                 VideoMaster.player.stop();
+                resize((int) (1920 / (new Float(Gdx.graphics.getWidth()) / 1920)),
+                        (int) (1050 / (new Float(Gdx.graphics.getHeight()) / 1050)));
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             } else {
                 VideoMaster.player.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
@@ -256,8 +284,11 @@ public class GenericLauncher extends Game {
             main.system.ExceptionMaster.printStackTrace(e);
             if (!CoreEngine.isIDE()) {
                 CrashManager.crashed();
-                throw new RuntimeException();
+                System.exit(-1);
             }
+        }
+        if (logProfiler) {
+            logProfiler();
         }
 //        } else
 //            render_();
@@ -266,8 +297,8 @@ public class GenericLauncher extends Game {
     public void render_() {
         GuiEventManager.processEvents();
         super.render();
-        if (!Assets.get().getManager().update()){
-            main.system.auxiliary.log.LogMaster.dev("Assets being loaded after..." );
+        if (!Assets.get().getManager().update()) {
+            main.system.auxiliary.log.LogMaster.dev("Assets being loaded after...");
         }
 
     }

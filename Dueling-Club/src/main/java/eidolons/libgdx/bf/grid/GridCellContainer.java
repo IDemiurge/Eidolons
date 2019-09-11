@@ -566,5 +566,20 @@ public class GridCellContainer extends GridCell {
         }
         return sorter;
     }
-
+    protected boolean isWithinCamera() {
+        float expandHeight=0;
+        float expandWidth=0;
+        if (visibleViews != null)
+        for (GenericGridView visibleView : visibleViews) {
+            if (visibleView.getExpandHeight()>expandHeight) {
+                expandHeight = visibleView.getExpandHeight();
+            }
+            if (visibleView.getExpandHeight()>expandHeight) {
+                expandWidth = visibleView.getExpandWidth();
+            }
+        }
+        return DungeonScreen.getInstance().getController().isWithinCamera(-expandWidth+getX() ,-expandHeight+ getY() ,
+                2*expandWidth+getWidth(),
+                2* expandHeight+ getHeight());
+    }
 }

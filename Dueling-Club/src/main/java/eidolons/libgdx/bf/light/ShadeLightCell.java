@@ -3,7 +3,10 @@ package eidolons.libgdx.bf.light;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
@@ -12,17 +15,21 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
+import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -43,14 +50,23 @@ public class ShadeLightCell extends SuperContainer {
     private Float originalX;
     private Float originalY;
     private boolean voidCell;
+    static SmartTextureAtlas shadowMapAtlas;
 
+    public static SmartTextureAtlas getShadowMapAtlas() {
+        if (shadowMapAtlas == null) {
+            shadowMapAtlas = new SmartTextureAtlas(
+                    PathFinder.getImagePath() +
+                            "ui/cells/outlines/shadows/shadows.txt");
+        }
+        return shadowMapAtlas;
+    }
 
     public ShadeLightCell(SHADE_CELL type) {
         this(type, null);
     }
 
     public ShadeLightCell(SHADE_CELL type, Object arg) {
-        super(new Image(TextureCache.getOrCreateR(getTexturePath(type, arg))));
+        super(new Image(getTexture(type, arg)));
         this.type = type;
         randomize();
         baseAlpha = 0;
@@ -72,13 +88,25 @@ public class ShadeLightCell extends SuperContainer {
 
     }
 
+    private static TextureRegion getTexture(SHADE_CELL type, Object arg) {
+        TextureAtlas.AtlasRegion texture = getShadowMapAtlas().findRegionFromFullPath(
+                (getTexturePath(type, arg)));
+        if (texture == null) {
+            main.system.auxiliary.log.LogMaster.important(getTexturePath(type, arg) + " - " + type + " has null texture ( " + arg);
+            return TextureCache.getOrCreateR(getTexturePath(type, arg));
+        }
+        return texture;
+    }
+
     private static String getTexturePath(SHADE_CELL type, Object arg) {
         switch (type) {
             //                    TODO varied enough already?
             case VOID:
-                return FileManager.getRandomFilePathVariant(
-                 PathFinder.getImagePath(),
-                 StringMaster.cropFormat(type.getTexturePath()), ".png", false, false);
+                return
+                        FileManager.formatPath(
+                                FileManager.getRandomFilePathVariant(
+                                        PathFinder.getImagePath(),
+                                        StringMaster.cropFormat(type.getTexturePath()), ".png", false, false));
         }
         return type.getTexturePath();
     }
@@ -228,14 +256,14 @@ public class ShadeLightCell extends SuperContainer {
             case LIGHT_EMITTER:
 
                 mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                 ? BLENDING.OVERLAY
-                 : BLENDING.SATURATE;
+                        ? BLENDING.OVERLAY
+                        : BLENDING.SATURATE;
                 break;
             case CONCEALMENT:
             case GAMMA_SHADOW:
                 mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                 ? BLENDING.OVERLAY
-                 : BLENDING.MULTIPLY;
+                        ? BLENDING.OVERLAY
+                        : BLENDING.MULTIPLY;
             case BLACKOUT:
                 break;
             case HIGLIGHT:
@@ -266,8 +294,8 @@ public class ShadeLightCell extends SuperContainer {
 
                             setScale(d.growX == null ? 1 : 0.8f, d.growY == null ? 1 : 0.8f);
                             Dimension dim = OverlayingMaster.getOffsetsForOverlaying(d,
-                             (int) getWidth() - 64,
-                             (int) getHeight() - 64 );
+                                    (int) getWidth() - 64,
+                                    (int) getHeight() - 64);
                             offsetX += dim.width;
                             offsetY += dim.height;
                             //so if 2+ overlays, will be centered between them...

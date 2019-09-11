@@ -91,17 +91,18 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
             if (difficulty != null) {
                 return true;
             }
-        GuiEventManager.trigger(
-         GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL);
-        try {
-            difficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,
-             WaitMaster.
-              waitForInput(DifficultySelectionPanel.WAIT_OPERATION).toString());
-            main.system.auxiliary.log.LogMaster.log(1, "+++++++++selected difficulty = " + difficulty);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            return false;
-        }
+        difficulty=DIFFICULTY.NOVICE;
+        //        GuiEventManager.trigger(
+//         GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL);
+//        try {
+//            difficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,
+//             WaitMaster.
+//              waitForInput(DifficultySelectionPanel.WAIT_OPERATION).toString());
+//            main.system.auxiliary.log.LogMaster.log(1, "+++++++++selected difficulty = " + difficulty);
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//            return false;
+//        }
         return true;
     }
 

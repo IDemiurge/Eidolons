@@ -85,6 +85,11 @@ public class GridMaster {
         return new Vector2(x, y);
     }
 
+    public static Coordinates getCameraCenter() {
+        int x = Math.round((DungeonScreen.getInstance().getController().getXCamPos() ) / 128);
+        int y = Math.round((DungeonScreen.getInstance().getController().getYCamPos() ) / 128);
+        return invertGdxY(Coordinates.get(x, y));
+    }
     public static Vector2 getMouseCoordinates() {
         return DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(new CursorPosVector2());
     }
@@ -177,4 +182,5 @@ public class GridMaster {
             }
             return "";
         }
-    }
+
+}

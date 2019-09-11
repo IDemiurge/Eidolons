@@ -112,7 +112,9 @@ public class ChannelingRule {
 //          new RemoveBuffEffect(string), castEffect)));
         modeEffect.setReinit(false);
 //        modeEffect.getAddBuffEffect().addEffect(triggerEffect);
-        modeEffect.getAddBuffEffect().setDuration(2);
+
+//        modeEffect.getAddBuffEffect().setDuration(2);
+        modeEffect.getAddBuffEffect().setDuration(0);
         result &= modeEffect.apply(REF);
         return result;
 

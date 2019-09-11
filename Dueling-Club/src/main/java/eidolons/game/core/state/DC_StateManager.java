@@ -7,7 +7,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -170,8 +169,9 @@ public class DC_StateManager extends StateManager {
 
     private void resetAll() {
         Ref ref = new Ref(game);
-        if (getGame().getLoop().getLastActionInput() != null) {
-            ref.setObj(KEYS.ACTIVE, getGame().getLoop().getLastActionInput().getAction());
+        if (getGame().getLoop().getLastAction() != null) {
+            ref.setObj(KEYS.ACTIVE, getGame().getLoop().getLastAction());
+//            getGame().getLoop().setLastActionInput(null);
         }
 
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_STARTS, ref));
@@ -210,6 +210,15 @@ public class DC_StateManager extends StateManager {
 
         if (savingOn) {
             keeper.save();
+        }
+        if (ref.getActive() != null) {
+            if (ref.getActive() instanceof Spell) {
+                if (((Spell) ref.getActive()).isChanneling())
+                if (!((Spell) ref.getActive()).isChannelingNow())
+                {
+                    game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
+                }
+            }
         }
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_DONE, ref));
     }

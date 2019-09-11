@@ -173,8 +173,11 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
-            case Keys.F11:
-                GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
+            case Keys.DEL:
+                GuiEventManager.trigger(GuiEventType.TOGGLE_LOG_GL_PROFILER);
+                break;
+            case Keys.END:
+                GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
                 break;
             case Keys.F9:
 //                Input.TextInputListener listener= new Input.TextInputListener() {
@@ -199,6 +202,9 @@ public class GlobalController implements Controller {
 
                 Eidolons.onNonGdxThread(() -> {
                     String text = DialogMaster.inputText("Your script...", lastScript);
+                    if (!text.contains("=")) {
+                        text = "script=" + text;
+                    }
                     if (!StringMaster.isEmpty(text)) {
                         lastScript = text;
 //                    DialogueManager.afterDialogue();
@@ -271,7 +277,13 @@ public class GlobalController implements Controller {
             return true;
         }
         if (Eidolons.getScreen().getController().space())
+        {
+            main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED " );
             return true;
+        }
+        if (Cinematics.ON) {
+            return false;
+        }
         if (DungeonScreen.getInstance().isBlocked())
             return false;
         if (DungeonScreen.getInstance() == null)
@@ -316,23 +328,33 @@ public class GlobalController implements Controller {
     }
 
     private boolean tab() {
+        List<GenericGridView> list = new ArrayList<>();
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
-        GridCellContainer cell = (GridCellContainer) hovered.getParent();
+        GridCellContainer cell=null ;
+        if (hovered != null) {
+         cell = (GridCellContainer) hovered.getParent();
+        list.addAll(cell.getUnitViewsVisible());
+        }
+        if (list.size() <= 1)
+        {
+            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+            if (Eidolons.getScreen().getController().inputPass()) {
 
-        List<GenericGridView> list = new ArrayList<>(cell.getUnitViewsVisible());
-        if (list.size() == 1)
-            return false;
+            }
+            return true;
+        }
         SortMaster.sortByExpression(list, view -> view.hashCode());
         int index = list.indexOf(hovered);
         index++;
         if (list.size() <= index)
             index = 0;
         int finalIndex = index;
+        GridCellContainer finalCell = cell;
         Eidolons.onNonGdxThread(() -> {
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
             GenericGridView newFocus = list.get(finalIndex);
             WaitMaster.WAIT(100);
-            cell.popupUnitView(newFocus);
+            finalCell.popupUnitView(newFocus);
             WaitMaster.WAIT(100);
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
             WaitMaster.WAIT(100);

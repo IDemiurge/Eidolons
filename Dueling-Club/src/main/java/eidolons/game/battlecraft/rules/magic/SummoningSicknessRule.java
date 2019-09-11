@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules.magic;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.atb.AtbController;
 import main.entity.obj.ActiveObj;
 
 public class SummoningSicknessRule {
@@ -16,7 +17,8 @@ public class SummoningSicknessRule {
         if (active instanceof Spell) {
             if (((Spell) active).checkParam(PARAMS.SUMMON_ATB)){
             int i = ((Spell) active).getIntParam(PARAMS.SUMMON_ATB);
-            unit.setParam(PARAMS.C_INITIATIVE, i);
+            unit.setParam(PARAMS.C_INITIATIVE, i* 100);
+                unit.setParam(PARAMS.ATB_START_PRESET, i, true, true);
             }
         }
 //outdated

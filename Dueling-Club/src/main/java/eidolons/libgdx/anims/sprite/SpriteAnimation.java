@@ -10,9 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.SuperActor.BLENDING;
+import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
 import main.system.ExceptionMaster;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
@@ -50,11 +53,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private boolean customAct;
     private float speed;
     private boolean aDefault;
-    private SuperActor.BLENDING blending;
+    private BLENDING blending;
     private float originX;
     private float originY;
     private Runnable onCycle;
     private int lastCycle;
+    private SpriteData data;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -226,11 +230,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return true;
     }
 
-    public SuperActor.BLENDING getBlending() {
+    public BLENDING getBlending() {
         return blending;
     }
 
-    public void setBlending(SuperActor.BLENDING blending) {
+    public void setBlending(BLENDING blending) {
         this.blending = blending;
     }
 
@@ -283,6 +287,58 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     }
 
+    public void setData(SpriteData spriteData) {
+        this.data = spriteData;
+        initData();
+
+    }
+
+    private void initData() {
+        for (String s : data.getValues().keySet()) {
+            SpriteData.SPRITE_VALUE spriteValue = data.getEnumConst(s);
+            float f = data.getFloatValue(spriteValue);
+            Boolean bool = data.getBooleanValue(spriteValue);
+            switch (spriteValue) {
+                case color:
+                    break;
+                case blending:
+                    setBlending( new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, data.getValue(spriteValue)));
+                    break;
+                case playMode:
+                    break;
+                case backAndForth:
+                    break;
+                case fps:
+                    setFps(f);
+                    break;
+                case loops:
+                    setLoops((int) f);
+                    break;
+                case x:
+                    setOffsetX(f);
+                    break;
+                case y:
+                    setOffsetY(f);
+                    break;
+                case scale:
+                    setScale(f);
+                    break;
+                case rotation:
+                    setRotation(f);
+                    break;
+                case flipX:
+                    setFlipX(bool);
+                    break;
+                case flipY:
+                    setFlipY(bool);
+                    break;
+                case alpha:
+                    setAlpha(f);
+                    break;
+            }
+
+        }
+    }
 
     private void updateSpeed() {
         //        setFrameDuration(); TODO (de)acceleration !
@@ -587,6 +643,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public Runnable getOnCycle() {
         return onCycle;
     }
+
 
 
     public enum SPRITE_BEHAVIOR {

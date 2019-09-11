@@ -73,8 +73,6 @@ public class Blackout {
     }
 
     public void  draw(CustomSpriteBatch batch ) {
-        if (CoreEngine.isSuperLite())
-            return;
         batch.begin();
         blackSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         blackSprite.resetColor(blackout);
@@ -85,6 +83,13 @@ public class Blackout {
         blackSprite.draw(batch);
         batch.resetBlending();
         batch.end();
+    }
+
+    public boolean isOpaque() {
+        if (blackout>=0.999f) {
+            return true;
+        }
+        return false;
     }
 
     public class BlackSprite extends Sprite {

@@ -2,6 +2,7 @@ package eidolons.libgdx.anims.fullscreen;
 
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.datasource.SpriteData;
 import main.game.bf.directions.FACING_DIRECTION;
 
 /**
@@ -16,6 +17,7 @@ public class FullscreenAnimDataSource {
     public boolean flipX;
     public boolean flipY;
     private int loops;
+    private SpriteData spriteData;
 
     public FullscreenAnimDataSource(FULLSCREEN_ANIM type, float intensity, FACING_DIRECTION from, SuperActor.BLENDING blending) {
         this.type = type;
@@ -60,5 +62,13 @@ public class FullscreenAnimDataSource {
 
     public void setIntensity(Float valueOf) {
         intensity = valueOf;
+    }
+
+    public SpriteData getSpriteData() {
+        return spriteData;
+    }
+
+    public void setSpriteData(SpriteData spriteData) {
+        this.spriteData = spriteData;
     }
 }

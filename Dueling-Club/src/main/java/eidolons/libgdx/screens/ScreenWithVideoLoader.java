@@ -68,6 +68,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 //        if (CoreEngine.isIggDemo()){
 //            return false;
 //        }
+        if (GdxMaster.getWidth()!=1920){
+            return false;
+        }
         if (videoEnabled == null)
             videoEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
         return videoEnabled;

@@ -156,8 +156,7 @@ public class GridCell extends Group implements Borderable {
             super.draw(batch, 1);
             return;
         }
-        if (!DungeonScreen.getInstance().controller.isWithinCamera
-         (this)) {
+        if (!isWithinCamera()) {
             return;
         }
        /* if (spriteCacheOn) {
@@ -192,6 +191,11 @@ public class GridCell extends Group implements Borderable {
 //            batch.draw(overlay, 0, 0, x+64, y+64, 128, 128, 1, 1, overlayRotation);
 //        }
 
+    }
+
+    protected boolean isWithinCamera() {
+        return DungeonScreen.getInstance().controller.isWithinCamera
+                (this);
     }
 
     @Override
