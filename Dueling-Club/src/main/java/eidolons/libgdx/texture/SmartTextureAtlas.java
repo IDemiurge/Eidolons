@@ -27,6 +27,7 @@ public class SmartTextureAtlas extends TextureAtlas {
     public SmartTextureAtlas(String path) {
         super(path);
         this.path=path;
+        main.system.auxiliary.log.LogMaster.dev("SmartTextureAtlas created: " + path);
     }
 
     public SmartTextureAtlas(TextureAtlasData data) {
@@ -53,7 +54,6 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     @Override
     public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
-
         return super.addRegion(name.toLowerCase(), textureRegion);
     }
 
@@ -102,5 +102,9 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     public AtlasRegion findRegionFromFullPath(String texturePath) {
         return findRegion(StringMaster.cropFormat(PathUtils.getLastPathSegment(texturePath)));
+    }
+
+    public void setPath(String fileName) {
+        this.path = fileName;
     }
 }

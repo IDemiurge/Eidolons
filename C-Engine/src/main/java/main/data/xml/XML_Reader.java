@@ -35,7 +35,6 @@ import static main.system.auxiliary.log.LogMaster.*;
 public class XML_Reader {
     // private static final Logger = Logger.getLogger(XML_Reader.class);
 
-    private static Map<String, String> xmlMap = new HashMap<>();
     private static Map<String, Set<String>> tabGroupMap = new HashMap<>();
     private static Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
 
@@ -108,6 +107,7 @@ public class XML_Reader {
                     String subKey = type.getProperty(subGroupingKey);
                     treeSubGroupMap.computeIfAbsent(aspect, k -> new HashSet<>()).add(subKey);
 
+                    type.setInitialized(true);
                     typeMap.put(name, type);
                     log(DATA_DEBUG, typeNode.getNodeName()
                      + " has been put into map as " + type);
@@ -219,7 +219,6 @@ public class XML_Reader {
             group = fileName.substring(indexOf + 1, fileName.length());
         }
 
-        xmlMap.put(xmlName, "");
         xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text);
         return xmlFile;
     }
@@ -373,10 +372,6 @@ public class XML_Reader {
     public static void loadMap(String name, String text) {
         final Document doc = XML_Converter.getDoc(text);
         loadMap(name, doc);
-    }
-
-    public static Map<String, String> getXmlMap() {
-        return xmlMap;
     }
 
 

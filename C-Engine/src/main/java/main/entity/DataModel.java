@@ -59,8 +59,8 @@ public abstract class DataModel {
     protected Player owner;
     protected Integer id;
 
-    protected PropMap propMap = new PropMap();
-    protected ParamMap paramMap = new ParamMap();
+    private PropMap propMap = new PropMap();
+    private ParamMap paramMap = new ParamMap();
 
     protected Map<PARAMETER, Map<String, Double>> modifierMaps;
     protected Map<VALUE, Boolean> booleanMap = new HashMap<>();
@@ -275,7 +275,7 @@ public abstract class DataModel {
         if (base) {
             return getType().getDoubleParam(param, false);
         }
-        String string = paramMap.get(param);
+        String string = getParamMap().get(param);
         int index = string.indexOf('.');
         if (index != -1) {
             if (NumberUtils.isNumber(string, false)) {
@@ -331,7 +331,7 @@ public abstract class DataModel {
         if (base) {
             string = getType().getParam(param);
         } else {
-            string = paramMap.get(param);
+            string = getParamMap().get(param);
         }
         if (string == null) {
             return 0;
@@ -400,7 +400,7 @@ public abstract class DataModel {
 
     public String getProperty(PROPERTY prop) {
         if (prop != null) {
-            return propMap.get(prop);
+            return getPropMap().get(prop);
         }
         return "";
     }
@@ -543,7 +543,7 @@ public abstract class DataModel {
         if (base) {
             return getType().getProperty(prop);
         }
-        return propMap.get(prop);
+        return getPropMap().get(prop);
 
     }
 
@@ -947,7 +947,7 @@ public abstract class DataModel {
         //        }
         // if (isParamSetLogged())
         //        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
-        if (paramMap.get(param.getName()).equals(value))
+        if (getParamMap().get(param.getName()).equals(value))
             return false;
         putParameter(param, value);
         setDirty(true);
@@ -1110,7 +1110,7 @@ public abstract class DataModel {
                 return false;
             }
         }
-        String prevValue = propMap.get(prop);
+        String prevValue = getPropMap().get(prop);
         if (!StringMaster.isEmpty(prevValue)) {
             if (!prevValue.endsWith(ContainerUtils.getContainerSeparator())) {
                 prevValue = prevValue + ContainerUtils.getContainerSeparator();
@@ -1139,7 +1139,7 @@ public abstract class DataModel {
         if (isTypeLinked()) {
             type.getPropMap().put(prop, value);
         }
-        propMap.put(prop, value);
+        getPropMap().put(prop, value);
     }
 
     protected void putParameter(PARAMETER param, String value) {
@@ -1153,7 +1153,7 @@ public abstract class DataModel {
         }
         if (integerCacheOn)
             integerMap.remove(param);
-        paramMap.put(param, value);
+        getParamMap().put(param, value);
     }
 
     public boolean isTypeLinked() {
@@ -1201,7 +1201,7 @@ public abstract class DataModel {
         // return false;
 
         boolean result;
-        if (prop.isContainer()) {
+        if (prop.isContainer() && !value.isEmpty()) {
             result = removeMultiProp(prop.getName(), value, all);
         } else {
             result = StringMaster.isEmpty(getProperty(prop));
@@ -1215,7 +1215,7 @@ public abstract class DataModel {
 
     protected boolean removeMultiProp(String prop, String value, boolean all) {
         boolean result = true;
-        String prevValue = propMap.get(prop);
+        String prevValue = getPropMap().get(prop);
         String strToReplace = value + ContainerUtils.getContainerSeparator();
         if (!prevValue.contains(strToReplace)) {
             strToReplace = ContainerUtils.getContainerSeparator() + value;
@@ -1228,7 +1228,7 @@ public abstract class DataModel {
         } else {
             value = StringMaster.replace(all, prevValue, strToReplace, "");
 
-            propMap.put(prop, value);
+            getPropMap().put(prop, value);
             setDirty(true);
         }
 
@@ -1311,6 +1311,9 @@ public abstract class DataModel {
         }
     }
 
+    public void addParam(String parameter, int value) {
+        modifyParameter(ContentValsManager.getPARAM(parameter), value);
+    }
     public void addParam(PARAMETER parameter, int value) {
         modifyParameter(parameter, value);
     }
@@ -1336,14 +1339,14 @@ public abstract class DataModel {
         for (VALUE exception : exceptions) {
             map.put(exception, getValue(exception));
         }
-        this.propMap = clonePropMap(type.getPropMap().getMap());
-        this.paramMap = cloneParamMap(type.getParamMap().getMap());
+        this.setPropMap(clonePropMap(type.getPropMap().getMap()));
+        this.setParamMap(cloneParamMap(type.getParamMap().getMap()));
         for (VALUE exception : exceptions) {
             String value = map.get(exception);
             if (exception instanceof PARAMETER) {
-                paramMap.put(exception.getName(), value);
+                getParamMap().put(exception.getName(), value);
             } else if (exception instanceof PROPERTY) {
-                propMap.put(exception.getName(), value);
+                getPropMap().put(exception.getName(), value);
             }
         }
         setDirty(true);
@@ -1352,7 +1355,7 @@ public abstract class DataModel {
     protected void copyDynamicParams(Entity from) {
         for (PARAMETER sub : from.getParamMap().keySet()) {
             if (sub.isDynamic())
-                paramMap.put(sub, from.getParamMap().get(sub));
+                getParamMap().put(sub, from.getParamMap().get(sub));
         }
 
     }

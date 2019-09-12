@@ -177,7 +177,6 @@ public class DC_GameManager extends GameManager {
         }
         getGameObjMaster().clearCaches();
         FutureBuilder.clearCaches();
-        ArrayMaster.resetBufferArray();
         getStateManager().resetAllSynchronized();
         checkForChanges(true);
 

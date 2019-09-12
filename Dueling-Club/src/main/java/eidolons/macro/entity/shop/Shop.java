@@ -60,7 +60,7 @@ public class Shop extends TownPlace implements ShopInterface {
     @Override
     public String getSaveData() {
         String s = "";
-        for (PROPERTY p : propMap.keySet()) {
+        for (PROPERTY p : getPropMap().keySet()) {
             if (SaveMasterOld.isPropSaved(p, getOBJ_TYPE_ENUM())) {
                 s += XML_Writer.openXML(p.getName())
                  + XML_Formatter.formatStringForXmlNodeName(getProperty(p))

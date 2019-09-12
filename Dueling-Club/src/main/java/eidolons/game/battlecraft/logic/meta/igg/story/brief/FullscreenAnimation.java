@@ -52,6 +52,7 @@ public class FullscreenAnimation extends SuperActor {
 //        if (batch instanceof CustomSpriteBatch) {
 //            ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
 //        }
+
         if (sprite != null) {
             sprite.setAlpha(getColor().a*alpha);
             sprite.draw(batch);
@@ -67,9 +68,9 @@ public class FullscreenAnimation extends SuperActor {
         if (sprite == null) {
             return;
         }
-        sprite.setAlpha(alpha);
-        sprite.setOffsetX(GdxMaster.getWidth() / 2); //center...
+        sprite.setOffsetX(GdxMaster.getWidth() / 2);
         sprite.setOffsetY(GdxMaster.getHeight() / 2);
+        sprite.setAlpha(alpha);
         sprite.setCustomAct(true);
         sprite.setFrameDuration(0.07f);
         sprite.setPlayMode(loop? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);

@@ -449,12 +449,12 @@ public class Party extends Obj {
         setParam(MACRO_PARAMS.EXPLORE_SPEED, getMaxParam(MACRO_PARAMS.EXPLORE_SPEED, false));
 
         if (macroParty != null) {
-            for (PROPERTY p : propMap.keySet()) {
+            for (PROPERTY p : getPropMap().keySet()) {
                 if (p instanceof MACRO_PROPS) {
                     macroParty.setProperty(p, getProperty(p));
                 }
             }
-            for (PARAMETER p : paramMap.keySet()) {
+            for (PARAMETER p : getParamMap().keySet()) {
                 if (p instanceof MACRO_PARAMS) {
                     macroParty.setParam(p, getParam(p));
                 }

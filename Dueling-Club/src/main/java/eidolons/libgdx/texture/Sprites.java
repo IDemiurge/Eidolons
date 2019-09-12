@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class Sprites {
     public static final String RADIAL = "sprites/ui/radial.txt";
-    public static final String BG_DUNGEON = "sprites/ui/backgrounds/dwarf hall.txt";
-    public static final String BG_VALLEY = "sprites/ui/backgrounds/valley.txt";
-    public static final String BG_BASTION = "sprites/ui/backgrounds/valley.txt";
-    public static final String BG_DEFAULT = "sprites/ui/backgrounds/atlas.txt";
+    public static final String BG_DUNGEON = "sprites/backgrounds/dwarf hall.txt";
+    public static final String BG_VALLEY = "sprites/backgrounds/valley.txt";
+    public static final String BG_BASTION = "sprites/backgrounds/valley.txt";
+    public static final String BG_DEFAULT = "sprites/backgrounds/atlas.txt";
     public static final String BG_GATEWAY = BG_DEFAULT; //TODO
 
     public static final String SHADOW_DEATH = "boss/reaper/attack/sever";
@@ -38,7 +38,7 @@ public class Sprites {
     public static final String PORTAL_CLOSE = "sprites/cells/portal/portal close.txt";
     public static final String INK_BLOTCH = "sprites/ui/misc/ink blotch.txt";
 
-    public static final String COMMENT_KESERIM = "sprites/hero/comment/keserim comment.txt";
+    public static final String COMMENT_KESERIM = "sprites/unit/comment/keserim comment.txt";
     public static final String HERO_KESERIM = "sprites/hero/keserim2.txt";
     public static final String SNOW = "sprites/particles/snow.txt";
     public static final String MIST = "sprites/particles/mist.txt";
@@ -52,6 +52,7 @@ public class Sprites {
     public static final String BLOOD_SQUIRT = "sprites/hit/blood/squirt.txt";
 
     public static final String GATE_LIGHTNING = "sprites/spell/nether/lightning gate.txt";
+    public static final String KTX_TEST = "sprites/test/maw.txt";
 
 
     private static final Map<String, String> spriteMap;

@@ -502,7 +502,7 @@ public class GenericEnums {
         CINDERS("ambient", "CINDERS tight"),
         CINDERS2("ambient", "CINDERS tight2"),
         CINDERS3("ambient", "CINDERS tight3"),
-        SMOKE;
+        SMOKE, DUMMY("dummy");
         private static final boolean NEW_MIST = false;
         public String path;
 
@@ -544,7 +544,7 @@ public class GenericEnums {
     }
 
     public enum SOUND_CUE {
-        wimper,
+//        wimper,
 
         //missing
         chant_atmo,
@@ -556,7 +556,7 @@ public class GenericEnums {
         dark_knight,
         dream,
         demon_growl,
-        laughter,
+        laugh,
         dark_laughter,
         slam,
         whispers,

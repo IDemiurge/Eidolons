@@ -123,7 +123,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     }
 
     protected void modifyHeroParameters() {
-        for (PARAMETER p : paramMap.getMap().keySet()) {
+        for (PARAMETER p : getParamMap().getMap().keySet()) {
             if (ContentValsManager.isValueForOBJ_TYPE(getHero().getOBJ_TYPE_ENUM(), p)) {
                 Integer amount = getIntParam(p);
                 if (amount != 0) {

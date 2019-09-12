@@ -90,7 +90,7 @@ public class GuiVisualEffects extends GroupX {
     }
 
     private boolean isCustomEmitters() {
-        return true;
+        return false;
     }
 
     private void initEmitters(AMBIENCE_TEMPLATE template, DAY_TIME time) {

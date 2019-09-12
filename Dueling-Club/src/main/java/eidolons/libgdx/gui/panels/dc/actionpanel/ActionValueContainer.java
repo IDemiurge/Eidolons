@@ -11,6 +11,7 @@ import eidolons.entity.handlers.active.Activator;
 import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.UiMaster;
@@ -19,7 +20,9 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
+import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.system.images.ImageManager.BORDER;
 
 import static eidolons.libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
@@ -41,6 +44,8 @@ public class ActionValueContainer extends ValueContainer {
     protected float underlayOffsetY;
     protected float size = UiMaster.getIconSize();
     private RadialMenu customRadialMenu;
+    FadeImageContainer highlight;
+
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -250,6 +255,36 @@ public class ActionValueContainer extends ValueContainer {
 //             overlay.getRegionHeight() * getImageContainer().getActor().getScaleY()
 //            );
 //        }
+    }
+
+
+    public void setHighlight(boolean b){
+        if (highlight == null) {
+            highlight= new FadeImageContainer(Images.TARGET_BORDER);
+            highlight.setColor(1, 0, 0, 1);
+            highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
+        }
+        //back and forth floating? or scale?
+        if (b){
+            highlight.fadeIn();
+        } else {
+            highlight.fadeOut();
+        }
+    }
+
+    @Override
+    public void act(float delta) {
+        if (highlight != null) {
+            if (highlight.getColor().a>0 && highlight.getActions().size==0) {
+            highlight.fluctuate(delta);
+            setScale(highlight.getColor().a);
+            setY(highlight.getContent().getColor().a * -32 + 32);
+            } else {
+                setScale(1);
+                setY(0);
+            }
+        }
+        super.act(delta);
     }
 
     private boolean isValid() {

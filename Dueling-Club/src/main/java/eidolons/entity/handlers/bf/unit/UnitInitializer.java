@@ -11,6 +11,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.game.SimulationGame;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
@@ -145,6 +146,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initSpellbook() {
+        if (EidolonsGame.BRIDGE){
+            return ;
+        }
         SpellMaster.initSpellbook(getEntity());
         List<Spell> spellbook =
                 new ArrayList<>(getEntity().getSpells());

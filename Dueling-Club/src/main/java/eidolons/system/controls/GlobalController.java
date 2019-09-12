@@ -173,8 +173,8 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
-            case Keys.DEL:
-                GuiEventManager.trigger(GuiEventType.TOGGLE_LOG_GL_PROFILER);
+            case Keys.ENTER:
+                GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
                 break;
             case Keys.END:
                 GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);

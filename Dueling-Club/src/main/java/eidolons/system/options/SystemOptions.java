@@ -43,7 +43,7 @@ public class SystemOptions
         levelTestMode(false),
         contentTestMode(false),
         reverseExit(false),
-        KeyCheat(false);
+        KeyCheat(false), LITE_MODE, SUPERLITE_MODE;
 
         boolean exclusive;
         Object[] options;

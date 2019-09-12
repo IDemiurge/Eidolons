@@ -74,6 +74,7 @@ public enum STD_MODES implements MODE {
         RESTING.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
         MEDITATION.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
         CHANNELING.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
+        CHANNELING.duration=0;
         DIVINATION.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
 
         CHANNELING.setRemoveEvent(null);

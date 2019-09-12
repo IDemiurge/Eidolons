@@ -7,6 +7,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.game.EidolonsGame;
 import eidolons.system.content.ContentGenerator;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -723,23 +724,32 @@ public class ItemGenerator implements GenericItemGenerator {
                 qMap.put(m, new ConcurrentMap<>());
             }
         }
+
         baseWeaponTypes.addAll(DataManager.getBaseTypes(DC_TYPE.WEAPONS));
+        if (!EidolonsGame.BRIDGE){
         baseArmorTypes.addAll(DataManager.getBaseTypes(DC_TYPE.ARMOR));
         baseJewelryTypes.addAll(DataManager.getBaseTypes(DC_TYPE.JEWELRY));
         baseItemTypes.addAll(DataManager.getBaseTypes(DC_TYPE.ITEMS));
+        }
         // baseGarmentTypes.addAll(DataManager.getBaseTypes(OBJ_TYPES.GARMENT));
 
-        DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[baseGarmentTypes.size()]));
         DataManager.setBaseWeaponTypes(baseWeaponTypes.toArray(new ObjType[baseWeaponTypes.size()]));
+
+        if (!EidolonsGame.BRIDGE){
+        DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[baseGarmentTypes.size()]));
         DataManager.setBaseArmorTypes(baseArmorTypes.toArray(new ObjType[baseArmorTypes.size()]));
         DataManager.setBaseJewelryTypes(baseJewelryTypes.toArray(new ObjType[baseJewelryTypes.size()]));
         DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[baseItemTypes.size()]));
+        }
         //Arrays.
         List<ObjType> list = new ArrayList<>();
         list.addAll(baseWeaponTypes);
+        if (!EidolonsGame.BRIDGE){
+
         list.addAll(baseArmorTypes);
         list.addAll(baseJewelryTypes);
         list.addAll(baseItemTypes);
+        }
         DataManager.setBaseAllItemTypes(list.toArray(new ObjType[list.size()]));
         //        defaultGenerator = new ItemGenerator(false);
         //        basicGenerator = new ItemGenerator(true);
@@ -749,7 +759,6 @@ public class ItemGenerator implements GenericItemGenerator {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
         DataManager.setItemMaps(itemMaps);
 
     }

@@ -283,9 +283,9 @@ public class GridPanel extends Group {
     }
 
     private boolean isDrawEmitters() {
-        if (CoreEngine.isSuperLite()) {
-            return false;
-        }
+//        if (CoreEngine.isSuperLite()) {
+//            return false;
+//        }
 //        return  !DialogueManager.isRunning() ||
 //                EidolonsGame.INTRO_STARTED||
 //                EidolonsGame.DUEL_TEST ;
@@ -300,8 +300,8 @@ public class GridPanel extends Group {
     }
 
     private void drawEmitters(Batch batch) {
-        for (GroupWithEmitters emitterGroup : emitterGroups) {
-            emitterGroup.draw(batch, 1f, true);
+        for (int i = 0; i <emitterGroups.size() ; i++) {
+            emitterGroups.get(i). draw(batch, 1f, true);
         }
     }
 

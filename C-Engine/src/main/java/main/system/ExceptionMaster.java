@@ -20,7 +20,7 @@ public class ExceptionMaster {
         {
             if (!PRINT_ALL) {
                 if (CoreEngine.isJar() || LogMaster.isOff() || !CoreEngine.isLiteLaunch()) {
-                    if (printed.contains(e.getMessage()))
+                  if (e.getMessage()!=null )  if (printed.contains(e.getMessage()))
                         return;
                     else
                         printed.add(e.getMessage());

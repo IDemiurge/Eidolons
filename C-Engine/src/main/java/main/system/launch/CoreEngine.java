@@ -11,6 +11,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -25,12 +26,10 @@ import java.util.List;
 
 public class CoreEngine {
 
-    public enum UPLOAD_PACKAGE {
-        Aphotic, igg,
-    }
+
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.7f";
+    public static final String VERSION = "0.9.8c";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Aphotic;
     public static final String VERSION_NAME = StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
@@ -52,6 +51,7 @@ public class CoreEngine {
     private static boolean graphicTestMode = false;
     private static boolean graphicsOff;
     private static boolean guiTestMode;
+    private static boolean vfxOff;
     private static boolean actionTargetingFiltersOff;
     private static boolean phaseAnimsOn;
     private static boolean logicTest;
@@ -69,7 +69,7 @@ public class CoreEngine {
     private static boolean utility;
     private static float memoryLevel;
     private static boolean fullFastMode;
-    private static boolean windows;
+    private static Boolean windows;
     private static long HEAP_SIZE;
     private static long TOTAL_MEMORY;
     private static int CPU_NUMBER;
@@ -98,6 +98,31 @@ public class CoreEngine {
     private static boolean dungeonTool;
     private static boolean testerVersion;
     private static boolean superLite;
+    private static boolean weakGpu;
+    private static boolean youTube;
+
+    public static void setWeakGpu(boolean weakGpu) {
+        CoreEngine.weakGpu = weakGpu;
+        LogMaster.important("Setting Weak GPU to " +weakGpu);
+    }
+
+    public static boolean getWeakGpu() {
+        return weakGpu;
+    }
+
+    public static boolean isYouTube() {
+        return youTube;
+    }
+
+    public static void setYouTube(boolean youTube) {
+        CoreEngine.youTube = youTube;
+    }
+
+
+    public enum UPLOAD_PACKAGE {
+        Aphotic, igg,
+    }
+
 
     public static boolean isMyLiteLaunch() {
         return isIDE() && isLiteLaunch();
@@ -109,7 +134,6 @@ public class CoreEngine {
         System.out.println("Core Engine Init... ");
 
 
-        windows = System.getProperty("os.name").startsWith("Windows");
         System.out.println("Heap size:  " +
                 (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
         System.out.println("CPU's available:  " +
@@ -506,6 +530,9 @@ public class CoreEngine {
     }
 
     public static boolean isWindows() {
+        if (windows==null) {
+            windows= System.getProperty("os.name").startsWith("Windows");
+        }
         return windows;
     }
 
@@ -718,6 +745,14 @@ public class CoreEngine {
     public static void setSuperLite(boolean superLite) {
         CoreEngine.superLite = superLite;
     }
+
+    public static boolean isVfxOff() {
+        return vfxOff || isSuperLite();
+    }
+    public static void setVfxOff(boolean vfxOff) {
+        CoreEngine.vfxOff = vfxOff;
+    }
+
 
     public static void setFlag(String field, Boolean val) {
         try {

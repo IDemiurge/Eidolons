@@ -152,18 +152,16 @@ public class ArrayMaster<T> {
         }
         return clone;
     }
+//    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
 
-    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
-
-    public static void resetBufferArray() {
-        booleanFalseArrays = new boolean[100][100][1][1];
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                booleanFalseArrays[i][j] = new boolean[i][j];
-            }
-        }
-    }
-
+//    public static void resetBufferArray() {
+//        booleanFalseArrays = new boolean[100][100][1][1];
+//        for (int i = 0; i < 100; i++) {
+//            for (int j = 0; j < 100; j++) {
+//                booleanFalseArrays[i][j] = new boolean[i][j];
+//            }
+//        }
+//    }
 //    public static boolean  isClearshotCached(  Obj source,
 //                                                   Obj target) {
 //       result= cacheMap.get(getKey(source, target))!=null ;
@@ -171,10 +169,10 @@ public class ArrayMaster<T> {
 //        return result;
 //    }
 
-    public static boolean[][] getBooleanFalseArray(int i, int i1) {
-//        main.system.auxiliary.log.LogMaster.log(1, i + ":" + i1);
-        return booleanFalseArrays[i][i1];
-    }
+//    public static boolean[][] getBooleanFalseArray(int i, int i1) {
+////        main.system.auxiliary.log.LogMaster.log(1, i + ":" + i1);
+//        return booleanFalseArrays[i][i1];
+//    }
     /**
      * This method rotates the matrix 90 degrees counter clockwise without using extra buffer..
      */

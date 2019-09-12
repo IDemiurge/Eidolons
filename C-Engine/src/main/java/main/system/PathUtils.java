@@ -145,6 +145,10 @@ public class PathUtils {
         LinkedList<String> segments = new LinkedList<>(splitPath(path));
         return segments.getLast();
     }
+    public static String getFirstPathSegment(String path) {
+        LinkedList<String> segments = new LinkedList<>(splitPath(path));
+        return segments.getFirst();
+    }
 
     public static String cropLastPathSegment(String path, boolean cropPathSeparator) {
         String cropped = StringMaster.replaceLast(path, getLastPathSegment(path), "");

@@ -13,22 +13,67 @@ import com.badlogic.gdx.tools.ktx.KTXProcessor;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
+import java.io.File;
+
 public class TextureConverter extends GdxUtil {
-    private static final String PATH = "pydolons hc";
+    private static final CharSequence FORMAT = ".ktx";
+    private final String[] args;
     private SpriteBatch spriteBatch;
-    private Texture texture;
-    private SpriteAnimation sprite;
+
+    private boolean checkRGB=true;
+    private boolean writeKTX=true;
+
+    public TextureConverter(String... args) {
+        this.args = args;
+    }
+
+    private void checkRGB(File file) {
+        String contents = FileManager.readFile(file);
+        if (contents.contains(".jpg"))        if (contents.contains("RGBA8888"))
+            FileManager.write(contents.replace("RGBA8888", "RGB888"),
+                    (file.getPath()));
+    }
+
+    private void generateAtlasVersion(File file) {
+        String contents = FileManager.readFile(file);
+        FileManager.write(contents.replace(".jpg", FORMAT).replace(".png", FORMAT),
+                Assets.getKtxAtlasPath(file.getPath()));
+    }
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
-        new TextureConverter().start();
+        new TextureConverter(args).start();
+    }
+
+    @Override
+    protected void execute() {
+        for (String arg : args) {
+            for (File file : FileManager.getFilesFromDirectory(PathFinder.getImagePath() +
+                    PathFinder.getSpritesPath() + arg, false, true)) {
+                if (file.getName().contains(".txt")) {
+                    if (checkRGB)
+                    checkRGB(file);
+                    if (!file.getName().contains("ktx")) {
+                        generateAtlasVersion(file);
+                    }
+                } else {
+                    if (writeKTX)
+                    if (!file.getName().contains(".ktx"))
+                        convert(file.getPath());
+                }
+            }
+
+        }
     }
 
     @Override
@@ -41,64 +86,25 @@ public class TextureConverter extends GdxUtil {
         return 1080;
     }
 
-    public  void convert(String raw){
-        String path=PathFinder.getImagePath()+raw;
+    public void convert(String raw) {
+        toKTX(raw);
+    }
 
-//        try {
-//            ETC1Compressor.process(
-//                    "C:\\drive\\[2019]\\Team\\AE\\tests\\uther\\moe\\medium",
-//                    "C:\\drive\\[2019]\\Team\\AE\\tests\\uther\\moe\\medium\\etc1",
-//                    false, true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-//        try {
-//            KTXProcessor.convert(path+
-//                            ".jpg", path+
-//                            ".ktx", false,
-//                    true, true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        KTXTextureData ktxTextureData=new KTXTextureData(GDX.file(path+".ktx"), false);
-//         texture = new Texture(ktxTextureData);
-
-        path=PathFinder.getImagePath()+"test/long sword";
+    private void toKTX(String path) {
+        main.system.auxiliary.log.LogMaster.dev("toKTX " + path);
         try {
-            KTXProcessor.convert(path+
-                            ".png", path+
-                            ".ktx", false,
+            KTXProcessor.convert(path, Assets.getKtxImgPath(path), false,
                     true, false);
+            main.system.auxiliary.log.LogMaster.dev("toKTX done " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        TextureAtlas atlas = new TextureAtlas(GDX.file(path+".ktx"));
-        Array<TextureAtlas.AtlasRegion> regs = atlas.findRegions("thrust");
-        sprite = new SpriteAnimation(1, true, regs);
-
-
-//        Pixmap pixmap = new Pixmap(GDX.file(path +
-//                ".png"));
-//        ETC1.encodeImagePKM(pixmap).write(Gdx.files.absolute(path +
-//                ".etc1"));
-//        TextureAtlas atlas = new TextureAtlas(GDX.file(path+".etc1"));
-//        Array<TextureAtlas.AtlasRegion> regs = atlas.findRegions("thrust");
-//        sprite = new SpriteAnimation(1, true, regs);
     }
+
     @Override
     public void render() {
         super.render();
-        if (spriteBatch == null)
-            spriteBatch = new SpriteBatch();
-
-        spriteBatch.draw(texture,0,0);
-        sprite.draw(spriteBatch);
 
     }
 
-    @Override
-    protected void execute() {
-        convert( PATH);
-    }
 }

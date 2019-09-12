@@ -25,8 +25,14 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
     }
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
-        LITE_MODE(false),
-        SUPERLITE_MODE(false),
+        SPRITES_OFF(false),
+        REDUCED_SPRITES(false),
+        GRID_SPRITES_OFF(false),
+        UNIT_SPRITES_OFF(false),
+        UI_SPRITES_OFF(false),
+        LARGE_SPRITES_OFF(false),
+        BACKGROUND_SPRITES_OFF(true),
+        SHADOW_MAP_OFF(false),
 
         FULLSCREEN(true),
         //        GAMMA(),
@@ -40,6 +46,9 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
                 return true;
             }
         },
+        PERFORMANCE_BOOST(20, 0, 100),
+        SHARD_VFX(true),
+        COLOR_TEXT_LOG(true),
         FRAMERATE(60, 20, 80) {
             @Override
             public boolean isDevOnly() {
@@ -54,7 +63,6 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         },
         //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
-        SHADOW_MAP_OFF(false),
         UI_VFX(false),
         FONT_SIZE(100, 50, 200) {
             @Override
@@ -98,10 +106,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
                 return true;
             }
         },
-        PERFORMANCE_BOOST(20, 0, 100),
-        SHARD_VFX(true),
-        COLOR_TEXT_LOG(true),
-        NO_BACKGROUND_SPRITES(true);
+        ;
 
         private Boolean exclusive;
         private Integer min;

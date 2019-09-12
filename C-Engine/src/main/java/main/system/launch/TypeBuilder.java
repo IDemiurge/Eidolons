@@ -32,7 +32,12 @@ public class TypeBuilder {
         ObjType type = null;
         if (objType != null) {
             type = getTypeInitializer().getNewType(objType);
-            buildType(node, type);
+            if (isBuildTypeOnInit())
+                buildType(node, type);
+            else {
+                type.setName(XML_Formatter.restoreXmlNodeName(node.getNodeName()));
+                type.setNode(node);
+            }
         } else {
             LogMaster.error("type with name \"" + typeType + "\" not found!");
         }
@@ -40,11 +45,21 @@ public class TypeBuilder {
         return type;
     }
 
+    private static boolean isBuildTypeOnInit() {
+        return false;
+    }
+
     public static ObjType buildType(Node node, ObjType type) {
 
         NodeList nl = node.getChildNodes();
-        LogMaster.log(0, "building type: " + node.getNodeName());
-
+        if (node.getNodeName().equalsIgnoreCase("Condemn")){
+           return type;
+        }
+        if (node.getNodeName().equalsIgnoreCase("Great_Sword")){
+            return type;
+        }
+        LogMaster.log(1, "building type: " + node.getNodeName());
+        type.setInitialized(false);
         for (int i = 0; i < nl.getLength(); i++) {
             Node child = nl.item(i);
 
@@ -65,7 +80,8 @@ public class TypeBuilder {
         }
 
         checkUID(type);
-
+        type.setInitialized(true);
+        type.setBuilt(true);
         return type;
     }
 
@@ -95,14 +111,14 @@ public class TypeBuilder {
 
 
                 if (StringMaster.getWellFormattedString(child.getNodeName()).equals(
-                 ((XmlHoldingType) (type)).getXmlProperty()
-                  .getName())
-                 ) {
+                        ((XmlHoldingType) (type)).getXmlProperty()
+                                .getName())
+                ) {
 
                     child = XML_Converter.getAbilitiesDoc(child);
 
                     type.setProperty(ContentValsManager.getPROP(child.getNodeName()), XML_Converter
-                     .getStringFromXML(child, false));
+                            .getStringFromXML(child, false));
 
                     ((XmlDocHolder) type).setDoc(child);
                     continue;

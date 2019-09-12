@@ -720,7 +720,7 @@ public class AtbPanel extends GroupX {
                         SpriteAnimation sprite = iconMap.get(intentIcon);
                             if (sprite == null) {
                                 iconMap.put(intentIcon,
-                                        sprite =SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath(), false, false));
+                                        sprite =SpriteAnimationFactory.getSpriteAnimation(intentIcon.getPath(), false, false, false));
                             }
                         sprite.setBlending(intentIcon.blending);
                         intentIconSprite.setSprite(sprite);

@@ -1206,10 +1206,10 @@ public class SpeechExecutor {
     }
 
     private int getTime(Integer millis, List<String> vars, float coef) {
-        if (CoreEngine.isSuperLite()) {
+        if (CoreEngine.isSuperLite()&& CoreEngine.isIDE())
+        {
             millis = millis / 2;
-//            return;
-        }
+        } else
         if (CoreEngine.isMyLiteLaunch()) {
             millis = millis * 2 / 3;
         }

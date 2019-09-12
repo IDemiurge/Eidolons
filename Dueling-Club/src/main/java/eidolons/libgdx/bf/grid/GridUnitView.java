@@ -324,4 +324,23 @@ public class GridUnitView extends GenericGridView {
             }
         }
     }
+
+    @Override
+    protected void alphaFluctuation(float delta) {
+        super.alphaFluctuation(delta);
+        if (highlight.getColor().a>0) {
+        alphaFluctuation(highlight, delta);
+        }
+    }
+
+    @Override
+    public void highlight() {
+        super.highlight();
+        screenOverlay=1;
+    }
+
+    @Override
+    public void highlightOff() {
+        screenOverlay=0;
+    }
 }

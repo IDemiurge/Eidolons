@@ -1,5 +1,6 @@
 package main.system.sound;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -23,9 +24,7 @@ import main.system.threading.WaitMaster;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Player {
@@ -40,6 +39,7 @@ public class Player {
     private int volume;
     private int delay = 0;
 //    Stack<SoundFx> process =new Stack();
+    private static Map<String, Sound> cache = new HashMap<>();
 
     // mute
     public Player() {
@@ -201,7 +201,10 @@ public class Player {
             playNow(new SoundFx(s, 1, 0));
         }
     }
-
+    public static void preload(String path) {
+        cache.put(path, Gdx.audio.newSound(Gdx.files.getFileHandle(path,
+                Files.FileType.Absolute)));
+    }
     public void playNow(SoundFx sound) {
         if (SoundMaster.isBlockNextSound()) {
             SoundMaster.setBlockNextSound(false);
@@ -210,8 +213,12 @@ public class Player {
         if (sound.getSound().endsWith(".ini"))
             return;
         try {
-            Sound soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
+            Sound soundFile = cache.get(sound.getSound());
+            if (soundFile ==null) {
+              soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
                     FileType.Absolute));
+                cache.put(sound.getSound(), soundFile);
+        }
             long id = soundFile.play(sound.getVolume());
             float v = sound.getVolume();
             if (v >= 5) {

@@ -242,6 +242,7 @@ public class ShardVisuals extends GroupX {
 
 
                     GenericEnums.VFX[] presets = ShardVisuals.getEmitters(overlay, size);
+                    if (isVfxOn())
                     for (GenericEnums.VFX preset : presets) {
                         EmitterActor actor = new EmitterActor(preset){
                             @Override
@@ -282,6 +283,10 @@ public class ShardVisuals extends GroupX {
         //update-able?
         // more than one shard on a single cell?
 
+    }
+
+    private boolean isVfxOn() {
+        return OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.AMBIENCE_VFX);
     }
 
     private SHARD_SIZE chooseSize(int x, int y, Object direction) {

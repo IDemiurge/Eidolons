@@ -32,7 +32,7 @@ public class WaitMaster {
         lock.lock();
         lock.newCondition().signal();
         lock.unlock();
-        main.system.auxiliary.log.LogMaster.dev("UNLOCKED " + o);
+//        main.system.auxiliary.log.LogMaster.dev("UNLOCKED " + o);
     }
 
     public static void waitLock(Object o) {
@@ -238,7 +238,7 @@ public class WaitMaster {
         DIALOGUE_DONE,
         AUTO_TEST_INPUT,
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
-        GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
+        GAME_RESUMED, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
         GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, PLAYER_ACTION_FINISHED, BRIEFING_COMPLETE, MESSAGE_RESPONSE, MESSAGE_RESPONSE_DEATH,
         FULLSCREEN_DONE, COMMENT_DONE, INPUT, WAIT_COMPLETE
     }

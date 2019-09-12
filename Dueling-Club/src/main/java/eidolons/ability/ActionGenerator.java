@@ -1,6 +1,7 @@
 package eidolons.ability;
 
 import eidolons.content.ValuePages;
+import eidolons.game.EidolonsGame;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -50,7 +51,8 @@ public class ActionGenerator {
     }
 
     public static void init() {
-        if (!CoreEngine.isArcaneVault()) {
+        if (!EidolonsGame.BRIDGE)
+            if (!CoreEngine.isArcaneVault()) {
             try {
                 generateOffhandActions();
             } catch (Exception e) {

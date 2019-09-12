@@ -85,6 +85,7 @@ public abstract class Entity extends DataModel implements OBJ {
         getId(); // new id if null
         this.TYPE_ENUM = type.getOBJ_TYPE_ENUM();
         this.type = (type); // no cloning by default
+        type.checkBuild();
         this.owner = owner;
         this.setOriginalOwner(owner);
         setProperty(G_PROPS.NAME, type.getName());

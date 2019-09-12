@@ -153,6 +153,7 @@ public class DataUnit<T extends Enum<T>> {
             if (pair.length != 2) {
 //                format=
                 LogMaster.log(0, "malformed data:" + entry);
+                handleMalformedData(entry);
                 continue;
             }
 
@@ -160,6 +161,9 @@ public class DataUnit<T extends Enum<T>> {
             name = name.trim();
             setValue(name, pair[1]);
         }
+    }
+
+    protected void handleMalformedData(String entry) {
     }
 
     public void addAverage(T stat, int val, int count) {

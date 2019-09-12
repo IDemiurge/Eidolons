@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.anims.Assets;
 import main.content.enums.GenericEnums;
+import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
@@ -19,15 +20,37 @@ public class EmitterPools {
     private static Map<String, Pool<ParticleEffectX>> effectPoolMap = new HashMap<>();
     private static boolean effectPoolingOn = true;
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
-    private static String dummy="advanced/smoke sphere";
+    private static boolean logging = true; //TODO emitters are not reset properly!
+    private static int emittersCounter=0;
 
     public static EmitterActor getEmitterActor(GenericEnums.VFX sfx) {
         return getEmitterActor(sfx.getPath());
     }
 
-    public static EmitterActor getEmitterActor(String path) {
-        if (CoreEngine.isJar())
-            System.out.println("getEmitterActor " + path);
+    public static EmitterActor getDummy(String path) {
+        main.system.auxiliary.log.LogMaster.important("Replacing vfx with dummy: " +path);
+        return getEmitterActor(
+                PathFinder.getVfxAtlasPath()+
+                GenericEnums.VFX.DUMMY.path, true);
+    }
+
+    public static ParticleEffectX getDummyFx(String path) {
+        main.system.auxiliary.log.LogMaster.important("Replacing vfx with dummy: " +path);
+        return new DummyParticleEffectX(
+                PathFinder.getVfxAtlasPath()+
+                        GenericEnums.VFX.DUMMY.path );
+    }
+    public static EmitterActor getEmitterActor(String path ) {
+        return getEmitterActor(path, false);
+    }
+        public static EmitterActor getEmitterActor(String path, boolean dummy) {
+        if (!dummy){
+        if (CoreEngine.isVfxOff()) {
+            if (!checkVfx(path)) {
+                return getDummy(path);
+            }
+            }
+        }
         if (!actorPoolingOn) {
             return new EmitterActor(path);
 
@@ -39,6 +62,9 @@ public class EmitterPools {
                 @Override
                 protected EmitterActor newObject() {
                     try {
+                        if (dummy) {
+                            return new DummyEmitterActor(finalPath);
+                        }
                         return new EmitterActor(finalPath);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
@@ -51,12 +77,25 @@ public class EmitterPools {
         return pool.obtain();
     }
 
+    private static boolean checkVfx(String path) {
+        if (path.contains("fire")){
+            return true;
+        }
+        if (path.contains("flame")){
+            return true;
+        }
+        return false;
+    }
+
     public static ParticleEffectX getEffect(String path) {
 //        if (CoreEngine.isJar())
 //            System.out.println("getEffect " + path);
 
-        if ( CoreEngine.isVfxOff())
-            return new ParticleEffectX(dummy);
+        if (CoreEngine.isVfxOff()){
+            if (!checkVfx(path)) {
+                return getDummyFx(path);
+            }
+        }
 
         if (!effectPoolingOn) {
             return new ParticleEffectX(path);
@@ -68,6 +107,10 @@ public class EmitterPools {
                 @Override
                 protected ParticleEffectX newObject() {
 //                  TODO   Assets.getVar().getManager().load();
+                    emittersCounter++;
+                    if (logging) {
+                        main.system.auxiliary.log.LogMaster.important(emittersCounter + "th emitter: " +path);
+                    }
                     return new ParticleEffectX(finalPath);
                 }
             };
@@ -100,10 +143,9 @@ public class EmitterPools {
 
     public static void preloadDefaultEmitters() {
         if (ParticleEffectX.isEmitterAtlasesOn())
-            return ;
+            return;
         for (GenericEnums.VFX sub : GenericEnums.VFX.values()) {
-            if (sub.isPreloaded())
-            {
+            if (sub.isPreloaded()) {
                 Assets.get().getManager().load(sub.getPath(), ParticleEffect.class);
                 getEmitterActor(sub);
             }

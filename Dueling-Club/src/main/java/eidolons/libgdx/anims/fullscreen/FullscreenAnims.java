@@ -157,10 +157,7 @@ public class FullscreenAnims extends GroupX {
             return;
         }
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false, false);
-        SpriteData spriteData= dataSource.getSpriteData();
-        if (spriteData != null) {
-            sprite.setData(spriteData);
-        }
+
         sprite.setCustomAct(true);
         sprite.setBlending(dataSource.getBlending());
         float intensity = dataSource.intensity;
@@ -175,6 +172,11 @@ public class FullscreenAnims extends GroupX {
 
         sprite.setX(GdxMaster.getWidth() / 2);
         sprite.setY(GdxMaster.getHeight() / 2);
+
+        SpriteData spriteData= dataSource.getSpriteData();
+        if (spriteData != null) {
+            sprite.setData(spriteData);
+        }
         spriteList.add(sprite);
 
         main.system.auxiliary.log.LogMaster.dev("Fullscreen anim added: " +path);

@@ -1,13 +1,17 @@
 package main.entity.type;
 
 import main.content.OBJ_TYPE;
+import main.content.values.parameters.ParamMap;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.content.values.properties.PropMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.TypeBuilder;
+import org.w3c.dom.Node;
 
 import javax.swing.*;
 
@@ -18,6 +22,8 @@ import javax.swing.*;
 public class ObjType extends Entity {
     private boolean generated;
     private boolean model;
+    private Node node;
+    private boolean built;
 
     public ObjType() {
         this(Game.game);
@@ -32,11 +38,15 @@ public class ObjType extends Entity {
         this.var = true;
         this.setType(type);
         setOBJ_TYPE_ENUM(type.getOBJ_TYPE_ENUM());
+
+        type.checkBuild();
         cloneMaps(type);
+        setBuilt(true);
+
         setRef(type.getRef());
         setGame(type.getGame());
         setGenerated(true);
-        if (type.getGame()!=null )
+        if (type.getGame() != null)
             type.getGame().initType(this);
     }
 
@@ -157,5 +167,48 @@ public class ObjType extends Entity {
     @Override
     protected void putProperty(PROPERTY prop, String value) {
         super.putProperty(prop, value);
+    }
+
+    public void checkBuild() {
+        if (!initialized)
+            return;
+        if (!built) {
+            if (node==null) {
+                built = true;
+                main.system.auxiliary.log.LogMaster.dev("Dummy unbuildable type "+this );
+                return;
+            }
+            try {
+                TypeBuilder.buildType(node, this);
+                built = true;
+                node = null;
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+    }
+
+    public void setNode(Node node) {
+        this.node = node;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public void setBuilt(boolean built) {
+        this.built = built;
+    }
+
+    @Override
+    public ParamMap getParamMap() {
+            checkBuild();
+        return super.getParamMap();
+    }
+
+    @Override
+    public PropMap getPropMap() {
+            checkBuild();
+        return super.getPropMap();
     }
 }

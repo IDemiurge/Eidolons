@@ -149,7 +149,7 @@ public class TexturePackerLaunch {
         settings.format = Format.RGBA4444;
         settings.jpegQuality = 0.55f;
         if (DialogMaster.confirm("Jpg?")) {
-            Integer i = DialogMaster.inputInt("Quality?", (int) (settings.jpegQuality*100));
+            Integer i = DialogMaster.inputInt("Quality?", (int) (settings.jpegQuality * 100));
             if (i != null) {
                 settings.jpegQuality = new Float(i) / 100;
             }
@@ -186,6 +186,11 @@ public class TexturePackerLaunch {
             return settings;
         settings = new Settings();
         settings.combineSubdirectories = DialogMaster.confirm("Is combine Subdirectories ?");
+
+        Float f = new Float(DialogMaster.inputInt("Scale?", 100)) / 100;
+        if (f != 0) {
+            settings.scale = new float[]{f};
+        }
 
         settings.maxHeight = (int) Math.pow(2, 13);
         settings.maxWidth = (int) Math.pow(2, 13);

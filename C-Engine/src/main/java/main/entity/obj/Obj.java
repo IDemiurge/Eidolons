@@ -125,9 +125,9 @@ public class Obj extends Entity {
     }
 
     public void cloneMaps(PropMap propMap, ParamMap paramMap) {
-        this.propMap = clonePropMap(propMap.getMap());
+        this.setPropMap(clonePropMap(propMap.getMap()));
 
-        this.paramMap= cloneParamMap(paramMap.getMap());
+        this.setParamMap(cloneParamMap(paramMap.getMap()));
 
         setDirty(true);
     }

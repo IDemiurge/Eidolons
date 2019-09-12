@@ -86,15 +86,16 @@ public class GenericLauncher extends Game {
         //            engineInit();
         //        }
         screenInit();
-          profiler = new GLProfiler(Gdx.graphics);
-          profiler.enable();
-         GuiEventManager.bind(GuiEventType.TOGGLE_LOG_GL_PROFILER, p-> {
-             logProfiler=!logProfiler;
-         });
-        GuiEventManager.bind(GuiEventType.LOG_DIAGNOSTICS, p-> {
-            logProfiler();
-            TextureCache.getInstance().logDiagnostics();
-        });
+
+//          profiler = new GLProfiler(Gdx.graphics);
+//          profiler.enable();
+//         GuiEventManager.bind(GuiEventType.TOGGLE_LOG_GL_PROFILER, p-> {
+//             logProfiler=!logProfiler;
+//         });
+//        GuiEventManager.bind(GuiEventType.LOG_DIAGNOSTICS, p-> {
+//            logProfiler();
+//            TextureCache.getInstance().logDiagnostics();
+//        });
     }
 
     private void logProfiler() {

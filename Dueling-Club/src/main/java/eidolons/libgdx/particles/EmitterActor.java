@@ -44,6 +44,7 @@ public class EmitterActor extends SuperActor {
     private boolean invert;
 
     public void init() {
+        effect = EmitterPools.getEffect(path);
         if (PathUtils.getLastPathSegment(PathUtils.cropLastPathSegment(path)).contains("invert")) {
             invert=true;
 //        shader
@@ -61,7 +62,6 @@ public class EmitterActor extends SuperActor {
 
     public EmitterActor(String path) {
         this.path = path;
-        effect = EmitterPools.getEffect(path);
         init();
     }
 
@@ -88,6 +88,9 @@ public class EmitterActor extends SuperActor {
         if (broken) {
             return;
         }
+        if (effect instanceof DummyParticleEffectX) {
+            broken = true;
+        }
         super.draw(batch, parentAlpha);
         effect.setPosition(getX(), getY());
         float delta = Gdx.graphics.getDeltaTime() * speed;
@@ -106,7 +109,7 @@ public class EmitterActor extends SuperActor {
                 ((CustomSpriteBatch) batch).resetBlending();
             }
         }
-
+//main.system.auxiliary.log.LogMaster.dev("vfx drawn " +path);
         effect.draw(batch, delta);
     }
 

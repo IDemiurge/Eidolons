@@ -249,6 +249,7 @@ public class FontMaster {
         METAMORPH("/metamorphous-regular.ttf", true),
         MAGIC("/magicmedieval.ttf"),
         MANORLY_("/manorly_.ttf"),
+        IMMORTAL("/IMMORTAL.ttf"),
         FERTIGO("/fertigo_pro.otf"),
         CHANCERY("/BLKCHCRY.ttf"),
         SUPER_KNIGHT("/supernatural_knight.ttf");

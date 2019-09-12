@@ -37,7 +37,7 @@ public class MainLauncher extends GenericLauncher {
     public static void main(String[] args) {
         EidolonsGame.setVar("non_test", true);
         EidolonsGame.setVar("tutorial", true);
-
+        GpuTester.test();
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
         CoreEngine.setSafeMode(true);
@@ -151,7 +151,7 @@ public class MainLauncher extends GenericLauncher {
                         EidolonsGame.setVar(p[0], Boolean.valueOf(p[1]));
                     } else {
                         if (command.contains(".") || command.contains("::")) {
-                            setCustomLaunch(new CustomLaunch(command));
+                            setCustomLaunch(new CustomLaunch(command.replace("_", " ")));
                         }
                     }
                 }

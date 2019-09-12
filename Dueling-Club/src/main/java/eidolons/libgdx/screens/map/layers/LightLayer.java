@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.particles.EmitterPools;
 import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.particles.EmitterActor;
@@ -44,7 +45,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     public static String getPath() {
         return
-                StrPathBuilder.build("global", "map", "layers", "light") + PathUtils.getPathSeparator();
+                StrPathBuilder.build("ui", "light") + PathUtils.getPathSeparator();
     }
 
     @Override
@@ -68,7 +69,29 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
                     MapMaster.addToListMap(map, time, container);
             }
         }
+
+        initEmitters();
+
+
         initialized = true;
+    }
+
+    private void initEmitters() {
+//      TODO   if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
+//        if (container.lightLayer.emitterPaths != null) {
+//            for (String sub : container.lightLayer.emitterPaths) {
+//                EmitterActor emitter = EmitterPools.getEmitterActor(sub); // new EmitterActor(sub);
+//                container.addActor(emitter);
+//                emitter.setPosition(container.getWidth() / 2,
+//                        GdxMaster.getHeight() - 25);
+//                emitter.setSpeed(0.5f);
+//                emitter.start();
+//                if (emitter.getEffect().getEmitters().size > 0) {
+//                    emitter.getEffect().getEmitters().get(0).scaleSize(container.getScaleX() + 0.25f);
+//                }
+//            }
+//            container.getContent().setZIndex(0);
+//        }
     }
 
     protected void addLight(LIGHT_LAYER sub) {
@@ -154,22 +177,6 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         }
         container.setFlipX(flipX);
         container.setPosition(x, y);
-
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_VFX))
-            if (container.lightLayer.emitterPaths != null) {
-                for (String sub : container.lightLayer.emitterPaths) {
-                    EmitterActor emitter = new EmitterActor(sub);
-                    container.addActor(emitter);
-                    emitter.setPosition(container.getWidth() / 2,
-                            GdxMaster.getHeight() - 25);
-                    emitter.setSpeed(0.5f);
-                    emitter.start();
-                    if (emitter.getEffect().getEmitters().size > 0) {
-                        emitter.getEffect().getEmitters().get(0).scaleSize(container.getScaleX() + 0.25f);
-                    }
-                }
-                container.getContent().setZIndex(0);
-            }
     }
 
     @Override

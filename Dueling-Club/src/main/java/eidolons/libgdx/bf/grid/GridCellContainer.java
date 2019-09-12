@@ -284,8 +284,7 @@ public class GridCellContainer extends GridCell {
         if (!Eidolons.game.isStarted())
             return true;
 
-        return !DungeonScreen.getInstance().
-         controller.isWithinCamera(this);
+        return !isWithinCamera();
     }
 
     private Integer getZIndexForView(GenericGridView actor) {
@@ -574,7 +573,7 @@ public class GridCellContainer extends GridCell {
             if (visibleView.getExpandHeight()>expandHeight) {
                 expandHeight = visibleView.getExpandHeight();
             }
-            if (visibleView.getExpandHeight()>expandHeight) {
+            if (visibleView.getExpandWidth()>expandWidth) {
                 expandWidth = visibleView.getExpandWidth();
             }
         }

@@ -515,16 +515,18 @@ public class AnimMaster3d {
     }
 
     private static void preloadAtlas(String path) {
-        if (atlasMap.containsKey(path))
-            return;
+//        if (atlasMap.containsKey(path))
+//            return;
         if (!FileManager.isFile(path)) {
             //            brokenPaths.add(path)
             LogMaster.log(1, path + " needs to preload, but it is not a file!..");
             return;
         }
-        LogMaster.log(1, path + " loading...");
-        Assets.get().getManager().load(path, TextureAtlas.class);
-        atlasMap.put(path, null);
+        if (!Assets.get().getManager().isLoaded(path)) {
+            LogMaster.log(1, path + " loading...");
+                Assets.get().getManager().load(path, TextureAtlas.class);
+        }
+//        atlasMap.put(path, null);
     }
 
     public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {
@@ -552,8 +554,10 @@ public class AnimMaster3d {
         }
         path = TextureCache.formatTexturePath(path);
 
-        TextureAtlas atlas = cache ? atlasMap.get(path) : null;
-        if (atlas == null) {
+        TextureAtlas atlas =null ;// cache ? atlasMap.get(path) : null;
+        if (Assets.get().getManager().isLoaded(path)) {
+            atlas = Assets.get().getManager().get(path);
+        } else  {
             if (Assets.isOn()) {
                 Chronos.mark("loading "+path);
                 Assets.get().getManager().load(path, TextureAtlas.class);
@@ -609,7 +613,7 @@ public class AnimMaster3d {
             }
         }
         if (cache) {
-            atlasMap.put(path, atlas);
+//            atlasMap.put(path, atlas);
         }
         return atlas;
 

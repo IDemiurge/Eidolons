@@ -2,13 +2,13 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
+import eidolons.libgdx.particles.DummyEmitterActor;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
 import main.data.XLinkedMap;
@@ -24,7 +24,7 @@ import main.system.auxiliary.data.FileManager;
 import java.io.File;
 import java.util.*;
 
-public abstract class GridObject extends GroupWithEmitters {
+public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected SpriteX sprite;
     protected Map<EmitterActor, Vector2> emitters = new XLinkedMap<>();
     protected Coordinates c;
@@ -171,12 +171,12 @@ public abstract class GridObject extends GroupWithEmitters {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!EidolonsGame.INTRO_STARTED)
-        {
-//            return;
-        }
         if (isIgnored()) {
             return;
+        }
+        if (getEmitters().iterator().hasNext())
+        if (!(getEmitters().iterator().next() instanceof DummyEmitterActor)) {
+            super.draw(batch, parentAlpha);
         }
         if (!initialized) {
             init();
@@ -246,7 +246,7 @@ public abstract class GridObject extends GroupWithEmitters {
     }
 
     @Override
-    public Collection getEmitters() {
+    public Collection<EmitterActor> getEmitters() {
         return emitters.keySet();
     }
 

@@ -72,12 +72,12 @@ public class BfObjEnums {
         GATE_PILLAR(10, "", "", "cells/gate/pillar.txt", 10),
 
         BIG_CLAW(15, "", "", "unit/claw big.txt", 10),
-
+//BLACK_CHAINS(),
         LEVIATHAN(15, "", "", "", 10,
-                "BIG_CLAW(100, -30)",
-                "BIG_CLAW(50, -30)",
-                "BIG_CLAW(100, 90)",
-                        "BIG_CLAW(50, 90)"),
+                "BIG_CLAW(150, 30)",
+                "BIG_CLAW( 0, 30)",
+                "BIG_CLAW(150, 110)",
+                        "BIG_CLAW( 0, 110)"),
 
 
         ;
@@ -1747,7 +1747,7 @@ public class BfObjEnums {
     public enum SPRITES {
 
         HERO_KESERIM("sprites/hero/keserim2.txt"),
-        COMMENT_KESERIM("sprites/hero/comment/keserim comment.txt"),
+        COMMENT_KESERIM("sprites/unit/comment/keserim comment.txt"),
         ALTAR("sprites/cells/bf/altar.txt"),
         FLOAT_WISP("sprites/cells/bf/light wisp float.txt"),
         FIRE_LIGHT("sprites/cells/bf/fire light.txt"),

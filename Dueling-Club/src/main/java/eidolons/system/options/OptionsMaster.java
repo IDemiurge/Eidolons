@@ -27,7 +27,6 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.GuiVisualEffects;
@@ -37,7 +36,6 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
-import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -57,7 +55,6 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.FileLogManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
@@ -170,7 +167,7 @@ public class OptionsMaster {
                     if (DungeonScreen.getInstance() == null) {
                         break;
                     }
-                    DungeonScreen.getInstance().getCameraMan(). setCameraTimer(intValue);
+                    DungeonScreen.getInstance().getCameraMan().setCameraTimer(intValue);
                     break;
                 case CENTER_CAMERA_DISTANCE_MOD:
                     CameraMan.setCameraPanMod(floatValue);
@@ -280,9 +277,10 @@ public class OptionsMaster {
         }
     }
 
-    public static void applyGraphicsOptions(   ) {
+    public static void applyGraphicsOptions() {
         applyGraphicsOptions(getGraphicsOptions());
     }
+
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
         if (Gdx.app == null) {
             return;
@@ -335,13 +333,19 @@ public class OptionsMaster {
 
     private static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
         switch (key) {
+            case LITE_MODE:
+                CoreEngine.setLiteLaunch(bool);
+                break;
+            case SUPERLITE_MODE:
+                CoreEngine.setSuperLite(bool);
+                break;
             case DEV:
                 CoreEngine.setDevEnabled(bool);
                 break;
             case LOGGING:
                 break;
             case LOG_TO_FILE:
-                FileLogManager.setLoggingOn(bool);
+                FileLogManager.on = bool;
                 break;
             case RESET_COSTS:
                 break;
@@ -411,16 +415,12 @@ public class OptionsMaster {
             case AMBIENCE_VFX:
                 ParticleManager.setAmbienceOn(bool);
                 break;
-            case LITE_MODE:
-                CoreEngine.setLiteLaunch(bool);
-                break;
+
             case FULLSCREEN:
                 if (Eidolons.getScope() == SCOPE.MENU)
                     Eidolons.setFullscreen(bool);
                 break;
-            case SUPERLITE_MODE:
-                CoreEngine.setSuperLite(bool);
-                break;
+
             case VIDEO:
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
@@ -454,7 +454,7 @@ public class OptionsMaster {
             case COLOR_TEXT_LOG:
                 LogPanel.setColorText(bool);
                 break;
-            case NO_BACKGROUND_SPRITES:
+            case BACKGROUND_SPRITES_OFF:
                 break;
         }
     }
@@ -670,6 +670,13 @@ public class OptionsMaster {
 
         autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
 
+        applySystemOptions(getSystemOptions());
+        try {
+            SystemAnalyzer.analyze();
+            SystemAnalyzer.adjustForRAM(optionsMap);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 //        if (CoreEngine.isMapPreview()) {
 //            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
 //        }
@@ -688,16 +695,16 @@ public class OptionsMaster {
     private static String readOptionsFile() {
         String path = getOptionsPath();
         String data = FileManager.readFile(path);
-       if (OPTIONS_MODE==null )
-           if (data.isEmpty() || isLocalOptionsPreferred()) {
-            data = FileManager.readFile(getLocalOptionsPath());
-        }
+        if (OPTIONS_MODE == null)
+            if (data.isEmpty() || isLocalOptionsPreferred()) {
+                data = FileManager.readFile(getLocalOptionsPath());
+            }
         return data;
     }
 
     private static void initFlags() {
         if (CoreEngine.isLiteLaunch()) {
-            getGraphicsOptions().setValue(GRAPHIC_OPTION.LITE_MODE, true);
+            getSystemOptions().setValue(SYSTEM_OPTION.LITE_MODE, true);
         }
     }
 
@@ -736,9 +743,7 @@ public class OptionsMaster {
     }
 
     private static Map<OPTIONS_GROUP, Options> initDefaults() {
-        SystemAnalyzer.analyze();
         Map<OPTIONS_GROUP, Options> defaults = initDefaults(false);
-        SystemAnalyzer.adjustForRAM(defaults);
         return defaults;
     }
 
@@ -757,6 +762,7 @@ public class OptionsMaster {
 
     private static Class<?> getOptionGroupEnumClass(OPTIONS_GROUP group) {
         switch (group) {
+
             case CONTROLS:
                 return CONTROL_OPTION.class;
             case ANIMATION:

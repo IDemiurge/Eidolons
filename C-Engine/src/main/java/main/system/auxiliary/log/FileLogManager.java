@@ -19,20 +19,13 @@ import java.util.Set;
 public class FileLogManager {
 
     private static final float WRITE_PERIOD = 5000;
-    private static boolean loggingOn;
+    public static boolean on;
     private static PrintStream console;
 
     public static void writeStatInfo(String toString) {
         //TODO
     }
 
-    public static void setLoggingOn(boolean loggingOn) {
-        FileLogManager.loggingOn = loggingOn;
-    }
-
-    public static boolean getLoggingOn() {
-        return loggingOn;
-    }
 
     public static boolean isFullLoggingConsole() {
         return false;
@@ -106,11 +99,15 @@ public class FileLogManager {
     }
 
     public static boolean isLogged(LOG_OUTPUT value) {
+        if (!on) {
+            return false;
+        }
         return true;
     }
 
     public static boolean isFullLogging() {
-        return true;}
+        return true;
+    }
 
     public static void writeAll() throws IOException {
         if (isFullLogging()) {

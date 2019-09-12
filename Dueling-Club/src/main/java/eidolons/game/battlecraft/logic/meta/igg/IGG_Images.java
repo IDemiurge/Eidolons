@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
-import eidolons.game.module.dungeoncrawl.generator.graph.dijkstra.SinglePaths;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -8,8 +7,6 @@ import main.content.enums.DungeonEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
-
-import java.io.File;
 
 public class IGG_Images {
     public static final String SHADOW = PathFinder.getArtFolder() + "Shadow.jpg";
@@ -20,7 +17,7 @@ public class IGG_Images {
     }
         public static String getBackground(IGG_Demo.IGG_MISSION mission) {
         String path=null ;
-        if (!CoreEngine.isLiteLaunch() && !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.NO_BACKGROUND_SPRITES)) {
+        if (!CoreEngine.isLiteLaunch() && !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.BACKGROUND_SPRITES_OFF)) {
             switch (mission) {
                 case TUTORIAL:
                     path = Sprites.BG_GATEWAY;

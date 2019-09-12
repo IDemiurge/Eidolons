@@ -19,6 +19,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
@@ -293,11 +294,12 @@ public class TextureCache {
     }
 
     public static String formatTexturePath(String path) {
-        path = path.toLowerCase()
-                .replace("\\", "/").replace("//", "/");
-        if (path.endsWith("/"))
-            return path.substring(0, path.length() - 1);
-        return path;
+        return FileManager.formatPath(path, true, true);
+//        path = path.toLowerCase()
+//                .replace("\\", "/").replace("//", "/");
+//        if (path.endsWith("/"))
+//            return path.substring(0, path.length() - 1);
+//        return path;
     }
 
     public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
