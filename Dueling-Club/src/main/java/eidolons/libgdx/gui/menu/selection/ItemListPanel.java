@@ -289,7 +289,7 @@ public abstract class ItemListPanel extends TablePanel {
                     }
 
                 }
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     protected boolean isAutopickFirstItem() {

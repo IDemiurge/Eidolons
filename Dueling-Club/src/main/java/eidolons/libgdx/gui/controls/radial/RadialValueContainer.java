@@ -47,7 +47,7 @@ public class RadialValueContainer extends ActionValueContainer {
         super(texture, action);
         this.size = size;
         setUnderlay(
-         valid ?
+         isValid() ?
           getUnderlayDefault().getTextureRegion() :
          getUnderlayDisabled().getTextureRegion());
 
@@ -56,7 +56,7 @@ public class RadialValueContainer extends ActionValueContainer {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!valid)
+                if (!isValid())
                     return;
                 setUnderlay(getUnderlayDisabled().getTextureRegion());
                 super.clicked(event, x, y);
@@ -64,7 +64,7 @@ public class RadialValueContainer extends ActionValueContainer {
 
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-                if (!valid)
+                if (!isValid())
                     return super.mouseMoved(event, x, y);
                 if (isHover())
                     return false;
@@ -77,7 +77,7 @@ public class RadialValueContainer extends ActionValueContainer {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (!valid) return;
+                if (!isValid()) return;
                 if (!isHover()) {
                     setHover(true);
                     setZIndex(Integer.MAX_VALUE);
@@ -102,7 +102,7 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public RadialValueContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
         this(textureRegion, runnable);
-        this.valid = valid;
+        this.setValid(valid);
         try {
             infoTextSupplier = RadialManager.getInfoTextSupplier(valid, activeObj, target);
         } catch (Exception e) {
@@ -226,7 +226,7 @@ public class RadialValueContainer extends ActionValueContainer {
     @Override
     public void setVisible(boolean visible) {
         setUnderlay(
-         valid ?
+         isValid() ?
           getUnderlayDefault().getTextureRegion() :
           getUnderlayDisabled().getTextureRegion());
         setUnderlayOffsetX(0);
@@ -246,7 +246,7 @@ public class RadialValueContainer extends ActionValueContainer {
                 } else {
                     infoLabel.setText(infoTextSupplier.get());
                 }
-                infoLabel.setColor(valid ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
+                infoLabel.setColor(isValid() ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
 
                 infoLabel.setPosition((64 - infoLabel.getWidth()) / 2,
                  (getHeight() + infoLabel.getHeight()) / 2);

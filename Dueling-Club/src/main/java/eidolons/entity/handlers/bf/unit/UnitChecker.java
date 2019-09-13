@@ -112,6 +112,7 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean isImmortalityOn() {
+
         if (getGame().isDebugMode())
             return false;
         if (CoreEngine.isLiteLaunch()){

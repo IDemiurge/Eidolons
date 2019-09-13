@@ -64,6 +64,8 @@ public class Assets {
     private static boolean ON = true;
     static Assets assets;
     private static List<String> ktxAtlases=    new ArrayList<>() ;
+    private static int estMemoryLoad=0;
+    private static int memoryBuffer=500;
     AssetManager manager;
     private TextureAtlas dummyAtlas = new TextureAtlas(PathFinder.getImagePath() + "sprites/ui/dummy.txt");
 
@@ -367,6 +369,44 @@ public class Assets {
                 }
         }
     }
+public enum ASSET{
+        ;
+    public boolean loaded;
+    GAME_SCOPE[] scopes;
+        String path;
+    int maxMemoryLevel;
+    int memoryCost;
+}
+    public static void preloadScope(GAME_SCOPE scope, boolean full) {
+        for (ASSET value : ASSET.values()) {
+            if (value.loaded) {
+                boolean ktx=true;
+                if (!isKtxTest() && checkMemory(value)) {
+                    ktx=false;
+                }
+                loadSprite(Sprites.SNOW, full, ktx);
+                if (ktx) {
+                    estMemoryLoad += value.memoryCost*getKtxCompressionFactor();
+                } else
+                     estMemoryLoad += value.memoryCost;
+
+            }
+
+        }
+    }
+
+    private static float getKtxCompressionFactor() {
+        return 0.6f;
+    }
+
+    private static boolean checkMemory(ASSET value) {
+       return
+                getEstGpuMemoryLeft()- memoryBuffer > value.memoryCost ;
+    }
+
+    private static Integer getEstGpuMemoryLeft() {
+        return GpuTester.getDedicatedMemory() - estMemoryLoad ;
+    }
 
     public static void preloadUI(boolean full) {
         ShadeLightCell.getShadowMapAtlas();
@@ -388,7 +428,7 @@ public class Assets {
             if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.  getDedicatedMemory()>1000)) {
                 ktx=false;
             }
-            loadSprite(Sprites.MIST, full, ktx);
+//            loadSprite(Sprites.MIST, full, ktx);
 
             ktx=false;
 
@@ -444,7 +484,7 @@ public class Assets {
     }
 
     private static boolean isKtxTest() {
-        return true;
+        return false;
     }
 
     private static boolean isPreloadOn() {

@@ -327,11 +327,11 @@ public class ColorManager {
     }
 
     public enum FLAG_COLOR {
-        BLUE(new Color(25, 25, 255)),
+        BLUE(new Color(55, 25, 255)),
         CYAN(new Color(35, 215, 185)),
         GREEN(new Color(25, 175, 65)),
         DARK_GREEN(new Color(25, 85, 65)),
-        PURPLE(new Color(88, 74, 255)),
+        PURPLE(new Color(130, 74, 255)),
         RED(new Color(255, 25, 25)),
         CRIMSON(new Color(145, 25, 95)),
         YELLOW(new Color(245, 200, 85)),

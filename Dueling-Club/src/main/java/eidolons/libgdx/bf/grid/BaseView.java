@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,6 +10,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
@@ -18,8 +20,11 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.file.ResourceMaster;
 import main.content.enums.GenericEnums;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
+import main.system.PathUtils;
 
 import java.util.List;
 
@@ -30,7 +35,7 @@ public class BaseView extends SuperActor {
     protected TextureRegion originalTextureAlt;
     protected FadeImageContainer portrait;
     private Image altPortrait;
-    protected  List<SpriteX> overlaySprites;
+    protected List<SpriteX> overlaySprites;
     protected List<SpriteX> underlaySprites;
     protected boolean forceTransform;
     protected GroupX spritesContainers;
@@ -49,6 +54,7 @@ public class BaseView extends SuperActor {
 
     public void init(UnitViewOptions o) {
         init(o.getPortraitTexture(), o.getPortraitPath());
+
     }
 
     protected void initSprite(UnitViewOptions o) {
@@ -58,7 +64,7 @@ public class BaseView extends SuperActor {
                         public void rotateBy(float amountInDegrees) {
                             super.rotateBy(amountInDegrees);
                             for (Actor child : getChildren()) {
-                                child.rotateBy(amountInDegrees );
+                                child.rotateBy(amountInDegrees);
                             }
                         }
                     }
@@ -70,30 +76,28 @@ public class BaseView extends SuperActor {
         underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false);
         if (underlaySprites != null) {
             for (SpriteX spriteX : underlaySprites) {
-                if (isUseSpriteContainer(o.getObj()))
-                {
+                if (isUseSpriteContainer(o.getObj())) {
                     spritesContainersUnder.addActor(spriteX);
 //                    float maxX;
 //                    float maxY;
 //                    spritesContainersUnder.setSize(maxX-minX, maxY);
 //                    spriteX.setOrigin(x, y);
-                }
-                else {
+                } else {
                     addActor(spriteX);
                     spriteX.setZIndex(0);
                 }
-                if (expandWidth<spriteX.getWidth()){
-                    expandWidth= spriteX.getWidth();
+                if (expandWidth < spriteX.getWidth()) {
+                    expandWidth = spriteX.getWidth();
                 }
-                if (expandHeight<spriteX.getHeight()){
-                    expandHeight= spriteX.getHeight();
+                if (expandHeight < spriteX.getHeight()) {
+                    expandHeight = spriteX.getHeight();
                 }
                 forceTransform = true;
             }
         }
 
         if (isUseSpriteContainer(o.getObj()))
-            addActor( spritesContainers = new GroupX(){
+            addActor(spritesContainers = new GroupX() {
                 @Override
                 public void act(float delta) {
                     super.act(delta);
@@ -110,11 +114,11 @@ public class BaseView extends SuperActor {
                 else {
                     addActor(spriteX);
                 }
-                if (expandWidth<spriteX.getWidth()){
-                    expandWidth= spriteX.getWidth();
+                if (expandWidth < spriteX.getWidth()) {
+                    expandWidth = spriteX.getWidth();
                 }
-                if (expandHeight<spriteX.getHeight()){
-                    expandHeight= spriteX.getHeight();
+                if (expandHeight < spriteX.getHeight()) {
+                    expandHeight = spriteX.getHeight();
                 }
                 forceTransform = true;
             }
@@ -126,12 +130,13 @@ public class BaseView extends SuperActor {
          * scale?
          */
     }
+
     public boolean isWithinCameraCheck() {
-        return getController().isWithinCamera(getX() + getWidth(), getY() + getHeight(), expandWidth+getWidth(),expandHeight+ getHeight());
+        return getController().isWithinCamera(getX() + getWidth(), getY() + getHeight(), expandWidth + getWidth(), expandHeight + getHeight());
     }
 
     protected boolean isUseSpriteContainer(BattleFieldObject obj) {
-        switch (  obj.getName()) {
+        switch (obj.getName()) {
             case "Ash Vault":
             case "Eldritch Vault":
                 return true;
@@ -146,10 +151,22 @@ public class BaseView extends SuperActor {
         portrait = initPortrait(portraitTexture, path);
         addActor(portrait);
 
-        addActor(highlight = new FadeImageContainer(Images.COLORLESS_BORDER));
-        highlight.setVisible(false);
-        GdxMaster.center(highlight);
-        highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
+        String type = "objects";
+        String name = PathUtils.getLastPathSegment(path);
+        if (path.contains("heroes")){
+            type = "heroes";
+        }
+        if (path.contains("units")){
+            type = "units";
+        }
+        GdxImageMaster.writeImage(new FileHandle(PathFinder.getImagePath()+"unitview/" +
+                type +
+                "/" +
+                name), portraitTexture);
+//        ResourceMaster.writeImage(path, "unitviews/" +
+//                type +
+//                "/" +
+//                name);
 
         addListener(new BattleClickListener() {
             @Override
@@ -252,18 +269,20 @@ public class BaseView extends SuperActor {
     }
 
     public void highlight() {
-
         highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, highlight.getColor().a);
         highlight.fadeIn();
 //        fire_light.fadeIn();
 
         //screen anim
 
-        main.system.auxiliary.log.LogMaster.dev("highlight " );
+        main.system.auxiliary.log.LogMaster.dev("highlight ");
     }
+
     public void highlightOff() {
-        if (highlight.isVisible()) {
-            highlight.fadeOut();
+        if (highlight != null) {
+            if (highlight.isVisible()) {
+                highlight.fadeOut();
+            }
         }
     }
 }

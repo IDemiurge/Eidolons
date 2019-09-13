@@ -52,7 +52,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 //    }
 
     private ObjType getPartyType() {
-        return DataManager.getType("Chained", DC_TYPE.PARTY);
+        return DataManager.getType("Chained Solo", DC_TYPE.PARTY);
     }
 
     @Override

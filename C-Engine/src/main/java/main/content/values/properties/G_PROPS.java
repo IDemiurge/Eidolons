@@ -54,7 +54,7 @@ public enum G_PROPS implements PROPERTY {
     SPELL_POOL("spells", "Spell pool"),
 
     MASTERY("Mastery", "armor", "weapons", "skills"),
-    STATUS("Status", true, "units", "chars", "bf", "spells", "actions", "weapons", "armor", "terrain"),
+    STATUS("Status", true, "units", "chars", "buffs", "spells", "actions", "weapons", "armor", "terrain"),
     MODE("Mode", false, "units", "chars"),
     ACTIVES("Actives", true, "units", "chars", "items", "actions", "classes", "spells", "weapons", "bf obj", "deities", "skills"),
     CUSTOM_SOUNDSET("Custom Soundset", false, "units", "chars", "actions", "spells", "bf obj", "items"),
@@ -104,7 +104,7 @@ public enum G_PROPS implements PROPERTY {
     STD_BOOLS(null, true, "all"),
     DYNAMIC_BOOLS(null, true, "all"),
 
-    STANDARD_PASSIVES("Passives", true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
+    STANDARD_PASSIVES("Passives", true,"buffs", "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
     IMMUNITIES(null, true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
     CLASS_TYPE("classes"),
     CLASS_GROUP("classes"),

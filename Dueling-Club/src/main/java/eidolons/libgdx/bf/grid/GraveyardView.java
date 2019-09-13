@@ -85,7 +85,7 @@ public class GraveyardView extends TablePanel {
     }
 
     public void updateGraveyard() {
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     @Override

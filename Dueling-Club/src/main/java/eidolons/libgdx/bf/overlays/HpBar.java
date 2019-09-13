@@ -388,8 +388,8 @@ public class HpBar extends SuperActor {
             if (label.isVisible()) {
                 label.getWidth();
             }
-            super.draw(batch, parentAlpha);
-            ScissorMaster.drawInRectangle(this, batch, getX(), getY(), innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
+//            super.draw(batch, parentAlpha);
+            ScissorMaster.drawInRectangle(this, batch, getX() , getY(),  innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
         } else {
             Color color = enduranceColor;
             TextureRegion region = enduranceBarRegion;

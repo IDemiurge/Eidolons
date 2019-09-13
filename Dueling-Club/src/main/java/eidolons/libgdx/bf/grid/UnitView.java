@@ -18,6 +18,7 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -56,6 +57,10 @@ public class UnitView extends BaseView implements HpBarView {
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.UNIT_BORDER);
     }
 
+    protected static String getAtlasPath() {
+        return "unitview/unitview.txt";
+    }
+
     public void init(UnitViewOptions o) {
         this.setMainHero(o.isMainHero());
         setTeamColor(o.getTeamColor());
@@ -68,7 +73,12 @@ public class UnitView extends BaseView implements HpBarView {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
+        if (o.getObj() instanceof Unit) {
+            addActor(highlight = new FadeImageContainer(Images.COLORLESS_BORDER));
+            highlight.setVisible(false);
+            GdxMaster.center(highlight);
+            highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
+        }
     }
 
 

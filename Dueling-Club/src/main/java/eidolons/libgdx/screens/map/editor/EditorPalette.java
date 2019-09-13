@@ -35,7 +35,7 @@ public class EditorPalette extends TabbedPanel {
     private EmitterPalette emitterPalette;
 
     public EditorPalette() {
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     @Override

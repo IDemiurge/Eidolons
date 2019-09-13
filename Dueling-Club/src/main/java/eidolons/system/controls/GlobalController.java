@@ -180,26 +180,6 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
                 break;
             case Keys.F9:
-//                Input.TextInputListener listener= new Input.TextInputListener() {
-//                    @Override
-//                    public void input(String text) {
-//                        if (!StringMaster.isEmpty(text)) {
-//                            lastScript = text;
-//                            try {
-//                                Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
-//                            } catch (Exception e) {
-//                                main.system.ExceptionMaster.printStackTrace(e);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void canceled() {
-//
-//                    }
-//                };
-//                Gdx.input.getTextInput(listener, "Tadan",lastScript,"your script...");
-
                 Eidolons.onNonGdxThread(() -> {
                     String text = DialogMaster.inputText("Your script...", lastScript);
                     if (!text.contains("=")) {
@@ -207,12 +187,7 @@ public class GlobalController implements Controller {
                     }
                     if (!StringMaster.isEmpty(text)) {
                         lastScript = text;
-//                    DialogueManager.afterDialogue();
-                        try {
-                            Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
+                        doScript(text);
                     }
                 });
                 return true;
@@ -265,6 +240,14 @@ public class GlobalController implements Controller {
         return false;
     }
 
+    private void doScript(String text) {
+        try {
+            Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
+
     private boolean space() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
@@ -276,9 +259,8 @@ public class GlobalController implements Controller {
             ConfirmationPanel.getInstance().ok();
             return true;
         }
-        if (Eidolons.getScreen().getController().space())
-        {
-            main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED " );
+        if (Eidolons.getScreen().getController().space()) {
+            main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
             return true;
         }
         if (Cinematics.ON) {
@@ -316,8 +298,12 @@ public class GlobalController implements Controller {
             MainMenu.getInstance().getHandler().handle(MAIN_MENU_ITEM.PLAY);
             return true;
         }
-        if (Eidolons.getScreen().getController().enter())
-            return true;
+        try {
+            if (Eidolons.getScreen().getController().enter())
+                return true;
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         return false;
     }
 
@@ -330,13 +316,12 @@ public class GlobalController implements Controller {
     private boolean tab() {
         List<GenericGridView> list = new ArrayList<>();
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
-        GridCellContainer cell=null ;
+        GridCellContainer cell = null;
         if (hovered != null) {
-         cell = (GridCellContainer) hovered.getParent();
-        list.addAll(cell.getUnitViewsVisible());
+            cell = (GridCellContainer) hovered.getParent();
+            list.addAll(cell.getUnitViewsVisible());
         }
-        if (list.size() <= 1)
-        {
+        if (list.size() <= 1) {
             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
             if (Eidolons.getScreen().getController().inputPass()) {
 
@@ -368,6 +353,12 @@ public class GlobalController implements Controller {
     private boolean escape() {
         if (!CoreEngine.isIDE())
             if (Cinematics.ON) {
+                if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
+                    doScript("skip=:;");
+//                    DungeonScreen.getInstance().getGuiStage().dialogueDone();
+                    FileLogManager.streamMain("Dialogue escaped");
+                    return true;
+                }
                 return false;
             }
 
@@ -384,11 +375,7 @@ public class GlobalController implements Controller {
             ConfirmationPanel.getInstance().cancel();
             return true;
         }
-        if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
-            DungeonScreen.getInstance().getGuiStage().dialogueDone();
-            FileLogManager.streamMain("Dialogue escaped");
-            return true;
-        }
+
         if (DC_Game.game.getManager().isSelecting()
             //         DungeonScreen.getInstance().getGridPanel().isSelecting()
         ) {

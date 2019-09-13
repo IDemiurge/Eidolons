@@ -160,8 +160,8 @@ public class DeathMaster extends Master {
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
                  killer.getRef().getAnimationActive());
             }
-
-            DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
+//        TODO too bad now really
+//         DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
 
             game.getLogManager().logDeath(killed, killer);
             getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));

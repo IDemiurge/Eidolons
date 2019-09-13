@@ -1111,6 +1111,10 @@ public class StringMaster {
     }
 
     public static String getAppendedImageFile(String file, String suffix) {
+        if (suffix != null)
+            if (suffix.contains("/")) {
+                return getAppendedImageFile(PathUtils.cropLastPathSegment(file), suffix, false);
+            }
         return getAppendedImageFile(file, suffix, false);
     }
 
@@ -1175,9 +1179,9 @@ public class StringMaster {
     }
 
     public static boolean containsWord(String name, String word) {
-        if (            name.equalsIgnoreCase(word) ||
-                        name.contains(" " + word) ||
-                        name.contains(word + " ")
+        if (name.equalsIgnoreCase(word) ||
+                name.contains(" " + word) ||
+                name.contains(word + " ")
         ) {
             return true;
         }
@@ -1189,7 +1193,7 @@ public class StringMaster {
     }
 
     public static String removeNewLines(String text) {
-      return ContainerUtils.construct("", StringMaster.splitLines(text));
+        return ContainerUtils.construct("", StringMaster.splitLines(text));
     }
 
 

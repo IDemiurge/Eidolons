@@ -91,7 +91,7 @@ public class EmitterActor extends SuperActor {
         if (effect instanceof DummyParticleEffectX) {
             broken = true;
         }
-        super.draw(batch, parentAlpha);
+//        super.draw(batch, parentAlpha);
         effect.setPosition(getX(), getY());
         float delta = Gdx.graphics.getDeltaTime() * speed;
 

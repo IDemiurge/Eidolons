@@ -27,11 +27,11 @@ public class HcNameAndGenderPanel extends SelectionTable<SmartButton> {
         EUtils.bind(GuiEventType.HC_GENDER_CHOSEN, p -> {
             randomize();
         });
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     private void randomize() {
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     @Override
@@ -41,9 +41,9 @@ public class HcNameAndGenderPanel extends SelectionTable<SmartButton> {
 
     @Override
     public void updateAct(float delta) {
-        if (updateRequired) {
+        if (isUpdateRequired()) {
             super.updateAct(delta);
-            updateRequired = false;
+            setUpdateRequired(false);
         }
     }
 

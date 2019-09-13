@@ -369,7 +369,8 @@ public class DungeonScreen extends GameScreenWithTown {
         checkInputController();
 //        stages.for
         guiStage.act(delta);
-        if (isShowingGrid())            if (isDrawGrid())
+        if (isShowingGrid())
+//            if (isDrawGrid())
             gridStage.act(delta);
         setBlocked(checkBlocked());
         cameraMan.act(delta);

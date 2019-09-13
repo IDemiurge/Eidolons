@@ -2,19 +2,22 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.particles.EmitterPools;
+import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer.LightContainer;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
@@ -27,6 +30,8 @@ import java.util.Map;
  * Created by JustMe on 2/28/2018.
  */
 public class LightLayer extends MapTimedLayer<LightContainer> {
+
+    private static SmartTextureAtlas lightsAtlas;
 
     static {
         LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths(GenericEnums.VFX.STARS.getPath());
@@ -62,8 +67,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
             //random position?
             for (int i = 0; i < sub.maxCount; i++) {
 
-                LightContainer container = new LightContainer(getPath()
-                        + sub.name().replace("_", " ") + ".png", sub);
+                LightContainer container = new LightContainer(sub);
                 container.setAlphaTemplate(sub.alphaTemplate);
                 for (DAY_TIME time : sub.times)
                     MapMaster.addToListMap(map, time, container);
@@ -95,8 +99,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     }
 
     protected void addLight(LIGHT_LAYER sub) {
-        LightContainer container = new LightContainer(getPath()
-                + sub.name().replace("_", " ") + ".png", sub);
+        LightContainer container = new LightContainer(sub);
 //        container.setAlphaTemplate(sub.alphaTemplate);
 
         adjust(container);
@@ -186,11 +189,12 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (isAdditive()) {
-            //            batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            //            ((CustomSpriteBatch) batch).resetBlending();
-            batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-        }
+//        if (isAdditive()) {
+        //            batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        //            ((CustomSpriteBatch) batch).resetBlending();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+//        }
+
         super.draw(batch, parentAlpha);
 
     }
@@ -208,20 +212,25 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
 
     public enum LIGHT_LAYER {
-        HEAVENLY_LIGHT_LARGE(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
-        HEAVENLY_LIGHT_LARGE_GOLDEN(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
+//        HEAVENLY_LIGHT_LARGE(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
+//        HEAVENLY_LIGHT_LARGE_GOLDEN(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
 
         HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
-        HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
+        HEAVENLY_LIGHT_LARGE_SPECKLED(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
 
-        LIGHT_SPREAD_SILVER(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
-        LIGHT_SPREAD_GOLDEN(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
-        LIGHT_SPREAD(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
-
+        //        LIGHT_SPREAD_SILVER(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
+//        LIGHT_SPREAD_GOLDEN(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
+//        LIGHT_SPREAD(5, GenericEnums.ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
+//
         VERTICAL_MOONLIGHT(0.4f, -0.15f, 6, GenericEnums.ALPHA_TEMPLATE.MOONLIGHT, true,
-                DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT),
+                DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT,
+                DAY_TIME.DAWN, DAY_TIME.DUSK
+        ),
+//
+//        VERTICAL_LIGHT_SILVER(1f, -0.25f, 5, GenericEnums.ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.MIDDAY, DAY_TIME.MORNING),
+//        VERTICAL_LIGHT_ASHEN(1f, -0.25f, 5, GenericEnums.ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.DUSK, DAY_TIME.MORNING),
 
-        VERTICAL_LIGHT(1f, -0.25f, 5, GenericEnums.ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.MIDDAY, DAY_TIME.MORNING),
+
 //        VERTICAL_LIGHT_LARGE_GOLDEN(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK),
 //        VERTICAL_LIGHT_LARGE_GOLDEN_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
 //        VERTICAL_LIGHT_LARGE_SILVER_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.MORNING),
@@ -258,11 +267,30 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     }
 
+    public static SmartTextureAtlas getLightAtlas() {
+        if (lightsAtlas == null) {
+            lightsAtlas = new SmartTextureAtlas(
+                    PathFinder.getImagePath() +
+                            "ui/light/light.txt");
+        }
+        return lightsAtlas;
+    }
+
+    private static TextureRegion getTexture(LIGHT_LAYER type) {
+        TextureAtlas.AtlasRegion texture = getLightAtlas().findRegion(
+                type.name().toLowerCase(). replace("_", " "));
+//        if (texture == null) {
+//            return null;
+//        }
+        return texture;
+    }
+
     public class LightContainer extends ImageContainer {
         LIGHT_LAYER lightLayer;
 
-        public LightContainer(String path, LIGHT_LAYER lightLayer) {
-            super(path);
+        public LightContainer(LIGHT_LAYER lightLayer) {
+            super(new Image(getTexture(lightLayer)));
+
             this.lightLayer = lightLayer;
             setTransform(false);
         }

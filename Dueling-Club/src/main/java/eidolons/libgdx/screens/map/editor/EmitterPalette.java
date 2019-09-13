@@ -39,7 +39,7 @@ public class EmitterPalette extends TabbedPanel {
     private ValueContainer selectedLabel;
 
     public EmitterPalette() {
-        updateRequired = true;
+        setUpdateRequired(true);
         GuiEventManager.bind(MapEvent.TIME_CHANGED, p -> setUpdateRequired(true));
     }
 

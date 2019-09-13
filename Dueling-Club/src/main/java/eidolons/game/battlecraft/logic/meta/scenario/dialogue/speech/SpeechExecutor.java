@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.active.DC_ActiveObj;
@@ -33,7 +32,6 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
@@ -144,11 +142,16 @@ public class SpeechExecutor {
             }
         }
         if (skipRun)
-        if (checkSkip(speechAction)){
-            return true;
-        }
+            if (checkSkip(speechAction)) {
+                return true;
+            }
         switch (speechAction) {
-
+            case HIGHLIGHT_ACTION:
+                DC_ActiveObj a = Eidolons.getMainHero().getActionOrSpell(value);
+                if (vars.size() > 0) {
+                    GuiEventManager.trigger(GuiEventType.HIGHLIGHT_ACTION_OFF, a);
+                } else
+                    GuiEventManager.trigger(GuiEventType.HIGHLIGHT_ACTION, a);
             case NO_SKIP:
                 setSkipRun(false);
                 break;
@@ -230,7 +233,17 @@ public class SpeechExecutor {
                         });
                 break;
             case MOVE:
-                getUnit(value).setCoordinates((getCoordinate(vars.get(0))));
+                unit = getUnit(value);
+                main.system.auxiliary.log.LogMaster.dev("MOVING: " + unit.getNameAndCoordinate());
+                unit.setCoordinates((getCoordinate(vars.get(0))));
+                main.system.auxiliary.log.LogMaster.dev("MOVED: " + unit.getNameAndCoordinate());
+
+                GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
+                if (isVisionRefreshRequired())
+                {
+                    GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
+                    master.getGame().getVisionMaster().refresh();
+                }
                 break;
             case TURN_AUTO:
                 getUnit(value).setFacing(
@@ -373,15 +386,15 @@ public class SpeechExecutor {
                         DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().isEmpty(), 10000);
                 break;
             case WAIT_ANIMS:
-                Predicate<Float> p= delta->{
+                Predicate<Float> p = delta -> {
                     if (!AnimMaster.getInstance().isDrawing()) {
-                    main.system.auxiliary.log.LogMaster.dev("Anims waiting unlocked! " );
+                        main.system.auxiliary.log.LogMaster.dev("Anims waiting unlocked! ");
                         return true;
                     }
-                    main.system.auxiliary.log.LogMaster.dev("Anims waiting... " );
+                    main.system.auxiliary.log.LogMaster.dev("Anims waiting... ");
                     return false;
                 };
-                main.system.auxiliary.log.LogMaster.dev("Anims wait locked! " );
+                main.system.auxiliary.log.LogMaster.dev("Anims wait locked! ");
                 if (NumberUtils.isInteger(value)) {
                     WaitMaster.waitForCondition(p, Integer.valueOf(value));
                 } else
@@ -486,7 +499,7 @@ public class SpeechExecutor {
                 }
                 Runnable onDone = null;
                 if (script != null) {
-                    if (skipRun){
+                    if (skipRun) {
                         execute(SCRIPT, script);
                         break;
                     }
@@ -535,14 +548,13 @@ public class SpeechExecutor {
                         data.flipX = true;
                     } else if (var.equalsIgnoreCase("y")) {
                         data.flipY = true;
+                    } else if (var.contains("::")) {
+                        SpriteData graphicData = new SpriteData(var);
+                        data.setSpriteData(graphicData);
                     } else
-                        if (var.contains("::")) {
-                            SpriteData graphicData = new SpriteData(var);
-                            data.setSpriteData(graphicData);
-                        } else
-                            data.setBlending(new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, var, true));
+                        data.setBlending(new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, var, true));
                 }
-                GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM, data );
+                GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM, data);
                 break;
 
 
@@ -561,12 +573,12 @@ public class SpeechExecutor {
                 bool = true;
             case TUT_SCRIPT:
                 if (speechAction == TUT_SCRIPT)
-                    if (!EidolonsGame.getVar("tutorial")) {
+                    if (!EidolonsGame.getAny("tutorial")) {
                         break;
                     }
             case SCRIPT_IF:
                 if (speechAction == SCRIPT_IF)
-                    if (!EidolonsGame.getVar(vars.get(0))) {
+                    if (!EidolonsGame.getAny(vars.get(0))) {
                         break;
                     }
             case SCRIPT:
@@ -642,7 +654,7 @@ public class SpeechExecutor {
                 break;
             case PRELOAD_MUSIC:
                 MusicMaster.getInstance().getMusic(MusicMaster.MUSIC_TRACK.valueOf(value.toUpperCase()
-                        .replace(" " , "_")).getPath(), true);
+                        .replace(" ", "_")).getPath(), true);
                 break;
             case SOUND_VARIANT:
                 random = true;
@@ -797,7 +809,18 @@ public class SpeechExecutor {
             case CAMERA:
                 doCamera(value, vars, speechAction);
                 break;
-
+            case UNFREEZE:
+                execute(BUFF_REMOVE, value + StringMaster.wrapInParenthesis("Disabled"));
+                break;
+            case FREEZE:
+                execute(BUFF_ADD, value + StringMaster.wrapInParenthesis("Disabled"));
+                break;
+            case RESET_VISION:
+                master.getGame().getVisionMaster().overrideVisionOff(getUnit(value) );
+                break;
+            case VISION:
+                master.getGame().getVisionMaster().overrideVision(getUnit(value), vars.get(0));
+                break;
             case WHITEOUT:
             case BLACKOUT:
                 doOut(value, vars, speechAction);
@@ -932,8 +955,13 @@ public class SpeechExecutor {
                 }
                 GuiEventManager.trigger(GuiEventType.PLAY_VIDEO, value, r);
                 break;
-            case ABORT_CHECK:
-                if (!EidolonsGame.getVar(value)) {
+            case BREAK_IF:
+                if (EidolonsGame.getAny(value)) {
+                    return false;
+                }
+                return true;
+            case CONTINUE_IF:
+                if (!EidolonsGame.getAny(value)) {
                     return false;
                 }
                 return true;
@@ -1031,7 +1059,6 @@ public class SpeechExecutor {
             switch (value) {
                 case "addAction":
                 case "removeAction":
-
                     break;
 
                 case "remove":
@@ -1050,9 +1077,11 @@ public class SpeechExecutor {
 
                     break;
                 case "fade":
-                    unit.kill(unit, false, false);
-                    new DeathAnim(unit).startAsSingleAnim(Ref.getSelfTargetingRefCopy(unit));
-
+//                    unit.kill(unit, false, false);
+                    unit.kill(unit, false, true);
+                    if (unit instanceof Unit) {
+                        new DeathAnim(unit).startAsSingleAnim(Ref.getSelfTargetingRefCopy(unit));
+                    }
                     break;
                 case "kill":
                     unit.kill(Eidolons.getMainHero(), true, false);
@@ -1065,6 +1094,12 @@ public class SpeechExecutor {
             }
             if (isVisionRefreshRequired())
                 unit.getGame().getVisionMaster().refresh();
+            else {
+                if (unit.isDead()) {
+//                    GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, unit);
+                    GuiEventManager.trigger(GuiEventType.REMOVE_UNIT_VIEW, unit);
+                }
+            }
         }
 
     }
@@ -1206,11 +1241,9 @@ public class SpeechExecutor {
     }
 
     private int getTime(Integer millis, List<String> vars, float coef) {
-        if (CoreEngine.isSuperLite()&& CoreEngine.isIDE())
-        {
+        if (CoreEngine.isSuperLite() && CoreEngine.isIDE()) {
             millis = millis / 2;
-        } else
-        if (CoreEngine.isMyLiteLaunch()) {
+        } else if (CoreEngine.isMyLiteLaunch()) {
             millis = millis * 2 / 3;
         }
         boolean absolute = false;
@@ -1260,7 +1293,7 @@ public class SpeechExecutor {
 
     public void checkSkipRun(String var) {
         setSkipRun(false);
-        if (EidolonsGame.getVar(var)) {
+        if (EidolonsGame.getAny(var)) {
             setSkipRun(true);
         }
 

@@ -148,7 +148,7 @@ public class PartyTooltip extends Tooltip {
 //        super.onMouseEnter(event, x, y, pointer, fromActor);
 //        ActorMaster.addScaleAction(actor, 1.2f, 1.2f, 0.4f);
 
-        updateRequired = true;
+        setUpdateRequired(true);
 
         actor.hover();
     }

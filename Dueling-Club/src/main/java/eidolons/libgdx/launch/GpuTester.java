@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class GpuTester {
 
-    private static Integer dedicatedMemory;
+    private static Integer dedicatedMemory=2000;
     private static Integer sharedMemory;
     private static boolean measured;
 

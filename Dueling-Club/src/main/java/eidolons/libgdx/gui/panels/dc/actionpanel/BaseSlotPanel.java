@@ -45,23 +45,28 @@ public class BaseSlotPanel extends TablePanel {
         updateAct(delta);
         invalidate();
         afterUpdateAct(delta);
-        updateRequired= false;
+        super.setUpdateRequired(false);
+    }
+
+    @Override
+    public void setUpdateRequired(boolean updateRequired) {
+        super.setUpdateRequired(updateRequired);
     }
 
     @Override
     public void act(float delta) {
         beforeReset -= delta;
         if (hoveredAny) {
-            updateRequired=false;
+            super.setUpdateRequired(false);
         } else
         if (beforeReset <= 0) {
-            beforeReset = resetPeriod;
-            updateRequired = true;
+            beforeReset = 6f;
+            super.setUpdateRequired(true);
         } else {
-            updateRequired=false;
+            super.setUpdateRequired(false);
         }
         if (!firstUpdateDone) {
-            updateRequired = true;
+            super.setUpdateRequired(true);
         }
         super.act(delta);
 //        if (!updateRequired) {
@@ -143,6 +148,7 @@ public class BaseSlotPanel extends TablePanel {
         activePage = page;
         modTableMap.get(activePage).setVisible(true);
         modTableMap.get(activePage).setTouchable(Touchable.enabled);
+
     }
 
     protected TablePanel initPage(List<ValueContainer> sources, String emptyImagePath) {

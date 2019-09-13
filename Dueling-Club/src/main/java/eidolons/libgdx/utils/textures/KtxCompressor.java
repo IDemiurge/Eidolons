@@ -1,39 +1,25 @@
 package eidolons.libgdx.utils.textures;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ETC1;
-import com.badlogic.gdx.graphics.glutils.KTXTextureData;
-import com.badlogic.gdx.tools.etc1.ETC1Compressor;
 import com.badlogic.gdx.tools.ktx.KTXProcessor;
-import com.badlogic.gdx.utils.Array;
-import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.texture.TextureCache;
-import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
 
-public class TextureConverter extends GdxUtil {
+public class KtxCompressor extends GdxUtil {
     private static final CharSequence FORMAT = ".ktx";
+    private static final String DEFAULT = "ui/light/light.png;";
     private final String[] args;
     private SpriteBatch spriteBatch;
 
     private boolean checkRGB=true;
     private boolean writeKTX=true;
 
-    public TextureConverter(String... args) {
+    public KtxCompressor(String... args) {
         this.args = args;
     }
 
@@ -52,7 +38,7 @@ public class TextureConverter extends GdxUtil {
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
-        new TextureConverter(args).start();
+        new KtxCompressor(args).start();
     }
 
     @Override

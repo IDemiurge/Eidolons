@@ -24,12 +24,12 @@ public class DynamicTooltip extends ValueTooltip {
                           Supplier<String> text) {
         this.text = text;
         this.pic = texture;
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        updateRequired = true;
+        setUpdateRequired(true);
         super.onMouseEnter(event, x, y, pointer, fromActor);
     }
 

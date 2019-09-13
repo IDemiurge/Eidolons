@@ -104,7 +104,10 @@ public class GenericGridView extends UnitView {
 //        }
 
         if (emblem != null) {
-            emblemLighting = new Image(TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
+            emblemLighting = new Image(
+                    UnitViewOptions.UNIT_VIEW_ATLAS
+                    ? TextureCache.fromAtlas(UnitView.getAtlasPath(), "light")
+                            : TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
             emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
             emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
             if (getTeamColor() != null)
@@ -311,7 +314,7 @@ public class GenericGridView extends UnitView {
     @Override
     public void setHpBar(HpBar hpBar) {
         super.setHpBar(hpBar);
-        hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar)-32, -hpBar.getHeight() / 2);
     }
 
     @Override

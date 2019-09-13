@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.quest;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -47,7 +46,7 @@ public class QuestProgressPanel extends TablePanelX {
 
         GuiEventManager.bind(GuiEventType.QUEST_ENDED,
                 p -> {
-                    updateRequired = true;
+                    setUpdateRequired(true);
 
                 });
         GuiEventManager.bind(GuiEventType.QUEST_STARTED,

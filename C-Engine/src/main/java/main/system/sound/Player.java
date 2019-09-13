@@ -580,7 +580,7 @@ public class Player {
     public void playNow(String sound, int volume_percentage, int delay) {
         setDelay(delay);
         setVolume(volume_percentage);
-        playNow(sound, volume_percentage, delay);
+        playNow(new SoundFx(sound, volume_percentage, delay));
     }
 
     public void playEffectSound(SOUNDS sound_type, Obj obj, int volume_percentage, int delay) {

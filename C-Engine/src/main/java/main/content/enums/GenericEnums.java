@@ -333,7 +333,7 @@ public class GenericEnums {
         //    IMPACT_demonology,
         //    IMPACT_scare,
         //    IMPACT_psychic,
-        //    CAST_darkness,
+
         //    CAST_black_hand,
         //    CAST_black_hand2,
         //    CAST_black_hand3,
@@ -352,6 +352,12 @@ public class GenericEnums {
 
 
          */
+
+        CAST_dark("spell/cast/witchery circle slow6"),
+        CAST_dark2("spell/cast/shadow center2"),
+        CAST_dark3("spell/cast/blood circle slow3"),
+        CAST_dark4("spell/cast/new storm"),
+        CAST_dark5("spell/cast/witchery circle slow4"),
 
         weave_nether("spell/weave/nether weave"),
         missile_nether("spell/missile/nether missile"),

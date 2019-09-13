@@ -28,12 +28,12 @@ public class MapDatePanel extends TablePanel {
 
     public MapDatePanel() {
         GuiEventManager.bind(MapEvent.DATE_CHANGED, p -> {
-            updateRequired = true;
+            setUpdateRequired(true);
             this.date = (GameDate) p.get();
         });
         setSize(GdxMaster.adjustSize(WIDTH), GdxMaster.adjustSize(HEIGHT));
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
-        updateRequired = true;
+        setUpdateRequired(true);
 
         //tooltips?
     }

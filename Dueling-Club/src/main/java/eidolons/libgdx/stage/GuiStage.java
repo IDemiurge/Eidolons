@@ -1021,6 +1021,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     public void dialogueDone() {
+        Eidolons.getGame().getManager().setHighlightedObj(null);
         dialogueContainer.fadeOut();
         dialogueToggle(false);
         dialogueContainer.hide();

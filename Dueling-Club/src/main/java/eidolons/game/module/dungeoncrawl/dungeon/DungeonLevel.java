@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.GenericMapper;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
@@ -448,6 +449,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public CELL_IMAGE getCellType(int i, int j) {
+        if (EidolonsGame.BRIDGE){
+            return CELL_IMAGE.octagonal;
+        }
+
         Coordinates c = new Coordinates(i, j);
         CELL_IMAGE img = cellTypeSpecialMap.get(c);
         if (img != null) {

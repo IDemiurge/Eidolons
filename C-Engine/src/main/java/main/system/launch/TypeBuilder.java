@@ -46,7 +46,7 @@ public class TypeBuilder {
     }
 
     private static boolean isBuildTypeOnInit() {
-        return false;
+        return !CoreEngine.isCombatGame();
     }
 
     public static ObjType buildType(Node node, ObjType type) {

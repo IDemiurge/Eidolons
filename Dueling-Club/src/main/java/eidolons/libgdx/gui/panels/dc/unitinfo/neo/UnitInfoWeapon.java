@@ -5,7 +5,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -20,7 +19,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class UnitInfoWeapon extends QuickWeaponPanel{
     public UnitInfoWeapon(boolean offhand) {
         super(offhand);
-        updateRequired=false;
+        setUpdateRequired(false);
 //        TextureRegion texture;
 //        setBackground(new TextureRegionDrawable(
 //         texture = offhand? TextureCache.getOrCreateR("ui/components/dc/infopanel/weapon background offhand.png")

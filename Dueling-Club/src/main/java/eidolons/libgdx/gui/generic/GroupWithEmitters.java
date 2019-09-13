@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.generic;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 
@@ -16,7 +17,7 @@ public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        draw(batch, parentAlpha, false);
+        draw(batch, parentAlpha, !GridPanel.isDrawEmittersOnTop());
     }
 
     public void draw(Batch batch, float parentAlpha, boolean drawEmitters) {

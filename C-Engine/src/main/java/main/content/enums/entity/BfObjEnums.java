@@ -29,10 +29,11 @@ public class BfObjEnums {
         chrysalis(15, "", "", "", 5,
                 "gate(0, 130)", "light( 0,  0)"),
 
-        darkness(15, "", "", "cells/bf/light wisp float.txt", 5,
-                "black wing(-60, -30)", "black wing(60, -30)"
-                , "black tendrils(50, -80)", "black tendrils(-50, -80)"
-                , "keserim(10, -90)"),
+        darkness(15, "", "", "", 5 //cells/bf/light wisp float.txt
+//                ,                "black wing(-60, -30)", "black wing(60, -30)"
+//                , "black tendrils(50, -80)", "black tendrils(-50, -80)"
+//                , "keserim(10, -90)"
+        ),
 
         dark_chrysalis(15, "", "", "", 5,
                 "black wing(-50, 30)", "black wing(50, 30)"
@@ -48,6 +49,7 @@ public class BfObjEnums {
                 "bone wing(-70, 30)", "bone wing(70, 30)"),
 
         flames(15, "", "", "", 5),
+        smoke(15, "", "", "", 5),
         hypnotic_flames_mass(15, "", "", "", 5),
         hypnotic_flames_mass_narrow(15, "", "", "", 5),
         hypnotic_flames_slow_up(15, "", "", "", 5),

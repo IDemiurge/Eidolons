@@ -72,7 +72,7 @@ public class BriefText extends TablePanelX {
     public void updateAct(float delta) {
         super.updateAct(delta);
         if (mainText.getActions().size != 0) {
-            updateRequired = true;
+            setUpdateRequired(true);
             return;
         }
 

@@ -22,6 +22,7 @@ import java.util.Map;
 public class EidolonsGame {
     public static   boolean DUEL_TEST  ;
     public static   boolean TRANSIT_TEST  ;
+    public static   boolean LEVI_TEST  =false;
 
     public static boolean BRIDGE = false;
     public static boolean BOSS_FIGHT;
@@ -58,8 +59,22 @@ public class EidolonsGame {
         }
 
     }
+    public static final boolean get(String field ) {
+        try {
+            return (boolean) EidolonsGame.class.getField(field.toUpperCase()).get(null );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-    public static boolean getVar(String field) {
+    public static boolean getAny(String field) {
+        if (varMap.get(field) == null) {
+            return get(field);
+        }
+        return varMap.get(field);
+    }
+        public static boolean getVar(String field) {
         if (varMap.get(field) == null) {
             return false;
         }

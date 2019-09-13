@@ -272,7 +272,7 @@ public class GridPanel extends Group {
             animMaster.setVisible(false);
 
             super.draw(batch, 1);
-            if (isDrawEmitters())
+            if (isDrawEmittersOnTop())
                 drawEmitters(batch);
             drawComments(batch);
             animMaster.setVisible(true);
@@ -282,13 +282,7 @@ public class GridPanel extends Group {
                     paused ? GrayscaleShader.getGrayscaleShader() : null, true);
     }
 
-    private boolean isDrawEmitters() {
-//        if (CoreEngine.isSuperLite()) {
-//            return false;
-//        }
-//        return  !DialogueManager.isRunning() ||
-//                EidolonsGame.INTRO_STARTED||
-//                EidolonsGame.DUEL_TEST ;
+    public static final  boolean isDrawEmittersOnTop() {
         return true;
     }
 
@@ -489,12 +483,32 @@ public class GridPanel extends Group {
             if (p.get() == null) {
                 return;
             }
-            UnitView view = getUnitView((BattleFieldObject) p.get());
+            BattleFieldObject unit = (BattleFieldObject) p.get();
+            UnitView view = getUnitView(unit);
+            main.system.auxiliary.log.LogMaster.dev("ACTOR_SPEAKS: " +unit);
+
+            unit.getGame().getManager().setHighlightedObj(unit);
+
             for (BaseView value : viewMap.values()) {
                 if (value==view) {
+
+//                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
                     view.highlight();
+                    GraphicData data= new GraphicData("alpha::0.8f");
+                    gridViewAnimator.animate(view ,  GridViewAnimator.VIEW_ANIM.screen , data);
+                    WaitMaster.doAfterWait(4000, ()-> {
+                        if (!DialogueManager.isRunning())
+                        {
+                            main.system.auxiliary.log.LogMaster.dev("hl off: " +unit);
+                            view.highlightOff();
+                            unit.getGame().getManager().setHighlightedObj(null);
+                        }
+                    });
                 } else
-                     value.highlightOff();
+                {
+                    value.highlightOff();
+                    GuiEventManager.trigger(GRID_OBJ_HOVER_OFF, view);
+                }
             }
 
         });
@@ -730,7 +744,12 @@ public class GridPanel extends Group {
             }
             setVisible((BattleFieldObject) p.get(), true);
         });
-        GuiEventManager.bind(UNIT_VISIBLE_OFF, p -> {
+        GuiEventManager.bind(REMOVE_UNIT_VIEW, p -> {
+
+            getUnitView((BattleFieldObject) p.get()).setVisible(false);
+            getUnitView((BattleFieldObject) p.get()).remove();
+        });
+            GuiEventManager.bind(UNIT_VISIBLE_OFF, p -> {
             if (p.get() instanceof Collection) {
                 for (Object sub : ((Collection) p.get())) {
                     setVisible((BattleFieldObject) sub, false);

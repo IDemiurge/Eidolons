@@ -50,8 +50,8 @@ public class SoundEvents {
                     if (EntityCheckMaster.isOverlaying(event.getRef().getTargetObj()))
                         break;
                     if (event.getRef().getTargetObj() != Eidolons.MAIN_HERO) {
-                        DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
-                                + "combat/fall/", true);
+//                        DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
+//                                + "combat/fall/", true);
                         break;
                     }
 

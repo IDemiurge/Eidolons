@@ -222,6 +222,9 @@ public class BuffMaster extends Master {
         BuffType type = new BuffType(DataManager.getType(s, DC_TYPE.BUFFS));
         if (effects == null) {
             Effects e = new Effects();
+            if (type.checkProperty(G_PROPS.STATUS))
+                e.add(new ModifyPropertyEffect(G_PROPS.STATUS, Effect.MOD_PROP_TYPE.ADD,
+                        type.getProperty(G_PROPS.STATUS)));
             if (type.checkProperty(G_PROPS.STD_BOOLS))
                 e.add(new ModifyPropertyEffect(G_PROPS.STD_BOOLS, Effect.MOD_PROP_TYPE.ADD,
                         type.getProperty(G_PROPS.STD_BOOLS)));

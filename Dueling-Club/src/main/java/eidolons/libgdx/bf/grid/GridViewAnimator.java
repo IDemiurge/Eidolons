@@ -105,7 +105,7 @@ public class GridViewAnimator {
 
 
     }
-    private boolean animate(GroupX animated, VIEW_ANIM value, GraphicData data) {
+    public boolean animate(GroupX animated, VIEW_ANIM value, GraphicData data) {
 
         main.system.auxiliary.log.LogMaster.dev(animated.toString()+ "'s Grid Anim handled: " +value.toString() + " \n"+data);
         switch (value) {

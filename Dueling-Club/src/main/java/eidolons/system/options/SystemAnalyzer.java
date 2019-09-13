@@ -56,9 +56,9 @@ public class SystemAnalyzer {
         float level = CoreEngine.getMemoryLevel();
 
 
-//        if (CoreEngine.isSuperLite()){
+        if (CoreEngine.isSuperLite()){
             level=1.5f;
-//        }
+        }
         if (level <= 1.0) {
             //            we are doomed
             graphics.setValue(GRAPHIC_OPTION.PERFORMANCE_BOOST, 100);

@@ -186,6 +186,7 @@ public class DialogueHandler {
     }
 
     public void setAutoCamera(boolean autoCamera) {
+        main.system.auxiliary.log.LogMaster.dev("autoCamera set " +autoCamera);
         this.autoCamera = autoCamera;
     }
 

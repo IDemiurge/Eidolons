@@ -84,6 +84,15 @@ public class EmitterPools {
         if (path.contains("flame")){
             return true;
         }
+        if (path.contains("nether")){
+            return true;
+        }
+        if (path.contains("spell")){
+            return true;
+        }
+        if (path.contains("invert")){
+            return true;
+        }
         return false;
     }
 

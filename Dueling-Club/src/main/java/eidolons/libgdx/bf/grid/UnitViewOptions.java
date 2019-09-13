@@ -17,14 +17,17 @@ import eidolons.libgdx.bf.boss.entity.BossMaster;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 
+import static eidolons.libgdx.texture.TextureCache.fromAtlas;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class UnitViewOptions {
 
+    public static final boolean UNIT_VIEW_ATLAS = false;
     public boolean cellBackground;
     private Runnable runnable;
     private TextureRegion portraitTexture;
@@ -86,6 +89,18 @@ public class UnitViewOptions {
     }
 
     public final void createFromGameObject(BattleFieldObject obj) {
+        if (UNIT_VIEW_ATLAS){
+            String imgPath = obj.getImagePath().replace("main", "unitview");
+            if (obj instanceof Structure) {
+                imgPath = "unitview/objects/" + PathUtils.getLastPathSegment(imgPath);
+            }
+            {
+                this.portraitTexture = fromAtlas(UnitView.getAtlasPath(), imgPath);
+            }
+        }
+        if (portraitTexture == null) {
+
+        }
         this.portraitTexture = getOrCreateR(obj.getImagePath());
         this.portraitPath =  (obj.getImagePath());
         this.name = obj.getName();
@@ -126,6 +141,9 @@ public class UnitViewOptions {
                     this.emblem = getOrCreateR(emblem);
                 else
                     emblem = obj.getOwner().getHeroObj().getProperty(G_PROPS.EMBLEM, true);
+                if (UNIT_VIEW_ATLAS){
+                    this.emblem = fromAtlas(UnitView.getAtlasPath(), PathUtils.getLastPathSegment(emblem));
+                } else
                 if (ImageManager.isImage(emblem))
                     this.emblem = getOrCreateR(emblem);
             }

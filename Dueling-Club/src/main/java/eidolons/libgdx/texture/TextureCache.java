@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.system.graphics.GreyscaleUtils;
@@ -54,6 +55,14 @@ public class TextureCache {
     private SmartTextureAtlas genAtlas;
     private Pattern pattern;
     private boolean silent;
+
+    public static TextureRegion fromAtlas(String atlasPath, String light) {
+    if ( Assets.get().getManager().isLoaded(atlasPath) ){
+        SmartTextureAtlas atlas = Assets.get().getManager().get(atlasPath);
+        return atlas.findRegion(light);
+    }
+        return new TextureRegion(getEmptyTexture());
+    }
 
     public void loadAtlases() {
         uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");

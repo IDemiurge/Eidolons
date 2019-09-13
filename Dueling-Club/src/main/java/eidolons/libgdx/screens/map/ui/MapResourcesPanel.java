@@ -44,7 +44,7 @@ public class MapResourcesPanel extends TablePanel {
 
 
     public MapResourcesPanel() {
-        updateRequired = true;
+        setUpdateRequired(true);
         setHeight(GdxMaster.adjustSize(HEIGHT + 4));
         defaults().width(GdxMaster.getWidth() / 3);
         addResGroup(resourceGroupOne);

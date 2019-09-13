@@ -55,7 +55,7 @@ public class ValueTooltip extends Tooltip {
     @Override
     public void updateAct(float delta) {
         if (getUserObject()==WAIT_FOR_RESET || getUserObject()==null ){
-            updateRequired=true;
+            setUpdateRequired(true);
             return;
         }
         clearChildren();

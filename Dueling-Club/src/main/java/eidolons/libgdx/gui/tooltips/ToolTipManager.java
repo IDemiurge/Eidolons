@@ -36,6 +36,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
+import main.system.threading.WaitMaster;
 
 import static main.system.GuiEventType.*;
 
@@ -76,10 +77,19 @@ public class ToolTipManager extends TablePanel {
         GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
             if (DungeonScreen.getInstance().isBlocked())
                 return;
+            if (Cinematics.ON) {
+                return;
+            }
             BaseView object = (BaseView) event.get();
             hovered(object);
             if (object instanceof LastSeenView)
                 return;
+        });
+
+        GuiEventManager.bind(SCALE_UP_VIEW, (event) -> {
+            BaseView object = (BaseView) event.get();
+            scaleUp(object);
+            WaitMaster.doAfterWait(3500,()-> scaleDown(object));
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
@@ -442,34 +452,14 @@ public class ToolTipManager extends TablePanel {
     }
 
 
-    private void hovered(BaseView object) {
+        private void hovered(BaseView object) {
         if (object.getUserObject() instanceof Structure){
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
             }
         }
-        if (Cinematics.ON) {
-            return;
-        }
-        float scaleX = getDefaultScale(object);
-        if (object.getScaleX() == getDefaultScale(object))
-            scaleX = getZoomScale(object);
-        float scaleY = getDefaultScale(object);
-        if (object.getScaleY() == getDefaultScale(object))
-            scaleY = getZoomScale(object);
+            scaleUp(object);
 
-        ActionMaster.
-                addScaleActionIfNoActions(object, scaleX, scaleY, 0.35f);
-
-        if (object instanceof GridUnitView) {
-            if (scaleX == getDefaultScale(object))
-                scaleX = getZoomScale(object);
-            if (scaleY == getDefaultScale(object))
-                scaleY = getZoomScale(object);
-            ActionMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleX, scaleY, 0.35f);
-        }
         object.setHovered(true);
         hoverOff=false;
         stackMaster.checkShowStack(object);
@@ -479,6 +469,33 @@ public class ToolTipManager extends TablePanel {
 
     }
 
+    private void scaleUp(BaseView object) {
+        scale(object, getZoomScale(object));
+    }
+    private void scaleDown(BaseView object) {
+        scale(object, getDefaultScale(object));
+    }
+        private void scale(BaseView object, float scale) {
+//        float scaleX = getDefaultScale(object);
+//        if (object.getScaleX() == getDefaultScale(object))
+//            scaleX = getZoomScale(object);
+//        float scaleY = getDefaultScale(object);
+//        if (object.getScaleY() == getDefaultScale(object))
+//            scaleY = getZoomScale(object);
+
+        ActionMaster.
+                addScaleActionIfNoActions(object, scale, scale, 0.35f);
+
+        if (object instanceof GridUnitView) {
+//            if (scaleX == getDefaultScale(object))
+//                scaleX = getZoomScale(object);
+//            if (scaleY == getDefaultScale(object))
+//                scaleY = getZoomScale(object);
+            ActionMaster.
+                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+                            , scale, scale, 0.35f);
+        }
+    }
     private void hoverOff(BaseView object) {
         if (object instanceof LastSeenView) {
             return;
@@ -488,25 +505,25 @@ public class ToolTipManager extends TablePanel {
                 return;
             }
         }
-        float scaleX;
-        float scaleY;
-
-        if (object instanceof GridUnitView) {
-            scaleX = object.getScaledWidth();
-            scaleY = object.getScaledHeight();
-            ActionMaster.
-                    addScaleAction(object, scaleX, scaleY, 0.35f);
-            scaleX = getDefaultScale(object);
-            scaleY = getDefaultScale(object);
-            ActionMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleX, scaleY, 0.35f);
-        } else {
-            scaleX = getDefaultScale(object);
-            scaleY = getDefaultScale(object);
-            ActionMaster.
-                    addScaleAction(object, scaleX, scaleY, 0.35f);
-        }
+        scaleDown(object);
+//        float scaleX;
+//        float scaleY;
+//        if (object instanceof GridUnitView) {
+//            scaleX = object.getScaledWidth();
+//            scaleY = object.getScaledHeight();
+//            ActionMaster.
+//                    addScaleAction(object, scaleX, scaleY, 0.35f);
+//            scaleX = getDefaultScale(object);
+//            scaleY = getDefaultScale(object);
+//            ActionMaster.
+//                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+//                            , scaleX, scaleY, 0.35f);
+//        } else {
+//            scaleX = getDefaultScale(object);
+//            scaleY = getDefaultScale(object);
+//            ActionMaster.
+//                    addScaleAction(object, scaleX, scaleY, 0.35f);
+//        }
         hoverOff = true;
         object.setHovered(false);
         stackMaster.checkStackOff(object);

@@ -115,7 +115,7 @@ public class QueueView extends UnitView {
         }
         if (!GridMaster.isHpBarsOnTop())
             if (hpBar != null)
-                hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
+                hpBar.setPosition(GdxMaster.centerWidth(hpBar)- 5, -hpBar.getHeight() / 2);
         if (isInitialized())
             reset();
 
@@ -225,7 +225,7 @@ public class QueueView extends UnitView {
         this.hpBar = hpBar;
         //        if (!GridPanel.isHpBarsOnTop()) {
         addActor(hpBar);
-        hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar)- 5, -hpBar.getHeight() / 2);
         //        }
         hpBar.setQueue(true);
     }

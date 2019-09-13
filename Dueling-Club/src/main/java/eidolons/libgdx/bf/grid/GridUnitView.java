@@ -22,6 +22,8 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -146,19 +148,34 @@ public class GridUnitView extends GenericGridView {
                 arrow.fadeOut();
             }
         }
-        super.draw(batch, parentAlpha);
-        if (screenOverlay > 0) {
-            portrait.setZIndex(999999);
+        if (!(screenOverlay > 0)) {
             super.draw(batch, parentAlpha);
-            ((CustomSpriteBatch) batch).setBlending(BLENDING.SCREEN); //could do other blends too
-            float a = getColor().a; // hue?
-            getColor().a = screenOverlay;
-            //setVisible(false); for all nonportrait
-            super.draw(batch, parentAlpha);
-            portrait.setZIndex(1);
-            getColor().a = a;
-            ((CustomSpriteBatch) batch).resetBlending();
+            return;
         }
+        if ( (screenOverlay > 0)) {
+            return; //TODO cut it
+        }
+        portrait.setZIndex(999999);
+        if (spritesContainersUnder!=null)
+            spritesContainersUnder.setVisible(false);
+        if (spritesContainers!=null)
+            spritesContainers.setVisible(false);
+        super.draw(batch, parentAlpha);
+
+        ((CustomSpriteBatch) batch).setBlending(BLENDING.SCREEN); //could do other blends too
+
+        float a = getColor().a; // hue?
+        getColor().a = screenOverlay;
+        //setVisible(false); for all nonportrait
+        super.draw(batch, parentAlpha);
+
+        if (spritesContainersUnder!=null)
+        spritesContainersUnder.setVisible(true);
+        if (spritesContainers!=null)
+            spritesContainers.setVisible(true);
+        portrait.setZIndex(1);
+        getColor().a = a;
+        ((CustomSpriteBatch) batch).resetBlending();
     }
 
     public float getScreenOverlay() {
@@ -328,19 +345,20 @@ public class GridUnitView extends GenericGridView {
     @Override
     protected void alphaFluctuation(float delta) {
         super.alphaFluctuation(delta);
-        if (highlight.getColor().a>0) {
-        alphaFluctuation(highlight, delta);
-        }
+//        if (highlight!=null )
+//        if (highlight.getColor().a>0) {
+//            alphaFluctuation(highlight, delta);
+//        }
     }
 
     @Override
     public void highlight() {
         super.highlight();
-        screenOverlay=1;
+//        screenOverlay=1;
     }
 
     @Override
     public void highlightOff() {
-        screenOverlay=0;
+//        screenOverlay=0;
     }
 }

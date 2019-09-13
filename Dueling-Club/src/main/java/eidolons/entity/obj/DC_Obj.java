@@ -77,6 +77,7 @@ public abstract class DC_Obj extends MicroObj {
     private VisionController visionController;
     private boolean visibilityOverride;
     private boolean resetIgnored;
+    private boolean visibilityFrozen;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -199,31 +200,31 @@ public abstract class DC_Obj extends MicroObj {
 
     // boolean map instead?
     public boolean isAgile() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS);
+        return checkPassive(STANDARD_PASSIVES.DEXTEROUS);
     }
 
     public boolean isFlying() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.FLYING);
+        return checkPassive(STANDARD_PASSIVES.FLYING);
     }
 
     public boolean hasDoubleCounter() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_RETALIATION);
+        return checkPassive(STANDARD_PASSIVES.DOUBLE_RETALIATION);
     }
 
     public boolean hasBludgeoning() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.BLUDGEONING);
+        return checkPassive(STANDARD_PASSIVES.BLUDGEONING);
     }
 
     public boolean hasNoRetaliation() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
+        return checkPassive(STANDARD_PASSIVES.NO_RETALIATION);
     }
 
     public boolean hasFirstStrike() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.FIRST_STRIKE);
+        return checkPassive(STANDARD_PASSIVES.FIRST_STRIKE);
     }
 
     public boolean hasNoMeleePenalty() {
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.NO_MELEE_PENALTY);
+        return checkPassive(STANDARD_PASSIVES.NO_MELEE_PENALTY);
 
     }
 
@@ -719,7 +720,7 @@ public abstract class DC_Obj extends MicroObj {
                 setGamma(i);
                 if (GammaMaster.DEBUG_MODE)
                 if (game.isDebugMode())
-                    main.system.auxiliary.log.LogMaster.log(1,this + " gamma = " +i);
+                    LogMaster.log(1,this + " gamma = " +i);
             }
         }
     }
@@ -776,5 +777,13 @@ public abstract class DC_Obj extends MicroObj {
 
     public void log(String s) {
         getGame().getLogManager().log(getName() + ": " + s);
+    }
+
+    public boolean isVisibilityFrozen() {
+        return visibilityFrozen;
+    }
+
+    public void setVisibilityFrozen(boolean visibilityFrozen) {
+        this.visibilityFrozen = visibilityFrozen;
     }
 }

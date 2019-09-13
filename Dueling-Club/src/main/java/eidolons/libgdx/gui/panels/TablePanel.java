@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class TablePanel<T extends Actor> extends Table {
 
-    protected boolean updateRequired;
+    private boolean updateRequired;
     private boolean fixedSize;
     private boolean fixedMinSize;
     private boolean fixedMaxSize;
@@ -165,7 +165,7 @@ public class TablePanel<T extends Actor> extends Table {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (updateRequired && isVisibleEffectively()) {
+        if (isUpdateRequired() && isVisibleEffectively()) {
             updateAllOnAct(delta);
         }
     }
@@ -175,7 +175,7 @@ public class TablePanel<T extends Actor> extends Table {
         if (invalidateOnUpdate())
             invalidate();
         afterUpdateAct(delta);
-        updateRequired = false;
+        setUpdateRequired(false);
     }
 
     protected boolean invalidateOnUpdate() {
@@ -213,7 +213,7 @@ public class TablePanel<T extends Actor> extends Table {
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         setUserObjectForChildren(userObject);
-        updateRequired = true;
+        setUpdateRequired(true);
     }
 
     protected void setUserObjectForChildren(Object userObject) {
@@ -252,5 +252,9 @@ public class TablePanel<T extends Actor> extends Table {
 
     public void setFixedSize(boolean fixedSize) {
         this.fixedSize = fixedSize;
+    }
+
+    public boolean isUpdateRequired() {
+        return updateRequired;
     }
 }

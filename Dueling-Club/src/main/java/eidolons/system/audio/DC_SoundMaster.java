@@ -7,6 +7,7 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -53,6 +54,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.CAST;
 import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.IMPACT;
 
 //import main.game.logic.battle.player.Player;
@@ -396,7 +398,7 @@ public class DC_SoundMaster extends SoundMaster {
                 case MISSILE:
                 case IMPACT:
                 case AFTEREFFECT:
-                    playNow(getActionEffectSoundPath((Spell) activeObj, part));
+                    playNow(getActionEffectSoundPath((Spell) activeObj, part), 200, 0);
                     return;
             }
         if (activeObj.isMove()) {
@@ -518,7 +520,14 @@ public class DC_SoundMaster extends SoundMaster {
         if (Cinematics.ON) {
             return "";
         }
+        if (part== CAST) {
+            return getSpellSoundPath() +
+                    spell.getProperty(G_PROPS.CUSTOM_SOUNDSET);
+        }
         if (part != IMPACT) {
+            return "";
+        }
+        if (!spell.getProperty(G_PROPS.CUSTOM_SOUNDSET).isEmpty()) {
             return "";
         }
         GenericEnums.DAMAGE_TYPE dmg_type =
@@ -619,7 +628,8 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public static void playDamageSound(GenericEnums.DAMAGE_TYPE damageType) {
-        playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
+       if (!EidolonsGame.DUEL)
+         playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
     }
 
     public static void playKeySound(String value, float volume, boolean random) {

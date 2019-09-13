@@ -15,6 +15,7 @@ import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
@@ -73,21 +74,19 @@ public class LinkedGridObject extends CinematicGridObject {
 
 //        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.32f);
 
-        CUSTOM_OBJECT.nether_flames.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
-        CUSTOM_OBJECT.burning_rubble.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
-        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
+//        CUSTOM_OBJECT.nether_flames.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
+//        CUSTOM_OBJECT.burning_rubble.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
+        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.vfxOver +=
+                "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
 
-//        CUSTOM_OBJECT.nether_flames.movable = true;
-//        CUSTOM_OBJECT.nether_flames.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
-//        CUSTOM_OBJECT.nether_flames.vfxChance = 44;
+        CUSTOM_OBJECT.smoke.vfxOver +=
+                "invert/smoke large(0, 0);";
 
-//        CUSTOM_OBJECT.burning_rubble.movable = true;
-//        CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.22f);
-//        CUSTOM_OBJECT.burning_rubble.screen = true;
-//        CUSTOM_OBJECT.burning_rubble.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
-//        CUSTOM_OBJECT.burning_rubble.vfxFolderOver = "ambient/sprite/fires/rubble";
-//        CUSTOM_OBJECT.burning_rubble.maxEmitters = 1;
-//        CUSTOM_OBJECT.burning_rubble.vfxChance = 44;
+        CUSTOM_OBJECT.power_field.setVfxSpeed(0.34f);
+        CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.4f);
+        CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.4f);
+        CUSTOM_OBJECT.smoke.setVfxSpeed(0.64f);
+        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.setVfxSpeed(0.4f);
 
 
         CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire slow up fine(0, 0);";
@@ -97,14 +96,11 @@ public class LinkedGridObject extends CinematicGridObject {
 
         CUSTOM_OBJECT.hypnotic_flames.vfxFolderUnder = "ambient/sprite/fires/hypno/best";
 
-//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
-//        CUSTOM_OBJECT.hypnotic_flames_green.vfxFolderUnder = "ambient/sprite/fires/hypno";
-//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
-//        CUSTOM_OBJECT.hypnotic_flames_green.vfxFolderUnder = "ambient/sprite/fires/hypno";
-//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
-//        CUSTOM_OBJECT.hypnotic_flames_green.vfxFolderUnder = "ambient/sprite/fires/hypno/hypnofire green2";
-//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
 
+        //portal.  ambient/sprite/swarm of light
+
+//        CUSTOM_OBJECT.nether_flames.vfxOver += "spell/nether/soul flame ambi(0, 0);";
+//        CUSTOM_OBJECT.burning_rubble.vfxOver += "spell/nether/toxic fumes(0, 0);";
 
         CUSTOM_OBJECT.crematory.vfxOver += "ambient/sprite/fires/real fire2(0, -40);";
         CUSTOM_OBJECT.crematory.screen = true;
@@ -113,18 +109,23 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.black_waters.vfxOver += "advanced/ambi/black water square small slow(-21, -21);";
         CUSTOM_OBJECT.black_waters.setVfxSpeed(0.6f);
 
-        CUSTOM_OBJECT.force_field.setVfxSpeed(0.14f);
+//        CUSTOM_OBJECT.force_field.vfxOver += "spell/nether/soul flame ambi(0, 0);";
+        CUSTOM_OBJECT.force_field.vfxOver += "spell/nether/toxic fumes(0, 0);";
+        CUSTOM_OBJECT.force_field.setVfxSpeed(0.34f);
         CUSTOM_OBJECT.force_field.always_visible=true;
 //        CUSTOM_OBJECT.force_field.maxEmitters=1;
 //        CUSTOM_OBJECT.force_field.vfxChance=0.12f;
 //        CUSTOM_OBJECT.force_field.vfxFolderOver ="spell/weave";
 //        CUSTOM_OBJECT.force_field.screen=true;
-
         CUSTOM_OBJECT.force_field.invert_screen=true;
 
-        CUSTOM_OBJECT.power_field.vfxOver ="spell/weave/nether weave(0, -0)";
+//        CUSTOM_OBJECT.power_field.vfxOver ="spell/weave/nether weave(0, -0)";
+        CUSTOM_OBJECT.power_field.vfxOver ="ambient/sprite/swarm of light(0, -0)";
+        //portal.  ambient/sprite/swarm of light
+        CUSTOM_OBJECT.power_field.always_visible=true;
 
         CUSTOM_OBJECT.LEVIATHAN.attach=true;
+        CUSTOM_OBJECT.LEVIATHAN.always_visible=true;
         CUSTOM_OBJECT.LEVIATHAN.invert_screen=true;
         CUSTOM_OBJECT.BIG_CLAW.invert_screen=true;
         CUSTOM_OBJECT.BIG_CLAW.backAndForth=true;
@@ -151,6 +152,25 @@ public class LinkedGridObject extends CinematicGridObject {
         LIGHT.screen = true;
 //        CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
 //        CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
+
+//        CUSTOM_OBJECT.nether_flames.movable = true;
+//        CUSTOM_OBJECT.nether_flames.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
+//        CUSTOM_OBJECT.nether_flames.vfxChance = 44;
+
+//        CUSTOM_OBJECT.burning_rubble.movable = true;
+//        CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.22f);
+//        CUSTOM_OBJECT.burning_rubble.screen = true;
+//        CUSTOM_OBJECT.burning_rubble.spriteColor = new Color(0.57f, 0.99f, 0.78f, 0.78f);
+//        CUSTOM_OBJECT.burning_rubble.vfxFolderOver = "ambient/sprite/fires/rubble";
+//        CUSTOM_OBJECT.burning_rubble.maxEmitters = 1;
+//        CUSTOM_OBJECT.burning_rubble.vfxChance = 44;
+//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
+//        CUSTOM_OBJECT.hypnotic_flames_green.vfxFolderUnder = "ambient/sprite/fires/hypno";
+//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
+//        CUSTOM_OBJECT.hypnotic_flames_green.vfxFolderUnder = "ambient/sprite/fires/hypno";
+//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
+//        CUSTOM_OBJECT.hypnotic_flames_green.vfxFolderUnder = "ambient/sprite/fires/hypno/hypnofire green2";
+//        CUSTOM_OBJECT.hypnotic_flames_green.maxEmitters = 1;
     }
 
     protected final BaseView linked;
@@ -179,6 +199,11 @@ public class LinkedGridObject extends CinematicGridObject {
         for (String additionalObject : additionalObjects) {
             object = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, VariableManager.removeVarPart(additionalObject));
             LinkedGridObject obj = new LinkedGridObject(linked, object, c) {
+                @Override
+                public boolean isVisible() {
+                    return LinkedGridObject.this.isVisible();
+                }
+
                 @Override
                 public boolean checkVisible() {
                     return LinkedGridObject.this.checkVisible();
@@ -228,12 +253,18 @@ public class LinkedGridObject extends CinematicGridObject {
         if (object.invert_screen_vfx) {
             setInvertScreen(true);
         }
+        if (additional != null)
+        for (LinkedGridObject linkedGridObject : additional) {
+            linkedGridObject.act(RandomWizard.getRandomFloat());
+
+        }
     }
 
     @Override
     protected void initEmitter(EmitterActor emitter, int offsetX, int offsetY) {
         super.initEmitter(emitter, offsetX, offsetY);
         emitter.setSpeed(object.getVfxSpeed());
+        emitter.act(RandomWizard.getRandomFloat());
     }
 
     protected boolean isIgnored() {

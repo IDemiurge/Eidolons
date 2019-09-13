@@ -14,9 +14,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,7 +22,7 @@ public class PanelActionsDataSource implements
         ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
         EffectsAndAbilitiesSource, ResourceSource,
         MainWeaponDataSource<ValueContainer>, OffWeaponDataSource {
-    private static Map<DC_ActiveObj, ValueContainer> cache = new HashMap<>();
+
     private Unit unit;
 
     private UnitDataSource unitDataSource;
@@ -34,33 +32,6 @@ public class PanelActionsDataSource implements
         unitDataSource = new UnitDataSource(unit);
     }
 
-    public static ValueContainer getValueContainer(DC_ActiveObj el, int size) {
-        ValueContainer container = cache.get(el);
-        boolean valid = el.canBeManuallyActivated();
-//        if (container != null) {
-//            container.setValid(valid);
-//            return container;
-//        }
-
-            container = new ActionValueContainer(
-                    size, valid, getImage(el)
-                    , el::invokeClicked);
-            cache.put(el, container);
-
-        container.setUserObject(el);
-
-        ActionCostTooltip tooltip = new ActionCostTooltip(el);
-
-        tooltip.addTo(container);
-        return container;
-    }
-
-
-    private static String getImage(DC_ActiveObj el) {
-        String image = el.getImagePath();
-        //        if (el.can)
-        return image;
-    }
 
     @Override
     public String getParam(PARAMS param) {
@@ -149,7 +120,7 @@ public class PanelActionsDataSource implements
     private Function<DC_ActiveObj, ValueContainer> getActiveObjValueContainerFunction(
             int size) {
         return el -> {
-            return getValueContainer(el, size);
+            return ActionContainerFactory.getValueContainer(el, size);
         };
     }
 

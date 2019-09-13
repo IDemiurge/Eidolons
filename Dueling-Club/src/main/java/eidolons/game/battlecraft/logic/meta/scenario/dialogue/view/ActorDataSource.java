@@ -32,12 +32,12 @@ public class ActorDataSource {
         if (actor.checkSingleProp(PROPS.ACTOR_TYPE, "SECONDARY")) {
             imageSuffix = ImageManager.FULL;
         } else {
-//          TODO   if (DialoguePortraitContainer.isBlotch())
-//            {
+              if (DialoguePortraitContainer.isBlotch())
+            {
 //                actorImage = ImageManager.getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(actorImage)));
-//                imageSuffix="";
-//            }
-//            else
+                imageSuffix="blotch/" +StringMaster.cropFormat(PathUtils.getLastPathSegment(actorImage))+ ".png";
+            }
+            else
                 imageSuffix = ImageManager.LARGE;
         }
 //        actorImage = actor.getProperty()

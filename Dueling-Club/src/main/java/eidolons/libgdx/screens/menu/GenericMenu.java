@@ -20,7 +20,6 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -156,7 +155,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         super.updateAct(delta);
         clear();
         addButtons();
-        updateRequired = false;
+        setUpdateRequired(false);
     }
 
     protected void addButtons() {
@@ -225,7 +224,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
             if (sub == null) {
                 setCurrentItem(previousItem);
                 setPreviousItem(null);
-                updateRequired = true;
+                setUpdateRequired(true);
                 return;
             }
             if (currentItem == sub) {
@@ -239,7 +238,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
             if (result) {
                 setPreviousItem(currentItem);
                 setCurrentItem(sub);
-                updateRequired = true;
+                setUpdateRequired(true);
             }
         };
     }
@@ -251,7 +250,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
                 if (sub == null) {
                     setCurrentItem(previousItem);
                     setPreviousItem(null);
-                    updateRequired = true;
+                    setUpdateRequired(true);
                     return true;
                 }
                 if (currentItem == sub) {
@@ -265,7 +264,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
                 if (result) {
                     setPreviousItem(currentItem);
                     setCurrentItem(sub);
-                    updateRequired = true;
+                    setUpdateRequired(true);
                 }
                 return super.touchDown(event, x, y, pointer, button);
             }

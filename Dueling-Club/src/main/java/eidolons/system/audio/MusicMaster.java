@@ -199,7 +199,7 @@ public class MusicMaster {
     }
 
     public static boolean isMusicPreloadOn() {
-        return !CoreEngine.isIDE();//!mainThemePlayed;
+        return true; //!CoreEngine.isIDE();//!mainThemePlayed;
     }
 
     public static boolean isOn() {
@@ -272,7 +272,10 @@ public class MusicMaster {
             startLoop();
         }
         if (!isOn())
+        {
+            stop();
             return;
+        }
         stopAmbience();
         if (ListMaster.isNotEmpty(playList))
             playList.clear();
@@ -801,6 +804,7 @@ public class MusicMaster {
     public void setScope(MUSIC_SCOPE scope) {
         if (scope != this.scope) {
             this.scope = scope;
+            main.system.auxiliary.log.LogMaster.dev("Music scope: " +scope);
 //            if (interruptOnSet)
 //                musicReset();
         }

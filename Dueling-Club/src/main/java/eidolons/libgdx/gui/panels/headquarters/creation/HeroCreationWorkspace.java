@@ -162,7 +162,7 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
     public void setItem(SelectableItemData sub) {
         previousItem = this.item;
         this.item = sub;
-        updateRequired = true;
+        setUpdateRequired(true);
         newSelection = true;
         //        setUserObject(HqDataMaster.getHeroDataSource((Unit) sub.getEntity()));
     }
