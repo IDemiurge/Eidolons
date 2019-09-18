@@ -5,10 +5,12 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.threading.WaitMaster;
 
 public class EidolonLord extends LightweightEntity {
 
@@ -67,6 +69,11 @@ public class EidolonLord extends LightweightEntity {
     public void soulsGained(Soul soul) {
         addProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
         getGame().getLogManager().log("A Soul is trapped: " + soul.getUnitType().getName());
+
+//        SpeechExecutor.run("sprite=soul grip(me)");
+//        WaitMaster.waitForCondition();
+
+        GuiEventManager.trigger(GuiEventType.SOULS_CLAIMED, soul);
     }
 
 

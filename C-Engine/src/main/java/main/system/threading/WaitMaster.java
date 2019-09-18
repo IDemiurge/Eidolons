@@ -19,17 +19,20 @@ public class WaitMaster {
     private static DequeImpl<WAIT_OPERATIONS> completeOperations;
 
     private static Map<Object, Lock> locks = new HashMap<>();
-    private static List<Object> unlocked = new ArrayList<>();
+    private static Map<Lock, Condition> conditions = new HashMap<>();
+    private static Set<Object> unlocked = new LinkedHashSet<>();
     private static int conditionCounter = 0;
 
     public static void unlock(Object o) {
         unlocked.add(o);
-        Lock lock = locks.get(o);
+        Lock lock = locks.remove(o);
         if (lock == null) {
-            main.system.auxiliary.log.LogMaster.dev("NO LOCK " + o);
+            main.system.auxiliary.log.LogMaster.important("NO LOCK " + o);
             return;
         }
+        main.system.auxiliary.log.LogMaster.important( "UNLOCKING " + o);
         lock.lock();
+         conditions.remove(lock).signal();
         lock.newCondition().signal();
         lock.unlock();
 //        main.system.auxiliary.log.LogMaster.dev("UNLOCKED " + o);
@@ -41,13 +44,18 @@ public class WaitMaster {
 
     public static void waitLock(Object o, int maxMillis) {
         if (unlocked.contains(o)) {
-            main.system.auxiliary.log.LogMaster.dev("ALREDY UNLOCKED " + o);
+            main.system.auxiliary.log.LogMaster.important("ALREADY UNLOCKED " + o);
             return;
         }
         Lock lock = new ReentrantLock();
+        if (locks.containsKey(o)) {
+            main.system.auxiliary.log.LogMaster.important("******ALREADY LOCKED " + o);
+            return;
+        }
         locks.put(o, lock);
         Condition waiting = lock.newCondition();
-        main.system.auxiliary.log.LogMaster.dev("LOCKED " + o);
+        conditions.put(lock, waiting);
+        main.system.auxiliary.log.LogMaster.important("LOCKED with key: " + o);
         lock.lock();
         try {
             if (maxMillis > 0) {
@@ -56,6 +64,8 @@ public class WaitMaster {
                 waiting.await();
         } catch (Exception e1) {
             e1.printStackTrace();
+        } finally{
+            lock.unlock();
         }
     }
 
@@ -91,16 +101,16 @@ public class WaitMaster {
     }
 
     public static Object waitForInput(WAIT_OPERATIONS operation) {
-        return waitForInput(operation, null);
+        return waitForInput(operation, 0);
     }
 
     public static Object waitForInputAnew(WAIT_OPERATIONS operation) {
         WaitMaster.getWaiters().remove(operation);
-        return waitForInput(operation, null);
+        return waitForInput(operation, 0);
     }
 
     public static Object waitForInput(WAIT_OPERATIONS operation,
-                                      Integer maxTime) {
+                                      int maxTime) {
         if (getCompleteOperations().contains(operation)) {
             return true;
         }
@@ -117,7 +127,7 @@ public class WaitMaster {
             return waiter.getInput();
         }
 
-        Object result = waiter.startWaiting(maxTime == null ? null : (long) maxTime);
+        Object result = waiter.startWaiting(maxTime == 0 ? null : (long) maxTime);
         LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
         waiters.remove(operation);
         return result;
@@ -211,7 +221,7 @@ public class WaitMaster {
             }
         };
 
-        Timer timer = TimerTaskMaster.newTimer(task, 100);
+        Timer timer = TimerTaskMaster.newTimer(task, 1000, 100);
         waitLock(o, max);
         timer.cancel();
     }

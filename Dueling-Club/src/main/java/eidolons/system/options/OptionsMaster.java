@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
@@ -186,10 +187,14 @@ public class OptionsMaster {
 
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
-            new EnumMaster<GAMEPLAY_OPTION>().
-                    retrieveEnumConst(GAMEPLAY_OPTION.class,
-                            gameplayOptions.getValues().get(sub).toString());
+//            new EnumMaster<GAMEPLAY_OPTION>().
+//                    retrieveEnumConst(GAMEPLAY_OPTION.class,
+//                            gameplayOptions.getValues().get(sub).toString());
+
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
+            if (key == null) {
+                continue;
+            }
             String value = gameplayOptions.getValue(key);
             switch (key) {
                 case GAME_SPEED:
@@ -363,6 +368,7 @@ public class OptionsMaster {
                 break;
             case TESTER_VERSION:
                 CoreEngine.setTesterVersion(bool);
+                EidolonsGame.LEVI_TEST = bool;
                 break;
             case LAZY:
                 break;
@@ -390,9 +396,9 @@ public class OptionsMaster {
 
     private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
-            case ALT_ASSET_LOAD:
-                Assets.setON(!bool);
-                break;
+//            case ALT_ASSET_LOAD:
+//                Assets.setON(!bool);
+//                break;
             case AMBIENCE_DENSITY:
                 EmitterMap.setGlobalShowChanceCoef(Integer.valueOf(value));
                 break;

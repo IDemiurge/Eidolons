@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.module.dungeoncrawl.objects.InscriptionMaster;
 import eidolons.game.module.dungeoncrawl.objects.KeyMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
@@ -13,6 +12,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
+import main.content.enums.GenericEnums;
 import main.game.bf.directions.DIRECTION;
 
 public class OverlayView extends BaseView implements HpBarView {
@@ -97,7 +97,7 @@ public class OverlayView extends BaseView implements HpBarView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         for (SpriteX spriteX : overlaySprites) {
-            spriteX.setBlending(BLENDING.SCREEN);
+            spriteX.setBlending(GenericEnums.BLENDING.SCREEN);
         }
         super.draw(batch, parentAlpha);
     }

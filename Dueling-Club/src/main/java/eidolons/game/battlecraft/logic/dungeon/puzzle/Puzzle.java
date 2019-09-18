@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
@@ -13,9 +12,9 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.DescriptionTooltips;
+import main.content.enums.GenericEnums;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
@@ -297,7 +296,7 @@ public class Puzzle {
     public void glimpse() {
         GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,
                 new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH,
-                        1, FACING_DIRECTION.NONE, SuperActor.BLENDING.SCREEN));
+                        1, FACING_DIRECTION.NONE, GenericEnums.BLENDING.SCREEN));
     }
 
     public Coordinates getAbsoluteCoordinate(Coordinates wall) {

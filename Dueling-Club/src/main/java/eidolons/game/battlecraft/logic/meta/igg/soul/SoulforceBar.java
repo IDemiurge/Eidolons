@@ -7,7 +7,6 @@ import eidolons.libgdx.anims.SimpleAnim;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -97,9 +96,9 @@ public class SoulforceBar extends GroupX {
         });
         setSize(barSprite.getWidth(), barSprite.getHeight());
         GdxMaster.center(barBg);
-        barSprite.setBlending(SuperActor.BLENDING.SCREEN);
+        barSprite.setBlending(GenericEnums.BLENDING.SCREEN);
         barSprite.setFps(12);
-        barBgSprite.setBlending(SuperActor.BLENDING.SCREEN);
+        barBgSprite.setBlending(GenericEnums.BLENDING.SCREEN);
         barBgSprite.setFps(12);
 //        anim = new SimpleAnim("sprites/ui/soulforce bar anim.txt", () -> {
 //        });

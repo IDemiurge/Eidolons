@@ -40,6 +40,7 @@ public class BfObjEnums {
                 , "black tendrils(50, -60)", "black tendrils(-50, -60)"),
 
         black_tendrils(12, "", "", "unit/white tent.txt", 5),
+        nether_tendrils(12, "", "", "unit/white tent.txt", 5),
         black_wing(13, "", "", "unit/wings.txt", 5),
         bone_wing(13, "", "", "unit/wings.txt", 5),
 
@@ -50,17 +51,19 @@ public class BfObjEnums {
 
         flames(15, "", "", "", 5),
         smoke(15, "", "", "", 5),
-        hypnotic_flames_mass(15, "", "", "", 5),
-        hypnotic_flames_mass_narrow(15, "", "", "", 5),
+        hypnotic_flames_mass(15, "", "", "cells/bf/fire light.txt", 5),
+        hypnotic_flames_mass_narrow(15, "", "", "cells/bf/fire light.txt", 5),
         hypnotic_flames_slow_up(15, "", "", "", 5),
         hypnotic_flames_green(15, "", "", "", 5),
+        hypnotic_flames_red(15, "", "", "", 5),
         hypnotic_flames_pale(15, "", "", "", 5),
         hypnotic_flames(15, "", "", "", 5),
+        anti_flame(15, "", "", "", 5),
 
 
         fire_light(15, "", "", "cells/bf/fire light.txt", 5),
-        nether_flames(15, "", "", "cells/bf/fire light.txt", 5),
-        burning_rubble(15, "", "", "cells/bf/fire light.txt", 5),
+        nether_flames(15, "", "", "", 5),
+        burning_rubble(15, "", "", "", 5),
 
 
         wisp_floating(15, "", "", "cells/bf/light wisp float.txt", 5),
@@ -74,15 +77,19 @@ public class BfObjEnums {
         GATE_PILLAR(10, "", "", "cells/gate/pillar.txt", 10),
 
         BIG_CLAW(15, "", "", "unit/claw big.txt", 10),
-//BLACK_CHAINS(),
+        SMALL_CLAW(15, "", "", "unit/small claw.txt", 10),
         LEVIATHAN(15, "", "", "", 10,
                 "BIG_CLAW(150, 30)",
                 "BIG_CLAW( 0, 30)",
                 "BIG_CLAW(150, 110)",
-                        "BIG_CLAW( 0, 110)"),
+                "BIG_CLAW( 0, 110)"),
+        SMALL_LEVIATHAN(15, "", "", "", 10,
+                "SMALL_CLAW(120, -10)",
+                "SMALL_CLAW( 15, -10)",
+                "SMALL_CLAW(120, 20)",
+                "SMALL_CLAW( 15, 20)"),
 
-
-        ;
+        BLACK_CHAINS(15, "", "", "cells/gate/gate.txt", 5);
 
         public boolean vfxUnderMirrorX;
         public boolean vfxUnderMirrorY;
@@ -98,18 +105,19 @@ public class BfObjEnums {
         public boolean invert_screen;
         public boolean screen;
         public boolean ignore_linked_visible;
-        public boolean always_visible;
         public GenericEnums.ALPHA_TEMPLATE alpha_template;
         public boolean attach;
-        public boolean backAndForth;
-        private float vfxSpeed = 1f;
         public double range;
         public int fps;
+        public boolean backAndForth;
         public int maxEmitters;
         public String vfxFolderUnder;
         public String vfxFolderOver;
         public String vfxUnder = "";
         public String vfxOver = "";
+        public GenericEnums.BLENDING blending= GenericEnums.BLENDING.SCREEN;
+        private float vfxSpeed = 1f;
+        public boolean always_visible;
         public String spritePath;
         public String[] additionalObjects;
 
@@ -130,6 +138,17 @@ public class BfObjEnums {
 
         public void setVfxSpeed(float vfxSpeed) {
             this.vfxSpeed = vfxSpeed;
+        }
+
+        public void copy(CUSTOM_OBJECT c) {
+            vfxUnder = c.vfxUnder;
+            vfxOver = c.vfxOver;
+            vfxSpeed = c.vfxSpeed;
+            always_visible = c.always_visible;
+            spritePath = c.spritePath;
+            additionalObjects = c.additionalObjects;
+            fps = c.fps;
+            backAndForth = c.backAndForth;
         }
     }
 
@@ -1765,6 +1784,7 @@ public class BfObjEnums {
         PORTAL("sprites/cells/portal/portal loop.txt"),
         PORTAL_OPEN("sprites/cells/portal/portal open.txt"),
         PORTAL_CLOSE("sprites/cells/portal/portal close.txt"),
+        BIG_CLAW_IDLE("sprites/unit/claw big.txt"),
         EMPTY("");
         public String path;
 

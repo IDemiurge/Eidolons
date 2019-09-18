@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
@@ -424,6 +425,6 @@ public class AI_Manager extends AiMaster {
     }
 
     public boolean isDefaultAiGroupForUnitOn() {
-        return false; //isRngDungeon() ?
+        return EidolonsGame.BRIDGE; //isRngDungeon() ?
     }
 }

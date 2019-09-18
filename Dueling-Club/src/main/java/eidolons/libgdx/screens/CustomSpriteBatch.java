@@ -7,11 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import eidolons.libgdx.bf.SuperActor.BLENDING;
+import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.shaders.FluctuatingShader;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.ShaderBatch;
+import main.content.enums.GenericEnums;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,9 +45,9 @@ public class CustomSpriteBatch extends ShaderBatch {
         begin();
         blackSprite.resetColor(alpha);
         if (whiteout)
-            setBlending(BLENDING.SCREEN);
+            setBlending(GenericEnums.BLENDING.SCREEN);
         else
-            setBlending(BLENDING.INVERT_SCREEN);
+            setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         blackSprite.draw(this);
         resetBlending();
         end();

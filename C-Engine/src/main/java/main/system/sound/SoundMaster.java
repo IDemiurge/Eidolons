@@ -252,11 +252,12 @@ public class SoundMaster {
                 return "atk";
             }
         },
-        HIT{
+        HIT {
             @Override
             public String getAltName() {
                 return "hurt";
             }
+
             @Override
             public String getAltName2() {
                 return "pain";
@@ -264,7 +265,8 @@ public class SoundMaster {
         }, DEATH,
         SPOT, IDLE, ALERT,
 
-        MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, SPEC_ACTION,WHAT, READY,
+        MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT,
+        SPEC_ACTION, WHAT, READY,
         // spell
         IMPACT,
         CAST,
@@ -289,12 +291,14 @@ public class SoundMaster {
         public String getAltName() {
             return super.toString();
         }
+
         public String getAltName2() {
             return super.toString();
         }
 
         public String getPath() {
-            return "effects/" + name().toLowerCase() + "/" + name();
+            return name();
+//            return "effects/" + name().toLowerCase() + "/" + name();
         }
     }
 

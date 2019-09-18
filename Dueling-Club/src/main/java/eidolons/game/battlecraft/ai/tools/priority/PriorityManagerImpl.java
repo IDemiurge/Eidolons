@@ -24,6 +24,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -1088,6 +1089,19 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return -10000;
             }
         }
+        if (getUnit().getBuff("Offhand Cadence") != null) {
+            if (!active.isOffhand()) {
+                main.system.auxiliary.log.LogMaster.important(getUnit()+ " Ai Prefers offhand cadence " );
+                return -10000;
+            }
+        }
+        if (getUnit().getBuff("Main Hand Cadence") != null) {
+            if (active.isOffhand()) {
+                main.system.auxiliary.log.LogMaster.important(getUnit()+ " Ai Prefers Main Hand Cadence " );
+                return -10000;
+            }
+        }
+
         boolean attack = !(active instanceof Spell);
         int enemy_priority = getUnitPriority(targetObj);
         int priority = enemy_priority;
@@ -1173,6 +1187,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         if (targetObj.isNeutral()) {
             addMultiplier(-90, "Neutral");
+        }
+        if (EidolonsGame.DUEL){
+            priority = priority * RandomWizard.getRandomIntBetween(50, 100) / 100;
         }
         return priority;
     }

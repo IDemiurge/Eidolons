@@ -12,7 +12,6 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -28,6 +27,7 @@ public class SpeedControlPanel extends TablePanelX {
 
     private static final String BG_PATH = "ui/components/dc/queue/speed ctrl bg.png";
     private final VisSlider slider;
+    private final VisCheckBox checkBox2;
     private ImageContainer background;
     private final VisCheckBox checkBox;
 
@@ -39,7 +39,8 @@ public class SpeedControlPanel extends TablePanelX {
         if (!VisUI.isLoaded()) {
             VisUI.load(PathFinder.getSkinPath());
         }
-        addActor(slider = new VisSlider(10, 150, 10, true));
+//        addActor(
+                slider = new VisSlider(10, 150, 10, true);
 //        setSize(background.getWidth(), background.getHeight());
         GdxMaster.center(slider);
 //        slider.setValue(OptionsMaster.getGameplayOptions().
@@ -61,12 +62,15 @@ public class SpeedControlPanel extends TablePanelX {
 //                Gdx.app.log("Options", option + " -> " + value);
             }
         });
-        addActor(checkBox = new VisCheckBox(StringMaster.getWellFormattedString(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL.getName())));
+        slider.addListener(new DynamicTooltip(()->"Adjust speed; current = " + getSpeed()).getController());
+
+        addActor(checkBox = new VisCheckBox(StringMaster.getWellFormattedString(
+                GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS.getName())));
         checkBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 OptionsMaster.getGameplayOptions().setValue(
-                        GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL, checkBox.isChecked());
+                        GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS, checkBox.isChecked());
                 OptionsMaster.applyGameplayOptions();
             }
         });
@@ -75,11 +79,30 @@ public class SpeedControlPanel extends TablePanelX {
         style.font = StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 17).font;
         checkBox.setStyle(style);
         checkBox.setScale(1.5f);
-        slider.addListener(new DynamicTooltip(()->"Adjust speed; current = " + getSpeed()).getController());
         checkBox.addListener(new ValueTooltip("Toggle auto-pause between enemy turns").getController());
-        setSize(140, 200);
+
+
+
+        addActor(checkBox2 = new VisCheckBox(StringMaster.getWellFormattedString(
+                GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS.getName())));
+        checkBox2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                OptionsMaster.getGameplayOptions().setValue(
+                        GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS, checkBox2.isChecked());
+                OptionsMaster.applyGameplayOptions();
+            }
+        });
+        GdxMaster.centerWidth(checkBox2);
+        checkBox2.setStyle(style);
+        checkBox2.setScale(1.5f);
+        checkBox2.addListener(new ValueTooltip("Toggle auto-pause between enemy turns").getController());
+
+        setSize(190, 80);
         GdxMaster.center(slider);
-        checkBox.setY(10);
+        checkBox2.setY(10);
+        checkBox2.setX(10);
+        checkBox.setY(40);
         checkBox.setX(10);
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 //        addActor(checkBox2 = new VisCheckBox(
@@ -88,7 +111,7 @@ public class SpeedControlPanel extends TablePanelX {
 //            @Override
 //            public void changed(ChangeEvent event, Actor actor) {
 //                OptionsMaster.getGameplayOptions().setValue(
-//                        GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL, checkBox.isChecked());
+//                        GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS, checkBox.isChecked());
 //                OptionsMaster.applyGameplayOptions();
 //            }
 //        });
@@ -115,7 +138,9 @@ public class SpeedControlPanel extends TablePanelX {
                     AnimationOptions.ANIMATION_OPTION.SPEED) / 3);
         } else {
             checkBox.setChecked(OptionsMaster.getGameplayOptions().
-                    getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL));
+                    getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS));
+            checkBox2.setChecked(OptionsMaster.getGameplayOptions().
+                    getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS));
             slider.setValue(OptionsMaster.getGameplayOptions().
                     getFloatValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED));
         }

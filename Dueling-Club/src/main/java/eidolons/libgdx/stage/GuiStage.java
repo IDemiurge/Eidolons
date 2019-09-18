@@ -758,7 +758,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (dur != 0) {
             ActionMaster.addFadeInAndOutAction(tooltip, dur, true);
         } else {
-            ActionMaster.addFadeInAction(tooltip, 0.5f);
+            ActionMaster.addFadeInAction(tooltip, 0.85f);
         }
         tooltip.layout();
         tooltip.pack();
@@ -768,8 +768,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         else
             return;
         tooltip.getParent().setPosition(
-                ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2,
-                action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
+                GdxMaster.centerWidthScreen(tooltip)-20
+//                ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2
+                        , action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
     }
 
     protected void hideTooltip(LabelX tooltip, float dur) {

@@ -351,7 +351,7 @@ public class GlobalController implements Controller {
     }
 
     private boolean escape() {
-        if (!CoreEngine.isIDE())
+//        if (!CoreEngine.isIDE())
             if (Cinematics.ON) {
                 if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
                     doScript("skip=:;");

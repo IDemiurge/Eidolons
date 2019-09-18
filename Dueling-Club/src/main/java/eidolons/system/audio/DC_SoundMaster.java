@@ -544,6 +544,8 @@ public class DC_SoundMaster extends SoundMaster {
                 retrieveEnumConst(GenericEnums.SOUND_CUE.class, substring);
         if (cue!=null) {
             parsed+=cue.getPath() + ";";
+        } else {
+            parsed += PathFinder.getSoundCuesPath() + substring;
         }
         }
         if (parsed.isEmpty()) {
@@ -632,6 +634,10 @@ public class DC_SoundMaster extends SoundMaster {
          playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
     }
 
+    public static void playRandomKeySound(String value) {
+        String[] sounds = value.split(",");
+        playKeySound(sounds[RandomWizard.getRandomInt(sounds.length)], 1, true);
+    }
     public static void playKeySound(String value, float volume, boolean random) {
         if (value.contains(".")) {
             String[] parts = value.split(Pattern.quote("."));
@@ -658,6 +664,11 @@ public class DC_SoundMaster extends SoundMaster {
          *
          */
     }
+
+    public static void playCueSound(GenericEnums.SOUND_CUE soundCue) {
+        play(soundCue.getPath());
+    }
+
 
     public void doPlayback(float delta) {
         if (soundPlayer == null)

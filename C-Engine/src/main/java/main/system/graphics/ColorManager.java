@@ -330,6 +330,7 @@ public class ColorManager {
         BLUE(new Color(55, 25, 255)),
         CYAN(new Color(35, 215, 185)),
         GREEN(new Color(25, 175, 65)),
+        NETHER(new Color(145, 195, 65)),
         DARK_GREEN(new Color(25, 85, 65)),
         PURPLE(new Color(130, 74, 255)),
         RED(new Color(255, 25, 25)),

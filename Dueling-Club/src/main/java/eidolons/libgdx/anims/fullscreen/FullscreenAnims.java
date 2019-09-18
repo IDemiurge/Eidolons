@@ -14,7 +14,6 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
@@ -67,7 +66,7 @@ public class FullscreenAnims extends GroupX {
             }
             {
                 if (obj == Eidolons.getMainHero()) {
-                    SuperActor.BLENDING blending = getBlending(type);
+                    GenericEnums.BLENDING blending = getBlending(type);
 
                     if (SPRITE_MODE) {
                         data = new FullscreenAnimDataSource(type, intensity,
@@ -132,18 +131,18 @@ public class FullscreenAnims extends GroupX {
         return facing;
     }
 
-    private SuperActor.BLENDING getBlending(FULLSCREEN_ANIM type) {
+    private GenericEnums.BLENDING getBlending(FULLSCREEN_ANIM type) {
         switch (type) {
 
             case BLOOD:
             case BLOOD_SCREEN:
-                return SuperActor.BLENDING.INVERT_SCREEN;
+                return GenericEnums.BLENDING.INVERT_SCREEN;
             case POISON:
                 return null;
             case DARKNESS:
                 break;
         }
-        return SuperActor.BLENDING.SCREEN;
+        return GenericEnums.BLENDING.SCREEN;
     }
 
 

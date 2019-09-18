@@ -211,15 +211,11 @@ public class Anim extends Group implements Animation {
         }
 
         updatePosition(delta);
-        emitterList.forEach(e -> {
-            e.setFlipX(flipX);
-            e.setFlipX(flipY);
-            e.act(delta);
-        });
-        sprites.forEach(s -> {
+
+//        sprites.forEach(s -> {
             //            s.setFlipX(flipX);
             //            s.setFlipX(flipY);
-        });
+//        });
         applyAnimMods();
         if (isDrawTexture() && getActions().size == 0) {
             draw(batch, alpha);
@@ -229,9 +225,15 @@ public class Anim extends Group implements Animation {
             s.draw(batch);
         });
         batch.setColor(new Color(1, 1, 1, 1));
-
-        emitterList.forEach(e -> {
-            e.draw(batch, 1f);
+        for (int i = 0, emitterListSize = emitterList.size(); i < emitterListSize; i++) {
+            SpellVfx spellVfx = emitterList.get(i);
+            spellVfx.setFlipX(flipX);
+            spellVfx.setFlipX(flipY);
+            spellVfx.act(delta);
+            spellVfx.draw(batch, 1f);
+        }
+//        emitterList.forEach(e -> {
+//            e.draw(batch, 1f);
             //            main.system.auxiliary.log.LogMaster.log(LogMaster.ANIM_DEBUG,
             //             e.getName() +
             //              " drawn at x " + e.getX() + " y " + e.getY());
@@ -242,7 +244,7 @@ public class Anim extends Group implements Animation {
             //                  + " ; activecount == " + em.getActiveCount()
             //                );
             //            });
-        });
+//        });
         return true;
     }
 
@@ -251,10 +253,12 @@ public class Anim extends Group implements Animation {
             waitForVfx();
             completingVfx = true;
         }
-        for (EmitterActor e : emitterList) {
+        for (int i = 0, emitterListSize = emitterList.size(); i < emitterListSize; i++) {
+            EmitterActor e = emitterList.get(i);
             e.getEffect().allowCompletion();
         }
-        for (EmitterActor e : emitterList) {
+        for (int i = 0, emitterListSize = emitterList.size(); i < emitterListSize; i++) {
+            EmitterActor e = emitterList.get(i);
             if (!e.isComplete()) {
                 return true;
             }
@@ -699,6 +703,9 @@ public class Anim extends Group implements Animation {
         });
 
         if (getActions().size == 0) { //TODO move it somewhere!
+            if (origin == null) {
+                return;
+            }
             setX(origin.x + getWidth() / 2);
             setY(origin.y - getHeight() / 2);
         }

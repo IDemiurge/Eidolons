@@ -1,5 +1,6 @@
 package eidolons.libgdx.anims.std.custom;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
@@ -8,7 +9,6 @@ import eidolons.libgdx.anims.anim3d.Weapon3dAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.PhaseVfx;
 import eidolons.libgdx.particles.VfxContainer;
 import eidolons.libgdx.particles.spell.VfxShaper;
@@ -17,6 +17,7 @@ import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.Arrays;
@@ -32,8 +33,13 @@ public class ForceAnim extends Weapon3dAnim {
 
     public static final List vfxList_death = Arrays.asList(new GenericEnums.VFX[]{
             GenericEnums.VFX.dark_blood,
-            GenericEnums.VFX.invert_missile,
+            GenericEnums.VFX.missile_death,
             GenericEnums.VFX.invert_breath,
+    });
+    public static final List vfxList_electric = Arrays.asList(new GenericEnums.VFX[]{
+            GenericEnums.VFX.missile_arcane_intense,
+            GenericEnums.VFX.missile_electric_intense,
+            GenericEnums.VFX.missile_electric,
     });
     public static final List vfxList_shadow = Arrays.asList(new GenericEnums.VFX[]{
             GenericEnums.VFX.dark_impact,
@@ -41,8 +47,11 @@ public class ForceAnim extends Weapon3dAnim {
             GenericEnums.VFX.invert_breath,
     });
     public static final List vfxList_chaos = Arrays.asList(new GenericEnums.VFX[]{
-            GenericEnums.VFX.missile_chaos, GenericEnums.VFX.spell_chaos_flames,
-            GenericEnums.VFX.spell_demonfire,
+            GenericEnums.VFX.missile_chaos,
+            GenericEnums.VFX.weave_chaos,
+            GenericEnums.VFX.missile_arcane_pink,
+//            GenericEnums.VFX.spell_chaos_flames,
+//            GenericEnums.VFX.spell_demonfire,
     });
 
 
@@ -54,12 +63,16 @@ public class ForceAnim extends Weapon3dAnim {
 
     private String getSpritePath() {
         if (getActive().getOwnerUnit().isMine()) {
+            if (!CoreEngine.isSuperLite())
+            if (type== GenericEnums.DAMAGE_TYPE.SHADOW) {
+                return "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt";
+            }
 //            if (type== GenericEnums.DAMAGE_TYPE.CHAOS) {
-                return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
+            return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
 //            }
-//            if (type== GenericEnums.DAMAGE_TYPE.SHADOW) {
-//                return "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt";
-//            }
+        }
+        if (type== GenericEnums.DAMAGE_TYPE.LIGHTNING) {
+            return Sprites.GATE_LIGHTNING;
         }
         return Sprites.BIG_CLAW_ATTACK;
 //        switch (getActive().getOwnerUnit().getName()) {
@@ -89,7 +102,7 @@ public class ForceAnim extends Weapon3dAnim {
         float dur = duration / regions.size;
 
         sprite = SpriteAnimationFactory.getSpriteAnimation(regions, dur, 1);
-        sprite.setBlending(SuperActor.BLENDING.SCREEN);
+        sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         switch (projection) {
             case FROM:
                 sprite.setFlipX(!PositionMaster.isAbove(getRef().getTargetObj(), getRef().getSourceObj()));
@@ -105,10 +118,28 @@ public class ForceAnim extends Weapon3dAnim {
 
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (type== GenericEnums.DAMAGE_TYPE.LIGHTNING){
+            sprite.setBlending(GenericEnums.BLENDING.SCREEN);
+        }
+        super.draw(batch, parentAlpha);
+    }
 
     @Override
     protected void resetEmitters() {
         super.resetEmitters();
+    }
+
+    @Override
+    public void updatePosition(float delta) {
+        try {
+            sprite.setX(origin.x);
+            sprite.setY(origin.y);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        super.updatePosition(delta);
     }
 
     @Override
@@ -118,21 +149,21 @@ public class ForceAnim extends Weapon3dAnim {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+
+        sprite.setFps(1/(getDuration()/sprite.getRegions().size));
+
         try {
-            String path = PathFinder.getVfxPath() + getVfxPath();// SpellVfxMaster.getRandomVfx
-//                    PhaseVfx.isRandom() ? PathFinder.getVfxAtlasPath() + "invert/" :
-//                            "breath";
-            //         );  //damage/fire
-//            if (type != null) {
-//                path = EffectAnimCreator.getVfx(type);
-//            }
+            String path = PathFinder.getVfxPath() + getVfxPath();
+
             main.system.auxiliary.log.LogMaster.dev("force anim destination: " + destination);
             shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
             emitterList.clear();
             emitterList.add(shaped);
             resetEmitters();
             startEmitters();
-
+            if (shaped == null) {
+                return;
+            }
             for (PhaseVfx vfx : shaped.getNested()) {
                 vfx.setTimeToNext(duration / 3 * 2);
                 vfx.act(1.5f);
@@ -140,15 +171,25 @@ public class ForceAnim extends Weapon3dAnim {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+
+
     }
 
     private String getVfxPath() {
         List list = vfxList_shadow;
-        if (type == GenericEnums.DAMAGE_TYPE.CHAOS) {
-            list = vfxList_chaos;
-        }
-        if (!getActive().getOwnerUnit().isMine()) {
-            list = vfxList_death;
+        switch (type) {
+            case CHAOS:
+                list = vfxList_chaos;
+                break;
+            case SHADOW:
+                list = vfxList_shadow;
+                break;
+            case DEATH:
+                list = vfxList_death;
+                break;
+            case LIGHTNING:
+                list = vfxList_electric;
+                break;
         }
         GenericEnums.VFX vfx = (GenericEnums.VFX) RandomWizard.getRandomListObject(list);
         return vfx.getPath();

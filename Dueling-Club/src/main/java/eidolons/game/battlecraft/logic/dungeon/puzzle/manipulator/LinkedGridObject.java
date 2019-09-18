@@ -1,11 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.particles.EmitterActor;
@@ -20,9 +18,6 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.GATE_PILLAR;
-import static main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT.LIGHT;
 
 public class LinkedGridObject extends CinematicGridObject {
     static {
@@ -48,8 +43,6 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.SNOWFALL_THICK.path + "(-32, 128);";
         CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.WISPS.path + "(-32, 128);";
 
-        LIGHT.screen = true;
-        GATE_PILLAR.screen = true;
 //        CUSTOM_OBJECT.black_waters.screen = true;
         CUSTOM_OBJECT.BLACKNESS.vfxUnderMirrorX = true;
 
@@ -59,10 +52,8 @@ public class LinkedGridObject extends CinematicGridObject {
 
 
         CUSTOM_OBJECT.wisp_floating.vfxOver += "ambient/sprite/willowisps(0, 0);";
-        CUSTOM_OBJECT.wisp_floating.screen = true;
 
         CUSTOM_OBJECT.flames.vfxOver += "ambient/sprite/fires/real fire2(0, 0);";
-        CUSTOM_OBJECT.flames.screen = true;
 
 
 //        CUSTOM_OBJECT.nether_flames.vfxUnder += "ambient/sprite/fires/nether flame green(0, 0);";
@@ -76,6 +67,7 @@ public class LinkedGridObject extends CinematicGridObject {
 
 //        CUSTOM_OBJECT.nether_flames.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
 //        CUSTOM_OBJECT.burning_rubble.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
+
         CUSTOM_OBJECT.hypnotic_flames_mass_narrow.vfxOver +=
                 "ambient/sprite/fires/hypno/best/hypnofire mass slow up narrow2(0, 0);";
 
@@ -86,16 +78,41 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.nether_flames.setVfxSpeed(0.4f);
         CUSTOM_OBJECT.burning_rubble.setVfxSpeed(0.4f);
         CUSTOM_OBJECT.smoke.setVfxSpeed(0.64f);
-        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.setVfxSpeed(0.4f);
+        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.setVfxSpeed(0.74f);
+        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.spriteColor = new Color(1, 1, 1, 0.34f);
+//        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.invert_screen_vfx = true;
+
+        CUSTOM_OBJECT.anti_flame.copy(CUSTOM_OBJECT.hypnotic_flames_mass_narrow);
+        CUSTOM_OBJECT.anti_flame.invert_screen_vfx = true;
+        CUSTOM_OBJECT.anti_flame.spritePath = null ;
+        CUSTOM_OBJECT.smoke.invert_screen_vfx = true;
 
 
-        CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire slow up fine(0, 0);";
-        CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire green slow up fine(0, 0);";
-        CUSTOM_OBJECT.hypnotic_flames_green.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire green2(0, 0);";
-        CUSTOM_OBJECT.hypnotic_flames_pale.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire pale2(0, 0);";
+//        CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire slow up fine(0, 0);";
+        CUSTOM_OBJECT.hypnotic_flames_slow_up.vfxOver += "ambient/sprite/fires/hypno/mass/hypnofire green slow up fine(0, 0);";
 
-        CUSTOM_OBJECT.hypnotic_flames.vfxFolderUnder = "ambient/sprite/fires/hypno/best";
+        CUSTOM_OBJECT.hypnotic_flames.vfxOver +=
+                "ambient/sprite/fires/hypno/mass/hypnofire mass supernarrow(0, 0);";
 
+        CUSTOM_OBJECT.hypnotic_flames_green.vfxOver +=
+                "ambient/sprite/fires/hypno/mass/hypnofire mass supernarrow green(0, 0);";
+        CUSTOM_OBJECT.hypnotic_flames_red.vfxOver +=
+                "ambient/sprite/fires/hypno/mass/hypnofire mass supernarrow red(0, 0);";
+
+
+        CUSTOM_OBJECT.hypnotic_flames_red.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames_green.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames_mass.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames_slow_up.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames_pale.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.always_visible = true;
+
+        CUSTOM_OBJECT.smoke.always_visible = true;
+
+//        CUSTOM_OBJECT.hypnotic_flames_green.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire supernarrow green(0, 0);";
+//        CUSTOM_OBJECT.hypnotic_flames_pale.vfxOver += "ambient/sprite/fires/hypno/best/hypnofire pale2(0, 0);";
+//        CUSTOM_OBJECT.hypnotic_flames.vfxFolderUnder = "ambient/sprite/fires/hypno/best";
 
         //portal.  ambient/sprite/swarm of light
 
@@ -103,53 +120,55 @@ public class LinkedGridObject extends CinematicGridObject {
 //        CUSTOM_OBJECT.burning_rubble.vfxOver += "spell/nether/toxic fumes(0, 0);";
 
         CUSTOM_OBJECT.crematory.vfxOver += "ambient/sprite/fires/real fire2(0, -40);";
-        CUSTOM_OBJECT.crematory.screen = true;
         CUSTOM_OBJECT.crematory.setVfxSpeed(0.14f);
 
         CUSTOM_OBJECT.black_waters.vfxOver += "advanced/ambi/black water square small slow(-21, -21);";
         CUSTOM_OBJECT.black_waters.setVfxSpeed(0.6f);
 
 //        CUSTOM_OBJECT.force_field.vfxOver += "spell/nether/soul flame ambi(0, 0);";
-        CUSTOM_OBJECT.force_field.vfxOver += "spell/nether/toxic fumes(0, 0);";
+//        CUSTOM_OBJECT.force_field.vfxOver += "spell/nether/toxic fumes(0, 0);";
         CUSTOM_OBJECT.force_field.setVfxSpeed(0.34f);
-        CUSTOM_OBJECT.force_field.always_visible=true;
+        CUSTOM_OBJECT.force_field.always_visible = true;
+        CUSTOM_OBJECT.smoke.always_visible = true;
+//        CUSTOM_OBJECT.force_field.attach=true;
 //        CUSTOM_OBJECT.force_field.maxEmitters=1;
 //        CUSTOM_OBJECT.force_field.vfxChance=0.12f;
 //        CUSTOM_OBJECT.force_field.vfxFolderOver ="spell/weave";
 //        CUSTOM_OBJECT.force_field.screen=true;
-        CUSTOM_OBJECT.force_field.invert_screen=true;
+        CUSTOM_OBJECT.force_field.blending = GenericEnums.BLENDING.INVERT_SCREEN;
 
 //        CUSTOM_OBJECT.power_field.vfxOver ="spell/weave/nether weave(0, -0)";
-        CUSTOM_OBJECT.power_field.vfxOver ="ambient/sprite/swarm of light(0, -0)";
+        CUSTOM_OBJECT.power_field.vfxOver = "ambient/sprite/swarm of light(0, -0)";
         //portal.  ambient/sprite/swarm of light
-        CUSTOM_OBJECT.power_field.always_visible=true;
+        CUSTOM_OBJECT.power_field.always_visible = true;
 
-        CUSTOM_OBJECT.LEVIATHAN.attach=true;
-        CUSTOM_OBJECT.LEVIATHAN.always_visible=true;
-        CUSTOM_OBJECT.LEVIATHAN.invert_screen=true;
-        CUSTOM_OBJECT.BIG_CLAW.invert_screen=true;
-        CUSTOM_OBJECT.BIG_CLAW.backAndForth=true;
+        CUSTOM_OBJECT.LEVIATHAN.attach = true;
+        CUSTOM_OBJECT.LEVIATHAN.always_visible = true;
+        CUSTOM_OBJECT.LEVIATHAN.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+        CUSTOM_OBJECT.BIG_CLAW.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+        CUSTOM_OBJECT.BIG_CLAW.backAndForth = true;
+        CUSTOM_OBJECT.SMALL_CLAW.backAndForth = true;
+        CUSTOM_OBJECT.SMALL_CLAW.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+
+        CUSTOM_OBJECT.BLACK_CHAINS.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+        CUSTOM_OBJECT.BLACK_CHAINS.spriteColor = new Color(0.6f, 1, 0.4f, 0.4f);
 
         CUSTOM_OBJECT.LEVIATHAN.vfxOver += "advanced/ambi/black water square small slow(-21, -21);";
 
-        CUSTOM_OBJECT.keserim.screen = true;
 //        CUSTOM_OBJECT.keserim.alpha = 0.6f;
         CUSTOM_OBJECT.keserim.alpha_template = GenericEnums.ALPHA_TEMPLATE.BLOOM;
 
         CUSTOM_OBJECT.dark_chrysalis.invert_screen_vfx = true;
-        CUSTOM_OBJECT.dark_chrysalis.invert_screen = true;
+        CUSTOM_OBJECT.dark_chrysalis.blending = GenericEnums.BLENDING.INVERT_SCREEN;
 //        CUSTOM_OBJECT.dark_chrysalis.always_visible = true;
-        CUSTOM_OBJECT.dark_chrysalis.vfxOver  = "unit/bloody bleed2(-50, 45);";
+        CUSTOM_OBJECT.dark_chrysalis.vfxOver = "unit/bloody bleed2(-50, 45);";
 
 
-        CUSTOM_OBJECT.black_tendrils.invert_screen = true;
-        CUSTOM_OBJECT.black_wings.invert_screen = true;
-        CUSTOM_OBJECT.bone_wings.screen = true;
-        CUSTOM_OBJECT.black_wing.invert_screen = true;
-        CUSTOM_OBJECT.bone_wing.screen = true;
+        CUSTOM_OBJECT.black_tendrils.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+        CUSTOM_OBJECT.nether_tendrils.spriteColor = new Color(0.6f, 1, 0.4f, 1);
+        CUSTOM_OBJECT.black_wings.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+        CUSTOM_OBJECT.black_wing.blending = GenericEnums.BLENDING.INVERT_SCREEN;
 
-        CUSTOM_OBJECT.GATE.screen = true;
-        LIGHT.screen = true;
 //        CUSTOM_OBJECT.black_waters.vfxFolderOver  =   "advanced/ambi/waters;";
 //        CUSTOM_OBJECT.black_waters.vfxChance = 0.1f;
 
@@ -187,7 +206,7 @@ public class LinkedGridObject extends CinematicGridObject {
             createAdditionalObjects(object.additionalObjects);
         }
 
-        setKey( StringMaster.getWellFormattedString(object.toString()));
+        setKey(StringMaster.getWellFormattedString(object.toString()));
     }
 
     protected void createAdditionalObjects(String[] additionalObjects) {
@@ -238,26 +257,22 @@ public class LinkedGridObject extends CinematicGridObject {
             addActor(fluctuating = new Fluctuating(object.alpha_template));
         }
         if (sprite != null) {
-
+            if (object.spriteColor != null) {
+                sprite.setColor(object.spriteColor);
+            }
             if (object.backAndForth) {
                 sprite.getSprite().setBackAndForth(true);
             }
-            if (object.screen) {
-                sprite.setBlending(SuperActor.BLENDING.SCREEN);
-            }
-            if (object.invert_screen) {
-                sprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-
-            }
+            sprite.setBlending(object.blending);
         }
         if (object.invert_screen_vfx) {
             setInvertScreen(true);
         }
         if (additional != null)
-        for (LinkedGridObject linkedGridObject : additional) {
-            linkedGridObject.act(RandomWizard.getRandomFloat());
+            for (LinkedGridObject linkedGridObject : additional) {
+                linkedGridObject.act(RandomWizard.getRandomFloat());
 
-        }
+            }
     }
 
     @Override
@@ -352,12 +367,12 @@ public class LinkedGridObject extends CinematicGridObject {
 
     @Override
     public boolean checkVisible() {
-        if (object.always_visible) {
-            return true;
-        }
         if (linked != null)
-        if (linked.getParent() == null) {
-            return false;
+            if (linked.getParent() == null) {
+                return false;
+            }
+        if (object.always_visible || object.attach) {
+            return true;
         }
         if (!object.ignore_linked_visible)
             if (!linked.isVisible()) {

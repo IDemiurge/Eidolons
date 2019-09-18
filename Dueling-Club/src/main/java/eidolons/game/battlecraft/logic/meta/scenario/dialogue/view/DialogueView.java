@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
@@ -274,7 +275,7 @@ public class DialogueView extends TablePanelX implements Scene {
 
     @Override
     public void act(float delta) {
-        if (container.getHandler().isSkipping()) {
+        if (container.getHandler().isSkipping() && Cinematics.ON) {
             tryNext(true);
         } else
         if (autoRespond) {

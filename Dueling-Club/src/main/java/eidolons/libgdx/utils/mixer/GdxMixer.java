@@ -13,11 +13,12 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
 import eidolons.libgdx.GDX;
-import eidolons.libgdx.bf.SuperActor.BLENDING;
+import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.utils.GdxUtil;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
 
@@ -75,7 +76,7 @@ public enum MIXER_LAUNCH{
         int size;
         String rootPath;
 
-        new GdxMixer(() -> GrayscaleShader.getGrayscaleShader(), BLENDING.MULTIPLY,
+        new GdxMixer(() -> GrayscaleShader.getGrayscaleShader(), GenericEnums.BLENDING.MULTIPLY,
          Images.EMPTY_ARMOR,
 //         PathFinder.getGeneratorRootPath() + "mixed.png",
          64

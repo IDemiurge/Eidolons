@@ -1,5 +1,6 @@
 package eidolons.libgdx.stage;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -214,8 +215,9 @@ public class BattleGuiStage extends GuiStage {
         });
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
             outcomePanel.setUserObject(new OutcomeDatasource((DC_Game) p.get()));
-            outcomePanel.fadeIn();
-            //            outcomePanel.setColor(new Color(1, 1, 1, 0));
+            outcomePanel.setVisible(true);
+
+            outcomePanel.setColor(new Color(1, 1, 1, 1));
             //            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
             float y = GdxMaster.getHeight() -
                     (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);

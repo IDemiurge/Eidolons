@@ -482,4 +482,8 @@ public class StyleHolder {
     public static LabelStyle getStyle(GuiStage.LABEL_STYLE style) {
         return getSizedColoredLabelStyle(style.font, style.size, style.color);
     }
+
+    public static LabelStyle newStyle(LabelStyle  style) {
+        return new LabelStyle(style);
+    }
 }

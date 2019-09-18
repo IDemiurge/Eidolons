@@ -71,4 +71,7 @@ public interface MODE {
     String getImagePath();
 
     AiEnums.BEHAVIOR_MODE getBehaviorMode();
+
+    boolean isRemoveEndRound();
+
 }

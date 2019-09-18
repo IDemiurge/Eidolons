@@ -100,7 +100,9 @@ public class CONTENT_CONSTS {
 
     public enum SOUNDSET {
         dark_elf,
+        leviathan,
         sorcerer,
+        warlock,
         barbarian,
         female,
         brute,

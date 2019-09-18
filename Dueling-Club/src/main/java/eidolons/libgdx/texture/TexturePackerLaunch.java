@@ -153,6 +153,7 @@ public class TexturePackerLaunch {
             if (i != null) {
                 settings.jpegQuality = new Float(i) / 100;
             }
+            settings.format = Format.RGB888;
             settings.outputFormat = "jpg";
         }
 
@@ -206,7 +207,10 @@ public class TexturePackerLaunch {
         settings.jpegQuality = 0.7f;
 
         if (DialogMaster.confirm("Jpg?"))
+        {
             settings.outputFormat = "jpg";
+            settings.format = Format.RGB888;
+        }
         return settings;
     }
 

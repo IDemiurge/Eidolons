@@ -23,6 +23,8 @@ import eidolons.system.text.DC_LogManager;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
@@ -169,9 +171,14 @@ public class DC_StateManager extends StateManager {
 
     private void resetAll() {
         Ref ref = new Ref(game);
+        DC_ActiveObj active=null ;
         if (getGame().getLoop().getLastAction() != null) {
-            ref.setObj(KEYS.ACTIVE, getGame().getLoop().getLastAction());
-//            getGame().getLoop().setLastActionInput(null);
+            if ( getGame().getLoop().getLastAction()==null ){
+                ref.setObj(KEYS.ACTIVE, active=getGame().getLoop().getLastActionEvent());
+            } else {
+                getGame().getLoop().setLastActionEvent( active= getGame().getLoop().getLastAction());
+                getGame().getLoop().setLastAction(null);
+            }
         }
 
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_STARTS, ref));
@@ -211,11 +218,12 @@ public class DC_StateManager extends StateManager {
         if (savingOn) {
             keeper.save();
         }
-        if (ref.getActive() != null) {
-            if (ref.getActive() instanceof Spell) {
-                if (((Spell) ref.getActive()).isChanneling())
-                if (!((Spell) ref.getActive()).isChannelingNow())
+        if (active != null) {
+            if (active instanceof Spell) {
+                if (((Spell) active).isChanneling())
+                if (!((Spell) active).isChannelingNow())
                 {
+                    ref.setObj(KEYS.ACTIVE, active);
                     game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
                 }
             }
@@ -416,6 +424,8 @@ public class DC_StateManager extends StateManager {
         for (Unit unit : unitsToReset) {
             if (!checkUnitIgnoresReset(unit))
                 unit.afterBuffRuleEffects();
+            unit.removeProperty(G_PROPS.STD_BOOLS,
+                    UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
         }
     }
 

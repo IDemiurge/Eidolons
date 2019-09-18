@@ -4,6 +4,7 @@ import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
@@ -20,7 +21,9 @@ import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
+import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
+import main.elements.conditions.PropCondition;
 
 public class RageRule extends DC_CounterRule {
     // can
@@ -84,7 +87,10 @@ public class RageRule extends DC_CounterRule {
 
 
                         new ConditionalEffect(
+                                new Conditions(
                                 new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
+                                        new PropCondition(G_PROPS.STANDARD_PASSIVES,
+                                                UnitEnums.STANDARD_PASSIVES.BERSERKER)),
                                 new Effects(new AddStatusEffect(STATUS.UNDYING),
                                         new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK)))
                 });

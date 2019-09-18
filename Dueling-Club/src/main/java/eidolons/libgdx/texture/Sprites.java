@@ -46,6 +46,9 @@ public class Sprites {
     public static final String AX_FIRE = "sprites/weapons3d/special/ax fire.txt";
     public static final String ACID_BLADE = "sprites/weapons3d/special/acid blade.txt";
     public static final String BIG_CLAW_ATTACK = "sprites/weapons3d/special/big claw slash.txt";
+    public static final String BIG_CLAW_IDLE = ("sprites/unit/claw big.txt");
+    public static final String SMALL_CLAW_ATTACK = "sprites/weapons3d/special/small claw slash.txt";
+    public static final String SMALL_CLAW_IDLE = ("sprites/unit/claw small.txt");
 
     public static final String BLOOD_SHOWER = "sprites/hit/blood/shower.txt";
     public static final String BLOOD_SLICE = "sprites/hit/blood/slice.txt";
@@ -53,7 +56,6 @@ public class Sprites {
 
     public static final String GATE_LIGHTNING = "sprites/spell/nether/lightning gate.txt";
     public static final String KTX_TEST = "sprites/test/maw.txt";
-
 
     private static final Map<String, String> spriteMap;
 

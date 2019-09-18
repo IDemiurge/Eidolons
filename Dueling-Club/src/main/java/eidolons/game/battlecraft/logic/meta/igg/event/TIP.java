@@ -167,6 +167,8 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
                 " to practice your sword. "),
         WELCOME_3("Good luck!"),
 
+    DEMO_END(false, IGG_Images.BRIEF_ART.APHOLON.getPath(), ""),
+
 //        ranged
 //        required reloading with ammo, which you carry in your Quick Slots alongside potions
 //        main\bf\prop\statues\angel statue.png
@@ -193,8 +195,8 @@ another trick is to set yourself on fire and gain Rage each time the burning hur
         public String message;
         public WaitMaster.WAIT_OPERATIONS messageChannel = MESSAGE_RESPONSE;
 
-        TIP(String img) {
-            this.img = img;
+        TIP(String message) {
+            this.message  = message;
             this.once = true;
         }
 

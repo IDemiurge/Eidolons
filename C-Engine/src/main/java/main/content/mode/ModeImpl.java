@@ -222,6 +222,11 @@ public class ModeImpl implements MODE {
         return behaviorMode;
     }
 
+    @Override
+    public boolean isRemoveEndRound() {
+        return template.isRemoveEndRound();
+    }
+
     public void setBehaviorMode(BEHAVIOR_MODE behaviorMode) {
         this.behaviorMode = behaviorMode;
     }

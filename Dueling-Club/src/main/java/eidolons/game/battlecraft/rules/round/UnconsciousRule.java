@@ -9,6 +9,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
@@ -162,6 +163,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         if (unit.isDead() == unconscious) {
             return false;
         }
+        if (EidolonsGame.getVar("ENDURANCE")|| !unit.isPlayerCharacter())
         if (endurance <= 0) {
             return true;
         }

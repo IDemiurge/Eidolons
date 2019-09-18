@@ -422,15 +422,18 @@ public class DC_GameManager extends GameManager {
     }
 
     public void activateMyAction(String actionName) {
+
         DC_UnitAction action = getActiveObj().getAction(actionName);
         if (action != null) {
             action.invokeClicked();
         }
+        DungeonScreen.getInstance().getController().inputPass();
     }
 
     public void activateMyAction(int index, ACTION_TYPE group) {
         try {
             getActiveObj().getActionMap().get(group).get(index).invokeClicked();
+            DungeonScreen.getInstance().getController().inputPass();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,

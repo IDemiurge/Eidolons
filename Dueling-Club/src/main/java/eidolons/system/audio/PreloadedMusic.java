@@ -130,7 +130,7 @@ public class PreloadedMusic implements Music {
 
     @Override
     public float getVolume() {
-        return 0;
+        return volume;
     }
 
     @Override

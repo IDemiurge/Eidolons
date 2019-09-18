@@ -27,17 +27,21 @@ public class Soundscape {
     static{
         SOUNDSCAPE.NETHER.weightMapCustom
                 .chain(thunder, 20)
-                .chain(whispers, 10)
-                .chain(rocks, 10)
-                .chain(crack, 10)
-                .chain(growl, 10)
+                .chain(whispers, 4)
+                .chain(rocks, 21)
+                .chain(crack, 15)
+                .chain(growl, 1)
+                .chain(chant_dark, 2)
+                .chain(chant_evil, 2)
 //                .chain(scream, 10)
 //                .chain(splash, 10)
 //                .chain(mythic_beast, 10)
         ;
         SOUNDSCAPE.NETHER.weightMapUnit
-                .putChain(wraith, 10)
+                .putChain(wraith, 2)
                 .putChain(ironman, 10)
+                .putChain(sorcerer, 10)
+                .putChain(warlock, 2)
 //                .putChain(zombie, 10)
 //                .putChain(cthulhu, 10)
         ;
@@ -56,6 +60,8 @@ public class Soundscape {
         rocks,
         crack,
         growl,
+        chant_dark,
+        chant_evil,
         whispers,
         thunder,
         woosh,

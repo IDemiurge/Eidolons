@@ -8,6 +8,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.ActionInput;
+import eidolons.libgdx.anims.AnimContext;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;
@@ -15,6 +17,9 @@ import main.elements.costs.Cost;
 import main.elements.costs.CostRequirements;
 import main.elements.costs.Costs;
 import main.entity.Ref;
+import main.game.logic.action.context.Context;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 
@@ -116,6 +121,8 @@ public class ChannelingRule {
 //        modeEffect.getAddBuffEffect().setDuration(2);
         modeEffect.getAddBuffEffect().setDuration(0);
         result &= modeEffect.apply(REF);
+
+        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(spell, new AnimContext(REF)));
         return result;
 
     }

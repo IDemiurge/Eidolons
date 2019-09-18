@@ -62,6 +62,15 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //TODO         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
     }
 
+//    @Override
+//    protected ParticleEmitter newEmitter(BufferedReader reader) throws IOException {
+//        return new ParticleEmitterX(reader);
+//    }
+
+    @Override
+    public Array<ParticleEmitter> getEmitters() {
+        return super.getEmitters();
+    }
     protected Texture loadTexture(FileHandle file) {
         return new Texture(file, false);
     }
@@ -119,10 +128,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         return false;
     }
 
-    @Override
-    public Array<ParticleEmitter> getEmitters() {
-        return super.getEmitters();
-    }
+
 
     public void loadEmitters(FileHandle effectFile) {
         try {

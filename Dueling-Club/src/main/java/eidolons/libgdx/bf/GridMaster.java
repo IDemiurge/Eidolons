@@ -2,6 +2,7 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.BaseView;
@@ -116,6 +117,8 @@ public class GridMaster {
     }
 
     public static void validateVisibleUnitView(BaseView baseView) {
+        if (Cinematics.ON)
+            return;
         if (baseView instanceof GridUnitView) {
             GridUnitView view = ((GridUnitView) baseView);
             if (view.getActions().size == 0) {
@@ -144,7 +147,8 @@ public class GridMaster {
                     } else {
                         //TODO detach bug
                         if (view.getParent() instanceof GridPanel)
-                            if (view.getX() <= 50)
+                            if (!view.getUserObject().isDead())
+                                if (view.getX() <= 50)
                                 if (view.getY() <= 0) {
                                     {
                                         GridPanel grid = ((GridPanel) view.getParent());

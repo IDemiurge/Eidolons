@@ -8,8 +8,8 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.texture.Sprites;
+import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -180,7 +180,7 @@ public class PortalMaster extends DungeonHandler {
         @Override
         protected void init() {
             super.init();
-            sprite.setBlending(SuperActor.BLENDING.SCREEN);
+            sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
 
         public FACING_DIRECTION getExitFacing() {

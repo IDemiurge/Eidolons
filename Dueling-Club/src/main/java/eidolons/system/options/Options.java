@@ -25,6 +25,23 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
 
     protected abstract Class<? extends T> getOptionClass();
 
+    @Override
+    public String getValue(E e) {
+        String v = super.getValue(e);
+        if (v == null) {
+            return "";
+        }
+        return v;
+    }
+
+    @Override
+    public String getValue(String name) {
+        String v = super.getValue(name);
+        if (v == null) {
+            return "";
+        }
+        return v;
+    }
 
     public Class<?> getValueClass(OPTION option) {
         if (option.isExclusive() != null) {

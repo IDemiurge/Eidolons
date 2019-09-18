@@ -33,7 +33,7 @@ public class UndyingCounterRule extends TriggerRule {
                 "]";
 //        DC_SoundMaster.playStandardSound();
         EUtils.showInfoText(true, msg);
-
+        new Event(Event.STANDARD_EVENT_TYPE.UNDYING_RULE, unit.getRef()).fire();
         return true;
     }
 

@@ -274,7 +274,7 @@ public class TextureCache {
     private static String getEmptyPath() {
         return
                 ImageManager.getImageFolderPath() +
-                        ImageManager.getDefaultEmptyListIcon();
+                        Images.MISSING_TEXTURE;
     }
 
     public static Texture createTexture(String path) {

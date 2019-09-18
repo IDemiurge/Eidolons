@@ -161,11 +161,13 @@ public class GridCellContainer extends GridCell {
             return;
         }
         hasBackground = false;
-        int i = 0;
+        int index = 0;
 
-        for (GenericGridView actor : getUnitViewsVisible()) {
+        List<GenericGridView> unitViewsVisible = getUnitViewsVisible();
+        for (int i = 0; i < unitViewsVisible.size(); i++) {
+            GenericGridView actor = unitViewsVisible.get(i);
             if (actor.isCellBackground()) {
-                i++;
+                index++;
                 hasBackground = true;
                 continue;
             }
@@ -176,14 +178,14 @@ public class GridCellContainer extends GridCell {
             int offset = getUnitViewOffset();
             float scaleX = getObjScale(actor);
             float scaleY = getObjScale(actor);
-            float y = getViewY(offset, i,
-             getUnitViewCountEffective());
-            float x = getViewX(offset, i);
+            float y = getViewY(offset, index,
+                    getUnitViewCountEffective());
+            float x = getViewX(offset, index);
             if (isAnimated()) {
 
                 actor.setPosition(x, y);
                 ActionMaster.addScaleAction(actor,
-                 scaleX, scaleY, 0.25f);
+                        scaleX, scaleY, 0.25f);
                 actor.sizeChanged();
             } else {
                 actor.setPosition(x, y);
@@ -193,7 +195,7 @@ public class GridCellContainer extends GridCell {
             actor.setScaledHeight(scaleY);
             actor.setScaledWidth(scaleX);
 
-            recalcImagesPos(actor, offset, offset, i++);
+            recalcImagesPos(actor, offset, offset, index++);
             if (actor.getY() + actor.getHeight() > maxY) {
                 maxY = actor.getY() + actor.getHeight();
             }

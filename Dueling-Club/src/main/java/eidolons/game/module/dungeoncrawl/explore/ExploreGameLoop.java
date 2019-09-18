@@ -290,6 +290,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             lastActionInput = actionInput;
         queueActionInput(actionInput);
         signal();
+        DungeonScreen.getInstance().getController().inputPass();
 
     }
 

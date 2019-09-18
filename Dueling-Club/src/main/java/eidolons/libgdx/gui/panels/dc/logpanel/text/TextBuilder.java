@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.LabelX;
+import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
@@ -35,8 +36,9 @@ public class TextBuilder {
         return new TextBuilder();
     }
 
+
     public Message build(float w) {
-        Label  l = new Label ("", style);
+        Label l = new Label("", style);
         l.setWrap(true);
         l.setAlignment(Align.left);
         l.setWidth(w);
@@ -114,6 +116,27 @@ public class TextBuilder {
         sb.append(s);
         sb.append("[]");
         return this;
+    }
+
+    public static final String COLOR = "#";
+
+    public static String parseColors(String text) {
+        String result = "";
+        for (String s : text.split(COLOR)) {
+            String key = VariableManager.getVar(s);
+            if (!key.isEmpty()) {
+            Color color = GdxColorMaster.getColorByName(key);
+            if (color != null) {
+                result += wrapInColor(color, s);
+                continue;
+            }
+            }
+            result += (s);
+        }
+        if (result.isEmpty()) {
+            return text;
+        }
+        return result;
     }
 
     public static String wrapInColor(Color color, String s) {

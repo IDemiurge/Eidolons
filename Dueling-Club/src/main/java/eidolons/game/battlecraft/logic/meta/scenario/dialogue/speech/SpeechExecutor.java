@@ -20,6 +20,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
@@ -32,7 +33,7 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
-import eidolons.libgdx.bf.SuperActor.BLENDING;
+import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.bf.grid.BaseView;
@@ -44,6 +45,7 @@ import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.SOUND_CUE;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.Soundscape.SOUNDSCAPE;
@@ -66,11 +68,15 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -93,11 +99,22 @@ public class SpeechExecutor {
     private boolean paused;
     private AbstractCoordinates offset;
     private boolean skipRun;
+    private boolean finalScript;
+    private SpeechScript lastScript;
+    private SpeechScript lt;
 
 
     public SpeechExecutor(MetaGameMaster master, DialogueManager dialogueManager) {
         this.master = master;
         this.dialogueManager = dialogueManager;
+    }
+
+    public static void run(String s) {
+        try {
+            Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(s);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public void execute(String speechAction, String value) {
@@ -126,6 +143,7 @@ public class SpeechExecutor {
         Vector2 v = null;
         CUSTOM_OBJECT obj = null;
         Coordinates c = null;
+        int max = 0;
         Coordinates c1 = null;
         String string = null;
         BattleFieldObject unit = Eidolons.getMainHero();
@@ -146,6 +164,12 @@ public class SpeechExecutor {
                 return true;
             }
         switch (speechAction) {
+            case RESET:
+                master.getGame().getManager().reset();
+                break;
+            case END:
+                finalScript = true;
+                break;
             case HIGHLIGHT_ACTION:
                 DC_ActiveObj a = Eidolons.getMainHero().getActionOrSpell(value);
                 if (vars.size() > 0) {
@@ -239,8 +263,7 @@ public class SpeechExecutor {
                 main.system.auxiliary.log.LogMaster.dev("MOVED: " + unit.getNameAndCoordinate());
 
                 GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
-                if (isVisionRefreshRequired())
-                {
+                if (isVisionRefreshRequired()) {
                     GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
                     master.getGame().getVisionMaster().refresh();
                 }
@@ -269,6 +292,15 @@ public class SpeechExecutor {
                                 unit, value, arg
                         });
                 break;
+            case LAST_TUTORIAL:
+                if (!value.isEmpty()) {
+                    execute(lt);
+                } else
+                    lt = lastScript;
+                break;
+            case END_ROUND:
+                master.getGame().getManager().endRound();
+                break;
             case ADD_PARAM:
                 getUnit(value).addParam(vars.get(0), Integer.valueOf(vars.get(1)));
                 reset();
@@ -283,24 +315,27 @@ public class SpeechExecutor {
                 break;
 
             case REPLACE:
-                break;
+                string = "replace";
             case CLEAR:
-                string = "remove";
+                if (speechAction == CLEAR) {
+                    string = "remove";
+                }
 //            case DECIMATE:
             case ALL:
 //                if (vars.size() > 0) {
 //                    c1 = getCoordinate(vars.get(1), true);
 //                    coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
 //                }
-                if (vars.size() > 0) {
-                    string = vars.get(0);
-                }
+                if (string.isEmpty())
+                    if (vars.size() > 0) {
+                        string = vars.get(0);
+                    }
                 for (BattleFieldObject bfObject : master.getGame().getBfObjects()) {
                     if (bfObject.getName().equalsIgnoreCase(value)) {
                         if (coordinatesList == null) {
-                            doUnit(bfObject, string);
+                            doUnit(bfObject, string, vars);
                         } else if (coordinatesList.contains(bfObject.getCoordinates())) {
-                            doUnit(bfObject, string);
+                            doUnit(bfObject, string, vars);
                         }
                     }
 
@@ -372,7 +407,7 @@ public class SpeechExecutor {
                 break;
 
             case TRIGGER_REMOVE:
-                if (value == "last") {
+                if (value.equalsIgnoreCase("last")) {
                     master.getBattleMaster().getScriptManager().removeLast();
                 } else {
 //                    TODO master.getBattleMaster().getScriptManager().remove(vars.getVar(0));
@@ -382,8 +417,9 @@ public class SpeechExecutor {
                 master.getBattleMaster().getScriptManager().parseScripts(full);
                 break;
             case WAIT_FOR_NO_COMMENTS:
+                max = Integer.valueOf(value);
                 WaitMaster.waitForCondition(delta ->
-                        DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().isEmpty(), 10000);
+                        DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().isEmpty(), max);
                 break;
             case WAIT_ANIMS:
                 Predicate<Float> p = delta -> {
@@ -408,6 +444,9 @@ public class SpeechExecutor {
                 break;
             case WAIT_PASS:
                 bool = true;
+                if (!vars.isEmpty()) {
+                    max = Integer.valueOf(vars.get(0));
+                }
             case WAIT_INPUT:
 //                DungeonScreen.getInstance().getController().onInput(() -> {
 //                    WaitMaster.WAIT_OPERATIONS operation = WaitMaster.WAIT_OPERATIONS.INPUT;
@@ -432,12 +471,22 @@ public class SpeechExecutor {
                         bool ? null : false, bool);
 
                 main.system.auxiliary.log.LogMaster.dev("Scripts locked!");
+                Timer timer = TimerTaskMaster.newTimer(new TimerTask() {
+                    @Override
+                    public void run() {
+                        EUtils.showInfoText("Awaiting input ...");
+                    }
+                }, 2500);
                 lock.lock();
                 try {
-                    waiting.await();
+                    if (max > 0) {
+                        waiting.await(max, TimeUnit.MILLISECONDS);
+                    } else
+                        waiting.await();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                timer.cancel();
                 main.system.auxiliary.log.LogMaster.dev("Scripts Unlocked!");
 
                 if (vars.size() > 1) {
@@ -454,7 +503,6 @@ public class SpeechExecutor {
 
             case WAIT_FOR:
                 pause();
-                Integer max = null;
                 if (vars.size() > 0) {
                     max = Integer.valueOf(vars.get(0));
                 }
@@ -530,7 +578,7 @@ public class SpeechExecutor {
             case FULLSCREEN:
                 FULLSCREEN_ANIM anim = new EnumMaster<FULLSCREEN_ANIM>().retrieveEnumConst(FULLSCREEN_ANIM.class, value);
                 FullscreenAnimDataSource data = new FullscreenAnimDataSource(anim, 1f,
-                        FACING_DIRECTION.NORTH, BLENDING.SCREEN);
+                        FACING_DIRECTION.NORTH, GenericEnums.BLENDING.SCREEN);
 
                 //invert?
                 //flip?
@@ -614,8 +662,8 @@ public class SpeechExecutor {
                 bool = true;
             case LOOP_TRACK:
                 String path = "";
-                float volume = 0.1f;
-                switch (value) {
+                float volume = 0.5f;
+               bla: switch (value) {
                     default:
                         if (vars.size() > 0) {
                             //TODO
@@ -629,13 +677,16 @@ public class SpeechExecutor {
                                     + ".mp3";
                         } else
                             path = cue.getPath();
-                        break;
+                        break bla;
                     case "ambi":
                     case "atmo":
                     case "music":
                         MusicMaster.MUSIC_TRACK track = MusicMaster.getTrackByName(vars.get(0));
+                        if (vars.size() > 1) {
+                            volume = Float.valueOf(vars.get(1));
+                        }
                         path = PathFinder.getMusicPath() + track.getPath();
-                        break;
+                        break bla;
                 }
                 GuiEventManager.trigger(bool ?
                         GuiEventType.STOP_LOOPING_TRACK : GuiEventType.ADD_LOOPING_TRACK, path, volume);
@@ -655,6 +706,9 @@ public class SpeechExecutor {
             case PRELOAD_MUSIC:
                 MusicMaster.getInstance().getMusic(MusicMaster.MUSIC_TRACK.valueOf(value.toUpperCase()
                         .replace(" ", "_")).getPath(), true);
+                break;
+            case RANDOM_SOUND:
+                DC_SoundMaster.playRandomKeySound(value);
                 break;
             case SOUND_VARIANT:
                 random = true;
@@ -816,7 +870,7 @@ public class SpeechExecutor {
                 execute(BUFF_ADD, value + StringMaster.wrapInParenthesis("Disabled"));
                 break;
             case RESET_VISION:
-                master.getGame().getVisionMaster().overrideVisionOff(getUnit(value) );
+                master.getGame().getVisionMaster().overrideVisionOff(getUnit(value));
                 break;
             case VISION:
                 master.getGame().getVisionMaster().overrideVision(getUnit(value), vars.get(0));
@@ -870,14 +924,14 @@ public class SpeechExecutor {
                 c1 = getCoordinate(vars.get(1), true);
                 for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetween(c, c1)) {
                     for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(coordinates)) {
-                        doUnit(object, value);
+                        doUnit(object, value, vars);
                     }
                 }
                 break;
             case COORDINATE:
                 c = getCoordinate(vars.get(0));
                 for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(c)) {
-                    doUnit(object, value);
+                    doUnit(object, value, vars);
                 }
                 break;
             case UNIT:
@@ -1050,10 +1104,10 @@ public class SpeechExecutor {
 
     private void doUnit(String value, List<String> vars) {
         BattleFieldObject unit = vars.size() == 0 ? Eidolons.getMainHero() : getUnit(vars.get(0));
-        doUnit(unit, value);
+        doUnit(unit, value, vars);
     }
 
-    private void doUnit(BattleFieldObject unit, String value) {
+    private void doUnit(BattleFieldObject unit, String value, List<String> vars) {
         //same find-alg!
         if (unit != null) {
             switch (value) {
@@ -1061,11 +1115,10 @@ public class SpeechExecutor {
                 case "removeAction":
                     break;
 
+
                 case "remove":
                     unit.kill(unit, false, true);
-//GuiEventManager.trigger(GuiEventType.)
-
-
+                    GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, unit);
                     break;
                 case "show":
                     unit.setHidden(false);
@@ -1076,12 +1129,19 @@ public class SpeechExecutor {
                     unit.setHidden(true);
 
                     break;
+
+                case "replace":
+
                 case "fade":
 //                    unit.kill(unit, false, false);
                     unit.kill(unit, false, true);
                     if (unit instanceof Unit) {
                         new DeathAnim(unit).startAsSingleAnim(Ref.getSelfTargetingRefCopy(unit));
                     }
+                    if (value.equalsIgnoreCase("replace"))
+                        if (vars.size() > 0) {
+                            execute(BF_OBJ, vars.get(0) + StringMaster.wrapInParenthesis(unit.getCoordinates().toString()));
+                        }
                     break;
                 case "kill":
                     unit.kill(Eidolons.getMainHero(), true, false);
@@ -1094,12 +1154,6 @@ public class SpeechExecutor {
             }
             if (isVisionRefreshRequired())
                 unit.getGame().getVisionMaster().refresh();
-            else {
-                if (unit.isDead()) {
-//                    GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, unit);
-                    GuiEventManager.trigger(GuiEventType.REMOVE_UNIT_VIEW, unit);
-                }
-            }
         }
 
     }
@@ -1279,6 +1333,10 @@ public class SpeechExecutor {
     }
 
     public void execute(SpeechScript speechScript) {
+        lastScript = speechScript;
+        if (finalScript) {
+            return;
+        }
         running = true;
         important("Executing script: " + speechScript.toString());
         for (Pair<SPEECH_ACTION, String> pair : speechScript.actions) {

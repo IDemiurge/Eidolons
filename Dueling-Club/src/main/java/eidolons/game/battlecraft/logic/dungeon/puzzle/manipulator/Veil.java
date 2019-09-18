@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.texture.Sprites;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.game.bf.Coordinates;
 
@@ -23,7 +23,7 @@ public class Veil extends GridObject {
     @Override
     protected void init() {
         super.init();
-        sprite.setBlending(SuperActor.BLENDING.SCREEN);
+        sprite.setBlending(GenericEnums.BLENDING.SCREEN);
 
     }
     @Override

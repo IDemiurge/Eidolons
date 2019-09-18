@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.RollDecorator;
@@ -9,6 +10,8 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.Images;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class SoulforcePanel extends GroupX {
     private final FadeImageContainer bg;
@@ -26,8 +29,8 @@ public class SoulforcePanel extends GroupX {
 //        decorated.toggle(false);
         addActor(bg = new FadeImageContainer("ui/components/dc/soulforce/background.png"));
         addActor(bar = new SoulforceBar( ));
-        addActor(lordBtn = new SmartButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> openLordPanel()));
-        addActor(paleBtn = new SmartButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> openLordPanel()));
+        addActor(lordBtn = new SmartButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> leftButton()));
+        addActor(paleBtn = new SmartButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> rightButton()));
 
         bar.addListener(new DynamicTooltip(() -> "Current Soulforce: " + bar.getTooltip()).getController());
         lordBtn.addListener(new DynamicTooltip(() -> "Eidolon Arts").getController());
@@ -54,6 +57,16 @@ public class SoulforcePanel extends GroupX {
          *sf  label
          *
          */
+    }
+
+    private void leftButton() {
+        SpeechExecutor.run("last tutorial=play;");
+        GuiEventManager.trigger(GuiEventType.SHOW_LAST_TUTORIAL_COMMENT);
+
+    }
+    private void rightButton() {
+        GuiEventManager.trigger(GuiEventType.SHOW_LAST_COMMENT);
+        SpeechExecutor.run("last tutorial=play");
     }
 
     @Override

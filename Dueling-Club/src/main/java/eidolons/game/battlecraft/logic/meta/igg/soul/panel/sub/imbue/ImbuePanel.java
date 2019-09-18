@@ -8,12 +8,12 @@ import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.content.enums.GenericEnums;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -48,7 +48,7 @@ public class ImbuePanel extends TablePanelX {
              imbuer.imbue(getSelectedItem(), getSouls());
             GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,
                     new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATES, 1,
-                            FACING_DIRECTION.NORTH, SuperActor.BLENDING.SCREEN));
+                            FACING_DIRECTION.NORTH, GenericEnums.BLENDING.SCREEN));
             soulSlots.resetSouls();
             LordPanel.getInstance().update();
         }

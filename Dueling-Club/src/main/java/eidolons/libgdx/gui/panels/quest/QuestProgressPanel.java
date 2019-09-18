@@ -1,6 +1,8 @@
 package eidolons.libgdx.gui.panels.quest;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.game.EidolonsGame;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -15,6 +17,14 @@ import main.system.GuiEventType;
  */
 public class QuestProgressPanel extends TablePanelX {
     public static final int WIDTH = 315;
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (EidolonsGame.DUEL) {
+            return;
+        }
+        super.draw(batch, parentAlpha);
+    }
 
     public QuestProgressPanel() {
         super(GdxMaster.adjustWidth(WIDTH), GdxMaster.adjustHeight(800));

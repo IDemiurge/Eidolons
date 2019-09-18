@@ -19,6 +19,8 @@ import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
+import java.util.ArrayList;
+
 import static eidolons.libgdx.anims.main.AnimMaster.isOn;
 
 /**
@@ -130,9 +132,11 @@ public class AnimDrawMaster extends Group {
 //            }
 //        });
         attachedAnims.removeIf((Animation a) -> !a.isRunning());
-        attachedAnims.forEach(a -> {
-            a.tryDraw(batch);
-        });
+        DequeImpl<Animation> animations = attachedAnims;
+        for (int i = 0, animationsSize = animations.size(); i < animationsSize; i++) {
+            Animation attachedAnim = animations.get(i);
+            attachedAnim.tryDraw(batch);
+        }
 
         if (leadAnimation == null) {
             startNext();
@@ -148,9 +152,11 @@ public class AnimDrawMaster extends Group {
         }
         // not turned on
         if (getParallelDrawing()) {
-            leadQueue.forEach(a -> {
+            DequeImpl<CompositeAnim> compositeAnims =  (leadQueue);
+            for (int i = 0, compositeAnimsSize = compositeAnims.size(); i < compositeAnimsSize; i++) {
+                CompositeAnim a = compositeAnims.get(i);
                 tryDrawAnimation(batch, a);
-            });
+            }
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }

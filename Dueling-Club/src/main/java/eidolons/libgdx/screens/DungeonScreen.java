@@ -417,7 +417,7 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
-    private boolean isDrawGrid() {
+    public boolean isDrawGrid() {
         if (!gridFirstDraw){
             gridFirstDraw=true;
             return true;

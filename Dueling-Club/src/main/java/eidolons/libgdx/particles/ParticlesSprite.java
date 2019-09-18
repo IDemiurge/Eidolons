@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
@@ -17,22 +16,22 @@ public class ParticlesSprite extends GroupX {
     }
 
     public enum PARTICLES_SPRITE {
-        ASH(false, "sprites/particles/snow.txt", SuperActor.BLENDING.INVERT_SCREEN,
+        ASH(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
                 12, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        ASH_THICK(false, "sprites/particles/snow.txt", SuperActor.BLENDING.INVERT_SCREEN,
+        ASH_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
                 14, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        MIST(true, "sprites/particles/mist.txt", SuperActor.BLENDING.SCREEN,
+        MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.SCREEN,
                 10, 2, null),
-        BLACK_MIST(true, "sprites/particles/mist.txt", SuperActor.BLENDING.INVERT_SCREEN,
+        BLACK_MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.INVERT_SCREEN,
                 10, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        SNOW(false, "sprites/particles/snow.txt", SuperActor.BLENDING.SCREEN,
+        SNOW(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
                 14, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        SNOW_THICK(false, "sprites/particles/snow.txt", SuperActor.BLENDING.SCREEN,
+        SNOW_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
                 15, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
         ;
 
 
-        PARTICLES_SPRITE(boolean flipping, String path, SuperActor.BLENDING blending, int fps, int overlap, GenericEnums.ALPHA_TEMPLATE fluctuation) {
+        PARTICLES_SPRITE(boolean flipping, String path, GenericEnums.BLENDING blending, int fps, int overlap, GenericEnums.ALPHA_TEMPLATE fluctuation) {
             this.flipping = flipping;
             this.path = path;
             this.blending = blending;
@@ -44,7 +43,7 @@ public class ParticlesSprite extends GroupX {
         public boolean reverse;
         public boolean flipping;
         public String path;
-        public SuperActor.BLENDING blending;
+        public GenericEnums.BLENDING blending;
         int fps;
         int overlap;
         boolean changeFps;

@@ -264,17 +264,17 @@ public class SpellMultiplicator implements Runnable {
         // 1 for ray, but we know coordinates precisely
         List<SpellVfx> list = new ArrayList<>();
 
-        for (SpellVfx e : emitterList) {
-            int angle = 0;
-            for (Coordinates coordinate : coordinates) {
-
+        int angle = 0;
+        for (Coordinates coordinate : coordinates) {
+            for (SpellVfx e : emitterList) {
                 if (e.isGenerated()) {
                     continue;
                 }
                 SpellVfx actor = multiplicateEmitter(angle, coordinate, e);
-                angle += 360 / max;
+
                 list.add(actor);
             }
+            angle += 360 / max;
         }
         list.forEach(a -> emitterList.add(a));
     }

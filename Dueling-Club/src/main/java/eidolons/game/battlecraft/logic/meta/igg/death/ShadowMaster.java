@@ -63,6 +63,8 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
     }
 
     public static boolean isOn() {
+        if (EidolonsGame.BRIDGE)
+            return false;
         if (ExplorationMaster.isExplorationOn())
             return false;
         if (!TEST_MODE)

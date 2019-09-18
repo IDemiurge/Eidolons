@@ -574,10 +574,10 @@ public class AnimMaster3d {
                 if (!Assets.get().getManager().isLoaded(path))
                 {
                     main.system.auxiliary.log.LogMaster.log(1, "************* Atlas failed to load! " + path);
-                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
-                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
-                    Assets.setON(false);
-                    OptionsMaster.saveOptions();
+//                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
+//                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
+//                    Assets.setON(false);
+//                    OptionsMaster.saveOptions();
                     return getOrCreateAtlas(path, cache);
                 }
                 try {

@@ -151,6 +151,7 @@ public class Images {
     public static final String LIGHT_SKULL = "sprites/cells/light skull.png";
     public static final String ROLL_ARROW = "ui/roll arrow.png";
     public static final String REALLY_EMPTY_32 ="ui/really empty 32.png" ;
+    public static final String MISSING_TEXTURE = "ui/missing.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

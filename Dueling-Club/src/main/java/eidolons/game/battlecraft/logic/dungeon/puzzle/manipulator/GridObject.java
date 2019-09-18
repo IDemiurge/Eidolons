@@ -41,7 +41,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         this.spritePath = spritePath;
         //black underlay?
         visionRange = getDefaultVisionRange();
-        if (spritePath != null) {
+        if (!StringMaster.isEmpty(spritePath)) {
             setKey(StringMaster.cropFormat(PathUtils.getLastPathSegment(spritePath)));
         }
     }
@@ -100,15 +100,20 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected void init() {
         getColor().a = 0;
         createEmittersUnder();
-        sprite = new SpriteX(spritePath);
-        if (sprite.getSprite() == null) {
-            sprite = null; //TODO igg demo fix
+        try {
+            sprite = new SpriteX(spritePath);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
+
         if (sprite != null) {
-            sprite.setFlipX(flipX);
-//        sprite.setBlending(SuperActor.BLENDING.SCREEN);
-            sprite.setFps(getFps());
-            addActor(sprite);
+            if (sprite.getSprite() == null) {
+                sprite = null; //TODO igg demo fix
+            } else {
+                sprite.setFlipX(flipX);
+                sprite.setFps(getFps());
+                addActor(sprite);
+            }
         }
         createEmittersOver();
 
@@ -175,9 +180,9 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
             return;
         }
         if (getEmitters().iterator().hasNext())
-        if (!(getEmitters().iterator().next() instanceof DummyEmitterActor)) {
-            super.draw(batch, parentAlpha);
-        }
+            if (!(getEmitters().iterator().next() instanceof DummyEmitterActor)) {
+                super.draw(batch, parentAlpha);
+            }
         if (!initialized) {
             init();
             act(RandomWizard.getRandomFloat());
@@ -194,11 +199,10 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         if (isIgnored()) {
             return;
         }
-        if (getColor().a == 1 &&
-                ((hidden || !checkVisible()))) {
+        if (((hidden || !checkVisible()))) {
             fadeOut();
         } else {
-            if (getColor().a == 0) {
+            {
                 if (checkVisible()) {
                     fadeIn();
                 }
@@ -212,7 +216,9 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     @Override
     public void fadeOut() {
-        super.fadeOut();
+        if (getColor().a == 1) {
+            super.fadeOut();
+        }
         for (EmitterActor emitterActor : emitters.keySet()) {
             emitterActor.getEffect().getEmitters().forEach(e -> e.allowCompletion());
         }
@@ -220,11 +226,15 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     @Override
     public void fadeIn() {
-        super.fadeIn();
+
+        if (getColor().a == 0)
+            super.fadeIn();
         for (EmitterActor emitterActor : emitters.keySet()) {
             emitterActor.getEffect().getEmitters().forEach(e -> {
-                e.reset();
-                e.start();
+                if (e.isComplete()) {
+                    e.reset();
+                    e.start();
+                }
             });
         }
     }

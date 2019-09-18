@@ -51,7 +51,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     public static final boolean TEST_MODE = false;
     public static final boolean TEST_OUTCOME = false;
     private static final String VICTORY_MESSAGE =
-     "+++That's It - You are Victorious!+++";
+     "+++You are Victorious!+++";
     private static final String DEFEAT_MESSAGE =
      "***All is lost - the Enemy has Prevailed!***";
     Cell<TextButton> exitButton;
@@ -77,6 +77,16 @@ public class OutcomePanel extends TablePanelX implements EventListener {
             return;
         }
         ShaderDrawer.drawWithCustomShader(this, batch, null);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
+    public void fadeIn() {
+        super.fadeIn();
     }
 
     @Override

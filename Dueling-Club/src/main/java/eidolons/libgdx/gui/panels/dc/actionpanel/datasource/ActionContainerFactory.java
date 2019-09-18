@@ -17,14 +17,14 @@ public class ActionContainerFactory {
 
     private ActionContainerFactory() {
         GuiEventManager.bind(GuiEventType. HIGHLIGHT_ACTION, p-> {
-            cache.get(p.get()).setHighlight(true);
+            getValueContainer((DC_ActiveObj) p.get(), 64) .setHighlight(true);
         });
         GuiEventManager.bind(GuiEventType. HIGHLIGHT_ACTION_OFF, p-> {
-            cache.get(p.get()).setHighlight(false);
+            getValueContainer((DC_ActiveObj) p.get(), 64) .setHighlight(false);
         });
     }
 
-    public static ValueContainer getValueContainer(DC_ActiveObj el, int size) {
+    public static ActionValueContainer getValueContainer(DC_ActiveObj el, int size) {
         ActionValueContainer container = cache.get(el);
         boolean valid = el.canBeManuallyActivated();
         boolean b=false;

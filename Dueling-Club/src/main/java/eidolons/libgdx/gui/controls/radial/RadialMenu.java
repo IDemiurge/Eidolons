@@ -11,12 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.EidolonsGame;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -27,6 +25,7 @@ import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
+import main.content.enums.GenericEnums;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
 import main.system.EventType;
@@ -67,7 +66,7 @@ public class RadialMenu extends Group implements Closable {
                 updateBackground(0);
             background.setScale(getColor().a);
             if (batch instanceof CustomSpriteBatch) {
-                ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
+                ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
             }
             try {
                 background.draw(batch);

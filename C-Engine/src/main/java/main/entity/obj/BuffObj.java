@@ -336,7 +336,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     @Override
     public void newRound() {
         // TODO Auto-generated method stub
-
+return ;
     }
 
     public void modifyDuration(Integer amount) {

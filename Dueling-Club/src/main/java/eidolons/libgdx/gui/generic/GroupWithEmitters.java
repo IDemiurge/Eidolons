@@ -2,13 +2,12 @@ package eidolons.libgdx.gui.generic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import main.content.enums.GenericEnums;
 
 import java.util.Collection;
-import java.util.Collections;
 
 public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
     private boolean invertScreen;
@@ -39,16 +38,25 @@ public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
 //         }
         }
         setTransform(false);
-        if (invertScreen)
-        if (drawEmitters) {
-            if (batch instanceof CustomSpriteBatch) {
-                ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.INVERT_SCREEN);
-            }
-        }
+//        if (drawEmitters) {
+//            if (invertScreen)
+//            {
+//                ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
+//            }
+//            else
+//            {
+//                ((CustomSpriteBatch) batch).resetBlending();
+//            }
+//        }
         super.draw(batch, parentAlpha);
     }
 
     public void setInvertScreen(boolean invertScreen) {
         this.invertScreen = invertScreen;
+        for (Actor child : getChildren()) {
+            if (child instanceof EmitterActor) {
+                ((EmitterActor) child).setInvert(invertScreen);
+            }
+        }
     }
 }

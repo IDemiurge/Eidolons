@@ -12,11 +12,19 @@ import main.game.logic.event.Event.EVENT_TYPE;
  */
 public class ScriptTrigger extends Trigger {
 
+    private   boolean tutorial;
     private String scriptText;
 
     public ScriptTrigger(String originalText, EVENT_TYPE eventType, Condition conditions, Ability abilities) {
         super(eventType, conditions, abilities);
         scriptText = originalText;
+        if (scriptText.contains("tutorial")) {
+            tutorial=true;
+        }
+    }
+
+    public boolean isTutorial() {
+        return tutorial;
     }
 
     public boolean isRemoveOnReset() {

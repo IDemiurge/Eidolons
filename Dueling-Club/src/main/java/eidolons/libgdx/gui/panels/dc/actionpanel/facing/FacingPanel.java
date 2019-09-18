@@ -71,6 +71,7 @@ public class FacingPanel extends TablePanel {
 //                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
 
                 GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero() , 2f);
+                DungeonScreen.getInstance().getController().inputPass();
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

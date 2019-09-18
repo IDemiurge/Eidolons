@@ -8,13 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 11/8/2018.
  */
 public class FadeSprite extends FadeImageContainer {
     SpriteAnimation spriteAnimation;
-    private BLENDING blending;
+    private GenericEnums.BLENDING blending;
 
     public FadeSprite(SpriteAnimation spriteAnimation) {
         this.spriteAnimation = spriteAnimation;
@@ -22,7 +23,7 @@ public class FadeSprite extends FadeImageContainer {
         spriteAnimation.setLooping(true);
         spriteAnimation.setFrameDuration(1.25f);
         spriteAnimation.setCustomAct(true);
-        setBlending(BLENDING.SCREEN);
+        setBlending(GenericEnums.BLENDING.SCREEN);
     }
 
     public FadeSprite(String imagePath) {
@@ -104,11 +105,11 @@ public class FadeSprite extends FadeImageContainer {
         super.setWidth(width);
     }
 
-    public BLENDING getBlending() {
+    public GenericEnums.BLENDING getBlending() {
         return blending;
     }
 
-    public void setBlending(BLENDING blending) {
+    public void setBlending(GenericEnums.BLENDING blending) {
         this.blending = blending;
     }
 }

@@ -34,7 +34,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
     public final FLAG_COLOR defaultEnemyColor =
             FLAG_COLOR.RED;
     public final FLAG_COLOR defaultEnemyColorAlt=
-            FLAG_COLOR.PEARL;
+            FLAG_COLOR.NETHER;
 
     public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED, FLAG_COLOR.ORANGE, FLAG_COLOR.CRIMSON,};
     public final FLAG_COLOR[] allyColors = {FLAG_COLOR.BLUE,

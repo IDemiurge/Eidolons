@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.gui.generic.GroupX;
+import main.content.enums.GenericEnums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class SpriteModel extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        displayedSprite.setBlending(SuperActor.BLENDING.SCREEN);
+        displayedSprite.setBlending(GenericEnums.BLENDING.SCREEN);
         defaultSprite.setLooping(true);
         if (pos != null) {
             displayedSprite.setOffsetY(pos.y);

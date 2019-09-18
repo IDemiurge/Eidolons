@@ -10,6 +10,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -109,6 +110,7 @@ public class TipMessageMaster {
     private static Runnable createChain(TIP[] tips) {
         if (tips.length <= 1)
             return () -> {
+                if (!CoreEngine.isIDE())
                 if (tips[0].once){
                     tips[0].done = true;
                 }
@@ -120,7 +122,11 @@ public class TipMessageMaster {
     }
 
     private static TipMessageSource getSource(TIP tip) {
-        return new TipMessageSource(tip.message, tip.img, "Continue", tip.optional, null, tip.messageChannel);
+        String message = tip.message;
+        if (tip.message.isEmpty()) {
+            message =DescriptionTooltips.getTipMap().get(tip.name().toLowerCase());
+        }
+        return new TipMessageSource( message, tip.img, "Continue", tip.optional, null, tip.messageChannel);
     }
 
     public static void onEvent(Event.EVENT_TYPE type) {

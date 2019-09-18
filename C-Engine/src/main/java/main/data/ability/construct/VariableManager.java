@@ -175,7 +175,6 @@ public class VariableManager {
             return "";
         }
         return typeName.substring(index);
-
     }
 
     public static String getVarPartLast(String typeName) {

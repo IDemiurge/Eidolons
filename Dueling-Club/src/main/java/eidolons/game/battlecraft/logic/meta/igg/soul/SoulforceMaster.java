@@ -55,6 +55,9 @@ public class SoulforceMaster extends MetaGameHandler {
     }
     //true if gameover
     public  boolean died(){
+        if (EidolonsGame.BRIDGE){
+            return false;
+        }
         /**
          *
          */

@@ -20,6 +20,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
+import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
@@ -299,6 +300,9 @@ public class RadialManager {
 
 
     protected static boolean checkExamineNode(DC_Obj target) {
+        if (!UnitInfoPanelNew.EXAMINE_READY && !CoreEngine.isIDE()){
+            return false;
+        }
         return target instanceof Unit && (
                 target.getOutlineTypeForPlayer() == null
                         && VisionManager.checkKnown(target));

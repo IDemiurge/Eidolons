@@ -20,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.gui.generic.GearActor;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.text.DC_LogManager;
 import main.game.bf.Coordinates;
@@ -71,6 +72,7 @@ public class GameLoop {
     protected ActionInput lastActionInput;
     private boolean firstActionDone;
     private DC_ActiveObj lastAction;
+    private DC_ActiveObj lastActionEvent;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -186,7 +188,9 @@ public class GameLoop {
             } catch (Exception e) {
                 ExceptionMaster.printStackTrace(e);
             }
+            Chronos.mark(activeUnit+"'s action");
             result = makeAction();
+            Chronos.logTimeElapsedForMark(activeUnit+"'s action");
             if (!aftermath)
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                     return false;
@@ -230,6 +234,9 @@ public class GameLoop {
 //            try {
             action = (waitForAI());
             AI_Manager.setOff(false);
+
+            waitForAnimations(action);
+
 //            } catch (Exception e) {
 //                AI_Manager.setOff(true);
 //                if (!aiFailNotified) {
@@ -248,7 +255,7 @@ public class GameLoop {
         result =
                 activateAction(action);
 
-        waitForAnimations(action);
+//        waitForAnimations(action);
         if (exited)
             return true;
         waitForPause();
@@ -404,6 +411,7 @@ public class GameLoop {
             EUtils.showInfoText(RandomWizard.random() ? "The game is Paused!" : "Game is paused now...");
             return;
         }
+        DungeonScreen.getInstance().getController().inputPass();
         WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput, false);
         if (actionInput != null)
             lastActionInput = actionInput;
@@ -566,5 +574,13 @@ public class GameLoop {
 
     public void setLastAction(DC_ActiveObj lastAction) {
         this.lastAction = lastAction;
+    }
+
+    public void setLastActionEvent(DC_ActiveObj lastActionEvent) {
+        this.lastActionEvent = lastActionEvent;
+    }
+
+    public DC_ActiveObj getLastActionEvent() {
+        return lastActionEvent;
     }
 }

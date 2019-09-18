@@ -1,15 +1,13 @@
 package eidolons.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
 
 public class Blackout {
     FloatAction blackoutAction = new FloatAction();
@@ -77,9 +75,9 @@ public class Blackout {
         blackSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         blackSprite.resetColor(blackout);
         if (whiteout)
-            batch.setBlending(SuperActor.BLENDING.SCREEN);
+            batch.setBlending(GenericEnums.BLENDING.SCREEN);
         else
-            batch.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+            batch.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         blackSprite.draw(batch);
         batch.resetBlending();
         batch.end();

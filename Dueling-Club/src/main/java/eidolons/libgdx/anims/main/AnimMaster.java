@@ -8,6 +8,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -22,9 +23,8 @@ import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
 import eidolons.libgdx.bf.boss.sprite.BossView;
 import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.controls.GlobalController;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.OptionsMaster;
@@ -119,7 +119,7 @@ public class AnimMaster extends Group {
     }
 
     public static float getAnimationSpeedFactor() {
-        if (Cinematics.ON){
+        if (Cinematics.ON) {
             return Cinematics.ANIM_SPEED;
         }
         if (animationSpeedFactor == null) {
@@ -194,18 +194,27 @@ public class AnimMaster extends Group {
             EUtils.showInfoText(show);
             show += ".";
         }
-        boolean control = OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.TURN_CONTROL);
 
+        boolean control =
+
+                OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS)
+                        ||
+                        OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS);
+        if (!DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().isEmpty()) {
+            control = true;
+        }
         if (!control)
+        {
             EUtils.showInfoText("... And Go");
-
-        if (control) {
+        }
+        else {
             if (!action.getAction().getOwnerUnit().isMine()) {
                 if (checkActionControlled(action)) {
-                    Eidolons.getGame().getLoop().setPaused(true);
-                    GlobalController.setControlPause(true);
-                    EUtils.showInfoText("Any key or click to continue...");
-                    //max wait time here? add dots?
+//                    if (OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS)) {
+//                   TODO      SpeechExecutor.run("wait pass=200(5000);");
+//                    } else
+                        SpeechExecutor.run("wait input= ;");
+
                     return;
                 }
 //                return;
@@ -281,6 +290,7 @@ public class AnimMaster extends Group {
     public static void onCustomAnim(String spritePath, Runnable runnable) {
         onCustomAnim(new SimpleAnim(spritePath, runnable));
     }
+
     public static void onCustomAnim(SimpleAnim anim) {
         Gdx.app.postRunnable(() -> anim.startAsSingleAnim());
     }

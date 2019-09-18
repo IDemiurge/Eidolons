@@ -16,6 +16,7 @@ import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.UNIT_DIRECTION;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class CoordinateTargeting extends TargetingImpl {
@@ -26,6 +27,7 @@ public class CoordinateTargeting extends TargetingImpl {
     private String coordinateKey;
     boolean flip; //TODO igg demo fix
     boolean useActivesRange;
+    private boolean cellTargeting = true;
 
     public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
         this.unitDirection = unitDirection;
@@ -104,9 +106,13 @@ public class CoordinateTargeting extends TargetingImpl {
                 }
             }
         }
-        Set<BattleFieldObject> objects = obj.getGame().getMaster().
-                getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
-        if (objects.size() == 0) {
+        Set<BattleFieldObject> objects = new HashSet<>();
+
+        if (!cellTargeting) {
+            objects = obj.getGame().getMaster().
+                    getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
+        }
+        if (objects.size() == 0 || cellTargeting) {
             DC_Cell cell = obj.getGame().getCellByCoordinate(coordinate);
             if (cell == null) {
                 return false;

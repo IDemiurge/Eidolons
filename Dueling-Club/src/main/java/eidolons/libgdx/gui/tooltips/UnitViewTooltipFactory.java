@@ -22,6 +22,7 @@ import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.ToolTipMaster;
+import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.properties.G_PROPS;
@@ -148,6 +149,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             addPropStringToValues(object, values, G_PROPS.STANDARD_PASSIVES, false);
             addPropStringToValues(object, values, G_PROPS.CLASSIFICATIONS, false);
 
+            if (object.checkBool(GenericEnums.STD_BOOLS.FAUX)) {
+                values.add(new ValueContainer("Fragile"));
+            } else
             if (object.isIndestructible()) {
                 values.add(new ValueContainer("Indestructible"));
             } else {

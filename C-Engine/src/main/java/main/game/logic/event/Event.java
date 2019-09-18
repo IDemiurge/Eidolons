@@ -272,8 +272,8 @@ public class Event implements Referred {
         INTERACTIVE_OBJ_PICKED_UP,
         UNIT_IS_FALLING_UNCONSCIOUS, COMBAT_STARTS, HERO_LEVEL_UP, TOWN_ENTERED, VICTORY, DEFEAT, INTRO_FINISHED, RESET_DONE, RESET_STARTS, CHANNELING_FAIL, SPELL_RESISTED
         ,        CHANNELING_DONE
-        ,        CHANNELING_STARTED
-        ;
+        ,        CHANNELING_STARTED,
+        UNDYING_RULE;
         private String arg = "";
 
         STANDARD_EVENT_TYPE() {

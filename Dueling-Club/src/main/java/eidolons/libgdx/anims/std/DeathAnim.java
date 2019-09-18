@@ -62,6 +62,8 @@ public class DeathAnim extends ActionAnim {
     }
 
     public static boolean isOn() {
+        if (!DungeonScreen.getInstance().isDrawGrid())
+            return false;
         if (!AnimMaster.isOn()) {
             return false;
         }

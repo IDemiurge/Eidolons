@@ -132,7 +132,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
                         getActionSequenceConstructor().constructSingleActionSequence(action,
-                                new Task(ai, goal, null)); //TODO target?
+                                new Task(ai, goal, null), true); //TODO target?
 
                 if (action.getTargeting() instanceof SelectiveTargeting) {
                     if (action.getTarget() == null) {

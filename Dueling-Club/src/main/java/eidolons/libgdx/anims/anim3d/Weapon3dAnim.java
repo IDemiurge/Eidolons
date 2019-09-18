@@ -18,7 +18,7 @@ import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
-import eidolons.libgdx.bf.SuperActor;
+import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
@@ -95,10 +95,10 @@ public class Weapon3dAnim extends ActionAnim {
         sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
         if (isScreen()){
-            sprite.setBlending(SuperActor.BLENDING.SCREEN);
+            sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
         if (isInvertScreen()){
-            sprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+            sprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         }
         if (!isRandomized()) {
             getSprites().clear();

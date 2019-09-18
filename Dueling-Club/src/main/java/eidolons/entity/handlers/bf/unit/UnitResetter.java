@@ -156,6 +156,8 @@ public class UnitResetter extends EntityResetter<Unit> {
                 if (getChecker().isImmortalityOn()) {
                     getEntity().addPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE);
                 } else {
+                    getEntity().removeProperty(G_PROPS.STD_BOOLS,
+                            UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
                     getEntity().removeProperty(G_PROPS.STANDARD_PASSIVES,
                             UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
                 }

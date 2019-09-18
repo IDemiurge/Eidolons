@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
+import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptTrigger;
 import main.data.ability.construct.VariableManager;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
@@ -99,7 +100,12 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
     protected void addTrigger(Trigger trigger) {
         if (trigger == null)
             return;
-        lastTrigger = trigger;
+//        trigger.
+        if (trigger instanceof ScriptTrigger) {
+            if (!((ScriptTrigger) trigger).isTutorial()) {
+                lastTrigger = trigger;
+            }
+        }
         getMaster().getGame().getManager().addTrigger(trigger);
 //        map.put(name, trigger);
 //        scriptTriggers.add(trigger);

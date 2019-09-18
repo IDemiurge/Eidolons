@@ -1,10 +1,13 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -82,6 +85,12 @@ public class QuickWeaponPanel extends TablePanelX {
 
     protected QuickAttackRadial createRadial(boolean offhand) {
         return new QuickAttackRadial(this, offhand);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+
+        super.draw(batch, parentAlpha);
     }
 
     protected void initTooltip() {
@@ -194,6 +203,10 @@ public class QuickWeaponPanel extends TablePanelX {
                     return false;
                 }
                 if (!getDataSource().getOwnerObj().isMine()) {
+                    return false;
+                }
+                if (EidolonsGame.ATTACKS_DISABLED) {
+                    EUtils.showInfoText("Attacks blocked - Chained!");
                     return false;
                 }
                 if (button == 1) {

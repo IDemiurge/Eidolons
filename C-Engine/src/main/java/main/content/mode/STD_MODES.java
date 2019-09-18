@@ -53,7 +53,12 @@ public enum STD_MODES implements MODE {
     NORMAL(false, false, false);
 
     private static final String DEFAULT_ATB_PERIOD="0.25";
+    private boolean removeEndRound;
 
+    @Override
+    public boolean isRemoveEndRound() {
+        return removeEndRound;
+    }
     static {
         DEFENDING.duration=2;
 

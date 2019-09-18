@@ -106,9 +106,9 @@ public class Player {
         if (!basePath.contains(SoundMaster.getPath())) {
             basePath = SoundMaster.getPath() + basePath;
         }
-        String sound = FileManager.getRandomFilePathVariant(basePath, format, !alt);
+        String sound = FileManager.getRandomFilePathVariant(basePath, format,alt);
         if (sound == null) {
-            sound = FileManager.getRandomFilePathVariant(basePath, format, alt);
+            sound = FileManager.getRandomFilePathVariant(basePath, format,  !alt);
         }
         if (sound == null) {
             format = (format.equalsIgnoreCase(FORMAT)) ? ALT_FORMAT : FORMAT;
@@ -215,7 +215,20 @@ public class Player {
         try {
             Sound soundFile = cache.get(sound.getSound());
             if (soundFile ==null) {
-              soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(sound.getSound(),
+                String path = sound.getSound();
+                if ( path.isEmpty( ))
+                    return;
+
+                    if (!path.contains(".")) {
+                    if (FileManager.isFile( path +  ".mp3" )) {
+                        path += ".mp3";
+                    } else
+                    if (FileManager.isFile( path +  ".wav" )) {
+                        path += ".wav";
+                    }
+
+                }
+              soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(path,
                     FileType.Absolute));
                 cache.put(sound.getSound(), soundFile);
         }
@@ -280,7 +293,13 @@ public class Player {
                     corePath = getRandomSound(sound_type, soundSet, true, false);
                     file = FileManager.getFile(corePath + "_01" + FORMAT);
                     if (!file.isFile())
+                    {
                         corePath = getRandomSound(sound_type, soundSet, false, false);
+                    }
+                    if (corePath != null)
+                     if (new File(corePath).isFile()) {
+                        return corePath;
+                    }
                 }
                 if (!file.isFile()) {
                     LogMaster.verbose("no sound file available for " + sound_type + " - " + soundSet);

@@ -63,7 +63,7 @@ public class AtbUnitImpl implements AtbUnit {
         double value = (i) * AtbController.TIME_LOGIC_MODIFIER;
 
         atbController.getManager().getGame().getLogManager().
-         log(LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL,
+         log(LogManager.LOGGING_DETAIL_LEVEL.FULL,
          getUnit().getName() + " has " +
           (getDisplayedAtbReadiness()) + "%" + " readiness");
 

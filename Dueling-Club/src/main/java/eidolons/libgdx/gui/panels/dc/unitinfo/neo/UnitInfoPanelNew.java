@@ -56,6 +56,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
+    public static final boolean EXAMINE_READY = false;
     private static UnitInfoPanelNew instance;
     public final Group outside;
     //centered?

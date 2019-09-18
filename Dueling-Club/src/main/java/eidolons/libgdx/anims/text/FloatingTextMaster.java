@@ -421,6 +421,7 @@ public class FloatingTextMaster {
                 return 10;
             case BATTLE_COMMENT:
                 return 8;
+//            case DURABILITY_LOSS:
         }
         return DEFAULT_DURATION * ConfigMaster.getInstance().getInt(ConfigKeys.FLOATING_TEXT_DURATION);
     }

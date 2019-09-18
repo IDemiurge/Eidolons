@@ -1,5 +1,6 @@
 package main.content.enums;
 
+import com.badlogic.gdx.graphics.GL20;
 import main.data.ability.construct.VarHolder;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -364,6 +365,8 @@ public class GenericEnums {
         missile_nether_nox("spell/missile/nether missile nox"),
         missile_electric("spell/missile/electric missile"),
         missile_electric_intense("spell/missile/electric missile intense2"),
+//        missile_electric_intense("spell/missile/electric missile intense2"),
+//        missile_electric("spell/missile/electric missile"),
 
         weave_arcane("spell/weave/arcane weave"),
         missile_arcane("spell/missile/arcane missile"),
@@ -645,5 +648,30 @@ public class GenericEnums {
             this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
         }
 
+    }
+
+    public enum BLENDING {
+        INVERT_SCREEN(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        PREMULTIPLIED_ALPHA(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
+        OVERLAY(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
+        MULTIPLY(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SATURATE(GL20.GL_DST_COLOR, GL20.GL_ONE),
+        DARKEN(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SUBTRACT(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),;
+
+        public int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
+
+        BLENDING(int blendDstFunc, int blendSrcFunc) {
+            this.blendDstFunc = blendDstFunc;
+            this.blendSrcFunc = blendSrcFunc;
+        }
+
+        BLENDING(int blendDstFunc, int blendSrcFunc, int blendDstFuncAlpha, int blendSrcFuncAlpha) {
+            this.blendDstFunc = blendDstFunc;
+            this.blendSrcFunc = blendSrcFunc;
+            this.blendDstFuncAlpha = blendDstFuncAlpha;
+            this.blendSrcFuncAlpha = blendSrcFuncAlpha;
+        }
     }
 }

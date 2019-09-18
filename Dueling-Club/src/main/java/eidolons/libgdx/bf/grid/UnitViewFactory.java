@@ -108,7 +108,7 @@ public class UnitViewFactory {
             LinkedGridObject obj = new LinkedGridObject(view,
                     x,
                     bfObj.getCoordinates());
-            if (x.attach) {
+            if (x.attach || bfObj instanceof Unit) {
                 view.addActor(obj);
                 obj.setZIndex(0);
             } else

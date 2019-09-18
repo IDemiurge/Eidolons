@@ -47,7 +47,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 
     public DialogueManager(MetaGameMaster master) {
         super(master);
-        SKIP_INTRO = OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION);
+//        SKIP_INTRO = OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION);
         PARSE_ON_INIT = !OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION);
 
         if (PARSE_ON_INIT)

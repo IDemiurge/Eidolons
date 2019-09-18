@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -116,7 +115,7 @@ public class SpriteX extends GroupX {
                     getSprite().setOffsetY( getHeight()-128);
                     break;
                 case "Ghost Light":
-                    getSprite().setBlending(SuperActor.BLENDING.SCREEN);
+                    getSprite().setBlending(GenericEnums.BLENDING.SCREEN);
                     break;
             }
         }
@@ -152,7 +151,7 @@ public class SpriteX extends GroupX {
         return sprite.getHeight();
     }
 
-    public void setBlending(SuperActor.BLENDING blending) {
+    public void setBlending(GenericEnums.BLENDING blending) {
         sprite.setBlending(blending);
     }
 

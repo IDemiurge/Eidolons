@@ -89,7 +89,7 @@ public class ToolTipManager extends TablePanel {
         GuiEventManager.bind(SCALE_UP_VIEW, (event) -> {
             BaseView object = (BaseView) event.get();
             scaleUp(object);
-            WaitMaster.doAfterWait(3500,()-> scaleDown(object));
+            WaitMaster.doAfterWait(3500, () -> scaleDown(object));
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
@@ -116,15 +116,14 @@ public class ToolTipManager extends TablePanel {
                 if (isLogged()) LogMaster.log(1, "Update ignored ");
                 return;
             }
-        if (tooltip != null)
-        {
+        if (tooltip != null) {
             if (object == null)
-                if (tooltipPanel!=null ){
-                if (HqPanel.getActiveInstance()!=null)
-                    if (GdxMaster.isVisibleEffectively(tooltipPanel)) {
-                        return;
-                    }
-            }
+                if (tooltipPanel != null) {
+                    if (HqPanel.getActiveInstance() != null)
+                        if (GdxMaster.isVisibleEffectively(tooltipPanel)) {
+                            return;
+                        }
+                }
             ActionMaster.addFadeOutAction(tooltip, 0.35f);
         }
         if (object == null) {
@@ -158,15 +157,15 @@ public class ToolTipManager extends TablePanel {
 
     private void show() {
 
-        if (tooltipPanel!=null ){
+        if (tooltipPanel != null) {
             if (tooltip.isBattlefield()) {
                 return;
             }
-            if (HqPanel.getActiveInstance()!=null)
+            if (HqPanel.getActiveInstance() != null)
                 if (GdxMaster.isVisibleEffectively(tooltipPanel)) {
-            tooltipPanel.init(tooltip);
-            return;
-            }
+                    tooltipPanel.init(tooltip);
+                    return;
+                }
         }
         init(tooltip);
     }
@@ -178,7 +177,7 @@ public class ToolTipManager extends TablePanel {
         if (!tooltip.isBattlefield()) {
             return 0;
         }
-        return DEFAULT_WAIT_TIME ;
+        return DEFAULT_WAIT_TIME;
     }
 
     @Override
@@ -186,6 +185,9 @@ public class ToolTipManager extends TablePanel {
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             if (tooltip instanceof UnitViewTooltip)
                 return;
+        }
+        if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size()>0) {
+            return;
         }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
                 ConfirmationPanel.getInstance().isVisible())
@@ -199,7 +201,7 @@ public class ToolTipManager extends TablePanel {
     }
 
 
-    private void  init(Tooltip tooltip) {
+    private void init(Tooltip tooltip) {
 
         if (isLogged()) LogMaster.log(1, "showing tooltips" + tooltip);
         tooltip.setManager(this);
@@ -282,8 +284,8 @@ public class ToolTipManager extends TablePanel {
             pos.lerp(new Vector2(
                     Gdx.input.getX(), Gdx.input.getY(
             )), 0.3f);
-             setPosition(presetTooltipPos.x - tooltip.getWidth()  +400,
-                    presetTooltipPos.y - tooltip.getHeight()-150);
+            setPosition(presetTooltipPos.x - tooltip.getWidth() + 400,
+                    presetTooltipPos.y - tooltip.getHeight() - 150);
             //set align too
             return;
         }
@@ -345,7 +347,7 @@ public class ToolTipManager extends TablePanel {
     }
 
     private void initTooltipPosition() {
-        if (presetTooltipPos!=null )
+        if (presetTooltipPos != null)
             return;
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
@@ -452,16 +454,16 @@ public class ToolTipManager extends TablePanel {
     }
 
 
-        private void hovered(BaseView object) {
-        if (object.getUserObject() instanceof Structure){
+    private void hovered(BaseView object) {
+        if (object.getUserObject() instanceof Structure) {
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
             }
         }
-            scaleUp(object);
+        scaleUp(object);
 
         object.setHovered(true);
-        hoverOff=false;
+        hoverOff = false;
         stackMaster.checkShowStack(object);
 
 
@@ -470,12 +472,16 @@ public class ToolTipManager extends TablePanel {
     }
 
     private void scaleUp(BaseView object) {
-        scale(object, getZoomScale(object));
+        scale(object, getZoomScale(object), getZoomScale(object));
     }
+
     private void scaleDown(BaseView object) {
-        scale(object, getDefaultScale(object));
+        scale(object, object.getScaledWidth(), getDefaultScale(object));
+
     }
-        private void scale(BaseView object, float scale) {
+
+
+    private void scale(BaseView object, float scale, float scaleQueue) {
 //        float scaleX = getDefaultScale(object);
 //        if (object.getScaleX() == getDefaultScale(object))
 //            scaleX = getZoomScale(object);
@@ -493,37 +499,41 @@ public class ToolTipManager extends TablePanel {
 //                scaleY = getZoomScale(object);
             ActionMaster.
                     addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scale, scale, 0.35f);
+                            , scaleQueue, scaleQueue, 0.35f);
         }
+
     }
+
     private void hoverOff(BaseView object) {
         if (object instanceof LastSeenView) {
             return;
         }
-        if (object.getUserObject() instanceof Structure){
+        if (object.getUserObject() instanceof Structure) {
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
             }
         }
         scaleDown(object);
-//        float scaleX;
-//        float scaleY;
-//        if (object instanceof GridUnitView) {
-//            scaleX = object.getScaledWidth();
-//            scaleY = object.getScaledHeight();
-//            ActionMaster.
-//                    addScaleAction(object, scaleX, scaleY, 0.35f);
-//            scaleX = getDefaultScale(object);
-//            scaleY = getDefaultScale(object);
-//            ActionMaster.
-//                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-//                            , scaleX, scaleY, 0.35f);
-//        } else {
-//            scaleX = getDefaultScale(object);
-//            scaleY = getDefaultScale(object);
-//            ActionMaster.
-//                    addScaleAction(object, scaleX, scaleY, 0.35f);
-//        }
+
+        float scaleX;
+        float scaleY;
+        if (object instanceof GridUnitView) {
+            scaleX = object.getScaledWidth();
+            scaleY = object.getScaledHeight();
+            ActionMaster.
+                    addScaleAction(object, scaleX, scaleY, 0.35f);
+            scaleX = getDefaultScale(object);
+            scaleY = getDefaultScale(object);
+            ActionMaster.
+                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
+                            , scaleX, scaleY, 0.35f);
+        } else {
+            scaleX = getDefaultScale(object);
+            scaleY = getDefaultScale(object);
+            ActionMaster.
+                    addScaleAction(object, scaleX, scaleY, 0.35f);
+        }
+
         hoverOff = true;
         object.setHovered(false);
         stackMaster.checkStackOff(object);

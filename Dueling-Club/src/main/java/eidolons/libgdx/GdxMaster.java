@@ -541,6 +541,9 @@ public class GdxMaster {
     public static void inputPass() {
         Eidolons.getScreen().getController().inputPass();
     }
+    public static void input() {
+        Eidolons.getScreen().getController().input();
+    }
 
     public enum CURSOR {
         DEFAULT,

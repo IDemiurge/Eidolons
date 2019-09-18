@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,8 +21,7 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -162,7 +160,7 @@ public class GridUnitView extends GenericGridView {
             spritesContainers.setVisible(false);
         super.draw(batch, parentAlpha);
 
-        ((CustomSpriteBatch) batch).setBlending(BLENDING.SCREEN); //could do other blends too
+        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN); //could do other blends too
 
         float a = getColor().a; // hue?
         getColor().a = screenOverlay;

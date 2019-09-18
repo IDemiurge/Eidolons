@@ -236,11 +236,11 @@ public class Assets {
             result = true;
         }
 
-        if (her0es) {
-            Chronos.mark("preload her0es");
-            preloadHeroes(full);
-            Chronos.logTimeElapsedForMark("preload her0es");
-        }
+//        if (her0es) {
+//            Chronos.mark("preload her0es");
+//            preloadHeroes(full);
+//            Chronos.logTimeElapsedForMark("preload her0es");
+//        }
 
         return result;
     }
@@ -441,14 +441,23 @@ public enum ASSET{
             loadSprite(Sprites.WHITE_TENTACLE, full, ktx);
             loadSprite(Sprites.BONE_WINGS, full, ktx);
             loadSprite(Sprites.LIGHT_VEIL, full, ktx);
+            loadSprite(Sprites.BIG_CLAW_ATTACK, full, ktx);
+            loadSprite(Sprites.BIG_CLAW_IDLE, full, ktx);
+            loadSprite(Sprites.SMALL_CLAW_IDLE, full, ktx);
             loadSprite("sprites/weapons3d/atlas/screen/ghost/ghost fist.txt", full, ktx);
+            loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
 
+            if (!CoreEngine.isSuperLite())
+            {
+                loadSprite( "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt", full, ktx);
+            }
 //            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
 
-
             if (EidolonsGame.DUEL_TEST) {
+                loadSprite(FULLSCREEN_ANIM.WAVE.getSpritePath(), full, ktx);
                 loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
-            } else if (EidolonsGame.TRANSIT_TEST) {
+            } else
+                if (EidolonsGame.TRANSIT_TEST) {
                 loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full, ktx);
             } else {
                 loadSprite(Sprites.PORTAL_OPEN, full, ktx);
@@ -539,9 +548,9 @@ public enum ASSET{
 //        if (checkReducedSprite(path)){
 //            reduced =true;
 //        }
-//        if (full) {
-//            assets.getManager().load(PathFinder.getImagePath() + spritePaths, TextureAtlas.class);
-//        } else
+        if (full && !CoreEngine.isSuperLite()) {
+            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
+        } else
         {
             SpriteAnimationFactory.getSpriteAnimation(path, false, true, ktx);
         }

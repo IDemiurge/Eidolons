@@ -331,7 +331,9 @@ public class GridPanel extends Group {
                 if (DC_Game.game.getVisionMaster().getVisible() != null) {
                     if (resetTimer <= 0) {
                         resetTimer = autoResetVisibleOnInterval;
-                        for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
+                        BattleFieldObject[] visible = DC_Game.game.getVisionMaster().getVisible();
+                        for (int i = 0, visibleLength = visible.length; i < visibleLength; i++) {
+                            BattleFieldObject sub = visible[i];
                             setVisible(viewMap.get(sub), true);
                             GridMaster.validateVisibleUnitView(viewMap.get(sub));
                             if (sub.isPlayerCharacter()) {
@@ -341,7 +343,9 @@ public class GridPanel extends Group {
                                 }
                             }
                         }
-                        for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
+                        BattleFieldObject[] invisible = DC_Game.game.getVisionMaster().getInvisible();
+                        for (int i = 0, invisibleLength = invisible.length; i < invisibleLength; i++) {
+                            BattleFieldObject sub = invisible[i];
                             setVisible(viewMap.get(sub), false);
                             //                            Debugger.validateInvisibleUnitView(viewMap.getVar(sub));
                         }
@@ -355,7 +359,9 @@ public class GridPanel extends Group {
 
     public void updateOutlines() {
 
-        viewMap.keySet().forEach(obj -> {
+        Object[] array = viewMap.keySet().toArray();
+        for (int i = 0; i < array.length; i++) {
+            BattleFieldObject obj = (BattleFieldObject) array[i];
             if (!obj.isOverlaying())
                 if (!obj.isMine())
                     if (!obj.isWall()) {
@@ -366,20 +372,20 @@ public class GridPanel extends Group {
                         if (outline != null) {
                             String path = Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj);
                             if (obj instanceof Unit) {
-                                main.system.auxiliary.log.LogMaster.log(1, obj + " has OUTLINE: " + path);
+                                LogMaster.log(1, obj + " has OUTLINE: " + path);
                             }
                             texture = TextureCache.getOrCreateR(path);
                             uv.setOutline(texture);
                         } else {
                             if (obj instanceof Unit) {
                                 if (!obj.isOutsideCombat()) {
-                                    main.system.auxiliary.log.LogMaster.log(1, obj + " has NO OUTLINE: ");
+                                    LogMaster.log(1, obj + " has NO OUTLINE: ");
                                 }
                             }
                             uv.setOutline(null);
                         }
                     }
-        });
+        }
     }
 
     private void checkAddBorder(int x, int y) {
@@ -489,27 +495,27 @@ public class GridPanel extends Group {
 
             unit.getGame().getManager().setHighlightedObj(unit);
 
-            for (BaseView value : viewMap.values()) {
-                if (value==view) {
+//            for (BaseView value : viewMap.values()) {
+//                if (value==view) {
 
 //                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
                     view.highlight();
                     GraphicData data= new GraphicData("alpha::0.8f");
                     gridViewAnimator.animate(view ,  GridViewAnimator.VIEW_ANIM.screen , data);
                     WaitMaster.doAfterWait(4000, ()-> {
-                        if (!DialogueManager.isRunning())
+//                        if (!DialogueManager.isRunning())
                         {
                             main.system.auxiliary.log.LogMaster.dev("hl off: " +unit);
                             view.highlightOff();
                             unit.getGame().getManager().setHighlightedObj(null);
                         }
                     });
-                } else
-                {
-                    value.highlightOff();
-                    GuiEventManager.trigger(GRID_OBJ_HOVER_OFF, view);
-                }
-            }
+//                } else
+//                {
+//                    value.highlightOff();
+//                    GuiEventManager.trigger(GRID_OBJ_HOVER_OFF, view);
+//                }
+//            }
 
         });
         GuiEventManager.bind(REMOVE_GRID_OBJ, p -> {

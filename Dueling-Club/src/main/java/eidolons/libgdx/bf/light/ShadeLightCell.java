@@ -3,7 +3,6 @@ package eidolons.libgdx.bf.light;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,8 +14,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
@@ -29,7 +26,6 @@ import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
-import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -250,20 +246,20 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private void initBlending(Batch batch) {
-        BLENDING mode = null;
+        GenericEnums.BLENDING mode = null;
         switch (type) {
             case GAMMA_LIGHT:
             case LIGHT_EMITTER:
 
                 mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                        ? BLENDING.OVERLAY
-                        : BLENDING.SATURATE;
+                        ? GenericEnums.BLENDING.OVERLAY
+                        : GenericEnums.BLENDING.SATURATE;
                 break;
             case CONCEALMENT:
             case GAMMA_SHADOW:
                 mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                        ? BLENDING.OVERLAY
-                        : BLENDING.MULTIPLY;
+                        ? GenericEnums.BLENDING.OVERLAY
+                        : GenericEnums.BLENDING.MULTIPLY;
             case BLACKOUT:
                 break;
             case HIGLIGHT:

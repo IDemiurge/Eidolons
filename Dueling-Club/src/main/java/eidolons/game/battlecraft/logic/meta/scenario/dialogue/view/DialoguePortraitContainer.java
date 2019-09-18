@@ -1,29 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.TiledNinePatchGenerator;
-import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
-import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.Sprites;
-import eidolons.libgdx.texture.TextureCache;
-import main.content.values.parameters.MACRO_PARAMS;
+import main.content.enums.GenericEnums;
 import main.system.auxiliary.StringMaster;
-import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 11/30/2018.
@@ -52,7 +39,7 @@ public class DialoguePortraitContainer extends TablePanelX {
 //        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
         if (isBlotch()) {
             addActor(bgSprite = new SpriteX(Sprites.INK_BLOTCH));
-            bgSprite.setBlending(SuperActor.BLENDING.INVERT_SCREEN);
+            bgSprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         }
         add(nameLabel = new LabelX()).row();
         nameLabel.setStyle(StyleHolder.getHqLabelStyle(20));
@@ -61,7 +48,7 @@ public class DialoguePortraitContainer extends TablePanelX {
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (batch instanceof CustomSpriteBatch) {
-                    ((CustomSpriteBatch) batch).setBlending(BLENDING.SCREEN);
+                    ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
                 }
                 super.draw(batch, parentAlpha);
                 if (batch instanceof CustomSpriteBatch) {

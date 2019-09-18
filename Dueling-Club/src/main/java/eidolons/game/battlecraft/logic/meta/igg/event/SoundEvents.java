@@ -13,6 +13,9 @@ public class SoundEvents {
 
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
+                case UNIT_HAS_BEEN_HIT:
+                    DC_SoundMaster.playHitSound(event.getRef().getTargetObj());
+                    return;
                 case UNIT_HAS_BEEN_DEALT_SPELL_DAMAGE:
                 case UNIT_HAS_BEEN_DEALT_PHYSICAL_DAMAGE:
                     DC_SoundMaster.playDamageSound(event.getRef().getDamageType());
@@ -65,6 +68,9 @@ public class SoundEvents {
                     return MusicMaster.MUSIC_MOMENT.RISE.getCorePath();
 
                 case UNIT_HAS_FALLEN_UNCONSCIOUS:
+                    if (event.getRef().getSourceObj().isDead()) {
+                        return null;
+                    }
                     if (event.getRef().getSourceObj() != Eidolons.MAIN_HERO) {
                         DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
                                 + "combat/fall/", true);

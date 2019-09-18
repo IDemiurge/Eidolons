@@ -26,7 +26,6 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -425,15 +424,15 @@ public class AtbPanel extends GroupX {
 
         timeLabel.setPosition(19, 120 - timeLabel.getPrefHeight());
         timeLabel.setZIndex(Integer.MAX_VALUE);
-        if (altBg) {
-            if (speedControlPanel.getColor().a == 1)
-                speedControlPanel.fadeOut();
-        } else {
-            if (speedControlPanel.getColor().a == 0)
-                speedControlPanel.fadeIn();
-        }
+//        if (altBg) {
+//            if (speedControlPanel.getColor().a == 1)
+//                speedControlPanel.fadeOut();
+//        } else {
+//            if (speedControlPanel.getColor().a == 0)
+//                speedControlPanel.fadeIn();
+//        }
         hideButton.setPosition(160, -100);
-        speedControlPanel.setPosition(0, -300);
+        speedControlPanel.setPosition(0, -110);
         super.act(delta);
         if (isRealTime()) {
             updateTime();
@@ -610,10 +609,10 @@ public class AtbPanel extends GroupX {
         DEBUFF("eye"),
         BUFF("eye"),
         HOSTILE_SPELL("eye"),
-        CHANNELING(SuperActor.BLENDING.SCREEN),
+        CHANNELING(GenericEnums.BLENDING.SCREEN),
         UNKNOWN,
 
-        PREPARE(SuperActor.BLENDING.SCREEN),
+        PREPARE(GenericEnums.BLENDING.SCREEN),
         WAIT,
         DEFEND,
         SEARCH,
@@ -621,7 +620,7 @@ public class AtbPanel extends GroupX {
         WHEEL,
 
         ;
-        SuperActor.BLENDING blending;
+        GenericEnums.BLENDING blending;
         private String path;
 
         INTENT_ICON() {
@@ -632,7 +631,7 @@ public class AtbPanel extends GroupX {
             this.path = path;
         }
 
-        INTENT_ICON(SuperActor.BLENDING blending) {
+        INTENT_ICON(GenericEnums.BLENDING blending) {
             this();
             this.blending = blending;
         }

@@ -1,8 +1,8 @@
 package eidolons.libgdx.anims.fullscreen;
 
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.SpriteData;
+import main.content.enums.GenericEnums;
 import main.game.bf.directions.FACING_DIRECTION;
 
 /**
@@ -13,13 +13,13 @@ public class FullscreenAnimDataSource {
     FULLSCREEN_ANIM type;
     float intensity;
     FACING_DIRECTION from;
-    private SuperActor.BLENDING blending;
+    private GenericEnums.BLENDING blending;
     public boolean flipX;
     public boolean flipY;
     private int loops;
     private SpriteData spriteData;
 
-    public FullscreenAnimDataSource(FULLSCREEN_ANIM type, float intensity, FACING_DIRECTION from, SuperActor.BLENDING blending) {
+    public FullscreenAnimDataSource(FULLSCREEN_ANIM type, float intensity, FACING_DIRECTION from, GenericEnums.BLENDING blending) {
         this.type = type;
         this.intensity = intensity;
         this.from = from;
@@ -44,11 +44,11 @@ public class FullscreenAnimDataSource {
         return from;
     }
 
-    public SuperActor.BLENDING getBlending() {
+    public GenericEnums.BLENDING getBlending() {
         return blending;
     }
 
-    public void setBlending(SuperActor.BLENDING blending) {
+    public void setBlending(GenericEnums.BLENDING blending) {
         this.blending = blending;
     }
 

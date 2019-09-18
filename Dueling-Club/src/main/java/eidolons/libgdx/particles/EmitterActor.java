@@ -8,16 +8,10 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.PathUtils;
-import main.system.auxiliary.log.LOG_CHANNEL;
-import main.system.launch.CoreEngine;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by JustMe on 1/10/2017.
@@ -41,12 +35,14 @@ public class EmitterActor extends SuperActor {
     boolean flipY;
 
     private ShaderProgram shader;
-    private boolean invert;
 
+    private boolean invert;
     public void init() {
         effect = EmitterPools.getEffect(path);
         if (PathUtils.getLastPathSegment(PathUtils.cropLastPathSegment(path)).contains("invert")) {
-            invert=true;
+            {
+                setInvert(true);
+            }
 //        shader
         }
     }
@@ -100,17 +96,18 @@ public class EmitterActor extends SuperActor {
             batch.setShader(shader);
             reset = true;
         }
-        if (invert) {
+        if (isInvert()) {
             Gdx.gl.glBlendEquation(GL20.GL_FUNC_REVERSE_SUBTRACT);
             reset = true;
+
         }
+//main.system.auxiliary.log.LogMaster.dev("vfx drawn " +path);
+        effect.draw(batch, delta);
         if (reset) {
             if (batch instanceof CustomSpriteBatch) {
                 ((CustomSpriteBatch) batch).resetBlending();
             }
         }
-//main.system.auxiliary.log.LogMaster.dev("vfx drawn " +path);
-        effect.draw(batch, delta);
     }
 
     public ParticleEffectX getEffect() {
@@ -227,5 +224,13 @@ public class EmitterActor extends SuperActor {
 
     public void allowFinish() {
         getEffect().allowCompletion();
+    }
+
+    public void setInvert(boolean invert) {
+        this.invert = invert;
+//        effect.getEmitters().forEach(e->e.setAdditive(false));
+//        for (Object item : effect.getEmitters().items) {
+//            ((ParticleEmitterX) item).setInvert(invert);
+//        }
     }
 }

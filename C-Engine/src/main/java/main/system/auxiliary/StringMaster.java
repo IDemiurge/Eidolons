@@ -1196,6 +1196,18 @@ public class StringMaster {
         return ContainerUtils.construct("", StringMaster.splitLines(text));
     }
 
+    public static String getBracketedPart(String typeName) {
+        int index = typeName.indexOf("[");
+        if (index == -1) {
+            return "";
+        }
+        int index2 = typeName.indexOf("]");
+        if (index2 == -1) {
+            return "";
+        }
+        return typeName.substring(index, index2+1);
+    }
+
 
     public enum STD_DEITY_TYPE_NAMES {
         Faithless

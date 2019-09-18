@@ -1,10 +1,11 @@
 package eidolons.libgdx.anims.sprite;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Sprites;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -32,12 +33,12 @@ public class SpriteMaster {
             s = new SpriteX(paths.get(i));
             BfObjEnums.SPRITES sprite = null;
             for (BfObjEnums.SPRITES sprites : BfObjEnums.SPRITES.values()) {
-                if (sprite== BfObjEnums.SPRITES.EMPTY) {
+                if (sprite == BfObjEnums.SPRITES.EMPTY) {
                     continue;
                 }
                 if (FileManager.formatPath(sprites.path, true).equalsIgnoreCase(
                         FileManager.formatPath(paths.get(i), true))) {
-                            sprite = sprites;
+                    sprite = sprites;
                 }
             }
             if (sprite == null) {
@@ -48,13 +49,17 @@ public class SpriteMaster {
 //            s.setFlipyX(isFlipX( paths.getVar(i), n , i ));
             s.setFps(getFps(sprite, over, obj));
             s.setBlending(getBlending(sprite, over, obj));
+
+            if (getColor(i, sprite, over, obj) != null) {
+                s.setColor(getColor(i, sprite, over, obj));
+            }
+
             s.setRotation(getRotation(sprite, over, obj, i));
             s.setX(getX(sprite, over, obj, i, n));
             s.setY(getY(sprite, over, obj, i, n));
 //            if (over)
             boolean offset = isOffset(sprite, over, i, n);
-            if (offset)
-            {
+            if (offset) {
                 s.getSprite().setOffsetX(s.getWidth() / 2 - 64);
                 s.getSprite().setOffsetY(s.getHeight() / 2 - 64);
             }
@@ -133,7 +138,7 @@ public class SpriteMaster {
             return parsed;
         }
         if (over) {
-            if (obj.isLightEmitter() ) {
+            if (obj.isLightEmitter()) {
                 return Sprites.FIRE_LIGHT;
             }
             if (obj.isBoss()) {
@@ -170,39 +175,51 @@ public class SpriteMaster {
                 case "Pale Wing":
                 case "Black Wing":
                     return StringMaster.getStringXTimes(2, Sprites.BONE_WINGS + ";");
-                case "Mistborn Horror":
+//                case "Mistborn Horror":
 //                    return StringMaster.getStringXTimes(8, Sprites.WHITE_TENTACLE+";");
-                    return StringMaster.getStringXTimes(6, Sprites.WHITE_TENTACLE + ";");
+//                    return StringMaster.getStringXTimes(6, Sprites.WHITE_TENTACLE + ";");
             }
 
         }
         return spritePath;
     }
 
-    private static SuperActor.BLENDING getBlending(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
+    private static Color getColor(int i, BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
+        switch (obj.getName()) {
+            case "Netherbound Horror":
+                if (i==4) {
+                    return new Color(0.78f, 1, 0.46f, 0);
+                }
+                return new Color(0.78f, 1, 0.46f, 1);
+        }
+        return null;
+    }
+
+    private static GenericEnums.BLENDING getBlending(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
         switch (obj.getName()) {
             case "Adeptus Carnifex":
-            case "Netherbound Horror":
-                return SuperActor.BLENDING.INVERT_SCREEN;
+//            case "Netherbound Horror":
+                return GenericEnums.BLENDING.INVERT_SCREEN;
             case "Hollow Adept":
-                return SuperActor.BLENDING.SCREEN;
+                return GenericEnums.BLENDING.SCREEN;
             case "Black Wing":
-            case "Mistborn Horror":
+//            case "Mistborn Horror":
             case "Dream Siphon":
-                return SuperActor.BLENDING.INVERT_SCREEN;
+                return GenericEnums.BLENDING.INVERT_SCREEN;
         }
         switch (sprite) {
+            case FIRE_LIGHT:
+            return GenericEnums.BLENDING.SCREEN;
             case VEIL:
             case FLOAT_WISP:
-            case FIRE_LIGHT:
             case WHITE_TENTACLE:
-                return SuperActor.BLENDING.SCREEN;
+                return GenericEnums.BLENDING.SCREEN;
         }
         if (obj.isOverlaying()) {
-            return SuperActor.BLENDING.SCREEN;
+            return GenericEnums.BLENDING.SCREEN;
         }
         if (over) {
-            return SuperActor.BLENDING.SCREEN;
+            return GenericEnums.BLENDING.SCREEN;
         }
         return null;
     }

@@ -352,7 +352,8 @@ public class DC_AttackMaster {
             return true;
         }
         ref.setAmount(final_amount);
-        DAMAGE_TYPE dmg_type = ref.getDamageType();
+
+        DAMAGE_TYPE dmg_type =  action.getActiveWeapon().getDamageType(); //ref.getDamageType();
 
         if (attack.isCritical()) {
             if (attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.CLEAVING_CRITICALS)) {

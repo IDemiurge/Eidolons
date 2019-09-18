@@ -173,7 +173,8 @@ public class ClearShotCondition extends MicroCondition {
                 } else {
                     list.add(target.getCoordinates());
                 }
-                for (Coordinates c : list) {
+                for (int i = 0, listSize = list.size(); i < listSize; i++) {
+                    Coordinates c = list.get(i);
                     if (checkWallObstruction(source, target, c))
                         return cacheResult(source, target, false);
                 }

@@ -19,6 +19,7 @@ import main.game.bf.Coordinates;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
+import main.system.sound.SoundMaster;
 
 import java.util.*;
 
@@ -191,6 +192,8 @@ public abstract class InputController implements InputProcessor {
                 return false;
         }
         if (onPassInput != null) {
+            SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK);
+
             main.system.auxiliary.log.LogMaster.dev("onPassInput.run() ");
             onPassInput.run();
             onPassInput = null;
@@ -199,7 +202,7 @@ public abstract class InputController implements InputProcessor {
         return false;
     }
 
-    private void input() {
+    public void input() {
         if (isStackInput()) {
             if (!onInputGdxQueue.isEmpty()) {
                 onInputGdx = onInputGdxQueue.removeFirst();

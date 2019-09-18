@@ -287,7 +287,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             return;
         }
         getHandler().activateOnGameLoopThread();
-        DungeonScreen.getInstance().getController().inputPass();
         //        activate();
         //     TODO is any of it useful?
         //   boolean dont = ownerObj.checkUncontrollable();

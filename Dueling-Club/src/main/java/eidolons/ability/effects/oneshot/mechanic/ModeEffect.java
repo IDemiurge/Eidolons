@@ -263,6 +263,7 @@ divination?
             c = new RefCondition(KEYS.EVENT_SOURCE, KEYS.MATCH);
             // ++ remove disable actions?!
         }
+        if (mode.isRemoveEndRound())
         addBuffEffect.addEffect(new DelayedEffect(REMOVE_EVENT, new RemoveBuffEffect(addBuffEffect
                 .getBuffTypeName()), c));
         // .apply(ref);

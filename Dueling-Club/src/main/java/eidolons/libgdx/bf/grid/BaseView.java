@@ -25,6 +25,7 @@ import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.PathUtils;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -153,16 +154,21 @@ public class BaseView extends SuperActor {
 
         String type = "objects";
         String name = PathUtils.getLastPathSegment(path);
-        if (path.contains("heroes")){
+        if (path.contains("heroes")) {
             type = "heroes";
         }
-        if (path.contains("units")){
+        if (path.contains("units")) {
             type = "units";
         }
-        GdxImageMaster.writeImage(new FileHandle(PathFinder.getImagePath()+"unitview/" +
-                type +
-                "/" +
-                name), portraitTexture);
+        if (CoreEngine.isIDE()) {
+
+            FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
+                    type +
+                    "/" +
+                    name);
+            if (!handle.exists())
+            GdxImageMaster.writeImage(handle, portraitTexture);
+        }
 //        ResourceMaster.writeImage(path, "unitviews/" +
 //                type +
 //                "/" +

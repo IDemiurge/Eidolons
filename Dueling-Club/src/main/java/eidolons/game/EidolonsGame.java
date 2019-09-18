@@ -6,6 +6,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
@@ -22,7 +23,8 @@ import java.util.Map;
 public class EidolonsGame {
     public static   boolean DUEL_TEST  ;
     public static   boolean TRANSIT_TEST  ;
-    public static   boolean LEVI_TEST  =false;
+    public static boolean LEVI_TEST = false;
+
 
     public static boolean BRIDGE = false;
     public static boolean BOSS_FIGHT;
@@ -36,6 +38,7 @@ public class EidolonsGame {
     public static boolean ATTACKS_DISABLED;
     public static boolean TURNS_DISABLED;
     public static boolean MOVES_DISABLED;
+    public static boolean MOVES_FORWARD_ONLY;
     public static boolean TUTORIAL;
     private static Map<String, Boolean> varMap = new StringMap<>();
     private static Map<String, Boolean> actionMap = new StringMap<>();
@@ -167,6 +170,9 @@ public class EidolonsGame {
             return false;
         }
         if (activeObj.isMove()) {
+            if (MOVES_FORWARD_ONLY) {
+                return !activeObj.getName().equalsIgnoreCase("Move");
+            }
             return MOVES_DISABLED;
         }
         if (activeObj.isTurn()) {

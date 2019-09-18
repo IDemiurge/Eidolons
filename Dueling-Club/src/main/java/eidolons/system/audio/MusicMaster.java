@@ -702,7 +702,9 @@ public class MusicMaster {
             if (!preloadedMusic.isPlaying()) {
                 preloadedMusic.play();
             }
-
+            if (preloadedMusic.getVolume()>0) {
+             preloadedMusic.setVolume(preloadedMusic.getVolume());
+            }
         }
     }
 

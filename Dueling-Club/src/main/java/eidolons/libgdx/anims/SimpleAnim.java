@@ -6,9 +6,9 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
+import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.EventCallback;
@@ -24,7 +24,7 @@ public class SimpleAnim implements Animation {
     List<SpellVfx> vfx;
     private boolean done;
     private int fps = 14;
-    private SuperActor.BLENDING blending = SuperActor.BLENDING.SCREEN;
+    private GenericEnums.BLENDING blending = GenericEnums.BLENDING.SCREEN;
     private boolean parallel;
 
     String spritePaths;
@@ -133,7 +133,7 @@ public class SimpleAnim implements Animation {
         this.fps = fps;
     }
 
-    public void setBlending(SuperActor.BLENDING blending) {
+    public void setBlending(GenericEnums.BLENDING blending) {
         this.blending = blending;
     }
 

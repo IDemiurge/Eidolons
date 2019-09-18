@@ -1,5 +1,6 @@
 package eidolons.libgdx.anims.std;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.MathUtils;
 import eidolons.entity.active.DC_ActiveObj;
@@ -373,9 +374,9 @@ public class SpellAnim extends ActionAnim {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 if (e.getSpeed() == 1f)
                     e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.getAnimationSpeedFactor(),
-                        0.3f));
+                            0.3f));
                 if (max < emitter.duration / e.getSpeed())
-                    max = emitter.duration/ e.getSpeed();
+                    max = emitter.duration / e.getSpeed();
 
             }
         }
@@ -391,15 +392,45 @@ public class SpellAnim extends ActionAnim {
                 max = e.getFrameDuration() * e.getFrameNumber();
 //            e.setSpeed(AnimMaster.getAnimationSpeedFactor());
         }
-        main.system.auxiliary.log.LogMaster.dev("Spell anim duration set: " +max);
+
+        if (getActive() instanceof Spell) {
+            if (((Spell) getActive()).isChannelingNow()) {
+                main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow " + getActive());
+                switch (getPart()) {
+                    case CAST:
+                        main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow duration =" + max);
+                        setDuration(max);
+                        return;
+                }
+            }
+            setDuration(0);
+        }
+
+        main.system.auxiliary.log.LogMaster.dev("Spell anim duration set: " + max);
         setDuration(
                 Math.min(DEFAULT_MAX_ANIM_DURATION, max));
     }
 
+    @Override
+    public boolean draw(Batch batch) {
+        boolean reslt = super.draw(batch);
+        if (getActive() instanceof Spell) {
+            if (((Spell) getActive()).isChannelingNow()) {
+                if (!getActive().getOwnerUnit().isDead()) {
+                    switch (getPart()) {
+                        case CAST:
+                            return true;
+                    }
+                }
+            }
+        }
+        return reslt;
+    }
+
     private float getDefaultVfxSpeed(AnimConstructor.ANIM_PART part) {
         switch (part) {
-            case CAST:
-                return 0.88f;
+//            case CAST:
+//                return 1.18f;
         }
         return 1f;
     }

@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 
 import java.util.Map;
@@ -47,7 +47,7 @@ public class LightOverlays extends GroupX {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).setBlending(SuperActor.BLENDING.SCREEN);
+            ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
         }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {

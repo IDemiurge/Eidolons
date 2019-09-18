@@ -9,9 +9,12 @@ import java.util.TimerTask;
 
 public class TimerTaskMaster {
 
-    public static Timer newTimer(TimerTask task, long period) {
+    public static Timer newTimer(TimerTask task,   long period) {
+        return newTimer(task, period, period);
+    }
+    public static Timer newTimer(TimerTask task, long delay, long period) {
         Timer timer = new Timer();
-        timer.schedule(task, period, period);
+        timer.schedule(task, delay, period);
         return timer;
     }
         public static Timer newTimer(Object object, final String methodName, Class<?>[] params,
