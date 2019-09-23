@@ -129,8 +129,10 @@ public class UnitViewOptions {
               "DIRECTION POINTER.png"));
 
 
-            String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
-
+            String emblem = PathFinder.getEmblemAutoFindPath()+ obj.getProperty(G_PROPS.EMBLEM, true);
+            if (obj.isMine()) {
+                emblem =PathFinder.getEmblemAutoFindPath() +"undead.png";
+            }
             if (ImageManager.isImage(emblem)) {
                 this.emblem = getOrCreateR(emblem);
             } else {

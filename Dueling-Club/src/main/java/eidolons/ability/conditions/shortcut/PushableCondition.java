@@ -3,6 +3,7 @@ package eidolons.ability.conditions.shortcut;
 import eidolons.ability.conditions.DC_Condition;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.Structure;
+import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.BfObjEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.EntityCheckMaster;
@@ -20,13 +21,16 @@ public class PushableCondition extends DC_Condition {
 
         if (ref.getMatchObj() instanceof Structure) {
             Structure structure = (Structure) ref.getMatchObj();
-            return isPushable(structure);
+            return isPushable(structure , (Unit) ref.getSourceObj());
 
         }
         return false;
     }
 
-    public static boolean isPushable(Structure structure) {
+    public static boolean isPushable(Structure structure, Unit unit) {
+        if (unit.isImmaterial()) {
+            return false;
+        }
         if (structure.isWall()) {
             return false;
         }

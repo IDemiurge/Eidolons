@@ -35,8 +35,8 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getAggroGroup() {
-        if (
-                !EidolonsGame.FIRST_BATTLE_STARTED ||
+        if (EidolonsGame.BRIDGE)
+        if (!EidolonsGame.FIRST_BATTLE_STARTED ||
                 getPlayerUnseenMode()) {
             return new ArrayList<>();
         }
@@ -134,9 +134,9 @@ public class AggroMaster extends ExplorationHandler {
             set.add(unit);
             //            }
         }
-        if (!EidolonsGame.DUEL)
-        set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
-                || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
+//        if (!EidolonsGame.DUEL)
+//        set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
+//                || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
 
         for (Unit unit : set) {
             unit.getAI().setEngaged(false); //TODO better place for it?

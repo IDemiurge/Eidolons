@@ -66,6 +66,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
 
         initBlackout();
+        if (CoreEngine.isIggDemo()){
+            return;
+        }
         if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
             if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
                     PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
@@ -177,10 +180,15 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void done(EventCallbackParam param) {
+       if (isLoaded())
+       {
+           updateInputController();
+           main.system.auxiliary.log.LogMaster.dev(" FIX DOUBLE LOAD!!!! " );
+           return;
+       }
         data.setParam(param);
         this.hideLoader();
         afterLoad();
-        updateInputController();
         GdxMaster.setDefaultCursor();
         triggerInitialEvents();
     }

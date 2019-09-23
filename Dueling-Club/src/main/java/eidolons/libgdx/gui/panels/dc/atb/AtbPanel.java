@@ -707,7 +707,9 @@ public class AtbPanel extends GroupX {
             if (isIntentIconsOn())
                 if (getActor() != null) {
 
-                    if (getActor().getUserObject() instanceof Unit) {
+
+
+                        if (getActor().getUserObject() instanceof Unit) {
                         Unit unit = (Unit) getActor().getUserObject();
                         intentIcon =unit.getIntentIcon();
                         if (intentIcon == null) {

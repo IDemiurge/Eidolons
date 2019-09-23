@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
@@ -69,7 +70,7 @@ public class GridUnitView extends GenericGridView {
     }
 
     public GridUnitView(UnitViewOptions o) {
-        this(null, o);
+        this(o.getObj(), o);
     }
 
     public void attachObj(OverlayView view) {
@@ -130,6 +131,7 @@ public class GridUnitView extends GenericGridView {
 //            if (getPortrait().getColor().a == 0) {
 //                getPortrait().fadeIn();
 //            }
+            ((CustomSpriteBatch) batch).resetBlending();
             if (getUserObject().isHidden()) {
                 return;
             }
@@ -150,13 +152,13 @@ public class GridUnitView extends GenericGridView {
             super.draw(batch, parentAlpha);
             return;
         }
-        if ( (screenOverlay > 0)) {
+        if ((screenOverlay > 0)) {
             return; //TODO cut it
         }
         portrait.setZIndex(999999);
-        if (spritesContainersUnder!=null)
+        if (spritesContainersUnder != null)
             spritesContainersUnder.setVisible(false);
-        if (spritesContainers!=null)
+        if (spritesContainers != null)
             spritesContainers.setVisible(false);
         super.draw(batch, parentAlpha);
 
@@ -167,9 +169,9 @@ public class GridUnitView extends GenericGridView {
         //setVisible(false); for all nonportrait
         super.draw(batch, parentAlpha);
 
-        if (spritesContainersUnder!=null)
-        spritesContainersUnder.setVisible(true);
-        if (spritesContainers!=null)
+        if (spritesContainersUnder != null)
+            spritesContainersUnder.setVisible(true);
+        if (spritesContainers != null)
             spritesContainers.setVisible(true);
         portrait.setZIndex(1);
         getColor().a = a;
@@ -212,6 +214,9 @@ public class GridUnitView extends GenericGridView {
     }
 
     protected void initQueueView(UnitViewOptions o) {
+        if (o.getObj() instanceof Structure) {
+            return;
+        }
         setHoverResponsive(o.isHoverResponsive());
         initiativeQueueUnitView = new QueueView(o, curId);
         initiativeQueueUnitView.setParentView(this);
@@ -247,17 +252,18 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void setOutline(TextureRegion outline) {
         super.setOutline(outline);
-        initiativeQueueUnitView.setOutline(outline);
+        if (initiativeQueueUnitView != null)
+            initiativeQueueUnitView.setOutline(outline);
     }
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
         super.setOutlinePathSupplier(pathSupplier);
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
 
-
-        initiativeQueueUnitView.
-                setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-                        TextureCache.getSizedRegion(AtbPanel.imageSize, pathSupplier.get()));
+        if (initiativeQueueUnitView != null)
+            initiativeQueueUnitView.
+                    setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
+                            TextureCache.getSizedRegion(AtbPanel.imageSize, pathSupplier.get()));
     }
 
 

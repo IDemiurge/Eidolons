@@ -24,6 +24,7 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
@@ -231,7 +232,7 @@ public class VisionRule {
             return VISIBILITY_LEVEL.CLEAR_SIGHT;
         }
         if (source == ShadowMaster.getShadowUnit()) {
-           return ShadowVisionMaster.getVisibility(sight, object);
+            return ShadowVisionMaster.getVisibility(sight, object);
 
         }
         if (master.getGame().getRules().getStealthRule().
@@ -266,7 +267,7 @@ public class VisionRule {
     }
 
     public PLAYER_VISION playerVision(Unit source, BattleFieldObject object) {
-        if (DebugMaster.isOmnivisionOn() ) {
+        if (DebugMaster.isOmnivisionOn()) {
             if (source.isMine()) {
                 return PLAYER_VISION.DETECTED;
 
@@ -322,8 +323,8 @@ public class VisionRule {
         if (Cinematics.ON) {
             if (!object.isLightEmitter())
                 if (object.isOverlaying()) {
-                return false;
-            }
+                    return false;
+                }
         }
         if (object.isOverlaying()) {
             return controller.getPlayerVisionMapper().get(source.getOwner(), object) ==
@@ -346,14 +347,23 @@ public class VisionRule {
         if (Bools.isTrue(controller.getDetectionMapper()
                 .get(source.getOwner(), object)))
             return;
+        Boolean prev = controller.getDetectionMapper().get(source.getOwner(), object);
+        if (Bools.isTrue(prev)) {
+            return;
+        }
         controller.getDetectionMapper().set(source.getOwner(), object, true);
-        if (isDetectionLogged(source, object))
-            master.getGame().getLogManager().logReveal(source, object);
+        if (isDetectionLogged(source, object)) {
+                master.getGame().getLogManager().logReveal(source, object);
+        }
         if (isDetectionSoundOn(source, object)) {
             if (source.getGame().isStarted())
-            if (!VisionManager.isCinematicVision())
+                if (!VisionManager.isCinematicVision())
 //            if (!source.getGame().isFootageMode())
-            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
+                    if (RandomWizard.chance(33)) {
+                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, source);
+                    } else {
+                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
+                    }
         }
     }
 

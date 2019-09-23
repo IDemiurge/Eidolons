@@ -2,6 +2,8 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.rules.TriggerRule;
 import eidolons.game.core.EUtils;
 import eidolons.system.audio.DC_SoundMaster;
@@ -21,15 +23,19 @@ public class UndyingCounterRule extends TriggerRule {
         int n = NumberUtils.getInteger(unit.getCustomParamMap().get(CounterMaster.findCounter("undying")));
 
 //                event.getRef().getSourceObj().getCounter(CounterMaster.findCounter(UnitEnums.COUNTER.Undying.getName()));
-        if (n==0) {
+        if (n == 0) {
             return false;
         }
         unit.modifyCounter(UnitEnums.COUNTER.Undying, -1);
+        if (EidolonsGame.BRIDGE)
+            if (unit.isPlayerCharacter()) {
+                EidolonLord.lord.soulforceLost(10);
+            }
         unit.preventDeath();
 //     TODO shouldn't be necessary?
 //      unit.addProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
-        String msg=unit.getName() + " will not die yet... [" +
-                (n-1) +
+        String msg = unit.getName() + " will not die yet... [" +
+                (n - 1) +
                 "]";
 //        DC_SoundMaster.playStandardSound();
         EUtils.showInfoText(true, msg);

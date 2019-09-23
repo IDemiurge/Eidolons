@@ -1,24 +1,18 @@
 package eidolons.libgdx.stage.camera;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.utils.ActTimer;
-import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
@@ -26,7 +20,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
 import main.system.threading.WaitMaster;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,7 +211,7 @@ public class CameraMan {
     }
 
     protected boolean isCameraPanningOff() {
-        return false; //TODO
+        return OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.AUTO_CAMERA_OFF); //TODO
     }
 
     private void cameraPan(MotionData motionData) {
@@ -247,6 +240,7 @@ public class CameraMan {
     }
 
     protected void cameraPan(Vector2 destination, float duration, Interpolation interpolation, Boolean overrideCheck) {
+        if (!Cinematics.ON)
         if (isCameraPanningOff()) {
             return;
         }
@@ -309,6 +303,7 @@ public class CameraMan {
             if (hero.getGame().getManager().getActiveObj()==hero) {
                 motions.clear();
                 centerCameraOn(hero);
+                pendingPanTarget=null;
 //                mustFinish=true;
                 main.system.auxiliary.log.LogMaster.dev("Panning camera to active unit" +hero);
 

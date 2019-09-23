@@ -103,7 +103,7 @@ public class AnimMaster3d {
             {"fist swing", "punch"},
             {"aimed shot", "quick shot"}
     };
-    public static boolean JPG_WEAPONS=EidolonsGame.BRIDGE;
+    public static boolean JPG_WEAPONS =false;// EidolonsGame.BRIDGE;
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
@@ -321,12 +321,12 @@ public class AnimMaster3d {
                 PathFinder.getWeaponAnimPath(), "atlas",
                 weapon.getWeaponType().toString().replace("_", " ")
                 , groupName, name
-                + getAtlasSuffix()+ TexturePackerLaunch.ATLAS_EXTENSION);
+                + getAtlasSuffix() + TexturePackerLaunch.ATLAS_EXTENSION);
         return s.toString();
     }
 
     private static String getAtlasSuffix() {
-        return JPG_WEAPONS? " jpg": "";
+        return JPG_WEAPONS ? " jpg" : "";
     }
 
     private static boolean isAssymetric(String activeWeapon) {
@@ -402,8 +402,10 @@ public class AnimMaster3d {
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
-
-        main.system.auxiliary.log.LogMaster.log(1, activeObj + " has invalid atlas: " + name);
+        if (atlas == null) {
+            main.system.auxiliary.log.LogMaster.log(1, activeObj + " has invalid atlas: " + name);
+            return SpriteAnimationFactory.dummySpriteRegions;
+        }
 
         Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
         if (regions.size == 0) {
@@ -524,7 +526,7 @@ public class AnimMaster3d {
         }
         if (!Assets.get().getManager().isLoaded(path)) {
             LogMaster.log(1, path + " loading...");
-                Assets.get().getManager().load(path, TextureAtlas.class);
+            Assets.get().getManager().load(path, TextureAtlas.class);
         }
 //        atlasMap.put(path, null);
     }
@@ -544,7 +546,17 @@ public class AnimMaster3d {
     }
 
     public static TextureAtlas getOrCreateAtlas(String path) {
-        return getOrCreateAtlas(path, true);
+        try {
+            return getOrCreateAtlas(path, true);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            try {
+                return new SmartTextureAtlas(path);
+            } catch (Exception e1) {
+                main.system.ExceptionMaster.printStackTrace(e1);
+            }
+        }
+        return null;
     }
 
     public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
@@ -554,31 +566,36 @@ public class AnimMaster3d {
         }
         path = TextureCache.formatTexturePath(path);
 
-        TextureAtlas atlas =null ;// cache ? atlasMap.get(path) : null;
+        TextureAtlas atlas = null;// cache ? atlasMap.get(path) : null;
         if (Assets.get().getManager().isLoaded(path)) {
             atlas = Assets.get().getManager().get(path);
-        } else  {
+        } else {
             if (Assets.isOn()) {
-                Chronos.mark("loading "+path);
+                Chronos.mark("loading " + path);
                 Assets.get().getManager().load(path, TextureAtlas.class);
 //                while (!Assets.getVar().getManager().isLoaded(path)) {
 //                    if (Assets.getVar().getManager().update())
 //                        break;
 //                }
-                while (!Assets.get().getManager().update(1000)) {
-                    if (Assets.get().getManager().isLoaded(path))
-                        break;
-                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
-                }
 
-                if (!Assets.get().getManager().isLoaded(path))
-                {
+                while (!Assets.get().getManager().isLoaded(path)) {
+                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
+                    if (Assets.get().getManager().update(1000))
+                        break;
+                }
+//                while (!Assets.get().getManager().update(1000)) {
+//                    if (Assets.get().getManager().isLoaded(path))
+//                        break;
+//                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
+//                }
+
+                if (!Assets.get().getManager().isLoaded(path)) {
                     main.system.auxiliary.log.LogMaster.log(1, "************* Atlas failed to load! " + path);
 //                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
 //                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
 //                    Assets.setON(false);
 //                    OptionsMaster.saveOptions();
-                    return getOrCreateAtlas(path, cache);
+                    return null; //getOrCreateAtlas(path, cache);
                 }
                 try {
                     Assets.get().getManager().finishLoadingAsset(path);
@@ -606,7 +623,7 @@ public class AnimMaster3d {
                 if (atlas == null) {
                     FileLogManager.streamMain("Lazy load failed! - " + path);
                 } else {
-                    Chronos.logTimeElapsedForMark("loading "+path);
+                    Chronos.logTimeElapsedForMark("loading " + path);
                 }
             } else {
                 atlas = new SmartTextureAtlas(path);
@@ -676,14 +693,14 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
-        if (EidolonsGame.BRIDGE)
-            return true;
-        if (CoreEngine.isIDE())
-            if (!CoreEngine.isGraphicTestMode())
-                if (CoreEngine.isLiteLaunch()) {
-                    if (!EidolonsGame.BOSS_FIGHT)
-                        return true;
-                }
+//        if (EidolonsGame.BRIDGE)
+//            return true;
+//        if (CoreEngine.isIDE())
+//            if (!CoreEngine.isGraphicTestMode())
+//                if (CoreEngine.isLiteLaunch()) {
+//                    if (!EidolonsGame.BOSS_FIGHT)
+//                        return true;
+//                }
         if (off == null)
             off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
         return off;

@@ -247,6 +247,11 @@ public class IGG_XmlMaster {
     }
 
     public static String getEntrancesData(Location location, String levelName) {
+        if (EidolonsGame.FOOTAGE) {
+            if (!location.getProperty(PROPS.ENTRANCE_COORDINATES).isEmpty()) {
+                return "Ash Vault(" +location.getProperty(PROPS.ENTRANCE_COORDINATES) + ");Ash Vault(0-0)";
+            }
+        }
         if (EidolonsGame.BOSS_FIGHT) { //TODO boss fix
             return "Dark Winding Upward Stairs(11-7);Dark Winding Upward Stairs(11-1)";
         }

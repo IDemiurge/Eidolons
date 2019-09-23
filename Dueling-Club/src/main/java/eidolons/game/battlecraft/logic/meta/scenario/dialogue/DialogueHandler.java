@@ -191,6 +191,9 @@ public class DialogueHandler {
     }
 
     public void checkAutoCamera(Unit linkedUnit) {
+        if (getDialogueManager().getContainer().isOpaque()) {
+            return;
+        }
         if (linkedUnit == null) {
             LogMaster.dev("Null unit for autocamera! "+getSpeakerLast() );
             return;

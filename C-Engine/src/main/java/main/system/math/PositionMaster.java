@@ -117,6 +117,11 @@ public class PositionMaster {
         distances[x][y] = result;
         return result;
     }
+    public static double getExactDistanceNoCache(Coordinates coordinates1, Coordinates coordinates2) {
+        int x = getX_Diff(coordinates1, coordinates2);
+        int y = getY_Diff(coordinates1, coordinates2);
+        return Math.sqrt(x * x + y * y);
+    }
 
     public static double getExactDistance(Obj obj, Obj obj1) {
         return getExactDistance(obj.getCoordinates(), obj1.getCoordinates());

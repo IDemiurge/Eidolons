@@ -199,7 +199,7 @@ public class ActionMaster {
         if ((action.getAmount()) <= -270)
             action.setAmount(to - from + 360);
 
-        float speed = 180 * AnimMaster.getAnimationSpeedFactor(); //* options
+        float speed = 260 * AnimMaster.getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);
         actor.addAction(action);

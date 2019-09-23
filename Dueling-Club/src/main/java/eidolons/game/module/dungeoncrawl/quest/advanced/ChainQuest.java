@@ -98,6 +98,11 @@ public class ChainQuest implements Quest{
         return null;
     }
 
+    @Override
+    public void increment() {
+
+    }
+
     private class Interim extends QuestReward {
         public Interim(ObjType objType) {
             super(objType);

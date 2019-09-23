@@ -33,7 +33,7 @@ public class IggBriefScreen extends UiStage {
 
     @Override
     public void draw() {
-//        super.draw();
+        super.draw();
     }
 
 }

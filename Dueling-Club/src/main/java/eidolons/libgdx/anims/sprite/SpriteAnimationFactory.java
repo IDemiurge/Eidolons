@@ -28,7 +28,7 @@ public class SpriteAnimationFactory {
     public final static float defaultFrameDuration = 0.025f;
     public final static float fps30 = 0.033f;
     static Map<String, SpriteAnimation> cache = new HashMap<>();
-    private static Array dummySpriteRegions;
+    public static Array<AtlasRegion> dummySpriteRegions;
     private static boolean singleFrameSpriteMode = false;
     private static boolean testMode = false;
 
@@ -143,7 +143,7 @@ public class SpriteAnimationFactory {
         return a;
     }
 
-    private static SpriteAnimation getDefaultSprite(String key) {
+    public static SpriteAnimation getDefaultSprite(String key) {
         main.system.auxiliary.log.LogMaster.important("Sprite replaced by default: " + key);
         SpriteAnimation spriteAnimation = new SpriteAnimation(fps30, false, dummySpriteRegions);
         spriteAnimation.setDefault(true);

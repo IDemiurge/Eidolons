@@ -27,7 +27,7 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
 //        CAMERA_FOLLOW_CURSOR_DISTANCE(0, 0, 1000),
         SCROLL_SPEED(100, 25, 200),
         ALT_MODE_ON(false),
-        MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER(3, 2, 5), OPEN_OBJECT_STACKS_ON_ALT_HOVER(true);
+        MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER(3, 2, 5), OPEN_OBJECT_STACKS_ON_ALT_HOVER(true), AUTO_CAMERA_OFF(false);
 //        BINDING_PROFILE, ;
         private Boolean exclusive;
         private Integer min;

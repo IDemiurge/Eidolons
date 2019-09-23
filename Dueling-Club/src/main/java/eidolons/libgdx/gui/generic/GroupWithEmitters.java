@@ -16,7 +16,8 @@ public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        draw(batch, parentAlpha, !GridPanel.isDrawEmittersOnTop());
+        draw(batch, parentAlpha,
+                !GridPanel.isDrawEmittersOnTop() );
     }
 
     public void draw(Batch batch, float parentAlpha, boolean drawEmitters) {

@@ -95,15 +95,18 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
 
     public void introDialogue() {
-        if (SKIP_INTRO){
+        if ( EidolonsGame.PUZZLES|| SKIP_INTRO || !EidolonsGame.BRIDGE){
             return ;
         }
+
 //        GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 8);
+
+        String dialogue = EidolonsGame.DUEL_TEST ? DUEL : INTRO;
         GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 1);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 8);
         WaitMaster.doAfterWait(5000, () -> GuiEventManager.trigger(INIT_DIALOG,
-                EidolonsGame.DUEL_TEST  ? DUEL: INTRO));
+                dialogue));
     }
     public void startDialogue(GameDialogue dialogue) {
     }

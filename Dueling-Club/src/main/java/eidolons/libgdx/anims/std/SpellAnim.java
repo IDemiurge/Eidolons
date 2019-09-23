@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.MathUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -104,15 +105,23 @@ public class SpellAnim extends ActionAnim {
         if (FileManager.isFile(PathFinder.getRootPath() + PathFinder.getSpellVfxPath() + path)) {
             return path;
         }
-
+        if (EidolonsGame.FOOTAGE) {
+            switch (group) {
+                case FIRE:
+                    switch (part) {
+                        case MISSILE:
+                            return "missile/chaos missile";
+                    }
+            }
+        }
         switch (group) {
             case FIRE:
                 if (part == AnimConstructor.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(4) + 1;
                     if (i == 1) {
-                        return "cast/destruction center";
+                        return "cast/destruction center5";
                     }
-                    return "cast/destruction center" + i;
+                    return "cast/destruction center5"  ;
                 }
 
                 if (part == AnimConstructor.ANIM_PART.AFTEREFFECT) {

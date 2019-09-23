@@ -94,9 +94,9 @@ public class ParticleManager extends GroupX {
             emitterMaps.clear();
             for (String sub : dataSource.getEmitters()) {
                 int showChance = dataSource.getShowChance();
-                if (!VariableManager.getVarPart(sub).isEmpty()) {
+                if (!VariableManager.getVar(sub).isEmpty()) {
+                    showChance = NumberUtils.getInteger(VariableManager.getVar(sub));
                     sub = VariableManager.removeVarPart(sub);
-                    showChance = NumberUtils.getInteger(VariableManager.getVarPart(sub));
                 }
                 EmitterMap emitterMap = cache.get(sub);
                 if (emitterMap == null) {

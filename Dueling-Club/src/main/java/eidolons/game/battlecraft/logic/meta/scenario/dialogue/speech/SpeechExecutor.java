@@ -132,7 +132,9 @@ public class SpeechExecutor {
 
     public boolean execute(SPEECH_ACTION speechAction, String value, boolean wait) {
         container = dialogueManager.getContainer();
-        handler = container.getHandler();
+        if (container != null) {
+             handler = container.getHandler();
+        }
         value = value.trim().toLowerCase();
         String full = value;
         List<String> vars = VariableManager.getVarList(value);
@@ -413,6 +415,18 @@ public class SpeechExecutor {
 //                    TODO master.getBattleMaster().getScriptManager().remove(vars.getVar(0));
                 }
                 break;
+            case QUEST_DONE:
+                master.getQuestMaster().questComplete(value);
+                break;
+            case QUEST_ADD:
+                if (vars.isEmpty()) {
+                    master.getQuestMaster().getQuest(value).increment();
+                } //TODO
+                break;
+            case QUEST:
+                master.getQuestMaster().questTaken(value, vars.isEmpty());
+                break;
+
             case TRIGGER:
                 master.getBattleMaster().getScriptManager().parseScripts(full);
                 break;
@@ -637,7 +651,13 @@ public class SpeechExecutor {
                         Eidolons.onNonGdxThread(() ->
                                 new SpeechScript(d, master).execute());
                     } else
-                        new SpeechScript(d, master).execute();
+                    {
+                        SpeechScript subscript = new SpeechScript(d, master);;
+                        subscript.execute();
+                        if (subscript.interrupted){
+                            return false;
+                        }
+                    }
 
                     break;
                 }
@@ -1016,6 +1036,12 @@ public class SpeechExecutor {
                 return true;
             case CONTINUE_IF:
                 if (!EidolonsGame.getAny(value)) {
+                    return false;
+                }
+                return true;
+            case GLOBAL_CONTINUE_IF:
+                if (!EidolonsGame.getAny(value)) {
+                    lastScript.interrupted=true;
                     return false;
                 }
                 return true;

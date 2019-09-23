@@ -449,14 +449,14 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public CELL_IMAGE getCellType(int i, int j) {
-        if (EidolonsGame.BRIDGE){
-            return CELL_IMAGE.octagonal;
-        }
 
         Coordinates c = new Coordinates(i, j);
         CELL_IMAGE img = cellTypeSpecialMap.get(c);
         if (img != null) {
             return img;
+        }
+        if (EidolonsGame.BRIDGE || EidolonsGame.BOSS_FIGHT) {
+            return CELL_IMAGE.octagonal;
         }
         LevelBlock block = getBlockForCoordinate(c);
         img = cellTypeMap.get(block);
@@ -630,12 +630,16 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public void initCellTypeMap(Map<String, String> customDataMap) {
         Map<Coordinates, CELL_IMAGE> map = new HashMap<>();
+        s:
         for (String s : customDataMap.keySet()) {
-            CELL_IMAGE type = new EnumMaster<CELL_IMAGE>().retrieveEnumConst(CELL_IMAGE.class, customDataMap.get(s));
-            if (type == null) {
-                continue;
+            for (String substring : ContainerUtils.openContainer(customDataMap.get(s))) {
+                CELL_IMAGE type = new EnumMaster<CELL_IMAGE>().retrieveEnumConst(CELL_IMAGE.class, substring);
+                if (type != null) {
+                    map.put(new Coordinates(s), type);
+                    continue s;
+                }
+
             }
-            map.put(new Coordinates(s), type);
         }
         cellTypeSpecialMap = (map);
     }

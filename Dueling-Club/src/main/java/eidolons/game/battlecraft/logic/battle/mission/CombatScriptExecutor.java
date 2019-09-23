@@ -114,9 +114,12 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     }
 
     private String getScriptsPath() {
-        return PathUtils.buildPath(
-                PathFinder.getTextPath(), "scripts", "demo"
-                , getBattle().getMission().getName() + " " + ScriptGenerator.SCRIPTS_FILE_NAME);
+        String name = getBattle().getMission().getName();
+        if (EidolonsGame.DUEL) {
+            name="duel";
+        }
+        return PathUtils.buildPath(PathFinder.getTextPath(),
+                "scripts", "demo", name + " " + ScriptGenerator.SCRIPTS_FILE_NAME);
     }
     //getMaster().getMetaMaster().getMetaGame().getScenario()
 

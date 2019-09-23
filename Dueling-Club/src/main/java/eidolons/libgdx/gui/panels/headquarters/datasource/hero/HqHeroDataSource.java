@@ -7,6 +7,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.libgdx.texture.Sprites;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
@@ -32,7 +33,7 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     protected boolean editable;
 
     public String getSpritePath() {
-        return PathFinder.getSpritesPath()+"/unit/"+getName()+".txt";
+        return Sprites.getHeroSpritePath(getName());
     }
     public HqHeroDataSource(HeroDataModel entity) {
         super(entity);

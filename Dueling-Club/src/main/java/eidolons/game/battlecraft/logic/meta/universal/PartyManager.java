@@ -63,7 +63,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     }
 
-    public void heroSelected(String newHero) {
+    public void heroSelected(Unit newHero) {
         /**
          * set as main
          * spawn

@@ -143,10 +143,16 @@ public class PathUtils {
 
     public static String getLastPathSegment(String path) {
         LinkedList<String> segments = new LinkedList<>(splitPath(path));
+        if (segments.isEmpty()) {
+            return "";
+        }
         return segments.getLast();
     }
     public static String getFirstPathSegment(String path) {
         LinkedList<String> segments = new LinkedList<>(splitPath(path));
+        if (segments.isEmpty()) {
+            return "";
+        }
         return segments.getFirst();
     }
 

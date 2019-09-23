@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
 import main.data.filesys.PathFinder;
@@ -26,10 +27,28 @@ import java.util.Stack;
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
-    private static final String FOOTAGE_SEQUENCE = "levels/.xml;" +
-            ""
+   public static  Integer HERO_INDEX =null;
+    private static final String FOOTAGE_SEQUENCE =
+            "footage/demon circle.xml;" +
+            "footage/serpentium.xml;" +
+            "levels/underworld.xml;" +
+            "modules/bastion.xml;" +
 
-            ;
+                    "levels/vault.xml;" +
+                    "modules/black river.xml;" +
+                    "modules/reaver.xml;" +
+
+                    "demo/underreach.xml;" +
+                    "crawl/cavern.xml;" +
+                    "crawl/guild dungeon.xml;" +
+                    "demo/Outer Cloister.xml;" +
+
+                    "crawl/cavern.xml;" +
+                    "crawl/cavern.xml;" +
+
+                    "levels/vault.xml;" +
+                    "levels/vault.xml;" +
+                    "levels/vault.xml;";
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
     private static CustomLaunch customLaunch;
@@ -44,12 +63,19 @@ public class MainLauncher extends GenericLauncher {
         CoreEngine.setIggDemo(true);
         CoreEngine.setMainGame(true);
         CoreEngine.setDialogueTest(true);
-        EidolonsGame.BRIDGE = true;
+//        EidolonsGame.BRIDGE = true;
 //        CoreEngine.setGraphicTestMode(args.length > 0);
 //        CoreEngine.setActiveTestMode(args.length > 0);
 //        CoreEngine.setReverseExit(args.length > 0);
         if (args.length > 0) {
             PathFinder.init();
+            if (args[0].contains("selectfootage")) {
+                int i = DialogMaster.inputInt(0);
+                args[0] = args[0] + "." + i;
+            }
+            if (args[0].contains("selecthero")) {
+                HERO_INDEX = DialogMaster.inputInt(0);
+            }
             String[] parts = args[0].split(";");
             if (!parts[0].isEmpty()) {
                 OptionsMaster.setOptionsMode(parts[0]);
@@ -57,6 +83,11 @@ public class MainLauncher extends GenericLauncher {
             }
             EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
             EidolonsGame.BRIDGE = args[0].contains("bridge");
+            EidolonsGame.FOOTAGE = args[0].contains("footage");
+            EidolonsGame.PUZZLES = args[0].contains("puzzle");
+
+
+            EidolonsGame.DUEL = args[0].contains("duel");
             EidolonsGame.DUEL_TEST = args[0].contains("duel");
             EidolonsGame.TRANSIT_TEST = args[0].contains("transit");
 
@@ -146,15 +177,19 @@ public class MainLauncher extends GenericLauncher {
                         presetNumbers.add(0, i);
                     } else {
 
-                    String[] p = command.split("=");
-                    if (p.length > 1) {
-                        EidolonsGame.setVar(p[0], Boolean.valueOf(p[1]));
-                    } else {
-                        if (command.contains(".") || command.contains("::")) {
-                            setCustomLaunch(new CustomLaunch(command.replace("_", " ")));
+                        String[] p = command.split("=");
+                        if (p.length > 1) {
+                            EidolonsGame.setVar(p[0], Boolean.valueOf(p[1]));
+                        } else {
+                            if (command.contains(".") || command.contains("::")) {
+                                if (command.length() < 3) {
+                                    command = FOOTAGE_SEQUENCE.split(";")
+                                            [Integer.valueOf(command.replace(".", ""))];
+                                }
+                                setCustomLaunch(new CustomLaunch(command.replace("_", " ")));
+                            }
                         }
                     }
-                }
                 }
             }
         }
@@ -174,7 +209,7 @@ public class MainLauncher extends GenericLauncher {
     }
 
     public static void setCustomLaunch(CustomLaunch customLaunch) {
-        main.system.auxiliary.log.LogMaster.important("customLaunch set: " +customLaunch);
+        main.system.auxiliary.log.LogMaster.important("customLaunch set: " + customLaunch);
         MainLauncher.customLaunch = customLaunch;
     }
 

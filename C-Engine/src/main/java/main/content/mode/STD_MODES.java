@@ -60,7 +60,7 @@ public enum STD_MODES implements MODE {
         return removeEndRound;
     }
     static {
-        DEFENDING.duration=2;
+        DEFENDING.duration=4;
 
         COWER.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD * 3 / 2);
 

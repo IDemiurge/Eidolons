@@ -21,6 +21,8 @@ import java.util.Map;
  * Created by JustMe on 5/13/2017.
  */
 public class EidolonsGame {
+    public static  boolean TESTER_VERSION = false;
+    public static   boolean FOOTAGE ;
     public static   boolean DUEL_TEST  ;
     public static   boolean TRANSIT_TEST  ;
     public static boolean LEVI_TEST = false;
@@ -40,6 +42,7 @@ public class EidolonsGame {
     public static boolean MOVES_DISABLED;
     public static boolean MOVES_FORWARD_ONLY;
     public static boolean TUTORIAL;
+    public static boolean PUZZLES;
     private static Map<String, Boolean> varMap = new StringMap<>();
     private static Map<String, Boolean> actionMap = new StringMap<>();
 
@@ -205,9 +208,9 @@ public class EidolonsGame {
     }
 
     public void init() {
-        if (metaMaster.getData().equalsIgnoreCase("ashen path")) {
-            BRIDGE = true;
-        }
+//        if (metaMaster.getData().equalsIgnoreCase("ashen path")) {
+//            BRIDGE = true;
+//        }
         metaMaster.init();
     }
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
@@ -20,6 +21,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.boss.entity.BossUnit;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -60,8 +62,8 @@ public class HpBar extends SuperActor {
     private final int innerWidth;
     BattleFieldObject dataSource;
     Float toughnessDeathBarrier;
-    float displayedToughnessPerc= 1f;
-    float displayedEndurancePerc= 1f;
+    float displayedToughnessPerc = 1f;
+    float displayedEndurancePerc = 1f;
     FloatActionLimited toughnessAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
     FloatActionLimited enduranceAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
     boolean labelsDisplayed = true;
@@ -69,7 +71,7 @@ public class HpBar extends SuperActor {
     private Float endurancePerc = 1f;
     private Float previousToughnessPerc = 1f;
     private Float previousEndurancePerc = 1f;
-    private float fullLengthPerc=1f;
+    private float fullLengthPerc = 1f;
     private boolean toughnessDeath;
     private TextureRegion barRegion; //TODO can it be static?
     private TextureRegion toughnessBarRegion;
@@ -86,20 +88,20 @@ public class HpBar extends SuperActor {
     public HpBar(BattleFieldObject dataSource) {
         this.dataSource = dataSource;
         barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "dc", "unit", "hp bar empty.png"));
+                "dc", "unit", "hp bar empty.png"));
         height = barRegion.getRegionHeight();
 
         toughnessBarRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "dc", "unit", "hp bar.png"));
+                "dc", "unit", "hp bar.png"));
         enduranceBarRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "dc", "unit", "hp bar.png"));
+                "dc", "unit", "hp bar.png"));
         innerWidth = enduranceBarRegion.getRegionWidth();
         barImage = new Image(barRegion);
         addActor(barImage);
         label = new Label("", StyleHolder.
-         getSizedLabelStyle(FONT.AVQ, FONT_SIZE));
+                getSizedLabelStyle(FONT.AVQ, FONT_SIZE));
         label_t = new Label("", StyleHolder.
-         getSizedLabelStyle(FONT.AVQ, FONT_SIZE));
+                getSizedLabelStyle(FONT.AVQ, FONT_SIZE));
         addActor(label_t);
         addActor(label);
         offsetX = barRegion.getRegionWidth() - toughnessBarRegion.getRegionWidth();
@@ -133,13 +135,20 @@ public class HpBar extends SuperActor {
 //        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
 //         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
         setToughnessPerc(new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
-         / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE))); //not a bug - we want to display this way!
+                / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE))); //not a bug - we want to display this way!
         setToughnessPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getToughnessPerc()));//  toughnessPerc % 0.01f;
         setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE)));
-        setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));//  toughnessPerc % 0.01f;
+        setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
+        if (dataSource.isPlayerCharacter()){
+            if (!EidolonsGame.getVar("endurance")){
+                setEndurancePerc( getToughnessPerc());
+//                setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
+            }
+        }
+       //  toughnessPerc % 0.01f;
 //        setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
         if (getToughnessPerc().equals(lastOfferedToughness) &&
-         getEndurancePerc().equals(lastOfferedEndurance))
+                getEndurancePerc().equals(lastOfferedEndurance))
             return;
 
         dirty = true;
@@ -185,7 +194,7 @@ public class HpBar extends SuperActor {
             displayedEndurancePerc = getEndurancePerc();
 
             float realPerc = new Float(100 * dataSource.getIntParam(PARAMS.C_ENDURANCE) /
-             dataSource.getIntParam(PARAMS.ENDURANCE)) / 100f;
+                    dataSource.getIntParam(PARAMS.ENDURANCE)) / 100f;
             if (displayedEndurancePerc != realPerc) {
                 displayedEndurancePerc = realPerc;
             }
@@ -193,7 +202,7 @@ public class HpBar extends SuperActor {
             displayedToughnessPerc = getToughnessPerc();
 
             realPerc = new Float(100 * dataSource.getIntParam(PARAMS.C_TOUGHNESS) /
-             dataSource.getIntParam(PARAMS.TOUGHNESS)) / 100f;
+                    dataSource.getIntParam(PARAMS.TOUGHNESS)) / 100f;
             if (displayedToughnessPerc != realPerc) {
                 displayedToughnessPerc = realPerc;
             }
@@ -249,9 +258,9 @@ public class HpBar extends SuperActor {
         }
         if (isAnimated() && getActions().size > 0) {
             displayedEndurancePerc =
-             enduranceAction.getValue();
+                    enduranceAction.getValue();
             displayedToughnessPerc =
-             toughnessAction.getValue();
+                    toughnessAction.getValue();
 
             fullLengthPerc = displayedEndurancePerc;
         } else if (!dirty)
@@ -266,7 +275,7 @@ public class HpBar extends SuperActor {
     private void resetLabel() {
 
         String text = "" + Math.round(dataSource.getIntParam(PARAMS.C_ENDURANCE))
-         + "/" + dataSource.getLastValidParamValue(PARAMS.ENDURANCE);
+                + "/" + dataSource.getLastValidParamValue(PARAMS.ENDURANCE);
         label.setText(text);
 
         text = "" + (dataSource.getIntParam(PARAMS.C_TOUGHNESS) //* displayedToughnessPerc
@@ -280,12 +289,12 @@ public class HpBar extends SuperActor {
 //        float offset = innerWidth * displayedToughnessPerc / 2;
         label_t.setPosition(0,
 //         offset - label_t.getWidth() / 2,
-         height * 3 / 2);
+                height * 3 / 2);
         float offset = innerWidth * displayedEndurancePerc / 2;
 
         label.setPosition(offset,
 //         offset - label.getWidth() / 2,
-         -height / 2);
+                -height / 2);
         label.setWidth(innerWidth);
         label_t.setWidth(innerWidth);
 
@@ -298,16 +307,16 @@ public class HpBar extends SuperActor {
         if (color == null) {
             return;
         }
-        if (perc==0)
+        if (perc == 0)
             return;
         batch.setColor(color);
         float x = getX() + offsetX;
         if (reverse) {
-            x = x + region.getRegionWidth()*getScaleX() * (Math.min(1,fullLengthPerc) - Math.min(1,perc));
+            x = x + region.getRegionWidth() * getScaleX() * (Math.min(1, fullLengthPerc) - Math.min(1, perc));
 //            x = x + region.getRegionWidth() * (  perc-1);
         }
         batch.draw(region, x, getY(), getScaleX() * region.getRegionWidth(),
-         getScaleY() * region.getRegionHeight());
+                getScaleY() * region.getRegionHeight());
     }
 
     @Override
@@ -389,14 +398,17 @@ public class HpBar extends SuperActor {
                 label.getWidth();
             }
 //            super.draw(batch, parentAlpha);
-            ScissorMaster.drawInRectangle(this, batch, getX() , getY(),  innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
+            if (dataSource instanceof BossUnit) {
+                ScissorMaster.drawInRectangle(this, batch, getX()-128, getY()-128,3* innerWidth *  MathMaster.minMax( fullLengthPerc, 0, 1)  * getScaleX(), height);
+            } else
+                ScissorMaster.drawInRectangle(this, batch, getX(), getY(), innerWidth * MathMaster.minMax( fullLengthPerc, 0.03f, 1) * getScaleX(), height);
         } else {
             Color color = enduranceColor;
             TextureRegion region = enduranceBarRegion;
-            drawBar(region, batch,Math.min(1,  displayedEndurancePerc), color, false);
+            drawBar(region, batch, Math.min(1, displayedEndurancePerc), color, false);
             color = toughnessColor;
             region = toughnessBarRegion;
-            drawBar(region, batch,Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
+            drawBar(region, batch, Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
             batch.flush();
         }
 
@@ -420,7 +432,7 @@ public class HpBar extends SuperActor {
     @Override
     public Stage getStage() {
         return (queue) ? DungeonScreen.getInstance().getGuiStage()
-         : DungeonScreen.getInstance().getGridStage();
+                : DungeonScreen.getInstance().getGridStage();
     }
 
     @Override
@@ -460,8 +472,8 @@ public class HpBar extends SuperActor {
     @Override
     public String toString() {
         return
-         (queue ? "queue hp bar" : label.getText() + " bar ") +
-          dataSource.getName();
+                (queue ? "queue hp bar" : label.getText() + " bar ") +
+                        dataSource.getName();
 //        label.getText()+
     }
 

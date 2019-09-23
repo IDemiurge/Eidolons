@@ -1,9 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
+import eidolons.game.EidolonsGame;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.DungeonEnums;
+import main.content.enums.entity.BfObjEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -17,6 +19,9 @@ public class IGG_Images {
     }
         public static String getBackground(IGG_Demo.IGG_MISSION mission) {
         String path=null ;
+            if (EidolonsGame.BOSS_FIGHT) {
+                return Sprites.BG_DEFAULT;
+            }
         if (!CoreEngine.isLiteLaunch() && !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.BACKGROUND_SPRITES_OFF)) {
             switch (mission) {
                 case TUTORIAL:

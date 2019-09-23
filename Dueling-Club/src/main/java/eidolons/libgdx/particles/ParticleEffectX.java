@@ -3,9 +3,7 @@ package eidolons.libgdx.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.util.EmitterMaster;
@@ -15,6 +13,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LogMaster;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,11 +22,14 @@ import java.util.List;
 /**
  * Created by JustMe on 1/27/2017.
  */
-public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
+public class ParticleEffectX extends ParticleEffect {
 
     public static final boolean TEST_MODE = false;
+    private static float globalAlpha;
     public String path;
     private static List<String> broken = new ArrayList<>();
+    private Float alpha = 1f;
+    private boolean spell;
 
     public ParticleEffectX(String path) {
         this.path = path;
@@ -38,7 +40,8 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
             FileHandle presetFile = new FileHandle(path);
             if (!presetFile.exists())
                 presetFile = Gdx.files.internal(PathFinder.getVfxAtlasPath() + path);
-
+            if (!presetFile.exists())
+                presetFile = Gdx.files.internal(PathFinder.getVfxPath() + path);
             try {
                 load(presetFile, getEmitterAtlas());
                 return;
@@ -54,23 +57,59 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
         if (FileManager.isImageFile(PathUtils.getLastPathSegment(imagePath))) {
             imagePath = PathUtils.cropLastPathSegment(imagePath);
         }
-        load(Gdx.files.internal(
-                PathUtils.addMissingPathSegments(
-                        path, PathFinder.getParticlePresetPath())),
+
+        load(Gdx.files.internal(PathUtils.addMissingPathSegments(path, PathFinder.getParticlePresetPath())),
                 Gdx.files.internal(imagePath));
 
-//TODO         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
     }
 
-//    @Override
-//    protected ParticleEmitter newEmitter(BufferedReader reader) throws IOException {
-//        return new ParticleEmitterX(reader);
-//    }
+    public static void setGlobalAlpha(float globalAlpha) {
+        ParticleEffectX.globalAlpha = globalAlpha;
+    }
+
+
+    public void setAlpha(Float a) {
+        this.alpha = a;
+        if (a != 1f) {
+            for (ParticleEmitter e : getEmitters()) {
+//                e.getTransparency().set
+//                float a = e.getTransparency().getScale(e.getPercentComplete());
+
+                float min = e.getTransparency().getHighMin();
+                float max = e.getTransparency().getHighMax();
+                float lowMax = e.getTransparency().getLowMax();
+                float lowMin = e.getTransparency().getLowMin();
+
+                e.getTransparency().setHigh(min * a, max * a);
+                e.getTransparency().setLow(lowMin * a, lowMax * a);
+
+            }
+        }
+    }
+
+    @Override
+    public void draw(Batch spriteBatch) {
+        if (globalAlpha != alpha) {
+            setAlpha(globalAlpha);
+        }
+        super.draw(spriteBatch);
+    }
+
+    @Override
+    public void draw(Batch spriteBatch, float delta) {
+        if (!spell)
+            if (globalAlpha != alpha) {
+                setAlpha(globalAlpha);
+            }
+        super.draw(spriteBatch, delta);
+    }
 
     @Override
     public Array<ParticleEmitter> getEmitters() {
         return super.getEmitters();
     }
+
     protected Texture loadTexture(FileHandle file) {
         return new Texture(file, false);
     }
@@ -84,7 +123,11 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     private TextureAtlas getEmitterAtlas() {
-        return EmitterMaster.getAtlas(path);
+        EmitterMaster.VFX_ATLAS type = EmitterMaster.getAtlasType(path);
+        if (type == EmitterMaster.VFX_ATLAS.SPELL) {
+            spell = true;
+        }
+        return EmitterMaster.getAtlas(type);
     }
 
     public void offset(String value, String offset) {
@@ -124,10 +167,9 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //            return true;
 //        }
         if (TEST_MODE)
-            main.system.auxiliary.log.LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
+            LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
         return false;
     }
-
 
 
     public void loadEmitters(FileHandle effectFile) {
@@ -143,7 +185,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 //        if (CoreEngine.isMacro())
         if (!effectFile.exists()) {
             broken.add(effectFile.path());
-            main.system.auxiliary.log.LogMaster.log(0, "no such emitter preset: " + effectFile.path());
+            LogMaster.log(0, "no such emitter preset: " + effectFile.path());
             return;
         }
         InputStream input = effectFile.read();
@@ -166,6 +208,10 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 
     }
 
+    //    @Override
+//    protected ParticleEmitter newEmitter(BufferedReader reader) throws IOException {
+//        return new ParticleEmitterX(reader);
+//    }
     public void setImagePath(String imagePath) {
         Array<String> array = new Array<>();
         array.add(imagePath);

@@ -179,13 +179,22 @@ public class GuiEventManagerImpl {
             lock.unlock();
 
 //            list.forEach(Runnable::run); apparently we still need crutches
-            for (Runnable runnable : list) {
-                try {
-                    runnable.run();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+            for (int i = 0, listSize = list.size(); i < listSize; i++) {
+                run( list.get(i));
+//                try {
+//                    list.get(i).run();
+//                } catch (Exception e) {
+//                    ExceptionMaster.printStackTrace(e);
+//                }
             }
+        }
+    }
+
+    private void run(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Exception e) {
+            ExceptionMaster.printStackTrace(e);
         }
     }
 

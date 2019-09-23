@@ -1822,6 +1822,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (getMode()!=null && getMode()!= STD_MODES.NORMAL){
             return AtbPanel.INTENT_ICON.getModeIcon(getMode());
         }
+        if (isBoss()) {
+            return AtbPanel.INTENT_ICON.WHEEL;
+        }
 
             return null;
     }

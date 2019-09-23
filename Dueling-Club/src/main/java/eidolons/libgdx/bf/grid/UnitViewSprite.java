@@ -34,9 +34,10 @@ public abstract class UnitViewSprite extends GridUnitView {
         super(o);
 //        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED , p-> );
 //        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES , p-> );
-
         addActor(spriteModel = new SpriteModel(
                 SpriteAnimationFactory.getSpriteAnimation(getSpritePath()), getName()));
+        setUserObject(o.getObj());
+
 //        spriteModel.setBlending(getBlending());
         //queue view
         // on hover?
@@ -54,8 +55,11 @@ public abstract class UnitViewSprite extends GridUnitView {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        height = getUserObject().getHeight() * GridMaster.CELL_H;
-        width = getUserObject().getWidth() * GridMaster.CELL_W;
+//        if (userObject == null) {
+//            userObject=
+//        }
+//        height = getUserObject().getHeight() * GridMaster.CELL_H;
+//        width = getUserObject().getWidth() * GridMaster.CELL_W;
     }
 
     @Override

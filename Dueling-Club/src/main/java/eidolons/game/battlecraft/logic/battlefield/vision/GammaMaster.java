@@ -4,6 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -20,6 +21,8 @@ import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL.VOID;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -68,7 +71,7 @@ public class GammaMaster {
         if (gamma != null)
             return gamma;
         return master.getIlluminationMaster().getIllumination(source, target)
-         - master.getIlluminationMaster().getConcealment(source, target);
+                - master.getIlluminationMaster().getConcealment(source, target);
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_CELL type) {
@@ -93,7 +96,7 @@ public class GammaMaster {
         }
         float alpha = 0;
         DC_Cell cell = Eidolons.game.getCellByCoordinate(
-         Coordinates.get(x, y));
+                Coordinates.get(x, y));
         if (cell == null) {
             if (type == SHADE_CELL.GAMMA_SHADOW)
                 return 1;
@@ -142,10 +145,10 @@ public class GammaMaster {
                 break;
             case CONCEALMENT:
                 alpha =
-                 //             Eidolons.game.getCellByCoordinate(
-                 //              Coordinates.getVar(x, y)).getIntParam(
-                 //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
-                 master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
+                        //             Eidolons.game.getCellByCoordinate(
+                        //              Coordinates.getVar(x, y)).getIntParam(
+                        //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
+                        master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
                     alpha += getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
@@ -186,14 +189,14 @@ public class GammaMaster {
         }
 
         float dst = 1 + (float) Coordinates.get(
-         sub.getX(), sub.getY()).dst_(Eidolons.getMainHero().getCoordinates());
+                sub.getX(), sub.getY()).dst_(Eidolons.getMainHero().getCoordinates());
         if (dst > Eidolons.getMainHero().
-         getMaxVisionDistanceTowards(sub.getCoordinates()))
+                getMaxVisionDistanceTowards(sub.getCoordinates()))
             return 0;
 
         float value = (float) (LIGHT_EMITTER_ALPHA_FACTOR / Math.sqrt(dst) *
-         master.getGame().getRules().getIlluminationRule()
-          .getLightEmission((DC_Obj) sub));
+                master.getGame().getRules().getIlluminationRule()
+                        .getLightEmission((DC_Obj) sub));
 
         boolean overlaying = ((BattleFieldObject) sub).isOverlaying();
 
@@ -216,6 +219,8 @@ public class GammaMaster {
 
 
     private float getVoidAlpha(int x, int y) {
+        if (EidolonsGame.BOSS_FIGHT)
+            return 0.6f;
         Float alpha = voidAlphaCache[x][y];
         if (alpha != null)
             return alpha;
@@ -263,15 +268,15 @@ public class GammaMaster {
         if (mainExitCoordingates == null) {
             if (master.getGame().getDungeonMaster().getDungeonWrapper() instanceof Location) {
                 Entrance exit = ((Location) master.getGame().getDungeonMaster().
-                 getDungeonWrapper()).getMainExit();
+                        getDungeonWrapper()).getMainExit();
                 mainExitCoordingates = exit.getCoordinates();
             }
         }
 
         BattleFieldObject obj = master.getGame().getManager().getHighlightedObj();
-        if (obj!=null ){
-            if (obj.getCoordinates().x==x)
-                if (obj.getCoordinates().y==y)
+        if (obj != null) {
+            if (obj.getCoordinates().x == x)
+                if (obj.getCoordinates().y == y)
                     return 1;
         }
         if (mainExitCoordingates != null) {
@@ -283,7 +288,7 @@ public class GammaMaster {
         //       TODO  questMaster = master.getGame().getMetaMaster().getQuestMaster();
         //        questMaster .getQuestCoordinates()
         if (master.getGame().getMetaMaster().getQuestMaster() != null) {
-            for ( Quest quest : master.getGame().getMetaMaster().getQuestMaster().getRunningQuests()) {
+            for (Quest quest : master.getGame().getMetaMaster().getQuestMaster().getRunningQuests()) {
                 if (quest.isComplete()) {
                     continue;
                 }
@@ -332,7 +337,7 @@ public class GammaMaster {
 
         //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
-         cell.getGamma();
+                cell.getGamma();
         //        return new Random().nextInt(50)/100 + 0.5f;
     }
 

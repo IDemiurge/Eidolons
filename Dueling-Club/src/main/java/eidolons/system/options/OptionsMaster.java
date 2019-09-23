@@ -19,12 +19,15 @@ import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
 import eidolons.libgdx.launch.GenericLauncher;
+import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.ParticleEmitterX;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -408,15 +411,14 @@ public class OptionsMaster {
             case PERFORMANCE_BOOST:
                 Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.valueOf(value)) / 10;
                 break;
+            case GRID_VFX:
+                GridPanel.setGridEmitters(bool);
+                break;
             case UI_VFX:
                 GuiVisualEffects.setOff(!bool);
                 break;
             case BRIGHTNESS:
                 GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
-                break;
-            case FRAMERATE:
-                GenericLauncher launcher = Eidolons.getLauncher();
-                launcher.setForegroundFPS(Integer.valueOf(value));
                 break;
             case AMBIENCE_VFX:
                 ParticleManager.setAmbienceOn(bool);
@@ -440,6 +442,9 @@ public class OptionsMaster {
                 break;
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
+                break;
+            case SPECIAL_EFFECTS:
+                ParticleEffectX.setGlobalAlpha(Float.valueOf(value) / 100);
                 break;
             case FONT_SIZE:
                 GdxMaster.setUserFontScale(Float.valueOf(value) / 100);

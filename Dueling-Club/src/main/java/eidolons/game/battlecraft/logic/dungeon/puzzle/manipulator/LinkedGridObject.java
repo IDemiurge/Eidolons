@@ -148,7 +148,7 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.BIG_CLAW.blending = GenericEnums.BLENDING.INVERT_SCREEN;
         CUSTOM_OBJECT.BIG_CLAW.backAndForth = true;
         CUSTOM_OBJECT.SMALL_CLAW.backAndForth = true;
-        CUSTOM_OBJECT.SMALL_CLAW.blending = GenericEnums.BLENDING.INVERT_SCREEN;
+//        CUSTOM_OBJECT.SMALL_CLAW.blending = GenericEnums.BLENDING.INVERT_SCREEN;
 
         CUSTOM_OBJECT.BLACK_CHAINS.blending = GenericEnums.BLENDING.INVERT_SCREEN;
         CUSTOM_OBJECT.BLACK_CHAINS.spriteColor = new Color(0.6f, 1, 0.4f, 0.4f);

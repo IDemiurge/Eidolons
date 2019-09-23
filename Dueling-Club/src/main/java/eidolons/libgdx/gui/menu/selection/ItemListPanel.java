@@ -58,18 +58,18 @@ public abstract class ItemListPanel extends TablePanel {
 
         if (getNinePatch() != null) {
             TextureRegion generated = new TextureRegion(
-             TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
-              getNinePatchBackground(),
-             getDefaultWidth()
-              , getDefaultHeight()));
+                    TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
+                            getNinePatchBackground(),
+                            getDefaultWidth()
+                            , getDefaultHeight()));
             setSize(generated.getRegionWidth(), generated.getRegionHeight());
             setFixedSize(true);
             addActor(new Image(generated));
         } else {
             pack(); //hurray!..
             setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
-            setSize( getDefaultWidth()
-             , getDefaultHeight());
+            setSize(getDefaultWidth()
+                    , getDefaultHeight());
             pack();
         }
 
@@ -78,6 +78,7 @@ public abstract class ItemListPanel extends TablePanel {
     protected BACKGROUND_NINE_PATCH getNinePatchBackground() {
         return BACKGROUND_NINE_PATCH.SEMI_THICK;
     }
+
     protected NINE_PATCH getNinePatch() {
         return NINE_PATCH.FRAME;
     }
@@ -105,11 +106,11 @@ public abstract class ItemListPanel extends TablePanel {
 
         if (button == null || sub == null) {
             button = new SmartButton((sub.name),
-             StyleHolder.getTextButtonStyle(getButtonStyle(),
-              getFontStyle(), getFontColor(), getFontSize())) {
+                    StyleHolder.getTextButtonStyle(getButtonStyle(),
+                            getFontStyle(), getFontColor(), getFontSize())) {
                 @Override
                 protected BUTTON_SOUND_MAP getSoundMap() {
-                  return getButtonSoundMap();
+                    return getButtonSoundMap();
                 }
 
                 @Override
@@ -118,7 +119,7 @@ public abstract class ItemListPanel extends TablePanel {
                 }
             };
             button.setSize(STD_BUTTON.MENU.getTexture().getMinWidth(),
-             STD_BUTTON.MENU.getTexture().getMinHeight());
+                    STD_BUTTON.MENU.getTexture().getMinHeight());
             getCache().put(sub, button);
             TextButton finalButton = button;
             button.addListener(new ClickListener() {
@@ -133,7 +134,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected BUTTON_SOUND_MAP getButtonSoundMap() {
-        return    BUTTON_SOUND_MAP.SELECTION;
+        return BUTTON_SOUND_MAP.SELECTION;
     }
 
     protected Color getFontColor() {
@@ -161,8 +162,9 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     public int getIndex() {
-        return  getItems().indexOf(currentItem);
+        return getItems().indexOf(currentItem);
     }
+
     public void selectWithOffset(int offset) {
         int index = getIndex();
         index += offset;
@@ -177,7 +179,7 @@ public abstract class ItemListPanel extends TablePanel {
         List<SelectableItemData> available = new LinkedList<>(items);
         available.removeIf(btn -> isBlocked(btn));
         SelectableItemData item = new RandomWizard<SelectableItemData>().
-         getRandomListItem(available);
+                getRandomListItem(available);
         currentItem = item;
         if (ListMaster.isNotEmpty(buttons))
             clicked(items.indexOf(item));
@@ -189,7 +191,11 @@ public abstract class ItemListPanel extends TablePanel {
 
     protected void clicked(int index) {
         index = Math.min(buttons.size() - 1, index);
-        clicked(buttons.get(index), getItems().get(index));
+        try {
+            clicked(buttons.get(index), getItems().get(index));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     protected boolean clicked(TextButton textButton, SelectableItemData sub) {
@@ -225,12 +231,12 @@ public abstract class ItemListPanel extends TablePanel {
         if (displayedSubitemPanel == null) {
 
             SelectionSubItemsPanel subItemsPanel = new SelectionSubItemsPanel(
-             item.getSubItems(), item, this);
+                    item.getSubItems(), item, this);
             displayedSubitemPanel = RollDecorator.decorate(subItemsPanel, FACING_DIRECTION.EAST, false);
             subCache.put(item, displayedSubitemPanel);
             addActor(displayedSubitemPanel);
             displayedSubitemPanel.setPosition(getX() + (getWidth() - subItemsPanel.getWidth()) / 2,
-             cache.get(item).getY() - subItemsPanel.getHeight() / 2);
+                    cache.get(item).getY() - subItemsPanel.getHeight() / 2);
             displayedSubitemPanel.setZIndex(0);
         }
         displayedSubitemPanel.toggle(true);
@@ -243,7 +249,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected void addButtons() {
-        if (getBackground()!=null )
+        if (getBackground() != null)
             clear(); //some funny issue with rows without clear()...
         else
             buttons.forEach(button -> button.remove());
@@ -325,8 +331,6 @@ public abstract class ItemListPanel extends TablePanel {
         infoPanel.subItemClicked(item, sub);
         subCache.get(item).toggle(false);
     }
-
-
 
 
     public static class SelectableItemData {

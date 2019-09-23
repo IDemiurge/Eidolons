@@ -62,16 +62,18 @@ public class ForceAnim extends Weapon3dAnim {
     }
 
     private String getSpritePath() {
-        if (getActive().getOwnerUnit().isMine()) {
+
+        if (type == GenericEnums.DAMAGE_TYPE.SHADOW || type == GenericEnums.DAMAGE_TYPE.DEATH) {
             if (!CoreEngine.isSuperLite())
-            if (type== GenericEnums.DAMAGE_TYPE.SHADOW) {
                 return "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt";
+            else {
+                return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
             }
-//            if (type== GenericEnums.DAMAGE_TYPE.CHAOS) {
-            return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
-//            }
         }
-        if (type== GenericEnums.DAMAGE_TYPE.LIGHTNING) {
+        if (type == GenericEnums.DAMAGE_TYPE.CHAOS) {
+            return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
+        }
+        if (type == GenericEnums.DAMAGE_TYPE.LIGHTNING) {
             return Sprites.GATE_LIGHTNING;
         }
         return Sprites.BIG_CLAW_ATTACK;
@@ -120,7 +122,7 @@ public class ForceAnim extends Weapon3dAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (type== GenericEnums.DAMAGE_TYPE.LIGHTNING){
+        if (type == GenericEnums.DAMAGE_TYPE.LIGHTNING) {
             sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
         super.draw(batch, parentAlpha);
@@ -150,7 +152,7 @@ public class ForceAnim extends Weapon3dAnim {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        sprite.setFps(1/(getDuration()/sprite.getRegions().size));
+        sprite.setFps(1 / (getDuration() / sprite.getRegions().size));
 
         try {
             String path = PathFinder.getVfxPath() + getVfxPath();
@@ -216,6 +218,7 @@ public class ForceAnim extends Weapon3dAnim {
         if (getSpeedX() != null) {
             setSpeedY(getSpeedX() / 2);
         }
+        duration = 2f;
     }
 
     @Override

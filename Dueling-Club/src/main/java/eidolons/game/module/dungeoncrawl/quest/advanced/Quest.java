@@ -40,4 +40,6 @@ public interface Quest {
     void setTown(Town town);
 
     Coordinates getCoordinate();
+
+    void increment();
 }

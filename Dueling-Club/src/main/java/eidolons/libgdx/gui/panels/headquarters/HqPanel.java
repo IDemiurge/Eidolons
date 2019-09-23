@@ -99,12 +99,12 @@ public class HqPanel extends TablePanel implements Blocking {
                 return; //really?
             }
         if (!CoreEngine.isLiteLaunch()) {
-            bgSprite = SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT, false);
+            bgSprite = SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT, false, false);
             if (bgSprite != null) {
-            bgSprite.setAlpha(0.4f);
-            bgSprite.setFrameDuration(0.1f);
-            bgSprite.setOffsetX(GdxMaster.getWidth() / 2);
-            bgSprite.setOffsetY(GdxMaster.getHeight() / 2);
+                bgSprite.setAlpha(0.4f);
+                bgSprite.setFrameDuration(0.1f);
+                bgSprite.setOffsetX(GdxMaster.getWidth() / 2);
+                bgSprite.setOffsetY(GdxMaster.getHeight() / 2);
             }
         }
         initialized = true;
@@ -166,8 +166,8 @@ public class HqPanel extends TablePanel implements Blocking {
         if (Eidolons.getGame().isBossFight()) {
             return;
         }
-        addActor(header );
-        header.setPosition(130, GdxMaster.getTopY(header)-75);
+        addActor(header);
+        header.setPosition(130, GdxMaster.getTopY(header) - 75);
 //        header.setPosition(110, 110); // wtff TODO igg demo fix
         header.setVisible(true);
         super.act(delta);
@@ -297,6 +297,14 @@ public class HqPanel extends TablePanel implements Blocking {
         clear();
         addElements();
 
+        if (userObject instanceof List) {
+            ((List) userObject).removeIf((h) -> {
+                if (h instanceof HqHeroDataSource) {
+                    return !((HqHeroDataSource) h).getName().equalsIgnoreCase(Eidolons.getMainHero().getName());
+                }
+                return false;
+            });
+        }
         if (userObject instanceof List) {
             heroes = (List<HqHeroDataSource>) userObject;
             userObject = ((List) userObject).get(0);

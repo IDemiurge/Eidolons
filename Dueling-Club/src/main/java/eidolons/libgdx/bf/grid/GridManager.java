@@ -253,6 +253,17 @@ public class GridManager {
         Vector2 finalAt = at;
         SpriteX finalCommentBgSprite = commentBgSprite;
         SpriteX finalCommentTextBgSprite = commentTextBgSprite;
+        DIRECTION textPlacement = textTop ? DIRECTION.DOWN
+                : (c.dst(Eidolons.getMainHero().getCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
+        if (finalAt != null) {
+            Vector2 v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
+            if (v.x < finalAt.x) {
+                textPlacement = DIRECTION.LEFT;
+            } else {
+                textPlacement = DIRECTION.RIGHT;
+            }
+        }
+        DIRECTION finalTextPlacement = textPlacement;
         GroupX commentGroup = new GroupX() {
             @Override
             public Actor hit(float x, float y, boolean touchable) {
@@ -269,16 +280,6 @@ public class GridManager {
 
             @Override
             public void act(float delta) {
-                DIRECTION textPlacement = textTop ? DIRECTION.DOWN
-                        : (c.dst(Eidolons.getMainHero().getCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
-                if (finalAt != null) {
-                    Vector2 v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
-                    if (v.x < finalAt.x) {
-                        textPlacement = DIRECTION.LEFT;
-                    } else {
-                        textPlacement = DIRECTION.RIGHT;
-                    }
-                }
                 if (textTop) {
                     finalCommentTextBgSprite.setScale(0.85f);
                     finalCommentTextBgSprite.setOrigin(finalCommentBgSprite.getWidth() / 4, finalCommentBgSprite.getHeight() / 4);
@@ -287,9 +288,9 @@ public class GridManager {
                 } else {
                     finalCommentTextBgSprite.setOrigin(finalCommentBgSprite.getWidth() / 2, finalCommentBgSprite.getHeight() / 2);
                     finalCommentTextBgSprite.setRotation(90);
-                    if (textPlacement == DIRECTION.RIGHT) {
+                    if (finalTextPlacement == DIRECTION.RIGHT) {
                         finalCommentTextBgSprite.setPosition(finalCommentBgSprite.getWidth() / 2.5f, -100 - finalCommentBgSprite.getHeight() / 7);
-                    } else if (textPlacement == DIRECTION.LEFT) {
+                    } else if (finalTextPlacement == DIRECTION.LEFT) {
 
                         finalCommentTextBgSprite.setPosition(-finalCommentBgSprite.getWidth() / 2.5f, -100 - finalCommentBgSprite.getHeight() / 7);
                     }
@@ -303,22 +304,23 @@ public class GridManager {
                 float x = finalCommentTextBgSprite.getX();
                 float y = finalCommentTextBgSprite.getY();
 
-                switch (textPlacement) {
+                switch (finalTextPlacement) {
                     case LEFT:
                         x = x - bgHeight / 4 + w * 0.8f / 2 - 30;
                         y = y + (h - y) / 2 + h * 0.57f + 28;
                         break;
                     case RIGHT:
-                        x = x - bgWidth / 2 + bgHeight - w - 20;
+                        x = x - bgWidth / 2 + bgHeight - w*0.7f - 45;
+//                        x = x - bgWidth / 2 + bgHeight - w - 20;
 //                        y = y + (h - y) / 2 + h*0.67f + 4;
-                        y = y + (h - y) / 2 + h * 0.57f + 28;
+                        y = y + (h - y) / 2 + h * 0.47f + 38;
                         break;
                     case DOWN:
                         x = x - w / 2 - bgWidth + bgHeight / 2 + 180;
                         if (seq) {
                         y = y + (h - y) / 2 - 5 - h / 6.5f;
                         } else {
-                            y = y + (h - y) / 2 - 11 - h /4.2f;
+                            y = y + (h - y) / 2 - 11 - h /4.7f;
                         }
                         break;
 
@@ -361,6 +363,14 @@ public class GridManager {
         if (at != null) {
             commentGroup.setX(at.x);
             commentGroup.setY(at.y);
+            switch (finalTextPlacement) {
+                case RIGHT:
+                    commentGroup.setX(commentGroup.getX() - 150);
+                    break;
+                case LEFT:
+                    commentGroup.setX(commentGroup.getX() + 150);
+                    break;
+            }
 //            commentGroup.setX(commentGroup.getX()+at.x); TODO is it better
 //            commentGroup.setY(commentGroup.getY()+at.y);
         } else

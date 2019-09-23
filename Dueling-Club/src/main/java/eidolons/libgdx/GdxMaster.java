@@ -52,11 +52,16 @@ public class GdxMaster {
     private static boolean cursorSet;
     private static boolean stackRunnables;
     private static Runnable stackRunnable;
+    private static CURSOR cursor;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
-        while (actor != null) {
-            list.add(actor.getParent());
+        if (actor == null) {
+            return list;
+        }
+        actor = actor.getParent();
+        while (actor instanceof Group) {
+            list.add((Group) actor);
             actor = actor.getParent();
         }
         return list;
@@ -443,6 +448,7 @@ public class GdxMaster {
         if (CoreEngine.isSuperLite()) {
             return;
         }
+
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         Gdx.graphics.setCursor(cursor);
@@ -450,14 +456,17 @@ public class GdxMaster {
     }
 
     public static void setDefaultCursor() {
-
-        if (CoreEngine.isIDE()) {
-            if (cursorSet)
-                return;
-            cursorSet = true;
+        if (cursor== CURSOR.DEFAULT) {
+            return;
         }
+//        if (CoreEngine.isIDE()) {
+//            if (cursorSet)
+//                return;
+//            cursorSet = true;
+//        }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+        cursor = CURSOR.DEFAULT;
     }
 
     public static void setLoadingCursor() {
@@ -466,6 +475,7 @@ public class GdxMaster {
         }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getLoadingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+        cursor = CURSOR.LOADING;
     }
 
     public static void setEmptyCursor() {
@@ -474,11 +484,13 @@ public class GdxMaster {
         }
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getEmptyCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+        cursor = CURSOR.EMPTY;
     }
 
     public static void setTargetingCursor() {
         Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
         setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+        cursor = CURSOR.TARGETING;
     }
 
     public static boolean isVisibleEffectively(Group a) {
@@ -550,7 +562,7 @@ public class GdxMaster {
         TARGETING,
         LOADING,
         WAITING,
-        NO,
+        NO, EMPTY,
 
     }
     //    protected static void setAttackTargetingCursor() {

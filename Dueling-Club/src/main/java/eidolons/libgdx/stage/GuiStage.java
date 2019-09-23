@@ -104,7 +104,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected DragManager dragManager;
     protected Entity draggedEntity;
 
-    protected FullLogPanel logPanel;
+    protected FullLogPanel fullLogPanel;
     protected QuestProgressPanel questProgressPanel;
     protected QuestJournal journal;
     protected TipMessageWindow tipMessageWindow;
@@ -117,8 +117,10 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected ArrayList<Actor> dialogueActors;
     protected DialogueContainer dialogueContainer;
     protected Map<GameDialogue, DialogueContainer> dialogueCache = new HashMap<>();
-    LordPanel lordPanel;
-    PlaceNavigationPanel navigationPanel;
+    protected LordPanel lordPanel;
+    protected  PlaceNavigationPanel navigationPanel;
+    protected HideButton hideQuests;
+    protected ExtendableLogPanel logPanel;
 
 
     public GuiStage(Viewport viewport, Batch batch) {
@@ -168,29 +170,26 @@ public class GuiStage extends StageX implements StageWithClosable {
         tipMessageWindow = new TipMessageWindow(null);
         addActor(dialogueContainer = new DialogueContainer());
         addActor(questProgressPanel = new QuestProgressPanel());
-        HideButton hideQuests = new HideButton(questProgressPanel);
+          hideQuests = new HideButton(questProgressPanel);
         addActor(hideQuests);
 
         questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
                 GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
 
-        hideQuests.setPosition(questProgressPanel.getX()
-                        + GdxMaster.adjustSizeBySquareRoot(100),
-                questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
 
 
         ExtendableLogPanel log = new ExtendableLogPanel(true);
-        Group decorated = log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
-        addActor(decorated);
-//        decorated.setOnClose(()->{
+          logPanel = log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
+        addActor(logPanel);
+//        logPanel.setOnClose(()->{
 //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
 //        });
-//        decorated.setOnOpen(()->{
+//        logPanel.setOnOpen(()->{
 //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_IN);
 //        });
-        decorated.
-                setPosition(GdxMaster.getWidth() - decorated.getWidth(), GdxMaster.getTopY(decorated));
-        addActor(logPanel = new FullLogPanel(100, 200));
+        logPanel.
+                setPosition(GdxMaster.getWidth() - logPanel.getWidth(), GdxMaster.getTopY(logPanel));
+        addActor(fullLogPanel = new FullLogPanel(100, 200));
 
         radial = new RadialMenu();
         addActor(radial);
@@ -769,7 +768,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             return;
         tooltip.getParent().setPosition(
                 GdxMaster.centerWidthScreen(tooltip)-20
-//                ((GdxMaster.getWidth() - logPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2
+//                ((GdxMaster.getWidth() - fullLogPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2
                         , action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
     }
 

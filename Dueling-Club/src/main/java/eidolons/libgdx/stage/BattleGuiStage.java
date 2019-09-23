@@ -28,7 +28,6 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import eidolons.libgdx.particles.ParticlesSprite;
 import eidolons.libgdx.particles.ParticlesSprites;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -99,7 +98,7 @@ public class BattleGuiStage extends GuiStage {
         soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
-//        getBottomPanel().setX((GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
+//        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
     }
 
@@ -249,6 +248,10 @@ public class BattleGuiStage extends GuiStage {
     public void act(float delta) {
         super.act(delta);
         update();
+        questProgressPanel.setY(logPanel.getY() - questProgressPanel.getPrefHeight() - 30);
+        hideQuests.setPosition(questProgressPanel.getX()
+                        + GdxMaster.adjustSizeBySquareRoot(100),
+                questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
     }
 
     public AtbPanel getAtbPanel() {

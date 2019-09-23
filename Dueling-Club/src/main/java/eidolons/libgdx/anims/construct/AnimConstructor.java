@@ -344,8 +344,8 @@ public class AnimConstructor {
                 }
                 if (part == ANIM_PART.MISSILE)
                 {
-                    if (EidolonsGame.DUEL)
-                        return new ForceAnim(active, ANIM_PART.MISSILE);
+//                    if (EidolonsGame.DUEL && active.getOwnerUnit())
+//                        return new ForceAnim(active, ANIM_PART.MISSILE);
                     return new Weapon3dAnim(active);
                 }
 

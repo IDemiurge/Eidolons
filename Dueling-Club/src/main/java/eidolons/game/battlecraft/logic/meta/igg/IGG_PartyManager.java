@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.libgdx.launch.MainLauncher;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -22,6 +23,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
@@ -33,7 +35,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
     private static final String LORD_TYPE = "Anphis Ar Keserim";
     private HeroChain chain;
     private ChainHero avatar;
-    private int deaths=0;
+    private int deaths = 0;
 
     public HeroChain getHeroChain() {
         return chain;
@@ -52,7 +54,10 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 //    }
 
     private ObjType getPartyType() {
-        return DataManager.getType("Chained Solo", DC_TYPE.PARTY);
+        if (EidolonsGame.BRIDGE)
+            return DataManager.getType("Chained Solo", DC_TYPE.PARTY);
+
+        return DataManager.getType("Chained Prev", DC_TYPE.PARTY);
     }
 
     @Override
@@ -79,6 +84,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
             Eidolons.setParty(party);
             party.toBase();
         }
+        heroSelected(party.getMember(selectedHero));
         chain = new HeroChain(party, //getMetaGame().getActIndex()+
                 1);
         getGame().getState().addObject(party);
@@ -118,32 +124,25 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
         selectedHero = newHero;
         ObjType type = DataManager.getType(selectedHero, DC_TYPE.CHARS);
         Coordinates c = getRespawnCoordinates(type);
-        Unit hero = (Unit) getGame().createUnit(type, c.x, c.y, getGame().getPlayer(true));// HeroCreator.initHero(selectedHero);
-        party.getMembers().clear();
-        party.setLeader(hero);
-//        hero.toBase();
-//        hero.afterEffects();
+//        Unit hero = (Unit) getGame().createUnit(type, c.x, c.y, getGame().getPlayer(true));// HeroCreator.initHero(selectedHero);
+//        party.getMembers().clear();
+        Unit hero = null;
+        for (Unit member : party.getMembers()) {
+            if (member.getName().equalsIgnoreCase(newHero)) {
+                hero = member;
+                hero.setCoordinates(c);
+//                hero.fullReset(getGame());
+                break;
+            }
+        }
+        heroSelected(hero);
 
-        hero.setMainHero(true);
-        party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
-        Eidolons.setSelectedMainHero(hero.getName());
-        Eidolons.setMainHero(hero);
-
-//        mainHeroSelected(party, hero );
-//        hero.setOriginalOwner(getGame().getPlayer(true));
-//        hero.setCoordinates(getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates()
-//        , true);
-
-        getGame().getManager().reset();
         //TODO what matters is to reset ObjArray
 //        hero.getVisionController().reset();
 //        hero.getGame().getVisionMaster().refresh();
 
 //        hero.getVisionController().logFor(hero);
-        getGame().getBattleFieldManager().resetWallMap();
 //        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
-        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, hero);
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
 
 
         main.system.auxiliary.log.LogMaster.log(1, "respawned as " +
@@ -151,8 +150,24 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
                 "; new hero: " + Eidolons.getMainHero().getInfo());
     }
 
+    @Override
+    public void heroSelected(Unit hero) {
+        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
+        GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);
+        party.setLeader(hero);
+        hero.setMainHero(true);
+        hero.setPale(false);
+        party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
+        Eidolons.setSelectedMainHero(hero.getName());
+        Eidolons.setMainHero(hero);
+        getGame().getManager().reset();
+        getGame().getBattleFieldManager().resetWallMap();
+        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, hero);
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
+    }
+
     private Coordinates getRespawnCoordinates(ObjType type) {
-        if (EidolonsGame.BRIDGE){
+        if (EidolonsGame.BRIDGE) {
             return getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates();
 //            return SoulforceMaster.getLastRespPoint();
         }
@@ -170,10 +185,21 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     @Override
     protected String chooseHero(List<String> members) {
+        if (EidolonsGame.PUZZLES) {
+            return TutorialManager.NEXT_HERO;
+        }
+            if (EidolonsGame.FOOTAGE) {
+            if (MainLauncher.HERO_INDEX != null) {
+                return members.get(MainLauncher.HERO_INDEX);
+            }
+            return new RandomWizard<String>().getRandomListItem(members);
+        }
         if (!EidolonsGame.TUTORIAL_MISSION) {
             Collections.shuffle(members);
         }
-        if (CoreEngine.isLiteLaunch() || getMetaGame().getMissionIndex() == 0) {
+        if (EidolonsGame.BRIDGE)
+//        if (CoreEngine.isLiteLaunch() || getMetaGame().getMissionIndex() == 0)
+        {
             return TutorialManager.NEXT_HERO;
         }
 //        if (getMetaGame().getMissionIndex()>0) {
@@ -186,7 +212,10 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     public String chooseNextHero() {
 //        if (!CoreEngine.isIDE())
-        if ( EidolonsGame.TUTORIAL_PATH || (EidolonsGame.TUTORIAL_MISSION&& deaths ==0)) {
+        if (EidolonsGame.FOOTAGE) {
+            return party.getRandomMember().getName();
+        }
+        if (EidolonsGame.TUTORIAL_PATH || (EidolonsGame.TUTORIAL_MISSION && deaths == 0)) {
             return TutorialManager.nextHero();
         }
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,

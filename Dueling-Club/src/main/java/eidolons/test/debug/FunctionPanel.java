@@ -14,7 +14,7 @@ public class FunctionPanel extends G_ButtonPanel {
     private DebugMaster master;
 
     // two button panels!
-    // logPanel
+    // fullLogPanel
     // full info panel
     public FunctionPanel(DebugMaster master) {
         super(getFunctions());

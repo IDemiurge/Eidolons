@@ -30,6 +30,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
+import eidolons.libgdx.video.VideoMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
@@ -352,6 +353,7 @@ public class GlobalController implements Controller {
 
     private boolean escape() {
 //        if (!CoreEngine.isIDE())
+
             if (Cinematics.ON) {
                 if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
                     doScript("skip=:;");

@@ -198,7 +198,9 @@ public class DeathMaster extends Master {
         if (killed instanceof Structure) {
             game.getMaster().clearCache(killed.getCoordinates());
         } else
-        if (killer.isPlayerCharacter()) {
+        if (!killed.isMine())
+        if (killer.isPlayerCharacter())
+        {
             SoulMaster.slain(killed);
         }
     }

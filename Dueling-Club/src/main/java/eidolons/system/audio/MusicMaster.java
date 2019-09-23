@@ -536,17 +536,19 @@ public class MusicMaster {
     private boolean checkMakePause() {
         int chance = 0;
         int length = 0;
+        if (loopingTrack)
+            return false;
         if (scope == MUSIC_SCOPE.BATTLE) {
             chance = 10;
-            length = 100 * 1000;
+            length =  10000;
         }
         if (scope == MUSIC_SCOPE.MENU) {
             chance = 100;
-            length = 30 * 1000;
+            length =   10000;
         }
         if (scope == MUSIC_SCOPE.MAP) {
             chance = 6;
-            length = 15 * 1000;
+            length = 15000;
         }
         if (RandomWizard.chance(chance)) {
             PAUSE = length;
@@ -770,6 +772,9 @@ public class MusicMaster {
 
     public Music getMusic(String path, boolean preloaded) {
         path = path.toLowerCase();
+        if (!path.contains(".mp3")) {
+            path +=".mp3";
+        }
         Music playedMusic = musicCache.get(path);
         if (playedMusic == null) {
             if (preloaded) {
@@ -807,6 +812,11 @@ public class MusicMaster {
         if (scope != this.scope) {
             this.scope = scope;
             main.system.auxiliary.log.LogMaster.dev("Music scope: " +scope);
+            switch (scope) {
+                case BATTLE:
+                    tracksPlayedInScope=5;
+                    break;
+            }
 //            if (interruptOnSet)
 //                musicReset();
         }

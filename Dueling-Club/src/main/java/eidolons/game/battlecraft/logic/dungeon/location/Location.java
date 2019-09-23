@@ -124,7 +124,9 @@ public class Location extends DungeonWrapper {
         String enterData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[0];
         String name = VariableManager.removeVarPart(enterData);
         Coordinates c = Coordinates.get(true, VariableManager.getVarIfExists(enterData));
-
+        if (name.contains("=")) {
+            name = name.split("=")[1];
+        }
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
                 if (e.getName().equals(name)) {
@@ -138,7 +140,7 @@ public class Location extends DungeonWrapper {
                 type = getEntranceType();
             }
             setMainEntrance(new Entrance(c.x, c.y, type,
-             getDungeon(), getDungeon()));
+                    getDungeon(), getDungeon()));
         }
         if (entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR).length < 2) {
             return;
@@ -146,6 +148,9 @@ public class Location extends DungeonWrapper {
         String exitData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[1];
         name = VariableManager.removeVarPart(exitData);
         c = Coordinates.get(true, VariableManager.getVarIfExists(exitData));
+        if (name.contains("=")) {
+            name = name.split("=")[1];
+        }
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
                 if (e.getName().equals(name)) {
@@ -160,7 +165,7 @@ public class Location extends DungeonWrapper {
                 type = getExitType();
             }
             setMainExit(new Entrance(c.x, c.y, type,
-             getDungeon(), getDungeon()));
+                    getDungeon(), getDungeon()));
         }
         if (CoreEngine.isReverseExit()) {
             Entrance e = getMainEntrance();
@@ -172,12 +177,12 @@ public class Location extends DungeonWrapper {
 
     private ObjType getEntranceType() {
         return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
-         getDungeonLevel().getEntranceType(), DC_TYPE.BF_OBJ);
+                getDungeonLevel().getEntranceType(), DC_TYPE.BF_OBJ);
     }
 
     private ObjType getExitType() {
         return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
-         getDungeonLevel().getExitType(), DC_TYPE.BF_OBJ);
+                getDungeonLevel().getExitType(), DC_TYPE.BF_OBJ);
     }
 
     @Override

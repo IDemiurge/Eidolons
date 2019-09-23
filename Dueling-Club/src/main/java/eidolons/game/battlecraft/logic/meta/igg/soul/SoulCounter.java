@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.igg.soul;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.google.gwt.user.client.ui.CustomButton;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -12,6 +13,8 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
@@ -40,6 +43,9 @@ public class SoulCounter extends GroupX {
             }
             DC_SoundMaster.playCueSound(GenericEnums.SOUND_CUE.ghost);
             Eidolons.getMainHero().addCounter(UnitEnums.COUNTER.Undying.getName(), souls + "");
+            if (EidolonsGame.BRIDGE) {
+            EidolonLord.lord.soulforceGained(souls*10);
+            }
             souls = 0;
             counter.setText("" + souls);
             SpeechExecutor.run("script=explosions(true)");
@@ -48,6 +54,8 @@ public class SoulCounter extends GroupX {
             souls++;
             counter.setText("" + souls);
         });
+
+        counter.addListener(new DynamicTooltip(()-> "Transform Souls into Undying counters").getController());
         counter.setText("3");
     }
 
@@ -55,7 +63,7 @@ public class SoulCounter extends GroupX {
     public void act(float delta) {
         setSize(btn.getWidth(), btn.getHeight());
         GdxMaster.center(counter);
-        counter.setX(counter.getX() - 5);
+        counter.setX((btn.getWidth()-counter.getPrefWidth())/2);
         super.act(delta);
     }
 }

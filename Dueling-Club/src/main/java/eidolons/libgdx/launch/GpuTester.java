@@ -30,7 +30,7 @@ public class GpuTester {
 
     }
     public static void test() {
-        if (CoreEngine.isWindows()){
+        if (!CoreEngine.isWindows()){
             return;
         }
         new Thread(() -> {

@@ -55,7 +55,7 @@ public class FloatingText extends GroupX {
     private float offsetY;
     private Predicate stayFullCondition;
     private FloatingTextMaster.TEXT_CASES aCase;
-    private float maxWidth=700;
+    private float maxWidth = 700;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -179,7 +179,9 @@ public class FloatingText extends GroupX {
             label =
                     new LabelX(getText(), getFontStyle());
             label.setMaxWidth(getMaxWidth());
-            label.setZigZagLines(true);
+            if (label.getText().length > 20) {
+                label.setZigZagLines(true);
+            }
             label.setText(getText());
             label.setColor(c);
             label.setPosition(0, DEFAULT_TEXT_Y);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
+import eidolons.libgdx.video.VideoMaster;
 
 /**
  * Created by JustMe on 5/24/2018.
@@ -24,7 +25,14 @@ public class GlobalInputController implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (Eidolons.getScope() == SCOPE.MENU) {
+            if (VideoMaster.player.isPlaying()) {
+                VideoMaster.player.stop();
+                return true;
+            }
+        }
         return false;
+
     }
 
     @Override

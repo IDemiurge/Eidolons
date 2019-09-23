@@ -26,7 +26,6 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObje
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -87,6 +86,7 @@ import static main.system.GuiEventType.*;
 
 public class GridPanel extends Group {
 
+    private static boolean gridEmitters;
     private final int square;
     protected GridCellContainer[][] cells;
     private int cols;
@@ -130,6 +130,14 @@ public class GridPanel extends Group {
         this.cols = cols;
         this.rows = rows;
         this.square = rows * cols;
+    }
+
+    public static boolean isGridEmitters() {
+        return gridEmitters;
+    }
+
+    public static void setGridEmitters(boolean gridEmitters) {
+        GridPanel.gridEmitters = gridEmitters;
     }
 
     public void reactivateModule() {
@@ -234,10 +242,10 @@ public class GridPanel extends Group {
         if (EidolonsGame.BRIDGE) {
             return true;
         }
-        if (CoreEngine.isLiteLaunch()) {
+        if (EidolonsGame.BOSS_FIGHT) {
             return false;
         }
-        if (EidolonsGame.BOSS_FIGHT) {
+        if (CoreEngine.isLiteLaunch()) {
             return false;
         }
 
@@ -272,7 +280,8 @@ public class GridPanel extends Group {
             animMaster.setVisible(false);
 
             super.draw(batch, 1);
-            if (isDrawEmittersOnTop())
+            if (isDrawEmitters())
+                if (isDrawEmittersOnTop())
                 drawEmitters(batch);
             drawComments(batch);
             animMaster.setVisible(true);
@@ -282,7 +291,16 @@ public class GridPanel extends Group {
                     paused ? GrayscaleShader.getGrayscaleShader() : null, true);
     }
 
-    public static final  boolean isDrawEmittersOnTop() {
+    public static final boolean isDrawEmitters() {
+        return isGridEmitters();
+    }
+    public static final boolean isDrawEmittersOnTop() {
+        if (EidolonsGame.FOOTAGE) {
+            return false;
+        }
+        if (EidolonsGame.BOSS_FIGHT) {
+            return false;
+        }
         return true;
     }
 
@@ -294,8 +312,8 @@ public class GridPanel extends Group {
     }
 
     private void drawEmitters(Batch batch) {
-        for (int i = 0; i <emitterGroups.size() ; i++) {
-            emitterGroups.get(i). draw(batch, 1f, true);
+        for (int i = 0; i < emitterGroups.size(); i++) {
+            emitterGroups.get(i).draw(batch, 1f, true);
         }
     }
 
@@ -491,7 +509,7 @@ public class GridPanel extends Group {
             }
             BattleFieldObject unit = (BattleFieldObject) p.get();
             UnitView view = getUnitView(unit);
-            main.system.auxiliary.log.LogMaster.dev("ACTOR_SPEAKS: " +unit);
+            main.system.auxiliary.log.LogMaster.dev("ACTOR_SPEAKS: " + unit);
 
             unit.getGame().getManager().setHighlightedObj(unit);
 
@@ -499,17 +517,17 @@ public class GridPanel extends Group {
 //                if (value==view) {
 
 //                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
-                    view.highlight();
-                    GraphicData data= new GraphicData("alpha::0.8f");
-                    gridViewAnimator.animate(view ,  GridViewAnimator.VIEW_ANIM.screen , data);
-                    WaitMaster.doAfterWait(4000, ()-> {
+            view.highlight();
+            GraphicData data = new GraphicData("alpha::0.8f");
+            gridViewAnimator.animate(view, GridViewAnimator.VIEW_ANIM.screen, data);
+            WaitMaster.doAfterWait(4000, () -> {
 //                        if (!DialogueManager.isRunning())
-                        {
-                            main.system.auxiliary.log.LogMaster.dev("hl off: " +unit);
-                            view.highlightOff();
-                            unit.getGame().getManager().setHighlightedObj(null);
-                        }
-                    });
+                {
+                    main.system.auxiliary.log.LogMaster.dev("hl off: " + unit);
+                    view.highlightOff();
+                    unit.getGame().getManager().setHighlightedObj(null);
+                }
+            });
 //                } else
 //                {
 //                    value.highlightOff();
@@ -525,6 +543,7 @@ public class GridPanel extends Group {
             GridObject gridObj = findGridObj(key, c);
             if (gridObj == null) {
                 main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key + c);
+                return;
             }
             gridObj.fadeOut(true);
             customOverlayingObjectsUnder.remove(gridObj);
@@ -679,10 +698,12 @@ public class GridPanel extends Group {
                     b = cells[obj1.getX()][rows - 1 - obj1.getY()];
                 }
 
-                if (b instanceof GridUnitView) {
+                if (((Group) b).getUserObject() instanceof Unit) {
                     final GridUnitView gridView = (GridUnitView) b;
                     final UnitView unitView = gridView.getInitiativeQueueUnitView();
+                    if (unitView != null) {
                     map.put(unitView, () -> p.getRight().run(obj1));
+                    }
                 }
 
                 map.put(b, () -> p.getRight().run(obj1));
@@ -755,7 +776,7 @@ public class GridPanel extends Group {
             getUnitView((BattleFieldObject) p.get()).setVisible(false);
             getUnitView((BattleFieldObject) p.get()).remove();
         });
-            GuiEventManager.bind(UNIT_VISIBLE_OFF, p -> {
+        GuiEventManager.bind(UNIT_VISIBLE_OFF, p -> {
             if (p.get() instanceof Collection) {
                 for (Object sub : ((Collection) p.get())) {
                     setVisible((BattleFieldObject) sub, false);
@@ -870,14 +891,20 @@ public class GridPanel extends Group {
 
                     LastSeenMaster.resetLastSeen((GridUnitView) view,
                             obj, !visible);
-                    if (obj.getLastSeenOutline() == null)
+                    if (obj.getLastSeenOutline() == null) {
                         (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
                                 () -> null);
-                    else
+                    } else {
                         (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
-                                () -> (obj.getLastSeenOutline().getImagePath())
-                        );
-
+                                () -> {
+                                    try {
+                                        return obj.getLastSeenOutline().getImagePath();
+                                    } catch (Exception e) {
+                                        main.system.ExceptionMaster.printStackTrace(e);
+                                    }
+                                    return null;
+                                });
+                    }
                 }
         }
     }
@@ -920,6 +947,9 @@ public class GridPanel extends Group {
             }
             for (BattleFieldObject object : map.get(coordinates)) {
                 if (!object.isOverlaying()) {
+                    if (viewMap.get(object) != null) {
+                        return;
+                    }
                     final BaseView baseView = createUnitView(object);
                     views.add(baseView);
                 } else {
@@ -1073,6 +1103,9 @@ public class GridPanel extends Group {
     }
 
     private void addUnitView(BattleFieldObject heroObj) {
+        if (viewMap.get(heroObj) != null) {
+            return;
+        }
         BaseView uv = createUnitView(heroObj);
         unitMoved(heroObj);
         if (!isVisibleByDefault(heroObj))
@@ -1217,12 +1250,13 @@ public class GridPanel extends Group {
 
 
         shadowMap.setZIndex(Integer.MAX_VALUE);
-        for (GridCellContainer cell : topCells) {
-            cell.setZIndex(Integer.MAX_VALUE);
-        }
+
         customOverlayingObjects.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });
+        for (GridCellContainer cell : topCells) {
+            cell.setZIndex(Integer.MAX_VALUE);
+        }
         customOverlayingObjectsTop.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });

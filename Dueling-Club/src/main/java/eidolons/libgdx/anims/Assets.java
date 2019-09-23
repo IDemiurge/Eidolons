@@ -25,6 +25,7 @@ import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.audio.SoundPlayer;
+import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.light.ShadeLightCell;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.launch.GpuTester;
@@ -217,6 +218,7 @@ public class Assets {
     public static boolean preload(DequeImpl<BattleFieldObject> objects,
                                   boolean full, boolean ui, boolean her0es, boolean emitters) {
         boolean result = preloadObjects(objects, full);
+        her0es = EidolonsGame.FOOTAGE;
 
         Chronos.mark("preload Audio");
         preloadAudio(full);
@@ -236,11 +238,11 @@ public class Assets {
             result = true;
         }
 
-//        if (her0es) {
-//            Chronos.mark("preload her0es");
-//            preloadHeroes(full);
-//            Chronos.logTimeElapsedForMark("preload her0es");
-//        }
+        if (her0es ) {
+            Chronos.mark("preload her0es");
+            preloadHeroes(full);
+            Chronos.logTimeElapsedForMark("preload her0es");
+        }
 
         return result;
     }
@@ -280,6 +282,8 @@ public class Assets {
                     case AMBIENCE:
                     case INVERT:
                         get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
+                        get().getManager().finishLoadingAsset(EmitterMaster.getVfxAtlasPathFull(value));
+                        EmitterMaster.getAtlas(value);
                         break;
                 }
             }
@@ -289,8 +293,7 @@ public class Assets {
 
 
     public static void preloadHeroes(boolean full) {
-        loadSprite(PathFinder.getSpritesPath()
-                + "hero/" + Eidolons.getMainHero().getName() + ".txt", full, false);
+        loadSprite(Sprites.getHeroSpritePath(Eidolons.getMainHero().getName()), full, false);
     }
 
     public static void preloadAudio(boolean full) {
@@ -413,6 +416,15 @@ public enum ASSET{
         boolean ktx=true;
         if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory()>3000)) {
             ktx=false;
+        }
+//        if (EidolonsGame.BOSS_FIGHT){
+//            loadSprite(BossAnimator.SPRITE_PATH.bosFIRE_LIGHT, full, ktx);
+//            return;
+//        }
+        if (!EidolonsGame.BRIDGE){
+            loadSprite(Sprites.FIRE_LIGHT, full, ktx);
+
+            return;
         }
         loadSprite(Sprites.SNOW, full, ktx);
         loadSprite(Sprites.BG_DEFAULT, full, ktx);
@@ -548,9 +560,9 @@ public enum ASSET{
 //        if (checkReducedSprite(path)){
 //            reduced =true;
 //        }
-        if (full && !CoreEngine.isSuperLite()) {
-            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
-        } else
+//        if (full && !CoreEngine.isSuperLite()) {
+//            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
+//        } else
         {
             SpriteAnimationFactory.getSpriteAnimation(path, false, true, ktx);
         }

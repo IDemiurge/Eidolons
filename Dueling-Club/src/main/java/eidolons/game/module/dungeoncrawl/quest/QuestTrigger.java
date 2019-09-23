@@ -30,8 +30,7 @@ public class QuestTrigger extends Trigger {
         setRemoveAfterTriggers(false);
 
         setCallback(() -> {
-            quest.numberAchieved++;
-            quest.update();
+            quest.increment();
             try {
                 specialAction(quest, event);
             } catch (Exception e) {

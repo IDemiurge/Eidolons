@@ -539,4 +539,13 @@ public class Party extends Obj {
         return ContainerUtils.openContainer(getProperty(PROPS.MEMBERS)).
                 stream().map(member -> DataManager.getType(member, DC_TYPE.CHARS)).collect(Collectors.toList());
     }
+
+    public Unit getMember(String selectedHero) {
+        for (Unit member : members) {
+            if (member.getName().equalsIgnoreCase(selectedHero)) {
+                return member;
+            }
+        }
+        return null;
+    }
 }

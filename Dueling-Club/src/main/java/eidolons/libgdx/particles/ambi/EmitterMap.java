@@ -137,7 +137,7 @@ public class EmitterMap extends Group {
             Coordinates mainHeroCoordinates =
              Eidolons.getMainHero().getCoordinates();
             if (isHideAroundPC() &&
-             PositionMaster.getDistance(c1, mainHeroCoordinates)
+             PositionMaster.getExactDistanceNoCache(c1, mainHeroCoordinates)
               < getMinDistance()) {
                 hide(c1);
             } else

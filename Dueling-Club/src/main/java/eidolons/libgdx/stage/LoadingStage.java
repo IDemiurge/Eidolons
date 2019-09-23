@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
@@ -59,9 +60,9 @@ public class LoadingStage extends Stage {
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
         final TextureRegion fullscreenTexture =
-         getOrCreateR(
-          (engineInit) ? "ui/main/logo fullscreen.png"
-           : "ui/main/moe loading screen.png");
+                getOrCreateR(
+                        (engineInit) ? "ui/main/logo fullscreen.png"
+                                : "ui/main/moe loading screen.png");
         fullscreenImage = new Image(fullscreenTexture);
         addActor(fullscreenImage);
 
@@ -72,9 +73,9 @@ public class LoadingStage extends Stage {
 
         if (ScenarioLauncher.running) {
             missionName = new Label(data.getName()
-             , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
+                    , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
             missionName.setPosition(GdxMaster.centerWidth(missionName),
-             GdxMaster.getTopY(missionName));
+                    GdxMaster.getTopY(missionName));
             addActor(missionName);
         }
     }
@@ -83,10 +84,16 @@ public class LoadingStage extends Stage {
 //        return "Tip: " +
 //         TipMaster.getTip()
 //         + "(click to show next tip)";
-        return "Eidolons: Netherflame v" + CoreEngine.VERSION + " [" +
-                CoreEngine.VERSION_NAME +
-                "] by Alexander Kamen" +
-         "    ***  Found bugs? Contact me at @EiDemiurge & EidolonsGame@gmail.com";
+
+        if (EidolonsGame.TESTER_VERSION) {
+            return "Eidolons: Netherflame v" + CoreEngine.VERSION + " [" +
+                    CoreEngine.VERSION_NAME +
+                    "] by Alexander Kamen" +
+                    "    ***  Found bugs? Contact me at @EiDemiurge & EidolonsGame@gmail.com";
+        }
+        return "Eidolons: Netherflame - " +
+                CoreEngine.VERSION_NAME + "[" +
+                "v" + CoreEngine.VERSION + "]";
     }
 
     public Label getUnderText() {
@@ -96,23 +103,23 @@ public class LoadingStage extends Stage {
     private void addFog() {
         int width = GdxMaster.getWidth();
         int height = 400;
-        for (int h = 0; h <= height; h +=RandomWizard.getRandomInt(200)+50) {
-            for (int w = 0; w <= width; w += RandomWizard.getRandomInt(200)+50) {
+        for (int h = 0; h <= height; h += RandomWizard.getRandomInt(200) + 50) {
+            for (int w = 0; w <= width; w += RandomWizard.getRandomInt(200) + 50) {
                 if (RandomWizard.chance(30)) {
                     continue;
                 }
 
                 //local time?!
                 AMBIENCE_TEMPLATE template =
-                         new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
-                        new WeightMap<>().
+                        new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
+                                new WeightMap<>().
 //                        chain(AMBIENCE_TEMPLATE.COLD, 10).
-                        chain(AMBIENCE_TEMPLATE.CAVE, 10).
-                        chain(AMBIENCE_TEMPLATE.DEEP_MIST, 10).
-                        chain(AMBIENCE_TEMPLATE.CRYPT , 10).
-                        getRandomByWeight().toString());
+        chain(AMBIENCE_TEMPLATE.CAVE, 10).
+                                        chain(AMBIENCE_TEMPLATE.DEEP_MIST, 10).
+                                        chain(AMBIENCE_TEMPLATE.CRYPT, 10).
+                                        getRandomByWeight().toString());
 
-                boolean night = TimeMaster.getTime()% (3600*24*1000) > 3600*12*1000;
+                boolean night = TimeMaster.getTime() % (3600 * 24 * 1000) > 3600 * 12 * 1000;
 
                 GenericEnums.VFX[] vfxes = night ? template.nightly : template.daily;
 

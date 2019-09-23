@@ -20,9 +20,9 @@ public class QuestProgressPanel extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (EidolonsGame.DUEL) {
-            return;
-        }
+//        if (EidolonsGame.DUEL) {
+//            return;
+//        }
         super.draw(batch, parentAlpha);
     }
 

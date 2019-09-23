@@ -23,6 +23,7 @@ public class DialoguePortraitContainer extends TablePanelX {
 //    private final ValueContainer affection;
     FadeImageContainer portrait;
     LabelX nameLabel;
+    private boolean init;
 
     public DialoguePortraitContainer() {
         super(250, DialogueView.HEIGHT);
@@ -37,6 +38,20 @@ public class DialoguePortraitContainer extends TablePanelX {
 //        region = TextureCache.getOrCreateR(
 //         ImageManager.getValueIconPath(MACRO_PARAMS.AFFECTION));
 //        teaInfo.add(affection = new ValueContainer(style, region, "", ""));
+
+//        addActor(overlaySprite = new SpriteX(Sprites.INK_BLOTCH));
+//        bgSprite.setBlending(SuperActor.BLENDING.SCREEN);
+
+//        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN,
+//        ImageManager.LARGE_ICON_WIDTH,  ImageManager.LARGE_ICON_HEIGHT);
+//        setBackground(new TextureRegionDrawable(new TextureRegion(background)));
+
+//        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+//        getCell(nameLabel).setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
+    }
+    public void init(){
+        init=true;
         if (isBlotch()) {
             addActor(bgSprite = new SpriteX(Sprites.INK_BLOTCH));
             bgSprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
@@ -56,16 +71,7 @@ public class DialoguePortraitContainer extends TablePanelX {
                 }
             }
         }).row();
-//        addActor(overlaySprite = new SpriteX(Sprites.INK_BLOTCH));
-//        bgSprite.setBlending(SuperActor.BLENDING.SCREEN);
-
-//        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.LIGHT, BACKGROUND_NINE_PATCH.PATTERN,
-//        ImageManager.LARGE_ICON_WIDTH,  ImageManager.LARGE_ICON_HEIGHT);
-//        setBackground(new TextureRegionDrawable(new TextureRegion(background)));
-
-//        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
-//        getCell(nameLabel).setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
-
+        main.system.auxiliary.log.LogMaster.dev("PORTRAIT INIT " +this);
     }
 
     public static boolean isBlotch() {
@@ -74,6 +80,9 @@ public class DialoguePortraitContainer extends TablePanelX {
 
     @Override
     public void act(float delta) {
+        if (!init){
+            init();
+        }
         super.act(delta);
         //TODO notnull
         bgSprite.setFps(8);
@@ -84,6 +93,9 @@ public class DialoguePortraitContainer extends TablePanelX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (!init){
+            init();
+        }
         bgSprite.getColor().a = parentAlpha;
         super.draw(batch, parentAlpha);
     }
@@ -91,6 +103,9 @@ public class DialoguePortraitContainer extends TablePanelX {
     @Override
     public void updateAct(float delta) {
 //        debugAll();
+        if (!init){
+            init();
+        }
         super.updateAct(delta);
         ActorDataSource dataSource = (ActorDataSource) getUserObject();
         if (dataSource == null) {
@@ -109,6 +124,9 @@ public class DialoguePortraitContainer extends TablePanelX {
     }
 
     public void setImage(String appendedImageFile) {
+        if (!init){
+            init();
+        }
         portrait.setImage(appendedImageFile);
         pack();
     }

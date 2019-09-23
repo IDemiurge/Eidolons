@@ -254,4 +254,10 @@ public class DungeonQuest implements Quest {
     public ObjType getObjType() {
         return objType;
     }
+
+    @Override
+    public void increment() {
+        numberAchieved++;
+        update();
+    }
 }

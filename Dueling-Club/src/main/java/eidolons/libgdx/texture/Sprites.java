@@ -1,5 +1,6 @@
 package eidolons.libgdx.texture;
 
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 
 import java.lang.reflect.Field;
@@ -77,6 +78,10 @@ public class Sprites {
         if (spriteMap.containsKey(key))
             return spriteMap.get(key);
         return key;
+    }
+
+    public static String getHeroSpritePath(String name) {
+        return PathFinder.getSpritesPath() + "/hero/" +  StringMaster.cropVersion(name.replace("lvl", "")).trim() + ".txt";
     }
 
     // "boss/reaper/attack/sever"

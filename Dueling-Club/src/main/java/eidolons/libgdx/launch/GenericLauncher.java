@@ -419,6 +419,7 @@ public class GenericLauncher extends Game {
                     switchScreen(WeaveScreen::getInstance, newMeta);
                     break;
                 case BATTLE:
+                    //TODO PITCH FIX - GET INSTANCE!
                     switchScreen(DungeonScreen::new, newMeta);
                     Eidolons.setScope(SCOPE.BATTLE);
                     break;

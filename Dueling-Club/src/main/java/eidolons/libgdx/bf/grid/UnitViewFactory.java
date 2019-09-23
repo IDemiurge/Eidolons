@@ -101,7 +101,9 @@ public class UnitViewFactory {
         view.setToolTip(tooltip);
         ClickListener listener = createListener(bfObj);
         view.addListener(listener);
+        if (view.getInitiativeQueueUnitView() != null) {
         view.getInitiativeQueueUnitView().addListener(listener);
+        }
 
         if (isGridObjRequired(bfObj)) {
             CUSTOM_OBJECT x = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));

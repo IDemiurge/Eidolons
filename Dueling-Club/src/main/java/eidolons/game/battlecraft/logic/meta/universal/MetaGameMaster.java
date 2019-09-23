@@ -340,7 +340,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public boolean isAlliesSupported() {
-        return true;
+        return false;
         //!OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL);
     }
 

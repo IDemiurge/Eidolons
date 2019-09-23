@@ -31,6 +31,7 @@ import main.elements.conditions.RefCondition;
 import main.elements.conditions.StringComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.Obj;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
@@ -154,8 +155,24 @@ divination?
         if (!mode.isContinuous()) {
             addRemoveTrigger();
         }
+
+        Effect e = createOneShotEffect(mode, ref.getTargetObj());
+        if (e != null) {
+            e.apply(ref);
+        }
         boolean result = addBuffEffect.apply(ref);
         return result;
+    }
+
+    private Effect createOneShotEffect(MODE mode, Obj obj) {
+        if (mode instanceof STD_MODES) {
+            switch (((STD_MODES) mode)) {
+                case DEFENDING:
+                    int n= obj.getIntParam(PARAMS.N_OF_COUNTERS)/2;
+                    return new ModifyValueEffect(PARAMS.C_N_OF_COUNTERS, MOD.MODIFY_BY_CONST, n+"");
+            }
+        }
+        return null;
     }
 
     private void addInitiativeEffect() {

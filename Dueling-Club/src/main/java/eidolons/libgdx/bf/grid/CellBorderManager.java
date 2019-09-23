@@ -21,7 +21,7 @@ public class CellBorderManager extends Group {
     public static final String targetPath = Images.TARGET_BORDER;
 
     private static TextureRegion teamcolorTexture;
-    private static   TextureRegion targetTexture;
+    private static TextureRegion targetTexture;
     public TextureRegion singleBorderImageBackup = null;
     private Borderable unitBorderOwner = null;
     private Map<Borderable, Runnable> teamColorBorderOwners = new HashMap<>();
@@ -40,10 +40,14 @@ public class CellBorderManager extends Group {
 
     private void clearTeamColorBorder(boolean restoreLastBorder) {
         teamColorBorderOwners.entrySet().forEach(entity -> {
-            entity.getKey().setBorder(null);
+            try {
+                entity.getKey().setBorder(null);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         });
         teamColorBorderOwners = new HashMap<>();
-        if (restoreLastBorder){
+        if (restoreLastBorder) {
             if (singleBorderImageBackup != null) {
                 showBorder(singleBorderImageBackup, unitBorderOwner);
                 singleBorderImageBackup = null;
@@ -79,6 +83,9 @@ public class CellBorderManager extends Group {
             }
         });
 
+        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
+            clearTeamColorBorder(true);
+        });
         GuiEventManager.bind(TARGET_SELECTION, obj -> {
             final Borderable borderable = (Borderable) obj.get();
             if (borderable != null) {
@@ -90,8 +97,7 @@ public class CellBorderManager extends Group {
                     //TODO replace this quick-fix:
                     // click on non-blue-border cell must still do cell.invokeClicked() (run()) somehow
 
-                    if (Eidolons.game.getManager().isSelecting())
-                    {
+                    if (Eidolons.game.getManager().isSelecting()) {
                         Eidolons.game.getManager().selectingStopped(true);
                         EUtils.playSound(STD_SOUNDS.NEW__CLICK_DISABLED);
                     }

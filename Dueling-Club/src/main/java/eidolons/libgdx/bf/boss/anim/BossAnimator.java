@@ -35,7 +35,7 @@ public class BossAnimator  {
      */
 
     public static String getSpritePath(BattleFieldObject obj) {
-        return "sprites/boss/reaper/atlas.txt";
+        return "sprites/boss/reaper/atlas channeling.txt";
     }
 
     public static final void preloadBoss(){

@@ -11,6 +11,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.FacingEntity;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -120,6 +121,17 @@ public class FloatingTextMaster {
     }
 
     private String getImage(Entity active, TEXT_CASES aCase, Object arg) {
+        if (EidolonsGame.FOOTAGE) {
+
+            switch (aCase) {
+//                case COSTS:
+                case BONUS_DAMAGE:
+                    break;
+                default:
+                    return "";
+            }
+        }
+
         switch (aCase) {
             case PARAM_MOD: {
                 Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
@@ -150,6 +162,16 @@ public class FloatingTextMaster {
     }
 
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
+        if (EidolonsGame.FOOTAGE) {
+            switch (aCase) {
+//                case COSTS:
+                case BONUS_DAMAGE:
+                    break;
+                default:
+                    return "";
+            }
+        }
+
         switch (aCase) {
             case ANNIHILATED:
                 return "Annihilated!";
@@ -269,7 +291,7 @@ public class FloatingTextMaster {
 
         FloatingText floatingText =
                 new FloatingText(
-                        () -> getText(active, CASE, arg), () -> getImage(active, CASE, arg)
+                        () -> getText(active, CASE, arg).trim(), () -> getImage(active, CASE, arg)
                         , getColor(CASE, arg));
 
         floatingText.setStayFullDuration(getStayFull(CASE, arg));
@@ -449,7 +471,7 @@ public class FloatingTextMaster {
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
         if (DungeonScreen.getInstance().getGridPanel() == null) {
-            main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " +arg);
+            main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " + arg);
             return;
         }
         if (GdxMaster.isLwjglThread()) {

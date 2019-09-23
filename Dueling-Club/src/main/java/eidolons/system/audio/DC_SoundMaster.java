@@ -96,7 +96,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static void playTurnSound(BattleFieldObject unit) {
 //         setPositionFor(unit.getCoordinates());
-//        getSoundPlayer().play(STD_SOUNDS.SLING.getPath());
+        getSoundPlayer().play(STD_SOUNDS.LAMP.getPath());
 
         playMoveSound(unit);
     }
@@ -119,9 +119,15 @@ public class DC_SoundMaster extends SoundMaster {
             } else
                 getPlayer().playRandomSoundFromFolder(
                         "std/move pale/");
-        } else
+        } else {
+            if (unit.getIntParam(PARAMS.WEIGHT)<=100) {
+                getPlayer().playRandomSoundFromFolder(
+                        "std/move/light");
+            }
+            else
             getPlayer().playRandomSoundFromFolder(
                     "std/move/");
+        }
 
     }
 

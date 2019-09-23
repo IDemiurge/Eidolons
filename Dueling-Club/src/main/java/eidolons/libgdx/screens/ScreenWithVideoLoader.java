@@ -40,7 +40,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     private static final Object QUEST_PANEL_ARG = 2;
     private static Boolean videoEnabled;
     protected VideoMaster loadVideo;
-    protected boolean looped;
     protected Label underText;
     protected HeroCreationPanel hcPanel;
 
@@ -51,7 +50,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
         if (isLoadingWithVideo())
             initVideo();
-        looped = true;
         underText = new Label(LoadingStage.getBottonText(), StyleHolder.getHqLabelStyle(20));
         getOverlayStage().addActor(underText);
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
@@ -282,10 +280,16 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
         if (loadVideo != null) {
             renderVideo(delta);
+            if (isVideoAsBackground()){
             overlayStage.act(delta);
             overlayStage.draw();
+            }
 
         }
+    }
+
+    protected boolean isVideoAsBackground() {
+        return false;
     }
 
     @Override
@@ -326,7 +330,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         if (loadVideo.getPlayer() == null)
             playVideo();
         else if (!loadVideo.getPlayer().isPlaying())
-            playVideo();
+        {
+            if (isLooped())
+             playVideo();
+        }
 //        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         if (isClearForVideo())
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -342,10 +349,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
 
     public boolean isLooped() {
-        return looped;
+        return false;
     }
 
-    public void setLooped(boolean looped) {
-        this.looped = looped;
-    }
 }

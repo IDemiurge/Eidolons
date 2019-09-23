@@ -56,9 +56,14 @@ public class ImageManager {
     public static final int LARGE_ICON_WIDTH = 250;
     public static final int FULL_ICON_HEIGHT = 700;
     public static final int FULL_ICON_WIDTH = 500;
-    private static final String EMPTY_LIST_ITEM = "ui/empty_item.jpg";
-    private static final String EMPTY_LIST_ITEM_ALT = "ui/empty_item_alt.jpg";
-    private static final String EMPTY_LIST_ITEM_SMALL = "ui/empty_item_small.jpg";
+    private static final String EMPTY_LIST_ITEM = "ui/missing 32.png";
+    private static final String EMPTY_LIST_ITEM_ALT = "ui/missing 32.png";
+    private static final String EMPTY_LIST_ITEM_SMALL = "ui/missing 32.png";
+//    private static final String EMPTY_LIST_ITEM = "ui/empty_item.jpg";
+//    private static final String EMPTY_LIST_ITEM_ALT = "ui/empty_item_alt.jpg";
+//    private static final String EMPTY_LIST_ITEM_SMALL = "ui/empty_item_small.jpg";
+
+
     private static final String HL_CELL = "ui/highlighted_cell.png";
     private static final String CONCEALED_CELL = "ui/hidden_cell.png";
     private static final String UNSEEN_CELL = "ui/undetected_cell.png";

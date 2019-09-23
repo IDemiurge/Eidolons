@@ -50,22 +50,25 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
     public DealDamageEffect(Formula formula, String damage_type, DAMAGE_MODIFIER damage_mod) {
         this(formula, new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-         damage_type));
+                damage_type));
         this.damage_mod = damage_mod;
     }
 
     @OmittedConstructor
     public DealDamageEffect(String damage_type, Formula formula, DAMAGE_MODIFIER... damage_mods) {
         this(formula, new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-         damage_type));
+                damage_type));
         this.damage_mods = damage_mods;
     }
+
     protected boolean checkEventsFired() {
         return true;
     }
+
     protected void fireAppliedEvent() {
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED, ref));
     }
+
     @Override
     public boolean applyThis() {
         if (ref.getTargetObj() == null) {
@@ -82,7 +85,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
         BattleFieldObject targetObj = (BattleFieldObject) ref.getTargetObj();
         int amount = formula.getAppendedByModifier(ref.getValue(KEYS.FORMULA))
-         .getInt(ref);
+                .getInt(ref);
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         boolean spell = active instanceof Spell;
 
@@ -95,13 +98,13 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         }
 
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "
-         + amount + " to " + ref.getTargetObj().toString());
+                + amount + " to " + ref.getTargetObj().toString());
         saveDamageModsToRef();
 
         ref.setValue(KEYS.DAMAGE_TYPE, damage_type.getName());
 
         int damage = DamageDealer.dealDamage(
-         getDamageObject(amount)
+                getDamageObject(amount)
 //         damage_type, targetObj, ref, amount
         );
 

@@ -44,7 +44,7 @@ public class SpriteModel extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        displayedSprite.setBlending(GenericEnums.BLENDING.SCREEN);
+        displayedSprite.setBlending(null  );
         defaultSprite.setLooping(true);
         if (pos != null) {
             displayedSprite.setOffsetY(pos.y);

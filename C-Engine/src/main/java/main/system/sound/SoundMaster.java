@@ -281,7 +281,7 @@ public class SoundMaster {
                 return "";
             }
         },
-        FALL;
+        FALL, LAUGH;
 
         @Override
         public String toString() {
@@ -305,7 +305,7 @@ public class SoundMaster {
     public enum STD_SOUNDS {
         POTION,
         POTION2,
-
+        LAMP,
 
         HERO,
         SCROLL,

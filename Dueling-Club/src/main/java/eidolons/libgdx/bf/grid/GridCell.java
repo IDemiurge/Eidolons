@@ -211,10 +211,10 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
-        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
-         ) {
-            return;
-        }
+//        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
+//         ) {
+//            return;
+//        }
         super.act(delta);
         if (DC_Game.game.isDebugMode()) {
             if (GammaMaster.DEBUG_MODE) {

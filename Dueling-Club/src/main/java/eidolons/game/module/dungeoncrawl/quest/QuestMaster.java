@@ -238,7 +238,10 @@ public class QuestMaster extends MetaGameHandler {
         return questsPool;
     }
 
-    public void questComplete(Quest quest) {
+    public void questComplete(String questN) {
+        questComplete(getQuest(questN));
+    }
+        public void questComplete(Quest quest) {
         questCancelled(quest.getTitle()); // just in case?..
         GuiEventManager.trigger(GuiEventType.QUEST_CANCELLED, quest.getTitle());
         GuiEventManager.trigger(GuiEventType.QUEST_COMPLETED, quest.getTitle());

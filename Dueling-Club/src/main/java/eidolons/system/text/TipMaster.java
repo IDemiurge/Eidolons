@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.game.EidolonsGame;
 import eidolons.system.text.TextMaster.LOCALE;
 import eidolons.system.text.Tips.*;
 import main.data.filesys.PathFinder;
@@ -35,7 +36,7 @@ public class TipMaster {
 
     };
     static boolean no_repeat;
-    static Boolean basicOrAdvanced = true;
+    static Boolean basicOrAdvanced = EidolonsGame.TESTER_VERSION;
     private static List displayedTips = new ArrayList<>();
 
     public static String getTip() {
