@@ -9,7 +9,7 @@ import main.system.threading.WaitMaster;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.*;
 
 public class TipMessageSource {
-    public WaitMaster.WAIT_OPERATIONS msgChannel;
+    public WaitMaster.WAIT_OPERATIONS msgChannel=CONFIRM;
     public String title;
     String message;
     String image;

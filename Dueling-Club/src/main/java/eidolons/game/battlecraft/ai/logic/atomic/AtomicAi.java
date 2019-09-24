@@ -20,6 +20,7 @@ import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
+import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
@@ -42,6 +43,7 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -216,6 +218,9 @@ public class AtomicAi extends AiHandler {
             return null;
         Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
 
+        if (new StackingRule(game).canBeMovedOnto(getUnit(), c)){
+            return c;
+        }
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
 
     }

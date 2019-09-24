@@ -84,11 +84,12 @@ public class BfObjEnums {
                 "BIG_CLAW(150, 110)",
                 "BIG_CLAW( 0, 110)"),
         SMALL_LEVIATHAN(15, "", "", "", 10,
-                "SMALL_CLAW(120, -10)",
-                "SMALL_CLAW( 15, -10)",
-                "SMALL_CLAW(120, 20)",
-                "SMALL_CLAW( 15, 20)"),
-
+                "SMALL_CLAW(120, 30)",
+                "SMALL_CLAW( 15, 30)"),
+//                "SMALL_CLAW(120, -10)",
+//                        "SMALL_CLAW( 15, -10)"),
+//                "SMALL_CLAW(120, 20)",
+//                "SMALL_CLAW( 15, 20)"
         BLACK_CHAINS(15, "", "", "cells/gate/gate.txt", 5);
 
         public boolean vfxUnderMirrorX;

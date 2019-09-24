@@ -27,6 +27,8 @@ public class QuestEnums {
     public enum QUEST_REWARD_TYPE {
         ITEM,
         RANK,
+        NONE,
+        SOULS,
         XP,
         GOLD,
         MIXED,
@@ -43,6 +45,7 @@ public class QuestEnums {
     }
 
     public enum QUEST_TYPE {
+        CUSTOM,
         BOSS,
         HUNT,
         OBJECTS,

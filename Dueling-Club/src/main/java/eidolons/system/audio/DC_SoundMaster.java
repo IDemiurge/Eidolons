@@ -562,7 +562,8 @@ public class DC_SoundMaster extends SoundMaster {
 
     private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
         if (CoreEngine.isIggDemo()) {
-            return getSpellSound(spell, part);
+            return "";
+//            return getSpellSound(spell, part);
         }
 
         String file = spell.getProperty(getProp(part));

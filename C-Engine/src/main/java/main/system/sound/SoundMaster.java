@@ -281,7 +281,7 @@ public class SoundMaster {
                 return "";
             }
         },
-        FALL, LAUGH;
+        FALL, LAUGH, DARK, EVIL;
 
         @Override
         public String toString() {

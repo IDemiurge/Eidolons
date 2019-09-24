@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.Unit;
@@ -36,6 +37,8 @@ import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.options.ControlOptions;
+import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.Texts;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
@@ -71,6 +74,7 @@ public class GridManager {
     FACING_DIRECTION f = FACING_DIRECTION.NORTH;
     GridPanel panel;
     private Integer waitCounter = 0;
+    private Coordinates c;
 
     public GridManager(GridPanel panel) {
         this.instance = this;
@@ -175,8 +179,9 @@ public class GridManager {
     public static String removeSequentialKey(String text) {
         return text.replace(SEQUENTIAL, "").trim();
     }
+
     public static String parseColors(String text) {
-       return  TextBuilder.parseColors(text);
+        return TextBuilder.parseColors(text);
     }
 
     private boolean isSequentialComment(String text) {
@@ -206,7 +211,8 @@ public class GridManager {
         FloatingText floatingText = createFloatText(c, at, f, text, flag, seq);
 
         if (!Cinematics.ON && !uiStage)
-            GuiEventManager.trigger(CAMERA_ZOOM, new CameraMan.MotionData(-10f, 1f));
+            if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
+                GuiEventManager.trigger(CAMERA_ZOOM, new CameraMan.MotionData(-10f, 1f));
 
         SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
             @Override
@@ -310,17 +316,17 @@ public class GridManager {
                         y = y + (h - y) / 2 + h * 0.57f + 28;
                         break;
                     case RIGHT:
-                        x = x - bgWidth / 2 + bgHeight - w*0.7f - 45;
+                        x = x - bgWidth / 2 + bgHeight - w * 0.7f - 45;
 //                        x = x - bgWidth / 2 + bgHeight - w - 20;
 //                        y = y + (h - y) / 2 + h*0.67f + 4;
-                        y = y + (h - y) / 2 + h * 0.47f + 38;
+                        y = y + (h - y) / 2 + h * 0.22f + 68;
                         break;
                     case DOWN:
                         x = x - w / 2 - bgWidth + bgHeight / 2 + 180;
                         if (seq) {
-                        y = y + (h - y) / 2 - 5 - h / 6.5f;
+                            y = y + (h - y) / 2 - 5 - h / 6.5f;
                         } else {
-                            y = y + (h - y) / 2 - 11 - h /4.7f;
+                            y = y + (h - y) / 2 - 7 - h / 4.9f;
                         }
                         break;
 
@@ -403,8 +409,8 @@ public class GridManager {
 //            at.y= at.y-100;
         }
         if (!uiStage) {
-
-            GuiEventManager.trigger(CAMERA_PAN_TO,seq ?v : at, true);
+            if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
+                GuiEventManager.trigger(CAMERA_PAN_TO, seq ? v : at, true, 3f);
         }
 
 
@@ -460,6 +466,10 @@ public class GridManager {
                     timer.cancel();
                 });
             } else {
+//           TODO      GdxMaster.onInput(() -> {
+//                    r.run();
+//                }, null , true);
+
 //            AFTER MIN TIME?!    GdxMaster.onInputGdx(() -> {
 //                    r.run();
 //                });
@@ -519,8 +529,8 @@ public class GridManager {
             public void clicked(InputEvent event, float x, float y) {
                 if (done)
                     return;
-                if (getTapCount()==1) {
-                    return ;
+                if (getTapCount() == 1) {
+                    return;
                 }
                 main.system.auxiliary.log.LogMaster.dev(" manual fade   " + key);
                 fadeRunnable.run();
@@ -575,8 +585,17 @@ public class GridManager {
                 if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), viewMap.getVar(ref.getSourceObj())))
                     panel.removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
+
+                if (event.getRef().getActive() instanceof Spell) {
+                    unitBeingMoved((BattleFieldObject) ref.getSourceObj());
+                }
+
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
                 unitMoved(event.getRef().getSourceObj());
+
+                if (event.getRef().getActive() instanceof Spell) {
+                    unitMovedForced((BattleFieldObject) ref.getSourceObj(), (Spell) event.getRef().getActive());
+                }
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
                 caught = true;
@@ -616,6 +635,34 @@ public class GridManager {
             panel.unitMoved((BattleFieldObject) sourceObj);
     }
 
+    public void unitMovedForced(BattleFieldObject sourceObj, Spell active) {
+        Coordinates c = sourceObj.getCoordinates();
+        if (active.getName().contains("1Projection")) {
+            sourceObj.setCoordinates(sourceObj.getLastCoordinates());
+        }
+        int n=1765;
+        if (active.getName().contains("Projection")) {
+             n=2765;
+        }
+        WaitMaster.doAfterWait(n, () -> {
+            Gdx.app.postRunnable(() -> {
+                if (active.getName().contains("1Projection")) {
+                    sourceObj.setCoordinates(c);
+                }
+                panel.unitMoved((BattleFieldObject) sourceObj);
+                BaseView view = panel.getViewMap().get(sourceObj);
+                view.fadeIn();
+            });
+        });
+    }
+        public void unitBeingMoved(BattleFieldObject sourceObj) {
+//              c = sourceObj.getCoordinates();
+//            sourceObj.setCoordinates(sourceObj.getLastCoordinates());
+        BaseView view = panel.getViewMap().get(sourceObj);
+        view.fadeOut();
+//        new MoveAnimation()
+
+    }
     public void checkHpBarReset(Obj obj) {
         HpBarView view = (HpBarView) getViewMap().get(obj);
         if (view != null)

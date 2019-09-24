@@ -9,7 +9,6 @@ import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.FacingEntity;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
@@ -97,7 +96,7 @@ public class FloatingTextMaster {
                 return GdxColorMaster.PALE_GREEN;
             case ATTACK_OF_OPPORTUNITY:
                 break;
-            case ATTACK_COUNTER:
+            case COUNTER_ATTACK:
                 break;
             case ATTACK_INSTANT:
                 break;
@@ -152,7 +151,10 @@ public class FloatingTextMaster {
                 break;
             case COSTS:
                 Cost cost = (Cost) arg;
+                if (cost.getPayment().getParamToPay() != null) {
                 return ImageManager.getValueIconPath(cost.getPayment().getParamToPay());
+                }
+                 return ImageManager.getValueIconPath(cost.getCostParam() );
             case STATUS:
                 break;
             case MODE:
@@ -249,7 +251,7 @@ public class FloatingTextMaster {
                 case ATTACK_INSTANT:
                     return TEXT_CASES.ATTACK_INSTANT;
                 case ATTACK_COUNTER:
-                    return TEXT_CASES.ATTACK_COUNTER;
+                    return TEXT_CASES.COUNTER_ATTACK;
                 case ATTACK_OF_OPPORTUNITY:
                     return TEXT_CASES.ATTACK_OF_OPPORTUNITY;
                 case ATTACK_PARRIED:
@@ -600,7 +602,7 @@ public class FloatingTextMaster {
         ATTACK_MISSED,
 
         ATTACK_OF_OPPORTUNITY,
-        ATTACK_COUNTER,
+        COUNTER_ATTACK,
         ATTACK_INSTANT,
 
         ROLL,

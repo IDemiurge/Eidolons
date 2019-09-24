@@ -26,7 +26,8 @@ public class GlobalInputController implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (Eidolons.getScope() == SCOPE.MENU) {
-            if (VideoMaster.player.isPlaying()) {
+            if (VideoMaster.player!=null )
+                if (VideoMaster.player.isPlaying()) {
                 VideoMaster.player.stop();
                 return true;
             }

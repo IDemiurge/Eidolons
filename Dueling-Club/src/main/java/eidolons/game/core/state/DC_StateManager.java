@@ -20,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.config.ConfigMaster;
 import eidolons.system.text.DC_LogManager;
+import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -220,9 +221,13 @@ public class DC_StateManager extends StateManager {
         }
         if (active != null) {
             if (active instanceof Spell) {
-                if (((Spell) active).isChanneling())
-                if (!((Spell) active).isChannelingNow())
+                Spell s = (Spell) active;
+                if (s.isChanneling())
+                if (!s.isChannelingNow())
                 {
+                    for (AbilityObj passive : s.getPassives()) {
+                        passive.activatedOn(ref);
+                    }
                     ref.setObj(KEYS.ACTIVE, active);
                     game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
                 }

@@ -22,6 +22,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
+import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +36,14 @@ public class ChannelingRule {
 
     private static final String PATH = "effects/channeling/";
     private static final PARAMS[] costParamsResolve = {
-     PARAMS.AP_COST,
-     PARAMS.ESS_COST,
-     PARAMS.ENDURANCE_COST,
+            PARAMS.AP_COST,
+            PARAMS.ESS_COST,
+            PARAMS.ENDURANCE_COST,
     };
     private static final PARAMS[] costParamsActivate = {
-     PARAMS.AP_COST,
-     PARAMS.STA_COST,
-     PARAMS.FOC_COST,
+            PARAMS.AP_COST,
+            PARAMS.STA_COST,
+            PARAMS.FOC_COST,
     };
     static boolean testMode;
 
@@ -86,6 +87,8 @@ public class ChannelingRule {
 
     public static boolean activateChanneing(Spell spell) {
 
+        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.DARK, spell.getOwnerObj());
+        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.EVIL, spell.getOwnerObj());
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
         spell.getOwnerUnit().getHandler().initChannelingSpellData(spell);
@@ -121,7 +124,7 @@ public class ChannelingRule {
 //        modeEffect.getAddBuffEffect().setDuration(2);
         modeEffect.getAddBuffEffect().setDuration(0);
         result &= modeEffect.apply(REF);
-
+        modeEffect.getAddBuffEffect().getBuff().setDuration(0);
         GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(spell, new AnimContext(REF)));
         return result;
 

@@ -29,6 +29,8 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.BLACKNESS.vfxOver += VFX.darkness.path + "(-132, -82);";
         CUSTOM_OBJECT.BLACKNESS.vfxUnder += VFX.soul_bleed.path + "(-132, -124);";
         CUSTOM_OBJECT.BLACKNESS.vfxUnder += VFX.soul_bleed.path + "(-132, -124);";
+        CUSTOM_OBJECT.SMALL_LEVIATHAN.spriteColor = new Color(1, 1, 1, 0.7f);
+        CUSTOM_OBJECT.SMALL_CLAW.spriteColor = new Color(1, 1, 1, 0.7f);
 
         CUSTOM_OBJECT.GATE_PILLAR.vfxOver = VFX.MIST_ARCANE.path + "(32, 128);";
         CUSTOM_OBJECT.GATE_PILLAR.vfxOver += VFX.MIST_ARCANE.path + "(-32, 128);";
@@ -104,6 +106,8 @@ public class LinkedGridObject extends CinematicGridObject {
         CUSTOM_OBJECT.hypnotic_flames.always_visible = true;
         CUSTOM_OBJECT.hypnotic_flames_green.always_visible = true;
         CUSTOM_OBJECT.hypnotic_flames_mass.always_visible = true;
+        CUSTOM_OBJECT.hypnotic_flames_mass.spriteColor = new Color(1, 1, 1, 0.57f);
+        CUSTOM_OBJECT.hypnotic_flames_mass_narrow.spriteColor = new Color(1, 1, 1, 0.57f);
         CUSTOM_OBJECT.hypnotic_flames_slow_up.always_visible = true;
         CUSTOM_OBJECT.hypnotic_flames_pale.always_visible = true;
         CUSTOM_OBJECT.hypnotic_flames_mass_narrow.always_visible = true;

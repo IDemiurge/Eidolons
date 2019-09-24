@@ -23,6 +23,8 @@ import main.system.math.Formula;
  * Created by JustMe on 10/5/2018.
  */
 public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
+    QUEST_REWARD_TYPE type;
+    QUEST_LEVEL level;
     String xpFormula = "";
     String goldFormula = "";
     String gloryFormula = "";
@@ -47,9 +49,9 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
     }
 
     public QuestReward(ObjType objType) {
-        QUEST_REWARD_TYPE type = new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
+          type = new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
                 objType.getProperty(MACRO_PROPS.QUEST_REWARD_TYPE));
-        QUEST_LEVEL level = new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
+          level = new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
                 objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
 
 
@@ -107,7 +109,14 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
 
     @Override
     public String toString() {
+        if (type==QUEST_REWARD_TYPE.NONE) {
+            return "";
+        }
         String s = "Reward: \n";
+        if (type==QUEST_REWARD_TYPE.SOULS) {
+            s+=" Souls: 10";
+            return s;
+        }
         if (!goldFormula.isEmpty())
             s += " Gold: " + new Formula(goldFormula).getInt();
         if (!xpFormula.isEmpty())

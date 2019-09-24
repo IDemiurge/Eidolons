@@ -26,6 +26,7 @@ import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.SimpleAnim;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
@@ -33,6 +34,7 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
+import main.content.ContentValsManager;
 import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
@@ -232,6 +234,11 @@ public class SpeechExecutor {
                 break;
 
 
+            case REVEAL :
+                bool=true;
+            case CONCEAL :
+                getUnit(value).setRevealed(bool);
+                break;
             case REVEAL_AREA:
                 //set some flag?
                 Coordinates center = getCoordinate(value);
@@ -308,7 +315,7 @@ public class SpeechExecutor {
                 reset();
                 break;
             case PARAM:
-                getUnit(value).setParam(vars.get(0), Integer.valueOf(vars.get(1)));
+                getUnit(value).setParam(ContentValsManager.getPARAM(vars.get(0)), Integer.valueOf(vars.get(1)), true, true);
                 reset();
                 break;
             case PROP:
@@ -427,6 +434,12 @@ public class SpeechExecutor {
                 master.getQuestMaster().questTaken(value, vars.isEmpty());
                 break;
 
+            case LOAD_SCOPE:
+                GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, value );
+                break;
+            case UNLOAD_SCOPE:
+                GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, value );
+                break;
             case TRIGGER:
                 master.getBattleMaster().getScriptManager().parseScripts(full);
                 break;
@@ -708,8 +721,12 @@ public class SpeechExecutor {
                         path = PathFinder.getMusicPath() + track.getPath();
                         break bla;
                 }
-                GuiEventManager.trigger(bool ?
-                        GuiEventType.STOP_LOOPING_TRACK : GuiEventType.ADD_LOOPING_TRACK, path, volume);
+                if (bool) {
+                    GuiEventManager.trigger(
+                            GuiEventType.STOP_LOOPING_TRACK , path);
+                } else {
+                    GuiEventManager.trigger(  GuiEventType.ADD_LOOPING_TRACK, path, volume);
+                }
                 break;
             case PARALLEL_MUSIC:
                 MusicMaster.getInstance().playParallel(value);

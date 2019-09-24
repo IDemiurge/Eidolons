@@ -83,7 +83,7 @@ public class AbilityEnums {
         NO_ENEMIES,
         NO_WALLS,
         NO_WATER,
-        NO_STEALTH, PUSHABLE, NO_NEUTRALS
+        NO_STEALTH, PUSHABLE, FREE_CELL, NO_NEUTRALS
 
     }
 }

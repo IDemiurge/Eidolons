@@ -73,7 +73,7 @@ public class GdxColorMaster {
 
     public static Color getColorByName(String value) {
         try {
-            return (Color) GdxColorMaster.class.getField(value.replace(" ", "_").toUpperCase()).get(null);
+            return (Color) GdxColorMaster.class.getField(value.replace(" ", "_").toUpperCase().trim()).get(null);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {

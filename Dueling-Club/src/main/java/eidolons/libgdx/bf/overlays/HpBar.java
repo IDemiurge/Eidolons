@@ -84,6 +84,7 @@ public class HpBar extends SuperActor {
     private boolean dirty;
     private Float lastOfferedToughness;
     private Float lastOfferedEndurance;
+    private boolean keserim;
 
     public HpBar(BattleFieldObject dataSource) {
         this.dataSource = dataSource;
@@ -206,6 +207,15 @@ public class HpBar extends SuperActor {
             if (displayedToughnessPerc != realPerc) {
                 displayedToughnessPerc = realPerc;
             }
+            keserim=false;
+            if (dataSource.isPlayerCharacter()){
+                if (!EidolonsGame.getVar("endurance")){
+                    keserim=true;
+//                    displayedToughnessPerc=Math.min( displayedToughnessPerc;
+                    displayedEndurancePerc =displayedToughnessPerc;
+//                setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
+                }
+            }
             return;
         }
         if (!getToughnessPerc().equals(getPreviousToughnessPerc())) {
@@ -311,7 +321,7 @@ public class HpBar extends SuperActor {
             return;
         batch.setColor(color);
         float x = getX() + offsetX;
-        if (reverse) {
+        if (reverse && keserim) {
             x = x + region.getRegionWidth() * getScaleX() * (Math.min(1, fullLengthPerc) - Math.min(1, perc));
 //            x = x + region.getRegionWidth() * (  perc-1);
         }
@@ -405,10 +415,11 @@ public class HpBar extends SuperActor {
         } else {
             Color color = enduranceColor;
             TextureRegion region = enduranceBarRegion;
-            drawBar(region, batch, Math.min(1, displayedEndurancePerc), color, false);
+            float p = MathMaster.minMax(displayedEndurancePerc, 0, 1);
+            drawBar(region, batch, p, color, false);
             color = toughnessColor;
             region = toughnessBarRegion;
-            drawBar(region, batch, Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
+            drawBar(region, batch, Math.min(p, displayedToughnessPerc), color, true);
             batch.flush();
         }
 

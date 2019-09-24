@@ -89,7 +89,8 @@ public class QuestPreparer {
                 quest.  setArg(QuestCreator.getItemTypeSpecial(quest.getObjType(), powerLevel, quest,
                         style ));
                 break;
-            case ESCAPE:
+            default:
+                quest.update();
                 break;
         }
     }

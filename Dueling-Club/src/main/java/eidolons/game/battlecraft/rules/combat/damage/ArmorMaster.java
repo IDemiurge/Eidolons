@@ -293,7 +293,7 @@ public class ArmorMaster {
 //                 durabilityLost, damage, damage_type, shield));
             }
 
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
+            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.COUNTER_ATTACK,
                     "Shield block!", attacked);
             Integer finalBlockValue = blockValue;
             DC_WeaponObj finalShield = shield;

@@ -133,6 +133,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                     getMetaGame().isDifficultyReset()))
                 Eidolons.getMainGame().setAborted(true);
         }
+        game.setMetaMaster(this);
         return game;
     }
 

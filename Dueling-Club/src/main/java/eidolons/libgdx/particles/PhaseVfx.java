@@ -69,6 +69,12 @@ public class PhaseVfx extends SpellVfx {
 
 
         }
+        for (ANIM_PART anim_part : map.keySet()) {
+            SpellVfx e = map.get(anim_part);
+            e.getEffect().setAlpha(0.23f);
+            e.setSpeed(0.63f);
+            e.getEffect().getEmitters().forEach(e1-> e1.setAdditive(false));
+        }
     }
 
     private boolean isUseMemory() {
@@ -131,8 +137,13 @@ public class PhaseVfx extends SpellVfx {
             }
         }
         if (active != null)
+        {
+            active.getEffect().setAlpha(0.23f);
+            active.getEffect().getEmitters().forEach(e-> e.setAdditive(false));
+            active.setSpeed(0.63f);
             active.act(delta);
-        main.system.auxiliary.log.LogMaster.log(1," "+delta );
+//        main.system.auxiliary.log.LogMaster.log(1," "+active.getEffect().alpha );
+        }
     }
 
     @Override

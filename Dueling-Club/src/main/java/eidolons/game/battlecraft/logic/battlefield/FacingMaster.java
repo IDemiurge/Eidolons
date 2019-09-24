@@ -260,7 +260,7 @@ public class FacingMaster {
 
             }
         FACING_DIRECTION pick = null;
-        Double max = 0.0;
+        Double max = - Double.MAX_VALUE;
         for (FACING_DIRECTION fac : map.keySet()) {
             if (map.get(fac) > max) {
                 max = map.get(fac);

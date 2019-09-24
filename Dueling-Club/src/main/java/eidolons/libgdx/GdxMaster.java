@@ -527,7 +527,7 @@ public class GdxMaster {
 
     public static void onInput(Runnable r, Boolean gdx_any_pass, boolean stack) {
         Runnable finalR = r;
-        if (!Eidolons.getScreen().getController().isStackInput()
+        if (! Eidolons.getScreen().getController().isStackInput()
                 || stack) {
             stackRunnable = r;
             return;

@@ -11,7 +11,9 @@ import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.HeroAnalyzer;
 import eidolons.game.module.herocreator.logic.spells.DivinationMaster;
+import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.system.audio.DC_SoundMaster;
+import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.SpellEnums;
@@ -138,7 +140,8 @@ public class SpellExecutor extends Executor {
 
     @Override
     public void resolve() {
-
+        DC_SoundMaster.playEffectSound(SOUNDS.DARK, getAction().getOwnerObj());
+        DC_SoundMaster.playEffectSound(SOUNDS.EVIL, getAction().getOwnerObj());
         if (!getRef().isQuiet()) {
             result = new Event(STANDARD_EVENT_TYPE.SPELL_BEING_RESOLVED, getRef()).fire();
             if (!result) {
@@ -160,7 +163,6 @@ public class SpellExecutor extends Executor {
         if (!getRef().isQuiet()) {
             new Event(STANDARD_EVENT_TYPE.SPELL_RESOLVED, getRef()).fire();
         }
-
         if (!result) {
             if (channeling) {
                 DC_SoundMaster.playEffectSound(SOUNDS.FAIL, getSpell());
@@ -179,7 +181,9 @@ public class SpellExecutor extends Executor {
 
             if (!getRef().isQuiet()) {
                 if (getAction().isChannelingNow())
+                {
                     new Event(STANDARD_EVENT_TYPE.CHANNELING_STARTED, getRef()).fire();
+                }
             }
         }
 

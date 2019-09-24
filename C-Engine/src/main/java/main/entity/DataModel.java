@@ -1184,7 +1184,8 @@ public abstract class DataModel {
 
     public boolean removeProperty(boolean base, PROPERTY prop, String value) {
         if (base)
-            return type.removeProperty(prop, value, false) || removeProperty(prop, value, false);
+            return type.removeProperty(prop, value, false)
+                    && removeProperty(prop, value, false);
         return removeProperty(prop, value, false);
     }
 

@@ -141,7 +141,7 @@ public class Executor extends ActiveHandler {
 //            AbilityConstructor.constructActives(getEntity());
 //            getEntity().construct(); already done?
 //        }
-         reset();
+        reset();
         syncActionRefWithSource();
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_ACTIVATED, getAction());
@@ -170,7 +170,7 @@ public class Executor extends ActiveHandler {
                     targets = " on " + getAction().getTargetObj().getNameIfKnown();
             } else if (getAction().getTargetGroup() != null) {
                 targets = " on " + getAction().getTargetGroup().toString();
-                getAction().getTargetGroup().getObjects().forEach(t->t.getRef().setObj(KEYS.HOSTILITY, getEntity()));
+                getAction().getTargetGroup().getObjects().forEach(t -> t.getRef().setObj(KEYS.HOSTILITY, getEntity()));
             }
         log(getAction().getOwnerObj().getNameAndCoordinate() + " activates "
                 + getAction().getName() + targets, false);
@@ -225,11 +225,10 @@ public class Executor extends ActiveHandler {
 
     @Override
     protected void log(String string, boolean gameLog) {
-        FileLogManager.streamAction(  string);
+        FileLogManager.streamAction(string);
         if (!ExplorationMaster.isExplorationOn()) {
             super.log(string, gameLog);
-            if (!gameLog)
-            {
+            if (!gameLog) {
 //                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
             }
         }
@@ -338,32 +337,32 @@ public class Executor extends ActiveHandler {
             }
         }
 //        else
-         // for Multi-targeting when single-wrapped Abilities cannot be used
-if (getAction().isStandardAttack()
+        // for Multi-targeting when single-wrapped Abilities cannot be used
+        if (getAction().isStandardAttack()
 //if (getAction().isRanged()
-        || getAction().getAbilities() == null) //TODO broke on aimed shot eh?
-        if (!isResult() && getAction().getActives() != null) {
-            result = true;
-            for (Active active : getAction().getActives()) {
-                ((Ability) active).setForcePresetTargeting(true); //TODO igg demo hack
-                try {
-                    setResult(isResult() & active.activatedOn(getRef()));
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-                if (!isResult()) {
-                    break;// TODO if cancelled!
-                }
-                if (!game.isStarted()) {
-                    continue;
-                }
-                // cancelled = null; TODO ???
-                if (getAction().getActives().size() > 1) { // between
-                    game.getManager().reset();
-                    refreshVisuals();
+                || getAction().getAbilities() == null) //TODO broke on aimed shot eh?
+            if (!isResult() && getAction().getActives() != null) {
+                result = true;
+                for (Active active : getAction().getActives()) {
+                    ((Ability) active).setForcePresetTargeting(true); //TODO igg demo hack
+                    try {
+                        setResult(isResult() & active.activatedOn(getRef()));
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                    if (!isResult()) {
+                        break;// TODO if cancelled!
+                    }
+                    if (!game.isStarted()) {
+                        continue;
+                    }
+                    // cancelled = null; TODO ???
+                    if (getAction().getActives().size() > 1) { // between
+                        game.getManager().reset();
+                        refreshVisuals();
+                    }
                 }
             }
-        }
 
 //        DC_SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
 
@@ -419,7 +418,7 @@ if (getAction().isStandardAttack()
 
         getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
                 -initiativeCost +
-                "%, now at " +AtbMaster.getDisplayedAtb( getOwnerObj())+
+                "%, now at " + AtbMaster.getDisplayedAtb(getOwnerObj()) +
                 "%");
 
     }

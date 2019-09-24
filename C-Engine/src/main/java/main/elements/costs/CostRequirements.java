@@ -45,6 +45,9 @@ public class CostRequirements extends Requirements {
         reqMap.clear();
         reqMap.putAll(additionalReqList);
         for (Payment payment : toPay) {
+            if (payment.getParamToPay() == null) {
+                continue;
+            }
             if (payment.getAmountFormula().toString().equals("0")) {
                 continue;
             }

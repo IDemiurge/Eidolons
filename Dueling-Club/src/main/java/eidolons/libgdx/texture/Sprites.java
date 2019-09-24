@@ -57,6 +57,8 @@ public class Sprites {
 
     public static final String GATE_LIGHTNING = "sprites/spell/nether/lightning gate.txt";
     public static final String KTX_TEST = "sprites/test/maw.txt";
+    public static final String GHOST_FIST = "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
+    public static final String REAPER_SCYHTE = "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt";
 
     private static final Map<String, String> spriteMap;
 

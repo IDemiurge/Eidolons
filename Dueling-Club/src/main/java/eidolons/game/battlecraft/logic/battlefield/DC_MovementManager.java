@@ -256,7 +256,7 @@ public class DC_MovementManager implements MovementManager {
 
     public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
-        Ref REF = new Ref(obj.getGame());
+        Ref REF =ref.getCopy();// new Ref(obj.getGame());
         REF.setTarget(cell.getId());
         REF.setSource(obj.getId());
         LogMaster.log(LogMaster.MOVEMENT_DEBUG, "Moving " + obj + " to " + cell);
@@ -289,11 +289,12 @@ public class DC_MovementManager implements MovementManager {
         if (!game.getRules().getStackingRule().canBeMovedOnto(obj, c)) {
             return false;
         }
+//        if (checkPushByMovement(obj, c)) {
+            //TODO
+//        }
 
-        if (checkPushByMovement(obj, c)) {
-            //what then?
-        }
-//  TODO shouldn't be necessary
+
+
 //
 //   if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
 //            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);

@@ -61,9 +61,9 @@ public class FullscreenAnims extends GroupX {
             float intensity = getIntensity(e);
             FACING_DIRECTION facing = getFacing(e);
             Obj obj = e.getRef().getTargetObj();
-            if (obj.isDead()) {
-                obj = e.getRef().getSourceObj();
-            }
+//            if (obj.isDead()) {
+//                obj = e.getRef().getSourceObj();
+//            }
             {
                 if (obj == Eidolons.getMainHero()) {
                     GenericEnums.BLENDING blending = getBlending(type);

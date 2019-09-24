@@ -121,7 +121,7 @@ public class SpellAnim extends ActionAnim {
                     if (i == 1) {
                         return "cast/destruction center5";
                     }
-                    return "cast/destruction center5"  ;
+                    return "cast/destruction center5";
                 }
 
                 if (part == AnimConstructor.ANIM_PART.AFTEREFFECT) {
@@ -408,6 +408,9 @@ public class SpellAnim extends ActionAnim {
                 switch (getPart()) {
                     case CAST:
                         main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow duration =" + max);
+                        if (getActive().getOwnerUnit().isPlayerCharacter()) {
+                        getEmitterList().forEach(e -> e.getEffect().setAlpha(0.74f));
+                        }
                         setDuration(max);
                         return;
                 }

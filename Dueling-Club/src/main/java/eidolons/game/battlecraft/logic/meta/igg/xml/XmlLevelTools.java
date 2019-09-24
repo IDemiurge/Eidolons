@@ -1,13 +1,17 @@
 package eidolons.game.battlecraft.logic.meta.igg.xml;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battle.test.TestMetaMaster;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
+import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
+import eidolons.libgdx.launch.MainLauncher;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
@@ -26,12 +30,14 @@ import java.util.Map;
 public class XmlLevelTools {
     @Test
     public void test() {
-        XmlLevelTools.insertModule(null, "sublevels/Ashen Path modular.xml",
-                "sublevels/Module Maze.xml", 0, 0);
+//        XmlLevelTools.insertModule(null, "sublevels/Ashen Path modular.xml",
+//                "sublevels/Module Maze.xml", 0, 0);
+        XmlLevelTools.insertModule( "modules/Mortuary.xml",
+                "ready/ascension.xml", 0, 0);
     }
 
     public static void main(String[] args) {
-        expandLevel(null, "sublevels/duncan module.xml", 13, 11, 15, 15, DIRECTION.UP);
+//        expandLevel(null, "sublevels/duncan module.xml", 13, 11, 15, 15, DIRECTION.UP);
     }
 public static void extractLevel(DC_Game game,int w, int h,
                                 int x, int y, String levelPath, String moduleName){
@@ -40,7 +46,7 @@ public static void extractLevel(DC_Game game,int w, int h,
 
 
 }
-    public static void expandLevel(DC_Game game, String modulePath, int w, int h,
+    public static void expandLevel( String modulePath, int w, int h,
                                    int newW, int newH, DIRECTION placeAt) {
         int x = 0;
         int y = 0;
@@ -55,7 +61,7 @@ public static void extractLevel(DC_Game game,int w, int h,
                     y = 0;
             }
         }
-        String newXml = insertModule(game, emptyLvl+".xml", modulePath, x, y);
+        String newXml = insertModule( emptyLvl+".xml", modulePath, x, y);
         String name = StringMaster.cropFormat(PathUtils.getLastPathSegment(modulePath));
 
         newXml = newXml.replace("<Name>" +
@@ -71,14 +77,16 @@ public static void extractLevel(DC_Game game,int w, int h,
 
     }
 
-    public static String insertModule(DC_Game game, String levelPath, String modulePath, int x, int y) {
+    public static String insertModule(String levelPath, String modulePath, int x, int y) {
         /**
          * we could build both levels and try using normal object methods?
          * do we have level=>xml write?
          * overlaying
          * meta-data
          */
-        initXmlTool(game);
+        MainLauncher.setCustomLaunch(new CustomLaunch(CustomLaunch.CustomLaunchValue.xml_path+ "::"+levelPath));
+        initXmlTool(null );
+        DC_Game game = Eidolons.getGame();
 
         Coordinates offset = new Coordinates(x, y);
         DungeonBuilder builder = game.getDungeonMaster().getBuilder();

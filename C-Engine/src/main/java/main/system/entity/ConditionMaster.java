@@ -686,7 +686,7 @@ public class ConditionMaster {
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
         MAINHERO("pc", "mainHero", "MAIN_HERO"),
-        NAME_SOURCE("name"),
+        NAME_SOURCE("name", "source", "sourceName"),
         NAME_TARGET("target"),
         NAME_ACTIVE("active"),
         NAME_SUMMONED("active"),

@@ -71,7 +71,7 @@ public class ModuleMaster extends MetaGameHandler {
         for (String module : moduleLevel.modules) {
             String name = VariableManager.removeVarPart(module) + ".xml";
             Coordinates c = Coordinates.get(VariableManager.getVars(module));
-            XmlLevelTools.insertModule(null, moduleLevel.path + ".xml", name, c.x, c.y);
+            XmlLevelTools.insertModule(  moduleLevel.path + ".xml", name, c.x, c.y);
 
         }
 

@@ -224,6 +224,17 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
+        if (getName().contains("Leviathan")) {
+            if ( param == PARAMS.C_TOUGHNESS)
+            {
+                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_TOUGHNESS" +value);
+            }
+            if (param == PARAMS.C_ENDURANCE  )
+            {
+                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_ENDURANCE" +value);
+            }
+        }
+
         if (CoreEngine.isAutoFixOn())
             if (isPlayerCharacter()) {
                 Integer integer = NumberUtils.getInteger(value);
@@ -299,6 +310,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         getResetter().afterEffectsApplied();
         getEntity().setBeingReset(false);
+
+        if (getName().contains("Leviathan")) {
+            main.system.auxiliary.log.LogMaster.dev("Leviathan C_TOUGHNESS " +getIntParam(PARAMS.C_TOUGHNESS));
+            main.system.auxiliary.log.LogMaster.dev("Leviathan C_ENDURANCE " +getIntParam(PARAMS.C_ENDURANCE));
+        }
     }
 
     @Override
@@ -1816,11 +1832,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public AtbPanel.INTENT_ICON getIntentIcon() {
-        if (isPlayerCharacter()) {
-            return  AtbPanel.INTENT_ICON.WAIT;
-        }
         if (getMode()!=null && getMode()!= STD_MODES.NORMAL){
             return AtbPanel.INTENT_ICON.getModeIcon(getMode());
+        }
+        if (isPlayerCharacter()) {
+            return  AtbPanel.INTENT_ICON.WAIT;
         }
         if (isBoss()) {
             return AtbPanel.INTENT_ICON.WHEEL;

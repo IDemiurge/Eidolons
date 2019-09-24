@@ -95,7 +95,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             return getName();
         }
 
-        if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT){
+        if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
             //!VisionManager.checkVisible(this)) {
 //        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
@@ -151,7 +151,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                 vision_mode = VisionEnums.VISION_MODE.NORMAL_VISION;
             } else {
                 vision_mode = new EnumMaster<VISION_MODE>().retrieveEnumConst(VISION_MODE.class,
-                 name);
+                        name);
             }
         }
         return vision_mode;
@@ -164,7 +164,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
         } else if (!getChecker().isBfObj()) {
             int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
-             getIntParam(PARAMS.XP_LEVEL_MOD));
+                    getIntParam(PARAMS.XP_LEVEL_MOD));
             // for training
             setParam(PARAMS.XP, xp);
         }
@@ -214,8 +214,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
         if (before - after != 0) {
             GuiEventManager.trigger(
-             INITIATIVE_CHANGED,
-             new ImmutablePair<>(this, after)
+                    INITIATIVE_CHANGED,
+                    new ImmutablePair<>(this, after)
             );
         }
     }
@@ -258,7 +258,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {
         this.preferredAttackOfOpportunity = preferredAttackOfOpportunity;
         setProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION, preferredAttackOfOpportunity
-         .getName());
+                .getName());
     }
 
     public DC_ActiveObj getPreferredAttackAction() {
@@ -279,13 +279,13 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public BEHAVIOR_MODE getBehaviorMode() {
         MODE mode = getMode();
-        if (  mode == null) {
+        if (mode == null) {
             return null;
         }
         if (isPlayerCharacter())
-        if (ExplorationMaster.isExplorationOn()){
-            return null;
-        }
+            if (ExplorationMaster.isExplorationOn()) {
+                return null;
+            }
         return mode.getBehaviorMode();
     }
 
@@ -300,7 +300,13 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void setMode(MODE mode) {
         if (this.mode == mode) return;
+        if (getBuff("Channeling") != null) {
+            if (mode != STD_MODES.CHANNELING) {
+                return;
+            }
+        }
         this.mode = mode;
+
         if (mode == null) {
             removeProperty(G_PROPS.MODE, "");
         } else {
@@ -311,7 +317,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         } else {
             GuiEventManager.trigger(SHOW_MODE_ICON, this, mode.getImagePath());
             EUtils.showInfoText(
-             StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
+                    StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
         }
     }
 
@@ -398,7 +404,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public DC_ActiveObj getActionOrSpell(String name) {
         return getGame().getActionManager().getAction(name, this, false);
     }
-        public DC_UnitAction getAction(String name) {
+
+    public DC_UnitAction getAction(String name) {
         ActiveObj action = getGame().getActionManager().getAction(name, this);
         if (action instanceof DC_UnitAction) {
             return (DC_UnitAction) action;
@@ -591,7 +598,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public UnitChecker getChecker() {
         return (UnitChecker) super.getChecker();
     }
-
 
 
     public MODE getModeFinal() {

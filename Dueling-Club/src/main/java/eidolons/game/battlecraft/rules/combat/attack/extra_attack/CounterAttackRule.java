@@ -10,12 +10,10 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
-import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.threading.WaitMaster;
 
 /**
  * Created by JustMe on 3/16/2017.
@@ -80,12 +78,14 @@ public class CounterAttackRule {
          action.getOwnerUnit() +
          " " + StringMaster.wrapInParenthesis(activeObj.getName()));
 
+        WaitMaster.WAIT(3000);
+//        WaitMaster.(1000);
 
         Ref ref =  (attacked.getRef()).getCopy();
         ref.setTarget(attacker.getId());
         game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_COUNTER, ref));
 
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_COUNTER,
+        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.COUNTER_ATTACK,
                 "Counter Attack!", attacked);
 
         return activeObj;

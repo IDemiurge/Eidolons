@@ -148,6 +148,9 @@ public class StackingRule implements ActionRule {
         if (unit != null)
         if (EntityCheckMaster.isImmaterial(  unit ))
             return true;
+        if (unit.getIntParam(PARAMS.GIRTH)==0) {
+            return true;
+        }
         if (PaleAspect.ON) {
             return true;
         }

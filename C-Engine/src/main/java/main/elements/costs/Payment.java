@@ -35,8 +35,10 @@ public class Payment implements Serializable {
     }
 
     public boolean pay(Obj payee, Ref ref) {
+        if (valueToPay == null) {
+            return true;
+        }
         Number n = amountFormula.evaluate(ref);
-
         if (n instanceof Double) {
             this.ref = ref;
             if (isRolledRounded()) {

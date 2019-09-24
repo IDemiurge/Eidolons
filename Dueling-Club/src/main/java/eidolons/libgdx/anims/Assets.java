@@ -20,6 +20,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
@@ -44,6 +45,7 @@ import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -64,9 +66,9 @@ import java.util.stream.Collectors;
 public class Assets {
     private static boolean ON = true;
     static Assets assets;
-    private static List<String> ktxAtlases=    new ArrayList<>() ;
-    private static int estMemoryLoad=0;
-    private static int memoryBuffer=500;
+    private static List<String> ktxAtlases = new ArrayList<>();
+    private static int estMemoryLoad = 0;
+    private static int memoryBuffer = 500;
     AssetManager manager;
     private TextureAtlas dummyAtlas = new TextureAtlas(PathFinder.getImagePath() + "sprites/ui/dummy.txt");
 
@@ -75,6 +77,14 @@ public class Assets {
     }
 
     private Assets() {
+        GuiEventManager.bind(GuiEventType.LOAD_SCOPE, p -> {
+            try {
+                preloadScope(new EnumMaster<GAME_SCOPE>().retrieveEnumConst(GAME_SCOPE.class, p.get().toString()),
+                        false);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        });
         GuiEventManager.bind(GuiEventType.DISPOSE_SCOPE, p -> {
             try {
                 dispose(new EnumMaster<GAME_SCOPE>().retrieveEnumConst(GAME_SCOPE.class, p.get().toString()));
@@ -91,8 +101,8 @@ public class Assets {
             @Override
             public synchronized boolean isLoaded(String fileName) {
                 fileName = FileManager.formatPath(fileName, true, true);
-                if (isKtx(fileName)){
-                    if (super.isLoaded(getKtxAtlasPath(fileName))){
+                if (isKtx(fileName)) {
+                    if (super.isLoaded(getKtxAtlasPath(fileName))) {
                         return true;
                     }
                 }
@@ -103,8 +113,8 @@ public class Assets {
             public synchronized boolean isLoaded(String fileName, Class type) {
                 fileName = FileManager.formatPath(fileName, true, true);
 
-                if (isKtx(fileName)){
-                    if (super.isLoaded(getKtxAtlasPath(fileName), type)){
+                if (isKtx(fileName)) {
+                    if (super.isLoaded(getKtxAtlasPath(fileName), type)) {
                         return true;
                     }
                 }
@@ -120,9 +130,9 @@ public class Assets {
             @Override
             public synchronized <T> T get(String fileName, Class<T> type) {
                 fileName = FileManager.formatPath(fileName, true, true);
-                if (isKtx(fileName)){
-                    main.system.auxiliary.log.LogMaster.dev(">>>>> returning KtxAtlas " +fileName);
-                    return super.get(getKtxAtlasPath(fileName) , type);
+                if (isKtx(fileName)) {
+                    main.system.auxiliary.log.LogMaster.dev(">>>>> returning KtxAtlas " + fileName);
+                    return super.get(getKtxAtlasPath(fileName), type);
                 }
                 return super.get(fileName, type);
             }
@@ -130,8 +140,8 @@ public class Assets {
             @Override
             public synchronized <T> T get(String fileName) {
                 fileName = FileManager.formatPath(fileName, true, true);
-                if (isKtx(fileName)){
-                    main.system.auxiliary.log.LogMaster.dev(">>>>> returning KtxAtlas " +fileName);
+                if (isKtx(fileName)) {
+                    main.system.auxiliary.log.LogMaster.dev(">>>>> returning KtxAtlas " + fileName);
                     return super.get(getKtxAtlasPath(fileName));
                 }
                 return super.get(fileName);
@@ -238,7 +248,7 @@ public class Assets {
             result = true;
         }
 
-        if (her0es ) {
+        if (her0es) {
             Chronos.mark("preload her0es");
             preloadHeroes(full);
             Chronos.logTimeElapsedForMark("preload her0es");
@@ -313,15 +323,16 @@ public class Assets {
     }
 
     public static String getKtxAtlasPath(String path) {
-        return  PathUtils.cropLastPathSegment(path)+"ktx/"+
-         StringMaster.getAppendedFile(PathUtils.getLastPathSegment(path), " ktx");
+        return PathUtils.cropLastPathSegment(path) + "ktx/" +
+                StringMaster.getAppendedFile(PathUtils.getLastPathSegment(path), " ktx");
     }
 
     public static void loadedKtxAtlas(String texturePath) {
         texturePath = TextureCache.formatTexturePath(texturePath);
         ktxAtlases.add(texturePath);
-        main.system.auxiliary.log.LogMaster.dev(">>>>> loadedKtxAtlas " +texturePath);
+        main.system.auxiliary.log.LogMaster.dev(">>>>> loadedKtxAtlas " + texturePath);
     }
+
     public static boolean isKtx(String texturePath) {
         return ktxAtlases.contains(texturePath);
     }
@@ -332,34 +343,29 @@ public class Assets {
                 ".ktx";
     }
 
-    public enum GAME_SCOPE {
-        DUEL,
-        INTRO, DIALOGUE,
-
-
-    }
 
     public static void dispose(GAME_SCOPE scope) {
         String[] paths = null;
         main.system.auxiliary.log.LogMaster.important("*********** Dispose Called for: " + scope);
-        switch (scope) {
-            case DIALOGUE:
-                paths = new String[]{
-                        Sprites.AX_FIRE, Sprites.ACID_BLADE,
-                        FULLSCREEN_ANIM.HELLFIRE.getSpritePath(),
-                        FULLSCREEN_ANIM.TUNNEL.getSpritePath(),
-                        FULLSCREEN_ANIM.WAVE.getSpritePath(),
-                        FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(),
-                        Sprites.BG_DEFAULT,
-                };
-                break;
-            case DUEL:
-                break;
-            case INTRO:
-                break;
-        }
-        List<String> toClear = new ArrayList<>(Arrays.asList(paths));
-        toClear=toClear.stream().map(t -> PathUtils.getLastPathSegment(t)).collect(Collectors.toList());
+//        switch (scope) {
+//            case DIALOGUE:
+//                paths = new String[]{
+//                        Sprites.AX_FIRE, Sprites.ACID_BLADE,
+//                        FULLSCREEN_ANIM.HELLFIRE.getSpritePath(),
+//                        FULLSCREEN_ANIM.TUNNEL.getSpritePath(),
+//                        FULLSCREEN_ANIM.WAVE.getSpritePath(),
+//                        FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(),
+//                        Sprites.BG_DEFAULT,
+//                };
+//                break;
+//            case DUEL:
+//                break;
+//            case INTRO:
+//                break;
+//        }
+        List<String> toClear = //new ArrayList<>(Arrays.asList(paths));
+                ContainerUtils.openContainer(scope.assets);
+        toClear = toClear.stream().map(t -> PathUtils.getLastPathSegment(t)).collect(Collectors.toList());
         main.system.auxiliary.log.LogMaster.important("*********** To Dispose: " + toClear);
         Array<TextureAtlas> array = new Array<>();
         for (TextureAtlas textureAtlas : get().getManager().getAll(TextureAtlas.class, array)) {
@@ -372,30 +378,37 @@ public class Assets {
                 }
         }
     }
-public enum ASSET{
+
+    public enum ASSET {
         ;
-    public boolean loaded;
-    GAME_SCOPE[] scopes;
+        public boolean loaded;
+        GAME_SCOPE[] scopes;
         String path;
-    int maxMemoryLevel;
-    int memoryCost;
-}
+        int maxMemoryLevel;
+        int memoryCost;
+    }
+
     public static void preloadScope(GAME_SCOPE scope, boolean full) {
-        for (ASSET value : ASSET.values()) {
-            if (value.loaded) {
-                boolean ktx=true;
-                if (!isKtxTest() && checkMemory(value)) {
-                    ktx=false;
-                }
-                loadSprite(Sprites.SNOW, full, ktx);
-                if (ktx) {
-                    estMemoryLoad += value.memoryCost*getKtxCompressionFactor();
-                } else
-                     estMemoryLoad += value.memoryCost;
-
-            }
-
+        for (String substring : ContainerUtils.openContainer(scope.assets)) {
+            boolean ktx = false;
+            loadSprite(substring, false, ktx);
         }
+
+
+//        for (ASSET value : ASSET.values()) {
+//            if (value.loaded) {
+//                boolean ktx=true;
+//                if (!isKtxTest() && checkMemory(value)) {
+//                    ktx=false;
+//                }
+//                loadSprite(value.path, full, ktx);
+//                if (ktx) {
+//                    estMemoryLoad += value.memoryCost*getKtxCompressionFactor();
+//                } else
+//                     estMemoryLoad += value.memoryCost;
+//
+//            }
+//        }
     }
 
     private static float getKtxCompressionFactor() {
@@ -403,33 +416,72 @@ public enum ASSET{
     }
 
     private static boolean checkMemory(ASSET value) {
-       return
-                getEstGpuMemoryLeft()- memoryBuffer > value.memoryCost ;
+        return
+                getEstGpuMemoryLeft() - memoryBuffer > value.memoryCost;
     }
 
     private static Integer getEstGpuMemoryLeft() {
-        return GpuTester.getDedicatedMemory() - estMemoryLoad ;
+        return GpuTester.getDedicatedMemory() - estMemoryLoad;
+    }
+
+
+    public enum GAME_SCOPE {
+        DUEL(ContainerUtils.build(Sprites.BIG_CLAW_ATTACK, Sprites.BIG_CLAW_IDLE, Sprites.SMALL_CLAW_IDLE,
+                Sprites.GHOST_FIST, FULLSCREEN_ANIM.BLOOD.getSpritePath(),
+                Sprites.REAPER_SCYHTE)),
+
+        INTRO(ContainerUtils.build(Sprites.ACID_BLADE, Sprites.AX_FIRE, Sprites.BLOOD_SHOWER, Sprites.BONE_WINGS,
+                FULLSCREEN_ANIM.HELLFIRE.getSpritePath(),
+                FULLSCREEN_ANIM.TUNNEL.getSpritePath(),
+                FULLSCREEN_ANIM.WAVE.getSpritePath(),
+                FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(),
+                Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
+
+        PUZZLES(ContainerUtils.build(Sprites.GATE_LIGHTNING, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
+                Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
+
+        COMMON(ContainerUtils.build(Sprites.SNOW, Sprites.FLOAT_WISP, Sprites.INK_BLOTCH, Sprites.BG_DEFAULT, Sprites.FIRE_LIGHT, Sprites.WATER,
+                FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), Sprites.GATE_LIGHTNING, Sprites.PORTAL_OPEN, Sprites.PORTAL_CLOSE, Sprites.PORTAL, Sprites.WHITE_TENTACLE)),
+
+        DIALOGUE(ContainerUtils.build(Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
+                Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
+        ;
+
+        GAME_SCOPE(String assets) {
+            this.assets = assets;
+        }
+
+        public String assets;
     }
 
     public static void preloadUI(boolean full) {
         ShadeLightCell.getShadowMapAtlas();
-        boolean ktx=true;
-        if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory()>3000)) {
-            ktx=false;
+        if (CoreEngine.isSuperLite()) {
+            if (isScopeLoadingMode()) {
+
+                if (!EidolonsGame.PUZZLES)
+                    preloadScope(GAME_SCOPE.COMMON, false);
+                preloadScope(getScope(), false);
+            }
+
+        }
+        boolean ktx = true;
+        if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory() > 3000)) {
+            ktx = false;
         }
 //        if (EidolonsGame.BOSS_FIGHT){
 //            loadSprite(BossAnimator.SPRITE_PATH.bosFIRE_LIGHT, full, ktx);
 //            return;
 //        }
-        if (!EidolonsGame.BRIDGE){
+        if (!EidolonsGame.BRIDGE) {
             loadSprite(Sprites.FIRE_LIGHT, full, ktx);
 
             return;
         }
         loadSprite(Sprites.SNOW, full, ktx);
         loadSprite(Sprites.BG_DEFAULT, full, ktx);
-        if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory()>2000)) {
-            ktx=false;
+        if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory() > 2000)) {
+            ktx = false;
         }
         loadSprite(FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), full, ktx);
 
@@ -437,12 +489,12 @@ public enum ASSET{
 //            return;
 //        }
         if (full) {
-            if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.  getDedicatedMemory()>1000)) {
-                ktx=false;
+            if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory() > 1000)) {
+                ktx = false;
             }
 //            loadSprite(Sprites.MIST, full, ktx);
 
-            ktx=false;
+            ktx = false;
 
             loadSprite(Sprites.COMMENT_KESERIM, full, ktx);
             loadSprite(Sprites.ORB, full, ktx);
@@ -456,20 +508,18 @@ public enum ASSET{
             loadSprite(Sprites.BIG_CLAW_ATTACK, full, ktx);
             loadSprite(Sprites.BIG_CLAW_IDLE, full, ktx);
             loadSprite(Sprites.SMALL_CLAW_IDLE, full, ktx);
-            loadSprite("sprites/weapons3d/atlas/screen/ghost/ghost fist.txt", full, ktx);
+            loadSprite(Sprites.GHOST_FIST, full, ktx);
             loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
 
-            if (!CoreEngine.isSuperLite())
-            {
-                loadSprite( "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt", full, ktx);
+            if (!CoreEngine.isSuperLite()) {
+                loadSprite("sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt", full, ktx);
             }
 //            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
 
             if (EidolonsGame.DUEL_TEST) {
                 loadSprite(FULLSCREEN_ANIM.WAVE.getSpritePath(), full, ktx);
                 loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
-            } else
-                if (EidolonsGame.TRANSIT_TEST) {
+            } else if (EidolonsGame.TRANSIT_TEST) {
                 loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full, ktx);
             } else {
                 loadSprite(Sprites.PORTAL_OPEN, full, ktx);
@@ -502,6 +552,20 @@ public enum ASSET{
         //locks
         // blood
         //boss
+    }
+
+    private static GAME_SCOPE getScope() {
+        if (EidolonsGame.DUEL) {
+            return GAME_SCOPE.DUEL;
+        }
+        if (EidolonsGame.PUZZLES) {
+            return GAME_SCOPE.PUZZLES;
+        }
+        return GAME_SCOPE.INTRO;
+    }
+
+    private static boolean isScopeLoadingMode() {
+        return true;
     }
 
     private static boolean isKtxTest() {

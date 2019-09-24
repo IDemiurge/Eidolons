@@ -124,7 +124,7 @@ public class GridMaster {
             if (view.getActions().size == 0) {
 
                 if (view.getUserObject() instanceof Unit)
-                    if (view.getPortrait().getColor().a == 0)
+                    if (view.getPortrait().getColor().a != 1)
                         if (view.getPortrait().getActions().size == 0) {
                             view.getPortrait().fadeIn();
                             main.system.auxiliary.log.LogMaster.warn("Validation was required for Portrait" + view +
@@ -148,8 +148,8 @@ public class GridMaster {
                         //TODO detach bug
                         if (view.getParent() instanceof GridPanel)
                             if (!view.getUserObject().isDead())
-                                if (view.getX() <= 50)
-                                if (view.getY() <= 0) {
+                                if (view.getX() <= 128)
+                                if (view.getY() <= 128) {
                                     {
                                         GridPanel grid = ((GridPanel) view.getParent());
                                         grid.getCells()[view.getUserObject().getX()][grid.getGdxY(view.getUserObject().getY())].addActor(view);

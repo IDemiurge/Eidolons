@@ -1,5 +1,6 @@
 package eidolons.system;
 
+import com.badlogic.gdx.Input;
 import eidolons.ability.conditions.*;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.req.CostCondition;
@@ -75,6 +76,8 @@ public class DC_ConditionMaster extends ConditionMaster {
         String obj_ref = KEYS.MATCH.toString();
         switch (MOD) {
 
+            case FREE_CELL:
+                return new CellCondition(true);
             case PUSHABLE:
                 return new PushableCondition();
 
@@ -359,10 +362,12 @@ public class DC_ConditionMaster extends ConditionMaster {
 
 //                new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.SNEAKING)
 //TODO igg demo hack
-                List<FACING_SINGLE> list = new ArrayList<>();
-                list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
+//                List<FACING_SINGLE> list = new ArrayList<>();
+//                list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
 
-                c.add(new OrConditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT)
+                c.add(new OrConditions(
+                        new StatusCheckCondition(KEYS.SOURCE.toString(), UnitEnums.STATUS.DEFENDING),
+                         new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT)
 //                        , TODO igg demo hack
 //                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
 //                                new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
@@ -386,7 +391,7 @@ public class DC_ConditionMaster extends ConditionMaster {
 
             case CLAIM: {
 
-                c.add(new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.CHANNELED)));
+                c.add(new NotCondition(new StatusCheckCondition( UnitEnums.STATUS.CHANNELED)));
                 c.add(new NotCondition(new OwnershipCondition(KEYS.SOURCE, KEYS.MATCH)));
                 c.add(ConditionMaster.getTYPECondition(DC_TYPE.BF_OBJ));
                 c.add(ConditionMaster.getDistanceFilterCondition(Ref.KEYS.SOURCE.name(),

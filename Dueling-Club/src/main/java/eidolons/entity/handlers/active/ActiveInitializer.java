@@ -8,6 +8,8 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.atb.AtbController;
+import eidolons.game.core.atb.AtbMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -58,10 +60,10 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                 }
             }
             if (getEntity().isAttackAny()) {
-                main.system.auxiliary.log.LogMaster.important( ">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
+                main.system.auxiliary.log.LogMaster.important(">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
             } else if (!getEntity().getName().equalsIgnoreCase("wait"))
                 if (!getEntity().getName().equalsIgnoreCase("idle")) {
-                  main.system.auxiliary.log.LogMaster.important(">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
+                    main.system.auxiliary.log.LogMaster.important(">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
                 }
         }
     }
@@ -110,6 +112,11 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                     // here perhaps!
                     cp_cost.addAltCost(new CostImpl(new Payment(PARAMS.C_N_OF_ACTIONS, ap_cost)));
                 }
+
+            costs.addCost(
+                    new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
+                            , PARAMS.INITIATIVE
+                    ));
             costs.removeCost(getHandler().isExtraAttackMode() ? PARAMS.C_N_OF_ACTIONS : PARAMS.C_N_OF_COUNTERS);
         }
         if (anim) {

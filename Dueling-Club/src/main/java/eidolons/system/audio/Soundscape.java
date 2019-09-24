@@ -37,20 +37,18 @@ public class Soundscape {
 //                .chain(splash, 10)
 //                .chain(mythic_beast, 10)
         ;
-        SOUNDSCAPE.NETHER.weightMapUnit
-                .putChain(wraith, 2)
-                .putChain(ironman, 10)
-                .putChain(sorcerer, 10)
-                .putChain(warlock, 2)
-//                .putChain(zombie, 10)
-//                .putChain(cthulhu, 10)
-        ;
-        SOUNDSCAPE.NETHER.weightMapSoundType
-//                .putChain(IDLE, 10)
-                .putChain(ALERT, 6)
-                .putChain(SPOT, 3)
-                .putChain(DEATH, 3)
-        ;
+//        SOUNDSCAPE.NETHER.weightMapUnit
+//                .putChain(wraith, 2)
+//                .putChain(ironman, 10)
+//                .putChain(sorcerer, 10)
+//                .putChain(warlock, 2)
+//        ;
+//        SOUNDSCAPE.NETHER.weightMapSoundType
+////                .putChain(IDLE, 10)
+//                .putChain(ALERT, 6)
+//                .putChain(SPOT, 3)
+//                .putChain(DEATH, 3)
+//        ;
 
     }
     Map<SOUNDSCAPE, Float> map;

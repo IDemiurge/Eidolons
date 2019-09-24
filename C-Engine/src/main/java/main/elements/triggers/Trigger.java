@@ -27,13 +27,14 @@ public class Trigger {
 
     public Trigger(EVENT_TYPE eventType, Condition conditions, Ability abilities) {
         this(eventType, conditions, abilities, abilities.getRef().getGame(),
-         abilities.getRef().getTarget());
+                abilities.getRef().getTarget());
     }
 
-    public Trigger(EVENT_TYPE eventType, Condition conditions ) {
-        this(eventType, conditions,null, Game.game, null);
+    public Trigger(EVENT_TYPE eventType, Condition conditions) {
+        this(eventType, conditions, null, Game.game, null);
     }
-    public Trigger( EVENT_TYPE eventType, Condition conditions, Ability abilities, Game game, Integer basis ) {
+
+    public Trigger(EVENT_TYPE eventType, Condition conditions, Ability abilities, Game game, Integer basis) {
         this.conditions = conditions;
         this.basis = basis;
         this.eventType = eventType;
@@ -41,8 +42,8 @@ public class Trigger {
         this.game = game;
 
         if (abilities != null) {
-        if (abilities.getEffects() != null)
-            abilities.getEffects().setTrigger(this);
+            if (abilities.getEffects() != null)
+                abilities.getEffects().setTrigger(this);
         }
     }
 
@@ -56,13 +57,12 @@ public class Trigger {
 
     public boolean trigger() {
 //        if (LogMaster.TRIGGER_DEBUG_ON)
-            LogMaster.log( LOG_CHANNEL.TRIGGER_DEBUG, toString()
-             + " has been triggered!");
-        if (callback!=null )
-        {
+        LogMaster.log(LOG_CHANNEL.TRIGGER_DEBUG, toString()
+                + " has been triggered!");
+        if (callback != null) {
             callback.run();
         }
-        if (abilities==null )
+        if (abilities == null)
             return true;
         abilities.setForceTargeting(forceTargeting);
 
@@ -73,7 +73,8 @@ public class Trigger {
             // if (
             game.getManager().checkForChanges(true);
             // game.getManager().refreshAll();
-        } if (isRemoveAfterTriggers(result)) {
+        }
+        if (isRemoveAfterTriggers(result)) {
             remove();
         }
         return result;
@@ -90,13 +91,13 @@ public class Trigger {
                 return false;
             }
         }
-        if (!getEventType().equals(event.getType())) {
+        if (!event.getType().equals(getEventType())) {
             return false;
         }
         LogMaster.log(LogMaster.CORE_DEBUG, "checking trigger for event: "
-         + event.getType().name());
+                + event.getType().name());
         // return true;
-        if (eventType.equals((event.getType()))) {
+        if (event.getType().equals(eventType)) {
             ref.setEvent(event);
             if (conditions == null) {
                 this.event = event;
@@ -125,7 +126,7 @@ public class Trigger {
     }
 
     protected Ref getRef(Event event) {
-        if (getAbilities()==null )
+        if (getAbilities() == null)
             return event.getRef();
         return getAbilities().getRef();
     }
@@ -219,10 +220,10 @@ public class Trigger {
     public String toXml() {
         StringBuilder builder = new StringBuilder(120);
         return builder.append(XML_Converter.openXml("Trigger")).
-         append(XML_Converter.wrap("STANDARD_EVENT_TYPE",
-          getEventType().toString())).
-         append(XML_Converter.wrap("Conditions", getConditions() == null ? "" : getConditions().toXml())).
-         append(XML_Converter.wrap("Abilities", getAbilities().toXml())).
-         append(XML_Converter.closeXml("Trigger")).toString();
+                append(XML_Converter.wrap("STANDARD_EVENT_TYPE",
+                        getEventType().toString())).
+                append(XML_Converter.wrap("Conditions", getConditions() == null ? "" : getConditions().toXml())).
+                append(XML_Converter.wrap("Abilities", getAbilities().toXml())).
+                append(XML_Converter.closeXml("Trigger")).toString();
     }
 }
