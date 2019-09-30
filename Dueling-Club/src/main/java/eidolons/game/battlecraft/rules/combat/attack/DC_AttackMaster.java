@@ -15,8 +15,10 @@ import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
 import eidolons.game.battlecraft.rules.combat.misc.InjuryRule;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
+import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
+import eidolons.libgdx.anims.AnimContext;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -31,6 +33,8 @@ import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
@@ -137,16 +141,31 @@ public class DC_AttackMaster {
             boolean countered = false;
             if (result == null) { // first strike
                 game.getLogManager().log(attack.getAttacker() + ": First Strike Counter-Attack!");
-                ActiveObj action = counterRule.tryCounter(attack, false);
+                DC_ActiveObj action = counterRule.tryFindCounter(attack, false);
                 if (action != null) {
                     AttackEffect effect = EffectMaster.getAttackEffect(action);
+                    GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(attack.getAction(), new AnimContext(attack.getAttacker(),
+                            attack.getAttacked())));
                     waitForAttackAnimation(effect.getAttack());
+
+                    counterRule.counterWith(attack.getAction(), action);
+
                     attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                     countered = true;
                 } else
+                {
+                    GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(attack.getAction(), new AnimContext(attack.getAttacker(),
+                            attack.getAttacked())));
+                    game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getAttacked().getNameIfKnown()
+                            + " fails to counter-attack against " +
+                            action.getOwnerUnit());
                     attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
+                }
                 result = true;
 
+            } else {
+                GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(attack.getAction(), new AnimContext(attack.getAttacker(),
+                        attack.getAttacked())));
             }
             if ((!countered) || attack.getAttacker().hasDoubleCounter()) {
                 if (canCounter) {
@@ -154,7 +173,7 @@ public class DC_AttackMaster {
                         if (attack.getAttacker().hasDoubleCounter()) {
                             game.getLogManager().log(attack.getAttacker() + ": Double Counter-Attack!");
                         }
-                        counterRule.tryCounter(attack);
+                        counterRule.tryFindCounter(attack);
                     }
                 }
             }
@@ -229,7 +248,7 @@ public class DC_AttackMaster {
         if (canCounter) {
             if (attacked.hasFirstStrike() && !attacker.hasFirstStrike()) {
                 if (!attacker.hasNoRetaliation()) {
-                    // countered = tryCounter(attack);
+                    // countered = tryFindCounter(attack);
                     return null;
                 }
             }
@@ -314,7 +333,7 @@ public class DC_AttackMaster {
                     }
                     if (canCounter) {
                         if ((!countered) || attacked.hasDoubleCounter()) {
-                            // tryCounter(attack); TODO ?
+                            // tryFindCounter(attack); TODO ?
                             return true;
                         }
                     }
@@ -501,7 +520,7 @@ public class DC_AttackMaster {
 
         // if (canCounter)
         // if ((!countered) || attacker.hasDoubleCounter())
-        // tryCounter(attack);
+        // tryFindCounter(attack);
 
         return true;
 

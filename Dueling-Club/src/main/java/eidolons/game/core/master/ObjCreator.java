@@ -131,6 +131,7 @@ public class ObjCreator extends Master {
                 case DUNGEON:
                    break;
 
+                case KEY:
                 case HANGING:
                     return new InteractiveObj(type, x, y);
                 case DOOR:

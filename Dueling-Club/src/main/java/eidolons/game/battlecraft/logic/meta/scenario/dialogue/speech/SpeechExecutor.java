@@ -34,6 +34,7 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
+import eidolons.libgdx.bf.GridMaster;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
@@ -144,7 +145,6 @@ public class SpeechExecutor {
         boolean ui = false;
         boolean bool = false;
         boolean random = false;
-        Vector2 v = null;
         CUSTOM_OBJECT obj = null;
         Coordinates c = null;
         int max = 0;
@@ -548,6 +548,11 @@ public class SpeechExecutor {
             case DISPLACE:
                 GuiEventManager.trigger(("GRID_" + speechAction.name()), getUnit(value), vars.get(0));
                 break;
+            case AMBI_VFX:
+                GenericEnums.VFX vfx = new EnumMaster<GenericEnums.VFX>().retrieveEnumConst(GenericEnums.VFX.class, value);
+                Vector2 vector = getCenteredPos(getCoordinate(vars.get(0)));
+               GuiEventManager.trigger(GuiEventType.ADD_AMBI_VFX, vfx, vector );
+                break;
             case VFX:
                 bool = true;
                 value = SpellVfxMaster.checkAlias(value);
@@ -589,7 +594,7 @@ public class SpeechExecutor {
                 SimpleAnim simpleAnim = new SimpleAnim(
                         bool ? value : "",
                         bool ? "" : value, onDone);
-                v = getCenteredPos(c);
+                Vector2 v = getCenteredPos(c);
                 simpleAnim.setOrigin(v);
 //                simpleAnim.setBlending(b);
 //                simpleAnim.setFps(f);
@@ -687,6 +692,12 @@ public class SpeechExecutor {
             case MOMENT:
                 MusicMaster.playMoment(value);
                 break;
+            case STOP_LOOP_NOW:
+                if (value.equalsIgnoreCase("all")) {
+                    GuiEventManager.trigger(GuiEventType.STOP_LOOPING_TRACK_NOW, null);
+                    break;
+                }
+
             case STOP_LOOP:
                 if (value.equalsIgnoreCase("all")) {
                     GuiEventManager.trigger(GuiEventType.STOP_LOOPING_TRACK, null);
@@ -712,7 +723,7 @@ public class SpeechExecutor {
                             path = cue.getPath();
                         break bla;
                     case "ambi":
-                    case "atmo":
+//                    case "atmo":
                     case "music":
                         MusicMaster.MUSIC_TRACK track = MusicMaster.getTrackByName(vars.get(0));
                         if (vars.size() > 1) {
@@ -1082,8 +1093,8 @@ public class SpeechExecutor {
             case BLACKOUT:
             case WHITEOUT:
             case COMMENT:
-            case SOUND:
-            case MUSIC:
+//            case SOUND:
+//            case MUSIC:
             case WAIT:
             case WAIT_FOR:
             case WAIT_ANIMS:

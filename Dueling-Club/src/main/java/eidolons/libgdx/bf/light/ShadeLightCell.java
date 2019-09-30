@@ -98,13 +98,20 @@ public class ShadeLightCell extends SuperContainer {
         switch (type) {
             //                    TODO varied enough already?
             case VOID:
-                return
-                        FileManager.formatPath(
-                                FileManager.getRandomFilePathVariant(
-                                        PathFinder.getImagePath(),
-                                        StringMaster.cropFormat(type.getTexturePath()), ".png", false, false));
+                return FileManager.formatPath(PathFinder.getImagePath() +
+                                        StringMaster.cropFormat(type.getTexturePath()) +
+                                        getRandomVoidVariant() +
+                                        ".png", false, false);
         }
         return type.getTexturePath();
+    }
+
+    private static String getRandomVoidVariant() {
+        int n = RandomWizard.getRandomIntBetween(1, 7, true);
+        if (n == 1) {
+            return "";
+        }
+        return n + "";
     }
 
     @Override

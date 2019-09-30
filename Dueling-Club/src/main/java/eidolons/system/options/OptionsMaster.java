@@ -430,6 +430,7 @@ public class OptionsMaster {
                 break;
 
             case VIDEO:
+
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
                 ParticleManager.setAmbienceMoveOn(
@@ -675,6 +676,7 @@ public class OptionsMaster {
             optionsMap = readOptions(data);
             addMissingDefaults(optionsMap);
 
+            if (!CoreEngine.isIDE())
             if (MetaDataUnit.getInstance().getIntValue(META_DATA.TIMES_LAUNCHED) < 2)
                 autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }

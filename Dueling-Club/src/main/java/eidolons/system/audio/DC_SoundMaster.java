@@ -395,7 +395,7 @@ public class DC_SoundMaster extends SoundMaster {
         //TODO
     }
 
-    private static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
+    public static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
         if (activeObj instanceof Spell)
             switch (part) {
                 case PRECAST:
@@ -520,6 +520,9 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String getSpellSound(Spell spell, ANIM_PART part) {
+        if (part != IMPACT) {
+            return "";
+        } //TODO
         if (!spell.getProperty("anim_sound_"+part.getPartPath()).isEmpty()) {
             return parseSound(spell.getProperty("anim_sound_" + part.getPartPath()));
         }
@@ -530,17 +533,14 @@ public class DC_SoundMaster extends SoundMaster {
             return getSpellSoundPath() +
                     spell.getProperty(G_PROPS.CUSTOM_SOUNDSET);
         }
-        if (part != IMPACT) {
-            return "";
-        }
-        if (!spell.getProperty(G_PROPS.CUSTOM_SOUNDSET).isEmpty()) {
-            return "";
-        }
-        GenericEnums.DAMAGE_TYPE dmg_type =
-                getDmgType(spell);
-
-        return FileManager.getRandomFile(PathFinder.getSoundsetsPath() + "damage/" +
-                dmg_type).getPath();
+//        if (!spell.getProperty(G_PROPS.CUSTOM_SOUNDSET).isEmpty()) {
+//            return "";
+//        }
+//        GenericEnums.DAMAGE_TYPE dmg_type =
+//                getDmgType(spell);
+        return FileManager.getRandomFile(PathFinder.getSoundsetsPath() + "damage/dark"
+//                +                dmg_type
+        ).getPath();
     }
 
     private static String parseSound(String property) {
@@ -562,8 +562,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
         if (CoreEngine.isIggDemo()) {
-            return "";
-//            return getSpellSound(spell, part);
+            return getSpellSound(spell, part);
         }
 
         String file = spell.getProperty(getProp(part));

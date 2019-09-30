@@ -145,7 +145,7 @@ public class AtbController implements Comparator<Unit> {
         }
         if (!isPrecalc()) {
             if (time > 0)
-                manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL, getTimeString(time) + " passed, " +
+                manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
                         getTimeString(SECONDS_IN_ROUND - this.time) +
                         " until end of round");
         }

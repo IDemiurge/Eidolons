@@ -108,17 +108,17 @@ public class SpriteX extends GroupX {
         sprite.setX(getX());
         sprite.setY(getY());
         sprite.setRotation(getRotation());
-        if (getParent() instanceof BaseView) {
-            switch (((BaseView) getParent()).getUserObject().getName()) {
-                case "Eldritch Sphere":
-                    getSprite().setOffsetX( getWidth()-128+32);
-                    getSprite().setOffsetY( getHeight()-128);
-                    break;
-                case "Ghost Light":
-                    getSprite().setBlending(GenericEnums.BLENDING.SCREEN);
-                    break;
-            }
-        }
+//        if (getParent() instanceof BaseView) {
+//            switch (((BaseView) getParent()).getUserObject().getName()) {
+//                case "Eldritch Sphere":
+//                    getSprite().setOffsetX( getWidth()-128+32);
+//                    getSprite().setOffsetY( getHeight()-128);
+//                    break;
+//                case "Ghost Light":
+//                    getSprite().setBlending(GenericEnums.BLENDING.SCREEN);
+//                    break;
+//            }
+//        }
 
         sprite.setFlipX(flipX);
         sprite.setFlipY(flipY);

@@ -22,8 +22,13 @@ public class LoadingScreen extends ScreenAdapter {
     public LoadingScreen() {
         background = new Image(new Texture(GDX.file(
          PathFinder.getImagePath() + "ui/main/logo fullscreen.png")));
-        background.setPosition(GdxMaster.centerWidth(background),
-         GdxMaster.centerHeight(background));
+
+        float x = new Float(GdxMaster.getWidth())/1920;
+        float y =  new Float(GdxMaster.getHeight())/1080;
+        background.setScale(Math.max(x, y));
+
+//        background.setPosition(GdxMaster.centerWidth(background),
+//         GdxMaster.centerHeight(background));
 
         label = new Label("Welcome. We are loading assets...",
          StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));

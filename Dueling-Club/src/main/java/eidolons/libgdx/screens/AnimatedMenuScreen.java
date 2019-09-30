@@ -12,6 +12,8 @@ import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.libgdx.video.VideoMaster;
+import eidolons.system.audio.MusicMaster;
 import eidolons.system.graphics.RESOLUTION;
 import main.content.DC_TYPE;
 import main.entity.Entity;
@@ -154,7 +156,9 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     @Override
     protected void preLoad() {
+
         super.preLoad();
+//        if (isvo)
 
         try {
             Assets.preloadMenu();
@@ -175,6 +179,13 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     @Override
     protected void renderLoader(float delta) {
 
+        if (!MusicMaster.getInstance().isRunning())
+        if (VideoMaster.player!=null || !isVideoEnabled())
+            try {
+                MusicMaster.getInstance().startLoop();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 //        background.draw(getBatch(), 1);
 
         super.renderLoader(delta);

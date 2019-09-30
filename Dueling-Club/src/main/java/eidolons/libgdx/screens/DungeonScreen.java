@@ -215,12 +215,20 @@ public class DungeonScreen extends GameScreenWithTown {
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH());
+
         controller = new DungeonInputController(getCam());
         //do not chain - will fail ...
         gridPanel.init(param.getObjects());
 
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager);
+        try {
+            batch.begin();
+            gridPanel.draw(batch, 1f);
+            batch.end();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         try {
             controller.setDefaultPos();
         } catch (Exception e) {
@@ -418,8 +426,8 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     public boolean isDrawGrid() {
-        if (!gridFirstDraw){
-            gridFirstDraw=true;
+        if (!gridFirstDraw) {
+            gridFirstDraw = true;
             return true;
         }
         return !isOpaque();
@@ -433,12 +441,17 @@ public class DungeonScreen extends GameScreenWithTown {
             float colorBits = GdxColorMaster.WHITE.toFloatBits();
             if (batch.getColor().toFloatBits() != colorBits)
                 batch.setColor(colorBits); //gotta reset the alpha...
+            if (isCenteredBackground()) {
+                int w = backTexture.getRegionWidth();
+                int h = backTexture.getRegionHeight();
+                int x = (GdxMaster.getWidth() - w) / 2;
+                int y = (GdxMaster.getHeight() - h) / 2;
+                batch.draw(backTexture, x, y, w, h);
 
-            int w = backTexture.getRegionWidth();
-            int h = backTexture.getRegionHeight();
-            int x = (GdxMaster.getWidth() - w) / 2;
-            int y = (GdxMaster.getHeight() - h) / 2;
-            batch.draw(backTexture, x, y, w, h);
+            } else {
+                //TODO max
+                batch.draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+            }
             if (backTexture == null)
                 if (backgroundSprite != null) {
                     drawSpriteBg(batch);
@@ -447,6 +460,10 @@ public class DungeonScreen extends GameScreenWithTown {
 
         }
 
+    }
+
+    private boolean isCenteredBackground() {
+        return !Eidolons.isFullscreen();
     }
 
     private void drawSpriteBg(Batch batch) {

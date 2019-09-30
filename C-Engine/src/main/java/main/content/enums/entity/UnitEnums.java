@@ -280,7 +280,7 @@ public final class UnitEnums {
         HOLY_PRAYER("Will restore Morale when receiving already known spells thru Divination"),
         // CORVIDAE("Immune to sneak attacks"),
         VOIDWALKER("Can traverse Void cells"),
-        ;
+        IMMOBILE("Cannot act");
 
 
         static {

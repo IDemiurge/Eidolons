@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
@@ -44,6 +45,11 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         if (!StringMaster.isEmpty(spritePath)) {
             setKey(StringMaster.cropFormat(PathUtils.getLastPathSegment(spritePath)));
         }
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return null;
     }
 
     protected abstract boolean isClearshotRequired();

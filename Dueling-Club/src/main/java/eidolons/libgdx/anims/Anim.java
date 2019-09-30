@@ -685,6 +685,7 @@ public class Anim extends Group implements Animation {
                 setX(defaultPosition.x + getOffsetX());
                 setY(defaultPosition.y + getOffsetY());
             }
+        if (sprites != null)
         sprites.forEach(s -> {
             if (s.isAttached()) {
                 if (getActions().size == 0) {

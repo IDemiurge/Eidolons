@@ -360,6 +360,9 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(UnitEnums.STATUS.DEAD)) {
             return true;
         }
+        if (checkPassive(STANDARD_PASSIVES.IMMOBILE)) {
+            return true;
+        }
         if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
             return true;
         }

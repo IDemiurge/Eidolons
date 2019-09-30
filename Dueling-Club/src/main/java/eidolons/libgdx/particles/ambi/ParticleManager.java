@@ -2,6 +2,7 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class ParticleManager extends GroupX {
     private static final GenericEnums.VFX FOG_VFX = GenericEnums.VFX.SMOKE_TEST;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
-     GRAPHIC_OPTION.AMBIENCE_VFX);
+     GRAPHIC_OPTION.AMBIENCE_VFX) ;
     private static boolean ambienceMoveOn;
     private static Dungeon dungeon_;
     public boolean debugMode;
@@ -85,6 +86,16 @@ public class ParticleManager extends GroupX {
 
         });
 
+        GuiEventManager.bind(GuiEventType.ADD_AMBI_VFX, p -> {
+            List l = (List) p.get();
+            GenericEnums.VFX vfx = (GenericEnums.VFX) l.get(0);
+            Vector2 v = (Vector2) l.get(1);
+            Ambience ambi=null ;
+            addActor(ambi=new Ambience(vfx));
+            ambi.setPosition(v.x, v.y);
+
+
+        });
         GuiEventManager.bind(GuiEventType.INIT_AMBIENCE, p -> {
             if (!isAmbienceOn())
                 return;
@@ -148,6 +159,9 @@ public class ParticleManager extends GroupX {
     }
 
     public static boolean isAmbienceOn() {
+        if (EidolonsGame.DUEL) {
+            return false;
+        }
         return ambienceOn;
     }
 

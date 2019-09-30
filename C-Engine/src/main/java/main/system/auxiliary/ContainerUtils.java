@@ -247,7 +247,7 @@ public class ContainerUtils {
         return ", ";
     }
 
-    public static String build(String... strings) {
+        public static String build(String... strings) {
 
         return build(false, strings);
     }

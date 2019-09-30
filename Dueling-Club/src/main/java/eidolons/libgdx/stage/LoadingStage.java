@@ -3,6 +3,7 @@ package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -38,7 +39,7 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class LoadingStage extends Stage {
     protected ScreenData data;
-    private boolean fogOn = !CoreEngine.isLiteLaunch();
+    private boolean fogOn = false;//!CoreEngine.isLiteLaunch();
     private boolean engineInit = true;
     private Image fullscreenImage;
     private List<Ambience> fogList = new ArrayList<>();
@@ -64,7 +65,14 @@ public class LoadingStage extends Stage {
                         (engineInit) ? "ui/main/logo fullscreen.png"
                                 : "ui/main/moe loading screen.png");
         fullscreenImage = new Image(fullscreenTexture);
+
+        float x = new Float(GdxMaster.getWidth())/1920;
+        float y =  new Float(GdxMaster.getHeight())/1080;
+        float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
+        fullscreenImage.setScale(s);
         addActor(fullscreenImage);
+//        fullscreenImage.setPosition(GdxMaster.centerWidth(fullscreenImage),
+//         GdxMaster.centerHeight(fullscreenImage));
 
 
         addActor(underText);

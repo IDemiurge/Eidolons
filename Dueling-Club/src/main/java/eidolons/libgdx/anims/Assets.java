@@ -20,13 +20,11 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.audio.SoundPlayer;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.light.ShadeLightCell;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.launch.GpuTester;
@@ -36,7 +34,6 @@ import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.swing.generic.services.dialog.CustomDialog;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -56,7 +53,6 @@ import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -317,7 +313,20 @@ public class Assets {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
+        switch (getScope()) {
+            case DUEL:
+                MusicMaster.getInstance().getMusic(MusicMaster.MUSIC_TRACK.NIGHT_OF_DEMON.getPath(), true);
+                break;
+            case INTRO:
+                MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
+                break;
+            case PUZZLES:
+                break;
+            case COMMON:
+                break;
+            case DIALOGUE:
+                break;
+        }
 
 
     }
@@ -426,24 +435,33 @@ public class Assets {
 
 
     public enum GAME_SCOPE {
-        DUEL(ContainerUtils.build(Sprites.BIG_CLAW_ATTACK, Sprites.BIG_CLAW_IDLE, Sprites.SMALL_CLAW_IDLE,
-                Sprites.GHOST_FIST, FULLSCREEN_ANIM.BLOOD.getSpritePath(),
-                Sprites.REAPER_SCYHTE)),
+        DUEL(ContainerUtils.construct(";",Sprites.BIG_CLAW_ATTACK, Sprites.BIG_CLAW_IDLE, Sprites.SMALL_CLAW_IDLE,
+                Sprites.GHOST_FIST,
+                Sprites.CLAWS,
+                Sprites.KRIS,
+                Sprites.FANGS,
+                Sprites.ARMOR_FIST,
 
-        INTRO(ContainerUtils.build(Sprites.ACID_BLADE, Sprites.AX_FIRE, Sprites.BLOOD_SHOWER, Sprites.BONE_WINGS,
+                FULLSCREEN_ANIM.BLOOD.getSpritePath()
+                , Sprites.REAPER_SCYTHE
+        )),
+
+        INTRO(ContainerUtils.construct(";",Sprites.ACID_BLADE, Sprites.AX_FIRE, Sprites.BLOOD_SHOWER, Sprites.BONE_WINGS,
                 FULLSCREEN_ANIM.HELLFIRE.getSpritePath(),
                 FULLSCREEN_ANIM.TUNNEL.getSpritePath(),
                 FULLSCREEN_ANIM.WAVE.getSpritePath(),
                 FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(),
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
 
-        PUZZLES(ContainerUtils.build(Sprites.GATE_LIGHTNING, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
+        PUZZLES(ContainerUtils.construct(";",Sprites.GATE_LIGHTNING, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
 
-        COMMON(ContainerUtils.build(Sprites.SNOW, Sprites.FLOAT_WISP, Sprites.INK_BLOTCH, Sprites.BG_DEFAULT, Sprites.FIRE_LIGHT, Sprites.WATER,
-                FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), Sprites.GATE_LIGHTNING, Sprites.PORTAL_OPEN, Sprites.PORTAL_CLOSE, Sprites.PORTAL, Sprites.WHITE_TENTACLE)),
+        COMMON(ContainerUtils.construct(";",Sprites.SNOW, Sprites.FLOAT_WISP,
+                Sprites.INK_BLOTCH, Sprites.BG_DEFAULT, Sprites.FIRE_LIGHT, Sprites.WATER,
+                FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), Sprites.GATE_LIGHTNING,
+                Sprites.PORTAL_OPEN, Sprites.PORTAL_CLOSE, Sprites.PORTAL, Sprites.WHITE_TENTACLE)),
 
-        DIALOGUE(ContainerUtils.build(Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
+        DIALOGUE(ContainerUtils.construct(";", Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
         ;
 
@@ -456,14 +474,17 @@ public class Assets {
 
     public static void preloadUI(boolean full) {
         ShadeLightCell.getShadowMapAtlas();
-        if (CoreEngine.isSuperLite()) {
+//        if (CoreEngine.isSuperLite())
+        {
+            if (EidolonsGame.FOOTAGE) {
+                return;
+            }
             if (isScopeLoadingMode()) {
-
                 if (!EidolonsGame.PUZZLES)
                     preloadScope(GAME_SCOPE.COMMON, false);
                 preloadScope(getScope(), false);
+                return;
             }
-
         }
         boolean ktx = true;
         if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory() > 3000)) {
@@ -624,12 +645,12 @@ public class Assets {
 //        if (checkReducedSprite(path)){
 //            reduced =true;
 //        }
-//        if (full && !CoreEngine.isSuperLite()) {
+//        if (full && !CoreEngine.isSuperLite()&&  CoreEngine.isIDE()) {
 //            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
 //        } else
-        {
-            SpriteAnimationFactory.getSpriteAnimation(path, false, true, ktx);
-        }
+//        {
+//        }
+        SpriteAnimationFactory.getSpriteAnimation(path, false, true, ktx);
     }
 
 

@@ -243,10 +243,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
                 loadVideo = new VideoMaster();
             } catch (Exception e) {
                 main.system.auxiliary.log.LogMaster.log(1, "VIDEO INIT FAILED!");
-                main.system.ExceptionMaster.printStackTrace(e);
-            } finally {
                 videoEnabled = false;
-                //            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
+                main.system.ExceptionMaster.printStackTrace(e);
             }
     }
 

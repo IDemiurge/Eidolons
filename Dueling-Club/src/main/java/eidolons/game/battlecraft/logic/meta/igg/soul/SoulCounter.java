@@ -55,7 +55,7 @@ public class SoulCounter extends GroupX {
             counter.setText("" + souls);
         });
 
-        counter.addListener(new DynamicTooltip(()-> "Transform Souls into Undying counters").getController());
+        addListener(new DynamicTooltip(()-> "Turn Souls into Undying counters").getController());
         counter.setText("3");
     }
 

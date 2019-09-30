@@ -6,10 +6,12 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.round.WaterRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.Door;
@@ -145,6 +147,7 @@ public class StackingRule implements ActionRule {
                     units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
+        if (!EidolonsGame.DUEL)
         if (unit != null)
         if (EntityCheckMaster.isImmaterial(  unit ))
             return true;

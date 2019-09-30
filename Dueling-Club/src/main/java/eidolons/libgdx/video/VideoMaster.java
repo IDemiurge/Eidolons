@@ -87,6 +87,12 @@ public class VideoMaster {
 //            Gdx.gl.glEnable(GL20.GL_CULL_FACE);
 //            Gdx.gl.glCullFace(GL20.GL_BACK);
 
+        VideoMaster.player.setOnCompletionListener(new VideoPlayer.CompletionListener() {
+            @Override
+            public void onCompletionListener(FileHandle file) {
+                player.stop();
+            }
+        });
         return player;
     }
 

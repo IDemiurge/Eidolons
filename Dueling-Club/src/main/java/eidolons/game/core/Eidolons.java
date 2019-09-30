@@ -178,10 +178,12 @@ public class Eidolons {
         if (fullscreen) {
             int width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
             int height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+            if (GdxMaster.FULLHD_ONLY)
             if (width > 1920) {
                 cannotFullscreen();
                 return;
             }
+            if (GdxMaster.FULLHD_ONLY)
             if (height > 1080) {
                 cannotFullscreen();
                 return;
@@ -423,6 +425,11 @@ public class Eidolons {
     }
 
     public static void setResolution(RESOLUTION resolution) {
+        if (resolution!= RESOLUTION._1920x1080) {
+            GdxMaster.CUSTOM_RESOLUTION = true;
+        } else {
+            GdxMaster.CUSTOM_RESOLUTION = false;
+        }
         if (resolution != null) {
             if (resolution != Eidolons.getResolution()) {
                 if (Eidolons.getScope() != null)

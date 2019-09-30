@@ -49,12 +49,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         PERFORMANCE_BOOST(20, 0, 100),
         SHARD_VFX(true),
         COLOR_TEXT_LOG(true),
-        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()) {
-            @Override
-            public boolean isDevOnly() {
-                return true;
-            }
-        },
+        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
         //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
         GRID_VFX(true),

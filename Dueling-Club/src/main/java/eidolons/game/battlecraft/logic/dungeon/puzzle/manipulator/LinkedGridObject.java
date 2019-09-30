@@ -146,6 +146,7 @@ public class LinkedGridObject extends CinematicGridObject {
         //portal.  ambient/sprite/swarm of light
         CUSTOM_OBJECT.power_field.always_visible = true;
 
+        CUSTOM_OBJECT.fire_light.attach = true;
         CUSTOM_OBJECT.LEVIATHAN.attach = true;
         CUSTOM_OBJECT.LEVIATHAN.always_visible = true;
         CUSTOM_OBJECT.LEVIATHAN.blending = GenericEnums.BLENDING.INVERT_SCREEN;

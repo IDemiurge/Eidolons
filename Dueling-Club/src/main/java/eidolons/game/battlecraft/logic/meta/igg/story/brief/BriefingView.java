@@ -78,7 +78,7 @@ public class BriefingView extends TablePanelX implements Scene {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         background.draw(batch, parentAlpha);
-        window.setPosition(GdxMaster.centerWidth(window), GdxMaster.centerHeight(window));
+        window.setPosition(GdxMaster.centerWidth(window), GdxMaster.centerHeight(window)+120);
         text.setPosition(GdxMaster.centerWidth(text), window.getY() - text.getHeight());
         super.draw(batch, parentAlpha);
     }

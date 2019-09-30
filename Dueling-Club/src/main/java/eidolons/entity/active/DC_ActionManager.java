@@ -239,29 +239,14 @@ public class DC_ActionManager implements ActionManager {
 
 
     @Override
-    public ActiveObj activateCounterAttack(ActiveObj action, Obj _countering) {
+    public DC_ActiveObj findCounterAttack(ActiveObj action, Obj _countering) {
         Unit target = (Unit) action.getOwnerUnit();
         Unit source = (Unit) _countering;
         DC_ActiveObj counter = (DC_ActiveObj) getCounterAttackAction(target, source,
                 (DC_ActiveObj) action);
-        if (counter == null) {
-            return null;
-        }
-        counter.setCounterMode(true);
-        boolean result = false;
-        try {
-            result = activateAction(target, source, counter);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            counter.setCounterMode(false);
-        }
-        if (!result) {
-            return null;
-        }
-        // TODO ?
         return counter;
     }
+
 
     public Active getCounterAttackAction(Unit countered, Unit countering,
                                          DC_ActiveObj active) {

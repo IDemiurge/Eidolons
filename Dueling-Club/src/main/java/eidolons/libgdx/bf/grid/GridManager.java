@@ -290,15 +290,15 @@ public class GridManager {
                     finalCommentTextBgSprite.setScale(0.85f);
                     finalCommentTextBgSprite.setOrigin(finalCommentBgSprite.getWidth() / 4, finalCommentBgSprite.getHeight() / 4);
                     finalCommentTextBgSprite.setRotation(90);
-                    finalCommentTextBgSprite.setPosition(finalCommentBgSprite.getWidth() / 2f, -50 - finalCommentBgSprite.getHeight() / 4);
+                    finalCommentTextBgSprite.setPosition(finalCommentBgSprite.getWidth() / 2f, -30 - finalCommentBgSprite.getHeight() / 2.5f);
                 } else {
                     finalCommentTextBgSprite.setOrigin(finalCommentBgSprite.getWidth() / 2, finalCommentBgSprite.getHeight() / 2);
                     finalCommentTextBgSprite.setRotation(90);
                     if (finalTextPlacement == DIRECTION.RIGHT) {
-                        finalCommentTextBgSprite.setPosition(finalCommentBgSprite.getWidth() / 2.5f, -100 - finalCommentBgSprite.getHeight() / 7);
+                        finalCommentTextBgSprite.setPosition(finalCommentBgSprite.getWidth() / 2.5f, -100 - finalCommentBgSprite.getHeight() / 5);
                     } else if (finalTextPlacement == DIRECTION.LEFT) {
 
-                        finalCommentTextBgSprite.setPosition(-finalCommentBgSprite.getWidth() / 2.5f, -100 - finalCommentBgSprite.getHeight() / 7);
+                        finalCommentTextBgSprite.setPosition(-finalCommentBgSprite.getWidth() / 2.5f, -100 - finalCommentBgSprite.getHeight() / 5);
                     }
                 }
 
@@ -322,7 +322,7 @@ public class GridManager {
                         y = y + (h - y) / 2 + h * 0.22f + 68;
                         break;
                     case DOWN:
-                        x = x - w / 2 - bgWidth + bgHeight / 2 + 180;
+                        x = x - w / 2 - bgWidth + bgHeight / 2 + 210;
                         if (seq) {
                             y = y + (h - y) / 2 - 5 - h / 6.5f;
                         } else {

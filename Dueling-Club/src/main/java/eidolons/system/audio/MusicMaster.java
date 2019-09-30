@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.data.XLinkedMap;
@@ -139,7 +140,21 @@ public class MusicMaster {
             for (PreloadedMusic preloadedMusic : new ArrayList<>(looping)) {
                 if (path==null || StringMaster.compare(preloadedMusic.getPath(), path, false)) {
                     looping.remove(preloadedMusic);
-                    break;
+                    if (path!=null) {
+                        break;
+                    }
+                }
+            }
+        });
+        GuiEventManager.bind(GuiEventType.STOP_LOOPING_TRACK_NOW, p -> {
+            String path = (String) p.get();
+            for (PreloadedMusic preloadedMusic : new ArrayList<>(looping)) {
+                if (path==null || StringMaster.compare(preloadedMusic.getPath(), path, false)) {
+                    looping.remove(preloadedMusic);
+                    preloadedMusic.stop();
+                    if (path!=null) {
+                        break;
+                    }
                 }
             }
         });
@@ -203,6 +218,10 @@ public class MusicMaster {
     }
 
     public static boolean isOn() {
+        if (VideoMaster.player!=null )
+        if (VideoMaster.player.isPlaying())
+            return false;
+        if (getInstance().scope!=MUSIC_SCOPE.MENU)
         if (EidolonsGame.DUEL) {
             return false;
         }

@@ -41,7 +41,11 @@ public class DescriptionTooltips {
         String source = FileManager.readFile(path);
         parseSource(source,tutorialMap, false);
     }
+   static boolean init;
     public static void init() {
+        if (init)
+            return;
+        init=true;
         paramMap = new XLinkedMap<>();
         tipMap = new XLinkedMap<>();
         loreMap = new XLinkedMap<>();

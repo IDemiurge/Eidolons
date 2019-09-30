@@ -8,6 +8,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -151,12 +152,13 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
             if (object.checkBool(GenericEnums.STD_BOOLS.FAUX)) {
                 values.add(new ValueContainer("Fragile"));
-            } else
-            if (object.isIndestructible()) {
+            } else if (object.isIndestructible()) {
                 values.add(new ValueContainer("Indestructible"));
             } else {
                 values.add(getValueContainer(object, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
-                values.add(getValueContainer(object, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
+                if (!object.isPlayerCharacter() || EidolonsGame.getVar("endurance")) {
+                    values.add(getValueContainer(object, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
+                }
             }
             if (!object.isBfObj())
                 if (info_level != null)
@@ -179,10 +181,10 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             }
                     }
             if (!object.isIndestructible())
-            if (info_level == INFO_LEVEL.VERBOSE) {
-                addParamStringToValues(object, values, PARAMS.ARMOR);
-                addParamStringToValues(object, values, PARAMS.RESISTANCE);
-            }
+                if (info_level == INFO_LEVEL.VERBOSE) {
+                    addParamStringToValues(object, values, PARAMS.ARMOR);
+                    addParamStringToValues(object, values, PARAMS.RESISTANCE);
+                }
 
             if (object.getGame().isDebugMode()) {
                 ValueContainer valueContainer =

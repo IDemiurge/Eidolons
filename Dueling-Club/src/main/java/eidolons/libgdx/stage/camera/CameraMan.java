@@ -9,6 +9,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.GameScreen;
@@ -299,7 +300,14 @@ public class CameraMan {
             return ;
         }
         pendingPanTarget = hero;
-        WaitMaster.doAfterWait(1000, ()->{
+        int time = 1500;
+        if (AnimMaster.getInstance().isDrawingPlayer()){
+            time = 2200;
+        }
+        if (hero.isPlayerCharacter()) {
+            time = 1000;
+        }
+        WaitMaster.doAfterWait(time, ()->{
             if (hero.getGame().getManager().getActiveObj()==hero) {
                 motions.clear();
                 centerCameraOn(hero);

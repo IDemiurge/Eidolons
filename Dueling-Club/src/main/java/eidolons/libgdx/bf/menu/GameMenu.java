@@ -2,6 +2,7 @@ package eidolons.libgdx.bf.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
@@ -104,6 +105,14 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected boolean isHidden(GAME_MENU_ITEM item) {
+        if (EidolonsGame.BRIDGE) {
+            switch (item) {
+                case MANUAL:
+                case BACK_TO_TOWN:
+                case TUTORIAL_RECAP:
+                    return false;
+            }
+        }
         if (item== GAME_MENU_ITEM.BACK_TO_TOWN) {
             return CoreEngine.isLiteLaunch();
         }

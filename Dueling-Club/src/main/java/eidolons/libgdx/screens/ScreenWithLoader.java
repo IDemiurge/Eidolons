@@ -92,11 +92,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void preLoad() {
-        try {
-            MusicMaster.getInstance().startLoop();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
 
         if (data.getDialogViews().size() > 0) {
             introStage = new ChainedStage(viewPort, getBatch(), data.getDialogViews());

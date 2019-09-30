@@ -80,6 +80,9 @@ public enum STD_MODES implements MODE {
         MEDITATION.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
         CHANNELING.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
         CHANNELING.duration=0;
+        CHANNELING.dispelOnHit=false; //TODO EA HACK
+
+
         DIVINATION.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD);
 
         CHANNELING.setRemoveEvent(null);

@@ -32,7 +32,8 @@ public class SoulforcePanel extends GroupX {
         addActor(lordBtn = new SmartButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> leftButton()));
         addActor(paleBtn = new SmartButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> rightButton()));
 
-        bar.addListener(new DynamicTooltip(() -> "Current Soulforce: " + bar.getTooltip()).getController());
+        bar.addListener(new DynamicTooltip(() -> "Undying counters: " + bar.getTooltip()).getController());
+//        bar.addListener(new DynamicTooltip(() -> "Current Soulforce: " + bar.getTooltip()).getController());
         lordBtn.addListener(new DynamicTooltip(() -> "Eidolon Arts").getController());
         paleBtn.addListener(new DynamicTooltip(() -> "Enter Pale Aspect").getController());
 

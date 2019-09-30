@@ -140,12 +140,12 @@ public class HpBar extends SuperActor {
         setToughnessPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getToughnessPerc()));//  toughnessPerc % 0.01f;
         setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE)));
         setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
-        if (dataSource.isPlayerCharacter()){
-            if (!EidolonsGame.getVar("endurance")){
-                setEndurancePerc( getToughnessPerc());
-//                setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
-            }
-        }
+//        if (dataSource.isPlayerCharacter()){
+//            if (!EidolonsGame.getVar("endurance")){
+//                setEndurancePerc( getToughnessPerc());
+////                setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
+//            }
+//        }
        //  toughnessPerc % 0.01f;
 //        setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
         if (getToughnessPerc().equals(lastOfferedToughness) &&
@@ -272,7 +272,11 @@ public class HpBar extends SuperActor {
             displayedToughnessPerc =
                     toughnessAction.getValue();
 
-            fullLengthPerc = displayedEndurancePerc;
+            if (!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
+                fullLengthPerc = displayedEndurancePerc;
+            else {
+                fullLengthPerc = displayedToughnessPerc;
+            }
         } else if (!dirty)
             return;
 //        if (dataSource.isBeingReset())
@@ -291,7 +295,11 @@ public class HpBar extends SuperActor {
         text = "" + (dataSource.getIntParam(PARAMS.C_TOUGHNESS) //* displayedToughnessPerc
         ) + "/" + dataSource.getLastValidParamValue(PARAMS.TOUGHNESS);
         label_t.setText(text);
-        fullLengthPerc = displayedEndurancePerc;
+        if (!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
+            fullLengthPerc = displayedEndurancePerc;
+        else {
+            fullLengthPerc = displayedToughnessPerc;
+        }
         if (getToughnessPerc() <= 0) {
             setToughnessPerc(toughnessDeathBarrier);
             toughnessDeath = true; //diff color?
@@ -339,7 +347,11 @@ public class HpBar extends SuperActor {
             if (isAnimated()) {
 //                return true; TODO why?
             }
-            fullLengthPerc = displayedEndurancePerc;
+            if (!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
+                fullLengthPerc = displayedEndurancePerc;
+            else {
+                fullLengthPerc = displayedToughnessPerc;
+            }
         }
         return false;
     }

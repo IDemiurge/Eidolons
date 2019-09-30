@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -28,6 +29,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.SmartTextureAtlas;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
@@ -240,7 +242,7 @@ public class HitAnim extends ActionAnim {
         float x = originalActorX;
         float y = originalActorY;
 
-        boolean overlaying=false;
+        boolean overlaying = false;
         if (getRef().getSourceObj() instanceof DC_Obj) {
             if (((DC_Obj) getRef().getSourceObj()).isOverlaying()) {
                 overlaying = true;
@@ -248,7 +250,7 @@ public class HitAnim extends ActionAnim {
         }
 
         SequenceAction sequence =
-                ActionMaster.getDisplaceSequence(x,y, dx, dy, getDuration()/2, overlaying);
+                ActionMaster.getDisplaceSequence(x, y, dx, dy, getDuration() / 2, overlaying);
 
         if (isDelayed()) {
             DelayAction delayed = new DelayAction(getDuration() / 3);
@@ -301,6 +303,10 @@ public class HitAnim extends ActionAnim {
         super.start();
         getActions().clear();
         addFadeAnim();
+
+        if (getActive() instanceof Spell) {
+            DC_SoundMaster.playAnimStartSound(getActive(), ANIM_PART.IMPACT);
+        }
         //        if (textSupplier != null)
         //            floatingText.setText(textSupplier.getVar());
 
@@ -326,11 +332,11 @@ public class HitAnim extends ActionAnim {
         add();
 
         try {
-         ScreenshakeMaster.shakeCamera(ref, damage);
+            ScreenshakeMaster.shakeCamera(ref, damage);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-         }
+    }
 
 
     @Override
@@ -380,7 +386,7 @@ public class HitAnim extends ActionAnim {
             case STONE:
                 break;
         }
-        return new Color(1,1,1,1);
+        return new Color(1, 1, 1, 1);
     }
 
     private SPRITE_TYPE getSpriteType(BattleFieldObject targetObj) {

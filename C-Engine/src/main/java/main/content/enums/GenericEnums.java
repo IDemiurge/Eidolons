@@ -353,6 +353,10 @@ public class GenericEnums {
 
          */
 
+        FULLSCREEN_FOG("ambient/fullscreen/fullscreen fog"),
+        FULLSCREEN_SNOW("ambient/fullscreen/fullscreen snow"),
+        FULLSCREEN_LEAVES("ambient/fullscreen/fullscreen leaves"),
+
         CAST_dark("spell/cast/witchery circle slow6"),
         CAST_dark2("spell/cast/shadow center2"),
         CAST_dark3("spell/cast/blood circle slow3"),

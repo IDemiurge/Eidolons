@@ -59,7 +59,7 @@ public class SoulforceBar extends GroupX {
     }
 
     public String getTooltip() {
-        return value+"/"+max;
+        return new Integer( (int)value/10)+"/"+( (int)max/10);
     }
     public void init() {
         GuiEventManager.bind(GuiEventType.SOULFORCE_RESET , p->

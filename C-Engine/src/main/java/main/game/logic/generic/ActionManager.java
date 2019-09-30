@@ -12,7 +12,7 @@ public interface ActionManager {
 
     ActiveObj newAction(ObjType type, Ref ref, Player owner, GenericGame game);
 
-    ActiveObj activateCounterAttack(ActiveObj action, Obj _countering);
+    ActiveObj findCounterAttack(ActiveObj action, Obj _countering);
 
     ActiveObj getAction(String abilTypeName, Entity entity);
 

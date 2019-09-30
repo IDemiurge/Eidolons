@@ -39,55 +39,66 @@ public class CounterAttackRule {
         return !active.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
     }
 
-    public ActiveObj tryCounter(Attack attack) {
-        return tryCounter(attack, true);
+    public DC_ActiveObj tryFindCounter(Attack attack) {
+        return tryFindCounter(attack, true);
     }
 
-    public ActiveObj tryCounter(Attack attack, boolean checkAnimationFinished) {
+    public DC_ActiveObj tryFindCounter(Attack attack, boolean checkAnimationFinished) {
         //        if (checkAnimationFinished) {
         //        }
 
-        ActiveObj counter = null;
+        DC_ActiveObj counter = null;
         if (!attack.isRanged())
-        if (attack.getAttackedUnit() != null)
-            if (!attack.isCounter() &&
-             (RuleKeeper.isRuleTestOn(RULE.COUNTER_ATTACK) ||
-              (attack.isCanCounter() &&
-               //           attack.getAttackedUnit().
-               canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
-             ) {
-                counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit(), attack.getAttacker());
-            }
+            if (attack.getAttackedUnit() != null)
+                if (!attack.isCounter() &&
+                        (RuleKeeper.isRuleTestOn(RULE.COUNTER_ATTACK) ||
+                                (attack.isCanCounter() &&
+                                        //           attack.getAttackedUnit().
+                                        canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
+                ) {
+                    counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit(), attack.getAttacker());
+                }
 
         return counter;
 
     }
 
-    private ActiveObj counter(DC_ActiveObj action, Unit attacked, Unit attacker) {
-        //        game.getLog().combatLog();
-//        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
-//         + action.getOwnerUnit());
-        ActiveObj activeObj = game.getActionManager().activateCounterAttack(action,
-         attacked);
-        if (activeObj == null) {
-            game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " fails to counter-attack against " +
-             action.getOwnerUnit());
-            return null;
-        }
+    public void counterWith(DC_ActiveObj action, DC_ActiveObj counter) {
+        Unit attacker = action.getOwnerUnit();
+        Unit attacked = counter.getOwnerUnit();
         game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " makes a counter-attack against " +
-         action.getOwnerUnit() +
-         " " + StringMaster.wrapInParenthesis(activeObj.getName()));
-
-        WaitMaster.WAIT(3000);
-//        WaitMaster.(1000);
-
-        Ref ref =  (attacked.getRef()).getCopy();
+                action.getOwnerUnit() +
+                " " + StringMaster.wrapInParenthesis(action.getName()));
+        Ref ref = (attacked.getRef()).getCopy();
         ref.setTarget(attacker.getId());
         game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_COUNTER, ref));
+
 
         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.COUNTER_ATTACK,
                 "Counter Attack!", attacked);
 
-        return activeObj;
+        Unit target = action.getOwnerUnit();
+        Unit source = counter.getOwnerUnit();
+        counter.setCounterMode(true);
+        boolean result = false;
+        try {
+            WaitMaster.WAIT(1000);
+            game.getActionManager().activateAction(target, source, counter);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        } finally {
+            counter.setCounterMode(false);
+        }
+    }
+
+    private DC_ActiveObj counter(DC_ActiveObj action, Unit attacked, Unit attacker) {
+        //        game.getLog().combatLog();
+//        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
+//         + action.getOwnerUnit());
+
+
+
+        return  game.getActionManager().findCounterAttack(action,
+                attacked);
     }
 }

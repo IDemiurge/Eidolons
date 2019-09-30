@@ -77,14 +77,14 @@ public class WaterRule extends RoundRule implements ActionRule {
 //                return true;
 //            }
 //        }
-        if (manualCheck) {
-            if (EidolonsGame.BRIDGE_CROSSED)
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                "Won't touch that"
+//        obj.getGame().getManager().isSelecting()
+//        if (manualCheck) {
+//            if (EidolonsGame.BRIDGE_CROSSED)
+//        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+//                "Won't touch that"
 //                "Too deep to cross!"
-
-                , obj);
-        }
+//                , obj);
+//        }
         return false;
     }
 

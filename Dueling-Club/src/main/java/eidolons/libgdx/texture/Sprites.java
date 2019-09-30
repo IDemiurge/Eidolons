@@ -49,7 +49,7 @@ public class Sprites {
     public static final String BIG_CLAW_ATTACK = "sprites/weapons3d/special/big claw slash.txt";
     public static final String BIG_CLAW_IDLE = ("sprites/unit/claw big.txt");
     public static final String SMALL_CLAW_ATTACK = "sprites/weapons3d/special/small claw slash.txt";
-    public static final String SMALL_CLAW_IDLE = ("sprites/unit/claw small.txt");
+    public static final String SMALL_CLAW_IDLE = ("sprites/unit/small claw.txt");
 
     public static final String BLOOD_SHOWER = "sprites/hit/blood/shower.txt";
     public static final String BLOOD_SLICE = "sprites/hit/blood/slice.txt";
@@ -58,7 +58,11 @@ public class Sprites {
     public static final String GATE_LIGHTNING = "sprites/spell/nether/lightning gate.txt";
     public static final String KTX_TEST = "sprites/test/maw.txt";
     public static final String GHOST_FIST = "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
-    public static final String REAPER_SCYHTE = "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt";
+    public static final String REAPER_SCYTHE = "sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt";
+    public static final String ARMOR_FIST = "sprites/weapons3d/atlas/natural/fists/armored fist.txt";
+    public static final String FANGS = "sprites/weapons3d/atlas/natural/fangs/fangs.txt";
+    public static final String CLAWS = "sprites/weapons3d/atlas/natural/claws/claws.txt";
+    public static final String KRIS = "sprites/weapons3d/atlas/blade/short swords/kris.txt";
 
     private static final Map<String, String> spriteMap;
 

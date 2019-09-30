@@ -26,6 +26,7 @@ public class EidolonsGame {
     public static   boolean DUEL_TEST  ;
     public static   boolean TRANSIT_TEST  ;
     public static boolean LEVI_TEST = false;
+    public static boolean IDE = CoreEngine.isIDE();
 
 
     public static boolean BRIDGE = false;
@@ -173,10 +174,13 @@ public class EidolonsGame {
             return false;
         }
         if (activeObj.isMove()) {
+            if (MOVES_DISABLED) {
+                return true;
+            }
             if (MOVES_FORWARD_ONLY) {
                 return !activeObj.getName().equalsIgnoreCase("Move");
             }
-            return MOVES_DISABLED;
+            return false;
         }
         if (activeObj.isTurn()) {
             return TURNS_DISABLED;

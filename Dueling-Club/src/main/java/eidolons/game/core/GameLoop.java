@@ -378,6 +378,11 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused, boolean logged, boolean manual) {
+        if (!ExplorationMaster.isExplorationOn())
+        {
+            EUtils.showInfoText("Cannot pause in combat");
+            return;
+        }
         if (!game.isStarted()) {
             return;
         }

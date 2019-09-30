@@ -286,7 +286,8 @@ public class ShardVisuals extends GroupX {
     }
 
     private boolean isVfxOn() {
-        return OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.AMBIENCE_VFX);
+//        return OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.AMBIENCE_VFX);
+        return false;
     }
 
     private SHARD_SIZE chooseSize(int x, int y, Object direction) {

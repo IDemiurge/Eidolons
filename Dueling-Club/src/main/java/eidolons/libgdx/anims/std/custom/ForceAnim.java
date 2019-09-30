@@ -70,13 +70,13 @@ public class ForceAnim extends Weapon3dAnim {
 
         if (type == GenericEnums.DAMAGE_TYPE.SHADOW || type == GenericEnums.DAMAGE_TYPE.DEATH) {
             if (!CoreEngine.isSuperLite())
-                return Sprites.REAPER_SCYHTE;
+                return Sprites.REAPER_SCYTHE;
             else {
                 return Sprites.GHOST_FIST;
             }
         }
         if (type == GenericEnums.DAMAGE_TYPE.CHAOS) {
-            return  Sprites.GHOST_FIST;
+            return Sprites.GHOST_FIST;
         }
         if (type == GenericEnums.DAMAGE_TYPE.LIGHTNING) {
             return Sprites.GATE_LIGHTNING;
@@ -94,11 +94,11 @@ public class ForceAnim extends Weapon3dAnim {
         SpriteAnimation atlas = SpriteAnimationFactory.getSpriteAnimation(getSpritePath());
 
         Array<TextureAtlas.AtlasRegion> regions = null;
-        if (getSpritePath().equalsIgnoreCase(Sprites.GHOST_FIST)) {
-//            if (type== GenericEnums.DAMAGE_TYPE.SHADOW) {
-//                regions = SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
-//                        .findRegions("Reaper_Scythe_Scythe_Swing_" + projection.toString().toLowerCase());
-//            } else
+        if (getSpritePath().equalsIgnoreCase(Sprites.REAPER_SCYTHE)) {
+            regions = SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
+                    .findRegions("Reaper_Scythe_Scythe_Swing_" + projection.toString().toLowerCase());
+        } else if (getSpritePath().equalsIgnoreCase(Sprites.GHOST_FIST)) {
+
             regions = SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
                     .findRegions("armored fist punch " + projection.toString().toLowerCase() +
                             "/armored fist punch " + projection.toString().toLowerCase());
@@ -119,11 +119,27 @@ public class ForceAnim extends Weapon3dAnim {
                 sprite.setFlipX(PositionMaster.isAbove(getRef().getTargetObj(), getRef().getSourceObj()));
                 break;
             case HOR:
-                sprite.setFlipX(PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
+                if (getSpritePath().equalsIgnoreCase(Sprites.GHOST_FIST)){
+                    sprite.setFlipX(PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
+                } else
+                if (getSpritePath().equalsIgnoreCase(Sprites.REAPER_SCYTHE)){
+                    sprite.setFlipX(!PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
+                } else
+                    sprite.setFlipX(!PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
                 break;
         }
         return sprite;
 
+    }
+    protected boolean isInvertScreen() {
+//        getActive().getActiveWeapon().checkSingleProp()
+        if (type != null) {
+            switch (type) {
+                case LIGHTNING:
+                    return false;
+            }
+        }
+        return !getActive().getOwnerUnit().isMine();
     }
 
     @Override
@@ -131,6 +147,7 @@ public class ForceAnim extends Weapon3dAnim {
         if (type == GenericEnums.DAMAGE_TYPE.LIGHTNING) {
             sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
+        if (isVfxOn())
         for (SpellVfx spellVfx : emitterList) {
 //            spellVfx.getEffect().getEmitters().forEach(e -> e.setAdditive(false));
             spellVfx.getEffect().setAlpha(0.1f);
@@ -147,12 +164,12 @@ public class ForceAnim extends Weapon3dAnim {
     @Override
     public void updatePosition(float delta) {
         if (sprite != null)
-        try {
-            sprite.setX(origin.x);
-            sprite.setY(origin.y);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                sprite.setX(origin.x);
+                sprite.setY(origin.y);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         super.updatePosition(delta);
     }
 
@@ -164,9 +181,10 @@ public class ForceAnim extends Weapon3dAnim {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         if (sprite != null) {
-        sprite.setFps(15);
+            sprite.setFps(15);
         }
 
+        if (isVfxOn())
         try {
             String path = PathFinder.getVfxPath() + getVfxPath();
 
@@ -188,6 +206,13 @@ public class ForceAnim extends Weapon3dAnim {
         }
 
 
+    }
+
+    private boolean isVfxOn() {
+        if (!getActive().isMine()) {
+            return true;
+        }
+        return false;
     }
 
     private String getVfxPath() {

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefMusic;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
@@ -139,7 +140,8 @@ public class QuestMaster extends MetaGameHandler {
             String txt = type.getName() + StringMaster.NEW_LINE +
                     StringMaster.NEW_LINE + quest.getProgressText() + StringMaster.NEW_LINE +
                     quest.getDescription();
-            MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
+            if (ExplorationMaster.isExplorationOn())
+                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
 
             TipMessageMaster.tip(new TipMessageSource(txt, type.getImagePath(), "Onward!", false, () -> {
             }));

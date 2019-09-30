@@ -3,6 +3,7 @@ package eidolons.libgdx.launch;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -250,7 +251,6 @@ public class GenericLauncher extends Game {
     public void resize(int width, int height) {
         if (viewport == null)
             return;
-
         viewport.update(width, height);
 
         if (gameScreen != null) gameScreen.resize(width, height);
@@ -260,7 +260,23 @@ public class GenericLauncher extends Game {
             VideoMaster.player.resize(width, height);
         }
     }
+    public static void setGraphicsMode() {
+//        switch (getString(OptionConstant.DISPLAY_MODE)) {
+//            case "windowed borderless":
+//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+//                break;
+//            case "windowed":
+//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+//                break;
+//            default:
+//                break;
+//        }
+//        Gdx.graphics.setWindowedMode(getInt(OptionConstant.RESOLUTION_X) + 1,
+//                getInt(OptionConstant.RESOLUTION_Y));
 
+
+//                Gdx.graphics.setWindowedMode(
+    }
     @Override
     public void render() {
 

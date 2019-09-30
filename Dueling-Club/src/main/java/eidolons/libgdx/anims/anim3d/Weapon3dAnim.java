@@ -114,9 +114,10 @@ public class Weapon3dAnim extends ActionAnim {
         getSprites().add(randomized);
     }
 
-    private boolean isInvertScreen() {
+    protected boolean isInvertScreen() {
 //        getActive().getActiveWeapon().checkSingleProp()
-        return !getActive().getOwnerUnit().isMine();
+//        return !getActive().getOwnerUnit().isMine();
+        return false;
     }
 
     private boolean isScreen() {

@@ -266,13 +266,19 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         sprite.setAlpha(alpha);
         sprite.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-        if (getScale() != null)
+        if (getScale() != null){
             sprite.setScale(getScale());
+            sprite.setPosition((int) (x + offsetX - getScale()*currentFrame.getRegionWidth() / 2), y
+                    + (int) (offsetY
+                    - getScale()*currentFrame.getRegionHeight() / 2));
+        }
+        else {
+            sprite.setPosition((int) (x + offsetX - currentFrame.getRegionWidth() / 2), y
+                    + (int) (offsetY
+                    - currentFrame.getRegionHeight() / 2));
+        }
         sprite.setRotation(rotation);
         sprite.setOrigin(originX, originY);
-        sprite.setPosition((int) (x + offsetX - currentFrame.getRegionWidth() / 2), y
-                + (int) (offsetY
-                - currentFrame.getRegionHeight() / 2));
 
 //        if (color != null)
         sprite.setColor(color);

@@ -7,6 +7,7 @@ import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
@@ -214,9 +215,10 @@ public class Executor extends ActiveHandler {
         if (getEntity().getOwnerUnit().isBoss()) { //TODO boss fix - what about spells?
             GuiEventManager.trigger(GuiEventType.BOSS_ACTION, input);
         } else {
-            GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-                    input
-            );
+            if (!input.getAction().isAttackAny()) //EA HACK
+                GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
+                        input
+                );
         }
 
         actionComplete();
@@ -534,6 +536,8 @@ public class Executor extends ActiveHandler {
     }
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {
+        if (EidolonsGame.DUEL)
+            return true;
         if (RuleKeeper.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS)) {
             try {
                 return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);

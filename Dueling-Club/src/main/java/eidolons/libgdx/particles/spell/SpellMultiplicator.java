@@ -326,6 +326,7 @@ public class SpellMultiplicator implements Runnable {
 
         switch (template) {
             case RAY:
+            case RAY_AUTO:
             case BLAST:
             case SPRAY:
             case WAVE:
