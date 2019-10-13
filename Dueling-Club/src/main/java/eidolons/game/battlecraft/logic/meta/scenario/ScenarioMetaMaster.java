@@ -2,10 +2,8 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
-import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
-import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
+import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.libgdx.launch.ScenarioLauncher;
@@ -25,7 +23,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     @Override
     public void preStart() {
-        getMetaDataManager().initMissionName();
+        getMetaDataManager().initData();
         super.preStart();
     }
 
@@ -52,7 +50,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
             }
         getMetaDataManager().setMissionName(null);
-        getMetaDataManager().initMissionName();
+        getMetaDataManager().initData();
         ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES );
@@ -83,6 +81,11 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
 //        GuiEventManager.trigger(GuiEventType.SCREEN_LOADED);
 
+    }
+
+    @Override
+    protected DefeatHandler createDefeatHandler() {
+        return new IGG_DefeatHandler(this);
     }
 
     @Override

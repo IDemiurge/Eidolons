@@ -442,8 +442,11 @@ public class ImageManager {
         return getHighlightedCellIcon(GuiManager.getBfCellsVersion());
     }
 
+    public static ImageIcon getUnknownIcon() {
+        return getIcon("ui/unknown.jpg");
+    }
     public static ImageIcon getEmptyEmblem() {
-        return getIcon("ui//emblems//empty emblem.jpg");
+        return getIcon("ui/unknown.jpg");
     }
 
     public static String getEmptyEmblemPath() {

@@ -129,11 +129,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             setWaitingForInput(true);
             this.param = param;
             updateInputController();
-        } else done(this.param);
+        } else
+            done(this.param);
 
-        if (param.get() instanceof BFDataCreatedEvent) {
-            Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
-        }
+//        if (param.get() instanceof BFDataCreatedEvent) {
+//       TODO      Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
+//        }
     }
 
     protected void renderMain(float delta) {

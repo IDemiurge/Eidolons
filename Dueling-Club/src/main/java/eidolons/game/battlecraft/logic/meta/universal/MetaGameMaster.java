@@ -1,12 +1,14 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.content.PROPS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.GameEventHandler;
+import eidolons.game.battlecraft.logic.meta.igg.event.IGG_EventHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -56,6 +58,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected GameEventHandler eventHandler;
     protected ModuleMaster moduleMaster;
 
+    ShadowMaster shadowMaster = new ShadowMaster(this);
+
+    public ShadowMaster getShadowMaster() {
+        return shadowMaster;
+    }
+
     public MetaGameMaster(String data) {
         this.data = data;
         initHandlers();
@@ -76,7 +84,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void initHandlers() {
         moduleMaster = new ModuleMaster(this);
-        eventHandler = new GameEventHandler(this);
+        eventHandler = new IGG_EventHandler(this);
         defeatHandler = createDefeatHandler();
         partyManager = createPartyManager();
         lootMaster = createLootMaster();
@@ -109,10 +117,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             Simulation.init(false, this);
             game = createGame();
             Simulation.setRealGame(game);
-        } else {
-            game.setMetaMaster(this);
         }
-
+        game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);
         preStart();
 
@@ -120,6 +126,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             Loader.loadCharacters();
         if (partyManager.initPlayerParty() != null) {
             if (isTownEnabled()) {
+                getMetaDataManager().initData();
+                getBattleMaster().getConstructor().init();
                 if (!getTownMaster().initTownPhase()) {
                     Eidolons.getMainGame().setAborted(true);
                     return game;
@@ -133,7 +141,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                     getMetaGame().isDifficultyReset()))
                 Eidolons.getMainGame().setAborted(true);
         }
-        game.setMetaMaster(this);
         return game;
     }
 
@@ -142,6 +149,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     protected boolean isTownEnabled() {
+        if (EidolonsGame.TOWN)
+            return true;
         if (CoreEngine.isFullFastMode()) {
             return false;
         }

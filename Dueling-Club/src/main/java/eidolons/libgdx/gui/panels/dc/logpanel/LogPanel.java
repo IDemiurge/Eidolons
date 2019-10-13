@@ -16,6 +16,7 @@ import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
@@ -98,6 +99,9 @@ public class LogPanel extends ScrollTextWrapper {
 //        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
 //            return;
 //        }  if it worked, could boost performance a bit when rolled out...
+        if (HqPanel.getActiveInstance()!=null) {
+            return;
+        }
         super.draw(batch, parentAlpha);
     }
 

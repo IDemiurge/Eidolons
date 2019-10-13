@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
+import eidolons.game.core.Eidolons;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
@@ -24,6 +25,7 @@ import main.game.bf.Coordinates;
 public class SoulforceMaster extends MetaGameHandler {
 
     private static Coordinates lastRespPoint;
+    private static SoulforceMaster instance;
 
     public SoulforceMaster(MetaGameMaster master) {
         super(master);
@@ -35,6 +37,13 @@ public class SoulforceMaster extends MetaGameHandler {
 
     public static void setLastRespPoint(Coordinates lastRespPoint) {
         SoulforceMaster.lastRespPoint = lastRespPoint;
+    }
+
+    public static SoulforceMaster getInstance() {
+        if (instance == null) {
+            instance = new SoulforceMaster(Eidolons.getGame().getMetaMaster());
+        }
+        return instance;
     }
 
     /**

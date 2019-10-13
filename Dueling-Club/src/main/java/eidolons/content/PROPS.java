@@ -482,15 +482,16 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ACTOR_UNIT_NAMES(null, true, "actors"),
 
     COATING_MOD(null, false, "chars", "units", "skills"),
-    KEY_DOOR_PAIRS(null, false, "dungeons"), LORD_SOULS(null, true, "lord"),
+    KEY_DOOR_PAIRS(null, false, "dungeons"),
+    DUNGEON_MAIN_ENTRANCES (null, false, "dungeons"),
+    LORD_SOULS(null, true, "lord"),
 
     EIDOLON_ASPECTS(null, true, "chars", "units"),
     ITEM_TRAITS(null, true, "weapons", "armor", "jewelry"),
     OVERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     UNDERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
-
-    ;
+;
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

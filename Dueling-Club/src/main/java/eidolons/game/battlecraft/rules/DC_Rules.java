@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.attach.DynamicBuffRules;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
 import eidolons.game.battlecraft.logic.battlefield.vision.HearingRule;
 import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
@@ -184,9 +185,11 @@ public class DC_Rules implements GameRules {
         this.buffRules.add(woundsRule);
 
 //        getTriggerRules().add(trampleRule = new TrampleRule(getGame()));
+        if (!EidolonsGame.FOOTAGE) {
         getTriggerRules().add(durabilityRule = new DurabilityRule(getGame()));
         getTriggerRules().add(bleedingTriggerRule = new BleedingRule(game));
         getTriggerRules().add(ashAnnihilationRule = new AshAnnihilationRule(game));
+        }
 
         CounterMasterAdvanced.defineInteractions();
 

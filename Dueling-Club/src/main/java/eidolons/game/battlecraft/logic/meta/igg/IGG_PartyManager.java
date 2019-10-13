@@ -180,15 +180,20 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
 
     private Party createParty(ObjType type, String selectedHero) {
+//        if (EidolonsGame.FOOTAGE) {
+//            return new Party(type);
+//        }
         return new ChainParty(type, selectedHero);
     }
 
     @Override
     protected String chooseHero(List<String> members) {
+        if (EidolonsGame.SELECT_HERO)
+            return super.chooseHero(members);
         if (EidolonsGame.PUZZLES) {
             return TutorialManager.NEXT_HERO;
         }
-            if (EidolonsGame.FOOTAGE) {
+        if (EidolonsGame.FOOTAGE) {
             if (MainLauncher.HERO_INDEX != null) {
                 return members.get(MainLauncher.HERO_INDEX);
             }

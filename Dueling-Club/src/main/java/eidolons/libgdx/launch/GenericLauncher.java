@@ -10,6 +10,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreenOld;
@@ -159,7 +160,8 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return false;//CoreEngine.isLiteLaunch();
+//        return CoreEngine.isIDE() && !EidolonsGame.BOSS_FIGHT;//CoreEngine.isLiteLaunch();
+        return false;
     }
 
     public LwjglApplicationConfiguration getConf() {
@@ -368,7 +370,7 @@ public class GenericLauncher extends Game {
                 initRunning = true;
                 Eidolons.onThisOrNonGdxThread(() -> {
                     if (Eidolons.getMainHero() != null) {
-                        main.system.auxiliary.log.LogMaster.log(1, "*************** Second init attempted, fuck it!");
+                        main.system.auxiliary.log.LogMaster.log(1, "*************** Second init attempted!");
                         return;
                     }
                     initScenarioBattle(data, data.getName());
@@ -402,7 +404,7 @@ public class GenericLauncher extends Game {
     }
 
     private MetaGameMaster createMetaForScenario(ScreenData data) {
-        if (data == null) {
+        if (!EidolonsGame.BRIDGE) {
             return new ScenarioMetaMaster(data.getName());
         }
         return new IGG_MetaMaster(data.getName());

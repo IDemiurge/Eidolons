@@ -186,6 +186,7 @@ public class ToolTipManager extends TablePanel {
             if (tooltip instanceof UnitViewTooltip)
                 return;
         }
+        if (DungeonScreen.getInstance().getGridPanel() != null)
         if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size()>0) {
             return;
         }

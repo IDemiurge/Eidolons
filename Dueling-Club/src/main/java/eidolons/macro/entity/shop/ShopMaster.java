@@ -111,9 +111,9 @@ public class ShopMaster {
 
     public static boolean checkMaterialAllowed(ShopInterface shop, MATERIAL material) {
         if (!ShopMaster.getMaterialsForShopLevel(shop.getShopLevel()).contains(
-         material)) {
+                material)) {
             if (!ShopMaster.getMaterialsForShopModifier(shop.getShopModifier())
-             .contains(material)) {
+                    .contains(material)) {
                 if (!getSpecialMaterials(shop).contains(material)) {
                     return false;
                 }
@@ -129,7 +129,7 @@ public class ShopMaster {
     }
 
     public static List<MATERIAL> getMaterialsForShopModifier(
-     SHOP_MODIFIER shopModifier) {
+            SHOP_MODIFIER shopModifier) {
         MATERIAL[] array = new MATERIAL[0];
         List<MATERIAL> list = new ArrayList<>();
         switch (shopModifier) {
@@ -146,14 +146,14 @@ public class ShopMaster {
                 break;
             case DWARVEN:
                 array = new MATERIAL[]{ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.IRONWOOD,
-                 ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.MITHRIL,
-                 ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.DRAGONHIDE,};
+                        ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.MITHRIL,
+                        ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.DRAGONHIDE,};
                 list.add(ItemEnums.MATERIAL.DRAGON_BONE);
                 break;
             case ELVEN:
                 array = new MATERIAL[]{ItemEnums.MATERIAL.PALEWOOD, ItemEnums.MATERIAL.MITHRIL,
-                 ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.BRONZE,
-                 ItemEnums.MATERIAL.FEYWOOD, ItemEnums.MATERIAL.LIZARD_SKIN,};
+                        ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.BRONZE,
+                        ItemEnums.MATERIAL.FEYWOOD, ItemEnums.MATERIAL.LIZARD_SKIN,};
                 break;
             case HOLY:
                 list.add(ItemEnums.MATERIAL.BRIGHT_STEEL);
@@ -161,7 +161,7 @@ public class ShopMaster {
                 break;
             case HUMAN:
                 array = new MATERIAL[]{ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.IRONWOOD,
-                 ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.BRASS, ItemEnums.MATERIAL.THICK_LEATHER,};
+                        ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.BRASS, ItemEnums.MATERIAL.THICK_LEATHER,};
                 break;
             case UNDERGROUND:
                 list.add(ItemEnums.MATERIAL.WAILWOOD);
@@ -263,11 +263,15 @@ public class ShopMaster {
             pool = basis;
         } else if (prop == null) {
             pool = DataManager.toTypeList(DataManager
-              .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
-             C_OBJ_TYPE.ITEMS);
+                            .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
+                    C_OBJ_TYPE.ITEMS);
         } else {
             pool = new ArrayList<>(basis);
-            FilterMaster.filter(pool, new PropCondition(prop, group));
+            try {
+                FilterMaster.filter(pool, new PropCondition(prop, group));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         pool = constructPool(pool, shop);
 //        pool.addAll(getSpecialItems(group));
@@ -293,7 +297,7 @@ public class ShopMaster {
                             if (!rollQuality(q, shop))
                                 continue;
                             filtered.add(ItemGenerator.getOrCreateItemType(t,
-                             material, q));
+                                    material, q));
                             //less chance if already in repertoire!
                         }
                     }
@@ -307,18 +311,18 @@ public class ShopMaster {
     }
 
     private static boolean rollQuality(QUALITY_LEVEL q, Shop shop) {
-        int chance =MathMaster.getMinMax(20 + shop.getGold() / shop.getIntParam(MACRO_PARAMS.SHOP_INCOME)
-         , 33, 50);
+        int chance = MathMaster.getMinMax(20 + shop.getGold() / shop.getIntParam(MACRO_PARAMS.SHOP_INCOME)
+                , 33, 50);
         return RandomWizard.chance(chance);
     }
 
     private static boolean rollMaterial(MATERIAL material, Shop shop) {
         int chance = MathMaster.getMinMax(25 + shop.getGold() / shop.getIntParam(MACRO_PARAMS.SHOP_INCOME)
-         , 42, 63);
+                , 42, 63);
         return RandomWizard.chance(chance);
     }
 
-    public static   String[] initItemGroups(SHOP_TYPE type) {
+    public static String[] initItemGroups(SHOP_TYPE type) {
         // Up to 4 item groups!
         String[] item_groups = type.getItemGroups();
         if (item_groups.length > ShaderDrawer.MAX_ITEM_GROUPS) {
@@ -335,7 +339,7 @@ public class ShopMaster {
         return item_groups;
     }
 
-    public static   OBJ_TYPE getItemsType(SHOP_TYPE shopType) {
+    public static OBJ_TYPE getItemsType(SHOP_TYPE shopType) {
 
         switch (shopType) {
             case JEWELER:

@@ -51,8 +51,11 @@ public class EUtils {
         onConfirm(text, false, null);
     }
 
-    public static boolean onConfirm(boolean wait, String text, boolean cancel,
-                                    Runnable o, boolean onAnotherThread) {
+    public static boolean waitConfirm(  String text) {
+        return onConfirm(true, text, true, null, false);
+    }
+        public static boolean onConfirm(boolean wait, String text, boolean cancel,
+        Runnable o, boolean onAnotherThread) {
         if (wait) {
             onConfirm(text, cancel, () -> {
                 if (o != null)

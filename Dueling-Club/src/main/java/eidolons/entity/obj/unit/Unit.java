@@ -152,6 +152,12 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
             setName(getName().replace(" IGG", ""));
 
+        } else {
+            try {
+                setFacing(FacingMaster.getRandomFacing());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         //TODO make it more apparent why and how this is done
         //cleanRef();
@@ -225,13 +231,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (getName().contains("Leviathan")) {
-            if ( param == PARAMS.C_TOUGHNESS)
-            {
-                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_TOUGHNESS" +value);
+            if (param == PARAMS.C_TOUGHNESS) {
+                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_TOUGHNESS" + value);
             }
-            if (param == PARAMS.C_ENDURANCE  )
-            {
-                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_ENDURANCE" +value);
+            if (param == PARAMS.C_ENDURANCE) {
+                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_ENDURANCE" + value);
             }
         }
 
@@ -312,8 +316,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         getEntity().setBeingReset(false);
 
         if (getName().contains("Leviathan")) {
-            main.system.auxiliary.log.LogMaster.dev("Leviathan C_TOUGHNESS " +getIntParam(PARAMS.C_TOUGHNESS));
-            main.system.auxiliary.log.LogMaster.dev("Leviathan C_ENDURANCE " +getIntParam(PARAMS.C_ENDURANCE));
+            main.system.auxiliary.log.LogMaster.dev("Leviathan C_TOUGHNESS " + getIntParam(PARAMS.C_TOUGHNESS));
+            main.system.auxiliary.log.LogMaster.dev("Leviathan C_ENDURANCE " + getIntParam(PARAMS.C_ENDURANCE));
         }
     }
 
@@ -1832,16 +1836,16 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public AtbPanel.INTENT_ICON getIntentIcon() {
-        if (getMode()!=null && getMode()!= STD_MODES.NORMAL){
+        if (getMode() != null && getMode() != STD_MODES.NORMAL) {
             return AtbPanel.INTENT_ICON.getModeIcon(getMode());
         }
         if (isPlayerCharacter()) {
-            return  AtbPanel.INTENT_ICON.WAIT;
+            return AtbPanel.INTENT_ICON.WAIT;
         }
         if (isBoss()) {
             return AtbPanel.INTENT_ICON.WHEEL;
         }
 
-            return null;
+        return null;
     }
-    }
+}

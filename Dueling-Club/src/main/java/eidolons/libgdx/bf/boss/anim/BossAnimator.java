@@ -5,6 +5,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -22,9 +23,11 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.io.File;
 
-public class BossAnimator  {
-    public static final String SPRITE_PATH = PathFinder.getSpritesPath()+ "boss/reaper/";
-    private static boolean fastMode ;
+public class BossAnimator {
+    public static final String SPRITE_PATH_REAPER = PathFinder.getSpritesPath() + "boss/reaper/";
+    public static final String SPRITE_PATH_STONE = PathFinder.getSpritesPath() + "boss/stone/";
+    private static boolean fastMode;
+    private static String spritePath;
     BossView view;
     SpriteModel sprite;
     BossUnit unit;
@@ -35,31 +38,37 @@ public class BossAnimator  {
      */
 
     public static String getSpritePath(BattleFieldObject obj) {
-        return "sprites/boss/reaper/atlas channeling.txt";
+        return spritePath+ "atlas.txt"; // channeling
     }
 
-    public static final void preloadBoss(){
+    public static final void preloadBoss() {
         Chronos.mark("Boss preload");
-        for (File file : FileManager.getFilesFromDirectory(PathFinder.getImagePath()+ SPRITE_PATH, false, true)) {
-            if (file.getName().endsWith(".txt")){
+        for (File file : FileManager.getFilesFromDirectory(PathFinder.getImagePath() + spritePath, false, true)) {
+            if (file.getName().endsWith(".txt")) {
                 String path = FileManager.formatPath(GdxImageMaster.cropImagePath(file.getPath())
-                ,true);
-                if (EidolonsGame.BRIDGE){
+                        , true);
+                if (EidolonsGame.BRIDGE) {
                     if (!PathUtils.getLastPathSegment(path).equalsIgnoreCase("atlas.txt"))
-                    if (!PathUtils.getLastPathSegment(path).equalsIgnoreCase("atlas2.txt"))
-                    {
-                        continue;
-                    }
+                        if (!PathUtils.getLastPathSegment(path).equalsIgnoreCase("atlas2.txt")) {
+                            continue;
+                        }
                 }
-                SpriteAnimationFactory.getSpriteAnimation(
-                      path);
+                Assets.loadSprite(path, false, false);
 
-                        LogMaster.log(1,"Preloaded: " + path);
             }
         }
         Chronos.logTimeElapsedForMark("Boss preload");
     }
-    public BossAnimator(BossView view, AnimMaster master) {
+
+    public BossAnimator(BossView view, AnimMaster master ) {
+        switch (view.getUserObject().getName()) {
+            case "Dream Reaper":
+                spritePath = BossAnimator.SPRITE_PATH_REAPER;
+                break;
+            case "Storm Lord":
+                spritePath = BossAnimator.SPRITE_PATH_STONE;
+                break;
+        }
         this.view = view;
         this.sprite = view.getSpriteModel();
         this.unit = view.getUserObject();
@@ -80,6 +89,10 @@ public class BossAnimator  {
 
     public static boolean getFastMode() {
         return fastMode;
+    }
+
+    public String getRoot() {
+        return spritePath;
     }
 
 
@@ -121,6 +134,7 @@ public class BossAnimator  {
         }
         return 1;
     }
+
     private void animate(ActionInput action) {
         String spritePath;
         updateBossAnims(action);
@@ -138,7 +152,7 @@ public class BossAnimator  {
         anim.setSpeedMod(speed);
         CompositeAnim compositeAnim = wrapAnim(anim);
         compositeAnim.setRef(action.getContext());
-       master.add( compositeAnim);
+        master.add(compositeAnim);
 
 
 //        playSounds(action);

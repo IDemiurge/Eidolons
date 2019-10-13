@@ -984,6 +984,10 @@ public class MusicMaster {
         public String getName() {
             return StringMaster.getWellFormattedString(name());
         }
+
+        public String getFullPath() {
+            return  PathFinder.getMusicPath() +"/" +  getPath();
+        }
     }
 
 }

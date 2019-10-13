@@ -171,7 +171,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     private void addSelectionPanel(SelectionPanel selectionPanel) {
-        boolean displayOnLoader = loading == isLoadingWithVideo();
+        boolean displayOnLoader = !(selectionPanel instanceof HeroSelectionPanel); // loading == isLoadingWithVideo();
         Stage stage = displayOnLoader ? getOverlayStage() : getMainStage();
         if (stage != null) {
             stage.addActor(selectionPanel);

@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -121,7 +122,7 @@ public class GridMaster {
             return;
         if (baseView instanceof GridUnitView) {
             GridUnitView view = ((GridUnitView) baseView);
-            if (view.getActions().size == 0) {
+            if (view.getActionsOfClass(AlphaAction.class).size == 0) {
 
                 if (view.getUserObject() instanceof Unit)
                     if (view.getPortrait().getColor().a != 1)

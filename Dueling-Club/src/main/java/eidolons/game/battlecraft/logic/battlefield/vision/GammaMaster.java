@@ -269,6 +269,9 @@ public class GammaMaster {
             if (master.getGame().getDungeonMaster().getDungeonWrapper() instanceof Location) {
                 Entrance exit = ((Location) master.getGame().getDungeonMaster().
                         getDungeonWrapper()).getMainExit();
+                if (exit == null) {
+                    return 0;
+                }
                 mainExitCoordingates = exit.getCoordinates();
             }
         }

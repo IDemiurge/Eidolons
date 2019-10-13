@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PROPS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
@@ -116,6 +117,9 @@ public class Location extends DungeonWrapper {
     public void initEntrances() {
 
         if (StringMaster.isEmpty(entranceData)) {
+            entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
+        }
+        if (StringMaster.isEmpty(entranceData) &&(!EidolonsGame.EXTENDED_DEMO && !getProperty(PROPS.ENTRANCE_COORDINATES, true).isEmpty())) {
             entranceData = getProperty(PROPS.ENTRANCE_COORDINATES, true);
         }
         if (StringMaster.isEmpty(entranceData)) {

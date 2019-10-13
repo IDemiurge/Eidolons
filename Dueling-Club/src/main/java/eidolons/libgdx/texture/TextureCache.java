@@ -238,6 +238,7 @@ public class TextureCache {
         switch (name) {
             //                imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
             case "logo fullscreen.png":
+            case "MAIN_MENU.png":
             case "defeat.png":
             case "defeat.jpg":
             case "defeat2.jpg":

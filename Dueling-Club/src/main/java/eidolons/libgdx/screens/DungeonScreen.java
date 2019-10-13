@@ -29,8 +29,10 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
+import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
@@ -107,6 +109,15 @@ public class DungeonScreen extends GameScreenWithTown {
 
         initGl();
 
+        GuiEventManager.bind(GuiEventType.SHOW_TOWN_PANEL, p -> {
+            try {
+                showTownPanel(p);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                showTownPanel(null);
+                Eidolons.exitToMenu();
+            }
+        });
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             if (CoreEngine.isIggDemo())
                 return;
@@ -138,15 +149,6 @@ public class DungeonScreen extends GameScreenWithTown {
 
                 MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
-            }
-        });
-        GuiEventManager.bind(GuiEventType.SHOW_TOWN_PANEL, p -> {
-            try {
-                showTownPanel(p);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                showTownPanel(null);
-                Eidolons.exitToMenu();
             }
         });
 
@@ -244,8 +246,17 @@ public class DungeonScreen extends GameScreenWithTown {
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
 
 
-        if (CoreEngine.isIggDemo())
+        if (CoreEngine.isIggDemo() && !EidolonsGame.FOOTAGE&& !EidolonsGame.EXTENDED_DEMO)
             initBackground();
+
+        if (!CoreEngine.isLiteLaunch())
+        if (EidolonsGame.FOOTAGE) {
+            if (MainLauncher.BG!=null) {
+                setBackground(MainLauncher.BG);
+            }
+//            setBackground(Sprites.BG_VALLEY);
+//            setBackground("main/background/ruins dark.png");
+        }
     }
 
     private void initBackground() {
@@ -274,7 +285,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (canShowScreen()) {  //town is considered 'loading phase' still
             return GdxMaster.getMultiplexer(guiStage, controller, gridStage);
         } else {
-            if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning()) {
+            if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
                 return GdxMaster.getMultiplexer(guiStage, super.createInputController());
             } else {
                 return super.createInputController();
@@ -336,6 +347,16 @@ public class DungeonScreen extends GameScreenWithTown {
     protected void renderLoaderAndOverlays(float delta) {
         setBlocked(checkBlocked());
         super.renderLoaderAndOverlays(delta);
+        if (selectionPanel != null) {
+            if (selectionPanel.getStage() == guiStage) {
+                if (!getBatch().isDrawing()) {
+                    getBatch().begin();
+                }
+                selectionPanel.act(delta);
+                selectionPanel.draw(getBatch(), 1f);
+                getBatch().end();
+            }
+        }
     }
 
     @Override
@@ -440,22 +461,21 @@ public class DungeonScreen extends GameScreenWithTown {
             batch.begin();
             float colorBits = GdxColorMaster.WHITE.toFloatBits();
             if (batch.getColor().toFloatBits() != colorBits)
-                batch.setColor(colorBits); //gotta reset the alpha...
+                batch.setColor(colorBits); //gotta reset the alpha... if (backTexture == null)
+            if (backgroundSprite != null) {
+                drawSpriteBg(batch);
+            } else
             if (isCenteredBackground()) {
                 int w = backTexture.getRegionWidth();
                 int h = backTexture.getRegionHeight();
                 int x = (GdxMaster.getWidth() - w) / 2;
                 int y = (GdxMaster.getHeight() - h) / 2;
                 batch.draw(backTexture, x, y, w, h);
-
             } else {
                 //TODO max
                 batch.draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
             }
-            if (backTexture == null)
-                if (backgroundSprite != null) {
-                    drawSpriteBg(batch);
-                }
+
             batch.end();
 
         }
@@ -463,7 +483,13 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     private boolean isCenteredBackground() {
-        return !Eidolons.isFullscreen();
+        if (backgroundSprite != null) {
+            return true;
+        }
+        if (EidolonsGame.FOOTAGE||EidolonsGame.BOSS_FIGHT) {
+            return false;
+        }
+        return  !Eidolons.isFullscreen();
     }
 
     private void drawSpriteBg(Batch batch) {

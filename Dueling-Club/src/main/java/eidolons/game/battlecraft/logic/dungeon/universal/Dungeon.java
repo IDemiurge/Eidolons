@@ -9,6 +9,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
+import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
@@ -17,6 +18,7 @@ import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.LightweightEntity;
 import main.entity.Ref;
@@ -288,6 +290,15 @@ public class Dungeon extends LightweightEntity {
     }
 
     public String getCellImagePath(int i, int j) {
+        if (!getProperty(G_PROPS.DUNGEON_GROUP).isEmpty()) {
+            DungeonEnums.DUNGEON_GROUP group = new EnumMaster<DungeonEnums.DUNGEON_GROUP>().retrieveEnumConst(DungeonEnums.DUNGEON_GROUP.class,
+                   getProperty(G_PROPS.DUNGEON_GROUP));
+            if (group != null)
+            return StrPathBuilder.build(PathFinder.getCellImagesPath(),
+                        getCellImgForGroup(group)+ ".png");
+
+        }
+        
         if (getGame().getDungeonMaster().getDungeonLevel() == null) {
             if (isSurface()) {
 
@@ -297,6 +308,22 @@ public class Dungeon extends LightweightEntity {
 
         }
         return ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion());
+    }
+
+    private String getCellImgForGroup(DungeonEnums.DUNGEON_GROUP group) {
+        switch(group){
+            case UNDERWORLD:
+                return DungeonLevel.CELL_IMAGE.octagonal.toString();
+            case ARCANE:
+                return DungeonLevel.CELL_IMAGE.star.toString();
+            case UNDEAD:
+                return DungeonLevel.CELL_IMAGE.circle.toString();
+            case HUMAN:
+                return DungeonLevel.CELL_IMAGE.cross.toString();
+            case MISC:
+                return DungeonLevel.CELL_IMAGE.natural.toString();
+        }
+        return null;
     }
 
     public Collection<Coordinates> getVoidCoordinates() {

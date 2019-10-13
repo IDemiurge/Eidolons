@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChainParty extends Party {
+    private  String leaderName;
     Set<Unit> deadHeroes = new LinkedHashSet<>();
     private int totalXp; //during this run; TODO - will it work with transits?
     private int goldStashed;
@@ -27,15 +28,21 @@ public class ChainParty extends Party {
 
     public ChainParty(ObjType type, String selectedHero) {
         super(type);
-//        addMember(HeroCreator.initHero(selectedHero));
+        leaderName = selectedHero;
+        initMembers();
 
     }
 
     @Override
     public void initMembers() {
+        if (leaderName == null) {
+            return;
+        }
         super.initMembers();
         for (Unit member : members) {
-            if ( member!=getLeader()) {
+            if ( member.getName().equalsIgnoreCase(leaderName)){
+                setLeader(member);
+            }else {
                 member.setPale(true);
             }
 

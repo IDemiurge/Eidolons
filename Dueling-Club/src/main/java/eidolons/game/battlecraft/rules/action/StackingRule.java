@@ -151,6 +151,11 @@ public class StackingRule implements ActionRule {
         if (unit != null)
         if (EntityCheckMaster.isImmaterial(  unit ))
             return true;
+        if (unit == null) {
+            // unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
+            // instead, just empty type with 0 girth!
+            unit = new ObjType();
+        } else
         if (unit.getIntParam(PARAMS.GIRTH)==0) {
             return true;
         }
@@ -165,11 +170,6 @@ public class StackingRule implements ActionRule {
         }
 
 
-        if (unit == null) {
-            // unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
-            // instead, just empty type with 0 girth!
-            unit = new ObjType();
-        }
         DC_Cell cell;
         if (!game.isSimulation()) {
             cell = game.getCellByCoordinate(c);

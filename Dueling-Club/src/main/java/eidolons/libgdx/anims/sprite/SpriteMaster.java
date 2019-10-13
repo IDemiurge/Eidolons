@@ -16,6 +16,9 @@ import main.system.auxiliary.data.FileManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.content.enums.entity.BfObjEnums.SPRITES.ALTAR;
+import static main.content.enums.entity.BfObjEnums.SPRITES.ORB;
+
 public class SpriteMaster {
     private static final int DEFAULT_FPS = 12;
     private static int n = 1;
@@ -108,10 +111,31 @@ public class SpriteMaster {
         if (over && n <= 1) {
             return 0;
         }
+        if (sprite==ORB)
+            return 32;
+        if (sprite==ALTAR) {
+            return 64;
+        }
         return -i * s.getHeight() / 12 + i * i * s.getHeight() / 54;
     }
 
     private static float getX(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj, int i, int n) {
+        if (sprite==ORB) {
+            return 32;
+        } if (sprite==ALTAR) {
+            return 64;
+        }
+//        if (getParent() instanceof BaseView) {
+//            switch (((BaseView) getParent()).getUserObject().getName()) {
+//                case "Eldritch Sphere":
+//                    getSprite().setOffsetX( getWidth()-128+32);
+//                    getSprite().setOffsetY( getHeight()-128);
+//                    break;
+//                case "Ghost Light":
+//                    getSprite().setBlending(GenericEnums.BLENDING.SCREEN);
+//                    break;
+//            }
+//        }
         if (over && n <= 1) {
             return 0;
         }

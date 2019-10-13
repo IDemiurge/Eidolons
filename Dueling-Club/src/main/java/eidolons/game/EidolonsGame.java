@@ -22,6 +22,8 @@ import java.util.Map;
  */
 public class EidolonsGame {
     public static  boolean TESTER_VERSION = false;
+    public static  boolean SELECT_HERO ;
+    public static  boolean SELECT_SCENARIO ;
     public static   boolean FOOTAGE ;
     public static   boolean DUEL_TEST  ;
     public static   boolean TRANSIT_TEST  ;
@@ -44,10 +46,17 @@ public class EidolonsGame {
     public static boolean MOVES_FORWARD_ONLY;
     public static boolean TUTORIAL;
     public static boolean PUZZLES;
+    public static boolean EXTENDED_DEMO;
+    public static boolean TOWN;
+    public static boolean IGG_DEMO;
     private static Map<String, Boolean> varMap = new StringMap<>();
     private static Map<String, Boolean> actionMap = new StringMap<>();
 
-    public static final void set(String field, boolean val) {
+    public static final void reset( ) {
+        EXTENDED_DEMO=false;
+        IGG_DEMO=false;
+    }
+        public static final void set(String field, boolean val) {
         setVar(field, val);
         try {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);

@@ -36,8 +36,9 @@ public class Fluctuating extends GroupX {
 
     static {
         if (CoreEngine.isMainGame()) {
-            fluctuatingAlphaPeriodGlobal = OptionsMaster.getGraphicsOptions().
-                    getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 + 1;
+            fluctuatingAlphaPeriodGlobal =1;
+//            OptionsMaster.getGraphicsOptions().
+//                    getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 + 1;
         }
     }
 

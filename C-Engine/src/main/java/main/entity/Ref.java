@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -34,8 +35,8 @@ import java.util.regex.Pattern;
  */
 public class Ref implements Cloneable, Serializable {
     public final static KEYS[] REPLACING_KEYS = {
-     KEYS.BUFF, KEYS.TARGET, KEYS.SOURCE, KEYS.MATCH, KEYS.BASIS, KEYS.EVENT, KEYS.
-     SUMMONER, KEYS.ACTIVE, KEYS.SPELL, KEYS.WEAPON, KEYS.ARMOR,
+            KEYS.BUFF, KEYS.TARGET, KEYS.SOURCE, KEYS.MATCH, KEYS.BASIS, KEYS.EVENT, KEYS.
+            SUMMONER, KEYS.ACTIVE, KEYS.SPELL, KEYS.WEAPON, KEYS.ARMOR,
     };
     protected static final long serialVersionUID = 1L; //why was it necessary? => deep clone...
     protected static final String MULTI_TARGET = KEYS.TARGET.name() + "#";
@@ -92,7 +93,7 @@ public class Ref implements Cloneable, Serializable {
 
     public Ref(Entity entity, Entity target) {
         this(entity.getGame(),
-         entity.getId());
+                entity.getId());
         setTarget(target.getId());
     }
 
@@ -120,6 +121,7 @@ public class Ref implements Cloneable, Serializable {
         REF.setTarget(obj.getId());
         return REF;
     }
+
     public static Ref getBasisRefCopy(Obj obj) {
         Ref REF = obj.getRef().getCopy();
         REF.setBasis(obj.getId());
@@ -127,6 +129,9 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public String getValue(KEYS key) {
+        if (key == null) {
+            return null;
+        }
         return values.get(key);
     }
 
@@ -136,9 +141,10 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public void setValue(KEYS name, String value) {
-        getValues().put(name, value);
         if (value == null) {
             removeValue(name);
+        } else {
+            getValues().put(name, value);
         }
         if (objCache != null)
             objCache.remove(name.name().toLowerCase());
@@ -268,7 +274,7 @@ public class Ref implements Cloneable, Serializable {
 
     protected void cloneMaps(Ref ref) {
         // no deep copy required here
-        values = new HashMap<>(ref.values);
+        values = new ConcurrentHashMap<>(ref.values);
     }
 
     protected String formatKeyString(String key) {
@@ -317,7 +323,7 @@ public class Ref implements Cloneable, Serializable {
         if (amount == null) {
             return 0;
         }
-        return  amount;
+        return amount;
     }
 
     public void setAmount(Integer amount) {
@@ -346,7 +352,7 @@ public class Ref implements Cloneable, Serializable {
                 int i = Integer.valueOf(getStr().replace(MULTI_TARGET, ""));
 
                 LogMaster.log(LogMaster.CORE_DEBUG_1, "multi targeting effect, selecting target #"
-                 + i + group);
+                        + i + group);
 
                 if (i > 0) {
                     i--;
@@ -380,8 +386,8 @@ public class Ref implements Cloneable, Serializable {
 
     public void setTarget(Integer this_target) {
         setID(KEYS.TARGET, this_target);
-        if (original && !isClone() && getSource()!=null ) {
-            LogMaster.log(1,">>>> target set for original ref? => \n " +this);
+        if (original && !isClone() && getSource() != null) {
+            LogMaster.log(1, ">>>> target set for original ref? => \n " + this);
         }
     }
 
@@ -466,7 +472,7 @@ public class Ref implements Cloneable, Serializable {
     public Obj getLastRemovedObj(KEYS key) {
         try {
             return game.getObjectById(NumberUtils.getInteger(getRemovedValues()
-             .get(key)));
+                    .get(key)));
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
             return null;
@@ -570,7 +576,7 @@ public class Ref implements Cloneable, Serializable {
             return null;
         }
         return new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-         getValue(KEYS.DAMAGE_TYPE));
+                getValue(KEYS.DAMAGE_TYPE));
     }
 
     public boolean isAnimationDisabled() {

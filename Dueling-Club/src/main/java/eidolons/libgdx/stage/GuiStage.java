@@ -118,7 +118,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected DialogueContainer dialogueContainer;
     protected Map<GameDialogue, DialogueContainer> dialogueCache = new HashMap<>();
     protected LordPanel lordPanel;
-    protected  PlaceNavigationPanel navigationPanel;
+    protected PlaceNavigationPanel navigationPanel;
     protected HideButton hideQuests;
     protected ExtendableLogPanel logPanel;
 
@@ -170,16 +170,15 @@ public class GuiStage extends StageX implements StageWithClosable {
         tipMessageWindow = new TipMessageWindow(null);
         addActor(dialogueContainer = new DialogueContainer());
         addActor(questProgressPanel = new QuestProgressPanel());
-          hideQuests = new HideButton(questProgressPanel);
+        hideQuests = new HideButton(questProgressPanel);
         addActor(hideQuests);
 
         questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
                 GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
 
 
-
         ExtendableLogPanel log = new ExtendableLogPanel(true);
-          logPanel = log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
+        logPanel = log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(logPanel);
 //        logPanel.setOnClose(()->{
 //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
@@ -326,7 +325,12 @@ public class GuiStage extends StageX implements StageWithClosable {
 //                getBatch().end();
 //                return;
 //            }
-
+//        if (hqPanel.isVisible()) {
+//            getBatch().begin();
+//            hqPanel.draw(getBatch(), 1f);
+//            getBatch().end();
+//            return;
+//        }
         if (CoreEngine.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
             if (gameMenu.isVisible())
@@ -767,9 +771,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         else
             return;
         tooltip.getParent().setPosition(
-                GdxMaster.centerWidthScreen(tooltip)-20
+                GdxMaster.centerWidthScreen(tooltip) - 20
 //                ((GdxMaster.getWidth() - fullLogPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2
-                        , action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
+                , action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
     }
 
     protected void hideTooltip(LabelX tooltip, float dur) {
@@ -812,8 +816,12 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (DC_Game.game.getKeyManager() == null) {
             return false;
         }
-        if (DC_Game.game.getKeyManager().handleKeyDown(keyCode)) {
-            return true;
+        try {
+            if (DC_Game.game.getKeyManager().handleKeyDown(keyCode)) {
+                return true;
+            }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return super.keyDown(keyCode);
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.GDX;
@@ -83,7 +84,7 @@ public abstract class SelectionPanel extends TablePanelX {
         addElement(null).bottom().size(getWidth(), 70);
 
         if (isDoneSupported()) {
-            infoPanel.initStartButton(getDoneText(), () -> tryDone());
+            infoPanel.initStartButton(getDoneText(), () -> done());
         }
         if (isBackSupported()) {
             addActor(backButton);
@@ -212,7 +213,9 @@ public abstract class SelectionPanel extends TablePanelX {
 
     @Override
     public boolean remove() {
+        if (getStage() != null) {
         getStage().removeListener(listener);
+        }
         return super.remove();
     }
 
@@ -253,6 +256,10 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     public void tryDone() {
+        if (MainLauncher.presetNumbers.isEmpty())
+        if (EidolonsGame.EXTENDED_DEMO || EidolonsGame.SELECT_SCENARIO) {
+            return;
+        }
         if (isAutoDoneEnabled())
             if (listPanel.getCurrentItem() == null) {
                 if (!MainLauncher.presetNumbers.isEmpty()) {
@@ -262,9 +269,6 @@ public abstract class SelectionPanel extends TablePanelX {
                 } else
                     return;
             }
-        if (listPanel.getCurrentItem() == null || listPanel.isBlocked(listPanel.getCurrentItem())) {
-            return;
-        }
         done();
     }
 
@@ -273,6 +277,9 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     public void done() {
+        if (listPanel.getCurrentItem() == null || listPanel.isBlocked(listPanel.getCurrentItem())) {
+            return;
+        }
         close();
     }
 

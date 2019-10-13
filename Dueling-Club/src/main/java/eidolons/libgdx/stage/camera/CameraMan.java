@@ -262,7 +262,7 @@ public class CameraMan {
             } else
                 overrideCheck = false;
 
-        if (!overrideCheck && !Cinematics.ON&& !EidolonsGame.DUEL)
+        if (!overrideCheck && !Cinematics.ON)  //&& !EidolonsGame.DUEL
             if (dst < getCameraMinCameraPanDist())
                 return;
 

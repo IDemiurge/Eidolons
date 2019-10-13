@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
@@ -235,9 +236,11 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public DungeonLevel getDungeonLevel() {
-//        if (dungeonWrapper == null && dungeonLevel == null) {
+        if (EidolonsGame.TOWN)
+        if (dungeonWrapper == null && dungeonLevel == null) {
 //            dungeonWrapper = initDungeon();
-//        } fk off lazy guy!
+            init();
+        }
         return dungeonLevel;
     }
 

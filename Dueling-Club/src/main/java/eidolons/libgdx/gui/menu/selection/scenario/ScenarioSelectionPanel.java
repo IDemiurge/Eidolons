@@ -1,10 +1,13 @@
 package eidolons.libgdx.gui.menu.selection.scenario;
 
+import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import main.content.DC_TYPE;
@@ -66,6 +69,12 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         ScreenData screenData = new ScreenData(SCREEN_TYPE.BATTLE, type.getName());
         if (IGG_Launcher.isDemo(type))
             screenData.setParam(new EventCallbackParam(type));
+
+//        CustomLaunch customLaunch = new CustomLaunch("");
+//        customLaunch.setValue(CustomLaunch.CustomLaunchValue.xml_path,
+//                type.getProperty(PROPS.SCENARIO_PATHS));
+//        MainLauncher.setCustomLaunch(customLaunch);
+
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
                 screenData);
     }

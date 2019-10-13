@@ -93,7 +93,7 @@ public class TownMaster extends MetaGameHandler {
 
     protected void updateQuests(Town town) {
         Unit hero = Eidolons.getMainHero();
-        for ( Quest quest : new ArrayList<>(questMaster.getRunningQuests())) {
+        for (Quest quest : new ArrayList<>(questMaster.getRunningQuests())) {
             if (quest.isComplete()) {
                 EUtils.onConfirm(true, "You have succeeded in our quest " +
                                 quest.getTitle() +
@@ -144,12 +144,16 @@ public class TownMaster extends MetaGameHandler {
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
             MusicMaster.getInstance().stopAmbience();
         }
-        if (!GdxMaster.hasController(Gdx.input.getInputProcessor(), TownPanel.getActiveInstance().getStage())) {
+        if (TownPanel.getActiveInstance() == null || !GdxMaster.hasController(Gdx.input.getInputProcessor(), TownPanel.getActiveInstance().getStage())) {
             GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, town);
             main.system.auxiliary.log.LogMaster.log(1, "Town is SCREWED, trying it again");
         }
 
-        getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.TOWN_ENTERED, town.getRef()));
+        try {
+            getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.TOWN_ENTERED, town.getRef()));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
         boolean result =
                 (boolean) WaitMaster.waitForInput(TownPanel.DONE_OPERATION);

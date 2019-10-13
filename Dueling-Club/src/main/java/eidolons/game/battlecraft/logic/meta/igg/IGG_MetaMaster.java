@@ -1,12 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
 import eidolons.content.PROPS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
+import eidolons.game.battlecraft.logic.meta.igg.event.GameEventHandler;
+import eidolons.game.battlecraft.logic.meta.igg.event.IGG_EventHandler;
 import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.igg.story.IGG_TownMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.Eidolons;
@@ -41,7 +45,6 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
     private final boolean boss;
     private final SoulforceMaster soulforceMaster;
-    ShadowMaster shadowMaster = new ShadowMaster(this);
 
     public IGG_MetaMaster(String data) {
         super(data);
@@ -58,6 +61,8 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
         soulforceMaster = new SoulforceMaster(this);
 
+
+        eventHandler = new IGG_EventHandler(this);
     }
 
     public boolean isBoss() {
@@ -68,9 +73,6 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
         return soulforceMaster;
     }
 
-    public ShadowMaster getShadowMaster() {
-        return shadowMaster;
-    }
 
     @Override
     public IGG_DefeatHandler getDefeatHandler() {
@@ -99,8 +101,10 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
     }
 
     @Override
-    protected MetaDataManager<IGG_Meta> createMetaDataManager() {
-        return new IGG_MetaDataManager(this);
+    protected MetaDataManager createMetaDataManager() {
+        if (EidolonsGame.BRIDGE)
+            return new IGG_MetaDataManager(this);
+        return new ScenarioMetaDataManager(this);
     }
 
     @Override
@@ -109,8 +113,8 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
     }
 
     @Override
-    public IGG_MetaDataManager getMetaDataManager() {
-        return (IGG_MetaDataManager) super.getMetaDataManager();
+    public MetaDataManager getMetaDataManager() {
+        return  super.getMetaDataManager();
     }
 
     public void next(Boolean outcome) {

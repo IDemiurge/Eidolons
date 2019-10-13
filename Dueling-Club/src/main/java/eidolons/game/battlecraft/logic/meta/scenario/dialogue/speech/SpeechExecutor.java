@@ -136,7 +136,7 @@ public class SpeechExecutor {
     public boolean execute(SPEECH_ACTION speechAction, String value, boolean wait) {
         container = dialogueManager.getContainer();
         if (container != null) {
-             handler = container.getHandler();
+            handler = container.getHandler();
         }
         value = value.trim().toLowerCase();
         String full = value;
@@ -234,9 +234,9 @@ public class SpeechExecutor {
                 break;
 
 
-            case REVEAL :
-                bool=true;
-            case CONCEAL :
+            case REVEAL:
+                bool = true;
+            case CONCEAL:
                 getUnit(value).setRevealed(bool);
                 break;
             case REVEAL_AREA:
@@ -435,10 +435,10 @@ public class SpeechExecutor {
                 break;
 
             case LOAD_SCOPE:
-                GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, value );
+                GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, value);
                 break;
             case UNLOAD_SCOPE:
-                GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, value );
+                GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, value);
                 break;
             case TRIGGER:
                 master.getBattleMaster().getScriptManager().parseScripts(full);
@@ -551,7 +551,7 @@ public class SpeechExecutor {
             case AMBI_VFX:
                 GenericEnums.VFX vfx = new EnumMaster<GenericEnums.VFX>().retrieveEnumConst(GenericEnums.VFX.class, value);
                 Vector2 vector = getCenteredPos(getCoordinate(vars.get(0)));
-               GuiEventManager.trigger(GuiEventType.ADD_AMBI_VFX, vfx, vector );
+                GuiEventManager.trigger(GuiEventType.ADD_AMBI_VFX, vfx, vector);
                 break;
             case VFX:
                 bool = true;
@@ -668,11 +668,11 @@ public class SpeechExecutor {
                     if (!vars.isEmpty() || bool) {
                         Eidolons.onNonGdxThread(() ->
                                 new SpeechScript(d, master).execute());
-                    } else
-                    {
-                        SpeechScript subscript = new SpeechScript(d, master);;
+                    } else {
+                        SpeechScript subscript = new SpeechScript(d, master);
+                        ;
                         subscript.execute();
-                        if (subscript.interrupted){
+                        if (subscript.interrupted) {
                             return false;
                         }
                     }
@@ -707,7 +707,8 @@ public class SpeechExecutor {
             case LOOP_TRACK:
                 String path = "";
                 float volume = 0.5f;
-               bla: switch (value) {
+                bla:
+                switch (value) {
                     default:
                         if (vars.size() > 0) {
                             //TODO
@@ -734,9 +735,9 @@ public class SpeechExecutor {
                 }
                 if (bool) {
                     GuiEventManager.trigger(
-                            GuiEventType.STOP_LOOPING_TRACK , path);
+                            GuiEventType.STOP_LOOPING_TRACK, path);
                 } else {
-                    GuiEventManager.trigger(  GuiEventType.ADD_LOOPING_TRACK, path, volume);
+                    GuiEventManager.trigger(GuiEventType.ADD_LOOPING_TRACK, path, volume);
                 }
                 break;
             case PARALLEL_MUSIC:
@@ -1062,6 +1063,17 @@ public class SpeechExecutor {
                     return false;
                 }
                 return true;
+            case SWITCH:
+                bool = true;
+            case CONFIRM:
+                if (!EUtils.waitConfirm(value)) {
+                    return bool;
+                }
+                if (!vars.isEmpty()) {
+                    EidolonsGame.setVar(vars.get(0), true);
+                    execute(SCRIPT, vars.get(0));
+                }
+                return !bool;
             case CONTINUE_IF:
                 if (!EidolonsGame.getAny(value)) {
                     return false;
@@ -1069,7 +1081,7 @@ public class SpeechExecutor {
                 return true;
             case GLOBAL_CONTINUE_IF:
                 if (!EidolonsGame.getAny(value)) {
-                    lastScript.interrupted=true;
+                    lastScript.interrupted = true;
                     return false;
                 }
                 return true;

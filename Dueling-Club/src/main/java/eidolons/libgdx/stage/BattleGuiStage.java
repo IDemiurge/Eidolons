@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
+import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Game;
 import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforcePanel;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
@@ -28,11 +30,15 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.ParticlesSprites;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -188,11 +194,21 @@ public class BattleGuiStage extends GuiStage {
             CharSequence v = "";
             if (Eidolons.getGame() instanceof ScenarioGame) {
                 try {
-                    ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
-                    text = m.getMetaGame().getScenario().getName();
-                    v = m.getMetaDataManager().getMissionName()
-                            + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
-                            m.getMetaGame().getMissionNumber() + "]";
+
+                    if (EidolonsGame.FOOTAGE) {
+                        text = "Extended Demo";
+                        v =
+                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment(StringMaster.cropFormat(MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path)))
+                                        + ", Level [" + (RandomWizard.getRandomIntBetween(1, 3)) + "/" +
+                                        3 + "]");
+                    } else {
+                        ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
+                        text = m.getMetaGame().getScenario().getName();
+                        v = m.getMetaDataManager().getMissionName()
+                                + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
+                                m.getMetaGame().getMissionNumber() + "]";
+                    }
+
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -231,7 +247,7 @@ public class BattleGuiStage extends GuiStage {
     public void update() {
 
         locationLabel.setPosition(25,
-                GdxMaster.getHeight() - locationLabel.getHeight() - atbPanel.getHeight() - 30);
+                GdxMaster.getHeight() - locationLabel.getHeight() - atbPanel.getHeight() - 100);
 
 //        if (outcomePanel != null)
 //            outcomePanel.setZIndex(Integer.MAX_VALUE);

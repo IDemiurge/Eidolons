@@ -123,7 +123,7 @@ public class ForceAnim extends Weapon3dAnim {
                     sprite.setFlipX(PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
                 } else
                 if (getSpritePath().equalsIgnoreCase(Sprites.REAPER_SCYTHE)){
-                    sprite.setFlipX(!PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
+                    sprite.setFlipX(PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
                 } else
                     sprite.setFlipX(!PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
                 break;

@@ -208,6 +208,9 @@ public class QuestMaster extends MetaGameHandler {
             case HUNT:
                 break;
             case OBJECTS:
+                if (master.getGame().getDungeonMaster().getDungeonLevel() == null) {
+                    return false;
+                }
                 switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
                     case Somber:
                     case Grimy:
@@ -218,6 +221,9 @@ public class QuestMaster extends MetaGameHandler {
                 return false;
             case COMMON_ITEMS:
             case SPECIAL_ITEM:
+                if (master.getGame().getDungeonMaster().getDungeonLevel() == null) {
+                    return false;
+                }
                 switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
                     case Somber:
                         return false;

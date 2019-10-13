@@ -10,6 +10,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxColorMaster;
@@ -140,6 +141,7 @@ public class GridUnitView extends GenericGridView {
                 return;
             }
         }
+        if (Cinematics.ON)
         if (!getColor().equals(GdxColorMaster.WHITE))
             portrait.setColor(getColor());
 

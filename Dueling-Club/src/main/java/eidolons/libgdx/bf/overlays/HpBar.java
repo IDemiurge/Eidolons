@@ -140,14 +140,6 @@ public class HpBar extends SuperActor {
         setToughnessPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getToughnessPerc()));//  toughnessPerc % 0.01f;
         setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE)));
         setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
-//        if (dataSource.isPlayerCharacter()){
-//            if (!EidolonsGame.getVar("endurance")){
-//                setEndurancePerc( getToughnessPerc());
-////                setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));
-//            }
-//        }
-       //  toughnessPerc % 0.01f;
-//        setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
         if (getToughnessPerc().equals(lastOfferedToughness) &&
                 getEndurancePerc().equals(lastOfferedEndurance))
             return;
@@ -208,6 +200,7 @@ public class HpBar extends SuperActor {
                 displayedToughnessPerc = realPerc;
             }
             keserim=false;
+            if (EidolonsGame.BRIDGE)
             if (dataSource.isPlayerCharacter()){
                 if (!EidolonsGame.getVar("endurance")){
                     keserim=true;
@@ -272,7 +265,7 @@ public class HpBar extends SuperActor {
             displayedToughnessPerc =
                     toughnessAction.getValue();
 
-            if (!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
+            if (!EidolonsGame.BRIDGE||!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
                 fullLengthPerc = displayedEndurancePerc;
             else {
                 fullLengthPerc = displayedToughnessPerc;
@@ -295,7 +288,7 @@ public class HpBar extends SuperActor {
         text = "" + (dataSource.getIntParam(PARAMS.C_TOUGHNESS) //* displayedToughnessPerc
         ) + "/" + dataSource.getLastValidParamValue(PARAMS.TOUGHNESS);
         label_t.setText(text);
-        if (!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
+        if (!EidolonsGame.BRIDGE||!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
             fullLengthPerc = displayedEndurancePerc;
         else {
             fullLengthPerc = displayedToughnessPerc;

@@ -8,6 +8,8 @@ import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.main.AnimMaster;
 import main.game.logic.event.Event;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class GameEventHandler extends MetaGameHandler {
 
@@ -15,10 +17,6 @@ public class GameEventHandler extends MetaGameHandler {
         super(master);
     }
 
-    @Override
-    public IGG_MetaMaster getMaster() {
-        return (IGG_MetaMaster) super.getMaster();
-    }
 
     public boolean handle(Event event) {
         SoundEvents.checkEventSound(event);
@@ -26,7 +24,6 @@ public class GameEventHandler extends MetaGameHandler {
 
         if (event.getType() instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
-
                 case HERO_LEVEL_UP:
                     TipMessageMaster.onEvent(event.getType());
                     break;
@@ -39,23 +36,11 @@ public class GameEventHandler extends MetaGameHandler {
                         return false;
                     }
                     break;
-                case UNIT_HAS_BEEN_KILLED:
-                    if (event.getRef().getTargetObj() == Eidolons.getMainHero()) {
-                        waitForAnims();
-                        getMaster().getShadowMaster().annihilated(event);
+                case UNIT_ACTION_COMPLETE:
+                    if (event.getRef().getSourceObj()== Eidolons.getMainHero()) {
+                        GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
                     }
-                    break;
-                case TIME_ELAPSED:
-                    getMaster().getShadowMaster().timeElapsed(event);
-                    break;
-                case UNIT_TURN_READY:
-                    break;
-                case UNIT_HAS_FALLEN_UNCONSCIOUS:
-                    handleUnconscious(event);
-                    break;
-                case COMBAT_ENDS:
-                    getMaster().getShadowMaster().victory(event);
-//                    getMaster().getDefeatHandler()
+
                     break;
                 case INTRO_FINISHED:
 
@@ -66,11 +51,11 @@ public class GameEventHandler extends MetaGameHandler {
         return true;
     }
 
-    private void waitForAnims() {
+    protected void waitForAnims() {
         AnimMaster.waitForAnimations(null);
     }
 
-    private void handleUnconscious(Event event) {
+    protected void handleUnconscious(Event event) {
         if (event.getRef().getSourceObj() instanceof Unit) {
             if (((Unit) event.getRef().getSourceObj()).isPlayerCharacter()) {
                 getMaster().getDefeatHandler().fallsUnconscious(event);

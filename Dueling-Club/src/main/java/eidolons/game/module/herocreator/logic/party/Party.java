@@ -34,7 +34,7 @@ import main.system.math.MathMaster;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Party extends Obj {
+public class    Party extends Obj {
     // TODO ++ EMBLEM!
     // arcade/skirmish mode
 
@@ -77,7 +77,7 @@ public class Party extends Obj {
             //TODO refactor
             if (DC_Game.game.getMetaMaster() != null)
                 heroName = DC_Game.game.getMetaMaster().getPartyManager().
-                 checkLeveledHeroVersionNeeded(heroName);
+                 checkLeveledHeroVersionNeeded(heroName).trim();
 
             try {
                 addMember(HeroCreator.initHero(heroName));

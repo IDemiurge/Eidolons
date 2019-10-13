@@ -81,7 +81,7 @@ public class RadialMenu extends Group implements Closable {
     }
 
     protected void initBackground() {
-        if (CoreEngine.isLiteLaunch() || EidolonsGame.BRIDGE || EidolonsGame.BOSS_FIGHT) {
+        if (!CoreEngine.isJar() && !CoreEngine.isFraps()) {
             return;
         }
         background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath(), false);
@@ -92,7 +92,10 @@ public class RadialMenu extends Group implements Closable {
     }
 
     protected String getBackgroundSpritePath() {
-        return Sprites.RADIAL;
+//        if (CoreEngine.isLiteLaunch()) {
+            return "";
+//        }
+//        return Sprites.RADIAL;
     }
 
     protected void bindEvents() {

@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -14,7 +15,7 @@ import main.system.auxiliary.StringMaster;
 public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     private String missionName;
 
-    public ScenarioMetaDataManager(ScenarioMetaMaster scenarioMetaMaster) {
+    public ScenarioMetaDataManager(MetaGameMaster scenarioMetaMaster) {
         super(scenarioMetaMaster);
     }
 
@@ -35,7 +36,13 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
         this.missionName = missionName;
     }
 
-    public void initMissionName() {
+    @Override
+    public String nextMission() {
+
+        return getMissionName();
+    }
+
+    public void initData() {
         String missionName =
                 getMissionName();
         getMetaGame().setMissions(ContainerUtils.openContainer(getMetaGame().getScenario().

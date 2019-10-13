@@ -239,6 +239,9 @@ public class GridPanel extends Group {
     }
 
     private boolean isShardsOn() {
+        if (EidolonsGame.FOOTAGE) {
+            return true;
+        }
         if (EidolonsGame.BRIDGE) {
             return true;
         }

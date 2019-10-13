@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.bitfire.utils.ItemsManager;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DummyUnit;
@@ -30,6 +31,7 @@ import eidolons.libgdx.bf.grid.comment.CommentData;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.HpBarManager;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.stage.camera.CameraMan;
@@ -75,13 +77,20 @@ public class GridManager {
     GridPanel panel;
     private Integer waitCounter = 0;
     private Coordinates c;
+    private List<Runnable> commentRunnables =    new ArrayList<>() ;
 
     public GridManager(GridPanel panel) {
         this.instance = this;
         this.panel = panel;
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
 
-        GuiEventManager.bind(SHOW_COMMENT_PORTRAIT, p -> {
+        GuiEventManager.bind(CLEAR_COMMENTS, p -> {
+            for (Runnable commentRunnable : commentRunnables) {
+                commentRunnable.run();
+            }
+            commentRunnables.clear();
+        });
+            GuiEventManager.bind(SHOW_COMMENT_PORTRAIT, p -> {
             List list = (List) p.get();
             comment(list);
         });
@@ -270,17 +279,17 @@ public class GridManager {
             }
         }
         DIRECTION finalTextPlacement = textPlacement;
-        GroupX commentGroup = new GroupX() {
+        GroupX commentGroup = new NoHitGroup() {
             @Override
             public Actor hit(float x, float y, boolean touchable) {
-
-                if (flag == null) {
-                    return null;
-                } else {
-                    if (!flag.get()) {
-                        return null;
-                    }
-                }
+                //              TODO do we do click to fade?
+//               if (flag == null) {
+//                    return null;
+//                } else {
+//                    if (!flag.get()) {
+//                        return null;
+//                    }
+//                }
                 return super.hit(x, y, touchable);
             }
 
@@ -502,6 +511,8 @@ public class GridManager {
         if (seq) {
             panel.getActiveCommentSprites().add(commentGroup);
         }
+        commentRunnables.add(r);
+//        commentMap.put(co)
         if (!onInput)
             WaitMaster.doAfterWait((int) time, () -> {
                 GdxMaster.onInputGdx(() -> {

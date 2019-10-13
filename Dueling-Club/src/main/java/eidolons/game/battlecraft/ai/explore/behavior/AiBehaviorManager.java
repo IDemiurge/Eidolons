@@ -45,7 +45,7 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     public static boolean isNewAiOn() {
-        return true;
+        return !EidolonsGame.FOOTAGE;
     }
 
     public void act(float delta) {

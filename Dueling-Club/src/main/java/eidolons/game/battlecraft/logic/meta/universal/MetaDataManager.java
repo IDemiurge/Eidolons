@@ -37,4 +37,8 @@ public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
 
     public void initData() {
     }
+
+    public String nextMission() {
+        return null;
+    }
 }

@@ -330,6 +330,7 @@ public class Eidolons {
     }
 
     public static void exitToMenu() {
+        EidolonsGame.reset();
         CoreEngine.setIggDemoRunning(false);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         try {

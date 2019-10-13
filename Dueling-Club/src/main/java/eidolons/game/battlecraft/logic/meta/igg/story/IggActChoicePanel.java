@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.story;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
@@ -36,6 +37,9 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
     }
 
     public void tryDone() {
+        if (EidolonsGame.SELECT_SCENARIO) {
+            return;
+        }
 //        if (CoreEngine.isIDE()) //TODO for A/B testing?
         if (isAutoDoneEnabled())
                 if (!MainLauncher.presetNumbers.isEmpty()) {

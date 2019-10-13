@@ -23,14 +23,13 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
-import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
 
 public class GridCellContainer extends GridCell {
     Map<GenericGridView, Integer  > indexMap = new LinkedHashMap<>();
     ValueContainer info;
-    private int unitViewCount = 0;
+    private int nonBgUnitViewCount = 0;
     private int overlayCount = 0;
     private GraveyardView graveyard;
     private boolean hasBackground;
@@ -142,21 +141,14 @@ public class GridCellContainer extends GridCell {
         ));
         if (visibleOnly) {
             visibleViews = list;
-            if (main) {
-                //                log(1, "visibleViews = " + list);
-            }
         } else {
             allViews = list;
-            if (main) {
-                //                log(1, " allViews = " + list);
-            }
         }
         return list;
     }
 
 
     public void recalcUnitViewBounds() {
-        unitViewCount = getUnitViewsVisible().size();
         if (getUnitViewCount() == 0) {
             return;
         }
@@ -204,6 +196,7 @@ public class GridCellContainer extends GridCell {
             graveyard.setZIndex(Integer.MAX_VALUE);
         }
         dirty = false;
+        info.setPosition(GDX.centerWidth(info), maxY + 10);
     }
 
     private void recalcImagesPos(GenericGridView actor,
@@ -375,14 +368,14 @@ public class GridCellContainer extends GridCell {
         super.act(delta);
          resetZIndices();
 
-        if (n != unitViewCount || secondCheck) {
+        if (n != nonBgUnitViewCount || secondCheck) {
             dirty = true;
         }
         if (dirty) {
-            unitViewCount = n;
-            recalcUnitViewBounds();            dirty = false;
+            nonBgUnitViewCount = n;
+            recalcUnitViewBounds();
+            dirty = false;
         }
-        info.setPosition(GDX.centerWidth(info), maxY + 10);
     }
 
     private boolean isStaticZindex() {
@@ -414,7 +407,6 @@ public class GridCellContainer extends GridCell {
         setDirty(true);
         if (actor instanceof GenericGridView) {
             GenericGridView view = (GenericGridView) actor;
-            unitViewCount = getUnitViewsVisible().size();
 
             if (isAnimated()) {
                 ActionMaster.addFadeInAction(actor, getFadeDuration()/1.5f); //igg demo hack
@@ -446,7 +438,7 @@ public class GridCellContainer extends GridCell {
         return getClass().getSimpleName() + " at " + getGridX() +
          ":" +
          getGridY() +
-         " with " + unitViewCount;
+         " with " + nonBgUnitViewCount;
     }
 
     public boolean removeActor(Actor actor) {
@@ -460,7 +452,6 @@ public class GridCellContainer extends GridCell {
 
         if (result && actor instanceof GenericGridView) {
             setDirty(true);
-            unitViewCount = getUnitViewsVisible().size();
             if (isAnimated())
                 ActionMaster.addFadeOutAction(actor, getFadeDuration());
             //            recalcUnitViewBounds();
@@ -518,12 +509,13 @@ public class GridCellContainer extends GridCell {
     }
 
     public int getUnitViewCount() {
-
-        return unitViewCount;
+//        return nonBgUnitViewCount;
+        return hasBackground ? nonBgUnitViewCount + 1 : nonBgUnitViewCount;
     }
 
     public int getUnitViewCountEffective() {
-        return hasBackground ? unitViewCount - 1 : unitViewCount;//-graveyard.getGraveCount() ;
+        return nonBgUnitViewCount;
+//        return hasBackground ? nonBgUnitViewCount - 1 : nonBgUnitViewCount;//-graveyard.getGraveCount() ;
     }
 
     public GenericGridView getTopUnitView() {

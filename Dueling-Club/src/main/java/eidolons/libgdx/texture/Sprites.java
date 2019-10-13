@@ -11,7 +11,7 @@ public class Sprites {
     public static final String RADIAL = "sprites/ui/radial.txt";
     public static final String BG_DUNGEON = "sprites/backgrounds/dwarf hall.txt";
     public static final String BG_VALLEY = "sprites/backgrounds/valley.txt";
-    public static final String BG_BASTION = "sprites/backgrounds/valley.txt";
+    public static final String BG_BASTION = "sprites/backgrounds/bastion.txt";
     public static final String BG_DEFAULT = "sprites/backgrounds/atlas.txt";
     public static final String BG_GATEWAY = BG_DEFAULT; //TODO
 

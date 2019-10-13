@@ -570,7 +570,11 @@ public class AnimMaster3d {
         if (Assets.get().getManager().isLoaded(path)) {
             atlas = Assets.get().getManager().get(path);
         } else {
-            if (Assets.isOn()) {
+            if (!Assets.isOn()) {
+                Chronos.mark("loading " + path);
+                atlas = new SmartTextureAtlas(path);
+                Chronos.logTimeElapsedForMark("loading " + path);
+            } else {
                 Chronos.mark("loading " + path);
                 Assets.get().getManager().load(path, TextureAtlas.class);
 //                while (!Assets.getVar().getManager().isLoaded(path)) {
@@ -579,9 +583,9 @@ public class AnimMaster3d {
 //                }
 
                 while (!Assets.get().getManager().isLoaded(path)) {
-                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
+                    LogMaster.log(1, "... loading " + path);
 //                    if (Assets.get().getManager().update(5000))
-                    if (Assets.get().getManager().update(1000))
+                    if (Assets.get().getManager().update(10))
                         break;
                 }
 //                while (!Assets.get().getManager().update(1000)) {
@@ -591,7 +595,7 @@ public class AnimMaster3d {
 //                }
 
                 if (!Assets.get().getManager().isLoaded(path)) {
-                    main.system.auxiliary.log.LogMaster.log(1, "************* Atlas failed to load! " + path);
+                    LogMaster.log(1, "************* Atlas failed to load! " + path);
 //                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
 //                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
 //                    Assets.setON(false);
@@ -602,10 +606,10 @@ public class AnimMaster3d {
                     Assets.get().getManager().finishLoadingAsset(path);
                     atlas = Assets.get().getManager().get(path, TextureAtlas.class);
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                     FileLogManager.streamMain("CRITICAL: asset not loaded - " + path);
 
-                    main.system.auxiliary.log.LogMaster.important("ALL assets: \n"
+                    LogMaster.important("ALL assets: \n"
                             + Assets.get().getManager().getDiagnostics());
                 }
                 if (atlas == null) {
@@ -626,8 +630,6 @@ public class AnimMaster3d {
                 } else {
                     Chronos.logTimeElapsedForMark("loading " + path);
                 }
-            } else {
-                atlas = new SmartTextureAtlas(path);
             }
         }
         if (cache) {

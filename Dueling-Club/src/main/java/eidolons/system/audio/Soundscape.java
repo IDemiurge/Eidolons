@@ -133,7 +133,9 @@ public class Soundscape {
         } else {
             SOUNDSET soundset = soundscape.weightMapUnit.getRandomByWeight();
             SOUNDS type = soundscape.weightMapSoundType.getRandomByWeight();
-            DC_SoundMaster.playEffectSound(type, soundset, volume,0);
+            if (type != null) {
+                DC_SoundMaster.playEffectSound(type, soundset, volume,0);
+            }
         }
 
     }

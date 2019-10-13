@@ -1,5 +1,6 @@
 package main.gui.components.tree;
 
+import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -23,14 +24,20 @@ import java.awt.*;
 
 public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer {
 
-    private DefaultTreeCellRenderer defRenderer;
+    private final DefaultTreeCellRenderer defRendererLarge;
+    private final DefaultTreeCellRenderer defRendererTiny;
+    private final DefaultTreeCellRenderer defRenderer;
+    private final DefaultTreeCellRenderer defRendererFolder;
     private int size = 64;
     private OBJ_TYPE TYPE = null;
     private boolean colorsInverted;
     private Workspace workspace;
 
     public AV_TreeCellRenderer() {
-        defRenderer = getDefaultRenderer();
+        defRendererFolder = getDefaultRenderer(0);
+        defRendererLarge = getDefaultRenderer(128);
+        defRenderer = getDefaultRenderer(64);
+        defRendererTiny = getDefaultRenderer(32);
     }
 
     @Override
@@ -78,9 +85,27 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             }
             Image img = ImageManager.getImage(type.getImagePath());
             if (img == null) {
+                Component treeCellRendererComponent = null;
+                if (type.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+                    switch (((DC_TYPE) type.getOBJ_TYPE_ENUM())) {
+                        case UNITS:
+                        case CHARS:
+                        case BF_OBJ:
+                            treeCellRendererComponent = defRendererLarge.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+                            break;
+                        default:
+                            treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+
+                    }
+                }
                 // main.system.auxiliary.LogMaster.log(1, "NULL img!" + " " +
                 // typeName);
-                return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
+                if (colorsInverted) {
+                    Color c = ColorManager.ALLY_COLOR;
+                    Color c2 = ColorManager.GOLDEN_WHITE;
+                    treeCellRendererComponent.setBackground(c);
+                    treeCellRendererComponent.setForeground(c2);
+                }
             }
             size = Math.min(getMaxTreeIconSize(), img.getWidth(null));
             G_Panel comp = new G_Panel();
@@ -121,8 +146,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
     private Component getDefaultComp(JTree tree, Object value, boolean selected, boolean expanded,
                                      boolean leaf, int row, boolean hasFocus) {
-        LogMaster.log(LogMaster.GUI_DEBUG, "drawing default lbl: " + value);
-        Component treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value,
+        Component treeCellRendererComponent = defRendererFolder.getTreeCellRendererComponent(tree, value,
                 selected, expanded, leaf, row, hasFocus);
         if (colorsInverted) {
             Color c = ColorManager.ALLY_COLOR;
@@ -151,8 +175,19 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
     }
 
-    private DefaultTreeCellRenderer getDefaultRenderer() {
+    private DefaultTreeCellRenderer getDefaultRenderer(int size) {
         return new DefaultTreeCellRenderer() {
+            @Override
+            public Icon getIcon() {
+                if (size == 0) {
+                    return super.getIcon();
+                }
+                if (size <= 64) {
+                    return ImageManager.getUnknownIcon();
+                }
+                return ImageManager.getEmptyUnitIcon();
+            }
+
             public Color getBackgroundNonSelectionColor() {
                 return (null);
             }

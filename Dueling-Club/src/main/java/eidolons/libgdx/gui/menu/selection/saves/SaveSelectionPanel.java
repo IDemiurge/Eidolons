@@ -20,6 +20,9 @@ public class SaveSelectionPanel extends HeroSelectionPanel {
 
     @Override
     public void done() {
+        if (listPanel.getCurrentItem() == null || listPanel.isBlocked(listPanel.getCurrentItem())) {
+            return;
+        }
         super.done();
         AdventureInitializer.load(listPanel.getCurrentItem().getName());
 

@@ -304,7 +304,8 @@ public class AnimMaster extends Group {
         DC_SoundMaster.bindEvents();
         floatTextLayer.bindEvents();
         GuiEventManager.bind(GuiEventType.BOSS_VIEW_CREATED, p -> {
-            bossAnimator = new BossAnimator((BossView) p.get(), this);
+            BossView b = (BossView) p.get();
+            bossAnimator = new BossAnimator(b, this  );
 
         });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
@@ -506,4 +507,7 @@ public class AnimMaster extends Group {
         drawer.addAttached(a);
     }
 
+    public BossAnimator getBossAnimator() {
+        return bossAnimator;
+    }
 }

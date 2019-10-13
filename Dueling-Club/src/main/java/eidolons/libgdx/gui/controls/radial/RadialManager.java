@@ -300,7 +300,7 @@ public class RadialManager {
 
 
     protected static boolean checkExamineNode(DC_Obj target) {
-        if (!UnitInfoPanelNew.EXAMINE_READY && !CoreEngine.isIDE()){
+        if (!UnitInfoPanelNew.EXAMINE_READY && !CoreEngine.isIDE()) {
             return false;
         }
         return target instanceof Unit && (
@@ -601,15 +601,21 @@ public class RadialManager {
         }
         if (!activeObj.isAttackGeneric())
             if (activeObj.isAttackAny()) {
-                int chance = activeObj.getCalculator().getCritOrDodgeChance(target);
+                int chance = 0;
+                try {
+                    chance = activeObj.getCalculator().getCritOrDodgeChance(target);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
                 if (chance == 0)
                     return null;
+                int finalChance = chance;
                 return () -> {
                     String string = null;
-                    if (chance > 0) {
-                        string = chance + "% to crit";
+                    if (finalChance > 0) {
+                        string = finalChance + "% to crit";
                     } else
-                        string = chance + "% to miss";
+                        string = finalChance + "% to miss";
                     return string;
                 };
             }

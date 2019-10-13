@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.GenericMapper;
@@ -16,10 +17,12 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
@@ -458,6 +461,8 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (EidolonsGame.BRIDGE || EidolonsGame.BOSS_FIGHT) {
             return CELL_IMAGE.octagonal;
         }
+
+
         LevelBlock block = getBlockForCoordinate(c);
         img = cellTypeMap.get(block);
         if (img == null) {

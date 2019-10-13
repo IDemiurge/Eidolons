@@ -29,7 +29,7 @@ public class CoreEngine {
 
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.9.9d";
+    public static final String VERSION = "1.0.0";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
     public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
@@ -100,6 +100,7 @@ public class CoreEngine {
     private static boolean superLite;
     private static boolean weakGpu;
     private static boolean youTube;
+    private static boolean fraps;
 
     public static void setWeakGpu(boolean weakGpu) {
         CoreEngine.weakGpu = weakGpu;
@@ -116,6 +117,14 @@ public class CoreEngine {
 
     public static void setYouTube(boolean youTube) {
         CoreEngine.youTube = youTube;
+    }
+
+    public static boolean isFraps() {
+        return fraps;
+    }
+
+    public static void setFraps(boolean fraps) {
+        CoreEngine.fraps = fraps;
     }
 
 

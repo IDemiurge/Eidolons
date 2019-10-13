@@ -54,7 +54,10 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     protected boolean isHidden(MAIN_MENU_ITEM item) {
         if (CoreEngine.isIggDemo()){
             switch (item) {
-
+                case RANDOM_SCENARIO:
+                case SELECT_SCENARIO:
+                case CUSTOM_LAUNCH:
+                case PLAY:
                 case DEMO:
 //                case CONTINUE:
                 case EXIT:
@@ -101,6 +104,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
         NEXT_SCENARIO(true),
         RANDOM_SCENARIO(false),
         SELECT_SCENARIO(false),
+        CUSTOM_LAUNCH(false),
         STANDOFF(true),
         SKIRMISH(true),
         PLAY( SELECT_SCENARIO, RANDOM_SCENARIO),//NEXT_SCENARIO, ),

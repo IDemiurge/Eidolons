@@ -260,6 +260,7 @@ public class GlobalController implements Controller {
             ConfirmationPanel.getInstance().ok();
             return true;
         }
+        if (Eidolons.getScreen().getController() != null)
         if (Eidolons.getScreen().getController().space()) {
             main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
             return true;
@@ -398,6 +399,8 @@ public class GlobalController implements Controller {
         if (Eidolons.getScreen().getController().escape())
             return true;
 
+//        if (){
+        GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
         guiStage.getTooltips().getStackMaster().stackOff();
         guiStage.getGameMenu().open();
         return true;

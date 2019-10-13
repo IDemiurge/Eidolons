@@ -98,6 +98,10 @@ public class XmlCleaner {
     }
 
     private static boolean isRemoveCHARS(ObjType type) {
+        if ("Count Ledwraith;Grimbart;Eidas Adeilar v3;   Elinda Carrow;Gnauri Viragost;Milthir;Ilureth Atalun-Ree;Raina Ardren;".contains(
+                type.getName())) {
+            return false;
+        }
         if (type.getGroup().equalsIgnoreCase("igg")) {
             return false;
         }

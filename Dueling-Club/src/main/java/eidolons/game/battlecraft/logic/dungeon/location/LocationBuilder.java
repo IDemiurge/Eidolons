@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -177,7 +178,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             processNode(n, getDungeon(), plan);
 
         }
-        if (CoreEngine.isIggDemo()) {
+        if (EidolonsGame.IGG_DEMO) {
 //            if (location.getProperty(PROPS.ENTRANCE_COORDINATES).isEmpty()) {
 //            }
             location.setEntranceData(IGG_XmlMaster.getEntrancesData(location, path));

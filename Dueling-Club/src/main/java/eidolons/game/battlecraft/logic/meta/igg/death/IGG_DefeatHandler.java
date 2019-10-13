@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
@@ -27,8 +28,8 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         if (!isOn()) {
             return true;
         }
-        if (getMaster().getSoulforceMaster().isTrueForm()) {
-            if (!getMaster().getSoulforceMaster().died())
+        if (SoulforceMaster.getInstance().isTrueForm()) {
+            if (!SoulforceMaster.getInstance().died())
                 return true;
 
             return false;
@@ -97,10 +98,7 @@ public class IGG_DefeatHandler extends DefeatHandler<IGG_Meta> {
         return (IGG_PartyManager) super.getPartyManager();
     }
 
-    @Override
-    public IGG_MetaMaster getMaster() {
-        return (IGG_MetaMaster) super.getMaster();
-    }
+
 
     @Override
     public void fallsUnconscious(Event event) {

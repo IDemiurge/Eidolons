@@ -22,7 +22,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
     }
 
     public Coordinates getPlayerSpawnCoordinates() {
-        String prop = getProperty(PROPS.PARTY_SPAWN_COORDINATES);
+        String prop = getProperty(PROPS.ENTRANCE_COORDINATES);
         if (prop.isEmpty()) {
             return Coordinates.getMiddleCoordinate(main.game.bf.directions.FACING_DIRECTION.NONE);
         }

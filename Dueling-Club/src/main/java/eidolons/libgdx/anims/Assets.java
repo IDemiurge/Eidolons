@@ -28,6 +28,7 @@ import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.light.ShadeLightCell;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.launch.GpuTester;
+import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
@@ -214,11 +215,11 @@ public class Assets {
     }
 
     public static boolean preloadAdditional(DequeImpl<BattleFieldObject> objects) {
-        return preload(objects, true, true, true, true);
+        return preload(objects, false, true, true, true);
     }
 
     public static boolean preloadMain(DequeImpl<BattleFieldObject> objects) {
-        return preload(objects, false, true, false, true);
+        return preload(objects, true, true, false, true);
     }
 
     public static boolean preload(DequeImpl<BattleFieldObject> objects,
@@ -243,11 +244,15 @@ public class Assets {
             Chronos.logTimeElapsedForMark("preload ui");
             result = true;
         }
+        if (!EidolonsGame.FOOTAGE)
+            if (her0es) {
+                Chronos.mark("preload her0es");
+                preloadHeroes(full);
+                Chronos.logTimeElapsedForMark("preload her0es");
+            }
 
-        if (her0es) {
-            Chronos.mark("preload her0es");
-            preloadHeroes(full);
-            Chronos.logTimeElapsedForMark("preload her0es");
+        if (MainLauncher.BG != null) {
+            loadSprite(MainLauncher.BG, false, false);
         }
 
         return result;
@@ -315,7 +320,9 @@ public class Assets {
         }
         switch (getScope()) {
             case DUEL:
-                MusicMaster.getInstance().getMusic(MusicMaster.MUSIC_TRACK.NIGHT_OF_DEMON.getPath(), true);
+                MusicMaster.getInstance().getMusic(
+
+                        MusicMaster.MUSIC_TRACK.NIGHT_OF_DEMON.getFullPath(), true);
                 break;
             case INTRO:
                 MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
@@ -400,7 +407,7 @@ public class Assets {
     public static void preloadScope(GAME_SCOPE scope, boolean full) {
         for (String substring : ContainerUtils.openContainer(scope.assets)) {
             boolean ktx = false;
-            loadSprite(substring, false, ktx);
+            loadSprite(substring, full, ktx);
         }
 
 
@@ -435,7 +442,7 @@ public class Assets {
 
 
     public enum GAME_SCOPE {
-        DUEL(ContainerUtils.construct(";",Sprites.BIG_CLAW_ATTACK, Sprites.BIG_CLAW_IDLE, Sprites.SMALL_CLAW_IDLE,
+        DUEL(ContainerUtils.construct(";", Sprites.BIG_CLAW_ATTACK, Sprites.BIG_CLAW_IDLE, Sprites.SMALL_CLAW_IDLE,
                 Sprites.GHOST_FIST,
                 Sprites.CLAWS,
                 Sprites.KRIS,
@@ -446,17 +453,17 @@ public class Assets {
                 , Sprites.REAPER_SCYTHE
         )),
 
-        INTRO(ContainerUtils.construct(";",Sprites.ACID_BLADE, Sprites.AX_FIRE, Sprites.BLOOD_SHOWER, Sprites.BONE_WINGS,
+        INTRO(ContainerUtils.construct(";", Sprites.ACID_BLADE, Sprites.AX_FIRE, Sprites.BLOOD_SHOWER, Sprites.BONE_WINGS,
                 FULLSCREEN_ANIM.HELLFIRE.getSpritePath(),
                 FULLSCREEN_ANIM.TUNNEL.getSpritePath(),
                 FULLSCREEN_ANIM.WAVE.getSpritePath(),
                 FULLSCREEN_ANIM.GATE_FLASH.getSpritePath(),
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
 
-        PUZZLES(ContainerUtils.construct(";",Sprites.GATE_LIGHTNING, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
+        PUZZLES(ContainerUtils.construct(";", Sprites.GATE_LIGHTNING, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
 
-        COMMON(ContainerUtils.construct(";",Sprites.SNOW, Sprites.FLOAT_WISP,
+        COMMON(ContainerUtils.construct(";", Sprites.SNOW, Sprites.FLOAT_WISP,
                 Sprites.INK_BLOTCH, Sprites.BG_DEFAULT, Sprites.FIRE_LIGHT, Sprites.WATER,
                 FULLSCREEN_ANIM.EXPLOSION.getSpritePath(), Sprites.GATE_LIGHTNING,
                 Sprites.PORTAL_OPEN, Sprites.PORTAL_CLOSE, Sprites.PORTAL, Sprites.WHITE_TENTACLE)),
@@ -481,8 +488,8 @@ public class Assets {
             }
             if (isScopeLoadingMode()) {
                 if (!EidolonsGame.PUZZLES)
-                    preloadScope(GAME_SCOPE.COMMON, false);
-                preloadScope(getScope(), false);
+                    preloadScope(GAME_SCOPE.COMMON, full);
+                preloadScope(getScope(), full);
                 return;
             }
         }
@@ -568,7 +575,9 @@ public class Assets {
         if (EidolonsGame.BRIDGE) {
             return;
         }
-        loadSprite(Sprites.RADIAL, full, ktx);
+//        if (!CoreEngine.isLiteLaunch())
+//            loadSprite(Sprites.RADIAL, full, ktx);
+
         loadSprite(IGG_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), full, ktx);
         //locks
         // blood
@@ -640,17 +649,20 @@ public class Assets {
         return true;
     }
 
-    private static void loadSprite(String path, boolean full, boolean ktx) {
+    public static void loadSprite(String path, boolean full, boolean ktx) {
 
 //        if (checkReducedSprite(path)){
 //            reduced =true;
 //        }
-//        if (full && !CoreEngine.isSuperLite()&&  CoreEngine.isIDE()) {
-//            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
-//        } else
-//        {
-//        }
-        SpriteAnimationFactory.getSpriteAnimation(path, false, true, ktx);
+        if (isAsyncLoad(full)) {
+            assets.getManager().load(PathFinder.getImagePath() + path, TextureAtlas.class);
+        } else {
+            SpriteAnimationFactory.getSpriteAnimation(path, false, true, ktx);
+        }
+    }
+
+    private static boolean isAsyncLoad(boolean full) {
+        return full;//!CoreEngine.isSuperLite()&&
     }
 
 
