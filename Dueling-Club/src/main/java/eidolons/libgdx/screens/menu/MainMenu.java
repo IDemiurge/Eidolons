@@ -52,22 +52,20 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
     @Override
     protected boolean isHidden(MAIN_MENU_ITEM item) {
-        if (CoreEngine.isIggDemo()){
-            switch (item) {
-                case RANDOM_SCENARIO:
-                case SELECT_SCENARIO:
-                case CUSTOM_LAUNCH:
-                case PLAY:
-                case DEMO:
-//                case CONTINUE:
-                case EXIT:
-//                case MANUAL:
-//                case  CREDITS:
-                case OPTIONS:
-                   return false;
-            }
-            return true;
-        }
+//        if (CoreEngine.isIggDemo())
+//        {
+//            switch (item) {
+//                case RANDOM_SCENARIO:
+//                case SELECT_SCENARIO:
+//                case CUSTOM_LAUNCH:
+//                case PLAY:
+//                case DEMO:
+//                case EXIT:
+//                case OPTIONS:
+//                   return false;
+//            }
+//            return true;
+//        }
         return item.secondary;
     }
 
@@ -99,7 +97,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
-        DEMO(true),
+        DEMO(false),
         CONTINUE(true),
         NEXT_SCENARIO(true),
         RANDOM_SCENARIO(false),

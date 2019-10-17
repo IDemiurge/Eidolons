@@ -29,46 +29,30 @@ import java.util.Stack;
  */
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
-    public static   String BG ;
+    public static String BG;
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
-   public static  Integer HERO_INDEX =-1;
+    public static Integer HERO_INDEX = -1;
     private static final String FOOTAGE_SEQUENCE =
-            "ready/ship.xml;" +
+                    "ready/ship.xml;" +
                     "ready/graveyard.xml;" +
-            "ready/wood.xml;" +
+                    "ready/wood.xml;" +
                     "crawl/cavern.xml;" +
                     "crawl/Guild Dungeon.xml;" +
                     "crawl/hell.xml;" +
                     "crawl/Underdark.xml;" +
-            "ready/dark castle.xml;" +
-            "ready/the fortress.xml;" +
+                    "ready/dark castle.xml;" +
+                    "ready/the fortress.xml;" +
                     "crawl/Ancient Ruins.xml;" +
                     "crawl/Ravenguard Dungeon.xml;" +
                     "crawl/Dwarven Halls.xml;" +
                     "ready/ravenguard sanctum.xml;" +
 
-
                     "ready/spire.xml;" +
                     "ready/mix.xml;" +
-            "footage/demon circle.xml;" +
-            "footage/serpentium.xml;" +
-            "levels/underworld.xml;" +
-            "modules/bastion.xml;" +
-
-                    "levels/vault.xml;" +
-                    "modules/black river.xml;" +
-                    "modules/reaver.xml;" +
-
-                    "demo/underreach.xml;" +
-                    "crawl/guild dungeon.xml;" +
-                    "demo/Outer Cloister.xml;" +
-
-                    "crawl/cavern.xml;" +
-                    "crawl/cavern.xml;" +
-
-                    "levels/vault.xml;" +
-                    "levels/vault.xml;" +
-                    "levels/vault.xml;";
+                    "footage/demon circle.xml;" +
+                    "footage/serpentium.xml;" +
+                    "levels/underworld.xml;" +
+                    "modules/bastion.xml;";
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
     private static CustomLaunch customLaunch;
@@ -90,15 +74,15 @@ public class MainLauncher extends GenericLauncher {
         if (args.length > 0) {
             PathFinder.init();
             if (args[0].contains("town")) {
-                EidolonsGame.TOWN=true;
+                EidolonsGame.TOWN = true;
             }
 
-                if (args[0].contains("selectfootage")) {
-                    CoreEngine.swingOn = true;
-                    CoreEngine.systemInit();
+            if (args[0].contains("selectfootage")) {
+                CoreEngine.swingOn = true;
+                CoreEngine.systemInit();
 //                int i = DialogMaster.inputInt(0);
-                    String level = ListChooser.chooseString(ContainerUtils.openContainer(FOOTAGE_SEQUENCE));
-                    args[0] = args[0] + ";" + level;
+                String level = ListChooser.chooseString(ContainerUtils.openContainer(FOOTAGE_SEQUENCE));
+                args[0] = args[0] + ";" + level;
 
 //                int i = DialogMaster.optionChoice("", FOOTAGE_SEQUENCE.split(";"));
 //                if (i==-1) {
@@ -109,8 +93,8 @@ public class MainLauncher extends GenericLauncher {
             }
             if (args[0].contains("selecthero")) {
                 HERO_INDEX = DialogMaster.inputInt(0);
-                if (HERO_INDEX==-1) {
-                    EidolonsGame.SELECT_HERO=true;
+                if (HERO_INDEX == -1) {
+                    EidolonsGame.SELECT_HERO = true;
                 }
             }
             String[] parts = args[0].split(";");
@@ -248,33 +232,33 @@ public class MainLauncher extends GenericLauncher {
     public static void setCustomLaunch(CustomLaunch customLaunch) {
         main.system.auxiliary.log.LogMaster.important("customLaunch set: " + customLaunch);
         MainLauncher.customLaunch = customLaunch;
-        BG=getBgForLvl(customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path));
+        BG = getBgForLvl(customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path));
     }
 
     private static String getBgForLvl(String value) {
-            switch (value) {
-                case "ready/graveyard.xml":
-                case "crawl/Dwarven Halls.xml":
-                    CoreEngine.setReverseExit(true);
-                    return null ;
-                case "ready/ship.xml":
-                    CoreEngine.setReverseExit(true);
+        switch (value) {
+            case "ready/graveyard.xml":
+            case "crawl/Dwarven Halls.xml":
+                CoreEngine.setReverseExit(true);
+                return null;
+            case "ready/ship.xml":
+                CoreEngine.setReverseExit(true);
 //                    return Sprites.BG_BASTION;
                 return "main/background/ship flip.jpg";
 
-                case "ready/ravenguard sanctum.xml":
-                case "crawl/Guild Dungeon.xml":
-                case "ready/wood.xml":
-                case "ready/dark castle.xml":
-                case "ready/the fortress.xml":
+            case "ready/ravenguard sanctum.xml":
+            case "crawl/Guild Dungeon.xml":
+            case "ready/wood.xml":
+            case "ready/dark castle.xml":
+            case "ready/the fortress.xml":
 
-                case "crawl/cavern.xml":
-                case "crawl/hell.xml":
-                case "crawl/Underdark.xml":
-                case "crawl/Ancient Ruins.xml":
-                case "crawl/Ravenguard Dungeon.xml":
-            }
-        return null ;
+            case "crawl/cavern.xml":
+            case "crawl/hell.xml":
+            case "crawl/Underdark.xml":
+            case "crawl/Ancient Ruins.xml":
+            case "crawl/Ravenguard Dungeon.xml":
+        }
+        return null;
     }
 
     @Override

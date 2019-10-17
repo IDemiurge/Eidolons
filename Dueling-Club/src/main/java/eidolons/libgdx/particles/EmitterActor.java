@@ -228,9 +228,5 @@ public class EmitterActor extends SuperActor {
 
     public void setInvert(boolean invert) {
         this.invert = invert;
-//        effect.getEmitters().forEach(e->e.setAdditive(false));
-//        for (Object item : effect.getEmitters().items) {
-//            ((ParticleEmitterX) item).setInvert(invert);
-//        }
     }
 }

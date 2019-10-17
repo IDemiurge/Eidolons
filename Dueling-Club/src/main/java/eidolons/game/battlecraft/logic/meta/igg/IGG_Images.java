@@ -64,7 +64,6 @@ public class IGG_Images {
     }
 
     public enum MAIN_ART {
-        MAIN_MENU("MAIN_MENU.png"),
         HALL2,
         HALL3,
         ;

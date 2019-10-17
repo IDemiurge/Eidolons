@@ -208,10 +208,6 @@ public class ParticleEffectX extends ParticleEffect {
 
     }
 
-    //    @Override
-//    protected ParticleEmitter newEmitter(BufferedReader reader) throws IOException {
-//        return new ParticleEmitterX(reader);
-//    }
     public void setImagePath(String imagePath) {
         Array<String> array = new Array<>();
         array.add(imagePath);
