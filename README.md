@@ -4,24 +4,24 @@ Originally using Swing/AWT graphics, Eidolons has been visually upgraded with Li
 More information can be found on [Steam](https://store.steampowered.com/app/1043440/Eidolons_Netherflame/?beta=0 "Eidolons Steam Store Page").
 
 ## Building from sources: 
-You will need to symlink this resource folder next to your target folder in order to run the game via MainLauncher.java. 
+You will need to put (or symlink) [this resource folder](https://drive.google.com/open?id=1ily3vyjxTnMjKxSZj_EMbnBxIU6SOXBA) next to your target folder in order to run the game via MainLauncher.java. 
 ## Releases:
 Same as with sources, place the resources folder next to the .exe or .jar that you want to run the game with.
 
 ## Feature Overview
-- Extensive hero customization with a custom class-system
+Extensive hero customization with a custom class-system
 <details>
   <summary>Screenshot</summary>
   
    ![alt text](https://i.ibb.co/KNbdLVP/h2.jpg)
 </details>
-- Innovative and complex Turn-based combat system based on ATB (a la HoMM5)
+Innovative and complex Turn-based combat system based on ATB (a la HoMM5)
 <details>
   <summary>Screenshot</summary>
    
 ![alt text](https://i.ibb.co/N7wyVbw/raw-collage-0-00-27-14.png)
 </details>
-- Randomly generated Grid-based dungeons 
+Randomly generated Grid-based dungeons 
 <details>
   <summary>Screenshot</summary>
    
