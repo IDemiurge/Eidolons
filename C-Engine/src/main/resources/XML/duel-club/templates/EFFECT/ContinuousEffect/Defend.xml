@@ -1,0 +1,4 @@
+<ContinuousEffect><ModifyValueEffect><PARAM>Defense</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<FORMULA>30+(10*{BUFF_TURNS_INGAME})</FORMULA>
+</ModifyValueEffect></ContinuousEffect>

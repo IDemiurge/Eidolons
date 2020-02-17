@@ -1,0 +1,12 @@
+<AddSpecialEffects><SPECIAL_EFFECTS_CASE>ON_ATTACK</SPECIAL_EFFECTS_CASE>
+<RandomizedEffect><Effects><AddBuffEffect><STRING>Weakened</STRING>
+<ModifyValueEffect><PARAM>Base_damage</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<FORMULA>-^VAR</FORMULA>
+</ModifyValueEffect><FORMULA>max(5, ^VAR)</FORMULA>
+</AddBuffEffect><AddBuffEffect><STRING>Haze</STRING>
+<ModifyValueEffect><PARAM>N_of_actions</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<FORMULA>-^VAR</FORMULA>
+</ModifyValueEffect><FORMULA>max(5, ^VAR)</FORMULA>
+</AddBuffEffect></Effects></RandomizedEffect></AddSpecialEffects>

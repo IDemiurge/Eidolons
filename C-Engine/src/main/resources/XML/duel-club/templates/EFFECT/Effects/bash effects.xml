@@ -1,0 +1,7 @@
+<Effects><ModifyValueEffect><PARAM>C Focus</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>-^VAR</STRING>
+</ModifyValueEffect><ModifyValueEffect><PARAM>C Initiative Bonus</PARAM>
+<MODVAL_TYPE>MODIFY_BY_CONST</MODVAL_TYPE>
+<STRING>-^VAR</STRING>
+</ModifyValueEffect></Effects>

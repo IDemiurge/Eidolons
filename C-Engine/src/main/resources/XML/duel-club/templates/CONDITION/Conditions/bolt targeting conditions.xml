@@ -1,0 +1,12 @@
+<Conditions><NotCondition><StringComparison><STRING>{MATCH_CLASSIFICATION}</STRING>
+<STRING>TERRAIN</STRING>
+<BOOLEAN>true</BOOLEAN>
+</StringComparison></NotCondition><NumericCondition><FORMULA>{SPELL_RANGE}</FORMULA>
+<FORMULA>[DISTANCE(SOURCE,MATCH)]</FORMULA>
+<BOOLEAN>false</BOOLEAN>
+</NumericCondition><RefCondition><STRING>MATCH</STRING>
+<STRING>SOURCE</STRING>
+<BOOLEAN>true</BOOLEAN>
+</RefCondition><NotCondition><OwnershipCondition><STRING>MATCH</STRING>
+<STRING>SOURCE</STRING>
+</OwnershipCondition></NotCondition></Conditions>

@@ -1,0 +1,378 @@
+<Party><Garro_Wulfen><params><Divination_Pool_Mod>100</Divination_Pool_Mod>
+<Base_Knowledge>4</Base_Knowledge>
+<Side_Sight_Penalty>1</Side_Sight_Penalty>
+<Base_Willpower>6</Base_Willpower>
+<Counter_Mod>50</Counter_Mod>
+<Divination_Max_Sd_Mod>100</Divination_Max_Sd_Mod>
+<Base_Dexterity>6</Base_Dexterity>
+<Xp>17</Xp>
+<Base_Spellpower>4</Base_Spellpower>
+<Weight>150</Weight>
+<Damage>10</Damage>
+<Detection>20</Detection>
+<Armorer_Mastery>3</Armorer_Mastery>
+<Memory_Remaining>4</Memory_Remaining>
+<Morale_Percentage>1000000</Morale_Percentage>
+<N_Of_Counters_Percentage>1000000</N_Of_Counters_Percentage>
+<N_Of_Counters>1</N_Of_Counters>
+<Offhand_Damage_Mod>75</Offhand_Damage_Mod>
+<Base_Strength>12</Base_Strength>
+<Gold_Mod>100</Gold_Mod>
+<Xp_Gain_Mod>100</Xp_Gain_Mod>
+<Wisdom>4</Wisdom>
+<Defense_Mod>100</Defense_Mod>
+<Defense>5</Defense>
+<Default_Willpower>1</Default_Willpower>
+<Base_Intelligence>5</Base_Intelligence>
+<Focus_Percentage>100</Focus_Percentage>
+<Morale>30</Morale>
+<Offhand_Attack_Mod>50</Offhand_Attack_Mod>
+<Default_Wisdom>-1</Default_Wisdom>
+<Damage_Mod>100</Damage_Mod>
+<Charisma>5</Charisma>
+<Resistance>15</Resistance>
+<Starting_Focus>25</Starting_Focus>
+<Base_Agility>6</Base_Agility>
+<Athletics_Mastery>5</Athletics_Mastery>
+<Summoned_Xp_Mod>100</Summoned_Xp_Mod>
+<Polearm_Mastery_Score>2</Polearm_Mastery_Score>
+<Essence>25</Essence>
+<Cadence_Ap_Mod>-25</Cadence_Ap_Mod>
+<Stamina>10</Stamina>
+<Armor_Gold_Percentage>40</Armor_Gold_Percentage>
+<Axe_Mastery>4</Axe_Mastery>
+<Sight_Range>3</Sight_Range>
+<Gold>5</Gold>
+<Vitality>11</Vitality>
+<Knowledge>4</Knowledge>
+<Essence_Percentage>100</Essence_Percentage>
+<Willpower>6</Willpower>
+<Strength>12</Strength>
+<Initiative_Bonus>5</Initiative_Bonus>
+<N_Of_Actions>4</N_Of_Actions>
+<Level>2</Level>
+<Spellpower>4</Spellpower>
+<Intelligence>5</Intelligence>
+<Attr_Points_Per_Level>5</Attr_Points_Per_Level>
+<Fire_Resistance>15</Fire_Resistance>
+<Blade_Mastery>11</Blade_Mastery>
+<Default_Vitality>1</Default_Vitality>
+<Armor_Mod>100</Armor_Mod>
+<Cadence_Sta_Mod>-35</Cadence_Sta_Mod>
+<Polearm_Mastery>2</Polearm_Mastery>
+<Blade_Mastery_Score>11</Blade_Mastery_Score>
+<Interrupt_Damage>100</Interrupt_Damage>
+<Initiative_Percentage>100</Initiative_Percentage>
+<Carrying_Capacity>65</Carrying_Capacity>
+<Attack>5</Attack>
+<Toughness>15</Toughness>
+<Mastery_Points_Per_Level>5</Mastery_Points_Per_Level>
+<Default_Knowledge>-1</Default_Knowledge>
+<Mobility_Mastery>5</Mobility_Mastery>
+<Xp_Level_Mod>100</Xp_Level_Mod>
+<Quick_Slots>2</Quick_Slots>
+<Axe_Mastery_Score>4</Axe_Mastery_Score>
+<Toughness_Percentage>100</Toughness_Percentage>
+<Initiative_Modifier>10</Initiative_Modifier>
+<Dexterity>6</Dexterity>
+<Armorer_Mastery_Score>3</Armorer_Mastery_Score>
+<Default_Spellpower>-1</Default_Spellpower>
+<Default_Dexterity>1</Default_Dexterity>
+<Endurance_Percentage>100</Endurance_Percentage>
+<Shadow_Resistance>15</Shadow_Resistance>
+<Total_Xp>225</Total_Xp>
+<Default_Agility>1</Default_Agility>
+<Base_Damage>3</Base_Damage>
+<Main_Hand_Gold_Percentage>70</Main_Hand_Gold_Percentage>
+<Free_Masteries>6</Free_Masteries>
+<Upkeep_Mod>100</Upkeep_Mod>
+<Memorization_Cap>5</Memorization_Cap>
+<N_Of_Actions_Percentage>1000000</N_Of_Actions_Percentage>
+<Base_Wisdom>4</Base_Wisdom>
+<Base_Vitality>11</Base_Vitality>
+<C_Quick_Slots>4</C_Quick_Slots>
+<Spirit>4</Spirit>
+<Attack_Mod>100</Attack_Mod>
+<Default_Strength>2</Default_Strength>
+<Endurance>30</Endurance>
+<Mobility_Mastery_Score>5</Mobility_Mastery_Score>
+<Power>22</Power>
+<Stamina_Percentage>100</Stamina_Percentage>
+<Agility>6</Agility>
+<Base_Charisma>5</Base_Charisma>
+<Focus>100</Focus>
+<Athletics_Mastery_Score>5</Athletics_Mastery_Score>
+</params><props><Deity>Night Lord</Deity>
+<Soundset>chars\male\blackguard\</Soundset>
+<Principles>War;Treachery;</Principles>
+<Jewelry></Jewelry>
+<Displayed_Name>Garro Wulfen</Displayed_Name>
+<Aspect>Darkness</Aspect>
+<Offhand_Natural_Weapon>Average Fist</Offhand_Natural_Weapon>
+<Quick_Items>Minor Healing Potion;Cheap Poison Coating;</Quick_Items>
+<Armor_Item>Inferior Copper Half Plate</Armor_Item>
+<Group>Preset</Group>
+<Gender>MALE</Gender>
+<Inventory></Inventory>
+<Description></Description>
+<Spellbook></Spellbook>
+<Classifications>Humanoid;Hero</Classifications>
+<Known_Spells></Known_Spells>
+<Emblem>UI\emblems\std\darkness\2arch.jpg</Emblem>
+<Lore></Lore>
+<Name>Garro Wulfen</Name>
+<Main_Hand_Item>Inferior Iron Flamberge</Main_Hand_Item>
+<Rank>New Hero</Rank>
+<Off_Hand_Item></Off_Hand_Item>
+<Standard_Passives></Standard_Passives>
+<Type>chars</Type>
+<Skills>Greater Strength;Great Sword Specialization;Sidestep;</Skills>
+<Natural_Weapon>Average Fist</Natural_Weapon>
+<Race>Human</Race>
+<Image>\mini\char\std\human\Wolf Realm\Count De'Mon2t.jpg</Image>
+<Background>Man Of Wolf Realm</Background>
+</props></Garro_Wulfen><Ravenna><params><Divination_Pool_Mod>100</Divination_Pool_Mod>
+<Base_Knowledge>7</Base_Knowledge>
+<Side_Sight_Penalty>1</Side_Sight_Penalty>
+<Base_Willpower>6</Base_Willpower>
+<Counter_Mod>50</Counter_Mod>
+<Divination_Max_Sd_Mod>100</Divination_Max_Sd_Mod>
+<Base_Dexterity>5</Base_Dexterity>
+<Xp>7</Xp>
+<Base_Spellpower>7</Base_Spellpower>
+<Weight>150</Weight>
+<Damage>10</Damage>
+<Psychic_Mastery_Score>7</Psychic_Mastery_Score>
+<Detection>20</Detection>
+<Memory_Remaining>4</Memory_Remaining>
+<Morale_Percentage>1000000</Morale_Percentage>
+<N_Of_Counters_Percentage>1000000</N_Of_Counters_Percentage>
+<N_Of_Counters>1</N_Of_Counters>
+<Offhand_Damage_Mod>75</Offhand_Damage_Mod>
+<Base_Strength>5</Base_Strength>
+<Gold_Mod>100</Gold_Mod>
+<Xp_Gain_Mod>100</Xp_Gain_Mod>
+<Wisdom>7</Wisdom>
+<Defense_Mod>100</Defense_Mod>
+<Defense>5</Defense>
+<Base_Intelligence>7</Base_Intelligence>
+<Focus_Percentage>100</Focus_Percentage>
+<Morale>30</Morale>
+<Offhand_Attack_Mod>50</Offhand_Attack_Mod>
+<Damage_Mod>100</Damage_Mod>
+<Charisma>5</Charisma>
+<Resistance>15</Resistance>
+<Base_Agility>5</Base_Agility>
+<Starting_Focus>25</Starting_Focus>
+<Summoned_Xp_Mod>100</Summoned_Xp_Mod>
+<Mastery_Bought_With_Xp>1</Mastery_Bought_With_Xp>
+<Essence>25</Essence>
+<Cadence_Ap_Mod>-25</Cadence_Ap_Mod>
+<Stamina>10</Stamina>
+<Armor_Gold_Percentage>40</Armor_Gold_Percentage>
+<Sight_Range>3</Sight_Range>
+<Gold>4</Gold>
+<Vitality>8</Vitality>
+<Knowledge>7</Knowledge>
+<Essence_Percentage>100</Essence_Percentage>
+<Shadow_Mastery_Score>10</Shadow_Mastery_Score>
+<Willpower>6</Willpower>
+<Strength>5</Strength>
+<Initiative_Bonus>5</Initiative_Bonus>
+<N_Of_Actions>4</N_Of_Actions>
+<Level>2</Level>
+<Spellpower>7</Spellpower>
+<Attr_Points_Per_Level>5</Attr_Points_Per_Level>
+<Intelligence>7</Intelligence>
+<Blade_Mastery>5</Blade_Mastery>
+<Armor_Mod>100</Armor_Mod>
+<Cadence_Sta_Mod>-35</Cadence_Sta_Mod>
+<Blade_Mastery_Score>5</Blade_Mastery_Score>
+<Interrupt_Damage>100</Interrupt_Damage>
+<Initiative_Percentage>100</Initiative_Percentage>
+<Carrying_Capacity>65</Carrying_Capacity>
+<Attack>5</Attack>
+<Shadow_Mastery>10</Shadow_Mastery>
+<Toughness>15</Toughness>
+<Mastery_Points_Per_Level>5</Mastery_Points_Per_Level>
+<Xp_Level_Mod>100</Xp_Level_Mod>
+<Mobility_Mastery>5</Mobility_Mastery>
+<Quick_Slots>2</Quick_Slots>
+<Toughness_Percentage>100</Toughness_Percentage>
+<Initiative_Modifier>10</Initiative_Modifier>
+<Dexterity>5</Dexterity>
+<Endurance_Percentage>100</Endurance_Percentage>
+<Total_Xp>225</Total_Xp>
+<Base_Damage>3</Base_Damage>
+<Main_Hand_Gold_Percentage>70</Main_Hand_Gold_Percentage>
+<Free_Masteries>4</Free_Masteries>
+<Upkeep_Mod>100</Upkeep_Mod>
+<Memorization_Cap>5</Memorization_Cap>
+<N_Of_Actions_Percentage>1000000</N_Of_Actions_Percentage>
+<Base_Wisdom>7</Base_Wisdom>
+<Base_Vitality>8</Base_Vitality>
+<C_Quick_Slots>4</C_Quick_Slots>
+<Spirit>4</Spirit>
+<Attack_Mod>100</Attack_Mod>
+<Endurance>30</Endurance>
+<Mobility_Mastery_Score>5</Mobility_Mastery_Score>
+<Power>22</Power>
+<Stamina_Percentage>100</Stamina_Percentage>
+<Agility>5</Agility>
+<Base_Charisma>5</Base_Charisma>
+<Focus>100</Focus>
+<Psychic_Mastery>7</Psychic_Mastery>
+</params><props><Deity>Night Lord</Deity>
+<Soundset>chars\female\bad girl\</Soundset>
+<Principles>Treachery;Freedom;</Principles>
+<Jewelry></Jewelry>
+<Displayed_Name>Ravenna</Displayed_Name>
+<Aspect>Neutral</Aspect>
+<Offhand_Natural_Weapon>Average Fist</Offhand_Natural_Weapon>
+<Quick_Items>Cheap Poison Coating;Inferior Copper Knife;Minor Essence Potion;</Quick_Items>
+<Armor_Item>Inferior Tough Leather Rogue Outfit</Armor_Item>
+<Group>Preset</Group>
+<Gender>FEMALE</Gender>
+<Inventory></Inventory>
+<Description></Description>
+<Spellbook></Spellbook>
+<Classifications>Humanoid;Hero</Classifications>
+<Known_Spells>Shadow Bolt;Haze;Scare;Hallucinations;</Known_Spells>
+<Emblem>UI\emblems\std\darkness\2night lord.jpg</Emblem>
+<Lore></Lore>
+<Name>Ravenna</Name>
+<Main_Hand_Item>Inferior Iron Stiletto</Main_Hand_Item>
+<Rank>New Hero</Rank>
+<Off_Hand_Item>Inferior Onyx Orb</Off_Hand_Item>
+<Verbatim_Spells>Shadow Bolt;</Verbatim_Spells>
+<Standard_Passives></Standard_Passives>
+<Type>chars</Type>
+<Skills>Greater Dexterity;Mercurial;Dagger Specialization;</Skills>
+<Natural_Weapon>Average Fist</Natural_Weapon>
+<Race>Human</Race>
+<Image>\mini\char\std\human\Generic\6dark\w_Night Witch.jpg</Image>
+<Memorized_Spells>Hallucinations;Scare;Haze;</Memorized_Spells>
+<Background>Stranger</Background>
+</props></Ravenna><Necrus><params><Divination_Pool_Mod>100</Divination_Pool_Mod>
+<Base_Knowledge>6</Base_Knowledge>
+<Side_Sight_Penalty>1</Side_Sight_Penalty>
+<Base_Willpower>6</Base_Willpower>
+<Counter_Mod>50</Counter_Mod>
+<Divination_Max_Sd_Mod>100</Divination_Max_Sd_Mod>
+<Base_Dexterity>6</Base_Dexterity>
+<Xp>9</Xp>
+<Base_Spellpower>5</Base_Spellpower>
+<Weight>150</Weight>
+<Damage>10</Damage>
+<Detection>20</Detection>
+<Memory_Remaining>4</Memory_Remaining>
+<Morale_Percentage>1000000</Morale_Percentage>
+<N_Of_Counters_Percentage>1000000</N_Of_Counters_Percentage>
+<N_Of_Counters>1</N_Of_Counters>
+<Offhand_Damage_Mod>75</Offhand_Damage_Mod>
+<Base_Strength>5</Base_Strength>
+<Gold_Mod>100</Gold_Mod>
+<Xp_Gain_Mod>100</Xp_Gain_Mod>
+<Wisdom>9</Wisdom>
+<Defense_Mod>100</Defense_Mod>
+<Defense>5</Defense>
+<Base_Intelligence>8</Base_Intelligence>
+<Focus_Percentage>100</Focus_Percentage>
+<Morale>30</Morale>
+<Offhand_Attack_Mod>50</Offhand_Attack_Mod>
+<Damage_Mod>100</Damage_Mod>
+<Charisma>6</Charisma>
+<Resistance>15</Resistance>
+<Base_Agility>5</Base_Agility>
+<Starting_Focus>25</Starting_Focus>
+<Spellcraft_Mastery_Score>10</Spellcraft_Mastery_Score>
+<Summoned_Xp_Mod>100</Summoned_Xp_Mod>
+<Mastery_Bought_With_Xp>2</Mastery_Bought_With_Xp>
+<Essence>25</Essence>
+<Cadence_Ap_Mod>-25</Cadence_Ap_Mod>
+<Stamina>10</Stamina>
+<Armor_Gold_Percentage>40</Armor_Gold_Percentage>
+<Sight_Range>3</Sight_Range>
+<Vitality>6</Vitality>
+<Knowledge>6</Knowledge>
+<Essence_Percentage>100</Essence_Percentage>
+<Willpower>6</Willpower>
+<Strength>5</Strength>
+<Initiative_Bonus>5</Initiative_Bonus>
+<Necromancy_Mastery>11</Necromancy_Mastery>
+<N_Of_Actions>4</N_Of_Actions>
+<Level>2</Level>
+<Spellpower>5</Spellpower>
+<Attr_Points_Per_Level>5</Attr_Points_Per_Level>
+<Intelligence>8</Intelligence>
+<Necromancy_Mastery_Score>11</Necromancy_Mastery_Score>
+<Affliction_Mastery_Score>7</Affliction_Mastery_Score>
+<Armor_Mod>100</Armor_Mod>
+<Cadence_Sta_Mod>-35</Cadence_Sta_Mod>
+<Interrupt_Damage>100</Interrupt_Damage>
+<Initiative_Percentage>100</Initiative_Percentage>
+<Carrying_Capacity>65</Carrying_Capacity>
+<Attack>5</Attack>
+<Toughness>15</Toughness>
+<Mastery_Points_Per_Level>5</Mastery_Points_Per_Level>
+<Xp_Level_Mod>100</Xp_Level_Mod>
+<Quick_Slots>2</Quick_Slots>
+<Toughness_Percentage>100</Toughness_Percentage>
+<Initiative_Modifier>10</Initiative_Modifier>
+<Dexterity>6</Dexterity>
+<Endurance_Percentage>100</Endurance_Percentage>
+<Total_Xp>225</Total_Xp>
+<Base_Damage>3</Base_Damage>
+<Main_Hand_Gold_Percentage>70</Main_Hand_Gold_Percentage>
+<Free_Masteries>4</Free_Masteries>
+<Upkeep_Mod>100</Upkeep_Mod>
+<Memorization_Cap>5</Memorization_Cap>
+<N_Of_Actions_Percentage>1000000</N_Of_Actions_Percentage>
+<Base_Wisdom>9</Base_Wisdom>
+<Base_Vitality>6</Base_Vitality>
+<C_Quick_Slots>4</C_Quick_Slots>
+<Spirit>4</Spirit>
+<Attack_Mod>100</Attack_Mod>
+<Endurance>30</Endurance>
+<Affliction_Mastery>7</Affliction_Mastery>
+<Power>22</Power>
+<Stamina_Percentage>100</Stamina_Percentage>
+<Mastery_Bought_With_Gold>2</Mastery_Bought_With_Gold>
+<Agility>5</Agility>
+<Base_Charisma>6</Base_Charisma>
+<Spellcraft_Mastery>10</Spellcraft_Mastery>
+<Focus>100</Focus>
+</params><props><Deity>Death Gorger</Deity>
+<Classes>Apostate;</Classes>
+<Soundset>chars\male\blackguard\</Soundset>
+<Principles>Ambition;Treachery;</Principles>
+<Jewelry></Jewelry>
+<Displayed_Name>Necrus</Displayed_Name>
+<Aspect>Neutral</Aspect>
+<Offhand_Natural_Weapon>Average Fist</Offhand_Natural_Weapon>
+<Quick_Items>Cheap Poison Coating;Minor Essence Potion;</Quick_Items>
+<Armor_Item>Inferior Cotton Adept Robe</Armor_Item>
+<Group>Preset</Group>
+<Gender>MALE</Gender>
+<Inventory></Inventory>
+<Description></Description>
+<Spellbook>Death Coil;</Spellbook>
+<Classifications>Humanoid;Hero</Classifications>
+<Known_Spells>Raise Skeleton;Death Bolt;Wraith Touch;Death Coil;</Known_Spells>
+<Emblem>UI\emblems\std\death\1ghoul.jpg</Emblem>
+<Lore></Lore>
+<Learned_Spells>Raise Skeleton;</Learned_Spells>
+<First_Class>Sorcerer</First_Class>
+<Name>Necrus</Name>
+<Main_Hand_Item>Inferior Bronze Scythe</Main_Hand_Item>
+<Rank>New Hero</Rank>
+<Off_Hand_Item></Off_Hand_Item>
+<Standard_Passives></Standard_Passives>
+<Type>chars</Type>
+<Skills>Bone Mastery;</Skills>
+<Natural_Weapon>Average Fist</Natural_Weapon>
+<Race>Human</Race>
+<Image>\mini\char\std\human\Generic\6dark\Necromancer.jpg</Image>
+<Memorized_Spells>Death Bolt;Wraith Touch;Raise Skeleton;</Memorized_Spells>
+<Background>Stranger</Background>
+</props></Necrus></Party>

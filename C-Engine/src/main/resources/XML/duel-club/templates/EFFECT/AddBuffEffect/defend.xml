@@ -1,0 +1,5 @@
+<AddBuffEffect><STRING>Defend</STRING>
+<ModifyValueEffect><PARAM>Leadership_mastery</PARAM>
+<MODVAL_TYPE>MODIFY_BY_PERCENT</MODVAL_TYPE>
+<FORMULA>30</FORMULA>
+</ModifyValueEffect></AddBuffEffect>

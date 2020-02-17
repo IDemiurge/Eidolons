@@ -1,0 +1,4 @@
+<ActiveAbility><AutoTargeting><REF_KEY>RANGED</REF_KEY>
+</AutoTargeting><ChangeRefEffect><BOOLEAN>false</BOOLEAN>
+<REF_KEY>AMMO</REF_KEY>
+</ChangeRefEffect></ActiveAbility>
