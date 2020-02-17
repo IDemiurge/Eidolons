@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.google.gwt.user.client.ui.CustomButton;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.EUtils;
