@@ -74,12 +74,12 @@ public class GridManager {
     public static GridManager instance;
 
     FACING_DIRECTION f = FACING_DIRECTION.NORTH;
-    GridPanel panel;
+    DC_GridPanel panel;
     private Integer waitCounter = 0;
     private Coordinates c;
     private List<Runnable> commentRunnables =    new ArrayList<>() ;
 
-    public GridManager(GridPanel panel) {
+    public GridManager(DC_GridPanel panel) {
         this.instance = this;
         this.panel = panel;
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());

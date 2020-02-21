@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,6 +27,7 @@ import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -39,13 +39,53 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
+
 public class UnitViewFactory {
-    public static GridUnitView create(BattleFieldObject bfObj) {
+    private static UnitViewFactory instance;
+
+    public static UnitViewFactory getInstance() {
+        if (instance == null) {
+            instance = new UnitViewFactory();
+        }
+        return instance;
+    }
+
+    public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
+        return (GridUnitView) getInstance().createGraveyardView(battleFieldObject);
+    }
+
+    public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
+        return getInstance().createOverlay(bfObj);
+    }
+
+    public GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view =
                 bfObj.isBoss() ? new BossView(options) :
                         new GridUnitView(bfObj, options);
 
+        addLastSeenView(bfObj, view, options);
+
+        addOutline(bfObj, view, options);
+
+        addForDC(bfObj, view, options);
+
+        if (isGridObjRequired(bfObj)) {
+            CUSTOM_OBJECT x = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
+            LinkedGridObject obj = new LinkedGridObject(view,
+                    x,
+                    bfObj.getCoordinates());
+            if (x.attach || bfObj instanceof Unit) {
+                view.addActor(obj);
+                obj.setZIndex(0);
+            } else
+                GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
+        }
+
+        return view;
+    }
+
+    protected void addLastSeenView(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
         if (bfObj instanceof Unit || bfObj.isLandscape() || bfObj.isWall() || bfObj.isWater())
             if (VisionMaster.isLastSeenOn()) {
                 if (!bfObj.isPlayerCharacter())
@@ -57,6 +97,10 @@ public class UnitViewFactory {
                         new LastSeenTooltipFactory().add(lsv, bfObj);
                     }
             }
+    }
+
+    protected void addOutline(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+
         view.setOutlinePathSupplier(() -> {
             if (CoreEngine.isFootageMode()) {
                 return null;
@@ -90,6 +134,8 @@ public class UnitViewFactory {
 
             return (path);
         });
+    }
+    protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
         view.createHpBar();
         if (bfObj instanceof Unit) {
             view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());
@@ -102,28 +148,14 @@ public class UnitViewFactory {
         ClickListener listener = createListener(bfObj);
         view.addListener(listener);
         if (view.getInitiativeQueueUnitView() != null) {
-        view.getInitiativeQueueUnitView().addListener(listener);
+            view.getInitiativeQueueUnitView().addListener(listener);
         }
-
-        if (isGridObjRequired(bfObj)) {
-            CUSTOM_OBJECT x = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
-            LinkedGridObject obj = new LinkedGridObject(view,
-                    x,
-                    bfObj.getCoordinates());
-            if (x.attach || bfObj instanceof Unit) {
-                view.addActor(obj);
-                obj.setZIndex(0);
-            } else
-                GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, obj);
-        }
-
         if (bfObj.checkBool(GenericEnums.STD_BOOLS.INVISIBLE)) {
             view.setInvisible(true);
         }
-        return view;
     }
 
-    private static boolean isGridObjRequired(BattleFieldObject bfObj) {
+    protected boolean isGridObjRequired(BattleFieldObject bfObj) {
         return bfObj.checkProperty(PROPS.CUSTOM_OBJECT);
     }
 
@@ -132,12 +164,15 @@ public class UnitViewFactory {
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         view.addListener(tooltip.getController());
-        view.addListener(createListener(bfObj));
+        view.addListener(doCreateListener(bfObj));
         view.setUserObject(bfObj);
         return view;
     }
 
-    public static ClickListener createListener(BattleFieldObject bfObj) {
+    public static ClickListener doCreateListener(BattleFieldObject bfObj) {
+        return getInstance().createListener(bfObj);
+    }
+    public  ClickListener createListener(BattleFieldObject bfObj) {
         return new BattleClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -195,7 +230,7 @@ public class UnitViewFactory {
                         }
                     }
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
             //
@@ -204,7 +239,7 @@ public class UnitViewFactory {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
 
-                if (event.getButton() == Input.Buttons.RIGHT) {
+                if (event.getButton() == Buttons.RIGHT) {
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, bfObj);
                     event.handle();
                     event.stop();
@@ -221,7 +256,7 @@ public class UnitViewFactory {
                 ;
     }
 
-    public static OverlayView createOverlay(BattleFieldObject bfObj) {
+    public OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         OverlayView view = new OverlayView(options, bfObj);
 
@@ -242,4 +277,6 @@ public class UnitViewFactory {
         }
         return view;
     }
+
+
 }

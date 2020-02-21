@@ -13,6 +13,7 @@ import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
+import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
@@ -35,34 +36,13 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected ShaderProgram bufferedShader;
     protected Float speed;
     protected TextureRegion backTexture;
-    protected GuiStage guiStage;
-    private RealTimeGameLoop realTimeGameLoop;
-    private List<Screenshake> shakes = new ArrayList<>();
+    protected GenericGuiStage guiStage;
+    protected RealTimeGameLoop realTimeGameLoop;
+    protected List<Screenshake> shakes = new ArrayList<>();
     protected CameraMan cameraMan;
 
     public GameScreen() {
-        GuiEventManager.bind(GuiEventType.GAME_PAUSED, d -> {
-            DC_Game.game.getLoop().setPaused(true);
-        });
-        GuiEventManager.bind(GuiEventType.GAME_RESUMED, d -> {
-            DC_Game.game.getLoop().setPaused(false);
-        });
-        GuiEventManager.bind(GuiEventType.CAMERA_SHAKE, p -> {
-            shakes.add((Screenshake) p.get());
-        });
-        GuiEventManager.bind(DIALOG_SHOW, obj -> {
-            DialogueHandler handler =
-                    (DialogueHandler) obj.get();
-            guiStage.afterBlackout(() -> guiStage.dialogueStarted(handler));
-//            if (dialogsStage == null) {
-//                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
-//
-//            } else {
-//                dialogsStage.play(list);
-//            }
-//            dialogsStage.setDialogueHandler(handler);
-//            updateInputController();
-        });
+
     }
 
     @Override
@@ -85,19 +65,9 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
 
     public boolean isOpaque() {
-        if (blackoutAction != null)
-            if (blackoutAction.getValue() >= 1) {
-                return true;
-            }
-        if (guiStage.getDialogueContainer() != null) {
-            return guiStage.getDialogueContainer().isOpaque();
-        }
         return false;
     }
 
-    public GuiStage getGuiStage() {
-        return guiStage;
-    }
 
     public InputController getController() {
         return controller;
@@ -150,5 +120,9 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     public void cameraStop(boolean full) {
         cameraMan.cameraStop(full);
+    }
+
+    public GuiStage getGuiStage() {
+        return null;
     }
 }

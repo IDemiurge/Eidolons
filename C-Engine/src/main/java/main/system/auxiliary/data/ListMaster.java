@@ -275,6 +275,15 @@ public class ListMaster<E> {
         list.addAll(inv_list);
     }
 
+    public Set<E> toSet(E... values) {
+        Set<E> set = new LinkedHashSet<>();
+        for (E v : values) {
+            if (v != null) {
+                set.add(v);
+            }
+        }
+        return set;
+    }
     public List<E> toList_(E... values) {
         List<E> list = new ArrayList<>();
         for (E v : values) {

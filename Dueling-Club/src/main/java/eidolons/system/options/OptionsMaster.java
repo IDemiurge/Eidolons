@@ -659,8 +659,9 @@ public class OptionsMaster {
     }
 
     private static boolean isLocalOptionsPreferred() {
-        return //CoreEngine.isMe() &&
-                !CoreEngine.isJar();
+//        return CoreEngine.isMe() &&
+////                !CoreEngine.isJar();
+        return false;
     }
 
     public static void init() {

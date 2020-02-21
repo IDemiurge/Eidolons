@@ -57,7 +57,7 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
 /**
  * Created by JustMe on 11/30/2017.
  */
-public class GenericLauncher extends Game {
+public abstract class GenericLauncher extends Game {
     public static final int FRAMERATE = 60;
     private static boolean firstInitDone;
     public GameScreen gameScreen;
@@ -72,6 +72,8 @@ public class GenericLauncher extends Game {
     public static void setFirstInitDone(boolean firstInitDone) {
         GenericLauncher.firstInitDone = firstInitDone;
     }
+
+    public abstract String  getOptionsPath();
 
     @Override
     public void create() {
@@ -135,10 +137,9 @@ public class GenericLauncher extends Game {
         } else {
             trySwitchScreen(new EventCallbackParam(data));
         }
-
     }
 
-    private boolean isFirstLoadingScreenShown() {
+    protected boolean isFirstLoadingScreenShown() {
         return false;
     }
 
@@ -244,8 +245,10 @@ public class GenericLauncher extends Game {
     }
 
     protected void engineInit() {
+        if (getOptionsPath() != null) {
+            OptionsMaster.setOptionsPath(getOptionsPath());
+        }
         DC_Engine.systemInit();
-        OptionsMaster.init();
     }
 
 
@@ -413,23 +416,23 @@ public class GenericLauncher extends Game {
     protected void trySwitchScreen(EventCallbackParam param) {
         if (CoreEngine.isIDE()) {
             try {
-                screenSwitcher(param);
+                screenSwitcher((ScreenData) param.get());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
-                screenSwitcher(new EventCallbackParam(new ScreenData(
-                        Eidolons.getPreviousScreenType(), "")));
+                screenSwitcher( new ScreenData(
+                        Eidolons.getPreviousScreenType(), "") );
             }
         } else {
-            screenSwitcher(param);
+            screenSwitcher((ScreenData) param.get());
         }
     }
 
-    protected void screenSwitcher(EventCallbackParam param) {
+    protected void screenSwitcher(ScreenData newMeta) {
         if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
-        ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
             switch (newMeta.getType()) {
+
                 case HEADQUARTERS:
                     switchScreen(HeadquarterScreen::new, newMeta);
                     break;

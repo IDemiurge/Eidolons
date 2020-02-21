@@ -19,6 +19,7 @@ public class DC_Engine extends CoreEngine {
     static {
         jarInit();
     }
+
     public static void analyzeUserSystem() {
 
     }
@@ -48,8 +49,14 @@ public class DC_Engine extends CoreEngine {
     }
 
     public static void systemInit() {
+        systemInit(true);
+    }
+
+    public static void systemInit(boolean initOptions) {
         CoreEngine.systemInit();
-        OptionsMaster.init();
+        if (initOptions) {
+            OptionsMaster.init();
+        }
         DC_GuiManager.init();
 //        TextMaster.init(locale);
     }
@@ -59,7 +66,7 @@ public class DC_Engine extends CoreEngine {
         new DC_ContentValsManager().init();
 
 //        CoreEngine.dataInit(!CoreEngine.isFastMode());
-        CoreEngine.dataInit(true );
+        CoreEngine.dataInit(true);
         //read save game?
         DC_ContentValsManager.initTypeDynamicValues();
         Chronos.logTimeElapsedForMark("DATA INIT");

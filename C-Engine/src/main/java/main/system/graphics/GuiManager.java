@@ -73,19 +73,24 @@ public class GuiManager {
         setBattleFieldHeight(getBF_CompDisplayedCellsY() * cellHeight);
         setBattleFieldWidth(getBF_CompDisplayedCellsX() * cellHeight);
 
-        if (CoreEngine.isSwingOn())
-        try {
-            UIManager.setLookAndFeel("" + "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
-             // "main.system.auxiliary.DarkNimbus"
-             // "com.jtattoo.plaf.noire.NoireLookAndFeel"
-            );
-
-            FontMaster.setUIFont();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+        if (CoreEngine.isSwingOn()) {
+            try {
+                UIManager.setLookAndFeel(
+                        "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+                );
+            } catch (Exception e) {
+                try {
+                    UIManager.setLookAndFeel(
+                            "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+                    );
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        FontMaster.setUIFont();
         }
     }
-
 
 
     public static Dimension getPortraitSize() {
@@ -286,7 +291,7 @@ public class GuiManager {
 
     public static void setWindowToFullscreen(JFrame frame) {
         GraphicsDevice myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
-         .getDefaultScreenDevice();
+                .getDefaultScreenDevice();
         try {
             myDevice.setFullScreenWindow(frame);
             setFullscreen(true);
@@ -330,7 +335,7 @@ public class GuiManager {
 
     public static Point getCenterPoint(Dimension size) {
         return new Point(MigMaster.getCenteredPosition(getScreenWidthInt(), size.width), MigMaster
-         .getCenteredPosition(getScreenHeightInt(), size.height));
+                .getCenteredPosition(getScreenHeightInt(), size.height));
     }
 
     public static int getCellNumber() {
@@ -371,7 +376,8 @@ public class GuiManager {
     }
 
     public enum DISPLAY_MODE {
-        _1920x1200_, _1920x1080_, _1680x1050_,;
+        _1920x1200_, _1920x1080_, _1680x1050_,
+        ;
     }
 
 }

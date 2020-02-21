@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eidolons</groupId>
-    <artifactId>battlecraft-parent</artifactId>
+    <artifactId>eidolons-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 

@@ -280,18 +280,27 @@ public class ActionMaster {
     }
 
     public static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
-        return ClassMaster.getInstances(
-                new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
-                c);
+        try {
+            return ClassMaster.getInstances(
+                    new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
+                    c);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return  new ArrayList<>();
     }
 
     public static void addScaleActionIfNoActions(Actor actor, float scaleX,
                                                  float scaleY, float v) {
         if (actor.getActions().size > 0) {
-            if (ClassMaster.getInstances(
-                    new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
-                    ScaleToAction.class).size() > 0) {
-                return;
+            try {
+                if (ClassMaster.getInstances(
+                        new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
+                        ScaleToAction.class).size() > 0) {
+                    return;
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -352,6 +361,7 @@ public class ActionMaster {
     public static SequenceAction getDisplaceSequence(int dx, int dy, float dur) {
         return getDisplaceSequence(0, 0, dx, dy, dur, false);
     }
+
     public static SequenceAction getDisplaceSequence(float x, float y, int dx, int dy, float dur, boolean overlaying) {
         MoveByAction move = (MoveByAction) ActionMaster.getAction(MoveByAction.class);
         move.setAmount(dx, dy);
@@ -374,6 +384,7 @@ public class ActionMaster {
         }
         return null;
     }
+
     public static SequenceAction getBackSequence(TemporalAction a) {
         SequenceAction sequenceAction = new SequenceAction();
         sequenceAction.addAction(a);
@@ -390,6 +401,7 @@ public class ActionMaster {
         back.setStart(action.getEnd());
         return back;
     }
+
     private static Action getBackColorAction(ColorAction action) {
         ColorAction back = new ColorAction();
         back.setInterpolation(action.getInterpolation());
@@ -403,7 +415,7 @@ public class ActionMaster {
         AlphaAction back = new AlphaAction();
         back.setInterpolation(action.getInterpolation());
         back.setDuration(action.getDuration());
-        Float  start = new ReflectionMaster<Float>().
+        Float start = new ReflectionMaster<Float>().
                 getFieldValue("start", action, AlphaAction.class);
         back.setAlpha(start);
         return back;

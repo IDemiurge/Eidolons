@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.mouse.MapInputController;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
@@ -90,6 +92,11 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     @Override
+    protected GridPanel createGrid(BFDataCreatedEvent param) {
+        return null;
+    }
+
+    @Override
     protected void afterLoad() {
         if (loaded) {
             GuiEventManager.trigger(MAP_READY);
@@ -133,7 +140,7 @@ public class MapScreen extends GameScreenWithTown {
             }
             current.addProcessor(controller);//new GestureDetector(controller));
         } else {
-            current = GdxMaster.getMultiplexer(super.createInputController());
+            current = GdxMaster.getMultiplexer(new MapInputController(cameraMan.getCam()));
         }
 
         return current;
@@ -222,7 +229,7 @@ public class MapScreen extends GameScreenWithTown {
             return false;
         if (getTimeMaster().isPlayerCamping())
             return true;
-        return guiStage.getGameMenu().isVisible();
+        return getGuiStage().getGameMenu().isVisible();
     }
 
     public MapObjStage getObjectStage() {

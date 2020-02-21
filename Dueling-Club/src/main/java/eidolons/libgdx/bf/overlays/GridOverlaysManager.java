@@ -20,10 +20,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.bf.grid.GenericGridView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.*;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -54,14 +51,14 @@ import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 public class GridOverlaysManager extends SuperActor {
 
     private final GridCellContainer[][] cells;
-    GridPanel gridPanel;
+    DC_GridPanel gridPanel;
     boolean sightInfoDisplayed;
     Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
     Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
     Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
     private BattleFieldObject observer;
 
-    public GridOverlaysManager(GridPanel gridPanel) {
+    public GridOverlaysManager(DC_GridPanel gridPanel) {
         this.gridPanel = gridPanel;
         cells = gridPanel.getCells();
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.OVERLAYS);
@@ -219,7 +216,7 @@ public class GridOverlaysManager extends SuperActor {
     public void setSightInfoDisplayed(boolean sightInfoDisplayed) {
         if (sightInfoDisplayed != this.sightInfoDisplayed) {
             this.sightInfoDisplayed = sightInfoDisplayed;
-            ((GridPanel) getParent()).setUpdateRequired(true);
+            ((DC_GridPanel) getParent()).setUpdateRequired(true);
         }
     }
 

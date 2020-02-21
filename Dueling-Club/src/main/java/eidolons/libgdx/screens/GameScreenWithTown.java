@@ -1,16 +1,77 @@
 package eidolons.libgdx.screens;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
+import eidolons.libgdx.stage.BattleGuiStage;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.macro.entity.town.Town;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+
+import static main.system.GuiEventType.DIALOG_SHOW;
 
 /**
  * Created by JustMe on 10/15/2018.
  */
-public abstract class GameScreenWithTown extends GameScreen {
+public abstract class GameScreenWithTown extends GenericDungeonScreen {
 
     protected TownPanel townPanel;
+
+    @Override
+    protected void preBindEvent() {
+        super.preBindEvent();
+        GuiEventManager.bind(GuiEventType.GAME_PAUSED, d -> {
+            DC_Game.game.getLoop().setPaused(true);
+        });
+        GuiEventManager.bind(GuiEventType.GAME_RESUMED, d -> {
+            DC_Game.game.getLoop().setPaused(false);
+        });
+        GuiEventManager.bind(GuiEventType.CAMERA_SHAKE, p -> {
+            shakes.add((Screenshake) p.get());
+        });
+        GuiEventManager.bind(DIALOG_SHOW, obj -> {
+            DialogueHandler handler =
+                    (DialogueHandler) obj.get();
+            getGuiStage().afterBlackout(() -> getGuiStage().dialogueStarted(handler));
+//            if (dialogsStage == null) {
+//                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
+//
+//            } else {
+//                dialogsStage.play(list);
+//            }
+//            dialogsStage.setDialogueHandler(handler);
+//            updateInputController();
+        });
+        GuiEventManager.bind(GuiEventType.SHOW_TOWN_PANEL, p -> {
+            try {
+                showTownPanel(p);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                showTownPanel(null);
+                Eidolons.exitToMenu();
+            }
+        });
+    }
+
+    public boolean isOpaque() {
+        if (blackoutAction != null)
+            if (blackoutAction.getValue() >= 1) {
+                return true;
+            }
+        if (getGuiStage().getDialogueContainer() != null) {
+            return getGuiStage().getDialogueContainer().isOpaque();
+        }
+        return false;
+    }
+
+    public GuiStage getGuiStage() {
+        return (GuiStage) guiStage;
+    }
 
     protected void showTownPanel(EventCallbackParam p) {
 
@@ -24,7 +85,7 @@ public abstract class GameScreenWithTown extends GameScreen {
             }
             TownPanel.setActiveInstance(null);
             updateInputController();
-            guiStage.setTown(false);
+            getGuiStage().setTown(false);
 
 
         } else {
@@ -46,7 +107,7 @@ public abstract class GameScreenWithTown extends GameScreen {
             GdxMaster.setDefaultCursor();
             TownPanel.setActiveInstance(townPanel);
             updateInputController();
-            guiStage.setTown(true);
+            getGuiStage().setTown(true);
         }
     }
 

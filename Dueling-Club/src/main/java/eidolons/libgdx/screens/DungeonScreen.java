@@ -25,6 +25,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
@@ -38,6 +39,7 @@ import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
@@ -71,8 +73,6 @@ public class DungeonScreen extends GameScreenWithTown {
     protected static DungeonScreen instance;
 
     protected ParticleManager particleManager;
-    protected StageX gridStage;
-    protected GridPanel gridPanel;
     private boolean blocked;
     private GridCellContainer stackView;
     private boolean firstShow;
@@ -105,30 +105,10 @@ public class DungeonScreen extends GameScreenWithTown {
         super.preLoad();
         gridStage = new StageX(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage(null, null); //separate batch for PP
+        guiStage = createGuiStage(); //separate batch for PP
 
         initGl();
-
-        GuiEventManager.bind(GuiEventType.SHOW_TOWN_PANEL, p -> {
-            try {
-                showTownPanel(p);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                showTownPanel(null);
-                Eidolons.exitToMenu();
-            }
-        });
-        GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
-            if (CoreEngine.isIggDemo())
-                return;
-            if (!CoreEngine.isLiteLaunch())
-                if (isSpriteBgTest()) {
-                    setBackground(Sprites.BG_DUNGEON);
-                    return;
-                }
-            final String path = (String) param.get();
-            setBackground(path);
-        });
+        preBindEvent();
 
         EmitterPools.preloadDefaultEmitters();
 
@@ -139,64 +119,10 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
 
-    protected void bindEvents() {
-        GuiEventManager.bind(BATTLE_FINISHED, param -> {
-            DC_Game.game.getLoop().stop(); //cleanup on real exit
-            DC_Game.game.getMetaMaster().gameExited();
-            if (MacroGame.getGame() != null) {
-                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                        new ScreenData(SCREEN_TYPE.MAP));
-
-                MacroGame.getGame().getLoop().combatFinished();
-                main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
-            }
-        });
-
-        GuiEventManager.bind(GuiEventType.CAMERA_LAPSE_TO, p -> {
-            getCam().position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
-
-        });
-    }
-
     @Override
     public void dispose() {
         super.dispose();
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
-    }
-
-    protected void checkGraphicsUpdates() {
-        if (backTexture == null && backgroundSprite == null) {
-            String path = null;
-            try {
-                path = DC_Game.game.getDungeonMaster().getDungeonWrapper().getMapBackground();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-            main.system.auxiliary.log.LogMaster.dev("Setting dc background " + path);
-            Chronos.mark("bg");
-            setBackground(path);
-            Chronos.logTimeElapsedForMark("bg");
-        }
-    }
-
-    private void setBackground(String path) {
-        if (path == null) {
-            return;
-        }
-        if (!TextureCache.isImage(path)) {
-            if (path.endsWith(".txt")) {
-                backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
-            }
-            return;
-        }
-
-        TextureRegion texture = getOrCreateR(path);
-        if (texture.getTexture() != TextureCache.getEmptyTexture())
-            backTexture = texture;
-
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-            TextureManager.initBackgroundCache(backTexture);
-        }
     }
 
     @Override
@@ -216,7 +142,7 @@ public class DungeonScreen extends GameScreenWithTown {
         MusicMaster.getInstance().scopeChanged(ATMO);
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
-        gridPanel = new GridPanel(param.getGridW(), param.getGridH());
+        gridPanel = createGrid(param);
 
         controller = new DungeonInputController(getCam());
         //do not chain - will fail ...
@@ -224,6 +150,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager);
+        if (isDrawGridOnInit())
         try {
             batch.begin();
             gridPanel.draw(batch, 1f);
@@ -232,7 +159,7 @@ public class DungeonScreen extends GameScreenWithTown {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         try {
-            controller.setDefaultPos();
+            getController().setDefaultPos();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -259,45 +186,27 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
-    private void initBackground() {
-        String path = IGG_Images.getBackground();
-        setBackground(path);
-    }
-
-
-    public void updateGui() {
-        getGuiStage().getBottomPanel().update();
-        checkGraphicsUpdates();
-    }
-
     @Override
-    protected InputProcessor createInputController() {
-//        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
-//                if (selectionPanel.getStage()==guiStage) {
-//            return GdxMaster.getMultiplexer(guiStage, controller);
-//            }
-//        }
-        if (isWaitingForInput())
-            return getWaitForInputController(param);
-        if (guiStage.isDialogueMode()) {
-            return GdxMaster.getMultiplexer(guiStage, controller);
-        }
-        if (canShowScreen()) {  //town is considered 'loading phase' still
-            return GdxMaster.getMultiplexer(guiStage, controller, gridStage);
-        } else {
-            if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
-                return GdxMaster.getMultiplexer(guiStage, super.createInputController());
-            } else {
-                return super.createInputController();
+    protected void bindEvents() {
+        super.bindEvents();
+        GuiEventManager.bind(BATTLE_FINISHED, param -> {
+            DC_Game.game.getLoop().stop(); //cleanup on real exit
+            DC_Game.game.getMetaMaster().gameExited();
+            if (MacroGame.getGame() != null) {
+                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
+                        new ScreenData(SCREEN_TYPE.MAP));
+
+                MacroGame.getGame().getLoop().combatFinished();
+                main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
             }
-        }
+        });
     }
 
-    protected void checkInputController() {
-        if (guiStage.isDialogueMode() != GdxMaster.hasController(Gdx.input.getInputProcessor(), gridStage)) {
-            updateInputController();
-        }
+
+    private boolean isDrawGridOnInit() {
+        return false;
     }
+
 
     protected void selectionPanelClosed() {
         if (TownPanel.getActiveInstance() != null)
@@ -343,56 +252,13 @@ public class DungeonScreen extends GameScreenWithTown {
         super.doBlackout();
     }
 
-    @Override
-    protected void renderLoaderAndOverlays(float delta) {
-        setBlocked(checkBlocked());
-        super.renderLoaderAndOverlays(delta);
-        if (selectionPanel != null) {
-            if (selectionPanel.getStage() == guiStage) {
-                if (!getBatch().isDrawing()) {
-                    getBatch().begin();
-                }
-                selectionPanel.act(delta);
-                selectionPanel.draw(getBatch(), 1f);
-                getBatch().end();
-            }
-        }
+    protected GuiStage createGuiStage() {
+        return new BattleGuiStage(null, null);
     }
 
-    @Override
-    public void render(float delta) {
-
-        Gdx.gl20.glEnable(GL_POINT_SMOOTH);
-        Gdx.gl20.glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-        Gdx.gl20.glEnable(GL_LINE_SMOOTH);
-        Gdx.gl20.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
-        Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-
-        batch.shaderFluctuation(delta);
-        if (speed != null) {
-            delta = delta * speed;
-        }
-        if (CoreEngine.isDevEnabled() && !Cinematics.ON)
-            if (DC_Game.game != null) {
-                if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) {
-                    if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-                        DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-                    } else {
-                        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
-                        }
-                        if (Gdx.input.isKeyPressed(Keys.TAB)) {
-                            DC_Game.game.getVisionMaster().refresh();
-                            GuiEventManager.trigger(UPDATE_GUI);
-                        }
-                    }
-                }
-
-            }
-        super.render(delta);
+    protected GridPanel createGrid(BFDataCreatedEvent param) {
+        return new GridPanel(param.getGridW(), param.getGridH());
     }
-
     public void renderMain(float delta) {
 
         checkInputController();
@@ -572,14 +438,6 @@ public class DungeonScreen extends GameScreenWithTown {
         return EidolonsGame.TUTORIAL_MISSION;
     }
 
-    @Override
-    protected boolean isTooltipsOn() {
-        if (TownPanel.getActiveInstance() != null) {
-            return false;
-        }
-        return super.isTooltipsOn();
-    }
-
 
     @Override
     public void reset() {
@@ -620,19 +478,52 @@ public class DungeonScreen extends GameScreenWithTown {
         if (selectionPanel != null)
             if (selectionPanel.isVisible() && selectionPanel.getStage() != null)
                 return true;
-        return guiStage.isBlocked();
+        return getGuiStage().isBlocked();
+    }
+    public void updateGui() {
+        getGuiStage().getBottomPanel().update();
+        checkGraphicsUpdates();
     }
 
-    public GridPanel getGridPanel() {
-        return gridPanel;
+    @Override
+    protected void renderLoaderAndOverlays(float delta) {
+
+        setBlocked(checkBlocked());
+        super.renderLoaderAndOverlays(delta);
+    }
+    protected void checkInputController() {
+        if (getGuiStage().isDialogueMode() != GdxMaster.hasController(Gdx.input.getInputProcessor(), gridStage)) {
+            updateInputController();
+        }
+    }
+    @Override
+    protected InputProcessor createInputController() {
+//        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
+//                if (selectionPanel.getStage()==guiStage) {
+//            return GdxMaster.getMultiplexer(guiStage, controller);
+//            }
+//        }
+        if (isWaitingForInput())
+            return getWaitForInputController(param);
+        if (getGuiStage().isDialogueMode()) {
+            return GdxMaster.getMultiplexer(guiStage, controller);
+        }
+        if (canShowScreen()) {  //town is considered 'loading phase' still
+            return GdxMaster.getMultiplexer(guiStage, controller, gridStage);
+        } else {
+            if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
+                return GdxMaster.getMultiplexer(guiStage, new DungeonInputController(getCamera()));
+            } else {
+                return new DungeonInputController(getCamera());
+            }
+        }
+    }
+    public DC_GridPanel getGridPanel() {
+        return (DC_GridPanel) gridPanel;
     }
 
     public BattleGuiStage getGuiStage() {
         return (BattleGuiStage) guiStage;
-    }
-
-    public InputController getController() {
-        return controller;
     }
 
     public Stage getGridStage() {

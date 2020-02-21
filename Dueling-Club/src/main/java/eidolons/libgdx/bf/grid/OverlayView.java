@@ -119,7 +119,7 @@ public class OverlayView extends BaseView implements HpBarView {
         final UnitViewTooltip tooltip = new UnitViewTooltip(this);
         tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         addListener(tooltip.getController());
-        addListener(UnitViewFactory.createListener(bfObj));
+        addListener(UnitViewFactory.doCreateListener(bfObj));
 
         initSprite(viewOptions);
     }

@@ -318,4 +318,8 @@ public abstract class Game implements Serializable {
     public void setCloningMode(boolean cloningMode) {
         this.cloningMode = cloningMode;
     }
+
+    public void removed(Obj obj) {
+
+    }
 }

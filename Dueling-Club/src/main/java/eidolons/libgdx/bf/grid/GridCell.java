@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -93,17 +94,25 @@ public class GridCell extends Group implements Borderable {
         cordsText.setVisible(false);
         addActor(cordsText);
 
-        addListener(new BattleClickListener() {
+        addListener(
+                createListener());
+
+        return this;
+    }
+
+    protected EventListener createListener() {
+
+        return new BattleClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                GlobalController.cellClicked(event,x, y);
+                GlobalController.cellClicked(event, x, y);
                 if (getTapCount() > 1) {
                     if (!isAlt()) {
                         if (!DefaultActionHandler.
-                         leftClickCell(false, isControl(), getGridX(), getGridY()))
+                                leftClickCell(false, isControl(), getGridX(), getGridY()))
                             DefaultActionHandler.
-                             leftClickCell(true, isControl(), getGridX(), getGridY());
+                                    leftClickCell(true, isControl(), getGridX(), getGridY());
                     }
                 }
             }
@@ -127,10 +136,10 @@ public class GridCell extends Group implements Borderable {
                     if (isEmpty())
                         if (isAlt() || isShift() || isControl()
                             //|| ExplorationMaster.isExplorationOn()
-                         )
+                        )
                             try {
                                 if (DefaultActionHandler.
-                                 leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
+                                        leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
                                     return;
                             } catch (Exception e) {
                                 ExceptionMaster.printStackTrace(e);
@@ -139,11 +148,9 @@ public class GridCell extends Group implements Borderable {
 
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
-//                super.touchUp(event, x, y, pointer, button);
+                //                super.touchUp(event, x, y, pointer, button);
             }
-        });
-
-        return this;
+        };
     }
 
     public boolean isEmpty() {
@@ -216,7 +223,7 @@ public class GridCell extends Group implements Borderable {
 //            return;
 //        }
         super.act(delta);
-        if (DC_Game.game.isDebugMode()) {
+        if (isCoordinatesShown()) {
             if (GammaMaster.DEBUG_MODE) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
                 cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="
@@ -233,6 +240,10 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setVisible(false);
             }
         }
+    }
+
+    protected boolean isCoordinatesShown() {
+        return DC_Game.game.isDebugMode();
     }
 
     @Override

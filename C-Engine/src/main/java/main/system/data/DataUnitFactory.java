@@ -6,8 +6,6 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.Map;
 
-import static javafx.scene.input.KeyCode.PROPS;
-
 /**
  * Created by JustMe on 5/11/2017.
  */

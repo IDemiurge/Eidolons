@@ -262,6 +262,11 @@ public class MainLauncher extends GenericLauncher {
     }
 
     @Override
+    public String getOptionsPath() {
+        return null;
+    }
+
+    @Override
     protected void engineInit() {
         super.engineInit();
         DC_Engine.dataInit();
