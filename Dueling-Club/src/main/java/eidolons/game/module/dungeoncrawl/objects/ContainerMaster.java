@@ -786,8 +786,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isPregenerateItems(DC_Obj containerObj) {
-        return containerObj.getGame().getMetaMaster().isRngDungeon()
-                || CoreEngine.isSafeMode();
+        return false;
+//        return containerObj.getGame().getMetaMaster().isRngDungeon()
+//                || CoreEngine.isSafeMode();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

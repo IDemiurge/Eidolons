@@ -66,6 +66,7 @@ public class GridCellContainer extends GridCell {
         info.padTop(12);
         info.padBottom(12);
         info.setVisible(false);
+
         graveyard = new GraveyardView();
         addActor(graveyard);
         graveyard.setWidth(getWidth());
@@ -571,7 +572,7 @@ public class GridCellContainer extends GridCell {
                 expandWidth = visibleView.getExpandWidth();
             }
         }
-        return DungeonScreen.getInstance().getController().isWithinCamera(-expandWidth+getX() ,-expandHeight+ getY() ,
+        return Eidolons.getScreen().getController().isWithinCamera(-expandWidth+getX() ,-expandHeight+ getY() ,
                 2*expandWidth+getWidth(),
                 2* expandHeight+ getHeight());
     }

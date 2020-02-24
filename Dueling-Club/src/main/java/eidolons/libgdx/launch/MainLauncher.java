@@ -97,10 +97,11 @@ public class MainLauncher extends GenericLauncher {
                     EidolonsGame.SELECT_HERO = true;
                 }
             }
-            String[] parts = args[0].split(";");
-            if (!parts[0].isEmpty()) {
+            String[] parts = args[0].split("--");
+            if (parts.length>1) {
                 OptionsMaster.setOptionsMode(parts[0]);
                 LogMaster.important(" Options Mode set: " + parts[0]);
+                args[0] = parts[1];
             }
             EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
             EidolonsGame.BRIDGE = args[0].contains("bridge");
@@ -143,21 +144,6 @@ public class MainLauncher extends GenericLauncher {
 //                if (CoreEngine.uploadPackage == CoreEngine.UPLOAD_PACKAGE.Aphotic) {
 //                    args = "FULL;DEMO;0;0".split(";");
 //                }
-
-//        try {
-//            ProcessBuilder p = new ProcessBuilder(
-////                    PathFinder.getRootPath()
-//                    "C:\\transfer\\jars\\launch4j-3.11-win32\\launch4j"
-//                    +
-//                    "/launch4j.exe");
-//            Process as = p.start();
-//            OutputStream stream = as.getOutputStream();
-//            stream.write("TEST THIS".getBytes());
-//            stream.write("TEST THIS".getBytes());
-//            stream.flush();
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
         String[] commands = args;
 //        if (commands.length == 1) {
 //            if (PathUtils.splitPath(commands[0]).size() > 1)

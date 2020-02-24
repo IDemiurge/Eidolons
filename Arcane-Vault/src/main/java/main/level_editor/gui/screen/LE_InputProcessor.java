@@ -1,51 +1,30 @@
 package main.level_editor.gui.screen;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import eidolons.libgdx.bf.mouse.DungeonInputController;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.level_editor.functions.LE_Manager;
+import main.level_editor.struct.level.Floor;
 
-public class LE_InputProcessor implements InputProcessor {
-    public LE_InputProcessor(LE_Manager manager) {
+public class LE_InputProcessor extends DungeonInputController {
 
+    public LE_InputProcessor(OrthographicCamera camera, Floor parameter) {
+        super(camera);
     }
 
     @Override
-    public boolean keyDown(int i) {
-        return false;
+    protected float getDefaultZoom() {
+        return 0.33f;
     }
 
     @Override
-    public boolean keyUp(int i) {
-        return false;
+    protected float getPreferredMinimumOfScreenToFitOnDisplay() {
+        return 0.1f;
     }
 
     @Override
-    public boolean keyTyped(char c) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int i, int i1, int i2) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int i) {
-        return false;
+    protected LE_Screen getScreen() {
+        return LE_Screen.getInstance ();
     }
 }

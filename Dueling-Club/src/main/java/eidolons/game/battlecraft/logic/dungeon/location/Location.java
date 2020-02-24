@@ -179,14 +179,13 @@ public class Location extends DungeonWrapper {
         }
     }
 
-    private ObjType getEntranceType() {
-        return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
-                getDungeonLevel().getEntranceType(), DC_TYPE.BF_OBJ);
+    protected ObjType getEntranceType() {
+        return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().getDefaultEntranceType(), DC_TYPE.BF_OBJ);
     }
 
-    private ObjType getExitType() {
+    protected ObjType getExitType() {
         return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
-                getDungeonLevel().getExitType(), DC_TYPE.BF_OBJ);
+                getDefaultExitType(), DC_TYPE.BF_OBJ);
     }
 
     @Override

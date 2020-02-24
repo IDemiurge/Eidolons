@@ -16,6 +16,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
@@ -30,31 +31,32 @@ public class SpellMaster {
         // SD: Mastery or Knowledge
         String spellGroup = spell.getProperty(G_PROPS.SPELL_GROUP);
         return new NumericCondition("max({SOURCE_KNOWLEDGE}/2-5," + "{SOURCE_" + spellGroup
-         + "MASTERY})", SD);
+                + "MASTERY})", SD);
     }
 
     public static String initSpellbook(Unit hero) {
+        List<ObjType> list = new ArrayList<>();
         if (hero.getGame().isSimulation()) {
             checkNewAutoVerbatim(hero);
-        }
-        List<ObjType> list = new ArrayList<>();
-        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            if (checkKnown(hero, type)) {
-                // if (!hero.checkProperty(PROPS.LEARNED_SPELLS,
-                // type.getName()))
-                if (!isUpgraded(hero, type)) {
-                    list.add(type);
+            for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+                if (checkKnown(hero, type)) {
+                    // if (!hero.checkProperty(PROPS.LEARNED_SPELLS,
+                    // type.getName()))
+                    if (!isUpgraded(hero, type)) {
+                        list.add(type);
+                    }
                 }
-
             }
-        }
+            String known = "";
+            for (ObjType type : list) {
+                known += type.getName() + ContainerUtils.getContainerSeparator();
+            }
+            hero.setProperty(PROPS.KNOWN_SPELLS, known, true);
 
-        String known = "";
-        for (ObjType type : list) {
-            known += type.getName() + ContainerUtils.getContainerSeparator();
+        } else {
+            String prop = hero.getProperty(PROPS.KNOWN_SPELLS);
+            list = DataManager.toTypeList(prop, DC_TYPE.SPELLS);
         }
-        hero.setProperty(PROPS.KNOWN_SPELLS, known, true);
-
         String spellbook = "";
         for (ObjType type : list) {
             if (!hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
@@ -158,16 +160,16 @@ public class SpellMaster {
     // IF MASTERY IS >1
     public static boolean checkDoubleKnowledge(Unit hero, ObjType type) {
         return (hero.checkParam(PARAMS.KNOWLEDGE, ""
-         + Math.round(type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-         * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR)))
-         && hero.checkParam(ContentValsManager
-         .findMastery(type.getProperty(G_PROPS.SPELL_GROUP)));
+                + Math.round(type.getIntParam(PARAMS.SPELL_DIFFICULTY)
+                * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR)))
+                && hero.checkParam(ContentValsManager
+                .findMastery(type.getProperty(G_PROPS.SPELL_GROUP)));
     }
 
     public static boolean checkMastery(Unit hero, ObjType type) {
 
         return hero.checkParam(ContentValsManager.findMastery(type.getProperty(G_PROPS.SPELL_GROUP)),
-         type.getParam(PARAMS.SPELL_DIFFICULTY));
+                type.getParam(PARAMS.SPELL_DIFFICULTY));
     }
 
     public static boolean checkStandardSpell(ObjType type) {
@@ -238,29 +240,29 @@ public class SpellMaster {
 
     public static void addVerbatimSpell(Unit hero, ObjType type) {
         hero.getType().addProperty(PROPS.VERBATIM_SPELLS, type.getName(), true);
-        hero.getType(). addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
+        hero.getType().addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
         hero.addProperty(PROPS.VERBATIM_SPELLS, type.getName(), true);
         hero.addProperty(PROPS.LEARNED_SPELLS, type.getName(), true);
         hero.initSpells(true);
     }
 
-    public static void removeSpell(Unit unit, ObjType type ) {
+    public static void removeSpell(Unit unit, ObjType type) {
         removeSpell(unit, type, true);
 //                !CoreEngine.isIDE());
     }
 
     public static void removeSpell(Unit unit, ObjType type, boolean forever) {
-        unit.removeProperty(forever, PROPS.VERBATIM_SPELLS, type.getName() );
-        unit.removeProperty(forever, PROPS.MEMORIZED_SPELLS, type.getName() );
+        unit.removeProperty(forever, PROPS.VERBATIM_SPELLS, type.getName());
+        unit.removeProperty(forever, PROPS.MEMORIZED_SPELLS, type.getName());
         unit.initSpellbook();
         unit.initSpells(true);
     }
 
     public static void removeSpells(Unit unit) {
-        unit.removeProperty( PROPS.VERBATIM_SPELLS  );
-        unit.removeProperty(  PROPS.MEMORIZED_SPELLS  );
-        unit.getType().removeProperty( PROPS.VERBATIM_SPELLS  );
-        unit.getType().removeProperty(  PROPS.MEMORIZED_SPELLS  );
+        unit.removeProperty(PROPS.VERBATIM_SPELLS);
+        unit.removeProperty(PROPS.MEMORIZED_SPELLS);
+        unit.getType().removeProperty(PROPS.VERBATIM_SPELLS);
+        unit.getType().removeProperty(PROPS.MEMORIZED_SPELLS);
         unit.initSpellbook();
         unit.initSpells(true);
     }

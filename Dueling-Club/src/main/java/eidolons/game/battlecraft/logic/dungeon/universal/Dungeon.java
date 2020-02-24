@@ -129,7 +129,7 @@ public class Dungeon extends LightweightEntity {
 
         if (getIntParam(PARAMS.BF_WIDTH) == 0)
             setParam(PARAMS.BF_WIDTH, getGame().getDungeonMaster().getBuilder().getDefaultWidth());
-        return getIntParam(PARAMS.BF_WIDTH);
+        return getIntParam(PARAMS.BF_WIDTH)+1;
     }
 
     public Integer getCellsY() {
@@ -141,7 +141,7 @@ public class Dungeon extends LightweightEntity {
             setParam(PARAMS.BF_HEIGHT, getGame().getDungeonMaster().getBuilder().
                     getDefaultHeight());
 
-        return getIntParam(PARAMS.BF_HEIGHT);
+        return getIntParam(PARAMS.BF_HEIGHT)+1;
     }
 
 

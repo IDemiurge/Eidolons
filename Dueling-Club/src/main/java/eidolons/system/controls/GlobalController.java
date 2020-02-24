@@ -30,7 +30,6 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.libgdx.video.VideoMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
@@ -261,10 +260,10 @@ public class GlobalController implements Controller {
             return true;
         }
         if (Eidolons.getScreen().getController() != null)
-        if (Eidolons.getScreen().getController().space()) {
-            main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
-            return true;
-        }
+            if (Eidolons.getScreen().getController().space()) {
+                main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
+                return true;
+            }
         if (Cinematics.ON) {
             return false;
         }
@@ -272,7 +271,7 @@ public class GlobalController implements Controller {
             return false;
         if (DungeonScreen.getInstance() == null)
             return false;
-        if (DungeonScreen.getInstance().isWaitingForInput())
+        if (DungeonScreen.getInstance().isWaitingForInputNow())
             return true;
         if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
                 instanceof Blocking)
@@ -355,15 +354,15 @@ public class GlobalController implements Controller {
     private boolean escape() {
 //        if (!CoreEngine.isIDE())
 
-            if (Cinematics.ON) {
-                if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
-                    doScript("skip=:;");
+        if (Cinematics.ON) {
+            if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
+                doScript("skip=:;");
 //                    DungeonScreen.getInstance().getGuiStage().dialogueDone();
-                    FileLogManager.streamMain("Dialogue escaped");
-                    return true;
-                }
-                return false;
+                FileLogManager.streamMain("Dialogue escaped");
+                return true;
             }
+            return false;
+        }
 
         DungeonScreen.getInstance().cameraStop(true);
 
@@ -385,25 +384,28 @@ public class GlobalController implements Controller {
             DungeonScreen.getInstance().getGridPanel().clearSelection();
             return true;
         }
-        GuiStage guiStage = Eidolons.getScreen().getGuiStage();
-        if (guiStage.getDraggedEntity() != null) {
-            guiStage.setDraggedEntity(null);
-            return true;
-        }
-        if (OptionsWindow.getInstance().isVisible()) {
-            OptionsWindow.getInstance().forceClose();
-            return true;
-        }
-        if (guiStage.closeDisplayed())
-            return true;
-        if (Eidolons.getScreen().getController().escape())
-            return true;
+        if (Eidolons.getScreen().getGuiStage() instanceof GuiStage) {
+            GuiStage guiStage = (GuiStage) Eidolons.getScreen().getGuiStage();
+            if (guiStage.getDraggedEntity() != null) {
+                guiStage.setDraggedEntity(null);
+                return true;
+            }
+            if (OptionsWindow.getInstance().isVisible()) {
+                OptionsWindow.getInstance().forceClose();
+                return true;
+            }
+            if (guiStage.closeDisplayed())
+                return true;
+            if (Eidolons.getScreen().getController().escape())
+                return true;
 
 //        if (){
-        GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
-        guiStage.getTooltips().getStackMaster().stackOff();
-        guiStage.getGameMenu().open();
-        return true;
+            GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
+            guiStage.getTooltips().getStackMaster().stackOff();
+            guiStage.getGameMenu().open();
+            return true;
+        }
+        return false;
     }
 
     @Override

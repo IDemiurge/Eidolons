@@ -14,6 +14,7 @@ import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Game;
 import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforcePanel;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -42,6 +43,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
+
+import static eidolons.game.battlecraft.rules.RuleKeeper.RULE.SOULFORCE;
 
 /**
  * Created by JustMe on 3/31/2017.
@@ -99,9 +102,11 @@ public class BattleGuiStage extends GuiStage {
         outcomePanel.setVisible(false);
         addActor(fullscreenAnims = new FullscreenAnims());
 
+        if (RuleKeeper.isRuleOn(SOULFORCE)) {
         addActor(soulforcePanel = new SoulforcePanel());
         GdxMaster.center(soulforcePanel);
         soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
+        }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
 //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);

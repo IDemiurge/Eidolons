@@ -1639,7 +1639,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (isDead()) {
             prefix += "(Dead) ";
         }
-        return prefix + getName() + (game.isDebugMode() || AI_Manager.isRunning() ? " at " + getCoordinates()
+        return prefix + getName() + (CoreEngine.isIDE() || AI_Manager.isRunning() ? " at " + getCoordinates()
                 : "");
     }
 

@@ -1,7 +1,9 @@
 package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.libgdx.GDX;
@@ -13,6 +15,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.utils.TextInputPanel;
 import main.entity.Entity;
 
@@ -32,7 +35,13 @@ public class GenericGuiStage extends StageX {
     protected TipMessageWindow tipMessageWindow;
 
     public GenericGuiStage(Viewport viewport, Batch batch) {
-        super(viewport, batch);
+        super(viewport == null
+                        ? new FillViewport(GdxMaster.getWidth(),
+                        GdxMaster.getHeight(), new OrthographicCamera())
+                        : viewport,
+                batch == null
+                        ? new CustomSpriteBatch()
+                        : batch);
     }
 
     public void confirm(String text,
@@ -148,5 +157,23 @@ public class GenericGuiStage extends StageX {
 
     public ToolTipManager getTooltips() {
         return tooltips;
+    }
+
+    public Closable getDisplayedClosable() {
+        return null;
+    }
+
+    public boolean isBlocked() {
+        return false;
+    }
+
+    public Entity getDraggedEntity() {
+        return null;
+    }
+
+    public void setDraggedEntity(Entity dragged) {
+    }
+
+    public void outsideClick() {
     }
 }

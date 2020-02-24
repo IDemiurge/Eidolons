@@ -3,19 +3,26 @@ package eidolons.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
+import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.GuiStage;
@@ -40,6 +47,7 @@ import static org.lwjgl.opengl.GL11.*;
 public abstract class GenericDungeonScreen extends GameScreen{
     protected StageX gridStage;
     protected GridPanel gridPanel;
+    protected ParticleManager particleManager;
 
     protected void preBindEvent() {
 
@@ -100,11 +108,72 @@ public abstract class GenericDungeonScreen extends GameScreen{
         setBackground(path);
     }
 
+    protected void drawBg(float delta) {
+        updateBackground(delta);
+        if (backTexture != null) {
+            Batch batch = guiStage.getCustomSpriteBatch();
+            batch.begin();
+            float colorBits = GdxColorMaster.WHITE.toFloatBits();
+            if (batch.getColor().toFloatBits() != colorBits)
+                batch.setColor(colorBits); //gotta reset the alpha... if (backTexture == null)
+            if (backgroundSprite != null) {
+                drawSpriteBg(batch);
+            } else if (isCenteredBackground()) {
+                int w = backTexture.getRegionWidth();
+                int h = backTexture.getRegionHeight();
+                int x = (GdxMaster.getWidth() - w) / 2;
+                int y = (GdxMaster.getHeight() - h) / 2;
+                batch.draw(backTexture, x, y, w, h);
+            } else {
+                //TODO max
+                batch.draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+            }
+
+            batch.end();
+
+        }
+
+    }
+
+    private boolean isCenteredBackground() {
+        if (backgroundSprite != null) {
+            return true;
+        }
+        if (EidolonsGame.FOOTAGE || EidolonsGame.BOSS_FIGHT) {
+            return false;
+        }
+        return !Eidolons.isFullscreen();
+    }
+
+    private void drawSpriteBg(Batch batch) {
+        backgroundSprite.setOffsetY(-
+                Gdx.graphics.getHeight() / 2);
+        backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
+        backgroundSprite.setSpeed(0.5f);
+        backgroundSprite.setOffsetY(getCam().position.y);
+        backgroundSprite.setOffsetX(getCam().position.x);
+        backgroundSprite.draw(batch);
+    }
+
+    private void updateBackground(float delta) {
+        if (backgroundSprite != null) {
+            backgroundSprite.act(delta);
+            backTexture = backgroundSprite.getCurrentFrame();
+            if (backgroundSprite.getCurrentFrameNumber() == backgroundSprite.getFrameNumber() - 1) {
+                if (backgroundSprite.getPlayMode() == Animation.PlayMode.LOOP_REVERSED)
+                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP);
+                else {
+                    backgroundSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
+                }
+            }
+            backTexture = backgroundSprite.getCurrentFrame();
+
+        }
+    }
+
     public void updateGui() {
         checkGraphicsUpdates();
     }
-
-    protected abstract InputProcessor createInputController();
 
 
     @Override
@@ -124,7 +193,15 @@ public abstract class GenericDungeonScreen extends GameScreen{
 
     @Override
     protected void afterLoad() {
+        setCam((OrthographicCamera) viewPort.getCamera());
 
+        final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
+        gridPanel = createGrid(param);
+
+        //do not chain - will fail ...
+        gridPanel.init(param.getObjects());
+
+        gridStage.addActor(gridPanel);
     }
 
     @Override
@@ -137,7 +214,7 @@ public abstract class GenericDungeonScreen extends GameScreen{
         Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
         Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
-        batch.shaderFluctuation(delta);
+        getBatch().shaderFluctuation(delta);
         if (speed != null) {
             delta = delta * speed;
         }
@@ -177,4 +254,5 @@ public abstract class GenericDungeonScreen extends GameScreen{
         return controller;
     }
 
+    public abstract GridPanel getGridPanel();
 }

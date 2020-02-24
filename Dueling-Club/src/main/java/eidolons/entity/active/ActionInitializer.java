@@ -104,8 +104,7 @@ public class ActionInitializer extends DC_ActionManager {
                     if (activeObj.isTurn())
                         return false;
                 if (activeObj.isMove())
-                    if (EidolonsGame.MOVES_DISABLED)
-                    {
+                    if (EidolonsGame.MOVES_DISABLED) {
                         return false;
                     }
                 if (activeObj.isAttackAny())
@@ -125,7 +124,8 @@ public class ActionInitializer extends DC_ActionManager {
             }
         return true;
     }
-        public boolean isActionAvailable(DC_ActiveObj activeObj, boolean exploreMode) {
+
+    public boolean isActionAvailable(DC_ActiveObj activeObj, boolean exploreMode) {
 
         switch (activeObj.getName()) {
             case "Defend":
@@ -210,14 +210,14 @@ public class ActionInitializer extends DC_ActionManager {
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Push.name(), unit));
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Pull.name(), unit));
 
+        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
+
         if (UnitAnalyzer.checkOffhand(unit)) {
             actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
-
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK), unit);
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK), unit);
         }
 
-        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.DUAL_ATTACKS))
             if (UnitAnalyzer.checkDualWielding(unit)) {
                 actives.addAll(DualAttackMaster.getDualAttacks(unit));
@@ -306,19 +306,18 @@ public class ActionInitializer extends DC_ActionManager {
     }
 
     private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
-        if (!offhandInit) {
-            ActionGenerator.generateOffhandActions();
-            offhandInit = true;
-        }
-        if (actives != null)
-            for (ActiveObj attack : actives) {
-                ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
-                        .getName()), DC_TYPE.ACTIONS));
+        if (actives != null) {
+            ArrayList<ActiveObj> list = new ArrayList<>(actives);
+            for (ActiveObj attack : list) {
+
+                ObjType offhand = ActionGenerator.generateOffhandAction(attack.getType());
+
                 if (offhand == null) {
                     continue;
                 }
                 actives.add(getOrCreateAction(offhand.getName(), unit));
             }
+        }
 
     }
 

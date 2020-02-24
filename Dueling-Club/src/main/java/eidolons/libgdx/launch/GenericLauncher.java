@@ -284,7 +284,6 @@ public abstract class GenericLauncher extends Game {
     }
     @Override
     public void render() {
-
         if (!Assets.get().getManager().update()) {
             main.system.auxiliary.log.LogMaster.dev("Assets being loaded...");
         }
@@ -414,17 +413,17 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {
-        if (CoreEngine.isIDE()) {
-            try {
-                screenSwitcher((ScreenData) param.get());
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                screenSwitcher( new ScreenData(
-                        Eidolons.getPreviousScreenType(), "") );
-            }
-        } else {
+//        if (CoreEngine.isIDE()) {
+//            try {
+//                screenSwitcher((ScreenData) param.get());
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//                screenSwitcher( new ScreenData(
+//                        Eidolons.getPreviousScreenType(), "") );
+//            }
+//        } else
             screenSwitcher((ScreenData) param.get());
-        }
+
     }
 
     protected void screenSwitcher(ScreenData newMeta) {

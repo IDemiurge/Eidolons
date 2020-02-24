@@ -122,8 +122,9 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     public boolean isWithinModule(Coordinates c) {
-        return CoordinatesMaster.isWithinBounds(c, current.getX(), current.getY(), current.getX() +
-                current.getWidth(), current.getY() + current.getHeight());
+        return false;
+//        return CoordinatesMaster.isWithinBounds(c, current.getX(), current.getY(), current.getX() +
+//                current.getWidth(), current.getY() + current.getHeight());
 
     }
 

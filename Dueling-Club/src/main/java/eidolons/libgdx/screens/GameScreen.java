@@ -122,7 +122,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         cameraMan.cameraStop(full);
     }
 
-    public GuiStage getGuiStage() {
+    public GenericGuiStage getGuiStage() {
         return null;
     }
 }

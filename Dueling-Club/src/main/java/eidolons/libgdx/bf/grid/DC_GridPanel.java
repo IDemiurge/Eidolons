@@ -81,7 +81,7 @@ public class DC_GridPanel extends GridPanel {
 
 
     public DC_GridPanel(int cols, int rows) {
-        super(rows, cols);
+        super(cols, rows);
     }
 
     public void reactivateModule() {
@@ -195,11 +195,13 @@ public class DC_GridPanel extends GridPanel {
     @Override
     public GridPanel init(DequeImpl<BattleFieldObject> objects) {
 
+        super.init(objects);
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
         manager = new GridManager(this);
         addActor(overlayManager = new GridOverlaysManager(this));
-        return super.init(objects);
+
+        return this;
     }
 
     private void drawComments(Batch batch) {

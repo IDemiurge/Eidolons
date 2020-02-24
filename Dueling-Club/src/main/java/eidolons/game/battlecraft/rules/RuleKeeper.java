@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.netherflame.NF_Game;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -84,6 +85,10 @@ public class RuleKeeper implements Controller {
                         return true;
                 }
                 break;
+            case EIDOLON:
+                if (Eidolons.getGame() instanceof NF_Game)
+                    return true;
+                return false;
         }
         return false;
     }
@@ -383,6 +388,7 @@ public class RuleKeeper implements Controller {
     }
 
     public enum RULE {
+        SOULFORCE(RULE_SCOPE.EIDOLON),
         FORCE(RULE_SCOPE.BASIC),
         CHANNELING(RULE_SCOPE.TEST),
         ATTACK_OF_OPPORTUNITY(RULE_SCOPE.BASIC),
@@ -439,7 +445,7 @@ public class RuleKeeper implements Controller {
     }
 
     public enum RULE_SCOPE {
-        TEST, BASIC, FULL, ADVANCED,
+        TEST, BASIC, FULL, ADVANCED, EIDOLON,
     }
 
     public enum SPELLCASTING_RULES {

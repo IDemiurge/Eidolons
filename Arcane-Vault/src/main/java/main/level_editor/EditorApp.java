@@ -8,6 +8,7 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.LoadingScreen;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
@@ -24,6 +25,7 @@ import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 public class EditorApp extends GenericLauncher {
+    private static final boolean TEST_MODE = true;
     private final String[] args;
 
     public EditorApp(String[] args) {
@@ -61,11 +63,14 @@ public class EditorApp extends GenericLauncher {
         newScreen.initLoadingStage(meta);
         setScreen(newScreen);
         load();
+
         render();
     }
 
     private void load() {
         Eidolons.onNonGdxThread(()->{
+            DC_Engine.dataInit();
+//            DC_Engine.dataInit(true);
             LevelEditor.welcome(args.length==0 ? null : args[0]);
         });
     }
@@ -77,7 +82,12 @@ public class EditorApp extends GenericLauncher {
 
     @Override
     public LwjglApplicationConfiguration getConf() {
-        return super.getConf();
+        LwjglApplicationConfiguration c = super.getConf();
+        if (TEST_MODE){
+            c.width=1;
+            c.height=1;
+        }
+        return c;
     }
 
     @Override

@@ -313,9 +313,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
         }
         if (mode == null || STD_MODES.NORMAL.equals(mode)) {
-            GuiEventManager.trigger(SHOW_MODE_ICON, this, null);
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, null);
         } else {
-            GuiEventManager.trigger(SHOW_MODE_ICON, this, mode.getImagePath());
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, mode.getImagePath());
             EUtils.showInfoText(
                     StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
         }

@@ -193,7 +193,7 @@ public abstract class HtNode extends DynamicLayeredActor {
         if (ListMaster.isNotEmpty(getAvailable())) {
 
             SlotSelectionRadialMenu.setActiveNode(this);
-            GuiEventManager.trigger(getSelectionEvent(), getAvailable(), tier, slot);
+            GuiEventManager.triggerWithParams(getSelectionEvent(), getAvailable(), tier, slot);
         } else {
             EUtils.showInfoText("Nothing available for this slot yet!");
         }

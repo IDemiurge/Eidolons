@@ -11,9 +11,11 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.launch.MainLauncher;
@@ -36,7 +38,9 @@ import main.level_editor.struct.level.Floor;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -53,6 +57,8 @@ public class LevelEditor {
     private static BossDungeon dungeon;
 
     public static void main(String[] args) {
+        CoreEngine.setLevelEditor(true);
+        Assets.setON(false);
         DC_Engine.systemInit(false);
         new EditorApp(args).start();
 
@@ -61,17 +67,17 @@ public class LevelEditor {
     public static void initFloor(LE_MetaMaster meta) {
         LE_GameSim game = meta.init();
 
-        DC_Engine.gameStartInit();
-
-        game.initAndStart();
-        String name = meta.getMetaDataManager().getDataPath();
+        String name = meta.getMetaDataManager().getMissionPath();
+        name = StringMaster.cropFormat(
+                PathUtils.getLastPathSegment(name));
         Floor floor = new Floor(name, game, game.getDungeon());
         floorSelected(floor);
+        game.initAndStart();
     }
 
     public static void newFloorSelected(String name) {
-        String path =!campaignMode? name : getRootPath() + name;
-        if (campaignMode){
+        String path = !campaignMode ? name : getRootPath() + name;
+        if (campaignMode) {
 //            dungeon.getFloorPath(name);
         } else {
         }
@@ -86,7 +92,10 @@ public class LevelEditor {
 
     public static void floorSelected(Floor floor) {
         current = floor;
+        Eidolons.game = floor.getGame();
+        DC_Game.game = floor.getGame();
         SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
+        main.system.auxiliary.log.LogMaster.log(1, "floorSelected: " + floor.getName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.EDITOR, floor));
     }
 
@@ -114,7 +123,7 @@ public class LevelEditor {
 
 
     public static void welcome(
-            String toOpen  ) {
+            String toOpen) {
         //welcome screen?..
 //        editorSettings = FileManager.readFile(getSettingsPath());
 //        toOpen = getOpenDefault();

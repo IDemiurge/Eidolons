@@ -248,6 +248,11 @@ public class MapScreen extends GameScreenWithTown {
         return controller;
     }
 
+    @Override
+    public GridPanel getGridPanel() {
+        return null;
+    }
+
     public int getMapWidth() {
         return (int) getMapStage().getMap().getWidth();
     }

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Logger;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.core.Eidolons;
@@ -222,15 +223,31 @@ public class Assets {
         return preload(objects, true, true, false, true);
     }
 
-    public static boolean preload(DequeImpl<BattleFieldObject> objects,
-                                  boolean full, boolean ui, boolean her0es, boolean emitters) {
+    public static boolean preloadModule(Module module) {
+/*
+
+ */
+
+        return false;
+    }
+        public static boolean preload(DequeImpl<BattleFieldObject> objects,
+        boolean full, boolean ui, boolean her0es, boolean emitters) {
         boolean result = preloadObjects(objects, full);
         her0es = EidolonsGame.FOOTAGE;
 
+        if (isOptimizationTest()){
+//            loadSprite("", false, true);
+            return true;
+        }
+        if (!CoreEngine.isIDE()) {
         Chronos.mark("preload Audio");
-        preloadAudio(full);
+        try {
+            preloadAudio(full);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         Chronos.logTimeElapsedForMark("preload Audio");
-
+        }
         if (!CoreEngine.isVfxOff()) {
             if (emitters) {
                 Chronos.mark("preload Emitters");
@@ -256,6 +273,10 @@ public class Assets {
         }
 
         return result;
+    }
+
+    private static boolean isOptimizationTest() {
+        return true;
     }
 
     private static boolean preloadObjects(DequeImpl<BattleFieldObject> objects, boolean full) {
@@ -470,7 +491,7 @@ public class Assets {
 
         DIALOGUE(ContainerUtils.construct(";", Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
-        ;
+        DEFAULT("");
 
         GAME_SCOPE(String assets) {
             this.assets = assets;
@@ -483,12 +504,12 @@ public class Assets {
         ShadeLightCell.getShadowMapAtlas();
 //        if (CoreEngine.isSuperLite())
         {
-            if (EidolonsGame.FOOTAGE) {
+            if (!EidolonsGame.IGG_DEMO) {
                 return;
             }
             if (isScopeLoadingMode()) {
-                if (!EidolonsGame.PUZZLES)
-                    preloadScope(GAME_SCOPE.COMMON, full);
+//                if (!EidolonsGame.PUZZLES)
+//                    preloadScope(GAME_SCOPE.COMMON, full);
                 preloadScope(getScope(), full);
                 return;
             }
@@ -591,7 +612,7 @@ public class Assets {
         if (EidolonsGame.PUZZLES) {
             return GAME_SCOPE.PUZZLES;
         }
-        return GAME_SCOPE.INTRO;
+        return GAME_SCOPE.DEFAULT;
     }
 
     private static boolean isScopeLoadingMode() {

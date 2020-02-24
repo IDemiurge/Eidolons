@@ -551,7 +551,7 @@ public class SpeechExecutor {
             case AMBI_VFX:
                 GenericEnums.VFX vfx = new EnumMaster<GenericEnums.VFX>().retrieveEnumConst(GenericEnums.VFX.class, value);
                 Vector2 vector = getCenteredPos(getCoordinate(vars.get(0)));
-                GuiEventManager.trigger(GuiEventType.ADD_AMBI_VFX, vfx, vector);
+                GuiEventManager.triggerWithParams(GuiEventType.ADD_AMBI_VFX, vfx, vector);
                 break;
             case VFX:
                 bool = true;
@@ -737,7 +737,7 @@ public class SpeechExecutor {
                     GuiEventManager.trigger(
                             GuiEventType.STOP_LOOPING_TRACK, path);
                 } else {
-                    GuiEventManager.trigger(GuiEventType.ADD_LOOPING_TRACK, path, volume);
+                    GuiEventManager.triggerWithParams(GuiEventType.ADD_LOOPING_TRACK, path, volume);
                 }
                 break;
             case PARALLEL_MUSIC:
@@ -746,7 +746,7 @@ public class SpeechExecutor {
             case SOUNDSCAPE:
                 SOUNDSCAPE soundscape = new EnumMaster<SOUNDSCAPE>().retrieveEnumConst(SOUNDSCAPE.class, value);
                 Float vol = Float.valueOf(vars.get(0));
-                GuiEventManager.trigger(GuiEventType.SET_SOUNDSCAPE_VOLUME,
+                GuiEventManager.triggerWithParams(GuiEventType.SET_SOUNDSCAPE_VOLUME,
                         soundscape, vol);
                 break;
             case MUSIC:
@@ -878,7 +878,7 @@ public class SpeechExecutor {
                         alpha = Float.valueOf(vars.get(0));
                 }
                 PARTICLES_SPRITE type = new EnumMaster<PARTICLES_SPRITE>().retrieveEnumConst(PARTICLES_SPRITE.class, value);
-                GuiEventManager.trigger(GuiEventType.SET_PARTICLES_ALPHA, type, alpha);
+                GuiEventManager.triggerWithParams(GuiEventType.SET_PARTICLES_ALPHA, type, alpha);
                 break;
             case AUTOCAMERA:
                 handler.setAutoCamera(!value.equalsIgnoreCase("off"));
@@ -948,9 +948,9 @@ public class SpeechExecutor {
                 }
                 //wards and awakening!
                 if (speechAction == GRID_OBJ_ANIM) {
-                    GuiEventManager.trigger(GuiEventType.GRID_OBJ_ANIM, value, c, new GraphicData(vars.get(1)));
+                    GuiEventManager.triggerWithParams(GuiEventType.GRID_OBJ_ANIM, value, c, new GraphicData(vars.get(1)));
                 } else if (speechAction == REMOVE_GRID_OBJ) {
-                    GuiEventManager.trigger(GuiEventType.REMOVE_GRID_OBJ, value, c);
+                    GuiEventManager.triggerWithParams(GuiEventType.REMOVE_GRID_OBJ, value, c);
                 } else {
                     GridObject x;
                     obj = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, value);
@@ -1056,7 +1056,7 @@ public class SpeechExecutor {
                 if (vars.size() > 0) {
                     r = () -> Eidolons.onNonGdxThread(() -> execute(SCRIPT, vars.get(0)));
                 }
-                GuiEventManager.trigger(GuiEventType.PLAY_VIDEO, value, r);
+                GuiEventManager.triggerWithParams(GuiEventType.PLAY_VIDEO, value, r);
                 break;
             case BREAK_IF:
                 if (EidolonsGame.getAny(value)) {

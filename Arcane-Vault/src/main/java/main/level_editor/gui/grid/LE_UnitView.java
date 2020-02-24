@@ -40,7 +40,18 @@ public class LE_UnitView extends GridUnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        setVisible(true);
         super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    @Override
+    public boolean isWithinCamera() {
+        return true;
     }
 
     @Override

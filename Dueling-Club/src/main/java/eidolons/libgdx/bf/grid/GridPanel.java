@@ -78,7 +78,7 @@ public class GridPanel extends Group {
     protected GridManager manager;
     protected GridOverlaysManager overlayManager;
 
-    public GridPanel(int rows, int cols) {
+    public GridPanel(int cols, int rows) {
         this.square = rows * cols;
         this.cols = cols;
         this.rows = rows;
@@ -134,7 +134,7 @@ public class GridPanel extends Group {
                     continue;
                 }
                 emptyImage = TextureCache.getOrCreateR(cell.getImagePath());
-                cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
+                cells[x][y] = createGridCell(emptyImage, x, getGdxY(y));
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
                 addActor(cells[x][y].init());
@@ -178,6 +178,10 @@ public class GridPanel extends Group {
 
 
         return this;
+    }
+
+    protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
+        return new GridCellContainer(emptyImage, x, y);
     }
 
     protected void addVoid(boolean hasVoid) {

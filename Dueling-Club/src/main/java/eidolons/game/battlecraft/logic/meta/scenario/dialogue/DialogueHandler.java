@@ -202,7 +202,7 @@ public class DialogueHandler {
             LogMaster.dev("PC for autocamera! "+getSpeakerLast() );
         }
         if (autoCamera) {
-            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT,
+            GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT,
                     linkedUnit, 3.4f, true, Interpolation.fade);
 
         }

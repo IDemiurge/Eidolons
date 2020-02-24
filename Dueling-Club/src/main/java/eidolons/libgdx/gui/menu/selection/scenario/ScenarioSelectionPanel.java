@@ -42,7 +42,6 @@ public class ScenarioSelectionPanel extends SelectionPanel {
     @Override
     public void init() {
         super.init();
-        tryDone();
     }
 
     protected String getDoneText() {
@@ -61,7 +60,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         }
 
         scenarioChosen(DataManager.getType(selection.toString(), DC_TYPE.SCENARIOS));
-
+        listPanel.deselect();
     }
 
     protected void scenarioChosen(ObjType type) {

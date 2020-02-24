@@ -32,4 +32,7 @@ public class Floor {
         return manager;
     }
 
+    public String getName() {
+        return name;
+    }
 }

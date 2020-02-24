@@ -51,7 +51,7 @@ public class UnitViewFactory {
     }
 
     public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
-        return (GridUnitView) getInstance().createGraveyardView(battleFieldObject);
+        return  getInstance().create(battleFieldObject);
     }
 
     public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
@@ -60,9 +60,7 @@ public class UnitViewFactory {
 
     public GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        GridUnitView view =
-                bfObj.isBoss() ? new BossView(options) :
-                        new GridUnitView(bfObj, options);
+        GridUnitView view = createView(bfObj, options);
 
         addLastSeenView(bfObj, view, options);
 
@@ -83,6 +81,12 @@ public class UnitViewFactory {
         }
 
         return view;
+    }
+
+    protected GridUnitView createView(BattleFieldObject bfObj, UnitViewOptions options) {
+        return
+                bfObj.isBoss() ? new BossView(options) :
+                        new GridUnitView(bfObj, options);
     }
 
     protected void addLastSeenView(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {

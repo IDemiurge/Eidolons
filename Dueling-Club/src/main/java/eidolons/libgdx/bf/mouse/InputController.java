@@ -51,7 +51,6 @@ public abstract class InputController implements InputProcessor {
     protected Set<SuperActor> cachedPosActors = new HashSet<>();
     protected static boolean unlimitedZoom;
     protected static boolean dragOff;
-    protected float defaultZoom = 1;
     private Runnable onInput;
     private Runnable onInputGdx;
     private Runnable onPassInput;
@@ -59,6 +58,7 @@ public abstract class InputController implements InputProcessor {
     private DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
     private DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
     private DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
+    protected float defaultZoom;
 
 
     public InputController(OrthographicCamera camera) {
@@ -84,6 +84,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected void initZoom() {
+        defaultZoom= getDefaultZoom();
         defaultZoom = Math.min(getWidth() * getPreferredMinimumOfScreenToFitOnDisplay()
                 / GdxMaster.getWidth(), 1f);
         defaultZoom = Math.min(getHeight() * getPreferredMinimumOfScreenToFitOnDisplay()
@@ -99,6 +100,10 @@ public abstract class InputController implements InputProcessor {
         halfHeight = height / 2;
 
 
+    }
+
+    protected float getDefaultZoom() {
+        return 1;
     }
 
     protected float getPreferredMinimumOfScreenToFitOnDisplay() {

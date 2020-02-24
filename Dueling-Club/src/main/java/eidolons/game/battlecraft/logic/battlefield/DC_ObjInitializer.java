@@ -332,7 +332,6 @@ public class DC_ObjInitializer {
                 }
             }
             last = false;
-            //todo optimize create unit func it too slow
             BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);
             if (unit == null) {
                 continue;
@@ -366,15 +365,11 @@ public class DC_ObjInitializer {
 
             if (!CoreEngine.isLevelEditor()) {
                 if (unit.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
-                    // if (!owner.isMe() || game.isDebugMode()) TODO why
-                    // not?
-                    //todo optimize train func it too slow
-                    UnitTrainingMaster.train((Unit) unit);
+                    if (game.getMetaMaster().getModuleMaster().isWithinModule(c))
+                        UnitTrainingMaster.train((Unit) unit);
                 }
             }
         }
-        // if (creeps)
-        // PartyManager.addCreepParty(DataManager.convertToTypeList(list));
         return map;
     }
 
@@ -509,7 +504,7 @@ public class DC_ObjInitializer {
     }
 
     public static List<ObjAtCoordinate> createObjTypeMap(String textContent) {
-        List<ObjAtCoordinate> list=     new ArrayList<>() ;
+        List<ObjAtCoordinate> list = new ArrayList<>();
         for (String substring : ContainerUtils.openContainer(textContent, OBJ_SEPARATOR)) {
             list.add(new ObjAtCoordinate(substring, C_OBJ_TYPE.BF_OBJ));
         }

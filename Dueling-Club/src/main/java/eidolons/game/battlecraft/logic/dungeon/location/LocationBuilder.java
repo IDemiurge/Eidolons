@@ -45,14 +45,14 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String ROOM_TYPE_NODE = "Room Type";
     public static final String COORDINATES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.COORDINATES_NODE);
     public static final String OBJ_NODE = StringMaster.getWellFormattedString(RngXmlMaster.OBJECTS_NODE);
-    public static final String OBJ_NODE_NEW = "obj_ids";
+    public static final String OBJ_NODE_NEW = "Obj_Ids";
     public static final String ENTRANCE_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ENTRANCE_NODE);
     public static final String EXIT_NODE = "Exits";
     public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
     public static final String META_DATA_NODE = "Named_Coordinate_Points";
 
 
-    public static final String ID_MAP = "ids_map";
+    public static final String ID_MAP = "Id_Map";
     public static final String AI_GROUPS_NODE = StringMaster
             .getWellFormattedString("ai groups node");
     private static Map<Integer, ObjType> idMap;
@@ -61,7 +61,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     @Refactor
     private List<Node> nodeList;
     private Location location;
-    private Dungeon dungeon;
 
     private List<Node> lazyInitZones = new ArrayList<>();
     private DungeonPlan plan;
@@ -85,6 +84,11 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         master.setDungeonLevel(level);
         level.getVoidCoordinates().addAll(location.getDungeon().getVoidCoordinates());
 //        location.setEntranceData();
+        try {
+            location.initEntrances();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         return location;
     }
 
@@ -140,8 +144,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             if (StringMaster.compareByChar(subNode.getNodeName(), COORDINATES_NODE)) {
                 coordinates = CoordinatesMaster.getCoordinatesFromString(subNode.getTextContent());
 
-            } else if (StringMaster.compareByChar(subNode.getNodeName(), ID_MAP)) {
-                processIdsMap(subNode.getTextContent());
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE_NEW)) {
                 objectMap = processObjects(dungeon, b, subNode);
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
@@ -195,9 +197,13 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             List<String> ids = ContainerUtils.openContainer(substring.split("=")[1], ",");
 
             for (String id : ids) {
-                objectsString += c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR
-                        + idMap.get(id).getName()
-                        + DC_ObjInitializer.OBJ_SEPARATOR;
+                try {
+                    objectsString += c + DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR
+                            + idMap.get(Integer.valueOf(id)).getName()
+                            + DC_ObjInitializer.OBJ_SEPARATOR;
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
             Map<Coordinates, ? extends Obj> subMap = DC_ObjInitializer.initMapBlockObjects(dungeon, b, objectsString);
             int i = 0;
@@ -210,23 +216,18 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         return fullMap;
     }
 
-    private static void processIdsMap(String textContent) {
+    private static void processIdsMap(DC_TYPE TYPE, String textContent) {
         /*
         id=objType(x, y);
         OR just map ids to types, then proceed with the obj map as usual
 
          */
         idMap = new LinkedHashMap<>();
-        String[] split = textContent.split("===");
-        for (String s : split) {
-            String sep = "==";
-            DC_TYPE TYPE = DC_TYPE.getType(textContent.split(sep)[0]);
-            String content = (textContent.split(sep)[1]);
-            for (String substring : ContainerUtils.openContainer(content)) {
-                Integer id = Integer.valueOf(substring.split("=")[0]);
-                ObjType type = DataManager.getType(substring.split("=")[1], TYPE);
-                idMap.put(id, type);
-            }
+        textContent = textContent.trim();
+        for (String content : ContainerUtils.openContainer(textContent)) {
+            Integer id = Integer.valueOf(content.split("=")[0]);
+            ObjType type = DataManager.getType(content.split("=")[1], TYPE);
+            idMap.put(id, type);
         }
     }
 
@@ -248,11 +249,11 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             location.setEntranceData(IGG_XmlMaster.getEntrancesData(location, path));
             location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
-        try {
-            location.initEntrances();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+//        try {
+//            location.initEntrances();
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//        }
         location.setPlan(plan);
         plan.setStringData(data);
         initDynamicObjData(location, plan);
@@ -279,6 +280,10 @@ public class LocationBuilder extends DungeonBuilder<Location> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
+        } else if (StringMaster.compareByChar(n.getNodeName(), ID_MAP)) {
+            for (Node node : XML_Converter.getNodeList(n)) {
+                processIdsMap(DC_TYPE.getType(node.getNodeName()), n.getTextContent());
+            }
         } else
             super.processNode(n, dungeon, plan);
     }
@@ -307,7 +312,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public void initModuleZoneLazily(Module module) {
         for (Node lazyInitZone : lazyInitZones) {
             if (lazyInitZone.getNodeName().equalsIgnoreCase(module.getName())) {
-                buildZone(dungeon, module.getName(), lazyInitZone);
+                buildZone(getDungeon().getDungeon(), module.getName(), lazyInitZone);
                 return;
             }
 
@@ -336,8 +341,8 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         if (plan.getBlocks().size() == 1) {
             int w = plan.getBlocks().get(0).getWidth();
             int h = plan.getBlocks().get(0).getHeight();
-            dungeon.setParam(PARAMS.BF_WIDTH, w, true);
-            dungeon.setParam(PARAMS.BF_HEIGHT, h, true);
+            getDungeon().getDungeon().setParam(PARAMS.BF_WIDTH, w, true);
+            getDungeon().getDungeon().setParam(PARAMS.BF_HEIGHT, h, true);
         }
         plan.setZones(zones);
     }

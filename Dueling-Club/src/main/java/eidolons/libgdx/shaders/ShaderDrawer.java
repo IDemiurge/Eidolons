@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Eidolons;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,13 @@ public class ShaderDrawer {
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal
     ) {
+        if (CoreEngine.isIDE())
+            if (shader!=null && !shader.isCompiled())
+            {
+                drawWithCustomShader(actor, batch, null , false, true);
+                return;
+            }
+
         drawWithCustomShader(actor, batch, shader, nullMeansOriginal, true);
     }
 

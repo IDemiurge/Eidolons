@@ -4,6 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
@@ -65,7 +66,7 @@ public class ObjCreator extends Master {
             if (EntityCheckMaster.isBoss(type)) {
                 obj = new BossUnit(type, x, y, owner, getGame(), ref);
             } else
-            obj = new Unit(type, x, y, owner, getGame(), ref);
+                obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         if (CoreEngine.isLevelEditor()) {
             return obj;
@@ -74,14 +75,8 @@ public class ObjCreator extends Master {
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
 
-        if (obj instanceof Unit)
-            game.getState().getManager().reset((Unit) obj);
-        else {
-            obj.toBase();
-            obj.resetObjects();
-            obj.afterEffects();
-        }
-        obj.setOriginalType(type.getType());
+        initObject(obj, type);
+
         if (getGame().getMetaMaster().isRngQuestsEnabled())
             for (Quest quest : game.getMetaMaster().getQuestMaster().getQuestsPool()) {
                 if (quest.getArg() instanceof ObjAtCoordinate) {
@@ -96,6 +91,36 @@ public class ObjCreator extends Master {
             }
 
         return obj;
+
+    }
+
+    protected void initObject(BattleFieldObject obj, ObjType type) {
+
+        if (!isUnitFullResetRequired(obj))
+            dummyReset(obj);
+        else if (obj instanceof Unit) {
+            game.getState().getManager().reset((Unit) obj);
+        } else {
+            obj.toBase();
+            obj.resetObjects();
+            obj.afterEffects();
+        }
+        obj.setOriginalType(type.getType());
+    }
+
+    private void dummyReset(BattleFieldObject obj) {
+        obj.resetPercentages();
+    }
+
+    private boolean isUnitFullResetRequired(BattleFieldObject obj) {
+        if (obj.isPlayerCharacter()) {
+            return true;
+        }
+        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
+            return false;
+
+        //TODO check distance
+        return false;
 
     }
 
@@ -129,7 +154,7 @@ public class ObjCreator extends Master {
         if (group != null) {
             switch (group) {
                 case DUNGEON:
-                   break;
+                    break;
 
                 case KEY:
                 case HANGING:

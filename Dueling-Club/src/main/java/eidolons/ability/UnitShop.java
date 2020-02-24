@@ -496,7 +496,7 @@ public class UnitShop {
     private static void equip(Unit unit, DC_HeroItemObj item, ITEM_SLOT slot) {
         if (slot != null) {
             if (!unit.equip(item, slot)) {
-                LogMaster.log(1, unit.getName() + " failed to equip "
+                LogMaster.dev(unit.getName() + " failed to equip "
                         + item.getName());
             }
         } else {
@@ -537,7 +537,7 @@ public class UnitShop {
 
     private static DC_HeroItemObj buy(ObjType type, Unit unit) {
         unit.modifyParameter(PARAMS.GOLD, -type.getIntParam(PARAMS.GOLD_COST));
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>> " + unit + " buys " + type
+        main.system.auxiliary.log.LogMaster.dev(">>>>>>> " + unit + " buys " + type
                 + " gold remains: " +
                 unit.getIntParam(PARAMS.GOLD));
         return ItemFactory.createItemObj(type, unit.getOwner(), unit.getGame(), unit.getRef(),

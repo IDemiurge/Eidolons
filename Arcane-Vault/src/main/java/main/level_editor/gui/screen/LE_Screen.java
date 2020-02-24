@@ -3,15 +3,18 @@ package main.level_editor.gui.screen;
 import com.badlogic.gdx.InputProcessor;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.bf.mouse.DungeonInputController;
+import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.particles.EmitterPools;
+import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.GenericDungeonScreen;
 import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.stage.GenericGuiStage;
-import eidolons.libgdx.stage.GuiStage;
-import main.content.ValueMap;
+import eidolons.libgdx.stage.StageX;
 import main.level_editor.gui.grid.LE_BfGrid;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.level_editor.struct.level.Floor;
+import main.system.threading.WaitMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +23,7 @@ import java.util.function.Supplier;
 public class LE_Screen extends GenericDungeonScreen {
 
     private static Map<Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
-    LE_Screen instance;
+    static LE_Screen instance;
     Floor floor;
 
     public static Supplier<ScreenWithLoader> getScreen(Floor parameter) {
@@ -28,15 +31,29 @@ public class LE_Screen extends GenericDungeonScreen {
         if (supplier != null) {
             return supplier;
         }
-        ScreenWithLoader screen= new LE_Screen();
-        cached.put(parameter, supplier=()-> screen);
+        ScreenWithLoader screen = new LE_Screen();
+        cached.put(parameter, supplier = () -> screen);
         return supplier;
     }
 
+    public static LE_Screen getInstance() {
+        return instance;
+    }
+
+
     @Override
     protected void preLoad() {
+        instance = this;
+        WaitMaster.unmarkAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
         floor = (Floor) data.getParameter();
-        super.preLoad();
+
+        gridStage = new StageX(viewPort, getBatch());
+        guiStage = createGuiStage(); //separate batch for PP
+
+        initGl();
+        preBindEvent();
+
+        EmitterPools.preloadDefaultEmitters();
     }
 
     @Override
@@ -45,12 +62,58 @@ public class LE_Screen extends GenericDungeonScreen {
     }
 
     @Override
+    protected boolean isWaitForInput() {
+        return false;
+    }
+
+    @Override
+    public void updateInputController() {
+        super.updateInputController();
+    }
+
+    @Override
     protected GridPanel createGrid(BFDataCreatedEvent param) {
-        return new LE_BfGrid(param.getGridW(), param.getGridH());
+        return new LE_BfGrid(param.getCols(), param.getRows());
     }
 
     @Override
     protected InputProcessor createInputController() {
-        return new LE_InputProcessor(floor.getManager());
+        return new LE_InputProcessor(getCamera(), floor);
+    }
+
+    @Override
+    protected void afterLoad() {
+        super.afterLoad();
+        particleManager = new ParticleManager();
+        gridStage.addActor(particleManager);
+
+        controller = (InputController) createInputController();
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        cameraMan.act(delta);
+        gridStage.act(delta);
+        guiStage.act(delta);
+        batch.begin();
+        drawBg(delta);
+        batch.end();
+        gridStage.draw();
+//        guiStage.draw();
+    }
+
+    @Override
+    protected void doBlackout() {
+    }
+
+    @Override
+    public GenericGuiStage getGuiStage() {
+        return guiStage;
+    }
+
+    @Override
+    public GridPanel getGridPanel() {
+        return gridPanel;
     }
 }

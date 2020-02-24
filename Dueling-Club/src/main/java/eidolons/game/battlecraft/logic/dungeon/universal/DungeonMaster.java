@@ -75,15 +75,19 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void gameStarted() {
-
-        try {
-            puzzleMaster.initPuzzles(getDungeon(), getDungeonLevel());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        if (isPuzzlesOn())
+            try {
+                puzzleMaster.initPuzzles(getDungeon(), getDungeonLevel());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         ParticleManager.init(dungeonWrapper.getDungeon());
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
         spawner.spawn();
+    }
+
+    protected boolean isPuzzlesOn() {
+        return true;
     }
 
     public void init() {
@@ -96,7 +100,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             dungeonWrapper = initDungeon();
             getBuilder().initLevel();
         }
-        if (!CoreEngine.isCombatGame()){
+        if (!CoreEngine.isCombatGame()) {
             return;
         }
 
@@ -116,15 +120,14 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         getDungeonLevel().initCellTypeMap(dataMap);
 
 
-
         for (String coordinate : dataMap.keySet()) {
             String data = dataMap.get(coordinate);
-            data=BridgeMaster.processMetaData(data);
+            data = BridgeMaster.processMetaData(data);
 
-            if (portalMaster.addPortal(coordinate, data)){
+            if (portalMaster.addPortal(coordinate, data)) {
                 continue;
             }
-            if (KeyMaster.addCustomKey(coordinate, data)){
+            if (KeyMaster.addCustomKey(coordinate, data)) {
                 continue;
             }
         }
@@ -237,10 +240,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public DungeonLevel getDungeonLevel() {
         if (EidolonsGame.TOWN)
-        if (dungeonWrapper == null && dungeonLevel == null) {
+            if (dungeonWrapper == null && dungeonLevel == null) {
 //            dungeonWrapper = initDungeon();
-            init();
-        }
+                init();
+            }
         return dungeonLevel;
     }
 
@@ -259,4 +262,13 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public PortalMaster getPortalMaster() {
         return portalMaster;
     }
+
+    public String getDefaultEntranceType() {
+        return getDungeonLevel().getEntranceType();
+    }
+
+    public String getDefaultExitType() {
+        return getDungeonLevel().getExitType();
+    }
+
 }

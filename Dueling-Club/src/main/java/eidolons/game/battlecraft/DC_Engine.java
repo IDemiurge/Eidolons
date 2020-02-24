@@ -76,7 +76,7 @@ public class DC_Engine extends CoreEngine {
     public static void gameInit() {
         ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
-        DescriptionTooltips.init();
+         DescriptionTooltips.init();
     }
 
     public static boolean isAtbMode() {

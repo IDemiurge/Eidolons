@@ -32,7 +32,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
-     PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
+            PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
     // or aggregation?
     private DC_QuickItemAction active;
     private boolean wrapped;
@@ -44,7 +44,10 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref, null);
-
+        if (getOwnerObj().isPlayerCharacter()) {
+            // generate active
+            getActive();
+        }
     }
 
     public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref, boolean wrapped) {
@@ -53,8 +56,10 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM + "", true);
         // durability into charges?
 
-        // generate active
-
+        if (getOwnerObj().isPlayerCharacter()) {
+            // generate active
+            getActive();
+        }
     }
 
     public DC_QuickItemObj(DC_WeaponObj item) {
@@ -101,7 +106,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.ACTIONS));
         type.setProperty(G_PROPS.IMAGE, getImagePath());
         type.setProperty(G_PROPS.NAME, type.getName() + ""
-         + StringMaster.wrapInParenthesis(getName()));
+                + StringMaster.wrapInParenthesis(getName()));
         type.setGame(game);
         setActive(new DC_QuickItemAction(type, getOriginalOwner(), getGame(), ref));
         getActive().setItem(this);
@@ -274,7 +279,8 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         if (wrapped) {
             modifyParameter(PARAMS.C_DURABILITY, -1);
             getWrappedWeapon().modifyParameter(PARAMS.C_DURABILITY, -1);
-        } main.system.auxiliary.log.LogMaster.log(1,this+" - Charge removed; left: " + getIntParam(PARAMS.C_CHARGES));
+        }
+        main.system.auxiliary.log.LogMaster.log(1, this + " - Charge removed; left: " + getIntParam(PARAMS.C_CHARGES));
         if (getIntParam(PARAMS.C_CHARGES) <= 0) {
             outOfCharges();
         }
@@ -288,11 +294,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     private void outOfCharges() {
-        main.system.auxiliary.log.LogMaster.log(1,"outOfCharges: " + this);
+        main.system.auxiliary.log.LogMaster.log(1, "outOfCharges: " + this);
         if (!checkBool(GenericEnums.STD_BOOLS.PERMANENT_ITEM)) {
-           if (getHero().removeQuickItem(this)){
-               main.system.auxiliary.log.LogMaster.log(1,"QI removed: " + this);
-           }
+            if (getHero().removeQuickItem(this)) {
+                main.system.auxiliary.log.LogMaster.log(1, "QI removed: " + this);
+            }
         }
 
     }
@@ -379,14 +385,14 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         // instead... but it's a limitation! :)
     }
 
-	/*
+    /*
      *
-	 * 
-	 * Cooldown Charges Out of charges - remove if removable
-	 * 
-	 * Will these items also provide passive bonuses? What about rings and
-	 * talismans?
-	 */
+     *
+     * Cooldown Charges Out of charges - remove if removable
+     *
+     * Will these items also provide passive bonuses? What about rings and
+     * talismans?
+     */
 
     public DC_QuickItemAction getActive() {
         if (active == null)

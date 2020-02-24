@@ -54,16 +54,14 @@ public class LoadingStage extends Stage {
         if (data.equals("Loading...")) {
             engineInit = true;
         }
-        underText = new Label(getBottonText(), StyleHolder.getHqLabelStyle(17));
+        underText = new Label(getBottomText(), StyleHolder.getHqLabelStyle(17));
 
         underText.addListener(TipMaster.getListener(underText));
         //TODO click to show next tip
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
         final TextureRegion fullscreenTexture =
-                getOrCreateR(
-                        (engineInit) ? "main/art/MAIN_MENU.jpg"
-                                : "ui/main/moe loading screen.png");
+                getOrCreateR(getBackgroundImagePath());
         fullscreenImage = new Image(fullscreenTexture);
 
         float x = new Float(GdxMaster.getWidth())/1920;
@@ -71,6 +69,9 @@ public class LoadingStage extends Stage {
         float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
         fullscreenImage.setScale(s);
         addActor(fullscreenImage);
+        if (!CoreEngine.isCombatGame()){
+            fullscreenImage.setVisible(false);
+        }
 //        fullscreenImage.setPosition(GdxMaster.centerWidth(fullscreenImage),
 //         GdxMaster.centerHeight(fullscreenImage));
 
@@ -88,7 +89,12 @@ public class LoadingStage extends Stage {
         }
     }
 
-    public static String getBottonText() {
+    protected String getBackgroundImagePath() {
+        return                (engineInit) ? "main/art/MAIN_MENU.jpg"
+                        : "ui/main/moe loading screen.png";
+    }
+
+    public static String getBottomText() {
 //        return "Tip: " +
 //         TipMaster.getTip()
 //         + "(click to show next tip)";

@@ -1,5 +1,7 @@
 package main.level_editor.sim;
 
+import eidolons.game.Simulation;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
@@ -14,9 +16,13 @@ import org.mockito.Mockito;
 
 public class LE_MetaMaster extends ScenarioMetaMaster {
 
+    private  Campaign campaign;
+
     public LE_MetaMaster(Campaign campaign) {
         super(campaign.getName());
+        this.campaign=campaign;
     }
+
     public LE_MetaMaster(String data) {
         super(data);
     }
@@ -28,7 +34,19 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
 
     @Override
     public LE_GameSim init() {
-        return (LE_GameSim) super.init();
+
+        game = createGame();
+        game.setMetaMaster(this);
+        metaGame = initializer.initMetaGame(data);
+
+        if (campaign!=null )
+            metaDataManager.setMissionPath(data);
+        else {
+
+            metaDataManager.setMissionPath(data);
+        }
+
+        return (LE_GameSim) game;
     }
 
     @Override
@@ -39,8 +57,23 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     }
 
     @Override
+    public MetaInitializer<ScenarioMeta> getInitializer() {
+        return super.getInitializer();
+    }
+
+    @Override
+    public PartyManager<ScenarioMeta> getPartyManager() {
+        return super.getPartyManager();
+    }
+
+    @Override
+    public LE_MetaDataManager getMetaDataManager() {
+        return (LE_MetaDataManager) super.getMetaDataManager();
+    }
+
+    @Override
     protected MetaDataManager createMetaDataManager() {
-        return new ScenarioMetaDataManager(this){
+        return new LE_MetaDataManager(this) {
 
         };
     }

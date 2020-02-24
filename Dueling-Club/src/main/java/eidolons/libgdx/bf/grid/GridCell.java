@@ -40,7 +40,7 @@ public class GridCell extends Group implements Borderable {
     protected Image backImage;
     protected Image overlayTexture;
     protected TextureRegion backTexture;
-//    protected TextureRegion overlay;
+    //    protected TextureRegion overlay;
     protected float overlayRotation;
     protected Image border = null;
     protected int gridX;
@@ -55,9 +55,8 @@ public class GridCell extends Group implements Borderable {
     /**
      * so we do create cells, but hide them...
      * fade in
-     *
+     * <p>
      * check if void - via prop
-     *
      */
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
@@ -89,7 +88,7 @@ public class GridCell extends Group implements Borderable {
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
-         StyleHolder.getDebugLabelStyle());
+                StyleHolder.getDebugLabelStyle());
         cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
         cordsText.setVisible(false);
         addActor(cordsText);
@@ -166,38 +165,22 @@ public class GridCell extends Group implements Borderable {
         if (!isWithinCamera()) {
             return;
         }
-       /* if (spriteCacheOn) {
-            TextureManager.drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
-             getGridX(), getGridY()
-            ));
-        }*/
 
-        if (parentAlpha == ShaderDrawer.SUPER_DRAW
-//         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
-         ) {
+        if (!isShadersSupported() || parentAlpha == ShaderDrawer.SUPER_DRAW
+        ) {
             super.draw(batch, 1);
         } else {
-//            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)
             ShaderDrawer.drawWithCustomShader(this,
-             batch,
-             !getUserObject().isPlayerHasSeen() ?
-             DarkShader.getDarkShader()
-//             FishEyeShader.getShader()
-              : null, true);
+                    batch,
+                    !getUserObject().isPlayerHasSeen() ?
+                            DarkShader.getDarkShader()
+                            : null, true);
         }
 
-//        if (overlay != null) {
-//            Vector2 v =  localToStageCoordinates
-//                    (new Vector2(getGridX()*128, getGridY()*128));
-//            float x= v.x;
-//            float y= v.y;
-//            batch.draw(overlay, x, y, x+64, y+64, 128, 128, 1, 1, overlayRotation);
-//              v = localToStageCoordinates(new Vector2(0, 0));
-//              x= v.x;
-//              y= v.y;
-//            batch.draw(overlay, 0, 0, x+64, y+64, 128, 128, 1, 1, overlayRotation);
-//        }
+    }
 
+    protected boolean isShadersSupported() {
+        return true;
     }
 
     protected boolean isWithinCamera() {
@@ -227,10 +210,10 @@ public class GridCell extends Group implements Borderable {
             if (GammaMaster.DEBUG_MODE) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
                 cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="
-                  + DC_Game.game.getVisionMaster().getGammaMaster().
-                  getGammaForCell(getGridX(), getGridY())
-                  + "\n illumination="
-                  + cell.getIntParam(PARAMS.ILLUMINATION)
+                        + DC_Game.game.getVisionMaster().getGammaMaster().
+                        getGammaForCell(getGridX(), getGridY())
+                        + "\n illumination="
+                        + cell.getIntParam(PARAMS.ILLUMINATION)
                 );
                 cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
 
@@ -304,13 +287,14 @@ public class GridCell extends Group implements Borderable {
 
     public void setOverlayRotation(float overlayRotation) {
         this.overlayRotation = overlayRotation;
-        overlayTexture.setOrigin(64,64);
+        overlayTexture.setOrigin(64, 64);
         ActionMaster.addRotateByAction(overlayTexture, overlayTexture.getRotation(), overlayRotation);
     }
 
     public void setOverlayAnimation(String path) {
         this.overlay.setSprite(path);
     }
+
     public void setOverlayTexture(TextureRegion overlay) {
         if (overlay == null) {
             ActionMaster.addFadeOutAction(overlayTexture, 2);
@@ -321,7 +305,7 @@ public class GridCell extends Group implements Borderable {
         this.overlayTexture.setDrawable(new TextureRegionDrawable(overlay));
         this.overlayTexture.setWidth(overlay.getRegionWidth());
         this.overlayTexture.setHeight(overlay.getRegionHeight());
-        GdxMaster.center(this.overlayTexture );
+        GdxMaster.center(this.overlayTexture);
 //        debug();
 //        this.overlay = overlay;
     }
@@ -334,3 +318,16 @@ public class GridCell extends Group implements Borderable {
         return overlayRotation;
     }
 }
+
+
+//        if (overlay != null) {
+//            Vector2 v =  localToStageCoordinates
+//                    (new Vector2(getGridX()*128, getGridY()*128));
+//            float x= v.x;
+//            float y= v.y;
+//            batch.draw(overlay, x, y, x+64, y+64, 128, 128, 1, 1, overlayRotation);
+//              v = localToStageCoordinates(new Vector2(0, 0));
+//              x= v.x;
+//              y= v.y;
+//            batch.draw(overlay, 0, 0, x+64, y+64, 128, 128, 1, 1, overlayRotation);
+//        }

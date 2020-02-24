@@ -187,7 +187,7 @@ public class DC_Game extends GenericGame {
 
         master = new DC_GameObjMaster(this);
         paleMaster = new DC_GameObjMaster(this, true);
-        manager = new DC_GameManager(getState(), this);
+        manager = createGameManager();
         manager.init();
 
         this.setIdManager(new DC_IdManager(this));
@@ -207,7 +207,7 @@ public class DC_Game extends GenericGame {
         if (isCombatGame())
             rules = new DC_Rules(this);
 
-        if (!isCombatGame() && !CoreEngine.isDungeonTool())
+        if (!isCombatGame() && !CoreEngine.isDungeonTool() &&!CoreEngine.isLevelEditor())
             return;
         if (isSimulation()) {
             return;
@@ -225,6 +225,10 @@ public class DC_Game extends GenericGame {
             return;
         battleMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
+    }
+
+    protected DC_GameManager createGameManager() {
+        return new DC_GameManager(getState(), this);
     }
 
     protected CombatMaster createCombatMaster() {
@@ -266,7 +270,7 @@ public class DC_Game extends GenericGame {
 
     public void battleInit() {
         setSimulation(false);
-        if (!isCombatGame()) {
+        if (!isCombatGame() ) {
             dungeonMaster.init();
             return;
         }

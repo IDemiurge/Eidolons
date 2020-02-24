@@ -135,7 +135,8 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
             plan.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
              .getTextContent(), FLIP.class));
 
-        } else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
+        }
+        else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
             plan.setDirectionMap(new RandomWizard<DIRECTION>()
              .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
 

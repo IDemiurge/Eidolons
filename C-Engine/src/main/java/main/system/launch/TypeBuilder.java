@@ -53,12 +53,6 @@ public class TypeBuilder {
     public static ObjType buildType(Node node, ObjType type) {
 
         NodeList nl = node.getChildNodes();
-        if (node.getNodeName().equalsIgnoreCase("Condemn")){
-           return type;
-        }
-        if (node.getNodeName().equalsIgnoreCase("Great_Sword")){
-            return type;
-        }
         LogMaster.log(1, "building type: " + node.getNodeName());
         type.setInitialized(false);
         for (int i = 0; i < nl.getLength(); i++) {

@@ -103,11 +103,11 @@ public class EUtils {
     }
 
     public static void showVFX(GenericEnums.VFX preset, Vector2 v) {
-        GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, v);
+        GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, v);
     }
 
     public static void showVFX(GenericEnums.VFX preset, int x, int y) {
-        GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
+        GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
     }
 
     public static void switchScreen(ScreenData screenData) {

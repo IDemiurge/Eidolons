@@ -419,7 +419,7 @@ public class GridManager {
         }
         if (!uiStage) {
             if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
-                GuiEventManager.trigger(CAMERA_PAN_TO, seq ? v : at, true, 3f);
+                GuiEventManager.triggerWithParams(CAMERA_PAN_TO, seq ? v : at, true, 3f);
         }
 
 

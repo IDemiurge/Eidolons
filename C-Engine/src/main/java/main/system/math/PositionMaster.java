@@ -103,6 +103,12 @@ public class PositionMaster {
             return 0;
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
+        if (x>=distances.length) {
+            return Math.sqrt(x * x + y * y);
+        }
+        if (y>=distances[0].length) {
+            return Math.sqrt(x * x + y * y);
+        }
         Double result = distances[ x][ y] ;
         if (result != null)
             return result;

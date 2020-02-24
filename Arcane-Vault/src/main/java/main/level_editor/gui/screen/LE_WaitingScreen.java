@@ -14,6 +14,7 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenWithLoader;
 import main.content.enums.DungeonEnums;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -32,9 +33,9 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     public void initLoadingStage(ScreenData meta) {
         super.initLoadingStage(meta);
         stage = new Stage();
-        background = new FadeImageContainer();
-        stage.addActor(background);
-        background.setImage(DungeonEnums.MAP_BACKGROUND.BASTION.getBackgroundFilePath());
+//        background = new FadeImageContainer();
+//        stage.addActor(background);
+//        background.setImage(DungeonEnums.MAP_BACKGROUND.BASTION.getBackgroundFilePath());
         GuiEventManager.bind(GuiEventType.LE_CHOOSE_FILE , p-> chooseFile());
     }
 
@@ -46,7 +47,16 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     }
 
     @Override
+    protected boolean isWaitForInput() {
+        return false;
+    }
+
+    @Override
     protected void afterLoad() {
+    }
+
+    @Override
+    public void loadingAssetsDone(EventCallbackParam param) {
     }
 
     private void chooseFile() {

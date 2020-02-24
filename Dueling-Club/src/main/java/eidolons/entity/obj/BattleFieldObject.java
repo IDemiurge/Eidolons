@@ -136,7 +136,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public String toString() {
         if (getGame().isDebugMode())
             return super.toString();
-        return getName();
+        return getNameAndCoordinate();
     }
 
     @Override
