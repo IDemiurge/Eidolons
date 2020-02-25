@@ -37,7 +37,6 @@ public class CoreEngine {
     public static boolean swingOn = true;
     public static boolean animationTestMode;
     private static CoreEngine engineObject;
-    private static boolean TEST_MODE = true;
     private static SoundMaster sm;
     private static boolean arcaneVault;
     private static boolean concurrentLaunch;
@@ -45,7 +44,6 @@ public class CoreEngine {
     private static boolean levelEditor;
     private static String selectivelyReadTypes;
     private static String exceptionTypes;
-    private static boolean enumCachingOn = true;
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = false;
@@ -70,9 +68,7 @@ public class CoreEngine {
     private static float memoryLevel;
     private static boolean fullFastMode;
     private static Boolean windows;
-    private static long HEAP_SIZE;
     private static long TOTAL_MEMORY;
-    private static int CPU_NUMBER;
     private static boolean me;
     private static boolean cinematicMode;
     private static boolean mapPreview;
@@ -143,8 +139,10 @@ public class CoreEngine {
         System.out.println("Core Engine Init... ");
 
 
+        long HEAP_SIZE;
         System.out.println("Heap size:  " +
                 (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
+        int CPU_NUMBER;
         System.out.println("CPU's available:  " +
                 (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
 //        System.out.println("Total Memory:  " +
@@ -238,6 +236,7 @@ public class CoreEngine {
 
         DC_TYPE TYPE = new EnumMaster<DC_TYPE>().retrieveEnumConst(DC_TYPE.class, name);
 
+        boolean TEST_MODE = true;
         if (isMenuScope() && !arcaneVault && !TEST_MODE) {
             if (TYPE == DC_TYPE.CHARS) {
                 return true;
@@ -285,6 +284,7 @@ public class CoreEngine {
     }
 
     public static boolean isEnumCachingOn() {
+        boolean enumCachingOn = true;
         return enumCachingOn;
     }
 

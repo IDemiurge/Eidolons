@@ -33,8 +33,7 @@ public class PathUtils {
         if (path.contains("/")) {
             path = path.replace("/", PATH_SEPARATOR);
         }
-        if (segments == null)
-            segments = Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
+        segments = Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
 
         segments = new ArrayList<>(segments);
         segments.removeIf(s -> s.isEmpty());
@@ -47,9 +46,9 @@ public class PathUtils {
     }
 
     public static String buildPath(String... strings) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String s : strings) {
-            result += s + PATH_SEPARATOR;
+            result.append(s).append(PATH_SEPARATOR);
         }
         return result.substring(0, result.length() - 1);
     }
@@ -132,7 +131,7 @@ public class PathUtils {
                     continue;
                 }
             }
-            builder.append(sub + separator);
+            builder.append(sub).append(separator);
         }
         return builder.toString();
     }

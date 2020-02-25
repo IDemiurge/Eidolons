@@ -140,16 +140,13 @@ public class TextParser {
                          StringMaster.FORMULA_REF_CLOSE_CHAR);
                     }
 
-                    if (ref_substring != null) {
-
-                        try {
-                            result = parseRef(ref_substring, ref);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                            LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
-                             + " failed to parse ref for text: " + text);
-                            return buffer;
-                        }
+                    try {
+                        result = parseRef(ref_substring, ref);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
+                         + " failed to parse ref for text: " + text);
+                        return buffer;
                     }
 
                 }
@@ -174,18 +171,18 @@ public class TextParser {
 
     public static String extractBraceEnclosed(String text) {
         char[] charArray = text.toCharArray();
-        String enclosed = "";
+        StringBuilder enclosed = new StringBuilder();
         boolean opened = false;
         for (char ch : charArray) {
             if (opened) {
-                enclosed += ch + "";
+                enclosed.append(ch);
             }
             if (ch == '[') {
                 opened = true;
             }
             if (ch == ']') {
                 opened = false;
-                enclosed += ";";
+                enclosed.append(";");
             }
 
         }

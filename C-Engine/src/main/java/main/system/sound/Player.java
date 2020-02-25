@@ -159,12 +159,11 @@ public class Player {
         }
         if (lastplayed.size() > 1) {
             if (neverRepeat) {
-                if (!lastplayed.isEmpty())
-                    if (lastplayed.peek().equals(sound)
-                            && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
-                        LogMaster.log(0, "NOT playing twice! - " + sound);
-                        return false;
-                    }
+                if (lastplayed.peek().equals(sound)
+                        && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
+                    LogMaster.log(0, "NOT playing twice! - " + sound);
+                    return false;
+                }
             }
         }
         LogMaster.log(0, "Playing: " + sound);
@@ -310,7 +309,8 @@ public class Player {
                     return corePath;
             }
             int i = 1;
-            while (file.isFile()) {
+            while (true) {
+                file.isFile();
 
                 String newPath = corePath + "_" + NumberUtils.prependZeroes(i, 2) + FORMAT;
                 file = FileManager.getFile(newPath);

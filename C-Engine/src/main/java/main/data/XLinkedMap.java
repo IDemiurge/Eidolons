@@ -27,11 +27,11 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
 
     @Override
     public String toString() {
-        String string = size() + " size map: ";
+        StringBuilder string = new StringBuilder(size() + " size map: ");
         for (java.util.Map.Entry<E, T> entry : entrySet()) {
-            string += entry.getKey() + " = " + entry.getValue() + ";";
+            string.append(entry.getKey()).append(" = ").append(entry.getValue()).append(";");
         }
-        return string;
+        return string.toString();
     }
 
     public T getByIndex(int index) {
@@ -56,9 +56,7 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
                 }
                 if (key instanceof String) {
                     String string = (String) key;
-                    if (t == null) {
-                        t = super.get(string.toUpperCase());
-                    }
+                    t = super.get(string.toUpperCase());
                     if (t == null) {
                         t = super.get(string.toLowerCase());
                     }
@@ -71,7 +69,7 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
                         if (t == null) {
                             if (wellFormattedString.endsWith("s")) {
                                 t = super.get(wellFormattedString.substring(0, string.length() - 1));
-                            } else if (t == null) {
+                            } else {
                                 t = super.get(wellFormattedString + "s");
                             }
                         }

@@ -8,7 +8,6 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
 
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
@@ -57,40 +56,40 @@ public class XML_Formatter {
 
     public static String getStringFromCode(String key) {
         List<String> list = ContainerUtils.openContainer(key);
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String o : list) {
             o = StringMaster.getSubStringBetween(o, ASCII_OPEN, ASCII_CLOSE);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result += Character.toString((char) (int) NumberUtils.getInteger(o));
+                result.append(Character.toString((char) (int) NumberUtils.getInteger(o)));
             } catch (Exception e) {
-                return result;
+                return result.toString();
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String replaceNonASCII(String text, String v) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (char c : text.toCharArray()) {
             if (!asciiEncoder.canEncode(c)) {
-                result += v;
+                result.append(v);
             } else {
-                result += c;
+                result.append(c);
             }
         }
-        return result;
+        return result.toString();
     }
         public static String encodeNonASCII(String v) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (char c : v.toCharArray()) {
             if (!asciiEncoder.canEncode(c)) {
-                result += getCodeFromChar(c + "");
+                result.append(getCodeFromChar(c + ""));
             } else {
-                result += c;
+                result.append(c);
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String formatDialogueLineContent(String string ) {

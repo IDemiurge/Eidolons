@@ -361,13 +361,11 @@ public class ContentValsManager {
         }
         valueName = valueName.replace("_", " ");
         valueName = valueName.replace(" ", "");
-        if (value == null) {
-            for (VALUE v : param ? params : props) {
-                if (StringMaster.compareByChar(valueName, v.toString().replace(" ", ""), false)) {
-                    value = v;
-                }
-                break;
+        for (VALUE v : param ? params : props) {
+            if (StringMaster.compareByChar(valueName, v.toString().replace(" ", ""), false)) {
+                value = v;
             }
+            break;
         }
         if (value == null) {
             for (VALUE p : param ? params : props) {
@@ -427,7 +425,7 @@ public class ContentValsManager {
         }
         if (!strict) {
             for (PROPERTY p : props) {
-                if (StringMaster.compare(valueName, p.toString(), strict)) {
+                if (StringMaster.compare(valueName, p.toString(), false)) {
                     return p;
                 }
             }
@@ -528,9 +526,7 @@ public class ContentValsManager {
 
     private static boolean checkExcluded(VALUE v) {
         if (excludedValueSet != null) {
-            if (excludedValueSet.contains(v)) {
-                return true;
-            }
+            return excludedValueSet.contains(v);
         }
         return false;
     }
@@ -542,12 +538,8 @@ public class ContentValsManager {
     public static List<VALUE> getValueList() {
         if (values == null) {
             values = new ArrayList<>();
-            for (PROPERTY p : getPropList()) {
-                values.add(p);
-            }
-            for (PARAMETER p : getParamList()) {
-                values.add(p);
-            }
+            values.addAll(getPropList());
+            values.addAll(getParamList());
         }
         return values;
     }

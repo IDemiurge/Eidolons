@@ -16,7 +16,6 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

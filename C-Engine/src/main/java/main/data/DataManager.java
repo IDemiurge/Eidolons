@@ -1,27 +1,16 @@
 package main.data;
 
 import main.content.*;
-import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
-import main.content.enums.macro.C_MACRO_OBJ_TYPE;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.data.ability.construct.VariableManager;
-import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.system.auxiliary.*;
-import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * Contains utility methods for finding and managing ObjType's

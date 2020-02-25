@@ -36,8 +36,6 @@ public class ListChooser extends GenericListChooser<String> {
     private static boolean sortingDisabled;
     protected Class<?> ENUM_CLASS;
     private VALUE sortValue = G_PROPS.NAME;
-    private PagedOptionsComp<SORT_TEMPLATE> sortOptionsComp;
-    private PagedOptionsComp<?> filterOptionsComp;
     private Class<?> filterOptionClass;
 
     public ListChooser(List<String> listData, boolean ENUM, OBJ_TYPE TYPE) {
@@ -173,9 +171,6 @@ public class ListChooser extends GenericListChooser<String> {
             }
         }
         String name = new ListChooser(mode, data, false).choose();
-        if (name == null) {
-            return null;
-        }
         return name;
     }
 
@@ -447,7 +442,7 @@ public class ListChooser extends GenericListChooser<String> {
     }
 
     protected void addSortOptionComp() {
-        sortOptionsComp = new PagedOptionsComp<>("Sort by: ", SORT_TEMPLATE.class);
+        PagedOptionsComp<SORT_TEMPLATE> sortOptionsComp = new PagedOptionsComp<>("Sort by: ", SORT_TEMPLATE.class);
         sortOptionsComp.addListener(new ListChooserSortOptionListener());
         panel.add(sortOptionsComp, "id sortOptionsComp, pos ip.x ip.y2");
         sortOptionsComp.refresh();
@@ -455,7 +450,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     protected void addFilterOptionComp() {
         if (getFilterOptionClass() != null) {
-            filterOptionsComp = new PagedOptionsComp<>("Filter: ", getFilterOptionClass());
+            PagedOptionsComp<?> filterOptionsComp = new PagedOptionsComp<>("Filter: ", getFilterOptionClass());
             filterOptionsComp.refresh();
             panel.add(filterOptionsComp, "id filterOptionsComp, pos ip.x sortOptionsComp.y2+12");
 

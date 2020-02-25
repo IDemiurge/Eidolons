@@ -173,7 +173,7 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
             LogMaster.log(0, "NULL DATA!!! ");
             return;
         }
-        if (this.data != null && data != null) {
+        if (this.data != null) {
             if (this.data.equals(data)) { // TODO
                 return;
             }

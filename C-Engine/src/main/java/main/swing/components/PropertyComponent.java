@@ -23,8 +23,6 @@ public class PropertyComponent extends G_Panel {
     int x, y;
     private VALUE val;
     private Obj obj;
-    private String text;
-    private SmartTextManager srm;
     private Color color;
 
     public PropertyComponent(VALUE val, Obj obj, boolean special) {
@@ -48,7 +46,7 @@ public class PropertyComponent extends G_Panel {
 
         this.font = FontMaster
          .getFont(FONT.MAIN, VAL_COMP_FONT_SIZE, Font.PLAIN);
-        srm = new SmartTextManager();
+        SmartTextManager srm = new SmartTextManager();
     }
 
     @Override
@@ -59,6 +57,7 @@ public class PropertyComponent extends G_Panel {
 
     @Override
     public void refresh() {
+        String text;
         if (special) {
             text = obj.getValue(val);
         } else {

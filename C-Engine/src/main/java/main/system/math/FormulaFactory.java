@@ -9,11 +9,11 @@ public class FormulaFactory {
 
 
     public static Formula getFormulaByAppend(Object... objects) {
-        String formula = "";
+        StringBuilder formula = new StringBuilder();
         for (Object o : objects) {
-            formula += StringMaster.wrapInParenthesis(o.toString()) + "+";
+            formula.append(StringMaster.wrapInParenthesis(o.toString())).append("+");
         }
 
-        return new Formula(StringMaster.cropLast(formula, 1));
+        return new Formula(StringMaster.cropLast(formula.toString(), 1));
     }
 }

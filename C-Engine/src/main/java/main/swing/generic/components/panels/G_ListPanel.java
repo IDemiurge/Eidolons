@@ -34,12 +34,11 @@ public abstract class G_ListPanel<E> extends G_Panel {
     protected int selection_mode = ListSelectionModel.SINGLE_SELECTION;
     protected int obj_size = 0;
     protected boolean vertical;
-    private boolean permanent;
     private MouseListener customMouseListener;
 
     public G_ListPanel(List<E> list) {
         this(list, GuiManager.getSmallObjSize(), null);
-        permanent = true;
+        boolean permanent = true;
 
     }
 

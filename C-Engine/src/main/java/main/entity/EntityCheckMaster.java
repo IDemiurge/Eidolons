@@ -82,9 +82,6 @@ public class EntityCheckMaster {
         if (unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName())) {
             return true;
         }
-        if (unit.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.WRAITH.getName())) {
-            return true;
-        }
-        return false;
+        return unit.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.WRAITH.getName());
     }
 }

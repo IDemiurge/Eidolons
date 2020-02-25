@@ -809,8 +809,7 @@ public class ImageManager {
         if (!FileManager.isImageFile(imgPath))
             return false;
         if (!FileManager.isFile(imgPath))
-            if (!FileManager.isFile(getImageFolderPath() + imgPath))
-                return false;
+            return FileManager.isFile(getImageFolderPath() + imgPath);
         return true;
         //        Image image = getImage(imgPath);
         //        if (image == null) {

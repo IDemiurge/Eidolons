@@ -128,9 +128,7 @@ public class FileChooser implements EDITOR {
     public void launch(JTable table, int row, int column, String v) {
 
         String selected = launch(v, (String) table.getModel().getValueAt(row, 1));
-        if (table != null) {
-            table.getModel().setValueAt(selected, row, 1);
-        }
+        table.getModel().setValueAt(selected, row, 1);
     }
 
     public String getFileLocation() {

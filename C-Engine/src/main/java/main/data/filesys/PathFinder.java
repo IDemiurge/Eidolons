@@ -19,7 +19,6 @@ public class PathFinder {
     public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + PathUtils.getPathSeparator() +
      "templates";
-    private static String MACRO_MODULE_NAME = "macro";
     private static String XML_PATH;
     private static String ROOT_PATH;
     private static String IMG_PATH;
@@ -77,6 +76,7 @@ public class PathFinder {
 
         FONT_PATH = ROOT_PATH + RES_PATH + "fonts" + PathUtils.getPathSeparator();
 
+        String MACRO_MODULE_NAME = "macro";
         MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();
 
         TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();

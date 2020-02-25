@@ -261,13 +261,9 @@ public class PositionMaster {
         }
         Boolean toTheLeftOr = isToTheLeftOr(obj1, obj2);
         if (toTheLeftOr == null) {
-            if (west_or_east != null) {
-                return false;
-            }
+            return west_or_east == null;
         } else if (toTheLeftOr) {
-            if (!Bools.isTrue(west_or_east)) {
-                return false;
-            }
+            return Bools.isTrue(west_or_east);
         }
 
         return true;

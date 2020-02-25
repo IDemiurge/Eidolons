@@ -307,14 +307,14 @@ public class SpellEnums {
         }
 
         private static String getSpecialEffect(String effectCase, String abilName, String... args) {
-            String string = "SpecEffect(" + effectCase + ",";
+            StringBuilder string = new StringBuilder("SpecEffect(" + effectCase + ",");
             for (String s : args) {
-                string += abilName + StringMaster.wrapInParenthesis(s);
-                string += StringMaster.AND_SEPARATOR;
+                string.append(abilName).append(StringMaster.wrapInParenthesis(s));
+                string.append(StringMaster.AND_SEPARATOR);
             }
-            string = StringMaster.cropLast(string, 1);
-            string = string + ")";
-            return string;
+            string = new StringBuilder(StringMaster.cropLast(string.toString(), 1));
+            string.append(")");
+            return string.toString();
         }
 
         public int getSpellDifficultyMod() {

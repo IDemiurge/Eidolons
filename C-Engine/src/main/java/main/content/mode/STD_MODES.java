@@ -3,7 +3,6 @@ package main.content.mode;
 import main.content.enums.system.AiEnums;
 import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.math.FormulaMaster;

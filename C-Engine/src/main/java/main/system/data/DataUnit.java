@@ -214,21 +214,21 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     protected String createObjCoordinateString(Map<Coordinates, ObjType> objMap, boolean invert) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (Coordinates c : objMap.keySet()) {
             String objTypeName = objMap.get(c).getName();
             if (invert) {
                 c.invert();
             }
-            string += c.toString();
-            string += StringMaster.getAltPairSeparator();
-            string += objTypeName;
-            string += StringMaster.getAltSeparator();
+            string.append(c.toString());
+            string.append(StringMaster.getAltPairSeparator());
+            string.append(objTypeName);
+            string.append(StringMaster.getAltSeparator());
 
         }
-        string = string.substring(0, string.length() - 1);
-        string += StringMaster.getDataUnitSeparator();
-        return string;
+        string = new StringBuilder(string.substring(0, string.length() - 1));
+        string.append(StringMaster.getDataUnitSeparator());
+        return string.toString();
     }
 
     public String getData() {
@@ -252,29 +252,27 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String getData(Set<String> set, Boolean format) {
-        String data = "";
+        StringBuilder data = new StringBuilder();
         for (String v : set) {
-            data += v + DataUnitFactory.getPairSeparator(format)
-             + values.get(v) + DataUnitFactory.getSeparator(format);
+            data.append(v).append(DataUnitFactory.getPairSeparator(format)).append(values.get(v)).append(DataUnitFactory.getSeparator(format));
         }
-        return data;
+        return data.toString();
     }
 
     public String getDataMapFormat() {
-        String data = "";
+        StringBuilder data = new StringBuilder();
         for (String p : getValues().keySet()) {
-            data += p + StringMaster.wrapInParenthesis(getValue(p)) + StringMaster.getSeparator();
+            data.append(p).append(StringMaster.wrapInParenthesis(getValue(p))).append(StringMaster.getSeparator());
         }
-        return data;
+        return data.toString();
     }
 
     public String getDataAltFormat() {
-        String data = "";
+        StringBuilder data = new StringBuilder();
         for (String p : getValues().keySet()) {
-            data += p + StringMaster.getAltPairSeparator() + getValue(p)
-             + StringMaster.getAltSeparator();
+            data.append(p).append(StringMaster.getAltPairSeparator()).append(getValue(p)).append(StringMaster.getAltSeparator());
         }
-        return data;
+        return data.toString();
 
     }
 
@@ -287,9 +285,7 @@ public class DataUnit<T extends Enum<T>> {
     public boolean equals(Object o) {
         if (o instanceof DataUnit) {
             DataUnit unit = (DataUnit) o;
-            if (unit.getData().equals(this.getData())) {
-                return true;
-            }
+            return unit.getData().equals(this.getData());
         }
         return false;
     }

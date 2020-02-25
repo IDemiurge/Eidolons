@@ -2,7 +2,6 @@ package main.system.text;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.entity.Ref;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -41,14 +40,14 @@ public class TextWrapper {
     public static String wrapWithNewLine(String text, int wrapLength) {
         List<String> list = wrap(text, wrapLength);
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int j = 0; j < list.size(); j++) {
             String sub = list.get(j);
             if (j != list.size() - 1)
-                result += sub + StringMaster.NEW_LINE;
-            else result += sub;
+                result.append(sub).append(StringMaster.NEW_LINE);
+            else result.append(sub);
         }
-        return result;
+        return result.toString();
     }
 
     public static String processText(int width, String text, LabelStyle style ) {
@@ -57,26 +56,25 @@ public class TextWrapper {
     public static String processText(int width, String text, LabelStyle style, boolean zigZagLines ) {
         if (text.trim().isEmpty())
             return "";
-        String newText = "";
+        StringBuilder newText = new StringBuilder();
         int maxLength = (int) (width / style.font.getSpaceWidth()*2/3);
 
         for (String substring : StringMaster.splitLines(text)) {
 
             if (substring.length()>maxLength)
                 substring = wrapWithNewLine(substring, maxLength);
-            newText+= substring+ StringMaster.NEW_LINE;
+            newText.append(substring).append(StringMaster.NEW_LINE);
         }
 
         if (zigZagLines) {
-            String newTextZiggy="";
+            StringBuilder newTextZiggy= new StringBuilder();
             int i =0;
-            for (String substring : StringMaster.splitLines(newText)) {
+            for (String substring : StringMaster.splitLines(newText.toString())) {
                 int n = (maxLength - substring.length()) * 2 / 3;
 //                if (i++%2==1){
 //                    n = n / 2;
 //                }
-                newTextZiggy +=StringMaster.getWhiteSpaces(n)+
-                        substring+StringMaster.NEW_LINE;
+                newTextZiggy.append(StringMaster.getWhiteSpaces(n)).append(substring).append(StringMaster.NEW_LINE);
             }
             return newTextZiggy.substring(0, newTextZiggy.length()-1);
         }

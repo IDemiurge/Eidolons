@@ -55,13 +55,13 @@ public class ConstructionManager {
     }
 
     public static String getXmlFromConstructorData(String name, Pair<Class, String>[] pairs) {
-        String xml = "";
+        StringBuilder xml = new StringBuilder();
         for (Pair<Class, String> sub : pairs) {
             //TODO find arg for that class?
             // do  xml node and classname match?
-            xml += XML_Converter.wrap(Mapper.getArgName(sub.getKey()), sub.getValue());
+            xml.append(XML_Converter.wrap(Mapper.getArgName(sub.getKey()), sub.getValue()));
         }
-        return XML_Converter.wrap(name, xml);
+        return XML_Converter.wrap(name, xml.toString());
     }
 
     private static List<Construct> getConstructs(Node node) {

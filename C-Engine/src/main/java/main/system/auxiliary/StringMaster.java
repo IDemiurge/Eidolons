@@ -172,13 +172,13 @@ public class StringMaster {
             return string == null;
         }
         if (string == null) {
-            return anotherString == null;
+            return false;
         }
         if (anotherString.isEmpty()) {
             return string.isEmpty();
         }
         if (string.isEmpty()) {
-            return anotherString.isEmpty();
+            return false;
         }
 
         if (anotherString.length() != string.length()) {
@@ -334,11 +334,8 @@ public class StringMaster {
             {
                 return true;
             }
-            if (contains(string2, string)) {
-                return true;
-            }
+            return contains(string2, string);
         }
-        return false;
     }
 
     public static String removePlularEnding(String textContent) {
@@ -383,7 +380,7 @@ public class StringMaster {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             s = s.trim();
             for (String str : pattern_space.split(s)) {
-                builder.append(getWellFormattedString(str) + " ");
+                builder.append(getWellFormattedString(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -392,7 +389,7 @@ public class StringMaster {
         if (s.contains("_")) {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             for (String str : pattern_.split(s)) {
-                builder.append(getWellFormattedString(str) + " ");
+                builder.append(getWellFormattedString(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -403,12 +400,6 @@ public class StringMaster {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             string = "";
             for (char c : s.toCharArray()) {
-                if (!string.isEmpty()) {
-                    if (Character.isUpperCase(c)) {
-                        builder.append(" ");
-
-                    }
-                }
                 builder.append(String.valueOf(c));
             }
             string = builder.toString();
@@ -1035,11 +1026,11 @@ public class StringMaster {
     }
 
     public static String getFirstConsonants(String name, int n) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (String sub : ContainerUtils.open(name, " ")) {
-            string += ("" + sub.charAt(0));
+            string.append("").append(sub.charAt(0));
         }
-        return string.toUpperCase();
+        return string.toString().toUpperCase();
     }
 
     // public static String getTypeNameFormat(String generic) {
@@ -1049,11 +1040,11 @@ public class StringMaster {
     // }
 
     public static String getAbbreviation(String name) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (String sub : ContainerUtils.open(name, " ")) {
-            string += ("" + sub.charAt(0));
+            string.append("").append(sub.charAt(0));
         }
-        return string.toUpperCase();
+        return string.toString().toUpperCase();
     }
 
     public static String formatMapKey(String name) {
@@ -1169,7 +1160,7 @@ public class StringMaster {
         //       : "\n");
         List<String> list = Arrays.stream(data.trim().split(separator)).
                 filter(line -> !line.isEmpty()).collect(Collectors.toList());
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     public static String trimNewlines(String s) {
@@ -1179,13 +1170,9 @@ public class StringMaster {
     }
 
     public static boolean containsWord(String name, String word) {
-        if (name.equalsIgnoreCase(word) ||
+        return name.equalsIgnoreCase(word) ||
                 name.contains(" " + word) ||
-                name.contains(word + " ")
-        ) {
-            return true;
-        }
-        return false;
+                name.contains(word + " ");
     }
 
     public static String indent(int i) {

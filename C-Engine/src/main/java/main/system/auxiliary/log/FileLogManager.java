@@ -1,8 +1,6 @@
 package main.system.auxiliary.log;
 
-import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
-import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
@@ -12,9 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class FileLogManager {
 
@@ -99,10 +94,7 @@ public class FileLogManager {
     }
 
     public static boolean isLogged(LOG_OUTPUT value) {
-        if (!on) {
-            return false;
-        }
-        return true;
+        return on;
     }
 
     public static boolean isFullLogging() {

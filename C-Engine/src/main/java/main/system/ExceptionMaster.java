@@ -12,12 +12,12 @@ import java.util.Set;
  */
 public class ExceptionMaster {
 
-    private static  boolean SKIP_WRITE =false;// CoreEngine.isLiteLaunch();
-    private static  boolean PRINT_ALL =false;// CoreEngine.isLiteLaunch();
     static Set<String> printed = new HashSet<>();
 
     public static void printStackTrace(Exception e) {
         {
+            // CoreEngine.isLiteLaunch();
+            boolean PRINT_ALL = false;
             if (!PRINT_ALL) {
                 if (CoreEngine.isJar() || LogMaster.isOff() || !CoreEngine.isLiteLaunch()) {
                   if (e.getMessage()!=null )  if (printed.contains(e.getMessage()))
@@ -27,6 +27,8 @@ public class ExceptionMaster {
                 }
             }
             e.printStackTrace();
+            // CoreEngine.isLiteLaunch();
+            boolean SKIP_WRITE = false;
             if (SKIP_WRITE) {
                 return;
             }

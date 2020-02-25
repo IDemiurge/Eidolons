@@ -381,9 +381,7 @@ public class XML_Writer {
         if (TYPE == DC_TYPE.SKILLS || TYPE == DC_TYPE.CHARS || TYPE == DC_TYPE.UNITS
          || TYPE == DC_TYPE.SPELLS) {
             if (StringMaster.isEmpty(value) || value.equals("0")) {
-                if (!val.getName().equalsIgnoreCase("CIRCLE")) {
-                    return false;
-                }
+                return val.getName().equalsIgnoreCase("CIRCLE");
             }
         }
         return true;
@@ -410,9 +408,8 @@ public class XML_Writer {
         if (value.contains("/s")) {
             value= value.replace("/s", "\\s");
         }
-        sub.append(openXML(valName) + value + closeXML(valName)
-         // + "\n" //costs 10x performance...
-        );
+        // + "\n" //costs 10x performance...
+        sub.append(openXML(valName)).append(value).append(closeXML(valName));
     }
 
     private static boolean write() {

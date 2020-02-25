@@ -165,10 +165,7 @@ public class GuiEventManagerImpl {
     }
 
     protected boolean isOnDemandCallback(EventType type) {
-        if (type == UNIT_CREATED) {
-            return false;
-        }
-        return true;
+        return type != UNIT_CREATED;
     }
 
     public void processEvents_() {

@@ -145,18 +145,18 @@ public class NumberUtils {
             }
             return result;
         } else {
-            String result = "";
+            StringBuilder result = new StringBuilder();
             for (char c : value.toCharArray()) {
                 if (c == ('.')) {
                     break;
                 }
                 if (c == ('-') || Character.isDigit(c)) {
 
-                    result += c;
+                    result.append(c);
                 }
             }
-            if (!result.isEmpty()) {
-                return Integer.valueOf(result);
+            if (result.length() > 0) {
+                return Integer.valueOf(result.toString());
             }
         }
 
@@ -247,17 +247,17 @@ public class NumberUtils {
 
     public static String getStringFromCode(String key) {
         List<String> list = ContainerUtils.openContainer(key);
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String o : list) {
             o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result += Character.toString((char) (int) getInteger(o));
+                result.append(Character.toString((char) (int) getInteger(o)));
             } catch (Exception e) {
-                return result;
+                return result.toString();
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String prependZeroes(int number, int digits) {
@@ -265,17 +265,17 @@ public class NumberUtils {
     }
 
     public static String getFormattedTimeString(int number, int digits) {
-        String result = "" + number;
+        StringBuilder result = new StringBuilder("" + number);
         if (digits < result.length()) {
             while (digits < result.length()) {
-                result = result.substring(1);
+                result = new StringBuilder(result.substring(1));
             }
         } else {
             while (digits > result.length()) {
-                result = "0" + result;
+                result.insert(0, "0");
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String getRoman(int level) {

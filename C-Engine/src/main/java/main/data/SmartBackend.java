@@ -1,6 +1,5 @@
 package main.data;
 
-import main.content.C_OBJ_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.properties.PROPERTY;
@@ -9,7 +8,6 @@ import main.entity.type.ObjType;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class SmartBackend extends DataBackend {
 

@@ -47,7 +47,6 @@ public class GenericListChooser<E> implements ListSelectionListener {
     private TextComp toolTipPanel;
     private Map<String, String> tooltipMap;
     private Decorator decorator;
-    private TextComp toolTipMainPanel;
 
     public GenericListChooser() {
 
@@ -162,7 +161,7 @@ public class GenericListChooser<E> implements ListSelectionListener {
             }
         };
         panel.add(toolTipPanel, "id tp, pos ip.x @max_y");
-        toolTipMainPanel = new TextComp(tooltip) {
+        TextComp toolTipMainPanel = new TextComp(tooltip) {
             @Override
             protected Color getColor() {
                 return Color.black;

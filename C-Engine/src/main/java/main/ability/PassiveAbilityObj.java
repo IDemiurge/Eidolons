@@ -18,7 +18,6 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
     private boolean retainAfterDeath;
     private Conditions retainConditions;
     private int dur;
-    private boolean applied;
 
     public PassiveAbilityObj(AbilityType type, Ref ref, Player player, Game game) {
         super(type, ref, player, game);
@@ -63,7 +62,7 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
 
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.PASSIVE_REMOVED, REF));
 
-        applied = false;
+        boolean applied = false;
 
         return super.kill();
     }

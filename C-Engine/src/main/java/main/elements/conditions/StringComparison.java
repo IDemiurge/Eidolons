@@ -68,7 +68,7 @@ public class StringComparison extends ConditionImpl {
         boolean result = StringMaster.compareByChar(val1, val2, false);
         if (!result) {
             if (!strict) {
-                result = StringMaster.compare(val1, val2, strict);
+                result = StringMaster.compare(val1, val2, false);
             }
         }
         if (!result) {

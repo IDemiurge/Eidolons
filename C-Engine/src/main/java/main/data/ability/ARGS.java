@@ -23,9 +23,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.dialogue.DataString;
 import main.data.dialogue.DataString.SPEECH_VALUE;
-import main.data.dialogue.Dialogue_Data;
-import main.data.dialogue.SpeechData;
-import main.data.dialogue.SpeechInterface;
 import main.elements.conditions.Condition;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
@@ -152,7 +149,6 @@ public enum ARGS implements Argument {
     UNKNOWN(Object.class),;
 
     private AE_ELEMENT_TYPE ELEMENT_TYPE;
-    private String name;
     private boolean primitive = false;
     private boolean container = false;
     private Class<?> coreClass;
@@ -169,7 +165,7 @@ public enum ARGS implements Argument {
 
     ARGS(Class<?> c) {
         this.container = Arrays.asList(Mapper.CONTAINER_CLASSES).contains(coreClass);
-        this.name = StringMaster.getWellFormattedString(name());
+        String name = StringMaster.getWellFormattedString(name());
         this.coreClass = c;
         setPrimitive(false);
         this.ELEMENT_TYPE = AE_ELEMENT_TYPE.ITEM_CHOOSING;

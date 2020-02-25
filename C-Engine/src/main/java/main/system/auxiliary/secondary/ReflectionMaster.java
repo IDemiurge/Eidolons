@@ -37,13 +37,12 @@ public class ReflectionMaster<T> {
         try {
             field = clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            if (clazz != null)
-                if (clazz.getSuperclass() != null) {
-                    setValue(fieldName, value, obj, clazz.getSuperclass());
-                    return;
-                } else {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+            if (clazz.getSuperclass() != null) {
+                setValue(fieldName, value, obj, clazz.getSuperclass());
+                return;
+            } else {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         field.setAccessible(true);
         try {

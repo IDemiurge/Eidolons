@@ -1,6 +1,5 @@
 package main.system.auxiliary.data;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import main.data.DataManager;
 import main.data.XLinkedMap;
@@ -99,10 +98,7 @@ public class ListMaster<E> {
         if (a == null) {
             return false;
         }
-        if (a.size==0) {
-            return false;
-        }
-        return true;
+        return a.size != 0;
     }
     public static boolean isNotEmpty(Collection list) {
         if (list == null) {
@@ -321,9 +317,7 @@ public class ListMaster<E> {
             return list;
         }
         for (List<E> sublist : nestedList) {
-            for (E e : sublist) {
-                list.add(e);
-            }
+            list.addAll(sublist);
         }
         return list;
     }
@@ -455,9 +449,7 @@ public class ListMaster<E> {
 
         List<E> clone = new ArrayList<>();
 
-        for (E e : list) {
-            clone.add(e);
-        }
+        clone.addAll(list);
 
         return clone;
     }
@@ -601,11 +593,8 @@ public class ListMaster<E> {
     public List<E> toObjList(List<E> tasks, List<ObjType> list) {
         List<E> filtered = new ArrayList<>();
         for (ObjType sub : list) {
-            for (E task : tasks)
-//				if (task.getType() == generic) {
-            {
-                filtered.add(task);
-            }
+            //				if (task.getType() == generic) {
+            filtered.addAll(tasks);
             break;
         }
 //		}

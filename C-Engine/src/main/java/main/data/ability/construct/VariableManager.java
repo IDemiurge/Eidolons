@@ -78,13 +78,13 @@ public class VariableManager {
         List<String> varList = getVarList(vars);
         String xml = newType.getProperty(G_PROPS.ABILITIES);
         XML_Converter.getStringFromXML(newType.getDoc());
-        String varProp = "";
+        StringBuilder varProp = new StringBuilder();
         String lastVar = null;
         for (String var : varList) {
             var = var.replace(StringMaster.COMMA_CODE, StringMaster.getVarSeparator());
 
             lastVar = var;
-            varProp += var + StringMaster.CONTAINER_SEPARATOR;
+            varProp.append(var).append(StringMaster.CONTAINER_SEPARATOR);
             if (!xml.contains(StringMaster.VAR_STRING)) {
                 // parsedVars +=var + StringMaster.CONTAINER_SEPARATOR; TODO
                 /*
@@ -101,7 +101,7 @@ public class VariableManager {
         }
 
         xml = StringMaster.replace(true, xml, StringMaster.VAR_STRING, lastVar);
-        newType.setProperty(G_PROPS.VARIABLES, varProp);
+        newType.setProperty(G_PROPS.VARIABLES, varProp.toString());
         if (TextParser.checkHasVarRefs(xml)) {
             xml = TextParser.parseXmlVarRefs(newType, xml);
             if (!TextParser.checkHasVarRefs(xml)) {
@@ -188,7 +188,7 @@ public class VariableManager {
     public static String getVarsFromXML(String xml, ObjType type) {
         // if (!variableInputRequesting)
         // return null;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int index = xml.indexOf(StringMaster.VAR_STRING);
         int i = 1;
         boolean manualVars = variableInputRequesting;
@@ -220,13 +220,13 @@ public class VariableManager {
             }
             i++;
             index = xml.indexOf(StringMaster.VAR_STRING);
-            result += input + StringMaster.getSeparator();
+            result.append(input).append(StringMaster.getSeparator());
 
         }
         if (manualVars) {
             varCache.add(type);
         }
-        return result;
+        return result.toString();
     }
 
     private static String getTypeVariables(ObjType type) {
@@ -277,7 +277,7 @@ public class VariableManager {
 
     public static synchronized String promptInputForVariables(String variables,
                                                               List<Object> varTypes) {
-        String varPart = "(";
+        StringBuilder varPart = new StringBuilder("(");
         int i = 0;
         for (String var : ContainerUtils.open(variables)) {
             String value;
@@ -297,12 +297,12 @@ public class VariableManager {
             if (value == null) {
                 return null;
             }
-            varPart += value + ",";
+            varPart.append(value).append(",");
             i++;
         }
-        varPart = varPart.substring(0, varPart.length() - 1);
-        varPart += ")";
-        return varPart;
+        varPart = new StringBuilder(varPart.substring(0, varPart.length() - 1));
+        varPart.append(")");
+        return varPart.toString();
     }
 
     private static String promptVarTypeInput(String var, VARIABLE_TYPES varType, Object value) {

@@ -70,10 +70,9 @@ public class ImageChooser extends FileChooser {
         return super.launch(v, parent);
     }
 
-    public class FileChooserImagePreview extends JPanel implements PropertyChangeListener {
+    public static class FileChooserImagePreview extends JPanel implements PropertyChangeListener {
 
         private int width, height;
-        private ImageIcon icon;
         private Image image;
         private int size;
         private Color bg;
@@ -103,11 +102,8 @@ public class ImageChooser extends FileChooser {
                  * Make reasonably sure we have an image format that AWT can
 				 * handle so we don't try to draw something silly.
 				 */
-                if ((name != null) && name.toLowerCase().endsWith(".jpg")
-                 || name.toLowerCase().endsWith(".jpeg")
-                 || name.toLowerCase().endsWith(".gif")
-                 || name.toLowerCase().endsWith(".png")) {
-                    icon = new ImageIcon(name);
+                if (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg") || name.toLowerCase().endsWith(".gif") || name.toLowerCase().endsWith(".png")) {
+                    ImageIcon icon = new ImageIcon(name);
                     image = icon.getImage();
                     scaleImage();
                     repaint();

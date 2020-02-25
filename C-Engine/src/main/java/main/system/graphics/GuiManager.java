@@ -24,9 +24,6 @@ public class GuiManager {
     private static int battleFieldWidth;
     private static int battleFieldHeight;
     private static int smallObjSize;
-    // depends on font!
-    private static int infoNamesColumnMinWidth = 100;
-    private static int infoNamesColumnMaxWidth = 200;
     private static int battleFieldCellsX = 9;
     private static int battleFieldCellsY = 7;
     private static boolean fullscreen;
@@ -38,7 +35,6 @@ public class GuiManager {
     private static int currentLevelCellsY;
     private static int squareCellSize;
     private static int cellWidth;
-    private static int bfCellsVersion = 1;
     private static Dimension overlayingHugeObjSize;
     private static Dimension overlayingObjSize;
     private static boolean guiDebug;
@@ -189,10 +185,13 @@ public class GuiManager {
     }
 
     public static int getInfoNamesColumnMinWidth() {
+        // depends on font!
+        int infoNamesColumnMinWidth = 100;
         return infoNamesColumnMinWidth;
     }
 
     public static int getInfoNamesColumnMaxWidth() {
+        int infoNamesColumnMaxWidth = 200;
         return infoNamesColumnMaxWidth;
     }
 
@@ -363,6 +362,7 @@ public class GuiManager {
     }
 
     public static int getBfCellsVersion() {
+        int bfCellsVersion = 1;
         return bfCellsVersion;
     }
 

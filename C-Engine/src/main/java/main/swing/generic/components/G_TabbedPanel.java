@@ -48,9 +48,9 @@ public class G_TabbedPanel extends G_Panel {
 
     @Override
     public String toString() {
-        String tabString = "";
+        StringBuilder tabString = new StringBuilder();
         for (Component tab : tabList) {
-            tabString += "\n" + tab.toString();
+            tabString.append("\n").append(tab.toString());
         }
         return tabs.getTabCount() + " TABS: " + tabString;
     }

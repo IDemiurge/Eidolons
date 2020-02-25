@@ -58,7 +58,7 @@ public class ClassFinder {
         for (File directory : dirs) {
             classes.addAll(findClasses(directory, packageName));
         }
-        return classes.toArray(new Class[classes.size()]);
+        return classes.toArray(new Class[0]);
     }
 
     private static Class[] getClassesFromJar(String packageName) {
@@ -102,7 +102,7 @@ public class ClassFinder {
         }
 
         System.out.println(classes.size()+ " classes found: " +classes);
-        return classes.toArray(new Class[classes.size()]);
+        return classes.toArray(new Class[0]);
     }
 
     /**

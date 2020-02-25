@@ -38,7 +38,7 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            return this == null;
+            return false;
         }
         return toString().equals(obj.toString());
     }

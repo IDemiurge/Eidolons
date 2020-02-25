@@ -153,7 +153,7 @@ public class FileManager {
                     break;
                 }
                 if (entry.getName().equals("content.xml")) {
-                    String xmlString = "";
+                    StringBuilder xmlString = new StringBuilder();
                     while (true) {
 
                         byte[] array = new byte[3000000]; // big enough for
@@ -165,15 +165,15 @@ public class FileManager {
                         }
                         new Inflater().inflate(array);
                         String string = new String(array);
-                        xmlString += string.substring(0, n);
+                        xmlString.append(string.substring(0, n));
                     }
 
-                    Node node = XML_Converter.findAndBuildNode(xmlString, "office:text");
-                    String string = "";
+                    Node node = XML_Converter.findAndBuildNode(xmlString.toString(), "office:text");
+                    StringBuilder string = new StringBuilder();
                     for (Node child : XML_Converter.getNodeList(node)) {
-                        string += child.getTextContent();
+                        string.append(child.getTextContent());
                     }
-                    return string;
+                    return string.toString();
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -270,7 +270,7 @@ public class FileManager {
         //fix slashes
         if (!afterClass.isEmpty()) {
             for (String sub : PathUtils.splitPath(afterClass)) {
-                formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
+                formatted.append(StringMaster.replace(true, sub, "/", "")).append("/");
             }
         }
         if (force) {
@@ -569,7 +569,7 @@ public class FileManager {
         List<File> list = new ArrayList<>();
         for (File f : folder.listFiles()) {
             if (subDirectories) {
-                list.addAll(getFilesFromDirectory(f.getPath(), allowDirectories, subDirectories));
+                list.addAll(getFilesFromDirectory(f.getPath(), allowDirectories, true));
             }
             if (f.isDirectory()) {
                 if (!allowDirectories) {

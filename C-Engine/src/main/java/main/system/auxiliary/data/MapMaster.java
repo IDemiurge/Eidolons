@@ -63,13 +63,12 @@ public class MapMaster<E, T> {
     }
 
     public static String getNetStringForMap(Map map) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         for (Object e : map.keySet()) {
-            s += e.toString() + StringMaster.wrapInParenthesis(map.get(e).toString())
-                    + StringMaster.SEPARATOR;
+            s.append(e.toString()).append(StringMaster.wrapInParenthesis(map.get(e).toString())).append(StringMaster.SEPARATOR);
         }
-        return s;
+        return s.toString();
     }
 
     public static boolean isNotEmpty(Map map) {

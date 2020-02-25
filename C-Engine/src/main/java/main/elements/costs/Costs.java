@@ -46,11 +46,11 @@ public class Costs extends CostImpl {
         if (strings.isEmpty()) {
             return req;
         }
-        String costsString = "to pay: ";
+        StringBuilder costsString = new StringBuilder("to pay: ");
         for (String s : strings) {
-            costsString += s + ", ";
+            costsString.append(s).append(", ");
         }
-        costsString = StringMaster.cropLast(costsString, 2, ", ");
+        costsString = new StringBuilder(StringMaster.cropLast(costsString.toString(), 2, ", "));
         return req + " " + costsString;
     }
 

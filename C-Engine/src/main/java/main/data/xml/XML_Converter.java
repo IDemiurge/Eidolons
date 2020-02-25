@@ -200,15 +200,15 @@ public class XML_Converter {
                     nodeName
                     , node));
         }
-        String xml = openXmlFormatted(nodeName);
+        StringBuilder xml = new StringBuilder(openXmlFormatted(nodeName));
         if (!node.isLeaf()) {
             for (DefaultMutableTreeNode child : TreeMaster.getChildren(node)) {
-                xml += getXmlFromNode(child);
+                xml.append(getXmlFromNode(child));
             }
         }
 
-        xml += closeXmlFormatted(nodeName);
-        return xml;
+        xml.append(closeXmlFormatted(nodeName));
+        return xml.toString();
 
     }
 
@@ -237,20 +237,20 @@ public class XML_Converter {
         if (node.getNodeName().contains("#text")) {
             return node.getTextContent();
         }
-        String string = openXmlFormatted(node.getNodeName());
+        StringBuilder string = new StringBuilder(openXmlFormatted(node.getNodeName()));
         if (node.hasChildNodes()) {
             NodeList childNodes = node.getChildNodes();
             for (int i = 0; i < childNodes.getLength(); i++) {
                 Node child = childNodes.item(i);
                 String childstring = getStringFromXMLNode(child);
-                string += childstring;
+                string.append(childstring);
             }
         } else {
-            string += node.getTextContent();
+            string.append(node.getTextContent());
         }
 
-        string += closeXmlFormatted(node.getNodeName());
-        return string;
+        string.append(closeXmlFormatted(node.getNodeName()));
+        return string.toString();
     }
 
     public static String getXMLfromTree(JTree tree) throws java.lang.ClassCastException {
@@ -440,7 +440,7 @@ public class XML_Converter {
 
     public static String getXMLFromTypeList(List<ObjType> typeList) {
         Map<OBJ_TYPE, String> subStringMap = new XMap<>();
-        String xml = "";
+        StringBuilder xml = new StringBuilder();
 
         for (ObjType type : typeList) {
             String typeString = subStringMap.get(type.getOBJ_TYPE_ENUM());
@@ -452,11 +452,11 @@ public class XML_Converter {
         }
 
         for (OBJ_TYPE type : subStringMap.keySet()) {
-            xml += wrap(type.getName(), subStringMap.get(type));
+            xml.append(wrap(type.getName(), subStringMap.get(type)));
         }
 
-        xml = wrap(TYPES_NODE, xml);
-        return xml;
+        xml = new StringBuilder(wrap(TYPES_NODE, xml.toString()));
+        return xml.toString();
     }
 
     public static String wrap(String enclosing, String node) {

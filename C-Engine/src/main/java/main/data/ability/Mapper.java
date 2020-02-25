@@ -55,7 +55,6 @@ public class Mapper {
     private static Map<String, AE_Item> itemMap = new HashMap<>();
     private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
     private static List<Argument> args;
-    private static List<String> classFolders;
 
     public static AE_Item getItem(String itemName, Class<?>[] parameterTypes) {
         return getItem(itemName, getArgList(parameterTypes));
@@ -206,7 +205,6 @@ public class Mapper {
             throws ClassNotFoundException, SecurityException, IOException {
         main.system.auxiliary.log.LogMaster.log(1, "Mapper: compile Arg Map for " + classFolders1);
         args = args1;
-        classFolders = classFolders1;
         for (Argument arg : args) {
             List<AE_Item> list = new ArrayList<>();
             map.put(arg, list);
@@ -216,7 +214,7 @@ public class Mapper {
         // compileContentConsts();
 
         ClassFinder.setIgnoredPaths(ignoredPaths);
-        for (String packageName : classFolders) {
+        for (String packageName : classFolders1) {
             for (Class<?> CLASS : ClassFinder.getClasses(packageName)) {
                 if (CLASS == null) {
                     LogMaster.log(1, "null class in " + packageName + "!");
@@ -382,9 +380,6 @@ public class Mapper {
         }
 
         Class<?> CLASS = item.getConcreteClass();
-        if (CLASS == null) {
-            return null;
-        }
         return CLASS;
     }
 

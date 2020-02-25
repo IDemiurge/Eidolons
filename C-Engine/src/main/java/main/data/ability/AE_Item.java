@@ -41,21 +41,21 @@ public class AE_Item implements Comparable<AE_Item> {
         if (constr == null) {
             return name;
         }
-        String args = ": ";
+        StringBuilder args = new StringBuilder(": ");
         try {
             for (String str : constr
              .getAnnotation(AE_ConstrArgs.class).argNames()) {
-                args += str + ", ";
+                args.append(str).append(", ");
             }
-            args = args.substring(0, args.length() - 2);
+            args = new StringBuilder(args.substring(0, args.length() - 2));
         } catch (Exception e) {
             if (constr.getParameterTypes().length < 1) {
                 return name;
             }
             for (Class<?> type : constr.getParameterTypes()) {
-                args += type.getSimpleName() + ", ";
+                args.append(type.getSimpleName()).append(", ");
             }
-            args = args.substring(0, args.length() - 2);
+            args = new StringBuilder(args.substring(0, args.length() - 2));
         }
 
         String string = name + args;

@@ -4,7 +4,6 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.system.auxiliary.data.ListMaster;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -128,7 +127,7 @@ public class ContainerUtils {
 
         for (String str : list) {
             if (str != null)
-                builder.append(str + divider);
+                builder.append(str).append(divider);
         }
         String result = builder.toString();
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
@@ -253,7 +252,7 @@ public class ContainerUtils {
     }
 
     public static String build(List<String> list) {
-        return build(list.toArray(new String[list.size()]));
+        return build(list.toArray(new String[0]));
     }
 
     public static String build(boolean whitespaces, String... strings) {

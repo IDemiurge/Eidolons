@@ -1,9 +1,6 @@
 package main.system.auxiliary.data;
 
 
-import main.entity.obj.Obj;
-import main.system.auxiliary.StringMaster;
-
 import java.util.*;
 
 public class ArrayMaster<T> {
@@ -128,10 +125,7 @@ public class ArrayMaster<T> {
             return false;
         if (cells.length <= x)
             return false;
-        if (cells[x].length <= y)
-            return false;
-
-        return true;
+        return cells[x].length > y;
     }
 
     public static Integer[][] rotate(boolean clockwise, Integer[][] matrix) {
@@ -288,14 +282,14 @@ public class ArrayMaster<T> {
     }
 
     public String getCellsString(Object[][] cells) {
-        String cellsString = "";
+        StringBuilder cellsString = new StringBuilder();
         for (Object[] sub : cells) {
             for (Object sub1 : sub) {
-                cellsString += sub1;
+                cellsString.append(sub1);
             }
-            cellsString += "\n";
+            cellsString.append("\n");
         }
-        return cellsString;
+        return cellsString.toString();
     }
 
     private void getTranspose(Object[][] matrix) {

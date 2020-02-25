@@ -63,7 +63,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     // }
     @OmittedConstructor
     public Effects(List<Effect> effects) {
-        this(effects.toArray(new Effect[effects.size()]));
+        this(effects.toArray(new Effect[0]));
     }
 
     @Override
@@ -136,9 +136,9 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
 
     @Override
     public String toString() {
-        String result = "Effects: ";
+        StringBuilder result = new StringBuilder("Effects: ");
         for (Effect effect : getEffects()) {
-            result += effect.toString() + ";\n";
+            result.append(effect.toString()).append(";\n");
         }
 
         return result.substring(0, result.length() - 1);
@@ -146,9 +146,9 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
 
     @Override
     public String getTooltip() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Effect effect : getEffects()) {
-            result += effect.getTooltip() + "; ";
+            result.append(effect.getTooltip()).append("; ");
         }
         return result.substring(0, result.length() - 2);
     }

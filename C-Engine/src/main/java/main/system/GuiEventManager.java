@@ -7,8 +7,6 @@ import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
 
-import static main.system.GuiEventType.SWITCH_SCREEN;
-
 /**
  * Created with IntelliJ IDEA.
  * Date: 04.11.2016

@@ -426,8 +426,7 @@ return ;
         }
         if (getType().getType() != null)
             if (getType().getType().getName().equals(DUMMY_BUFF_TYPE))
-                if (!isTransient())
-                    return false;
+                return isTransient();
 
         return true;
     }

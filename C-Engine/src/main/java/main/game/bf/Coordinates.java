@@ -5,7 +5,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
@@ -19,8 +18,6 @@ public class Coordinates {
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
     static Coordinates[][] coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT];
-    private static int h;
-    private static int w;
     private static boolean flipX;
     private static boolean flipY;
     private static boolean rotate;
@@ -82,8 +79,8 @@ public class Coordinates {
         adjacenctMap.clear();
         adjacenctMapNoDiags.clear();
         adjacenctMapDiagsOnly.clear();
-        w = GuiManager.getBF_CompDisplayedCellsX();
-        h = GuiManager.getBF_CompDisplayedCellsY();
+        int w = GuiManager.getBF_CompDisplayedCellsX();
+        int h = GuiManager.getBF_CompDisplayedCellsY();
         coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
 
     }
@@ -187,10 +184,7 @@ public class Coordinates {
         if (y >= GuiManager.getCurrentLevelCellsY()) {
             return true;
         }
-        if (y < 0) {
-            return true;
-        }
-        return false;
+        return y < 0;
     }
 
     public static Coordinates get(String s) {
@@ -419,24 +413,21 @@ public class Coordinates {
 
     public Coordinates[] getAdjacent() {
         if (adjacent == null) {
-            adjacent = getAdjacentCoordinates().toArray(new Coordinates[
-                    getAdjacentCoordinates().size()]);
+            adjacent = getAdjacentCoordinates().toArray(new Coordinates[0]);
         }
         return adjacent;
     }
 
     public Coordinates[] getAdjacenctNoDiags() {
         if (adjacenctNoDiags == null) {
-            adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[
-                    getAdjacentCoordinates(false).size()]);
+            adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[0]);
         }
         return adjacenctNoDiags;
     }
 
     public Coordinates[] getAdjacenctDiagsOnly() {
         if (adjacenctDiagsOnly == null) {
-            adjacenctDiagsOnly = getAdjacentCoordinates(null).toArray(new Coordinates[
-                    getAdjacentCoordinates(null).size()]);
+            adjacenctDiagsOnly = getAdjacentCoordinates(null).toArray(new Coordinates[0]);
         }
         return adjacenctDiagsOnly;
     }
@@ -480,9 +471,7 @@ public class Coordinates {
                 }
             }
             if (Math.abs(coordinates.y - y) == 1) {
-                if (Math.abs(coordinates.x - x) <= 1) {
-                    return true;
-                }
+                return Math.abs(coordinates.x - x) <= 1;
             }
             return false;
         }
@@ -492,9 +481,7 @@ public class Coordinates {
             }
         }
         if (Math.abs(coordinates.y - y) == 1) {
-            if (Math.abs(coordinates.x - x) < 1) {
-                return true;
-            }
+            return Math.abs(coordinates.x - x) < 1;
         }
         return false;
     }
@@ -506,9 +493,7 @@ public class Coordinates {
             }
         }
         if (Math.abs(coordinates.y - y) == 1) {
-            if (Math.abs(coordinates.x - x) <= 1) {
-                return true;
-            }
+            return Math.abs(coordinates.x - x) <= 1;
         }
         return false;
     }

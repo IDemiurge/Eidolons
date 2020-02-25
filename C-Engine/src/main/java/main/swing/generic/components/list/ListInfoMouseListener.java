@@ -8,11 +8,9 @@ import java.awt.event.MouseListener;
 
 public class ListInfoMouseListener implements MouseListener {
 
-    private G_InfoPanel infoPanel;
     private OBJ_TYPE TYPE;
 
     public ListInfoMouseListener(OBJ_TYPE TYPE, G_InfoPanel infoPanel) {
-        this.infoPanel = infoPanel;
 
     }
 

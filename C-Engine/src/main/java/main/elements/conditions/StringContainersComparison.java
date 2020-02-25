@@ -43,7 +43,7 @@ public class StringContainersComparison extends StringComparison {
             for (String s : ContainerUtils.open(val2)) {
                 result = negative;
                 if (strictContents) {
-                    if (StringMaster.compareByChar(s1, s, strictContents)) {
+                    if (StringMaster.compareByChar(s1, s, true)) {
                         return !negative;
                     }
                 }

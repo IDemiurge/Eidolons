@@ -6,12 +6,11 @@ import javax.swing.*;
 
 public class G_ToolBar extends G_Component {
 
-    private final JToolBar component;
     String[] commands = new String[]{"add", "remove"};
 
 
     public G_ToolBar(int orientation, G_Component[] items) {
-        component = new JToolBar("my toolbar");
+        JToolBar component = new JToolBar("my toolbar");
 
 
         //component.setLayout(new FlowLayout());

@@ -51,7 +51,7 @@ public class Parameter extends DynamicValue {
         // else
         if (obj_string.equalsIgnoreCase(Ref.KEYS.EVENT.name())) {
             if (ref.getEvent().getRef().getInteger(value_string) != null) {
-                return Integer.valueOf(ref.getEvent().getRef().getInteger(value_string));
+                return ref.getEvent().getRef().getInteger(value_string);
             }
             return new Formula(value_string).wrapObjRef().getInt(ref.getEvent().getRef());
         }
@@ -86,7 +86,7 @@ public class Parameter extends DynamicValue {
 
         int x;
 
-        x = Integer.valueOf((entity).getIntParam(getParam(), ref.isBase()));
+        x = (entity).getIntParam(getParam(), ref.isBase());
 
         return x;
 

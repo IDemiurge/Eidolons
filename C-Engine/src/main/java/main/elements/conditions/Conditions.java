@@ -16,7 +16,6 @@ public class Conditions extends Vector<Condition> implements Condition {
     boolean isTrue;
     boolean or = false;
     private Condition lastCheckedCondition;
-    private boolean fastFailOnCheck = !CoreEngine.isLogicTest();
 
     @OmittedConstructor
     public Conditions(Condition... c) {
@@ -160,7 +159,6 @@ public class Conditions extends Vector<Condition> implements Condition {
         return lastCheckedCondition;
     }
     public void setFastFailOnCheck(boolean fastFailOnCheck) {
-        this.fastFailOnCheck = fastFailOnCheck;
     }
 
     @Override
@@ -199,9 +197,7 @@ public class Conditions extends Vector<Condition> implements Condition {
             }
         }
         if (checkConditionUnwrap(c)) {
-            for (Condition cond : ((Conditions) c)) {
-                add(cond);
-            }
+            this.addAll(((Conditions) c));
             return true;
         }
 
@@ -212,9 +208,7 @@ public class Conditions extends Vector<Condition> implements Condition {
     protected boolean checkConditionUnwrap(Condition c) {
         if (!(this instanceof OrConditions)) {
             if (!(c instanceof OrConditions)) {
-                if (c instanceof Conditions) {
-                    return true;
-                }
+                return c instanceof Conditions;
             }
         }
         return false;

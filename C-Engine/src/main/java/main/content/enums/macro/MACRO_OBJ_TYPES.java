@@ -69,11 +69,9 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     // INFLUENCE("DIALOGUE_ACTOR", PROPS.ASPECT, 11, true),
     // DIALOGUE_ACTOR("DIALOGUE_ACTOR", PROPS.ASPECT, 11, true)
 
-    private static Map<String, MACRO_OBJ_TYPES> searchMap;
-
     static {
         final MACRO_OBJ_TYPES[] values = values();
-        searchMap = new HashMap<>(values.length, 1f);
+        Map<String, MACRO_OBJ_TYPES> searchMap = new HashMap<>(values.length, 1f);
 
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
             MACRO_OBJ_TYPES value = values[i];
@@ -140,9 +138,7 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     public static MACRO_OBJ_TYPES getType(String s) {
         MACRO_OBJ_TYPES type = null;
 
-        if (type == null) {
-            type = new EnumMaster<MACRO_OBJ_TYPES>().retrieveEnumConst(MACRO_OBJ_TYPES.class, s);
-        }
+        type = new EnumMaster<MACRO_OBJ_TYPES>().retrieveEnumConst(MACRO_OBJ_TYPES.class, s);
         // if (type == null) {
         // type = new EnumMaster<MACRO_OBJ_TYPES>().retrieveEnumConst(
         // MACRO_OBJ_TYPES.class, s, true);

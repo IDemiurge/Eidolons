@@ -20,7 +20,6 @@ public class Formula {
 
     private static FuncMap functionMap;
     private String formula;
-    private String buffer;
     private static Map<String, Expression> expressionMap = new HashMap<>();
 
     public Formula(String formula) {
@@ -50,7 +49,7 @@ public class Formula {
             return new Double(formula);
         }
 
-        buffer = formula;
+        String buffer = formula;
         VarMap vm = new VarMap(false /* case sensitive */);
 
         buffer = new DynamicValueParser().parseDynamicValues(buffer, ref);

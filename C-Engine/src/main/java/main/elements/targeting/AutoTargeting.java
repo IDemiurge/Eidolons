@@ -26,7 +26,6 @@ public class AutoTargeting extends TargetingImpl {
     protected String maxNumberOfTargets;
     protected String minNumberOfTargets;
     protected boolean unlimitedTargets = false;
-    private Boolean closest;
     private Obj lastTarget;
     private String TYPES;
     private KEYS keyword;
@@ -43,7 +42,6 @@ public class AutoTargeting extends TargetingImpl {
 
     public AutoTargeting(Condition condition, Formula numberOfTargets,
                          Boolean closestOrRandom) {
-        this.closest = closestOrRandom;
         this.setConditions(new Conditions(condition));
         if (numberOfTargets == null) {
             unlimitedTargets = true;
