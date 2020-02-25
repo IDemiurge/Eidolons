@@ -14,11 +14,18 @@ public class LE_UnitViewFactory extends UnitViewFactory {
 
     @Override
     public ClickListener createListener(BattleFieldObject bfObj) {
-        return new ClickListener() {
+        return new ClickListener(-1) {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 LevelEditor.getCurrent().getManager().getMouseHandler().handleObjectClick(event, getTapCount(), bfObj);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                 super.touchDown(event, x, y, pointer, button);
+                 event.stop();
+                 return true;
             }
         };
     }

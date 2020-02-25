@@ -47,7 +47,7 @@ public class ForceAnim extends Weapon3dAnim {
     );
     public static final List vfxList_chaos = Arrays.asList(//            GenericEnums.VFX.missile_chaos,
 //            GenericEnums.VFX.weave_chaos,
-            GenericEnums.VFX.weave_nether 
+            GenericEnums.VFX.weave_nether
 //            GenericEnums.VFX.weave_chaos,
 //            GenericEnums.VFX.missile_arcane_pink,
 //            GenericEnums.VFX.spell_chaos_flames,

@@ -1,6 +1,8 @@
 package main.level_editor.gui.screen;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
@@ -25,6 +27,7 @@ public class LE_Screen extends GenericDungeonScreen {
     private static Map<Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
     static LE_Screen instance;
     Floor floor;
+    private LE_InputProcessor processor;
 
     public static Supplier<ScreenWithLoader> getScreen(Floor parameter) {
         Supplier<ScreenWithLoader> supplier = cached.get(parameter);
@@ -68,7 +71,8 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     public void updateInputController() {
-        super.updateInputController();
+        GdxMaster.setInputProcessor(
+                new InputMultiplexer( createInputController(), gridStage, guiStage ));
     }
 
     @Override
@@ -78,7 +82,10 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     protected InputProcessor createInputController() {
-        return new LE_InputProcessor(getCamera(), floor);
+        if (processor==null) {
+            processor= new LE_InputProcessor(getCamera(), floor);
+        }
+        return processor;
     }
 
     @Override

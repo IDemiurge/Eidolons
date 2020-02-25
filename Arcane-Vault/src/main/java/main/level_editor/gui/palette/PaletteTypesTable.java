@@ -16,7 +16,7 @@ import main.system.GuiEventType;
 
 import java.util.List;
 
-public class PaletteTable extends SelectionImageTable  {
+public class PaletteTypesTable extends SelectionImageTable  {
 
     private final List<ObjType> types;
 
@@ -30,7 +30,7 @@ public class PaletteTable extends SelectionImageTable  {
         return super.getData();
     }
 
-    public PaletteTable(int wrap, List<ObjType> types, int space) {
+    public PaletteTypesTable(int wrap, List<ObjType> types, int space) {
         super(wrap, types.size(), space);
         this.types = types;
     }

@@ -5,12 +5,19 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.obj.MicroObj;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.functions.LE_Handler;
 import main.level_editor.functions.LE_Manager;
 import main.level_editor.functions.selection.LE_Selection;
 import main.level_editor.sim.LE_GameSim;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.threading.WaitMaster;
 
@@ -25,7 +32,8 @@ public class LE_MouseHandler extends LE_Handler {
 
 
     public void handleCellClick(InputEvent event, int tapCount, int gridX, int gridY) {
-        LE_Selection selection = getSelectionHandler().getSelection();
+//        LE_Selection selection = getSelectionHandler().getSelection();
+        Coordinates c = Coordinates.get(gridX, gridY);
         switch (getSelectionHandler().getMode()) {
             case COORDINATE:
             case AREA:
@@ -33,16 +41,30 @@ public class LE_MouseHandler extends LE_Handler {
                 return;
         }
         //check simplest click
-        selection.setCoordinates(new ListMaster<Coordinates>().toSet(Coordinates.get(gridX,gridY)));
+//        selection.setCoordinates(new ListMaster<Coordinates>().toSet(Coordinates.get(gridX,gridY)));
 
 
         CLICK_MODE mode = getModeForClick(event, tapCount);
 
         switch (mode) {
+            case RIGHT:
+                ObjType dummyObjType= DataManager.getType("Stone Wall", DC_TYPE.BF_OBJ);
+                MicroObj d = getGame().createUnit(dummyObjType, gridX, gridY, DC_Player.NEUTRAL);
+                return;
             //copy metadata
             //delete top
             //delete all
             //select area
+            case ALT:
+                manager.getModule(c).toggleCoordinate(c); //expand or cut
+                // remap modules - put them far enough apart...
+                //switch to adjacent?
+
+                /*
+                to be fair, it'd be much better to edit modules REALLY separately
+
+                 */
+                break;
         }
     }
 
@@ -62,9 +84,10 @@ public class LE_MouseHandler extends LE_Handler {
             //remove
             case DOUBLE:
             case RIGHT:
+                getGame().softRemove(bfObj);
+                GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
                 break;
             case DOUBLE_RIGHT:
-                getGame().softRemove(bfObj);
                 break;
 
         }

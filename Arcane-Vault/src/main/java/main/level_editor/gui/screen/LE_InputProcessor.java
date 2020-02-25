@@ -11,16 +11,28 @@ public class LE_InputProcessor extends DungeonInputController {
 
     public LE_InputProcessor(OrthographicCamera camera, Floor parameter) {
         super(camera);
+        setZoomStep(0.2f);
+        setUnlimitedZoom(true);
+
+    }
+
+    @Override
+    protected float getMargin() {
+        return 1200;
+    }
+
+    protected float getDragCoef() {
+        return 1.5f;
     }
 
     @Override
     protected float getDefaultZoom() {
-        return 0.33f;
+        return 1.73f;
     }
 
     @Override
     protected float getPreferredMinimumOfScreenToFitOnDisplay() {
-        return 0.1f;
+        return 2.0f;
     }
 
     @Override

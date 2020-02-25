@@ -32,10 +32,19 @@ public class LE_GridCell extends GridCellContainer {
 
     @Override
     protected EventListener createListener() {
-        return new ClickListener() {
+        return new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 LevelEditor.getCurrent().getManager().getMouseHandler().handleCellClick(event, getTapCount(), getGridX(), getGridY());
+            }
+
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchDown(event, x, y, pointer, button);
+                if (button==0)
+                    return false;
+                return true;
             }
         };
     }

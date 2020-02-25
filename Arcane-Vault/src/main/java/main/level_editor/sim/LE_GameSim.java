@@ -49,14 +49,22 @@ public class LE_GameSim extends ScenarioGame {
 
     @Override
     public void removed(Obj obj) {
-        simIdManager.objectRemoved(obj);
+        Integer id = simIdManager.objectRemoved(obj);
+        getMetaMaster().getDungeonMaster().getLayerManager().removeFromCurrent(id , obj);
     }
 
     @Override
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-        MicroObj obj = super.createUnit(type, x, y, owner, ref);
+    public void softRemove(BattleFieldObject obj) {
+        super.softRemove(obj);
+        removed(obj);
+    }
+
+    @Override
+    public MicroObj createUnit(ObjType type, int x, int y, Player owner) {
+        MicroObj obj = super.createUnit(type, x, y, owner);
 //        floor.getManager().get
-        simIdManager.objectCreated(obj);
+        Integer id = simIdManager.objectCreated(obj);
+        getMetaMaster().getDungeonMaster().getLayerManager().addToCurrent(id , obj);
         return obj;
     }
 

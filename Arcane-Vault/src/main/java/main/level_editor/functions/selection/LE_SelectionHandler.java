@@ -12,10 +12,11 @@ public class LE_SelectionHandler extends LE_Handler {
 
     LE_Selection previousSelection;
     LE_Selection selection;
-    private SELECTION_MODE mode;
+    private SELECTION_MODE mode= SELECTION_MODE.NONE;
 
     public LE_SelectionHandler(LE_Manager manager) {
         super(manager);
+        selection = new LE_Selection();
     }
 
     public void previousSelection(){
@@ -79,6 +80,9 @@ public class LE_SelectionHandler extends LE_Handler {
     }
 
     public SELECTION_MODE getMode() {
+        if (mode == null) {
+            mode = SELECTION_MODE.NONE;
+        }
         return mode;
     }
 }

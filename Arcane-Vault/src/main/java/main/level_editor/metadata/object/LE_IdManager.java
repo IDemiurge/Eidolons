@@ -2,8 +2,6 @@ package main.level_editor.metadata.object;
 
 import eidolons.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
-import main.level_editor.functions.LE_Handler;
-import main.level_editor.functions.LE_Manager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,19 +19,22 @@ public class LE_IdManager {
         ID = objIdMap.size();
         objects = objIdMap;
     }
-    public void objectRemoved(Obj obj) {
+
+    public Integer objectRemoved(Obj obj) {
         for (Integer integer : objects.keySet()) {
-            if (objects.get(integer) == obj){
+            if (objects.get(integer) == obj) {
                 objects.remove(integer);
-                return;
+                return integer;
             }
 
         }
+        return null;
     }
-    public void objectCreated(Obj obj) {
+
+    public Integer objectCreated(Obj obj) {
         Integer id = ID++;
         objects.put(id, obj);
-
+        return id;
     }
 
     public Obj getObjectById(Integer id) {
@@ -42,7 +43,7 @@ public class LE_IdManager {
 
     public Integer getId(BattleFieldObject obj) {
         for (Integer integer : objects.keySet()) {
-            if (objects.get(integer) == obj){
+            if (objects.get(integer) == obj) {
                 return integer;
             }
 

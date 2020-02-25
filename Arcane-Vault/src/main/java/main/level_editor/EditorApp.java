@@ -58,10 +58,15 @@ public class EditorApp extends GenericLauncher {
         screenInit();
     }
     protected void screenInit() {
-        LE_WaitingScreen newScreen = new LE_WaitingScreen();
-        ScreenData meta=new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
-        newScreen.initLoadingStage(meta);
-        setScreen(newScreen);
+//        if (args.length> 0 ){
+//            // ???
+//        } else
+          {
+            LE_WaitingScreen newScreen = new LE_WaitingScreen();
+            ScreenData meta=new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
+            newScreen.initLoadingStage(meta);
+            setScreen(newScreen);
+        }
         load();
 
         render();

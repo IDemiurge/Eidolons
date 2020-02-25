@@ -45,6 +45,15 @@ public class LE_UnitView extends GridUnitView {
     }
 
     @Override
+    protected void setDefaultTexture() {
+    }
+
+    @Override
+    protected TextureRegion getDefaultTexture() {
+        return originalTexture;
+    }
+
+    @Override
     public boolean isVisible() {
         return true;
     }
